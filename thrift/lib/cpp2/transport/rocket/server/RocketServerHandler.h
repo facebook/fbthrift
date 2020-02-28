@@ -47,10 +47,12 @@ class RocketServerHandler {
 
   virtual void handleRequestStreamFrame(
       RequestStreamFrame&&,
+      RocketServerFrameContext&& context,
       RocketStreamClientCallback*) = 0;
 
   virtual void handleRequestChannelFrame(
       RequestChannelFrame&&,
+      RocketServerFrameContext&& context,
       // TODO current only Sink are supported by using channel
       RocketSinkClientCallback*) = 0;
 

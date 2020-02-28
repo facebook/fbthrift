@@ -56,9 +56,7 @@ void RocketSinkClientCallback::onFirstResponse(
   if (UNLIKELY(serverCallbackOrError_ == kErrorFlag)) {
     serverCallback->onSinkError(TApplicationException(
         TApplicationException::TApplicationExceptionType::INTERRUPTION));
-    auto& connection = connection_;
     connection_.freeStream(streamId_);
-    connection.decInflightRequests();
     return;
   }
 
@@ -67,7 +65,6 @@ void RocketSinkClientCallback::onFirstResponse(
       streamId_,
       pack(std::move(firstResponse)).value(),
       Flags::none().next(true));
-  connection_.decInflightRequests();
 }
 
 void RocketSinkClientCallback::onFirstResponseError(
@@ -88,9 +85,7 @@ void RocketSinkClientCallback::onFirstResponseError(
       });
   DCHECK(isEncodedError);
 
-  auto& connection = connection_;
   connection_.freeStream(streamId_);
-  connection.decInflightRequests();
 }
 
 void RocketSinkClientCallback::onFinalResponse(StreamPayload&& firstResponse) {

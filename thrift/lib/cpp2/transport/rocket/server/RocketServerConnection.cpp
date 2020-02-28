@@ -106,7 +106,7 @@ RocketServerConnection::~RocketServerConnection() {
   socket_.reset();
 }
 
-bool RocketServerConnection::closeIfNeeded() {
+void RocketServerConnection::closeIfNeeded() {
   if (state_ == ConnectionState::DRAINING && inflightRequests_ == 0 &&
       inflightSinkFinalResponses_ == 0) {
     DestructorGuard dg(this);
@@ -117,11 +117,11 @@ bool RocketServerConnection::closeIfNeeded() {
         StreamId{0}, RocketException(ErrorCode::CONNECTION_DRAIN_COMPLETE));
 
     state_ = ConnectionState::CLOSING;
-    return closeIfNeeded();
+    closeIfNeeded();
   }
 
   if (state_ != ConnectionState::CLOSING || isBusy()) {
-    return false;
+    return;
   }
 
   DestructorGuard dg(this);
@@ -153,8 +153,6 @@ bool RocketServerConnection::closeIfNeeded() {
   writeBatcher_.drain();
 
   socketDrainer_.activate();
-
-  return true;
 }
 
 void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {

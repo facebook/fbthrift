@@ -79,13 +79,13 @@ ThriftRocketServerHandler::ThriftRocketServerHandler(
     : worker_(std::move(worker)),
       connectionGuard_(worker_->getActiveRequestsGuard()),
       clientAddress_(clientAddress),
-      connContext_(std::make_shared<Cpp2ConnContext>(
+      connContext_(
           &clientAddress_,
           transport,
           nullptr, /* eventBaseManager */
           nullptr, /* duplexChannel */
           nullptr, /* x509PeerCert */
-          worker_->getServer()->getClientIdentityHook())),
+          worker_->getServer()->getClientIdentityHook()),
       setupFrameHandlers_(handlers) {}
 
 ThriftRocketServerHandler::~ThriftRocketServerHandler() {
@@ -137,7 +137,7 @@ void ThriftRocketServerHandler::handleSetupFrame(
           ErrorCode::INVALID_SETUP,
           "Error deserializing SETUP payload: underflow"));
     }
-    eventBase_ = connContext_->getTransport()->getEventBase();
+    eventBase_ = connContext_.getTransport()->getEventBase();
     for (const auto& h : setupFrameHandlers_) {
       auto processorInfo = h->tryHandle(*meta);
       if (processorInfo) {
@@ -192,7 +192,7 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
         *eventBase_,
         *serverConfigs_,
         std::move(md),
-        *connContext_,
+        connContext_,
         *activeRequestsRegistry_,
         std::move(debugPayload),
         ctx->getRootId(),
@@ -216,7 +216,7 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
         *eventBase_,
         *serverConfigs_,
         std::move(md),
-        *connContext_,
+        connContext_,
         *activeRequestsRegistry_,
         std::move(debugPayload),
         ctx->getRootId(),
@@ -229,6 +229,7 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
 
 void ThriftRocketServerHandler::handleRequestStreamFrame(
     RequestStreamFrame&& frame,
+    RocketServerFrameContext&& context,
     RocketStreamClientCallback* clientCallback) {
   auto makeRequestStream = [&](RequestRpcMetadata&& md,
                                std::unique_ptr<folly::IOBuf> debugPayload,
@@ -242,6 +243,7 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
         *activeRequestsRegistry_,
         std::move(debugPayload),
         ctx->getRootId(),
+        std::move(context),
         clientCallback,
         cpp2Processor_);
   };
@@ -251,6 +253,7 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
 
 void ThriftRocketServerHandler::handleRequestChannelFrame(
     RequestChannelFrame&& frame,
+    RocketServerFrameContext&& context,
     RocketSinkClientCallback* clientCallback) {
   auto makeRequestSink = [&](RequestRpcMetadata&& md,
                              std::unique_ptr<folly::IOBuf> debugPayload,
@@ -264,6 +267,7 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
         *activeRequestsRegistry_,
         std::move(debugPayload),
         ctx->getRootId(),
+        std::move(context),
         clientCallback,
         cpp2Processor_);
   };

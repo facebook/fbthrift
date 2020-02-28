@@ -189,6 +189,15 @@ class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
         });
   }
 
+  folly::Future<apache::thrift::ServerStream<int64_t>> future_emptyStreamSlow(
+      int64_t sleepMs) {
+    requestSem_.post();
+    return folly::futures::sleepUnsafe(std::chrono::milliseconds(sleepMs))
+        .thenValue([](auto&&) {
+          return apache::thrift::ServerStream<int64_t>::createEmpty();
+        });
+  }
+
   void waitForRequest() {
     requestSem_.wait();
   }
@@ -218,6 +227,15 @@ class SlowSimpleServiceImplSemiFuture : public virtual SimpleServiceSvIf {
     return folly::futures::sleep(std::chrono::milliseconds(sleepMs))
         .deferValue([message = std::move(message)](auto&&) mutable {
           return std::move(message);
+        });
+  }
+
+  folly::SemiFuture<apache::thrift::ServerStream<int64_t>>
+  semifuture_emptyStreamSlow(int64_t sleepMs) {
+    requestSem_.post();
+    return folly::futures::sleep(std::chrono::milliseconds(sleepMs))
+        .deferValue([](auto&&) {
+          return apache::thrift::ServerStream<int64_t>::createEmpty();
         });
   }
 
@@ -255,6 +273,32 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequests) {
 
   EXPECT_GE(timer.elapsed().count(), 6000);
   EXPECT_EQ(6000, std::move(future).get());
+}
+
+TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsStreamTaskTimeout) {
+  SKIP_IF(this->isHeaderTransport())
+      << "Streaming is not implemented for Header transport";
+
+  auto serviceImpl = this->newService();
+
+  folly::Optional<ScopedServerInterfaceThread> ssit(
+      folly::in_place, serviceImpl);
+
+  auto cli = this->template newClient<SimpleServiceAsyncClient>(*ssit);
+
+  folly::stop_watch<std::chrono::milliseconds> timer;
+
+  apache::thrift::RpcOptions options;
+  options.setTimeout(std::chrono::seconds{1});
+  auto future = cli->semifuture_emptyStreamSlow(options, 6000);
+
+  serviceImpl->waitForRequest();
+  serviceImpl.reset();
+
+  ssit.reset();
+
+  EXPECT_GE(timer.elapsed().count(), 6000);
+  EXPECT_ANY_THROW(std::move(future).get());
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsLargeMessage) {

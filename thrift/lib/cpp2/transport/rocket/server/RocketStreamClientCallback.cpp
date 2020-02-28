@@ -69,9 +69,7 @@ bool RocketStreamClientCallback::onFirstResponse(
     StreamServerCallback* serverCallback) {
   if (UNLIKELY(serverCallbackOrCancelled_ == kCancelledFlag)) {
     serverCallback->onStreamCancel();
-    auto& connection = connection_;
     connection_.freeStream(streamId_);
-    connection.decInflightRequests();
     return false;
   }
 
@@ -93,10 +91,6 @@ bool RocketStreamClientCallback::onFirstResponse(
       pack(std::move(firstResponse)).value(),
       Flags::none().next(true));
 
-  bool selfAlive = connection_.decInflightRequests();
-  if (!selfAlive) {
-    return false;
-  }
   if (tokens) {
     return request(tokens);
   }
@@ -121,9 +115,7 @@ void RocketStreamClientCallback::onFirstResponseError(
       });
   DCHECK(isEncodedError);
 
-  auto& connection = connection_;
   connection_.freeStream(streamId_);
-  connection.decInflightRequests();
 }
 
 bool RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {

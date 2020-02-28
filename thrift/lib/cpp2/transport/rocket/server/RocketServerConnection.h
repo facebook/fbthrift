@@ -79,17 +79,6 @@ class RocketServerConnection final
   void handleFrame(std::unique_ptr<folly::IOBuf> frame);
   void close(folly::exception_wrapper ew);
 
-  void incInflightRequests() {
-    ++inflightRequests_;
-  }
-
-  // return true if connection still alive (not closed)
-  bool decInflightRequests() {
-    DCHECK(inflightRequests_ != 0);
-    --inflightRequests_;
-    return !closeIfNeeded();
-  }
-
   // AsyncTransportWrapper::WriteCallback implementation
   void writeSuccess() noexcept final;
   void writeErr(
@@ -317,8 +306,7 @@ class RocketServerConnection final
 
   ~RocketServerConnection();
 
-  // return true if connection closed
-  bool closeIfNeeded();
+  void closeIfNeeded();
   void flushWrites(std::unique_ptr<folly::IOBuf> writes) {
     ++inflightWrites_;
     socket_->writeChain(this, std::move(writes));
@@ -363,6 +351,15 @@ class RocketServerConnection final
       RocketServerFrameContext(*this, streamId)
           .onFullFrame(std::forward<RequestFrame>(frame));
     }
+  }
+
+  void incInflightRequests() {
+    ++inflightRequests_;
+  }
+
+  void decInflightRequests() {
+    --inflightRequests_;
+    closeIfNeeded();
   }
 
   friend class RocketServerFrameContext;

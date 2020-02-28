@@ -84,10 +84,9 @@ void RocketServerFrameContext::onFullFrame(RequestStreamFrame&& fullFrame) && {
   auto& connection = *connection_;
   auto& frameHandler = *connection.frameHandler_;
   auto& clientCallback = connection.createStreamClientCallback(
-      streamId_,
-      *std::exchange(connection_, nullptr),
-      fullFrame.initialRequestN());
-  frameHandler.handleRequestStreamFrame(std::move(fullFrame), &clientCallback);
+      streamId_, connection, fullFrame.initialRequestN());
+  frameHandler.handleRequestStreamFrame(
+      std::move(fullFrame), std::move(*this), &clientCallback);
 }
 
 void RocketServerFrameContext::onFullFrame(RequestChannelFrame&& fullFrame) && {
@@ -99,11 +98,11 @@ void RocketServerFrameContext::onFullFrame(RequestChannelFrame&& fullFrame) && {
                 STREAMING_CONTRACT_VIOLATION,
             "initialRequestN of Sink must be 2"));
   } else {
-    auto& clientCallback = connection.createSinkClientCallback(
-        streamId_, *std::exchange(connection_, nullptr));
+    auto& clientCallback =
+        connection.createSinkClientCallback(streamId_, connection);
     auto& frameHandler = *connection.frameHandler_;
     frameHandler.handleRequestChannelFrame(
-        std::move(fullFrame), &clientCallback);
+        std::move(fullFrame), std::move(*this), &clientCallback);
   }
 }
 

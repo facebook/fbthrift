@@ -81,9 +81,11 @@ class ThriftRocketServerHandler : public RocketServerHandler {
       RocketServerFrameContext&& context) final;
   void handleRequestStreamFrame(
       RequestStreamFrame&& frame,
+      RocketServerFrameContext&& context,
       RocketStreamClientCallback* clientCallback) final;
   void handleRequestChannelFrame(
       RequestChannelFrame&& frame,
+      RocketServerFrameContext&& context,
       RocketSinkClientCallback* clientCallback) final;
 
   apache::thrift::server::TServerObserver::SamplingStatus shouldSample();
@@ -94,7 +96,7 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   const std::shared_ptr<Cpp2Worker> worker_;
   const std::shared_ptr<void> connectionGuard_;
   const folly::SocketAddress clientAddress_;
-  const std::shared_ptr<Cpp2ConnContext> connContext_;
+  Cpp2ConnContext connContext_;
   const std::vector<std::unique_ptr<SetupFrameHandler>>& setupFrameHandlers_;
 
   std::shared_ptr<AsyncProcessor> cpp2Processor_;

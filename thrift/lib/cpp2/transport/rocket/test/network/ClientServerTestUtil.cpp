@@ -408,6 +408,7 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
 
   void handleRequestStreamFrame(
       RequestStreamFrame&& frame,
+      RocketServerFrameContext&&,
       RocketStreamClientCallback* clientCallback) final {
     class TestRocketStreamServerCallback final : public StreamServerCallback {
      public:
@@ -506,6 +507,7 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
 
   void handleRequestChannelFrame(
       RequestChannelFrame&&,
+      RocketServerFrameContext&&,
       RocketSinkClientCallback* clientCallback) final {
     apache::thrift::detail::SinkConsumerImpl impl{
         [](folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> asyncGen)
