@@ -48,6 +48,7 @@ cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import (
     NOTSET as __NOTSET,
+    NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
     SetSpec as __SetSpec,
@@ -897,9 +898,9 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value={{!
-          }}{{#type:listElemType}}{{> types/PythonType}}{{/type:listElemType}}{{!
-        }})
+        {{#type:listElemType}}
+        return __ListSpec(value={{> types/PythonType}}, kind={{> types/ThriftNumberType}})
+        {{/type:listElemType}}
 
 
 Sequence.register({{> types/CythonPythonType}})
@@ -1160,9 +1161,10 @@ Sequence.register({{> types/CythonPythonType}})
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value={{!
-          }}{{#type:setElemType}}{{> types/PythonType}}{{/type:setElemType}}{{!
-        }})
+        {{#type:setElemType}}
+        return __SetSpec(value={{> types/PythonType}}, kind={{> types/ThriftNumberType}})
+        {{/type:setElemType}}
+
 
 
 Set.register({{> types/CythonPythonType}})
@@ -1386,7 +1388,9 @@ Set.register({{> types/CythonPythonType}})
     def __get_reflection__():
         return __MapSpec(key={{!
           }}{{#type:keyType}}{{> types/PythonType}}{{/type:keyType}}, {{!
-          }}value={{#type:valueType}}{{> types/PythonType}}{{/type:valueType}}{{!
+          }}key_kind={{#type:keyType}}{{> types/ThriftNumberType}}{{/type:keyType}}, {{!
+          }}value={{#type:valueType}}{{> types/PythonType}}{{/type:valueType}}, {{!
+          }}value_kind={{#type:valueType}}{{> types/ThriftNumberType}}{{/type:valueType}}{{!
         }})
 
 

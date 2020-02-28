@@ -19,6 +19,7 @@ cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import (
     NOTSET as __NOTSET,
+    NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
     SetSpec as __SetSpec,

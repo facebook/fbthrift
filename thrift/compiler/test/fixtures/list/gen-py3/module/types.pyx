@@ -19,6 +19,7 @@ cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import (
     NOTSET as __NOTSET,
+    NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
     SetSpec as __SetSpec,
@@ -209,7 +210,7 @@ cdef class List__string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=str)
+        return __ListSpec(value=str, kind=None)
 
 
 Sequence.register(List__string)
@@ -350,7 +351,7 @@ cdef class Map__i64_List__string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, value=List__string)
+        return __MapSpec(key=int, key_kind=__NumberType.I64, value=List__string, value_kind=None)
 
 
 Mapping.register(Map__i64_List__string)

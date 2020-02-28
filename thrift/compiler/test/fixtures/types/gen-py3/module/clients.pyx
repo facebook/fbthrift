@@ -22,6 +22,7 @@ from libcpp.typeinfo cimport type_info
 import thrift.py3.types
 cimport thrift.py3.types
 from thrift.py3.types cimport move
+from thrift.py3.types import NumberType as __NumberType
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
@@ -151,11 +152,13 @@ cdef class SomeService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="m",
                     type=_module_types.std_unordered_map__Map__i32_string,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.std_unordered_map__Map__i32_string,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -170,11 +173,13 @@ cdef class SomeService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="r",
                     type=_module_types.List__i64,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.Map__binary_i64,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({

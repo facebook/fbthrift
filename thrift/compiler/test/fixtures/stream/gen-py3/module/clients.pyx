@@ -22,6 +22,7 @@ from libcpp.typeinfo cimport type_info
 import thrift.py3.types
 cimport thrift.py3.types
 from thrift.py3.types cimport move
+from thrift.py3.types import NumberType as __NumberType
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
@@ -242,17 +243,20 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="i32_from",
                     type=int,
+                    kind=__NumberType.I32,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
                 __ArgumentSpec(
                     name="i32_to",
                     type=int,
+                    kind=__NumberType.I32,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.ClientBufferedStream__i32,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -267,11 +271,13 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="foo",
                     type=int,
+                    kind=__NumberType.I32,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.ClientBufferedStream__i32,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -286,11 +292,13 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="foo",
                     type=int,
+                    kind=__NumberType.I32,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.ClientBufferedStream__i32,
+            result_kind=None,
             exceptions=[
                 _module_types.FooEx,
             ],
@@ -306,11 +314,13 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="foo",
                     type=int,
+                    kind=__NumberType.I32,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.ResponseAndClientBufferedStream__i32_i32,
+            result_kind=None,
             exceptions=[
                 _module_types.FooEx,
             ],

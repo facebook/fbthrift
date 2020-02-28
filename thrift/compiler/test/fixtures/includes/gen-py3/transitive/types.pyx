@@ -19,6 +19,7 @@ cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import (
     NOTSET as __NOTSET,
+    NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
     SetSpec as __SetSpec,
@@ -197,6 +198,7 @@ cdef class Foo(thrift.py3.types.Struct):
           __FieldSpec(
   name="a",
   type=int,
+  kind=__NumberType.I64,
   qualifier=__Qualifier.NONE,
   default=defaults.a,
   annotations=_py_types.MappingProxyType({

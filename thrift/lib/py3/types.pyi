@@ -35,6 +35,16 @@ class NOTSETTYPE(enum.Enum):
 
 NOTSET = NOTSETTYPE.token
 
+class NumberType(enum.Enum):
+    NONE = ...
+    BYTE = ...
+    I08 = ...
+    I16 = ...
+    I32 = ...
+    I64 = ...
+    FLOAT = ...
+    DOUBLE = ...
+
 class Struct:
     def __copy__(self: _T) -> _T: ...
 
@@ -95,16 +105,21 @@ class StructSpec(NamedTuple):
 class FieldSpec(NamedTuple):
     name: str
     type: Type[Any]
+    kind: Optional[NumberType]
     qualifier: Qualifier
     default: Optional[Any]
     annotations: Mapping[str, str] = {}
 
 class ListSpec(NamedTuple):
     value: Type[Any]
+    kind: Optional[NumberType]
 
 class SetSpec(NamedTuple):
     value: Type[Any]
+    kind: Optional[NumberType]
 
 class MapSpec(NamedTuple):
     key: Type[Any]
+    key_kind: Optional[NumberType]
     value: Type[Any]
+    value_kind: Optional[NumberType]

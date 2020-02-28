@@ -19,6 +19,7 @@ cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import (
     NOTSET as __NOTSET,
+    NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
     SetSpec as __SetSpec,
@@ -406,6 +407,7 @@ cdef class Color(thrift.py3.types.Struct):
           __FieldSpec(
   name="red",
   type=float,
+  kind=__NumberType.DOUBLE,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -414,6 +416,7 @@ cdef class Color(thrift.py3.types.Struct):
                 __FieldSpec(
   name="green",
   type=float,
+  kind=__NumberType.DOUBLE,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -422,6 +425,7 @@ cdef class Color(thrift.py3.types.Struct):
                 __FieldSpec(
   name="blue",
   type=float,
+  kind=__NumberType.DOUBLE,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -430,6 +434,7 @@ cdef class Color(thrift.py3.types.Struct):
                 __FieldSpec(
   name="alpha",
   type=float,
+  kind=__NumberType.DOUBLE,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -749,6 +754,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
           __FieldSpec(
   name="color",
   type=Color,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -757,6 +763,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
                 __FieldSpec(
   name="licensePlate",
   type=str,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -765,6 +772,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
                 __FieldSpec(
   name="description",
   type=str,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -773,6 +781,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
                 __FieldSpec(
   name="name",
   type=str,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -781,6 +790,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
                 __FieldSpec(
   name="hasAC",
   type=bool,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=defaults.hasAC,
   annotations=_py_types.MappingProxyType({
@@ -1272,6 +1282,7 @@ cdef class Person(thrift.py3.types.Struct):
           __FieldSpec(
   name="id",
   type=int,
+  kind=__NumberType.I64,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1280,6 +1291,7 @@ cdef class Person(thrift.py3.types.Struct):
                 __FieldSpec(
   name="name",
   type=str,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1288,6 +1300,7 @@ cdef class Person(thrift.py3.types.Struct):
                 __FieldSpec(
   name="age",
   type=int,
+  kind=__NumberType.I16,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1296,6 +1309,7 @@ cdef class Person(thrift.py3.types.Struct):
                 __FieldSpec(
   name="address",
   type=str,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1304,6 +1318,7 @@ cdef class Person(thrift.py3.types.Struct):
                 __FieldSpec(
   name="favoriteColor",
   type=Color,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1312,6 +1327,7 @@ cdef class Person(thrift.py3.types.Struct):
                 __FieldSpec(
   name="friends",
   type=Set__i64,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1320,6 +1336,7 @@ cdef class Person(thrift.py3.types.Struct):
                 __FieldSpec(
   name="bestFriend",
   type=int,
+  kind=__NumberType.I64,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1328,6 +1345,7 @@ cdef class Person(thrift.py3.types.Struct):
                 __FieldSpec(
   name="petNames",
   type=Map__Animal_string,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1336,6 +1354,7 @@ cdef class Person(thrift.py3.types.Struct):
                 __FieldSpec(
   name="afraidOfAnimal",
   type=Animal,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1344,6 +1363,7 @@ cdef class Person(thrift.py3.types.Struct):
                 __FieldSpec(
   name="vehicles",
   type=List__Vehicle,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1636,7 +1656,8 @@ cdef class Set__i64(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=int)
+        return __SetSpec(value=int, kind=__NumberType.I64)
+
 
 
 Set.register(Set__i64)
@@ -1774,7 +1795,7 @@ cdef class Map__Animal_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=Animal, value=str)
+        return __MapSpec(key=Animal, key_kind=None, value=str, value_kind=None)
 
 
 Mapping.register(Map__Animal_string)
@@ -1939,7 +1960,7 @@ cdef class List__Vehicle(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=Vehicle)
+        return __ListSpec(value=Vehicle, kind=None)
 
 
 Sequence.register(List__Vehicle)

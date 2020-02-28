@@ -19,6 +19,7 @@ cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import (
     NOTSET as __NOTSET,
+    NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
     SetSpec as __SetSpec,
@@ -896,6 +897,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
           __FieldSpec(
   name="intValue",
   type=int,
+  kind=__NumberType.I64,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -904,6 +906,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
                 __FieldSpec(
   name="stringValue",
   type=str,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -912,6 +915,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
                 __FieldSpec(
   name="intListValue",
   type=List__i64,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -920,6 +924,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
                 __FieldSpec(
   name="stringListValue",
   type=List__string,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -928,6 +933,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
                 __FieldSpec(
   name="typedefValue",
   type=Map__i16_string,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -936,6 +942,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
                 __FieldSpec(
   name="stringRef",
   type=str,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1127,6 +1134,7 @@ cdef class ListUnion(thrift.py3.types.Union):
           __FieldSpec(
   name="intListValue",
   type=List__i64,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1135,6 +1143,7 @@ cdef class ListUnion(thrift.py3.types.Union):
                 __FieldSpec(
   name="stringListValue",
   type=List__string,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1326,6 +1335,7 @@ cdef class DataUnion(thrift.py3.types.Union):
           __FieldSpec(
   name="binaryData",
   type=bytes,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1334,6 +1344,7 @@ cdef class DataUnion(thrift.py3.types.Union):
                 __FieldSpec(
   name="stringData",
   type=str,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1592,6 +1603,7 @@ cdef class Val(thrift.py3.types.Struct):
           __FieldSpec(
   name="strVal",
   type=str,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1600,6 +1612,7 @@ cdef class Val(thrift.py3.types.Struct):
                 __FieldSpec(
   name="intVal",
   type=int,
+  kind=__NumberType.I32,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1608,6 +1621,7 @@ cdef class Val(thrift.py3.types.Struct):
                 __FieldSpec(
   name="typedefValue",
   type=Map__i16_string,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1797,6 +1811,7 @@ cdef class ValUnion(thrift.py3.types.Union):
           __FieldSpec(
   name="v1",
   type=Val,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1805,6 +1820,7 @@ cdef class ValUnion(thrift.py3.types.Union):
                 __FieldSpec(
   name="v2",
   type=Val,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1996,6 +2012,7 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
           __FieldSpec(
   name="thingOne",
   type=str,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -2004,6 +2021,7 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
                 __FieldSpec(
   name="thingTwo",
   type=str,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -2202,6 +2220,7 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
           __FieldSpec(
   name="num",
   type=int,
+  kind=__NumberType.I64,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -2373,6 +2392,7 @@ cdef class NonCopyableUnion(thrift.py3.types.Union):
           __FieldSpec(
   name="s",
   type=NonCopyableStruct,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -2584,7 +2604,7 @@ cdef class List__i64(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=int)
+        return __ListSpec(value=int, kind=__NumberType.I64)
 
 
 Sequence.register(List__i64)
@@ -2749,7 +2769,7 @@ cdef class List__string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=str)
+        return __ListSpec(value=str, kind=None)
 
 
 Sequence.register(List__string)
@@ -2888,7 +2908,7 @@ cdef class Map__i16_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, value=str)
+        return __MapSpec(key=int, key_kind=__NumberType.I16, value=str, value_kind=None)
 
 
 Mapping.register(Map__i16_string)

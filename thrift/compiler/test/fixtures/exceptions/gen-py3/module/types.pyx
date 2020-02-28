@@ -19,6 +19,7 @@ cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import (
     NOTSET as __NOTSET,
+    NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
     SetSpec as __SetSpec,
@@ -254,6 +255,7 @@ cdef class Fiery(thrift.py3.exceptions.Error):
           __FieldSpec(
   name="message",
   type=str,
+  kind=None,
   qualifier=__Qualifier.REQUIRED,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -376,6 +378,7 @@ cdef class Serious(thrift.py3.exceptions.Error):
           __FieldSpec(
   name="sonnet",
   type=str,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({

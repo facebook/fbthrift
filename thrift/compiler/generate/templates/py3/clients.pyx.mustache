@@ -41,6 +41,7 @@ from libcpp.typeinfo cimport type_info
 import thrift.py3.types
 cimport thrift.py3.types
 from thrift.py3.types cimport move
+from thrift.py3.types import NumberType as __NumberType
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
@@ -168,6 +169,7 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
                 __ArgumentSpec(
                     name="{{field:name}}",
                     type={{#field:type}}{{> types/PythonType}}{{/field:type}},
+                    kind={{#field:type}}{{> types/ThriftNumberType}}{{/field:type}},
                     annotations=_py_types.MappingProxyType({
                         {{#field:annotations}}
                         {{> Annotation }}
@@ -184,6 +186,7 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
                 }}{{#type:streamresponse?}}{{> clients/StreamResponseClassName}}{{/type:streamresponse?}}{{!
                 }}{{^type:void?}}{{> types/PythonType}}{{/type:void?}}{{!
                 }}{{/function:returnType}},
+            result_kind={{#function:returnType}}{{> types/ThriftNumberType}}{{/function:returnType}},
             exceptions=[
                 {{#function:exceptions}}
                 {{#field:type}}{{> types/PythonType}}{{/field:type}},

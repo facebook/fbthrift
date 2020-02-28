@@ -34,6 +34,7 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
+from thrift.py3.types import NumberType as __NumberType
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
     from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
@@ -137,6 +138,7 @@ cdef class RaiserInterface(
             arguments=[
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -150,6 +152,7 @@ cdef class RaiserInterface(
             arguments=[
             ],
             result=None,
+            result_kind=None,
             exceptions=[
                 _module_types.Banal,
                 _module_types.Fiery,
@@ -166,6 +169,7 @@ cdef class RaiserInterface(
             arguments=[
             ],
             result=str,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -179,6 +183,7 @@ cdef class RaiserInterface(
             arguments=[
             ],
             result=str,
+            result_kind=None,
             exceptions=[
                 _module_types.Fiery,
                 _module_types.Banal,

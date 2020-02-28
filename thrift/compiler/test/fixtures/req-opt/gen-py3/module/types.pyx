@@ -19,6 +19,7 @@ cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import (
     NOTSET as __NOTSET,
+    NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
     SetSpec as __SetSpec,
@@ -285,6 +286,7 @@ cdef class Foo(thrift.py3.types.Struct):
           __FieldSpec(
   name="myInteger",
   type=int,
+  kind=__NumberType.I32,
   qualifier=__Qualifier.REQUIRED,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -293,6 +295,7 @@ cdef class Foo(thrift.py3.types.Struct):
                 __FieldSpec(
   name="myString",
   type=str,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -301,6 +304,7 @@ cdef class Foo(thrift.py3.types.Struct):
                 __FieldSpec(
   name="myBools",
   type=List__bool,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -309,6 +313,7 @@ cdef class Foo(thrift.py3.types.Struct):
                 __FieldSpec(
   name="myNumbers",
   type=List__i32,
+  kind=None,
   qualifier=__Qualifier.REQUIRED,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -517,7 +522,7 @@ cdef class List__bool(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=bool)
+        return __ListSpec(value=bool, kind=None)
 
 
 Sequence.register(List__bool)
@@ -683,7 +688,7 @@ cdef class List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=int)
+        return __ListSpec(value=int, kind=__NumberType.I32)
 
 
 Sequence.register(List__i32)

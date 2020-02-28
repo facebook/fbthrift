@@ -19,6 +19,7 @@ cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import (
     NOTSET as __NOTSET,
+    NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
     SetSpec as __SetSpec,
@@ -210,7 +211,7 @@ cdef class List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=int)
+        return __ListSpec(value=int, kind=__NumberType.I32)
 
 
 Sequence.register(List__i32)
@@ -351,7 +352,7 @@ cdef class Map__i32_List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, value=List__i32)
+        return __MapSpec(key=int, key_kind=__NumberType.I32, value=List__i32, value_kind=None)
 
 
 Mapping.register(Map__i32_List__i32)
@@ -600,7 +601,8 @@ cdef class Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=int)
+        return __SetSpec(value=int, kind=__NumberType.I32)
+
 
 
 Set.register(Set__i32)
@@ -741,7 +743,7 @@ cdef class Map__i32_Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, value=Set__i32)
+        return __MapSpec(key=int, key_kind=__NumberType.I32, value=Set__i32, value_kind=None)
 
 
 Mapping.register(Map__i32_Set__i32)
@@ -881,7 +883,7 @@ cdef class Map__i32_i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, value=int)
+        return __MapSpec(key=int, key_kind=__NumberType.I32, value=int, value_kind=__NumberType.I32)
 
 
 Mapping.register(Map__i32_i32)
@@ -1063,7 +1065,7 @@ cdef class List__Map__i32_i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=Map__i32_i32)
+        return __ListSpec(value=Map__i32_i32, kind=None)
 
 
 Sequence.register(List__Map__i32_i32)
@@ -1245,7 +1247,7 @@ cdef class List__Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=Set__i32)
+        return __ListSpec(value=Set__i32, kind=None)
 
 
 Sequence.register(List__Set__i32)
@@ -1386,7 +1388,7 @@ cdef class Map__i32_Map__i32_Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, value=Map__i32_Set__i32)
+        return __MapSpec(key=int, key_kind=__NumberType.I32, value=Map__i32_Set__i32, value_kind=None)
 
 
 Mapping.register(Map__i32_Map__i32_Set__i32)
@@ -1568,7 +1570,7 @@ cdef class List__Map__i32_Map__i32_Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=Map__i32_Map__i32_Set__i32)
+        return __ListSpec(value=Map__i32_Map__i32_Set__i32, kind=None)
 
 
 Sequence.register(List__Map__i32_Map__i32_Set__i32)
@@ -1750,7 +1752,7 @@ cdef class List__List__Map__i32_Map__i32_Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=List__Map__i32_Map__i32_Set__i32)
+        return __ListSpec(value=List__Map__i32_Map__i32_Set__i32, kind=None)
 
 
 Sequence.register(List__List__Map__i32_Map__i32_Set__i32)

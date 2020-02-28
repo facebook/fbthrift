@@ -19,6 +19,7 @@ cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import (
     NOTSET as __NOTSET,
+    NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
     SetSpec as __SetSpec,
@@ -334,6 +335,7 @@ cdef class Struct(thrift.py3.types.Struct):
           __FieldSpec(
   name="first",
   type=int,
+  kind=__NumberType.I32,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -342,6 +344,7 @@ cdef class Struct(thrift.py3.types.Struct):
                 __FieldSpec(
   name="second",
   type=str,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -550,7 +553,7 @@ cdef class List__Enum(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=Enum)
+        return __ListSpec(value=Enum, kind=None)
 
 
 Sequence.register(List__Enum)

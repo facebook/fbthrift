@@ -34,6 +34,7 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
+from thrift.py3.types import NumberType as __NumberType
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
     from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
@@ -107,11 +108,13 @@ cdef class ExtendTestServiceInterface(
                 __ArgumentSpec(
                     name="struct1",
                     type=_hsmodule_types.HsFoo,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=bool,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({

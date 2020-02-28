@@ -19,6 +19,7 @@ cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import (
     NOTSET as __NOTSET,
+    NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
     SetSpec as __SetSpec,
@@ -230,6 +231,7 @@ cdef class Struct(thrift.py3.types.Struct):
           __FieldSpec(
   name="first",
   type=_module0_types.Struct,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -238,6 +240,7 @@ cdef class Struct(thrift.py3.types.Struct):
                 __FieldSpec(
   name="second",
   type=_module1_types.Struct,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -467,6 +470,7 @@ cdef class BigStruct(thrift.py3.types.Struct):
           __FieldSpec(
   name="s",
   type=Struct,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -475,6 +479,7 @@ cdef class BigStruct(thrift.py3.types.Struct):
                 __FieldSpec(
   name="id",
   type=int,
+  kind=__NumberType.I32,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({

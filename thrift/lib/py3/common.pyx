@@ -229,5 +229,5 @@ cdef class RpcOptions:
         return self._writeheaders
 
 InterfaceSpec = namedtuple('InterfaceSpec', ['name', 'methods', 'annotations'])
-MethodSpec = namedtuple('MethodSpec', ['name', 'arguments', 'result', 'exceptions', 'annotations'])
-ArgumentSpec = namedtuple('ArgumentSpec', ['name', 'type', 'annotations'])
+MethodSpec = namedtuple('MethodSpec', ['name', 'arguments', 'result_kind', 'result', 'exceptions', 'annotations'])
+ArgumentSpec = namedtuple('ArgumentSpec', ['name', 'kind', 'type', 'annotations'])

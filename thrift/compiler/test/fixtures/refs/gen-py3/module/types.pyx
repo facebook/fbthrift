@@ -19,6 +19,7 @@ cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import (
     NOTSET as __NOTSET,
+    NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
     SetSpec as __SetSpec,
@@ -400,6 +401,7 @@ cdef class MyUnion(thrift.py3.types.Union):
           __FieldSpec(
   name="anInteger",
   type=int,
+  kind=__NumberType.I32,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -408,6 +410,7 @@ cdef class MyUnion(thrift.py3.types.Union):
                 __FieldSpec(
   name="aString",
   type=str,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -680,6 +683,7 @@ cdef class MyField(thrift.py3.types.Struct):
           __FieldSpec(
   name="opt_value",
   type=int,
+  kind=__NumberType.I64,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -688,6 +692,7 @@ cdef class MyField(thrift.py3.types.Struct):
                 __FieldSpec(
   name="value",
   type=int,
+  kind=__NumberType.I64,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -696,6 +701,7 @@ cdef class MyField(thrift.py3.types.Struct):
                 __FieldSpec(
   name="req_value",
   type=int,
+  kind=__NumberType.I64,
   qualifier=__Qualifier.REQUIRED,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -956,6 +962,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           __FieldSpec(
   name="opt_ref",
   type=MyField,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -964,6 +971,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 __FieldSpec(
   name="ref",
   type=MyField,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -972,6 +980,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 __FieldSpec(
   name="req_ref",
   type=MyField,
+  kind=None,
   qualifier=__Qualifier.REQUIRED,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1232,6 +1241,7 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
           __FieldSpec(
   name="u",
   type=MyUnion,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1240,6 +1250,7 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
                 __FieldSpec(
   name="aDouble",
   type=float,
+  kind=__NumberType.DOUBLE,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1248,6 +1259,7 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
                 __FieldSpec(
   name="f",
   type=MyField,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1437,6 +1449,7 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
           __FieldSpec(
   name="mes",
   type=List__RecursiveStruct,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1770,6 +1783,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
           __FieldSpec(
   name="list_ref",
   type=List__i32,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1778,6 +1792,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
                 __FieldSpec(
   name="set_ref",
   type=Set__i32,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1786,6 +1801,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
                 __FieldSpec(
   name="map_ref",
   type=Map__i32_i32,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1794,6 +1810,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
                 __FieldSpec(
   name="list_ref_unique",
   type=List__i32,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1802,6 +1819,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
                 __FieldSpec(
   name="set_ref_shared",
   type=Set__i32,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -1810,6 +1828,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
                 __FieldSpec(
   name="list_ref_shared_const",
   type=List__i32,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -2070,6 +2089,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
           __FieldSpec(
   name="opt_shared_const",
   type=MyField,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -2078,6 +2098,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
                 __FieldSpec(
   name="shared_const",
   type=MyField,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -2086,6 +2107,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
                 __FieldSpec(
   name="req_shared_const",
   type=MyField,
+  kind=None,
   qualifier=__Qualifier.REQUIRED,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -2487,6 +2509,7 @@ cdef class StructWithRef(thrift.py3.types.Struct):
           __FieldSpec(
   name="def_field",
   type=Empty,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -2495,6 +2518,7 @@ cdef class StructWithRef(thrift.py3.types.Struct):
                 __FieldSpec(
   name="opt_field",
   type=Empty,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -2503,6 +2527,7 @@ cdef class StructWithRef(thrift.py3.types.Struct):
                 __FieldSpec(
   name="req_field",
   type=Empty,
+  kind=None,
   qualifier=__Qualifier.REQUIRED,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -2763,6 +2788,7 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
           __FieldSpec(
   name="def_field",
   type=Empty,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -2771,6 +2797,7 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
                 __FieldSpec(
   name="opt_field",
   type=Empty,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -2779,6 +2806,7 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
                 __FieldSpec(
   name="req_field",
   type=Empty,
+  kind=None,
   qualifier=__Qualifier.REQUIRED,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -3039,6 +3067,7 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
           __FieldSpec(
   name="def_field",
   type=Empty,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -3047,6 +3076,7 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
                 __FieldSpec(
   name="opt_field",
   type=Empty,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -3055,6 +3085,7 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
                 __FieldSpec(
   name="req_field",
   type=Empty,
+  kind=None,
   qualifier=__Qualifier.REQUIRED,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -3315,6 +3346,7 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
           __FieldSpec(
   name="def_field",
   type=Empty,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -3323,6 +3355,7 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
                 __FieldSpec(
   name="opt_field",
   type=Empty,
+  kind=None,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -3331,6 +3364,7 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
                 __FieldSpec(
   name="req_field",
   type=Empty,
+  kind=None,
   qualifier=__Qualifier.REQUIRED,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -3523,6 +3557,7 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
           __FieldSpec(
   name="def_field",
   type=Empty,
+  kind=None,
   qualifier=__Qualifier.NONE,
   default=None,
   annotations=_py_types.MappingProxyType({
@@ -3731,7 +3766,7 @@ cdef class List__RecursiveStruct(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=RecursiveStruct)
+        return __ListSpec(value=RecursiveStruct, kind=None)
 
 
 Sequence.register(List__RecursiveStruct)
@@ -3897,7 +3932,7 @@ cdef class List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=int)
+        return __ListSpec(value=int, kind=__NumberType.I32)
 
 
 Sequence.register(List__i32)
@@ -4146,7 +4181,8 @@ cdef class Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=int)
+        return __SetSpec(value=int, kind=__NumberType.I32)
+
 
 
 Set.register(Set__i32)
@@ -4286,7 +4322,7 @@ cdef class Map__i32_i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, value=int)
+        return __MapSpec(key=int, key_kind=__NumberType.I32, value=int, value_kind=__NumberType.I32)
 
 
 Mapping.register(Map__i32_i32)

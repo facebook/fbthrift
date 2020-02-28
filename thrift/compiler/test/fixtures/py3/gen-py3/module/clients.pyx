@@ -22,6 +22,7 @@ from libcpp.typeinfo cimport type_info
 import thrift.py3.types
 cimport thrift.py3.types
 from thrift.py3.types cimport move
+from thrift.py3.types import NumberType as __NumberType
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
@@ -1605,6 +1606,7 @@ cdef class SimpleService(thrift.py3.client.Client):
             arguments=[
             ],
             result=int,
+            result_kind=__NumberType.I32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1619,11 +1621,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="num",
                     type=int,
+                    kind=__NumberType.I32,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.I32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1637,6 +1641,7 @@ cdef class SimpleService(thrift.py3.client.Client):
             arguments=[
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1651,17 +1656,20 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="first",
                     type=str,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
                 __ArgumentSpec(
                     name="second",
                     type=str,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=str,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1676,11 +1684,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="simple_struct",
                     type=_module_types.SimpleStruct,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.I32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1695,11 +1705,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="input",
                     type=bool,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=bool,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1714,11 +1726,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="input",
                     type=int,
+                    kind=__NumberType.BYTE,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.BYTE,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1733,11 +1747,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="input",
                     type=int,
+                    kind=__NumberType.I16,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.I16,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1752,11 +1768,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="input",
                     type=int,
+                    kind=__NumberType.I64,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.I64,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1771,11 +1789,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="input",
                     type=float,
+                    kind=__NumberType.DOUBLE,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=float,
+            result_kind=__NumberType.DOUBLE,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1789,6 +1809,7 @@ cdef class SimpleService(thrift.py3.client.Client):
             arguments=[
             ],
             result=None,
+            result_kind=None,
             exceptions=[
                 _module_types.SimpleException,
             ],
@@ -1803,6 +1824,7 @@ cdef class SimpleService(thrift.py3.client.Client):
             arguments=[
             ],
             result=int,
+            result_kind=__NumberType.I32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1817,11 +1839,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="numbers",
                     type=_module_types.List__i16,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.I32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1836,11 +1860,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="numbers",
                     type=_module_types.List__i32,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.I32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1855,11 +1881,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="numbers",
                     type=_module_types.List__i64,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.I32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1874,11 +1902,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="words",
                     type=_module_types.List__string,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=str,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1893,11 +1923,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="items",
                     type=_module_types.List__SimpleStruct,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.I32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1912,11 +1944,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="numbers",
                     type=_module_types.Set__i32,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.I32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1931,17 +1965,20 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="words",
                     type=_module_types.Set__string,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
                 __ArgumentSpec(
                     name="word",
                     type=str,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=bool,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1956,17 +1993,20 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="words",
                     type=_module_types.Map__string_string,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
                 __ArgumentSpec(
                     name="key",
                     type=str,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=str,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1981,11 +2021,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="items",
                     type=_module_types.Map__string_SimpleStruct,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.I16,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2000,11 +2042,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="items",
                     type=_module_types.Map__string_i16,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.I16,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2019,11 +2063,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="counter",
                     type=_module_types.ComplexStruct,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.I32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2038,11 +2084,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="counter",
                     type=_module_types.ComplexStruct,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=str,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2056,6 +2104,7 @@ cdef class SimpleService(thrift.py3.client.Client):
             arguments=[
             ],
             result=_module_types.SimpleStruct,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2070,11 +2119,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="n",
                     type=int,
+                    kind=__NumberType.I16,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.List__i32,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2089,11 +2140,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="words",
                     type=_module_types.List__string,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.Set__string,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2108,11 +2161,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="words",
                     type=_module_types.List__string,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.Map__string_i16,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2127,11 +2182,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="in_enum",
                     type=_module_types.AnEnum,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.AnEnum,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2146,17 +2203,20 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="num_lists",
                     type=int,
+                    kind=__NumberType.I16,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
                 __ArgumentSpec(
                     name="num_items",
                     type=int,
+                    kind=__NumberType.I16,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.List__List__i32,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2171,11 +2231,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="sentence",
                     type=str,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.Map__string_Map__string_i32,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2190,11 +2252,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="some_words",
                     type=str,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.List__Set__string,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2209,11 +2273,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="struct_map",
                     type=_module_types.Map__string_List__SimpleStruct,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.I32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2228,11 +2294,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="word_chars",
                     type=_module_types.List__List__string,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=str,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2247,11 +2315,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="sets",
                     type=_module_types.List__Set__i32,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.Set__i32,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2266,11 +2336,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="string_map",
                     type=_module_types.List__Map__string_string,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.Set__string,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2285,11 +2357,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="key",
                     type=int,
+                    kind=__NumberType.I32,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=float,
+            result_kind=__NumberType.DOUBLE,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2304,11 +2378,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="something",
                     type=bytes,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=bytes,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2323,11 +2399,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="binaries",
                     type=_module_types.List__binary,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.Set__binary,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2342,11 +2420,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="the_enum",
                     type=_module_types.List__AnEnum,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.List__AnEnum,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2361,11 +2441,13 @@ cdef class SimpleService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="u",
                     type=_module_types.BinaryUnion,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.BinaryUnionStruct,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2468,6 +2550,7 @@ cdef class DerivedService(SimpleService):
             arguments=[
             ],
             result=int,
+            result_kind=__NumberType.I32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -2530,6 +2613,7 @@ cdef class RederivedService(DerivedService):
             arguments=[
             ],
             result=int,
+            result_kind=__NumberType.I32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({

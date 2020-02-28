@@ -19,6 +19,7 @@ cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import (
     NOTSET as __NOTSET,
+    NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
     SetSpec as __SetSpec,
@@ -183,7 +184,7 @@ cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, value=str)
+        return __MapSpec(key=int, key_kind=__NumberType.I32, value=str, value_kind=None)
 
 
 Mapping.register(std_unordered_map__Map__i32_string)
@@ -365,7 +366,7 @@ cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=std_unordered_map__Map__i32_string)
+        return __ListSpec(value=std_unordered_map__Map__i32_string, kind=None)
 
 
 Sequence.register(List__std_unordered_map__Map__i32_string)

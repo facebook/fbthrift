@@ -22,6 +22,7 @@ from libcpp.typeinfo cimport type_info
 import thrift.py3.types
 cimport thrift.py3.types
 from thrift.py3.types cimport move
+from thrift.py3.types import NumberType as __NumberType
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
@@ -114,11 +115,13 @@ cdef class HsTestService(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="int1",
                     type=int,
+                    kind=__NumberType.I64,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.I64,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({

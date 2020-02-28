@@ -34,6 +34,7 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
+from thrift.py3.types import NumberType as __NumberType
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
     from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
@@ -139,11 +140,13 @@ cdef class NestedContainersInterface(
                 __ArgumentSpec(
                     name="foo",
                     type=_module_types.Map__i32_List__i32,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -158,11 +161,13 @@ cdef class NestedContainersInterface(
                 __ArgumentSpec(
                     name="foo",
                     type=_module_types.Map__i32_Set__i32,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -177,11 +182,13 @@ cdef class NestedContainersInterface(
                 __ArgumentSpec(
                     name="foo",
                     type=_module_types.List__Map__i32_i32,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -196,11 +203,13 @@ cdef class NestedContainersInterface(
                 __ArgumentSpec(
                     name="foo",
                     type=_module_types.List__Set__i32,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -215,11 +224,13 @@ cdef class NestedContainersInterface(
                 __ArgumentSpec(
                     name="foo",
                     type=_module_types.List__List__Map__i32_Map__i32_Set__i32,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({

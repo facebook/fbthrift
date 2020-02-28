@@ -22,6 +22,7 @@ from libcpp.typeinfo cimport type_info
 import thrift.py3.types
 cimport thrift.py3.types
 from thrift.py3.types cimport move
+from thrift.py3.types import NumberType as __NumberType
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
@@ -115,11 +116,13 @@ cdef class ExtendTestService(_hsmodule_clients.HsTestService):
                 __ArgumentSpec(
                     name="struct1",
                     type=_hsmodule_types.HsFoo,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=bool,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({

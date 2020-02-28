@@ -34,6 +34,7 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
+from thrift.py3.types import NumberType as __NumberType
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
     from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
@@ -557,6 +558,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -571,6 +573,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=bool,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -584,6 +587,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=int,
+            result_kind=__NumberType.I16,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -597,6 +601,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=int,
+            result_kind=__NumberType.I32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -610,6 +615,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=int,
+            result_kind=__NumberType.I64,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -623,6 +629,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=float,
+            result_kind=__NumberType.FLOAT,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -636,6 +643,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=float,
+            result_kind=__NumberType.DOUBLE,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -649,6 +657,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=str,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -663,6 +672,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=bytes,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -676,6 +686,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=_module_types.Map__string_i64,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -689,6 +700,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=int,
+            result_kind=__NumberType.I32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -702,6 +714,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=_module_types.List__Map__Empty_MyStruct,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -715,6 +728,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=_module_types.List__List__List__Map__Empty_MyStruct,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -728,6 +742,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=_module_types.MyEnumA,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -742,6 +757,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=_module_types.List__MyEnumA,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -756,6 +772,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=_module_types.MyStruct,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -769,6 +786,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=_module_types.Set__MyStruct,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -782,6 +800,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=_module_types.ComplexUnion,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -796,6 +815,7 @@ cdef class ReturnServiceInterface(
             arguments=[
             ],
             result=_module_types.List__ComplexUnion,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -810,11 +830,13 @@ cdef class ReturnServiceInterface(
                 __ArgumentSpec(
                     name="size",
                     type=int,
+                    kind=__NumberType.I64,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=__iobuf.IOBuf,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -830,11 +852,13 @@ cdef class ReturnServiceInterface(
                 __ArgumentSpec(
                     name="size",
                     type=int,
+                    kind=__NumberType.I64,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=__iobuf.IOBuf,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1169,11 +1193,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=int,
+                    kind=__NumberType.I16,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1189,17 +1215,20 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=int,
+                    kind=__NumberType.BYTE,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
                 __ArgumentSpec(
                     name="param2",
                     type=int,
+                    kind=__NumberType.I16,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1214,11 +1243,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=_module_types.Map__string_i64,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1233,17 +1264,20 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=_module_types.Map__string_i64,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
                 __ArgumentSpec(
                     name="param2",
                     type=_module_types.Set__List__string,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1258,11 +1292,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=int,
+                    kind=__NumberType.I32,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1277,11 +1313,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=_module_types.MyEnumA,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1296,11 +1334,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=_module_types.MyStruct,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1315,11 +1355,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=_module_types.List__ComplexUnion,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1334,17 +1376,20 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=int,
+                    kind=__NumberType.I32,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
                 __ArgumentSpec(
                     name="param2",
                     type=int,
+                    kind=__NumberType.I64,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=bool,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1359,11 +1404,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=_module_types.Map__string_i64,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=bool,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1378,11 +1425,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=_module_types.ComplexUnion,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=bool,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1397,17 +1446,20 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=float,
+                    kind=__NumberType.FLOAT,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
                 __ArgumentSpec(
                     name="param2",
                     type=float,
+                    kind=__NumberType.DOUBLE,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.I64,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1422,17 +1474,20 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=str,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
                 __ArgumentSpec(
                     name="param2",
                     type=_module_types.Set__List__List__Map__Empty_MyStruct,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.I64,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1447,35 +1502,41 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=int,
+                    kind=__NumberType.I32,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
                 __ArgumentSpec(
                     name="param2",
                     type=int,
+                    kind=__NumberType.I32,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
                 __ArgumentSpec(
                     name="param3",
                     type=int,
+                    kind=__NumberType.I32,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
                 __ArgumentSpec(
                     name="param4",
                     type=int,
+                    kind=__NumberType.I32,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
                 __ArgumentSpec(
                     name="param5",
                     type=int,
+                    kind=__NumberType.I32,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.I64,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1491,11 +1552,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=_module_types.Set__MyStruct,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=float,
+            result_kind=__NumberType.DOUBLE,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1510,11 +1573,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=str,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=str,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1529,11 +1594,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=bytes,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=bytes,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1548,11 +1615,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=bool,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.Map__string_i64,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1567,17 +1636,20 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=_module_types.Map__i32_List__string,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
                 __ArgumentSpec(
                     name="param2",
                     type=_module_types.List__string,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.List__bool,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1592,11 +1664,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=_module_types.List__List__List__List__i32,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.Map__Set__List__i32_Map__List__Set__string_string,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1611,11 +1685,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=int,
+                    kind=__NumberType.I32,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=int,
+            result_kind=__NumberType.I32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1630,11 +1706,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=_module_types.List__Map__Empty_MyStruct,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.List__i32,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1650,11 +1728,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=float,
+                    kind=__NumberType.DOUBLE,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.MyEnumA,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1669,17 +1749,20 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=float,
+                    kind=__NumberType.DOUBLE,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
                 __ArgumentSpec(
                     name="param2",
                     type=_module_types.MyEnumA,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.MyEnumA,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1694,11 +1777,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=_module_types.Map__string_i64,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.List__MyEnumA,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1713,11 +1798,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=int,
+                    kind=__NumberType.I16,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.MyStruct,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1733,11 +1820,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=_module_types.Set__string,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.Set__MyStruct,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1752,17 +1841,20 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=int,
+                    kind=__NumberType.I32,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
                 __ArgumentSpec(
                     name="param2",
                     type=int,
+                    kind=__NumberType.I32,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.ComplexUnion,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -1777,11 +1869,13 @@ cdef class ParamServiceInterface(
                 __ArgumentSpec(
                     name="param1",
                     type=str,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=_module_types.List__ComplexUnion,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({

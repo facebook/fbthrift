@@ -18,7 +18,17 @@ from collections import namedtuple
 from folly.iobuf import IOBuf
 from types import MappingProxyType
 
-__all__ = ['Struct', 'BadEnum', 'NOTSET', 'Union', 'Enum', 'Flag']
+__all__ = ['NumberType', 'Struct', 'BadEnum', 'NOTSET', 'Union', 'Enum', 'Flag']
+
+class NumberType(enum.Enum):
+    NONE = 0
+    BYTE = 1
+    I08 = 1
+    I16 = 2
+    I32 = 3
+    I64 = 4
+    FLOAT = 5
+    DOUBLE = 6
 
 class NOTSETTYPE(enum.Enum):
     token = 0
@@ -131,7 +141,7 @@ class Qualifier(enum.Enum):
 
 
 StructSpec = namedtuple('StructSpec', ['name', 'fields', 'kind', 'annotations'])
-FieldSpec = namedtuple('FieldSpec', ['name', 'type', 'qualifier', 'default', 'annotations'])
-ListSpec = namedtuple('ListSpec', ['value'])
-SetSpec = namedtuple('SetSpec', ['value'])
-MapSpec = namedtuple('MapSpec', ['key', 'value'])
+FieldSpec = namedtuple('FieldSpec', ['name', 'type', 'kind', 'qualifier', 'default', 'annotations'])
+ListSpec = namedtuple('ListSpec', ['value', 'kind'])
+SetSpec = namedtuple('SetSpec', ['value', 'kind'])
+MapSpec = namedtuple('MapSpec', [ 'key', 'key_kind', 'value', 'value_kind'])

@@ -22,6 +22,7 @@ from libcpp.typeinfo cimport type_info
 import thrift.py3.types
 cimport thrift.py3.types
 from thrift.py3.types cimport move
+from thrift.py3.types import NumberType as __NumberType
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
@@ -260,11 +261,13 @@ cdef class NestedContainers(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="foo",
                     type=_module_types.Map__i32_List__i32,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -279,11 +282,13 @@ cdef class NestedContainers(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="foo",
                     type=_module_types.Map__i32_Set__i32,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -298,11 +303,13 @@ cdef class NestedContainers(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="foo",
                     type=_module_types.List__Map__i32_i32,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -317,11 +324,13 @@ cdef class NestedContainers(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="foo",
                     type=_module_types.List__Set__i32,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -336,11 +345,13 @@ cdef class NestedContainers(thrift.py3.client.Client):
                 __ArgumentSpec(
                     name="foo",
                     type=_module_types.List__List__Map__i32_Map__i32_Set__i32,
+                    kind=None,
                     annotations=_py_types.MappingProxyType({
                     }),
                 ),
             ],
             result=None,
+            result_kind=None,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
