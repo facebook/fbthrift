@@ -44,9 +44,6 @@ service StreamService {
 
   stream<i32> slowCancellation();
 
-  // As long as the client consumes, the server will send messages
-  stream<Message> listen(1: string sender);
-
   // These method will not be overiden, so the default implementation will be
   // used. If client calls these methods, it should not cause any crash and it
   // should end gracefully
