@@ -234,9 +234,9 @@ void RocketClientChannel::sendThriftRequest(
   }
 
   // compress the request if needed
-  if (autoCompressSizeLimit_.hasValue() &&
+  if (autoCompressSizeLimit_.has_value() &&
       *autoCompressSizeLimit_ < int(buf->computeChainDataLength())) {
-    if (negotiatedCompressionAlgo_.hasValue()) {
+    if (negotiatedCompressionAlgo_.has_value()) {
       rocket::compressRequest(metadata, buf, *negotiatedCompressionAlgo_);
     }
   }

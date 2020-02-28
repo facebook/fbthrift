@@ -405,7 +405,7 @@ void HeaderServerChannel::messageReceived(
 
   uint32_t recvSeqId = header->getSequenceNumber();
   bool outOfOrder = (header->getFlags() & HEADER_FLAG_SUPPORT_OUT_OF_ORDER);
-  if (!outOfOrder_.hasValue()) {
+  if (!outOfOrder_.has_value()) {
     outOfOrder_ = outOfOrder;
   } else if (outOfOrder_.value() != outOfOrder) {
     LOG(ERROR) << "Channel " << (outOfOrder_.value() ? "" : "doesn't ")
