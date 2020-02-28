@@ -106,6 +106,47 @@ T&& castToFollyOrForward(T&& t) {
   return std::forward<T>(t);
 }
 
+template <class T>
+auto&& fromFollyOptional(
+    DeprecatedOptionalField<T>& lhs,
+    const folly::Optional<T>& rhs) {
+  if (rhs) {
+    lhs = *rhs;
+  }
+  return lhs;
+}
+
+template <class T>
+auto&& fromFollyOptional(
+    DeprecatedOptionalField<T>& lhs,
+    folly::Optional<T>&& rhs) {
+  if (rhs) {
+    lhs = std::move(*rhs);
+  }
+  return lhs;
+}
+
+// TODO: remove rvalue overloads if no one use them
+template <class T>
+auto&& fromFollyOptional(
+    DeprecatedOptionalField<T>&& lhs,
+    const folly::Optional<T>& rhs) {
+  if (rhs) {
+    lhs = *rhs;
+  }
+  return std::move(lhs);
+}
+
+template <class T>
+auto&& fromFollyOptional(
+    DeprecatedOptionalField<T>&& lhs,
+    folly::Optional<T>&& rhs) {
+  if (rhs) {
+    lhs = std::move(*rhs);
+  }
+  return std::move(lhs);
+}
+
 } // namespace thrift
 } // namespace apache
 

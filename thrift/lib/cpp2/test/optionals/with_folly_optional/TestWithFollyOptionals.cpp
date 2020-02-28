@@ -178,3 +178,27 @@ TEST(TestWithFollyOptionals, EqualityTests) {
   obj2.structOpt->extraInt64Opt = 13;
   EXPECT_EQ(obj1, obj2);
 }
+
+TEST(TestWithFollyOptionals, APITests) {
+  cpp2::HasOptionals obj1;
+  cpp2::HasOptionals obj2;
+
+  obj1.int64Opt = 1;
+  folly::Optional<int64_t> f{2};
+  obj2.int64Opt = apache::thrift::fromFollyOptional(obj1.int64Opt, f);
+  EXPECT_EQ(obj1.int64Opt.value(), 2);
+  EXPECT_EQ(obj2.int64Opt.value(), 2);
+
+  obj2.int64Opt = apache::thrift::fromFollyOptional(
+      obj1.int64Opt, folly::Optional<int64_t>{3});
+  EXPECT_EQ(obj1.int64Opt.value(), 3);
+  EXPECT_EQ(obj2.int64Opt.value(), 3);
+
+  obj1.int64Opt = apache::thrift::fromFollyOptional(
+      cpp2::HasOptionals().int64Opt, folly::Optional<int64_t>{4});
+  EXPECT_EQ(obj1.int64Opt.value(), 4);
+  f = 4;
+  obj2.int64Opt =
+      apache::thrift::fromFollyOptional(cpp2::HasOptionals().int64Opt, f);
+  EXPECT_EQ(obj2.int64Opt.value(), 4);
+}
