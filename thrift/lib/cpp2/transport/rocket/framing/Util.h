@@ -21,6 +21,7 @@
 #include <exception>
 #include <string>
 
+#include <folly/Memory.h>
 #include <folly/io/Cursor.h>
 
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
@@ -91,16 +92,18 @@ alignTo4k(folly::IOBuf& buffer, size_t startOffset, size_t frameSize) {
   size_t padding = kPageSize - startOffset % kPageSize;
   size_t allocationSize = padding + std::max(buffer.length(), frameSize);
 
-  void* rawbuf = nullptr;
-  if (posix_memalign(&rawbuf, kPageSize, allocationSize)) {
+  void* rawbuf = folly::aligned_malloc(allocationSize, kPageSize);
+  if (!rawbuf) {
     LOG(ERROR) << "Allocating : " << kPageSize
                << " aligned memory of size: " << allocationSize << " failed!";
     return false;
   }
-  DCHECK(rawbuf);
 
   auto iobuf = folly::IOBuf::takeOwnership(
-      static_cast<void*>(rawbuf), allocationSize, allocationSize);
+      static_cast<void*>(rawbuf),
+      allocationSize,
+      allocationSize,
+      [](void* p, void*) { folly::aligned_free(p); });
 
   iobuf->trimStart(padding);
   iobuf->trimEnd(allocationSize - buffer.length() - padding);
