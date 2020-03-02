@@ -98,9 +98,9 @@ void compressRequest(
   data = folly::io::getCodec(codec)->compress(data.get());
 }
 
-void uncompressRequest(
+folly::Expected<std::unique_ptr<folly::IOBuf>, std::string> uncompressRequest(
     CompressionAlgorithm compression,
-    std::unique_ptr<folly::IOBuf>& data) {
+    std::unique_ptr<folly::IOBuf> data) {
   folly::io::CodecType codec;
   switch (compression) {
     case CompressionAlgorithm::ZSTD:
@@ -113,8 +113,14 @@ void uncompressRequest(
       codec = folly::io::CodecType::NO_COMPRESSION;
       break;
   }
-  data = folly::io::getCodec(codec)->uncompress(data.get());
+
+  try {
+    return folly::io::getCodec(codec)->uncompress(data.get());
+  } catch (const std::exception& e) {
+    return folly::makeUnexpected(std::string(e.what()));
+  }
 }
+
 } // namespace rocket
 } // namespace thrift
 } // namespace apache

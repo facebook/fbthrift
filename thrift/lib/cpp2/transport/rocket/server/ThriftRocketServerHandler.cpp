@@ -322,7 +322,16 @@ void ThriftRocketServerHandler::handleRequestCommon(
   auto data = std::move(payload).data();
   // uncompress the request if it's compressed
   if (auto compression = metadata.compression_ref()) {
-    rocket::uncompressRequest(*metadata.compression_ref(), data);
+    auto result =
+        rocket::uncompressRequest(*metadata.compression_ref(), std::move(data));
+    if (!result) {
+      handleDecompressionFailure(
+          makeRequest(
+              std::move(metadata), std::move(debugPayload), reqCtx.get()),
+          std::move(result).error());
+      return;
+    }
+    data = std::move(result.value());
   }
 
   // check the checksum
@@ -380,6 +389,19 @@ void ThriftRocketServerHandler::handleRequestWithBadChecksum(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::CHECKSUM_MISMATCH, "Checksum mismatch"),
       "Corrupted request");
+}
+
+void ThriftRocketServerHandler::handleDecompressionFailure(
+    ThriftRequestCoreUniquePtr request,
+    std::string&& reason) {
+  if (auto* observer = serverConfigs_->getObserver()) {
+    observer->taskKilled();
+  }
+  request->sendErrorWrapped(
+      folly::make_exception_wrapper<TApplicationException>(
+          TApplicationException::INVALID_TRANSFORM,
+          fmt::format("decompression failure: {}", std::move(reason))),
+      "decompression failure");
 }
 
 void ThriftRocketServerHandler::handleRequestOverloadedServer(

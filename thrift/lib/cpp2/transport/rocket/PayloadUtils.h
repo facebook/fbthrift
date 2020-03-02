@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/Expected.h>
 #include <folly/Try.h>
 #include <folly/compression/Compression.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -132,9 +133,9 @@ void compressRequest(
 /**
  * Helper method to uncompress the request on server side.
  */
-void uncompressRequest(
+folly::Expected<std::unique_ptr<folly::IOBuf>, std::string> uncompressRequest(
     CompressionAlgorithm compression,
-    std::unique_ptr<folly::IOBuf>& data);
+    std::unique_ptr<folly::IOBuf> data);
 } // namespace rocket
 } // namespace thrift
 } // namespace apache
