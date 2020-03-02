@@ -184,8 +184,16 @@ TEST(TestWithFollyOptionals, APITests) {
   cpp2::HasOptionals obj2;
 
   obj1.int64Opt = 1;
-  folly::Optional<int64_t> f{2};
+  EXPECT_TRUE(obj1.int64Opt.has_value());
+  EXPECT_FALSE(obj2.int64Opt.has_value());
+  EXPECT_EQ(obj1.int64Opt.value(), 1);
+
+  folly::Optional<int64_t> f;
   obj2.int64Opt = apache::thrift::fromFollyOptional(obj1.int64Opt, f);
+  EXPECT_FALSE(obj1.int64Opt.has_value());
+  EXPECT_FALSE(obj2.int64Opt.has_value());
+
+  obj2.int64Opt = apache::thrift::fromFollyOptional(obj1.int64Opt, f = 2);
   EXPECT_EQ(obj1.int64Opt.value(), 2);
   EXPECT_EQ(obj2.int64Opt.value(), 2);
 

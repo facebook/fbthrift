@@ -106,6 +106,8 @@ auto&& fromFollyOptional(
     const folly::Optional<T>& rhs) {
   if (rhs) {
     lhs = *rhs;
+  } else {
+    lhs.reset();
   }
   return lhs;
 }
@@ -116,7 +118,10 @@ auto&& fromFollyOptional(
     folly::Optional<T>&& rhs) {
   if (rhs) {
     lhs = std::move(*rhs);
+  } else {
+    lhs.reset();
   }
+
   return lhs;
 }
 
@@ -127,6 +132,8 @@ auto&& fromFollyOptional(
     const folly::Optional<T>& rhs) {
   if (rhs) {
     lhs = *rhs;
+  } else {
+    lhs.reset();
   }
   return std::move(lhs);
 }
@@ -137,6 +144,8 @@ auto&& fromFollyOptional(
     folly::Optional<T>&& rhs) {
   if (rhs) {
     lhs = std::move(*rhs);
+  } else {
+    lhs.reset();
   }
   return std::move(lhs);
 }
