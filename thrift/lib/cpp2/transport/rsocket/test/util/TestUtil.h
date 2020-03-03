@@ -26,11 +26,9 @@
 #include <thrift/lib/cpp2/transport/core/testutil/FakeServerObserver.h>
 #include <thrift/lib/cpp2/transport/core/testutil/MockCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TAsyncSocketIntercepted.h>
-#include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
-#include <yarpl/flowable/TestSubscriber.h>
 
 namespace apache {
 namespace thrift {
@@ -41,7 +39,6 @@ using namespace apache::thrift::transport;
 using namespace testing;
 using namespace testutil::testservice;
 using testutil::testservice::Message;
-using yarpl::flowable::TestSubscriber;
 
 // Event handler to attach to the Thrift server so we know when it is
 // ready to serve and also so we can determine the port it is

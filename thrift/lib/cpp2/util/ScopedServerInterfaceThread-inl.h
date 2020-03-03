@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <folly/executors/GlobalExecutor.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 

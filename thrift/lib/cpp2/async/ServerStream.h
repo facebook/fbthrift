@@ -21,10 +21,10 @@
 #include <folly/experimental/coro/AsyncGenerator.h>
 #endif // FOLLY_HAS_COROUTINES
 #include <folly/Try.h>
+#include <folly/executors/GlobalExecutor.h>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
 #include <thrift/lib/cpp2/async/ServerGeneratorStream.h>
 #include <thrift/lib/cpp2/async/ServerPublisherStream.h>
-#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 
 namespace yarpl {
@@ -44,30 +44,6 @@ class ServerStream {
       : fn_(detail::ServerGeneratorStream::fromAsyncGenerator(std::move(gen))) {
   }
 #endif
-
-  /* implicit */ ServerStream(Stream<T>&& stream)
-      : fn_([stream = std::move(stream)](
-                folly::Executor::KeepAlive<>,
-                folly::Try<StreamPayload> (*encode)(folly::Try<T>&&)) mutable {
-          return [stream = std::move(stream).map(
-                      [encode](T&& item) mutable {
-                        return encode(folly::Try<T>(std::move(item)))
-                            .value()
-                            .payload;
-                      },
-                      [encode](folly::exception_wrapper&& ew) mutable {
-                        return encode(folly::Try<T>(std::move(ew))).exception();
-                      })](
-                     FirstResponsePayload&& payload,
-                     StreamClientCallback* callback,
-                     folly::EventBase* clientEb) mutable {
-            auto streamPtr =
-                std::move(stream).toStreamServerCallbackPtr(*clientEb);
-            streamPtr->resetClientCallback(*callback);
-            std::ignore = callback->onFirstResponse(
-                std::move(payload), clientEb, streamPtr.release());
-          };
-        }) {}
 
   static std::pair<ServerStream<T>, ServerStreamPublisher<T>> createPublisher(
       folly::Function<void()> onStreamCompleteOrCancel) {

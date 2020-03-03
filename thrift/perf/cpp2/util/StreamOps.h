@@ -19,10 +19,8 @@
 #include <folly/GLog.h>
 #include <folly/system/ThreadName.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
-#include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <thrift/perf/cpp2/if/gen-cpp2/ApiBase_types.h>
 #include <thrift/perf/cpp2/util/QPSStats.h>
-#include <yarpl/Flowable.h>
 #include <random>
 
 DECLARE_uint32(chunk_size);
@@ -181,26 +179,6 @@ class StreamDownload {
     rpcOptions.setQueueTimeout(std::chrono::seconds(10));
     rpcOptions.setTimeout(std::chrono::seconds(10));
     rpcOptions.setChunkBufferSize(FLAGS_batch_size);
-
-    class Subscription : public yarpl::flowable::Subscription {
-     public:
-      Subscription(QPSStats* stats) : stats_(stats) {
-        stats_->registerCounter(ks_Request_);
-      }
-
-      void request(int64_t cnt) override {
-        // not the amount of requests but number of requests!
-        stats_->add(ks_Request_);
-        requested_ += cnt;
-      }
-      void cancel() override {
-        requested_ = -1;
-      }
-
-      std::atomic<int32_t> requested_{0};
-      std::string ks_Request_ = "s_request";
-      QPSStats* stats_;
-    };
 
     client->sync_streamDownload(rpcOptions)
         .subscribeExTry(

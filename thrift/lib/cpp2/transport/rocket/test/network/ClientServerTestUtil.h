@@ -26,7 +26,6 @@
 #include <folly/io/async/ScopedEventBaseThread.h>
 
 #include <thrift/lib/cpp2/async/ServerStream.h>
-#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>

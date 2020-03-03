@@ -508,7 +508,7 @@ TEST(ServerStreamTest, FactoryLeak) {
       co_yield std::move(i);
     }
   });
-  stream = apache::thrift::Stream<int>();
+  stream = apache::thrift::ServerStream<int>::createEmpty();
 }
 
 } // namespace thrift

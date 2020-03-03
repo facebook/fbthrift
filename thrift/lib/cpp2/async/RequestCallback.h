@@ -28,7 +28,6 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ClientSinkBridge.h>
 #include <thrift/lib/cpp2/async/ClientStreamBridge.h>
-#include <thrift/lib/cpp2/async/Stream.h>
 
 namespace apache {
 namespace thrift {

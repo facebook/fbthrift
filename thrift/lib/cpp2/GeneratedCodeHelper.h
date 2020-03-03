@@ -34,7 +34,6 @@
 #include <thrift/lib/cpp2/async/ClientSinkBridge.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/Sink.h>
-#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/detail/meta.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>

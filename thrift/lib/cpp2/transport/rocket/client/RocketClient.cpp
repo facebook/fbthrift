@@ -39,7 +39,6 @@
 #include <folly/lang/Exception.h>
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
-#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/core/TryUtil.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>

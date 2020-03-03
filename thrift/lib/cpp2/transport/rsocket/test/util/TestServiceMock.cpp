@@ -15,15 +15,12 @@
  */
 
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
-
 #include <rsocket/Payload.h>
-#include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 
 namespace testutil {
 namespace testservice {
 
 using namespace apache::thrift;
-using namespace yarpl::flowable;
 
 class LeakDetector {
  public:
@@ -165,9 +162,7 @@ TestServiceMock::sleepWithResponse(int32_t timeMs) {
   /* sleep override */
   std::this_thread::sleep_for(std::chrono::milliseconds(timeMs));
   return {1,
-          toStream(
-              Flowable<>::range(1, 1)->map([](auto i) { return (int32_t)i; }),
-              &executor_)};
+          ([]() -> folly::coro::AsyncGenerator<int32_t&&> { co_yield 1; })()};
 }
 
 apache::thrift::ServerStream<int32_t> TestServiceMock::sleepWithoutResponse(

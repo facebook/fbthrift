@@ -44,7 +44,6 @@
 
 #include <thrift/lib/cpp2/async/ServerSinkBridge.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
-#include <thrift/lib/cpp2/async/StreamPublisher.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/transport/core/TryUtil.h>

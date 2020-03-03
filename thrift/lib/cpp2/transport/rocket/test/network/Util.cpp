@@ -27,7 +27,6 @@
 #include <folly/io/IOBuf.h>
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
-#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 
 namespace apache {

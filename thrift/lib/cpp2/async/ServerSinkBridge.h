@@ -28,7 +28,6 @@
 #include <folly/experimental/coro/Task.h>
 
 #include <thrift/lib/cpp2/async/SinkBridgeUtil.h>
-#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/async/TwoWayBridge.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>

@@ -21,6 +21,7 @@
 #include <folly/ExceptionWrapper.h>
 #include <folly/String.h>
 #include <folly/container/F14Map.h>
+#include <folly/executors/SerialExecutor.h>
 #include <folly/futures/Future.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/TApplicationException.h>
@@ -754,32 +755,6 @@ struct HandlerCallbackHelper {
     return cob(protoSeqId, ctx, std::move(input));
   }
 };
-
-template <typename StreamInputType>
-struct HandlerCallbackHelperStream {
-  using InputType = StreamInputType;
-  using CobPtr = ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> (*)(
-      int32_t protoSeqId,
-      apache::thrift::ContextStack*,
-      InputType);
-  static ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> call(
-      CobPtr cob,
-      int32_t protoSeqId,
-      apache::thrift::ContextStack* ctx,
-      apache::thrift::concurrency::ThreadManager*,
-      InputType input) {
-    return cob(protoSeqId, ctx, std::move(input));
-  }
-};
-
-template <typename Response, typename StreamItem>
-struct HandlerCallbackHelper<ResponseAndStream<Response, StreamItem>>
-    : public HandlerCallbackHelperStream<
-          ResponseAndStream<Response, StreamItem>> {};
-
-template <typename StreamItem>
-struct HandlerCallbackHelper<Stream<StreamItem>>
-    : public HandlerCallbackHelperStream<Stream<StreamItem>> {};
 
 template <typename StreamInputType>
 struct HandlerCallbackHelperServerStream {
