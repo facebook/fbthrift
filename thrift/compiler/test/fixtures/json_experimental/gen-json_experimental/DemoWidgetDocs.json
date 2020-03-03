@@ -1,4 +1,5 @@
 {
+  "__fbthrift": "@generated",
   "thrift_module" : "DemoWidgetDocs",
   "namespaces": {
     "php": "thrift_php_demo",

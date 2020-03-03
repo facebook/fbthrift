@@ -102,6 +102,8 @@ void t_json_generator::generate_program() {
   f_out_.open(fname.c_str());
   indent(f_out_) << "{" << endl;
   indent_up();
+  indent(f_out_) << "\"__fbthrift\": {\"@"
+                 << "generated\": 0}," << endl;
   indent(f_out_) << "\"thrift_module\" : \"" << module_name << "\"";
 
   if (!program_->get_consts().empty()) {

@@ -1,4 +1,5 @@
 {
+  "__fbthrift": "@generated",
   "thrift_module" : "ThriftdocTest",
   "namespaces": {
     "cpp": "thrift.test",

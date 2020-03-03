@@ -78,6 +78,7 @@ class JsonCompilerTest(unittest.TestCase):
         obj = gen("foo.thrift", textwrap.dedent("""\
         """))
         self.assertEqual(obj, {
+            "__fbthrift": {"@" + "generated": 0},
             "thrift_module": "foo",
         })
 
@@ -87,6 +88,7 @@ class JsonCompilerTest(unittest.TestCase):
             }
         """))
         self.assertEqual(obj, {
+            "__fbthrift": {"@" + "generated": 0},
             "thrift_module": "foo",
             "structs": {
                 "DataHolder": {
@@ -108,6 +110,7 @@ class JsonCompilerTest(unittest.TestCase):
             }
         """))
         self.assertEqual(obj, {
+            "__fbthrift": {"@" + "generated": 0},
             "thrift_module": "foo",
             "structs": {
                 "DataItem": {
@@ -141,6 +144,7 @@ class JsonCompilerTest(unittest.TestCase):
             }
         """))
         self.assertEqual(obj, {
+            "__fbthrift": {"@" + "generated": 0},
             "thrift_module": "foo",
             "structs": {
                 "DataItem": {
@@ -185,6 +189,7 @@ class JsonCompilerTest(unittest.TestCase):
             }
         """))
         self.assertEqual(obj, {
+            "__fbthrift": {"@" + "generated": 0},
             "thrift_module": "foo",
             "structs": {
                 "DataItem": {
