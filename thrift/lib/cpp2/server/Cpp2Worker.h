@@ -119,7 +119,7 @@ class Cpp2Worker : public wangle::Acceptor,
       folly::AsyncTransportWrapper::UniquePtr sock,
       const folly::SocketAddress* addr);
 
-  std::shared_ptr<RequestsRegistry> getRequestsRegistry() {
+  RequestsRegistry* getRequestsRegistry() const {
     return requestsRegistry_;
   }
 
@@ -145,11 +145,7 @@ class Cpp2Worker : public wangle::Acceptor,
       : Acceptor(server->getServerSocketConfig()),
         wangle::PeekingAcceptorHandshakeHelper::PeekCallback(kPeekCount),
         server_(server),
-        activeRequests_(0),
-        requestsRegistry_(std::make_shared<RequestsRegistry>(
-            server_->getMaxDebugPayloadMemoryPerRequest(),
-            server_->getMaxDebugPayloadMemoryPerWorker(),
-            server_->getMaxFinishedDebugPayloadsPerWorker())) {
+        activeRequests_(0) {
     setGracefulShutdownTimeout(server->workersJoinTimeout_);
   }
 
@@ -165,7 +161,7 @@ class Cpp2Worker : public wangle::Acceptor,
       eventBase = folly::EventBaseManager::get()->getEventBase();
     }
     init(nullptr, eventBase);
-
+    initRequestsRegistry();
     if (serverChannel) {
       // duplex
       useExistingChannel(serverChannel);
@@ -247,9 +243,11 @@ class Cpp2Worker : public wangle::Acceptor,
       const std::shared_ptr<HeaderServerChannel>& serverChannel);
 
   uint32_t activeRequests_;
-  std::shared_ptr<RequestsRegistry> requestsRegistry_;
+  RequestsRegistry* requestsRegistry_;
   bool stopping_{false};
   folly::Baton<> stopBaton_;
+
+  void initRequestsRegistry();
 
   wangle::AcceptorHandshakeHelper::UniquePtr getHelper(
       const std::vector<uint8_t>& bytes,

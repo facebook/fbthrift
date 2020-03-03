@@ -141,9 +141,10 @@ void testOneInput(
     size_t Size,
     folly::AsyncTransportWrapper::UniquePtr sock) {
   auto* const sockPtr = sock.get();
+  auto evb = sockPtr->getEventBase();
   apache::thrift::ThriftServer server;
   server.setProcessorFactory(std::make_shared<FakeProcessorFactory>());
-  auto worker = apache::thrift::Cpp2Worker::create(&server);
+  auto worker = apache::thrift::Cpp2Worker::create(&server, nullptr, evb);
   std::vector<std::unique_ptr<apache::thrift::rocket::SetupFrameHandler>> v;
   folly::SocketAddress address;
   auto connection = new apache::thrift::rocket::RocketServerConnection(
@@ -154,19 +155,21 @@ void testOneInput(
   folly::DelayedDestruction::DestructorGuard dg(connection);
   apache::thrift::rocket::Parser<apache::thrift::rocket::RocketServerConnection>
       p(*connection);
-  size_t left = Size;
-  while (left != 0) {
-    void* buffer;
-    size_t length;
-    p.getReadBuffer(&buffer, &length);
-    size_t lenToRead = std::min(left, length);
-    memcpy(buffer, Data, lenToRead);
-    p.readDataAvailable(lenToRead);
-    Data += lenToRead;
-    left -= lenToRead;
-  }
-  connection->close(folly::exception_wrapper());
-  sockPtr->getEventBase()->loop();
+  evb->runInEventBaseThread([&]() {
+    size_t left = Size;
+    while (left != 0) {
+      void* buffer;
+      size_t length;
+      p.getReadBuffer(&buffer, &length);
+      size_t lenToRead = std::min(left, length);
+      memcpy(buffer, Data, lenToRead);
+      p.readDataAvailable(lenToRead);
+      Data += lenToRead;
+      left -= lenToRead;
+    }
+    connection->close(folly::exception_wrapper());
+  });
+  evb->loop();
 }
 
 } // namespace test

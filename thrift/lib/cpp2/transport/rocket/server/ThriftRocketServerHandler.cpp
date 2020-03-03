@@ -145,9 +145,7 @@ void ThriftRocketServerHandler::handleSetupFrame(
         valid &= !!(cpp2Processor_ = std::move(processorInfo->cpp2Processor_));
         valid &= !!(threadManager_ = std::move(processorInfo->threadManager_));
         valid &= !!(serverConfigs_ = &processorInfo->serverConfigs_);
-        valid &=
-            !!(activeRequestsRegistry_ =
-                   std::move(processorInfo->activeRequestsRegistry_));
+        valid &= !!(requestsRegistry_ = processorInfo->requestsRegistry_);
         if (!valid) {
           return connection.close(
               folly::make_exception_wrapper<RocketException>(
@@ -161,7 +159,7 @@ void ThriftRocketServerHandler::handleSetupFrame(
     cpp2Processor_ = worker_->getServer()->getCpp2Processor();
     threadManager_ = worker_->getServer()->getThreadManager();
     serverConfigs_ = worker_->getServer();
-    activeRequestsRegistry_ = worker_->getRequestsRegistry();
+    requestsRegistry_ = worker_->getRequestsRegistry();
     // add sampleRate
     if (serverConfigs_) {
       if (auto* observer = serverConfigs_->getObserver()) {
@@ -193,7 +191,7 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
         *serverConfigs_,
         std::move(md),
         connContext_,
-        *activeRequestsRegistry_,
+        *requestsRegistry_,
         std::move(debugPayload),
         ctx->getRootId(),
         std::move(context));
@@ -217,7 +215,7 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
         *serverConfigs_,
         std::move(md),
         connContext_,
-        *activeRequestsRegistry_,
+        *requestsRegistry_,
         std::move(debugPayload),
         ctx->getRootId(),
         std::move(context),
@@ -240,7 +238,7 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
         *serverConfigs_,
         std::move(md),
         connContext_,
-        *activeRequestsRegistry_,
+        *requestsRegistry_,
         std::move(debugPayload),
         ctx->getRootId(),
         std::move(context),
@@ -264,7 +262,7 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
         *serverConfigs_,
         std::move(md),
         connContext_,
-        *activeRequestsRegistry_,
+        *requestsRegistry_,
         std::move(debugPayload),
         ctx->getRootId(),
         std::move(context),
@@ -280,7 +278,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
     Payload&& payload,
     F&& makeRequest) {
   auto baseReqCtx = cpp2Processor_->getBaseContextForRequest();
-  auto rootid = activeRequestsRegistry_->genRootId();
+  auto rootid = requestsRegistry_->genRootId();
   auto reqCtx = baseReqCtx
       ? folly::RequestContext::copyAsRoot(*baseReqCtx, rootid)
       : std::make_shared<folly::RequestContext>(rootid);

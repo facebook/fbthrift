@@ -47,16 +47,16 @@ struct ProcessorInfo {
       std::unique_ptr<apache::thrift::AsyncProcessor> cpp2Processor,
       std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager,
       server::ServerConfigs& serverConfigs,
-      std::shared_ptr<RequestsRegistry> activeRequestsRegistry)
+      RequestsRegistry* requestsRegistry)
       : cpp2Processor_(std::move(cpp2Processor)),
         threadManager_(std::move(threadManager)),
         serverConfigs_(serverConfigs),
-        activeRequestsRegistry_(std::move(activeRequestsRegistry)) {}
+        requestsRegistry_(std::move(requestsRegistry)) {}
 
   std::unique_ptr<apache::thrift::AsyncProcessor> cpp2Processor_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
   server::ServerConfigs& serverConfigs_;
-  std::shared_ptr<RequestsRegistry> activeRequestsRegistry_;
+  RequestsRegistry* requestsRegistry_;
 };
 
 /*

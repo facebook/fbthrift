@@ -102,7 +102,7 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   std::shared_ptr<AsyncProcessor> cpp2Processor_;
   std::shared_ptr<concurrency::ThreadManager> threadManager_;
   server::ServerConfigs* serverConfigs_ = nullptr;
-  std::shared_ptr<RequestsRegistry> activeRequestsRegistry_;
+  RequestsRegistry* requestsRegistry_ = nullptr;
   folly::EventBase* eventBase_;
 
   uint32_t sampleRate_{0};

@@ -169,10 +169,8 @@ class DebugInterface : public DebugTestServiceSvIf {
 class DebuggingFrameHandler : public rocket::SetupFrameHandler {
  public:
   explicit DebuggingFrameHandler(ThriftServer& server)
-      : origServer_(server), reqRegistry_([] {
-          auto p = new RequestsRegistry(0, 0, 0);
-          return new std::shared_ptr<RequestsRegistry>(p);
-        }) {
+      : origServer_(server),
+        reqRegistry_([] { return new RequestsRegistry(0, 0, 0); }) {
     auto tf =
         std::make_shared<PosixThreadFactory>(PosixThreadFactory::ATTACHED);
     tm_ = std::make_shared<SimpleThreadManager<folly::LifoSem>>(1, false);
@@ -185,7 +183,7 @@ class DebuggingFrameHandler : public rocket::SetupFrameHandler {
     if (meta.interfaceKind_ref().has_value() &&
         meta.interfaceKind_ref().value() == InterfaceKind::DEBUGGING) {
       auto info = rocket::ProcessorInfo{
-          debug_.getProcessor(), tm_, origServer_, *reqRegistry_.get()};
+          debug_.getProcessor(), tm_, origServer_, reqRegistry_.get()};
       return folly::Optional<rocket::ProcessorInfo>(std::move(info));
     }
     return folly::Optional<rocket::ProcessorInfo>();
@@ -195,7 +193,7 @@ class DebuggingFrameHandler : public rocket::SetupFrameHandler {
   ThriftServer& origServer_;
   DebugInterface debug_;
   std::shared_ptr<ThreadManager> tm_;
-  folly::ThreadLocal<std::shared_ptr<RequestsRegistry>> reqRegistry_;
+  folly::ThreadLocal<RequestsRegistry> reqRegistry_;
 };
 
 class RequestInstrumentationTest : public testing::Test {

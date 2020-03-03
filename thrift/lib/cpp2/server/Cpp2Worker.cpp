@@ -20,6 +20,7 @@
 
 #include <folly/String.h>
 #include <folly/io/async/AsyncSSLSocket.h>
+#include <folly/io/async/EventBaseLocal.h>
 #include <folly/portability/Sockets.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
@@ -40,6 +41,21 @@ using namespace apache::thrift::transport;
 using namespace apache::thrift::async;
 using apache::thrift::concurrency::Util;
 using std::shared_ptr;
+
+namespace {
+folly::LeakySingleton<folly::EventBaseLocal<RequestsRegistry>> registry;
+}
+
+void Cpp2Worker::initRequestsRegistry() {
+  auto* evb = getEventBase();
+  evb->runInEventBaseThread([this, evb]() {
+    this->requestsRegistry_ = &registry.get().getOrCreate(
+        *evb,
+        server_->getMaxDebugPayloadMemoryPerRequest(),
+        server_->getMaxDebugPayloadMemoryPerWorker(),
+        server_->getMaxFinishedDebugPayloadsPerWorker());
+  });
+}
 
 void Cpp2Worker::onNewConnection(
     folly::AsyncTransportWrapper::UniquePtr sock,
