@@ -28,7 +28,7 @@ from six import StringIO
 from thrift import Thrift
 from thrift.util import randomizer
 from thrift.protocol.TCompactProtocol import getVarint
-from .THeaderTransport import (
+from thrift.transport.THeaderTransport import (
     THeaderTransport, INFO, HEADER_MAGIC, _flush_info_headers
 )
 

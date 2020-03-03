@@ -24,7 +24,7 @@ from multiprocessing import  Process
 import gevent
 from gevent.server import StreamServer
 
-from .TServer import TServer
+from thrift.server.TServer import TServer
 from thrift.transport.TTransport import TTransportException
 from thrift.transport.TSocket import TSocket
 from thrift.protocol.THeaderProtocol import THeaderProtocolFactory

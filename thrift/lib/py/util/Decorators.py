@@ -87,7 +87,7 @@ def process_main(twisted=False, asyncio=False):
             exc = make_unknown_function_exception(name)
             self.writeException(oprot, name, seqid, exc)
             if twisted:
-                from twisted.internet import defer
+                from twisted.internet import defer  # @manual
                 return defer.succeed(None)
             if asyncio:
                 fut = Future(loop=self._loop)

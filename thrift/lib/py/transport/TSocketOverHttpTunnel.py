@@ -17,8 +17,8 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from .TSocket import TSocket
-from .TTransport import TTransportException
+from thrift.transport.TSocket import TSocket
+from thrift.transport.TTransport import TTransportException
 import socket
 
 
