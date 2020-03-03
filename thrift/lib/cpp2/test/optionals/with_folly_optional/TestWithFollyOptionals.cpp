@@ -209,4 +209,11 @@ TEST(TestWithFollyOptionals, APITests) {
   obj2.int64Opt =
       apache::thrift::fromFollyOptional(cpp2::HasOptionals().int64Opt, f);
   EXPECT_EQ(obj2.int64Opt.value(), 4);
+
+  static_assert(!std::is_constructible_v<
+                apache::thrift::DeprecatedOptionalField<int>,
+                folly::Optional<int>>);
+  static_assert(!std::is_convertible_v<
+                folly::Optional<int>,
+                apache::thrift::DeprecatedOptionalField<int>>);
 }

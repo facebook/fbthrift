@@ -38,8 +38,6 @@ class DeprecatedOptionalField : public folly::Optional<T> {
 
  public:
   using Base::Base;
-  DeprecatedOptionalField(Base&&) = delete;
-  DeprecatedOptionalField(const Base&) = delete;
 
   // Use perfect forwarding to hide Base::operator=(Base&&),
   // Otherwise `s.foo = {};` will be ambiguous between
