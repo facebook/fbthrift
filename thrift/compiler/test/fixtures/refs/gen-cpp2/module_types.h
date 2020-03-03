@@ -533,20 +533,24 @@ class MyField final : private apache::thrift::detail::st::ComparisonOperators<My
     return {std::move(opt_value), __isset.opt_value};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const int64_t&> value_ref() const& {
-    return {value, __isset.value};
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> value_ref() const& {
+    return {this->value, __isset.value};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const int64_t&&> value_ref() const&& {
-    return {std::move(value), __isset.value};
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> value_ref() const&& {
+    return {std::move(this->value), __isset.value};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<int64_t&> value_ref() & {
-    return {value, __isset.value};
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> value_ref() & {
+    return {this->value, __isset.value};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<int64_t&&> value_ref() && {
-    return {std::move(value), __isset.value};
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> value_ref() && {
+    return {std::move(this->value), __isset.value};
   }
 
   const int64_t* get_opt_value() const& {
@@ -695,36 +699,44 @@ class StructWithUnion final : private apache::thrift::detail::st::ComparisonOper
   bool operator==(const StructWithUnion& rhs) const;
   bool operator<(const StructWithUnion& rhs) const;
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const double&> aDouble_ref() const& {
-    return {aDouble, __isset.aDouble};
+  template <typename..., typename T = double>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> aDouble_ref() const& {
+    return {this->aDouble, __isset.aDouble};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const double&&> aDouble_ref() const&& {
-    return {std::move(aDouble), __isset.aDouble};
+  template <typename..., typename T = double>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> aDouble_ref() const&& {
+    return {std::move(this->aDouble), __isset.aDouble};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<double&> aDouble_ref() & {
-    return {aDouble, __isset.aDouble};
+  template <typename..., typename T = double>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> aDouble_ref() & {
+    return {this->aDouble, __isset.aDouble};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<double&&> aDouble_ref() && {
-    return {std::move(aDouble), __isset.aDouble};
+  template <typename..., typename T = double>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> aDouble_ref() && {
+    return {std::move(this->aDouble), __isset.aDouble};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::MyField&> f_ref() const& {
-    return {f, __isset.f};
+  template <typename..., typename T =  ::cpp2::MyField>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> f_ref() const& {
+    return {this->f, __isset.f};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::MyField&&> f_ref() const&& {
-    return {std::move(f), __isset.f};
+  template <typename..., typename T =  ::cpp2::MyField>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> f_ref() const&& {
+    return {std::move(this->f), __isset.f};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::MyField&> f_ref() & {
-    return {f, __isset.f};
+  template <typename..., typename T =  ::cpp2::MyField>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> f_ref() & {
+    return {this->f, __isset.f};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::MyField&&> f_ref() && {
-    return {std::move(f), __isset.f};
+  template <typename..., typename T =  ::cpp2::MyField>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> f_ref() && {
+    return {std::move(this->f), __isset.f};
   }
 
   double get_aDouble() const {

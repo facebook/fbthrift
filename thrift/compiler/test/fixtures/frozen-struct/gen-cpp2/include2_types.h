@@ -76,36 +76,44 @@ class IncludedB final : private apache::thrift::detail::st::ComparisonOperators<
   bool operator==(const IncludedB& rhs) const;
   bool operator<(const IncludedB& rhs) const;
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> i32Field_ref() const& {
-    return {i32Field, __isset.i32Field};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> i32Field_ref() const& {
+    return {this->i32Field, __isset.i32Field};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> i32Field_ref() const&& {
-    return {std::move(i32Field), __isset.i32Field};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> i32Field_ref() const&& {
+    return {std::move(this->i32Field), __isset.i32Field};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> i32Field_ref() & {
-    return {i32Field, __isset.i32Field};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> i32Field_ref() & {
+    return {this->i32Field, __isset.i32Field};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> i32Field_ref() && {
-    return {std::move(i32Field), __isset.i32Field};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> i32Field_ref() && {
+    return {std::move(this->i32Field), __isset.i32Field};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> strField_ref() const& {
-    return {strField, __isset.strField};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> strField_ref() const& {
+    return {this->strField, __isset.strField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> strField_ref() const&& {
-    return {std::move(strField), __isset.strField};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> strField_ref() const&& {
+    return {std::move(this->strField), __isset.strField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> strField_ref() & {
-    return {strField, __isset.strField};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> strField_ref() & {
+    return {this->strField, __isset.strField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> strField_ref() && {
-    return {std::move(strField), __isset.strField};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> strField_ref() && {
+    return {std::move(this->strField), __isset.strField};
   }
 
   int32_t get_i32Field() const {

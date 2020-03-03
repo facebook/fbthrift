@@ -126,20 +126,24 @@ class BasicTypes final : private apache::thrift::detail::st::ComparisonOperators
     return {std::move(third), __isset.third};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const bool&> isTrue_ref() const& {
-    return {isTrue, __isset.isTrue};
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> isTrue_ref() const& {
+    return {this->isTrue, __isset.isTrue};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const bool&&> isTrue_ref() const&& {
-    return {std::move(isTrue), __isset.isTrue};
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> isTrue_ref() const&& {
+    return {std::move(this->isTrue), __isset.isTrue};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<bool&> isTrue_ref() & {
-    return {isTrue, __isset.isTrue};
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> isTrue_ref() & {
+    return {this->isTrue, __isset.isTrue};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<bool&&> isTrue_ref() && {
-    return {std::move(isTrue), __isset.isTrue};
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> isTrue_ref() && {
+    return {std::move(this->isTrue), __isset.isTrue};
   }
 
   int32_t get_first() const {

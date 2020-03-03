@@ -86,52 +86,64 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::Included&> MyIncludedField_ref() const& {
-    return {MyIncludedField, __isset.MyIncludedField};
+  template <typename..., typename T =  ::cpp2::Included>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIncludedField_ref() const& {
+    return {this->MyIncludedField, __isset.MyIncludedField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::Included&&> MyIncludedField_ref() const&& {
-    return {std::move(MyIncludedField), __isset.MyIncludedField};
+  template <typename..., typename T =  ::cpp2::Included>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIncludedField_ref() const&& {
+    return {std::move(this->MyIncludedField), __isset.MyIncludedField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::Included&> MyIncludedField_ref() & {
-    return {MyIncludedField, __isset.MyIncludedField};
+  template <typename..., typename T =  ::cpp2::Included>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIncludedField_ref() & {
+    return {this->MyIncludedField, __isset.MyIncludedField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::Included&&> MyIncludedField_ref() && {
-    return {std::move(MyIncludedField), __isset.MyIncludedField};
+  template <typename..., typename T =  ::cpp2::Included>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedField_ref() && {
+    return {std::move(this->MyIncludedField), __isset.MyIncludedField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::Included&> MyOtherIncludedField_ref() const& {
-    return {MyOtherIncludedField, __isset.MyOtherIncludedField};
+  template <typename..., typename T =  ::cpp2::Included>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyOtherIncludedField_ref() const& {
+    return {this->MyOtherIncludedField, __isset.MyOtherIncludedField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::Included&&> MyOtherIncludedField_ref() const&& {
-    return {std::move(MyOtherIncludedField), __isset.MyOtherIncludedField};
+  template <typename..., typename T =  ::cpp2::Included>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyOtherIncludedField_ref() const&& {
+    return {std::move(this->MyOtherIncludedField), __isset.MyOtherIncludedField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::Included&> MyOtherIncludedField_ref() & {
-    return {MyOtherIncludedField, __isset.MyOtherIncludedField};
+  template <typename..., typename T =  ::cpp2::Included>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyOtherIncludedField_ref() & {
+    return {this->MyOtherIncludedField, __isset.MyOtherIncludedField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::Included&&> MyOtherIncludedField_ref() && {
-    return {std::move(MyOtherIncludedField), __isset.MyOtherIncludedField};
+  template <typename..., typename T =  ::cpp2::Included>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyOtherIncludedField_ref() && {
+    return {std::move(this->MyOtherIncludedField), __isset.MyOtherIncludedField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::IncludedInt64&> MyIncludedInt_ref() const& {
-    return {MyIncludedInt, __isset.MyIncludedInt};
+  template <typename..., typename T =  ::cpp2::IncludedInt64>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIncludedInt_ref() const& {
+    return {this->MyIncludedInt, __isset.MyIncludedInt};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::IncludedInt64&&> MyIncludedInt_ref() const&& {
-    return {std::move(MyIncludedInt), __isset.MyIncludedInt};
+  template <typename..., typename T =  ::cpp2::IncludedInt64>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIncludedInt_ref() const&& {
+    return {std::move(this->MyIncludedInt), __isset.MyIncludedInt};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::IncludedInt64&> MyIncludedInt_ref() & {
-    return {MyIncludedInt, __isset.MyIncludedInt};
+  template <typename..., typename T =  ::cpp2::IncludedInt64>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIncludedInt_ref() & {
+    return {this->MyIncludedInt, __isset.MyIncludedInt};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::IncludedInt64&&> MyIncludedInt_ref() && {
-    return {std::move(MyIncludedInt), __isset.MyIncludedInt};
+  template <typename..., typename T =  ::cpp2::IncludedInt64>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedInt_ref() && {
+    return {std::move(this->MyIncludedInt), __isset.MyIncludedInt};
   }
   const  ::cpp2::Included& get_MyIncludedField() const&;
    ::cpp2::Included get_MyIncludedField() &&;

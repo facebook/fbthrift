@@ -172,100 +172,124 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   bool operator==(const ModuleA& rhs) const;
   bool operator<(const ModuleA& rhs) const;
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> i32Field_ref() const& {
-    return {i32Field, __isset.i32Field};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> i32Field_ref() const& {
+    return {this->i32Field, __isset.i32Field};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> i32Field_ref() const&& {
-    return {std::move(i32Field), __isset.i32Field};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> i32Field_ref() const&& {
+    return {std::move(this->i32Field), __isset.i32Field};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> i32Field_ref() & {
-    return {i32Field, __isset.i32Field};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> i32Field_ref() & {
+    return {this->i32Field, __isset.i32Field};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> i32Field_ref() && {
-    return {std::move(i32Field), __isset.i32Field};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> i32Field_ref() && {
+    return {std::move(this->i32Field), __isset.i32Field};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> strField_ref() const& {
-    return {strField, __isset.strField};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> strField_ref() const& {
+    return {this->strField, __isset.strField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> strField_ref() const&& {
-    return {std::move(strField), __isset.strField};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> strField_ref() const&& {
+    return {std::move(this->strField), __isset.strField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> strField_ref() & {
-    return {strField, __isset.strField};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> strField_ref() & {
+    return {this->strField, __isset.strField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> strField_ref() && {
-    return {std::move(strField), __isset.strField};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> strField_ref() && {
+    return {std::move(this->strField), __isset.strField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector<int16_t>&> listField_ref() const& {
-    return {listField, __isset.listField};
+  template <typename..., typename T = ::std::vector<int16_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> listField_ref() const& {
+    return {this->listField, __isset.listField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector<int16_t>&&> listField_ref() const&& {
-    return {std::move(listField), __isset.listField};
+  template <typename..., typename T = ::std::vector<int16_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> listField_ref() const&& {
+    return {std::move(this->listField), __isset.listField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector<int16_t>&> listField_ref() & {
-    return {listField, __isset.listField};
+  template <typename..., typename T = ::std::vector<int16_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> listField_ref() & {
+    return {this->listField, __isset.listField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector<int16_t>&&> listField_ref() && {
-    return {std::move(listField), __isset.listField};
+  template <typename..., typename T = ::std::vector<int16_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> listField_ref() && {
+    return {std::move(this->listField), __isset.listField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<::std::string, int32_t>&> mapField_ref() const& {
-    return {mapField, __isset.mapField};
+  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> mapField_ref() const& {
+    return {this->mapField, __isset.mapField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<::std::string, int32_t>&&> mapField_ref() const&& {
-    return {std::move(mapField), __isset.mapField};
+  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> mapField_ref() const&& {
+    return {std::move(this->mapField), __isset.mapField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<::std::string, int32_t>&> mapField_ref() & {
-    return {mapField, __isset.mapField};
+  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> mapField_ref() & {
+    return {this->mapField, __isset.mapField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<::std::string, int32_t>&&> mapField_ref() && {
-    return {std::move(mapField), __isset.mapField};
+  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> mapField_ref() && {
+    return {std::move(this->mapField), __isset.mapField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::some::ns::IncludedA&> inclAField_ref() const& {
-    return {inclAField, __isset.inclAField};
+  template <typename..., typename T =  ::some::ns::IncludedA>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> inclAField_ref() const& {
+    return {this->inclAField, __isset.inclAField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::some::ns::IncludedA&&> inclAField_ref() const&& {
-    return {std::move(inclAField), __isset.inclAField};
+  template <typename..., typename T =  ::some::ns::IncludedA>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> inclAField_ref() const&& {
+    return {std::move(this->inclAField), __isset.inclAField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::some::ns::IncludedA&> inclAField_ref() & {
-    return {inclAField, __isset.inclAField};
+  template <typename..., typename T =  ::some::ns::IncludedA>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> inclAField_ref() & {
+    return {this->inclAField, __isset.inclAField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::some::ns::IncludedA&&> inclAField_ref() && {
-    return {std::move(inclAField), __isset.inclAField};
+  template <typename..., typename T =  ::some::ns::IncludedA>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> inclAField_ref() && {
+    return {std::move(this->inclAField), __isset.inclAField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::some::ns::IncludedB&> inclBField_ref() const& {
-    return {inclBField, __isset.inclBField};
+  template <typename..., typename T =  ::some::ns::IncludedB>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> inclBField_ref() const& {
+    return {this->inclBField, __isset.inclBField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::some::ns::IncludedB&&> inclBField_ref() const&& {
-    return {std::move(inclBField), __isset.inclBField};
+  template <typename..., typename T =  ::some::ns::IncludedB>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> inclBField_ref() const&& {
+    return {std::move(this->inclBField), __isset.inclBField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::some::ns::IncludedB&> inclBField_ref() & {
-    return {inclBField, __isset.inclBField};
+  template <typename..., typename T =  ::some::ns::IncludedB>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> inclBField_ref() & {
+    return {this->inclBField, __isset.inclBField};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::some::ns::IncludedB&&> inclBField_ref() && {
-    return {std::move(inclBField), __isset.inclBField};
+  template <typename..., typename T =  ::some::ns::IncludedB>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> inclBField_ref() && {
+    return {std::move(this->inclBField), __isset.inclBField};
   }
 
   int32_t get_i32Field() const {
@@ -387,36 +411,44 @@ class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<Mo
   bool operator==(const ModuleB& rhs) const;
   bool operator<(const ModuleB& rhs) const;
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> i32Field_ref() const& {
-    return {i32Field, __isset.i32Field};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> i32Field_ref() const& {
+    return {this->i32Field, __isset.i32Field};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> i32Field_ref() const&& {
-    return {std::move(i32Field), __isset.i32Field};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> i32Field_ref() const&& {
+    return {std::move(this->i32Field), __isset.i32Field};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> i32Field_ref() & {
-    return {i32Field, __isset.i32Field};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> i32Field_ref() & {
+    return {this->i32Field, __isset.i32Field};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> i32Field_ref() && {
-    return {std::move(i32Field), __isset.i32Field};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> i32Field_ref() && {
+    return {std::move(this->i32Field), __isset.i32Field};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::some::ns::EnumB&> inclEnumB_ref() const& {
-    return {inclEnumB, __isset.inclEnumB};
+  template <typename..., typename T =  ::some::ns::EnumB>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> inclEnumB_ref() const& {
+    return {this->inclEnumB, __isset.inclEnumB};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::some::ns::EnumB&&> inclEnumB_ref() const&& {
-    return {std::move(inclEnumB), __isset.inclEnumB};
+  template <typename..., typename T =  ::some::ns::EnumB>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> inclEnumB_ref() const&& {
+    return {std::move(this->inclEnumB), __isset.inclEnumB};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::some::ns::EnumB&> inclEnumB_ref() & {
-    return {inclEnumB, __isset.inclEnumB};
+  template <typename..., typename T =  ::some::ns::EnumB>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> inclEnumB_ref() & {
+    return {this->inclEnumB, __isset.inclEnumB};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::some::ns::EnumB&&> inclEnumB_ref() && {
-    return {std::move(inclEnumB), __isset.inclEnumB};
+  template <typename..., typename T =  ::some::ns::EnumB>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> inclEnumB_ref() && {
+    return {std::move(this->inclEnumB), __isset.inclEnumB};
   }
 
   int32_t get_i32Field() const {

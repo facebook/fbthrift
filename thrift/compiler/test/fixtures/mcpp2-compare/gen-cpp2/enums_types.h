@@ -245,20 +245,24 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
   bool operator==(const SomeStruct& rhs) const;
   bool operator<(const SomeStruct& rhs) const;
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> fieldA_ref() const& {
-    return {fieldA, __isset.fieldA};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
+    return {this->fieldA, __isset.fieldA};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> fieldA_ref() const&& {
-    return {std::move(fieldA), __isset.fieldA};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldA_ref() const&& {
+    return {std::move(this->fieldA), __isset.fieldA};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> fieldA_ref() & {
-    return {fieldA, __isset.fieldA};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldA_ref() & {
+    return {this->fieldA, __isset.fieldA};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> fieldA_ref() && {
-    return {std::move(fieldA), __isset.fieldA};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA_ref() && {
+    return {std::move(this->fieldA), __isset.fieldA};
   }
 
   int32_t get_fieldA() const {

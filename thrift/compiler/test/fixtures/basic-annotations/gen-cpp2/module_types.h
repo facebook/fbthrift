@@ -142,68 +142,84 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const int64_t&> majorVer_ref() const& {
-    return {majorVer, __isset.majorVer};
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> majorVer_ref() const& {
+    return {this->majorVer, __isset.majorVer};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const int64_t&&> majorVer_ref() const&& {
-    return {std::move(majorVer), __isset.majorVer};
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> majorVer_ref() const&& {
+    return {std::move(this->majorVer), __isset.majorVer};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<int64_t&> majorVer_ref() & {
-    return {majorVer, __isset.majorVer};
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> majorVer_ref() & {
+    return {this->majorVer, __isset.majorVer};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<int64_t&&> majorVer_ref() && {
-    return {std::move(majorVer), __isset.majorVer};
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> majorVer_ref() && {
+    return {std::move(this->majorVer), __isset.majorVer};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> package_ref() const& {
-    return {package, __isset.package};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> package_ref() const& {
+    return {this->package, __isset.package};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> package_ref() const&& {
-    return {std::move(package), __isset.package};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> package_ref() const&& {
+    return {std::move(this->package), __isset.package};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> package_ref() & {
-    return {package, __isset.package};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> package_ref() & {
+    return {this->package, __isset.package};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> package_ref() && {
-    return {std::move(package), __isset.package};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> package_ref() && {
+    return {std::move(this->package), __isset.package};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> annotation_with_quote_ref() const& {
-    return {annotation_with_quote, __isset.annotation_with_quote};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotation_with_quote_ref() const& {
+    return {this->annotation_with_quote, __isset.annotation_with_quote};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> annotation_with_quote_ref() const&& {
-    return {std::move(annotation_with_quote), __isset.annotation_with_quote};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotation_with_quote_ref() const&& {
+    return {std::move(this->annotation_with_quote), __isset.annotation_with_quote};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> annotation_with_quote_ref() & {
-    return {annotation_with_quote, __isset.annotation_with_quote};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> annotation_with_quote_ref() & {
+    return {this->annotation_with_quote, __isset.annotation_with_quote};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> annotation_with_quote_ref() && {
-    return {std::move(annotation_with_quote), __isset.annotation_with_quote};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotation_with_quote_ref() && {
+    return {std::move(this->annotation_with_quote), __isset.annotation_with_quote};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> class__ref() const& {
-    return {class_, __isset.class_};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> class__ref() const& {
+    return {this->class_, __isset.class_};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> class__ref() const&& {
-    return {std::move(class_), __isset.class_};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> class__ref() const&& {
+    return {std::move(this->class_), __isset.class_};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> class__ref() & {
-    return {class_, __isset.class_};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> class__ref() & {
+    return {this->class_, __isset.class_};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> class__ref() && {
-    return {std::move(class_), __isset.class_};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> class__ref() && {
+    return {std::move(this->class_), __isset.class_};
   }
 
   int64_t get_majorVer() const {

@@ -88,36 +88,44 @@ class Struct final : private apache::thrift::detail::st::ComparisonOperators<Str
   bool operator==(const Struct& rhs) const;
   bool operator<(const Struct& rhs) const;
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::module0::Struct&> first_ref() const& {
-    return {first, __isset.first};
+  template <typename..., typename T =  ::module0::Struct>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> first_ref() const& {
+    return {this->first, __isset.first};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::module0::Struct&&> first_ref() const&& {
-    return {std::move(first), __isset.first};
+  template <typename..., typename T =  ::module0::Struct>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> first_ref() const&& {
+    return {std::move(this->first), __isset.first};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::module0::Struct&> first_ref() & {
-    return {first, __isset.first};
+  template <typename..., typename T =  ::module0::Struct>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> first_ref() & {
+    return {this->first, __isset.first};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::module0::Struct&&> first_ref() && {
-    return {std::move(first), __isset.first};
+  template <typename..., typename T =  ::module0::Struct>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> first_ref() && {
+    return {std::move(this->first), __isset.first};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::module1::Struct&> second_ref() const& {
-    return {second, __isset.second};
+  template <typename..., typename T =  ::module1::Struct>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> second_ref() const& {
+    return {this->second, __isset.second};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::module1::Struct&&> second_ref() const&& {
-    return {std::move(second), __isset.second};
+  template <typename..., typename T =  ::module1::Struct>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> second_ref() const&& {
+    return {std::move(this->second), __isset.second};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::module1::Struct&> second_ref() & {
-    return {second, __isset.second};
+  template <typename..., typename T =  ::module1::Struct>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> second_ref() & {
+    return {this->second, __isset.second};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::module1::Struct&&> second_ref() && {
-    return {std::move(second), __isset.second};
+  template <typename..., typename T =  ::module1::Struct>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> second_ref() && {
+    return {std::move(this->second), __isset.second};
   }
   const  ::module0::Struct& get_first() const&;
    ::module0::Struct get_first() &&;
@@ -195,36 +203,44 @@ class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<
   bool operator==(const BigStruct& rhs) const;
   bool operator<(const BigStruct& rhs) const;
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::module2::Struct&> s_ref() const& {
-    return {s, __isset.s};
+  template <typename..., typename T =  ::module2::Struct>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> s_ref() const& {
+    return {this->s, __isset.s};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::module2::Struct&&> s_ref() const&& {
-    return {std::move(s), __isset.s};
+  template <typename..., typename T =  ::module2::Struct>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> s_ref() const&& {
+    return {std::move(this->s), __isset.s};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::module2::Struct&> s_ref() & {
-    return {s, __isset.s};
+  template <typename..., typename T =  ::module2::Struct>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> s_ref() & {
+    return {this->s, __isset.s};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref< ::module2::Struct&&> s_ref() && {
-    return {std::move(s), __isset.s};
+  template <typename..., typename T =  ::module2::Struct>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> s_ref() && {
+    return {std::move(this->s), __isset.s};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> id_ref() const& {
-    return {id, __isset.id};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> id_ref() const& {
+    return {this->id, __isset.id};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> id_ref() const&& {
-    return {std::move(id), __isset.id};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> id_ref() const&& {
+    return {std::move(this->id), __isset.id};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> id_ref() & {
-    return {id, __isset.id};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> id_ref() & {
+    return {this->id, __isset.id};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> id_ref() && {
-    return {std::move(id), __isset.id};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> id_ref() && {
+    return {std::move(this->id), __isset.id};
   }
   const  ::module2::Struct& get_s() const&;
    ::module2::Struct get_s() &&;
