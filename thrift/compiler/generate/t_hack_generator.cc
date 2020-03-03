@@ -2703,8 +2703,6 @@ void t_hack_generator::_generate_php_struct_definition(
       }
 
       if (strict_types_) {
-        out << indent()
-            << "/* HH_FIXME[4088] Sketchy null check previously hidden by unsafe */\n";
         if (t->is_container() || t->is_enum()) {
           out << indent()
               << "/* HH_FIXME[4110] mixed vs default conflict previously hidden by unsafe */\n";
