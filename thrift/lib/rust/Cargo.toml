@@ -1,6 +1,6 @@
 # @generated
 # @autocargo from //thrift/lib/rust:fbthrift
-# Signature<<166a2cef7fd02140a84b4542662a135cd046d1f0>>
+# Signature<<00be3d2bdadfa85e48f42a822335da47b5e2f4f2>>
 [package]
 name = "fbthrift"
 edition = "2018"
@@ -22,4 +22,4 @@ thiserror = "1.0"
 
 [dev-dependencies]
 quickcheck = "0.9"
-# @end of Signature<<166a2cef7fd02140a84b4542662a135cd046d1f0>>
+# @end of Signature<<00be3d2bdadfa85e48f42a822335da47b5e2f4f2>>
