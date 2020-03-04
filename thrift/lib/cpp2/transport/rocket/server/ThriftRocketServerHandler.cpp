@@ -321,7 +321,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
   // uncompress the request if it's compressed
   if (auto compression = metadata.compression_ref()) {
     auto result =
-        rocket::uncompressRequest(*metadata.compression_ref(), std::move(data));
+        rocket::uncompressPayload(*metadata.compression_ref(), std::move(data));
     if (!result) {
       handleDecompressionFailure(
           makeRequest(

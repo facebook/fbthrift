@@ -75,42 +75,25 @@ ThriftServerRequestResponse::~ThriftServerRequestResponse() {
 void ThriftServerRequestResponse::sendThriftResponse(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> data) noexcept {
+  if (!data) {
+    std::move(context_).sendError(RocketException(
+        ErrorCode::INVALID, "serialization failed for response"));
+    return;
+  }
+
   // transform (e.g. compress) the response if needed
   RocketServerConnection& connection = context_.connection();
   folly::Optional<CompressionAlgorithm> compressionAlgo =
       connection.getNegotiatedCompressionAlgorithm();
-
-  std::unique_ptr<folly::IOBuf> compressed;
   // only compress response if compressionAlgo is negotiated during TLS
   // handshake and the response size is greater than minCompressTypes
-  if (compressionAlgo.has_value() && data &&
+  if (compressionAlgo.has_value() &&
       data->computeChainDataLength() >= connection.getMinCompressBytes()) {
-    folly::io::CodecType compressCodec;
-    switch (*compressionAlgo) {
-      case CompressionAlgorithm::ZSTD:
-        compressCodec = folly::io::CodecType::ZSTD;
-        metadata.compression_ref() = *compressionAlgo;
-        break;
-      case CompressionAlgorithm::ZLIB:
-        compressCodec = folly::io::CodecType::ZLIB;
-        metadata.compression_ref() = *compressionAlgo;
-        break;
-      case CompressionAlgorithm::NONE:
-        compressCodec = folly::io::CodecType::NO_COMPRESSION;
-    }
-    compressed = folly::io::getCodec(compressCodec)->compress(data.get());
-  } else {
-    compressed = std::move(data);
+    compressPayload(metadata, data, *compressionAlgo);
   }
-
-  if (compressed) {
-    std::move(context_).sendPayload(
-        makePayload(metadata, std::move(compressed)),
-        Flags::none().next(true).complete(true));
-  } else {
-    std::move(context_).sendError(RocketException(
-        ErrorCode::INVALID, "serialization failed for response"));
-  }
+  std::move(context_).sendPayload(
+      makePayload(metadata, std::move(data)),
+      Flags::none().next(true).complete(true));
 }
 
 void ThriftServerRequestResponse::sendSerializedError(

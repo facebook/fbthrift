@@ -16,9 +16,11 @@
 
 #pragma once
 
+#include <fmt/core.h>
 #include <folly/Expected.h>
 #include <folly/Try.h>
 #include <folly/compression/Compression.h>
+#include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -64,6 +66,13 @@ inline size_t unpackCompact(
   return 0;
 }
 
+/**
+ * Helper method to uncompress the request on server side.
+ */
+folly::Expected<std::unique_ptr<folly::IOBuf>, std::string> uncompressPayload(
+    CompressionAlgorithm compression,
+    std::unique_ptr<folly::IOBuf> data);
+
 template <class T>
 folly::Try<T> unpack(rocket::Payload&& payload) {
   return folly::makeTryWith([&] {
@@ -76,20 +85,16 @@ folly::Try<T> unpack(rocket::Payload&& payload) {
     }
 
     auto data = std::move(payload).data();
-    // decompress the response if needed
+    // uncompress the payload if needed
     if (auto compress = t.metadata.compression_ref()) {
-      folly::io::CodecType codecType;
-      switch (*compress) {
-        case CompressionAlgorithm::ZSTD:
-          codecType = folly::io::CodecType::ZSTD;
-          break;
-        case CompressionAlgorithm::ZLIB:
-          codecType = folly::io::CodecType::ZLIB;
-          break;
-        case CompressionAlgorithm::NONE:
-          codecType = folly::io::CodecType::NO_COMPRESSION;
+      auto result = uncompressPayload(*compress, std::move(data));
+      if (!result) {
+        folly::throw_exception<TApplicationException>(
+            TApplicationException::INVALID_TRANSFORM,
+            fmt::format(
+                "decompression failure: {}", std::move(result.error())));
       }
-      data = folly::io::getCodec(codecType)->uncompress(std::move(data).get());
+      data = std::move(result.value());
     }
 
     unpackCompact(t.payload, std::move(data));
@@ -123,19 +128,28 @@ folly::Try<rocket::Payload> pack(T&& payload) {
 }
 
 /**
- * Helper method to compress the request before sending to the server.
+ * Helper method to compress the payload before sending to the remote endpoint.
  */
-void compressRequest(
+template <class Metadata>
+void compressPayload(
+    Metadata& metadata,
+    std::unique_ptr<folly::IOBuf>& data,
+    CompressionAlgorithm compression);
+
+extern template void compressPayload<>(
     RequestRpcMetadata& metadata,
     std::unique_ptr<folly::IOBuf>& data,
     CompressionAlgorithm compression);
 
-/**
- * Helper method to uncompress the request on server side.
- */
-folly::Expected<std::unique_ptr<folly::IOBuf>, std::string> uncompressRequest(
-    CompressionAlgorithm compression,
-    std::unique_ptr<folly::IOBuf> data);
+extern template void compressPayload<>(
+    ResponseRpcMetadata& metadata,
+    std::unique_ptr<folly::IOBuf>& data,
+    CompressionAlgorithm compression);
+
+extern template void compressPayload<>(
+    StreamPayloadMetadata& metadata,
+    std::unique_ptr<folly::IOBuf>& data,
+    CompressionAlgorithm compression);
 } // namespace rocket
 } // namespace thrift
 } // namespace apache

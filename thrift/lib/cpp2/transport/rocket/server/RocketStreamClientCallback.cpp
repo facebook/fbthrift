@@ -82,8 +82,15 @@ bool RocketStreamClientCallback::onFirstResponse(
     scheduleTimeout();
   }
 
-  // compress the response if needed
-  compressResponse(firstResponse);
+  // compress the payload if needed
+  folly::Optional<CompressionAlgorithm> compression =
+      connection_.getNegotiatedCompressionAlgorithm();
+  if (compression.has_value() &&
+      firstResponse.payload->computeChainDataLength() >=
+          connection_.getMinCompressBytes()) {
+    rocket::compressPayload(
+        firstResponse.metadata, firstResponse.payload, *compression);
+  }
 
   connection_.sendPayload(
       streamId_,
@@ -122,8 +129,16 @@ bool RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
   if (!--tokens_) {
     scheduleTimeout();
   }
-  // compress the response if needed
-  compressResponse(payload);
+
+  // compress the payload if needed
+  folly::Optional<CompressionAlgorithm> compression =
+      connection_.getNegotiatedCompressionAlgorithm();
+  if (compression.has_value() &&
+      payload.payload->computeChainDataLength() >=
+          connection_.getMinCompressBytes()) {
+    rocket::compressPayload(payload.metadata, payload.payload, *compression);
+  }
+
   connection_.sendPayload(
       streamId_, pack(std::move(payload)).value(), Flags::none().next(true));
   return true;
@@ -222,32 +237,6 @@ void RocketStreamClientCallback::scheduleTimeout() {
 void RocketStreamClientCallback::cancelTimeout() {
   timeoutCallback_.reset();
 }
-
-template <class Payload>
-void RocketStreamClientCallback::compressResponse(Payload& payload) {
-  folly::Optional<CompressionAlgorithm> compression =
-      connection_.getNegotiatedCompressionAlgorithm();
-
-  if (compression.hasValue()) {
-    folly::io::CodecType codec;
-    switch (*compression) {
-      case CompressionAlgorithm::ZSTD:
-        codec = folly::io::CodecType::ZSTD;
-        payload.metadata.compression_ref() = *compression;
-        break;
-      case CompressionAlgorithm::ZLIB:
-        codec = folly::io::CodecType::ZLIB;
-        payload.metadata.compression_ref() = *compression;
-        break;
-      case CompressionAlgorithm::NONE:
-        codec = folly::io::CodecType::NO_COMPRESSION;
-        break;
-    }
-    payload.payload =
-        folly::io::getCodec(codec)->compress(payload.payload.get());
-  }
-}
-
 } // namespace rocket
 } // namespace thrift
 } // namespace apache

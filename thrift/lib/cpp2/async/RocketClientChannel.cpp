@@ -19,6 +19,7 @@
 #include <memory>
 #include <utility>
 
+#include <fmt/core.h>
 #include <folly/ExceptionString.h>
 #include <folly/GLog.h>
 #include <folly/Likely.h>
@@ -32,6 +33,7 @@
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/Request.h>
 
+#include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
@@ -176,6 +178,14 @@ void RocketClientChannel::sendRequestStream(
     return;
   }
 
+  // compress the request if needed
+  if (autoCompressSizeLimit_.has_value() &&
+      *autoCompressSizeLimit_ < int(buf->computeChainDataLength())) {
+    if (negotiatedCompressionAlgo_.has_value()) {
+      rocket::compressPayload(metadata, buf, *negotiatedCompressionAlgo_);
+    }
+  }
+
   return rclient_->sendRequestStream(
       rocket::makePayload(metadata, std::move(buf)),
       firstResponseTimeout,
@@ -236,7 +246,7 @@ void RocketClientChannel::sendThriftRequest(
   if (autoCompressSizeLimit_.has_value() &&
       *autoCompressSizeLimit_ < int(buf->computeChainDataLength())) {
     if (negotiatedCompressionAlgo_.has_value()) {
-      rocket::compressRequest(metadata, buf, *negotiatedCompressionAlgo_);
+      rocket::compressPayload(metadata, buf, *negotiatedCompressionAlgo_);
     }
   }
 
@@ -337,23 +347,19 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
       try {
         deserializeMetadata(responseMetadata, response.value());
         detail::fillTHeaderFromResponseRpcMetadata(responseMetadata, *tHeader);
+        // unfortunately we can only std::move the response payload here due to
+        // deserializeMetadata() above still need to reference it
+        uncompressedResponse = std::move(response.value()).data();
         if (auto compress = responseMetadata.compression_ref()) {
-          folly::io::CodecType codec;
-          switch (*compress) {
-            case CompressionAlgorithm::ZSTD:
-              codec = folly::io::CodecType::ZSTD;
-              break;
-            case CompressionAlgorithm::ZLIB:
-              codec = folly::io::CodecType::ZLIB;
-              break;
-            case CompressionAlgorithm::NONE:
-              codec = folly::io::CodecType::NO_COMPRESSION;
-              break;
+          auto result = rocket::uncompressPayload(
+              *compress, std::move(uncompressedResponse));
+          if (!result) {
+            folly::throw_exception<TApplicationException>(
+                TApplicationException::INVALID_TRANSFORM,
+                fmt::format(
+                    "decompression failure: {}", std::move(result.error())));
           }
-          uncompressedResponse = folly::io::getCodec(codec)->uncompress(
-              std::move(response.value()).data().get());
-        } else {
-          uncompressedResponse = std::move(response.value()).data();
+          uncompressedResponse = std::move(result.value());
         }
       } catch (const std::exception& e) {
         FB_LOG_EVERY_MS(ERROR, 10000) << "Exception on deserializing metadata: "

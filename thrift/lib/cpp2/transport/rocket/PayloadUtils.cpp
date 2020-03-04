@@ -77,8 +77,9 @@ template Payload makePayload<>(
 /**
  * Helper method to compress the request before sending to the server.
  */
-void compressRequest(
-    RequestRpcMetadata& metadata,
+template <class Metadata>
+void compressPayload(
+    Metadata& metadata,
     std::unique_ptr<folly::IOBuf>& data,
     CompressionAlgorithm compression) {
   folly::io::CodecType codec;
@@ -98,7 +99,22 @@ void compressRequest(
   data = folly::io::getCodec(codec)->compress(data.get());
 }
 
-folly::Expected<std::unique_ptr<folly::IOBuf>, std::string> uncompressRequest(
+template void compressPayload<>(
+    RequestRpcMetadata& metadata,
+    std::unique_ptr<folly::IOBuf>& data,
+    CompressionAlgorithm compression);
+
+template void compressPayload<>(
+    ResponseRpcMetadata& metadata,
+    std::unique_ptr<folly::IOBuf>& data,
+    CompressionAlgorithm compression);
+
+template void compressPayload<>(
+    StreamPayloadMetadata& metadata,
+    std::unique_ptr<folly::IOBuf>& data,
+    CompressionAlgorithm compression);
+
+folly::Expected<std::unique_ptr<folly::IOBuf>, std::string> uncompressPayload(
     CompressionAlgorithm compression,
     std::unique_ptr<folly::IOBuf> data) {
   folly::io::CodecType codec;
