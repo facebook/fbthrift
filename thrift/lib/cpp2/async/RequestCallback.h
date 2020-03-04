@@ -470,6 +470,21 @@ class RpcOptions {
     return queueTimeout_;
   }
 
+  /**
+   * Set routing key for (e.g. consistent hashing based) routing.
+   *
+   * @param routingKey routing key, e.g. consistent hashing seed
+   * @return reference to this object
+   */
+  RpcOptions& setRoutingKey(const std::string& routingKey) {
+    routingKey_ = routingKey;
+    return *this;
+  }
+
+  const std::string& getRoutingKey() const {
+    return routingKey_;
+  }
+
   void setWriteHeader(const std::string& key, const std::string& value) {
     writeHeaders_[key] = value;
   }
@@ -500,6 +515,7 @@ class RpcOptions {
   bool clientOnlyTimeouts_{false};
   bool enableChecksum_{false};
   int32_t chunkBufferSize_{100};
+  std::string routingKey_;
 
   // For sending and receiving headers.
   std::map<std::string, std::string> writeHeaders_;
