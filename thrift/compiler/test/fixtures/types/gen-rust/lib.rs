@@ -1685,13 +1685,6 @@ pub mod services {
         pub enum BounceMapExn {
             Success(include::types::SomeMap),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for BounceMapExn {
-            fn default() -> Self {
-                BounceMapExn::UnknownField(-1)
-            }
         }
 
         impl From<ApplicationException> for BounceMapExn {
@@ -1722,11 +1715,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    BounceMapExn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -1779,13 +1767,6 @@ pub mod services {
         pub enum BinaryKeyedMapExn {
             Success(std::collections::BTreeMap<crate::types::TBinary, i64>),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for BinaryKeyedMapExn {
-            fn default() -> Self {
-                BinaryKeyedMapExn::UnknownField(-1)
-            }
         }
 
         impl From<ApplicationException> for BinaryKeyedMapExn {
@@ -1816,11 +1797,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    BinaryKeyedMapExn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -2179,7 +2155,6 @@ pub mod server {
                         "bounce_map",
                     )
                 }
-                Err(exn) => exn,
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,
@@ -2230,7 +2205,6 @@ pub mod server {
                         "binary_keyed_map",
                     )
                 }
-                Err(exn) => exn,
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,

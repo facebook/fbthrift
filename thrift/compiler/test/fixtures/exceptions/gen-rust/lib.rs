@@ -168,13 +168,6 @@ pub mod services {
         pub enum DoBlandExn {
             Success(()),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for DoBlandExn {
-            fn default() -> Self {
-                DoBlandExn::UnknownField(-1)
-            }
         }
 
         impl From<ApplicationException> for DoBlandExn {
@@ -205,11 +198,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    DoBlandExn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -259,13 +247,6 @@ pub mod services {
             f(crate::types::Fiery),
             s(crate::types::Serious),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for DoRaiseExn {
-            fn default() -> Self {
-                DoRaiseExn::UnknownField(-1)
-            }
         }
 
         impl From<crate::types::Banal> for DoRaiseExn {
@@ -341,11 +322,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    DoRaiseExn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -404,13 +380,6 @@ pub mod services {
         pub enum Get200Exn {
             Success(String),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for Get200Exn {
-            fn default() -> Self {
-                Get200Exn::UnknownField(-1)
-            }
         }
 
         impl From<ApplicationException> for Get200Exn {
@@ -441,11 +410,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    Get200Exn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -501,13 +465,6 @@ pub mod services {
             b(crate::types::Banal),
             s(crate::types::Serious),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for Get500Exn {
-            fn default() -> Self {
-                Get500Exn::UnknownField(-1)
-            }
         }
 
         impl From<crate::types::Fiery> for Get500Exn {
@@ -583,11 +540,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    Get500Exn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -1068,7 +1020,6 @@ pub mod server {
                         "doBland",
                     )
                 }
-                Err(exn) => exn,
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,
@@ -1154,7 +1105,6 @@ pub mod server {
                         "get200",
                     )
                 }
-                Err(exn) => exn,
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,

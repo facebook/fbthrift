@@ -18,13 +18,6 @@ pub mod services {
         pub enum MapListExn {
             Success(()),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for MapListExn {
-            fn default() -> Self {
-                MapListExn::UnknownField(-1)
-            }
         }
 
         impl From<ApplicationException> for MapListExn {
@@ -55,11 +48,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    MapListExn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -106,13 +94,6 @@ pub mod services {
         pub enum MapSetExn {
             Success(()),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for MapSetExn {
-            fn default() -> Self {
-                MapSetExn::UnknownField(-1)
-            }
         }
 
         impl From<ApplicationException> for MapSetExn {
@@ -143,11 +124,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    MapSetExn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -194,13 +170,6 @@ pub mod services {
         pub enum ListMapExn {
             Success(()),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for ListMapExn {
-            fn default() -> Self {
-                ListMapExn::UnknownField(-1)
-            }
         }
 
         impl From<ApplicationException> for ListMapExn {
@@ -231,11 +200,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    ListMapExn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -282,13 +246,6 @@ pub mod services {
         pub enum ListSetExn {
             Success(()),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for ListSetExn {
-            fn default() -> Self {
-                ListSetExn::UnknownField(-1)
-            }
         }
 
         impl From<ApplicationException> for ListSetExn {
@@ -319,11 +276,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    ListSetExn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -370,13 +322,6 @@ pub mod services {
         pub enum TurtlesExn {
             Success(()),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for TurtlesExn {
-            fn default() -> Self {
-                TurtlesExn::UnknownField(-1)
-            }
         }
 
         impl From<ApplicationException> for TurtlesExn {
@@ -407,11 +352,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    TurtlesExn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -989,7 +929,6 @@ pub mod server {
                         "mapList",
                     )
                 }
-                Err(exn) => exn,
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,
@@ -1040,7 +979,6 @@ pub mod server {
                         "mapSet",
                     )
                 }
-                Err(exn) => exn,
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,
@@ -1091,7 +1029,6 @@ pub mod server {
                         "listMap",
                     )
                 }
-                Err(exn) => exn,
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,
@@ -1142,7 +1079,6 @@ pub mod server {
                         "listSet",
                     )
                 }
-                Err(exn) => exn,
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,
@@ -1193,7 +1129,6 @@ pub mod server {
                         "turtles",
                     )
                 }
-                Err(exn) => exn,
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,

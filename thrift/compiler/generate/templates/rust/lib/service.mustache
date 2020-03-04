@@ -32,13 +32,6 @@
             {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),{{!
             }}{{/function:exceptions}}
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for {{function:upcamel}}Exn {
-            fn default() -> Self {
-                {{function:upcamel}}Exn::UnknownField(-1)
-            }
         }{{!
         }}{{#function:uniqueExceptions}}
 
@@ -88,11 +81,6 @@
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    {{function:upcamel}}Exn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();

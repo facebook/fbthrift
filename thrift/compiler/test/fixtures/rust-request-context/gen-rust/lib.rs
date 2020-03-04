@@ -311,13 +311,6 @@ pub mod services {
         pub enum PingExn {
             Success(()),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for PingExn {
-            fn default() -> Self {
-                PingExn::UnknownField(-1)
-            }
         }
 
         impl From<ApplicationException> for PingExn {
@@ -348,11 +341,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    PingExn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -399,13 +387,6 @@ pub mod services {
         pub enum GetRandomDataExn {
             Success(String),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for GetRandomDataExn {
-            fn default() -> Self {
-                GetRandomDataExn::UnknownField(-1)
-            }
         }
 
         impl From<ApplicationException> for GetRandomDataExn {
@@ -436,11 +417,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    GetRandomDataExn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -493,13 +469,6 @@ pub mod services {
         pub enum HasDataByIdExn {
             Success(bool),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for HasDataByIdExn {
-            fn default() -> Self {
-                HasDataByIdExn::UnknownField(-1)
-            }
         }
 
         impl From<ApplicationException> for HasDataByIdExn {
@@ -530,11 +499,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    HasDataByIdExn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -587,13 +551,6 @@ pub mod services {
         pub enum GetDataByIdExn {
             Success(String),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for GetDataByIdExn {
-            fn default() -> Self {
-                GetDataByIdExn::UnknownField(-1)
-            }
         }
 
         impl From<ApplicationException> for GetDataByIdExn {
@@ -624,11 +581,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    GetDataByIdExn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -681,13 +633,6 @@ pub mod services {
         pub enum PutDataByIdExn {
             Success(()),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for PutDataByIdExn {
-            fn default() -> Self {
-                PutDataByIdExn::UnknownField(-1)
-            }
         }
 
         impl From<ApplicationException> for PutDataByIdExn {
@@ -718,11 +663,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    PutDataByIdExn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -769,13 +709,6 @@ pub mod services {
         pub enum LobDataByIdExn {
             Success(()),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for LobDataByIdExn {
-            fn default() -> Self {
-                LobDataByIdExn::UnknownField(-1)
-            }
         }
 
         impl From<ApplicationException> for LobDataByIdExn {
@@ -806,11 +739,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    LobDataByIdExn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -1464,7 +1392,6 @@ pub mod server {
                         "ping",
                     )
                 }
-                Err(exn) => exn,
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,
@@ -1508,7 +1435,6 @@ pub mod server {
                         "getRandomData",
                     )
                 }
-                Err(exn) => exn,
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,
@@ -1560,7 +1486,6 @@ pub mod server {
                         "hasDataById",
                     )
                 }
-                Err(exn) => exn,
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,
@@ -1612,7 +1537,6 @@ pub mod server {
                         "getDataById",
                     )
                 }
-                Err(exn) => exn,
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,
@@ -1672,7 +1596,6 @@ pub mod server {
                         "putDataById",
                     )
                 }
-                Err(exn) => exn,
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,
@@ -1732,7 +1655,6 @@ pub mod server {
                         "lobDataById",
                     )
                 }
-                Err(exn) => exn,
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,

@@ -147,7 +147,9 @@
                         "{{function:name}}",
                     )
                 }
+                {{#function:exceptions?}}
                 Err(exn) => exn,
+                {{/function:exceptions?}}
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,

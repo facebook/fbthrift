@@ -18,13 +18,6 @@ pub mod services {
         pub enum DoRootExn {
             Success(()),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for DoRootExn {
-            fn default() -> Self {
-                DoRootExn::UnknownField(-1)
-            }
         }
 
         impl From<ApplicationException> for DoRootExn {
@@ -55,11 +48,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    DoRootExn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -113,13 +101,6 @@ pub mod services {
         pub enum DoMidExn {
             Success(()),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for DoMidExn {
-            fn default() -> Self {
-                DoMidExn::UnknownField(-1)
-            }
         }
 
         impl From<ApplicationException> for DoMidExn {
@@ -150,11 +131,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    DoMidExn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -208,13 +184,6 @@ pub mod services {
         pub enum DoLeafExn {
             Success(()),
             ApplicationException(::fbthrift::types::ApplicationException),
-            UnknownField(i32),
-        }
-
-        impl Default for DoLeafExn {
-            fn default() -> Self {
-                DoLeafExn::UnknownField(-1)
-            }
         }
 
         impl From<ApplicationException> for DoLeafExn {
@@ -245,11 +214,6 @@ pub mod services {
                         "ApplicationException",
                         -2147483648i32,
                     ),
-                    DoLeafExn::UnknownField(x) => {
-                        p.write_field_begin("UnknownField", TType::I32, *x as i16);
-                        x.write(p);
-                        p.write_field_end();
-                    }
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -819,7 +783,6 @@ pub mod server {
                         "do_root",
                     )
                 }
-                Err(exn) => exn,
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,
@@ -1016,7 +979,6 @@ pub mod server {
                         "do_mid",
                     )
                 }
-                Err(exn) => exn,
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,
@@ -1223,7 +1185,6 @@ pub mod server {
                         "do_leaf",
                     )
                 }
-                Err(exn) => exn,
             };
             let res = serialize!(P, |p| fbthrift::protocol::write_message(
                 p,
