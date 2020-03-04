@@ -481,8 +481,23 @@ class RpcOptions {
     return *this;
   }
 
+  /**
+   * Set shard ID for sending request to sharding-based services.
+   *
+   * @param shardId shard ID to use for service discovery
+   * @return reference to this object
+   */
+  RpcOptions& setShardId(const std::string& shardId) {
+    shardId_ = shardId;
+    return *this;
+  }
+
   const std::string& getRoutingKey() const {
     return routingKey_;
+  }
+
+  const std::string& getShardId() const {
+    return shardId_;
   }
 
   void setWriteHeader(const std::string& key, const std::string& value) {
@@ -515,7 +530,9 @@ class RpcOptions {
   bool clientOnlyTimeouts_{false};
   bool enableChecksum_{false};
   int32_t chunkBufferSize_{100};
+
   std::string routingKey_;
+  std::string shardId_;
 
   // For sending and receiving headers.
   std::map<std::string, std::string> writeHeaders_;
