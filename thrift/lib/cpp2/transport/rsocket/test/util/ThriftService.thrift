@@ -73,6 +73,7 @@ service StreamService {
       responseAndStreamThrows(1: i32 whichEx) throws (1: SecondEx e);
 
   stream<i32> requestWithBlob(1: binary (cpp2.type = "folly::IOBuf") val);
+  stream<string> streamBlobs(1:i32 count);
 }
 
 # OldVersion and NewVersion services will be used to test the behavior

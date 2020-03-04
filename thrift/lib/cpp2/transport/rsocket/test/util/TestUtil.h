@@ -20,12 +20,15 @@
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeServerObserver.h>
 #include <thrift/lib/cpp2/transport/core/testutil/MockCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TAsyncSocketIntercepted.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
+#include <thrift/lib/cpp2/transport/rocket/server/ThriftRocketServerHandler.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
@@ -67,7 +70,8 @@ class TestSetup : public testing::Test {
   virtual std::unique_ptr<ThriftServer> createServer(
       std::shared_ptr<AsyncProcessorFactory>,
       uint16_t& port,
-      int maxRequests = 0);
+      int maxRequests = 0,
+      bool enableCompressionForRocketServer = false);
 
   std::unique_ptr<PooledRequestChannel, folly::DelayedDestruction::Destructor>
   connectToServer(
@@ -110,5 +114,41 @@ class TestSetup : public testing::Test {
       std::make_shared<folly::ScopedEventBaseThread>()};
 };
 
+// A test RoutingHandler to always apply compression
+class TestRSRoutingHandler : public apache::thrift::RSRoutingHandler {
+ public:
+  TestRSRoutingHandler() = default;
+  TestRSRoutingHandler(const TestRSRoutingHandler&) = delete;
+  TestRSRoutingHandler& operator=(const TestRSRoutingHandler&) = delete;
+
+  void handleConnection(
+      wangle::ConnectionManager* connectionManager,
+      folly::AsyncTransportWrapper::UniquePtr sock,
+      folly::SocketAddress const* address,
+      wangle::TransportInfo const& /*tinfo*/,
+      std::shared_ptr<Cpp2Worker> worker) override {
+    auto* const sockPtr = sock.get();
+    auto* const server = worker->getServer();
+    auto* const connection = new rocket::RocketServerConnection(
+        std::move(sock),
+        std::make_shared<rocket::ThriftRocketServerHandler>(
+            worker, *address, sockPtr, setupFrameHandlers_),
+        server->getStreamExpireTime());
+    // set compression algorithm to be used on this connection
+    connection->setNegotiatedCompressionAlgorithm(CompressionAlgorithm::ZSTD);
+    connection->setMinCompressBytes(server->getMinCompressBytes());
+    connectionManager->addConnection(connection);
+
+    if (auto* observer = server->getObserver()) {
+      observer->connAccepted();
+      observer->activeConnections(
+          connectionManager->getNumConnections() *
+          server->getNumIOWorkerThreads());
+    }
+  }
+
+ private:
+  std::vector<std::unique_ptr<rocket::SetupFrameHandler>> setupFrameHandlers_;
+};
 } // namespace thrift
 } // namespace apache

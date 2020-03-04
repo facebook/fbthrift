@@ -27,7 +27,8 @@ namespace thrift {
 std::unique_ptr<ThriftServer> TestSetup::createServer(
     std::shared_ptr<AsyncProcessorFactory> processorFactory,
     uint16_t& port,
-    int maxRequests) {
+    int maxRequests,
+    bool enableCompressionForRocketServer) {
   // override the default
   FLAGS_transport = "rocket"; // client's transport
   observer_ = std::make_shared<FakeServerObserver>();
@@ -54,9 +55,11 @@ std::unique_ptr<ThriftServer> TestSetup::createServer(
   }
 
   server->setProcessorFactory(processorFactory);
-
-  server->addRoutingHandler(
-      std::make_unique<apache::thrift::RSRoutingHandler>());
+  if (!enableCompressionForRocketServer) {
+    server->addRoutingHandler(std::make_unique<RSRoutingHandler>());
+  } else {
+    server->addRoutingHandler(std::make_unique<TestRSRoutingHandler>());
+  }
 
   auto eventHandler = std::make_shared<TestEventHandler>();
   server->setServerEventHandler(eventHandler);

@@ -54,6 +54,10 @@ class TAsyncSocketIntercepted : public TAsyncSocket {
     params_ = params;
   }
 
+  int32_t getTotalBytesRead() {
+    return totalBytesRead_;
+  }
+
   WriteResult performWrite(
       const iovec* vec,
       uint32_t count,
@@ -65,6 +69,7 @@ class TAsyncSocketIntercepted : public TAsyncSocket {
 
  private:
   std::shared_ptr<Params> params_;
+  int32_t totalBytesRead_{0};
 };
 
 } // namespace async

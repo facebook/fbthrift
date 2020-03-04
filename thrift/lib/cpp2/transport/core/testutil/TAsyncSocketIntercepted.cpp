@@ -60,6 +60,7 @@ folly::AsyncSocket::ReadResult TAsyncSocketIntercepted::performRead(
       res.readReturn >= params_->corruptLastReadByteMinSize_) {
     static_cast<char*>(*buf)[res.readReturn - 1]++;
   }
+  totalBytesRead_ += res.readReturn;
   return res;
 }
 
