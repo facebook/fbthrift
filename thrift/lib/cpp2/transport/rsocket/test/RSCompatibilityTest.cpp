@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/ThriftRocketServerHandler.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
+#include <thrift/lib/cpp2/transport/rsocket/test/util/TestUtil.h>
 
 DECLARE_int32(num_client_connections);
 DECLARE_string(transport); // ConnectionManager depends on this flag.
@@ -158,20 +159,26 @@ TEST_F(RSCompatibilityTest, RequestResponse_Checksumming) {
   compatibilityTest_->TestRequestResponse_Checksumming();
 }
 
-TEST_F(RSCompatibilityTest, RequestResponse_CompressRequest) {
+// Test that without compression, bytes received is greater than total
+// payload bytes
+TEST_F(RSCompatibilityTest, RequestResponse_NoCompression) {
   compatibilityTest_->connectToServer([this](auto client) {
-    EXPECT_CALL(*compatibilityTest_->handler_.get(), hello_(testing::_));
+    EXPECT_CALL(*compatibilityTest_->handler_.get(), echo_(testing::_));
+    static const int kSize = 32 << 10;
+    std::string asString(kSize, 'a');
+    std::unique_ptr<folly::IOBuf> payload = folly::IOBuf::copyBuffer(asString);
+    auto result =
+        client->future_echo(RpcOptions().setEnableChecksum(true), *payload);
+    EXPECT_EQ(std::move(result).get(), asString);
+
     auto* channel = dynamic_cast<RocketClientChannel*>(client->getChannel());
     ASSERT_NE(nullptr, channel);
-
-    // set the channel to compress requests
-    channel->setNegotiatedCompressionAlgorithm(CompressionAlgorithm::ZSTD);
-    channel->setAutoCompressSizeLimit(0);
-
-    std::string name("snoopy");
-    auto result =
-        client->future_hello(RpcOptions().setEnableChecksum(true), name).get();
-    EXPECT_EQ("Hello, snoopy", result);
+    auto sock = channel->getTransport()
+                    ->getUnderlyingTransport<TAsyncSocketIntercepted>();
+    ASSERT_NE(nullptr, sock);
+    int32_t numRead = sock->getTotalBytesRead();
+    // check that compression actually kicked in
+    EXPECT_GT(numRead, asString.size());
   });
 }
 
@@ -266,48 +273,13 @@ TEST_F(RSCompatibilityTest, ClientIdentityHook) {
  * set compression on the server-side and test the behavior.
  */
 class RSCompatibilityTest2 : public testing::Test {
-  class TestRoutingHandler : public RSRoutingHandler {
-   public:
-    TestRoutingHandler() = default;
-    TestRoutingHandler(const TestRoutingHandler&) = delete;
-    TestRoutingHandler& operator=(const TestRoutingHandler&) = delete;
-    void handleConnection(
-        wangle::ConnectionManager* connectionManager,
-        folly::AsyncTransportWrapper::UniquePtr sock,
-        folly::SocketAddress const* address,
-        wangle::TransportInfo const& /*tinfo*/,
-        std::shared_ptr<Cpp2Worker> worker) override {
-      auto sockPtr = sock.get();
-
-      auto* const server = worker->getServer();
-      auto* const connection = new rocket::RocketServerConnection(
-          std::move(sock),
-          std::make_shared<rocket::ThriftRocketServerHandler>(
-              worker, *address, sockPtr, setupFrameHandlers),
-          server->getStreamExpireTime());
-      connection->setNegotiatedCompressionAlgorithm(CompressionAlgorithm::ZSTD);
-      connection->setMinCompressBytes(server->getMinCompressBytes());
-      connectionManager->addConnection(connection);
-
-      if (auto* observer = server->getObserver()) {
-        observer->connAccepted();
-        observer->activeConnections(
-            connectionManager->getNumConnections() *
-            server->getNumIOWorkerThreads());
-      }
-    }
-
-   private:
-    std::vector<std::unique_ptr<rocket::SetupFrameHandler>> setupFrameHandlers;
-  };
-
  public:
   RSCompatibilityTest2() {
     FLAGS_transport = "rocket";
 
     compatibilityTest_ = std::make_unique<TransportCompatibilityTest>();
     compatibilityTest_->addRoutingHandler(
-        std::make_unique<TestRoutingHandler>());
+        std::make_unique<TestRSRoutingHandler>());
     compatibilityTest_->startServer();
   }
 
@@ -317,7 +289,7 @@ class RSCompatibilityTest2 : public testing::Test {
 
 TEST_F(RSCompatibilityTest2, RequestResponse_CompressRequestResponse) {
   compatibilityTest_->connectToServer([this](auto client) {
-    EXPECT_CALL(*compatibilityTest_->handler_.get(), hello_(testing::_));
+    EXPECT_CALL(*compatibilityTest_->handler_.get(), echo_(testing::_));
     auto* channel = dynamic_cast<RocketClientChannel*>(client->getChannel());
     ASSERT_NE(nullptr, channel);
 
@@ -325,10 +297,19 @@ TEST_F(RSCompatibilityTest2, RequestResponse_CompressRequestResponse) {
     channel->setNegotiatedCompressionAlgorithm(CompressionAlgorithm::ZSTD);
     channel->setAutoCompressSizeLimit(0);
 
-    std::string name("snoopy");
+    static const int kSize = 32 << 10;
+    std::string asString(kSize, 'a');
+    std::unique_ptr<folly::IOBuf> payload = folly::IOBuf::copyBuffer(asString);
     auto result =
-        client->future_hello(RpcOptions().setEnableChecksum(true), name).get();
-    EXPECT_EQ("Hello, snoopy", result);
+        client->future_echo(RpcOptions().setEnableChecksum(true), *payload);
+    EXPECT_EQ(std::move(result).get(), asString);
+
+    auto sock = channel->getTransport()
+                    ->getUnderlyingTransport<TAsyncSocketIntercepted>();
+    ASSERT_NE(nullptr, sock);
+    int32_t numRead = sock->getTotalBytesRead();
+    // check that compression actually kicked in
+    EXPECT_LT(numRead, asString.size());
   });
 }
 

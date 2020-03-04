@@ -62,10 +62,10 @@ void waitNoLeak(StreamServiceAsyncClient* client) {
 class StreamingTest : public TestSetup {
  protected:
   void SetUp() override {
-    handler_ = std::make_shared<StrictMock<TestServiceMock>>();
+    handler_ = std::make_shared<StrictMock<TestStreamServiceMock>>();
     server_ = createServer(
-        std::make_shared<ThriftServerAsyncProcessorFactory<TestServiceMock>>(
-            handler_),
+        std::make_shared<
+            ThriftServerAsyncProcessorFactory<TestStreamServiceMock>>(handler_),
         port_);
   }
 
@@ -109,7 +109,8 @@ class StreamingTest : public TestSetup {
     if (enableCompression) {
       // recreate server_ with compression enabled on the server side
       server_ = createServer(
-          std::make_shared<ThriftServerAsyncProcessorFactory<TestServiceMock>>(
+          std::make_shared<
+              ThriftServerAsyncProcessorFactory<TestStreamServiceMock>>(
               handler_),
           port_,
           0,
@@ -169,7 +170,7 @@ class StreamingTest : public TestSetup {
 
  protected:
   std::unique_ptr<ThriftServer> server_;
-  std::shared_ptr<testing::StrictMock<TestServiceMock>> handler_;
+  std::shared_ptr<testing::StrictMock<TestStreamServiceMock>> handler_;
 
   uint16_t port_;
 };
@@ -986,8 +987,8 @@ TEST_F(StreamingTest, ServerCompletesFirstResponseAfterClientTimeout) {
   // only happen after sync_leakCheckWithSleep's handler code returns.
   numWorkerThreads_ = 1;
   server_ = createServer(
-      std::make_shared<ThriftServerAsyncProcessorFactory<TestServiceMock>>(
-          handler_),
+      std::make_shared<
+          ThriftServerAsyncProcessorFactory<TestStreamServiceMock>>(handler_),
       port_);
   folly::EventBase evb;
 

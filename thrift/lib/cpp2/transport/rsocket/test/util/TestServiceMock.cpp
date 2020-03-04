@@ -57,11 +57,11 @@ class LeakDetector {
   }
 };
 
-int32_t TestServiceMock::echo(int32_t value) {
+int32_t TestStreamServiceMock::echo(int32_t value) {
   return value;
 }
 
-ServerStream<int32_t> TestServiceMock::range(int32_t from, int32_t to) {
+ServerStream<int32_t> TestStreamServiceMock::range(int32_t from, int32_t to) {
   auto [stream, publisher] = ServerStream<int32_t>::createPublisher();
   for (; from < to; ++from) {
     publisher.next(from);
@@ -71,7 +71,7 @@ ServerStream<int32_t> TestServiceMock::range(int32_t from, int32_t to) {
 }
 
 ServerStream<int32_t>
-TestServiceMock::slowRange(int32_t from, int32_t to, int32_t millis) {
+TestStreamServiceMock::slowRange(int32_t from, int32_t to, int32_t millis) {
   auto [stream, publisher] = ServerStream<int32_t>::createPublisher();
   auto eb = folly::getEventBase();
   std::shared_ptr<std::function<void(decltype(publisher), int32_t)>> schedule =
@@ -102,7 +102,7 @@ TestServiceMock::slowRange(int32_t from, int32_t to, int32_t millis) {
   return std::move(stream);
 }
 
-ServerStream<int32_t> TestServiceMock::slowCancellation() {
+ServerStream<int32_t> TestStreamServiceMock::slowCancellation() {
   class Slow {
    public:
     ~Slow() {
@@ -121,7 +121,7 @@ ServerStream<int32_t> TestServiceMock::slowCancellation() {
 #endif
 }
 
-ResponseAndServerStream<int32_t, int32_t> TestServiceMock::leakCheck(
+ResponseAndServerStream<int32_t, int32_t> TestStreamServiceMock::leakCheck(
     int32_t from,
     int32_t to) {
 #if FOLLY_HAS_COROUTINES
@@ -140,38 +140,41 @@ ResponseAndServerStream<int32_t, int32_t> TestServiceMock::leakCheck(
 }
 
 ResponseAndServerStream<int32_t, int32_t>
-TestServiceMock::leakCheckWithSleep(int32_t from, int32_t to, int32_t sleepMs) {
+TestStreamServiceMock::leakCheckWithSleep(
+    int32_t from,
+    int32_t to,
+    int32_t sleepMs) {
   std::this_thread::sleep_for(std::chrono::milliseconds{sleepMs});
   return leakCheck(from, to);
 }
 
-int32_t TestServiceMock::instanceCount() {
+int32_t TestStreamServiceMock::instanceCount() {
   return LeakDetector::getInstanceCount();
 }
 
-ServerStream<Message> TestServiceMock::returnNullptr() {
+ServerStream<Message> TestStreamServiceMock::returnNullptr() {
   return ServerStream<Message>::createEmpty();
 }
 
-ResponseAndServerStream<int, Message> TestServiceMock::throwError() {
+ResponseAndServerStream<int, Message> TestStreamServiceMock::throwError() {
   throw Error();
 }
 
 apache::thrift::ResponseAndServerStream<int32_t, int32_t>
-TestServiceMock::sleepWithResponse(int32_t timeMs) {
+TestStreamServiceMock::sleepWithResponse(int32_t timeMs) {
   /* sleep override */
   std::this_thread::sleep_for(std::chrono::milliseconds(timeMs));
   return {1,
           ([]() -> folly::coro::AsyncGenerator<int32_t&&> { co_yield 1; })()};
 }
 
-apache::thrift::ServerStream<int32_t> TestServiceMock::sleepWithoutResponse(
-    int32_t timeMs) {
+apache::thrift::ServerStream<int32_t>
+TestStreamServiceMock::sleepWithoutResponse(int32_t timeMs) {
   return std::move(sleepWithResponse(timeMs).stream);
 }
 
 apache::thrift::ResponseAndServerStream<int32_t, int32_t>
-TestServiceMock::streamServerSlow() {
+TestStreamServiceMock::streamServerSlow() {
 #if FOLLY_HAS_COROUTINES
   auto stream = folly::coro::co_invoke([
     =,
@@ -188,7 +191,7 @@ TestServiceMock::streamServerSlow() {
   return {1, std::move(stream)};
 }
 
-void TestServiceMock::sendMessage(
+void TestStreamServiceMock::sendMessage(
     int32_t messageId,
     bool complete,
     bool error) {
@@ -207,14 +210,15 @@ void TestServiceMock::sendMessage(
   }
 }
 
-apache::thrift::ServerStream<int32_t> TestServiceMock::registerToMessages() {
+apache::thrift::ServerStream<int32_t>
+TestStreamServiceMock::registerToMessages() {
   auto streamAndPublisher = ServerStream<int32_t>::createPublisher();
   messages_ = std::make_unique<apache::thrift::ServerStreamPublisher<int32_t>>(
       std::move(streamAndPublisher.second));
   return std::move(streamAndPublisher.first);
 }
 
-apache::thrift::ServerStream<Message> TestServiceMock::streamThrows(
+apache::thrift::ServerStream<Message> TestStreamServiceMock::streamThrows(
     int32_t whichEx) {
   if (whichEx == 0) {
     SecondEx ex;
@@ -240,16 +244,16 @@ apache::thrift::ServerStream<Message> TestServiceMock::streamThrows(
 }
 
 apache::thrift::ResponseAndServerStream<int32_t, Message>
-TestServiceMock::responseAndStreamThrows(int32_t whichEx) {
+TestStreamServiceMock::responseAndStreamThrows(int32_t whichEx) {
   return {1, streamThrows(whichEx)};
 }
 
-apache::thrift::ServerStream<int32_t> TestServiceMock::requestWithBlob(
+apache::thrift::ServerStream<int32_t> TestStreamServiceMock::requestWithBlob(
     std::unique_ptr<folly::IOBuf>) {
   return apache::thrift::ServerStream<int32_t>::createEmpty();
 }
 
-apache::thrift::ServerStream<std::string> TestServiceMock::streamBlobs(
+apache::thrift::ServerStream<std::string> TestStreamServiceMock::streamBlobs(
     int32_t count) {
   static const int kSize = 32 << 10;
   std::string asString(kSize, 'a');

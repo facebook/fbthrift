@@ -24,9 +24,9 @@
 namespace testutil {
 namespace testservice {
 
-class TestServiceMock : public StreamServiceSvIf {
+class TestStreamServiceMock : public StreamServiceSvIf {
  public:
-  TestServiceMock() {}
+  TestStreamServiceMock() {}
 
   int32_t echo(int32_t value) override;
 
