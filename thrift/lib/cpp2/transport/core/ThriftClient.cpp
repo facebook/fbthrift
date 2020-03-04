@@ -116,7 +116,7 @@ std::unique_ptr<RequestRpcMetadata> ThriftClient::createRequestRpcMetadata(
     metadata->priority_ref() =
         static_cast<RpcPriority>(rpcOptions.getPriority());
   }
-  if (header->getCrc32c().hasValue()) {
+  if (header->getCrc32c().has_value()) {
     metadata->crc32c_ref() = header->getCrc32c().value();
   }
   auto otherMetadata = metadata->otherMetadata_ref();
