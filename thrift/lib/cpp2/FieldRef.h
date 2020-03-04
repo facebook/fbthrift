@@ -124,8 +124,8 @@ class field_ref {
   }
 
   template <typename Index>
-  FOLLY_ERASE auto operator[](const Index& index)
-      -> decltype(std::declval<reference_type>()[index]) const {
+  FOLLY_ERASE auto operator[](const Index& index) const
+      -> decltype(std::declval<reference_type>()[index]) {
     return value_[index];
   }
 

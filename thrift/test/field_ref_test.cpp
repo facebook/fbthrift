@@ -111,12 +111,17 @@ class TestStruct {
     return {std::move(uptr_), __isset.uptr};
   }
 
+  field_ref<std::vector<bool>&> vec() & {
+    return {vec_, __isset.vec};
+  }
+
  private:
   std::string name_ = "default";
   IntAssignable int_assign_;
   std::shared_ptr<int> ptr_;
   int int_val_;
   std::unique_ptr<int> uptr_;
+  std::vector<bool> vec_;
 
   struct __isset {
     bool name;
@@ -124,6 +129,7 @@ class TestStruct {
     bool ptr;
     bool int_val;
     bool uptr;
+    bool vec;
   } __isset = {};
 };
 
@@ -304,8 +310,9 @@ TEST(field_ref_test, move) {
 
 TEST(field_ref_test, subscript) {
   TestStruct s;
-  char c = s.name()[0];
-  (void)c;
+  s.vec() = {false};
+  EXPECT_FALSE(s.vec()[0]);
+  s.vec()[0] = true;
 }
 
 TEST(optional_field_ref_test, access_default_value) {
