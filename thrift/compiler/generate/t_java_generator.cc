@@ -2148,50 +2148,58 @@ void t_java_generator::generate_java_struct_tostring(
       indent(out) << "sb.append(\"" << fname << "\");" << endl;
       indent(out) << "sb.append(space);" << endl;
       indent(out) << "sb.append(\":\").append(space);" << endl;
-      bool can_be_null = type_can_be_null(field->get_type());
-      std::string field_getter = "this." + get_simple_getter_name(field) + "()";
-      if (can_be_null) {
-        indent(out) << "if (" << field_getter << " == null) {" << endl;
-        indent(out) << "  sb.append(\"null\");" << endl;
-        indent(out) << "} else {" << endl;
-        indent_up();
-      }
 
-      if (ftype->is_base_type() && ftype->is_binary()) {
-        indent(out) << "  int __" << fname << "_size = Math.min("
-                    << field_getter << ".length, 128);" << endl;
-        indent(out) << "  for (int i = 0; i < __" << fname << "_size; i++) {"
-                    << endl;
-        indent(out) << "    if (i != 0) sb.append(\" \");" << endl;
-        indent(out)
-            << "    sb.append(Integer.toHexString(" << field_getter
-            << "[i]).length() > 1 ? Integer.toHexString(" << field_getter
-            << "[i]).substring(Integer.toHexString(" << field_getter
-            << "[i]).length() - 2).toUpperCase() : \"0\" + Integer.toHexString("
-            << field_getter << "[i]).toUpperCase());" << endl;
-        indent(out) << "  }" << endl;
-        indent(out) << "  if (" << field_getter
-                    << ".length > 128) sb.append(\" ...\");" << endl;
-      } else if (ftype->is_enum()) {
-        indent(out) << "String " << fname << "_name = " << field_getter
-                    << " == null ? \"null\" : " << field_getter << ".name();"
-                    << endl;
-        indent(out) << "if (" << fname << "_name != null) {" << endl;
-        indent(out) << "  sb.append(" << fname << "_name);" << endl;
-        indent(out) << "  sb.append(\" (\");" << endl;
-        indent(out) << "}" << endl;
-        indent(out) << "sb.append(" << field_getter << ");" << endl;
-        indent(out) << "if (" << fname << "_name != null) {" << endl;
-        indent(out) << "  sb.append(\")\");" << endl;
-        indent(out) << "}" << endl;
+      auto is_sensitive = field->annotations_.find("java.sensitive") !=
+          field->annotations_.end();
+      if (is_sensitive) {
+        indent(out) << "sb.append(\"<SENSITIVE FIELD>\");" << endl;
       } else {
-        indent(out) << "sb.append(TBaseHelper.toString(" << field_getter
-                    << ", indent + 1, prettyPrint));" << endl;
-      }
+        bool can_be_null = type_can_be_null(field->get_type());
+        std::string field_getter =
+            "this." + get_simple_getter_name(field) + "()";
+        if (can_be_null) {
+          indent(out) << "if (" << field_getter << " == null) {" << endl;
+          indent(out) << "  sb.append(\"null\");" << endl;
+          indent(out) << "} else {" << endl;
+          indent_up();
+        }
 
-      if (can_be_null) {
-        indent_down();
-        indent(out) << "}" << endl;
+        if (ftype->is_base_type() && ftype->is_binary()) {
+          indent(out) << "  int __" << fname << "_size = Math.min("
+                      << field_getter << ".length, 128);" << endl;
+          indent(out) << "  for (int i = 0; i < __" << fname << "_size; i++) {"
+                      << endl;
+          indent(out) << "    if (i != 0) sb.append(\" \");" << endl;
+          indent(out)
+              << "    sb.append(Integer.toHexString(" << field_getter
+              << "[i]).length() > 1 ? Integer.toHexString(" << field_getter
+              << "[i]).substring(Integer.toHexString(" << field_getter
+              << "[i]).length() - 2).toUpperCase() : \"0\" + Integer.toHexString("
+              << field_getter << "[i]).toUpperCase());" << endl;
+          indent(out) << "  }" << endl;
+          indent(out) << "  if (" << field_getter
+                      << ".length > 128) sb.append(\" ...\");" << endl;
+        } else if (ftype->is_enum()) {
+          indent(out) << "String " << fname << "_name = " << field_getter
+                      << " == null ? \"null\" : " << field_getter << ".name();"
+                      << endl;
+          indent(out) << "if (" << fname << "_name != null) {" << endl;
+          indent(out) << "  sb.append(" << fname << "_name);" << endl;
+          indent(out) << "  sb.append(\" (\");" << endl;
+          indent(out) << "}" << endl;
+          indent(out) << "sb.append(" << field_getter << ");" << endl;
+          indent(out) << "if (" << fname << "_name != null) {" << endl;
+          indent(out) << "  sb.append(\")\");" << endl;
+          indent(out) << "}" << endl;
+        } else {
+          indent(out) << "sb.append(TBaseHelper.toString(" << field_getter
+                      << ", indent + 1, prettyPrint));" << endl;
+        }
+
+        if (can_be_null) {
+          indent_down();
+          indent(out) << "}" << endl;
+        }
       }
       indent(out) << "first = false;" << endl;
 

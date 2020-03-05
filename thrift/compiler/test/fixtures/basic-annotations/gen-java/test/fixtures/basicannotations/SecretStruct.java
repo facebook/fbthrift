@@ -352,11 +352,7 @@ public class SecretStruct implements TBase, java.io.Serializable, Cloneable, Com
     sb.append("password");
     sb.append(space);
     sb.append(":").append(space);
-    if (this.getPassword() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getPassword(), indent + 1, prettyPrint));
-    }
+    sb.append("<SENSITIVE FIELD>");
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
     sb.append(")");
