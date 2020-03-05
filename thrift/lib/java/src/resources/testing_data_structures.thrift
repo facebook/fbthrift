@@ -27,6 +27,11 @@ struct MySimpleStruct {
   2: string name,
 }
 
+struct MySensitiveStruct {
+  1: i64 id,
+  2: string password (java.sensitive),
+}
+
 union MySimpleUnion {
   1: i64 caseOne,
   2: i64 caseTwo,

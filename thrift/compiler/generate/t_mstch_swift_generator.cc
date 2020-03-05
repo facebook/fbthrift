@@ -346,6 +346,7 @@ class mstch_swift_field : public mstch_field {
             {"field:setIsNested",
              &mstch_swift_field::set_nested_container_flag},
             {"field:typeFieldName", &mstch_swift_field::type_field_name},
+            {"field:isSensitive?", &mstch_swift_field::is_sensitive},
         });
   }
 
@@ -483,6 +484,10 @@ class mstch_swift_field : public mstch_field {
   }
   mstch::node has_java_annotations() {
     return field_->annotations_.find("java.swift.annotations") !=
+        field_->annotations_.end();
+  }
+  mstch::node is_sensitive() {
+    return field_->annotations_.find("java.sensitive") !=
         field_->annotations_.end();
   }
   std::string constant_name(string name) {

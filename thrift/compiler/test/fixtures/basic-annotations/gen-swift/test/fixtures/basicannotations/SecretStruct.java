@@ -88,7 +88,7 @@ public final class SecretStruct {
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("id", id);
-        helper.add("password", password);
+        helper.add("password", "<SENSITIVE FIELD>");
         return helper.toString();
     }
     
