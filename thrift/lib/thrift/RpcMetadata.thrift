@@ -151,6 +151,12 @@ struct ResponseRpcMetadata {
 struct StreamPayloadMetadata {
   // The CompressionAlgorithm used to compress responses (if any)
   1: optional CompressionAlgorithm compression;
+  // A string to string map that can be populated by the server
+  // handler and further populated by plugins on the server side
+  // before it is finally sent back to the client.
+  // Any frequently used key-value pair in this map should be replaced
+  // by a field in this struct.
+  2: optional map<string, string> otherMetadata;
 }
 
 // Setup metadata sent from the client to the server at the time
@@ -168,6 +174,11 @@ struct RequestSetupMetadata {
 }
 
 struct HeadersPayloadContent {
+  // A string to string map that can be populated by the server
+  // handler and further populated by plugins on the server side
+  // before it is finally sent back to the client.
+  // Any frequently used key-value pair in this map should be replaced
+  // by a field in this struct.
   1: optional map<string, string> otherMetadata;
 }
 
