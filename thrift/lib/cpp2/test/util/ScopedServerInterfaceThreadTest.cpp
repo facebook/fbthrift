@@ -18,6 +18,7 @@
 
 #include <atomic>
 
+#include <folly/executors/GlobalExecutor.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/portability/GTest.h>
 #include <folly/stop_watch.h>
@@ -175,7 +176,8 @@ class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
       return infiniteFuture().thenValue([res = a + b](auto&&) { return res; });
     }
 
-    return folly::futures::sleepUnsafe(std::chrono::milliseconds(a + b))
+    return folly::futures::sleep(std::chrono::milliseconds(a + b))
+        .via(folly::getGlobalCPUExecutor())
         .thenValue([=](auto&&) { return a + b; });
   }
 
@@ -183,7 +185,8 @@ class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
       std::unique_ptr<std::string> message,
       int64_t sleepMs) override {
     requestSem_.post();
-    return folly::futures::sleepUnsafe(std::chrono::milliseconds(sleepMs))
+    return folly::futures::sleep(std::chrono::milliseconds(sleepMs))
+        .via(folly::getGlobalCPUExecutor())
         .thenValue([message = std::move(message)](auto&&) mutable {
           return std::move(message);
         });
@@ -192,7 +195,8 @@ class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
   folly::Future<apache::thrift::ServerStream<int64_t>> future_emptyStreamSlow(
       int64_t sleepMs) {
     requestSem_.post();
-    return folly::futures::sleepUnsafe(std::chrono::milliseconds(sleepMs))
+    return folly::futures::sleep(std::chrono::milliseconds(sleepMs))
+        .via(folly::getGlobalCPUExecutor())
         .thenValue([](auto&&) {
           return apache::thrift::ServerStream<int64_t>::createEmpty();
         });
