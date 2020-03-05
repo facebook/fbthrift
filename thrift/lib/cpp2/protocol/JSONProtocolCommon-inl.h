@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <folly/Utility.h>
+
 namespace apache {
 namespace thrift {
 
@@ -325,7 +327,7 @@ uint32_t JSONProtocolWriterCommon::writeJSONBase64(folly::ByteRange v) {
     len -= 3;
   }
   if (len) { // Handle remainder
-    DCHECK_LE(len, std::numeric_limits<int>::max());
+    DCHECK_LE(len, folly::to_unsigned(std::numeric_limits<int>::max()));
     base64_encode(bytes, folly::to_narrow(len), b);
     for (uint32_t i = 0; i < len + 1; i++) {
       out_.write(b[i]);

@@ -70,7 +70,7 @@ std::string fieldTypeName(TType type) {
   }
 }
 
-const int kIndent = 2;
+const size_t kIndent = 2;
 
 } // namespace
 
