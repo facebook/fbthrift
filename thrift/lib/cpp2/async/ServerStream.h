@@ -45,6 +45,9 @@ class ServerStream {
   }
 #endif
 
+  // Completion callback is optional
+  // It may destroy the ServerStreamPublisher object inline
+  // It must not call complete() on the publisher object inline
   static std::pair<ServerStream<T>, ServerStreamPublisher<T>> createPublisher(
       folly::Function<void()> onStreamCompleteOrCancel) {
     auto pair = detail::ServerPublisherStream<T>::create(
