@@ -4059,11 +4059,17 @@ void t_java_generator::generate_field_descs(ofstream& out, t_struct* tstruct) {
   vector<t_field*>::const_iterator m_iter;
 
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    auto is_sensitive = (*m_iter)->annotations_.find("java.sensitive") !=
+        (*m_iter)->annotations_.end();
     indent(out) << "private static final TField "
                 << constant_name((*m_iter)->get_name())
                 << "_FIELD_DESC = new TField(\"" << (*m_iter)->get_name()
                 << "\", " << type_to_enum((*m_iter)->get_type()) << ", "
-                << "(short)" << (*m_iter)->get_key() << ");" << endl;
+                << "(short)" << (*m_iter)->get_key();
+    if (is_sensitive) {
+      out << ", new HashMap<String, Object>() {{ put(\"sensitive\", true); }}";
+    }
+    out << ");" << endl;
   }
 }
 

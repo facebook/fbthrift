@@ -16,24 +16,36 @@
 
 package com.facebook.thrift.protocol;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /** Helper class that encapsulates field metadata. */
 public class TField {
+  private static final Map<String, Object> EMPTY_METADATA = new HashMap();
+
   public TField() {
     this("", TType.STOP, (short) 0);
   }
 
-  public TField(String n, byte t, short i) {
-    name = n;
-    type = t;
-    id = i;
+  public TField(String name, byte type, short id) {
+    this(name, type, id, EMPTY_METADATA);
+  }
+
+  public TField(String name, byte type, short id, Map<String, Object> metadata) {
+    this.name = name;
+    this.type = type;
+    this.id = id;
+    this.metadata = metadata;
   }
 
   public final String name;
   public final byte type;
   public final short id;
+  public final Map<String, Object> metadata;
 
   public String toString() {
-    return "<TField name:'" + name + "' type:" + type + " field-id:" + id + ">";
+    return String.format(
+        "<TField name:'%s' type:%d field-id:%d metadata='%s'>", name, type, id, metadata);
   }
 
   public boolean equals(TField otherField) {

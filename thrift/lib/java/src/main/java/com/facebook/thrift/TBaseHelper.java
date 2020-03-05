@@ -1092,7 +1092,11 @@ public final class TBaseHelper {
         sb.append(":");
         sb.append(space);
 
-        renderFieldValue(sb, fieldValue, indent, prettyPrint, indentStr, newLine, space);
+        if (tfield.metadata.containsKey("sensitive")) {
+          sb.append("<SENSITIVE FIELD>");
+        } else {
+          renderFieldValue(sb, fieldValue, indent, prettyPrint, indentStr, newLine, space);
+        }
       }
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
       sb.append(")");

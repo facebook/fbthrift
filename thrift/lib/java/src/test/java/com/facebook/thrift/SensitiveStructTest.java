@@ -31,6 +31,13 @@ public class SensitiveStructTest extends TestCase {
   }
 
   @Test
+  public static void testAndroid() throws Exception {
+    com.facebook.thrift.android.test.MySensitiveStruct struct =
+        new com.facebook.thrift.android.test.MySensitiveStruct(123L, password);
+    assertFalse(errorMsg, struct.toString().contains(password));
+  }
+
+  @Test
   public static void testJavaSwift() throws Exception {
     com.facebook.thrift.javaswift.test.MySensitiveStruct struct =
         new com.facebook.thrift.javaswift.test.MySensitiveStruct.Builder()

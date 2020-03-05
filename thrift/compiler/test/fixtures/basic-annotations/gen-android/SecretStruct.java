@@ -24,7 +24,7 @@ import com.facebook.thrift.protocol.*;
 public class SecretStruct implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("SecretStruct");
   private static final TField ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
-  private static final TField PASSWORD_FIELD_DESC = new TField("password", TType.STRING, (short)2);
+  private static final TField PASSWORD_FIELD_DESC = new TField("password", TType.STRING, (short)2, new HashMap<String, Object>() {{ put("sensitive", true); }});
 
   public final Long id;
   public final String password;
