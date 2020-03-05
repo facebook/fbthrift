@@ -23,3 +23,10 @@ class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
+class SecretStruct_Builder(thrift.py3.builder.StructBuilder):
+    id: _typing.Optional[int]
+    password: _typing.Optional[str]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+

@@ -145,3 +145,90 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * SecretStruct
+ */
+class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'id',
+      'type' => \TType::I64,
+    ),
+    2 => shape(
+      'var' => 'password',
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'id' => 1,
+    'password' => 2,
+  ];
+  const type TShape = shape(
+    'id' => int,
+    'password' => string,
+    ...
+  );
+  const int STRUCTURAL_ID = 7563936987719176841;
+  /**
+   * Original thrift field:-
+   * 1: i64 id
+   */
+  public int $id;
+  /**
+   * Original thrift field:-
+   * 2: string password
+   */
+  public string $password;
+
+  <<__Rx>>
+  public function __construct(?int $id = null, ?string $password = null  ) {
+    if ($id === null) {
+      $this->id = 0;
+    } else {
+      $this->id = $id;
+    }
+    if ($password === null) {
+      $this->password = '';
+    } else {
+      $this->password = $password;
+    }
+  }
+
+  public function getName(): string {
+    return 'SecretStruct';
+  }
+
+  public static function __fromShape(self::TShape $shape): this {
+    $me = new static();
+    $me->id = $shape['id'];
+    $me->password = $shape['password'];
+    return $me;
+  }
+
+  <<__Rx>>
+  public function __toShape(): self::TShape {
+    return shape(
+      'id' => $this->id,
+      'password' => $this->password,
+    );
+  }
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'id') !== null) {
+      $this->id = /* HH_FIXME[4110] */ $parsed['id'];
+    }    
+    if (idx($parsed, 'password') !== null) {
+      $this->password = /* HH_FIXME[4110] */ $parsed['password'];
+    }    
+  }
+
+}
+

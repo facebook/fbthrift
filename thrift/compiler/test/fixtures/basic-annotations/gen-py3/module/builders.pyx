@@ -13,3 +13,10 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
         yield "annotation_with_quote", self.annotation_with_quote
         yield "class_", self.class_
 
+cdef class SecretStruct_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.SecretStruct
+
+    def __iter__(self):
+        yield "id", self.id
+        yield "password", self.password
+

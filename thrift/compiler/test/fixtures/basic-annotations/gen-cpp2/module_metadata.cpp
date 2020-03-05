@@ -54,6 +54,28 @@ void StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
     module_MyStruct.fields.push_back(std::move(field));
   }
 }
+void StructMetadata<::cpp2::SecretStruct>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.SecretStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_SecretStruct = res.first->second;
+  module_SecretStruct.name = "module.SecretStruct";
+  module_SecretStruct.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_SecretStruct_fields[] = {
+    std::make_tuple(1, "id", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
+    std::make_tuple(2, "password", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+  };
+  for (const auto& f : module_SecretStruct_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
+    module_SecretStruct.fields.push_back(std::move(field));
+  }
+}
 
 void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_ping(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;

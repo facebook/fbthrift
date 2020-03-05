@@ -473,3 +473,240 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return (deserialize, (MyStruct, serialize(self)))
 
 
+@__cython.auto_pickle(False)
+cdef class SecretStruct(thrift.py3.types.Struct):
+
+    def __init__(
+        SecretStruct self, *,
+        id=None,
+        str password=None
+    ):
+        if id is not None:
+            if not isinstance(id, int):
+                raise TypeError(f'id is not a { int !r}.')
+            id = <int64_t> id
+
+        self._cpp_obj = move(SecretStruct._make_instance(
+          NULL,
+          NULL,
+          id,
+          password,
+        ))
+
+    def __call__(
+        SecretStruct self,
+        id=__NOTSET,
+        password=__NOTSET
+    ):
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[2] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if id is ___NOTSET:
+            __isNOTSET[0] = True
+            id = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
+        if password is ___NOTSET:
+            __isNOTSET[1] = True
+            password = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
+
+        if not changes:
+            return self
+
+        if id is not None:
+            if not isinstance(id, int):
+                raise TypeError(f'id is not a { int !r}.')
+            id = <int64_t> id
+
+        if password is not None:
+            if not isinstance(password, str):
+                raise TypeError(f'password is not a { str !r}.')
+
+        inst = <SecretStruct>SecretStruct.__new__(SecretStruct)
+        inst._cpp_obj = move(SecretStruct._make_instance(
+          self._cpp_obj.get(),
+          __isNOTSET,
+          id,
+          password,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cSecretStruct] _make_instance(
+        cSecretStruct* base_instance,
+        bint* __isNOTSET,
+        object id ,
+        str password 
+    ) except *:
+        cdef unique_ptr[cSecretStruct] c_inst
+        if base_instance:
+            c_inst = make_unique[cSecretStruct](deref(base_instance))
+        else:
+            c_inst = make_unique[cSecretStruct]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if not __isNOTSET[0] and id is None:
+                deref(c_inst).id = default_inst[cSecretStruct]().id
+                deref(c_inst).__isset.id = False
+                pass
+
+            if not __isNOTSET[1] and password is None:
+                deref(c_inst).password = default_inst[cSecretStruct]().password
+                deref(c_inst).__isset.password = False
+                pass
+
+        if id is not None:
+            deref(c_inst).id = id
+            deref(c_inst).__isset.id = True
+        if password is not None:
+            deref(c_inst).password = thrift.py3.types.move(thrift.py3.types.bytes_to_string(password.encode('utf-8')))
+            deref(c_inst).__isset.password = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'id', self.id
+        yield 'password', self.password
+
+    def __bool__(self):
+        return True
+
+    @staticmethod
+    cdef create(shared_ptr[cSecretStruct] cpp_obj):
+        inst = <SecretStruct>SecretStruct.__new__(SecretStruct)
+        inst._cpp_obj = move_shared(cpp_obj)
+        return inst
+
+    @property
+    def id(self):
+
+        return deref(self._cpp_obj).id
+
+    @property
+    def password(self):
+
+        return (<bytes>deref(self._cpp_obj).password).decode('UTF-8')
+
+
+    def __hash__(SecretStruct self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.id,
+            self.password,
+            ))
+        return self.__hash
+
+    def __repr__(SecretStruct self):
+        return f'SecretStruct(id={repr(self.id)}, password={repr(self.password)})'
+    def __copy__(SecretStruct self):
+        cdef shared_ptr[cSecretStruct] cpp_obj = make_shared[cSecretStruct](
+            deref(self._cpp_obj)
+        )
+        return SecretStruct.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, SecretStruct) and
+                isinstance(other, SecretStruct)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cSecretStruct* cself = (<SecretStruct>self)._cpp_obj.get()
+        cdef cSecretStruct* cother = (<SecretStruct>other)._cpp_obj.get()
+        if cop == Py_EQ:
+            return deref(cself) == deref(cother)
+        elif cop == Py_NE:
+            return deref(cself) != deref(cother)
+        elif cop == Py_LT:
+            return deref(cself) < deref(cother)
+        elif cop == Py_LE:
+            return deref(cself) <= deref(cother)
+        elif cop == Py_GT:
+            return deref(cself) > deref(cother)
+        elif cop == Py_GE:
+            return deref(cself) >= deref(cother)
+        else:
+            return NotImplemented
+
+    @staticmethod
+    def __get_reflection__():
+      defaults = SecretStruct.create(constant_shared_ptr[cSecretStruct](default_inst[cSecretStruct]()))
+      return __StructSpec(
+        name="SecretStruct",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="id",
+  type=int,
+  kind=__NumberType.I64,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="password",
+  type=str,
+  kind=None,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """java.sensitive""": """1""",  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    cdef __iobuf.IOBuf _serialize(SecretStruct self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cSecretStruct* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cSecretStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cSecretStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cSecretStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cSecretStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(SecretStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cSecretStruct]()
+        cdef cSecretStruct* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cSecretStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cSecretStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cSecretStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cSecretStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (SecretStruct, serialize(self)))
+
+

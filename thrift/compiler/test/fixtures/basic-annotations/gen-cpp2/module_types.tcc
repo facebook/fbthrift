@@ -29,6 +29,13 @@ struct TccStructTraits<::cpp2::MyStruct> {
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
+template <>
+struct TccStructTraits<::cpp2::SecretStruct> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
 
 } // namespace detail
 } // namespace thrift
@@ -227,5 +234,142 @@ extern template void MyStruct::readNoXfer<>(apache::thrift::CompactProtocolReade
 extern template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+template <class Protocol_>
+void SecretStruct::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_I64))) {
+    goto _loop;
+  }
+_readField_id:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->id, _readState);
+    this->__isset.id = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          2,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_password:
+  {
+    
+    iprot->readString(this->password);
+    this->__isset.password = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          2,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  _readState.afterAdvanceFailure(iprot);
+  if (_readState.atStop()) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<SecretStruct>>();
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I64))) {
+        goto _readField_id;
+      } else {
+        goto _skip;
+      }
+    }
+    case 2:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
+        goto _readField_password;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      _readState.skip(iprot);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t SecretStruct::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("SecretStruct");
+  xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->id);
+  xfer += prot_->serializedFieldSize("password", apache::thrift::protocol::T_STRING, 2);
+  xfer += prot_->serializedSizeString(this->password);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t SecretStruct::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("SecretStruct");
+  xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->id);
+  xfer += prot_->serializedFieldSize("password", apache::thrift::protocol::T_STRING, 2);
+  xfer += prot_->serializedSizeString(this->password);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t SecretStruct::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("SecretStruct");
+  xfer += prot_->writeFieldBegin("id", apache::thrift::protocol::T_I64, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->id);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("password", apache::thrift::protocol::T_STRING, 2);
+  xfer += prot_->writeString(this->password);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+extern template void SecretStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t SecretStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t SecretStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t SecretStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void SecretStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t SecretStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t SecretStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t SecretStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2

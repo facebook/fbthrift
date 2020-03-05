@@ -20,3 +20,8 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public str class_
 
 
+cdef class SecretStruct_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pint id
+    cdef public str password
+
+

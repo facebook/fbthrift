@@ -229,3 +229,116 @@ func (p *MyStruct) String() string {
   return fmt.Sprintf("MyStruct(%+v)", *p)
 }
 
+// Attributes:
+//  - Id
+//  - Password
+type SecretStruct struct {
+  Id int64 `thrift:"id,1" db:"id" json:"id"`
+  Password string `thrift:"password,2" db:"password" json:"password"`
+}
+
+func NewSecretStruct() *SecretStruct {
+  return &SecretStruct{}
+}
+
+
+func (p *SecretStruct) GetId() int64 {
+  return p.Id
+}
+
+func (p *SecretStruct) GetPassword() string {
+  return p.Password
+}
+func (p *SecretStruct) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *SecretStruct)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI64(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.Id = v
+}
+  return nil
+}
+
+func (p *SecretStruct)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.Password = v
+}
+  return nil
+}
+
+func (p *SecretStruct) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("SecretStruct"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *SecretStruct) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:id: ", p), err) }
+  if err := oprot.WriteI64(int64(p.Id)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.id (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:id: ", p), err) }
+  return err
+}
+
+func (p *SecretStruct) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("password", thrift.STRING, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:password: ", p), err) }
+  if err := oprot.WriteString(string(p.Password)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.password (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:password: ", p), err) }
+  return err
+}
+
+func (p *SecretStruct) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("SecretStruct(%+v)", *p)
+}
+

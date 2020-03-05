@@ -43,6 +43,8 @@ cdef cMyEnum MyEnum_to_cpp(MyEnum value)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
     # Forward Declaration
     cdef cppclass cMyStruct "::cpp2::MyStruct"
+    # Forward Declaration
+    cdef cppclass cSecretStruct "::cpp2::SecretStruct"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cMyStruct__isset "::cpp2::MyStruct::__isset":
@@ -66,14 +68,35 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         string class_
         cMyStruct__isset __isset
 
+    cdef cppclass cSecretStruct__isset "::cpp2::SecretStruct::__isset":
+        bint id
+        bint password
+
+    cdef cppclass cSecretStruct "::cpp2::SecretStruct":
+        cSecretStruct() except +
+        cSecretStruct(const cSecretStruct&) except +
+        bint operator==(cSecretStruct&)
+        bint operator!=(cSecretStruct&)
+        bint operator<(cSecretStruct&)
+        bint operator>(cSecretStruct&)
+        bint operator<=(cSecretStruct&)
+        bint operator>=(cSecretStruct&)
+        int64_t id
+        string password
+        cSecretStruct__isset __isset
+
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cMyStruct] move(unique_ptr[cMyStruct])
     cdef shared_ptr[cMyStruct] move_shared "std::move"(shared_ptr[cMyStruct])
     cdef unique_ptr[cMyStruct] move_unique "std::move"(unique_ptr[cMyStruct])
+    cdef shared_ptr[cSecretStruct] move(unique_ptr[cSecretStruct])
+    cdef shared_ptr[cSecretStruct] move_shared "std::move"(shared_ptr[cSecretStruct])
+    cdef unique_ptr[cSecretStruct] move_unique "std::move"(unique_ptr[cSecretStruct])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyStruct>"(shared_ptr[cMyStruct])
+    cdef shared_ptr[const cSecretStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::SecretStruct>"(shared_ptr[cSecretStruct])
 
 # Forward Definition of the cython struct
 cdef class MyStruct(thrift.py3.types.Struct)
@@ -96,6 +119,26 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct])
+
+# Forward Definition of the cython struct
+cdef class SecretStruct(thrift.py3.types.Struct)
+
+
+cdef class SecretStruct(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cSecretStruct] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cSecretStruct] _make_instance(
+        cSecretStruct* base_instance,
+        bint* __isNOTSET,
+        object id,
+        str password
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cSecretStruct])
 
 
 

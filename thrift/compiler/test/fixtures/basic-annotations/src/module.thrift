@@ -51,3 +51,8 @@ service MyServicePrioParent {
 service MyServicePrioChild extends MyServicePrioParent {
   void pang() (priority = 'BEST_EFFORT')
 }
+
+struct SecretStruct {
+  1: i64 id,
+  2: string password (java.sensitive)
+}

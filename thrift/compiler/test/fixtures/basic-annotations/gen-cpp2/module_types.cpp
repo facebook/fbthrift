@@ -69,6 +69,20 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
+void TccStructTraits<::cpp2::SecretStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "id") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "password") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
 
 } // namespace detail
 } // namespace thrift
@@ -152,5 +166,65 @@ template void MyStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+SecretStruct::SecretStruct(apache::thrift::FragileConstructor, int64_t id__arg, ::std::string password__arg) :
+    id(std::move(id__arg)),
+    password(std::move(password__arg)) {
+  __isset.id = true;
+  __isset.password = true;
+}
+
+void SecretStruct::__clear() {
+  // clear all fields
+  id = 0;
+  password = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  __isset = {};
+}
+
+bool SecretStruct::operator==(const SecretStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.id == rhs.id)) {
+    return false;
+  }
+  if (!(lhs.password == rhs.password)) {
+    return false;
+  }
+  return true;
+}
+
+bool SecretStruct::operator<(const SecretStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.id == rhs.id)) {
+    return lhs.id < rhs.id;
+  }
+  if (!(lhs.password == rhs.password)) {
+    return lhs.password < rhs.password;
+  }
+  return false;
+}
+
+
+void swap(SecretStruct& a, SecretStruct& b) {
+  using ::std::swap;
+  swap(a.id, b.id);
+  swap(a.password, b.password);
+  swap(a.__isset, b.__isset);
+}
+
+template void SecretStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t SecretStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t SecretStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t SecretStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void SecretStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t SecretStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t SecretStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t SecretStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2

@@ -17,6 +17,8 @@ struct majorVer;
 struct package;
 struct annotation_with_quote;
 struct class_;
+struct id;
+struct password;
 } // namespace tag
 namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_majorVer
@@ -34,6 +36,14 @@ APACHE_THRIFT_DEFINE_ACCESSOR(annotation_with_quote);
 #ifndef APACHE_THRIFT_ACCESSOR_class_
 #define APACHE_THRIFT_ACCESSOR_class_
 APACHE_THRIFT_DEFINE_ACCESSOR(class_);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_id
+#define APACHE_THRIFT_ACCESSOR_id
+APACHE_THRIFT_DEFINE_ACCESSOR(id);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_password
+#define APACHE_THRIFT_ACCESSOR_password
+APACHE_THRIFT_DEFINE_ACCESSOR(password);
 #endif
 } // namespace detail
 } // namespace thrift
@@ -98,6 +108,7 @@ extern const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUE
 // BEGIN forward_declare
 namespace cpp2 {
 class MyStruct;
+class SecretStruct;
 } // cpp2
 // END forward_declare
 // BEGIN typedefs
@@ -297,6 +308,128 @@ void swap(MyStruct& a, MyStruct& b);
 
 template <class Protocol_>
 uint32_t MyStruct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+class SecretStruct final : private apache::thrift::detail::st::ComparisonOperators<SecretStruct> {
+ public:
+
+  SecretStruct() :
+      id(0) {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  SecretStruct(apache::thrift::FragileConstructor, int64_t id__arg, ::std::string password__arg);
+
+  SecretStruct(SecretStruct&&) = default;
+
+  SecretStruct(const SecretStruct&) = default;
+
+  SecretStruct& operator=(SecretStruct&&) = default;
+
+  SecretStruct& operator=(const SecretStruct&) = default;
+  void __clear();
+ public:
+  int64_t id;
+ public:
+  ::std::string password;
+
+ public:
+  struct __isset {
+    bool id;
+    bool password;
+  } __isset = {};
+  bool operator==(const SecretStruct& rhs) const;
+  bool operator<(const SecretStruct& rhs) const;
+
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> id_ref() const& {
+    return {this->id, __isset.id};
+  }
+
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> id_ref() const&& {
+    return {std::move(this->id), __isset.id};
+  }
+
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> id_ref() & {
+    return {this->id, __isset.id};
+  }
+
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> id_ref() && {
+    return {std::move(this->id), __isset.id};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> password_ref() const& {
+    return {this->password, __isset.password};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> password_ref() const&& {
+    return {std::move(this->password), __isset.password};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> password_ref() & {
+    return {this->password, __isset.password};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> password_ref() && {
+    return {std::move(this->password), __isset.password};
+  }
+
+  int64_t get_id() const {
+    return id;
+  }
+
+  int64_t& set_id(int64_t id_) {
+    id = id_;
+    __isset.id = true;
+    return id;
+  }
+
+  const ::std::string& get_password() const& {
+    return password;
+  }
+
+  ::std::string get_password() && {
+    return std::move(password);
+  }
+
+  template <typename T_SecretStruct_password_struct_setter = ::std::string>
+  ::std::string& set_password(T_SecretStruct_password_struct_setter&& password_) {
+    password = std::forward<T_SecretStruct_password_struct_setter>(password_);
+    __isset.password = true;
+    return password;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< SecretStruct >;
+};
+
+void swap(SecretStruct& a, SecretStruct& b);
+
+template <class Protocol_>
+uint32_t SecretStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

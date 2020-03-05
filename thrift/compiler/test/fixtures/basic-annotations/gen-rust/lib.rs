@@ -20,6 +20,12 @@ pub mod types {
         pub class_: String,
     }
 
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct SecretStruct {
+        pub id: i64,
+        pub password: String,
+    }
+
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
     pub struct MyEnum(pub i32);
 
@@ -165,6 +171,57 @@ pub mod types {
                 package: field_package.unwrap_or_default(),
                 annotation_with_quote: field_annotation_with_quote.unwrap_or_default(),
                 class_: field_class_.unwrap_or_default(),
+            })
+        }
+    }
+
+
+    impl Default for self::SecretStruct {
+        fn default() -> Self {
+            Self {
+                id: Default::default(),
+                password: Default::default(),
+            }
+        }
+    }
+
+    impl GetTType for self::SecretStruct {
+        const TTYPE: TType = TType::Struct;
+    }
+
+    impl<P: ProtocolWriter> Serialize<P> for self::SecretStruct {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("SecretStruct");
+            p.write_field_begin("id", TType::I64, 1);
+            Serialize::write(&self.id, p);
+            p.write_field_end();
+            p.write_field_begin("password", TType::String, 2);
+            Serialize::write(&self.password, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P: ProtocolReader> Deserialize<P> for self::SecretStruct {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
+            let mut field_id = None;
+            let mut field_password = None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| ())?;
+                match (fty, fid as i32) {
+                    (TType::Stop, _) => break,
+                    (TType::I64, 1) => field_id = Some(Deserialize::read(p)?),
+                    (TType::String, 2) => field_password = Some(Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            Ok(Self {
+                id: field_id.unwrap_or_default(),
+                password: field_password.unwrap_or_default(),
             })
         }
     }

@@ -38,6 +38,23 @@
           "required" : true
         }
       }
+    },
+    "SecretStruct" : {
+      "lineno" : 55,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "id" : {
+          "type_enum" : "I64",
+          "spec_args" : null,
+          "required" : true
+        },
+        "password" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true
+        }
+      }
     }
   },
   "services" : {
