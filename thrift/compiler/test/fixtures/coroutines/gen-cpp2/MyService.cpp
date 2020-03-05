@@ -30,8 +30,8 @@ folly::Future<folly::Unit> MyServiceSvIf::future_ping() {
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<void> MyServiceSvIf::co_ping() {
   auto future = future_ping();
-  return [](folly::Future<folly::Unit> future) mutable -> folly::coro::Task<void> {
-     co_await std::move(future);
+  return [](folly::Future<folly::Unit> aFuture) mutable -> folly::coro::Task<void> {
+     co_await std::move(aFuture);
   }(std::move(future));
 }
 
@@ -94,8 +94,8 @@ folly::Future<bool> MyServiceSvIf::future_hasDataById(int64_t id) {
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<bool> MyServiceSvIf::co_hasDataById(int64_t id) {
   auto future = future_hasDataById(id);
-  return [](folly::Future<bool> future) mutable -> folly::coro::Task<bool> {
-    co_return co_await std::move(future);
+  return [](folly::Future<bool> aFuture) mutable -> folly::coro::Task<bool> {
+    co_return co_await std::move(aFuture);
   }(std::move(future));
 }
 
@@ -140,8 +140,8 @@ folly::Future<std::unique_ptr<::std::string>> MyServiceSvIf::future_getDataById(
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<std::unique_ptr<::std::string>> MyServiceSvIf::co_getDataById(int64_t id) {
   auto future = future_getDataById(id);
-  return [](folly::Future<std::unique_ptr<::std::string>> future) mutable -> folly::coro::Task<std::unique_ptr<::std::string>> {
-    co_return co_await std::move(future);
+  return [](folly::Future<std::unique_ptr<::std::string>> aFuture) mutable -> folly::coro::Task<std::unique_ptr<::std::string>> {
+    co_return co_await std::move(aFuture);
   }(std::move(future));
 }
 
