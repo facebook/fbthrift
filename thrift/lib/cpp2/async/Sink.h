@@ -75,28 +75,29 @@ class ClientSink {
 
   folly::coro::Task<R> sink(folly::coro::AsyncGenerator<T&&> generator) {
     folly::exception_wrapper ew;
-    auto finalResponse = co_await std::exchange(impl_, nullptr)->sink([
-      this,
-      &ew,
-      generator = std::move(generator)
-    ]() mutable -> folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> {
-      try {
-        while (auto item = co_await generator.next()) {
-          co_yield folly::Try<StreamPayload>(
-              StreamPayload(serializer_(folly::Try<T>(std::move(*item))), {}));
-        }
-      } catch (std::exception& e) {
-        ew = folly::exception_wrapper(std::current_exception(), e);
-      } catch (...) {
-        ew = folly::exception_wrapper(std::current_exception());
-      }
+    auto finalResponse =
+        co_await std::exchange(impl_, nullptr)
+            ->sink(
+                [ this, &ew ](auto _generator)
+                    -> folly::coro::AsyncGenerator<
+                        folly::Try<StreamPayload>&&> {
+                  try {
+                    while (auto item = co_await _generator.next()) {
+                      co_yield folly::Try<StreamPayload>(StreamPayload(
+                          serializer_(folly::Try<T>(std::move(*item))), {}));
+                    }
+                  } catch (std::exception& e) {
+                    ew = folly::exception_wrapper(std::current_exception(), e);
+                  } catch (...) {
+                    ew = folly::exception_wrapper(std::current_exception());
+                  }
 
-      if (ew) {
-        co_yield folly::Try<StreamPayload>(rocket::RocketException(
-            rocket::ErrorCode::APPLICATION_ERROR,
-            serializer_(folly::Try<T>(ew))));
-      }
-    }());
+                  if (ew) {
+                    co_yield folly::Try<StreamPayload>(rocket::RocketException(
+                        rocket::ErrorCode::APPLICATION_ERROR,
+                        serializer_(folly::Try<T>(ew))));
+                  }
+                }(std::move(generator)));
 
     if (ew) {
       throw SinkThrew();

@@ -115,6 +115,8 @@ class ClientSinkBridge : public TwoWayBridge<
         } else {
           clientPush(SinkComplete{});
           sinkComplete = true;
+          // release generator
+          generator = {};
         }
         credit--;
       }
