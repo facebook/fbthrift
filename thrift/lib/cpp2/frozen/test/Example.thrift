@@ -150,3 +150,8 @@ struct Big {
   4: TestUnion aTestUnion,
   5: string aString,
 }
+
+struct User {
+  1: i64 uid,
+  2: string name,
+} (cpp.declare_hash, cpp.declare_equal_to)

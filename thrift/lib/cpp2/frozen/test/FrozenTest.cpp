@@ -159,6 +159,31 @@ TEST(Frozen, Compatibility) {
   EXPECT_EQ(view12.pets()[1].name(), view21.pets()[1].name());
 }
 
+// It's important to make sure the hash function not change, other wise the
+// existing indexed data will be messed up.
+TEST(Frozen, HashCompatibility) {
+  // int
+  std::hash<int64_t> intHash;
+  for (int64_t i = -10000; i < 10000; ++i) {
+    EXPECT_EQ(Layout<int64_t>::hash(i), intHash(i));
+  }
+
+  // string
+  using StrLayout = Layout<std::string>;
+  using View = StrLayout::View;
+
+  auto follyHash = [](const View& v) {
+    return folly::hash::fnv64_buf(v.begin(), v.size());
+  };
+
+  std::vector<std::string> strs{
+      "hello", "WOrld", "luckylook", "facebook", "Let it go!!"};
+  for (auto&& s : strs) {
+    View v(s);
+    EXPECT_EQ(StrLayout::hash(v), follyHash(v));
+  }
+}
+
 TEST(Frozen, EmbeddedSchema) {
   std::string storage;
   {

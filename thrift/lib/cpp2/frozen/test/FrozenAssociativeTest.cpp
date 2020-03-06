@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 
 using namespace apache::thrift::frozen;
+using namespace apache::thrift::test;
 
 std::map<int, int> osquares{{1, 1}, {2, 4}, {3, 9}, {4, 16}};
 std::unordered_map<int, int> usquares{{1, 1}, {2, 4}, {3, 9}, {4, 16}};
@@ -350,4 +351,38 @@ TEST(Frozen, SpillBug) {
   EXPECT_EQ(distance(fmaps[0].equal_range(3)), 0);
   EXPECT_EQ(distance(fmaps[0].equal_range(-1)), 0);
   EXPECT_EQ(distance(fmaps[1].equal_range(-1)), 1);
+}
+
+// Define hash and equal_to for User
+namespace std {
+size_t hash<User>::operator()(const User& user) const {
+  auto h = folly::hash::fnv64_buf(&user.uid, sizeof(user.uid));
+  h = folly::hash::fnv64_buf(&user.name, sizeof(user.name), h);
+  return h;
+}
+
+bool equal_to<User>::operator()(const User& lhs, const User& rhs) const {
+  return lhs.uid == rhs.uid && lhs.name == rhs.name;
+}
+} // namespace std
+
+TEST(FrozenMap, StructAsKey) {
+  auto user = [](int64_t uid, std::string name) {
+    User u;
+    u.uid = uid;
+    u.name = name;
+    return u;
+  };
+
+  const auto u1 = user(1, "andy");
+  const auto u2 = user(2, "jack");
+  const auto u3 = user(3, "mike");
+
+  std::unordered_map<User, int> userMap{
+      {u1, 1},
+      {u1, 2},
+      {u3, 3},
+  };
+
+  EXPECT_NO_THROW(freeze(userMap));
 }

@@ -279,6 +279,11 @@ struct LayoutBase {
     bits = layout.getBits();
   }
 
+  template <typename K>
+  static size_t hash(const K& key) {
+    return std::hash<K>()(key);
+  }
+
  protected:
   LayoutBase(const LayoutBase&) = default;
   LayoutBase(LayoutBase&&) = default;
