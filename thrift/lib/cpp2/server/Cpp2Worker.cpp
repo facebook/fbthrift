@@ -48,12 +48,15 @@ folly::LeakySingleton<folly::EventBaseLocal<RequestsRegistry>> registry;
 
 void Cpp2Worker::initRequestsRegistry() {
   auto* evb = getEventBase();
-  evb->runInEventBaseThread([this, evb]() {
-    this->requestsRegistry_ = &registry.get().getOrCreate(
-        *evb,
-        server_->getMaxDebugPayloadMemoryPerRequest(),
-        server_->getMaxDebugPayloadMemoryPerWorker(),
-        server_->getMaxFinishedDebugPayloadsPerWorker());
+  auto memPerReq = server_->getMaxDebugPayloadMemoryPerRequest();
+  auto memPerWorker = server_->getMaxDebugPayloadMemoryPerWorker();
+  auto maxFinished = server_->getMaxFinishedDebugPayloadsPerWorker();
+  std::weak_ptr<Cpp2Worker> self_weak = shared_from_this();
+  evb->runInEventBaseThread([=, self_weak = std::move(self_weak)]() {
+    if (auto self = self_weak.lock()) {
+      self->requestsRegistry_ = &registry.get().getOrCreate(
+          *evb, memPerReq, memPerWorker, maxFinished);
+    }
   });
 }
 
