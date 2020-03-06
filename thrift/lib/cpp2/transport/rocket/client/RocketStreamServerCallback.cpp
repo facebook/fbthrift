@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp2/transport/rocket/client/RocketStreamServerCallback.h>
 
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
 
@@ -297,6 +298,19 @@ StreamChannelStatus RocketChannelServerCallback::onSinkCancel() {
 // RocketSinkServerCallback
 void RocketSinkServerCallback::onSinkNext(StreamPayload&& payload) {
   DCHECK(state_ == State::BothOpen);
+
+  // compress the payload if needed
+  if (client_.getAutoCompressSizeLimit().has_value() &&
+      *(client_.getAutoCompressSizeLimit()) <
+          int(payload.payload->computeChainDataLength())) {
+    if (client_.getNegotiatedCompressionAlgorithm().has_value()) {
+      rocket::compressPayload(
+          payload.metadata,
+          payload.payload,
+          *(client_.getNegotiatedCompressionAlgorithm()));
+    }
+  }
+
   client_.sendPayload(
       streamId_, std::move(payload), rocket::Flags::none().next(true));
 }

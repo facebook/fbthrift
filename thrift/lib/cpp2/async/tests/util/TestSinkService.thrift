@@ -45,4 +45,5 @@ service TestSinkService {
   sink<i32 throws (1: SinkException e), bool> sinkThrow();
   sink<i32, bool throws (1: FinalException e)> sinkFinalThrow();
   void purge();
+  sink<string, i32> sinkBlobs(1: i32 count);
 }

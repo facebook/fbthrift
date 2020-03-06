@@ -197,5 +197,23 @@ apache::thrift::SinkConsumer<int32_t, bool> TestSinkService::sinkFinalThrow() {
 
 void TestSinkService::purge() {}
 
+apache::thrift::SinkConsumer<std::string, int32_t> TestSinkService::sinkBlobs(
+    int32_t count) {
+  return apache::thrift::SinkConsumer<std::string, int32_t>{
+      [count](folly::coro::AsyncGenerator<std::string&&> gen)
+          -> folly::coro::Task<int32_t> {
+        int32_t i = 0;
+        int32_t size = 0;
+        while (auto item = co_await gen.next()) {
+          i++;
+          size += item->size();
+        }
+        EXPECT_EQ(i, count);
+        co_return size;
+      },
+      10 /* buffer size */
+  };
+}
+
 } // namespace testservice
 } // namespace testutil

@@ -133,13 +133,9 @@ class RocketClientChannel final : public ClientChannel {
 
   void setFlushList(FlushList* flushList);
 
-  void setNegotiatedCompressionAlgorithm(CompressionAlgorithm compressionAlgo) {
-    negotiatedCompressionAlgo_ = compressionAlgo;
-  }
+  void setNegotiatedCompressionAlgorithm(CompressionAlgorithm compressionAlgo);
 
-  void setAutoCompressSizeLimit(int32_t size) {
-    autoCompressSizeLimit_ = size;
-  }
+  void setAutoCompressSizeLimit(int32_t size);
 
  private:
   static constexpr std::chrono::milliseconds kDefaultRpcTimeout{500};

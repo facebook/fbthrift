@@ -56,6 +56,9 @@ class TestSinkService : public TestSinkServiceSvIf {
 
   void purge() override;
 
+  apache::thrift::SinkConsumer<std::string, int32_t> sinkBlobs(
+      int32_t count) override;
+
  private:
   std::atomic<int> activeSinks_{0};
 };

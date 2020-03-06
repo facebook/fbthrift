@@ -45,8 +45,10 @@ folly::AsyncSocket::WriteResult TAsyncSocketIntercepted::performWrite(
     }
     vec = newiov.data();
   }
-  return TAsyncSocket::performWrite(
+  WriteResult writeRes = TAsyncSocket::performWrite(
       vec, count, flags, countWritten, partialWritten);
+  totalBytesWritten_ += writeRes.writeReturn;
+  return writeRes;
 }
 
 folly::AsyncSocket::ReadResult TAsyncSocketIntercepted::performRead(

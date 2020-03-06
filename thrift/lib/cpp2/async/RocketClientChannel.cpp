@@ -124,6 +124,21 @@ void RocketClientChannel::setFlushList(FlushList* flushList) {
   }
 }
 
+void RocketClientChannel::setNegotiatedCompressionAlgorithm(
+    CompressionAlgorithm compressionAlgo) {
+  negotiatedCompressionAlgo_ = compressionAlgo;
+  if (rclient_) {
+    rclient_->setNegotiatedCompressionAlgorithm(compressionAlgo);
+  }
+}
+
+void RocketClientChannel::setAutoCompressSizeLimit(int32_t size) {
+  autoCompressSizeLimit_ = size;
+  if (rclient_) {
+    rclient_->setAutoCompressSizeLimit(size);
+  }
+}
+
 RocketClientChannel::Ptr RocketClientChannel::newChannel(
     folly::AsyncTransportWrapper::UniquePtr socket,
     RequestSetupMetadata meta) {
@@ -213,6 +228,14 @@ void RocketClientChannel::sendRequestSink(
   if (!preSendValidation(
           metadata, rpcOptions, buf, clientCallback, firstResponseTimeout)) {
     return;
+  }
+
+  // compress the request if needed
+  if (autoCompressSizeLimit_.hasValue() &&
+      *autoCompressSizeLimit_ < int(buf->computeChainDataLength())) {
+    if (negotiatedCompressionAlgo_.hasValue()) {
+      rocket::compressPayload(metadata, buf, *negotiatedCompressionAlgo_);
+    }
   }
 
   return rclient_->sendRequestSink(
