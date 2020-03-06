@@ -1060,31 +1060,31 @@ pub mod client {
     pub trait MyService: Send {
         fn ping(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::PingError>> + Send + 'static>>;
         fn getRandomData(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::my_service::GetRandomDataError>> + Send + 'static>>;
         fn hasDataById(
             &self,
             arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<bool>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<bool, crate::errors::my_service::HasDataByIdError>> + Send + 'static>>;
         fn getDataById(
             &self,
             arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::my_service::GetDataByIdError>> + Send + 'static>>;
         fn putDataById(
             &self,
             arg_id: i64,
             arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + Send + 'static>>;
         fn lobDataById(
             &self,
             arg_id: i64,
             arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + Send + 'static>>;
         fn doNothing(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::DoNothingError>> + Send + 'static>>;
     }
 
     impl<P, T> MyService for MyServiceImpl<P, T>
@@ -1095,7 +1095,7 @@ pub mod client {
         ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
     {        fn ping(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::PingError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1113,26 +1113,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
+                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::my_service::PingError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::my_service::PingExn::read(p)? {
-                                    crate::services::my_service::PingExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::MyServicePingError(exn).into()),
+                                let exn = crate::services::my_service::PingExn::read(p)?;
+                                match exn {
+                                    crate::services::my_service::PingExn::Success(x) => Ok(x),
+                                    crate::services::my_service::PingExn::ApplicationException(ae) => {
+                                        Err(crate::errors::my_service::PingError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::MyServicePingError(
-                                    crate::services::my_service::PingExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::my_service::PingError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::my_service::PingError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -1143,7 +1146,7 @@ pub mod client {
         }
         fn getRandomData(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::my_service::GetRandomDataError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1161,26 +1164,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<String> {
+                    move |mut p: P::Deserializer| -> std::result::Result<String, crate::errors::my_service::GetRandomDataError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::my_service::GetRandomDataExn::read(p)? {
-                                    crate::services::my_service::GetRandomDataExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::MyServiceGetRandomDataError(exn).into()),
+                                let exn = crate::services::my_service::GetRandomDataExn::read(p)?;
+                                match exn {
+                                    crate::services::my_service::GetRandomDataExn::Success(x) => Ok(x),
+                                    crate::services::my_service::GetRandomDataExn::ApplicationException(ae) => {
+                                        Err(crate::errors::my_service::GetRandomDataError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::MyServiceGetRandomDataError(
-                                    crate::services::my_service::GetRandomDataExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::my_service::GetRandomDataError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::my_service::GetRandomDataError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -1192,7 +1198,7 @@ pub mod client {
         fn hasDataById(
             &self,
             arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<bool>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<bool, crate::errors::my_service::HasDataByIdError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1213,26 +1219,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<bool> {
+                    move |mut p: P::Deserializer| -> std::result::Result<bool, crate::errors::my_service::HasDataByIdError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::my_service::HasDataByIdExn::read(p)? {
-                                    crate::services::my_service::HasDataByIdExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::MyServiceHasDataByIdError(exn).into()),
+                                let exn = crate::services::my_service::HasDataByIdExn::read(p)?;
+                                match exn {
+                                    crate::services::my_service::HasDataByIdExn::Success(x) => Ok(x),
+                                    crate::services::my_service::HasDataByIdExn::ApplicationException(ae) => {
+                                        Err(crate::errors::my_service::HasDataByIdError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::MyServiceHasDataByIdError(
-                                    crate::services::my_service::HasDataByIdExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::my_service::HasDataByIdError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::my_service::HasDataByIdError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -1244,7 +1253,7 @@ pub mod client {
         fn getDataById(
             &self,
             arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::my_service::GetDataByIdError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1265,26 +1274,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<String> {
+                    move |mut p: P::Deserializer| -> std::result::Result<String, crate::errors::my_service::GetDataByIdError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::my_service::GetDataByIdExn::read(p)? {
-                                    crate::services::my_service::GetDataByIdExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::MyServiceGetDataByIdError(exn).into()),
+                                let exn = crate::services::my_service::GetDataByIdExn::read(p)?;
+                                match exn {
+                                    crate::services::my_service::GetDataByIdExn::Success(x) => Ok(x),
+                                    crate::services::my_service::GetDataByIdExn::ApplicationException(ae) => {
+                                        Err(crate::errors::my_service::GetDataByIdError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::MyServiceGetDataByIdError(
-                                    crate::services::my_service::GetDataByIdExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::my_service::GetDataByIdError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::my_service::GetDataByIdError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -1297,7 +1309,7 @@ pub mod client {
             &self,
             arg_id: i64,
             arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1321,26 +1333,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
+                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::my_service::PutDataByIdError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::my_service::PutDataByIdExn::read(p)? {
-                                    crate::services::my_service::PutDataByIdExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::MyServicePutDataByIdError(exn).into()),
+                                let exn = crate::services::my_service::PutDataByIdExn::read(p)?;
+                                match exn {
+                                    crate::services::my_service::PutDataByIdExn::Success(x) => Ok(x),
+                                    crate::services::my_service::PutDataByIdExn::ApplicationException(ae) => {
+                                        Err(crate::errors::my_service::PutDataByIdError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::MyServicePutDataByIdError(
-                                    crate::services::my_service::PutDataByIdExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::my_service::PutDataByIdError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::my_service::PutDataByIdError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -1353,7 +1368,7 @@ pub mod client {
             &self,
             arg_id: i64,
             arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1377,26 +1392,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
+                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::my_service::LobDataByIdError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::my_service::LobDataByIdExn::read(p)? {
-                                    crate::services::my_service::LobDataByIdExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::MyServiceLobDataByIdError(exn).into()),
+                                let exn = crate::services::my_service::LobDataByIdExn::read(p)?;
+                                match exn {
+                                    crate::services::my_service::LobDataByIdExn::Success(x) => Ok(x),
+                                    crate::services::my_service::LobDataByIdExn::ApplicationException(ae) => {
+                                        Err(crate::errors::my_service::LobDataByIdError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::MyServiceLobDataByIdError(
-                                    crate::services::my_service::LobDataByIdExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::my_service::LobDataByIdError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::my_service::LobDataByIdError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -1407,7 +1425,7 @@ pub mod client {
         }
         fn doNothing(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::DoNothingError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1425,26 +1443,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
+                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::my_service::DoNothingError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::my_service::DoNothingExn::read(p)? {
-                                    crate::services::my_service::DoNothingExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::MyServiceDoNothingError(exn).into()),
+                                let exn = crate::services::my_service::DoNothingExn::read(p)?;
+                                match exn {
+                                    crate::services::my_service::DoNothingExn::Success(x) => Ok(x),
+                                    crate::services::my_service::DoNothingExn::ApplicationException(ae) => {
+                                        Err(crate::errors::my_service::DoNothingError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::MyServiceDoNothingError(
-                                    crate::services::my_service::DoNothingExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::my_service::DoNothingError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::my_service::DoNothingError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -1462,20 +1483,20 @@ pub mod client {
     {
         fn ping(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::PingError>> + Send + 'static>> {
             self.as_ref().ping(
             )
         }
         fn getRandomData(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::my_service::GetRandomDataError>> + Send + 'static>> {
             self.as_ref().getRandomData(
             )
         }
         fn hasDataById(
             &self,
             arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<bool>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<bool, crate::errors::my_service::HasDataByIdError>> + Send + 'static>> {
             self.as_ref().hasDataById(
                 arg_id,
             )
@@ -1483,7 +1504,7 @@ pub mod client {
         fn getDataById(
             &self,
             arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::my_service::GetDataByIdError>> + Send + 'static>> {
             self.as_ref().getDataById(
                 arg_id,
             )
@@ -1492,7 +1513,7 @@ pub mod client {
             &self,
             arg_id: i64,
             arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + Send + 'static>> {
             self.as_ref().putDataById(
                 arg_id,
                 arg_data,
@@ -1502,7 +1523,7 @@ pub mod client {
             &self,
             arg_id: i64,
             arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + Send + 'static>> {
             self.as_ref().lobDataById(
                 arg_id,
                 arg_data,
@@ -1510,7 +1531,7 @@ pub mod client {
         }
         fn doNothing(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::DoNothingError>> + Send + 'static>> {
             self.as_ref().doNothing(
             )
         }
@@ -1580,10 +1601,10 @@ pub mod client {
     pub trait MyServicePrioParent: Send {
         fn ping(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> + Send + 'static>>;
         fn pong(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service_prio_parent::PongError>> + Send + 'static>>;
     }
 
     impl<P, T> MyServicePrioParent for MyServicePrioParentImpl<P, T>
@@ -1594,7 +1615,7 @@ pub mod client {
         ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
     {        fn ping(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1612,26 +1633,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
+                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::my_service_prio_parent::PingError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::my_service_prio_parent::PingExn::read(p)? {
-                                    crate::services::my_service_prio_parent::PingExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::MyServicePrioParentPingError(exn).into()),
+                                let exn = crate::services::my_service_prio_parent::PingExn::read(p)?;
+                                match exn {
+                                    crate::services::my_service_prio_parent::PingExn::Success(x) => Ok(x),
+                                    crate::services::my_service_prio_parent::PingExn::ApplicationException(ae) => {
+                                        Err(crate::errors::my_service_prio_parent::PingError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::MyServicePrioParentPingError(
-                                    crate::services::my_service_prio_parent::PingExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::my_service_prio_parent::PingError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::my_service_prio_parent::PingError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -1642,7 +1666,7 @@ pub mod client {
         }
         fn pong(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service_prio_parent::PongError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1660,26 +1684,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
+                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::my_service_prio_parent::PongError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::my_service_prio_parent::PongExn::read(p)? {
-                                    crate::services::my_service_prio_parent::PongExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::MyServicePrioParentPongError(exn).into()),
+                                let exn = crate::services::my_service_prio_parent::PongExn::read(p)?;
+                                match exn {
+                                    crate::services::my_service_prio_parent::PongExn::Success(x) => Ok(x),
+                                    crate::services::my_service_prio_parent::PongExn::ApplicationException(ae) => {
+                                        Err(crate::errors::my_service_prio_parent::PongError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::MyServicePrioParentPongError(
-                                    crate::services::my_service_prio_parent::PongExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::my_service_prio_parent::PongError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::my_service_prio_parent::PongError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -1697,13 +1724,13 @@ pub mod client {
     {
         fn ping(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> + Send + 'static>> {
             self.as_ref().ping(
             )
         }
         fn pong(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service_prio_parent::PongError>> + Send + 'static>> {
             self.as_ref().pong(
             )
         }
@@ -1784,7 +1811,7 @@ pub mod client {
     pub trait MyServicePrioChild: crate::client::MyServicePrioParent + Send {
         fn pang(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service_prio_child::PangError>> + Send + 'static>>;
     }
 
     impl<P, T> MyServicePrioChild for MyServicePrioChildImpl<P, T>
@@ -1795,7 +1822,7 @@ pub mod client {
         ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
     {        fn pang(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service_prio_child::PangError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1813,26 +1840,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
+                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::my_service_prio_child::PangError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::my_service_prio_child::PangExn::read(p)? {
-                                    crate::services::my_service_prio_child::PangExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::MyServicePrioChildPangError(exn).into()),
+                                let exn = crate::services::my_service_prio_child::PangExn::read(p)?;
+                                match exn {
+                                    crate::services::my_service_prio_child::PangExn::Success(x) => Ok(x),
+                                    crate::services::my_service_prio_child::PangExn::ApplicationException(ae) => {
+                                        Err(crate::errors::my_service_prio_child::PangError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::MyServicePrioChildPangError(
-                                    crate::services::my_service_prio_child::PangExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::my_service_prio_child::PangError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::my_service_prio_child::PangError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -1851,7 +1881,7 @@ pub mod client {
     {
         fn pang(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service_prio_child::PangError>> + Send + 'static>> {
             self.as_ref().pang(
             )
         }
@@ -3039,79 +3069,58 @@ pub mod mock {
     impl<'mock> super::client::MyService for MyService<'mock> {
         fn ping(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::PingError>> + Send + 'static>> {
             let mut closure = self.ping.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure()
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::MyServicePingError(error),
-                ))))
+            Box::pin(futures::future::ready(closure()))
         }
         fn getRandomData(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::my_service::GetRandomDataError>> + Send + 'static>> {
             let mut closure = self.getRandomData.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure()
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::MyServiceGetRandomDataError(error),
-                ))))
+            Box::pin(futures::future::ready(closure()))
         }
         fn hasDataById(
             &self,
             arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<bool>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<bool, crate::errors::my_service::HasDataByIdError>> + Send + 'static>> {
             let mut closure = self.hasDataById.closure.lock().unwrap();
             let closure: &mut dyn FnMut(i64) -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure(arg_id.clone())
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::MyServiceHasDataByIdError(error),
-                ))))
+            Box::pin(futures::future::ready(closure(arg_id.clone())))
         }
         fn getDataById(
             &self,
             arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::my_service::GetDataByIdError>> + Send + 'static>> {
             let mut closure = self.getDataById.closure.lock().unwrap();
             let closure: &mut dyn FnMut(i64) -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure(arg_id.clone())
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::MyServiceGetDataByIdError(error),
-                ))))
+            Box::pin(futures::future::ready(closure(arg_id.clone())))
         }
         fn putDataById(
             &self,
             arg_id: i64,
             arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + Send + 'static>> {
             let mut closure = self.putDataById.closure.lock().unwrap();
             let closure: &mut dyn FnMut(i64, String) -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure(arg_id.clone(), arg_data.to_owned())
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::MyServicePutDataByIdError(error),
-                ))))
+            Box::pin(futures::future::ready(closure(arg_id.clone(), arg_data.to_owned())))
         }
         fn lobDataById(
             &self,
             arg_id: i64,
             arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + Send + 'static>> {
             let mut closure = self.lobDataById.closure.lock().unwrap();
             let closure: &mut dyn FnMut(i64, String) -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure(arg_id.clone(), arg_data.to_owned())
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::MyServiceLobDataByIdError(error),
-                ))))
+            Box::pin(futures::future::ready(closure(arg_id.clone(), arg_data.to_owned())))
         }
         fn doNothing(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::DoNothingError>> + Send + 'static>> {
             let mut closure = self.doNothing.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure()
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::MyServiceDoNothingError(error),
-                ))))
+            Box::pin(futures::future::ready(closure()))
         }
     }
 
@@ -3122,7 +3131,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut() -> Result<
                     (),
-                    crate::services::my_service::PingExn,
+                    crate::errors::my_service::PingError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -3149,7 +3158,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::my_service::PingExn>,
+                E: Into<crate::errors::my_service::PingError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -3161,7 +3170,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut() -> Result<
                     String,
-                    crate::services::my_service::GetRandomDataExn,
+                    crate::errors::my_service::GetRandomDataError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -3188,7 +3197,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::my_service::GetRandomDataExn>,
+                E: Into<crate::errors::my_service::GetRandomDataError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -3200,7 +3209,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut(i64) -> Result<
                     bool,
-                    crate::services::my_service::HasDataByIdExn,
+                    crate::errors::my_service::HasDataByIdError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -3227,7 +3236,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::my_service::HasDataByIdExn>,
+                E: Into<crate::errors::my_service::HasDataByIdError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -3239,7 +3248,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut(i64) -> Result<
                     String,
-                    crate::services::my_service::GetDataByIdExn,
+                    crate::errors::my_service::GetDataByIdError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -3266,7 +3275,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::my_service::GetDataByIdExn>,
+                E: Into<crate::errors::my_service::GetDataByIdError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -3278,7 +3287,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut(i64, String) -> Result<
                     (),
-                    crate::services::my_service::PutDataByIdExn,
+                    crate::errors::my_service::PutDataByIdError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -3305,7 +3314,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::my_service::PutDataByIdExn>,
+                E: Into<crate::errors::my_service::PutDataByIdError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -3317,7 +3326,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut(i64, String) -> Result<
                     (),
-                    crate::services::my_service::LobDataByIdExn,
+                    crate::errors::my_service::LobDataByIdError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -3344,7 +3353,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::my_service::LobDataByIdExn>,
+                E: Into<crate::errors::my_service::LobDataByIdError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -3356,7 +3365,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut() -> Result<
                     (),
-                    crate::services::my_service::DoNothingExn,
+                    crate::errors::my_service::DoNothingError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -3383,7 +3392,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::my_service::DoNothingExn>,
+                E: Into<crate::errors::my_service::DoNothingError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -3412,23 +3421,17 @@ pub mod mock {
     impl<'mock> super::client::MyServicePrioParent for MyServicePrioParent<'mock> {
         fn ping(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> + Send + 'static>> {
             let mut closure = self.ping.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure()
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::MyServicePrioParentPingError(error),
-                ))))
+            Box::pin(futures::future::ready(closure()))
         }
         fn pong(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service_prio_parent::PongError>> + Send + 'static>> {
             let mut closure = self.pong.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure()
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::MyServicePrioParentPongError(error),
-                ))))
+            Box::pin(futures::future::ready(closure()))
         }
     }
 
@@ -3439,7 +3442,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut() -> Result<
                     (),
-                    crate::services::my_service_prio_parent::PingExn,
+                    crate::errors::my_service_prio_parent::PingError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -3466,7 +3469,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::my_service_prio_parent::PingExn>,
+                E: Into<crate::errors::my_service_prio_parent::PingError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -3478,7 +3481,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut() -> Result<
                     (),
-                    crate::services::my_service_prio_parent::PongExn,
+                    crate::errors::my_service_prio_parent::PongError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -3505,7 +3508,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::my_service_prio_parent::PongExn>,
+                E: Into<crate::errors::my_service_prio_parent::PongError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -3534,13 +3537,10 @@ pub mod mock {
     impl<'mock> super::client::MyServicePrioChild for MyServicePrioChild<'mock> {
         fn pang(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service_prio_child::PangError>> + Send + 'static>> {
             let mut closure = self.pang.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure()
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::MyServicePrioChildPangError(error),
-                ))))
+            Box::pin(futures::future::ready(closure()))
         }
     }
 
@@ -3559,7 +3559,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut() -> Result<
                     (),
-                    crate::services::my_service_prio_child::PangExn,
+                    crate::errors::my_service_prio_child::PangError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -3586,7 +3586,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::my_service_prio_child::PangExn>,
+                E: Into<crate::errors::my_service_prio_child::PangError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -3597,38 +3597,216 @@ pub mod mock {
 }
 
 pub mod errors {
-    use fbthrift::ApplicationException;
-    use thiserror::Error;
+    pub mod my_service {
 
-    #[derive(Debug, Error)]
-    pub enum ErrorKind {
-        #[error("MyService::ping failed with {0:?}")]
-        MyServicePingError(crate::services::my_service::PingExn),
-        #[error("MyService::getRandomData failed with {0:?}")]
-        MyServiceGetRandomDataError(crate::services::my_service::GetRandomDataExn),
-        #[error("MyService::hasDataById failed with {0:?}")]
-        MyServiceHasDataByIdError(crate::services::my_service::HasDataByIdExn),
-        #[error("MyService::getDataById failed with {0:?}")]
-        MyServiceGetDataByIdError(crate::services::my_service::GetDataByIdExn),
-        #[error("MyService::putDataById failed with {0:?}")]
-        MyServicePutDataByIdError(crate::services::my_service::PutDataByIdExn),
-        #[error("MyService::lobDataById failed with {0:?}")]
-        MyServiceLobDataByIdError(crate::services::my_service::LobDataByIdExn),
-        #[error("MyService::doNothing failed with {0:?}")]
-        MyServiceDoNothingError(crate::services::my_service::DoNothingExn),
-        #[error("MyServicePrioParent::ping failed with {0:?}")]
-        MyServicePrioParentPingError(crate::services::my_service_prio_parent::PingExn),
-        #[error("MyServicePrioParent::pong failed with {0:?}")]
-        MyServicePrioParentPongError(crate::services::my_service_prio_parent::PongExn),
-        #[error("MyServicePrioChild::pang failed with {0:?}")]
-        MyServicePrioChildPangError(crate::services::my_service_prio_child::PangExn),
-        #[error("Application exception: {0:?}")]
-        ApplicationException(ApplicationException),
-    }
-
-    impl From<ApplicationException> for ErrorKind {
-        fn from(exn: ApplicationException) -> Self {
-            ErrorKind::ApplicationException(exn)
+        #[derive(Debug, thiserror::Error)]
+        pub enum PingError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
         }
+
+        impl From<::anyhow::Error> for PingError {
+            fn from(err: ::anyhow::Error) -> Self {
+                PingError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for PingError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                PingError::ApplicationException(ae)
+            }
+        }
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum GetRandomDataError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<::anyhow::Error> for GetRandomDataError {
+            fn from(err: ::anyhow::Error) -> Self {
+                GetRandomDataError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for GetRandomDataError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                GetRandomDataError::ApplicationException(ae)
+            }
+        }
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum HasDataByIdError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<::anyhow::Error> for HasDataByIdError {
+            fn from(err: ::anyhow::Error) -> Self {
+                HasDataByIdError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for HasDataByIdError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                HasDataByIdError::ApplicationException(ae)
+            }
+        }
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum GetDataByIdError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<::anyhow::Error> for GetDataByIdError {
+            fn from(err: ::anyhow::Error) -> Self {
+                GetDataByIdError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for GetDataByIdError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                GetDataByIdError::ApplicationException(ae)
+            }
+        }
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum PutDataByIdError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<::anyhow::Error> for PutDataByIdError {
+            fn from(err: ::anyhow::Error) -> Self {
+                PutDataByIdError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for PutDataByIdError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                PutDataByIdError::ApplicationException(ae)
+            }
+        }
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum LobDataByIdError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<::anyhow::Error> for LobDataByIdError {
+            fn from(err: ::anyhow::Error) -> Self {
+                LobDataByIdError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for LobDataByIdError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                LobDataByIdError::ApplicationException(ae)
+            }
+        }
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum DoNothingError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<::anyhow::Error> for DoNothingError {
+            fn from(err: ::anyhow::Error) -> Self {
+                DoNothingError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for DoNothingError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                DoNothingError::ApplicationException(ae)
+            }
+        }
+
     }
+
+    pub mod my_service_prio_parent {
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum PingError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<::anyhow::Error> for PingError {
+            fn from(err: ::anyhow::Error) -> Self {
+                PingError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for PingError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                PingError::ApplicationException(ae)
+            }
+        }
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum PongError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<::anyhow::Error> for PongError {
+            fn from(err: ::anyhow::Error) -> Self {
+                PongError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for PongError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                PongError::ApplicationException(ae)
+            }
+        }
+
+    }
+
+    pub mod my_service_prio_child {
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum PangError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<::anyhow::Error> for PangError {
+            fn from(err: ::anyhow::Error) -> Self {
+                PangError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for PangError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                PangError::ApplicationException(ae)
+            }
+        }
+
+    }
+
 }

@@ -92,8 +92,9 @@
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<{{!
-            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<{{!
+            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+            }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + Send + 'static>>;{{!
         }}{{/service:functions}}
     }
@@ -112,8 +113,9 @@
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<{{!
-            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<{{!
+            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+            }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
@@ -141,28 +143,37 @@
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<{{!
-                        }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
+                    move |mut p: P::Deserializer| -> std::result::Result<{{!
+                        }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+                        }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
                     }}> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::read(p)? {
-                                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res) => Ok(res),
-                                    exn => Err({{program:crate}}::errors::ErrorKind::{{service:name}}{{function:upcamel}}Error(exn).into()),
+                                let exn = {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::read(p)?;
+                                match exn {
+                                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(x) => Ok(x),
+                                    {{#function:exceptions}}
+                                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::{{field:name}}(err) => {
+                                        Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::{{field:name}}(err))
+                                    }
+                                    {{/function:exceptions}}
+                                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(ae) => {
+                                        Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err({{program:crate}}::errors::ErrorKind::{{service:name}}{{function:upcamel}}Error(
-                                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(ae),
-                                ).into())
+                                Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -190,8 +201,9 @@
             {{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},
             {{/function:args}}
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<{{!
-            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<{{!
+            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+            }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + Send + 'static>> {
             self.as_ref().{{function:name}}(
                 {{#function:args}}

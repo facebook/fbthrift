@@ -1876,11 +1876,11 @@ pub mod client {
         fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<include::types::SomeMap>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + Send + 'static>>;
         fn binary_keyed_map(
             &self,
             arg_r: &[i64],
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<std::collections::BTreeMap<crate::types::TBinary, i64>>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<std::collections::BTreeMap<crate::types::TBinary, i64>, crate::errors::some_service::BinaryKeyedMapError>> + Send + 'static>>;
     }
 
     impl<P, T> SomeService for SomeServiceImpl<P, T>
@@ -1892,7 +1892,7 @@ pub mod client {
     {        fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<include::types::SomeMap>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1913,26 +1913,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<include::types::SomeMap> {
+                    move |mut p: P::Deserializer| -> std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::some_service::BounceMapExn::read(p)? {
-                                    crate::services::some_service::BounceMapExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::SomeServiceBounceMapError(exn).into()),
+                                let exn = crate::services::some_service::BounceMapExn::read(p)?;
+                                match exn {
+                                    crate::services::some_service::BounceMapExn::Success(x) => Ok(x),
+                                    crate::services::some_service::BounceMapExn::ApplicationException(ae) => {
+                                        Err(crate::errors::some_service::BounceMapError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::SomeServiceBounceMapError(
-                                    crate::services::some_service::BounceMapExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::some_service::BounceMapError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::some_service::BounceMapError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -1944,7 +1947,7 @@ pub mod client {
         fn binary_keyed_map(
             &self,
             arg_r: &[i64],
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<std::collections::BTreeMap<crate::types::TBinary, i64>>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<std::collections::BTreeMap<crate::types::TBinary, i64>, crate::errors::some_service::BinaryKeyedMapError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1965,26 +1968,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<std::collections::BTreeMap<crate::types::TBinary, i64>> {
+                    move |mut p: P::Deserializer| -> std::result::Result<std::collections::BTreeMap<crate::types::TBinary, i64>, crate::errors::some_service::BinaryKeyedMapError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::some_service::BinaryKeyedMapExn::read(p)? {
-                                    crate::services::some_service::BinaryKeyedMapExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::SomeServiceBinaryKeyedMapError(exn).into()),
+                                let exn = crate::services::some_service::BinaryKeyedMapExn::read(p)?;
+                                match exn {
+                                    crate::services::some_service::BinaryKeyedMapExn::Success(x) => Ok(x),
+                                    crate::services::some_service::BinaryKeyedMapExn::ApplicationException(ae) => {
+                                        Err(crate::errors::some_service::BinaryKeyedMapError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::SomeServiceBinaryKeyedMapError(
-                                    crate::services::some_service::BinaryKeyedMapExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::some_service::BinaryKeyedMapError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::some_service::BinaryKeyedMapError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -2003,7 +2009,7 @@ pub mod client {
         fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<include::types::SomeMap>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + Send + 'static>> {
             self.as_ref().bounce_map(
                 arg_m,
             )
@@ -2011,7 +2017,7 @@ pub mod client {
         fn binary_keyed_map(
             &self,
             arg_r: &[i64],
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<std::collections::BTreeMap<crate::types::TBinary, i64>>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<std::collections::BTreeMap<crate::types::TBinary, i64>, crate::errors::some_service::BinaryKeyedMapError>> + Send + 'static>> {
             self.as_ref().binary_keyed_map(
                 arg_r,
             )
@@ -2432,24 +2438,18 @@ pub mod mock {
         fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<include::types::SomeMap>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + Send + 'static>> {
             let mut closure = self.bounce_map.closure.lock().unwrap();
             let closure: &mut dyn FnMut(include::types::SomeMap) -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure(arg_m.clone())
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::SomeServiceBounceMapError(error),
-                ))))
+            Box::pin(futures::future::ready(closure(arg_m.clone())))
         }
         fn binary_keyed_map(
             &self,
             arg_r: &[i64],
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<std::collections::BTreeMap<crate::types::TBinary, i64>>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<std::collections::BTreeMap<crate::types::TBinary, i64>, crate::errors::some_service::BinaryKeyedMapError>> + Send + 'static>> {
             let mut closure = self.binary_keyed_map.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<i64>) -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure(arg_r.to_owned())
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::SomeServiceBinaryKeyedMapError(error),
-                ))))
+            Box::pin(futures::future::ready(closure(arg_r.to_owned())))
         }
     }
 
@@ -2460,7 +2460,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut(include::types::SomeMap) -> Result<
                     include::types::SomeMap,
-                    crate::services::some_service::BounceMapExn,
+                    crate::errors::some_service::BounceMapError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -2487,7 +2487,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::some_service::BounceMapExn>,
+                E: Into<crate::errors::some_service::BounceMapError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -2499,7 +2499,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut(Vec<i64>) -> Result<
                     std::collections::BTreeMap<crate::types::TBinary, i64>,
-                    crate::services::some_service::BinaryKeyedMapExn,
+                    crate::errors::some_service::BinaryKeyedMapError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -2526,7 +2526,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::some_service::BinaryKeyedMapExn>,
+                E: Into<crate::errors::some_service::BinaryKeyedMapError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -2537,22 +2537,48 @@ pub mod mock {
 }
 
 pub mod errors {
-    use fbthrift::ApplicationException;
-    use thiserror::Error;
+    pub mod some_service {
 
-    #[derive(Debug, Error)]
-    pub enum ErrorKind {
-        #[error("SomeService::bounce_map failed with {0:?}")]
-        SomeServiceBounceMapError(crate::services::some_service::BounceMapExn),
-        #[error("SomeService::binary_keyed_map failed with {0:?}")]
-        SomeServiceBinaryKeyedMapError(crate::services::some_service::BinaryKeyedMapExn),
-        #[error("Application exception: {0:?}")]
-        ApplicationException(ApplicationException),
-    }
-
-    impl From<ApplicationException> for ErrorKind {
-        fn from(exn: ApplicationException) -> Self {
-            ErrorKind::ApplicationException(exn)
+        #[derive(Debug, thiserror::Error)]
+        pub enum BounceMapError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
         }
+
+        impl From<::anyhow::Error> for BounceMapError {
+            fn from(err: ::anyhow::Error) -> Self {
+                BounceMapError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for BounceMapError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                BounceMapError::ApplicationException(ae)
+            }
+        }
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum BinaryKeyedMapError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<::anyhow::Error> for BinaryKeyedMapError {
+            fn from(err: ::anyhow::Error) -> Self {
+                BinaryKeyedMapError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for BinaryKeyedMapError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                BinaryKeyedMapError::ApplicationException(ae)
+            }
+        }
+
     }
+
 }

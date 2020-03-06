@@ -53,8 +53,9 @@
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<{{!
-            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<{{!
+            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+            }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + Send + 'static>> {
             let mut closure = self.{{function:name}}.closure.lock().unwrap();
             let closure: &mut dyn FnMut({{!
@@ -74,10 +75,7 @@
                 }}{{/field:type}}{{!
                 }}{{^last?}}, {{/last?}}{{!
                 }}{{/function:args}}{{!
-            }})
-                .map_err(|error| anyhow::Error::from(
-                    {{program:crate}}::errors::ErrorKind::{{service:name}}{{function:upcamel}}Error(error),
-                ))))
+            }})))
         }{{!
         }}{{/service:functions}}
     }
@@ -114,7 +112,7 @@
                     }}{{/function:args}}{{!
                 }}) -> Result<
                     {{#function:returnType}}{{>lib/type}}{{/function:returnType}},
-                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn,
+                    {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -171,7 +169,7 @@
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn>,
+                E: Into<{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();

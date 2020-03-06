@@ -630,16 +630,16 @@ pub mod client {
     pub trait Raiser: Send {
         fn doBland(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::raiser::DoBlandError>> + Send + 'static>>;
         fn doRaise(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::raiser::DoRaiseError>> + Send + 'static>>;
         fn get200(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::raiser::Get200Error>> + Send + 'static>>;
         fn get500(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::raiser::Get500Error>> + Send + 'static>>;
     }
 
     impl<P, T> Raiser for RaiserImpl<P, T>
@@ -650,7 +650,7 @@ pub mod client {
         ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
     {        fn doBland(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::raiser::DoBlandError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -668,26 +668,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
+                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::raiser::DoBlandError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::raiser::DoBlandExn::read(p)? {
-                                    crate::services::raiser::DoBlandExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::RaiserDoBlandError(exn).into()),
+                                let exn = crate::services::raiser::DoBlandExn::read(p)?;
+                                match exn {
+                                    crate::services::raiser::DoBlandExn::Success(x) => Ok(x),
+                                    crate::services::raiser::DoBlandExn::ApplicationException(ae) => {
+                                        Err(crate::errors::raiser::DoBlandError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::RaiserDoBlandError(
-                                    crate::services::raiser::DoBlandExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::raiser::DoBlandError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::raiser::DoBlandError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -698,7 +701,7 @@ pub mod client {
         }
         fn doRaise(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::raiser::DoRaiseError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -716,26 +719,38 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
+                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::raiser::DoRaiseError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::raiser::DoRaiseExn::read(p)? {
-                                    crate::services::raiser::DoRaiseExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::RaiserDoRaiseError(exn).into()),
+                                let exn = crate::services::raiser::DoRaiseExn::read(p)?;
+                                match exn {
+                                    crate::services::raiser::DoRaiseExn::Success(x) => Ok(x),
+                                    crate::services::raiser::DoRaiseExn::b(err) => {
+                                        Err(crate::errors::raiser::DoRaiseError::b(err))
+                                    }
+                                    crate::services::raiser::DoRaiseExn::f(err) => {
+                                        Err(crate::errors::raiser::DoRaiseError::f(err))
+                                    }
+                                    crate::services::raiser::DoRaiseExn::s(err) => {
+                                        Err(crate::errors::raiser::DoRaiseError::s(err))
+                                    }
+                                    crate::services::raiser::DoRaiseExn::ApplicationException(ae) => {
+                                        Err(crate::errors::raiser::DoRaiseError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::RaiserDoRaiseError(
-                                    crate::services::raiser::DoRaiseExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::raiser::DoRaiseError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::raiser::DoRaiseError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -746,7 +761,7 @@ pub mod client {
         }
         fn get200(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::raiser::Get200Error>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -764,26 +779,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<String> {
+                    move |mut p: P::Deserializer| -> std::result::Result<String, crate::errors::raiser::Get200Error> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::raiser::Get200Exn::read(p)? {
-                                    crate::services::raiser::Get200Exn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::RaiserGet200Error(exn).into()),
+                                let exn = crate::services::raiser::Get200Exn::read(p)?;
+                                match exn {
+                                    crate::services::raiser::Get200Exn::Success(x) => Ok(x),
+                                    crate::services::raiser::Get200Exn::ApplicationException(ae) => {
+                                        Err(crate::errors::raiser::Get200Error::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::RaiserGet200Error(
-                                    crate::services::raiser::Get200Exn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::raiser::Get200Error::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::raiser::Get200Error::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -794,7 +812,7 @@ pub mod client {
         }
         fn get500(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::raiser::Get500Error>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -812,26 +830,38 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<String> {
+                    move |mut p: P::Deserializer| -> std::result::Result<String, crate::errors::raiser::Get500Error> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::raiser::Get500Exn::read(p)? {
-                                    crate::services::raiser::Get500Exn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::RaiserGet500Error(exn).into()),
+                                let exn = crate::services::raiser::Get500Exn::read(p)?;
+                                match exn {
+                                    crate::services::raiser::Get500Exn::Success(x) => Ok(x),
+                                    crate::services::raiser::Get500Exn::f(err) => {
+                                        Err(crate::errors::raiser::Get500Error::f(err))
+                                    }
+                                    crate::services::raiser::Get500Exn::b(err) => {
+                                        Err(crate::errors::raiser::Get500Error::b(err))
+                                    }
+                                    crate::services::raiser::Get500Exn::s(err) => {
+                                        Err(crate::errors::raiser::Get500Error::s(err))
+                                    }
+                                    crate::services::raiser::Get500Exn::ApplicationException(ae) => {
+                                        Err(crate::errors::raiser::Get500Error::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::RaiserGet500Error(
-                                    crate::services::raiser::Get500Exn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::raiser::Get500Error::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::raiser::Get500Error::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -849,25 +879,25 @@ pub mod client {
     {
         fn doBland(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::raiser::DoBlandError>> + Send + 'static>> {
             self.as_ref().doBland(
             )
         }
         fn doRaise(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::raiser::DoRaiseError>> + Send + 'static>> {
             self.as_ref().doRaise(
             )
         }
         fn get200(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::raiser::Get200Error>> + Send + 'static>> {
             self.as_ref().get200(
             )
         }
         fn get500(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::raiser::Get500Error>> + Send + 'static>> {
             self.as_ref().get500(
             )
         }
@@ -1382,43 +1412,31 @@ pub mod mock {
     impl<'mock> super::client::Raiser for Raiser<'mock> {
         fn doBland(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::raiser::DoBlandError>> + Send + 'static>> {
             let mut closure = self.doBland.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure()
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::RaiserDoBlandError(error),
-                ))))
+            Box::pin(futures::future::ready(closure()))
         }
         fn doRaise(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::raiser::DoRaiseError>> + Send + 'static>> {
             let mut closure = self.doRaise.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure()
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::RaiserDoRaiseError(error),
-                ))))
+            Box::pin(futures::future::ready(closure()))
         }
         fn get200(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::raiser::Get200Error>> + Send + 'static>> {
             let mut closure = self.get200.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure()
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::RaiserGet200Error(error),
-                ))))
+            Box::pin(futures::future::ready(closure()))
         }
         fn get500(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::raiser::Get500Error>> + Send + 'static>> {
             let mut closure = self.get500.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure()
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::RaiserGet500Error(error),
-                ))))
+            Box::pin(futures::future::ready(closure()))
         }
     }
 
@@ -1429,7 +1447,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut() -> Result<
                     (),
-                    crate::services::raiser::DoBlandExn,
+                    crate::errors::raiser::DoBlandError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -1456,7 +1474,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::raiser::DoBlandExn>,
+                E: Into<crate::errors::raiser::DoBlandError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -1468,7 +1486,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut() -> Result<
                     (),
-                    crate::services::raiser::DoRaiseExn,
+                    crate::errors::raiser::DoRaiseError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -1495,7 +1513,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::raiser::DoRaiseExn>,
+                E: Into<crate::errors::raiser::DoRaiseError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -1507,7 +1525,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut() -> Result<
                     String,
-                    crate::services::raiser::Get200Exn,
+                    crate::errors::raiser::Get200Error,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -1534,7 +1552,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::raiser::Get200Exn>,
+                E: Into<crate::errors::raiser::Get200Error>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -1546,7 +1564,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut() -> Result<
                     String,
-                    crate::services::raiser::Get500Exn,
+                    crate::errors::raiser::Get500Error,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -1573,7 +1591,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::raiser::Get500Exn>,
+                E: Into<crate::errors::raiser::Get500Error>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -1584,26 +1602,136 @@ pub mod mock {
 }
 
 pub mod errors {
-    use fbthrift::ApplicationException;
-    use thiserror::Error;
+    pub mod raiser {
 
-    #[derive(Debug, Error)]
-    pub enum ErrorKind {
-        #[error("Raiser::doBland failed with {0:?}")]
-        RaiserDoBlandError(crate::services::raiser::DoBlandExn),
-        #[error("Raiser::doRaise failed with {0:?}")]
-        RaiserDoRaiseError(crate::services::raiser::DoRaiseExn),
-        #[error("Raiser::get200 failed with {0:?}")]
-        RaiserGet200Error(crate::services::raiser::Get200Exn),
-        #[error("Raiser::get500 failed with {0:?}")]
-        RaiserGet500Error(crate::services::raiser::Get500Exn),
-        #[error("Application exception: {0:?}")]
-        ApplicationException(ApplicationException),
-    }
-
-    impl From<ApplicationException> for ErrorKind {
-        fn from(exn: ApplicationException) -> Self {
-            ErrorKind::ApplicationException(exn)
+        #[derive(Debug, thiserror::Error)]
+        pub enum DoBlandError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
         }
+
+        impl From<::anyhow::Error> for DoBlandError {
+            fn from(err: ::anyhow::Error) -> Self {
+                DoBlandError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for DoBlandError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                DoBlandError::ApplicationException(ae)
+            }
+        }
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum DoRaiseError {
+            #[error("Raiser::doRaise failed with {0:?}")]
+            b(crate::types::Banal),
+            #[error("Raiser::doRaise failed with {0:?}")]
+            f(crate::types::Fiery),
+            #[error("Raiser::doRaise failed with {0:?}")]
+            s(crate::types::Serious),
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<crate::types::Banal> for DoRaiseError {
+            fn from(e: crate::types::Banal) -> Self {
+                DoRaiseError::b(e)
+            }
+        }
+
+        impl From<crate::types::Fiery> for DoRaiseError {
+            fn from(e: crate::types::Fiery) -> Self {
+                DoRaiseError::f(e)
+            }
+        }
+
+        impl From<crate::types::Serious> for DoRaiseError {
+            fn from(e: crate::types::Serious) -> Self {
+                DoRaiseError::s(e)
+            }
+        }
+
+        impl From<::anyhow::Error> for DoRaiseError {
+            fn from(err: ::anyhow::Error) -> Self {
+                DoRaiseError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for DoRaiseError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                DoRaiseError::ApplicationException(ae)
+            }
+        }
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum Get200Error {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<::anyhow::Error> for Get200Error {
+            fn from(err: ::anyhow::Error) -> Self {
+                Get200Error::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for Get200Error {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                Get200Error::ApplicationException(ae)
+            }
+        }
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum Get500Error {
+            #[error("Raiser::get500 failed with {0:?}")]
+            f(crate::types::Fiery),
+            #[error("Raiser::get500 failed with {0:?}")]
+            b(crate::types::Banal),
+            #[error("Raiser::get500 failed with {0:?}")]
+            s(crate::types::Serious),
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<crate::types::Fiery> for Get500Error {
+            fn from(e: crate::types::Fiery) -> Self {
+                Get500Error::f(e)
+            }
+        }
+
+        impl From<crate::types::Banal> for Get500Error {
+            fn from(e: crate::types::Banal) -> Self {
+                Get500Error::b(e)
+            }
+        }
+
+        impl From<crate::types::Serious> for Get500Error {
+            fn from(e: crate::types::Serious) -> Self {
+                Get500Error::s(e)
+            }
+        }
+
+        impl From<::anyhow::Error> for Get500Error {
+            fn from(err: ::anyhow::Error) -> Self {
+                Get500Error::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for Get500Error {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                Get500Error::ApplicationException(ae)
+            }
+        }
+
     }
+
 }

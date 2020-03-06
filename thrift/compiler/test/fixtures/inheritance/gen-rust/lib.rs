@@ -286,7 +286,7 @@ pub mod client {
     pub trait MyRoot: Send {
         fn do_root(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_root::DoRootError>> + Send + 'static>>;
     }
 
     impl<P, T> MyRoot for MyRootImpl<P, T>
@@ -297,7 +297,7 @@ pub mod client {
         ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
     {        fn do_root(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_root::DoRootError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -315,26 +315,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
+                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::my_root::DoRootError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::my_root::DoRootExn::read(p)? {
-                                    crate::services::my_root::DoRootExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::MyRootDoRootError(exn).into()),
+                                let exn = crate::services::my_root::DoRootExn::read(p)?;
+                                match exn {
+                                    crate::services::my_root::DoRootExn::Success(x) => Ok(x),
+                                    crate::services::my_root::DoRootExn::ApplicationException(ae) => {
+                                        Err(crate::errors::my_root::DoRootError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::MyRootDoRootError(
-                                    crate::services::my_root::DoRootExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::my_root::DoRootError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::my_root::DoRootError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -352,7 +355,7 @@ pub mod client {
     {
         fn do_root(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_root::DoRootError>> + Send + 'static>> {
             self.as_ref().do_root(
             )
         }
@@ -432,7 +435,7 @@ pub mod client {
     pub trait MyNode: crate::client::MyRoot + Send {
         fn do_mid(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_node::DoMidError>> + Send + 'static>>;
     }
 
     impl<P, T> MyNode for MyNodeImpl<P, T>
@@ -443,7 +446,7 @@ pub mod client {
         ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
     {        fn do_mid(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_node::DoMidError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -461,26 +464,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
+                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::my_node::DoMidError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::my_node::DoMidExn::read(p)? {
-                                    crate::services::my_node::DoMidExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::MyNodeDoMidError(exn).into()),
+                                let exn = crate::services::my_node::DoMidExn::read(p)?;
+                                match exn {
+                                    crate::services::my_node::DoMidExn::Success(x) => Ok(x),
+                                    crate::services::my_node::DoMidExn::ApplicationException(ae) => {
+                                        Err(crate::errors::my_node::DoMidError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::MyNodeDoMidError(
-                                    crate::services::my_node::DoMidExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::my_node::DoMidError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::my_node::DoMidError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -499,7 +505,7 @@ pub mod client {
     {
         fn do_mid(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_node::DoMidError>> + Send + 'static>> {
             self.as_ref().do_mid(
             )
         }
@@ -592,7 +598,7 @@ pub mod client {
     pub trait MyLeaf: crate::client::MyNode + Send {
         fn do_leaf(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + Send + 'static>>;
     }
 
     impl<P, T> MyLeaf for MyLeafImpl<P, T>
@@ -603,7 +609,7 @@ pub mod client {
         ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
     {        fn do_leaf(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -621,26 +627,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
+                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::my_leaf::DoLeafError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::my_leaf::DoLeafExn::read(p)? {
-                                    crate::services::my_leaf::DoLeafExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::MyLeafDoLeafError(exn).into()),
+                                let exn = crate::services::my_leaf::DoLeafExn::read(p)?;
+                                match exn {
+                                    crate::services::my_leaf::DoLeafExn::Success(x) => Ok(x),
+                                    crate::services::my_leaf::DoLeafExn::ApplicationException(ae) => {
+                                        Err(crate::errors::my_leaf::DoLeafError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::MyLeafDoLeafError(
-                                    crate::services::my_leaf::DoLeafExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::my_leaf::DoLeafError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::my_leaf::DoLeafError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -660,7 +669,7 @@ pub mod client {
     {
         fn do_leaf(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + Send + 'static>> {
             self.as_ref().do_leaf(
             )
         }
@@ -1417,13 +1426,10 @@ pub mod mock {
     impl<'mock> super::client::MyRoot for MyRoot<'mock> {
         fn do_root(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_root::DoRootError>> + Send + 'static>> {
             let mut closure = self.do_root.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure()
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::MyRootDoRootError(error),
-                ))))
+            Box::pin(futures::future::ready(closure()))
         }
     }
 
@@ -1434,7 +1440,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut() -> Result<
                     (),
-                    crate::services::my_root::DoRootExn,
+                    crate::errors::my_root::DoRootError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -1461,7 +1467,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::my_root::DoRootExn>,
+                E: Into<crate::errors::my_root::DoRootError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -1490,13 +1496,10 @@ pub mod mock {
     impl<'mock> super::client::MyNode for MyNode<'mock> {
         fn do_mid(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_node::DoMidError>> + Send + 'static>> {
             let mut closure = self.do_mid.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure()
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::MyNodeDoMidError(error),
-                ))))
+            Box::pin(futures::future::ready(closure()))
         }
     }
 
@@ -1515,7 +1518,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut() -> Result<
                     (),
-                    crate::services::my_node::DoMidExn,
+                    crate::errors::my_node::DoMidError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -1542,7 +1545,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::my_node::DoMidExn>,
+                E: Into<crate::errors::my_node::DoMidError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -1571,13 +1574,10 @@ pub mod mock {
     impl<'mock> super::client::MyLeaf for MyLeaf<'mock> {
         fn do_leaf(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + Send + 'static>> {
             let mut closure = self.do_leaf.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure()
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::MyLeafDoLeafError(error),
-                ))))
+            Box::pin(futures::future::ready(closure()))
         }
     }
 
@@ -1604,7 +1604,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut() -> Result<
                     (),
-                    crate::services::my_leaf::DoLeafExn,
+                    crate::errors::my_leaf::DoLeafError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -1631,7 +1631,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::my_leaf::DoLeafExn>,
+                E: Into<crate::errors::my_leaf::DoLeafError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -1642,24 +1642,76 @@ pub mod mock {
 }
 
 pub mod errors {
-    use fbthrift::ApplicationException;
-    use thiserror::Error;
+    pub mod my_root {
 
-    #[derive(Debug, Error)]
-    pub enum ErrorKind {
-        #[error("MyRoot::do_root failed with {0:?}")]
-        MyRootDoRootError(crate::services::my_root::DoRootExn),
-        #[error("MyNode::do_mid failed with {0:?}")]
-        MyNodeDoMidError(crate::services::my_node::DoMidExn),
-        #[error("MyLeaf::do_leaf failed with {0:?}")]
-        MyLeafDoLeafError(crate::services::my_leaf::DoLeafExn),
-        #[error("Application exception: {0:?}")]
-        ApplicationException(ApplicationException),
-    }
-
-    impl From<ApplicationException> for ErrorKind {
-        fn from(exn: ApplicationException) -> Self {
-            ErrorKind::ApplicationException(exn)
+        #[derive(Debug, thiserror::Error)]
+        pub enum DoRootError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
         }
+
+        impl From<::anyhow::Error> for DoRootError {
+            fn from(err: ::anyhow::Error) -> Self {
+                DoRootError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for DoRootError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                DoRootError::ApplicationException(ae)
+            }
+        }
+
     }
+
+    pub mod my_node {
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum DoMidError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<::anyhow::Error> for DoMidError {
+            fn from(err: ::anyhow::Error) -> Self {
+                DoMidError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for DoMidError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                DoMidError::ApplicationException(ae)
+            }
+        }
+
+    }
+
+    pub mod my_leaf {
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum DoLeafError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<::anyhow::Error> for DoLeafError {
+            fn from(err: ::anyhow::Error) -> Self {
+                DoLeafError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for DoLeafError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                DoLeafError::ApplicationException(ae)
+            }
+        }
+
+    }
+
 }

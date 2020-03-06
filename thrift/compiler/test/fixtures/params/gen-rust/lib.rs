@@ -425,23 +425,23 @@ pub mod client {
         fn mapList(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, Vec<i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::MapListError>> + Send + 'static>>;
         fn mapSet(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::MapSetError>> + Send + 'static>>;
         fn listMap(
             &self,
             arg_foo: &[std::collections::BTreeMap<i32, i32>],
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::ListMapError>> + Send + 'static>>;
         fn listSet(
             &self,
             arg_foo: &[std::collections::BTreeSet<i32>],
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::ListSetError>> + Send + 'static>>;
         fn turtles(
             &self,
             arg_foo: &[Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>],
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::TurtlesError>> + Send + 'static>>;
     }
 
     impl<P, T> NestedContainers for NestedContainersImpl<P, T>
@@ -453,7 +453,7 @@ pub mod client {
     {        fn mapList(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, Vec<i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::MapListError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -474,26 +474,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
+                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::nested_containers::MapListError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::nested_containers::MapListExn::read(p)? {
-                                    crate::services::nested_containers::MapListExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::NestedContainersMapListError(exn).into()),
+                                let exn = crate::services::nested_containers::MapListExn::read(p)?;
+                                match exn {
+                                    crate::services::nested_containers::MapListExn::Success(x) => Ok(x),
+                                    crate::services::nested_containers::MapListExn::ApplicationException(ae) => {
+                                        Err(crate::errors::nested_containers::MapListError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::NestedContainersMapListError(
-                                    crate::services::nested_containers::MapListExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::nested_containers::MapListError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::nested_containers::MapListError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -505,7 +508,7 @@ pub mod client {
         fn mapSet(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::MapSetError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -526,26 +529,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
+                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::nested_containers::MapSetError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::nested_containers::MapSetExn::read(p)? {
-                                    crate::services::nested_containers::MapSetExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::NestedContainersMapSetError(exn).into()),
+                                let exn = crate::services::nested_containers::MapSetExn::read(p)?;
+                                match exn {
+                                    crate::services::nested_containers::MapSetExn::Success(x) => Ok(x),
+                                    crate::services::nested_containers::MapSetExn::ApplicationException(ae) => {
+                                        Err(crate::errors::nested_containers::MapSetError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::NestedContainersMapSetError(
-                                    crate::services::nested_containers::MapSetExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::nested_containers::MapSetError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::nested_containers::MapSetError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -557,7 +563,7 @@ pub mod client {
         fn listMap(
             &self,
             arg_foo: &[std::collections::BTreeMap<i32, i32>],
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::ListMapError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -578,26 +584,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
+                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::nested_containers::ListMapError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::nested_containers::ListMapExn::read(p)? {
-                                    crate::services::nested_containers::ListMapExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::NestedContainersListMapError(exn).into()),
+                                let exn = crate::services::nested_containers::ListMapExn::read(p)?;
+                                match exn {
+                                    crate::services::nested_containers::ListMapExn::Success(x) => Ok(x),
+                                    crate::services::nested_containers::ListMapExn::ApplicationException(ae) => {
+                                        Err(crate::errors::nested_containers::ListMapError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::NestedContainersListMapError(
-                                    crate::services::nested_containers::ListMapExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::nested_containers::ListMapError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::nested_containers::ListMapError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -609,7 +618,7 @@ pub mod client {
         fn listSet(
             &self,
             arg_foo: &[std::collections::BTreeSet<i32>],
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::ListSetError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -630,26 +639,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
+                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::nested_containers::ListSetError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::nested_containers::ListSetExn::read(p)? {
-                                    crate::services::nested_containers::ListSetExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::NestedContainersListSetError(exn).into()),
+                                let exn = crate::services::nested_containers::ListSetExn::read(p)?;
+                                match exn {
+                                    crate::services::nested_containers::ListSetExn::Success(x) => Ok(x),
+                                    crate::services::nested_containers::ListSetExn::ApplicationException(ae) => {
+                                        Err(crate::errors::nested_containers::ListSetError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::NestedContainersListSetError(
-                                    crate::services::nested_containers::ListSetExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::nested_containers::ListSetError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::nested_containers::ListSetError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -661,7 +673,7 @@ pub mod client {
         fn turtles(
             &self,
             arg_foo: &[Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>],
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::TurtlesError>> + Send + 'static>> {
             use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -682,26 +694,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
+                .map_err(From::from)
                 .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
+                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::nested_containers::TurtlesError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
                             MessageType::Reply => {
-                                match crate::services::nested_containers::TurtlesExn::read(p)? {
-                                    crate::services::nested_containers::TurtlesExn::Success(res) => Ok(res),
-                                    exn => Err(crate::errors::ErrorKind::NestedContainersTurtlesError(exn).into()),
+                                let exn = crate::services::nested_containers::TurtlesExn::read(p)?;
+                                match exn {
+                                    crate::services::nested_containers::TurtlesExn::Success(x) => Ok(x),
+                                    crate::services::nested_containers::TurtlesExn::ApplicationException(ae) => {
+                                        Err(crate::errors::nested_containers::TurtlesError::ApplicationException(ae))
+                                    }
                                 }
                             }
                             MessageType::Exception => {
                                 let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::ErrorKind::NestedContainersTurtlesError(
-                                    crate::services::nested_containers::TurtlesExn::ApplicationException(ae),
-                                ).into())
+                                Err(crate::errors::nested_containers::TurtlesError::ApplicationException(ae))
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                anyhow::bail!("Unexpected message type {:?}", message_type)
+                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                Err(crate::errors::nested_containers::TurtlesError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -720,7 +735,7 @@ pub mod client {
         fn mapList(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, Vec<i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::MapListError>> + Send + 'static>> {
             self.as_ref().mapList(
                 arg_foo,
             )
@@ -728,7 +743,7 @@ pub mod client {
         fn mapSet(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::MapSetError>> + Send + 'static>> {
             self.as_ref().mapSet(
                 arg_foo,
             )
@@ -736,7 +751,7 @@ pub mod client {
         fn listMap(
             &self,
             arg_foo: &[std::collections::BTreeMap<i32, i32>],
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::ListMapError>> + Send + 'static>> {
             self.as_ref().listMap(
                 arg_foo,
             )
@@ -744,7 +759,7 @@ pub mod client {
         fn listSet(
             &self,
             arg_foo: &[std::collections::BTreeSet<i32>],
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::ListSetError>> + Send + 'static>> {
             self.as_ref().listSet(
                 arg_foo,
             )
@@ -752,7 +767,7 @@ pub mod client {
         fn turtles(
             &self,
             arg_foo: &[Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>],
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::TurtlesError>> + Send + 'static>> {
             self.as_ref().turtles(
                 arg_foo,
             )
@@ -1368,57 +1383,42 @@ pub mod mock {
         fn mapList(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, Vec<i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::MapListError>> + Send + 'static>> {
             let mut closure = self.mapList.closure.lock().unwrap();
             let closure: &mut dyn FnMut(std::collections::BTreeMap<i32, Vec<i32>>) -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure(arg_foo.clone())
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::NestedContainersMapListError(error),
-                ))))
+            Box::pin(futures::future::ready(closure(arg_foo.clone())))
         }
         fn mapSet(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::MapSetError>> + Send + 'static>> {
             let mut closure = self.mapSet.closure.lock().unwrap();
             let closure: &mut dyn FnMut(std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>) -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure(arg_foo.clone())
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::NestedContainersMapSetError(error),
-                ))))
+            Box::pin(futures::future::ready(closure(arg_foo.clone())))
         }
         fn listMap(
             &self,
             arg_foo: &[std::collections::BTreeMap<i32, i32>],
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::ListMapError>> + Send + 'static>> {
             let mut closure = self.listMap.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<std::collections::BTreeMap<i32, i32>>) -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure(arg_foo.to_owned())
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::NestedContainersListMapError(error),
-                ))))
+            Box::pin(futures::future::ready(closure(arg_foo.to_owned())))
         }
         fn listSet(
             &self,
             arg_foo: &[std::collections::BTreeSet<i32>],
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::ListSetError>> + Send + 'static>> {
             let mut closure = self.listSet.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<std::collections::BTreeSet<i32>>) -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure(arg_foo.to_owned())
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::NestedContainersListSetError(error),
-                ))))
+            Box::pin(futures::future::ready(closure(arg_foo.to_owned())))
         }
         fn turtles(
             &self,
             arg_foo: &[Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>],
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::nested_containers::TurtlesError>> + Send + 'static>> {
             let mut closure = self.turtles.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>) -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure(arg_foo.to_owned())
-                .map_err(|error| anyhow::Error::from(
-                    crate::errors::ErrorKind::NestedContainersTurtlesError(error),
-                ))))
+            Box::pin(futures::future::ready(closure(arg_foo.to_owned())))
         }
     }
 
@@ -1429,7 +1429,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut(std::collections::BTreeMap<i32, Vec<i32>>) -> Result<
                     (),
-                    crate::services::nested_containers::MapListExn,
+                    crate::errors::nested_containers::MapListError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -1456,7 +1456,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::nested_containers::MapListExn>,
+                E: Into<crate::errors::nested_containers::MapListError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -1468,7 +1468,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut(std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>) -> Result<
                     (),
-                    crate::services::nested_containers::MapSetExn,
+                    crate::errors::nested_containers::MapSetError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -1495,7 +1495,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::nested_containers::MapSetExn>,
+                E: Into<crate::errors::nested_containers::MapSetError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -1507,7 +1507,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut(Vec<std::collections::BTreeMap<i32, i32>>) -> Result<
                     (),
-                    crate::services::nested_containers::ListMapExn,
+                    crate::errors::nested_containers::ListMapError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -1534,7 +1534,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::nested_containers::ListMapExn>,
+                E: Into<crate::errors::nested_containers::ListMapError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -1546,7 +1546,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut(Vec<std::collections::BTreeSet<i32>>) -> Result<
                     (),
-                    crate::services::nested_containers::ListSetExn,
+                    crate::errors::nested_containers::ListSetError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -1573,7 +1573,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::nested_containers::ListSetExn>,
+                E: Into<crate::errors::nested_containers::ListSetError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -1585,7 +1585,7 @@ pub mod mock {
             pub(super) closure: Mutex<Box<
                 dyn FnMut(Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>) -> Result<
                     (),
-                    crate::services::nested_containers::TurtlesExn,
+                    crate::errors::nested_containers::TurtlesError,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -1612,7 +1612,7 @@ pub mod mock {
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::nested_containers::TurtlesExn>,
+                E: Into<crate::errors::nested_containers::TurtlesError>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
@@ -1623,28 +1623,108 @@ pub mod mock {
 }
 
 pub mod errors {
-    use fbthrift::ApplicationException;
-    use thiserror::Error;
+    pub mod nested_containers {
 
-    #[derive(Debug, Error)]
-    pub enum ErrorKind {
-        #[error("NestedContainers::mapList failed with {0:?}")]
-        NestedContainersMapListError(crate::services::nested_containers::MapListExn),
-        #[error("NestedContainers::mapSet failed with {0:?}")]
-        NestedContainersMapSetError(crate::services::nested_containers::MapSetExn),
-        #[error("NestedContainers::listMap failed with {0:?}")]
-        NestedContainersListMapError(crate::services::nested_containers::ListMapExn),
-        #[error("NestedContainers::listSet failed with {0:?}")]
-        NestedContainersListSetError(crate::services::nested_containers::ListSetExn),
-        #[error("NestedContainers::turtles failed with {0:?}")]
-        NestedContainersTurtlesError(crate::services::nested_containers::TurtlesExn),
-        #[error("Application exception: {0:?}")]
-        ApplicationException(ApplicationException),
-    }
-
-    impl From<ApplicationException> for ErrorKind {
-        fn from(exn: ApplicationException) -> Self {
-            ErrorKind::ApplicationException(exn)
+        #[derive(Debug, thiserror::Error)]
+        pub enum MapListError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
         }
+
+        impl From<::anyhow::Error> for MapListError {
+            fn from(err: ::anyhow::Error) -> Self {
+                MapListError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for MapListError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                MapListError::ApplicationException(ae)
+            }
+        }
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum MapSetError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<::anyhow::Error> for MapSetError {
+            fn from(err: ::anyhow::Error) -> Self {
+                MapSetError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for MapSetError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                MapSetError::ApplicationException(ae)
+            }
+        }
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum ListMapError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<::anyhow::Error> for ListMapError {
+            fn from(err: ::anyhow::Error) -> Self {
+                ListMapError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for ListMapError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                ListMapError::ApplicationException(ae)
+            }
+        }
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum ListSetError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<::anyhow::Error> for ListSetError {
+            fn from(err: ::anyhow::Error) -> Self {
+                ListSetError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for ListSetError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                ListSetError::ApplicationException(ae)
+            }
+        }
+
+        #[derive(Debug, thiserror::Error)]
+        pub enum TurtlesError {
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl From<::anyhow::Error> for TurtlesError {
+            fn from(err: ::anyhow::Error) -> Self {
+                TurtlesError::ThriftError(err)
+            }
+        }
+
+        impl From<::fbthrift::ApplicationException> for TurtlesError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                TurtlesError::ApplicationException(ae)
+            }
+        }
+
     }
+
 }
