@@ -357,13 +357,18 @@ void ThriftRocketServerHandler::handleRequestCommon(
       }
     }
   }
-  cpp2Processor_->process(
-      std::move(request),
-      std::move(data),
-      protocolId,
-      cpp2ReqCtx,
-      eventBase_,
-      threadManager_.get());
+  try {
+    cpp2Processor_->process(
+        std::move(request),
+        std::move(data),
+        protocolId,
+        cpp2ReqCtx,
+        eventBase_,
+        threadManager_.get());
+  } catch (...) {
+    LOG(DFATAL) << "AsyncProcessor::process exception: "
+                << folly::exceptionStr(std::current_exception());
+  }
 }
 
 void ThriftRocketServerHandler::handleRequestWithBadMetadata(

@@ -396,9 +396,8 @@ void Cpp2Connection::requestReceived(
         worker_->getEventBase(),
         threadManager_.get());
   } catch (...) {
-    LOG(WARNING) << "Process exception: "
-                 << folly::exceptionStr(std::current_exception());
-    throw;
+    LOG(DFATAL) << "AsyncProcessor::process exception: "
+                << folly::exceptionStr(std::current_exception());
   }
 }
 
