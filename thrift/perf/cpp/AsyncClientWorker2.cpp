@@ -18,8 +18,6 @@
 
 #include <thrift/perf/cpp/AsyncClientWorker2.h>
 
-#include <queue>
-
 #include <proxygen/lib/http/codec/HTTP2Codec.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
@@ -29,6 +27,7 @@
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/perf/cpp/ClientLoadConfig.h>
+#include <queue>
 
 using namespace apache::thrift::test;
 using namespace apache::thrift::async;
@@ -84,14 +83,16 @@ class AsyncRunner2 {
       const std::shared_ptr<ScoreBoard>& scoreboard,
       const LoadTestClientPtr& client,
       int n_ops,
-      int n_async)
+      int n_async,
+      AsyncIntervalTimer* atimer)
       : terminator_(terminator),
         config_(config),
         scoreboard_(scoreboard),
         client_(client),
         ctr_(n_ops),
         n_outstanding_(0),
-        n_async_(n_async) {}
+        n_async_(n_async),
+        asyncTimer_(atimer) {}
 
   ~AsyncRunner2() {}
 
@@ -119,6 +120,7 @@ class AsyncRunner2 {
   int ctr_;
   int n_outstanding_;
   int n_async_;
+  AsyncIntervalTimer* asyncTimer_;
 };
 
 class LoadCallback : public RequestCallback {
@@ -197,6 +199,7 @@ void AsyncClientWorker2::run() {
   std::list<AsyncRunner2*> clients;
   std::list<AsyncRunner2*>::iterator it;
   LoopTerminator loopTerminator(&eb_);
+
   do {
     // Create a new connection
     int n_clients = getConfig()->getAsyncClients();
@@ -204,6 +207,8 @@ void AsyncClientWorker2::run() {
     uint32_t nops = getConfig()->pickOpsPerConnection();
     // How many outstanding ops at a time
     int n_async = getConfig()->getAsyncOpsPerClient();
+    asyncTimer_.setRatePerSec(
+        getConfig()->getDesiredQPS(), getConfig()->getNumWorkerThreads());
 
     for (int i = 0; i < n_clients; i++) {
       std::shared_ptr<LoadTestAsyncClient> client;
@@ -215,7 +220,8 @@ void AsyncClientWorker2::run() {
             getScoreBoard(),
             client,
             nops,
-            n_async);
+            n_async,
+            &asyncTimer_);
         clients.push_back(r);
       } catch (const std::exception& ex) {
         ErrorAction action = handleConnError(ex);
@@ -238,6 +244,7 @@ void AsyncClientWorker2::run() {
         }
       }
     }
+    asyncTimer_.start();
     for (auto r : clients) {
       r->startRun();
     }
@@ -274,11 +281,12 @@ void AsyncClientWorker2::setupSSLContext() {
 }
 
 void AsyncRunner2::performAsyncOperation() {
-  // We don't support throttled QPS right now.  The right way to do
-  // this requires an AsyncIntervalTimer
-
   LoadCallback* cb = new LoadCallback(this, client_.get());
   std::unique_ptr<RequestCallback> recvCob(cb);
+
+  if (!asyncTimer_->sleep()) {
+    T_ERROR("can't keep up with requested QPS rate");
+  }
 
   uint32_t opType = config_->pickOpType();
   scoreboard_->opStarted(opType);

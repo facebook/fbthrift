@@ -20,6 +20,7 @@
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/SSLContext.h>
 #include <thrift/lib/cpp/test/loadgen/Worker.h>
+#include <thrift/perf/cpp/AsyncIntervalTimer.h>
 #include <thrift/perf/cpp/ClientLoadConfig.h>
 #include <thrift/perf/if/gen-cpp2/LoadTest.h>
 
@@ -36,7 +37,8 @@ namespace thrift {
 class AsyncClientWorker2
     : public Worker<test::LoadTestAsyncClient, ClientLoadConfig> {
  public:
-  AsyncClientWorker2() : eb_(), sslContext_(new folly::SSLContext()) {
+  AsyncClientWorker2()
+      : eb_(), asyncTimer_(0), sslContext_(new folly::SSLContext()) {
     setupSSLContext();
   }
 
@@ -53,8 +55,8 @@ class AsyncClientWorker2
 
  private:
   void setupSSLContext();
-
   folly::EventBase eb_;
+  AsyncIntervalTimer asyncTimer_;
   std::shared_ptr<folly::SSLContext> sslContext_;
 
   struct SessionDeleter {
