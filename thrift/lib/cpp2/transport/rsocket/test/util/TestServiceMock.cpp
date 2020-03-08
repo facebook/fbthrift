@@ -266,5 +266,8 @@ apache::thrift::ServerStream<std::string> TestStreamServiceMock::streamBlobs(
   return std::move(stream);
 }
 
+void TestStreamServiceMock::async_eb_leakCallback(
+    std::unique_ptr<apache::thrift::HandlerCallback<
+        apache::thrift::ServerStream<int32_t>>>) {}
 } // namespace testservice
 } // namespace testutil

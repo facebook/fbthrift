@@ -74,6 +74,8 @@ service StreamService {
 
   stream<i32> requestWithBlob(1: binary (cpp2.type = "folly::IOBuf") val);
   stream<string> streamBlobs(1:i32 count);
+
+  stream<i32> leakCallback() (thread = "eb");
 }
 
 # OldVersion and NewVersion services will be used to test the behavior

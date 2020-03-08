@@ -66,6 +66,10 @@ class TestStreamServiceMock : public StreamServiceSvIf {
 
   apache::thrift::ServerStream<std::string> streamBlobs(int32_t count) override;
 
+  void async_eb_leakCallback(
+      std::unique_ptr<apache::thrift::HandlerCallback<
+          apache::thrift::ServerStream<int32_t>>>) override;
+
  protected:
   folly::ScopedEventBaseThread executor_;
 

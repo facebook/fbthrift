@@ -497,6 +497,12 @@ class HandlerCallbackBase {
   virtual ~HandlerCallbackBase() {
     // req must be deleted in the eb
     if (req_) {
+      if (ewp_) {
+        exception(TApplicationException(
+            TApplicationException::INTERNAL_ERROR,
+            "apache::thrift::HandlerCallback not completed"));
+        return;
+      }
       DCHECK(eb_);
       if (eb_->inRunningEventBaseThread()) {
         req_.reset();
@@ -613,7 +619,7 @@ class HandlerCallbackBase {
       apache::thrift::TApplicationException ex(
           "Failed to add task to queue, too full");
       if (req_ && ewp_) {
-        req_->sendErrorWrapped(
+        std::exchange(req_, {})->sendErrorWrapped(
             folly::make_exception_wrapper<TApplicationException>(std::move(ex)),
             kQueueOverloadedErrorCode);
       } else {
@@ -676,7 +682,7 @@ class HandlerCallbackBase {
       return;
     }
     if (getEventBase()->isInEventBaseThread()) {
-      f(std::move(req_), protoSeqId_, ctx_.get(), ex, reqCtx_);
+      f(std::exchange(req_, {}), protoSeqId_, ctx_.get(), ex, reqCtx_);
       ctx_.reset();
     } else {
       getEventBase()->runInEventBaseThread([f = std::forward<F>(f),
@@ -694,7 +700,7 @@ class HandlerCallbackBase {
     folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
     transform(queue);
     if (getEventBase()->isInEventBaseThread()) {
-      req_->sendReply(queue.move(), nullptr, crc32c);
+      std::exchange(req_, {})->sendReply(queue.move(), nullptr, crc32c);
     } else {
       getEventBase()->runInEventBaseThread(
           [req = std::move(req_), queue = std::move(queue), crc32c]() mutable {
@@ -954,8 +960,6 @@ class HandlerCallback<void> : public HandlerCallbackBase {
         cp_(cp) {
     this->protoSeqId_ = protoSeqId;
   }
-
-  ~HandlerCallback() override {}
 
   void done() {
     doDone();

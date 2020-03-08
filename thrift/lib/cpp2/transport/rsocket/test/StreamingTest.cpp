@@ -1046,5 +1046,18 @@ TEST_F(StreamingTest, SetMaxRequests) {
     EXPECT_ANY_THROW(client->sync_range(rpcOptions, 0, 10));
   });
 }
+
+TEST_F(StreamingTest, LeakCallback) {
+  server_->setMaxRequests(2);
+  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
+    try {
+      client->sync_leakCallback();
+      ADD_FAILURE() << "Didn't throw";
+    } catch (const TApplicationException& ex) {
+      EXPECT_TRUE(folly::StringPiece(ex.what()).contains(
+          "HandlerCallback not completed"));
+    }
+  });
+}
 } // namespace thrift
 } // namespace apache
