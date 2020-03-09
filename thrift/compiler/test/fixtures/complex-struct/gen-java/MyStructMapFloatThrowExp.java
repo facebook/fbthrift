@@ -202,37 +202,16 @@ public class MyStructMapFloatThrowExp implements TBase, java.io.Serializable, Cl
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof MyStructMapFloatThrowExp)
-      return this.equals((MyStructMapFloatThrowExp)that);
-    return false;
-  }
-
-  public boolean equals(MyStructMapFloatThrowExp that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    MyStructMapFloatThrowExp that = (MyStructMapFloatThrowExp)_that;
 
-    boolean this_present_myLongField = true;
-    boolean that_present_myLongField = true;
-    if (this_present_myLongField || that_present_myLongField) {
-      if (!(this_present_myLongField && that_present_myLongField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myLongField, that.myLongField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myLongField, that.myLongField)) { return false; }
 
-    boolean this_present_mapListOfFloats = true && this.isSetMapListOfFloats();
-    boolean that_present_mapListOfFloats = true && that.isSetMapListOfFloats();
-    if (this_present_mapListOfFloats || that_present_mapListOfFloats) {
-      if (!(this_present_mapListOfFloats && that_present_mapListOfFloats))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.mapListOfFloats, that.mapListOfFloats))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMapListOfFloats(), that.isSetMapListOfFloats(), this.mapListOfFloats, that.mapListOfFloats)) { return false; }
 
     return true;
   }
@@ -259,7 +238,7 @@ public class MyStructMapFloatThrowExp implements TBase, java.io.Serializable, Cl
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myLongField, other.myLongField);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMapListOfFloats()).compareTo(other.isSetMapListOfFloats());
@@ -267,7 +246,7 @@ public class MyStructMapFloatThrowExp implements TBase, java.io.Serializable, Cl
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(mapListOfFloats, other.mapListOfFloats);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

@@ -429,73 +429,24 @@ public class complexException extends Exception implements TBase, java.io.Serial
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof complexException)
-      return this.equals((complexException)that);
-    return false;
-  }
-
-  public boolean equals(complexException that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    complexException that = (complexException)_that;
 
-    boolean this_present_message = true && this.isSetMessage();
-    boolean that_present_message = true && that.isSetMessage();
-    if (this_present_message || that_present_message) {
-      if (!(this_present_message && that_present_message))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.message, that.message))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMessage(), that.isSetMessage(), this.message, that.message)) { return false; }
 
-    boolean this_present_listStrings = true && this.isSetListStrings();
-    boolean that_present_listStrings = true && that.isSetListStrings();
-    if (this_present_listStrings || that_present_listStrings) {
-      if (!(this_present_listStrings && that_present_listStrings))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.listStrings, that.listStrings))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetListStrings(), that.isSetListStrings(), this.listStrings, that.listStrings)) { return false; }
 
-    boolean this_present_errorEnum = true && this.isSetErrorEnum();
-    boolean that_present_errorEnum = true && that.isSetErrorEnum();
-    if (this_present_errorEnum || that_present_errorEnum) {
-      if (!(this_present_errorEnum && that_present_errorEnum))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.errorEnum, that.errorEnum))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetErrorEnum(), that.isSetErrorEnum(), this.errorEnum, that.errorEnum)) { return false; }
 
-    boolean this_present_unionError = true && this.isSetUnionError();
-    boolean that_present_unionError = true && that.isSetUnionError();
-    if (this_present_unionError || that_present_unionError) {
-      if (!(this_present_unionError && that_present_unionError))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.unionError, that.unionError))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetUnionError(), that.isSetUnionError(), this.unionError, that.unionError)) { return false; }
 
-    boolean this_present_structError = true && this.isSetStructError();
-    boolean that_present_structError = true && that.isSetStructError();
-    if (this_present_structError || that_present_structError) {
-      if (!(this_present_structError && that_present_structError))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.structError, that.structError))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetStructError(), that.isSetStructError(), this.structError, that.structError)) { return false; }
 
-    boolean this_present_lsMap = true && this.isSetLsMap();
-    boolean that_present_lsMap = true && that.isSetLsMap();
-    if (this_present_lsMap || that_present_lsMap) {
-      if (!(this_present_lsMap && that_present_lsMap))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.lsMap, that.lsMap))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetLsMap(), that.isSetLsMap(), this.lsMap, that.lsMap)) { return false; }
 
     return true;
   }

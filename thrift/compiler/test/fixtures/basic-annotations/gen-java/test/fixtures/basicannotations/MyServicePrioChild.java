@@ -235,19 +235,12 @@ public class MyServicePrioChild {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof pang_args)
-        return this.equals((pang_args)that);
-      return false;
-    }
-
-    public boolean equals(pang_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      pang_args that = (pang_args)_that;
 
       return true;
     }
@@ -373,19 +366,12 @@ public class MyServicePrioChild {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof pang_result)
-        return this.equals((pang_result)that);
-      return false;
-    }
-
-    public boolean equals(pang_result that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      pang_result that = (pang_result)_that;
 
       return true;
     }

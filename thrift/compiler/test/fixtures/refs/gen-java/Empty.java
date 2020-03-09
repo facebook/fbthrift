@@ -78,19 +78,12 @@ public class Empty implements TBase, java.io.Serializable, Cloneable, Comparable
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof Empty)
-      return this.equals((Empty)that);
-    return false;
-  }
-
-  public boolean equals(Empty that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    Empty that = (Empty)_that;
 
     return true;
   }

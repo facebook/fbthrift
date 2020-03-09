@@ -644,109 +644,32 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof Person)
-      return this.equals((Person)that);
-    return false;
-  }
-
-  public boolean equals(Person that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    Person that = (Person)_that;
 
-    boolean this_present_id = true;
-    boolean that_present_id = true;
-    if (this_present_id || that_present_id) {
-      if (!(this_present_id && that_present_id))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.id, that.id))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.id, that.id)) { return false; }
 
-    boolean this_present_name = true && this.isSetName();
-    boolean that_present_name = true && that.isSetName();
-    if (this_present_name || that_present_name) {
-      if (!(this_present_name && that_present_name))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.name, that.name))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetName(), that.isSetName(), this.name, that.name)) { return false; }
 
-    boolean this_present_age = true && this.isSetAge();
-    boolean that_present_age = true && that.isSetAge();
-    if (this_present_age || that_present_age) {
-      if (!(this_present_age && that_present_age))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.age, that.age))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetAge(), that.isSetAge(), this.age, that.age)) { return false; }
 
-    boolean this_present_address = true && this.isSetAddress();
-    boolean that_present_address = true && that.isSetAddress();
-    if (this_present_address || that_present_address) {
-      if (!(this_present_address && that_present_address))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.address, that.address))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetAddress(), that.isSetAddress(), this.address, that.address)) { return false; }
 
-    boolean this_present_favoriteColor = true && this.isSetFavoriteColor();
-    boolean that_present_favoriteColor = true && that.isSetFavoriteColor();
-    if (this_present_favoriteColor || that_present_favoriteColor) {
-      if (!(this_present_favoriteColor && that_present_favoriteColor))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.favoriteColor, that.favoriteColor))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetFavoriteColor(), that.isSetFavoriteColor(), this.favoriteColor, that.favoriteColor)) { return false; }
 
-    boolean this_present_friends = true && this.isSetFriends();
-    boolean that_present_friends = true && that.isSetFriends();
-    if (this_present_friends || that_present_friends) {
-      if (!(this_present_friends && that_present_friends))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.friends, that.friends))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetFriends(), that.isSetFriends(), this.friends, that.friends)) { return false; }
 
-    boolean this_present_bestFriend = true && this.isSetBestFriend();
-    boolean that_present_bestFriend = true && that.isSetBestFriend();
-    if (this_present_bestFriend || that_present_bestFriend) {
-      if (!(this_present_bestFriend && that_present_bestFriend))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.bestFriend, that.bestFriend))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetBestFriend(), that.isSetBestFriend(), this.bestFriend, that.bestFriend)) { return false; }
 
-    boolean this_present_petNames = true && this.isSetPetNames();
-    boolean that_present_petNames = true && that.isSetPetNames();
-    if (this_present_petNames || that_present_petNames) {
-      if (!(this_present_petNames && that_present_petNames))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.petNames, that.petNames))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetPetNames(), that.isSetPetNames(), this.petNames, that.petNames)) { return false; }
 
-    boolean this_present_afraidOfAnimal = true && this.isSetAfraidOfAnimal();
-    boolean that_present_afraidOfAnimal = true && that.isSetAfraidOfAnimal();
-    if (this_present_afraidOfAnimal || that_present_afraidOfAnimal) {
-      if (!(this_present_afraidOfAnimal && that_present_afraidOfAnimal))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.afraidOfAnimal, that.afraidOfAnimal))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetAfraidOfAnimal(), that.isSetAfraidOfAnimal(), this.afraidOfAnimal, that.afraidOfAnimal)) { return false; }
 
-    boolean this_present_vehicles = true && this.isSetVehicles();
-    boolean that_present_vehicles = true && that.isSetVehicles();
-    if (this_present_vehicles || that_present_vehicles) {
-      if (!(this_present_vehicles && that_present_vehicles))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.vehicles, that.vehicles))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetVehicles(), that.isSetVehicles(), this.vehicles, that.vehicles)) { return false; }
 
     return true;
   }
@@ -773,7 +696,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(id, other.id);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetName()).compareTo(other.isSetName());
@@ -781,7 +704,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(name, other.name);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetAge()).compareTo(other.isSetAge());
@@ -789,7 +712,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(age, other.age);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetAddress()).compareTo(other.isSetAddress());
@@ -797,7 +720,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(address, other.address);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetFavoriteColor()).compareTo(other.isSetFavoriteColor());
@@ -805,7 +728,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(favoriteColor, other.favoriteColor);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetFriends()).compareTo(other.isSetFriends());
@@ -813,7 +736,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(friends, other.friends);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetBestFriend()).compareTo(other.isSetBestFriend());
@@ -821,7 +744,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(bestFriend, other.bestFriend);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetPetNames()).compareTo(other.isSetPetNames());
@@ -829,7 +752,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(petNames, other.petNames);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetAfraidOfAnimal()).compareTo(other.isSetAfraidOfAnimal());
@@ -837,7 +760,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(afraidOfAnimal, other.afraidOfAnimal);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetVehicles()).compareTo(other.isSetVehicles());
@@ -845,7 +768,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(vehicles, other.vehicles);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

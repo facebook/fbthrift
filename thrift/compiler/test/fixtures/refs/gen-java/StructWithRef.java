@@ -258,46 +258,18 @@ public class StructWithRef implements TBase, java.io.Serializable, Cloneable, Co
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof StructWithRef)
-      return this.equals((StructWithRef)that);
-    return false;
-  }
-
-  public boolean equals(StructWithRef that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    StructWithRef that = (StructWithRef)_that;
 
-    boolean this_present_def_field = true && this.isSetDef_field();
-    boolean that_present_def_field = true && that.isSetDef_field();
-    if (this_present_def_field || that_present_def_field) {
-      if (!(this_present_def_field && that_present_def_field))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.def_field, that.def_field))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetDef_field(), that.isSetDef_field(), this.def_field, that.def_field)) { return false; }
 
-    boolean this_present_opt_field = true && this.isSetOpt_field();
-    boolean that_present_opt_field = true && that.isSetOpt_field();
-    if (this_present_opt_field || that_present_opt_field) {
-      if (!(this_present_opt_field && that_present_opt_field))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.opt_field, that.opt_field))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetOpt_field(), that.isSetOpt_field(), this.opt_field, that.opt_field)) { return false; }
 
-    boolean this_present_req_field = true && this.isSetReq_field();
-    boolean that_present_req_field = true && that.isSetReq_field();
-    if (this_present_req_field || that_present_req_field) {
-      if (!(this_present_req_field && that_present_req_field))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.req_field, that.req_field))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetReq_field(), that.isSetReq_field(), this.req_field, that.req_field)) { return false; }
 
     return true;
   }
@@ -324,7 +296,7 @@ public class StructWithRef implements TBase, java.io.Serializable, Cloneable, Co
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(def_field, other.def_field);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetOpt_field()).compareTo(other.isSetOpt_field());
@@ -332,7 +304,7 @@ public class StructWithRef implements TBase, java.io.Serializable, Cloneable, Co
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(opt_field, other.opt_field);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetReq_field()).compareTo(other.isSetReq_field());
@@ -340,7 +312,7 @@ public class StructWithRef implements TBase, java.io.Serializable, Cloneable, Co
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(req_field, other.req_field);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

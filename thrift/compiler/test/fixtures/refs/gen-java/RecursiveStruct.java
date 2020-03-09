@@ -140,28 +140,14 @@ public class RecursiveStruct implements TBase, java.io.Serializable, Cloneable {
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof RecursiveStruct)
-      return this.equals((RecursiveStruct)that);
-    return false;
-  }
-
-  public boolean equals(RecursiveStruct that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    RecursiveStruct that = (RecursiveStruct)_that;
 
-    boolean this_present_mes = true && this.isSetMes();
-    boolean that_present_mes = true && that.isSetMes();
-    if (this_present_mes || that_present_mes) {
-      if (!(this_present_mes && that_present_mes))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.mes, that.mes))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMes(), that.isSetMes(), this.mes, that.mes)) { return false; }
 
     return true;
   }

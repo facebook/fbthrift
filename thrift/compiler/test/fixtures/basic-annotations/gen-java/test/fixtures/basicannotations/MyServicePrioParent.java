@@ -359,19 +359,12 @@ public class MyServicePrioParent {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof ping_args)
-        return this.equals((ping_args)that);
-      return false;
-    }
-
-    public boolean equals(ping_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      ping_args that = (ping_args)_that;
 
       return true;
     }
@@ -497,19 +490,12 @@ public class MyServicePrioParent {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof ping_result)
-        return this.equals((ping_result)that);
-      return false;
-    }
-
-    public boolean equals(ping_result that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      ping_result that = (ping_result)_that;
 
       return true;
     }
@@ -634,19 +620,12 @@ public class MyServicePrioParent {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof pong_args)
-        return this.equals((pong_args)that);
-      return false;
-    }
-
-    public boolean equals(pong_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      pong_args that = (pong_args)_that;
 
       return true;
     }
@@ -772,19 +751,12 @@ public class MyServicePrioParent {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof pong_result)
-        return this.equals((pong_result)that);
-      return false;
-    }
-
-    public boolean equals(pong_result that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      pong_result that = (pong_result)_that;
 
       return true;
     }

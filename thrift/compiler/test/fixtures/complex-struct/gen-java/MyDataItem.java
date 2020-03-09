@@ -78,19 +78,12 @@ public class MyDataItem implements TBase, java.io.Serializable, Cloneable, Compa
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof MyDataItem)
-      return this.equals((MyDataItem)that);
-    return false;
-  }
-
-  public boolean equals(MyDataItem that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    MyDataItem that = (MyDataItem)_that;
 
     return true;
   }

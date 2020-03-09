@@ -138,28 +138,14 @@ public class Fiery extends Exception implements TBase, java.io.Serializable, Clo
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof Fiery)
-      return this.equals((Fiery)that);
-    return false;
-  }
-
-  public boolean equals(Fiery that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    Fiery that = (Fiery)_that;
 
-    boolean this_present_message = true && this.isSetMessage();
-    boolean that_present_message = true && that.isSetMessage();
-    if (this_present_message || that_present_message) {
-      if (!(this_present_message && that_present_message))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.message, that.message))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMessage(), that.isSetMessage(), this.message, that.message)) { return false; }
 
     return true;
   }

@@ -78,19 +78,12 @@ public class FooEx extends Exception implements TBase, java.io.Serializable, Clo
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof FooEx)
-      return this.equals((FooEx)that);
-    return false;
-  }
-
-  public boolean equals(FooEx that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    FooEx that = (FooEx)_that;
 
     return true;
   }

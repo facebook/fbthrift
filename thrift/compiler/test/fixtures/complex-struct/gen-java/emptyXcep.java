@@ -78,19 +78,12 @@ public class emptyXcep extends Exception implements TBase, java.io.Serializable,
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof emptyXcep)
-      return this.equals((emptyXcep)that);
-    return false;
-  }
-
-  public boolean equals(emptyXcep that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    emptyXcep that = (emptyXcep)_that;
 
     return true;
   }

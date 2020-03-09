@@ -126,55 +126,20 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof MyStruct)
-      return this.equals((MyStruct)that);
-    return false;
-  }
-
-  public boolean equals(MyStruct that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    MyStruct that = (MyStruct)_that;
 
-    boolean this_present_MyIntField = true && this.isSetMyIntField();
-    boolean that_present_MyIntField = true && that.isSetMyIntField();
-    if (this_present_MyIntField || that_present_MyIntField) {
-      if (!(this_present_MyIntField && that_present_MyIntField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.MyIntField, that.MyIntField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyIntField(), that.isSetMyIntField(), this.MyIntField, that.MyIntField)) { return false; }
 
-    boolean this_present_MyStringField = true && this.isSetMyStringField();
-    boolean that_present_MyStringField = true && that.isSetMyStringField();
-    if (this_present_MyStringField || that_present_MyStringField) {
-      if (!(this_present_MyStringField && that_present_MyStringField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.MyStringField, that.MyStringField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyStringField(), that.isSetMyStringField(), this.MyStringField, that.MyStringField)) { return false; }
 
-    boolean this_present_MyDataField = true && this.isSetMyDataField();
-    boolean that_present_MyDataField = true && that.isSetMyDataField();
-    if (this_present_MyDataField || that_present_MyDataField) {
-      if (!(this_present_MyDataField && that_present_MyDataField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.MyDataField, that.MyDataField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyDataField(), that.isSetMyDataField(), this.MyDataField, that.MyDataField)) { return false; }
 
-    boolean this_present_myEnum = true && this.isSetMyEnum();
-    boolean that_present_myEnum = true && that.isSetMyEnum();
-    if (this_present_myEnum || that_present_myEnum) {
-      if (!(this_present_myEnum && that_present_myEnum))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myEnum, that.myEnum))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyEnum(), that.isSetMyEnum(), this.myEnum, that.myEnum)) { return false; }
 
     return true;
   }

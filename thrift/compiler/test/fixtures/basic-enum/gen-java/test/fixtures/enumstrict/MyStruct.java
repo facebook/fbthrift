@@ -218,37 +218,16 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof MyStruct)
-      return this.equals((MyStruct)that);
-    return false;
-  }
-
-  public boolean equals(MyStruct that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    MyStruct that = (MyStruct)_that;
 
-    boolean this_present_myEnum = true && this.isSetMyEnum();
-    boolean that_present_myEnum = true && that.isSetMyEnum();
-    if (this_present_myEnum || that_present_myEnum) {
-      if (!(this_present_myEnum && that_present_myEnum))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myEnum, that.myEnum))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyEnum(), that.isSetMyEnum(), this.myEnum, that.myEnum)) { return false; }
 
-    boolean this_present_myBigEnum = true && this.isSetMyBigEnum();
-    boolean that_present_myBigEnum = true && that.isSetMyBigEnum();
-    if (this_present_myBigEnum || that_present_myBigEnum) {
-      if (!(this_present_myBigEnum && that_present_myBigEnum))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myBigEnum, that.myBigEnum))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyBigEnum(), that.isSetMyBigEnum(), this.myBigEnum, that.myBigEnum)) { return false; }
 
     return true;
   }
@@ -275,7 +254,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myEnum, other.myEnum);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyBigEnum()).compareTo(other.isSetMyBigEnum());
@@ -283,7 +262,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myBigEnum, other.myBigEnum);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

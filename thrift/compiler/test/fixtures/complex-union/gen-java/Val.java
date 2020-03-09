@@ -252,46 +252,18 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof Val)
-      return this.equals((Val)that);
-    return false;
-  }
-
-  public boolean equals(Val that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    Val that = (Val)_that;
 
-    boolean this_present_strVal = true && this.isSetStrVal();
-    boolean that_present_strVal = true && that.isSetStrVal();
-    if (this_present_strVal || that_present_strVal) {
-      if (!(this_present_strVal && that_present_strVal))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.strVal, that.strVal))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetStrVal(), that.isSetStrVal(), this.strVal, that.strVal)) { return false; }
 
-    boolean this_present_intVal = true;
-    boolean that_present_intVal = true;
-    if (this_present_intVal || that_present_intVal) {
-      if (!(this_present_intVal && that_present_intVal))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.intVal, that.intVal))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.intVal, that.intVal)) { return false; }
 
-    boolean this_present_typedefValue = true && this.isSetTypedefValue();
-    boolean that_present_typedefValue = true && that.isSetTypedefValue();
-    if (this_present_typedefValue || that_present_typedefValue) {
-      if (!(this_present_typedefValue && that_present_typedefValue))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.typedefValue, that.typedefValue))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetTypedefValue(), that.isSetTypedefValue(), this.typedefValue, that.typedefValue)) { return false; }
 
     return true;
   }
@@ -318,7 +290,7 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(strVal, other.strVal);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetIntVal()).compareTo(other.isSetIntVal());
@@ -326,7 +298,7 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(intVal, other.intVal);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetTypedefValue()).compareTo(other.isSetTypedefValue());
@@ -334,7 +306,7 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(typedefValue, other.typedefValue);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

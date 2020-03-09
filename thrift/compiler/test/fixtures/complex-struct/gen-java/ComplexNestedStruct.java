@@ -1093,181 +1093,48 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof ComplexNestedStruct)
-      return this.equals((ComplexNestedStruct)that);
-    return false;
-  }
-
-  public boolean equals(ComplexNestedStruct that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    ComplexNestedStruct that = (ComplexNestedStruct)_that;
 
-    boolean this_present_setOfSetOfInt = true && this.isSetSetOfSetOfInt();
-    boolean that_present_setOfSetOfInt = true && that.isSetSetOfSetOfInt();
-    if (this_present_setOfSetOfInt || that_present_setOfSetOfInt) {
-      if (!(this_present_setOfSetOfInt && that_present_setOfSetOfInt))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.setOfSetOfInt, that.setOfSetOfInt))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetSetOfSetOfInt(), that.isSetSetOfSetOfInt(), this.setOfSetOfInt, that.setOfSetOfInt)) { return false; }
 
-    boolean this_present_listofListOfListOfListOfEnum = true && this.isSetListofListOfListOfListOfEnum();
-    boolean that_present_listofListOfListOfListOfEnum = true && that.isSetListofListOfListOfListOfEnum();
-    if (this_present_listofListOfListOfListOfEnum || that_present_listofListOfListOfListOfEnum) {
-      if (!(this_present_listofListOfListOfListOfEnum && that_present_listofListOfListOfListOfEnum))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.listofListOfListOfListOfEnum, that.listofListOfListOfListOfEnum))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetListofListOfListOfListOfEnum(), that.isSetListofListOfListOfListOfEnum(), this.listofListOfListOfListOfEnum, that.listofListOfListOfListOfEnum)) { return false; }
 
-    boolean this_present_listOfListOfMyStruct = true && this.isSetListOfListOfMyStruct();
-    boolean that_present_listOfListOfMyStruct = true && that.isSetListOfListOfMyStruct();
-    if (this_present_listOfListOfMyStruct || that_present_listOfListOfMyStruct) {
-      if (!(this_present_listOfListOfMyStruct && that_present_listOfListOfMyStruct))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.listOfListOfMyStruct, that.listOfListOfMyStruct))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetListOfListOfMyStruct(), that.isSetListOfListOfMyStruct(), this.listOfListOfMyStruct, that.listOfListOfMyStruct)) { return false; }
 
-    boolean this_present_setOfListOfListOfLong = true && this.isSetSetOfListOfListOfLong();
-    boolean that_present_setOfListOfListOfLong = true && that.isSetSetOfListOfListOfLong();
-    if (this_present_setOfListOfListOfLong || that_present_setOfListOfListOfLong) {
-      if (!(this_present_setOfListOfListOfLong && that_present_setOfListOfListOfLong))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.setOfListOfListOfLong, that.setOfListOfListOfLong))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetSetOfListOfListOfLong(), that.isSetSetOfListOfListOfLong(), this.setOfListOfListOfLong, that.setOfListOfListOfLong)) { return false; }
 
-    boolean this_present_setOfSetOfsetOfLong = true && this.isSetSetOfSetOfsetOfLong();
-    boolean that_present_setOfSetOfsetOfLong = true && that.isSetSetOfSetOfsetOfLong();
-    if (this_present_setOfSetOfsetOfLong || that_present_setOfSetOfsetOfLong) {
-      if (!(this_present_setOfSetOfsetOfLong && that_present_setOfSetOfsetOfLong))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.setOfSetOfsetOfLong, that.setOfSetOfsetOfLong))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetSetOfSetOfsetOfLong(), that.isSetSetOfSetOfsetOfLong(), this.setOfSetOfsetOfLong, that.setOfSetOfsetOfLong)) { return false; }
 
-    boolean this_present_mapStructListOfListOfLong = true && this.isSetMapStructListOfListOfLong();
-    boolean that_present_mapStructListOfListOfLong = true && that.isSetMapStructListOfListOfLong();
-    if (this_present_mapStructListOfListOfLong || that_present_mapStructListOfListOfLong) {
-      if (!(this_present_mapStructListOfListOfLong && that_present_mapStructListOfListOfLong))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.mapStructListOfListOfLong, that.mapStructListOfListOfLong))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMapStructListOfListOfLong(), that.isSetMapStructListOfListOfLong(), this.mapStructListOfListOfLong, that.mapStructListOfListOfLong)) { return false; }
 
-    boolean this_present_mKeyStructValInt = true && this.isSetMKeyStructValInt();
-    boolean that_present_mKeyStructValInt = true && that.isSetMKeyStructValInt();
-    if (this_present_mKeyStructValInt || that_present_mKeyStructValInt) {
-      if (!(this_present_mKeyStructValInt && that_present_mKeyStructValInt))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.mKeyStructValInt, that.mKeyStructValInt))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMKeyStructValInt(), that.isSetMKeyStructValInt(), this.mKeyStructValInt, that.mKeyStructValInt)) { return false; }
 
-    boolean this_present_listOfMapKeyIntValInt = true && this.isSetListOfMapKeyIntValInt();
-    boolean that_present_listOfMapKeyIntValInt = true && that.isSetListOfMapKeyIntValInt();
-    if (this_present_listOfMapKeyIntValInt || that_present_listOfMapKeyIntValInt) {
-      if (!(this_present_listOfMapKeyIntValInt && that_present_listOfMapKeyIntValInt))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.listOfMapKeyIntValInt, that.listOfMapKeyIntValInt))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetListOfMapKeyIntValInt(), that.isSetListOfMapKeyIntValInt(), this.listOfMapKeyIntValInt, that.listOfMapKeyIntValInt)) { return false; }
 
-    boolean this_present_listOfMapKeyStrValList = true && this.isSetListOfMapKeyStrValList();
-    boolean that_present_listOfMapKeyStrValList = true && that.isSetListOfMapKeyStrValList();
-    if (this_present_listOfMapKeyStrValList || that_present_listOfMapKeyStrValList) {
-      if (!(this_present_listOfMapKeyStrValList && that_present_listOfMapKeyStrValList))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.listOfMapKeyStrValList, that.listOfMapKeyStrValList))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetListOfMapKeyStrValList(), that.isSetListOfMapKeyStrValList(), this.listOfMapKeyStrValList, that.listOfMapKeyStrValList)) { return false; }
 
-    boolean this_present_mapKeySetValLong = true && this.isSetMapKeySetValLong();
-    boolean that_present_mapKeySetValLong = true && that.isSetMapKeySetValLong();
-    if (this_present_mapKeySetValLong || that_present_mapKeySetValLong) {
-      if (!(this_present_mapKeySetValLong && that_present_mapKeySetValLong))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.mapKeySetValLong, that.mapKeySetValLong))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMapKeySetValLong(), that.isSetMapKeySetValLong(), this.mapKeySetValLong, that.mapKeySetValLong)) { return false; }
 
-    boolean this_present_mapKeyListValLong = true && this.isSetMapKeyListValLong();
-    boolean that_present_mapKeyListValLong = true && that.isSetMapKeyListValLong();
-    if (this_present_mapKeyListValLong || that_present_mapKeyListValLong) {
-      if (!(this_present_mapKeyListValLong && that_present_mapKeyListValLong))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.mapKeyListValLong, that.mapKeyListValLong))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMapKeyListValLong(), that.isSetMapKeyListValLong(), this.mapKeyListValLong, that.mapKeyListValLong)) { return false; }
 
-    boolean this_present_mapKeyMapValMap = true && this.isSetMapKeyMapValMap();
-    boolean that_present_mapKeyMapValMap = true && that.isSetMapKeyMapValMap();
-    if (this_present_mapKeyMapValMap || that_present_mapKeyMapValMap) {
-      if (!(this_present_mapKeyMapValMap && that_present_mapKeyMapValMap))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.mapKeyMapValMap, that.mapKeyMapValMap))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMapKeyMapValMap(), that.isSetMapKeyMapValMap(), this.mapKeyMapValMap, that.mapKeyMapValMap)) { return false; }
 
-    boolean this_present_mapKeySetValMap = true && this.isSetMapKeySetValMap();
-    boolean that_present_mapKeySetValMap = true && that.isSetMapKeySetValMap();
-    if (this_present_mapKeySetValMap || that_present_mapKeySetValMap) {
-      if (!(this_present_mapKeySetValMap && that_present_mapKeySetValMap))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.mapKeySetValMap, that.mapKeySetValMap))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMapKeySetValMap(), that.isSetMapKeySetValMap(), this.mapKeySetValMap, that.mapKeySetValMap)) { return false; }
 
-    boolean this_present_NestedMaps = true && this.isSetNestedMaps();
-    boolean that_present_NestedMaps = true && that.isSetNestedMaps();
-    if (this_present_NestedMaps || that_present_NestedMaps) {
-      if (!(this_present_NestedMaps && that_present_NestedMaps))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.NestedMaps, that.NestedMaps))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetNestedMaps(), that.isSetNestedMaps(), this.NestedMaps, that.NestedMaps)) { return false; }
 
-    boolean this_present_mapKeyIntValList = true && this.isSetMapKeyIntValList();
-    boolean that_present_mapKeyIntValList = true && that.isSetMapKeyIntValList();
-    if (this_present_mapKeyIntValList || that_present_mapKeyIntValList) {
-      if (!(this_present_mapKeyIntValList && that_present_mapKeyIntValList))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.mapKeyIntValList, that.mapKeyIntValList))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMapKeyIntValList(), that.isSetMapKeyIntValList(), this.mapKeyIntValList, that.mapKeyIntValList)) { return false; }
 
-    boolean this_present_mapKeyIntValSet = true && this.isSetMapKeyIntValSet();
-    boolean that_present_mapKeyIntValSet = true && that.isSetMapKeyIntValSet();
-    if (this_present_mapKeyIntValSet || that_present_mapKeyIntValSet) {
-      if (!(this_present_mapKeyIntValSet && that_present_mapKeyIntValSet))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.mapKeyIntValSet, that.mapKeyIntValSet))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMapKeyIntValSet(), that.isSetMapKeyIntValSet(), this.mapKeyIntValSet, that.mapKeyIntValSet)) { return false; }
 
-    boolean this_present_mapKeySetValInt = true && this.isSetMapKeySetValInt();
-    boolean that_present_mapKeySetValInt = true && that.isSetMapKeySetValInt();
-    if (this_present_mapKeySetValInt || that_present_mapKeySetValInt) {
-      if (!(this_present_mapKeySetValInt && that_present_mapKeySetValInt))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.mapKeySetValInt, that.mapKeySetValInt))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMapKeySetValInt(), that.isSetMapKeySetValInt(), this.mapKeySetValInt, that.mapKeySetValInt)) { return false; }
 
-    boolean this_present_mapKeyListValSet = true && this.isSetMapKeyListValSet();
-    boolean that_present_mapKeyListValSet = true && that.isSetMapKeyListValSet();
-    if (this_present_mapKeyListValSet || that_present_mapKeyListValSet) {
-      if (!(this_present_mapKeyListValSet && that_present_mapKeyListValSet))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.mapKeyListValSet, that.mapKeyListValSet))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMapKeyListValSet(), that.isSetMapKeyListValSet(), this.mapKeyListValSet, that.mapKeyListValSet)) { return false; }
 
     return true;
   }

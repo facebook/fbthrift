@@ -249,46 +249,18 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable, 
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof StructWithUnion)
-      return this.equals((StructWithUnion)that);
-    return false;
-  }
-
-  public boolean equals(StructWithUnion that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    StructWithUnion that = (StructWithUnion)_that;
 
-    boolean this_present_u = true && this.isSetU();
-    boolean that_present_u = true && that.isSetU();
-    if (this_present_u || that_present_u) {
-      if (!(this_present_u && that_present_u))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.u, that.u))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetU(), that.isSetU(), this.u, that.u)) { return false; }
 
-    boolean this_present_aDouble = true;
-    boolean that_present_aDouble = true;
-    if (this_present_aDouble || that_present_aDouble) {
-      if (!(this_present_aDouble && that_present_aDouble))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.aDouble, that.aDouble))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.aDouble, that.aDouble)) { return false; }
 
-    boolean this_present_f = true && this.isSetF();
-    boolean that_present_f = true && that.isSetF();
-    if (this_present_f || that_present_f) {
-      if (!(this_present_f && that_present_f))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.f, that.f))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetF(), that.isSetF(), this.f, that.f)) { return false; }
 
     return true;
   }
@@ -315,7 +287,7 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable, 
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(u, other.u);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetADouble()).compareTo(other.isSetADouble());
@@ -323,7 +295,7 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable, 
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(aDouble, other.aDouble);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetF()).compareTo(other.isSetF());
@@ -331,7 +303,7 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable, 
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(f, other.f);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

@@ -138,28 +138,14 @@ public class Serious extends Exception implements TBase, java.io.Serializable, C
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof Serious)
-      return this.equals((Serious)that);
-    return false;
-  }
-
-  public boolean equals(Serious that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    Serious that = (Serious)_that;
 
-    boolean this_present_sonnet = true && this.isSetSonnet();
-    boolean that_present_sonnet = true && that.isSetSonnet();
-    if (this_present_sonnet || that_present_sonnet) {
-      if (!(this_present_sonnet && that_present_sonnet))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.sonnet, that.sonnet))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetSonnet(), that.isSetSonnet(), this.sonnet, that.sonnet)) { return false; }
 
     return true;
   }

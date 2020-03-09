@@ -97,46 +97,18 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof MyStruct)
-      return this.equals((MyStruct)that);
-    return false;
-  }
-
-  public boolean equals(MyStruct that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    MyStruct that = (MyStruct)_that;
 
-    boolean this_present_MyIncludedField = true && this.isSetMyIncludedField();
-    boolean that_present_MyIncludedField = true && that.isSetMyIncludedField();
-    if (this_present_MyIncludedField || that_present_MyIncludedField) {
-      if (!(this_present_MyIncludedField && that_present_MyIncludedField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.MyIncludedField, that.MyIncludedField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyIncludedField(), that.isSetMyIncludedField(), this.MyIncludedField, that.MyIncludedField)) { return false; }
 
-    boolean this_present_MyOtherIncludedField = true && this.isSetMyOtherIncludedField();
-    boolean that_present_MyOtherIncludedField = true && that.isSetMyOtherIncludedField();
-    if (this_present_MyOtherIncludedField || that_present_MyOtherIncludedField) {
-      if (!(this_present_MyOtherIncludedField && that_present_MyOtherIncludedField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.MyOtherIncludedField, that.MyOtherIncludedField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyOtherIncludedField(), that.isSetMyOtherIncludedField(), this.MyOtherIncludedField, that.MyOtherIncludedField)) { return false; }
 
-    boolean this_present_MyIncludedInt = true && this.isSetMyIncludedInt();
-    boolean that_present_MyIncludedInt = true && that.isSetMyIncludedInt();
-    if (this_present_MyIncludedInt || that_present_MyIncludedInt) {
-      if (!(this_present_MyIncludedInt && that_present_MyIncludedInt))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.MyIncludedInt, that.MyIncludedInt))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyIncludedInt(), that.isSetMyIncludedInt(), this.MyIncludedInt, that.MyIncludedInt)) { return false; }
 
     return true;
   }

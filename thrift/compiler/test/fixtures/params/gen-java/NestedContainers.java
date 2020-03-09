@@ -722,28 +722,14 @@ public class NestedContainers {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof mapList_args)
-        return this.equals((mapList_args)that);
-      return false;
-    }
-
-    public boolean equals(mapList_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      mapList_args that = (mapList_args)_that;
 
-      boolean this_present_foo = true && this.isSetFoo();
-      boolean that_present_foo = true && that.isSetFoo();
-      if (this_present_foo || that_present_foo) {
-        if (!(this_present_foo && that_present_foo))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.foo, that.foo))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetFoo(), that.isSetFoo(), this.foo, that.foo)) { return false; }
 
       return true;
     }
@@ -770,7 +756,7 @@ public class NestedContainers {
         return lastComparison;
       }
       lastComparison = TBaseHelper.compareTo(foo, other.foo);
-      if (lastComparison != 0) {
+      if (lastComparison != 0) { 
         return lastComparison;
       }
       return 0;
@@ -938,19 +924,12 @@ public class NestedContainers {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof mapList_result)
-        return this.equals((mapList_result)that);
-      return false;
-    }
-
-    public boolean equals(mapList_result that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      mapList_result that = (mapList_result)_that;
 
       return true;
     }
@@ -1132,28 +1111,14 @@ public class NestedContainers {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof mapSet_args)
-        return this.equals((mapSet_args)that);
-      return false;
-    }
-
-    public boolean equals(mapSet_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      mapSet_args that = (mapSet_args)_that;
 
-      boolean this_present_foo = true && this.isSetFoo();
-      boolean that_present_foo = true && that.isSetFoo();
-      if (this_present_foo || that_present_foo) {
-        if (!(this_present_foo && that_present_foo))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.foo, that.foo))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetFoo(), that.isSetFoo(), this.foo, that.foo)) { return false; }
 
       return true;
     }
@@ -1180,7 +1145,7 @@ public class NestedContainers {
         return lastComparison;
       }
       lastComparison = TBaseHelper.compareTo(foo, other.foo);
-      if (lastComparison != 0) {
+      if (lastComparison != 0) { 
         return lastComparison;
       }
       return 0;
@@ -1348,19 +1313,12 @@ public class NestedContainers {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof mapSet_result)
-        return this.equals((mapSet_result)that);
-      return false;
-    }
-
-    public boolean equals(mapSet_result that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      mapSet_result that = (mapSet_result)_that;
 
       return true;
     }
@@ -1542,28 +1500,14 @@ public class NestedContainers {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof listMap_args)
-        return this.equals((listMap_args)that);
-      return false;
-    }
-
-    public boolean equals(listMap_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      listMap_args that = (listMap_args)_that;
 
-      boolean this_present_foo = true && this.isSetFoo();
-      boolean that_present_foo = true && that.isSetFoo();
-      if (this_present_foo || that_present_foo) {
-        if (!(this_present_foo && that_present_foo))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.foo, that.foo))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetFoo(), that.isSetFoo(), this.foo, that.foo)) { return false; }
 
       return true;
     }
@@ -1590,7 +1534,7 @@ public class NestedContainers {
         return lastComparison;
       }
       lastComparison = TBaseHelper.compareTo(foo, other.foo);
-      if (lastComparison != 0) {
+      if (lastComparison != 0) { 
         return lastComparison;
       }
       return 0;
@@ -1758,19 +1702,12 @@ public class NestedContainers {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof listMap_result)
-        return this.equals((listMap_result)that);
-      return false;
-    }
-
-    public boolean equals(listMap_result that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      listMap_result that = (listMap_result)_that;
 
       return true;
     }
@@ -1951,28 +1888,14 @@ public class NestedContainers {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof listSet_args)
-        return this.equals((listSet_args)that);
-      return false;
-    }
-
-    public boolean equals(listSet_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      listSet_args that = (listSet_args)_that;
 
-      boolean this_present_foo = true && this.isSetFoo();
-      boolean that_present_foo = true && that.isSetFoo();
-      if (this_present_foo || that_present_foo) {
-        if (!(this_present_foo && that_present_foo))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.foo, that.foo))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetFoo(), that.isSetFoo(), this.foo, that.foo)) { return false; }
 
       return true;
     }
@@ -1999,7 +1922,7 @@ public class NestedContainers {
         return lastComparison;
       }
       lastComparison = TBaseHelper.compareTo(foo, other.foo);
-      if (lastComparison != 0) {
+      if (lastComparison != 0) { 
         return lastComparison;
       }
       return 0;
@@ -2164,19 +2087,12 @@ public class NestedContainers {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof listSet_result)
-        return this.equals((listSet_result)that);
-      return false;
-    }
-
-    public boolean equals(listSet_result that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      listSet_result that = (listSet_result)_that;
 
       return true;
     }
@@ -2362,28 +2278,14 @@ public class NestedContainers {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof turtles_args)
-        return this.equals((turtles_args)that);
-      return false;
-    }
-
-    public boolean equals(turtles_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      turtles_args that = (turtles_args)_that;
 
-      boolean this_present_foo = true && this.isSetFoo();
-      boolean that_present_foo = true && that.isSetFoo();
-      if (this_present_foo || that_present_foo) {
-        if (!(this_present_foo && that_present_foo))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.foo, that.foo))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetFoo(), that.isSetFoo(), this.foo, that.foo)) { return false; }
 
       return true;
     }
@@ -2410,7 +2312,7 @@ public class NestedContainers {
         return lastComparison;
       }
       lastComparison = TBaseHelper.compareTo(foo, other.foo);
-      if (lastComparison != 0) {
+      if (lastComparison != 0) { 
         return lastComparison;
       }
       return 0;
@@ -2635,19 +2537,12 @@ public class NestedContainers {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof turtles_result)
-        return this.equals((turtles_result)that);
-      return false;
-    }
-
-    public boolean equals(turtles_result that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      turtles_result that = (turtles_result)_that;
 
       return true;
     }

@@ -258,46 +258,18 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof MyStruct)
-      return this.equals((MyStruct)that);
-    return false;
-  }
-
-  public boolean equals(MyStruct that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    MyStruct that = (MyStruct)_that;
 
-    boolean this_present_opt_ref = true && this.isSetOpt_ref();
-    boolean that_present_opt_ref = true && that.isSetOpt_ref();
-    if (this_present_opt_ref || that_present_opt_ref) {
-      if (!(this_present_opt_ref && that_present_opt_ref))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.opt_ref, that.opt_ref))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetOpt_ref(), that.isSetOpt_ref(), this.opt_ref, that.opt_ref)) { return false; }
 
-    boolean this_present_ref = true && this.isSetRef();
-    boolean that_present_ref = true && that.isSetRef();
-    if (this_present_ref || that_present_ref) {
-      if (!(this_present_ref && that_present_ref))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.ref, that.ref))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetRef(), that.isSetRef(), this.ref, that.ref)) { return false; }
 
-    boolean this_present_req_ref = true && this.isSetReq_ref();
-    boolean that_present_req_ref = true && that.isSetReq_ref();
-    if (this_present_req_ref || that_present_req_ref) {
-      if (!(this_present_req_ref && that_present_req_ref))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.req_ref, that.req_ref))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetReq_ref(), that.isSetReq_ref(), this.req_ref, that.req_ref)) { return false; }
 
     return true;
   }
@@ -324,7 +296,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(opt_ref, other.opt_ref);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetRef()).compareTo(other.isSetRef());
@@ -332,7 +304,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(ref, other.ref);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetReq_ref()).compareTo(other.isSetReq_ref());
@@ -340,7 +312,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(req_ref, other.req_ref);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

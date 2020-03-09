@@ -78,37 +78,16 @@ public class SecretStruct implements TBase, java.io.Serializable, Cloneable {
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof SecretStruct)
-      return this.equals((SecretStruct)that);
-    return false;
-  }
-
-  public boolean equals(SecretStruct that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    SecretStruct that = (SecretStruct)_that;
 
-    boolean this_present_id = true && this.isSetId();
-    boolean that_present_id = true && that.isSetId();
-    if (this_present_id || that_present_id) {
-      if (!(this_present_id && that_present_id))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.id, that.id))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetId(), that.isSetId(), this.id, that.id)) { return false; }
 
-    boolean this_present_password = true && this.isSetPassword();
-    boolean that_present_password = true && that.isSetPassword();
-    if (this_present_password || that_present_password) {
-      if (!(this_present_password && that_present_password))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.password, that.password))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetPassword(), that.isSetPassword(), this.password, that.password)) { return false; }
 
     return true;
   }

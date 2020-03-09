@@ -138,28 +138,14 @@ public class StructWithRefAndAnnotCppNoexceptMoveCtor implements TBase, java.io.
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof StructWithRefAndAnnotCppNoexceptMoveCtor)
-      return this.equals((StructWithRefAndAnnotCppNoexceptMoveCtor)that);
-    return false;
-  }
-
-  public boolean equals(StructWithRefAndAnnotCppNoexceptMoveCtor that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    StructWithRefAndAnnotCppNoexceptMoveCtor that = (StructWithRefAndAnnotCppNoexceptMoveCtor)_that;
 
-    boolean this_present_def_field = true && this.isSetDef_field();
-    boolean that_present_def_field = true && that.isSetDef_field();
-    if (this_present_def_field || that_present_def_field) {
-      if (!(this_present_def_field && that_present_def_field))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.def_field, that.def_field))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetDef_field(), that.isSetDef_field(), this.def_field, that.def_field)) { return false; }
 
     return true;
   }
@@ -186,7 +172,7 @@ public class StructWithRefAndAnnotCppNoexceptMoveCtor implements TBase, java.io.
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(def_field, other.def_field);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

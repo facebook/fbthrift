@@ -258,46 +258,18 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof StructWithSharedConst)
-      return this.equals((StructWithSharedConst)that);
-    return false;
-  }
-
-  public boolean equals(StructWithSharedConst that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    StructWithSharedConst that = (StructWithSharedConst)_that;
 
-    boolean this_present_opt_shared_const = true && this.isSetOpt_shared_const();
-    boolean that_present_opt_shared_const = true && that.isSetOpt_shared_const();
-    if (this_present_opt_shared_const || that_present_opt_shared_const) {
-      if (!(this_present_opt_shared_const && that_present_opt_shared_const))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.opt_shared_const, that.opt_shared_const))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetOpt_shared_const(), that.isSetOpt_shared_const(), this.opt_shared_const, that.opt_shared_const)) { return false; }
 
-    boolean this_present_shared_const = true && this.isSetShared_const();
-    boolean that_present_shared_const = true && that.isSetShared_const();
-    if (this_present_shared_const || that_present_shared_const) {
-      if (!(this_present_shared_const && that_present_shared_const))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.shared_const, that.shared_const))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetShared_const(), that.isSetShared_const(), this.shared_const, that.shared_const)) { return false; }
 
-    boolean this_present_req_shared_const = true && this.isSetReq_shared_const();
-    boolean that_present_req_shared_const = true && that.isSetReq_shared_const();
-    if (this_present_req_shared_const || that_present_req_shared_const) {
-      if (!(this_present_req_shared_const && that_present_req_shared_const))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.req_shared_const, that.req_shared_const))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetReq_shared_const(), that.isSetReq_shared_const(), this.req_shared_const, that.req_shared_const)) { return false; }
 
     return true;
   }
@@ -324,7 +296,7 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(opt_shared_const, other.opt_shared_const);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetShared_const()).compareTo(other.isSetShared_const());
@@ -332,7 +304,7 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(shared_const, other.shared_const);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetReq_shared_const()).compareTo(other.isSetReq_shared_const());
@@ -340,7 +312,7 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(req_shared_const, other.req_shared_const);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

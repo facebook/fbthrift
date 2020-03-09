@@ -305,55 +305,20 @@ public class MyStructFloatFieldThrowExp implements TBase, java.io.Serializable, 
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof MyStructFloatFieldThrowExp)
-      return this.equals((MyStructFloatFieldThrowExp)that);
-    return false;
-  }
-
-  public boolean equals(MyStructFloatFieldThrowExp that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    MyStructFloatFieldThrowExp that = (MyStructFloatFieldThrowExp)_that;
 
-    boolean this_present_myLongField = true;
-    boolean that_present_myLongField = true;
-    if (this_present_myLongField || that_present_myLongField) {
-      if (!(this_present_myLongField && that_present_myLongField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myLongField, that.myLongField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myLongField, that.myLongField)) { return false; }
 
-    boolean this_present_MyByteField = true;
-    boolean that_present_MyByteField = true;
-    if (this_present_MyByteField || that_present_MyByteField) {
-      if (!(this_present_MyByteField && that_present_MyByteField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.MyByteField, that.MyByteField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.MyByteField, that.MyByteField)) { return false; }
 
-    boolean this_present_myStringField = true && this.isSetMyStringField();
-    boolean that_present_myStringField = true && that.isSetMyStringField();
-    if (this_present_myStringField || that_present_myStringField) {
-      if (!(this_present_myStringField && that_present_myStringField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myStringField, that.myStringField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyStringField(), that.isSetMyStringField(), this.myStringField, that.myStringField)) { return false; }
 
-    boolean this_present_myFloatField = true;
-    boolean that_present_myFloatField = true;
-    if (this_present_myFloatField || that_present_myFloatField) {
-      if (!(this_present_myFloatField && that_present_myFloatField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myFloatField, that.myFloatField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myFloatField, that.myFloatField)) { return false; }
 
     return true;
   }
@@ -380,7 +345,7 @@ public class MyStructFloatFieldThrowExp implements TBase, java.io.Serializable, 
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myLongField, other.myLongField);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyByteField()).compareTo(other.isSetMyByteField());
@@ -388,7 +353,7 @@ public class MyStructFloatFieldThrowExp implements TBase, java.io.Serializable, 
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(MyByteField, other.MyByteField);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyStringField()).compareTo(other.isSetMyStringField());
@@ -396,7 +361,7 @@ public class MyStructFloatFieldThrowExp implements TBase, java.io.Serializable, 
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myStringField, other.myStringField);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyFloatField()).compareTo(other.isSetMyFloatField());
@@ -404,7 +369,7 @@ public class MyStructFloatFieldThrowExp implements TBase, java.io.Serializable, 
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myFloatField, other.myFloatField);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

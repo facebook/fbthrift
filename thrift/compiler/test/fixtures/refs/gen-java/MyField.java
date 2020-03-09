@@ -272,46 +272,18 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof MyField)
-      return this.equals((MyField)that);
-    return false;
-  }
-
-  public boolean equals(MyField that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    MyField that = (MyField)_that;
 
-    boolean this_present_opt_value = true && this.isSetOpt_value();
-    boolean that_present_opt_value = true && that.isSetOpt_value();
-    if (this_present_opt_value || that_present_opt_value) {
-      if (!(this_present_opt_value && that_present_opt_value))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.opt_value, that.opt_value))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetOpt_value(), that.isSetOpt_value(), this.opt_value, that.opt_value)) { return false; }
 
-    boolean this_present_value = true;
-    boolean that_present_value = true;
-    if (this_present_value || that_present_value) {
-      if (!(this_present_value && that_present_value))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.value, that.value))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.value, that.value)) { return false; }
 
-    boolean this_present_req_value = true;
-    boolean that_present_req_value = true;
-    if (this_present_req_value || that_present_req_value) {
-      if (!(this_present_req_value && that_present_req_value))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.req_value, that.req_value))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.req_value, that.req_value)) { return false; }
 
     return true;
   }
@@ -338,7 +310,7 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(opt_value, other.opt_value);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetValue()).compareTo(other.isSetValue());
@@ -346,7 +318,7 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(value, other.value);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetReq_value()).compareTo(other.isSetReq_value());
@@ -354,7 +326,7 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(req_value, other.req_value);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

@@ -197,37 +197,16 @@ public class reqXcep extends Exception implements TBase, java.io.Serializable, C
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof reqXcep)
-      return this.equals((reqXcep)that);
-    return false;
-  }
-
-  public boolean equals(reqXcep that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    reqXcep that = (reqXcep)_that;
 
-    boolean this_present_message = true && this.isSetMessage();
-    boolean that_present_message = true && that.isSetMessage();
-    if (this_present_message || that_present_message) {
-      if (!(this_present_message && that_present_message))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.message, that.message))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMessage(), that.isSetMessage(), this.message, that.message)) { return false; }
 
-    boolean this_present_errorCode = true;
-    boolean that_present_errorCode = true;
-    if (this_present_errorCode || that_present_errorCode) {
-      if (!(this_present_errorCode && that_present_errorCode))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.errorCode, that.errorCode))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.errorCode, that.errorCode)) { return false; }
 
     return true;
   }

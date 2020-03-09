@@ -199,37 +199,16 @@ public class SecretStruct implements TBase, java.io.Serializable, Cloneable, Com
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof SecretStruct)
-      return this.equals((SecretStruct)that);
-    return false;
-  }
-
-  public boolean equals(SecretStruct that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    SecretStruct that = (SecretStruct)_that;
 
-    boolean this_present_id = true;
-    boolean that_present_id = true;
-    if (this_present_id || that_present_id) {
-      if (!(this_present_id && that_present_id))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.id, that.id))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.id, that.id)) { return false; }
 
-    boolean this_present_password = true && this.isSetPassword();
-    boolean that_present_password = true && that.isSetPassword();
-    if (this_present_password || that_present_password) {
-      if (!(this_present_password && that_present_password))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.password, that.password))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetPassword(), that.isSetPassword(), this.password, that.password)) { return false; }
 
     return true;
   }
@@ -256,7 +235,7 @@ public class SecretStruct implements TBase, java.io.Serializable, Cloneable, Com
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(id, other.id);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetPassword()).compareTo(other.isSetPassword());
@@ -264,7 +243,7 @@ public class SecretStruct implements TBase, java.io.Serializable, Cloneable, Com
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(password, other.password);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

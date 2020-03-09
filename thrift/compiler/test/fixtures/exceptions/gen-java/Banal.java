@@ -78,19 +78,12 @@ public class Banal extends Exception implements TBase, java.io.Serializable, Clo
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof Banal)
-      return this.equals((Banal)that);
-    return false;
-  }
-
-  public boolean equals(Banal that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    Banal that = (Banal)_that;
 
     return true;
   }

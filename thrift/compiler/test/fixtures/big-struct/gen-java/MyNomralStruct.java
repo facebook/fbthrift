@@ -1693,289 +1693,72 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof MyNomralStruct)
-      return this.equals((MyNomralStruct)that);
-    return false;
-  }
-
-  public boolean equals(MyNomralStruct that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    MyNomralStruct that = (MyNomralStruct)_that;
 
-    boolean this_present_msg1 = true && this.isSetMsg1();
-    boolean that_present_msg1 = true && that.isSetMsg1();
-    if (this_present_msg1 || that_present_msg1) {
-      if (!(this_present_msg1 && that_present_msg1))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg1, that.msg1))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg1(), that.isSetMsg1(), this.msg1, that.msg1)) { return false; }
 
-    boolean this_present_msg2 = true && this.isSetMsg2();
-    boolean that_present_msg2 = true && that.isSetMsg2();
-    if (this_present_msg2 || that_present_msg2) {
-      if (!(this_present_msg2 && that_present_msg2))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg2, that.msg2))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg2(), that.isSetMsg2(), this.msg2, that.msg2)) { return false; }
 
-    boolean this_present_msg3 = true && this.isSetMsg3();
-    boolean that_present_msg3 = true && that.isSetMsg3();
-    if (this_present_msg3 || that_present_msg3) {
-      if (!(this_present_msg3 && that_present_msg3))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg3, that.msg3))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg3(), that.isSetMsg3(), this.msg3, that.msg3)) { return false; }
 
-    boolean this_present_msg4 = true && this.isSetMsg4();
-    boolean that_present_msg4 = true && that.isSetMsg4();
-    if (this_present_msg4 || that_present_msg4) {
-      if (!(this_present_msg4 && that_present_msg4))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg4, that.msg4))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg4(), that.isSetMsg4(), this.msg4, that.msg4)) { return false; }
 
-    boolean this_present_msg5 = true && this.isSetMsg5();
-    boolean that_present_msg5 = true && that.isSetMsg5();
-    if (this_present_msg5 || that_present_msg5) {
-      if (!(this_present_msg5 && that_present_msg5))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg5, that.msg5))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg5(), that.isSetMsg5(), this.msg5, that.msg5)) { return false; }
 
-    boolean this_present_msg6 = true && this.isSetMsg6();
-    boolean that_present_msg6 = true && that.isSetMsg6();
-    if (this_present_msg6 || that_present_msg6) {
-      if (!(this_present_msg6 && that_present_msg6))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg6, that.msg6))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg6(), that.isSetMsg6(), this.msg6, that.msg6)) { return false; }
 
-    boolean this_present_msg7 = true && this.isSetMsg7();
-    boolean that_present_msg7 = true && that.isSetMsg7();
-    if (this_present_msg7 || that_present_msg7) {
-      if (!(this_present_msg7 && that_present_msg7))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg7, that.msg7))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg7(), that.isSetMsg7(), this.msg7, that.msg7)) { return false; }
 
-    boolean this_present_msg8 = true && this.isSetMsg8();
-    boolean that_present_msg8 = true && that.isSetMsg8();
-    if (this_present_msg8 || that_present_msg8) {
-      if (!(this_present_msg8 && that_present_msg8))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg8, that.msg8))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg8(), that.isSetMsg8(), this.msg8, that.msg8)) { return false; }
 
-    boolean this_present_msg9 = true && this.isSetMsg9();
-    boolean that_present_msg9 = true && that.isSetMsg9();
-    if (this_present_msg9 || that_present_msg9) {
-      if (!(this_present_msg9 && that_present_msg9))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg9, that.msg9))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg9(), that.isSetMsg9(), this.msg9, that.msg9)) { return false; }
 
-    boolean this_present_myIntField10 = true;
-    boolean that_present_myIntField10 = true;
-    if (this_present_myIntField10 || that_present_myIntField10) {
-      if (!(this_present_myIntField10 && that_present_myIntField10))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField10, that.myIntField10))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myIntField10, that.myIntField10)) { return false; }
 
-    boolean this_present_myIntField11 = true;
-    boolean that_present_myIntField11 = true;
-    if (this_present_myIntField11 || that_present_myIntField11) {
-      if (!(this_present_myIntField11 && that_present_myIntField11))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField11, that.myIntField11))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myIntField11, that.myIntField11)) { return false; }
 
-    boolean this_present_myIntField12 = true;
-    boolean that_present_myIntField12 = true;
-    if (this_present_myIntField12 || that_present_myIntField12) {
-      if (!(this_present_myIntField12 && that_present_myIntField12))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField12, that.myIntField12))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myIntField12, that.myIntField12)) { return false; }
 
-    boolean this_present_myIntField13 = true;
-    boolean that_present_myIntField13 = true;
-    if (this_present_myIntField13 || that_present_myIntField13) {
-      if (!(this_present_myIntField13 && that_present_myIntField13))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField13, that.myIntField13))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myIntField13, that.myIntField13)) { return false; }
 
-    boolean this_present_myIntField14 = true;
-    boolean that_present_myIntField14 = true;
-    if (this_present_myIntField14 || that_present_myIntField14) {
-      if (!(this_present_myIntField14 && that_present_myIntField14))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField14, that.myIntField14))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myIntField14, that.myIntField14)) { return false; }
 
-    boolean this_present_myIntField15 = true;
-    boolean that_present_myIntField15 = true;
-    if (this_present_myIntField15 || that_present_myIntField15) {
-      if (!(this_present_myIntField15 && that_present_myIntField15))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField15, that.myIntField15))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myIntField15, that.myIntField15)) { return false; }
 
-    boolean this_present_myIntField16 = true;
-    boolean that_present_myIntField16 = true;
-    if (this_present_myIntField16 || that_present_myIntField16) {
-      if (!(this_present_myIntField16 && that_present_myIntField16))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField16, that.myIntField16))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myIntField16, that.myIntField16)) { return false; }
 
-    boolean this_present_myIntField17 = true;
-    boolean that_present_myIntField17 = true;
-    if (this_present_myIntField17 || that_present_myIntField17) {
-      if (!(this_present_myIntField17 && that_present_myIntField17))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField17, that.myIntField17))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myIntField17, that.myIntField17)) { return false; }
 
-    boolean this_present_myIntField18 = true;
-    boolean that_present_myIntField18 = true;
-    if (this_present_myIntField18 || that_present_myIntField18) {
-      if (!(this_present_myIntField18 && that_present_myIntField18))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField18, that.myIntField18))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myIntField18, that.myIntField18)) { return false; }
 
-    boolean this_present_myIntField19 = true;
-    boolean that_present_myIntField19 = true;
-    if (this_present_myIntField19 || that_present_myIntField19) {
-      if (!(this_present_myIntField19 && that_present_myIntField19))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField19, that.myIntField19))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myIntField19, that.myIntField19)) { return false; }
 
-    boolean this_present_myIntField20 = true;
-    boolean that_present_myIntField20 = true;
-    if (this_present_myIntField20 || that_present_myIntField20) {
-      if (!(this_present_myIntField20 && that_present_myIntField20))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField20, that.myIntField20))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myIntField20, that.myIntField20)) { return false; }
 
-    boolean this_present_myDoubleField21 = true;
-    boolean that_present_myDoubleField21 = true;
-    if (this_present_myDoubleField21 || that_present_myDoubleField21) {
-      if (!(this_present_myDoubleField21 && that_present_myDoubleField21))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField21, that.myDoubleField21))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField21, that.myDoubleField21)) { return false; }
 
-    boolean this_present_myDoubleField22 = true;
-    boolean that_present_myDoubleField22 = true;
-    if (this_present_myDoubleField22 || that_present_myDoubleField22) {
-      if (!(this_present_myDoubleField22 && that_present_myDoubleField22))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField22, that.myDoubleField22))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField22, that.myDoubleField22)) { return false; }
 
-    boolean this_present_myDoubleField23 = true;
-    boolean that_present_myDoubleField23 = true;
-    if (this_present_myDoubleField23 || that_present_myDoubleField23) {
-      if (!(this_present_myDoubleField23 && that_present_myDoubleField23))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField23, that.myDoubleField23))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField23, that.myDoubleField23)) { return false; }
 
-    boolean this_present_myDoubleField24 = true;
-    boolean that_present_myDoubleField24 = true;
-    if (this_present_myDoubleField24 || that_present_myDoubleField24) {
-      if (!(this_present_myDoubleField24 && that_present_myDoubleField24))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField24, that.myDoubleField24))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField24, that.myDoubleField24)) { return false; }
 
-    boolean this_present_myDoubleField25 = true;
-    boolean that_present_myDoubleField25 = true;
-    if (this_present_myDoubleField25 || that_present_myDoubleField25) {
-      if (!(this_present_myDoubleField25 && that_present_myDoubleField25))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField25, that.myDoubleField25))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField25, that.myDoubleField25)) { return false; }
 
-    boolean this_present_myDoubleField26 = true;
-    boolean that_present_myDoubleField26 = true;
-    if (this_present_myDoubleField26 || that_present_myDoubleField26) {
-      if (!(this_present_myDoubleField26 && that_present_myDoubleField26))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField26, that.myDoubleField26))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField26, that.myDoubleField26)) { return false; }
 
-    boolean this_present_myDoubleField27 = true;
-    boolean that_present_myDoubleField27 = true;
-    if (this_present_myDoubleField27 || that_present_myDoubleField27) {
-      if (!(this_present_myDoubleField27 && that_present_myDoubleField27))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField27, that.myDoubleField27))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField27, that.myDoubleField27)) { return false; }
 
-    boolean this_present_myDoubleField28 = true;
-    boolean that_present_myDoubleField28 = true;
-    if (this_present_myDoubleField28 || that_present_myDoubleField28) {
-      if (!(this_present_myDoubleField28 && that_present_myDoubleField28))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField28, that.myDoubleField28))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField28, that.myDoubleField28)) { return false; }
 
-    boolean this_present_myDoubleField29 = true;
-    boolean that_present_myDoubleField29 = true;
-    if (this_present_myDoubleField29 || that_present_myDoubleField29) {
-      if (!(this_present_myDoubleField29 && that_present_myDoubleField29))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField29, that.myDoubleField29))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField29, that.myDoubleField29)) { return false; }
 
-    boolean this_present_myDoubleField30 = true;
-    boolean that_present_myDoubleField30 = true;
-    if (this_present_myDoubleField30 || that_present_myDoubleField30) {
-      if (!(this_present_myDoubleField30 && that_present_myDoubleField30))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField30, that.myDoubleField30))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField30, that.myDoubleField30)) { return false; }
 
     return true;
   }
@@ -2002,7 +1785,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg1, other.msg1);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg2()).compareTo(other.isSetMsg2());
@@ -2010,7 +1793,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg2, other.msg2);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg3()).compareTo(other.isSetMsg3());
@@ -2018,7 +1801,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg3, other.msg3);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg4()).compareTo(other.isSetMsg4());
@@ -2026,7 +1809,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg4, other.msg4);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg5()).compareTo(other.isSetMsg5());
@@ -2034,7 +1817,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg5, other.msg5);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg6()).compareTo(other.isSetMsg6());
@@ -2042,7 +1825,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg6, other.msg6);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg7()).compareTo(other.isSetMsg7());
@@ -2050,7 +1833,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg7, other.msg7);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg8()).compareTo(other.isSetMsg8());
@@ -2058,7 +1841,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg8, other.msg8);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg9()).compareTo(other.isSetMsg9());
@@ -2066,7 +1849,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg9, other.msg9);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField10()).compareTo(other.isSetMyIntField10());
@@ -2074,7 +1857,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField10, other.myIntField10);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField11()).compareTo(other.isSetMyIntField11());
@@ -2082,7 +1865,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField11, other.myIntField11);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField12()).compareTo(other.isSetMyIntField12());
@@ -2090,7 +1873,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField12, other.myIntField12);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField13()).compareTo(other.isSetMyIntField13());
@@ -2098,7 +1881,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField13, other.myIntField13);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField14()).compareTo(other.isSetMyIntField14());
@@ -2106,7 +1889,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField14, other.myIntField14);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField15()).compareTo(other.isSetMyIntField15());
@@ -2114,7 +1897,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField15, other.myIntField15);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField16()).compareTo(other.isSetMyIntField16());
@@ -2122,7 +1905,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField16, other.myIntField16);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField17()).compareTo(other.isSetMyIntField17());
@@ -2130,7 +1913,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField17, other.myIntField17);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField18()).compareTo(other.isSetMyIntField18());
@@ -2138,7 +1921,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField18, other.myIntField18);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField19()).compareTo(other.isSetMyIntField19());
@@ -2146,7 +1929,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField19, other.myIntField19);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField20()).compareTo(other.isSetMyIntField20());
@@ -2154,7 +1937,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField20, other.myIntField20);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField21()).compareTo(other.isSetMyDoubleField21());
@@ -2162,7 +1945,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField21, other.myDoubleField21);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField22()).compareTo(other.isSetMyDoubleField22());
@@ -2170,7 +1953,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField22, other.myDoubleField22);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField23()).compareTo(other.isSetMyDoubleField23());
@@ -2178,7 +1961,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField23, other.myDoubleField23);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField24()).compareTo(other.isSetMyDoubleField24());
@@ -2186,7 +1969,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField24, other.myDoubleField24);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField25()).compareTo(other.isSetMyDoubleField25());
@@ -2194,7 +1977,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField25, other.myDoubleField25);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField26()).compareTo(other.isSetMyDoubleField26());
@@ -2202,7 +1985,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField26, other.myDoubleField26);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField27()).compareTo(other.isSetMyDoubleField27());
@@ -2210,7 +1993,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField27, other.myDoubleField27);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField28()).compareTo(other.isSetMyDoubleField28());
@@ -2218,7 +2001,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField28, other.myDoubleField28);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField29()).compareTo(other.isSetMyDoubleField29());
@@ -2226,7 +2009,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField29, other.myDoubleField29);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField30()).compareTo(other.isSetMyDoubleField30());
@@ -2234,7 +2017,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField30, other.myDoubleField30);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

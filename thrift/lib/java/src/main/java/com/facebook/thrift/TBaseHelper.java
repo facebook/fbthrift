@@ -591,21 +591,45 @@ public final class TBaseHelper {
   /**
    * Checks two items for logical equality.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   public static boolean equalsNobinary(byte[] a, byte[] b) {
     return Arrays.equals(a, b);
   }
 
+  public static boolean equalsNobinary(boolean isSetA, boolean isSetB, byte[] a, byte[] b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+
+    return equalsNobinary(a, b);
+  }
+
   /**
    * Checks two items for logical equality.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   public static boolean equalsNobinary(String a, String b) {
+    if (a == null) {
+      return b == null;
+    }
     return a.equals(b);
+  }
+
+  public static boolean equalsNobinary(boolean isSetA, boolean isSetB, String a, String b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
   }
 
   /** Checks two items for logical equality. */
@@ -613,14 +637,37 @@ public final class TBaseHelper {
     return a == b;
   }
 
+  public static boolean equalsNobinary(boolean isSetA, boolean isSetB, boolean a, boolean b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
+  }
+
   /**
    * Checks two items for logical equality.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   public static boolean equalsNobinary(Boolean a, Boolean b) {
+    if (a == null) {
+      return b == null;
+    }
     return a.equals(b);
+  }
+
+  public static boolean equalsNobinary(boolean isSetA, boolean isSetB, Boolean a, Boolean b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
   }
 
   /** Checks two items for logical equality. */
@@ -628,14 +675,37 @@ public final class TBaseHelper {
     return a == b;
   }
 
+  public static boolean equalsNobinary(boolean isSetA, boolean isSetB, byte a, byte b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
+  }
+
   /**
    * Checks two items for logical equality.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   public static boolean equalsNobinary(Byte a, Byte b) {
+    if (a == null) {
+      return b == null;
+    }
     return a.equals(b);
+  }
+
+  public static boolean equalsNobinary(boolean isSetA, boolean isSetB, Byte a, Byte b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
   }
 
   /** Checks two items for logical equality. */
@@ -643,14 +713,37 @@ public final class TBaseHelper {
     return a == b;
   }
 
+  public static boolean equalsNobinary(boolean isSetA, boolean isSetB, short a, short b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
+  }
+
   /**
    * Checks two items for logical equality.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   public static boolean equalsNobinary(Short a, Short b) {
+    if (a == null) {
+      return b == null;
+    }
     return a.equals(b);
+  }
+
+  public static boolean equalsNobinary(boolean isSetA, boolean isSetB, Short a, Short b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
   }
 
   /** Checks two items for logical equality. */
@@ -658,14 +751,37 @@ public final class TBaseHelper {
     return a == b;
   }
 
+  public static boolean equalsNobinary(boolean isSetA, boolean isSetB, int a, int b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
+  }
+
   /**
    * Checks two items for logical equality.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   public static boolean equalsNobinary(Integer a, Integer b) {
+    if (a == null) {
+      return b == null;
+    }
     return a.equals(b);
+  }
+
+  public static boolean equalsNobinary(boolean isSetA, boolean isSetB, Integer a, Integer b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
   }
 
   /** Checks two items for logical equality. */
@@ -673,14 +789,37 @@ public final class TBaseHelper {
     return a == b;
   }
 
+  public static boolean equalsNobinary(boolean isSetA, boolean isSetB, long a, long b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
+  }
+
   /**
    * Checks two items for logical equality.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   public static boolean equalsNobinary(Long a, Long b) {
+    if (a == null) {
+      return b == null;
+    }
     return a.equals(b);
+  }
+
+  public static boolean equalsNobinary(boolean isSetA, boolean isSetB, Long a, Long b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
   }
 
   /** Checks two items for logical equality. */
@@ -688,14 +827,37 @@ public final class TBaseHelper {
     return a == b;
   }
 
+  public static boolean equalsNobinary(boolean isSetA, boolean isSetB, double a, double b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
+  }
+
   /**
    * Checks two items for logical equality.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   public static boolean equalsNobinary(Double a, Double b) {
+    if (a == null) {
+      return b == null;
+    }
     return a.equals(b);
+  }
+
+  public static boolean equalsNobinary(boolean isSetA, boolean isSetB, Double a, Double b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
   }
 
   /** Checks two items for logical equality. */
@@ -703,14 +865,37 @@ public final class TBaseHelper {
     return a == b;
   }
 
+  public static boolean equalsNobinary(boolean isSetA, boolean isSetB, float a, float b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
+  }
+
   /**
    * Checks two items for logical equality.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   public static boolean equalsNobinary(Float a, Float b) {
+    if (a == null) {
+      return b == null;
+    }
     return a.equals(b);
+  }
+
+  public static boolean equalsNobinary(boolean isSetA, boolean isSetB, Float a, Float b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
   }
 
   /**
@@ -718,11 +903,28 @@ public final class TBaseHelper {
    * neither keys nor values can be <code>byte[]</code> or containers which themselves contain naked
    * binaries. The key type and value type should both be expressible in thrift.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   public static <K, V> boolean equalsNobinary(Map<K, V> as, Map<K, V> bs) {
+    if (as == null) {
+      return bs == null;
+    }
     return as.equals(bs);
+  }
+
+  public static <K, V> boolean equalsNobinary(
+      boolean isSetA, boolean isSetB, Map<K, V> as, Map<K, V> bs) {
+    if (as == bs) { // performance, not correctness
+      return true;
+    }
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(as, bs);
   }
 
   /**
@@ -730,14 +932,27 @@ public final class TBaseHelper {
    * elements can not be <code>byte[]</code> or containers which themselves contain naked binaries.
    * The element type should be expressible in thrift.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   public static <T> boolean equalsNobinary(List<T> as, List<T> bs) {
+    if (as == null) {
+      return false;
+    }
+    return as.equals(bs);
+  }
+
+  public static <T> boolean equalsNobinary(boolean isSetA, boolean isSetB, List<T> as, List<T> bs) {
     if (as == bs) { // performance, not correctness
       return true;
     }
-    return as.equals(bs);
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(as, bs);
   }
 
   /**
@@ -745,65 +960,128 @@ public final class TBaseHelper {
    * elements can not be <code>byte[]</code> or containers which themselves contain naked binaries.
    * The element type should be expressible in thrift.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   public static <T> boolean equalsNobinary(Set<T> as, Set<T> bs) {
+    if (as == null) {
+      return bs == null;
+    }
+    return as.equals(bs);
+  }
+
+  public static <T> boolean equalsNobinary(boolean isSetA, boolean isSetB, Set<T> as, Set<T> bs) {
     if (as == bs) { // performance, not correctness
       return true;
     }
-    return as.equals(bs);
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(as, bs);
   }
 
   /**
    * Checks two items for logical equality.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   public static <T extends TBase> boolean equalsNobinary(T a, T b) {
+    if (a == null) {
+      return b == null;
+    }
+    return a.equals(b);
+  }
+
+  public static <T extends TBase> boolean equalsNobinary(boolean isSetA, boolean isSetB, T a, T b) {
     if (a == b) { // performance, not correctness
       return true;
     }
-    return a.equals(b);
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
   }
 
   /**
    * Checks two enum for logical equality.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   public static <T extends TEnum> boolean equalsNobinary(T a, T b) {
-    if (a == b) {
-      return true;
+    // Note that `a` and `b` are @Nullable here
+    if (a == null) {
+      return b == null;
     }
-    if (a == null || b == null) {
-      return false;
-    }
-    // Note that `a` and `b` are non-null here
     return a.getValue() == b.getValue();
   }
 
-  /**
-   * Checks two items for logical equality.
-   *
-   * @param a non-null item
-   * @param b non-null item
-   */
-  public static boolean equalsSlow(byte[] a, byte[] b) {
-    return Arrays.equals(a, b);
+  public static <T extends TEnum> boolean equalsNobinary(boolean isSetA, boolean isSetB, T a, T b) {
+    if (a == b) { // performance, not correctness
+      return true;
+    }
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
   }
 
   /**
    * Checks two items for logical equality.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
+   */
+  public static boolean equalsSlow(byte[] a, byte[] b) {
+    if (a == null) {
+      return b == null;
+    }
+    return Arrays.equals(a, b);
+  }
+
+  public static boolean equalsSlow(boolean isSetA, boolean isSetB, byte[] a, byte[] b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
+  }
+
+  public static <K, V> boolean equalsSlow(
+      boolean isSetA, boolean isSetB, Map<K, V> a, Map<K, V> b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
+  }
+
+  /**
+   * Checks two items for logical equality.
+   *
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   public static <K, V> boolean equalsSlow(Map<K, V> a, Map<K, V> b) {
     if (a == b) { // performance, not correctness
       return true;
+    }
+    if (a == null) {
+      return false;
     }
     if (a.size() != b.size()) {
       return false;
@@ -834,15 +1112,28 @@ public final class TBaseHelper {
     return true;
   }
 
+  public static <T> boolean equalsSlow(boolean isSetA, boolean isSetB, List<T> a, List<T> b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
+  }
+
   /**
    * Checks two items for logical equality.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   public static <T> boolean equalsSlow(List<T> a, List<T> b) {
     if (a == b) { // performance, not correctness
       return true;
+    }
+    if (a == null) {
+      return false;
     }
     if (a.size() != b.size()) {
       return false;
@@ -861,15 +1152,28 @@ public final class TBaseHelper {
     return true;
   }
 
+  public static <T> boolean equalsSlow(boolean isSetA, boolean isSetB, Set<T> a, Set<T> b) {
+    if (isSetA ^ isSetB) {
+      return false;
+    }
+    if (!isSetA) {
+      return true;
+    }
+    return equalsNobinary(a, b);
+  }
+
   /**
    * Checks two items for logical equality.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   public static <T> boolean equalsSlow(Set<T> a, Set<T> b) {
     if (a == b) { // performance, not correctness
       return true;
+    }
+    if (a == null) {
+      return false;
     }
     if (a.size() != b.size()) {
       return false;
@@ -903,13 +1207,16 @@ public final class TBaseHelper {
    * Checks two items for logical equality. Neither item should contain naked binaries. Both items
    * should be of the same Thrift-expressible type.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   @SuppressWarnings({"unchecked", "rawtypes"})
   /*package*/ static <T> boolean equalsNobinaryUnchecked(T a, T b) {
     if (a == b) { // performance, not correctness
       return true;
+    }
+    if (a == null) {
+      return false;
     }
     if (a instanceof byte[] && b instanceof byte[]) {
       return equalsSlow((byte[]) a, (byte[]) b);
@@ -948,13 +1255,16 @@ public final class TBaseHelper {
    * Checks two items for logical equality. Both items should be of the same Thrift-expressible
    * type.
    *
-   * @param a non-null item
-   * @param b non-null item
+   * @param a @Nullable item
+   * @param b @Nullable item
    */
   @SuppressWarnings({"rawtypes", "unchecked"})
   /*package*/ static <T> boolean equalsSlowUnchecked(T a, T b) {
     if (a == b) { // performance, not correctness
       return true;
+    }
+    if (a == null) {
+      return false;
     }
     if (a instanceof byte[] && b instanceof byte[]) {
       return equalsSlow((byte[]) a, (byte[]) b);

@@ -1437,27 +1437,17 @@ void t_java_generator::generate_java_struct_equality(
     ofstream& out,
     t_struct* tstruct) {
   out << indent() << "@Override" << endl
-      << indent() << "public boolean equals(Object that) {" << endl;
+      << indent() << "public boolean equals(Object _that) {" << endl;
   indent_up();
-  out << indent() << "if (that == null)" << endl
-      << indent() << "  return false;" << endl
-      << indent() << "if (that instanceof " << tstruct->get_name() << ")"
-      << endl
-      << indent() << "  return this.equals((" << tstruct->get_name()
-      << ")that);" << endl
-      << indent() << "return false;" << endl;
-  scope_down(out);
-  out << endl;
+  out << indent() << "if (_that == null)" << endl
+      << indent() << "  return false;" << endl;
 
-  out << indent() << "public boolean equals(" << tstruct->get_name()
-      << " that) {" << endl;
-  indent_up();
-  out << indent() << "if (that == null)" << endl
-      << indent() << "  return false;" << endl
-      << indent() << "if (this == that)" << endl
+  out << indent() << "if (this == _that)" << endl
       << // to make up for an otherwise
       indent() << "  return true;" << endl; // slow equals and a bad hashCode
 
+  out << indent() << tstruct->get_name() << " that = (" << tstruct->get_name()
+      << ")_that;" << endl;
   const vector<t_field*>& members = tstruct->get_members();
   for (auto m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     out << endl;
@@ -1468,41 +1458,20 @@ void t_java_generator::generate_java_struct_equality(
     bool is_optional = (*m_iter)->get_req() == t_field::T_OPTIONAL;
     bool can_be_null = type_can_be_null(t);
     string name = (*m_iter)->get_name();
-
-    string this_present = "true";
-    string that_present = "true";
-    string unequal;
+    string equalMethodName = "equalsNobinary";
+    if (type_has_naked_binary(t)) {
+      equalMethodName = "equalsSlow";
+    }
 
     if (is_optional || can_be_null) {
-      this_present += " && this." + generate_isset_check(*m_iter);
-      that_present += " && that." + generate_isset_check(*m_iter);
-    }
-
-    out << indent() << "boolean this_present_" << name << " = " << this_present
-        << ";" << endl
-        << indent() << "boolean that_present_" << name << " = " << that_present
-        << ";" << endl
-        << indent() << "if ("
-        << "this_present_" << name << " || that_present_" << name << ") {"
-        << endl;
-    indent_up();
-    out << indent() << "if (!("
-        << "this_present_" << name << " && that_present_" << name << "))"
-        << endl
-        << indent() << "  return false;" << endl;
-
-    if (type_has_naked_binary(t)) {
-      unequal = "!TBaseHelper.equalsSlow(this." + name + ", that." + name + ")";
+      out << indent() << "if (!TBaseHelper." << equalMethodName << "("
+          << "this." + generate_isset_check(*m_iter) << ", "
+          << "that." + generate_isset_check(*m_iter) << ", this." << name
+          << ", that." << name << ")) { return false; }" << endl;
     } else {
-      // No need to switch on the type here; we can let javac figure it out
-      unequal =
-          "!TBaseHelper.equalsNobinary(this." + name + ", that." + name + ")";
+      out << indent() << "if (!TBaseHelper." << equalMethodName << "(this."
+          << name << ", that." << name << ")) { return false; }" << endl;
     }
-
-    out << indent() << "if (" << unequal << ")" << endl
-        << indent() << "  return false;" << endl;
-
-    scope_down(out);
   }
   out << endl;
   indent(out) << "return true;" << endl;
@@ -1562,7 +1531,7 @@ void t_java_generator::generate_java_struct_compare_to(
     indent(out) << "lastComparison = TBaseHelper.compareTo("
                 << field->get_name() << ", other." << field->get_name() << ");"
                 << endl;
-    indent(out) << "if (lastComparison != 0) {" << endl;
+    indent(out) << "if (lastComparison != 0) { " << endl;
     indent(out) << "  return lastComparison;" << endl;
     indent(out) << "}" << endl;
   }

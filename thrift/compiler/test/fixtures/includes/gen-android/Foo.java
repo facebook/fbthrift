@@ -59,28 +59,14 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof Foo)
-      return this.equals((Foo)that);
-    return false;
-  }
-
-  public boolean equals(Foo that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    Foo that = (Foo)_that;
 
-    boolean this_present_a = true && this.isSetA();
-    boolean that_present_a = true && that.isSetA();
-    if (this_present_a || that_present_a) {
-      if (!(this_present_a && that_present_a))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.a, that.a))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetA(), that.isSetA(), this.a, that.a)) { return false; }
 
     return true;
   }

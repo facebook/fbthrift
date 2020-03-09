@@ -12957,2332 +12957,526 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof MyBigStruct)
-      return this.equals((MyBigStruct)that);
-    return false;
-  }
-
-  public boolean equals(MyBigStruct that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    MyBigStruct that = (MyBigStruct)_that;
 
-    boolean this_present_msg1 = true && this.isSetMsg1();
-    boolean that_present_msg1 = true && that.isSetMsg1();
-    if (this_present_msg1 || that_present_msg1) {
-      if (!(this_present_msg1 && that_present_msg1))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg1, that.msg1))
-        return false;
-    }
-
-    boolean this_present_msg2 = true && this.isSetMsg2();
-    boolean that_present_msg2 = true && that.isSetMsg2();
-    if (this_present_msg2 || that_present_msg2) {
-      if (!(this_present_msg2 && that_present_msg2))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg2, that.msg2))
-        return false;
-    }
-
-    boolean this_present_msg3 = true && this.isSetMsg3();
-    boolean that_present_msg3 = true && that.isSetMsg3();
-    if (this_present_msg3 || that_present_msg3) {
-      if (!(this_present_msg3 && that_present_msg3))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg3, that.msg3))
-        return false;
-    }
-
-    boolean this_present_msg4 = true && this.isSetMsg4();
-    boolean that_present_msg4 = true && that.isSetMsg4();
-    if (this_present_msg4 || that_present_msg4) {
-      if (!(this_present_msg4 && that_present_msg4))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg4, that.msg4))
-        return false;
-    }
-
-    boolean this_present_msg5 = true && this.isSetMsg5();
-    boolean that_present_msg5 = true && that.isSetMsg5();
-    if (this_present_msg5 || that_present_msg5) {
-      if (!(this_present_msg5 && that_present_msg5))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg5, that.msg5))
-        return false;
-    }
-
-    boolean this_present_msg6 = true && this.isSetMsg6();
-    boolean that_present_msg6 = true && that.isSetMsg6();
-    if (this_present_msg6 || that_present_msg6) {
-      if (!(this_present_msg6 && that_present_msg6))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg6, that.msg6))
-        return false;
-    }
-
-    boolean this_present_msg7 = true && this.isSetMsg7();
-    boolean that_present_msg7 = true && that.isSetMsg7();
-    if (this_present_msg7 || that_present_msg7) {
-      if (!(this_present_msg7 && that_present_msg7))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg7, that.msg7))
-        return false;
-    }
-
-    boolean this_present_msg8 = true && this.isSetMsg8();
-    boolean that_present_msg8 = true && that.isSetMsg8();
-    if (this_present_msg8 || that_present_msg8) {
-      if (!(this_present_msg8 && that_present_msg8))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg8, that.msg8))
-        return false;
-    }
-
-    boolean this_present_msg9 = true && this.isSetMsg9();
-    boolean that_present_msg9 = true && that.isSetMsg9();
-    if (this_present_msg9 || that_present_msg9) {
-      if (!(this_present_msg9 && that_present_msg9))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg9, that.msg9))
-        return false;
-    }
-
-    boolean this_present_myIntField10 = true;
-    boolean that_present_myIntField10 = true;
-    if (this_present_myIntField10 || that_present_myIntField10) {
-      if (!(this_present_myIntField10 && that_present_myIntField10))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField10, that.myIntField10))
-        return false;
-    }
-
-    boolean this_present_myIntField11 = true;
-    boolean that_present_myIntField11 = true;
-    if (this_present_myIntField11 || that_present_myIntField11) {
-      if (!(this_present_myIntField11 && that_present_myIntField11))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField11, that.myIntField11))
-        return false;
-    }
-
-    boolean this_present_myIntField12 = true;
-    boolean that_present_myIntField12 = true;
-    if (this_present_myIntField12 || that_present_myIntField12) {
-      if (!(this_present_myIntField12 && that_present_myIntField12))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField12, that.myIntField12))
-        return false;
-    }
-
-    boolean this_present_myIntField13 = true;
-    boolean that_present_myIntField13 = true;
-    if (this_present_myIntField13 || that_present_myIntField13) {
-      if (!(this_present_myIntField13 && that_present_myIntField13))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField13, that.myIntField13))
-        return false;
-    }
-
-    boolean this_present_myIntField14 = true;
-    boolean that_present_myIntField14 = true;
-    if (this_present_myIntField14 || that_present_myIntField14) {
-      if (!(this_present_myIntField14 && that_present_myIntField14))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField14, that.myIntField14))
-        return false;
-    }
-
-    boolean this_present_myIntField15 = true;
-    boolean that_present_myIntField15 = true;
-    if (this_present_myIntField15 || that_present_myIntField15) {
-      if (!(this_present_myIntField15 && that_present_myIntField15))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField15, that.myIntField15))
-        return false;
-    }
-
-    boolean this_present_myIntField16 = true;
-    boolean that_present_myIntField16 = true;
-    if (this_present_myIntField16 || that_present_myIntField16) {
-      if (!(this_present_myIntField16 && that_present_myIntField16))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField16, that.myIntField16))
-        return false;
-    }
-
-    boolean this_present_myIntField17 = true;
-    boolean that_present_myIntField17 = true;
-    if (this_present_myIntField17 || that_present_myIntField17) {
-      if (!(this_present_myIntField17 && that_present_myIntField17))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField17, that.myIntField17))
-        return false;
-    }
-
-    boolean this_present_myIntField18 = true;
-    boolean that_present_myIntField18 = true;
-    if (this_present_myIntField18 || that_present_myIntField18) {
-      if (!(this_present_myIntField18 && that_present_myIntField18))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField18, that.myIntField18))
-        return false;
-    }
-
-    boolean this_present_myIntField19 = true;
-    boolean that_present_myIntField19 = true;
-    if (this_present_myIntField19 || that_present_myIntField19) {
-      if (!(this_present_myIntField19 && that_present_myIntField19))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField19, that.myIntField19))
-        return false;
-    }
-
-    boolean this_present_myIntField20 = true;
-    boolean that_present_myIntField20 = true;
-    if (this_present_myIntField20 || that_present_myIntField20) {
-      if (!(this_present_myIntField20 && that_present_myIntField20))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myIntField20, that.myIntField20))
-        return false;
-    }
-
-    boolean this_present_myDoubleField21 = true;
-    boolean that_present_myDoubleField21 = true;
-    if (this_present_myDoubleField21 || that_present_myDoubleField21) {
-      if (!(this_present_myDoubleField21 && that_present_myDoubleField21))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField21, that.myDoubleField21))
-        return false;
-    }
-
-    boolean this_present_myDoubleField22 = true;
-    boolean that_present_myDoubleField22 = true;
-    if (this_present_myDoubleField22 || that_present_myDoubleField22) {
-      if (!(this_present_myDoubleField22 && that_present_myDoubleField22))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField22, that.myDoubleField22))
-        return false;
-    }
-
-    boolean this_present_myDoubleField23 = true;
-    boolean that_present_myDoubleField23 = true;
-    if (this_present_myDoubleField23 || that_present_myDoubleField23) {
-      if (!(this_present_myDoubleField23 && that_present_myDoubleField23))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField23, that.myDoubleField23))
-        return false;
-    }
-
-    boolean this_present_myDoubleField24 = true;
-    boolean that_present_myDoubleField24 = true;
-    if (this_present_myDoubleField24 || that_present_myDoubleField24) {
-      if (!(this_present_myDoubleField24 && that_present_myDoubleField24))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField24, that.myDoubleField24))
-        return false;
-    }
-
-    boolean this_present_myDoubleField25 = true;
-    boolean that_present_myDoubleField25 = true;
-    if (this_present_myDoubleField25 || that_present_myDoubleField25) {
-      if (!(this_present_myDoubleField25 && that_present_myDoubleField25))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField25, that.myDoubleField25))
-        return false;
-    }
-
-    boolean this_present_myDoubleField26 = true;
-    boolean that_present_myDoubleField26 = true;
-    if (this_present_myDoubleField26 || that_present_myDoubleField26) {
-      if (!(this_present_myDoubleField26 && that_present_myDoubleField26))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField26, that.myDoubleField26))
-        return false;
-    }
-
-    boolean this_present_myDoubleField27 = true;
-    boolean that_present_myDoubleField27 = true;
-    if (this_present_myDoubleField27 || that_present_myDoubleField27) {
-      if (!(this_present_myDoubleField27 && that_present_myDoubleField27))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField27, that.myDoubleField27))
-        return false;
-    }
-
-    boolean this_present_myDoubleField28 = true;
-    boolean that_present_myDoubleField28 = true;
-    if (this_present_myDoubleField28 || that_present_myDoubleField28) {
-      if (!(this_present_myDoubleField28 && that_present_myDoubleField28))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField28, that.myDoubleField28))
-        return false;
-    }
-
-    boolean this_present_myDoubleField29 = true;
-    boolean that_present_myDoubleField29 = true;
-    if (this_present_myDoubleField29 || that_present_myDoubleField29) {
-      if (!(this_present_myDoubleField29 && that_present_myDoubleField29))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField29, that.myDoubleField29))
-        return false;
-    }
-
-    boolean this_present_myDoubleField30 = true;
-    boolean that_present_myDoubleField30 = true;
-    if (this_present_myDoubleField30 || that_present_myDoubleField30) {
-      if (!(this_present_myDoubleField30 && that_present_myDoubleField30))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myDoubleField30, that.myDoubleField30))
-        return false;
-    }
-
-    boolean this_present_msg31 = true && this.isSetMsg31();
-    boolean that_present_msg31 = true && that.isSetMsg31();
-    if (this_present_msg31 || that_present_msg31) {
-      if (!(this_present_msg31 && that_present_msg31))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg31, that.msg31))
-        return false;
-    }
-
-    boolean this_present_msg32 = true && this.isSetMsg32();
-    boolean that_present_msg32 = true && that.isSetMsg32();
-    if (this_present_msg32 || that_present_msg32) {
-      if (!(this_present_msg32 && that_present_msg32))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg32, that.msg32))
-        return false;
-    }
-
-    boolean this_present_msg33 = true && this.isSetMsg33();
-    boolean that_present_msg33 = true && that.isSetMsg33();
-    if (this_present_msg33 || that_present_msg33) {
-      if (!(this_present_msg33 && that_present_msg33))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg33, that.msg33))
-        return false;
-    }
-
-    boolean this_present_msg34 = true && this.isSetMsg34();
-    boolean that_present_msg34 = true && that.isSetMsg34();
-    if (this_present_msg34 || that_present_msg34) {
-      if (!(this_present_msg34 && that_present_msg34))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg34, that.msg34))
-        return false;
-    }
-
-    boolean this_present_msg35 = true && this.isSetMsg35();
-    boolean that_present_msg35 = true && that.isSetMsg35();
-    if (this_present_msg35 || that_present_msg35) {
-      if (!(this_present_msg35 && that_present_msg35))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg35, that.msg35))
-        return false;
-    }
-
-    boolean this_present_msg36 = true && this.isSetMsg36();
-    boolean that_present_msg36 = true && that.isSetMsg36();
-    if (this_present_msg36 || that_present_msg36) {
-      if (!(this_present_msg36 && that_present_msg36))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg36, that.msg36))
-        return false;
-    }
-
-    boolean this_present_msg37 = true && this.isSetMsg37();
-    boolean that_present_msg37 = true && that.isSetMsg37();
-    if (this_present_msg37 || that_present_msg37) {
-      if (!(this_present_msg37 && that_present_msg37))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg37, that.msg37))
-        return false;
-    }
-
-    boolean this_present_msg38 = true && this.isSetMsg38();
-    boolean that_present_msg38 = true && that.isSetMsg38();
-    if (this_present_msg38 || that_present_msg38) {
-      if (!(this_present_msg38 && that_present_msg38))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg38, that.msg38))
-        return false;
-    }
-
-    boolean this_present_msg39 = true && this.isSetMsg39();
-    boolean that_present_msg39 = true && that.isSetMsg39();
-    if (this_present_msg39 || that_present_msg39) {
-      if (!(this_present_msg39 && that_present_msg39))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg39, that.msg39))
-        return false;
-    }
-
-    boolean this_present_msg40 = true && this.isSetMsg40();
-    boolean that_present_msg40 = true && that.isSetMsg40();
-    if (this_present_msg40 || that_present_msg40) {
-      if (!(this_present_msg40 && that_present_msg40))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg40, that.msg40))
-        return false;
-    }
-
-    boolean this_present_msg41 = true && this.isSetMsg41();
-    boolean that_present_msg41 = true && that.isSetMsg41();
-    if (this_present_msg41 || that_present_msg41) {
-      if (!(this_present_msg41 && that_present_msg41))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg41, that.msg41))
-        return false;
-    }
-
-    boolean this_present_msg42 = true && this.isSetMsg42();
-    boolean that_present_msg42 = true && that.isSetMsg42();
-    if (this_present_msg42 || that_present_msg42) {
-      if (!(this_present_msg42 && that_present_msg42))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg42, that.msg42))
-        return false;
-    }
-
-    boolean this_present_msg43 = true && this.isSetMsg43();
-    boolean that_present_msg43 = true && that.isSetMsg43();
-    if (this_present_msg43 || that_present_msg43) {
-      if (!(this_present_msg43 && that_present_msg43))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg43, that.msg43))
-        return false;
-    }
-
-    boolean this_present_msg44 = true && this.isSetMsg44();
-    boolean that_present_msg44 = true && that.isSetMsg44();
-    if (this_present_msg44 || that_present_msg44) {
-      if (!(this_present_msg44 && that_present_msg44))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg44, that.msg44))
-        return false;
-    }
-
-    boolean this_present_msg45 = true && this.isSetMsg45();
-    boolean that_present_msg45 = true && that.isSetMsg45();
-    if (this_present_msg45 || that_present_msg45) {
-      if (!(this_present_msg45 && that_present_msg45))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg45, that.msg45))
-        return false;
-    }
-
-    boolean this_present_msg46 = true && this.isSetMsg46();
-    boolean that_present_msg46 = true && that.isSetMsg46();
-    if (this_present_msg46 || that_present_msg46) {
-      if (!(this_present_msg46 && that_present_msg46))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg46, that.msg46))
-        return false;
-    }
-
-    boolean this_present_msg47 = true && this.isSetMsg47();
-    boolean that_present_msg47 = true && that.isSetMsg47();
-    if (this_present_msg47 || that_present_msg47) {
-      if (!(this_present_msg47 && that_present_msg47))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg47, that.msg47))
-        return false;
-    }
-
-    boolean this_present_msg48 = true && this.isSetMsg48();
-    boolean that_present_msg48 = true && that.isSetMsg48();
-    if (this_present_msg48 || that_present_msg48) {
-      if (!(this_present_msg48 && that_present_msg48))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg48, that.msg48))
-        return false;
-    }
-
-    boolean this_present_msg49 = true && this.isSetMsg49();
-    boolean that_present_msg49 = true && that.isSetMsg49();
-    if (this_present_msg49 || that_present_msg49) {
-      if (!(this_present_msg49 && that_present_msg49))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg49, that.msg49))
-        return false;
-    }
-
-    boolean this_present_msg50 = true && this.isSetMsg50();
-    boolean that_present_msg50 = true && that.isSetMsg50();
-    if (this_present_msg50 || that_present_msg50) {
-      if (!(this_present_msg50 && that_present_msg50))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg50, that.msg50))
-        return false;
-    }
-
-    boolean this_present_msg51 = true && this.isSetMsg51();
-    boolean that_present_msg51 = true && that.isSetMsg51();
-    if (this_present_msg51 || that_present_msg51) {
-      if (!(this_present_msg51 && that_present_msg51))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg51, that.msg51))
-        return false;
-    }
-
-    boolean this_present_msg52 = true && this.isSetMsg52();
-    boolean that_present_msg52 = true && that.isSetMsg52();
-    if (this_present_msg52 || that_present_msg52) {
-      if (!(this_present_msg52 && that_present_msg52))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg52, that.msg52))
-        return false;
-    }
-
-    boolean this_present_msg53 = true && this.isSetMsg53();
-    boolean that_present_msg53 = true && that.isSetMsg53();
-    if (this_present_msg53 || that_present_msg53) {
-      if (!(this_present_msg53 && that_present_msg53))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg53, that.msg53))
-        return false;
-    }
-
-    boolean this_present_msg54 = true && this.isSetMsg54();
-    boolean that_present_msg54 = true && that.isSetMsg54();
-    if (this_present_msg54 || that_present_msg54) {
-      if (!(this_present_msg54 && that_present_msg54))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg54, that.msg54))
-        return false;
-    }
-
-    boolean this_present_msg55 = true && this.isSetMsg55();
-    boolean that_present_msg55 = true && that.isSetMsg55();
-    if (this_present_msg55 || that_present_msg55) {
-      if (!(this_present_msg55 && that_present_msg55))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg55, that.msg55))
-        return false;
-    }
-
-    boolean this_present_msg56 = true && this.isSetMsg56();
-    boolean that_present_msg56 = true && that.isSetMsg56();
-    if (this_present_msg56 || that_present_msg56) {
-      if (!(this_present_msg56 && that_present_msg56))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg56, that.msg56))
-        return false;
-    }
-
-    boolean this_present_msg57 = true && this.isSetMsg57();
-    boolean that_present_msg57 = true && that.isSetMsg57();
-    if (this_present_msg57 || that_present_msg57) {
-      if (!(this_present_msg57 && that_present_msg57))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg57, that.msg57))
-        return false;
-    }
-
-    boolean this_present_msg58 = true && this.isSetMsg58();
-    boolean that_present_msg58 = true && that.isSetMsg58();
-    if (this_present_msg58 || that_present_msg58) {
-      if (!(this_present_msg58 && that_present_msg58))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg58, that.msg58))
-        return false;
-    }
-
-    boolean this_present_msg59 = true && this.isSetMsg59();
-    boolean that_present_msg59 = true && that.isSetMsg59();
-    if (this_present_msg59 || that_present_msg59) {
-      if (!(this_present_msg59 && that_present_msg59))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg59, that.msg59))
-        return false;
-    }
-
-    boolean this_present_msg60 = true && this.isSetMsg60();
-    boolean that_present_msg60 = true && that.isSetMsg60();
-    if (this_present_msg60 || that_present_msg60) {
-      if (!(this_present_msg60 && that_present_msg60))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg60, that.msg60))
-        return false;
-    }
-
-    boolean this_present_msg61 = true && this.isSetMsg61();
-    boolean that_present_msg61 = true && that.isSetMsg61();
-    if (this_present_msg61 || that_present_msg61) {
-      if (!(this_present_msg61 && that_present_msg61))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg61, that.msg61))
-        return false;
-    }
-
-    boolean this_present_msg62 = true && this.isSetMsg62();
-    boolean that_present_msg62 = true && that.isSetMsg62();
-    if (this_present_msg62 || that_present_msg62) {
-      if (!(this_present_msg62 && that_present_msg62))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg62, that.msg62))
-        return false;
-    }
-
-    boolean this_present_msg63 = true && this.isSetMsg63();
-    boolean that_present_msg63 = true && that.isSetMsg63();
-    if (this_present_msg63 || that_present_msg63) {
-      if (!(this_present_msg63 && that_present_msg63))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg63, that.msg63))
-        return false;
-    }
-
-    boolean this_present_msg64 = true && this.isSetMsg64();
-    boolean that_present_msg64 = true && that.isSetMsg64();
-    if (this_present_msg64 || that_present_msg64) {
-      if (!(this_present_msg64 && that_present_msg64))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg64, that.msg64))
-        return false;
-    }
-
-    boolean this_present_msg65 = true && this.isSetMsg65();
-    boolean that_present_msg65 = true && that.isSetMsg65();
-    if (this_present_msg65 || that_present_msg65) {
-      if (!(this_present_msg65 && that_present_msg65))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg65, that.msg65))
-        return false;
-    }
-
-    boolean this_present_msg66 = true && this.isSetMsg66();
-    boolean that_present_msg66 = true && that.isSetMsg66();
-    if (this_present_msg66 || that_present_msg66) {
-      if (!(this_present_msg66 && that_present_msg66))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg66, that.msg66))
-        return false;
-    }
-
-    boolean this_present_msg67 = true && this.isSetMsg67();
-    boolean that_present_msg67 = true && that.isSetMsg67();
-    if (this_present_msg67 || that_present_msg67) {
-      if (!(this_present_msg67 && that_present_msg67))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg67, that.msg67))
-        return false;
-    }
-
-    boolean this_present_msg68 = true && this.isSetMsg68();
-    boolean that_present_msg68 = true && that.isSetMsg68();
-    if (this_present_msg68 || that_present_msg68) {
-      if (!(this_present_msg68 && that_present_msg68))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg68, that.msg68))
-        return false;
-    }
-
-    boolean this_present_msg69 = true && this.isSetMsg69();
-    boolean that_present_msg69 = true && that.isSetMsg69();
-    if (this_present_msg69 || that_present_msg69) {
-      if (!(this_present_msg69 && that_present_msg69))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg69, that.msg69))
-        return false;
-    }
-
-    boolean this_present_msg70 = true && this.isSetMsg70();
-    boolean that_present_msg70 = true && that.isSetMsg70();
-    if (this_present_msg70 || that_present_msg70) {
-      if (!(this_present_msg70 && that_present_msg70))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg70, that.msg70))
-        return false;
-    }
-
-    boolean this_present_msg71 = true && this.isSetMsg71();
-    boolean that_present_msg71 = true && that.isSetMsg71();
-    if (this_present_msg71 || that_present_msg71) {
-      if (!(this_present_msg71 && that_present_msg71))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg71, that.msg71))
-        return false;
-    }
-
-    boolean this_present_msg72 = true && this.isSetMsg72();
-    boolean that_present_msg72 = true && that.isSetMsg72();
-    if (this_present_msg72 || that_present_msg72) {
-      if (!(this_present_msg72 && that_present_msg72))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg72, that.msg72))
-        return false;
-    }
-
-    boolean this_present_msg73 = true && this.isSetMsg73();
-    boolean that_present_msg73 = true && that.isSetMsg73();
-    if (this_present_msg73 || that_present_msg73) {
-      if (!(this_present_msg73 && that_present_msg73))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg73, that.msg73))
-        return false;
-    }
-
-    boolean this_present_msg74 = true && this.isSetMsg74();
-    boolean that_present_msg74 = true && that.isSetMsg74();
-    if (this_present_msg74 || that_present_msg74) {
-      if (!(this_present_msg74 && that_present_msg74))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg74, that.msg74))
-        return false;
-    }
-
-    boolean this_present_msg75 = true && this.isSetMsg75();
-    boolean that_present_msg75 = true && that.isSetMsg75();
-    if (this_present_msg75 || that_present_msg75) {
-      if (!(this_present_msg75 && that_present_msg75))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg75, that.msg75))
-        return false;
-    }
-
-    boolean this_present_msg76 = true && this.isSetMsg76();
-    boolean that_present_msg76 = true && that.isSetMsg76();
-    if (this_present_msg76 || that_present_msg76) {
-      if (!(this_present_msg76 && that_present_msg76))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg76, that.msg76))
-        return false;
-    }
-
-    boolean this_present_msg77 = true && this.isSetMsg77();
-    boolean that_present_msg77 = true && that.isSetMsg77();
-    if (this_present_msg77 || that_present_msg77) {
-      if (!(this_present_msg77 && that_present_msg77))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg77, that.msg77))
-        return false;
-    }
-
-    boolean this_present_msg78 = true && this.isSetMsg78();
-    boolean that_present_msg78 = true && that.isSetMsg78();
-    if (this_present_msg78 || that_present_msg78) {
-      if (!(this_present_msg78 && that_present_msg78))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg78, that.msg78))
-        return false;
-    }
-
-    boolean this_present_msg79 = true && this.isSetMsg79();
-    boolean that_present_msg79 = true && that.isSetMsg79();
-    if (this_present_msg79 || that_present_msg79) {
-      if (!(this_present_msg79 && that_present_msg79))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg79, that.msg79))
-        return false;
-    }
-
-    boolean this_present_msg80 = true && this.isSetMsg80();
-    boolean that_present_msg80 = true && that.isSetMsg80();
-    if (this_present_msg80 || that_present_msg80) {
-      if (!(this_present_msg80 && that_present_msg80))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg80, that.msg80))
-        return false;
-    }
-
-    boolean this_present_msg81 = true && this.isSetMsg81();
-    boolean that_present_msg81 = true && that.isSetMsg81();
-    if (this_present_msg81 || that_present_msg81) {
-      if (!(this_present_msg81 && that_present_msg81))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg81, that.msg81))
-        return false;
-    }
-
-    boolean this_present_msg82 = true && this.isSetMsg82();
-    boolean that_present_msg82 = true && that.isSetMsg82();
-    if (this_present_msg82 || that_present_msg82) {
-      if (!(this_present_msg82 && that_present_msg82))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg82, that.msg82))
-        return false;
-    }
-
-    boolean this_present_msg83 = true && this.isSetMsg83();
-    boolean that_present_msg83 = true && that.isSetMsg83();
-    if (this_present_msg83 || that_present_msg83) {
-      if (!(this_present_msg83 && that_present_msg83))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg83, that.msg83))
-        return false;
-    }
-
-    boolean this_present_msg84 = true && this.isSetMsg84();
-    boolean that_present_msg84 = true && that.isSetMsg84();
-    if (this_present_msg84 || that_present_msg84) {
-      if (!(this_present_msg84 && that_present_msg84))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg84, that.msg84))
-        return false;
-    }
-
-    boolean this_present_msg85 = true && this.isSetMsg85();
-    boolean that_present_msg85 = true && that.isSetMsg85();
-    if (this_present_msg85 || that_present_msg85) {
-      if (!(this_present_msg85 && that_present_msg85))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg85, that.msg85))
-        return false;
-    }
-
-    boolean this_present_msg86 = true && this.isSetMsg86();
-    boolean that_present_msg86 = true && that.isSetMsg86();
-    if (this_present_msg86 || that_present_msg86) {
-      if (!(this_present_msg86 && that_present_msg86))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg86, that.msg86))
-        return false;
-    }
-
-    boolean this_present_msg87 = true && this.isSetMsg87();
-    boolean that_present_msg87 = true && that.isSetMsg87();
-    if (this_present_msg87 || that_present_msg87) {
-      if (!(this_present_msg87 && that_present_msg87))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg87, that.msg87))
-        return false;
-    }
-
-    boolean this_present_msg88 = true && this.isSetMsg88();
-    boolean that_present_msg88 = true && that.isSetMsg88();
-    if (this_present_msg88 || that_present_msg88) {
-      if (!(this_present_msg88 && that_present_msg88))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg88, that.msg88))
-        return false;
-    }
-
-    boolean this_present_msg89 = true && this.isSetMsg89();
-    boolean that_present_msg89 = true && that.isSetMsg89();
-    if (this_present_msg89 || that_present_msg89) {
-      if (!(this_present_msg89 && that_present_msg89))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg89, that.msg89))
-        return false;
-    }
-
-    boolean this_present_msg90 = true && this.isSetMsg90();
-    boolean that_present_msg90 = true && that.isSetMsg90();
-    if (this_present_msg90 || that_present_msg90) {
-      if (!(this_present_msg90 && that_present_msg90))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg90, that.msg90))
-        return false;
-    }
-
-    boolean this_present_msg91 = true && this.isSetMsg91();
-    boolean that_present_msg91 = true && that.isSetMsg91();
-    if (this_present_msg91 || that_present_msg91) {
-      if (!(this_present_msg91 && that_present_msg91))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg91, that.msg91))
-        return false;
-    }
-
-    boolean this_present_msg92 = true && this.isSetMsg92();
-    boolean that_present_msg92 = true && that.isSetMsg92();
-    if (this_present_msg92 || that_present_msg92) {
-      if (!(this_present_msg92 && that_present_msg92))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg92, that.msg92))
-        return false;
-    }
-
-    boolean this_present_msg93 = true && this.isSetMsg93();
-    boolean that_present_msg93 = true && that.isSetMsg93();
-    if (this_present_msg93 || that_present_msg93) {
-      if (!(this_present_msg93 && that_present_msg93))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg93, that.msg93))
-        return false;
-    }
-
-    boolean this_present_msg94 = true && this.isSetMsg94();
-    boolean that_present_msg94 = true && that.isSetMsg94();
-    if (this_present_msg94 || that_present_msg94) {
-      if (!(this_present_msg94 && that_present_msg94))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg94, that.msg94))
-        return false;
-    }
-
-    boolean this_present_msg95 = true && this.isSetMsg95();
-    boolean that_present_msg95 = true && that.isSetMsg95();
-    if (this_present_msg95 || that_present_msg95) {
-      if (!(this_present_msg95 && that_present_msg95))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg95, that.msg95))
-        return false;
-    }
-
-    boolean this_present_msg96 = true && this.isSetMsg96();
-    boolean that_present_msg96 = true && that.isSetMsg96();
-    if (this_present_msg96 || that_present_msg96) {
-      if (!(this_present_msg96 && that_present_msg96))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg96, that.msg96))
-        return false;
-    }
-
-    boolean this_present_msg97 = true && this.isSetMsg97();
-    boolean that_present_msg97 = true && that.isSetMsg97();
-    if (this_present_msg97 || that_present_msg97) {
-      if (!(this_present_msg97 && that_present_msg97))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg97, that.msg97))
-        return false;
-    }
-
-    boolean this_present_msg98 = true && this.isSetMsg98();
-    boolean that_present_msg98 = true && that.isSetMsg98();
-    if (this_present_msg98 || that_present_msg98) {
-      if (!(this_present_msg98 && that_present_msg98))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg98, that.msg98))
-        return false;
-    }
-
-    boolean this_present_msg99 = true && this.isSetMsg99();
-    boolean that_present_msg99 = true && that.isSetMsg99();
-    if (this_present_msg99 || that_present_msg99) {
-      if (!(this_present_msg99 && that_present_msg99))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg99, that.msg99))
-        return false;
-    }
-
-    boolean this_present_msg100 = true && this.isSetMsg100();
-    boolean that_present_msg100 = true && that.isSetMsg100();
-    if (this_present_msg100 || that_present_msg100) {
-      if (!(this_present_msg100 && that_present_msg100))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg100, that.msg100))
-        return false;
-    }
-
-    boolean this_present_msg101 = true && this.isSetMsg101();
-    boolean that_present_msg101 = true && that.isSetMsg101();
-    if (this_present_msg101 || that_present_msg101) {
-      if (!(this_present_msg101 && that_present_msg101))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg101, that.msg101))
-        return false;
-    }
-
-    boolean this_present_msg102 = true && this.isSetMsg102();
-    boolean that_present_msg102 = true && that.isSetMsg102();
-    if (this_present_msg102 || that_present_msg102) {
-      if (!(this_present_msg102 && that_present_msg102))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg102, that.msg102))
-        return false;
-    }
-
-    boolean this_present_msg103 = true && this.isSetMsg103();
-    boolean that_present_msg103 = true && that.isSetMsg103();
-    if (this_present_msg103 || that_present_msg103) {
-      if (!(this_present_msg103 && that_present_msg103))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg103, that.msg103))
-        return false;
-    }
-
-    boolean this_present_msg104 = true && this.isSetMsg104();
-    boolean that_present_msg104 = true && that.isSetMsg104();
-    if (this_present_msg104 || that_present_msg104) {
-      if (!(this_present_msg104 && that_present_msg104))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg104, that.msg104))
-        return false;
-    }
-
-    boolean this_present_msg105 = true && this.isSetMsg105();
-    boolean that_present_msg105 = true && that.isSetMsg105();
-    if (this_present_msg105 || that_present_msg105) {
-      if (!(this_present_msg105 && that_present_msg105))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg105, that.msg105))
-        return false;
-    }
-
-    boolean this_present_msg106 = true && this.isSetMsg106();
-    boolean that_present_msg106 = true && that.isSetMsg106();
-    if (this_present_msg106 || that_present_msg106) {
-      if (!(this_present_msg106 && that_present_msg106))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg106, that.msg106))
-        return false;
-    }
-
-    boolean this_present_msg107 = true && this.isSetMsg107();
-    boolean that_present_msg107 = true && that.isSetMsg107();
-    if (this_present_msg107 || that_present_msg107) {
-      if (!(this_present_msg107 && that_present_msg107))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg107, that.msg107))
-        return false;
-    }
-
-    boolean this_present_msg108 = true && this.isSetMsg108();
-    boolean that_present_msg108 = true && that.isSetMsg108();
-    if (this_present_msg108 || that_present_msg108) {
-      if (!(this_present_msg108 && that_present_msg108))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg108, that.msg108))
-        return false;
-    }
-
-    boolean this_present_msg109 = true && this.isSetMsg109();
-    boolean that_present_msg109 = true && that.isSetMsg109();
-    if (this_present_msg109 || that_present_msg109) {
-      if (!(this_present_msg109 && that_present_msg109))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg109, that.msg109))
-        return false;
-    }
-
-    boolean this_present_msg110 = true && this.isSetMsg110();
-    boolean that_present_msg110 = true && that.isSetMsg110();
-    if (this_present_msg110 || that_present_msg110) {
-      if (!(this_present_msg110 && that_present_msg110))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg110, that.msg110))
-        return false;
-    }
-
-    boolean this_present_msg111 = true && this.isSetMsg111();
-    boolean that_present_msg111 = true && that.isSetMsg111();
-    if (this_present_msg111 || that_present_msg111) {
-      if (!(this_present_msg111 && that_present_msg111))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg111, that.msg111))
-        return false;
-    }
-
-    boolean this_present_msg112 = true && this.isSetMsg112();
-    boolean that_present_msg112 = true && that.isSetMsg112();
-    if (this_present_msg112 || that_present_msg112) {
-      if (!(this_present_msg112 && that_present_msg112))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg112, that.msg112))
-        return false;
-    }
-
-    boolean this_present_msg113 = true && this.isSetMsg113();
-    boolean that_present_msg113 = true && that.isSetMsg113();
-    if (this_present_msg113 || that_present_msg113) {
-      if (!(this_present_msg113 && that_present_msg113))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg113, that.msg113))
-        return false;
-    }
-
-    boolean this_present_msg114 = true && this.isSetMsg114();
-    boolean that_present_msg114 = true && that.isSetMsg114();
-    if (this_present_msg114 || that_present_msg114) {
-      if (!(this_present_msg114 && that_present_msg114))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg114, that.msg114))
-        return false;
-    }
-
-    boolean this_present_msg115 = true && this.isSetMsg115();
-    boolean that_present_msg115 = true && that.isSetMsg115();
-    if (this_present_msg115 || that_present_msg115) {
-      if (!(this_present_msg115 && that_present_msg115))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg115, that.msg115))
-        return false;
-    }
-
-    boolean this_present_msg116 = true && this.isSetMsg116();
-    boolean that_present_msg116 = true && that.isSetMsg116();
-    if (this_present_msg116 || that_present_msg116) {
-      if (!(this_present_msg116 && that_present_msg116))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg116, that.msg116))
-        return false;
-    }
-
-    boolean this_present_msg117 = true && this.isSetMsg117();
-    boolean that_present_msg117 = true && that.isSetMsg117();
-    if (this_present_msg117 || that_present_msg117) {
-      if (!(this_present_msg117 && that_present_msg117))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg117, that.msg117))
-        return false;
-    }
-
-    boolean this_present_msg118 = true && this.isSetMsg118();
-    boolean that_present_msg118 = true && that.isSetMsg118();
-    if (this_present_msg118 || that_present_msg118) {
-      if (!(this_present_msg118 && that_present_msg118))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg118, that.msg118))
-        return false;
-    }
-
-    boolean this_present_msg119 = true && this.isSetMsg119();
-    boolean that_present_msg119 = true && that.isSetMsg119();
-    if (this_present_msg119 || that_present_msg119) {
-      if (!(this_present_msg119 && that_present_msg119))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg119, that.msg119))
-        return false;
-    }
-
-    boolean this_present_msg120 = true && this.isSetMsg120();
-    boolean that_present_msg120 = true && that.isSetMsg120();
-    if (this_present_msg120 || that_present_msg120) {
-      if (!(this_present_msg120 && that_present_msg120))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg120, that.msg120))
-        return false;
-    }
-
-    boolean this_present_msg121 = true && this.isSetMsg121();
-    boolean that_present_msg121 = true && that.isSetMsg121();
-    if (this_present_msg121 || that_present_msg121) {
-      if (!(this_present_msg121 && that_present_msg121))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg121, that.msg121))
-        return false;
-    }
-
-    boolean this_present_msg122 = true && this.isSetMsg122();
-    boolean that_present_msg122 = true && that.isSetMsg122();
-    if (this_present_msg122 || that_present_msg122) {
-      if (!(this_present_msg122 && that_present_msg122))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg122, that.msg122))
-        return false;
-    }
-
-    boolean this_present_msg123 = true && this.isSetMsg123();
-    boolean that_present_msg123 = true && that.isSetMsg123();
-    if (this_present_msg123 || that_present_msg123) {
-      if (!(this_present_msg123 && that_present_msg123))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg123, that.msg123))
-        return false;
-    }
-
-    boolean this_present_msg124 = true && this.isSetMsg124();
-    boolean that_present_msg124 = true && that.isSetMsg124();
-    if (this_present_msg124 || that_present_msg124) {
-      if (!(this_present_msg124 && that_present_msg124))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg124, that.msg124))
-        return false;
-    }
-
-    boolean this_present_msg125 = true && this.isSetMsg125();
-    boolean that_present_msg125 = true && that.isSetMsg125();
-    if (this_present_msg125 || that_present_msg125) {
-      if (!(this_present_msg125 && that_present_msg125))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg125, that.msg125))
-        return false;
-    }
-
-    boolean this_present_msg126 = true && this.isSetMsg126();
-    boolean that_present_msg126 = true && that.isSetMsg126();
-    if (this_present_msg126 || that_present_msg126) {
-      if (!(this_present_msg126 && that_present_msg126))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg126, that.msg126))
-        return false;
-    }
-
-    boolean this_present_msg127 = true && this.isSetMsg127();
-    boolean that_present_msg127 = true && that.isSetMsg127();
-    if (this_present_msg127 || that_present_msg127) {
-      if (!(this_present_msg127 && that_present_msg127))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg127, that.msg127))
-        return false;
-    }
-
-    boolean this_present_msg128 = true && this.isSetMsg128();
-    boolean that_present_msg128 = true && that.isSetMsg128();
-    if (this_present_msg128 || that_present_msg128) {
-      if (!(this_present_msg128 && that_present_msg128))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg128, that.msg128))
-        return false;
-    }
-
-    boolean this_present_msg129 = true && this.isSetMsg129();
-    boolean that_present_msg129 = true && that.isSetMsg129();
-    if (this_present_msg129 || that_present_msg129) {
-      if (!(this_present_msg129 && that_present_msg129))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg129, that.msg129))
-        return false;
-    }
-
-    boolean this_present_msg130 = true && this.isSetMsg130();
-    boolean that_present_msg130 = true && that.isSetMsg130();
-    if (this_present_msg130 || that_present_msg130) {
-      if (!(this_present_msg130 && that_present_msg130))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg130, that.msg130))
-        return false;
-    }
-
-    boolean this_present_msg131 = true && this.isSetMsg131();
-    boolean that_present_msg131 = true && that.isSetMsg131();
-    if (this_present_msg131 || that_present_msg131) {
-      if (!(this_present_msg131 && that_present_msg131))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg131, that.msg131))
-        return false;
-    }
-
-    boolean this_present_msg132 = true && this.isSetMsg132();
-    boolean that_present_msg132 = true && that.isSetMsg132();
-    if (this_present_msg132 || that_present_msg132) {
-      if (!(this_present_msg132 && that_present_msg132))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg132, that.msg132))
-        return false;
-    }
-
-    boolean this_present_msg133 = true && this.isSetMsg133();
-    boolean that_present_msg133 = true && that.isSetMsg133();
-    if (this_present_msg133 || that_present_msg133) {
-      if (!(this_present_msg133 && that_present_msg133))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg133, that.msg133))
-        return false;
-    }
-
-    boolean this_present_msg134 = true && this.isSetMsg134();
-    boolean that_present_msg134 = true && that.isSetMsg134();
-    if (this_present_msg134 || that_present_msg134) {
-      if (!(this_present_msg134 && that_present_msg134))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg134, that.msg134))
-        return false;
-    }
-
-    boolean this_present_msg135 = true && this.isSetMsg135();
-    boolean that_present_msg135 = true && that.isSetMsg135();
-    if (this_present_msg135 || that_present_msg135) {
-      if (!(this_present_msg135 && that_present_msg135))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg135, that.msg135))
-        return false;
-    }
-
-    boolean this_present_msg136 = true && this.isSetMsg136();
-    boolean that_present_msg136 = true && that.isSetMsg136();
-    if (this_present_msg136 || that_present_msg136) {
-      if (!(this_present_msg136 && that_present_msg136))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg136, that.msg136))
-        return false;
-    }
-
-    boolean this_present_msg137 = true && this.isSetMsg137();
-    boolean that_present_msg137 = true && that.isSetMsg137();
-    if (this_present_msg137 || that_present_msg137) {
-      if (!(this_present_msg137 && that_present_msg137))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg137, that.msg137))
-        return false;
-    }
-
-    boolean this_present_msg138 = true && this.isSetMsg138();
-    boolean that_present_msg138 = true && that.isSetMsg138();
-    if (this_present_msg138 || that_present_msg138) {
-      if (!(this_present_msg138 && that_present_msg138))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg138, that.msg138))
-        return false;
-    }
-
-    boolean this_present_msg139 = true && this.isSetMsg139();
-    boolean that_present_msg139 = true && that.isSetMsg139();
-    if (this_present_msg139 || that_present_msg139) {
-      if (!(this_present_msg139 && that_present_msg139))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg139, that.msg139))
-        return false;
-    }
-
-    boolean this_present_msg140 = true && this.isSetMsg140();
-    boolean that_present_msg140 = true && that.isSetMsg140();
-    if (this_present_msg140 || that_present_msg140) {
-      if (!(this_present_msg140 && that_present_msg140))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg140, that.msg140))
-        return false;
-    }
-
-    boolean this_present_msg141 = true && this.isSetMsg141();
-    boolean that_present_msg141 = true && that.isSetMsg141();
-    if (this_present_msg141 || that_present_msg141) {
-      if (!(this_present_msg141 && that_present_msg141))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg141, that.msg141))
-        return false;
-    }
-
-    boolean this_present_msg142 = true && this.isSetMsg142();
-    boolean that_present_msg142 = true && that.isSetMsg142();
-    if (this_present_msg142 || that_present_msg142) {
-      if (!(this_present_msg142 && that_present_msg142))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg142, that.msg142))
-        return false;
-    }
-
-    boolean this_present_msg143 = true && this.isSetMsg143();
-    boolean that_present_msg143 = true && that.isSetMsg143();
-    if (this_present_msg143 || that_present_msg143) {
-      if (!(this_present_msg143 && that_present_msg143))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg143, that.msg143))
-        return false;
-    }
-
-    boolean this_present_msg144 = true && this.isSetMsg144();
-    boolean that_present_msg144 = true && that.isSetMsg144();
-    if (this_present_msg144 || that_present_msg144) {
-      if (!(this_present_msg144 && that_present_msg144))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg144, that.msg144))
-        return false;
-    }
-
-    boolean this_present_msg145 = true && this.isSetMsg145();
-    boolean that_present_msg145 = true && that.isSetMsg145();
-    if (this_present_msg145 || that_present_msg145) {
-      if (!(this_present_msg145 && that_present_msg145))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg145, that.msg145))
-        return false;
-    }
-
-    boolean this_present_msg146 = true && this.isSetMsg146();
-    boolean that_present_msg146 = true && that.isSetMsg146();
-    if (this_present_msg146 || that_present_msg146) {
-      if (!(this_present_msg146 && that_present_msg146))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg146, that.msg146))
-        return false;
-    }
-
-    boolean this_present_msg147 = true && this.isSetMsg147();
-    boolean that_present_msg147 = true && that.isSetMsg147();
-    if (this_present_msg147 || that_present_msg147) {
-      if (!(this_present_msg147 && that_present_msg147))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg147, that.msg147))
-        return false;
-    }
-
-    boolean this_present_msg148 = true && this.isSetMsg148();
-    boolean that_present_msg148 = true && that.isSetMsg148();
-    if (this_present_msg148 || that_present_msg148) {
-      if (!(this_present_msg148 && that_present_msg148))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg148, that.msg148))
-        return false;
-    }
-
-    boolean this_present_msg149 = true && this.isSetMsg149();
-    boolean that_present_msg149 = true && that.isSetMsg149();
-    if (this_present_msg149 || that_present_msg149) {
-      if (!(this_present_msg149 && that_present_msg149))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg149, that.msg149))
-        return false;
-    }
-
-    boolean this_present_msg150 = true && this.isSetMsg150();
-    boolean that_present_msg150 = true && that.isSetMsg150();
-    if (this_present_msg150 || that_present_msg150) {
-      if (!(this_present_msg150 && that_present_msg150))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg150, that.msg150))
-        return false;
-    }
-
-    boolean this_present_msg151 = true && this.isSetMsg151();
-    boolean that_present_msg151 = true && that.isSetMsg151();
-    if (this_present_msg151 || that_present_msg151) {
-      if (!(this_present_msg151 && that_present_msg151))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg151, that.msg151))
-        return false;
-    }
-
-    boolean this_present_msg152 = true && this.isSetMsg152();
-    boolean that_present_msg152 = true && that.isSetMsg152();
-    if (this_present_msg152 || that_present_msg152) {
-      if (!(this_present_msg152 && that_present_msg152))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg152, that.msg152))
-        return false;
-    }
-
-    boolean this_present_msg153 = true && this.isSetMsg153();
-    boolean that_present_msg153 = true && that.isSetMsg153();
-    if (this_present_msg153 || that_present_msg153) {
-      if (!(this_present_msg153 && that_present_msg153))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg153, that.msg153))
-        return false;
-    }
-
-    boolean this_present_msg154 = true && this.isSetMsg154();
-    boolean that_present_msg154 = true && that.isSetMsg154();
-    if (this_present_msg154 || that_present_msg154) {
-      if (!(this_present_msg154 && that_present_msg154))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg154, that.msg154))
-        return false;
-    }
-
-    boolean this_present_msg155 = true && this.isSetMsg155();
-    boolean that_present_msg155 = true && that.isSetMsg155();
-    if (this_present_msg155 || that_present_msg155) {
-      if (!(this_present_msg155 && that_present_msg155))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg155, that.msg155))
-        return false;
-    }
-
-    boolean this_present_msg156 = true && this.isSetMsg156();
-    boolean that_present_msg156 = true && that.isSetMsg156();
-    if (this_present_msg156 || that_present_msg156) {
-      if (!(this_present_msg156 && that_present_msg156))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg156, that.msg156))
-        return false;
-    }
-
-    boolean this_present_msg157 = true && this.isSetMsg157();
-    boolean that_present_msg157 = true && that.isSetMsg157();
-    if (this_present_msg157 || that_present_msg157) {
-      if (!(this_present_msg157 && that_present_msg157))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg157, that.msg157))
-        return false;
-    }
-
-    boolean this_present_msg158 = true && this.isSetMsg158();
-    boolean that_present_msg158 = true && that.isSetMsg158();
-    if (this_present_msg158 || that_present_msg158) {
-      if (!(this_present_msg158 && that_present_msg158))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg158, that.msg158))
-        return false;
-    }
-
-    boolean this_present_msg159 = true && this.isSetMsg159();
-    boolean that_present_msg159 = true && that.isSetMsg159();
-    if (this_present_msg159 || that_present_msg159) {
-      if (!(this_present_msg159 && that_present_msg159))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg159, that.msg159))
-        return false;
-    }
-
-    boolean this_present_msg160 = true && this.isSetMsg160();
-    boolean that_present_msg160 = true && that.isSetMsg160();
-    if (this_present_msg160 || that_present_msg160) {
-      if (!(this_present_msg160 && that_present_msg160))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg160, that.msg160))
-        return false;
-    }
-
-    boolean this_present_msg161 = true && this.isSetMsg161();
-    boolean that_present_msg161 = true && that.isSetMsg161();
-    if (this_present_msg161 || that_present_msg161) {
-      if (!(this_present_msg161 && that_present_msg161))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg161, that.msg161))
-        return false;
-    }
-
-    boolean this_present_msg162 = true && this.isSetMsg162();
-    boolean that_present_msg162 = true && that.isSetMsg162();
-    if (this_present_msg162 || that_present_msg162) {
-      if (!(this_present_msg162 && that_present_msg162))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg162, that.msg162))
-        return false;
-    }
-
-    boolean this_present_msg163 = true && this.isSetMsg163();
-    boolean that_present_msg163 = true && that.isSetMsg163();
-    if (this_present_msg163 || that_present_msg163) {
-      if (!(this_present_msg163 && that_present_msg163))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg163, that.msg163))
-        return false;
-    }
-
-    boolean this_present_msg164 = true && this.isSetMsg164();
-    boolean that_present_msg164 = true && that.isSetMsg164();
-    if (this_present_msg164 || that_present_msg164) {
-      if (!(this_present_msg164 && that_present_msg164))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg164, that.msg164))
-        return false;
-    }
-
-    boolean this_present_msg165 = true && this.isSetMsg165();
-    boolean that_present_msg165 = true && that.isSetMsg165();
-    if (this_present_msg165 || that_present_msg165) {
-      if (!(this_present_msg165 && that_present_msg165))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg165, that.msg165))
-        return false;
-    }
-
-    boolean this_present_msg166 = true && this.isSetMsg166();
-    boolean that_present_msg166 = true && that.isSetMsg166();
-    if (this_present_msg166 || that_present_msg166) {
-      if (!(this_present_msg166 && that_present_msg166))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg166, that.msg166))
-        return false;
-    }
-
-    boolean this_present_msg167 = true && this.isSetMsg167();
-    boolean that_present_msg167 = true && that.isSetMsg167();
-    if (this_present_msg167 || that_present_msg167) {
-      if (!(this_present_msg167 && that_present_msg167))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg167, that.msg167))
-        return false;
-    }
-
-    boolean this_present_msg168 = true && this.isSetMsg168();
-    boolean that_present_msg168 = true && that.isSetMsg168();
-    if (this_present_msg168 || that_present_msg168) {
-      if (!(this_present_msg168 && that_present_msg168))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg168, that.msg168))
-        return false;
-    }
-
-    boolean this_present_msg169 = true && this.isSetMsg169();
-    boolean that_present_msg169 = true && that.isSetMsg169();
-    if (this_present_msg169 || that_present_msg169) {
-      if (!(this_present_msg169 && that_present_msg169))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg169, that.msg169))
-        return false;
-    }
-
-    boolean this_present_msg170 = true && this.isSetMsg170();
-    boolean that_present_msg170 = true && that.isSetMsg170();
-    if (this_present_msg170 || that_present_msg170) {
-      if (!(this_present_msg170 && that_present_msg170))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg170, that.msg170))
-        return false;
-    }
-
-    boolean this_present_msg171 = true && this.isSetMsg171();
-    boolean that_present_msg171 = true && that.isSetMsg171();
-    if (this_present_msg171 || that_present_msg171) {
-      if (!(this_present_msg171 && that_present_msg171))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg171, that.msg171))
-        return false;
-    }
-
-    boolean this_present_msg172 = true && this.isSetMsg172();
-    boolean that_present_msg172 = true && that.isSetMsg172();
-    if (this_present_msg172 || that_present_msg172) {
-      if (!(this_present_msg172 && that_present_msg172))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg172, that.msg172))
-        return false;
-    }
-
-    boolean this_present_msg173 = true && this.isSetMsg173();
-    boolean that_present_msg173 = true && that.isSetMsg173();
-    if (this_present_msg173 || that_present_msg173) {
-      if (!(this_present_msg173 && that_present_msg173))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg173, that.msg173))
-        return false;
-    }
-
-    boolean this_present_msg174 = true && this.isSetMsg174();
-    boolean that_present_msg174 = true && that.isSetMsg174();
-    if (this_present_msg174 || that_present_msg174) {
-      if (!(this_present_msg174 && that_present_msg174))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg174, that.msg174))
-        return false;
-    }
-
-    boolean this_present_msg175 = true && this.isSetMsg175();
-    boolean that_present_msg175 = true && that.isSetMsg175();
-    if (this_present_msg175 || that_present_msg175) {
-      if (!(this_present_msg175 && that_present_msg175))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg175, that.msg175))
-        return false;
-    }
-
-    boolean this_present_msg176 = true && this.isSetMsg176();
-    boolean that_present_msg176 = true && that.isSetMsg176();
-    if (this_present_msg176 || that_present_msg176) {
-      if (!(this_present_msg176 && that_present_msg176))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg176, that.msg176))
-        return false;
-    }
-
-    boolean this_present_msg177 = true && this.isSetMsg177();
-    boolean that_present_msg177 = true && that.isSetMsg177();
-    if (this_present_msg177 || that_present_msg177) {
-      if (!(this_present_msg177 && that_present_msg177))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg177, that.msg177))
-        return false;
-    }
-
-    boolean this_present_msg178 = true && this.isSetMsg178();
-    boolean that_present_msg178 = true && that.isSetMsg178();
-    if (this_present_msg178 || that_present_msg178) {
-      if (!(this_present_msg178 && that_present_msg178))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg178, that.msg178))
-        return false;
-    }
-
-    boolean this_present_msg179 = true && this.isSetMsg179();
-    boolean that_present_msg179 = true && that.isSetMsg179();
-    if (this_present_msg179 || that_present_msg179) {
-      if (!(this_present_msg179 && that_present_msg179))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg179, that.msg179))
-        return false;
-    }
-
-    boolean this_present_msg180 = true && this.isSetMsg180();
-    boolean that_present_msg180 = true && that.isSetMsg180();
-    if (this_present_msg180 || that_present_msg180) {
-      if (!(this_present_msg180 && that_present_msg180))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg180, that.msg180))
-        return false;
-    }
-
-    boolean this_present_msg181 = true && this.isSetMsg181();
-    boolean that_present_msg181 = true && that.isSetMsg181();
-    if (this_present_msg181 || that_present_msg181) {
-      if (!(this_present_msg181 && that_present_msg181))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg181, that.msg181))
-        return false;
-    }
-
-    boolean this_present_msg182 = true && this.isSetMsg182();
-    boolean that_present_msg182 = true && that.isSetMsg182();
-    if (this_present_msg182 || that_present_msg182) {
-      if (!(this_present_msg182 && that_present_msg182))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg182, that.msg182))
-        return false;
-    }
-
-    boolean this_present_msg183 = true && this.isSetMsg183();
-    boolean that_present_msg183 = true && that.isSetMsg183();
-    if (this_present_msg183 || that_present_msg183) {
-      if (!(this_present_msg183 && that_present_msg183))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg183, that.msg183))
-        return false;
-    }
-
-    boolean this_present_msg184 = true && this.isSetMsg184();
-    boolean that_present_msg184 = true && that.isSetMsg184();
-    if (this_present_msg184 || that_present_msg184) {
-      if (!(this_present_msg184 && that_present_msg184))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg184, that.msg184))
-        return false;
-    }
-
-    boolean this_present_msg185 = true && this.isSetMsg185();
-    boolean that_present_msg185 = true && that.isSetMsg185();
-    if (this_present_msg185 || that_present_msg185) {
-      if (!(this_present_msg185 && that_present_msg185))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg185, that.msg185))
-        return false;
-    }
-
-    boolean this_present_msg186 = true && this.isSetMsg186();
-    boolean that_present_msg186 = true && that.isSetMsg186();
-    if (this_present_msg186 || that_present_msg186) {
-      if (!(this_present_msg186 && that_present_msg186))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg186, that.msg186))
-        return false;
-    }
-
-    boolean this_present_msg187 = true && this.isSetMsg187();
-    boolean that_present_msg187 = true && that.isSetMsg187();
-    if (this_present_msg187 || that_present_msg187) {
-      if (!(this_present_msg187 && that_present_msg187))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg187, that.msg187))
-        return false;
-    }
-
-    boolean this_present_msg188 = true && this.isSetMsg188();
-    boolean that_present_msg188 = true && that.isSetMsg188();
-    if (this_present_msg188 || that_present_msg188) {
-      if (!(this_present_msg188 && that_present_msg188))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg188, that.msg188))
-        return false;
-    }
-
-    boolean this_present_msg189 = true && this.isSetMsg189();
-    boolean that_present_msg189 = true && that.isSetMsg189();
-    if (this_present_msg189 || that_present_msg189) {
-      if (!(this_present_msg189 && that_present_msg189))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg189, that.msg189))
-        return false;
-    }
-
-    boolean this_present_msg190 = true && this.isSetMsg190();
-    boolean that_present_msg190 = true && that.isSetMsg190();
-    if (this_present_msg190 || that_present_msg190) {
-      if (!(this_present_msg190 && that_present_msg190))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg190, that.msg190))
-        return false;
-    }
-
-    boolean this_present_msg191 = true && this.isSetMsg191();
-    boolean that_present_msg191 = true && that.isSetMsg191();
-    if (this_present_msg191 || that_present_msg191) {
-      if (!(this_present_msg191 && that_present_msg191))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg191, that.msg191))
-        return false;
-    }
-
-    boolean this_present_msg192 = true && this.isSetMsg192();
-    boolean that_present_msg192 = true && that.isSetMsg192();
-    if (this_present_msg192 || that_present_msg192) {
-      if (!(this_present_msg192 && that_present_msg192))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg192, that.msg192))
-        return false;
-    }
-
-    boolean this_present_msg193 = true && this.isSetMsg193();
-    boolean that_present_msg193 = true && that.isSetMsg193();
-    if (this_present_msg193 || that_present_msg193) {
-      if (!(this_present_msg193 && that_present_msg193))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg193, that.msg193))
-        return false;
-    }
-
-    boolean this_present_msg194 = true && this.isSetMsg194();
-    boolean that_present_msg194 = true && that.isSetMsg194();
-    if (this_present_msg194 || that_present_msg194) {
-      if (!(this_present_msg194 && that_present_msg194))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg194, that.msg194))
-        return false;
-    }
-
-    boolean this_present_msg195 = true && this.isSetMsg195();
-    boolean that_present_msg195 = true && that.isSetMsg195();
-    if (this_present_msg195 || that_present_msg195) {
-      if (!(this_present_msg195 && that_present_msg195))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg195, that.msg195))
-        return false;
-    }
-
-    boolean this_present_msg196 = true && this.isSetMsg196();
-    boolean that_present_msg196 = true && that.isSetMsg196();
-    if (this_present_msg196 || that_present_msg196) {
-      if (!(this_present_msg196 && that_present_msg196))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg196, that.msg196))
-        return false;
-    }
-
-    boolean this_present_msg197 = true && this.isSetMsg197();
-    boolean that_present_msg197 = true && that.isSetMsg197();
-    if (this_present_msg197 || that_present_msg197) {
-      if (!(this_present_msg197 && that_present_msg197))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg197, that.msg197))
-        return false;
-    }
-
-    boolean this_present_msg198 = true && this.isSetMsg198();
-    boolean that_present_msg198 = true && that.isSetMsg198();
-    if (this_present_msg198 || that_present_msg198) {
-      if (!(this_present_msg198 && that_present_msg198))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg198, that.msg198))
-        return false;
-    }
-
-    boolean this_present_msg199 = true && this.isSetMsg199();
-    boolean that_present_msg199 = true && that.isSetMsg199();
-    if (this_present_msg199 || that_present_msg199) {
-      if (!(this_present_msg199 && that_present_msg199))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg199, that.msg199))
-        return false;
-    }
-
-    boolean this_present_msg200 = true && this.isSetMsg200();
-    boolean that_present_msg200 = true && that.isSetMsg200();
-    if (this_present_msg200 || that_present_msg200) {
-      if (!(this_present_msg200 && that_present_msg200))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg200, that.msg200))
-        return false;
-    }
-
-    boolean this_present_msg201 = true && this.isSetMsg201();
-    boolean that_present_msg201 = true && that.isSetMsg201();
-    if (this_present_msg201 || that_present_msg201) {
-      if (!(this_present_msg201 && that_present_msg201))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg201, that.msg201))
-        return false;
-    }
-
-    boolean this_present_msg202 = true && this.isSetMsg202();
-    boolean that_present_msg202 = true && that.isSetMsg202();
-    if (this_present_msg202 || that_present_msg202) {
-      if (!(this_present_msg202 && that_present_msg202))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg202, that.msg202))
-        return false;
-    }
-
-    boolean this_present_msg203 = true && this.isSetMsg203();
-    boolean that_present_msg203 = true && that.isSetMsg203();
-    if (this_present_msg203 || that_present_msg203) {
-      if (!(this_present_msg203 && that_present_msg203))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg203, that.msg203))
-        return false;
-    }
-
-    boolean this_present_msg204 = true && this.isSetMsg204();
-    boolean that_present_msg204 = true && that.isSetMsg204();
-    if (this_present_msg204 || that_present_msg204) {
-      if (!(this_present_msg204 && that_present_msg204))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg204, that.msg204))
-        return false;
-    }
-
-    boolean this_present_msg205 = true && this.isSetMsg205();
-    boolean that_present_msg205 = true && that.isSetMsg205();
-    if (this_present_msg205 || that_present_msg205) {
-      if (!(this_present_msg205 && that_present_msg205))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg205, that.msg205))
-        return false;
-    }
-
-    boolean this_present_msg206 = true && this.isSetMsg206();
-    boolean that_present_msg206 = true && that.isSetMsg206();
-    if (this_present_msg206 || that_present_msg206) {
-      if (!(this_present_msg206 && that_present_msg206))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg206, that.msg206))
-        return false;
-    }
-
-    boolean this_present_msg207 = true && this.isSetMsg207();
-    boolean that_present_msg207 = true && that.isSetMsg207();
-    if (this_present_msg207 || that_present_msg207) {
-      if (!(this_present_msg207 && that_present_msg207))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg207, that.msg207))
-        return false;
-    }
-
-    boolean this_present_msg208 = true && this.isSetMsg208();
-    boolean that_present_msg208 = true && that.isSetMsg208();
-    if (this_present_msg208 || that_present_msg208) {
-      if (!(this_present_msg208 && that_present_msg208))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg208, that.msg208))
-        return false;
-    }
-
-    boolean this_present_msg209 = true && this.isSetMsg209();
-    boolean that_present_msg209 = true && that.isSetMsg209();
-    if (this_present_msg209 || that_present_msg209) {
-      if (!(this_present_msg209 && that_present_msg209))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg209, that.msg209))
-        return false;
-    }
-
-    boolean this_present_msg210 = true && this.isSetMsg210();
-    boolean that_present_msg210 = true && that.isSetMsg210();
-    if (this_present_msg210 || that_present_msg210) {
-      if (!(this_present_msg210 && that_present_msg210))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg210, that.msg210))
-        return false;
-    }
-
-    boolean this_present_msg211 = true && this.isSetMsg211();
-    boolean that_present_msg211 = true && that.isSetMsg211();
-    if (this_present_msg211 || that_present_msg211) {
-      if (!(this_present_msg211 && that_present_msg211))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg211, that.msg211))
-        return false;
-    }
-
-    boolean this_present_msg212 = true && this.isSetMsg212();
-    boolean that_present_msg212 = true && that.isSetMsg212();
-    if (this_present_msg212 || that_present_msg212) {
-      if (!(this_present_msg212 && that_present_msg212))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg212, that.msg212))
-        return false;
-    }
-
-    boolean this_present_msg213 = true && this.isSetMsg213();
-    boolean that_present_msg213 = true && that.isSetMsg213();
-    if (this_present_msg213 || that_present_msg213) {
-      if (!(this_present_msg213 && that_present_msg213))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg213, that.msg213))
-        return false;
-    }
-
-    boolean this_present_msg214 = true && this.isSetMsg214();
-    boolean that_present_msg214 = true && that.isSetMsg214();
-    if (this_present_msg214 || that_present_msg214) {
-      if (!(this_present_msg214 && that_present_msg214))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg214, that.msg214))
-        return false;
-    }
-
-    boolean this_present_msg215 = true && this.isSetMsg215();
-    boolean that_present_msg215 = true && that.isSetMsg215();
-    if (this_present_msg215 || that_present_msg215) {
-      if (!(this_present_msg215 && that_present_msg215))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg215, that.msg215))
-        return false;
-    }
-
-    boolean this_present_msg216 = true && this.isSetMsg216();
-    boolean that_present_msg216 = true && that.isSetMsg216();
-    if (this_present_msg216 || that_present_msg216) {
-      if (!(this_present_msg216 && that_present_msg216))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg216, that.msg216))
-        return false;
-    }
-
-    boolean this_present_msg217 = true && this.isSetMsg217();
-    boolean that_present_msg217 = true && that.isSetMsg217();
-    if (this_present_msg217 || that_present_msg217) {
-      if (!(this_present_msg217 && that_present_msg217))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg217, that.msg217))
-        return false;
-    }
-
-    boolean this_present_msg218 = true && this.isSetMsg218();
-    boolean that_present_msg218 = true && that.isSetMsg218();
-    if (this_present_msg218 || that_present_msg218) {
-      if (!(this_present_msg218 && that_present_msg218))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg218, that.msg218))
-        return false;
-    }
-
-    boolean this_present_msg219 = true && this.isSetMsg219();
-    boolean that_present_msg219 = true && that.isSetMsg219();
-    if (this_present_msg219 || that_present_msg219) {
-      if (!(this_present_msg219 && that_present_msg219))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg219, that.msg219))
-        return false;
-    }
-
-    boolean this_present_msg220 = true && this.isSetMsg220();
-    boolean that_present_msg220 = true && that.isSetMsg220();
-    if (this_present_msg220 || that_present_msg220) {
-      if (!(this_present_msg220 && that_present_msg220))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg220, that.msg220))
-        return false;
-    }
-
-    boolean this_present_msg221 = true && this.isSetMsg221();
-    boolean that_present_msg221 = true && that.isSetMsg221();
-    if (this_present_msg221 || that_present_msg221) {
-      if (!(this_present_msg221 && that_present_msg221))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg221, that.msg221))
-        return false;
-    }
-
-    boolean this_present_msg222 = true && this.isSetMsg222();
-    boolean that_present_msg222 = true && that.isSetMsg222();
-    if (this_present_msg222 || that_present_msg222) {
-      if (!(this_present_msg222 && that_present_msg222))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg222, that.msg222))
-        return false;
-    }
-
-    boolean this_present_msg223 = true && this.isSetMsg223();
-    boolean that_present_msg223 = true && that.isSetMsg223();
-    if (this_present_msg223 || that_present_msg223) {
-      if (!(this_present_msg223 && that_present_msg223))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg223, that.msg223))
-        return false;
-    }
-
-    boolean this_present_msg224 = true && this.isSetMsg224();
-    boolean that_present_msg224 = true && that.isSetMsg224();
-    if (this_present_msg224 || that_present_msg224) {
-      if (!(this_present_msg224 && that_present_msg224))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg224, that.msg224))
-        return false;
-    }
-
-    boolean this_present_msg225 = true && this.isSetMsg225();
-    boolean that_present_msg225 = true && that.isSetMsg225();
-    if (this_present_msg225 || that_present_msg225) {
-      if (!(this_present_msg225 && that_present_msg225))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg225, that.msg225))
-        return false;
-    }
-
-    boolean this_present_msg226 = true && this.isSetMsg226();
-    boolean that_present_msg226 = true && that.isSetMsg226();
-    if (this_present_msg226 || that_present_msg226) {
-      if (!(this_present_msg226 && that_present_msg226))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg226, that.msg226))
-        return false;
-    }
-
-    boolean this_present_msg227 = true && this.isSetMsg227();
-    boolean that_present_msg227 = true && that.isSetMsg227();
-    if (this_present_msg227 || that_present_msg227) {
-      if (!(this_present_msg227 && that_present_msg227))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg227, that.msg227))
-        return false;
-    }
-
-    boolean this_present_msg228 = true && this.isSetMsg228();
-    boolean that_present_msg228 = true && that.isSetMsg228();
-    if (this_present_msg228 || that_present_msg228) {
-      if (!(this_present_msg228 && that_present_msg228))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg228, that.msg228))
-        return false;
-    }
-
-    boolean this_present_msg229 = true && this.isSetMsg229();
-    boolean that_present_msg229 = true && that.isSetMsg229();
-    if (this_present_msg229 || that_present_msg229) {
-      if (!(this_present_msg229 && that_present_msg229))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg229, that.msg229))
-        return false;
-    }
-
-    boolean this_present_msg230 = true && this.isSetMsg230();
-    boolean that_present_msg230 = true && that.isSetMsg230();
-    if (this_present_msg230 || that_present_msg230) {
-      if (!(this_present_msg230 && that_present_msg230))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg230, that.msg230))
-        return false;
-    }
-
-    boolean this_present_msg231 = true && this.isSetMsg231();
-    boolean that_present_msg231 = true && that.isSetMsg231();
-    if (this_present_msg231 || that_present_msg231) {
-      if (!(this_present_msg231 && that_present_msg231))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg231, that.msg231))
-        return false;
-    }
-
-    boolean this_present_msg232 = true && this.isSetMsg232();
-    boolean that_present_msg232 = true && that.isSetMsg232();
-    if (this_present_msg232 || that_present_msg232) {
-      if (!(this_present_msg232 && that_present_msg232))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg232, that.msg232))
-        return false;
-    }
-
-    boolean this_present_msg233 = true && this.isSetMsg233();
-    boolean that_present_msg233 = true && that.isSetMsg233();
-    if (this_present_msg233 || that_present_msg233) {
-      if (!(this_present_msg233 && that_present_msg233))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg233, that.msg233))
-        return false;
-    }
-
-    boolean this_present_msg234 = true && this.isSetMsg234();
-    boolean that_present_msg234 = true && that.isSetMsg234();
-    if (this_present_msg234 || that_present_msg234) {
-      if (!(this_present_msg234 && that_present_msg234))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg234, that.msg234))
-        return false;
-    }
-
-    boolean this_present_msg235 = true && this.isSetMsg235();
-    boolean that_present_msg235 = true && that.isSetMsg235();
-    if (this_present_msg235 || that_present_msg235) {
-      if (!(this_present_msg235 && that_present_msg235))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg235, that.msg235))
-        return false;
-    }
-
-    boolean this_present_msg236 = true && this.isSetMsg236();
-    boolean that_present_msg236 = true && that.isSetMsg236();
-    if (this_present_msg236 || that_present_msg236) {
-      if (!(this_present_msg236 && that_present_msg236))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg236, that.msg236))
-        return false;
-    }
-
-    boolean this_present_msg237 = true && this.isSetMsg237();
-    boolean that_present_msg237 = true && that.isSetMsg237();
-    if (this_present_msg237 || that_present_msg237) {
-      if (!(this_present_msg237 && that_present_msg237))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg237, that.msg237))
-        return false;
-    }
-
-    boolean this_present_msg238 = true && this.isSetMsg238();
-    boolean that_present_msg238 = true && that.isSetMsg238();
-    if (this_present_msg238 || that_present_msg238) {
-      if (!(this_present_msg238 && that_present_msg238))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg238, that.msg238))
-        return false;
-    }
-
-    boolean this_present_msg239 = true && this.isSetMsg239();
-    boolean that_present_msg239 = true && that.isSetMsg239();
-    if (this_present_msg239 || that_present_msg239) {
-      if (!(this_present_msg239 && that_present_msg239))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg239, that.msg239))
-        return false;
-    }
-
-    boolean this_present_msg240 = true && this.isSetMsg240();
-    boolean that_present_msg240 = true && that.isSetMsg240();
-    if (this_present_msg240 || that_present_msg240) {
-      if (!(this_present_msg240 && that_present_msg240))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg240, that.msg240))
-        return false;
-    }
-
-    boolean this_present_msg241 = true && this.isSetMsg241();
-    boolean that_present_msg241 = true && that.isSetMsg241();
-    if (this_present_msg241 || that_present_msg241) {
-      if (!(this_present_msg241 && that_present_msg241))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg241, that.msg241))
-        return false;
-    }
-
-    boolean this_present_msg242 = true && this.isSetMsg242();
-    boolean that_present_msg242 = true && that.isSetMsg242();
-    if (this_present_msg242 || that_present_msg242) {
-      if (!(this_present_msg242 && that_present_msg242))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg242, that.msg242))
-        return false;
-    }
-
-    boolean this_present_msg243 = true && this.isSetMsg243();
-    boolean that_present_msg243 = true && that.isSetMsg243();
-    if (this_present_msg243 || that_present_msg243) {
-      if (!(this_present_msg243 && that_present_msg243))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg243, that.msg243))
-        return false;
-    }
-
-    boolean this_present_msg244 = true && this.isSetMsg244();
-    boolean that_present_msg244 = true && that.isSetMsg244();
-    if (this_present_msg244 || that_present_msg244) {
-      if (!(this_present_msg244 && that_present_msg244))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg244, that.msg244))
-        return false;
-    }
-
-    boolean this_present_msg245 = true && this.isSetMsg245();
-    boolean that_present_msg245 = true && that.isSetMsg245();
-    if (this_present_msg245 || that_present_msg245) {
-      if (!(this_present_msg245 && that_present_msg245))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg245, that.msg245))
-        return false;
-    }
-
-    boolean this_present_msg246 = true && this.isSetMsg246();
-    boolean that_present_msg246 = true && that.isSetMsg246();
-    if (this_present_msg246 || that_present_msg246) {
-      if (!(this_present_msg246 && that_present_msg246))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg246, that.msg246))
-        return false;
-    }
-
-    boolean this_present_msg247 = true && this.isSetMsg247();
-    boolean that_present_msg247 = true && that.isSetMsg247();
-    if (this_present_msg247 || that_present_msg247) {
-      if (!(this_present_msg247 && that_present_msg247))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg247, that.msg247))
-        return false;
-    }
-
-    boolean this_present_msg248 = true && this.isSetMsg248();
-    boolean that_present_msg248 = true && that.isSetMsg248();
-    if (this_present_msg248 || that_present_msg248) {
-      if (!(this_present_msg248 && that_present_msg248))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg248, that.msg248))
-        return false;
-    }
-
-    boolean this_present_msg249 = true && this.isSetMsg249();
-    boolean that_present_msg249 = true && that.isSetMsg249();
-    if (this_present_msg249 || that_present_msg249) {
-      if (!(this_present_msg249 && that_present_msg249))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg249, that.msg249))
-        return false;
-    }
-
-    boolean this_present_msg250 = true && this.isSetMsg250();
-    boolean that_present_msg250 = true && that.isSetMsg250();
-    if (this_present_msg250 || that_present_msg250) {
-      if (!(this_present_msg250 && that_present_msg250))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg250, that.msg250))
-        return false;
-    }
-
-    boolean this_present_msg251 = true && this.isSetMsg251();
-    boolean that_present_msg251 = true && that.isSetMsg251();
-    if (this_present_msg251 || that_present_msg251) {
-      if (!(this_present_msg251 && that_present_msg251))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg251, that.msg251))
-        return false;
-    }
-
-    boolean this_present_msg252 = true && this.isSetMsg252();
-    boolean that_present_msg252 = true && that.isSetMsg252();
-    if (this_present_msg252 || that_present_msg252) {
-      if (!(this_present_msg252 && that_present_msg252))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg252, that.msg252))
-        return false;
-    }
-
-    boolean this_present_msg253 = true && this.isSetMsg253();
-    boolean that_present_msg253 = true && that.isSetMsg253();
-    if (this_present_msg253 || that_present_msg253) {
-      if (!(this_present_msg253 && that_present_msg253))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg253, that.msg253))
-        return false;
-    }
-
-    boolean this_present_msg254 = true && this.isSetMsg254();
-    boolean that_present_msg254 = true && that.isSetMsg254();
-    if (this_present_msg254 || that_present_msg254) {
-      if (!(this_present_msg254 && that_present_msg254))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg254, that.msg254))
-        return false;
-    }
-
-    boolean this_present_msg255 = true && this.isSetMsg255();
-    boolean that_present_msg255 = true && that.isSetMsg255();
-    if (this_present_msg255 || that_present_msg255) {
-      if (!(this_present_msg255 && that_present_msg255))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg255, that.msg255))
-        return false;
-    }
-
-    boolean this_present_msg256 = true && this.isSetMsg256();
-    boolean that_present_msg256 = true && that.isSetMsg256();
-    if (this_present_msg256 || that_present_msg256) {
-      if (!(this_present_msg256 && that_present_msg256))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg256, that.msg256))
-        return false;
-    }
-
-    boolean this_present_msg257 = true && this.isSetMsg257();
-    boolean that_present_msg257 = true && that.isSetMsg257();
-    if (this_present_msg257 || that_present_msg257) {
-      if (!(this_present_msg257 && that_present_msg257))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.msg257, that.msg257))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg1(), that.isSetMsg1(), this.msg1, that.msg1)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg2(), that.isSetMsg2(), this.msg2, that.msg2)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg3(), that.isSetMsg3(), this.msg3, that.msg3)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg4(), that.isSetMsg4(), this.msg4, that.msg4)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg5(), that.isSetMsg5(), this.msg5, that.msg5)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg6(), that.isSetMsg6(), this.msg6, that.msg6)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg7(), that.isSetMsg7(), this.msg7, that.msg7)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg8(), that.isSetMsg8(), this.msg8, that.msg8)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg9(), that.isSetMsg9(), this.msg9, that.msg9)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myIntField10, that.myIntField10)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myIntField11, that.myIntField11)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myIntField12, that.myIntField12)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myIntField13, that.myIntField13)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myIntField14, that.myIntField14)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myIntField15, that.myIntField15)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myIntField16, that.myIntField16)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myIntField17, that.myIntField17)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myIntField18, that.myIntField18)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myIntField19, that.myIntField19)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myIntField20, that.myIntField20)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField21, that.myDoubleField21)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField22, that.myDoubleField22)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField23, that.myDoubleField23)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField24, that.myDoubleField24)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField25, that.myDoubleField25)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField26, that.myDoubleField26)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField27, that.myDoubleField27)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField28, that.myDoubleField28)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField29, that.myDoubleField29)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.myDoubleField30, that.myDoubleField30)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg31(), that.isSetMsg31(), this.msg31, that.msg31)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg32(), that.isSetMsg32(), this.msg32, that.msg32)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg33(), that.isSetMsg33(), this.msg33, that.msg33)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg34(), that.isSetMsg34(), this.msg34, that.msg34)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg35(), that.isSetMsg35(), this.msg35, that.msg35)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg36(), that.isSetMsg36(), this.msg36, that.msg36)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg37(), that.isSetMsg37(), this.msg37, that.msg37)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg38(), that.isSetMsg38(), this.msg38, that.msg38)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg39(), that.isSetMsg39(), this.msg39, that.msg39)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg40(), that.isSetMsg40(), this.msg40, that.msg40)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg41(), that.isSetMsg41(), this.msg41, that.msg41)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg42(), that.isSetMsg42(), this.msg42, that.msg42)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg43(), that.isSetMsg43(), this.msg43, that.msg43)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg44(), that.isSetMsg44(), this.msg44, that.msg44)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg45(), that.isSetMsg45(), this.msg45, that.msg45)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg46(), that.isSetMsg46(), this.msg46, that.msg46)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg47(), that.isSetMsg47(), this.msg47, that.msg47)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg48(), that.isSetMsg48(), this.msg48, that.msg48)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg49(), that.isSetMsg49(), this.msg49, that.msg49)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg50(), that.isSetMsg50(), this.msg50, that.msg50)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg51(), that.isSetMsg51(), this.msg51, that.msg51)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg52(), that.isSetMsg52(), this.msg52, that.msg52)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg53(), that.isSetMsg53(), this.msg53, that.msg53)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg54(), that.isSetMsg54(), this.msg54, that.msg54)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg55(), that.isSetMsg55(), this.msg55, that.msg55)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg56(), that.isSetMsg56(), this.msg56, that.msg56)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg57(), that.isSetMsg57(), this.msg57, that.msg57)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg58(), that.isSetMsg58(), this.msg58, that.msg58)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg59(), that.isSetMsg59(), this.msg59, that.msg59)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg60(), that.isSetMsg60(), this.msg60, that.msg60)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg61(), that.isSetMsg61(), this.msg61, that.msg61)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg62(), that.isSetMsg62(), this.msg62, that.msg62)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg63(), that.isSetMsg63(), this.msg63, that.msg63)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg64(), that.isSetMsg64(), this.msg64, that.msg64)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg65(), that.isSetMsg65(), this.msg65, that.msg65)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg66(), that.isSetMsg66(), this.msg66, that.msg66)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg67(), that.isSetMsg67(), this.msg67, that.msg67)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg68(), that.isSetMsg68(), this.msg68, that.msg68)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg69(), that.isSetMsg69(), this.msg69, that.msg69)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg70(), that.isSetMsg70(), this.msg70, that.msg70)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg71(), that.isSetMsg71(), this.msg71, that.msg71)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg72(), that.isSetMsg72(), this.msg72, that.msg72)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg73(), that.isSetMsg73(), this.msg73, that.msg73)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg74(), that.isSetMsg74(), this.msg74, that.msg74)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg75(), that.isSetMsg75(), this.msg75, that.msg75)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg76(), that.isSetMsg76(), this.msg76, that.msg76)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg77(), that.isSetMsg77(), this.msg77, that.msg77)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg78(), that.isSetMsg78(), this.msg78, that.msg78)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg79(), that.isSetMsg79(), this.msg79, that.msg79)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg80(), that.isSetMsg80(), this.msg80, that.msg80)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg81(), that.isSetMsg81(), this.msg81, that.msg81)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg82(), that.isSetMsg82(), this.msg82, that.msg82)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg83(), that.isSetMsg83(), this.msg83, that.msg83)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg84(), that.isSetMsg84(), this.msg84, that.msg84)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg85(), that.isSetMsg85(), this.msg85, that.msg85)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg86(), that.isSetMsg86(), this.msg86, that.msg86)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg87(), that.isSetMsg87(), this.msg87, that.msg87)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg88(), that.isSetMsg88(), this.msg88, that.msg88)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg89(), that.isSetMsg89(), this.msg89, that.msg89)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg90(), that.isSetMsg90(), this.msg90, that.msg90)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg91(), that.isSetMsg91(), this.msg91, that.msg91)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg92(), that.isSetMsg92(), this.msg92, that.msg92)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg93(), that.isSetMsg93(), this.msg93, that.msg93)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg94(), that.isSetMsg94(), this.msg94, that.msg94)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg95(), that.isSetMsg95(), this.msg95, that.msg95)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg96(), that.isSetMsg96(), this.msg96, that.msg96)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg97(), that.isSetMsg97(), this.msg97, that.msg97)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg98(), that.isSetMsg98(), this.msg98, that.msg98)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg99(), that.isSetMsg99(), this.msg99, that.msg99)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg100(), that.isSetMsg100(), this.msg100, that.msg100)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg101(), that.isSetMsg101(), this.msg101, that.msg101)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg102(), that.isSetMsg102(), this.msg102, that.msg102)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg103(), that.isSetMsg103(), this.msg103, that.msg103)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg104(), that.isSetMsg104(), this.msg104, that.msg104)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg105(), that.isSetMsg105(), this.msg105, that.msg105)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg106(), that.isSetMsg106(), this.msg106, that.msg106)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg107(), that.isSetMsg107(), this.msg107, that.msg107)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg108(), that.isSetMsg108(), this.msg108, that.msg108)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg109(), that.isSetMsg109(), this.msg109, that.msg109)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg110(), that.isSetMsg110(), this.msg110, that.msg110)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg111(), that.isSetMsg111(), this.msg111, that.msg111)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg112(), that.isSetMsg112(), this.msg112, that.msg112)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg113(), that.isSetMsg113(), this.msg113, that.msg113)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg114(), that.isSetMsg114(), this.msg114, that.msg114)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg115(), that.isSetMsg115(), this.msg115, that.msg115)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg116(), that.isSetMsg116(), this.msg116, that.msg116)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg117(), that.isSetMsg117(), this.msg117, that.msg117)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg118(), that.isSetMsg118(), this.msg118, that.msg118)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg119(), that.isSetMsg119(), this.msg119, that.msg119)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg120(), that.isSetMsg120(), this.msg120, that.msg120)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg121(), that.isSetMsg121(), this.msg121, that.msg121)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg122(), that.isSetMsg122(), this.msg122, that.msg122)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg123(), that.isSetMsg123(), this.msg123, that.msg123)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg124(), that.isSetMsg124(), this.msg124, that.msg124)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg125(), that.isSetMsg125(), this.msg125, that.msg125)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg126(), that.isSetMsg126(), this.msg126, that.msg126)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg127(), that.isSetMsg127(), this.msg127, that.msg127)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg128(), that.isSetMsg128(), this.msg128, that.msg128)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg129(), that.isSetMsg129(), this.msg129, that.msg129)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg130(), that.isSetMsg130(), this.msg130, that.msg130)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg131(), that.isSetMsg131(), this.msg131, that.msg131)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg132(), that.isSetMsg132(), this.msg132, that.msg132)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg133(), that.isSetMsg133(), this.msg133, that.msg133)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg134(), that.isSetMsg134(), this.msg134, that.msg134)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg135(), that.isSetMsg135(), this.msg135, that.msg135)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg136(), that.isSetMsg136(), this.msg136, that.msg136)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg137(), that.isSetMsg137(), this.msg137, that.msg137)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg138(), that.isSetMsg138(), this.msg138, that.msg138)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg139(), that.isSetMsg139(), this.msg139, that.msg139)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg140(), that.isSetMsg140(), this.msg140, that.msg140)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg141(), that.isSetMsg141(), this.msg141, that.msg141)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg142(), that.isSetMsg142(), this.msg142, that.msg142)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg143(), that.isSetMsg143(), this.msg143, that.msg143)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg144(), that.isSetMsg144(), this.msg144, that.msg144)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg145(), that.isSetMsg145(), this.msg145, that.msg145)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg146(), that.isSetMsg146(), this.msg146, that.msg146)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg147(), that.isSetMsg147(), this.msg147, that.msg147)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg148(), that.isSetMsg148(), this.msg148, that.msg148)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg149(), that.isSetMsg149(), this.msg149, that.msg149)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg150(), that.isSetMsg150(), this.msg150, that.msg150)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg151(), that.isSetMsg151(), this.msg151, that.msg151)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg152(), that.isSetMsg152(), this.msg152, that.msg152)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg153(), that.isSetMsg153(), this.msg153, that.msg153)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg154(), that.isSetMsg154(), this.msg154, that.msg154)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg155(), that.isSetMsg155(), this.msg155, that.msg155)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg156(), that.isSetMsg156(), this.msg156, that.msg156)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg157(), that.isSetMsg157(), this.msg157, that.msg157)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg158(), that.isSetMsg158(), this.msg158, that.msg158)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg159(), that.isSetMsg159(), this.msg159, that.msg159)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg160(), that.isSetMsg160(), this.msg160, that.msg160)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg161(), that.isSetMsg161(), this.msg161, that.msg161)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg162(), that.isSetMsg162(), this.msg162, that.msg162)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg163(), that.isSetMsg163(), this.msg163, that.msg163)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg164(), that.isSetMsg164(), this.msg164, that.msg164)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg165(), that.isSetMsg165(), this.msg165, that.msg165)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg166(), that.isSetMsg166(), this.msg166, that.msg166)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg167(), that.isSetMsg167(), this.msg167, that.msg167)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg168(), that.isSetMsg168(), this.msg168, that.msg168)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg169(), that.isSetMsg169(), this.msg169, that.msg169)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg170(), that.isSetMsg170(), this.msg170, that.msg170)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg171(), that.isSetMsg171(), this.msg171, that.msg171)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg172(), that.isSetMsg172(), this.msg172, that.msg172)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg173(), that.isSetMsg173(), this.msg173, that.msg173)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg174(), that.isSetMsg174(), this.msg174, that.msg174)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg175(), that.isSetMsg175(), this.msg175, that.msg175)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg176(), that.isSetMsg176(), this.msg176, that.msg176)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg177(), that.isSetMsg177(), this.msg177, that.msg177)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg178(), that.isSetMsg178(), this.msg178, that.msg178)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg179(), that.isSetMsg179(), this.msg179, that.msg179)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg180(), that.isSetMsg180(), this.msg180, that.msg180)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg181(), that.isSetMsg181(), this.msg181, that.msg181)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg182(), that.isSetMsg182(), this.msg182, that.msg182)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg183(), that.isSetMsg183(), this.msg183, that.msg183)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg184(), that.isSetMsg184(), this.msg184, that.msg184)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg185(), that.isSetMsg185(), this.msg185, that.msg185)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg186(), that.isSetMsg186(), this.msg186, that.msg186)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg187(), that.isSetMsg187(), this.msg187, that.msg187)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg188(), that.isSetMsg188(), this.msg188, that.msg188)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg189(), that.isSetMsg189(), this.msg189, that.msg189)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg190(), that.isSetMsg190(), this.msg190, that.msg190)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg191(), that.isSetMsg191(), this.msg191, that.msg191)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg192(), that.isSetMsg192(), this.msg192, that.msg192)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg193(), that.isSetMsg193(), this.msg193, that.msg193)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg194(), that.isSetMsg194(), this.msg194, that.msg194)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg195(), that.isSetMsg195(), this.msg195, that.msg195)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg196(), that.isSetMsg196(), this.msg196, that.msg196)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg197(), that.isSetMsg197(), this.msg197, that.msg197)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg198(), that.isSetMsg198(), this.msg198, that.msg198)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg199(), that.isSetMsg199(), this.msg199, that.msg199)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg200(), that.isSetMsg200(), this.msg200, that.msg200)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg201(), that.isSetMsg201(), this.msg201, that.msg201)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg202(), that.isSetMsg202(), this.msg202, that.msg202)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg203(), that.isSetMsg203(), this.msg203, that.msg203)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg204(), that.isSetMsg204(), this.msg204, that.msg204)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg205(), that.isSetMsg205(), this.msg205, that.msg205)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg206(), that.isSetMsg206(), this.msg206, that.msg206)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg207(), that.isSetMsg207(), this.msg207, that.msg207)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg208(), that.isSetMsg208(), this.msg208, that.msg208)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg209(), that.isSetMsg209(), this.msg209, that.msg209)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg210(), that.isSetMsg210(), this.msg210, that.msg210)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg211(), that.isSetMsg211(), this.msg211, that.msg211)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg212(), that.isSetMsg212(), this.msg212, that.msg212)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg213(), that.isSetMsg213(), this.msg213, that.msg213)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg214(), that.isSetMsg214(), this.msg214, that.msg214)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg215(), that.isSetMsg215(), this.msg215, that.msg215)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg216(), that.isSetMsg216(), this.msg216, that.msg216)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg217(), that.isSetMsg217(), this.msg217, that.msg217)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg218(), that.isSetMsg218(), this.msg218, that.msg218)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg219(), that.isSetMsg219(), this.msg219, that.msg219)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg220(), that.isSetMsg220(), this.msg220, that.msg220)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg221(), that.isSetMsg221(), this.msg221, that.msg221)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg222(), that.isSetMsg222(), this.msg222, that.msg222)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg223(), that.isSetMsg223(), this.msg223, that.msg223)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg224(), that.isSetMsg224(), this.msg224, that.msg224)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg225(), that.isSetMsg225(), this.msg225, that.msg225)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg226(), that.isSetMsg226(), this.msg226, that.msg226)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg227(), that.isSetMsg227(), this.msg227, that.msg227)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg228(), that.isSetMsg228(), this.msg228, that.msg228)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg229(), that.isSetMsg229(), this.msg229, that.msg229)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg230(), that.isSetMsg230(), this.msg230, that.msg230)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg231(), that.isSetMsg231(), this.msg231, that.msg231)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg232(), that.isSetMsg232(), this.msg232, that.msg232)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg233(), that.isSetMsg233(), this.msg233, that.msg233)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg234(), that.isSetMsg234(), this.msg234, that.msg234)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg235(), that.isSetMsg235(), this.msg235, that.msg235)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg236(), that.isSetMsg236(), this.msg236, that.msg236)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg237(), that.isSetMsg237(), this.msg237, that.msg237)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg238(), that.isSetMsg238(), this.msg238, that.msg238)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg239(), that.isSetMsg239(), this.msg239, that.msg239)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg240(), that.isSetMsg240(), this.msg240, that.msg240)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg241(), that.isSetMsg241(), this.msg241, that.msg241)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg242(), that.isSetMsg242(), this.msg242, that.msg242)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg243(), that.isSetMsg243(), this.msg243, that.msg243)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg244(), that.isSetMsg244(), this.msg244, that.msg244)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg245(), that.isSetMsg245(), this.msg245, that.msg245)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg246(), that.isSetMsg246(), this.msg246, that.msg246)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg247(), that.isSetMsg247(), this.msg247, that.msg247)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg248(), that.isSetMsg248(), this.msg248, that.msg248)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg249(), that.isSetMsg249(), this.msg249, that.msg249)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg250(), that.isSetMsg250(), this.msg250, that.msg250)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg251(), that.isSetMsg251(), this.msg251, that.msg251)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg252(), that.isSetMsg252(), this.msg252, that.msg252)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg253(), that.isSetMsg253(), this.msg253, that.msg253)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg254(), that.isSetMsg254(), this.msg254, that.msg254)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg255(), that.isSetMsg255(), this.msg255, that.msg255)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg256(), that.isSetMsg256(), this.msg256, that.msg256)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetMsg257(), that.isSetMsg257(), this.msg257, that.msg257)) { return false; }
 
     return true;
   }
@@ -15309,7 +13503,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg1, other.msg1);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg2()).compareTo(other.isSetMsg2());
@@ -15317,7 +13511,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg2, other.msg2);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg3()).compareTo(other.isSetMsg3());
@@ -15325,7 +13519,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg3, other.msg3);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg4()).compareTo(other.isSetMsg4());
@@ -15333,7 +13527,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg4, other.msg4);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg5()).compareTo(other.isSetMsg5());
@@ -15341,7 +13535,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg5, other.msg5);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg6()).compareTo(other.isSetMsg6());
@@ -15349,7 +13543,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg6, other.msg6);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg7()).compareTo(other.isSetMsg7());
@@ -15357,7 +13551,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg7, other.msg7);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg8()).compareTo(other.isSetMsg8());
@@ -15365,7 +13559,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg8, other.msg8);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg9()).compareTo(other.isSetMsg9());
@@ -15373,7 +13567,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg9, other.msg9);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField10()).compareTo(other.isSetMyIntField10());
@@ -15381,7 +13575,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField10, other.myIntField10);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField11()).compareTo(other.isSetMyIntField11());
@@ -15389,7 +13583,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField11, other.myIntField11);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField12()).compareTo(other.isSetMyIntField12());
@@ -15397,7 +13591,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField12, other.myIntField12);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField13()).compareTo(other.isSetMyIntField13());
@@ -15405,7 +13599,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField13, other.myIntField13);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField14()).compareTo(other.isSetMyIntField14());
@@ -15413,7 +13607,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField14, other.myIntField14);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField15()).compareTo(other.isSetMyIntField15());
@@ -15421,7 +13615,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField15, other.myIntField15);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField16()).compareTo(other.isSetMyIntField16());
@@ -15429,7 +13623,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField16, other.myIntField16);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField17()).compareTo(other.isSetMyIntField17());
@@ -15437,7 +13631,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField17, other.myIntField17);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField18()).compareTo(other.isSetMyIntField18());
@@ -15445,7 +13639,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField18, other.myIntField18);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField19()).compareTo(other.isSetMyIntField19());
@@ -15453,7 +13647,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField19, other.myIntField19);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyIntField20()).compareTo(other.isSetMyIntField20());
@@ -15461,7 +13655,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myIntField20, other.myIntField20);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField21()).compareTo(other.isSetMyDoubleField21());
@@ -15469,7 +13663,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField21, other.myDoubleField21);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField22()).compareTo(other.isSetMyDoubleField22());
@@ -15477,7 +13671,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField22, other.myDoubleField22);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField23()).compareTo(other.isSetMyDoubleField23());
@@ -15485,7 +13679,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField23, other.myDoubleField23);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField24()).compareTo(other.isSetMyDoubleField24());
@@ -15493,7 +13687,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField24, other.myDoubleField24);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField25()).compareTo(other.isSetMyDoubleField25());
@@ -15501,7 +13695,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField25, other.myDoubleField25);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField26()).compareTo(other.isSetMyDoubleField26());
@@ -15509,7 +13703,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField26, other.myDoubleField26);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField27()).compareTo(other.isSetMyDoubleField27());
@@ -15517,7 +13711,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField27, other.myDoubleField27);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField28()).compareTo(other.isSetMyDoubleField28());
@@ -15525,7 +13719,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField28, other.myDoubleField28);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField29()).compareTo(other.isSetMyDoubleField29());
@@ -15533,7 +13727,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField29, other.myDoubleField29);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyDoubleField30()).compareTo(other.isSetMyDoubleField30());
@@ -15541,7 +13735,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myDoubleField30, other.myDoubleField30);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg31()).compareTo(other.isSetMsg31());
@@ -15549,7 +13743,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg31, other.msg31);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg32()).compareTo(other.isSetMsg32());
@@ -15557,7 +13751,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg32, other.msg32);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg33()).compareTo(other.isSetMsg33());
@@ -15565,7 +13759,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg33, other.msg33);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg34()).compareTo(other.isSetMsg34());
@@ -15573,7 +13767,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg34, other.msg34);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg35()).compareTo(other.isSetMsg35());
@@ -15581,7 +13775,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg35, other.msg35);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg36()).compareTo(other.isSetMsg36());
@@ -15589,7 +13783,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg36, other.msg36);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg37()).compareTo(other.isSetMsg37());
@@ -15597,7 +13791,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg37, other.msg37);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg38()).compareTo(other.isSetMsg38());
@@ -15605,7 +13799,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg38, other.msg38);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg39()).compareTo(other.isSetMsg39());
@@ -15613,7 +13807,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg39, other.msg39);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg40()).compareTo(other.isSetMsg40());
@@ -15621,7 +13815,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg40, other.msg40);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg41()).compareTo(other.isSetMsg41());
@@ -15629,7 +13823,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg41, other.msg41);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg42()).compareTo(other.isSetMsg42());
@@ -15637,7 +13831,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg42, other.msg42);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg43()).compareTo(other.isSetMsg43());
@@ -15645,7 +13839,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg43, other.msg43);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg44()).compareTo(other.isSetMsg44());
@@ -15653,7 +13847,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg44, other.msg44);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg45()).compareTo(other.isSetMsg45());
@@ -15661,7 +13855,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg45, other.msg45);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg46()).compareTo(other.isSetMsg46());
@@ -15669,7 +13863,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg46, other.msg46);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg47()).compareTo(other.isSetMsg47());
@@ -15677,7 +13871,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg47, other.msg47);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg48()).compareTo(other.isSetMsg48());
@@ -15685,7 +13879,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg48, other.msg48);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg49()).compareTo(other.isSetMsg49());
@@ -15693,7 +13887,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg49, other.msg49);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg50()).compareTo(other.isSetMsg50());
@@ -15701,7 +13895,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg50, other.msg50);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg51()).compareTo(other.isSetMsg51());
@@ -15709,7 +13903,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg51, other.msg51);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg52()).compareTo(other.isSetMsg52());
@@ -15717,7 +13911,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg52, other.msg52);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg53()).compareTo(other.isSetMsg53());
@@ -15725,7 +13919,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg53, other.msg53);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg54()).compareTo(other.isSetMsg54());
@@ -15733,7 +13927,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg54, other.msg54);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg55()).compareTo(other.isSetMsg55());
@@ -15741,7 +13935,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg55, other.msg55);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg56()).compareTo(other.isSetMsg56());
@@ -15749,7 +13943,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg56, other.msg56);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg57()).compareTo(other.isSetMsg57());
@@ -15757,7 +13951,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg57, other.msg57);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg58()).compareTo(other.isSetMsg58());
@@ -15765,7 +13959,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg58, other.msg58);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg59()).compareTo(other.isSetMsg59());
@@ -15773,7 +13967,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg59, other.msg59);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg60()).compareTo(other.isSetMsg60());
@@ -15781,7 +13975,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg60, other.msg60);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg61()).compareTo(other.isSetMsg61());
@@ -15789,7 +13983,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg61, other.msg61);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg62()).compareTo(other.isSetMsg62());
@@ -15797,7 +13991,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg62, other.msg62);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg63()).compareTo(other.isSetMsg63());
@@ -15805,7 +13999,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg63, other.msg63);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg64()).compareTo(other.isSetMsg64());
@@ -15813,7 +14007,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg64, other.msg64);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg65()).compareTo(other.isSetMsg65());
@@ -15821,7 +14015,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg65, other.msg65);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg66()).compareTo(other.isSetMsg66());
@@ -15829,7 +14023,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg66, other.msg66);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg67()).compareTo(other.isSetMsg67());
@@ -15837,7 +14031,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg67, other.msg67);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg68()).compareTo(other.isSetMsg68());
@@ -15845,7 +14039,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg68, other.msg68);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg69()).compareTo(other.isSetMsg69());
@@ -15853,7 +14047,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg69, other.msg69);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg70()).compareTo(other.isSetMsg70());
@@ -15861,7 +14055,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg70, other.msg70);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg71()).compareTo(other.isSetMsg71());
@@ -15869,7 +14063,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg71, other.msg71);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg72()).compareTo(other.isSetMsg72());
@@ -15877,7 +14071,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg72, other.msg72);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg73()).compareTo(other.isSetMsg73());
@@ -15885,7 +14079,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg73, other.msg73);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg74()).compareTo(other.isSetMsg74());
@@ -15893,7 +14087,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg74, other.msg74);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg75()).compareTo(other.isSetMsg75());
@@ -15901,7 +14095,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg75, other.msg75);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg76()).compareTo(other.isSetMsg76());
@@ -15909,7 +14103,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg76, other.msg76);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg77()).compareTo(other.isSetMsg77());
@@ -15917,7 +14111,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg77, other.msg77);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg78()).compareTo(other.isSetMsg78());
@@ -15925,7 +14119,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg78, other.msg78);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg79()).compareTo(other.isSetMsg79());
@@ -15933,7 +14127,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg79, other.msg79);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg80()).compareTo(other.isSetMsg80());
@@ -15941,7 +14135,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg80, other.msg80);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg81()).compareTo(other.isSetMsg81());
@@ -15949,7 +14143,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg81, other.msg81);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg82()).compareTo(other.isSetMsg82());
@@ -15957,7 +14151,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg82, other.msg82);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg83()).compareTo(other.isSetMsg83());
@@ -15965,7 +14159,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg83, other.msg83);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg84()).compareTo(other.isSetMsg84());
@@ -15973,7 +14167,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg84, other.msg84);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg85()).compareTo(other.isSetMsg85());
@@ -15981,7 +14175,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg85, other.msg85);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg86()).compareTo(other.isSetMsg86());
@@ -15989,7 +14183,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg86, other.msg86);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg87()).compareTo(other.isSetMsg87());
@@ -15997,7 +14191,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg87, other.msg87);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg88()).compareTo(other.isSetMsg88());
@@ -16005,7 +14199,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg88, other.msg88);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg89()).compareTo(other.isSetMsg89());
@@ -16013,7 +14207,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg89, other.msg89);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg90()).compareTo(other.isSetMsg90());
@@ -16021,7 +14215,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg90, other.msg90);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg91()).compareTo(other.isSetMsg91());
@@ -16029,7 +14223,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg91, other.msg91);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg92()).compareTo(other.isSetMsg92());
@@ -16037,7 +14231,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg92, other.msg92);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg93()).compareTo(other.isSetMsg93());
@@ -16045,7 +14239,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg93, other.msg93);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg94()).compareTo(other.isSetMsg94());
@@ -16053,7 +14247,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg94, other.msg94);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg95()).compareTo(other.isSetMsg95());
@@ -16061,7 +14255,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg95, other.msg95);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg96()).compareTo(other.isSetMsg96());
@@ -16069,7 +14263,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg96, other.msg96);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg97()).compareTo(other.isSetMsg97());
@@ -16077,7 +14271,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg97, other.msg97);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg98()).compareTo(other.isSetMsg98());
@@ -16085,7 +14279,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg98, other.msg98);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg99()).compareTo(other.isSetMsg99());
@@ -16093,7 +14287,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg99, other.msg99);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg100()).compareTo(other.isSetMsg100());
@@ -16101,7 +14295,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg100, other.msg100);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg101()).compareTo(other.isSetMsg101());
@@ -16109,7 +14303,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg101, other.msg101);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg102()).compareTo(other.isSetMsg102());
@@ -16117,7 +14311,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg102, other.msg102);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg103()).compareTo(other.isSetMsg103());
@@ -16125,7 +14319,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg103, other.msg103);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg104()).compareTo(other.isSetMsg104());
@@ -16133,7 +14327,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg104, other.msg104);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg105()).compareTo(other.isSetMsg105());
@@ -16141,7 +14335,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg105, other.msg105);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg106()).compareTo(other.isSetMsg106());
@@ -16149,7 +14343,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg106, other.msg106);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg107()).compareTo(other.isSetMsg107());
@@ -16157,7 +14351,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg107, other.msg107);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg108()).compareTo(other.isSetMsg108());
@@ -16165,7 +14359,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg108, other.msg108);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg109()).compareTo(other.isSetMsg109());
@@ -16173,7 +14367,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg109, other.msg109);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg110()).compareTo(other.isSetMsg110());
@@ -16181,7 +14375,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg110, other.msg110);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg111()).compareTo(other.isSetMsg111());
@@ -16189,7 +14383,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg111, other.msg111);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg112()).compareTo(other.isSetMsg112());
@@ -16197,7 +14391,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg112, other.msg112);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg113()).compareTo(other.isSetMsg113());
@@ -16205,7 +14399,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg113, other.msg113);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg114()).compareTo(other.isSetMsg114());
@@ -16213,7 +14407,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg114, other.msg114);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg115()).compareTo(other.isSetMsg115());
@@ -16221,7 +14415,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg115, other.msg115);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg116()).compareTo(other.isSetMsg116());
@@ -16229,7 +14423,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg116, other.msg116);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg117()).compareTo(other.isSetMsg117());
@@ -16237,7 +14431,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg117, other.msg117);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg118()).compareTo(other.isSetMsg118());
@@ -16245,7 +14439,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg118, other.msg118);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg119()).compareTo(other.isSetMsg119());
@@ -16253,7 +14447,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg119, other.msg119);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg120()).compareTo(other.isSetMsg120());
@@ -16261,7 +14455,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg120, other.msg120);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg121()).compareTo(other.isSetMsg121());
@@ -16269,7 +14463,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg121, other.msg121);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg122()).compareTo(other.isSetMsg122());
@@ -16277,7 +14471,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg122, other.msg122);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg123()).compareTo(other.isSetMsg123());
@@ -16285,7 +14479,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg123, other.msg123);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg124()).compareTo(other.isSetMsg124());
@@ -16293,7 +14487,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg124, other.msg124);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg125()).compareTo(other.isSetMsg125());
@@ -16301,7 +14495,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg125, other.msg125);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg126()).compareTo(other.isSetMsg126());
@@ -16309,7 +14503,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg126, other.msg126);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg127()).compareTo(other.isSetMsg127());
@@ -16317,7 +14511,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg127, other.msg127);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg128()).compareTo(other.isSetMsg128());
@@ -16325,7 +14519,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg128, other.msg128);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg129()).compareTo(other.isSetMsg129());
@@ -16333,7 +14527,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg129, other.msg129);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg130()).compareTo(other.isSetMsg130());
@@ -16341,7 +14535,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg130, other.msg130);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg131()).compareTo(other.isSetMsg131());
@@ -16349,7 +14543,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg131, other.msg131);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg132()).compareTo(other.isSetMsg132());
@@ -16357,7 +14551,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg132, other.msg132);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg133()).compareTo(other.isSetMsg133());
@@ -16365,7 +14559,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg133, other.msg133);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg134()).compareTo(other.isSetMsg134());
@@ -16373,7 +14567,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg134, other.msg134);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg135()).compareTo(other.isSetMsg135());
@@ -16381,7 +14575,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg135, other.msg135);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg136()).compareTo(other.isSetMsg136());
@@ -16389,7 +14583,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg136, other.msg136);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg137()).compareTo(other.isSetMsg137());
@@ -16397,7 +14591,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg137, other.msg137);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg138()).compareTo(other.isSetMsg138());
@@ -16405,7 +14599,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg138, other.msg138);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg139()).compareTo(other.isSetMsg139());
@@ -16413,7 +14607,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg139, other.msg139);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg140()).compareTo(other.isSetMsg140());
@@ -16421,7 +14615,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg140, other.msg140);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg141()).compareTo(other.isSetMsg141());
@@ -16429,7 +14623,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg141, other.msg141);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg142()).compareTo(other.isSetMsg142());
@@ -16437,7 +14631,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg142, other.msg142);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg143()).compareTo(other.isSetMsg143());
@@ -16445,7 +14639,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg143, other.msg143);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg144()).compareTo(other.isSetMsg144());
@@ -16453,7 +14647,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg144, other.msg144);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg145()).compareTo(other.isSetMsg145());
@@ -16461,7 +14655,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg145, other.msg145);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg146()).compareTo(other.isSetMsg146());
@@ -16469,7 +14663,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg146, other.msg146);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg147()).compareTo(other.isSetMsg147());
@@ -16477,7 +14671,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg147, other.msg147);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg148()).compareTo(other.isSetMsg148());
@@ -16485,7 +14679,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg148, other.msg148);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg149()).compareTo(other.isSetMsg149());
@@ -16493,7 +14687,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg149, other.msg149);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg150()).compareTo(other.isSetMsg150());
@@ -16501,7 +14695,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg150, other.msg150);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg151()).compareTo(other.isSetMsg151());
@@ -16509,7 +14703,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg151, other.msg151);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg152()).compareTo(other.isSetMsg152());
@@ -16517,7 +14711,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg152, other.msg152);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg153()).compareTo(other.isSetMsg153());
@@ -16525,7 +14719,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg153, other.msg153);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg154()).compareTo(other.isSetMsg154());
@@ -16533,7 +14727,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg154, other.msg154);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg155()).compareTo(other.isSetMsg155());
@@ -16541,7 +14735,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg155, other.msg155);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg156()).compareTo(other.isSetMsg156());
@@ -16549,7 +14743,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg156, other.msg156);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg157()).compareTo(other.isSetMsg157());
@@ -16557,7 +14751,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg157, other.msg157);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg158()).compareTo(other.isSetMsg158());
@@ -16565,7 +14759,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg158, other.msg158);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg159()).compareTo(other.isSetMsg159());
@@ -16573,7 +14767,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg159, other.msg159);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg160()).compareTo(other.isSetMsg160());
@@ -16581,7 +14775,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg160, other.msg160);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg161()).compareTo(other.isSetMsg161());
@@ -16589,7 +14783,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg161, other.msg161);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg162()).compareTo(other.isSetMsg162());
@@ -16597,7 +14791,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg162, other.msg162);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg163()).compareTo(other.isSetMsg163());
@@ -16605,7 +14799,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg163, other.msg163);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg164()).compareTo(other.isSetMsg164());
@@ -16613,7 +14807,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg164, other.msg164);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg165()).compareTo(other.isSetMsg165());
@@ -16621,7 +14815,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg165, other.msg165);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg166()).compareTo(other.isSetMsg166());
@@ -16629,7 +14823,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg166, other.msg166);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg167()).compareTo(other.isSetMsg167());
@@ -16637,7 +14831,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg167, other.msg167);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg168()).compareTo(other.isSetMsg168());
@@ -16645,7 +14839,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg168, other.msg168);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg169()).compareTo(other.isSetMsg169());
@@ -16653,7 +14847,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg169, other.msg169);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg170()).compareTo(other.isSetMsg170());
@@ -16661,7 +14855,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg170, other.msg170);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg171()).compareTo(other.isSetMsg171());
@@ -16669,7 +14863,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg171, other.msg171);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg172()).compareTo(other.isSetMsg172());
@@ -16677,7 +14871,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg172, other.msg172);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg173()).compareTo(other.isSetMsg173());
@@ -16685,7 +14879,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg173, other.msg173);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg174()).compareTo(other.isSetMsg174());
@@ -16693,7 +14887,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg174, other.msg174);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg175()).compareTo(other.isSetMsg175());
@@ -16701,7 +14895,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg175, other.msg175);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg176()).compareTo(other.isSetMsg176());
@@ -16709,7 +14903,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg176, other.msg176);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg177()).compareTo(other.isSetMsg177());
@@ -16717,7 +14911,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg177, other.msg177);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg178()).compareTo(other.isSetMsg178());
@@ -16725,7 +14919,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg178, other.msg178);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg179()).compareTo(other.isSetMsg179());
@@ -16733,7 +14927,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg179, other.msg179);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg180()).compareTo(other.isSetMsg180());
@@ -16741,7 +14935,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg180, other.msg180);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg181()).compareTo(other.isSetMsg181());
@@ -16749,7 +14943,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg181, other.msg181);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg182()).compareTo(other.isSetMsg182());
@@ -16757,7 +14951,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg182, other.msg182);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg183()).compareTo(other.isSetMsg183());
@@ -16765,7 +14959,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg183, other.msg183);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg184()).compareTo(other.isSetMsg184());
@@ -16773,7 +14967,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg184, other.msg184);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg185()).compareTo(other.isSetMsg185());
@@ -16781,7 +14975,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg185, other.msg185);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg186()).compareTo(other.isSetMsg186());
@@ -16789,7 +14983,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg186, other.msg186);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg187()).compareTo(other.isSetMsg187());
@@ -16797,7 +14991,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg187, other.msg187);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg188()).compareTo(other.isSetMsg188());
@@ -16805,7 +14999,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg188, other.msg188);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg189()).compareTo(other.isSetMsg189());
@@ -16813,7 +15007,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg189, other.msg189);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg190()).compareTo(other.isSetMsg190());
@@ -16821,7 +15015,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg190, other.msg190);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg191()).compareTo(other.isSetMsg191());
@@ -16829,7 +15023,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg191, other.msg191);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg192()).compareTo(other.isSetMsg192());
@@ -16837,7 +15031,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg192, other.msg192);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg193()).compareTo(other.isSetMsg193());
@@ -16845,7 +15039,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg193, other.msg193);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg194()).compareTo(other.isSetMsg194());
@@ -16853,7 +15047,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg194, other.msg194);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg195()).compareTo(other.isSetMsg195());
@@ -16861,7 +15055,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg195, other.msg195);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg196()).compareTo(other.isSetMsg196());
@@ -16869,7 +15063,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg196, other.msg196);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg197()).compareTo(other.isSetMsg197());
@@ -16877,7 +15071,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg197, other.msg197);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg198()).compareTo(other.isSetMsg198());
@@ -16885,7 +15079,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg198, other.msg198);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg199()).compareTo(other.isSetMsg199());
@@ -16893,7 +15087,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg199, other.msg199);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg200()).compareTo(other.isSetMsg200());
@@ -16901,7 +15095,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg200, other.msg200);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg201()).compareTo(other.isSetMsg201());
@@ -16909,7 +15103,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg201, other.msg201);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg202()).compareTo(other.isSetMsg202());
@@ -16917,7 +15111,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg202, other.msg202);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg203()).compareTo(other.isSetMsg203());
@@ -16925,7 +15119,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg203, other.msg203);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg204()).compareTo(other.isSetMsg204());
@@ -16933,7 +15127,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg204, other.msg204);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg205()).compareTo(other.isSetMsg205());
@@ -16941,7 +15135,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg205, other.msg205);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg206()).compareTo(other.isSetMsg206());
@@ -16949,7 +15143,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg206, other.msg206);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg207()).compareTo(other.isSetMsg207());
@@ -16957,7 +15151,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg207, other.msg207);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg208()).compareTo(other.isSetMsg208());
@@ -16965,7 +15159,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg208, other.msg208);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg209()).compareTo(other.isSetMsg209());
@@ -16973,7 +15167,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg209, other.msg209);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg210()).compareTo(other.isSetMsg210());
@@ -16981,7 +15175,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg210, other.msg210);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg211()).compareTo(other.isSetMsg211());
@@ -16989,7 +15183,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg211, other.msg211);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg212()).compareTo(other.isSetMsg212());
@@ -16997,7 +15191,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg212, other.msg212);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg213()).compareTo(other.isSetMsg213());
@@ -17005,7 +15199,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg213, other.msg213);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg214()).compareTo(other.isSetMsg214());
@@ -17013,7 +15207,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg214, other.msg214);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg215()).compareTo(other.isSetMsg215());
@@ -17021,7 +15215,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg215, other.msg215);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg216()).compareTo(other.isSetMsg216());
@@ -17029,7 +15223,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg216, other.msg216);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg217()).compareTo(other.isSetMsg217());
@@ -17037,7 +15231,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg217, other.msg217);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg218()).compareTo(other.isSetMsg218());
@@ -17045,7 +15239,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg218, other.msg218);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg219()).compareTo(other.isSetMsg219());
@@ -17053,7 +15247,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg219, other.msg219);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg220()).compareTo(other.isSetMsg220());
@@ -17061,7 +15255,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg220, other.msg220);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg221()).compareTo(other.isSetMsg221());
@@ -17069,7 +15263,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg221, other.msg221);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg222()).compareTo(other.isSetMsg222());
@@ -17077,7 +15271,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg222, other.msg222);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg223()).compareTo(other.isSetMsg223());
@@ -17085,7 +15279,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg223, other.msg223);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg224()).compareTo(other.isSetMsg224());
@@ -17093,7 +15287,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg224, other.msg224);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg225()).compareTo(other.isSetMsg225());
@@ -17101,7 +15295,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg225, other.msg225);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg226()).compareTo(other.isSetMsg226());
@@ -17109,7 +15303,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg226, other.msg226);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg227()).compareTo(other.isSetMsg227());
@@ -17117,7 +15311,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg227, other.msg227);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg228()).compareTo(other.isSetMsg228());
@@ -17125,7 +15319,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg228, other.msg228);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg229()).compareTo(other.isSetMsg229());
@@ -17133,7 +15327,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg229, other.msg229);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg230()).compareTo(other.isSetMsg230());
@@ -17141,7 +15335,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg230, other.msg230);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg231()).compareTo(other.isSetMsg231());
@@ -17149,7 +15343,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg231, other.msg231);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg232()).compareTo(other.isSetMsg232());
@@ -17157,7 +15351,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg232, other.msg232);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg233()).compareTo(other.isSetMsg233());
@@ -17165,7 +15359,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg233, other.msg233);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg234()).compareTo(other.isSetMsg234());
@@ -17173,7 +15367,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg234, other.msg234);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg235()).compareTo(other.isSetMsg235());
@@ -17181,7 +15375,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg235, other.msg235);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg236()).compareTo(other.isSetMsg236());
@@ -17189,7 +15383,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg236, other.msg236);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg237()).compareTo(other.isSetMsg237());
@@ -17197,7 +15391,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg237, other.msg237);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg238()).compareTo(other.isSetMsg238());
@@ -17205,7 +15399,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg238, other.msg238);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg239()).compareTo(other.isSetMsg239());
@@ -17213,7 +15407,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg239, other.msg239);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg240()).compareTo(other.isSetMsg240());
@@ -17221,7 +15415,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg240, other.msg240);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg241()).compareTo(other.isSetMsg241());
@@ -17229,7 +15423,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg241, other.msg241);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg242()).compareTo(other.isSetMsg242());
@@ -17237,7 +15431,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg242, other.msg242);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg243()).compareTo(other.isSetMsg243());
@@ -17245,7 +15439,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg243, other.msg243);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg244()).compareTo(other.isSetMsg244());
@@ -17253,7 +15447,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg244, other.msg244);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg245()).compareTo(other.isSetMsg245());
@@ -17261,7 +15455,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg245, other.msg245);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg246()).compareTo(other.isSetMsg246());
@@ -17269,7 +15463,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg246, other.msg246);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg247()).compareTo(other.isSetMsg247());
@@ -17277,7 +15471,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg247, other.msg247);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg248()).compareTo(other.isSetMsg248());
@@ -17285,7 +15479,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg248, other.msg248);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg249()).compareTo(other.isSetMsg249());
@@ -17293,7 +15487,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg249, other.msg249);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg250()).compareTo(other.isSetMsg250());
@@ -17301,7 +15495,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg250, other.msg250);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg251()).compareTo(other.isSetMsg251());
@@ -17309,7 +15503,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg251, other.msg251);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg252()).compareTo(other.isSetMsg252());
@@ -17317,7 +15511,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg252, other.msg252);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg253()).compareTo(other.isSetMsg253());
@@ -17325,7 +15519,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg253, other.msg253);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg254()).compareTo(other.isSetMsg254());
@@ -17333,7 +15527,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg254, other.msg254);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg255()).compareTo(other.isSetMsg255());
@@ -17341,7 +15535,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg255, other.msg255);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg256()).compareTo(other.isSetMsg256());
@@ -17349,7 +15543,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg256, other.msg256);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMsg257()).compareTo(other.isSetMsg257());
@@ -17357,7 +15551,7 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(msg257, other.msg257);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

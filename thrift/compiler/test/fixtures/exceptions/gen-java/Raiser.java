@@ -617,19 +617,12 @@ public class Raiser {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof doBland_args)
-        return this.equals((doBland_args)that);
-      return false;
-    }
-
-    public boolean equals(doBland_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      doBland_args that = (doBland_args)_that;
 
       return true;
     }
@@ -755,19 +748,12 @@ public class Raiser {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof doBland_result)
-        return this.equals((doBland_result)that);
-      return false;
-    }
-
-    public boolean equals(doBland_result that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      doBland_result that = (doBland_result)_that;
 
       return true;
     }
@@ -892,19 +878,12 @@ public class Raiser {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof doRaise_args)
-        return this.equals((doRaise_args)that);
-      return false;
-    }
-
-    public boolean equals(doRaise_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      doRaise_args that = (doRaise_args)_that;
 
       return true;
     }
@@ -1173,46 +1152,18 @@ public class Raiser {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof doRaise_result)
-        return this.equals((doRaise_result)that);
-      return false;
-    }
-
-    public boolean equals(doRaise_result that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      doRaise_result that = (doRaise_result)_that;
 
-      boolean this_present_b = true && this.isSetB();
-      boolean that_present_b = true && that.isSetB();
-      if (this_present_b || that_present_b) {
-        if (!(this_present_b && that_present_b))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.b, that.b))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetB(), that.isSetB(), this.b, that.b)) { return false; }
 
-      boolean this_present_f = true && this.isSetF();
-      boolean that_present_f = true && that.isSetF();
-      if (this_present_f || that_present_f) {
-        if (!(this_present_f && that_present_f))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.f, that.f))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetF(), that.isSetF(), this.f, that.f)) { return false; }
 
-      boolean this_present_s = true && this.isSetS();
-      boolean that_present_s = true && that.isSetS();
-      if (this_present_s || that_present_s) {
-        if (!(this_present_s && that_present_s))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.s, that.s))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetS(), that.isSetS(), this.s, that.s)) { return false; }
 
       return true;
     }
@@ -1391,19 +1342,12 @@ public class Raiser {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof get200_args)
-        return this.equals((get200_args)that);
-      return false;
-    }
-
-    public boolean equals(get200_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      get200_args that = (get200_args)_that;
 
       return true;
     }
@@ -1582,28 +1526,14 @@ public class Raiser {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof get200_result)
-        return this.equals((get200_result)that);
-      return false;
-    }
-
-    public boolean equals(get200_result that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      get200_result that = (get200_result)_that;
 
-      boolean this_present_success = true && this.isSetSuccess();
-      boolean that_present_success = true && that.isSetSuccess();
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.success, that.success))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetSuccess(), that.isSetSuccess(), this.success, that.success)) { return false; }
 
       return true;
     }
@@ -1630,7 +1560,7 @@ public class Raiser {
         return lastComparison;
       }
       lastComparison = TBaseHelper.compareTo(success, other.success);
-      if (lastComparison != 0) {
+      if (lastComparison != 0) { 
         return lastComparison;
       }
       return 0;
@@ -1758,19 +1688,12 @@ public class Raiser {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof get500_args)
-        return this.equals((get500_args)that);
-      return false;
-    }
-
-    public boolean equals(get500_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      get500_args that = (get500_args)_that;
 
       return true;
     }
@@ -2084,55 +2007,20 @@ public class Raiser {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof get500_result)
-        return this.equals((get500_result)that);
-      return false;
-    }
-
-    public boolean equals(get500_result that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      get500_result that = (get500_result)_that;
 
-      boolean this_present_success = true && this.isSetSuccess();
-      boolean that_present_success = true && that.isSetSuccess();
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.success, that.success))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetSuccess(), that.isSetSuccess(), this.success, that.success)) { return false; }
 
-      boolean this_present_f = true && this.isSetF();
-      boolean that_present_f = true && that.isSetF();
-      if (this_present_f || that_present_f) {
-        if (!(this_present_f && that_present_f))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.f, that.f))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetF(), that.isSetF(), this.f, that.f)) { return false; }
 
-      boolean this_present_b = true && this.isSetB();
-      boolean that_present_b = true && that.isSetB();
-      if (this_present_b || that_present_b) {
-        if (!(this_present_b && that_present_b))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.b, that.b))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetB(), that.isSetB(), this.b, that.b)) { return false; }
 
-      boolean this_present_s = true && this.isSetS();
-      boolean that_present_s = true && that.isSetS();
-      if (this_present_s || that_present_s) {
-        if (!(this_present_s && that_present_s))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.s, that.s))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetS(), that.isSetS(), this.s, that.s)) { return false; }
 
       return true;
     }

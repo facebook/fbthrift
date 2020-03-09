@@ -307,55 +307,20 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof Color)
-      return this.equals((Color)that);
-    return false;
-  }
-
-  public boolean equals(Color that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    Color that = (Color)_that;
 
-    boolean this_present_red = true;
-    boolean that_present_red = true;
-    if (this_present_red || that_present_red) {
-      if (!(this_present_red && that_present_red))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.red, that.red))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.red, that.red)) { return false; }
 
-    boolean this_present_green = true;
-    boolean that_present_green = true;
-    if (this_present_green || that_present_green) {
-      if (!(this_present_green && that_present_green))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.green, that.green))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.green, that.green)) { return false; }
 
-    boolean this_present_blue = true;
-    boolean that_present_blue = true;
-    if (this_present_blue || that_present_blue) {
-      if (!(this_present_blue && that_present_blue))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.blue, that.blue))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.blue, that.blue)) { return false; }
 
-    boolean this_present_alpha = true;
-    boolean that_present_alpha = true;
-    if (this_present_alpha || that_present_alpha) {
-      if (!(this_present_alpha && that_present_alpha))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.alpha, that.alpha))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.alpha, that.alpha)) { return false; }
 
     return true;
   }
@@ -382,7 +347,7 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(red, other.red);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetGreen()).compareTo(other.isSetGreen());
@@ -390,7 +355,7 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(green, other.green);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetBlue()).compareTo(other.isSetBlue());
@@ -398,7 +363,7 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(blue, other.blue);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetAlpha()).compareTo(other.isSetAlpha());
@@ -406,7 +371,7 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(alpha, other.alpha);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

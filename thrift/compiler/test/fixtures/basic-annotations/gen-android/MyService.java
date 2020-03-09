@@ -817,19 +817,12 @@ public class MyService {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof ping_args)
-        return this.equals((ping_args)that);
-      return false;
-    }
-
-    public boolean equals(ping_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      ping_args that = (ping_args)_that;
 
       return true;
     }
@@ -912,19 +905,12 @@ public class MyService {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof ping_result)
-        return this.equals((ping_result)that);
-      return false;
-    }
-
-    public boolean equals(ping_result that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      ping_result that = (ping_result)_that;
 
       return true;
     }
@@ -1006,19 +992,12 @@ public class MyService {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof getRandomData_args)
-        return this.equals((getRandomData_args)that);
-      return false;
-    }
-
-    public boolean equals(getRandomData_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      getRandomData_args that = (getRandomData_args)_that;
 
       return true;
     }
@@ -1140,28 +1119,14 @@ public class MyService {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof getRandomData_result)
-        return this.equals((getRandomData_result)that);
-      return false;
-    }
-
-    public boolean equals(getRandomData_result that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      getRandomData_result that = (getRandomData_result)_that;
 
-      boolean this_present_success = true && this.isSetSuccess();
-      boolean that_present_success = true && that.isSetSuccess();
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.success, that.success))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetSuccess(), that.isSetSuccess(), this.success, that.success)) { return false; }
 
       return true;
     }
@@ -1296,28 +1261,14 @@ public class MyService {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof hasDataById_args)
-        return this.equals((hasDataById_args)that);
-      return false;
-    }
-
-    public boolean equals(hasDataById_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      hasDataById_args that = (hasDataById_args)_that;
 
-      boolean this_present_id = true && this.isSetId();
-      boolean that_present_id = true && that.isSetId();
-      if (this_present_id || that_present_id) {
-        if (!(this_present_id && that_present_id))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.id, that.id))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetId(), that.isSetId(), this.id, that.id)) { return false; }
 
       return true;
     }
@@ -1453,28 +1404,14 @@ public class MyService {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof hasDataById_result)
-        return this.equals((hasDataById_result)that);
-      return false;
-    }
-
-    public boolean equals(hasDataById_result that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      hasDataById_result that = (hasDataById_result)_that;
 
-      boolean this_present_success = true && this.isSetSuccess();
-      boolean that_present_success = true && that.isSetSuccess();
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.success, that.success))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetSuccess(), that.isSetSuccess(), this.success, that.success)) { return false; }
 
       return true;
     }
@@ -1609,28 +1546,14 @@ public class MyService {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof getDataById_args)
-        return this.equals((getDataById_args)that);
-      return false;
-    }
-
-    public boolean equals(getDataById_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      getDataById_args that = (getDataById_args)_that;
 
-      boolean this_present_id = true && this.isSetId();
-      boolean that_present_id = true && that.isSetId();
-      if (this_present_id || that_present_id) {
-        if (!(this_present_id && that_present_id))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.id, that.id))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetId(), that.isSetId(), this.id, that.id)) { return false; }
 
       return true;
     }
@@ -1766,28 +1689,14 @@ public class MyService {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof getDataById_result)
-        return this.equals((getDataById_result)that);
-      return false;
-    }
-
-    public boolean equals(getDataById_result that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      getDataById_result that = (getDataById_result)_that;
 
-      boolean this_present_success = true && this.isSetSuccess();
-      boolean that_present_success = true && that.isSetSuccess();
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.success, that.success))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetSuccess(), that.isSetSuccess(), this.success, that.success)) { return false; }
 
       return true;
     }
@@ -1954,37 +1863,16 @@ public class MyService {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof putDataById_args)
-        return this.equals((putDataById_args)that);
-      return false;
-    }
-
-    public boolean equals(putDataById_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      putDataById_args that = (putDataById_args)_that;
 
-      boolean this_present_id = true && this.isSetId();
-      boolean that_present_id = true && that.isSetId();
-      if (this_present_id || that_present_id) {
-        if (!(this_present_id && that_present_id))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.id, that.id))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetId(), that.isSetId(), this.id, that.id)) { return false; }
 
-      boolean this_present_data = true && this.isSetData();
-      boolean that_present_data = true && that.isSetData();
-      if (this_present_data || that_present_data) {
-        if (!(this_present_data && that_present_data))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.data, that.data))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetData(), that.isSetData(), this.data, that.data)) { return false; }
 
       return true;
     }
@@ -2095,19 +1983,12 @@ public class MyService {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof putDataById_result)
-        return this.equals((putDataById_result)that);
-      return false;
-    }
-
-    public boolean equals(putDataById_result that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      putDataById_result that = (putDataById_result)_that;
 
       return true;
     }
@@ -2260,37 +2141,16 @@ public class MyService {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof lobDataById_args)
-        return this.equals((lobDataById_args)that);
-      return false;
-    }
-
-    public boolean equals(lobDataById_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      lobDataById_args that = (lobDataById_args)_that;
 
-      boolean this_present_id = true && this.isSetId();
-      boolean that_present_id = true && that.isSetId();
-      if (this_present_id || that_present_id) {
-        if (!(this_present_id && that_present_id))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.id, that.id))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetId(), that.isSetId(), this.id, that.id)) { return false; }
 
-      boolean this_present_data = true && this.isSetData();
-      boolean that_present_data = true && that.isSetData();
-      if (this_present_data || that_present_data) {
-        if (!(this_present_data && that_present_data))
-          return false;
-        if (!TBaseHelper.equalsNobinary(this.data, that.data))
-          return false;
-      }
+      if (!TBaseHelper.equalsNobinary(this.isSetData(), that.isSetData(), this.data, that.data)) { return false; }
 
       return true;
     }
@@ -2401,19 +2261,12 @@ public class MyService {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof doNothing_args)
-        return this.equals((doNothing_args)that);
-      return false;
-    }
-
-    public boolean equals(doNothing_args that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      doNothing_args that = (doNothing_args)_that;
 
       return true;
     }
@@ -2496,19 +2349,12 @@ public class MyService {
     }
 
     @Override
-    public boolean equals(Object that) {
-      if (that == null)
+    public boolean equals(Object _that) {
+      if (_that == null)
         return false;
-      if (that instanceof doNothing_result)
-        return this.equals((doNothing_result)that);
-      return false;
-    }
-
-    public boolean equals(doNothing_result that) {
-      if (that == null)
-        return false;
-      if (this == that)
+      if (this == _that)
         return true;
+      doNothing_result that = (doNothing_result)_that;
 
       return true;
     }

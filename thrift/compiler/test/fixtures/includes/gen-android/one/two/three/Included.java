@@ -80,37 +80,16 @@ public class Included implements TBase, java.io.Serializable, Cloneable {
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof Included)
-      return this.equals((Included)that);
-    return false;
-  }
-
-  public boolean equals(Included that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    Included that = (Included)_that;
 
-    boolean this_present_MyIntField = true && this.isSetMyIntField();
-    boolean that_present_MyIntField = true && that.isSetMyIntField();
-    if (this_present_MyIntField || that_present_MyIntField) {
-      if (!(this_present_MyIntField && that_present_MyIntField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.MyIntField, that.MyIntField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyIntField(), that.isSetMyIntField(), this.MyIntField, that.MyIntField)) { return false; }
 
-    boolean this_present_MyTransitiveField = true && this.isSetMyTransitiveField();
-    boolean that_present_MyTransitiveField = true && that.isSetMyTransitiveField();
-    if (this_present_MyTransitiveField || that_present_MyTransitiveField) {
-      if (!(this_present_MyTransitiveField && that_present_MyTransitiveField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.MyTransitiveField, that.MyTransitiveField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyTransitiveField(), that.isSetMyTransitiveField(), this.MyTransitiveField, that.MyTransitiveField)) { return false; }
 
     return true;
   }

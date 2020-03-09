@@ -574,100 +574,30 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof MyStructTypeDef)
-      return this.equals((MyStructTypeDef)that);
-    return false;
-  }
-
-  public boolean equals(MyStructTypeDef that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    MyStructTypeDef that = (MyStructTypeDef)_that;
 
-    boolean this_present_myLongField = true;
-    boolean that_present_myLongField = true;
-    if (this_present_myLongField || that_present_myLongField) {
-      if (!(this_present_myLongField && that_present_myLongField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myLongField, that.myLongField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myLongField, that.myLongField)) { return false; }
 
-    boolean this_present_myLongTypeDef = true;
-    boolean that_present_myLongTypeDef = true;
-    if (this_present_myLongTypeDef || that_present_myLongTypeDef) {
-      if (!(this_present_myLongTypeDef && that_present_myLongTypeDef))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myLongTypeDef, that.myLongTypeDef))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.myLongTypeDef, that.myLongTypeDef)) { return false; }
 
-    boolean this_present_myStringField = true && this.isSetMyStringField();
-    boolean that_present_myStringField = true && that.isSetMyStringField();
-    if (this_present_myStringField || that_present_myStringField) {
-      if (!(this_present_myStringField && that_present_myStringField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myStringField, that.myStringField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyStringField(), that.isSetMyStringField(), this.myStringField, that.myStringField)) { return false; }
 
-    boolean this_present_myStringTypedef = true && this.isSetMyStringTypedef();
-    boolean that_present_myStringTypedef = true && that.isSetMyStringTypedef();
-    if (this_present_myStringTypedef || that_present_myStringTypedef) {
-      if (!(this_present_myStringTypedef && that_present_myStringTypedef))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myStringTypedef, that.myStringTypedef))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyStringTypedef(), that.isSetMyStringTypedef(), this.myStringTypedef, that.myStringTypedef)) { return false; }
 
-    boolean this_present_myMapField = true && this.isSetMyMapField();
-    boolean that_present_myMapField = true && that.isSetMyMapField();
-    if (this_present_myMapField || that_present_myMapField) {
-      if (!(this_present_myMapField && that_present_myMapField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myMapField, that.myMapField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyMapField(), that.isSetMyMapField(), this.myMapField, that.myMapField)) { return false; }
 
-    boolean this_present_myMapTypedef = true && this.isSetMyMapTypedef();
-    boolean that_present_myMapTypedef = true && that.isSetMyMapTypedef();
-    if (this_present_myMapTypedef || that_present_myMapTypedef) {
-      if (!(this_present_myMapTypedef && that_present_myMapTypedef))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myMapTypedef, that.myMapTypedef))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyMapTypedef(), that.isSetMyMapTypedef(), this.myMapTypedef, that.myMapTypedef)) { return false; }
 
-    boolean this_present_myListField = true && this.isSetMyListField();
-    boolean that_present_myListField = true && that.isSetMyListField();
-    if (this_present_myListField || that_present_myListField) {
-      if (!(this_present_myListField && that_present_myListField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myListField, that.myListField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyListField(), that.isSetMyListField(), this.myListField, that.myListField)) { return false; }
 
-    boolean this_present_myListTypedef = true && this.isSetMyListTypedef();
-    boolean that_present_myListTypedef = true && that.isSetMyListTypedef();
-    if (this_present_myListTypedef || that_present_myListTypedef) {
-      if (!(this_present_myListTypedef && that_present_myListTypedef))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myListTypedef, that.myListTypedef))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyListTypedef(), that.isSetMyListTypedef(), this.myListTypedef, that.myListTypedef)) { return false; }
 
-    boolean this_present_myMapListOfTypeDef = true && this.isSetMyMapListOfTypeDef();
-    boolean that_present_myMapListOfTypeDef = true && that.isSetMyMapListOfTypeDef();
-    if (this_present_myMapListOfTypeDef || that_present_myMapListOfTypeDef) {
-      if (!(this_present_myMapListOfTypeDef && that_present_myMapListOfTypeDef))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myMapListOfTypeDef, that.myMapListOfTypeDef))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyMapListOfTypeDef(), that.isSetMyMapListOfTypeDef(), this.myMapListOfTypeDef, that.myMapListOfTypeDef)) { return false; }
 
     return true;
   }
@@ -694,7 +624,7 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myLongField, other.myLongField);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyLongTypeDef()).compareTo(other.isSetMyLongTypeDef());
@@ -702,7 +632,7 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myLongTypeDef, other.myLongTypeDef);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyStringField()).compareTo(other.isSetMyStringField());
@@ -710,7 +640,7 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myStringField, other.myStringField);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyStringTypedef()).compareTo(other.isSetMyStringTypedef());
@@ -718,7 +648,7 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myStringTypedef, other.myStringTypedef);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyMapField()).compareTo(other.isSetMyMapField());
@@ -726,7 +656,7 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myMapField, other.myMapField);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyMapTypedef()).compareTo(other.isSetMyMapTypedef());
@@ -734,7 +664,7 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myMapTypedef, other.myMapTypedef);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyListField()).compareTo(other.isSetMyListField());
@@ -742,7 +672,7 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myListField, other.myListField);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyListTypedef()).compareTo(other.isSetMyListTypedef());
@@ -750,7 +680,7 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myListTypedef, other.myListTypedef);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMyMapListOfTypeDef()).compareTo(other.isSetMyMapListOfTypeDef());
@@ -758,7 +688,7 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myMapListOfTypeDef, other.myMapListOfTypeDef);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

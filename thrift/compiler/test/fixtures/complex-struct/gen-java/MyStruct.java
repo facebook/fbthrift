@@ -1544,262 +1544,66 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof MyStruct)
-      return this.equals((MyStruct)that);
-    return false;
-  }
-
-  public boolean equals(MyStruct that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    MyStruct that = (MyStruct)_that;
 
-    boolean this_present_MyIntField = true;
-    boolean that_present_MyIntField = true;
-    if (this_present_MyIntField || that_present_MyIntField) {
-      if (!(this_present_MyIntField && that_present_MyIntField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.MyIntField, that.MyIntField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.MyIntField, that.MyIntField)) { return false; }
 
-    boolean this_present_MyStringField = true && this.isSetMyStringField();
-    boolean that_present_MyStringField = true && that.isSetMyStringField();
-    if (this_present_MyStringField || that_present_MyStringField) {
-      if (!(this_present_MyStringField && that_present_MyStringField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.MyStringField, that.MyStringField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyStringField(), that.isSetMyStringField(), this.MyStringField, that.MyStringField)) { return false; }
 
-    boolean this_present_MyDataField = true && this.isSetMyDataField();
-    boolean that_present_MyDataField = true && that.isSetMyDataField();
-    if (this_present_MyDataField || that_present_MyDataField) {
-      if (!(this_present_MyDataField && that_present_MyDataField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.MyDataField, that.MyDataField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyDataField(), that.isSetMyDataField(), this.MyDataField, that.MyDataField)) { return false; }
 
-    boolean this_present_myEnum = true && this.isSetMyEnum();
-    boolean that_present_myEnum = true && that.isSetMyEnum();
-    if (this_present_myEnum || that_present_myEnum) {
-      if (!(this_present_myEnum && that_present_myEnum))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.myEnum, that.myEnum))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMyEnum(), that.isSetMyEnum(), this.myEnum, that.myEnum)) { return false; }
 
-    boolean this_present_MyBoolField = true;
-    boolean that_present_MyBoolField = true;
-    if (this_present_MyBoolField || that_present_MyBoolField) {
-      if (!(this_present_MyBoolField && that_present_MyBoolField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.MyBoolField, that.MyBoolField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.MyBoolField, that.MyBoolField)) { return false; }
 
-    boolean this_present_MyByteField = true;
-    boolean that_present_MyByteField = true;
-    if (this_present_MyByteField || that_present_MyByteField) {
-      if (!(this_present_MyByteField && that_present_MyByteField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.MyByteField, that.MyByteField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.MyByteField, that.MyByteField)) { return false; }
 
-    boolean this_present_MyShortField = true;
-    boolean that_present_MyShortField = true;
-    if (this_present_MyShortField || that_present_MyShortField) {
-      if (!(this_present_MyShortField && that_present_MyShortField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.MyShortField, that.MyShortField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.MyShortField, that.MyShortField)) { return false; }
 
-    boolean this_present_MyLongField = true;
-    boolean that_present_MyLongField = true;
-    if (this_present_MyLongField || that_present_MyLongField) {
-      if (!(this_present_MyLongField && that_present_MyLongField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.MyLongField, that.MyLongField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.MyLongField, that.MyLongField)) { return false; }
 
-    boolean this_present_MyDoubleField = true;
-    boolean that_present_MyDoubleField = true;
-    if (this_present_MyDoubleField || that_present_MyDoubleField) {
-      if (!(this_present_MyDoubleField && that_present_MyDoubleField))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.MyDoubleField, that.MyDoubleField))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.MyDoubleField, that.MyDoubleField)) { return false; }
 
-    boolean this_present_lDouble = true && this.isSetLDouble();
-    boolean that_present_lDouble = true && that.isSetLDouble();
-    if (this_present_lDouble || that_present_lDouble) {
-      if (!(this_present_lDouble && that_present_lDouble))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.lDouble, that.lDouble))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetLDouble(), that.isSetLDouble(), this.lDouble, that.lDouble)) { return false; }
 
-    boolean this_present_lShort = true && this.isSetLShort();
-    boolean that_present_lShort = true && that.isSetLShort();
-    if (this_present_lShort || that_present_lShort) {
-      if (!(this_present_lShort && that_present_lShort))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.lShort, that.lShort))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetLShort(), that.isSetLShort(), this.lShort, that.lShort)) { return false; }
 
-    boolean this_present_lInteger = true && this.isSetLInteger();
-    boolean that_present_lInteger = true && that.isSetLInteger();
-    if (this_present_lInteger || that_present_lInteger) {
-      if (!(this_present_lInteger && that_present_lInteger))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.lInteger, that.lInteger))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetLInteger(), that.isSetLInteger(), this.lInteger, that.lInteger)) { return false; }
 
-    boolean this_present_lLong = true && this.isSetLLong();
-    boolean that_present_lLong = true && that.isSetLLong();
-    if (this_present_lLong || that_present_lLong) {
-      if (!(this_present_lLong && that_present_lLong))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.lLong, that.lLong))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetLLong(), that.isSetLLong(), this.lLong, that.lLong)) { return false; }
 
-    boolean this_present_lString = true && this.isSetLString();
-    boolean that_present_lString = true && that.isSetLString();
-    if (this_present_lString || that_present_lString) {
-      if (!(this_present_lString && that_present_lString))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.lString, that.lString))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetLString(), that.isSetLString(), this.lString, that.lString)) { return false; }
 
-    boolean this_present_lBool = true && this.isSetLBool();
-    boolean that_present_lBool = true && that.isSetLBool();
-    if (this_present_lBool || that_present_lBool) {
-      if (!(this_present_lBool && that_present_lBool))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.lBool, that.lBool))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetLBool(), that.isSetLBool(), this.lBool, that.lBool)) { return false; }
 
-    boolean this_present_lByte = true && this.isSetLByte();
-    boolean that_present_lByte = true && that.isSetLByte();
-    if (this_present_lByte || that_present_lByte) {
-      if (!(this_present_lByte && that_present_lByte))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.lByte, that.lByte))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetLByte(), that.isSetLByte(), this.lByte, that.lByte)) { return false; }
 
-    boolean this_present_mShortString = true && this.isSetMShortString();
-    boolean that_present_mShortString = true && that.isSetMShortString();
-    if (this_present_mShortString || that_present_mShortString) {
-      if (!(this_present_mShortString && that_present_mShortString))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.mShortString, that.mShortString))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMShortString(), that.isSetMShortString(), this.mShortString, that.mShortString)) { return false; }
 
-    boolean this_present_mIntegerString = true && this.isSetMIntegerString();
-    boolean that_present_mIntegerString = true && that.isSetMIntegerString();
-    if (this_present_mIntegerString || that_present_mIntegerString) {
-      if (!(this_present_mIntegerString && that_present_mIntegerString))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.mIntegerString, that.mIntegerString))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMIntegerString(), that.isSetMIntegerString(), this.mIntegerString, that.mIntegerString)) { return false; }
 
-    boolean this_present_mStringMyStruct = true && this.isSetMStringMyStruct();
-    boolean that_present_mStringMyStruct = true && that.isSetMStringMyStruct();
-    if (this_present_mStringMyStruct || that_present_mStringMyStruct) {
-      if (!(this_present_mStringMyStruct && that_present_mStringMyStruct))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.mStringMyStruct, that.mStringMyStruct))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMStringMyStruct(), that.isSetMStringMyStruct(), this.mStringMyStruct, that.mStringMyStruct)) { return false; }
 
-    boolean this_present_mStringBool = true && this.isSetMStringBool();
-    boolean that_present_mStringBool = true && that.isSetMStringBool();
-    if (this_present_mStringBool || that_present_mStringBool) {
-      if (!(this_present_mStringBool && that_present_mStringBool))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.mStringBool, that.mStringBool))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMStringBool(), that.isSetMStringBool(), this.mStringBool, that.mStringBool)) { return false; }
 
-    boolean this_present_mIntegerInteger = true && this.isSetMIntegerInteger();
-    boolean that_present_mIntegerInteger = true && that.isSetMIntegerInteger();
-    if (this_present_mIntegerInteger || that_present_mIntegerInteger) {
-      if (!(this_present_mIntegerInteger && that_present_mIntegerInteger))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.mIntegerInteger, that.mIntegerInteger))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMIntegerInteger(), that.isSetMIntegerInteger(), this.mIntegerInteger, that.mIntegerInteger)) { return false; }
 
-    boolean this_present_mIntegerBool = true && this.isSetMIntegerBool();
-    boolean that_present_mIntegerBool = true && that.isSetMIntegerBool();
-    if (this_present_mIntegerBool || that_present_mIntegerBool) {
-      if (!(this_present_mIntegerBool && that_present_mIntegerBool))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.mIntegerBool, that.mIntegerBool))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMIntegerBool(), that.isSetMIntegerBool(), this.mIntegerBool, that.mIntegerBool)) { return false; }
 
-    boolean this_present_sShort = true && this.isSetSShort();
-    boolean that_present_sShort = true && that.isSetSShort();
-    if (this_present_sShort || that_present_sShort) {
-      if (!(this_present_sShort && that_present_sShort))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.sShort, that.sShort))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetSShort(), that.isSetSShort(), this.sShort, that.sShort)) { return false; }
 
-    boolean this_present_sMyStruct = true && this.isSetSMyStruct();
-    boolean that_present_sMyStruct = true && that.isSetSMyStruct();
-    if (this_present_sMyStruct || that_present_sMyStruct) {
-      if (!(this_present_sMyStruct && that_present_sMyStruct))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.sMyStruct, that.sMyStruct))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetSMyStruct(), that.isSetSMyStruct(), this.sMyStruct, that.sMyStruct)) { return false; }
 
-    boolean this_present_sLong = true && this.isSetSLong();
-    boolean that_present_sLong = true && that.isSetSLong();
-    if (this_present_sLong || that_present_sLong) {
-      if (!(this_present_sLong && that_present_sLong))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.sLong, that.sLong))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetSLong(), that.isSetSLong(), this.sLong, that.sLong)) { return false; }
 
-    boolean this_present_sString = true && this.isSetSString();
-    boolean that_present_sString = true && that.isSetSString();
-    if (this_present_sString || that_present_sString) {
-      if (!(this_present_sString && that_present_sString))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.sString, that.sString))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetSString(), that.isSetSString(), this.sString, that.sString)) { return false; }
 
-    boolean this_present_sByte = true && this.isSetSByte();
-    boolean that_present_sByte = true && that.isSetSByte();
-    if (this_present_sByte || that_present_sByte) {
-      if (!(this_present_sByte && that_present_sByte))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.sByte, that.sByte))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetSByte(), that.isSetSByte(), this.sByte, that.sByte)) { return false; }
 
     return true;
   }

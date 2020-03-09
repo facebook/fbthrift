@@ -406,73 +406,24 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof StructWithContainers)
-      return this.equals((StructWithContainers)that);
-    return false;
-  }
-
-  public boolean equals(StructWithContainers that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    StructWithContainers that = (StructWithContainers)_that;
 
-    boolean this_present_list_ref = true && this.isSetList_ref();
-    boolean that_present_list_ref = true && that.isSetList_ref();
-    if (this_present_list_ref || that_present_list_ref) {
-      if (!(this_present_list_ref && that_present_list_ref))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.list_ref, that.list_ref))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetList_ref(), that.isSetList_ref(), this.list_ref, that.list_ref)) { return false; }
 
-    boolean this_present_set_ref = true && this.isSetSet_ref();
-    boolean that_present_set_ref = true && that.isSetSet_ref();
-    if (this_present_set_ref || that_present_set_ref) {
-      if (!(this_present_set_ref && that_present_set_ref))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.set_ref, that.set_ref))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetSet_ref(), that.isSetSet_ref(), this.set_ref, that.set_ref)) { return false; }
 
-    boolean this_present_map_ref = true && this.isSetMap_ref();
-    boolean that_present_map_ref = true && that.isSetMap_ref();
-    if (this_present_map_ref || that_present_map_ref) {
-      if (!(this_present_map_ref && that_present_map_ref))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.map_ref, that.map_ref))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetMap_ref(), that.isSetMap_ref(), this.map_ref, that.map_ref)) { return false; }
 
-    boolean this_present_list_ref_unique = true && this.isSetList_ref_unique();
-    boolean that_present_list_ref_unique = true && that.isSetList_ref_unique();
-    if (this_present_list_ref_unique || that_present_list_ref_unique) {
-      if (!(this_present_list_ref_unique && that_present_list_ref_unique))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.list_ref_unique, that.list_ref_unique))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetList_ref_unique(), that.isSetList_ref_unique(), this.list_ref_unique, that.list_ref_unique)) { return false; }
 
-    boolean this_present_set_ref_shared = true && this.isSetSet_ref_shared();
-    boolean that_present_set_ref_shared = true && that.isSetSet_ref_shared();
-    if (this_present_set_ref_shared || that_present_set_ref_shared) {
-      if (!(this_present_set_ref_shared && that_present_set_ref_shared))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.set_ref_shared, that.set_ref_shared))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetSet_ref_shared(), that.isSetSet_ref_shared(), this.set_ref_shared, that.set_ref_shared)) { return false; }
 
-    boolean this_present_list_ref_shared_const = true && this.isSetList_ref_shared_const();
-    boolean that_present_list_ref_shared_const = true && that.isSetList_ref_shared_const();
-    if (this_present_list_ref_shared_const || that_present_list_ref_shared_const) {
-      if (!(this_present_list_ref_shared_const && that_present_list_ref_shared_const))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.list_ref_shared_const, that.list_ref_shared_const))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetList_ref_shared_const(), that.isSetList_ref_shared_const(), this.list_ref_shared_const, that.list_ref_shared_const)) { return false; }
 
     return true;
   }
@@ -499,7 +450,7 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(list_ref, other.list_ref);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetSet_ref()).compareTo(other.isSetSet_ref());
@@ -507,7 +458,7 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(set_ref, other.set_ref);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetMap_ref()).compareTo(other.isSetMap_ref());
@@ -515,7 +466,7 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(map_ref, other.map_ref);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetList_ref_unique()).compareTo(other.isSetList_ref_unique());
@@ -523,7 +474,7 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(list_ref_unique, other.list_ref_unique);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetSet_ref_shared()).compareTo(other.isSetSet_ref_shared());
@@ -531,7 +482,7 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(set_ref_shared, other.set_ref_shared);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetList_ref_shared_const()).compareTo(other.isSetList_ref_shared_const());
@@ -539,7 +490,7 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(list_ref_shared_const, other.list_ref_shared_const);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

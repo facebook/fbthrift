@@ -145,28 +145,14 @@ public class NonCopyableStruct implements TBase, java.io.Serializable, Cloneable
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof NonCopyableStruct)
-      return this.equals((NonCopyableStruct)that);
-    return false;
-  }
-
-  public boolean equals(NonCopyableStruct that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    NonCopyableStruct that = (NonCopyableStruct)_that;
 
-    boolean this_present_num = true;
-    boolean that_present_num = true;
-    if (this_present_num || that_present_num) {
-      if (!(this_present_num && that_present_num))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.num, that.num))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.num, that.num)) { return false; }
 
     return true;
   }
@@ -193,7 +179,7 @@ public class NonCopyableStruct implements TBase, java.io.Serializable, Cloneable
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(num, other.num);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

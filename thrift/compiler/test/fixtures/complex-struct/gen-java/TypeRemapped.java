@@ -308,55 +308,20 @@ public class TypeRemapped implements TBase, java.io.Serializable, Cloneable, Com
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof TypeRemapped)
-      return this.equals((TypeRemapped)that);
-    return false;
-  }
-
-  public boolean equals(TypeRemapped that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    TypeRemapped that = (TypeRemapped)_that;
 
-    boolean this_present_lsMap = true && this.isSetLsMap();
-    boolean that_present_lsMap = true && that.isSetLsMap();
-    if (this_present_lsMap || that_present_lsMap) {
-      if (!(this_present_lsMap && that_present_lsMap))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.lsMap, that.lsMap))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetLsMap(), that.isSetLsMap(), this.lsMap, that.lsMap)) { return false; }
 
-    boolean this_present_ioMap = true && this.isSetIoMap();
-    boolean that_present_ioMap = true && that.isSetIoMap();
-    if (this_present_ioMap || that_present_ioMap) {
-      if (!(this_present_ioMap && that_present_ioMap))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.ioMap, that.ioMap))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetIoMap(), that.isSetIoMap(), this.ioMap, that.ioMap)) { return false; }
 
-    boolean this_present_BigInteger = true;
-    boolean that_present_BigInteger = true;
-    if (this_present_BigInteger || that_present_BigInteger) {
-      if (!(this_present_BigInteger && that_present_BigInteger))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.BigInteger, that.BigInteger))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.BigInteger, that.BigInteger)) { return false; }
 
-    boolean this_present_binaryTestBuffer = true && this.isSetBinaryTestBuffer();
-    boolean that_present_binaryTestBuffer = true && that.isSetBinaryTestBuffer();
-    if (this_present_binaryTestBuffer || that_present_binaryTestBuffer) {
-      if (!(this_present_binaryTestBuffer && that_present_binaryTestBuffer))
-        return false;
-      if (!TBaseHelper.equalsSlow(this.binaryTestBuffer, that.binaryTestBuffer))
-        return false;
-    }
+    if (!TBaseHelper.equalsSlow(this.isSetBinaryTestBuffer(), that.isSetBinaryTestBuffer(), this.binaryTestBuffer, that.binaryTestBuffer)) { return false; }
 
     return true;
   }
@@ -383,7 +348,7 @@ public class TypeRemapped implements TBase, java.io.Serializable, Cloneable, Com
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(lsMap, other.lsMap);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetIoMap()).compareTo(other.isSetIoMap());
@@ -391,7 +356,7 @@ public class TypeRemapped implements TBase, java.io.Serializable, Cloneable, Com
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(ioMap, other.ioMap);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetBigInteger()).compareTo(other.isSetBigInteger());
@@ -399,7 +364,7 @@ public class TypeRemapped implements TBase, java.io.Serializable, Cloneable, Com
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(BigInteger, other.BigInteger);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetBinaryTestBuffer()).compareTo(other.isSetBinaryTestBuffer());
@@ -407,7 +372,7 @@ public class TypeRemapped implements TBase, java.io.Serializable, Cloneable, Com
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(binaryTestBuffer, other.binaryTestBuffer);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

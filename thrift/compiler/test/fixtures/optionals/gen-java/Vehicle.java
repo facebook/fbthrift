@@ -362,64 +362,22 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof Vehicle)
-      return this.equals((Vehicle)that);
-    return false;
-  }
-
-  public boolean equals(Vehicle that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    Vehicle that = (Vehicle)_that;
 
-    boolean this_present_color = true && this.isSetColor();
-    boolean that_present_color = true && that.isSetColor();
-    if (this_present_color || that_present_color) {
-      if (!(this_present_color && that_present_color))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.color, that.color))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetColor(), that.isSetColor(), this.color, that.color)) { return false; }
 
-    boolean this_present_licensePlate = true && this.isSetLicensePlate();
-    boolean that_present_licensePlate = true && that.isSetLicensePlate();
-    if (this_present_licensePlate || that_present_licensePlate) {
-      if (!(this_present_licensePlate && that_present_licensePlate))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.licensePlate, that.licensePlate))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetLicensePlate(), that.isSetLicensePlate(), this.licensePlate, that.licensePlate)) { return false; }
 
-    boolean this_present_description = true && this.isSetDescription();
-    boolean that_present_description = true && that.isSetDescription();
-    if (this_present_description || that_present_description) {
-      if (!(this_present_description && that_present_description))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.description, that.description))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetDescription(), that.isSetDescription(), this.description, that.description)) { return false; }
 
-    boolean this_present_name = true && this.isSetName();
-    boolean that_present_name = true && that.isSetName();
-    if (this_present_name || that_present_name) {
-      if (!(this_present_name && that_present_name))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.name, that.name))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetName(), that.isSetName(), this.name, that.name)) { return false; }
 
-    boolean this_present_hasAC = true && this.isSetHasAC();
-    boolean that_present_hasAC = true && that.isSetHasAC();
-    if (this_present_hasAC || that_present_hasAC) {
-      if (!(this_present_hasAC && that_present_hasAC))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.hasAC, that.hasAC))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetHasAC(), that.isSetHasAC(), this.hasAC, that.hasAC)) { return false; }
 
     return true;
   }
@@ -446,7 +404,7 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(color, other.color);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetLicensePlate()).compareTo(other.isSetLicensePlate());
@@ -454,7 +412,7 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(licensePlate, other.licensePlate);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetDescription()).compareTo(other.isSetDescription());
@@ -462,7 +420,7 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(description, other.description);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetName()).compareTo(other.isSetName());
@@ -470,7 +428,7 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(name, other.name);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetHasAC()).compareTo(other.isSetHasAC());
@@ -478,7 +436,7 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(hasAC, other.hasAC);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;

@@ -151,3 +151,28 @@ struct TypeRemapped {
   5: binary  byteArrayForBinary,
   6: list<FMap> myListOfFMaps,
 }
+
+struct StructWithOptional {
+  1: i64 id,
+  2: string name,
+  3: optional i32 id2,
+  4: optional string name2
+}
+
+struct StructWithAllTypes {
+  1: optional bool bb,
+  2: byte b,
+  3: i16 s,
+  4: i32 i,
+  5: optional i64 l,
+  6: float f,
+  7: double d,
+  8: string myString,
+  9: binary bin,
+  10: list<i32> intList,
+  11: set<i32> intSet,
+  12: map<i32, i32> intMap,
+  13: SmallEnum myEnum,
+  14: MySimpleStruct myStruct,
+  15: MySimpleUnion myUnion,
+}

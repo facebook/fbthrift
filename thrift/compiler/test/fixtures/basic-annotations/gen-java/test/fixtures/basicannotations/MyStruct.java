@@ -303,55 +303,20 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   }
 
   @Override
-  public boolean equals(Object that) {
-    if (that == null)
+  public boolean equals(Object _that) {
+    if (_that == null)
       return false;
-    if (that instanceof MyStruct)
-      return this.equals((MyStruct)that);
-    return false;
-  }
-
-  public boolean equals(MyStruct that) {
-    if (that == null)
-      return false;
-    if (this == that)
+    if (this == _that)
       return true;
+    MyStruct that = (MyStruct)_that;
 
-    boolean this_present_major = true;
-    boolean that_present_major = true;
-    if (this_present_major || that_present_major) {
-      if (!(this_present_major && that_present_major))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.major, that.major))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.major, that.major)) { return false; }
 
-    boolean this_present_package = true && this.isSetPackage();
-    boolean that_present_package = true && that.isSetPackage();
-    if (this_present_package || that_present_package) {
-      if (!(this_present_package && that_present_package))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.package, that.package))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetPackage(), that.isSetPackage(), this.package, that.package)) { return false; }
 
-    boolean this_present_annotation_with_quote = true && this.isSetAnnotation_with_quote();
-    boolean that_present_annotation_with_quote = true && that.isSetAnnotation_with_quote();
-    if (this_present_annotation_with_quote || that_present_annotation_with_quote) {
-      if (!(this_present_annotation_with_quote && that_present_annotation_with_quote))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.annotation_with_quote, that.annotation_with_quote))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetAnnotation_with_quote(), that.isSetAnnotation_with_quote(), this.annotation_with_quote, that.annotation_with_quote)) { return false; }
 
-    boolean this_present_class_ = true && this.isSetClass_();
-    boolean that_present_class_ = true && that.isSetClass_();
-    if (this_present_class_ || that_present_class_) {
-      if (!(this_present_class_ && that_present_class_))
-        return false;
-      if (!TBaseHelper.equalsNobinary(this.class_, that.class_))
-        return false;
-    }
+    if (!TBaseHelper.equalsNobinary(this.isSetClass_(), that.isSetClass_(), this.class_, that.class_)) { return false; }
 
     return true;
   }
@@ -378,7 +343,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(major, other.major);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetPackage()).compareTo(other.isSetPackage());
@@ -386,7 +351,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(package, other.package);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetAnnotation_with_quote()).compareTo(other.isSetAnnotation_with_quote());
@@ -394,7 +359,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(annotation_with_quote, other.annotation_with_quote);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     lastComparison = Boolean.valueOf(isSetClass_()).compareTo(other.isSetClass_());
@@ -402,7 +367,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(class_, other.class_);
-    if (lastComparison != 0) {
+    if (lastComparison != 0) { 
       return lastComparison;
     }
     return 0;
