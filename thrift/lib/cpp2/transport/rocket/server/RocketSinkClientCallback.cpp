@@ -99,9 +99,6 @@ void RocketSinkClientCallback::onFirstResponseError(
 
 void RocketSinkClientCallback::onFinalResponse(StreamPayload&& finalResponse) {
   DCHECK(state_ == State::BothOpen || state_ == State::StreamOpen);
-  if (state_ == State::StreamOpen) {
-    connection_.decInflightFinalResponse();
-  }
 
   // compress the response if needed
   folly::Optional<CompressionAlgorithm> compression =
@@ -112,11 +109,17 @@ void RocketSinkClientCallback::onFinalResponse(StreamPayload&& finalResponse) {
     rocket::compressPayload(
         finalResponse.metadata, finalResponse.payload, *compression);
   }
+
   connection_.sendPayload(
       streamId_,
       pack(std::move(finalResponse)).value(),
       Flags::none().next(true).complete(true));
+  auto state = state_;
+  auto& connection = connection_;
   connection_.freeStream(streamId_);
+  if (state == State::StreamOpen) {
+    connection.decInflightFinalResponse();
+  }
 }
 
 void RocketSinkClientCallback::onFinalResponseError(

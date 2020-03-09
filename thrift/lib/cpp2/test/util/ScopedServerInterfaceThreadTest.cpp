@@ -19,6 +19,9 @@
 #include <atomic>
 
 #include <folly/executors/GlobalExecutor.h>
+
+#include <folly/experimental/coro/BlockingWait.h>
+#include <folly/experimental/coro/Sleep.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/portability/GTest.h>
 #include <folly/stop_watch.h>
@@ -44,6 +47,27 @@ class SimpleServiceImpl : public virtual SimpleServiceSvIf {
       int64_t b) override {
     cb->result(a + b);
   }
+
+  apache::thrift::SinkConsumer<int64_t, bool> slowReturnSink(int64_t sleepMs) {
+    return apache::thrift::SinkConsumer<int64_t, bool>{
+        [&, sleepMs](folly::coro::AsyncGenerator<int64_t&&> gen)
+            -> folly::coro::Task<bool> {
+          while (auto item = co_await gen.next()) {
+          }
+          // sink complete
+          requestSem_.post();
+          co_await folly::coro::sleep(std::chrono::milliseconds(sleepMs));
+          co_return true;
+        },
+        10};
+  }
+
+  void waitForSinkComplete() {
+    requestSem_.wait();
+  }
+
+ private:
+  folly::LifoSem requestSem_;
 };
 
 TEST(ScopedServerInterfaceThread, nada) {
@@ -116,6 +140,34 @@ TEST(ScopedServerInterfaceThread, configureCbCalled) {
         configCalled = true;
       });
   EXPECT_TRUE(configCalled);
+}
+
+TEST(ScopedServerInterfaceThread, joinRequestsSinkSlowFinalResponse) {
+  folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+    auto serviceImpl = std::make_shared<SimpleServiceImpl>();
+    folly::Optional<ScopedServerInterfaceThread> ssit(
+        folly::in_place, serviceImpl);
+
+    auto cli =
+        ssit->newClient<SimpleServiceAsyncClient>(nullptr, [](auto socket) {
+          auto channel = RocketClientChannel::newChannel(std::move(socket));
+          channel->setTimeout(0);
+          return channel;
+        });
+
+    auto sink = co_await cli->co_slowReturnSink(6000);
+    // should not throw
+    bool result =
+        co_await sink.sink([&](auto) -> folly::coro::AsyncGenerator<int64_t&&> {
+          co_yield 1;
+          co_yield 2;
+        }(folly::makeGuard([&]() {
+                             serviceImpl->waitForSinkComplete();
+                             serviceImpl.reset();
+                             ssit.reset();
+                           })));
+    EXPECT_TRUE(result);
+  }());
 }
 
 template <typename ChannelT, typename ServiceT>

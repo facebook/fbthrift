@@ -22,4 +22,6 @@ service SimpleService {
   string echoSlow(1: string message, 2: i64 sleepMs)
 
   stream<i64> emptyStreamSlow(1: i64 sleepMs) (cpp.coroutine);
+
+  sink<i64, bool> slowReturnSink(1: i64 sleepMs);
 }

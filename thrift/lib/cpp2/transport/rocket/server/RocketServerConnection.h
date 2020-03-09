@@ -135,6 +135,7 @@ class RocketServerConnection final
   void decInflightFinalResponse() {
     DCHECK(inflightSinkFinalResponses_ != 0);
     inflightSinkFinalResponses_--;
+    closeIfNeeded();
   }
 
  private:
