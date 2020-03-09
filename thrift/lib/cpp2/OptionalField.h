@@ -40,7 +40,6 @@ class DeprecatedOptionalField : public folly::Optional<T> {
   DeprecatedOptionalField() = default;
   DeprecatedOptionalField(const DeprecatedOptionalField&) = default;
   DeprecatedOptionalField(DeprecatedOptionalField&&) = default;
-  DeprecatedOptionalField(folly::None) noexcept {}
   /* implicit */ DeprecatedOptionalField(const T& t) noexcept(
       std::is_nothrow_copy_constructible<T>::value)
       : Base(t) {}
@@ -72,11 +71,6 @@ class DeprecatedOptionalField : public folly::Optional<T> {
   auto&& operator=(folly::Optional<T>&& other) noexcept(
       std::is_nothrow_move_assignable<T>::value) {
     Base::operator=(std::move(other));
-    return *this;
-  }
-
-  auto&& operator=(folly::None) noexcept {
-    Base::operator=(folly::none);
     return *this;
   }
 
