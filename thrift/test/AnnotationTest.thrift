@@ -32,6 +32,7 @@ struct foo {
   python.type = "DenseFoo",
   java.final = "",
   cpp2.methods = "public: void manuallyDefinedDummyMethod() {}",
+  policy = bar{"zar": [11, 22, 33]},
 )
 
 typedef string ( unicode.encoding = "UTF-16" ) non_latin_string

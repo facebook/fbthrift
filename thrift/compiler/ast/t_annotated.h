@@ -17,8 +17,10 @@
 #pragma once
 
 #include <map>
+#include <memory>
 #include <string>
 
+#include <thrift/compiler/ast/t_const.h>
 #include <thrift/compiler/ast/t_doc.h>
 
 namespace apache {
@@ -35,6 +37,7 @@ class t_annotated : public t_doc {
   virtual ~t_annotated() {}
 
   std::map<std::string, std::string> annotations_;
+  std::map<std::string, std::shared_ptr<t_const>> annotation_objects_;
 };
 
 /**
@@ -46,6 +49,7 @@ struct t_annotation {
       : key(key_), val(val_) {}
   std::string key;
   std::string val;
+  std::shared_ptr<t_const> object_val;
 };
 
 } // namespace compiler

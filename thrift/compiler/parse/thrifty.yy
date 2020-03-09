@@ -488,6 +488,7 @@ Typedef:
       $$->set_lineno(lineno_stack.pop(LineType::kTypedef));
       if ($5 != NULL) {
         $$->annotations_ = $5->annotations_;
+        $$->annotation_objects_ = $5->annotation_objects_;
         delete $5;
       }
     }
@@ -518,6 +519,7 @@ Enum:
       $$->set_lineno(lineno_stack.pop(LineType::kEnum));
       if ($8 != NULL) {
         $$->annotations_ = $8->annotations_;
+        $$->annotation_objects_ = $8->annotation_objects_;
         delete $8;
       }
       y_enum_name = nullptr;
@@ -568,6 +570,7 @@ EnumDef:
       }
       if ($3 != NULL) {
         $$->annotations_ = $3->annotations_;
+        $$->annotation_objects_ = $3->annotation_objects_;
         delete $3;
       }
     }
@@ -758,6 +761,7 @@ Struct:
       $$->set_lineno(lineno_stack.pop(LineType::kStruct));
       if ($7 != NULL) {
         $$->annotations_ = $7->annotations_;
+        $$->annotation_objects_ = $7->annotation_objects_;
         delete $7;
       }
       y_field_val = -1;
@@ -777,6 +781,7 @@ Xception:
       $$->set_lineno(lineno_stack.pop(LineType::kXception));
       if ($7 != NULL) {
         $$->annotations_ = $7->annotations_;
+        $$->annotation_objects_ = $7->annotation_objects_;
         delete $7;
       }
 
@@ -827,6 +832,7 @@ Service:
       $$->set_lineno(lineno_stack.pop(LineType::kService));
       if ($10) {
         $$->annotations_ = $10->annotations_;
+        $$->annotation_objects_ = $10->annotation_objects_;
         delete $10;
       }
     }
@@ -902,6 +908,7 @@ Function:
       }
       if ($9) {
         func->annotations_ = std::move($9->annotations_);
+        func->annotation_objects_ = std::move($9->annotation_objects_);
       }
       delete $9;
       $$ = func;
@@ -1019,6 +1026,7 @@ Field:
           }
         }
         $$->annotations_ = $7->annotations_;
+        $$->annotation_objects_ = $7->annotation_objects_;
         delete $7;
       }
     }
@@ -1224,6 +1232,7 @@ FieldType:
           auto td = new t_typedef(
               const_cast<t_program*>($$->get_program()), $$, $$->get_name(), driver.scope_cache);
           td->annotations_ = $2->annotations_;
+          td->annotation_objects_ = $2->annotation_objects_;
           $$ = td;
           driver.program->add_unnamed_typedef(std::unique_ptr<t_typedef>{td});
           delete $2;
@@ -1239,6 +1248,7 @@ FieldType:
           driver.program->add_placeholder_typedef(std::unique_ptr<t_typedef>{td});
           if ($2 != NULL) {
             $$->annotations_ = $2->annotations_;
+            $$->annotation_objects_ = $2->annotation_objects_;
             delete $2;
           }
         }
@@ -1268,6 +1278,7 @@ BaseType: SimpleBaseType TypeAnnotations
       if ($2 != NULL) {
         $$ = new t_base_type(*static_cast<t_base_type*>($1));
         $$->annotations_ = $2->annotations_;
+        $$->annotation_objects_ = $2->annotation_objects_;
         delete $2;
 
         if (driver.mode == parsing_mode::INCLUDES) {
@@ -1333,6 +1344,7 @@ ContainerType: SimpleContainerType TypeAnnotations
       $$ = $1;
       if ($2 != NULL) {
         $$->annotations_ = $2->annotations_;
+        $$->annotation_objects_ = $2->annotation_objects_;
         delete $2;
       }
     }
@@ -1392,7 +1404,11 @@ TypeAnnotationList:
     {
       driver.debug("TypeAnnotationList -> TypeAnnotationList , TypeAnnotation");
       $$ = $1;
-      $$->annotations_[$2->key] = $2->val;
+      if ($2->object_val == nullptr) {
+        $$->annotations_[$2->key] = $2->val;
+      } else {
+        $$->annotation_objects_[$2->key] = $2->object_val;     
+      }
       delete $2;
     }
 |
@@ -1402,6 +1418,22 @@ TypeAnnotationList:
     }
 
 TypeAnnotation:
+  tok_identifier "=" FieldType ConstMap CommaOrSemicolonOptional
+    {
+      driver.debug("TypeAnnotation TypeAnnotationValueObject");
+      $$ = new t_annotation;
+      $$->key = $1;
+      $$->object_val = std::make_shared<t_const>(
+        driver.program,
+        $3,
+        $1,
+        std::unique_ptr<t_const_value>($4)
+      );
+      if (driver.mode == parsing_mode::PROGRAM) {
+        driver.validate_const_type($$->object_val.get());
+      }
+    }
+|
   tok_identifier TypeAnnotationValue CommaOrSemicolonOptional
     {
       driver.debug("TypeAnnotation TypeAnnotationValue");
