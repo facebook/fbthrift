@@ -151,10 +151,10 @@ void Cpp2Channel::writeSuccess() noexcept {
 
   DestructorGuard dg(this);
   auto* cb = sendCallbacks_.front();
+  sendCallbacks_.pop_front();
   if (cb) {
     cb->messageSent();
   }
-  sendCallbacks_.pop_front();
 }
 
 void Cpp2Channel::writeError(
@@ -167,11 +167,11 @@ void Cpp2Channel::writeError(
   DestructorGuard dg(this);
   VLOG(5) << "Got a write error: " << folly::exceptionStr(ex);
   auto* cb = sendCallbacks_.front();
+  sendCallbacks_.pop_front();
   if (cb) {
     cb->messageSendError(
         folly::make_exception_wrapper<TTransportException>(ex));
   }
-  sendCallbacks_.pop_front();
 }
 
 void Cpp2Channel::processReadEOF() noexcept {
