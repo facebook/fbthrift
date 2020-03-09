@@ -369,12 +369,22 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
   @Override
   protected Map<Integer, FieldMetaData> getMetaDataMap() { return metaDataMap; }
 
-  public long getIntValue() {
-    if (getSetField() == INTVALUE) {
-      return (Long)getFieldValue();
+  private Object __getValue(int expectedFieldId) {
+    if (getSetField() == expectedFieldId) {
+      return getFieldValue();
     } else {
-      throw new RuntimeException("Cannot get field 'intValue' because union is currently set to " + getFieldDesc(getSetField()).name);
+      throw new RuntimeException("Cannot get field '" + getFieldDesc(expectedFieldId).name + "' because union is currently set to " + getFieldDesc(getSetField()).name);
     }
+  }
+
+  private void __setValue(int fieldId, Object __value) {
+    if (__value == null) throw new NullPointerException();
+    setField_ = fieldId;
+    value_ = __value;
+  }
+
+  public long getIntValue() {
+    return (Long) __getValue(INTVALUE);
   }
 
   public void setIntValue(long __value) {
@@ -383,73 +393,43 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
   }
 
   public String getStringValue() {
-    if (getSetField() == STRINGVALUE) {
-      return (String)getFieldValue();
-    } else {
-      throw new RuntimeException("Cannot get field 'stringValue' because union is currently set to " + getFieldDesc(getSetField()).name);
-    }
+    return (String) __getValue(STRINGVALUE);
   }
 
   public void setStringValue(String __value) {
-    if (__value == null) throw new NullPointerException();
-    setField_ = STRINGVALUE;
-    value_ = __value;
+    __setValue(STRINGVALUE, __value);
   }
 
   public List<Long> getIntListValue() {
-    if (getSetField() == INTLISTVALUE) {
-      return (List<Long>)getFieldValue();
-    } else {
-      throw new RuntimeException("Cannot get field 'intListValue' because union is currently set to " + getFieldDesc(getSetField()).name);
-    }
+    return (List<Long>) __getValue(INTLISTVALUE);
   }
 
   public void setIntListValue(List<Long> __value) {
-    if (__value == null) throw new NullPointerException();
-    setField_ = INTLISTVALUE;
-    value_ = __value;
+    __setValue(INTLISTVALUE, __value);
   }
 
   public List<String> getStringListValue() {
-    if (getSetField() == STRINGLISTVALUE) {
-      return (List<String>)getFieldValue();
-    } else {
-      throw new RuntimeException("Cannot get field 'stringListValue' because union is currently set to " + getFieldDesc(getSetField()).name);
-    }
+    return (List<String>) __getValue(STRINGLISTVALUE);
   }
 
   public void setStringListValue(List<String> __value) {
-    if (__value == null) throw new NullPointerException();
-    setField_ = STRINGLISTVALUE;
-    value_ = __value;
+    __setValue(STRINGLISTVALUE, __value);
   }
 
   public Map<Short,String> getTypedefValue() {
-    if (getSetField() == TYPEDEFVALUE) {
-      return (Map<Short,String>)getFieldValue();
-    } else {
-      throw new RuntimeException("Cannot get field 'typedefValue' because union is currently set to " + getFieldDesc(getSetField()).name);
-    }
+    return (Map<Short,String>) __getValue(TYPEDEFVALUE);
   }
 
   public void setTypedefValue(Map<Short,String> __value) {
-    if (__value == null) throw new NullPointerException();
-    setField_ = TYPEDEFVALUE;
-    value_ = __value;
+    __setValue(TYPEDEFVALUE, __value);
   }
 
   public String getStringRef() {
-    if (getSetField() == STRINGREF) {
-      return (String)getFieldValue();
-    } else {
-      throw new RuntimeException("Cannot get field 'stringRef' because union is currently set to " + getFieldDesc(getSetField()).name);
-    }
+    return (String) __getValue(STRINGREF);
   }
 
   public void setStringRef(String __value) {
-    if (__value == null) throw new NullPointerException();
-    setField_ = STRINGREF;
-    value_ = __value;
+    __setValue(STRINGREF, __value);
   }
 
   public boolean equals(Object other) {

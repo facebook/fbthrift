@@ -178,32 +178,34 @@ public class ValUnion extends TUnion<ValUnion> implements Comparable<ValUnion> {
   @Override
   protected Map<Integer, FieldMetaData> getMetaDataMap() { return metaDataMap; }
 
-  public Val getV1() {
-    if (getSetField() == V1) {
-      return (Val)getFieldValue();
+  private Object __getValue(int expectedFieldId) {
+    if (getSetField() == expectedFieldId) {
+      return getFieldValue();
     } else {
-      throw new RuntimeException("Cannot get field 'v1' because union is currently set to " + getFieldDesc(getSetField()).name);
+      throw new RuntimeException("Cannot get field '" + getFieldDesc(expectedFieldId).name + "' because union is currently set to " + getFieldDesc(getSetField()).name);
     }
+  }
+
+  private void __setValue(int fieldId, Object __value) {
+    if (__value == null) throw new NullPointerException();
+    setField_ = fieldId;
+    value_ = __value;
+  }
+
+  public Val getV1() {
+    return (Val) __getValue(V1);
   }
 
   public void setV1(Val __value) {
-    if (__value == null) throw new NullPointerException();
-    setField_ = V1;
-    value_ = __value;
+    __setValue(V1, __value);
   }
 
   public Val getV2() {
-    if (getSetField() == V2) {
-      return (Val)getFieldValue();
-    } else {
-      throw new RuntimeException("Cannot get field 'v2' because union is currently set to " + getFieldDesc(getSetField()).name);
-    }
+    return (Val) __getValue(V2);
   }
 
   public void setV2(Val __value) {
-    if (__value == null) throw new NullPointerException();
-    setField_ = V2;
-    value_ = __value;
+    __setValue(V2, __value);
   }
 
   public boolean equals(Object other) {

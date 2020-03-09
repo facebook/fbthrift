@@ -144,18 +144,26 @@ public class NonCopyableUnion extends TUnion<NonCopyableUnion> implements Compar
   @Override
   protected Map<Integer, FieldMetaData> getMetaDataMap() { return metaDataMap; }
 
-  public NonCopyableStruct getS() {
-    if (getSetField() == S) {
-      return (NonCopyableStruct)getFieldValue();
+  private Object __getValue(int expectedFieldId) {
+    if (getSetField() == expectedFieldId) {
+      return getFieldValue();
     } else {
-      throw new RuntimeException("Cannot get field 's' because union is currently set to " + getFieldDesc(getSetField()).name);
+      throw new RuntimeException("Cannot get field '" + getFieldDesc(expectedFieldId).name + "' because union is currently set to " + getFieldDesc(getSetField()).name);
     }
   }
 
-  public void setS(NonCopyableStruct __value) {
+  private void __setValue(int fieldId, Object __value) {
     if (__value == null) throw new NullPointerException();
-    setField_ = S;
+    setField_ = fieldId;
     value_ = __value;
+  }
+
+  public NonCopyableStruct getS() {
+    return (NonCopyableStruct) __getValue(S);
+  }
+
+  public void setS(NonCopyableStruct __value) {
+    __setValue(S, __value);
   }
 
   public boolean equals(Object other) {

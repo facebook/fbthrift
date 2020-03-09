@@ -681,6 +681,25 @@ void t_java_generator::generate_union_getters_and_setters(
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
+  indent(out) << "private Object __getValue(int expectedFieldId) {" << endl;
+  indent(out) << "  if (getSetField() == expectedFieldId) {" << endl;
+  indent(out) << "    return getFieldValue();" << endl;
+  indent(out) << "  } else {" << endl;
+  indent(out)
+      << "    throw new RuntimeException(\"Cannot get field '\" + getFieldDesc(expectedFieldId).name + \""
+      << "' because union is currently set to \" + getFieldDesc(getSetField()).name);"
+      << endl;
+  indent(out) << "  }" << endl;
+  indent(out) << "}" << endl << endl;
+
+  indent(out) << "private void __setValue(int fieldId, Object __value) {"
+              << endl;
+  indent(out) << "  if (__value == null) throw new NullPointerException();"
+              << endl;
+  indent(out) << "  setField_ = fieldId;" << endl;
+  indent(out) << "  value_ = __value;" << endl;
+  indent(out) << "}" << endl << endl;
+
   bool first = true;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     if (first) {
@@ -694,16 +713,9 @@ void t_java_generator::generate_union_getters_and_setters(
     generate_java_doc(out, field);
     indent(out) << "public " << type_name(field->get_type()) << " "
                 << get_simple_getter_name(field) << "() {" << endl;
-    indent(out) << "  if (" << generate_setfield_check(field) << ") {" << endl;
-    indent(out) << "    return (" << type_name(field->get_type(), true)
-                << ")getFieldValue();" << endl;
-    indent(out) << "  } else {" << endl;
-    indent(out)
-        << "    throw new RuntimeException(\"Cannot get field '"
-        << field->get_name()
-        << "' because union is currently set to \" + getFieldDesc(getSetField()).name);"
-        << endl;
-    indent(out) << "  }" << endl;
+    indent(out) << "  return (" << type_name(field->get_type(), true)
+                << ") __getValue(" << upcase_string(field->get_name()) << ");"
+                << endl;
     indent(out) << "}" << endl;
 
     out << endl;
@@ -712,12 +724,13 @@ void t_java_generator::generate_union_getters_and_setters(
     indent(out) << "public void set" << get_cap_name(field->get_name()) << "("
                 << type_name(field->get_type()) << " __value) {" << endl;
     if (type_can_be_null(field->get_type())) {
-      indent(out) << "  if (__value == null) throw new NullPointerException();"
+      indent(out) << "  __setValue(" << upcase_string(field->get_name())
+                  << ", __value);" << endl;
+    } else {
+      indent(out) << "  setField_ = " << upcase_string(field->get_name()) << ";"
                   << endl;
+      indent(out) << "  value_ = __value;" << endl;
     }
-    indent(out) << "  setField_ = " << upcase_string(field->get_name()) << ";"
-                << endl;
-    indent(out) << "  value_ = __value;" << endl;
     indent(out) << "}" << endl;
   }
 }

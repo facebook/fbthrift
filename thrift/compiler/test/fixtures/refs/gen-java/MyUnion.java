@@ -176,12 +176,22 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
   @Override
   protected Map<Integer, FieldMetaData> getMetaDataMap() { return metaDataMap; }
 
-  public int getAnInteger() {
-    if (getSetField() == ANINTEGER) {
-      return (Integer)getFieldValue();
+  private Object __getValue(int expectedFieldId) {
+    if (getSetField() == expectedFieldId) {
+      return getFieldValue();
     } else {
-      throw new RuntimeException("Cannot get field 'anInteger' because union is currently set to " + getFieldDesc(getSetField()).name);
+      throw new RuntimeException("Cannot get field '" + getFieldDesc(expectedFieldId).name + "' because union is currently set to " + getFieldDesc(getSetField()).name);
     }
+  }
+
+  private void __setValue(int fieldId, Object __value) {
+    if (__value == null) throw new NullPointerException();
+    setField_ = fieldId;
+    value_ = __value;
+  }
+
+  public int getAnInteger() {
+    return (Integer) __getValue(ANINTEGER);
   }
 
   public void setAnInteger(int __value) {
@@ -190,17 +200,11 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
   }
 
   public String getAString() {
-    if (getSetField() == ASTRING) {
-      return (String)getFieldValue();
-    } else {
-      throw new RuntimeException("Cannot get field 'aString' because union is currently set to " + getFieldDesc(getSetField()).name);
-    }
+    return (String) __getValue(ASTRING);
   }
 
   public void setAString(String __value) {
-    if (__value == null) throw new NullPointerException();
-    setField_ = ASTRING;
-    value_ = __value;
+    __setValue(ASTRING, __value);
   }
 
   public boolean equals(Object other) {

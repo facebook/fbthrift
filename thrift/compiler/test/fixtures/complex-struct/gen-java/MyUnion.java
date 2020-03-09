@@ -245,16 +245,26 @@ public class MyUnion extends TUnion<MyUnion> {
   @Override
   protected Map<Integer, FieldMetaData> getMetaDataMap() { return metaDataMap; }
 
+  private Object __getValue(int expectedFieldId) {
+    if (getSetField() == expectedFieldId) {
+      return getFieldValue();
+    } else {
+      throw new RuntimeException("Cannot get field '" + getFieldDesc(expectedFieldId).name + "' because union is currently set to " + getFieldDesc(getSetField()).name);
+    }
+  }
+
+  private void __setValue(int fieldId, Object __value) {
+    if (__value == null) throw new NullPointerException();
+    setField_ = fieldId;
+    value_ = __value;
+  }
+
   /**
    * 
    * @see MyEnum
    */
   public MyEnum getMyEnum() {
-    if (getSetField() == MYENUM) {
-      return (MyEnum)getFieldValue();
-    } else {
-      throw new RuntimeException("Cannot get field 'myEnum' because union is currently set to " + getFieldDesc(getSetField()).name);
-    }
+    return (MyEnum) __getValue(MYENUM);
   }
 
   /**
@@ -262,51 +272,31 @@ public class MyUnion extends TUnion<MyUnion> {
    * @see MyEnum
    */
   public void setMyEnum(MyEnum __value) {
-    if (__value == null) throw new NullPointerException();
-    setField_ = MYENUM;
-    value_ = __value;
+    __setValue(MYENUM, __value);
   }
 
   public MyStruct getMyStruct() {
-    if (getSetField() == MYSTRUCT) {
-      return (MyStruct)getFieldValue();
-    } else {
-      throw new RuntimeException("Cannot get field 'myStruct' because union is currently set to " + getFieldDesc(getSetField()).name);
-    }
+    return (MyStruct) __getValue(MYSTRUCT);
   }
 
   public void setMyStruct(MyStruct __value) {
-    if (__value == null) throw new NullPointerException();
-    setField_ = MYSTRUCT;
-    value_ = __value;
+    __setValue(MYSTRUCT, __value);
   }
 
   public MyDataItem getMyDataItem() {
-    if (getSetField() == MYDATAITEM) {
-      return (MyDataItem)getFieldValue();
-    } else {
-      throw new RuntimeException("Cannot get field 'myDataItem' because union is currently set to " + getFieldDesc(getSetField()).name);
-    }
+    return (MyDataItem) __getValue(MYDATAITEM);
   }
 
   public void setMyDataItem(MyDataItem __value) {
-    if (__value == null) throw new NullPointerException();
-    setField_ = MYDATAITEM;
-    value_ = __value;
+    __setValue(MYDATAITEM, __value);
   }
 
   public ComplexNestedStruct getComplexNestedStruct() {
-    if (getSetField() == COMPLEXNESTEDSTRUCT) {
-      return (ComplexNestedStruct)getFieldValue();
-    } else {
-      throw new RuntimeException("Cannot get field 'complexNestedStruct' because union is currently set to " + getFieldDesc(getSetField()).name);
-    }
+    return (ComplexNestedStruct) __getValue(COMPLEXNESTEDSTRUCT);
   }
 
   public void setComplexNestedStruct(ComplexNestedStruct __value) {
-    if (__value == null) throw new NullPointerException();
-    setField_ = COMPLEXNESTEDSTRUCT;
-    value_ = __value;
+    __setValue(COMPLEXNESTEDSTRUCT, __value);
   }
 
   public boolean equals(Object other) {

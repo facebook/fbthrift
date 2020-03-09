@@ -176,32 +176,34 @@ public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion
   @Override
   protected Map<Integer, FieldMetaData> getMetaDataMap() { return metaDataMap; }
 
-  public byte[] getBinaryData() {
-    if (getSetField() == BINARYDATA) {
-      return (byte[])getFieldValue();
+  private Object __getValue(int expectedFieldId) {
+    if (getSetField() == expectedFieldId) {
+      return getFieldValue();
     } else {
-      throw new RuntimeException("Cannot get field 'binaryData' because union is currently set to " + getFieldDesc(getSetField()).name);
+      throw new RuntimeException("Cannot get field '" + getFieldDesc(expectedFieldId).name + "' because union is currently set to " + getFieldDesc(getSetField()).name);
     }
+  }
+
+  private void __setValue(int fieldId, Object __value) {
+    if (__value == null) throw new NullPointerException();
+    setField_ = fieldId;
+    value_ = __value;
+  }
+
+  public byte[] getBinaryData() {
+    return (byte[]) __getValue(BINARYDATA);
   }
 
   public void setBinaryData(byte[] __value) {
-    if (__value == null) throw new NullPointerException();
-    setField_ = BINARYDATA;
-    value_ = __value;
+    __setValue(BINARYDATA, __value);
   }
 
   public String getStringData() {
-    if (getSetField() == STRINGDATA) {
-      return (String)getFieldValue();
-    } else {
-      throw new RuntimeException("Cannot get field 'stringData' because union is currently set to " + getFieldDesc(getSetField()).name);
-    }
+    return (String) __getValue(STRINGDATA);
   }
 
   public void setStringData(String __value) {
-    if (__value == null) throw new NullPointerException();
-    setField_ = STRINGDATA;
-    value_ = __value;
+    __setValue(STRINGDATA, __value);
   }
 
   public boolean equals(Object other) {

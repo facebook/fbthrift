@@ -176,32 +176,34 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
   @Override
   protected Map<Integer, FieldMetaData> getMetaDataMap() { return metaDataMap; }
 
-  public String getThingOne() {
-    if (getSetField() == THINGONE) {
-      return (String)getFieldValue();
+  private Object __getValue(int expectedFieldId) {
+    if (getSetField() == expectedFieldId) {
+      return getFieldValue();
     } else {
-      throw new RuntimeException("Cannot get field 'thingOne' because union is currently set to " + getFieldDesc(getSetField()).name);
+      throw new RuntimeException("Cannot get field '" + getFieldDesc(expectedFieldId).name + "' because union is currently set to " + getFieldDesc(getSetField()).name);
     }
+  }
+
+  private void __setValue(int fieldId, Object __value) {
+    if (__value == null) throw new NullPointerException();
+    setField_ = fieldId;
+    value_ = __value;
+  }
+
+  public String getThingOne() {
+    return (String) __getValue(THINGONE);
   }
 
   public void setThingOne(String __value) {
-    if (__value == null) throw new NullPointerException();
-    setField_ = THINGONE;
-    value_ = __value;
+    __setValue(THINGONE, __value);
   }
 
   public String getThingTwo() {
-    if (getSetField() == THINGTWO) {
-      return (String)getFieldValue();
-    } else {
-      throw new RuntimeException("Cannot get field 'thingTwo' because union is currently set to " + getFieldDesc(getSetField()).name);
-    }
+    return (String) __getValue(THINGTWO);
   }
 
   public void setThingTwo(String __value) {
-    if (__value == null) throw new NullPointerException();
-    setField_ = THINGTWO;
-    value_ = __value;
+    __setValue(THINGTWO, __value);
   }
 
   public boolean equals(Object other) {
