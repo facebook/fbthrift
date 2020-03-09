@@ -317,7 +317,7 @@ class t_java_generator : public t_oop_generator {
 
     return generate_boxed_primitive || ttype->is_container() ||
         ttype->is_struct() || ttype->is_xception() ||
-        ttype->is_string_or_binary();
+        ttype->is_string_or_binary() || ttype->is_enum();
   }
 
   std::string constant_name(std::string name);

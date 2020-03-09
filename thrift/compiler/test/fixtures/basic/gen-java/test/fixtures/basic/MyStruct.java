@@ -45,8 +45,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
   // isset id assignments
   private static final int __MYINTFIELD_ISSET_ID = 0;
-  private static final int __MYENUM_ISSET_ID = 1;
-  private BitSet __isset_bit_vector = new BitSet(2);
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -82,7 +81,6 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     this.MyStringField = MyStringField;
     this.MyDataField = MyDataField;
     this.myEnum = myEnum;
-    setMyEnumIsSet(true);
   }
 
   public static class Builder {
@@ -91,7 +89,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     private MyDataItem MyDataField;
     private MyEnum myEnum;
 
-    BitSet __optional_isset = new BitSet(2);
+    BitSet __optional_isset = new BitSet(1);
 
     public Builder() {
     }
@@ -114,7 +112,6 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
     public Builder setMyEnum(final MyEnum myEnum) {
       this.myEnum = myEnum;
-      __optional_isset.set(__MYENUM_ISSET_ID, true);
       return this;
     }
 
@@ -125,9 +122,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       }
       result.setMyStringField(this.MyStringField);
       result.setMyDataField(this.MyDataField);
-      if (__optional_isset.get(__MYENUM_ISSET_ID)) {
-        result.setMyEnum(this.myEnum);
-      }
+      result.setMyEnum(this.myEnum);
       return result;
     }
   }
@@ -149,7 +144,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     if (other.isSetMyDataField()) {
       this.MyDataField = TBaseHelper.deepCopy(other.MyDataField);
     }
-    this.myEnum = TBaseHelper.deepCopy(other.myEnum);
+    if (other.isSetMyEnum()) {
+      this.myEnum = TBaseHelper.deepCopy(other.myEnum);
+    }
   }
 
   public MyStruct deepCopy() {
@@ -241,21 +238,22 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
    */
   public MyStruct setMyEnum(MyEnum myEnum) {
     this.myEnum = myEnum;
-    setMyEnumIsSet(true);
     return this;
   }
 
   public void unsetMyEnum() {
-    __isset_bit_vector.clear(__MYENUM_ISSET_ID);
+    this.myEnum = null;
   }
 
   // Returns true if field myEnum is set (has been assigned a value) and false otherwise
   public boolean isSetMyEnum() {
-    return __isset_bit_vector.get(__MYENUM_ISSET_ID);
+    return this.myEnum != null;
   }
 
   public void setMyEnumIsSet(boolean __value) {
-    __isset_bit_vector.set(__MYENUM_ISSET_ID, __value);
+    if (!__value) {
+      this.myEnum = null;
+    }
   }
 
   public void setFieldValue(int fieldID, Object __value) {
@@ -358,8 +356,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         return false;
     }
 
-    boolean this_present_myEnum = true;
-    boolean that_present_myEnum = true;
+    boolean this_present_myEnum = true && this.isSetMyEnum();
+    boolean that_present_myEnum = true && that.isSetMyEnum();
     if (this_present_myEnum || that_present_myEnum) {
       if (!(this_present_myEnum && that_present_myEnum))
         return false;
@@ -459,7 +457,6 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         case MYENUM:
           if (__field.type == TType.I32) {
             this.myEnum = MyEnum.findByValue(iprot.readI32());
-            setMyEnumIsSet(true);
           } else { 
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -494,9 +491,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       this.MyDataField.write(oprot);
       oprot.writeFieldEnd();
     }
-    oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
-    oprot.writeI32(this.myEnum == null ? 0 : this.myEnum.getValue());
-    oprot.writeFieldEnd();
+    if (this.myEnum != null) {
+      oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
+      oprot.writeI32(this.myEnum == null ? 0 : this.myEnum.getValue());
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -550,14 +549,18 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     sb.append("myEnum");
     sb.append(space);
     sb.append(":").append(space);
-    String myEnum_name = this.getMyEnum() == null ? "null" : this.getMyEnum().name();
-    if (myEnum_name != null) {
-      sb.append(myEnum_name);
-      sb.append(" (");
-    }
-    sb.append(this.getMyEnum());
-    if (myEnum_name != null) {
-      sb.append(")");
+    if (this.getMyEnum() == null) {
+      sb.append("null");
+    } else {
+      String myEnum_name = this.getMyEnum() == null ? "null" : this.getMyEnum().name();
+      if (myEnum_name != null) {
+        sb.append(myEnum_name);
+        sb.append(" (");
+      }
+      sb.append(this.getMyEnum());
+      if (myEnum_name != null) {
+        sb.append(")");
+      }
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

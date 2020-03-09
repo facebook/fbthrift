@@ -48,8 +48,6 @@ public class complexException extends Exception implements TBase, java.io.Serial
   public static final int LSMAP = 6;
 
   // isset id assignments
-  private static final int __ERRORENUM_ISSET_ID = 0;
-  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -91,7 +89,6 @@ public class complexException extends Exception implements TBase, java.io.Serial
     this.message = message;
     this.listStrings = listStrings;
     this.errorEnum = errorEnum;
-    setErrorEnumIsSet(true);
     this.structError = structError;
     this.lsMap = lsMap;
   }
@@ -108,7 +105,6 @@ public class complexException extends Exception implements TBase, java.io.Serial
     this.message = message;
     this.listStrings = listStrings;
     this.errorEnum = errorEnum;
-    setErrorEnumIsSet(true);
     this.unionError = unionError;
     this.structError = structError;
     this.lsMap = lsMap;
@@ -121,8 +117,6 @@ public class complexException extends Exception implements TBase, java.io.Serial
     private MyUnion unionError;
     private MyStruct structError;
     private Map<Long,String> lsMap;
-
-    BitSet __optional_isset = new BitSet(1);
 
     public Builder() {
     }
@@ -139,7 +133,6 @@ public class complexException extends Exception implements TBase, java.io.Serial
 
     public Builder setErrorEnum(final MyEnum errorEnum) {
       this.errorEnum = errorEnum;
-      __optional_isset.set(__ERRORENUM_ISSET_ID, true);
       return this;
     }
 
@@ -162,9 +155,7 @@ public class complexException extends Exception implements TBase, java.io.Serial
       complexException result = new complexException();
       result.setMessage(this.message);
       result.setListStrings(this.listStrings);
-      if (__optional_isset.get(__ERRORENUM_ISSET_ID)) {
-        result.setErrorEnum(this.errorEnum);
-      }
+      result.setErrorEnum(this.errorEnum);
       result.setUnionError(this.unionError);
       result.setStructError(this.structError);
       result.setLsMap(this.lsMap);
@@ -180,15 +171,15 @@ public class complexException extends Exception implements TBase, java.io.Serial
    * Performs a deep copy on <i>other</i>.
    */
   public complexException(complexException other) {
-    __isset_bit_vector.clear();
-    __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetMessage()) {
       this.message = TBaseHelper.deepCopy(other.message);
     }
     if (other.isSetListStrings()) {
       this.listStrings = TBaseHelper.deepCopy(other.listStrings);
     }
-    this.errorEnum = TBaseHelper.deepCopy(other.errorEnum);
+    if (other.isSetErrorEnum()) {
+      this.errorEnum = TBaseHelper.deepCopy(other.errorEnum);
+    }
     if (other.isSetUnionError()) {
       this.unionError = TBaseHelper.deepCopy(other.unionError);
     }
@@ -266,21 +257,22 @@ public class complexException extends Exception implements TBase, java.io.Serial
    */
   public complexException setErrorEnum(MyEnum errorEnum) {
     this.errorEnum = errorEnum;
-    setErrorEnumIsSet(true);
     return this;
   }
 
   public void unsetErrorEnum() {
-    __isset_bit_vector.clear(__ERRORENUM_ISSET_ID);
+    this.errorEnum = null;
   }
 
   // Returns true if field errorEnum is set (has been assigned a value) and false otherwise
   public boolean isSetErrorEnum() {
-    return __isset_bit_vector.get(__ERRORENUM_ISSET_ID);
+    return this.errorEnum != null;
   }
 
   public void setErrorEnumIsSet(boolean __value) {
-    __isset_bit_vector.set(__ERRORENUM_ISSET_ID, __value);
+    if (!__value) {
+      this.errorEnum = null;
+    }
   }
 
   public MyUnion getUnionError() {
@@ -469,8 +461,8 @@ public class complexException extends Exception implements TBase, java.io.Serial
         return false;
     }
 
-    boolean this_present_errorEnum = true;
-    boolean that_present_errorEnum = true;
+    boolean this_present_errorEnum = true && this.isSetErrorEnum();
+    boolean that_present_errorEnum = true && that.isSetErrorEnum();
     if (this_present_errorEnum || that_present_errorEnum) {
       if (!(this_present_errorEnum && that_present_errorEnum))
         return false;
@@ -553,7 +545,6 @@ public class complexException extends Exception implements TBase, java.io.Serial
         case ERRORENUM:
           if (__field.type == TType.I32) {
             this.errorEnum = MyEnum.findByValue(iprot.readI32());
-            setErrorEnumIsSet(true);
           } else { 
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -628,9 +619,11 @@ public class complexException extends Exception implements TBase, java.io.Serial
       }
       oprot.writeFieldEnd();
     }
-    oprot.writeFieldBegin(ERROR_ENUM_FIELD_DESC);
-    oprot.writeI32(this.errorEnum == null ? 0 : this.errorEnum.getValue());
-    oprot.writeFieldEnd();
+    if (this.errorEnum != null) {
+      oprot.writeFieldBegin(ERROR_ENUM_FIELD_DESC);
+      oprot.writeI32(this.errorEnum == null ? 0 : this.errorEnum.getValue());
+      oprot.writeFieldEnd();
+    }
     if (this.unionError != null) {
       if (isSetUnionError()) {
         oprot.writeFieldBegin(UNION_ERROR_FIELD_DESC);
@@ -701,14 +694,18 @@ public class complexException extends Exception implements TBase, java.io.Serial
     sb.append("errorEnum");
     sb.append(space);
     sb.append(":").append(space);
-    String errorEnum_name = this.getErrorEnum() == null ? "null" : this.getErrorEnum().name();
-    if (errorEnum_name != null) {
-      sb.append(errorEnum_name);
-      sb.append(" (");
-    }
-    sb.append(this.getErrorEnum());
-    if (errorEnum_name != null) {
-      sb.append(")");
+    if (this.getErrorEnum() == null) {
+      sb.append("null");
+    } else {
+      String errorEnum_name = this.getErrorEnum() == null ? "null" : this.getErrorEnum().name();
+      if (errorEnum_name != null) {
+        sb.append(errorEnum_name);
+        sb.append(" (");
+      }
+      sb.append(this.getErrorEnum());
+      if (errorEnum_name != null) {
+        sb.append(")");
+      }
     }
     first = false;
     if (isSetUnionError())

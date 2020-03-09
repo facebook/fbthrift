@@ -230,6 +230,7 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
    * @see MyEnum
    */
   public void setMyEnum(MyEnum __value) {
+    if (__value == null) throw new NullPointerException();
     setField_ = MYENUM;
     value_ = __value;
   }

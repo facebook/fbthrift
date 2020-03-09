@@ -63,8 +63,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
   private static final int __ID_ISSET_ID = 0;
   private static final int __AGE_ISSET_ID = 1;
   private static final int __BESTFRIEND_ISSET_ID = 2;
-  private static final int __AFRAIDOFANIMAL_ISSET_ID = 3;
-  private BitSet __isset_bit_vector = new BitSet(4);
+  private BitSet __isset_bit_vector = new BitSet(3);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -139,7 +138,6 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     setBestFriendIsSet(true);
     this.petNames = petNames;
     this.afraidOfAnimal = afraidOfAnimal;
-    setAfraidOfAnimalIsSet(true);
     this.vehicles = vehicles;
   }
 
@@ -155,7 +153,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     private Animal afraidOfAnimal;
     private List<Vehicle> vehicles;
 
-    BitSet __optional_isset = new BitSet(4);
+    BitSet __optional_isset = new BitSet(3);
 
     public Builder() {
     }
@@ -205,7 +203,6 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
 
     public Builder setAfraidOfAnimal(final Animal afraidOfAnimal) {
       this.afraidOfAnimal = afraidOfAnimal;
-      __optional_isset.set(__AFRAIDOFANIMAL_ISSET_ID, true);
       return this;
     }
 
@@ -230,9 +227,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
         result.setBestFriend(this.bestFriend);
       }
       result.setPetNames(this.petNames);
-      if (__optional_isset.get(__AFRAIDOFANIMAL_ISSET_ID)) {
-        result.setAfraidOfAnimal(this.afraidOfAnimal);
-      }
+      result.setAfraidOfAnimal(this.afraidOfAnimal);
       result.setVehicles(this.vehicles);
       return result;
     }
@@ -266,7 +261,9 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     if (other.isSetPetNames()) {
       this.petNames = TBaseHelper.deepCopy(other.petNames);
     }
-    this.afraidOfAnimal = TBaseHelper.deepCopy(other.afraidOfAnimal);
+    if (other.isSetAfraidOfAnimal()) {
+      this.afraidOfAnimal = TBaseHelper.deepCopy(other.afraidOfAnimal);
+    }
     if (other.isSetVehicles()) {
       this.vehicles = TBaseHelper.deepCopy(other.vehicles);
     }
@@ -479,21 +476,22 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
    */
   public Person setAfraidOfAnimal(Animal afraidOfAnimal) {
     this.afraidOfAnimal = afraidOfAnimal;
-    setAfraidOfAnimalIsSet(true);
     return this;
   }
 
   public void unsetAfraidOfAnimal() {
-    __isset_bit_vector.clear(__AFRAIDOFANIMAL_ISSET_ID);
+    this.afraidOfAnimal = null;
   }
 
   // Returns true if field afraidOfAnimal is set (has been assigned a value) and false otherwise
   public boolean isSetAfraidOfAnimal() {
-    return __isset_bit_vector.get(__AFRAIDOFANIMAL_ISSET_ID);
+    return this.afraidOfAnimal != null;
   }
 
   public void setAfraidOfAnimalIsSet(boolean __value) {
-    __isset_bit_vector.set(__AFRAIDOFANIMAL_ISSET_ID, __value);
+    if (!__value) {
+      this.afraidOfAnimal = null;
+    }
   }
 
   public List<Vehicle> getVehicles() {
@@ -953,7 +951,6 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
         case AFRAIDOFANIMAL:
           if (__field.type == TType.I32) {
             this.afraidOfAnimal = Animal.findByValue(iprot.readI32());
-            setAfraidOfAnimalIsSet(true);
           } else { 
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -1054,10 +1051,12 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
         oprot.writeFieldEnd();
       }
     }
-    if (isSetAfraidOfAnimal()) {
-      oprot.writeFieldBegin(AFRAID_OF_ANIMAL_FIELD_DESC);
-      oprot.writeI32(this.afraidOfAnimal == null ? 0 : this.afraidOfAnimal.getValue());
-      oprot.writeFieldEnd();
+    if (this.afraidOfAnimal != null) {
+      if (isSetAfraidOfAnimal()) {
+        oprot.writeFieldBegin(AFRAID_OF_ANIMAL_FIELD_DESC);
+        oprot.writeI32(this.afraidOfAnimal == null ? 0 : this.afraidOfAnimal.getValue());
+        oprot.writeFieldEnd();
+      }
     }
     if (this.vehicles != null) {
       if (isSetVehicles()) {
@@ -1192,14 +1191,18 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
       sb.append("afraidOfAnimal");
       sb.append(space);
       sb.append(":").append(space);
-      String afraidOfAnimal_name = this.getAfraidOfAnimal() == null ? "null" : this.getAfraidOfAnimal().name();
-      if (afraidOfAnimal_name != null) {
-        sb.append(afraidOfAnimal_name);
-        sb.append(" (");
-      }
-      sb.append(this.getAfraidOfAnimal());
-      if (afraidOfAnimal_name != null) {
-        sb.append(")");
+      if (this.getAfraidOfAnimal() == null) {
+        sb.append("null");
+      } else {
+        String afraidOfAnimal_name = this.getAfraidOfAnimal() == null ? "null" : this.getAfraidOfAnimal().name();
+        if (afraidOfAnimal_name != null) {
+          sb.append(afraidOfAnimal_name);
+          sb.append(" (");
+        }
+        sb.append(this.getAfraidOfAnimal());
+        if (afraidOfAnimal_name != null) {
+          sb.append(")");
+        }
       }
       first = false;
     }
