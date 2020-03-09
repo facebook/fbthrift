@@ -37,16 +37,46 @@ class DeprecatedOptionalField : public folly::Optional<T> {
   }
 
  public:
-  using Base::Base;
+  DeprecatedOptionalField() = default;
+  DeprecatedOptionalField(const DeprecatedOptionalField&) = default;
+  DeprecatedOptionalField(DeprecatedOptionalField&&) = default;
+  DeprecatedOptionalField(folly::None) noexcept {}
+  /* implicit */ DeprecatedOptionalField(const T& t) noexcept(
+      std::is_nothrow_copy_constructible<T>::value)
+      : Base(t) {}
+  /* implicit */ DeprecatedOptionalField(T&& t) noexcept(
+      std::is_nothrow_move_constructible<T>::value)
+      : Base(std::move(t)) {}
 
-  // Use perfect forwarding to hide Base::operator=(Base&&),
-  // Otherwise `s.foo = {};` will be ambiguous between
-  // default copy ctor and Base::operator=(Base&&).
-  template <class U>
-  auto& operator=(U&& u) noexcept(
-      noexcept(std::declval<DeprecatedOptionalField>().Base::operator=(
-          std::forward<U>(u)))) {
-    Base::operator=(std::forward<U>(u));
+  DeprecatedOptionalField& operator=(const DeprecatedOptionalField&) = default;
+  DeprecatedOptionalField& operator=(DeprecatedOptionalField&&) = default;
+
+  auto&& operator=(const T& other) noexcept(
+      std::is_nothrow_copy_assignable<T>::value) {
+    Base::operator=(other);
+    return *this;
+  }
+
+  auto&& operator=(T&& other) noexcept(
+      std::is_nothrow_move_assignable<T>::value) {
+    Base::operator=(std::move(other));
+    return *this;
+  }
+
+  auto&& operator=(const folly::Optional<T>& other) noexcept(
+      std::is_nothrow_copy_assignable<T>::value) {
+    Base::operator=(other);
+    return *this;
+  }
+
+  auto&& operator=(folly::Optional<T>&& other) noexcept(
+      std::is_nothrow_move_assignable<T>::value) {
+    Base::operator=(std::move(other));
+    return *this;
+  }
+
+  auto&& operator=(folly::None) noexcept {
+    Base::operator=(folly::none);
     return *this;
   }
 
