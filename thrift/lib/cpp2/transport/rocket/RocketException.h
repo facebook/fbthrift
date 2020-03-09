@@ -63,24 +63,5 @@ class RocketException : public std::exception {
 };
 
 } // namespace rocket
-
-namespace detail {
-
-struct EncodedError : std::exception {
-  explicit EncodedError(std::unique_ptr<folly::IOBuf> buf)
-      : encoded(std::move(buf)) {}
-
-  EncodedError(const EncodedError& oth) : encoded(oth.encoded->clone()) {}
-  EncodedError& operator=(const EncodedError& oth) {
-    encoded = oth.encoded->clone();
-    return *this;
-  }
-  EncodedError(EncodedError&&) = default;
-  EncodedError& operator=(EncodedError&&) = default;
-
-  std::unique_ptr<folly::IOBuf> encoded;
-};
-
-} // namespace detail
 } // namespace thrift
 } // namespace apache
