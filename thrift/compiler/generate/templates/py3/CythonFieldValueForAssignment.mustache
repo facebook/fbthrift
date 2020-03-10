@@ -44,27 +44,19 @@ on a struct.
   }}{{/field:shared_const_ref?}}{{!
 }}{{/field:reference?}}{{^field:reference?}}{{!
 }}{{#type:base?}}{{!
-  }}{{#program:optionals?}}{{#field:optional?}}cOptional[{{> types/CythonCppType}}]({{/field:optional?}}{{/program:optionals?}}{{!
   }}{{#type:string?}}thrift.py3.types.move(thrift.py3.types.bytes_to_string({{/type:string?}}{{!
   }}{{#type:binary?}}thrift.py3.types.move(thrift.py3.types.bytes_to_string({{/type:binary?}}{{!
   }}{{field:py_name}}{{!
   }}{{#type:string?}}.encode('utf-8'))){{/type:string?}}{{!
   }}{{#type:binary?}})){{/type:binary?}}{{!
-  }}{{#program:optionals?}}{{#field:optional?}}){{/field:optional?}}{{/program:optionals?}}{{!
 }}{{/type:base?}}{{!
 }}{{#type:enum?}}{{!
-    }}{{#program:optionals?}}{{#field:optional?}}cOptional[{{> types/CythonCppType}}]({{/field:optional?}}{{/program:optionals?}}{{!
     }}{{> types/CythonPythonType}}_to_cpp({{field:py_name}}){{!
-    }}{{#program:optionals?}}{{#field:optional?}}){{/field:optional?}}{{/program:optionals?}}{{!
 }}{{/type:enum?}}{{!
 }}{{#type:struct?}}{{!
-    }}{{#program:optionals?}}{{#field:optional?}}cOptional[{{> types/CythonCppType}}]({{/field:optional?}}{{/program:optionals?}}{{!
     }}deref((<{{> types/CythonPythonType }}?> {{field:py_name}})._cpp_obj){{!
-    }}{{#program:optionals?}}{{#field:optional?}}){{/field:optional?}}{{/program:optionals?}}{{!
 }}{{/type:struct?}}{{!
 }}{{#type:container?}}{{!
-    }}{{#program:optionals?}}{{#field:optional?}}cOptional[{{> types/CythonCppType}}]({{/field:optional?}}{{/program:optionals?}}{{!
     }}deref({{> types/CythonPythonType }}({{field:py_name}})._cpp_obj){{!
-    }}{{#program:optionals?}}{{#field:optional?}}){{/field:optional?}}{{/program:optionals?}}{{!
 }}{{/type:container?}}{{/field:reference?}}{{!
 }}{{/type:hasCustomTypeBehavior?}}

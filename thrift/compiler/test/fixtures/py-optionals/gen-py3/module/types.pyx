@@ -620,13 +620,13 @@ cdef class Vehicle(thrift.py3.types.Struct):
         if color is not None:
             deref(c_inst).color = deref((<Color?> color)._cpp_obj)
         if licensePlate is not None:
-            deref(c_inst).licensePlate = cOptional[string](thrift.py3.types.move(thrift.py3.types.bytes_to_string(licensePlate.encode('utf-8'))))
+            deref(c_inst).licensePlate.assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(licensePlate.encode('utf-8'))))
         if description is not None:
-            deref(c_inst).description = cOptional[string](thrift.py3.types.move(thrift.py3.types.bytes_to_string(description.encode('utf-8'))))
+            deref(c_inst).description.assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(description.encode('utf-8'))))
         if name is not None:
-            deref(c_inst).name = cOptional[string](thrift.py3.types.move(thrift.py3.types.bytes_to_string(name.encode('utf-8'))))
+            deref(c_inst).name.assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(name.encode('utf-8'))))
         if hasAC is not None:
-            deref(c_inst).hasAC = cOptional[cbool](hasAC)
+            deref(c_inst).hasAC.assign(hasAC)
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -1079,21 +1079,21 @@ cdef class Person(thrift.py3.types.Struct):
         if name is not None:
             deref(c_inst).name = thrift.py3.types.move(thrift.py3.types.bytes_to_string(name.encode('utf-8')))
         if age is not None:
-            deref(c_inst).age = cOptional[int16_t](age)
+            deref(c_inst).age.assign(age)
         if address is not None:
-            deref(c_inst).address = cOptional[string](thrift.py3.types.move(thrift.py3.types.bytes_to_string(address.encode('utf-8'))))
+            deref(c_inst).address.assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(address.encode('utf-8'))))
         if favoriteColor is not None:
-            deref(c_inst).favoriteColor = cOptional[cColor](deref((<Color?> favoriteColor)._cpp_obj))
+            deref(c_inst).favoriteColor.assign(deref((<Color?> favoriteColor)._cpp_obj))
         if friends is not None:
-            deref(c_inst).friends = cOptional[cset[int64_t]](deref(Set__i64(friends)._cpp_obj))
+            deref(c_inst).friends.assign(deref(Set__i64(friends)._cpp_obj))
         if bestFriend is not None:
-            deref(c_inst).bestFriend = cOptional[int64_t](bestFriend)
+            deref(c_inst).bestFriend.assign(bestFriend)
         if petNames is not None:
-            deref(c_inst).petNames = cOptional[cmap[cAnimal,string]](deref(Map__Animal_string(petNames)._cpp_obj))
+            deref(c_inst).petNames.assign(deref(Map__Animal_string(petNames)._cpp_obj))
         if afraidOfAnimal is not None:
-            deref(c_inst).afraidOfAnimal = cOptional[cAnimal](Animal_to_cpp(afraidOfAnimal))
+            deref(c_inst).afraidOfAnimal.assign(Animal_to_cpp(afraidOfAnimal))
         if vehicles is not None:
-            deref(c_inst).vehicles = cOptional[vector[cVehicle]](deref(List__Vehicle(vehicles)._cpp_obj))
+            deref(c_inst).vehicles.assign(deref(List__Vehicle(vehicles)._cpp_obj))
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)

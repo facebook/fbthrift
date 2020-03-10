@@ -286,7 +286,12 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
             deref(c_inst).{{field:py_name}}_ref().assign({{> CythonFieldValueForAssignment}})
             {{/field:has_ref_accessor?}}
             {{^field:has_ref_accessor?}}
+            {{#field:follyOptional?}}
+            deref(c_inst).{{field:py_name}}.assign({{> CythonFieldValueForAssignment}})
+            {{/field:follyOptional?}}
+            {{^field:follyOptional?}}
             deref(c_inst).{{field:py_name}} = {{> CythonFieldValueForAssignment}}
+            {{/field:follyOptional?}}
             {{/field:has_ref_accessor?}}
             {{! This should also be inside the if statement, so indent appropriately }}
             {{#field:isset?}}

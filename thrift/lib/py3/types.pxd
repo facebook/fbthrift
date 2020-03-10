@@ -135,3 +135,9 @@ cdef extern from "thrift/lib/cpp2/FieldRef.h" namespace "apache::thrift" nogil:
         # Cython doesn't handle references very well, so use a different name
         # for value_unchecked in the contexts where references actually work.
         T& ref_unchecked "value_unchecked" ()
+
+cdef extern from "thrift/lib/cpp2/OptionalField.h" namespace "apache::thrift" nogil:
+    cdef cppclass DeprecatedOptionalField[T]:
+        void assign "operator="(T)
+        bint has_value()
+        T value()
