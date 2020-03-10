@@ -63,7 +63,7 @@ void TOutput::perror(const char* message, int errno_copy) {
 }
 
 std::string TOutput::strerror_s(int errno_copy) {
-  return folly::errnoStr(errno_copy).toStdString();
+  return folly::errnoStr(errno_copy);
 }
 
 TLibraryException::TLibraryException(const char* message, int errnoValue) {
