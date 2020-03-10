@@ -74,7 +74,9 @@ class Cpp2Worker : public wangle::Acceptor,
   void init(
       folly::AsyncServerSocket* serverSocket,
       folly::EventBase* eventBase,
-      wangle::SSLStats* stats = nullptr) override {
+      wangle::SSLStats* stats = nullptr,
+      std::shared_ptr<const fizz::server::FizzServerContext> fizzContext =
+          nullptr) override {
     if (auto thriftConfigBase =
             folly::get_ptr(accConfig_.customConfigMap, "thrift_tls_config")) {
       assert(static_cast<ThriftTlsConfig*>((*thriftConfigBase).get()));
@@ -88,7 +90,7 @@ class Cpp2Worker : public wangle::Acceptor,
       }
     }
     securityProtocolCtxManager_.addPeeker(this);
-    Acceptor::init(serverSocket, eventBase, stats);
+    Acceptor::init(serverSocket, eventBase, stats, fizzContext);
   }
 
   /*
