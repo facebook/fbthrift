@@ -18,6 +18,8 @@
 
 #include <limits>
 
+#include <folly/Utility.h>
+
 THRIFT_IMPL_HASH(apache::thrift::frozen::schema::MemoryField)
 THRIFT_IMPL_HASH(apache::thrift::frozen::schema::MemoryLayoutBase)
 THRIFT_IMPL_HASH(apache::thrift::frozen::schema::MemoryLayout)
@@ -31,7 +33,8 @@ namespace schema {
 int16_t MemorySchema::Helper::add(MemoryLayout&& layout) {
   // Add distinct layout, bounds check layoutId
   size_t layoutId = layoutTable_.add(std::move(layout));
-  CHECK_LE(layoutId, std::numeric_limits<int16_t>::max()) << "Layout overflow";
+  CHECK_LE(layoutId, folly::to_unsigned(std::numeric_limits<int16_t>::max()))
+      << "Layout overflow";
   return static_cast<int16_t>(layoutId);
 }
 
