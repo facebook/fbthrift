@@ -90,7 +90,7 @@ const TType CTypeToTType[14] = {
 } // namespace detail
 
 uint32_t CompactProtocolWriter::writeMessageBegin(
-    const std::string& name,
+    folly::StringPiece name,
     MessageType messageType,
     int32_t seqid) {
   uint32_t wsize = 0;
@@ -329,7 +329,7 @@ uint32_t CompactProtocolWriter::writeBinary(const folly::IOBuf& str) {
  */
 
 uint32_t CompactProtocolWriter::serializedMessageSize(
-    const std::string& name) const {
+    folly::StringPiece name) const {
   // I32{version} + String{name} + I32{seqid}
   return 2 * serializedSizeI32() + serializedSizeString(name);
 }

@@ -82,7 +82,7 @@ class BinaryProtocolWriter {
   }
 
   inline uint32_t writeMessageBegin(
-      const std::string& name,
+      folly::StringPiece name,
       MessageType messageType,
       int32_t seqid);
   inline uint32_t writeMessageEnd();
@@ -124,7 +124,7 @@ class BinaryProtocolWriter {
    *   there are IOBuf fields, and their sizes aren't too small to be packed),
    *   and won't count in the ZC estimate.
    */
-  inline uint32_t serializedMessageSize(const std::string& name) const;
+  inline uint32_t serializedMessageSize(folly::StringPiece name) const;
   inline uint32_t
   serializedFieldSize(const char* name, TType fieldType, int16_t fieldId) const;
   inline uint32_t serializedStructSize(const char* name) const;

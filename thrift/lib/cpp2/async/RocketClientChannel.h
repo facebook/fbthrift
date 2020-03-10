@@ -61,6 +61,11 @@ class RocketClientChannel final : public ClientChannel {
       folly::AsyncTransportWrapper::UniquePtr socket,
       RequestSetupMetadata meta = RequestSetupMetadata());
 
+  using RequestChannel::sendRequestNoResponse;
+  using RequestChannel::sendRequestResponse;
+  using RequestChannel::sendRequestSink;
+  using RequestChannel::sendRequestStream;
+
   void sendRequestResponse(
       RpcOptions& rpcOptions,
       std::unique_ptr<folly::IOBuf> buf,
@@ -78,8 +83,6 @@ class RocketClientChannel final : public ClientChannel {
       std::unique_ptr<folly::IOBuf> buf,
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* clientCallback) override;
-
-  using RequestChannel::sendRequestStream;
 
   void sendRequestSink(
       RpcOptions& rpcOptions,

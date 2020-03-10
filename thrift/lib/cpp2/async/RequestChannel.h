@@ -50,6 +50,13 @@ namespace thrift {
 class StreamClientCallback;
 class SinkClientCallback;
 
+struct SerializedRequest {
+  explicit SerializedRequest(std::unique_ptr<folly::IOBuf> buffer_)
+      : buffer(std::move(buffer_)) {}
+
+  std::unique_ptr<folly::IOBuf> buffer;
+};
+
 /**
  * RequestChannel defines an asynchronous API for request-based I/O.
  */
@@ -68,14 +75,16 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    */
   void sendRequestAsync(
       apache::thrift::RpcOptions&,
-      std::unique_ptr<folly::IOBuf>,
+      folly::StringPiece methodName,
+      SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr,
       RpcKind kind);
 
   void sendRequestAsync(
       apache::thrift::RpcOptions&,
-      std::unique_ptr<folly::IOBuf>,
+      folly::StringPiece methodName,
+      SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       SinkClientCallback*);
   /**
@@ -88,6 +97,13 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    */
   virtual void sendRequestResponse(
       RpcOptions&,
+      folly::StringPiece methodName,
+      SerializedRequest&&,
+      std::shared_ptr<apache::thrift::transport::THeader>,
+      RequestClientCallback::Ptr);
+
+  virtual void sendRequestResponse(
+      RpcOptions&,
       std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) = 0;
@@ -96,6 +112,13 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    *
    * Null RequestCallback is allowed for oneway requests
    */
+  virtual void sendRequestNoResponse(
+      RpcOptions&,
+      folly::StringPiece methodName,
+      SerializedRequest&&,
+      std::shared_ptr<apache::thrift::transport::THeader>,
+      RequestClientCallback::Ptr);
+
   virtual void sendRequestNoResponse(
       RpcOptions&,
       std::unique_ptr<folly::IOBuf>,
@@ -112,7 +135,8 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    */
   virtual void sendRequestStream(
       RpcOptions& rpcOptions,
-      std::unique_ptr<folly::IOBuf> buf,
+      folly::StringPiece methodName,
+      SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr);
 
@@ -120,7 +144,27 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       RpcOptions& rpcOptions,
       std::unique_ptr<folly::IOBuf> buf,
       std::shared_ptr<transport::THeader> header,
+      RequestClientCallback::Ptr);
+
+  virtual void sendRequestStream(
+      RpcOptions& rpcOptions,
+      folly::StringPiece methodName,
+      SerializedRequest&&,
+      std::shared_ptr<transport::THeader> header,
       StreamClientCallback* clientCallback);
+
+  virtual void sendRequestStream(
+      RpcOptions& rpcOptions,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<transport::THeader> header,
+      StreamClientCallback* clientCallback);
+
+  virtual void sendRequestSink(
+      RpcOptions& rpcOptions,
+      folly::StringPiece methodName,
+      SerializedRequest&&,
+      std::shared_ptr<transport::THeader> header,
+      SinkClientCallback* clientCallback);
 
   virtual void sendRequestSink(
       RpcOptions& rpcOptions,
@@ -225,17 +269,15 @@ inline StreamClientCallback* createStreamClientCallback(
 }
 
 template <class Protocol>
-std::unique_ptr<folly::IOBuf> preprocessSendT(
+SerializedRequest preprocessSendT(
     Protocol* prot,
     apache::thrift::RpcOptions& rpcOptions,
     apache::thrift::ContextStack& ctx,
     apache::thrift::transport::THeader& header,
-    const char* methodName,
     folly::FunctionRef<void(Protocol*)> writefunc,
     folly::FunctionRef<size_t(Protocol*)> sizefunc) {
   return folly::fibers::runInMainContext([&] {
     size_t bufSize = sizefunc(prot);
-    bufSize += prot->serializedMessageSize(methodName);
     folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
 
     // Preallocate small buffer headroom for transports metadata & framing.
@@ -246,13 +288,9 @@ std::unique_ptr<folly::IOBuf> preprocessSendT(
 
     prot->setOutput(&queue, bufSize);
     auto guard = folly::makeGuard([&] { prot->setOutput(nullptr); });
-    size_t crcSkip = 0;
     try {
       ctx.preWrite();
-      prot->writeMessageBegin(methodName, apache::thrift::T_CALL, 0);
-      crcSkip = queue.chainLength();
       writefunc(prot);
-      prot->writeMessageEnd();
       ::apache::thrift::SerializedMessage smsg;
       smsg.protocolType = prot->protocolType();
       smsg.buffer = queue.front();
@@ -265,11 +303,10 @@ std::unique_ptr<folly::IOBuf> preprocessSendT(
     }
 
     if (rpcOptions.getEnableChecksum()) {
-      header.setCrc32c(
-          apache::thrift::checksum::crc32c(*queue.front(), crcSkip));
+      header.setCrc32c(apache::thrift::checksum::crc32c(*queue.front()));
     }
 
-    return queue.move();
+    return SerializedRequest(queue.move());
   });
 }
 
@@ -285,10 +322,15 @@ void clientSendT(
     folly::FunctionRef<void(Protocol*)> writefunc,
     folly::FunctionRef<size_t(Protocol*)> sizefunc,
     RpcKind kind) {
-  auto buf = preprocessSendT(
-      prot, rpcOptions, ctx, *header, methodName, writefunc, sizefunc);
+  auto request =
+      preprocessSendT(prot, rpcOptions, ctx, *header, writefunc, sizefunc);
   channel->sendRequestAsync(
-      rpcOptions, std::move(buf), std::move(header), std::move(callback), kind);
+      rpcOptions,
+      methodName,
+      std::move(request),
+      std::move(header),
+      std::move(callback),
+      kind);
 }
 
 template <class Protocol>
@@ -302,10 +344,14 @@ void clientSendT(
     const char* methodName,
     folly::FunctionRef<void(Protocol*)> writefunc,
     folly::FunctionRef<size_t(Protocol*)> sizefunc) {
-  auto buf = preprocessSendT(
-      prot, rpcOptions, ctx, *header, methodName, writefunc, sizefunc);
+  auto request =
+      preprocessSendT(prot, rpcOptions, ctx, *header, writefunc, sizefunc);
   channel->sendRequestAsync(
-      rpcOptions, std::move(buf), std::move(header), std::move(callback));
+      rpcOptions,
+      methodName,
+      std::move(request),
+      std::move(header),
+      std::move(callback));
 }
 
 } // namespace thrift

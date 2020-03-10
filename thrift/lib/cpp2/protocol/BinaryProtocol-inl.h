@@ -26,7 +26,7 @@ namespace apache {
 namespace thrift {
 
 uint32_t BinaryProtocolWriter::writeMessageBegin(
-    const std::string& name,
+    folly::StringPiece name,
     MessageType messageType,
     int32_t seqid) {
   int32_t version = (VERSION_1) | ((int32_t)messageType);
@@ -209,7 +209,7 @@ uint32_t BinaryProtocolWriter::writeSerializedData(
  */
 
 uint32_t BinaryProtocolWriter::serializedMessageSize(
-    const std::string& name) const {
+    folly::StringPiece name) const {
   // I32{version} + String{name} + I32{seqid}
   return 2 * serializedSizeI32() + serializedSizeString(name);
 }

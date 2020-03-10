@@ -89,6 +89,9 @@ class HeaderClientChannel : public ClientChannel,
   }
 
   // Client interface from RequestChannel
+  using RequestChannel::sendRequestNoResponse;
+  using RequestChannel::sendRequestResponse;
+
   void sendRequestResponse(
       RpcOptions&,
       std::unique_ptr<folly::IOBuf>,

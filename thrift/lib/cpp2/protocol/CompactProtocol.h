@@ -132,7 +132,7 @@ class CompactProtocolWriter {
   }
 
   inline uint32_t writeMessageBegin(
-      const std::string& name,
+      folly::StringPiece name,
       MessageType messageType,
       int32_t seqid);
   inline uint32_t writeMessageEnd();
@@ -187,7 +187,7 @@ class CompactProtocolWriter {
    *    Note that we still may not pre-allocate ideally for the IOBuf case,
    *    since the IOBuf might be in the middle of the serialized stream.
    */
-  inline uint32_t serializedMessageSize(const std::string& name) const;
+  inline uint32_t serializedMessageSize(folly::StringPiece name) const;
   inline uint32_t
   serializedFieldSize(const char* name, TType fieldType, int16_t fieldId) const;
   inline uint32_t serializedStructSize(const char* name) const;
