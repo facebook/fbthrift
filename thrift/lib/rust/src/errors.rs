@@ -52,3 +52,24 @@ impl From<ApplicationException> for Error {
         ProtocolError::ApplicationException(exn).into()
     }
 }
+
+/// Error value returned by functions that do not throw any user-defined exceptions.
+#[derive(Debug, Error)]
+pub enum NonthrowingFunctionError {
+    #[error("Application exception: {0:?}")]
+    ApplicationException(ApplicationException),
+    #[error("{0}")]
+    ThriftError(Error),
+}
+
+impl From<Error> for NonthrowingFunctionError {
+    fn from(err: Error) -> Self {
+        NonthrowingFunctionError::ThriftError(err)
+    }
+}
+
+impl From<ApplicationException> for NonthrowingFunctionError {
+    fn from(ae: ApplicationException) -> Self {
+        NonthrowingFunctionError::ApplicationException(ae)
+    }
+}

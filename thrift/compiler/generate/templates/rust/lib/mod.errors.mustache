@@ -20,6 +20,7 @@
     pub mod {{service:snake}} {
 
         {{#service:functions}}
+        {{#function:exceptions?}}
         #[derive(Debug, thiserror::Error)]
         pub enum {{function:upcamel}}Error {
             {{#function:exceptions}}
@@ -51,6 +52,10 @@
                 {{function:upcamel}}Error::ApplicationException(ae)
             }
         }
+        {{/function:exceptions?}}
+        {{^function:exceptions?}}
+        pub type {{function:upcamel}}Error = ::fbthrift::NonthrowingFunctionError;
+        {{/function:exceptions?}}
 
         {{/service:functions}}
     }

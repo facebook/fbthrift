@@ -2205,125 +2205,17 @@ pub mod mock {
 pub mod errors {
     pub mod my_service {
 
-        #[derive(Debug, thiserror::Error)]
-        pub enum PingError {
-            #[error("Application exception: {0:?}")]
-            ApplicationException(::fbthrift::types::ApplicationException),
-            #[error("{0}")]
-            ThriftError(::anyhow::Error),
-        }
+        pub type PingError = ::fbthrift::NonthrowingFunctionError;
 
-        impl From<::anyhow::Error> for PingError {
-            fn from(err: ::anyhow::Error) -> Self {
-                PingError::ThriftError(err)
-            }
-        }
+        pub type GetRandomDataError = ::fbthrift::NonthrowingFunctionError;
 
-        impl From<::fbthrift::ApplicationException> for PingError {
-            fn from(ae: ::fbthrift::ApplicationException) -> Self {
-                PingError::ApplicationException(ae)
-            }
-        }
+        pub type HasDataByIdError = ::fbthrift::NonthrowingFunctionError;
 
-        #[derive(Debug, thiserror::Error)]
-        pub enum GetRandomDataError {
-            #[error("Application exception: {0:?}")]
-            ApplicationException(::fbthrift::types::ApplicationException),
-            #[error("{0}")]
-            ThriftError(::anyhow::Error),
-        }
+        pub type GetDataByIdError = ::fbthrift::NonthrowingFunctionError;
 
-        impl From<::anyhow::Error> for GetRandomDataError {
-            fn from(err: ::anyhow::Error) -> Self {
-                GetRandomDataError::ThriftError(err)
-            }
-        }
+        pub type PutDataByIdError = ::fbthrift::NonthrowingFunctionError;
 
-        impl From<::fbthrift::ApplicationException> for GetRandomDataError {
-            fn from(ae: ::fbthrift::ApplicationException) -> Self {
-                GetRandomDataError::ApplicationException(ae)
-            }
-        }
-
-        #[derive(Debug, thiserror::Error)]
-        pub enum HasDataByIdError {
-            #[error("Application exception: {0:?}")]
-            ApplicationException(::fbthrift::types::ApplicationException),
-            #[error("{0}")]
-            ThriftError(::anyhow::Error),
-        }
-
-        impl From<::anyhow::Error> for HasDataByIdError {
-            fn from(err: ::anyhow::Error) -> Self {
-                HasDataByIdError::ThriftError(err)
-            }
-        }
-
-        impl From<::fbthrift::ApplicationException> for HasDataByIdError {
-            fn from(ae: ::fbthrift::ApplicationException) -> Self {
-                HasDataByIdError::ApplicationException(ae)
-            }
-        }
-
-        #[derive(Debug, thiserror::Error)]
-        pub enum GetDataByIdError {
-            #[error("Application exception: {0:?}")]
-            ApplicationException(::fbthrift::types::ApplicationException),
-            #[error("{0}")]
-            ThriftError(::anyhow::Error),
-        }
-
-        impl From<::anyhow::Error> for GetDataByIdError {
-            fn from(err: ::anyhow::Error) -> Self {
-                GetDataByIdError::ThriftError(err)
-            }
-        }
-
-        impl From<::fbthrift::ApplicationException> for GetDataByIdError {
-            fn from(ae: ::fbthrift::ApplicationException) -> Self {
-                GetDataByIdError::ApplicationException(ae)
-            }
-        }
-
-        #[derive(Debug, thiserror::Error)]
-        pub enum PutDataByIdError {
-            #[error("Application exception: {0:?}")]
-            ApplicationException(::fbthrift::types::ApplicationException),
-            #[error("{0}")]
-            ThriftError(::anyhow::Error),
-        }
-
-        impl From<::anyhow::Error> for PutDataByIdError {
-            fn from(err: ::anyhow::Error) -> Self {
-                PutDataByIdError::ThriftError(err)
-            }
-        }
-
-        impl From<::fbthrift::ApplicationException> for PutDataByIdError {
-            fn from(ae: ::fbthrift::ApplicationException) -> Self {
-                PutDataByIdError::ApplicationException(ae)
-            }
-        }
-
-        #[derive(Debug, thiserror::Error)]
-        pub enum LobDataByIdError {
-            #[error("Application exception: {0:?}")]
-            ApplicationException(::fbthrift::types::ApplicationException),
-            #[error("{0}")]
-            ThriftError(::anyhow::Error),
-        }
-
-        impl From<::anyhow::Error> for LobDataByIdError {
-            fn from(err: ::anyhow::Error) -> Self {
-                LobDataByIdError::ThriftError(err)
-            }
-        }
-
-        impl From<::fbthrift::ApplicationException> for LobDataByIdError {
-            fn from(ae: ::fbthrift::ApplicationException) -> Self {
-                LobDataByIdError::ApplicationException(ae)
-            }
-        }
+        pub type LobDataByIdError = ::fbthrift::NonthrowingFunctionError;
 
     }
 

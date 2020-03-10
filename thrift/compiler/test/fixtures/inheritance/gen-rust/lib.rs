@@ -1644,73 +1644,19 @@ pub mod mock {
 pub mod errors {
     pub mod my_root {
 
-        #[derive(Debug, thiserror::Error)]
-        pub enum DoRootError {
-            #[error("Application exception: {0:?}")]
-            ApplicationException(::fbthrift::types::ApplicationException),
-            #[error("{0}")]
-            ThriftError(::anyhow::Error),
-        }
-
-        impl From<::anyhow::Error> for DoRootError {
-            fn from(err: ::anyhow::Error) -> Self {
-                DoRootError::ThriftError(err)
-            }
-        }
-
-        impl From<::fbthrift::ApplicationException> for DoRootError {
-            fn from(ae: ::fbthrift::ApplicationException) -> Self {
-                DoRootError::ApplicationException(ae)
-            }
-        }
+        pub type DoRootError = ::fbthrift::NonthrowingFunctionError;
 
     }
 
     pub mod my_node {
 
-        #[derive(Debug, thiserror::Error)]
-        pub enum DoMidError {
-            #[error("Application exception: {0:?}")]
-            ApplicationException(::fbthrift::types::ApplicationException),
-            #[error("{0}")]
-            ThriftError(::anyhow::Error),
-        }
-
-        impl From<::anyhow::Error> for DoMidError {
-            fn from(err: ::anyhow::Error) -> Self {
-                DoMidError::ThriftError(err)
-            }
-        }
-
-        impl From<::fbthrift::ApplicationException> for DoMidError {
-            fn from(ae: ::fbthrift::ApplicationException) -> Self {
-                DoMidError::ApplicationException(ae)
-            }
-        }
+        pub type DoMidError = ::fbthrift::NonthrowingFunctionError;
 
     }
 
     pub mod my_leaf {
 
-        #[derive(Debug, thiserror::Error)]
-        pub enum DoLeafError {
-            #[error("Application exception: {0:?}")]
-            ApplicationException(::fbthrift::types::ApplicationException),
-            #[error("{0}")]
-            ThriftError(::anyhow::Error),
-        }
-
-        impl From<::anyhow::Error> for DoLeafError {
-            fn from(err: ::anyhow::Error) -> Self {
-                DoLeafError::ThriftError(err)
-            }
-        }
-
-        impl From<::fbthrift::ApplicationException> for DoLeafError {
-            fn from(ae: ::fbthrift::ApplicationException) -> Self {
-                DoLeafError::ApplicationException(ae)
-            }
-        }
+        pub type DoLeafError = ::fbthrift::NonthrowingFunctionError;
 
     }
 

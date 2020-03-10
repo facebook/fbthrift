@@ -1625,105 +1625,15 @@ pub mod mock {
 pub mod errors {
     pub mod nested_containers {
 
-        #[derive(Debug, thiserror::Error)]
-        pub enum MapListError {
-            #[error("Application exception: {0:?}")]
-            ApplicationException(::fbthrift::types::ApplicationException),
-            #[error("{0}")]
-            ThriftError(::anyhow::Error),
-        }
+        pub type MapListError = ::fbthrift::NonthrowingFunctionError;
 
-        impl From<::anyhow::Error> for MapListError {
-            fn from(err: ::anyhow::Error) -> Self {
-                MapListError::ThriftError(err)
-            }
-        }
+        pub type MapSetError = ::fbthrift::NonthrowingFunctionError;
 
-        impl From<::fbthrift::ApplicationException> for MapListError {
-            fn from(ae: ::fbthrift::ApplicationException) -> Self {
-                MapListError::ApplicationException(ae)
-            }
-        }
+        pub type ListMapError = ::fbthrift::NonthrowingFunctionError;
 
-        #[derive(Debug, thiserror::Error)]
-        pub enum MapSetError {
-            #[error("Application exception: {0:?}")]
-            ApplicationException(::fbthrift::types::ApplicationException),
-            #[error("{0}")]
-            ThriftError(::anyhow::Error),
-        }
+        pub type ListSetError = ::fbthrift::NonthrowingFunctionError;
 
-        impl From<::anyhow::Error> for MapSetError {
-            fn from(err: ::anyhow::Error) -> Self {
-                MapSetError::ThriftError(err)
-            }
-        }
-
-        impl From<::fbthrift::ApplicationException> for MapSetError {
-            fn from(ae: ::fbthrift::ApplicationException) -> Self {
-                MapSetError::ApplicationException(ae)
-            }
-        }
-
-        #[derive(Debug, thiserror::Error)]
-        pub enum ListMapError {
-            #[error("Application exception: {0:?}")]
-            ApplicationException(::fbthrift::types::ApplicationException),
-            #[error("{0}")]
-            ThriftError(::anyhow::Error),
-        }
-
-        impl From<::anyhow::Error> for ListMapError {
-            fn from(err: ::anyhow::Error) -> Self {
-                ListMapError::ThriftError(err)
-            }
-        }
-
-        impl From<::fbthrift::ApplicationException> for ListMapError {
-            fn from(ae: ::fbthrift::ApplicationException) -> Self {
-                ListMapError::ApplicationException(ae)
-            }
-        }
-
-        #[derive(Debug, thiserror::Error)]
-        pub enum ListSetError {
-            #[error("Application exception: {0:?}")]
-            ApplicationException(::fbthrift::types::ApplicationException),
-            #[error("{0}")]
-            ThriftError(::anyhow::Error),
-        }
-
-        impl From<::anyhow::Error> for ListSetError {
-            fn from(err: ::anyhow::Error) -> Self {
-                ListSetError::ThriftError(err)
-            }
-        }
-
-        impl From<::fbthrift::ApplicationException> for ListSetError {
-            fn from(ae: ::fbthrift::ApplicationException) -> Self {
-                ListSetError::ApplicationException(ae)
-            }
-        }
-
-        #[derive(Debug, thiserror::Error)]
-        pub enum TurtlesError {
-            #[error("Application exception: {0:?}")]
-            ApplicationException(::fbthrift::types::ApplicationException),
-            #[error("{0}")]
-            ThriftError(::anyhow::Error),
-        }
-
-        impl From<::anyhow::Error> for TurtlesError {
-            fn from(err: ::anyhow::Error) -> Self {
-                TurtlesError::ThriftError(err)
-            }
-        }
-
-        impl From<::fbthrift::ApplicationException> for TurtlesError {
-            fn from(ae: ::fbthrift::ApplicationException) -> Self {
-                TurtlesError::ApplicationException(ae)
-            }
-        }
+        pub type TurtlesError = ::fbthrift::NonthrowingFunctionError;
 
     }
 

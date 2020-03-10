@@ -68,7 +68,7 @@ pub use crate::bufext::{BufExt, BufMutExt};
 pub use crate::client::{ClientFactory, Transport};
 pub use crate::compact_protocol::CompactProtocol;
 pub use crate::deserialize::Deserialize;
-pub use crate::errors::ProtocolError;
+pub use crate::errors::{NonthrowingFunctionError, ProtocolError};
 pub use crate::framing::{Framing, FramingDecoded, FramingEncoded, FramingEncodedFinal};
 pub use crate::processor::{NullServiceProcessor, ServiceProcessor, ThriftService};
 pub use crate::protocol::{

@@ -2539,45 +2539,9 @@ pub mod mock {
 pub mod errors {
     pub mod some_service {
 
-        #[derive(Debug, thiserror::Error)]
-        pub enum BounceMapError {
-            #[error("Application exception: {0:?}")]
-            ApplicationException(::fbthrift::types::ApplicationException),
-            #[error("{0}")]
-            ThriftError(::anyhow::Error),
-        }
+        pub type BounceMapError = ::fbthrift::NonthrowingFunctionError;
 
-        impl From<::anyhow::Error> for BounceMapError {
-            fn from(err: ::anyhow::Error) -> Self {
-                BounceMapError::ThriftError(err)
-            }
-        }
-
-        impl From<::fbthrift::ApplicationException> for BounceMapError {
-            fn from(ae: ::fbthrift::ApplicationException) -> Self {
-                BounceMapError::ApplicationException(ae)
-            }
-        }
-
-        #[derive(Debug, thiserror::Error)]
-        pub enum BinaryKeyedMapError {
-            #[error("Application exception: {0:?}")]
-            ApplicationException(::fbthrift::types::ApplicationException),
-            #[error("{0}")]
-            ThriftError(::anyhow::Error),
-        }
-
-        impl From<::anyhow::Error> for BinaryKeyedMapError {
-            fn from(err: ::anyhow::Error) -> Self {
-                BinaryKeyedMapError::ThriftError(err)
-            }
-        }
-
-        impl From<::fbthrift::ApplicationException> for BinaryKeyedMapError {
-            fn from(ae: ::fbthrift::ApplicationException) -> Self {
-                BinaryKeyedMapError::ApplicationException(ae)
-            }
-        }
+        pub type BinaryKeyedMapError = ::fbthrift::NonthrowingFunctionError;
 
     }
 

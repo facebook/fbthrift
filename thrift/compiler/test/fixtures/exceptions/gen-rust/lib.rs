@@ -1604,25 +1604,7 @@ pub mod mock {
 pub mod errors {
     pub mod raiser {
 
-        #[derive(Debug, thiserror::Error)]
-        pub enum DoBlandError {
-            #[error("Application exception: {0:?}")]
-            ApplicationException(::fbthrift::types::ApplicationException),
-            #[error("{0}")]
-            ThriftError(::anyhow::Error),
-        }
-
-        impl From<::anyhow::Error> for DoBlandError {
-            fn from(err: ::anyhow::Error) -> Self {
-                DoBlandError::ThriftError(err)
-            }
-        }
-
-        impl From<::fbthrift::ApplicationException> for DoBlandError {
-            fn from(ae: ::fbthrift::ApplicationException) -> Self {
-                DoBlandError::ApplicationException(ae)
-            }
-        }
+        pub type DoBlandError = ::fbthrift::NonthrowingFunctionError;
 
         #[derive(Debug, thiserror::Error)]
         pub enum DoRaiseError {
@@ -1668,25 +1650,7 @@ pub mod errors {
             }
         }
 
-        #[derive(Debug, thiserror::Error)]
-        pub enum Get200Error {
-            #[error("Application exception: {0:?}")]
-            ApplicationException(::fbthrift::types::ApplicationException),
-            #[error("{0}")]
-            ThriftError(::anyhow::Error),
-        }
-
-        impl From<::anyhow::Error> for Get200Error {
-            fn from(err: ::anyhow::Error) -> Self {
-                Get200Error::ThriftError(err)
-            }
-        }
-
-        impl From<::fbthrift::ApplicationException> for Get200Error {
-            fn from(ae: ::fbthrift::ApplicationException) -> Self {
-                Get200Error::ApplicationException(ae)
-            }
-        }
+        pub type Get200Error = ::fbthrift::NonthrowingFunctionError;
 
         #[derive(Debug, thiserror::Error)]
         pub enum Get500Error {
