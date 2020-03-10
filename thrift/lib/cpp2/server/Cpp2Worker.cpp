@@ -66,6 +66,12 @@ void Cpp2Worker::onNewConnection(
     const std::string& nextProtocolName,
     wangle::SecureTransportType secureTransportType,
     const wangle::TransportInfo& tinfo) {
+  // This is possible if the connection was accepted before stopListening()
+  // call, but handshake was finished after stopCPUWorkers() call.
+  if (stopping_) {
+    return;
+  }
+
   auto* observer = server_->getObserver();
   uint32_t maxConnection = server_->getMaxConnections();
   if (maxConnection > 0 &&
