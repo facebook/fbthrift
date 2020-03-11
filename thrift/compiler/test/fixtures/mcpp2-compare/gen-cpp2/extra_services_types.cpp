@@ -117,17 +117,17 @@ void containerStruct2::__clear() {
   // clear all fields
   fieldA = 0;
   req_fieldA = 0;
-  opt_fieldA.clear();
+  opt_fieldA.reset();
   fieldB.clear();
   req_fieldB.clear();
-  opt_fieldB.clear();
+  opt_fieldB.reset();
   fieldC.clear();
   req_fieldC.clear();
-  opt_fieldC.clear();
+  opt_fieldC.reset();
   fieldD = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
   req_fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
-  opt_fieldE.clear();
+  opt_fieldE.reset();
 }
 
 bool containerStruct2::operator==(const containerStruct2& rhs) const {

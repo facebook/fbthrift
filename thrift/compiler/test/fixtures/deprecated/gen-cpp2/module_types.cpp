@@ -64,7 +64,7 @@ void House::__clear() {
   // clear all fields
   id = 0;
   houseName = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  houseColors.clear();
+  houseColors.reset();
 }
 
 bool House::operator==(const House& rhs) const {

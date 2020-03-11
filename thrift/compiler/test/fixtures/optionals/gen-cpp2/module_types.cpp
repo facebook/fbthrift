@@ -236,10 +236,10 @@ Vehicle::Vehicle(apache::thrift::FragileConstructor,  ::cpp2::Color color__arg, 
 void Vehicle::__clear() {
   // clear all fields
   ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::clear(&color);
-  licensePlate.clear();
-  description.clear();
-  name.clear();
-  hasAC.clear();
+  licensePlate.reset();
+  description.reset();
+  name.reset();
+  hasAC.reset();
 }
 
 bool Vehicle::operator==(const Vehicle& rhs) const {
@@ -330,14 +330,14 @@ void Person::__clear() {
   // clear all fields
   id = 0;
   name = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  age.clear();
-  address.clear();
-  favoriteColor.clear();
-  friends.clear();
-  bestFriend.clear();
-  petNames.clear();
-  afraidOfAnimal.clear();
-  vehicles.clear();
+  age.reset();
+  address.reset();
+  favoriteColor.reset();
+  friends.reset();
+  bestFriend.reset();
+  petNames.reset();
+  afraidOfAnimal.reset();
+  vehicles.reset();
 }
 
 bool Person::operator==(const Person& rhs) const {
