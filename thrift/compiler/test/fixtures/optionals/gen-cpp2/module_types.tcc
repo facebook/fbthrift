@@ -392,19 +392,19 @@ uint32_t Vehicle::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("Vehicle");
   xfer += prot_->serializedFieldSize("color", apache::thrift::protocol::T_STRUCT, 1);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::serializedSize(prot_, &this->color);
-  if (this->licensePlate.hasValue()) {
+  if (this->licensePlate.has_value()) {
     xfer += prot_->serializedFieldSize("licensePlate", apache::thrift::protocol::T_STRING, 2);
     xfer += prot_->serializedSizeString(this->licensePlate.value());
   }
-  if (this->description.hasValue()) {
+  if (this->description.has_value()) {
     xfer += prot_->serializedFieldSize("description", apache::thrift::protocol::T_STRING, 3);
     xfer += prot_->serializedSizeString(this->description.value());
   }
-  if (this->name.hasValue()) {
+  if (this->name.has_value()) {
     xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 4);
     xfer += prot_->serializedSizeString(this->name.value());
   }
-  if (this->hasAC.hasValue()) {
+  if (this->hasAC.has_value()) {
     xfer += prot_->serializedFieldSize("hasAC", apache::thrift::protocol::T_BOOL, 5);
     xfer += prot_->serializedSizeBool(this->hasAC.value());
   }
@@ -418,19 +418,19 @@ uint32_t Vehicle::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("Vehicle");
   xfer += prot_->serializedFieldSize("color", apache::thrift::protocol::T_STRUCT, 1);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::serializedSizeZC(prot_, &this->color);
-  if (this->licensePlate.hasValue()) {
+  if (this->licensePlate.has_value()) {
     xfer += prot_->serializedFieldSize("licensePlate", apache::thrift::protocol::T_STRING, 2);
     xfer += prot_->serializedSizeString(this->licensePlate.value());
   }
-  if (this->description.hasValue()) {
+  if (this->description.has_value()) {
     xfer += prot_->serializedFieldSize("description", apache::thrift::protocol::T_STRING, 3);
     xfer += prot_->serializedSizeString(this->description.value());
   }
-  if (this->name.hasValue()) {
+  if (this->name.has_value()) {
     xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 4);
     xfer += prot_->serializedSizeString(this->name.value());
   }
-  if (this->hasAC.hasValue()) {
+  if (this->hasAC.has_value()) {
     xfer += prot_->serializedFieldSize("hasAC", apache::thrift::protocol::T_BOOL, 5);
     xfer += prot_->serializedSizeBool(this->hasAC.value());
   }
@@ -445,22 +445,22 @@ uint32_t Vehicle::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("color", apache::thrift::protocol::T_STRUCT, 1);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::write(prot_, &this->color);
   xfer += prot_->writeFieldEnd();
-  if (this->licensePlate.hasValue()) {
+  if (this->licensePlate.has_value()) {
     xfer += prot_->writeFieldBegin("licensePlate", apache::thrift::protocol::T_STRING, 2);
     xfer += prot_->writeString(this->licensePlate.value());
     xfer += prot_->writeFieldEnd();
   }
-  if (this->description.hasValue()) {
+  if (this->description.has_value()) {
     xfer += prot_->writeFieldBegin("description", apache::thrift::protocol::T_STRING, 3);
     xfer += prot_->writeString(this->description.value());
     xfer += prot_->writeFieldEnd();
   }
-  if (this->name.hasValue()) {
+  if (this->name.has_value()) {
     xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 4);
     xfer += prot_->writeString(this->name.value());
     xfer += prot_->writeFieldEnd();
   }
-  if (this->hasAC.hasValue()) {
+  if (this->hasAC.has_value()) {
     xfer += prot_->writeFieldBegin("hasAC", apache::thrift::protocol::T_BOOL, 5);
     xfer += prot_->writeBool(this->hasAC.value());
     xfer += prot_->writeFieldEnd();
@@ -747,35 +747,35 @@ uint32_t Person::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::PersonID>::serializedSize<false>(*prot_, this->id);
   xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->name);
-  if (this->age.hasValue()) {
+  if (this->age.has_value()) {
     xfer += prot_->serializedFieldSize("age", apache::thrift::protocol::T_I16, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int16_t>::serializedSize<false>(*prot_, this->age.value());
   }
-  if (this->address.hasValue()) {
+  if (this->address.has_value()) {
     xfer += prot_->serializedFieldSize("address", apache::thrift::protocol::T_STRING, 4);
     xfer += prot_->serializedSizeString(this->address.value());
   }
-  if (this->favoriteColor.hasValue()) {
+  if (this->favoriteColor.has_value()) {
     xfer += prot_->serializedFieldSize("favoriteColor", apache::thrift::protocol::T_STRUCT, 5);
     xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::serializedSize(prot_, &this->favoriteColor.value());
   }
-  if (this->friends.hasValue()) {
+  if (this->friends.has_value()) {
     xfer += prot_->serializedFieldSize("friends", apache::thrift::protocol::T_SET, 6);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set< ::cpp2::PersonID>>::serializedSize<false>(*prot_, this->friends.value());
   }
-  if (this->bestFriend.hasValue()) {
+  if (this->bestFriend.has_value()) {
     xfer += prot_->serializedFieldSize("bestFriend", apache::thrift::protocol::T_I64, 7);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::PersonID>::serializedSize<false>(*prot_, this->bestFriend.value());
   }
-  if (this->petNames.hasValue()) {
+  if (this->petNames.has_value()) {
     xfer += prot_->serializedFieldSize("petNames", apache::thrift::protocol::T_MAP, 8);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, ::std::map< ::cpp2::Animal, ::std::string>>::serializedSize<false>(*prot_, this->petNames.value());
   }
-  if (this->afraidOfAnimal.hasValue()) {
+  if (this->afraidOfAnimal.has_value()) {
     xfer += prot_->serializedFieldSize("afraidOfAnimal", apache::thrift::protocol::T_I32, 9);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Animal>::serializedSize<false>(*prot_, this->afraidOfAnimal.value());
   }
-  if (this->vehicles.hasValue()) {
+  if (this->vehicles.has_value()) {
     xfer += prot_->serializedFieldSize("vehicles", apache::thrift::protocol::T_LIST, 10);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::cpp2::Vehicle>>::serializedSize<false>(*prot_, this->vehicles.value());
   }
@@ -791,35 +791,35 @@ uint32_t Person::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::PersonID>::serializedSize<false>(*prot_, this->id);
   xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->name);
-  if (this->age.hasValue()) {
+  if (this->age.has_value()) {
     xfer += prot_->serializedFieldSize("age", apache::thrift::protocol::T_I16, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int16_t>::serializedSize<false>(*prot_, this->age.value());
   }
-  if (this->address.hasValue()) {
+  if (this->address.has_value()) {
     xfer += prot_->serializedFieldSize("address", apache::thrift::protocol::T_STRING, 4);
     xfer += prot_->serializedSizeString(this->address.value());
   }
-  if (this->favoriteColor.hasValue()) {
+  if (this->favoriteColor.has_value()) {
     xfer += prot_->serializedFieldSize("favoriteColor", apache::thrift::protocol::T_STRUCT, 5);
     xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::serializedSizeZC(prot_, &this->favoriteColor.value());
   }
-  if (this->friends.hasValue()) {
+  if (this->friends.has_value()) {
     xfer += prot_->serializedFieldSize("friends", apache::thrift::protocol::T_SET, 6);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set< ::cpp2::PersonID>>::serializedSize<false>(*prot_, this->friends.value());
   }
-  if (this->bestFriend.hasValue()) {
+  if (this->bestFriend.has_value()) {
     xfer += prot_->serializedFieldSize("bestFriend", apache::thrift::protocol::T_I64, 7);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::PersonID>::serializedSize<false>(*prot_, this->bestFriend.value());
   }
-  if (this->petNames.hasValue()) {
+  if (this->petNames.has_value()) {
     xfer += prot_->serializedFieldSize("petNames", apache::thrift::protocol::T_MAP, 8);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, ::std::map< ::cpp2::Animal, ::std::string>>::serializedSize<false>(*prot_, this->petNames.value());
   }
-  if (this->afraidOfAnimal.hasValue()) {
+  if (this->afraidOfAnimal.has_value()) {
     xfer += prot_->serializedFieldSize("afraidOfAnimal", apache::thrift::protocol::T_I32, 9);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Animal>::serializedSize<false>(*prot_, this->afraidOfAnimal.value());
   }
-  if (this->vehicles.hasValue()) {
+  if (this->vehicles.has_value()) {
     xfer += prot_->serializedFieldSize("vehicles", apache::thrift::protocol::T_LIST, 10);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::cpp2::Vehicle>>::serializedSize<false>(*prot_, this->vehicles.value());
   }
@@ -837,42 +837,42 @@ uint32_t Person::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->writeString(this->name);
   xfer += prot_->writeFieldEnd();
-  if (this->age.hasValue()) {
+  if (this->age.has_value()) {
     xfer += prot_->writeFieldBegin("age", apache::thrift::protocol::T_I16, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int16_t>::write(*prot_, this->age.value());
     xfer += prot_->writeFieldEnd();
   }
-  if (this->address.hasValue()) {
+  if (this->address.has_value()) {
     xfer += prot_->writeFieldBegin("address", apache::thrift::protocol::T_STRING, 4);
     xfer += prot_->writeString(this->address.value());
     xfer += prot_->writeFieldEnd();
   }
-  if (this->favoriteColor.hasValue()) {
+  if (this->favoriteColor.has_value()) {
     xfer += prot_->writeFieldBegin("favoriteColor", apache::thrift::protocol::T_STRUCT, 5);
     xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::write(prot_, &this->favoriteColor.value());
     xfer += prot_->writeFieldEnd();
   }
-  if (this->friends.hasValue()) {
+  if (this->friends.has_value()) {
     xfer += prot_->writeFieldBegin("friends", apache::thrift::protocol::T_SET, 6);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set< ::cpp2::PersonID>>::write(*prot_, this->friends.value());
     xfer += prot_->writeFieldEnd();
   }
-  if (this->bestFriend.hasValue()) {
+  if (this->bestFriend.has_value()) {
     xfer += prot_->writeFieldBegin("bestFriend", apache::thrift::protocol::T_I64, 7);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::PersonID>::write(*prot_, this->bestFriend.value());
     xfer += prot_->writeFieldEnd();
   }
-  if (this->petNames.hasValue()) {
+  if (this->petNames.has_value()) {
     xfer += prot_->writeFieldBegin("petNames", apache::thrift::protocol::T_MAP, 8);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, ::std::map< ::cpp2::Animal, ::std::string>>::write(*prot_, this->petNames.value());
     xfer += prot_->writeFieldEnd();
   }
-  if (this->afraidOfAnimal.hasValue()) {
+  if (this->afraidOfAnimal.has_value()) {
     xfer += prot_->writeFieldBegin("afraidOfAnimal", apache::thrift::protocol::T_I32, 9);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Animal>::write(*prot_, this->afraidOfAnimal.value());
     xfer += prot_->writeFieldEnd();
   }
-  if (this->vehicles.hasValue()) {
+  if (this->vehicles.has_value()) {
     xfer += prot_->writeFieldBegin("vehicles", apache::thrift::protocol::T_LIST, 10);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::cpp2::Vehicle>>::write(*prot_, this->vehicles.value());
     xfer += prot_->writeFieldEnd();

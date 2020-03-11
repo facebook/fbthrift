@@ -151,7 +151,7 @@ uint32_t House::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::ColorID>::serializedSize<false>(*prot_, this->id);
   xfer += prot_->serializedFieldSize("houseName", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->houseName);
-  if (this->houseColors.hasValue()) {
+  if (this->houseColors.has_value()) {
     xfer += prot_->serializedFieldSize("houseColors", apache::thrift::protocol::T_SET, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set< ::cpp2::ColorID>>::serializedSize<false>(*prot_, this->houseColors.value());
   }
@@ -167,7 +167,7 @@ uint32_t House::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::ColorID>::serializedSize<false>(*prot_, this->id);
   xfer += prot_->serializedFieldSize("houseName", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->houseName);
-  if (this->houseColors.hasValue()) {
+  if (this->houseColors.has_value()) {
     xfer += prot_->serializedFieldSize("houseColors", apache::thrift::protocol::T_SET, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set< ::cpp2::ColorID>>::serializedSize<false>(*prot_, this->houseColors.value());
   }
@@ -185,7 +185,7 @@ uint32_t House::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("houseName", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->writeString(this->houseName);
   xfer += prot_->writeFieldEnd();
-  if (this->houseColors.hasValue()) {
+  if (this->houseColors.has_value()) {
     xfer += prot_->writeFieldBegin("houseColors", apache::thrift::protocol::T_SET, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set< ::cpp2::ColorID>>::write(*prot_, this->houseColors.value());
     xfer += prot_->writeFieldEnd();
