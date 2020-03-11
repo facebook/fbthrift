@@ -17,6 +17,8 @@
 package thrift
 
 import (
+	"bytes"
+	"fmt"
 	"strings"
 	"testing"
 	"time"
@@ -31,10 +33,13 @@ func TestSkipUnknownTypeBinaryProtocol(t *testing.T) {
 	d := NewDeserializer()
 	f := NewBinaryProtocolFactoryDefault()
 	d.Protocol = f.GetProtocol(d.Transport)
-	// skip over a map with invalid key/value type and 1.7B entries
-	data := []byte("\n\x10\rO\t6\x03\n\n\n\x10\r\n\tslice\x00")
+	// skip over a map with invalid key/value type and ~550M entries
+	data := make([]byte, 1100000000)
+	copy(data[:], []byte("\n\x10\rO\t6\x03\n\n\n\x10\r\n\tsl ce\x00"))
+	transport, _ := d.Transport.(*MemoryBuffer)
+	transport.Buffer = bytes.NewBuffer(data)
 	start := time.Now()
-	err := d.Read(&m, data)
+	err := m.Read(d.Protocol)
 	if err == nil {
 		t.Fatalf("Parsed invalid message correctly")
 	} else if !strings.Contains(err.Error(), "unknown type") {
@@ -43,5 +48,51 @@ func TestSkipUnknownTypeBinaryProtocol(t *testing.T) {
 
 	if time.Now().Sub(start).Seconds() > 5 {
 		t.Fatalf("It should not take seconds to parse a small message")
+	}
+}
+
+func TestInitialAllocationMapBinaryProtocol(t *testing.T) {
+	var m MyTestStruct
+	d := NewDeserializer()
+	f := NewBinaryProtocolFactoryDefault()
+	d.Protocol = f.GetProtocol(d.Transport)
+	// attempts to allocate a map with 1.8B elements for a 20 byte message
+	data := []byte("\n\x10\rO\t6\x03\n\n\n\x10\r\n\tslice\x00")
+	err := d.Read(&m, data)
+	if err == nil {
+		t.Fatalf("Parsed invalid message correctly")
+	} else if !strings.Contains(err.Error(), "Invalid data length") {
+		t.Fatalf("Failed for reason besides Invalid data length")
+	}
+}
+
+func TestInitialAllocationListBinaryProtocol(t *testing.T) {
+	var m MyTestStruct
+	d := NewDeserializer()
+	f := NewBinaryProtocolFactoryDefault()
+	d.Protocol = f.GetProtocol(d.Transport)
+	// attempts to allocate a list with 1.8B elements for a 20 byte message
+	data := []byte("\n\x10\rO\t6\x03\n\n\n\x10\x0f\n\tslice\x00")
+	err := d.Read(&m, data)
+	if err == nil {
+		t.Fatalf("Parsed invalid message correctly")
+	} else if !strings.Contains(err.Error(), "Invalid data length") {
+		t.Fatalf("Failed for reason besides Invalid data length")
+	}
+}
+
+func TestInitialAllocationSetBinaryProtocol(t *testing.T) {
+	var m MyTestStruct
+	d := NewDeserializer()
+	f := NewBinaryProtocolFactoryDefault()
+	d.Protocol = f.GetProtocol(d.Transport)
+	// attempts to allocate a set with 1.8B elements for a 20 byte message
+	data := []byte("\n\x12\rO\t6\x03\n\n\n\x10\x0e\n\tslice\x00")
+	err := d.Read(&m, data)
+	if err == nil {
+		t.Fatalf("Parsed invalid message correctly")
+	} else if !strings.Contains(err.Error(), "Invalid data length") {
+		fmt.Printf("Got %+v", err)
+		t.Fatalf("Failed for reason besides Invalid data length")
 	}
 }

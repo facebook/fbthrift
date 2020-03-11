@@ -17,7 +17,6 @@
 package thrift
 
 import (
-	"bytes"
 	"io"
 	"io/ioutil"
 	"math"
@@ -172,8 +171,6 @@ func ReadWriteProtocolParallelTest(t *testing.T, protocolFactory ProtocolFactory
 	rConn, wConn := tcpStreamSetupForTest(t)
 	rdr, writer := io.Pipe()
 	transports := []TransportFactory{
-		NewStreamTransportFactory(rdr, writer, false),                             // use a pipe
-		NewStreamTransportFactory(rConn, wConn, false),                            // use tcp over network
 		NewFramedTransportFactory(NewStreamTransportFactory(rdr, writer, false)),  // framed over pipe
 		NewFramedTransportFactory(NewStreamTransportFactory(rConn, wConn, false)), // framed over tcp
 	}
@@ -237,12 +234,10 @@ func ReadWriteProtocolParallelTest(t *testing.T, protocolFactory ProtocolFactory
 }
 
 func ReadWriteProtocolTest(t *testing.T, protocolFactory ProtocolFactory) {
-	buf := bytes.NewBuffer(make([]byte, 0, 1024))
 	l := HTTPClientSetupForTest(t)
 	defer l.Close()
 	transports := []TransportFactory{
 		NewMemoryBufferTransportFactory(1024),
-		NewStreamTransportFactory(buf, buf, true),
 		NewFramedTransportFactory(NewMemoryBufferTransportFactory(1024)),
 		NewHTTPPostClientTransportFactory("http://" + l.Addr().String()),
 	}
