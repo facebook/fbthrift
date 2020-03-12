@@ -99,6 +99,28 @@ class ThriftClient : public ClientChannel {
       std::shared_ptr<apache::thrift::transport::THeader> header,
       RequestClientCallback::Ptr cb) override;
 
+  void sendRequestStream(
+      RpcOptions&,
+      folly::StringPiece,
+      SerializedRequest&&,
+      std::shared_ptr<transport::THeader>,
+      StreamClientCallback* clientCallback) override {
+    clientCallback->onFirstResponseError(
+        folly::make_exception_wrapper<transport::TTransportException>(
+            "Current channel doesn't support stream RPC"));
+  }
+
+  void sendRequestSink(
+      RpcOptions&,
+      folly::StringPiece,
+      SerializedRequest&&,
+      std::shared_ptr<transport::THeader>,
+      SinkClientCallback* clientCallback) override {
+    clientCallback->onFirstResponseError(
+        folly::make_exception_wrapper<transport::TTransportException>(
+            "Current channel doesn't support sink RPC"));
+  }
+
   folly::EventBase* getEventBase() const override;
 
   uint16_t getProtocolId() override;

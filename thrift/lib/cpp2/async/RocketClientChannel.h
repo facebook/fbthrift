@@ -68,25 +68,29 @@ class RocketClientChannel final : public ClientChannel {
 
   void sendRequestResponse(
       RpcOptions& rpcOptions,
-      std::unique_ptr<folly::IOBuf> buf,
+      folly::StringPiece methodName,
+      SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cb) override;
 
   void sendRequestNoResponse(
       RpcOptions& rpcOptions,
-      std::unique_ptr<folly::IOBuf> buf,
+      folly::StringPiece methodName,
+      SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cb) override;
 
   void sendRequestStream(
       RpcOptions& rpcOptions,
-      std::unique_ptr<folly::IOBuf> buf,
+      folly::StringPiece methodName,
+      SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* clientCallback) override;
 
   void sendRequestSink(
       RpcOptions& rpcOptions,
-      std::unique_ptr<folly::IOBuf> buf,
+      folly::StringPiece methodName,
+      SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       SinkClientCallback* clientCallback) override;
 
@@ -146,7 +150,7 @@ class RocketClientChannel final : public ClientChannel {
   folly::EventBase* evb_{nullptr};
   std::unique_ptr<rocket::RocketClient, folly::DelayedDestruction::Destructor>
       rclient_;
-  uint16_t protocolId_{apache::thrift::protocol::T_BINARY_PROTOCOL};
+  uint16_t protocolId_{apache::thrift::protocol::T_COMPACT_PROTOCOL};
   std::chrono::milliseconds timeout_{kDefaultRpcTimeout};
   folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;
   folly::Optional<int32_t> autoCompressSizeLimit_;
@@ -169,7 +173,8 @@ class RocketClientChannel final : public ClientChannel {
   void sendThriftRequest(
       RpcOptions& rpcOptions,
       RpcKind kind,
-      std::unique_ptr<folly::IOBuf> buf,
+      folly::StringPiece methodName,
+      SerializedRequest&& request,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       RequestClientCallback::Ptr cb);
 
@@ -188,7 +193,6 @@ class RocketClientChannel final : public ClientChannel {
   bool preSendValidation(
       RequestRpcMetadata& metadata,
       RpcOptions& rpcOptions,
-      std::unique_ptr<folly::IOBuf>& buf,
       CallbackPtr& cb,
       std::chrono::milliseconds& firstResponseTimeout);
 

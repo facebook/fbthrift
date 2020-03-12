@@ -32,6 +32,7 @@ RequestRpcMetadata makeRequestRpcMetadata(
     const RpcOptions& rpcOptions,
     RpcKind kind,
     ProtocolId protocolId,
+    folly::StringPiece methodName,
     std::chrono::milliseconds defaultChannelTimeout,
     transport::THeader& header,
     const transport::THeader::StringToStringMap& persistentWriteHeaders);

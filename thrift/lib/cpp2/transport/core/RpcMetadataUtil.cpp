@@ -35,6 +35,7 @@ RequestRpcMetadata makeRequestRpcMetadata(
     const RpcOptions& rpcOptions,
     RpcKind kind,
     ProtocolId protocolId,
+    folly::StringPiece methodName,
     std::chrono::milliseconds defaultChannelTimeout,
     transport::THeader& header,
     const transport::THeader::StringToStringMap& persistentWriteHeaders) {
@@ -42,6 +43,7 @@ RequestRpcMetadata makeRequestRpcMetadata(
   uint64_t flags = 0;
   metadata.protocol_ref() = protocolId;
   metadata.kind_ref() = kind;
+  metadata.name_ref() = methodName.str();
   if (rpcOptions.getTimeout() > std::chrono::milliseconds::zero()) {
     metadata.clientTimeoutMs_ref() = rpcOptions.getTimeout().count();
   } else if (defaultChannelTimeout > std::chrono::milliseconds::zero()) {

@@ -148,33 +148,38 @@ RocketClientChannel::Ptr RocketClientChannel::newChannel(
 
 void RocketClientChannel::sendRequestResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<folly::IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cb) {
   sendThriftRequest(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
-      std::move(buf),
+      methodName,
+      std::move(request),
       std::move(header),
       std::move(cb));
 }
 
 void RocketClientChannel::sendRequestNoResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<folly::IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cb) {
   sendThriftRequest(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_NO_RESPONSE,
-      std::move(buf),
+      methodName,
+      std::move(request),
       std::move(header),
       std::move(cb));
 }
 
 void RocketClientChannel::sendRequestStream(
     RpcOptions& rpcOptions,
-    std::unique_ptr<folly::IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& request,
     std::shared_ptr<THeader> header,
     StreamClientCallback* clientCallback) {
   DestructorGuard dg(this);
@@ -183,15 +188,18 @@ void RocketClientChannel::sendRequestStream(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       static_cast<ProtocolId>(protocolId_),
+      methodName,
       timeout_,
       *header,
       getPersistentWriteHeaders());
 
   std::chrono::milliseconds firstResponseTimeout;
   if (!preSendValidation(
-          metadata, rpcOptions, buf, clientCallback, firstResponseTimeout)) {
+          metadata, rpcOptions, clientCallback, firstResponseTimeout)) {
     return;
   }
+
+  auto buf = std::move(request.buffer);
 
   // compress the request if needed
   if (autoCompressSizeLimit_.has_value() &&
@@ -211,7 +219,8 @@ void RocketClientChannel::sendRequestStream(
 
 void RocketClientChannel::sendRequestSink(
     RpcOptions& rpcOptions,
-    std::unique_ptr<folly::IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     SinkClientCallback* clientCallback) {
   DestructorGuard dg(this);
@@ -220,15 +229,18 @@ void RocketClientChannel::sendRequestSink(
       rpcOptions,
       RpcKind::SINK,
       static_cast<ProtocolId>(protocolId_),
+      methodName,
       timeout_,
       *header,
       getPersistentWriteHeaders());
 
   std::chrono::milliseconds firstResponseTimeout;
   if (!preSendValidation(
-          metadata, rpcOptions, buf, clientCallback, firstResponseTimeout)) {
+          metadata, rpcOptions, clientCallback, firstResponseTimeout)) {
     return;
   }
+
+  auto buf = std::move(request.buffer);
 
   // compress the request if needed
   if (autoCompressSizeLimit_.hasValue() &&
@@ -247,7 +259,8 @@ void RocketClientChannel::sendRequestSink(
 void RocketClientChannel::sendThriftRequest(
     RpcOptions& rpcOptions,
     RpcKind kind,
-    std::unique_ptr<folly::IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cb) {
   DestructorGuard dg(this);
@@ -256,14 +269,17 @@ void RocketClientChannel::sendThriftRequest(
       rpcOptions,
       kind,
       static_cast<ProtocolId>(protocolId_),
+      methodName,
       timeout_,
       *header,
       getPersistentWriteHeaders());
 
   std::chrono::milliseconds timeout;
-  if (!preSendValidation(metadata, rpcOptions, buf, cb, timeout)) {
+  if (!preSendValidation(metadata, rpcOptions, cb, timeout)) {
     return;
   }
+
+  auto buf = std::move(request.buffer);
 
   // compress the request if needed
   if (autoCompressSizeLimit_.has_value() &&
@@ -432,17 +448,8 @@ template <typename CallbackPtr>
 bool RocketClientChannel::preSendValidation(
     RequestRpcMetadata& metadata,
     RpcOptions& rpcOptions,
-    std::unique_ptr<folly::IOBuf>& buf,
     CallbackPtr& cb,
     std::chrono::milliseconds& firstResponseTimeout) {
-  if (!EnvelopeUtil::stripEnvelope(&metadata, buf)) {
-    onResponseError(
-        cb,
-        folly::make_exception_wrapper<TTransportException>(
-            TTransportException::CORRUPTED_DATA,
-            "Unexpected problem stripping envelope"));
-    return false;
-  }
   metadata.seqId_ref().reset();
   DCHECK(metadata.kind_ref().has_value());
 

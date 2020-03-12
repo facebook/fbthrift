@@ -53,14 +53,30 @@ void InMemoryChannel::sendThriftRequest(
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   CHECK(evb_->isInEventBaseThread());
   CHECK(payload);
-  if (!EnvelopeUtil::stripEnvelope(&metadata, payload)) {
-    LOG(ERROR) << "Unexpected problem stripping envelope";
-    auto evb = callback->getEventBase();
-    evb->runInEventBaseThread([cb = std::move(callback)]() mutable {
-      cb->onError(folly::exception_wrapper(
-          std::runtime_error("Unexpected problem stripping envelope")));
-    });
-    return;
+  {
+    auto envelopeAndRequest =
+        EnvelopeUtil::stripRequestEnvelope(std::move(payload));
+    if (!envelopeAndRequest) {
+      LOG(ERROR) << "Unexpected problem stripping envelope";
+      auto evb = callback->getEventBase();
+      evb->runInEventBaseThread([cb = std::move(callback)]() mutable {
+        cb->onError(folly::exception_wrapper(
+            std::runtime_error("Unexpected problem stripping envelope")));
+      });
+      return;
+    }
+    metadata.name_ref() = envelopeAndRequest->first.methodName;
+    switch (envelopeAndRequest->first.protocolId) {
+      case protocol::T_BINARY_PROTOCOL:
+        metadata.protocol_ref() = ProtocolId::BINARY;
+        break;
+      case protocol::T_COMPACT_PROTOCOL:
+        metadata.protocol_ref() = ProtocolId::COMPACT;
+        break;
+      default:
+        std::terminate();
+    }
+    payload = std::move(envelopeAndRequest->second);
   }
   CHECK(metadata.kind_ref());
   if (*metadata.kind_ref() == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||

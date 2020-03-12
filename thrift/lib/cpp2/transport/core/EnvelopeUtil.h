@@ -16,76 +16,72 @@
 
 #pragma once
 
-#include <glog/logging.h>
-
-#include <folly/io/IOBuf.h>
-#include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
 namespace thrift {
 
 class EnvelopeUtil {
  public:
-  // Strips the envelope out of the payload and moves the information
-  // contained in it into metadata.  This function is required to
-  // maintain legacy compatibility.  Eventually, the envelope should
-  // only be used with the header transport (i.e., not even created in
-  // the first place), at which point this function will be
+  struct Envelope {
+    int16_t protocolId;
+    std::string methodName;
+  };
+
+  // Strips the envelope out of the payload and extracts method name from it.
+  // This function is required to maintain legacy compatibility.  Eventually,
+  // the envelope should only be used with the header transport (i.e., not even
+  // created in the first place), at which point this function will be
   // deprecated.
-  static bool stripEnvelope(
-      RequestRpcMetadata* metadata,
-      std::unique_ptr<folly::IOBuf>& payload) noexcept {
-    MessageType mtype;
+  static folly::Optional<std::pair<Envelope, std::unique_ptr<folly::IOBuf>>>
+  stripRequestEnvelope(std::unique_ptr<folly::IOBuf>&& payload) noexcept {
     uint64_t sz;
     while (payload->length() == 0) {
       if (payload->next() != payload.get()) {
         payload = payload->pop();
       } else {
         LOG(ERROR) << "Payload is empty";
-        return false;
+        return folly::none;
       }
     }
+    Envelope envelope;
     try {
+      MessageType mtype;
       // Sequence id is always 0 in the envelope.  So we ignore it.
       int32_t seqId;
       auto protByte = payload->data()[0];
-      auto name = metadata->name_ref();
-      if (!name) {
-        name = {};
-      }
       switch (protByte) {
         case 0x80: {
           BinaryProtocolReader reader;
-          metadata->protocol_ref() = ProtocolId::BINARY;
+          envelope.protocolId = protocol::T_BINARY_PROTOCOL;
           reader.setInput(payload.get());
-          reader.readMessageBegin(*name, mtype, seqId);
+          reader.readMessageBegin(envelope.methodName, mtype, seqId);
           sz = reader.getCursorPosition();
           break;
         }
         case 0x82: {
-          metadata->protocol_ref() = ProtocolId::COMPACT;
+          envelope.protocolId = protocol::T_COMPACT_PROTOCOL;
           CompactProtocolReader reader;
           reader.setInput(payload.get());
-          reader.readMessageBegin(*name, mtype, seqId);
+          reader.readMessageBegin(envelope.methodName, mtype, seqId);
           sz = reader.getCursorPosition();
           break;
         }
         // TODO: Add Frozen2 case.
         default:
           LOG(ERROR) << "Unknown protocol: " << protByte;
-          return false;
+          return folly::none;
       }
+      DCHECK_EQ(T_CALL, mtype);
     } catch (const TException& ex) {
       LOG(ERROR) << "Invalid envelope: " << ex.what();
-      return false;
+      return folly::none;
     }
     // Remove the envelope.
     removePrefix(payload, sz);
-    return true;
+    return std::make_pair(std::move(envelope), std::move(payload));
   }
 
   static void removePrefix(std::unique_ptr<folly::IOBuf>& buf, uint32_t size) {

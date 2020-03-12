@@ -256,9 +256,25 @@ void SingleRpcChannel::onThriftRequest() noexcept {
     return;
   }
   RequestRpcMetadata metadata;
-  if (!EnvelopeUtil::stripEnvelope(&metadata, contents_)) {
-    sendThriftErrorResponse("Invalid envelope: see logs for error");
-    return;
+  {
+    auto envelopeAndRequest =
+        EnvelopeUtil::stripRequestEnvelope(std::move(contents_));
+    if (!envelopeAndRequest) {
+      sendThriftErrorResponse("Invalid envelope: see logs for error");
+      return;
+    }
+    metadata.name_ref() = envelopeAndRequest->first.methodName;
+    switch (envelopeAndRequest->first.protocolId) {
+      case protocol::T_BINARY_PROTOCOL:
+        metadata.protocol_ref() = ProtocolId::BINARY;
+        break;
+      case protocol::T_COMPACT_PROTOCOL:
+        metadata.protocol_ref() = ProtocolId::COMPACT;
+        break;
+      default:
+        std::terminate();
+    }
+    contents_ = std::move(envelopeAndRequest->second);
   }
   // Default Single Request Single Response
   metadata.kind_ref() = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;

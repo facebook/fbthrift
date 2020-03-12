@@ -36,6 +36,7 @@
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/RequestCallback.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
 #include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 #include <thrift/lib/cpp2/util/Checksum.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -106,7 +107,7 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       RpcOptions&,
       std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>,
-      RequestClientCallback::Ptr) = 0;
+      RequestClientCallback::Ptr);
 
   /* Similar to sendRequest, although replyReceived will never be called
    *
@@ -123,7 +124,7 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       RpcOptions&,
       std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>,
-      RequestClientCallback::Ptr) = 0;
+      RequestClientCallback::Ptr);
 
   /**
    * ReplyCallback will be invoked when the reply to this request is
