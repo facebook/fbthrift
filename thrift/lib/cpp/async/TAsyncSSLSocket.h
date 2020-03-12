@@ -18,6 +18,7 @@
 
 #include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncSSLSocket.h>
+#include <folly/net/NetworkSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 
 namespace apache {
@@ -46,16 +47,11 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket, public TAsyncSocket {
   TAsyncSSLSocket(
       const std::shared_ptr<folly::SSLContext>& ctx,
       folly::EventBase* evb,
-      int fd,
+      folly::NetworkSocket fd,
       bool server = true,
       bool deferSecurityNegotiation = false)
-      : AsyncSocket(evb, folly::NetworkSocket::fromFd(fd)),
-        folly::AsyncSSLSocket(
-            ctx,
-            evb,
-            folly::NetworkSocket::fromFd(fd),
-            server,
-            deferSecurityNegotiation),
+      : AsyncSocket(evb, fd),
+        folly::AsyncSSLSocket(ctx, evb, fd, server, deferSecurityNegotiation),
         TAsyncSocket(evb, fd) {}
 
   static std::shared_ptr<TAsyncSSLSocket> newSocket(
@@ -68,7 +64,7 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket, public TAsyncSocket {
   static std::shared_ptr<TAsyncSSLSocket> newSocket(
       const std::shared_ptr<folly::SSLContext>& ctx,
       folly::EventBase* evb,
-      int fd,
+      folly::NetworkSocket fd,
       bool server = true) {
     return std::shared_ptr<TAsyncSSLSocket>(
         new TAsyncSSLSocket(ctx, evb, fd, server), Destructor());
@@ -86,14 +82,10 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket, public TAsyncSocket {
   TAsyncSSLSocket(
       const std::shared_ptr<folly::SSLContext>& ctx,
       folly::EventBase* evb,
-      int fd,
+      folly::NetworkSocket fd,
       const std::string& serverName)
-      : AsyncSocket(evb, folly::NetworkSocket::fromFd(fd)),
-        folly::AsyncSSLSocket(
-            ctx,
-            evb,
-            folly::NetworkSocket::fromFd(fd),
-            serverName),
+      : AsyncSocket(evb, fd),
+        folly::AsyncSSLSocket(ctx, evb, fd, serverName),
         TAsyncSocket(evb, fd) {}
 
   static std::shared_ptr<TAsyncSSLSocket> newSocket(

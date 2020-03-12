@@ -49,7 +49,8 @@ TAsyncSocket::UniquePtr TAsyncSSLSocketFactory::make() const {
   return TAsyncSocket::UniquePtr(new TAsyncSSLSocket(context_, eventBase_));
 }
 
-TAsyncSocket::UniquePtr TAsyncSSLSocketFactory::make(int fd) const {
+TAsyncSocket::UniquePtr TAsyncSSLSocketFactory::make(
+    folly::NetworkSocket fd) const {
   return TAsyncSocket::UniquePtr(
       new TAsyncSSLSocket(context_, eventBase_, fd, serverMode_));
 }

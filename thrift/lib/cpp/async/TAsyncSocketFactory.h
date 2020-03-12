@@ -18,6 +18,7 @@
 #define THRIFT_ASYNC_TASYNCSOCKETFACTORY_H_ 1
 
 #include <folly/io/async/EventBase.h>
+#include <folly/net/NetworkSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 
 namespace apache {
@@ -43,7 +44,7 @@ class TAsyncSocketFactory {
   /**
    * Construct a new socket based on the given connected file descriptor.
    */
-  virtual TAsyncSocket::UniquePtr make(int fd) const;
+  virtual TAsyncSocket::UniquePtr make(folly::NetworkSocket fd) const;
 
  protected:
   folly::EventBase* eventBase_;

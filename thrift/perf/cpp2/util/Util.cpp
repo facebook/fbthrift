@@ -30,7 +30,7 @@ TAsyncSocket::UniquePtr getSocket(
     auto sslContext = std::make_shared<folly::SSLContext>();
     sslContext->setAdvertisedNextProtocols(advertizedProtocols);
     auto sslSock = new TAsyncSSLSocket(
-        sslContext, evb, sock->detachNetworkSocket().toFd(), false);
+        sslContext, evb, sock->detachNetworkSocket(), false);
     sslSock->sslConn(nullptr);
     sock.reset(sslSock);
   }

@@ -26,6 +26,7 @@
 #include <folly/io/async/AsyncSocketException.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/lang/Bits.h>
+#include <folly/net/NetworkSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 
@@ -107,7 +108,8 @@ void createTCPSocketPair(
     // so that the event loop will terminate
     acceptSocket.reset();
 
-    *server = TAsyncSocket::newSocket(eventBase, fd);
+    *server =
+        TAsyncSocket::newSocket(eventBase, folly::NetworkSocket::fromFd(fd));
   });
 
   acceptSocket->addAcceptCallback(&acceptCallback, nullptr);
@@ -146,7 +148,8 @@ void createSSLSocketPair(
     // so that the event loop will terminate
     acceptSocket.reset();
 
-    *server = TAsyncSSLSocket::newSocket(ctx, eventBase, fd);
+    *server = TAsyncSSLSocket::newSocket(
+        ctx, eventBase, folly::NetworkSocket::fromFd(fd));
     (*server)->sslAccept(
         &serverHandshakeCallback, std::chrono::milliseconds(5));
   });

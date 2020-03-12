@@ -24,6 +24,7 @@
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/test/SocketPair.h>
 #include <folly/io/async/test/Util.h>
+#include <folly/net/NetworkSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TBinaryAsyncChannel.h>
 #include <thrift/lib/cpp/async/TFramedAsyncChannel.h>
@@ -521,11 +522,11 @@ template <typename ChannelT>
 class SocketPairTest {
  public:
   SocketPairTest() : eventBase_(), socketPair_() {
-    socket0_ = TAsyncSocket::newSocket(&eventBase_, socketPair_[0]);
-    socketPair_.extractFD0();
+    socket0_ = TAsyncSocket::newSocket(
+        &eventBase_, socketPair_.extractNetworkSocket0());
 
-    socket1_ = TAsyncSocket::newSocket(&eventBase_, socketPair_[1]);
-    socketPair_.extractFD1();
+    socket1_ = TAsyncSocket::newSocket(
+        &eventBase_, socketPair_.extractNetworkSocket1());
 
     channel0_ = ChannelT::newChannel(socket0_);
     channel1_ = ChannelT::newChannel(socket1_);

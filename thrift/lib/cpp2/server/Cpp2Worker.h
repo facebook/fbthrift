@@ -23,6 +23,7 @@
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/EventHandler.h>
 #include <folly/io/async/HHWheelTimer.h>
+#include <folly/net/NetworkSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp2/security/FizzPeeker.h>
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
@@ -222,7 +223,8 @@ class Cpp2Worker : public wangle::Acceptor,
       folly::EventBase* base,
       int fd) override {
     return folly::AsyncSocket::UniquePtr(
-        new apache::thrift::async::TAsyncSocket(base, fd));
+        new apache::thrift::async::TAsyncSocket(
+            base, folly::NetworkSocket::fromFd(fd)));
   }
 
   folly::AsyncSSLSocket::UniquePtr makeNewAsyncSSLSocket(
@@ -233,7 +235,7 @@ class Cpp2Worker : public wangle::Acceptor,
         new apache::thrift::async::TAsyncSSLSocket(
             ctx,
             base,
-            fd,
+            folly::NetworkSocket::fromFd(fd),
             true, /* set server */
             true /* defer the security negotiation until sslAccept. */));
   }

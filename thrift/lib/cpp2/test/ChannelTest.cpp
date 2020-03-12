@@ -150,14 +150,16 @@ class SocketPairTest {
       auto serverCtx = std::make_shared<folly::SSLContext>();
       getctx(clientCtx, serverCtx);
       socket0_ = TAsyncSSLSocket::newSocket(
-          clientCtx, &eventBase_, socketPair.extractFD0(), false);
+          clientCtx, &eventBase_, socketPair.extractNetworkSocket0(), false);
       socket1_ = TAsyncSSLSocket::newSocket(
-          serverCtx, &eventBase_, socketPair.extractFD1(), true);
+          serverCtx, &eventBase_, socketPair.extractNetworkSocket1(), true);
       dynamic_cast<TAsyncSSLSocket*>(socket0_.get())->sslConn(nullptr);
       dynamic_cast<TAsyncSSLSocket*>(socket1_.get())->sslAccept(nullptr);
     } else {
-      socket0_ = TAsyncSocket::newSocket(&eventBase_, socketPair.extractFD0());
-      socket1_ = TAsyncSocket::newSocket(&eventBase_, socketPair.extractFD1());
+      socket0_ = TAsyncSocket::newSocket(
+          &eventBase_, socketPair.extractNetworkSocket0());
+      socket1_ = TAsyncSocket::newSocket(
+          &eventBase_, socketPair.extractNetworkSocket1());
     }
 
     channel0_ = createChannel<Channel1>(socket0_);

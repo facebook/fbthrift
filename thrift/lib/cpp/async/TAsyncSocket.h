@@ -19,6 +19,7 @@
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/EventHandler.h>
+#include <folly/net/NetworkSocket.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
 namespace apache {
@@ -40,8 +41,8 @@ class TAsyncSocket : public virtual folly::AsyncSocket {
       bool useZeroCopy = false)
       : folly::AsyncSocket(evb, address, connectTimeout, useZeroCopy) {}
 
-  TAsyncSocket(folly::EventBase* evb, int fd)
-      : folly::AsyncSocket(evb, folly::NetworkSocket::fromFd(fd)) {}
+  TAsyncSocket(folly::EventBase* evb, folly::NetworkSocket fd)
+      : folly::AsyncSocket(evb, fd) {}
 
   TAsyncSocket(
       folly::EventBase* evb,
@@ -81,7 +82,7 @@ class TAsyncSocket : public virtual folly::AsyncSocket {
 
   static std::shared_ptr<TAsyncSocket> newSocket(
       folly::EventBase* evb,
-      int fd) {
+      folly::NetworkSocket fd) {
     return std::shared_ptr<TAsyncSocket>(
         new TAsyncSocket(evb, fd), Destructor());
   }

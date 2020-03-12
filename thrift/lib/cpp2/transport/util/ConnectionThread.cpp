@@ -70,7 +70,7 @@ void ConnectionThread::maybeCreateConnection(
         auto sslSocket = new TAsyncSSLSocket(
             sslContext,
             this->getEventBase(),
-            socket->detachNetworkSocket().toFd(),
+            socket->detachNetworkSocket(),
             false);
         sslSocket->sslConn(nullptr);
         socket.reset(sslSocket);

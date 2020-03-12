@@ -17,6 +17,7 @@
 #pragma once
 
 #include <fizz/server/AsyncFizzServer.h>
+#include <folly/net/NetworkSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersContext.h>
@@ -92,7 +93,8 @@ class ThriftFizzAcceptorHandshakeHelper
       folly::EventBase* evb,
       int fd) override {
     return folly::AsyncSSLSocket::UniquePtr(
-        new apache::thrift::async::TAsyncSSLSocket(sslContext, evb, fd));
+        new apache::thrift::async::TAsyncSSLSocket(
+            sslContext, evb, folly::NetworkSocket::fromFd(fd)));
   }
 
   // AsyncFizzServer::HandshakeCallback API

@@ -17,6 +17,7 @@
 #pragma once
 
 #include <folly/io/async/SSLContext.h>
+#include <folly/net/NetworkSocket.h>
 
 #include <thrift/lib/cpp/async/TAsyncSocketFactory.h>
 
@@ -46,7 +47,7 @@ class TAsyncSSLSocketFactory : public TAsyncSocketFactory {
 
   // TAsyncSocketFactory
   TAsyncSocket::UniquePtr make() const override;
-  TAsyncSocket::UniquePtr make(int fd) const override;
+  TAsyncSocket::UniquePtr make(folly::NetworkSocket fd) const override;
 
  protected:
   folly::EventBase* eventBase_;
