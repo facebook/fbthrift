@@ -78,7 +78,7 @@ BENCHMARK(CompactProtocolReader_dtor, kiters) {
   }
   braces.dismiss();
   while (iters--) {
-    protos[iters].clear();
+    protos[iters].reset();
   }
   braces.rehire();
 }
@@ -103,7 +103,7 @@ BENCHMARK(CompactProtocolWriter_dtor, kiters) {
   }
   braces.dismiss();
   while (iters--) {
-    protos[iters].clear();
+    protos[iters].reset();
   }
   braces.rehire();
 }
