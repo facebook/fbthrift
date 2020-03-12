@@ -144,7 +144,7 @@ static bool generate(
     }
 
     for (auto gen_string : generator_strings) {
-      auto pos = gen_string.find(":");
+      auto pos = gen_string.find(':');
       std::string lang = gen_string.substr(0, pos);
 
       t_generator* generator =
@@ -205,8 +205,8 @@ static string get_include_path(
 
   // infer cpp include prefix from the filename passed in if none specified.
   if (include_prefix == "") {
-    if (input_filename.rfind("/") != string::npos) {
-      include_prefix = input_filename.substr(0, input_filename.rfind("/"));
+    if (input_filename.rfind('/') != string::npos) {
+      include_prefix = input_filename.substr(0, input_filename.rfind('/'));
     }
   }
 

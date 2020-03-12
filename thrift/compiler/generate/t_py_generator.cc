@@ -2830,7 +2830,7 @@ void t_py_generator::generate_process_function(
     t_function* tfunction,
     bool with_context,
     bool future) {
-  string fn_name = tfunction->get_name();
+  const string& fn_name = tfunction->get_name();
 
   // Open function
   if (future) {

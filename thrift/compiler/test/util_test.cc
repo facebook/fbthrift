@@ -263,7 +263,8 @@ TEST_F(UtilTest, topological_sort_example) {
       {"a", {"b"}},
   };
   std::vector<std::string> vertices;
-  for (auto kvp : graph) {
+  vertices.reserve(graph.size());
+  for (const auto& kvp : graph) {
     vertices.push_back(kvp.first);
   }
   auto result = topological_sort<std::string>(

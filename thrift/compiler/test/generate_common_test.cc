@@ -41,6 +41,7 @@ TEST(GenerateCommon, SplitNamespace) {
   };
 
   std::vector<std::vector<std::string>> splits;
+  splits.reserve(namespaces.size());
   for (const auto& ns : namespaces) {
     splits.push_back(split_namespace(ns));
   }

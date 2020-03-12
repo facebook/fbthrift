@@ -66,7 +66,7 @@ std::string t_program::compute_name_from_file_path(std::string path) {
   if (slash != std::string::npos) {
     path = path.substr(slash + 1);
   }
-  std::string::size_type dot = path.rfind(".");
+  std::string::size_type dot = path.rfind('.');
   if (dot != std::string::npos) {
     path = path.substr(0, dot);
   }

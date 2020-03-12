@@ -1212,8 +1212,8 @@ string t_hack_generator::render_const_value(
         } else {
           out << value->get_double();
         }
-        if (out.str().find(".") == string::npos &&
-            out.str().find("e") == string::npos) {
+        if (out.str().find('.') == string::npos &&
+            out.str().find('e') == string::npos) {
           out << ".0";
         }
         break;
@@ -2974,7 +2974,7 @@ void t_hack_generator::generate_php_struct_reader(
 void t_hack_generator::generate_php_struct_writer(
     ofstream& out,
     t_struct* tstruct) {
-  string name = tstruct->get_name();
+  const string& name = tstruct->get_name();
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -3251,7 +3251,7 @@ void t_hack_generator::generate_process_function(
   string service_name = hack_name(tservice);
   string argsname = service_name + "_" + tfunction->get_name() + "_args";
   string resultname = service_name + "_" + tfunction->get_name() + "_result";
-  string fn_name = tfunction->get_name();
+  const string& fn_name = tfunction->get_name();
 
   f_service_ << indent()
              << "$handler_ctx = $this->eventHandler_->getHandlerContext('"
@@ -4395,7 +4395,7 @@ void t_hack_generator::_generate_service_client_children(
     const vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator fld_iter;
     string funname = (*f_iter)->get_name();
-    string tservice_name = tservice->get_name();
+    const string& tservice_name = tservice->get_name();
     string return_typehint = type_to_typehint((*f_iter)->get_returntype());
     generate_php_docstring(out, *f_iter);
     if (nullable_everything_) {

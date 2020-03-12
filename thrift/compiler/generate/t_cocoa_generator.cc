@@ -1246,7 +1246,7 @@ void t_cocoa_generator::generate_cocoa_struct_writer(
   out << indent() << "- (void) write: (id <TProtocol>) outProtocol {" << endl;
   indent_up();
 
-  string name = tstruct->get_name();
+  const string& name = tstruct->get_name();
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -1302,7 +1302,7 @@ void t_cocoa_generator::generate_cocoa_struct_result_writer(
   out << indent() << "- (void) write: (id <TProtocol>) outProtocol {" << endl;
   indent_up();
 
-  string name = tstruct->get_name();
+  const string& name = tstruct->get_name();
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
 

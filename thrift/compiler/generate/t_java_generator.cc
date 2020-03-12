@@ -51,7 +51,7 @@ void t_java_generator::init_generator() {
   string dir = package_name_;
   string subdir = get_out_dir();
   string::size_type loc;
-  while ((loc = dir.find(".")) != string::npos) {
+  while ((loc = dir.find('.')) != string::npos) {
     subdir = subdir + "/" + dir.substr(0, loc);
     boost::filesystem::create_directory(subdir);
     dir = dir.substr(loc + 1);
@@ -1745,7 +1745,6 @@ void t_java_generator::generate_java_struct_writer(
       << endl;
   indent_up();
 
-  string name = tstruct->get_name();
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -1809,7 +1808,6 @@ void t_java_generator::generate_java_struct_result_writer(
       << endl;
   indent_up();
 
-  string name = tstruct->get_name();
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -1902,7 +1900,7 @@ void t_java_generator::generate_generic_field_getters_setters(
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     t_field* field = *f_iter;
     t_type* type = field->get_type()->get_true_type();
-    std::string field_name = field->get_name();
+    const std::string& field_name = field->get_name();
     std::string cap_name = get_cap_name(field_name);
 
     if (type->is_list() || type->is_map() || type->is_set())
@@ -1959,7 +1957,7 @@ void t_java_generator::generate_generic_field_getters_setters(
 }
 
 std::string t_java_generator::get_simple_getter_name(t_field* field) {
-  std::string field_name = field->get_name();
+  const std::string& field_name = field->get_name();
   std::string cap_name = get_cap_name(field_name);
   t_type* type = field->get_type()->get_true_type();
 
@@ -2229,7 +2227,7 @@ void t_java_generator::generate_java_meta_data_map(
               << endl;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     t_field* field = *f_iter;
-    std::string field_name = field->get_name();
+    const std::string& field_name = field->get_name();
     indent(out) << "tmpMetaDataMap.put(" << upcase_string(field_name)
                 << ", new FieldMetaData(\"" << field_name << "\", ";
 
@@ -3663,7 +3661,7 @@ string t_java_generator::type_name(
   // Check for namespacing
   const t_program* program = ttype->get_program();
   if (program != nullptr && program != program_) {
-    string package = program->get_namespace(namespace_key_);
+    const string& package = program->get_namespace(namespace_key_);
     if (!package.empty()) {
       return package + "." + ttype->get_name();
     }

@@ -188,7 +188,7 @@ void t_csharp_generator::init_generator() {
   string subdir = get_out_dir().c_str();
   string::size_type loc;
 
-  while ((loc = dir.find(".")) != string::npos) {
+  while ((loc = dir.find('.')) != string::npos) {
     subdir = subdir + "/" + dir.substr(0, loc);
     boost::filesystem::create_directory(subdir);
     dir = dir.substr(loc + 1);
@@ -630,7 +630,7 @@ void t_csharp_generator::generate_csharp_struct_writer(
   out << indent() << "public void Write(TProtocol oprot) {" << endl;
   indent_up();
 
-  string name = tstruct->get_name();
+  const string& name = tstruct->get_name();
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -681,7 +681,7 @@ void t_csharp_generator::generate_csharp_struct_result_writer(
   indent(out) << "public void Write(TProtocol oprot) {" << endl;
   indent_up();
 
-  string name = tstruct->get_name();
+  const string& name = tstruct->get_name();
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
 

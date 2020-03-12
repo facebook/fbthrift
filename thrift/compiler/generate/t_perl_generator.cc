@@ -190,7 +190,7 @@ class t_perl_generator : public t_oop_generator {
     std::string::size_type loc;
 
     if (ns.size() > 0) {
-      while ((loc = ns.find(".")) != std::string::npos) {
+      while ((loc = ns.find('.')) != std::string::npos) {
         dirs.push_back(ns.substr(0, loc));
         ns = ns.substr(loc + 1);
       }
@@ -207,7 +207,7 @@ class t_perl_generator : public t_oop_generator {
     std::string::size_type loc;
 
     if (ns.size() > 0) {
-      while ((loc = ns.find(".")) != std::string::npos) {
+      while ((loc = ns.find('.')) != std::string::npos) {
         result += ns.substr(0, loc);
         result += "::";
         ns = ns.substr(loc + 1);
@@ -650,7 +650,7 @@ void t_perl_generator::generate_perl_struct_reader(
 void t_perl_generator::generate_perl_struct_writer(
     ofstream& out,
     t_struct* tstruct) {
-  string name = tstruct->get_name();
+  const string& name = tstruct->get_name();
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
 

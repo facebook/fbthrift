@@ -678,7 +678,7 @@ void t_ocaml_generator::generate_ocaml_struct_reader(
 void t_ocaml_generator::generate_ocaml_struct_writer(
     ofstream& out,
     t_struct* tstruct) {
-  string name = tstruct->get_name();
+  const string& name = tstruct->get_name();
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
   string str = tmp("_str");

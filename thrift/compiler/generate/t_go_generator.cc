@@ -791,7 +791,7 @@ void t_go_generator::init_generator() {
 
   string::size_type loc;
 
-  while ((loc = target.find(".")) != string::npos) {
+  while ((loc = target.find('.')) != string::npos) {
     target.replace(loc, 1, 1, '/');
   }
 
@@ -1708,7 +1708,7 @@ void t_go_generator::generate_go_struct_writer(
     bool is_result,
     bool uses_countsetfields) {
   (void)is_result;
-  string name(tstruct->get_name());
+  const string& name = tstruct->get_name();
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
   indent(out) << "func (p *" << tstruct_name
@@ -1906,11 +1906,11 @@ void t_go_generator::generate_service_interface(t_service* tservice) {
   string extends = "";
   string extends_if = "";
   string serviceName(publicize(tservice->get_name()));
-  string interfaceName = serviceName;
+  const string& interfaceName = serviceName;
 
   if (tservice->get_extends() != nullptr) {
     extends = type_name(tservice->get_extends());
-    size_t index = extends.rfind(".");
+    size_t index = extends.rfind('.');
 
     if (index != string::npos) {
       extends_if = "\n" + indent() + "  " + extends.substr(0, index + 1) +
@@ -2146,7 +2146,7 @@ void t_go_generator::generate_service_client(
 
   if (tservice->get_extends() != nullptr) {
     extends = type_name(tservice->get_extends());
-    size_t index = extends.rfind(".");
+    size_t index = extends.rfind('.');
 
     if (index != string::npos) {
       extends_client = extends.substr(0, index + 1) +
@@ -2159,7 +2159,7 @@ void t_go_generator::generate_service_client(
     }
   }
 
-  extends_field = extends_client.substr(extends_client.find(".") + 1);
+  extends_field = extends_client.substr(extends_client.find('.') + 1);
 
   generate_go_docstring(f_service_, tservice);
   f_service_ << indent() << "type " << clientTypeName << " struct {" << endl;
@@ -2253,7 +2253,7 @@ void t_go_generator::generate_service_remote(t_service* tservice) {
   string service_module = get_real_go_module(program_);
   string::size_type loc;
 
-  while ((loc = service_module.find(".")) != string::npos) {
+  while ((loc = service_module.find('.')) != string::npos) {
     service_module.replace(loc, 1, 1, '/');
   }
   if (!gen_package_prefix_.empty()) {
@@ -2745,7 +2745,7 @@ void t_go_generator::generate_service_server(t_service* tservice) {
 
   if (tservice->get_extends() != nullptr) {
     extends = type_name(tservice->get_extends());
-    size_t index = extends.rfind(".");
+    size_t index = extends.rfind('.');
 
     if (index != string::npos) {
       extends_processor = extends.substr(0, index + 1) +

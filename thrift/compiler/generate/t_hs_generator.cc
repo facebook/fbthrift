@@ -689,7 +689,7 @@ void t_hs_generator::generate_hs_struct_definition(
       } else {
         indent(out) << ", ";
       }
-      string mname = m_iter->get_name();
+      const string& mname = m_iter->get_name();
       out << field_name(tname, mname) << " :: ";
       if (m_iter->get_req() == t_field::T_OPTIONAL ||
           ((t_type*)m_iter->get_type())->is_xception()) {
@@ -932,7 +932,7 @@ void t_hs_generator::generate_hs_struct_writer(
         } else {
           out << ", ";
         }
-        string mname = f_iter->get_name();
+        const string& mname = f_iter->get_name();
         int32_t key = f_iter->get_key();
         out << "(\\" << v << " -> (" << key << ", (\"" << mname << "\",";
         generate_serialize_type(out, f_iter->get_type(), v);
@@ -960,7 +960,7 @@ void t_hs_generator::generate_hs_struct_writer(
     } else {
       indent(out) << ", ";
     }
-    string mname = f_iter->get_name();
+    const string& mname = f_iter->get_name();
     int32_t key = f_iter->get_key();
     out << "(\\";
     out << v << " -> ";
@@ -1109,7 +1109,7 @@ void t_hs_generator::generate_hs_typemap(ofstream& out, t_struct* tstruct) {
   indent(out) << "typemap_" << name << " = Map.fromList [";
   bool first = true;
   for (const auto& f_iter : fields) {
-    string mname = f_iter->get_name();
+    const string& mname = f_iter->get_name();
     if (!first) {
       out << ",";
     }
@@ -1314,7 +1314,7 @@ void t_hs_generator::generate_service_client(t_service* tservice) {
 
     bool first = true;
     for (auto& fld_iter : fields) {
-      string fieldname = fld_iter->get_name();
+      const string& fieldname = fld_iter->get_name();
       f_client_ << (first ? "" : ",");
       f_client_ << qualifier << field_name(argsname, fieldname) << "=";
       if (fld_iter->get_req() == t_field::T_OPTIONAL ||

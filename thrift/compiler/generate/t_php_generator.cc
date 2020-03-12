@@ -624,7 +624,6 @@ void t_php_generator::generate_json_reader(ofstream& out, t_struct* tstruct) {
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
-  string name = tstruct->get_name();
   indent(out) << "public function "
               << "readFromJson($jsonText) {" << endl;
 
@@ -1496,7 +1495,7 @@ void t_php_generator::generate_php_struct_reader(
 void t_php_generator::generate_php_struct_writer(
     ofstream& out,
     t_struct* tstruct) {
-  string name = tstruct->get_name();
+  const string& name = tstruct->get_name();
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -1826,7 +1825,7 @@ void t_php_generator::generate_process_function(
       "_" + tfunction->get_name() + "_args";
   string resultname = php_namespace(tservice->get_program()) + service_name_ +
       "_" + tfunction->get_name() + "_result";
-  string fn_name = tfunction->get_name();
+  const string& fn_name = tfunction->get_name();
 
   f_service_ << indent()
              << "$handler_ctx = $this->eventHandler_->getHandlerContext('"

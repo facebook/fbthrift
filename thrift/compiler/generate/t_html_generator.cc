@@ -381,7 +381,7 @@ int t_html_generator::print_type(t_type* ttype) {
     len = ttype->get_name().size();
   } else {
     string prog_name = ttype->get_program()->get_name();
-    string type_name = ttype->get_name();
+    const string& type_name = ttype->get_name();
     f_out_ << "<a href=\"" << prog_name << ".html#";
     if (ttype->is_typedef()) {
       f_out_ << "Typedef_";

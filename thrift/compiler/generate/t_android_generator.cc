@@ -50,7 +50,7 @@ void t_android_generator::init_generator() {
   string dir = package_name_;
   string subdir = get_out_dir();
   string::size_type loc;
-  while ((loc = dir.find(".")) != string::npos) {
+  while ((loc = dir.find('.')) != string::npos) {
     subdir = subdir + "/" + dir.substr(0, loc);
     boost::filesystem::create_directory(subdir);
     dir = dir.substr(loc + 1);

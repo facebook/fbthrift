@@ -466,7 +466,7 @@ void t_json_generator::generate_const(t_const* tconst) {
  * @param tstruct The struct definition
  */
 void t_json_generator::generate_struct(t_struct* tstruct) {
-  string name = tstruct->get_name();
+  const string& name = tstruct->get_name();
   indent(f_out_) << "\"" << name << "\" : {" << endl;
   indent_up();
   print_lineno(tstruct->get_lineno());

@@ -203,7 +203,7 @@ class t_js_generator : public t_oop_generator {
     std::vector<std::string> pieces;
 
     if (ns.size() > 0) {
-      while ((loc = ns.find(".")) != std::string::npos) {
+      while ((loc = ns.find('.')) != std::string::npos) {
         pieces.push_back(ns.substr(0, loc));
         ns = ns.substr(loc + 1);
       }
@@ -723,7 +723,7 @@ void t_js_generator::generate_js_struct_reader(
 void t_js_generator::generate_js_struct_writer(
     ofstream& out,
     t_struct* tstruct) {
-  string name = tstruct->get_name();
+  const string& name = tstruct->get_name();
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
 

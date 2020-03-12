@@ -78,7 +78,7 @@ class t_d_generator : public t_oop_generator {
     string dir = program_->get_namespace("d");
     string subdir = get_out_dir();
     string::size_type loc;
-    while ((loc = dir.find(".")) != string::npos) {
+    while ((loc = dir.find('.')) != string::npos) {
       subdir = subdir + "/" + dir.substr(0, loc);
       boost::filesystem::create_directory(subdir);
       dir = dir.substr(loc + 1);
@@ -170,7 +170,7 @@ class t_d_generator : public t_oop_generator {
   void generate_enum(t_enum* tenum) override {
     vector<t_enum_value*> constants = tenum->get_enum_values();
 
-    string enum_name = tenum->get_name();
+    const string& enum_name = tenum->get_name();
     f_types_ << indent() << "enum " << enum_name << " {" << endl;
 
     indent_up();
@@ -382,7 +382,7 @@ class t_d_generator : public t_oop_generator {
    * Writes a server skeleton for the passed service to out.
    */
   void print_server_skeleton(ostream& out, t_service* tservice) {
-    string svc_name = tservice->get_name();
+    const string& svc_name = tservice->get_name();
 
     out << "/*" << endl
         << " * This auto-generated skeleton file illustrates how to build a server. If you"

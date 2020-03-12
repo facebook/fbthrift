@@ -177,7 +177,7 @@ void parsing_driver::parse_file() {
 // else (e.g. `util.{h|cc}`) once everything gets consolidated into `parse/`.
 /* static */ std::string
     parsing_driver::directory_name(const std::string& filename) {
-  std::string::size_type slash = filename.rfind("/");
+  std::string::size_type slash = filename.rfind('/');
   // No slash, just use the current directory
   if (slash == std::string::npos) {
     return ".";

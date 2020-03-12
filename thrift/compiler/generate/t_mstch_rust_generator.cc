@@ -1412,7 +1412,7 @@ void t_mstch_rust_generator::load_crate_map(const std::string& path) {
     sources[crate_name].push_back(thrift_name);
   }
 
-  for (auto source : sources) {
+  for (const auto& source : sources) {
     std::string crate_name;
     auto thrift_names = source.second;
     auto multifile = thrift_names.size() > 1;
@@ -1427,7 +1427,7 @@ void t_mstch_rust_generator::load_crate_map(const std::string& path) {
     }
 
     if (multifile) {
-      for (auto thrift_name : thrift_names) {
+      for (const auto& thrift_name : thrift_names) {
         options_.cratemap[thrift_name] =
             crate_name + "::" + mangle(thrift_name);
       }

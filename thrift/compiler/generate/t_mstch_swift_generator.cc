@@ -57,7 +57,7 @@ std::string get_constants_class_name(const t_program& prog) {
     }
 
     if (java_class_name == "" ||
-        java_class_name.find(".") != std::string::npos) {
+        java_class_name.find('.') != std::string::npos) {
       throw std::runtime_error{"Java Constants Class Name `" + java_class_name +
                                "` is not well formatted."};
     }
