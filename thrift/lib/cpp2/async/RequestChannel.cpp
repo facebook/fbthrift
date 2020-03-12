@@ -196,17 +196,6 @@ void RequestChannel::sendRequestAsync(
 }
 
 void RequestChannel::sendRequestStream(
-    RpcOptions& rpcOptions,
-    std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<apache::thrift::transport::THeader> header,
-    RequestClientCallback::Ptr cb) {
-  StreamClientCallback* clientCallback = createStreamClientCallback(
-      std::move(cb), rpcOptions.getChunkBufferSize());
-  sendRequestStream(
-      rpcOptions, std::move(buf), std::move(header), clientCallback);
-}
-
-void RequestChannel::sendRequestStream(
     RpcOptions&,
     std::unique_ptr<folly::IOBuf>,
     std::shared_ptr<transport::THeader>,
@@ -246,19 +235,6 @@ void RequestChannel::sendRequestNoResponse(
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestClientCallback::Ptr clientCallback) {
   sendRequestNoResponse(
-      rpcOptions,
-      serializeRequest(methodName, std::move(request), getProtocolId()),
-      std::move(header),
-      std::move(clientCallback));
-}
-
-void RequestChannel::sendRequestStream(
-    RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
-    SerializedRequest&& request,
-    std::shared_ptr<apache::thrift::transport::THeader> header,
-    RequestClientCallback::Ptr clientCallback) {
-  sendRequestStream(
       rpcOptions,
       serializeRequest(methodName, std::move(request), getProtocolId()),
       std::move(header),

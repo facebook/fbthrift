@@ -143,24 +143,6 @@ void PooledRequestChannel::sendRequestStream(
     RpcOptions& options,
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<transport::THeader> header,
-    RequestClientCallback::Ptr cob) {
-  if (!cob->isInlineSafe()) {
-    cob = RequestClientCallback::Ptr(new ExecutorRequestCallback<false>(
-        std::move(cob), getKeepAliveToken(callbackExecutor_)));
-  }
-  sendRequestImpl([options = std::move(options),
-                   buf = std::move(buf),
-                   header = std::move(header),
-                   cob = std::move(cob)](Impl& channel) mutable {
-    channel.sendRequestStream(
-        options, std::move(buf), std::move(header), std::move(cob));
-  });
-}
-
-void PooledRequestChannel::sendRequestStream(
-    RpcOptions& options,
-    std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<transport::THeader> header,
     StreamClientCallback* cob) {
   sendRequestImpl([options = std::move(options),
                    buf = std::move(buf),
