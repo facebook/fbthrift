@@ -65,23 +65,25 @@ std::unique_ptr<folly::IOBuf> serializeRequest(
 
   // We skip writeMessageEnd because for both Binary and Compact it's a noop.
 }
-
-std::unique_ptr<folly::IOBuf> serializeRequest(
-    folly::StringPiece methodName,
-    SerializedRequest&& request,
-    uint16_t protocolId) {
-  switch (protocolId) {
-    case protocol::T_BINARY_PROTOCOL:
-      return serializeRequest<BinaryProtocolWriter>(
-          methodName, std::move(request.buffer));
-    case protocol::T_COMPACT_PROTOCOL:
-      return serializeRequest<CompactProtocolWriter>(
-          methodName, std::move(request.buffer));
-    default:
-      LOG(FATAL) << "Unsupported protocolId: " << protocolId;
-  };
-}
 } // namespace
+
+LegacySerializedRequest::LegacySerializedRequest(
+    uint16_t protocolId,
+    folly::StringPiece methodName,
+    SerializedRequest&& serializedRequest)
+    : buffer([&] {
+        switch (protocolId) {
+          case protocol::T_BINARY_PROTOCOL:
+            return serializeRequest<BinaryProtocolWriter>(
+                methodName, std::move(serializedRequest.buffer));
+
+          case protocol::T_COMPACT_PROTOCOL:
+            return serializeRequest<CompactProtocolWriter>(
+                methodName, std::move(serializedRequest.buffer));
+          default:
+            LOG(FATAL) << "Unsupported protocolId: " << protocolId;
+        }
+      }()) {}
 
 void RequestChannel::sendRequestAsync(
     apache::thrift::RpcOptions& rpcOptions,
@@ -197,12 +199,11 @@ void RequestChannel::sendRequestAsync(
 
 void RequestChannel::sendRequestResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<folly::IOBuf> buf,
+    LegacySerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestClientCallback::Ptr clientCallback) {
   if (auto envelopeAndRequest =
-          EnvelopeUtil::stripRequestEnvelope(std::move(buf))) {
-    DCHECK_EQ(getProtocolId(), envelopeAndRequest->first.protocolId);
+          EnvelopeUtil::stripRequestEnvelope(std::move(request.buffer))) {
     return sendRequestResponse(
         rpcOptions,
         envelopeAndRequest->first.methodName,
@@ -216,27 +217,13 @@ void RequestChannel::sendRequestResponse(
           "Unexpected problem stripping envelope"));
 }
 
-void RequestChannel::sendRequestResponse(
-    RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
-    SerializedRequest&& request,
-    std::shared_ptr<apache::thrift::transport::THeader> header,
-    RequestClientCallback::Ptr clientCallback) {
-  sendRequestResponse(
-      rpcOptions,
-      serializeRequest(methodName, std::move(request), getProtocolId()),
-      std::move(header),
-      std::move(clientCallback));
-}
-
 void RequestChannel::sendRequestNoResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<folly::IOBuf> buf,
+    LegacySerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestClientCallback::Ptr clientCallback) {
   if (auto envelopeAndRequest =
-          EnvelopeUtil::stripRequestEnvelope(std::move(buf))) {
-    DCHECK_EQ(getProtocolId(), envelopeAndRequest->first.protocolId);
+          EnvelopeUtil::stripRequestEnvelope(std::move(request.buffer))) {
     return sendRequestNoResponse(
         rpcOptions,
         envelopeAndRequest->first.methodName,
@@ -250,27 +237,13 @@ void RequestChannel::sendRequestNoResponse(
           "Unexpected problem stripping envelope"));
 }
 
-void RequestChannel::sendRequestNoResponse(
-    RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
-    SerializedRequest&& request,
-    std::shared_ptr<apache::thrift::transport::THeader> header,
-    RequestClientCallback::Ptr clientCallback) {
-  sendRequestNoResponse(
-      rpcOptions,
-      serializeRequest(methodName, std::move(request), getProtocolId()),
-      std::move(header),
-      std::move(clientCallback));
-}
-
 void RequestChannel::sendRequestStream(
     RpcOptions& rpcOptions,
-    std::unique_ptr<folly::IOBuf> buf,
+    LegacySerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     StreamClientCallback* clientCallback) {
   if (auto envelopeAndRequest =
-          EnvelopeUtil::stripRequestEnvelope(std::move(buf))) {
-    DCHECK_EQ(getProtocolId(), envelopeAndRequest->first.protocolId);
+          EnvelopeUtil::stripRequestEnvelope(std::move(request.buffer))) {
     return sendRequestStream(
         rpcOptions,
         envelopeAndRequest->first.methodName,
@@ -285,26 +258,23 @@ void RequestChannel::sendRequestStream(
 }
 
 void RequestChannel::sendRequestStream(
-    RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
-    SerializedRequest&& request,
-    std::shared_ptr<transport::THeader> header,
+    RpcOptions&,
+    folly::StringPiece,
+    SerializedRequest&&,
+    std::shared_ptr<transport::THeader>,
     StreamClientCallback* clientCallback) {
-  sendRequestStream(
-      rpcOptions,
-      serializeRequest(methodName, std::move(request), getProtocolId()),
-      std::move(header),
-      clientCallback);
+  clientCallback->onFirstResponseError(
+      folly::make_exception_wrapper<transport::TTransportException>(
+          "This channel doesn't support stream RPC"));
 }
 
 void RequestChannel::sendRequestSink(
     RpcOptions& rpcOptions,
-    std::unique_ptr<folly::IOBuf> buf,
+    LegacySerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     SinkClientCallback* clientCallback) {
   if (auto envelopeAndRequest =
-          EnvelopeUtil::stripRequestEnvelope(std::move(buf))) {
-    DCHECK_EQ(getProtocolId(), envelopeAndRequest->first.protocolId);
+          EnvelopeUtil::stripRequestEnvelope(std::move(request.buffer))) {
     return sendRequestSink(
         rpcOptions,
         envelopeAndRequest->first.methodName,
@@ -319,16 +289,14 @@ void RequestChannel::sendRequestSink(
 }
 
 void RequestChannel::sendRequestSink(
-    RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
-    SerializedRequest&& request,
-    std::shared_ptr<transport::THeader> header,
+    RpcOptions&,
+    folly::StringPiece,
+    SerializedRequest&&,
+    std::shared_ptr<transport::THeader>,
     SinkClientCallback* clientCallback) {
-  sendRequestSink(
-      rpcOptions,
-      serializeRequest(methodName, std::move(request), getProtocolId()),
-      std::move(header),
-      clientCallback);
+  clientCallback->onFirstResponseError(
+      folly::make_exception_wrapper<transport::TTransportException>(
+          "This channel doesn't support sink RPC"));
 }
 
 } // namespace thrift

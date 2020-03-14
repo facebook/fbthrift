@@ -58,6 +58,18 @@ struct SerializedRequest {
   std::unique_ptr<folly::IOBuf> buffer;
 };
 
+struct LegacySerializedRequest {
+  /* implicit */ LegacySerializedRequest(std::unique_ptr<folly::IOBuf> buffer_)
+      : buffer(std::move(buffer_)) {}
+
+  LegacySerializedRequest(
+      uint16_t protocolId,
+      folly::StringPiece methodName,
+      SerializedRequest&& serializedRequest);
+
+  std::unique_ptr<folly::IOBuf> buffer;
+};
+
 /**
  * RequestChannel defines an asynchronous API for request-based I/O.
  */
@@ -101,11 +113,11 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       folly::StringPiece methodName,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
-      RequestClientCallback::Ptr);
+      RequestClientCallback::Ptr) = 0;
 
-  virtual void sendRequestResponse(
+  void sendRequestResponse(
       RpcOptions&,
-      std::unique_ptr<folly::IOBuf>,
+      LegacySerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr);
 
@@ -118,11 +130,11 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       folly::StringPiece methodName,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
-      RequestClientCallback::Ptr);
+      RequestClientCallback::Ptr) = 0;
 
-  virtual void sendRequestNoResponse(
+  void sendRequestNoResponse(
       RpcOptions&,
-      std::unique_ptr<folly::IOBuf>,
+      LegacySerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr);
 
@@ -141,9 +153,9 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* clientCallback);
 
-  virtual void sendRequestStream(
+  void sendRequestStream(
       RpcOptions& rpcOptions,
-      std::unique_ptr<folly::IOBuf> buf,
+      LegacySerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* clientCallback);
 
@@ -154,9 +166,9 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       std::shared_ptr<transport::THeader> header,
       SinkClientCallback* clientCallback);
 
-  virtual void sendRequestSink(
+  void sendRequestSink(
       RpcOptions& rpcOptions,
-      std::unique_ptr<folly::IOBuf> buf,
+      LegacySerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       SinkClientCallback* clientCallback);
 

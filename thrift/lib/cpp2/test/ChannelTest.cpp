@@ -46,11 +46,23 @@ using std::make_unique;
 using std::shared_ptr;
 using std::unique_ptr;
 
-unique_ptr<IOBuf> makeTestBuf(size_t len) {
+unique_ptr<IOBuf> makeTestBufImpl(size_t len) {
   unique_ptr<IOBuf> buf = IOBuf::create(len);
   buf->IOBuf::append(len);
   memset(buf->writableData(), char(0x80), len);
-  return buf;
+  return LegacySerializedRequest(
+             T_COMPACT_PROTOCOL, "test", SerializedRequest(std::move(buf)))
+      .buffer;
+}
+
+unique_ptr<IOBuf> makeTestBuf(size_t len) {
+  for (auto requestLen = len; requestLen > 0; --requestLen) {
+    auto buf = makeTestBufImpl(requestLen);
+    if (buf->computeChainDataLength() == len) {
+      return buf;
+    }
+  }
+  LOG(FATAL) << "Can't generate valid legacy request of given length: " << len;
 }
 
 class EventBaseAborter : public folly::AsyncTimeout {
@@ -369,7 +381,7 @@ class MessageTest : public SocketPairTest<Cpp2Channel, Cpp2Channel>,
 };
 
 TEST(Channel, Cpp2Channel) {
-  MessageTest(1).run();
+  MessageTest(10).run();
   MessageTest(100).run();
   MessageTest(1024 * 1024).run();
 }
@@ -377,7 +389,7 @@ TEST(Channel, Cpp2Channel) {
 TEST(Channel, Cpp2ChannelSSL) {
   MessageTest::Config socketConfig;
   socketConfig.ssl = true;
-  MessageTest(1, socketConfig).run();
+  MessageTest(10, socketConfig).run();
   MessageTest(100, socketConfig).run();
   MessageTest(1024 * 1024, socketConfig).run();
 }
@@ -501,7 +513,7 @@ class HeaderChannelTest
 };
 
 TEST(Channel, HeaderChannelTest) {
-  HeaderChannelTest(1).run();
+  HeaderChannelTest(10).run();
   HeaderChannelTest(100).run();
   HeaderChannelTest(1024 * 1024).run();
 }
@@ -509,7 +521,7 @@ TEST(Channel, HeaderChannelTest) {
 TEST(Channel, HeaderChannelTestSSL) {
   HeaderChannelTest::Config socketConfig;
   socketConfig.ssl = true;
-  HeaderChannelTest(1, socketConfig).run();
+  HeaderChannelTest(10, socketConfig).run();
   HeaderChannelTest(100, socketConfig).run();
   HeaderChannelTest(1024 * 1024, socketConfig).run();
 }
@@ -581,7 +593,7 @@ class InOrderTest
       public ResponseCallback {
  public:
   explicit InOrderTest(Config socketConfig = Config())
-      : SocketPairTest(socketConfig), len_(1) {}
+      : SocketPairTest(socketConfig), len_(10) {}
 
   class Callback : public TestRequestCallback {
    public:
@@ -726,13 +738,13 @@ class BadSeqIdTest
 };
 
 TEST(Channel, BadSeqIdTest) {
-  BadSeqIdTest(1).run();
+  BadSeqIdTest(10).run();
 }
 
 TEST(Channel, BadSeqIdTestSSL) {
   BadSeqIdTest::Config socketConfig;
   socketConfig.ssl = true;
-  BadSeqIdTest(1, socketConfig).run();
+  BadSeqIdTest(10, socketConfig).run();
 }
 
 class TimeoutTest
@@ -741,7 +753,7 @@ class TimeoutTest
       public ResponseCallback {
  public:
   explicit TimeoutTest(uint32_t timeout, Config socketConfig = Config())
-      : SocketPairTest(socketConfig), timeout_(timeout), len_(1) {}
+      : SocketPairTest(socketConfig), timeout_(timeout), len_(10) {}
 
   void preLoop() override {
     TestRequestCallback::reset();
@@ -814,7 +826,7 @@ class OptionsTimeoutTest
       public ResponseCallback {
  public:
   explicit OptionsTimeoutTest(Config socketConfig = Config())
-      : SocketPairTest(socketConfig), len_(1) {}
+      : SocketPairTest(socketConfig), len_(10) {}
 
   void preLoop() override {
     TestRequestCallback::reset();
@@ -846,7 +858,7 @@ class OptionsTimeoutTest
   void postLoop() override {
     EXPECT_EQ(reply_, 1);
     EXPECT_EQ(replyError_, 1);
-    EXPECT_EQ(replyBytes_, 1);
+    EXPECT_EQ(replyBytes_, len_);
     EXPECT_EQ(closed_, false); // client timeouts do not close connection
     EXPECT_EQ(serverClosed_, false);
     EXPECT_EQ(request_, 2);

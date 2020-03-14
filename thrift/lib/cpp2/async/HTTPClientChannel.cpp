@@ -163,18 +163,30 @@ void HTTPClientChannel::destroy() {
 
 void HTTPClientChannel::sendRequestNoResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
+  auto buf =
+      LegacySerializedRequest(
+          header->getProtocolId(), methodName, std::move(serializedRequest))
+          .buffer;
+
   sendRequest_(
       rpcOptions, true, std::move(buf), std::move(header), std::move(cb));
 }
 
 void HTTPClientChannel::sendRequestResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
+  auto buf =
+      LegacySerializedRequest(
+          header->getProtocolId(), methodName, std::move(serializedRequest))
+          .buffer;
+
   sendRequest_(
       rpcOptions, false, std::move(buf), std::move(header), std::move(cb));
 }

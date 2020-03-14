@@ -100,9 +100,15 @@ bool HeaderClientChannel::clientSupportHeader() {
 // Client Interface
 void HeaderClientChannel::sendRequestNoResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
+  auto buf =
+      LegacySerializedRequest(
+          header->getProtocolId(), methodName, std::move(serializedRequest))
+          .buffer;
+
   setRequestHeaderOptions(header.get());
   addRpcOptionHeaders(header.get(), rpcOptions);
 
@@ -147,9 +153,15 @@ uint16_t HeaderClientChannel::getProtocolId() {
 
 void HeaderClientChannel::sendRequestResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
+  auto buf =
+      LegacySerializedRequest(
+          header->getProtocolId(), methodName, std::move(serializedRequest))
+          .buffer;
+
   // cb is not allowed to be null.
   DCHECK(cb);
 

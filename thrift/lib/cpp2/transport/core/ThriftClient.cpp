@@ -66,9 +66,15 @@ void ThriftClient::setHTTPUrl(const std::string& url) {
 
 void ThriftClient::sendRequestResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
+  auto buf =
+      LegacySerializedRequest(
+          header->getProtocolId(), methodName, std::move(serializedRequest))
+          .buffer;
+
   return sendRequestHelper(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
@@ -79,9 +85,15 @@ void ThriftClient::sendRequestResponse(
 
 void ThriftClient::sendRequestNoResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
+  auto buf =
+      LegacySerializedRequest(
+          header->getProtocolId(), methodName, std::move(serializedRequest))
+          .buffer;
+
   sendRequestHelper(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_NO_RESPONSE,

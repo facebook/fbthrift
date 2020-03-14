@@ -91,42 +91,20 @@ class HeaderClientChannel : public ClientChannel,
   // Client interface from RequestChannel
   using RequestChannel::sendRequestNoResponse;
   using RequestChannel::sendRequestResponse;
-  using RequestChannel::sendRequestSink;
-  using RequestChannel::sendRequestStream;
 
   void sendRequestResponse(
       RpcOptions&,
-      std::unique_ptr<folly::IOBuf>,
+      folly::StringPiece,
+      SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) override;
 
   void sendRequestNoResponse(
       RpcOptions&,
-      std::unique_ptr<folly::IOBuf>,
+      folly::StringPiece,
+      SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) override;
-
-  void sendRequestStream(
-      RpcOptions&,
-      folly::StringPiece,
-      SerializedRequest&&,
-      std::shared_ptr<transport::THeader>,
-      StreamClientCallback* clientCallback) override {
-    clientCallback->onFirstResponseError(
-        folly::make_exception_wrapper<transport::TTransportException>(
-            "HeaderClientChannel doesn't support stream RPC"));
-  }
-
-  void sendRequestSink(
-      RpcOptions&,
-      folly::StringPiece,
-      SerializedRequest&&,
-      std::shared_ptr<transport::THeader>,
-      SinkClientCallback* clientCallback) override {
-    clientCallback->onFirstResponseError(
-        folly::make_exception_wrapper<transport::TTransportException>(
-            "HeaderClientChannel doesn't support sink RPC"));
-  }
 
   void setCloseCallback(CloseCallback*) override;
 
