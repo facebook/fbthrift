@@ -714,15 +714,8 @@ TEST_F(RocketNetworkTest, RequestStreamNewApiBasic) {
   auto channel = RocketClientChannel::newChannel(std::move(socket));
 
   constexpr uint64_t kNumRequestedPayloads = 200;
-  folly::IOBufQueue queue;
-  CompactProtocolWriter writer;
-  writer.setOutput(&queue);
-  writer.writeMessageBegin("dummy", T_CALL, 0);
-
-  auto payload = folly::IOBuf::copyBuffer(folly::sformat(
-      "{}generate:{}",
-      folly::StringPiece{queue.move()->coalesce()},
-      kNumRequestedPayloads));
+  auto payload = folly::IOBuf::copyBuffer(
+      folly::sformat("generate:{}", kNumRequestedPayloads));
 
   RpcOptions rpcOptions;
   rpcOptions.setChunkBufferSize(0);
@@ -730,7 +723,8 @@ TEST_F(RocketNetworkTest, RequestStreamNewApiBasic) {
 
   channel->sendRequestStream(
       rpcOptions,
-      std::move(payload),
+      "dummy",
+      apache::thrift::SerializedRequest(std::move(payload)),
       std::make_shared<THeader>(),
       &clientCallback);
 
@@ -750,22 +744,15 @@ TEST_F(RocketNetworkTest, RequestStreamNewApiError) {
   auto channel = RocketClientChannel::newChannel(std::move(socket));
 
   constexpr uint64_t kNumRequestedPayloads = 200;
-  folly::IOBufQueue queue;
-  CompactProtocolWriter writer;
-  writer.setOutput(&queue);
-  writer.writeMessageBegin("dummy", T_CALL, 0);
-
-  auto payload = folly::IOBuf::copyBuffer(folly::sformat(
-      "{}error:application",
-      folly::StringPiece{queue.move()->coalesce()},
-      kNumRequestedPayloads));
+  auto payload = folly::IOBuf::copyBuffer("error:application");
 
   RpcOptions rpcOptions;
   TestClientCallback clientCallback(evb, kNumRequestedPayloads);
 
   channel->sendRequestStream(
       rpcOptions,
-      std::move(payload),
+      "dummy",
+      apache::thrift::SerializedRequest(std::move(payload)),
       std::make_shared<THeader>(),
       &clientCallback);
 
@@ -786,14 +773,8 @@ TEST_F(RocketNetworkTest, RequestStreamNewApiHeadersPush) {
 
   {
     constexpr uint64_t kNumRequestedHeaders = 200;
-    folly::IOBufQueue queue;
-    CompactProtocolWriter writer;
-    writer.setOutput(&queue);
-    writer.writeMessageBegin("dummy", T_CALL, 0);
-    auto payload = folly::IOBuf::copyBuffer(folly::sformat(
-        "{}generateheaders:{}",
-        folly::StringPiece{queue.move()->coalesce()},
-        kNumRequestedHeaders));
+    auto payload = folly::IOBuf::copyBuffer(
+        folly::sformat("generateheaders:{}", kNumRequestedHeaders));
 
     RpcOptions rpcOptions;
     rpcOptions.setChunkBufferSize(0);
@@ -801,7 +782,8 @@ TEST_F(RocketNetworkTest, RequestStreamNewApiHeadersPush) {
 
     channel->sendRequestStream(
         rpcOptions,
-        std::move(payload),
+        "dummy",
+        apache::thrift::SerializedRequest(std::move(payload)),
         std::make_shared<THeader>(),
         &clientCallback);
 
@@ -814,14 +796,8 @@ TEST_F(RocketNetworkTest, RequestStreamNewApiHeadersPush) {
 
   {
     constexpr uint64_t kNumEchoHeaders = 200;
-    folly::IOBufQueue queue;
-    CompactProtocolWriter writer;
-    writer.setOutput(&queue);
-    writer.writeMessageBegin("dummy", T_CALL, 0);
-    auto payload = folly::IOBuf::copyBuffer(folly::sformat(
-        "{}echoheaders:{}",
-        folly::StringPiece{queue.move()->coalesce()},
-        kNumEchoHeaders));
+    auto payload = folly::IOBuf::copyBuffer(
+        folly::sformat("echoheaders:{}", kNumEchoHeaders));
 
     RpcOptions rpcOptions;
     rpcOptions.setChunkBufferSize(0);
@@ -829,7 +805,8 @@ TEST_F(RocketNetworkTest, RequestStreamNewApiHeadersPush) {
 
     channel->sendRequestStream(
         rpcOptions,
-        std::move(payload),
+        "dummy",
+        apache::thrift::SerializedRequest(std::move(payload)),
         std::make_shared<THeader>(),
         &clientCallback);
 

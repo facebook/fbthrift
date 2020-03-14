@@ -238,26 +238,6 @@ void RequestChannel::sendRequestNoResponse(
 }
 
 void RequestChannel::sendRequestStream(
-    RpcOptions& rpcOptions,
-    LegacySerializedRequest&& request,
-    std::shared_ptr<transport::THeader> header,
-    StreamClientCallback* clientCallback) {
-  if (auto envelopeAndRequest =
-          EnvelopeUtil::stripRequestEnvelope(std::move(request.buffer))) {
-    return sendRequestStream(
-        rpcOptions,
-        envelopeAndRequest->first.methodName,
-        SerializedRequest(std::move(envelopeAndRequest->second)),
-        std::move(header),
-        clientCallback);
-  }
-  clientCallback->onFirstResponseError(
-      folly::make_exception_wrapper<transport::TTransportException>(
-          transport::TTransportException::CORRUPTED_DATA,
-          "Unexpected problem stripping envelope"));
-}
-
-void RequestChannel::sendRequestStream(
     RpcOptions&,
     folly::StringPiece,
     SerializedRequest&&,
@@ -266,26 +246,6 @@ void RequestChannel::sendRequestStream(
   clientCallback->onFirstResponseError(
       folly::make_exception_wrapper<transport::TTransportException>(
           "This channel doesn't support stream RPC"));
-}
-
-void RequestChannel::sendRequestSink(
-    RpcOptions& rpcOptions,
-    LegacySerializedRequest&& request,
-    std::shared_ptr<transport::THeader> header,
-    SinkClientCallback* clientCallback) {
-  if (auto envelopeAndRequest =
-          EnvelopeUtil::stripRequestEnvelope(std::move(request.buffer))) {
-    return sendRequestSink(
-        rpcOptions,
-        envelopeAndRequest->first.methodName,
-        SerializedRequest(std::move(envelopeAndRequest->second)),
-        std::move(header),
-        clientCallback);
-  }
-  clientCallback->onFirstResponseError(
-      folly::make_exception_wrapper<transport::TTransportException>(
-          transport::TTransportException::CORRUPTED_DATA,
-          "Unexpected problem stripping envelope"));
 }
 
 void RequestChannel::sendRequestSink(
