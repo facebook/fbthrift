@@ -48,7 +48,8 @@ class HibernatingRequestChannel::RequestCallback
 
 void HibernatingRequestChannel::sendRequestResponse(
     RpcOptions& options,
-    std::unique_ptr<folly::IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     apache::thrift::RequestClientCallback::Ptr cob) {
   auto implPtr = impl();
@@ -56,7 +57,11 @@ void HibernatingRequestChannel::sendRequestResponse(
   cob = apache::thrift::RequestClientCallback::Ptr(
       new RequestCallback(std::move(cob), std::move(implPtr)));
   implRef.sendRequestResponse(
-      options, std::move(buf), std::move(header), std::move(cob));
+      options,
+      methodName,
+      std::move(request),
+      std::move(header),
+      std::move(cob));
 
   timeout_->scheduleTimeout(waitTime_.count());
 }

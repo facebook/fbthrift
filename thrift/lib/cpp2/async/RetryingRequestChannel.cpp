@@ -30,13 +30,15 @@ class RetryingRequestChannel::RequestCallback
       int retries,
       apache::thrift::RpcOptions options,
       apache::thrift::RequestClientCallback::Ptr cob,
-      std::unique_ptr<folly::IOBuf> buf,
+      folly::StringPiece methodName,
+      SerializedRequest&& request,
       std::shared_ptr<apache::thrift::transport::THeader> header)
       : impl_(std::move(impl)),
         retriesLeft_(retries),
         options_(options),
         cob_(std::move(cob)),
-        buf_(std::move(buf)),
+        methodName_(methodName.str()),
+        request_(std::move(request)),
         header_(std::move(header)) {
     if (retriesLeft_) {
       ka_ = std::move(ka);
@@ -76,7 +78,11 @@ class RetryingRequestChannel::RequestCallback
     }
 
     impl_->sendRequestResponse(
-        options_, buf_->clone(), header_, RequestClientCallback::Ptr(this));
+        options_,
+        methodName_,
+        SerializedRequest(request_.buffer->clone()),
+        header_,
+        RequestClientCallback::Ptr(this));
   }
 
   folly::Executor::KeepAlive<> ka_;
@@ -84,13 +90,15 @@ class RetryingRequestChannel::RequestCallback
   int retriesLeft_;
   apache::thrift::RpcOptions options_;
   RequestClientCallback::Ptr cob_;
-  std::unique_ptr<folly::IOBuf> buf_;
+  std::string methodName_;
+  SerializedRequest request_;
   std::shared_ptr<apache::thrift::transport::THeader> header_;
 };
 
 void RetryingRequestChannel::sendRequestResponse(
     apache::thrift::RpcOptions& options,
-    std::unique_ptr<folly::IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestClientCallback::Ptr cob) {
   cob = RequestClientCallback::Ptr(new RequestCallback(
@@ -99,11 +107,16 @@ void RetryingRequestChannel::sendRequestResponse(
       numRetries_,
       options,
       std::move(cob),
-      buf->clone(),
+      methodName,
+      SerializedRequest(request.buffer->clone()),
       header));
 
   return impl_->sendRequestResponse(
-      options, std::move(buf), std::move(header), std::move(cob));
+      options,
+      methodName,
+      std::move(request),
+      std::move(header),
+      std::move(cob));
 }
 } // namespace thrift
 } // namespace apache

@@ -105,7 +105,8 @@ class ExecutorRequestCallback final : public RequestClientCallback {
 
 void PooledRequestChannel::sendRequestResponse(
     RpcOptions& options,
-    std::unique_ptr<folly::IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
   if (!cob->isInlineSafe()) {
@@ -113,17 +114,23 @@ void PooledRequestChannel::sendRequestResponse(
         std::move(cob), getKeepAliveToken(callbackExecutor_)));
   }
   sendRequestImpl([options = std::move(options),
-                   buf = std::move(buf),
+                   methodNameStr = methodName.str(),
+                   request = std::move(request),
                    header = std::move(header),
                    cob = std::move(cob)](Impl& channel) mutable {
     channel.sendRequestResponse(
-        options, std::move(buf), std::move(header), std::move(cob));
+        options,
+        methodNameStr,
+        std::move(request),
+        std::move(header),
+        std::move(cob));
   });
 }
 
 void PooledRequestChannel::sendRequestNoResponse(
     RpcOptions& options,
-    std::unique_ptr<folly::IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
   if (!cob->isInlineSafe()) {
@@ -131,37 +138,48 @@ void PooledRequestChannel::sendRequestNoResponse(
         std::move(cob), getKeepAliveToken(callbackExecutor_)));
   }
   sendRequestImpl([options = std::move(options),
-                   buf = std::move(buf),
+                   methodNameStr = methodName.str(),
+                   request = std::move(request),
                    header = std::move(header),
                    cob = std::move(cob)](Impl& channel) mutable {
     channel.sendRequestNoResponse(
-        options, std::move(buf), std::move(header), std::move(cob));
+        options,
+        methodNameStr,
+        std::move(request),
+        std::move(header),
+        std::move(cob));
   });
 }
 
 void PooledRequestChannel::sendRequestStream(
     RpcOptions& options,
-    std::unique_ptr<folly::IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     StreamClientCallback* cob) {
   sendRequestImpl([options = std::move(options),
-                   buf = std::move(buf),
+                   methodNameStr = methodName.str(),
+                   request = std::move(request),
                    header = std::move(header),
                    cob](Impl& channel) mutable {
-    channel.sendRequestStream(options, std::move(buf), std::move(header), cob);
+    channel.sendRequestStream(
+        options, methodNameStr, std::move(request), std::move(header), cob);
   });
 }
 
 void PooledRequestChannel::sendRequestSink(
     RpcOptions& options,
-    std::unique_ptr<folly::IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     SinkClientCallback* cob) {
   sendRequestImpl([options = std::move(options),
-                   buf = std::move(buf),
+                   methodNameStr = methodName.str(),
+                   request = std::move(request),
                    header = std::move(header),
                    cob](Impl& channel) mutable {
-    channel.sendRequestSink(options, std::move(buf), std::move(header), cob);
+    channel.sendRequestSink(
+        options, methodNameStr, std::move(request), std::move(header), cob);
   });
 }
 

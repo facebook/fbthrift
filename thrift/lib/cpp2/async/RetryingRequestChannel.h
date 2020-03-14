@@ -39,13 +39,15 @@ class RetryingRequestChannel : public apache::thrift::RequestChannel {
 
   void sendRequestResponse(
       apache::thrift::RpcOptions& options,
-      std::unique_ptr<folly::IOBuf> buf,
+      folly::StringPiece methodName,
+      SerializedRequest&& request,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
   void sendRequestNoResponse(
       apache::thrift::RpcOptions&,
-      std::unique_ptr<folly::IOBuf>,
+      folly::StringPiece,
+      SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) override {
     LOG(FATAL) << "Not supported";

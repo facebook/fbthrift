@@ -46,13 +46,15 @@ class HibernatingRequestChannel : public RequestChannel {
 
   void sendRequestResponse(
       RpcOptions& options,
-      std::unique_ptr<folly::IOBuf> buf,
+      folly::StringPiece,
+      SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
   void sendRequestNoResponse(
       RpcOptions&,
-      std::unique_ptr<folly::IOBuf>,
+      folly::StringPiece,
+      SerializedRequest&&,
       std::shared_ptr<transport::THeader>,
       RequestClientCallback::Ptr) override {
     LOG(FATAL) << "Not supported";

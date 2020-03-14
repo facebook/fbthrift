@@ -54,15 +54,20 @@ class ReconnectingRequestChannel : public RequestChannel {
     return {new ReconnectingRequestChannel(evb, std::move(implCreator)), {}};
   }
 
+  using RequestChannel::sendRequestNoResponse;
+  using RequestChannel::sendRequestResponse;
+
   void sendRequestResponse(
       RpcOptions& options,
-      std::unique_ptr<folly::IOBuf> buf,
+      folly::StringPiece methodName,
+      SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
   void sendRequestNoResponse(
       RpcOptions&,
-      std::unique_ptr<folly::IOBuf>,
+      folly::StringPiece methodName,
+      SerializedRequest&& request,
       std::shared_ptr<transport::THeader>,
       RequestClientCallback::Ptr) override;
 

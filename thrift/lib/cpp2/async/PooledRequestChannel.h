@@ -58,28 +58,35 @@ class PooledRequestChannel : public RequestChannel {
 
   void sendRequestResponse(
       RpcOptions& options,
-      std::unique_ptr<folly::IOBuf> buf,
+      folly::StringPiece,
+      SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
   void sendRequestNoResponse(
       RpcOptions& options,
-      std::unique_ptr<folly::IOBuf> buf,
+      folly::StringPiece,
+      SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
   void sendRequestStream(
       RpcOptions& options,
-      std::unique_ptr<folly::IOBuf> buf,
+      folly::StringPiece,
+      SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* cob) override;
 
   void sendRequestSink(
       RpcOptions& options,
-      std::unique_ptr<folly::IOBuf> buf,
+      folly::StringPiece,
+      SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       SinkClientCallback* cob) override;
 
+  using RequestChannel::sendRequestNoResponse;
+  using RequestChannel::sendRequestResponse;
+  using RequestChannel::sendRequestSink;
   using RequestChannel::sendRequestStream;
 
   void setCloseCallback(CloseCallback*) override {

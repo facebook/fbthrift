@@ -61,26 +61,36 @@ class ChannelKeepAlive : public RequestClientCallback {
 
 void ReconnectingRequestChannel::sendRequestResponse(
     RpcOptions& options,
-    std::unique_ptr<folly::IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
   cob = RequestClientCallback::Ptr(
       new ChannelKeepAlive(impl_, std::move(cob), false));
 
   return impl().sendRequestResponse(
-      options, std::move(buf), std::move(header), std::move(cob));
+      options,
+      methodName,
+      std::move(request),
+      std::move(header),
+      std::move(cob));
 }
 
 void ReconnectingRequestChannel::sendRequestNoResponse(
     RpcOptions& options,
-    std::unique_ptr<folly::IOBuf> buf,
+    folly::StringPiece methodName,
+    SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
   cob = RequestClientCallback::Ptr(
       new ChannelKeepAlive(impl_, std::move(cob), true));
 
   return impl().sendRequestNoResponse(
-      options, std::move(buf), std::move(header), std::move(cob));
+      options,
+      methodName,
+      std::move(request),
+      std::move(header),
+      std::move(cob));
 }
 
 ReconnectingRequestChannel::Impl& ReconnectingRequestChannel::impl() {
