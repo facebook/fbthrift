@@ -106,6 +106,7 @@ string t_java_generator::java_struct_imports() {
  */
 string t_java_generator::java_thrift_imports() {
   return string() + "import com.facebook.thrift.*;\n" +
+      "import com.facebook.thrift.annotations.*;\n" +
       "import com.facebook.thrift.async.*;\n" +
       "import com.facebook.thrift.meta_data.*;\n" +
       "import com.facebook.thrift.server.*;\n" +
@@ -709,8 +710,10 @@ void t_java_generator::generate_union_getters_and_setters(
     }
 
     t_field* field = (*m_iter);
-
     generate_java_doc(out, field);
+    if (is_field_sensitive(field)) {
+      indent(out) << "@Sensitive" << endl;
+    }
     indent(out) << "public " << type_name(field->get_type()) << " "
                 << get_simple_getter_name(field) << "() {" << endl;
     indent(out) << "  return (" << type_name(field->get_type(), true)
@@ -1990,6 +1993,9 @@ void t_java_generator::generate_java_bean_boilerplate(
     // Simple getter
     std::string getter_name = get_simple_getter_name(field);
     generate_java_doc(out, field);
+    if (is_field_sensitive(field)) {
+      indent(out) << "@Sensitive" << endl;
+    }
     indent(out) << "public " << type_name(type) << " " << getter_name << "() {"
                 << endl;
     indent_up();
@@ -2129,9 +2135,7 @@ void t_java_generator::generate_java_struct_tostring(
       indent(out) << "sb.append(space);" << endl;
       indent(out) << "sb.append(\":\").append(space);" << endl;
 
-      auto is_sensitive = field->annotations_.find("java.sensitive") !=
-          field->annotations_.end();
-      if (is_sensitive) {
+      if (is_field_sensitive(field)) {
         indent(out) << "sb.append(\"<SENSITIVE FIELD>\");" << endl;
       } else {
         bool can_be_null = type_can_be_null(field->get_type());
@@ -4039,14 +4043,12 @@ void t_java_generator::generate_field_descs(ofstream& out, t_struct* tstruct) {
   vector<t_field*>::const_iterator m_iter;
 
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    auto is_sensitive = (*m_iter)->annotations_.find("java.sensitive") !=
-        (*m_iter)->annotations_.end();
     indent(out) << "private static final TField "
                 << constant_name((*m_iter)->get_name())
                 << "_FIELD_DESC = new TField(\"" << (*m_iter)->get_name()
                 << "\", " << type_to_enum((*m_iter)->get_type()) << ", "
                 << "(short)" << (*m_iter)->get_key();
-    if (is_sensitive) {
+    if (is_field_sensitive(*m_iter)) {
       out << ", new HashMap<String, Object>() {{ put(\"sensitive\", true); }}";
     }
     out << ");" << endl;

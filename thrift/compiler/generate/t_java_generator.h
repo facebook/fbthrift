@@ -330,6 +330,11 @@ class t_java_generator : public t_oop_generator {
         !func->get_returntype()->is_sink();
   }
 
+  bool is_field_sensitive(t_field* field) {
+    return field->annotations_.find("java.sensitive") !=
+        field->annotations_.end();
+  }
+
   std::string namespace_key_;
   bool generate_field_metadata_ = true;
   bool generate_immutable_structs_ = false;

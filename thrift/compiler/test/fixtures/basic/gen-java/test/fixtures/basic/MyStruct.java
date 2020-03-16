@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.BitSet;
 import java.util.Arrays;
 import com.facebook.thrift.*;
+import com.facebook.thrift.annotations.*;
 import com.facebook.thrift.async.*;
 import com.facebook.thrift.meta_data.*;
 import com.facebook.thrift.server.*;
