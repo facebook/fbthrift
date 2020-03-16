@@ -468,7 +468,7 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
     invariant(
       $this->_type === union1Enum::i,
       'get_i called on an instance of union1 whose current type is %s',
-      $this->_type,
+      (string)$this->_type,
     );
     return \nullthrows($this->i);
   }
@@ -483,7 +483,7 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
     invariant(
       $this->_type === union1Enum::d,
       'get_d called on an instance of union1 whose current type is %s',
-      $this->_type,
+      (string)$this->_type,
     );
     return \nullthrows($this->d);
   }
@@ -597,7 +597,7 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     invariant(
       $this->_type === union2Enum::i,
       'get_i called on an instance of union2 whose current type is %s',
-      $this->_type,
+      (string)$this->_type,
     );
     return \nullthrows($this->i);
   }
@@ -612,7 +612,7 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     invariant(
       $this->_type === union2Enum::d,
       'get_d called on an instance of union2 whose current type is %s',
-      $this->_type,
+      (string)$this->_type,
     );
     return \nullthrows($this->d);
   }
@@ -627,7 +627,7 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     invariant(
       $this->_type === union2Enum::s,
       'get_s called on an instance of union2 whose current type is %s',
-      $this->_type,
+      (string)$this->_type,
     );
     return \nullthrows($this->s);
   }
@@ -642,7 +642,7 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     invariant(
       $this->_type === union2Enum::u,
       'get_u called on an instance of union2 whose current type is %s',
-      $this->_type,
+      (string)$this->_type,
     );
     return \nullthrows($this->u);
   }

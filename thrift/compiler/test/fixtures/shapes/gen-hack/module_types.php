@@ -92,7 +92,7 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     invariant(
       $this->_type === \test\fixtures\UnionEnum::intValue,
       'get_intValue called on an instance of Union whose current type is %s',
-      $this->_type,
+      (string)$this->_type,
     );
     return \nullthrows($this->intValue);
   }
@@ -107,7 +107,7 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     invariant(
       $this->_type === \test\fixtures\UnionEnum::stringValue,
       'get_stringValue called on an instance of Union whose current type is %s',
-      $this->_type,
+      (string)$this->_type,
     );
     return \nullthrows($this->stringValue);
   }

@@ -2402,7 +2402,7 @@ void t_hack_generator::generate_php_union_methods(
                 << ",\n";
     indent(out) << "'get_" << fieldName << " called on an instance of "
                 << tstruct->get_name() << " whose current type is %s',\n";
-    indent(out) << "$this->_type,\n";
+    indent(out) << "(string)$this->_type,\n";
     indent_down();
     indent(out) << ");\n";
     indent(out) << "return \\nullthrows($this->" << fieldName << ");\n";

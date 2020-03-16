@@ -1875,7 +1875,7 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
     invariant(
       $this->_type === NoExceptMoveUnionEnum::string_field,
       'get_string_field called on an instance of NoExceptMoveUnion whose current type is %s',
-      $this->_type,
+      (string)$this->_type,
     );
     return \nullthrows($this->string_field);
   }
@@ -1890,7 +1890,7 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
     invariant(
       $this->_type === NoExceptMoveUnionEnum::i32_field,
       'get_i32_field called on an instance of NoExceptMoveUnion whose current type is %s',
-      $this->_type,
+      (string)$this->_type,
     );
     return \nullthrows($this->i32_field);
   }

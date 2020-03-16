@@ -243,7 +243,7 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
     invariant(
       $this->_type === \test\fixtures\jsenum\UnionTestingEnum::foo,
       'get_foo called on an instance of UnionTesting whose current type is %s',
-      $this->_type,
+      (string)$this->_type,
     );
     return \nullthrows($this->foo);
   }
@@ -259,7 +259,7 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
     invariant(
       $this->_type === \test\fixtures\jsenum\UnionTestingEnum::bar,
       'get_bar called on an instance of UnionTesting whose current type is %s',
-      $this->_type,
+      (string)$this->_type,
     );
     return \nullthrows($this->bar);
   }

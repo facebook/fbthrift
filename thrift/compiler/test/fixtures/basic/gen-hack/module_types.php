@@ -287,7 +287,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     invariant(
       $this->_type === MyUnionEnum::myEnum,
       'get_myEnum called on an instance of MyUnion whose current type is %s',
-      $this->_type,
+      (string)$this->_type,
     );
     return \nullthrows($this->myEnum);
   }
@@ -302,7 +302,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     invariant(
       $this->_type === MyUnionEnum::myStruct,
       'get_myStruct called on an instance of MyUnion whose current type is %s',
-      $this->_type,
+      (string)$this->_type,
     );
     return \nullthrows($this->myStruct);
   }
@@ -317,7 +317,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     invariant(
       $this->_type === MyUnionEnum::myDataItem,
       'get_myDataItem called on an instance of MyUnion whose current type is %s',
-      $this->_type,
+      (string)$this->_type,
     );
     return \nullthrows($this->myDataItem);
   }
