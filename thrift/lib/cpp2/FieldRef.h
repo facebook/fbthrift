@@ -91,14 +91,6 @@ class field_ref {
     is_set_ = other.is_set();
   }
 
-  template <typename U>
-  FOLLY_ERASE void move_from(field_ref<U> other) noexcept(
-      std::is_nothrow_assignable<value_type&, U&&>::value) {
-    value_ = std::move(other.value_);
-    is_set_ = other.is_set_;
-    other.is_set_ = false;
-  }
-
   // Returns true iff the field is set. field_ref doesn't provide conversion to
   // bool to avoid confusion between checking if the field is set and getting
   // the field's value, particularly for bool fields.
@@ -209,7 +201,6 @@ class optional_field_ref {
       std::is_nothrow_assignable<value_type&, U&&>::value) {
     value_ = std::move(other.value_);
     is_set_ = other.is_set_;
-    other.is_set_ = false;
   }
 
 #ifdef THRIFT_HAS_OPTIONAL

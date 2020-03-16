@@ -185,20 +185,6 @@ TEST(field_ref_test, copy_from_other_type) {
   EXPECT_EQ(s.int_assign()->value, 42);
 }
 
-TEST(field_ref_test, move_from) {
-  auto s = TestStruct();
-  auto s2 = TestStruct();
-  s.name() = "foo";
-  s.name().move_from(s2.name());
-  EXPECT_FALSE(s.name().is_set());
-  EXPECT_FALSE(s2.name().is_set());
-  s2.name() = "foo";
-  s.name().move_from(s2.name());
-  EXPECT_TRUE(s.name().is_set());
-  EXPECT_EQ(*s.name(), "foo");
-  EXPECT_FALSE(s2.name().is_set());
-}
-
 template <template <typename> class FieldRef>
 void check_is_assignable() {
   using IntAssignableRef = FieldRef<IntAssignable&>;
@@ -371,7 +357,7 @@ TEST(optional_field_ref_test, move_from) {
   s.opt_name().move_from(s2.opt_name());
   EXPECT_TRUE(s.opt_name().has_value());
   EXPECT_EQ(*s.opt_name(), "foo");
-  EXPECT_FALSE(s2.opt_name().has_value());
+  EXPECT_TRUE(s2.opt_name().has_value());
 }
 
 TEST(optional_field_ref_test, is_assignable) {
