@@ -152,6 +152,13 @@ auto&& fromFollyOptional(
 
 FOLLY_NAMESPACE_STD_BEGIN
 template <class T>
-struct hash<apache::thrift::DeprecatedOptionalField<T>>
-    : hash<folly::Optional<T>> {};
+struct hash<apache::thrift::DeprecatedOptionalField<T>> {
+  size_t operator()(
+      apache::thrift::DeprecatedOptionalField<T> const& obj) const {
+    if (!obj.hasValue()) {
+      return 0;
+    }
+    return hash<typename remove_const<T>::type>()(*obj);
+  }
+};
 FOLLY_NAMESPACE_STD_END
