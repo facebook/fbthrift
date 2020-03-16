@@ -20,7 +20,6 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
-using namespace std;
 using namespace apache::thrift::transport;
 
 TEST(THeaderTest, removeBadHeaderStringSize) {
