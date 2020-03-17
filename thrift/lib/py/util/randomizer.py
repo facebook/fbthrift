@@ -30,6 +30,9 @@ import six.moves as sm
 
 from thrift import Thrift
 
+from thrift.util.type_inspect import get_spec, ThriftPyTypeSpec
+
+
 INFINITY = float('inf')
 
 if sys.version_info[0] >= 3:
@@ -58,8 +61,6 @@ class BaseRandomizer(object):
 
     Class Attributes:
 
-    name (str): The name of the thrift type.
-
     ttype (int (enum)): The attribute of Thrift.TTypes corresponding to the type
 
     default_constraints (dict): Default values for randomizers' constraint
@@ -67,8 +68,8 @@ class BaseRandomizer(object):
 
     Instance Attributes:
 
-    spec_args (tuple): The Thrift spec_args tuple. Provides additional
-    information about the field beyond thrift type.
+    type_spec (ThriftTypeSpec): The thrift spec wrapper. Provides additional
+    information about the type beyond thrift type.
 
     state (RandomizerState): State attributes to be preserved across randomizer
     components in recursive and nested randomizer structures. Includes
@@ -80,7 +81,6 @@ class BaseRandomizer(object):
     recursively updated with the key/value pairs in the constraint dict passed
     to __init__.
     """
-    name = None
     ttype = None
 
     default_constraints = {
@@ -89,27 +89,15 @@ class BaseRandomizer(object):
         'p_fuzz': 1  # If seed not ignored, chance of fuzzing seed
     }
 
-    @classmethod
-    def get_type_name(cls, spec_args):
-        """
-        Get the name of this type that should be used to index into the
-        type constraint stack dictionary. For basic types, it should
-        be the name of the thrift type. For collection types it should
-        include <brackets> with the element type. For user-defined types
-        it should be the user-defined name.
-        """
-        return cls.name
-
-    def __init__(self, spec_args, state, constraints):
+    def __init__(self, type_spec, state, constraints):
         """
         spec_args: thrift arguments for this field
         state: RandomizerState instance
         constraints: dict of constraints specific to this randomizer
         """
-        cls = self.__class__
-        self.spec_args = spec_args
+        self.type_spec = type_spec
         self.state = state
-        self.type_name = cls.get_type_name(spec_args)
+        self.type_name = type_spec.get_type_name()
         self.constraints = self.flatten_constraints(constraints)
         self.preprocessing_done = False
 
@@ -156,7 +144,7 @@ class BaseRandomizer(object):
         """Check if this randomizer is equal to `other` randomizer. If two
         randomizers are equal, they have the same type and constraints and
         are expected to behave identically (up to random number generation.)"""
-        return ((self.spec_args == other.spec_args) and
+        return ((self.type_spec == other.type_spec) and
                 (self.constraints == other.constraints))
 
     @property
@@ -250,7 +238,6 @@ class ScalarTypeRandomizer(BaseRandomizer):
             return None
 
 class BoolRandomizer(BaseRandomizer):
-    name = "bool"
     ttype = Thrift.TType.BOOL
 
     default_constraints = dict(BaseRandomizer.default_constraints)
@@ -287,7 +274,6 @@ def _random_int_factory(k):
     return random_int_k_bits
 
 class EnumRandomizer(ScalarTypeRandomizer):
-    name = "enum"
     ttype = Thrift.TType.I32
 
     random_int_32 = staticmethod(_random_int_factory(32))
@@ -298,15 +284,9 @@ class EnumRandomizer(ScalarTypeRandomizer):
         'p_invalid': 0.01,
     })
 
-    @classmethod
-    def get_type_name(cls, spec_args):
-        return spec_args.__name__
-
     def _preprocess_constraints(self):
-        self.ttype = self.spec_args
-
         self._whiteset = set()
-        for _, val in six.iteritems(self.ttype._NAMES_TO_VALUES):
+        for val in six.itervalues(self.type_spec.names_to_values()):
             self._whiteset.add(val)
 
         self._whitelist = list(self._whiteset)
@@ -317,7 +297,7 @@ class EnumRandomizer(ScalarTypeRandomizer):
         val = super(EnumRandomizer, self)._randomize()
         if val is not None:
             if isinstance(val, six.string_types):
-                return self.ttype._NAMES_TO_VALUES[val]
+                return self.type_spec.names_to_values()[val]
             else:
                 return val
 
@@ -332,7 +312,7 @@ class EnumRandomizer(ScalarTypeRandomizer):
 
     def eval_seed(self, seed):
         if isinstance(seed, six.string_types):
-            return self.ttype._NAMES_TO_VALUES[seed]
+            return self.type_spec.names_to_values()[seed]
         else:
             return seed
 
@@ -351,7 +331,6 @@ def _integer_randomizer_factory(name, ttype, n_bits):
     _random_i32 = _random_int_factory(_n_bits)
 
     class NBitIntegerRandomizer(ScalarTypeRandomizer):
-        name = _name
         ttype = _ttype
 
         default_constraints = dict(ScalarTypeRandomizer.default_constraints)
@@ -415,7 +394,7 @@ def _integer_randomizer_factory(name, ttype, n_bits):
 
     return NBitIntegerRandomizer
 
-ByteRandomizer = _integer_randomizer_factory("byte", Thrift.TType.BYTE, 8)
+ByteRandomizer = _integer_randomizer_factory("i8", Thrift.TType.BYTE, 8)
 I16Randomizer = _integer_randomizer_factory("i16", Thrift.TType.I16, 16)
 I32Randomizer = _integer_randomizer_factory("i32", Thrift.TType.I32, 32)
 I64Randomizer = _integer_randomizer_factory("i64", Thrift.TType.I64, 64)
@@ -463,13 +442,11 @@ class FloatingPointRandomizer(ScalarTypeRandomizer):
             raise TypeError("Invalid %s seed: %s" % (self.__class__.name, seed))
 
 class SinglePrecisionFloatRandomizer(FloatingPointRandomizer):
-    name = "float"
     ttype = Thrift.TType.FLOAT
 
     _universe_size = 2 ** 32
 
 class DoublePrecisionFloatRandomizer(FloatingPointRandomizer):
-    name = "double"
     ttype = Thrift.TType.DOUBLE
 
     _universe_size = 2 ** 64
@@ -498,7 +475,6 @@ class CollectionTypeRandomizer(BaseRandomizer):
             return val
 
 class StringRandomizer(CollectionTypeRandomizer, ScalarTypeRandomizer):
-    name = "string"
     ttype = Thrift.TType.STRING
 
     ascii_range = (0, 127)
@@ -519,10 +495,7 @@ class StringRandomizer(CollectionTypeRandomizer, ScalarTypeRandomizer):
         for _ in sm.xrange(length):
             chars.append(chr(random.randint(*cls.ascii_range)))
 
-        if six.PY3:
-            return six.binary_type(''.join(chars), 'ascii')
-        else:
-            return six.binary_type(''.join(chars))
+        return ''.join(chars)
 
     def eval_seed(self, seed):
         if isinstance(seed, six.string_types):
@@ -540,21 +513,13 @@ class NonAssociativeContainerRandomizer(CollectionTypeRandomizer):
         'element': {}
     })
 
-    @classmethod
-    def get_type_name(cls, spec_args):
-        elem_ttype, elem_spec_args = spec_args
-        elem_randomizer_cls = _get_randomizer_class(elem_ttype, elem_spec_args)
-        elem_type_name = elem_randomizer_cls.get_type_name(elem_spec_args)
-        return "%s<%s>" % (cls.name, elem_type_name)
-
     def _init_subrandomizers(self):
-        elem_ttype, elem_spec_args = self.spec_args
+        elem_spec = self.type_spec.get_subtypes()[ThriftPyTypeSpec.SUBTYPE_ELEMENT]
         elem_constraints = self.constraints['element']
-        self._element_randomizer = self.state.get_randomizer(
-            elem_ttype, elem_spec_args, elem_constraints)
+        self._element_randomizer = self.state.get_randomizer_for_spec(
+            elem_spec, elem_constraints)
 
 class ListRandomizer(NonAssociativeContainerRandomizer):
-    name = "list"
     ttype = Thrift.TType.LIST
 
     def _randomize(self):
@@ -616,7 +581,6 @@ class ListRandomizer(NonAssociativeContainerRandomizer):
         return [self._element_randomizer.eval_seed(e) for e in seed]
 
 class SetRandomizer(NonAssociativeContainerRandomizer):
-    name = "set"
     ttype = Thrift.TType.SET
 
     def _randomize(self):
@@ -645,7 +609,6 @@ class SetRandomizer(NonAssociativeContainerRandomizer):
         return {self._element_randomizer.eval_seed(e) for e in seed}
 
 class MapRandomizer(CollectionTypeRandomizer):
-    name = "map"
     ttype = Thrift.TType.MAP
 
     default_constraints = dict(CollectionTypeRandomizer.default_constraints)
@@ -654,28 +617,18 @@ class MapRandomizer(CollectionTypeRandomizer):
         'value': {}
     })
 
-    @classmethod
-    def get_type_name(cls, spec_args):
-        key_ttype, key_spec_args, val_ttype, val_spec_args = spec_args
-
-        key_randomizer_cls = _get_randomizer_class(key_ttype, key_spec_args)
-        key_type_name = key_randomizer_cls.get_type_name(key_spec_args)
-
-        val_randomizer_cls = _get_randomizer_class(val_ttype, val_spec_args)
-        val_type_name = val_randomizer_cls.get_type_name(val_spec_args)
-
-        return "%s<%s, %s>" % (cls.name, key_type_name, val_type_name)
-
     def _init_subrandomizers(self):
-        key_ttype, key_spec_args, val_ttype, val_spec_args = self.spec_args
+        subtypes = self.type_spec.get_subtypes()
+        key_spec = subtypes[ThriftPyTypeSpec.SUBTYPE_KEY]
+        val_spec = subtypes[ThriftPyTypeSpec.SUBTYPE_VALUE]
 
         key_constraints = self.constraints['key']
         val_constraints = self.constraints['value']
 
-        self._key_randomizer = self.state.get_randomizer(
-            key_ttype, key_spec_args, key_constraints)
-        self._val_randomizer = self.state.get_randomizer(
-            val_ttype, val_spec_args, val_constraints)
+        self._key_randomizer = self.state.get_randomizer_for_spec(
+            key_spec, key_constraints)
+        self._val_randomizer = self.state.get_randomizer_for_spec(
+            val_spec, val_constraints)
 
     def _randomize(self):
         key_randomizer = self._key_randomizer
@@ -715,7 +668,6 @@ class MapRandomizer(CollectionTypeRandomizer):
         return res
 
 class StructRandomizer(BaseRandomizer):
-    name = "struct"
     ttype = Thrift.TType.STRUCT
 
     default_constraints = dict(BaseRandomizer.default_constraints)
@@ -725,42 +677,21 @@ class StructRandomizer(BaseRandomizer):
         'per_field': {}
     })
 
-    @classmethod
-    def get_type_name(cls, spec_args):
-        ttype = spec_args[0]
-        return ttype.__name__
-
     @property
     def universe_size(self):
         return INFINITY
 
-    def _field_is_required(self, required_value):
-        """Enum defined in /thrift/compiler/parse/t_field.h:
-
-        T_REQUIRED = 0
-        T_OPTIONAL = 1
-        T_OPT_IN_REQ_OUT = 2
-
-        Return True iff required_value is T_REQUIRED
-        """
-        return required_value == 0
-
     def _init_subrandomizers(self):
-        ttype, specs, is_union = self.spec_args
-
-        self.type_name = ttype.__name__
+        subtypes = self.type_spec.get_subtypes()
+        requiredness = self.type_spec.get_subtype_requiredness()
 
         field_rules = {}
-        for spec in specs:
-            if spec is None:
-                continue
-            (key, field_ttype, name, field_spec_args, default_value, req) = spec
-
-            field_required = self._field_is_required(req)
+        for name, field_spec in six.iteritems(subtypes):
+            field_required = requiredness[name]
             field_constraints = self.constraints.get(name, {})
 
-            field_randomizer = self.state.get_randomizer(
-                field_ttype, field_spec_args, field_constraints)
+            field_randomizer = self.state.get_randomizer_for_spec(
+                field_spec, field_constraints)
 
             field_rules[name] = {
                 'required': field_required,
@@ -769,8 +700,8 @@ class StructRandomizer(BaseRandomizer):
             field_rules[name].update(self.constraints['per_field'].get(name, {}))
 
         self._field_rules = field_rules
-        self._is_union = is_union
-        self._ttype = ttype
+        self._is_union = self.type_spec.is_union
+        self._ttype = self.type_spec.get_type()
         self._field_names = list(self._field_rules)
 
     def _increase_recursion_depth(self):
@@ -971,14 +902,11 @@ def _init_types():
 
 _init_types()
 
-def _get_randomizer_class(ttype, spec_args):
+def _get_randomizer_class(type_spec):
     # Special case: i32 and enum have separate classes but the same ttype
-    if ttype == Thrift.TType.I32:
-        if spec_args is None:
-            return I32Randomizer
-        else:
-            return EnumRandomizer
-    return _ttype_to_randomizer[ttype]
+    if type_spec.is_enum():
+        return EnumRandomizer
+    return _ttype_to_randomizer[type_spec.ttype]
 
 
 class RandomizerState(object):
@@ -1032,11 +960,15 @@ class RandomizerState(object):
         self.default_constraints = default_constraints or {}
 
     def get_randomizer(self, ttype, spec_args, constraints):
+        type_spec = get_spec(ttype, spec_args)
+        return self.get_randomizer_for_spec(type_spec, constraints)
+
+    def get_randomizer_for_spec(self, type_spec, constraints):
         """Get a randomizer object.
         Return an already-preprocessed randomizer if available and create a new
         one and preprocess it otherwise"""
-        randomizer_class = _get_randomizer_class(ttype, spec_args)
-        randomizer = randomizer_class(spec_args, self, constraints)
+        randomizer_class = _get_randomizer_class(type_spec)
+        randomizer = randomizer_class(type_spec, self, constraints)
 
         # Check if this randomizer is already in self.randomizers
         randomizers = self.randomizers[randomizer.__class__.ttype]
