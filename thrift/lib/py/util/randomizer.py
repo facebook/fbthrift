@@ -784,8 +784,8 @@ class StructRandomizer(BaseRandomizer):
             rule = self._field_rules[field_name]
             required = rule['required']
 
-            p_include = rule.get('p_include', p_include)
-            if not required and not (random.random() < p_include):
+            field_p_include = rule.get('p_include', p_include)
+            if not required and not (random.random() < field_p_include):
                 continue
 
             value = rule['randomizer'].generate()
