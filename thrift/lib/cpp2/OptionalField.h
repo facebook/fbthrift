@@ -99,22 +99,28 @@ class DeprecatedOptionalField : public folly::Optional<T> {
 
 template <class T>
 folly::Optional<T> castToFolly(const DeprecatedOptionalField<T>& t) {
-  return t;
+  if (t) {
+    return *t;
+  }
+  return {};
 }
 
 template <class T>
 folly::Optional<T> castToFolly(DeprecatedOptionalField<T>&& t) {
-  return std::move(t);
+  if (t) {
+    return std::move(*t);
+  }
+  return {};
 }
 
 template <class T>
 folly::Optional<T> castToFollyOrForward(const DeprecatedOptionalField<T>& t) {
-  return t;
+  return castToFolly(t);
 }
 
 template <class T>
 folly::Optional<T> castToFollyOrForward(DeprecatedOptionalField<T>&& t) {
-  return std::move(t);
+  return castToFolly(std::move(t));
 }
 
 template <class T>
