@@ -299,22 +299,24 @@ class EnumRandomizer(ScalarTypeRandomizer):
             if isinstance(val, six.string_types):
                 return self.type_spec.names_to_values()[val]
             else:
-                return val
+                return self.type_spec.construct_instance(val)
 
         if random.random() < self.constraints['p_invalid']:
             # Generate an i32 value that does not correspond to an enum member
             n = None
             while (n in self._whiteset) or (n is None):
                 n = cls.random_int_32()
-            return n
+            return self.type_spec.construct_instance(n)
         else:
-            return random.choice(self._whitelist)
+            return self.type_spec.construct_instance(random.choice(self._whitelist))
 
     def eval_seed(self, seed):
         if isinstance(seed, six.string_types):
-            return self.type_spec.names_to_values()[seed]
-        else:
+            seed = self.type_spec.names_to_values()[seed]
+        elif not isinstance(seed, int):
+            # Assume the seed is given in its native type
             return seed
+        return self.type_spec.construct_instance(seed)
 
     @property
     def universe_size(self):
@@ -701,7 +703,6 @@ class StructRandomizer(BaseRandomizer):
 
         self._field_rules = field_rules
         self._is_union = self.type_spec.is_union
-        self._ttype = self.type_spec.get_type()
         self._field_names = list(self._field_rules)
 
     def _increase_recursion_depth(self):
@@ -809,7 +810,7 @@ class StructRandomizer(BaseRandomizer):
             if self._is_union:
                 for f in self._field_names:
                     fields.setdefault(f, None)
-            return self._ttype(**fields)
+            return self.type_spec.construct_instance(**fields)
 
     def _fuzz(self, seed):
         """Fuzz a single field of the struct at random"""
@@ -849,7 +850,7 @@ class StructRandomizer(BaseRandomizer):
                 field_randomizer = field_rules[field_name]['randomizer']
                 fields[field_name] = field_randomizer.eval_seed(seed_val)
 
-        return self._ttype(**fields)
+        return self.type_spec.construct_instance(**fields)
 
     def eval_seed(self, seed):
         fields = {}
@@ -862,7 +863,7 @@ class StructRandomizer(BaseRandomizer):
         if self._is_union:
             for f in self._field_names:
                 fields.setdefault(f, None)
-        return self._ttype(**fields)
+        return self.type_spec.construct_instance(**fields)
 
 _ttype_to_randomizer = {}
 

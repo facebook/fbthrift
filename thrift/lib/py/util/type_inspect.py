@@ -82,6 +82,10 @@ class ThriftTypeSpec(object):
     def get_type(self):
         raise NotImplementedError
 
+    def construct_instance(self, *args, **kwargs):
+        """Construct a thrift type instance from appropriate arguments"""
+        return self.get_type()(*args, **kwargs)
+
     def get_subtypes(self):
         """Return a mapping from each subtype to its ThriftTypeSpec. Non-empty
         for lists, sets, maps and structs. The key identifies the field name
@@ -138,6 +142,11 @@ class ThriftEnumSpec(ThriftPyTypeSpec):
 
     def get_type(self):
         return self.spec_args
+
+    def construct_instance(self, value):
+        # enums are ints. The thrift enum type (self.spec_args) is not supposed to be
+        # instantiated
+        return int(value)
 
 
 def _build_scalar_type_spec(_name):
