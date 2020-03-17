@@ -95,6 +95,12 @@ class ThriftTypeSpec(object):
         """
         return {}
 
+    def value_to_dict(self, thrift_value):
+        """Return a mapping from field names to values. Only required for
+        structs
+        """
+        raise NotImplementedError
+
 
 class ThriftPyTypeSpec(ThriftTypeSpec):
     """TypeSpec implementation for python thrift structures"""
@@ -231,3 +237,23 @@ class ThriftStructSpec(ThriftPyTypeSpec):
 
     def get_subtype_requiredness(self):
         return self.subtype_requiredness
+
+    def value_to_dict(self, thrift_value):
+        if isinstance(thrift_value, dict):
+            return thrift_value
+        res = {}
+        if self.is_union:
+            field = getattr(thrift_value, 'field', None)
+            value = getattr(thrift_value, 'value', None)
+            thrift_spec = getattr(thrift_value, 'thrift_spec', None)
+            if not field or not thrift_spec:
+                return res
+            field_spec = thrift_spec[field]
+            if not field_spec or len(field_spec) < 3:
+                return res
+            res[field_spec[2]] = value
+        else:
+            for key, value in vars(thrift_value).items():
+                if value is not None:
+                    res[key] = value
+        return res
