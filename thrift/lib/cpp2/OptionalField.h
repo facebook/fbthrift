@@ -161,10 +161,10 @@ template <class T>
 struct hash<apache::thrift::DeprecatedOptionalField<T>> {
   size_t operator()(
       apache::thrift::DeprecatedOptionalField<T> const& obj) const {
-    if (!obj.hasValue()) {
+    if (!obj.has_value()) {
       return 0;
     }
-    return hash<typename remove_const<T>::type>()(*obj);
+    return hash<remove_const_t<T>>()(*obj);
   }
 };
 FOLLY_NAMESPACE_STD_END
