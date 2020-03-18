@@ -457,6 +457,9 @@ string t_java_generator::render_const_value(
           }
         }
         render << '"';
+        if (tbase == t_base_type::TYPE_BINARY) {
+          render << ".getBytes()";
+        }
         break;
       }
       case t_base_type::TYPE_BOOL:
