@@ -103,7 +103,6 @@ add_library(
 
   ContextStack.cpp
   EventHandlerBase.cpp
-  async/TAsyncSocketFactory.cpp
   async/TBinaryAsyncChannel.cpp
   async/TFramedAsyncChannel.cpp
   async/THttpAsyncChannel.cpp
