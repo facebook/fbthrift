@@ -133,11 +133,11 @@ class ServerPublisherStream : private StreamServerCallback {
     using Queue =
         typename twowaybridge_detail::Queue<folly::Try<StreamPayload>>;
     static constexpr uint64_t creditValSize = sizeof(void*) * 8 - 1;
-    static constexpr uint64_t maxCreditVal = (1ul << creditValSize) - 1;
+    static constexpr uint64_t maxCreditVal = (1ull << creditValSize) - 1;
 
     Queue buffer;
     struct {
-      bool isSet : 1;
+      uint64_t isSet : 1;
       uint64_t val : creditValSize;
     } credits;
 
