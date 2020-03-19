@@ -19,10 +19,6 @@ cdef class Internship_Builder(thrift.py3.builder.StructBuilder):
     cdef public _module_types.Company employer
 
 
-cdef class UnEnumStruct_Builder(thrift.py3.builder.StructBuilder):
-    cdef public _module_types.City city
-
-
 cdef class Range_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint min
     cdef public pint max

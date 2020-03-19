@@ -22,12 +22,6 @@ class Internship_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
-class UnEnumStruct_Builder(thrift.py3.builder.StructBuilder):
-    city: _typing.Optional[_module_types.City]
-
-    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
-
-
 class Range_Builder(thrift.py3.builder.StructBuilder):
     min: _typing.Optional[int]
     max: _typing.Optional[int]

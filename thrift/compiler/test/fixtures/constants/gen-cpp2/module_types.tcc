@@ -44,13 +44,6 @@ struct TccStructTraits<::cpp2::Internship> {
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits<::cpp2::UnEnumStruct> {
-  static void translateFieldName(
-      folly::StringPiece _fname,
-      int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
-};
-template <>
 struct TccStructTraits<::cpp2::Range> {
   static void translateFieldName(
       folly::StringPiece _fname,
@@ -265,114 +258,6 @@ extern template void Internship::readNoXfer<>(apache::thrift::CompactProtocolRea
 extern template uint32_t Internship::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t Internship::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Internship::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-} // cpp2
-namespace cpp2 {
-
-template <class Protocol_>
-void UnEnumStruct::readNoXfer(Protocol_* iprot) {
-  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
-
-  _readState.readStructBegin(iprot);
-
-  using apache::thrift::TProtocolException;
-
-
-  if (UNLIKELY(!_readState.advanceToNextField(
-          iprot,
-          0,
-          1,
-          apache::thrift::protocol::T_I32))) {
-    goto _loop;
-  }
-_readField_city:
-  {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::City>::readWithContext(*iprot, this->city, _readState);
-    this->__isset.city = true;
-  }
-
-  if (UNLIKELY(!_readState.advanceToNextField(
-          iprot,
-          1,
-          0,
-          apache::thrift::protocol::T_STOP))) {
-    goto _loop;
-  }
-
-_end:
-  _readState.readStructEnd(iprot);
-
-  return;
-
-_loop:
-  _readState.afterAdvanceFailure(iprot);
-  if (_readState.atStop()) {
-    goto _end;
-  }
-  if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<UnEnumStruct>>();
-  }
-
-  switch (_readState.fieldId) {
-    case 1:
-    {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
-        goto _readField_city;
-      } else {
-        goto _skip;
-      }
-    }
-    default:
-    {
-_skip:
-      _readState.skip(iprot);
-      _readState.readFieldEnd(iprot);
-      _readState.readFieldBeginNoInline(iprot);
-      goto _loop;
-    }
-  }
-}
-
-template <class Protocol_>
-uint32_t UnEnumStruct::serializedSize(Protocol_ const* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("UnEnumStruct");
-  xfer += prot_->serializedFieldSize("city", apache::thrift::protocol::T_I32, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::City>::serializedSize<false>(*prot_, this->city);
-  xfer += prot_->serializedSizeStop();
-  return xfer;
-}
-
-template <class Protocol_>
-uint32_t UnEnumStruct::serializedSizeZC(Protocol_ const* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("UnEnumStruct");
-  xfer += prot_->serializedFieldSize("city", apache::thrift::protocol::T_I32, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::City>::serializedSize<false>(*prot_, this->city);
-  xfer += prot_->serializedSizeStop();
-  return xfer;
-}
-
-template <class Protocol_>
-uint32_t UnEnumStruct::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("UnEnumStruct");
-  xfer += prot_->writeFieldBegin("city", apache::thrift::protocol::T_I32, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::City>::write(*prot_, this->city);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
-}
-
-extern template void UnEnumStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t UnEnumStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t UnEnumStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t UnEnumStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void UnEnumStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t UnEnumStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t UnEnumStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t UnEnumStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {

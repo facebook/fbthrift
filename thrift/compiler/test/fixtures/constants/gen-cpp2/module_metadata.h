@@ -39,11 +39,6 @@ class StructMetadata<::cpp2::Internship> {
   static void gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::UnEnumStruct> {
- public:
-  static void gen(ThriftMetadata& metadata);
-};
-template <>
 class StructMetadata<::cpp2::Range> {
  public:
   static void gen(ThriftMetadata& metadata);

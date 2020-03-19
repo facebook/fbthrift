@@ -75,10 +75,6 @@ const Internship partial_const = {
   "title": "Some Job",
 }
 
-struct UnEnumStruct {
-  1: City city = -1, # thrift-compiler should emit a warning
-}
-
 struct Range {
   1: required i32 min;
   2: required i32 max;

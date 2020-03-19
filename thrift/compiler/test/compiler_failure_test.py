@@ -73,6 +73,26 @@ class CompilerFailureTest(unittest.TestCase):
         err = err.replace("{}/".format(self.tmp), "")
         return p.returncode, out, err
 
+    def test_enum_wrong_default_value(self):
+        # tests initializing enum with default value of wrong type
+        write_file("foo.thrift", textwrap.dedent("""\
+            enum Color {
+                RED = 1,
+                GREEN = 2,
+                BLUE = 3,
+            }
+
+            struct MyS {
+                1: Color color = -1
+            }
+        """))
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(ret, 0)
+        self.assertEqual(
+            err,
+            "[WARNING:foo.thrift:9] type error: const \"color\" was declared as enum \"Color\" with a value not of that enum\n",
+        )
+
     def test_duplicate_method_name(self):
         # tests overriding a method of the same service
         write_file("foo.thrift", textwrap.dedent("""\

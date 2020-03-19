@@ -73,8 +73,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
     # Forward Declaration
     cdef cppclass cInternship "::cpp2::Internship"
     # Forward Declaration
-    cdef cppclass cUnEnumStruct "::cpp2::UnEnumStruct"
-    # Forward Declaration
     cdef cppclass cRange "::cpp2::Range"
     # Forward Declaration
     cdef cppclass cstruct1 "::cpp2::struct1"
@@ -106,21 +104,6 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         string title
         optional_field_ref[cCompany] employer_ref()
         cInternship__isset __isset
-
-    cdef cppclass cUnEnumStruct__isset "::cpp2::UnEnumStruct::__isset":
-        bint city
-
-    cdef cppclass cUnEnumStruct "::cpp2::UnEnumStruct":
-        cUnEnumStruct() except +
-        cUnEnumStruct(const cUnEnumStruct&) except +
-        bint operator==(cUnEnumStruct&)
-        bint operator!=(cUnEnumStruct&)
-        bint operator<(cUnEnumStruct&)
-        bint operator>(cUnEnumStruct&)
-        bint operator<=(cUnEnumStruct&)
-        bint operator>=(cUnEnumStruct&)
-        cCity city
-        cUnEnumStruct__isset __isset
 
     cdef cppclass cRange__isset "::cpp2::Range::__isset":
         bint min
@@ -252,9 +235,6 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cInternship] move(unique_ptr[cInternship])
     cdef shared_ptr[cInternship] move_shared "std::move"(shared_ptr[cInternship])
     cdef unique_ptr[cInternship] move_unique "std::move"(unique_ptr[cInternship])
-    cdef shared_ptr[cUnEnumStruct] move(unique_ptr[cUnEnumStruct])
-    cdef shared_ptr[cUnEnumStruct] move_shared "std::move"(shared_ptr[cUnEnumStruct])
-    cdef unique_ptr[cUnEnumStruct] move_unique "std::move"(unique_ptr[cUnEnumStruct])
     cdef shared_ptr[cRange] move(unique_ptr[cRange])
     cdef shared_ptr[cRange] move_shared "std::move"(shared_ptr[cRange])
     cdef unique_ptr[cRange] move_unique "std::move"(unique_ptr[cRange])
@@ -276,7 +256,6 @@ cdef extern from "<utility>" namespace "std" nogil:
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cInternship] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Internship>"(shared_ptr[cInternship])
-    cdef shared_ptr[const cUnEnumStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::UnEnumStruct>"(shared_ptr[cUnEnumStruct])
     cdef shared_ptr[const cRange] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Range>"(shared_ptr[cRange])
     cdef shared_ptr[const cstruct1] const_pointer_cast "std::const_pointer_cast<const ::cpp2::struct1>"(shared_ptr[cstruct1])
     cdef shared_ptr[const cstruct2] const_pointer_cast "std::const_pointer_cast<const ::cpp2::struct2>"(shared_ptr[cstruct2])
@@ -304,25 +283,6 @@ cdef class Internship(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cInternship])
-
-# Forward Definition of the cython struct
-cdef class UnEnumStruct(thrift.py3.types.Struct)
-
-
-cdef class UnEnumStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
-    cdef shared_ptr[cUnEnumStruct] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cUnEnumStruct] _make_instance(
-        cUnEnumStruct* base_instance,
-        bint* __isNOTSET,
-        City city
-    ) except *
-
-    @staticmethod
-    cdef create(shared_ptr[cUnEnumStruct])
 
 # Forward Definition of the cython struct
 cdef class Range(thrift.py3.types.Struct)

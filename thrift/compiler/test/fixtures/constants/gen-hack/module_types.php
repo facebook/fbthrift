@@ -102,45 +102,6 @@ class Internship implements \IThriftStruct {
 
 /**
  * Original thrift struct:-
- * UnEnumStruct
- */
-class UnEnumStruct implements \IThriftStruct {
-  use \ThriftSerializationTrait;
-
-  const dict<int, this::TFieldSpec> SPEC = dict[
-    1 => shape(
-      'var' => 'city',
-      'type' => \TType::I32,
-      'enum' => City::class,
-    ),
-  ];
-  const dict<string, int> FIELDMAP = dict[
-    'city' => 1,
-  ];
-  const int STRUCTURAL_ID = 8709689501091584749;
-  /**
-   * Original thrift field:-
-   * 1: enum module.City city
-   */
-  public ?City $city;
-
-  <<__Rx>>
-  public function __construct(?City $city = null  ) {
-    if ($city === null) {
-      $this->city = City::coerce(-1);
-    } else {
-      $this->city = $city;
-    }
-  }
-
-  public function getName(): string {
-    return 'UnEnumStruct';
-  }
-
-}
-
-/**
- * Original thrift struct:-
  * Range
  */
 class Range implements \IThriftStruct {

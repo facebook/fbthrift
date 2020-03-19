@@ -127,16 +127,6 @@ void TccStructTraits<::cpp2::Internship>::translateFieldName(
     _ftype = apache::thrift::protocol::T_I32;
   }
 }
-void TccStructTraits<::cpp2::UnEnumStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "city") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-}
 void TccStructTraits<::cpp2::Range>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
@@ -323,56 +313,6 @@ template void Internship::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Internship::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Internship::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Internship::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-} // cpp2
-namespace cpp2 {
-
-UnEnumStruct::UnEnumStruct(apache::thrift::FragileConstructor,  ::cpp2::City city__arg) :
-    city(std::move(city__arg)) {
-  __isset.city = true;
-}
-
-void UnEnumStruct::__clear() {
-  // clear all fields
-  city = static_cast< ::cpp2::City>(-1);
-  __isset = {};
-}
-
-bool UnEnumStruct::operator==(const UnEnumStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (!(lhs.city == rhs.city)) {
-    return false;
-  }
-  return true;
-}
-
-bool UnEnumStruct::operator<(const UnEnumStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (!(lhs.city == rhs.city)) {
-    return lhs.city < rhs.city;
-  }
-  return false;
-}
-
-
-void swap(UnEnumStruct& a, UnEnumStruct& b) {
-  using ::std::swap;
-  swap(a.city, b.city);
-  swap(a.__isset, b.__isset);
-}
-
-template void UnEnumStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t UnEnumStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t UnEnumStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t UnEnumStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void UnEnumStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t UnEnumStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t UnEnumStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t UnEnumStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {

@@ -16,7 +16,6 @@ namespace tag {
 struct weeks;
 struct title;
 struct employer;
-struct city;
 struct min;
 struct max;
 struct a;
@@ -47,10 +46,6 @@ APACHE_THRIFT_DEFINE_ACCESSOR(title);
 #ifndef APACHE_THRIFT_ACCESSOR_employer
 #define APACHE_THRIFT_ACCESSOR_employer
 APACHE_THRIFT_DEFINE_ACCESSOR(employer);
-#endif
-#ifndef APACHE_THRIFT_ACCESSOR_city
-#define APACHE_THRIFT_ACCESSOR_city
-APACHE_THRIFT_DEFINE_ACCESSOR(city);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_min
 #define APACHE_THRIFT_ACCESSOR_min
@@ -247,7 +242,6 @@ extern const _Company_EnumMapFactory::NamesToValuesMapType _Company_NAMES_TO_VAL
 // BEGIN forward_declare
 namespace cpp2 {
 class Internship;
-class UnEnumStruct;
 class Range;
 class struct1;
 class struct2;
@@ -396,90 +390,6 @@ void swap(Internship& a, Internship& b);
 
 template <class Protocol_>
 uint32_t Internship::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCursorPosition();
-  readNoXfer(iprot);
-  return iprot->getCursorPosition() - _xferStart;
-}
-
-} // cpp2
-namespace cpp2 {
-class UnEnumStruct final : private apache::thrift::detail::st::ComparisonOperators<UnEnumStruct> {
- public:
-
-  UnEnumStruct() :
-      city(static_cast< ::cpp2::City>(-1)) {}
-  // FragileConstructor for use in initialization lists only.
-  [[deprecated("This constructor is deprecated")]]
-  UnEnumStruct(apache::thrift::FragileConstructor,  ::cpp2::City city__arg);
-
-  UnEnumStruct(UnEnumStruct&&) = default;
-
-  UnEnumStruct(const UnEnumStruct&) = default;
-
-  UnEnumStruct& operator=(UnEnumStruct&&) = default;
-
-  UnEnumStruct& operator=(const UnEnumStruct&) = default;
-  void __clear();
- public:
-   ::cpp2::City city;
-
- public:
-  struct __isset {
-    bool city;
-  } __isset = {};
-  bool operator==(const UnEnumStruct& rhs) const;
-  bool operator<(const UnEnumStruct& rhs) const;
-
-  template <typename..., typename T =  ::cpp2::City>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> city_ref() const& {
-    return {this->city, __isset.city};
-  }
-
-  template <typename..., typename T =  ::cpp2::City>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> city_ref() const&& {
-    return {std::move(this->city), __isset.city};
-  }
-
-  template <typename..., typename T =  ::cpp2::City>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> city_ref() & {
-    return {this->city, __isset.city};
-  }
-
-  template <typename..., typename T =  ::cpp2::City>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> city_ref() && {
-    return {std::move(this->city), __isset.city};
-  }
-
-   ::cpp2::City get_city() const {
-    return city;
-  }
-
-   ::cpp2::City& set_city( ::cpp2::City city_) {
-    city = city_;
-    __isset.city = true;
-    return city;
-  }
-
-  template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
-  template <class Protocol_>
-  uint32_t serializedSize(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t write(Protocol_* prot_) const;
-
- private:
-  template <class Protocol_>
-  void readNoXfer(Protocol_* iprot);
-
-  friend class ::apache::thrift::Cpp2Ops< UnEnumStruct >;
-};
-
-void swap(UnEnumStruct& a, UnEnumStruct& b);
-
-template <class Protocol_>
-uint32_t UnEnumStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

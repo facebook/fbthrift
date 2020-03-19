@@ -12,12 +12,6 @@ cdef class Internship_Builder(thrift.py3.builder.StructBuilder):
         yield "title", self.title
         yield "employer", self.employer
 
-cdef class UnEnumStruct_Builder(thrift.py3.builder.StructBuilder):
-    _struct_type = _module_types.UnEnumStruct
-
-    def __iter__(self):
-        yield "city", self.city
-
 cdef class Range_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.Range
 

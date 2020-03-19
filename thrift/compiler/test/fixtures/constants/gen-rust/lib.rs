@@ -300,11 +300,6 @@ pub mod types {
     }
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    pub struct UnEnumStruct {
-        pub city: crate::types::City,
-    }
-
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Range {
         pub min: i32,
         pub max: i32,
@@ -655,50 +650,6 @@ pub mod types {
                 weeks: field_weeks.unwrap_or_default(),
                 title: field_title.unwrap_or_default(),
                 employer: field_employer,
-            })
-        }
-    }
-
-
-    impl Default for self::UnEnumStruct {
-        fn default() -> Self {
-            Self {
-                city: crate::types::City(-1),
-            }
-        }
-    }
-
-    impl GetTType for self::UnEnumStruct {
-        const TTYPE: TType = TType::Struct;
-    }
-
-    impl<P: ProtocolWriter> Serialize<P> for self::UnEnumStruct {
-        fn write(&self, p: &mut P) {
-            p.write_struct_begin("UnEnumStruct");
-            p.write_field_begin("city", TType::I32, 1);
-            Serialize::write(&self.city, p);
-            p.write_field_end();
-            p.write_field_stop();
-            p.write_struct_end();
-        }
-    }
-
-    impl<P: ProtocolReader> Deserialize<P> for self::UnEnumStruct {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            let mut field_city = None;
-            let _ = p.read_struct_begin(|_| ())?;
-            loop {
-                let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::I32, 1) => field_city = Some(Deserialize::read(p)?),
-                    (fty, _) => p.skip(fty)?,
-                }
-                p.read_field_end()?;
-            }
-            p.read_struct_end()?;
-            Ok(Self {
-                city: field_city.unwrap_or_else(|| crate::types::City(-1)),
             })
         }
     }
