@@ -202,6 +202,16 @@ TEST(TestWithFollyOptionals, APITests) {
   EXPECT_EQ(obj1.int64Opt.value(), 3);
   EXPECT_EQ(obj2.int64Opt.value(), 3);
 
+  static_assert(std::is_same_v<
+                decltype(obj1.int64Opt),
+                apache::thrift::DeprecatedOptionalField<int64_t>>);
+  static_assert(std::is_same_v<
+                decltype(castToFolly(obj1.int64Opt)),
+                folly::Optional<int64_t>>);
+  static_assert(std::is_same_v<
+                decltype(castToFollyOrForward(obj1.int64Opt)),
+                folly::Optional<int64_t>>);
+
   static_assert(!std::is_constructible_v<
                 apache::thrift::DeprecatedOptionalField<int>,
                 folly::Optional<int>>);
