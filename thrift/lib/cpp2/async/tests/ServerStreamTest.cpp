@@ -344,25 +344,15 @@ TEST(ServerStreamTest, CancelDestroyPublisher) {
         FirstResponsePayload{nullptr, {}},
         &clientCallback,
         clientEb.getEventBase());
-    clientEb.add([&] {
-      clientCallback.started.wait();
-      std::ignore = clientCallback.cb->onStreamRequestN(11); // complete costs 1
+    clientEb.add([&] { clientCallback.started.wait(); });
+    serverEb.add([&] {
+      clientEb.getEventBase()->runInEventBaseThreadAndWait(
+          [&] { clientCallback.cb->onStreamCancel(); });
+      EXPECT_TRUE(pub);
     });
-    for (int i = 0; i < 10; i++) {
-      serverEb.add([&, i] {
-        if (pub) {
-          if (i == 1) {
-            clientEb.getEventBase()->runInEventBaseThreadAndWait(
-                [&] { clientCallback.cb->onStreamCancel(); });
-          }
-          pub->next(i);
-        }
-      });
-    }
   }
-  EXPECT_EQ(clientCallback.i, 1);
   EXPECT_FALSE(pub);
-}
+} // namespace thrift
 
 TEST(ServerStreamTest, CancelCompletePublisherRace) {
   ClientCallback clientCallback;
