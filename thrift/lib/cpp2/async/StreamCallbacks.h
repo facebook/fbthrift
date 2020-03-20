@@ -71,6 +71,25 @@ struct EncodedError : std::exception {
 
 } // namespace detail
 
+/**
+ * The Stream contract is a flow-controlled server-to-client channel
+ *
+ * The contract is initiated when the client sends a stream request.
+ * The server must calls onFirstResponse or onFirstResponseError.
+ * After the first response the server may call onStreamNext repeatedly
+ * (as many times as it has tokens).
+ * It may always call onStreamError/Complete (even without tokens).
+ * It may always call onSinkHeaders (does not use tokens).
+ * After the first response the client may call onStreamRequestN repeatedly
+ * and onStreamCancel once.
+ *
+ * on* methods that return void terminate the contract. No method may be called
+ * on either callback after a terminating method is called on either callback.
+ * Methods that return bool are not terminating unless they return false.
+ * These methods must return false if they called a terminating method inline,
+ * or true otherwise.
+ */
+
 class StreamClientCallback;
 
 class StreamServerCallback {
@@ -84,6 +103,7 @@ class StreamServerCallback {
     return true;
   }
 
+  // not terminating
   virtual void resetClientCallback(StreamClientCallback&) = 0;
 };
 
@@ -106,6 +126,7 @@ class StreamClientCallback {
     return true;
   }
 
+  // not terminating
   virtual void resetServerCallback(StreamServerCallback&) = 0;
 };
 
@@ -117,6 +138,21 @@ struct StreamServerCallbackCancel {
 
 using StreamServerCallbackPtr =
     std::unique_ptr<StreamServerCallback, StreamServerCallbackCancel>;
+
+/**
+ * The Sink contract is a flow-controlled client-to-server channel
+ *
+ * The contract is initiated when the client sends a sink request.
+ * The server must calls onFirstResponse or onFirstResponseError.
+ * After the first response the client may call onSinkNext repeatedly
+ * (as many times as it has tokens).
+ * It may always call onSinkError/onStreamCancel, which terminate the contract,
+ * and onSinkComplete, after which the server must call onFinalResponse/Error
+ * to terminate the contract.
+ * After the first response the server may call onSinkRequestN repeatedly.
+ *
+ * TODO(T64321978): make nonterminating methods return bool
+ */
 
 class SinkServerCallback {
  public:
@@ -143,6 +179,12 @@ class SinkClientCallback {
 
   virtual void onSinkRequestN(uint64_t) = 0;
 };
+
+/**
+ * The Channel contract is a flow-controlled bidirectional stream
+ * Using it will make @andrii angrii
+ * Currently unused
+ */
 
 class ChannelServerCallback {
  public:
