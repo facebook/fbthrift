@@ -29,7 +29,7 @@ namespace thrift {
  * turned on. It will be eventually replaced by thrift::optional_field_ref.
  */
 template <typename T>
-class DeprecatedOptionalField : public folly::Optional<T> {
+class DeprecatedOptionalField : private folly::Optional<T> {
  private:
   using Base = folly::Optional<T>;
   const Base& toFolly() const {
@@ -37,6 +37,20 @@ class DeprecatedOptionalField : public folly::Optional<T> {
   }
 
  public:
+  using Base::operator->;
+  using Base::operator*;
+  using Base::operator bool;
+  using Base::assign;
+  using Base::clear;
+  using Base::emplace;
+  using Base::get_pointer;
+  using Base::has_value;
+  using Base::hasValue;
+  using Base::reset;
+  using Base::value;
+  using Base::value_or;
+  using typename Base::value_type;
+
   DeprecatedOptionalField() = default;
   DeprecatedOptionalField(const DeprecatedOptionalField&) = default;
   DeprecatedOptionalField(DeprecatedOptionalField&&) = default;
@@ -214,6 +228,17 @@ auto&& fromFollyOptional(
   }
 
   return lhs;
+}
+
+// TODO: Remove if no one use them
+template <class T>
+auto* get_pointer(const DeprecatedOptionalField<T>& opt) {
+  return opt.get_pointer();
+}
+
+template <class T>
+auto* get_pointer(DeprecatedOptionalField<T>& opt) {
+  return opt.get_pointer();
 }
 
 } // namespace thrift
