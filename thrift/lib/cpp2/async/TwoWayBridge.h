@@ -281,7 +281,7 @@ class AtomicQueueOrPtr {
   Value* pushOrGetClosedPayload(Message&& message) {
     auto storage = storage_.load(std::memory_order_acquire);
     if (static_cast<Type>(storage & kTypeMask) == Type::CLOSED) {
-      return reinterpret_cast<Value*>(storage & kPointerMask);
+      return closedPayload_;
     }
 
     std::unique_ptr<typename MessageQueue::Node> node(
@@ -307,7 +307,7 @@ class AtomicQueueOrPtr {
           break;
         case Type::CLOSED:
           message = std::move(node->value);
-          return reinterpret_cast<Value*>(ptr);
+          return closedPayload_;
         default:
           folly::assume_unreachable();
       }
@@ -315,8 +315,9 @@ class AtomicQueueOrPtr {
   }
 
   MessageQueue closeOrGetMessages(Value* payload) {
-    assert(!(reinterpret_cast<intptr_t>(payload) & kTypeMask));
     assert(payload); // nullptr is used as a sentinel
+    // this is only read if the compare_exchange succeeds
+    closedPayload_ = payload;
     while (true) {
       auto storage = storage_.exchange(
           static_cast<intptr_t>(Type::EMPTY), std::memory_order_acquire);
@@ -329,8 +330,7 @@ class AtomicQueueOrPtr {
         case Type::EMPTY:
           if (storage_.compare_exchange_weak(
                   storage,
-                  reinterpret_cast<intptr_t>(payload) |
-                      static_cast<intptr_t>(Type::CLOSED),
+                  static_cast<intptr_t>(Type::CLOSED),
                   std::memory_order_release,
                   std::memory_order_relaxed)) {
             return MessageQueue();
@@ -353,7 +353,13 @@ class AtomicQueueOrPtr {
   static constexpr intptr_t kTypeMask = 3;
   static constexpr intptr_t kPointerMask = ~kTypeMask;
 
+  // These can be combined if the platform requires Value to be 8-byte aligned.
+  // Most platforms don't require that for functions.
+  // A workaround is to make that function a member of an aligned struct
+  // and pass in the address of the struct, but that is not necessarily a win
+  // because of the runtime indirection cost.
   std::atomic<intptr_t> storage_{0};
+  Value* closedPayload_{nullptr};
 };
 } // namespace twowaybridge_detail
 
