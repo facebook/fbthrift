@@ -52,6 +52,25 @@ struct HeadersPayload {
   HeadersPayloadMetadata metadata;
 };
 
+namespace detail {
+
+struct EncodedError : std::exception {
+  explicit EncodedError(std::unique_ptr<folly::IOBuf> buf)
+      : encoded(std::move(buf)) {}
+
+  EncodedError(const EncodedError& oth) : encoded(oth.encoded->clone()) {}
+  EncodedError& operator=(const EncodedError& oth) {
+    encoded = oth.encoded->clone();
+    return *this;
+  }
+  EncodedError(EncodedError&&) = default;
+  EncodedError& operator=(EncodedError&&) = default;
+
+  std::unique_ptr<folly::IOBuf> encoded;
+};
+
+} // namespace detail
+
 class StreamClientCallback;
 
 class StreamServerCallback {
@@ -66,38 +85,6 @@ class StreamServerCallback {
   }
 
   virtual void resetClientCallback(StreamClientCallback&) = 0;
-};
-
-struct StreamServerCallbackCancel {
-  void operator()(StreamServerCallback* streamServerCallback) noexcept {
-    streamServerCallback->onStreamCancel();
-  }
-};
-
-using StreamServerCallbackPtr =
-    std::unique_ptr<StreamServerCallback, StreamServerCallbackCancel>;
-
-class ChannelServerCallback {
- public:
-  virtual ~ChannelServerCallback() = default;
-
-  virtual void onStreamRequestN(uint64_t) = 0;
-  virtual void onStreamCancel() = 0;
-
-  virtual void onSinkNext(StreamPayload&&) = 0;
-  virtual void onSinkError(folly::exception_wrapper) = 0;
-  virtual void onSinkComplete() = 0;
-};
-
-class SinkServerCallback {
- public:
-  virtual ~SinkServerCallback() = default;
-
-  virtual void onSinkNext(StreamPayload&&) = 0;
-  virtual void onSinkError(folly::exception_wrapper) = 0;
-  virtual void onSinkComplete() = 0;
-
-  virtual void onStreamCancel() = 0;
 };
 
 class StreamClientCallback {
@@ -122,6 +109,53 @@ class StreamClientCallback {
   virtual void resetServerCallback(StreamServerCallback&) = 0;
 };
 
+struct StreamServerCallbackCancel {
+  void operator()(StreamServerCallback* streamServerCallback) noexcept {
+    streamServerCallback->onStreamCancel();
+  }
+};
+
+using StreamServerCallbackPtr =
+    std::unique_ptr<StreamServerCallback, StreamServerCallbackCancel>;
+
+class SinkServerCallback {
+ public:
+  virtual ~SinkServerCallback() = default;
+
+  virtual void onSinkNext(StreamPayload&&) = 0;
+  virtual void onSinkError(folly::exception_wrapper) = 0;
+  virtual void onSinkComplete() = 0;
+
+  virtual void onStreamCancel() = 0;
+};
+
+class SinkClientCallback {
+ public:
+  virtual ~SinkClientCallback() = default;
+  virtual void onFirstResponse(
+      FirstResponsePayload&&,
+      folly::EventBase*,
+      SinkServerCallback*) = 0;
+  virtual void onFirstResponseError(folly::exception_wrapper) = 0;
+
+  virtual void onFinalResponse(StreamPayload&&) = 0;
+  virtual void onFinalResponseError(folly::exception_wrapper) = 0;
+
+  virtual void onSinkRequestN(uint64_t) = 0;
+};
+
+class ChannelServerCallback {
+ public:
+  virtual ~ChannelServerCallback() = default;
+
+  virtual void onStreamRequestN(uint64_t) = 0;
+  virtual void onStreamCancel() = 0;
+
+  virtual void onSinkNext(StreamPayload&&) = 0;
+  virtual void onSinkError(folly::exception_wrapper) = 0;
+  virtual void onSinkComplete() = 0;
+};
+
 class ChannelClientCallback {
  public:
   virtual ~ChannelClientCallback() = default;
@@ -142,38 +176,5 @@ class ChannelClientCallback {
   virtual void onSinkCancel() = 0;
 };
 
-class SinkClientCallback {
- public:
-  virtual ~SinkClientCallback() = default;
-  virtual void onFirstResponse(
-      FirstResponsePayload&&,
-      folly::EventBase*,
-      SinkServerCallback*) = 0;
-  virtual void onFirstResponseError(folly::exception_wrapper) = 0;
-
-  virtual void onFinalResponse(StreamPayload&&) = 0;
-  virtual void onFinalResponseError(folly::exception_wrapper) = 0;
-
-  virtual void onSinkRequestN(uint64_t) = 0;
-};
-
-namespace detail {
-
-struct EncodedError : std::exception {
-  explicit EncodedError(std::unique_ptr<folly::IOBuf> buf)
-      : encoded(std::move(buf)) {}
-
-  EncodedError(const EncodedError& oth) : encoded(oth.encoded->clone()) {}
-  EncodedError& operator=(const EncodedError& oth) {
-    encoded = oth.encoded->clone();
-    return *this;
-  }
-  EncodedError(EncodedError&&) = default;
-  EncodedError& operator=(EncodedError&&) = default;
-
-  std::unique_ptr<folly::IOBuf> encoded;
-};
-
-} // namespace detail
 } // namespace thrift
 } // namespace apache
