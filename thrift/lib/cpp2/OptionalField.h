@@ -230,17 +230,6 @@ auto&& fromFollyOptional(
   return lhs;
 }
 
-// TODO: Remove if no one use them
-template <class T>
-auto* get_pointer(const DeprecatedOptionalField<T>& opt) {
-  return opt.get_pointer();
-}
-
-template <class T>
-auto* get_pointer(DeprecatedOptionalField<T>& opt) {
-  return opt.get_pointer();
-}
-
 } // namespace thrift
 } // namespace apache
 

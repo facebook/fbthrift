@@ -536,17 +536,6 @@ TEST(DeprecatedOptionalField, Conversions) {
   // EXPECT_TRUE(mbool == false);
 }
 
-TEST(DeprecatedOptionalField, Pointee) {
-  DeprecatedOptionalField<int> x;
-  EXPECT_FALSE(get_pointer(x));
-  x = 1;
-  EXPECT_TRUE(get_pointer(x));
-  *get_pointer(x) = 2;
-  EXPECT_TRUE(*x == 2);
-  x = none;
-  EXPECT_FALSE(get_pointer(x));
-}
-
 TEST(DeprecatedOptionalField, SelfAssignment) {
   DeprecatedOptionalField<int> a{42};
   a = static_cast<decltype(a)&>(a); // suppress self-assign warning
