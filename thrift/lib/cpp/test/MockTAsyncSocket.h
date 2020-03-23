@@ -19,6 +19,7 @@
 
 #include <folly/portability/GMock.h>
 
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 
@@ -73,7 +74,7 @@ class MockTAsyncSocket : public apache::thrift::async::TAsyncSocket {
       void(
           AsyncTransportWrapper::WriteCallback*,
           std::unique_ptr<folly::IOBuf>&& buf,
-          apache::thrift::async::WriteFlags));
+          folly::WriteFlags));
 };
 
 } // namespace test

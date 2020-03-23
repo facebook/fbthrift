@@ -65,7 +65,7 @@ class TAsyncSocketIntercepted : public TAsyncSocket {
   WriteResult performWrite(
       const iovec* vec,
       uint32_t count,
-      WriteFlags flags,
+      folly::WriteFlags flags,
       uint32_t* countWritten,
       uint32_t* partialWritten) override;
 

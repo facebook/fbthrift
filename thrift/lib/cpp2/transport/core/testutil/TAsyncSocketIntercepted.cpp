@@ -23,7 +23,7 @@ namespace async {
 folly::AsyncSocket::WriteResult TAsyncSocketIntercepted::performWrite(
     const iovec* vec,
     uint32_t count,
-    WriteFlags flags,
+    folly::WriteFlags flags,
     uint32_t* countWritten,
     uint32_t* partialWritten) {
   std::vector<iovec> newiov;

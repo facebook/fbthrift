@@ -88,8 +88,6 @@ class TAsyncSocket : public virtual folly::AsyncSocket {
   }
 };
 
-typedef folly::WriteFlags WriteFlags;
-
 } // namespace async
 } // namespace thrift
 } // namespace apache
