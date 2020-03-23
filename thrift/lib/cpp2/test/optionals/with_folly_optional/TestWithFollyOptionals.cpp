@@ -70,9 +70,9 @@ TEST(TestWithFollyOptionals, SerDesTests) {
   json1 = objToJSON(obj1);
   obj2 = jsonToObj<cpp2::HasOptionals>(json1);
   EXPECT_EQ(obj1, obj2);
-  EXPECT_FALSE(obj2.int64Opt.hasValue());
-  EXPECT_FALSE(obj2.listOpt.hasValue());
-  EXPECT_FALSE(obj2.structOpt.hasValue());
+  EXPECT_FALSE(obj2.int64Opt.has_value());
+  EXPECT_FALSE(obj2.listOpt.has_value());
+  EXPECT_FALSE(obj2.structOpt.has_value());
   json2 = objToJSON(obj2);
   EXPECT_EQ(json1, json2);
 
