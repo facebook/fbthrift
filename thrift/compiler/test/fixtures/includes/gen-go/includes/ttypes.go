@@ -153,6 +153,14 @@ func (p *Included) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("Included(%+v)", *p)
+
+  myIntFieldVal := fmt.Sprint(p.MyIntField)
+  var myTransitiveFieldVal string
+  if p.MyTransitiveField == nil {
+    myTransitiveFieldVal = "<nil>"
+  }else{
+    myTransitiveFieldVal = fmt.Sprint(*p.MyTransitiveField)
+  }
+  return fmt.Sprintf("Included({MyIntField:%s MyTransitiveField:%s })", myIntFieldVal, myTransitiveFieldVal)
 }
 

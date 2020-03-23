@@ -292,7 +292,18 @@ func (p *Automobile) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("Automobile(%+v)", *p)
+
+  plateVal := fmt.Sprint(p.Plate)
+  var previousPlateVal string
+  if p.PreviousPlate == nil {
+    previousPlateVal = "<nil>"
+  }else{
+    previousPlateVal = fmt.Sprint(*p.PreviousPlate)
+  }
+  firstPlateVal := fmt.Sprint(p.FirstPlate)
+  yearVal := fmt.Sprint(p.Year)
+  driversVal := fmt.Sprint(p.Drivers)
+  return fmt.Sprintf("Automobile({Plate:%s PreviousPlate:%s FirstPlate:%s Year:%s Drivers:%s })", plateVal, previousPlateVal, firstPlateVal, yearVal, driversVal)
 }
 
 // Attributes:
@@ -405,7 +416,10 @@ func (p *MapKey) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MapKey(%+v)", *p)
+
+  numVal := fmt.Sprint(p.Num)
+  strvalVal := fmt.Sprint(p.Strval)
+  return fmt.Sprintf("MapKey({Num:%s Strval:%s })", numVal, strvalVal)
 }
 
 // Attributes:
@@ -516,7 +530,9 @@ func (p *MapContainer) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MapContainer(%+v)", *p)
+
+  mapvalVal := fmt.Sprint(p.Mapval)
+  return fmt.Sprintf("MapContainer({Mapval:%s })", mapvalVal)
 }
 
 // Attributes:
@@ -645,7 +661,20 @@ func (p *Pair) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("Pair(%+v)", *p)
+
+  var automobileVal string
+  if p.Automobile == nil {
+    automobileVal = "<nil>"
+  }else{
+    automobileVal = fmt.Sprint(*p.Automobile)
+  }
+  var carVal string
+  if p.Car == nil {
+    carVal = "<nil>"
+  }else{
+    carVal = fmt.Sprint(*p.Car)
+  }
+  return fmt.Sprintf("Pair({Automobile:%s Car:%s })", automobileVal, carVal)
 }
 
 // Attributes:
@@ -798,6 +827,9 @@ func (p *Collection) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("Collection(%+v)", *p)
+
+  automobilesVal := fmt.Sprint(p.Automobiles)
+  carsVal := fmt.Sprint(p.Cars)
+  return fmt.Sprintf("Collection({Automobiles:%s Cars:%s })", automobilesVal, carsVal)
 }
 

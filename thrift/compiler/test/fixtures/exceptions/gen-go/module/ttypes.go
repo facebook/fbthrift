@@ -67,7 +67,8 @@ func (p *Banal) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("Banal(%+v)", *p)
+
+  return fmt.Sprintf("Banal({})")
 }
 
 func (p *Banal) Error() string {
@@ -159,7 +160,9 @@ func (p *Fiery) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("Fiery(%+v)", *p)
+
+  messageVal := fmt.Sprint(p.Message)
+  return fmt.Sprintf("Fiery({Message:%s })", messageVal)
 }
 
 func (p *Fiery) Error() string {
@@ -255,7 +258,14 @@ func (p *Serious) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("Serious(%+v)", *p)
+
+  var sonnetVal string
+  if p.Sonnet == nil {
+    sonnetVal = "<nil>"
+  }else{
+    sonnetVal = fmt.Sprint(*p.Sonnet)
+  }
+  return fmt.Sprintf("Serious({Sonnet:%s })", sonnetVal)
 }
 
 func (p *Serious) Error() string {

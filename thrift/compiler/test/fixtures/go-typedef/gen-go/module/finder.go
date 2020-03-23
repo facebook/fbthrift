@@ -492,7 +492,9 @@ func (p *FinderByPlateArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("FinderByPlateArgs(%+v)", *p)
+
+  plateVal := fmt.Sprint(p.Plate)
+  return fmt.Sprintf("FinderByPlateArgs({Plate:%s })", plateVal)
 }
 
 // Attributes:
@@ -585,7 +587,14 @@ func (p *FinderByPlateResult) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("FinderByPlateResult(%+v)", *p)
+
+  var successVal string
+  if p.Success == nil {
+    successVal = "<nil>"
+  }else{
+    successVal = fmt.Sprint(*p.Success)
+  }
+  return fmt.Sprintf("FinderByPlateResult({Success:%s })", successVal)
 }
 
 // Attributes:
@@ -670,7 +679,9 @@ func (p *FinderAliasByPlateArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("FinderAliasByPlateArgs(%+v)", *p)
+
+  plateVal := fmt.Sprint(p.Plate)
+  return fmt.Sprintf("FinderAliasByPlateArgs({Plate:%s })", plateVal)
 }
 
 // Attributes:
@@ -763,7 +774,14 @@ func (p *FinderAliasByPlateResult) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("FinderAliasByPlateResult(%+v)", *p)
+
+  var successVal string
+  if p.Success == nil {
+    successVal = "<nil>"
+  }else{
+    successVal = fmt.Sprint(*p.Success)
+  }
+  return fmt.Sprintf("FinderAliasByPlateResult({Success:%s })", successVal)
 }
 
 // Attributes:
@@ -848,7 +866,9 @@ func (p *FinderPreviousPlateArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("FinderPreviousPlateArgs(%+v)", *p)
+
+  plateVal := fmt.Sprint(p.Plate)
+  return fmt.Sprintf("FinderPreviousPlateArgs({Plate:%s })", plateVal)
 }
 
 // Attributes:
@@ -942,7 +962,14 @@ func (p *FinderPreviousPlateResult) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("FinderPreviousPlateResult(%+v)", *p)
+
+  var successVal string
+  if p.Success == nil {
+    successVal = "<nil>"
+  }else{
+    successVal = fmt.Sprint(*p.Success)
+  }
+  return fmt.Sprintf("FinderPreviousPlateResult({Success:%s })", successVal)
 }
 
 

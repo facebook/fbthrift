@@ -424,7 +424,9 @@ func (p *SomeServiceBounceMapArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("SomeServiceBounceMapArgs(%+v)", *p)
+
+  mVal := fmt.Sprint(p.M)
+  return fmt.Sprintf("SomeServiceBounceMapArgs({M:%s })", mVal)
 }
 
 // Attributes:
@@ -544,7 +546,9 @@ func (p *SomeServiceBounceMapResult) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("SomeServiceBounceMapResult(%+v)", *p)
+
+  successVal := fmt.Sprint(p.Success)
+  return fmt.Sprintf("SomeServiceBounceMapResult({Success:%s })", successVal)
 }
 
 // Attributes:
@@ -649,7 +653,9 @@ func (p *SomeServiceBinaryKeyedMapArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("SomeServiceBinaryKeyedMapArgs(%+v)", *p)
+
+  rVal := fmt.Sprint(p.R)
+  return fmt.Sprintf("SomeServiceBinaryKeyedMapArgs({R:%s })", rVal)
 }
 
 // Attributes:
@@ -769,7 +775,9 @@ func (p *SomeServiceBinaryKeyedMapResult) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("SomeServiceBinaryKeyedMapResult(%+v)", *p)
+
+  successVal := fmt.Sprint(p.Success)
+  return fmt.Sprintf("SomeServiceBinaryKeyedMapResult({Success:%s })", successVal)
 }
 
 

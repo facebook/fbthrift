@@ -703,7 +703,8 @@ func (p *MyServicePingArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyServicePingArgs(%+v)", *p)
+
+  return fmt.Sprintf("MyServicePingArgs({})")
 }
 
 type MyServicePingResult struct {
@@ -753,7 +754,8 @@ func (p *MyServicePingResult) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyServicePingResult(%+v)", *p)
+
+  return fmt.Sprintf("MyServicePingResult({})")
 }
 
 type MyServiceGetRandomDataArgs struct {
@@ -803,7 +805,8 @@ func (p *MyServiceGetRandomDataArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyServiceGetRandomDataArgs(%+v)", *p)
+
+  return fmt.Sprintf("MyServiceGetRandomDataArgs({})")
 }
 
 // Attributes:
@@ -896,7 +899,14 @@ func (p *MyServiceGetRandomDataResult) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyServiceGetRandomDataResult(%+v)", *p)
+
+  var successVal string
+  if p.Success == nil {
+    successVal = "<nil>"
+  }else{
+    successVal = fmt.Sprint(*p.Success)
+  }
+  return fmt.Sprintf("MyServiceGetRandomDataResult({Success:%s })", successVal)
 }
 
 // Attributes:
@@ -980,7 +990,9 @@ func (p *MyServiceHasDataByIdArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyServiceHasDataByIdArgs(%+v)", *p)
+
+  idVal := fmt.Sprint(p.Id)
+  return fmt.Sprintf("MyServiceHasDataByIdArgs({Id:%s })", idVal)
 }
 
 // Attributes:
@@ -1073,7 +1085,14 @@ func (p *MyServiceHasDataByIdResult) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyServiceHasDataByIdResult(%+v)", *p)
+
+  var successVal string
+  if p.Success == nil {
+    successVal = "<nil>"
+  }else{
+    successVal = fmt.Sprint(*p.Success)
+  }
+  return fmt.Sprintf("MyServiceHasDataByIdResult({Success:%s })", successVal)
 }
 
 // Attributes:
@@ -1157,7 +1176,9 @@ func (p *MyServiceGetDataByIdArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyServiceGetDataByIdArgs(%+v)", *p)
+
+  idVal := fmt.Sprint(p.Id)
+  return fmt.Sprintf("MyServiceGetDataByIdArgs({Id:%s })", idVal)
 }
 
 // Attributes:
@@ -1250,7 +1271,14 @@ func (p *MyServiceGetDataByIdResult) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyServiceGetDataByIdResult(%+v)", *p)
+
+  var successVal string
+  if p.Success == nil {
+    successVal = "<nil>"
+  }else{
+    successVal = fmt.Sprint(*p.Success)
+  }
+  return fmt.Sprintf("MyServiceGetDataByIdResult({Success:%s })", successVal)
 }
 
 // Attributes:
@@ -1364,7 +1392,10 @@ func (p *MyServicePutDataByIdArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyServicePutDataByIdArgs(%+v)", *p)
+
+  idVal := fmt.Sprint(p.Id)
+  dataVal := fmt.Sprint(p.Data)
+  return fmt.Sprintf("MyServicePutDataByIdArgs({Id:%s Data:%s })", idVal, dataVal)
 }
 
 type MyServicePutDataByIdResult struct {
@@ -1414,7 +1445,8 @@ func (p *MyServicePutDataByIdResult) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyServicePutDataByIdResult(%+v)", *p)
+
+  return fmt.Sprintf("MyServicePutDataByIdResult({})")
 }
 
 // Attributes:
@@ -1528,7 +1560,10 @@ func (p *MyServiceLobDataByIdArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyServiceLobDataByIdArgs(%+v)", *p)
+
+  idVal := fmt.Sprint(p.Id)
+  dataVal := fmt.Sprint(p.Data)
+  return fmt.Sprintf("MyServiceLobDataByIdArgs({Id:%s Data:%s })", idVal, dataVal)
 }
 
 

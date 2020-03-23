@@ -248,7 +248,9 @@ func (p *DecoratedStruct) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("DecoratedStruct(%+v)", *p)
+
+  fieldVal := fmt.Sprint(p.Field)
+  return fmt.Sprintf("DecoratedStruct({Field:%s })", fieldVal)
 }
 
 // Attributes:
@@ -734,7 +736,16 @@ func (p *ContainerStruct) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("ContainerStruct(%+v)", *p)
+
+  fieldBVal := fmt.Sprint(p.FieldB)
+  fieldCVal := fmt.Sprint(p.FieldC)
+  fieldDVal := fmt.Sprint(p.FieldD)
+  fieldEVal := fmt.Sprint(p.FieldE)
+  fieldFVal := fmt.Sprint(p.FieldF)
+  fieldGVal := fmt.Sprint(p.FieldG)
+  fieldHVal := fmt.Sprint(p.FieldH)
+  fieldAVal := fmt.Sprint(p.FieldA)
+  return fmt.Sprintf("ContainerStruct({FieldB:%s FieldC:%s FieldD:%s FieldE:%s FieldF:%s FieldG:%s FieldH:%s FieldA:%s })", fieldBVal, fieldCVal, fieldDVal, fieldEVal, fieldFVal, fieldGVal, fieldHVal, fieldAVal)
 }
 
 // Attributes:
@@ -838,7 +849,9 @@ func (p *CppTypeStruct) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("CppTypeStruct(%+v)", *p)
+
+  fieldAVal := fmt.Sprint(p.FieldA)
+  return fmt.Sprintf("CppTypeStruct({FieldA:%s })", fieldAVal)
 }
 
 // Attributes:
@@ -921,7 +934,9 @@ func (p *VirtualStruct) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("VirtualStruct(%+v)", *p)
+
+  myIntFieldVal := fmt.Sprint(p.MyIntField)
+  return fmt.Sprintf("VirtualStruct({MyIntField:%s })", myIntFieldVal)
 }
 
 // Attributes:
@@ -1040,7 +1055,10 @@ func (p *MyStructWithForwardRefEnum) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyStructWithForwardRefEnum(%+v)", *p)
+
+  aVal := fmt.Sprint(p.A)
+  bVal := fmt.Sprint(p.B)
+  return fmt.Sprintf("MyStructWithForwardRefEnum({A:%s B:%s })", aVal, bVal)
 }
 
 // Attributes:
@@ -1153,7 +1171,10 @@ func (p *TrivialNumeric) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("TrivialNumeric(%+v)", *p)
+
+  aVal := fmt.Sprint(p.A)
+  bVal := fmt.Sprint(p.B)
+  return fmt.Sprintf("TrivialNumeric({A:%s B:%s })", aVal, bVal)
 }
 
 // Attributes:
@@ -1280,7 +1301,15 @@ func (p *TrivialNestedWithDefault) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("TrivialNestedWithDefault(%+v)", *p)
+
+  zVal := fmt.Sprint(p.Z)
+  var nVal string
+  if p.N == nil {
+    nVal = "<nil>"
+  }else{
+    nVal = fmt.Sprint(*p.N)
+  }
+  return fmt.Sprintf("TrivialNestedWithDefault({Z:%s N:%s })", zVal, nVal)
 }
 
 // Attributes:
@@ -1422,7 +1451,10 @@ func (p *ComplexString) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("ComplexString(%+v)", *p)
+
+  aVal := fmt.Sprint(p.A)
+  bVal := fmt.Sprint(p.B)
+  return fmt.Sprintf("ComplexString({A:%s B:%s })", aVal, bVal)
 }
 
 // Attributes:
@@ -1551,7 +1583,15 @@ func (p *ComplexNestedWithDefault) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("ComplexNestedWithDefault(%+v)", *p)
+
+  zVal := fmt.Sprint(p.Z)
+  var nVal string
+  if p.N == nil {
+    nVal = "<nil>"
+  }else{
+    nVal = fmt.Sprint(*p.N)
+  }
+  return fmt.Sprintf("ComplexNestedWithDefault({Z:%s N:%s })", zVal, nVal)
 }
 
 // Attributes:
@@ -1781,7 +1821,13 @@ func (p *MinPadding) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MinPadding(%+v)", *p)
+
+  smallVal := fmt.Sprint(p.Small)
+  bigVal := fmt.Sprint(p.Big)
+  mediumVal := fmt.Sprint(p.Medium)
+  biggishVal := fmt.Sprint(p.Biggish)
+  tinyVal := fmt.Sprint(p.Tiny)
+  return fmt.Sprintf("MinPadding({Small:%s Big:%s Medium:%s Biggish:%s Tiny:%s })", smallVal, bigVal, mediumVal, biggishVal, tinyVal)
 }
 
 // Attributes:
@@ -1961,7 +2007,17 @@ func (p *MyStruct) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyStruct(%+v)", *p)
+
+  myIntFieldVal := fmt.Sprint(p.MyIntField)
+  myStringFieldVal := fmt.Sprint(p.MyStringField)
+  majorVerVal := fmt.Sprint(p.MajorVer)
+  var dataVal string
+  if p.Data == nil {
+    dataVal = "<nil>"
+  }else{
+    dataVal = fmt.Sprint(*p.Data)
+  }
+  return fmt.Sprintf("MyStruct({MyIntField:%s MyStringField:%s MajorVer:%s Data:%s })", myIntFieldVal, myStringFieldVal, majorVerVal, dataVal)
 }
 
 type MyDataItem struct {
@@ -2010,7 +2066,8 @@ func (p *MyDataItem) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyDataItem(%+v)", *p)
+
+  return fmt.Sprintf("MyDataItem({})")
 }
 
 // Attributes:
@@ -2093,7 +2150,9 @@ func (p *Renaming) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("Renaming(%+v)", *p)
+
+  fooVal := fmt.Sprint(p.Foo)
+  return fmt.Sprintf("Renaming({Foo:%s })", fooVal)
 }
 
 // Attributes:
@@ -2256,7 +2315,10 @@ func (p *AnnotatedTypes) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("AnnotatedTypes(%+v)", *p)
+
+  binaryFieldVal := fmt.Sprint(p.BinaryField)
+  listFieldVal := fmt.Sprint(p.ListField)
+  return fmt.Sprintf("AnnotatedTypes({BinaryField:%s ListField:%s })", binaryFieldVal, listFieldVal)
 }
 
 // Attributes:
@@ -2387,7 +2449,20 @@ func (p *ForwardUsageRoot) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("ForwardUsageRoot(%+v)", *p)
+
+  var forwardUsageStructVal string
+  if p.ForwardUsageStruct == nil {
+    forwardUsageStructVal = "<nil>"
+  }else{
+    forwardUsageStructVal = fmt.Sprint(*p.ForwardUsageStruct)
+  }
+  var forwardUsageByRefVal string
+  if p.ForwardUsageByRef == nil {
+    forwardUsageByRefVal = "<nil>"
+  }else{
+    forwardUsageByRefVal = fmt.Sprint(*p.ForwardUsageByRef)
+  }
+  return fmt.Sprintf("ForwardUsageRoot({ForwardUsageStruct:%s ForwardUsageByRef:%s })", forwardUsageStructVal, forwardUsageByRefVal)
 }
 
 // Attributes:
@@ -2479,7 +2554,14 @@ func (p *ForwardUsageStruct) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("ForwardUsageStruct(%+v)", *p)
+
+  var fooVal string
+  if p.Foo == nil {
+    fooVal = "<nil>"
+  }else{
+    fooVal = fmt.Sprint(*p.Foo)
+  }
+  return fmt.Sprintf("ForwardUsageStruct({Foo:%s })", fooVal)
 }
 
 // Attributes:
@@ -2571,7 +2653,14 @@ func (p *ForwardUsageByRef) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("ForwardUsageByRef(%+v)", *p)
+
+  var fooVal string
+  if p.Foo == nil {
+    fooVal = "<nil>"
+  }else{
+    fooVal = fmt.Sprint(*p.Foo)
+  }
+  return fmt.Sprintf("ForwardUsageByRef({Foo:%s })", fooVal)
 }
 
 type NoexceptMoveEmpty struct {
@@ -2620,7 +2709,8 @@ func (p *NoexceptMoveEmpty) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("NoexceptMoveEmpty(%+v)", *p)
+
+  return fmt.Sprintf("NoexceptMoveEmpty({})")
 }
 
 // Attributes:
@@ -2703,7 +2793,9 @@ func (p *NoexceptMoveSimpleStruct) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("NoexceptMoveSimpleStruct(%+v)", *p)
+
+  boolFieldVal := fmt.Sprint(p.BoolField)
+  return fmt.Sprintf("NoexceptMoveSimpleStruct({BoolField:%s })", boolFieldVal)
 }
 
 // Attributes:
@@ -3098,7 +3190,17 @@ func (p *NoexceptMoveComplexStruct) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("NoexceptMoveComplexStruct(%+v)", *p)
+
+  myBoolFieldVal := fmt.Sprint(p.MyBoolField)
+  myIntFieldVal := fmt.Sprint(p.MyIntField)
+  myStringFieldVal := fmt.Sprint(p.MyStringField)
+  myStringField2Val := fmt.Sprint(p.MyStringField2)
+  myBinaryFieldVal := fmt.Sprint(p.MyBinaryField)
+  myBinaryField2Val := fmt.Sprint(p.MyBinaryField2)
+  myBinaryField3Val := fmt.Sprint(p.MyBinaryField3)
+  myBinaryListField4Val := fmt.Sprint(p.MyBinaryListField4)
+  myMapEnumAndIntVal := fmt.Sprint(p.MyMapEnumAndInt)
+  return fmt.Sprintf("NoexceptMoveComplexStruct({MyBoolField:%s MyIntField:%s MyStringField:%s MyStringField2:%s MyBinaryField:%s MyBinaryField2:%s MyBinaryField3:%s MyBinaryListField4:%s MyMapEnumAndInt:%s })", myBoolFieldVal, myIntFieldVal, myStringFieldVal, myStringField2Val, myBinaryFieldVal, myBinaryField2Val, myBinaryField3Val, myBinaryListField4Val, myMapEnumAndIntVal)
 }
 
 // Attributes:
@@ -3244,6 +3346,19 @@ func (p *NoExceptMoveUnion) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("NoExceptMoveUnion(%+v)", *p)
+
+  var stringFieldVal string
+  if p.StringField == nil {
+    stringFieldVal = "<nil>"
+  }else{
+    stringFieldVal = fmt.Sprint(*p.StringField)
+  }
+  var i32FieldVal string
+  if p.I32Field == nil {
+    i32FieldVal = "<nil>"
+  }else{
+    i32FieldVal = fmt.Sprint(*p.I32Field)
+  }
+  return fmt.Sprintf("NoExceptMoveUnion({StringField:%s I32Field:%s })", stringFieldVal, i32FieldVal)
 }
 

@@ -103,6 +103,8 @@ func (p *Foo) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("Foo(%+v)", *p)
+
+  aVal := fmt.Sprint(p.A)
+  return fmt.Sprintf("Foo({A:%s })", aVal)
 }
 

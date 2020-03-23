@@ -223,7 +223,8 @@ func (p *MyNodeDoMidArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyNodeDoMidArgs(%+v)", *p)
+
+  return fmt.Sprintf("MyNodeDoMidArgs({})")
 }
 
 type MyNodeDoMidResult struct {
@@ -273,7 +274,8 @@ func (p *MyNodeDoMidResult) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyNodeDoMidResult(%+v)", *p)
+
+  return fmt.Sprintf("MyNodeDoMidResult({})")
 }
 
 

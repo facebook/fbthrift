@@ -113,6 +113,13 @@ func (p *IncludesAlso) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("IncludesAlso(%+v)", *p)
+
+  var alsoVal string
+  if p.Also == nil {
+    alsoVal = "<nil>"
+  }else{
+    alsoVal = fmt.Sprint(*p.Also)
+  }
+  return fmt.Sprintf("IncludesAlso({Also:%s })", alsoVal)
 }
 

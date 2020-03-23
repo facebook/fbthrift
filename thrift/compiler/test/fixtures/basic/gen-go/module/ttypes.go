@@ -231,7 +231,17 @@ func (p *MyStruct) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyStruct(%+v)", *p)
+
+  myIntFieldVal := fmt.Sprint(p.MyIntField)
+  myStringFieldVal := fmt.Sprint(p.MyStringField)
+  var myDataFieldVal string
+  if p.MyDataField == nil {
+    myDataFieldVal = "<nil>"
+  }else{
+    myDataFieldVal = fmt.Sprint(*p.MyDataField)
+  }
+  myEnumVal := fmt.Sprint(p.MyEnum)
+  return fmt.Sprintf("MyStruct({MyIntField:%s MyStringField:%s MyDataField:%s MyEnum:%s })", myIntFieldVal, myStringFieldVal, myDataFieldVal, myEnumVal)
 }
 
 type MyDataItem struct {
@@ -280,7 +290,8 @@ func (p *MyDataItem) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyDataItem(%+v)", *p)
+
+  return fmt.Sprintf("MyDataItem({})")
 }
 
 // Attributes:
@@ -469,6 +480,25 @@ func (p *MyUnion) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyUnion(%+v)", *p)
+
+  var myEnumVal string
+  if p.MyEnum == nil {
+    myEnumVal = "<nil>"
+  }else{
+    myEnumVal = fmt.Sprint(*p.MyEnum)
+  }
+  var myStructVal string
+  if p.MyStruct == nil {
+    myStructVal = "<nil>"
+  }else{
+    myStructVal = fmt.Sprint(*p.MyStruct)
+  }
+  var myDataItemVal string
+  if p.MyDataItem == nil {
+    myDataItemVal = "<nil>"
+  }else{
+    myDataItemVal = fmt.Sprint(*p.MyDataItem)
+  }
+  return fmt.Sprintf("MyUnion({MyEnum:%s MyStruct:%s MyDataItem:%s })", myEnumVal, myStructVal, myDataItemVal)
 }
 
