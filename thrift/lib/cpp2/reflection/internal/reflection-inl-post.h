@@ -82,7 +82,7 @@ struct isset {
     if (set && !field.has_value()) {
       field.emplace();
     } else if (!set && field.has_value()) {
-      field.clear();
+      field.reset();
     }
     return set;
   }
