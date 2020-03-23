@@ -15,6 +15,8 @@
  */
 
 namespace cpp2 testutil.testservice
+
+typedef binary (cpp2.type = "folly::IOBuf") IOBuf
 exception MyException {
   1: string reason;
 }
@@ -45,5 +47,7 @@ service TestSinkService {
   sink<i32 throws (1: SinkException e), bool> sinkThrow();
   sink<i32, bool throws (1: FinalException e)> sinkFinalThrow();
   void purge();
+
   sink<string, i32> sinkBlobs(1: i32 count);
+  sink<IOBuf, i32> alignment(1: binary expected);
 }

@@ -75,6 +75,8 @@ class Parser final : public folly::AsyncTransportWrapper::ReadCallback {
   std::chrono::steady_clock::time_point resizeBufferTimer_{
       std::chrono::steady_clock::now()};
   const std::chrono::milliseconds resizeBufferTimeout_;
+  bool enablePageAlignment_{false};
+  bool aligning_{false};
 };
 
 } // namespace rocket

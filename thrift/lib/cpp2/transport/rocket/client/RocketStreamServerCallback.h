@@ -157,8 +157,12 @@ class RocketSinkServerCallback : public SinkServerCallback {
   RocketSinkServerCallback(
       rocket::StreamId streamId,
       rocket::RocketClient& client,
-      SinkClientCallback& clientCallback)
-      : client_(client), clientCallback_(clientCallback), streamId_(streamId) {}
+      SinkClientCallback& clientCallback,
+      bool pageAligned)
+      : client_(client),
+        clientCallback_(clientCallback),
+        streamId_(streamId),
+        pageAligned_(pageAligned) {}
 
   void onSinkNext(StreamPayload&&) override;
   void onSinkError(folly::exception_wrapper) override;
@@ -187,6 +191,7 @@ class RocketSinkServerCallback : public SinkServerCallback {
   rocket::RocketClient& client_;
   SinkClientCallback& clientCallback_;
   rocket::StreamId streamId_;
+  bool pageAligned_;
   enum class State { BothOpen, StreamOpen };
   State state_{State::BothOpen};
 };

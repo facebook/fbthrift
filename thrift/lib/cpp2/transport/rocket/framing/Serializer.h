@@ -37,6 +37,7 @@ namespace rocket {
 class Serializer {
  public:
   static constexpr size_t kBytesForFrameOrMetadataLength = 3;
+  static constexpr size_t kMinimumFrameHeaderLength = 9;
 
   Serializer() {
     queue_.append(folly::IOBuf::create(kQueueAppenderChunkSize));

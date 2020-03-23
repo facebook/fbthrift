@@ -444,10 +444,11 @@ void RocketClient::sendRequestChannel(
 void RocketClient::sendRequestSink(
     Payload&& request,
     std::chrono::milliseconds firstResponseTimeout,
-    SinkClientCallback* clientCallback) {
+    SinkClientCallback* clientCallback,
+    bool pageAligned) {
   const auto streamId = makeStreamId();
   auto serverCallback = std::make_unique<RocketSinkServerCallback>(
-      streamId, *this, *clientCallback);
+      streamId, *this, *clientCallback, pageAligned);
   sendRequestStreamChannel(
       streamId,
       std::move(request),
@@ -738,6 +739,27 @@ bool RocketClient::sendExtHeaders(StreamId streamId, HeadersPayload&& payload) {
       std::move(onError));
 }
 
+void RocketClient::sendExtAlignedPage(
+    StreamId streamId,
+    std::unique_ptr<folly::IOBuf> payload,
+    Flags flags) {
+  auto g = makeRequestCountGuard();
+  auto onError = [dg = DestructorGuard(this), this, g = std::move(g)](
+                     transport::TTransportException ex) {
+    FB_LOG_EVERY_MS(ERROR, 1000)
+        << "sendExtAlignedPage failed, closing now: " << ex.what();
+    close(std::move(ex));
+  };
+
+  std::ignore = sendFrame(
+      ExtFrame(
+          streamId,
+          Payload::makeFromData(std::move(payload)),
+          flags.ignore(true),
+          ExtFrameType::ALIGNED_PAGE),
+      std::move(onError));
+}
+
 folly::Try<void> RocketClient::scheduleWrite(RequestContext& ctx) {
   if (!evb_) {
     folly::throw_exception(transport::TTransportException(
@@ -879,8 +901,8 @@ void RocketClient::closeNowImpl() noexcept {
 
   // Move streams_ into a local copy before iterating and erasing. Note that
   // flowable->onError() may itself attempt to erase an element of streams_,
-  // invalidating any outstanding iterators. Also, since the client is shutting
-  // down now, we don't bother with notifyIfDetachable().
+  // invalidating any outstanding iterators. Also, since the client is
+  // shutting down now, we don't bother with notifyIfDetachable().
   auto streams = std::move(streams_);
   for (const auto& callback : streams) {
     callback.match([&](auto* serverCallback) {

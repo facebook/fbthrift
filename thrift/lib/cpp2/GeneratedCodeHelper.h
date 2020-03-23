@@ -422,9 +422,20 @@ apache::thrift::ClientBufferedStream<T> decode_client_buffered_stream(
 template <typename Protocol, typename PResult, typename T>
 std::unique_ptr<folly::IOBuf> encode_stream_payload(T&& _item);
 
+template <typename Protocol, typename PResult>
+std::unique_ptr<folly::IOBuf> encode_stream_payload(folly::IOBuf&& _item);
+
 template <typename Protocol, typename PResult, typename ErrorMapFunc>
 std::unique_ptr<folly::IOBuf> encode_stream_exception(
     folly::exception_wrapper ew);
+
+template <typename Protocol, typename PResult, typename T>
+T decode_stream_payload_impl(folly::IOBuf& payload, folly::tag_t<T>);
+
+template <typename Protocol, typename PResult, typename T>
+folly::IOBuf decode_stream_payload_impl(
+    folly::IOBuf& payload,
+    folly::tag_t<folly::IOBuf>);
 
 template <typename Protocol, typename PResult, typename T>
 T decode_stream_payload(folly::IOBuf& payload);
@@ -623,9 +634,8 @@ ClientSink<SinkType, FinalResponseType> createSink(
       std::move(impl),
       [](folly::Try<SinkType>&& item) mutable {
         if (item.hasValue()) {
-          return ap::
-              encode_stream_payload<ProtocolWriter, SinkPResult, SinkType>(
-                  std::move(item).value());
+          return ap::encode_stream_payload<ProtocolWriter, SinkPResult>(
+              std::move(item).value());
         } else {
           return ap::encode_stream_exception<
               ProtocolWriter,
@@ -917,6 +927,11 @@ std::unique_ptr<folly::IOBuf> encode_stream_payload(T&& _item) {
   return std::move(queue).move();
 }
 
+template <typename Protocol, typename PResult>
+std::unique_ptr<folly::IOBuf> encode_stream_payload(folly::IOBuf&& _item) {
+  return std::make_unique<folly::IOBuf>(std::move(_item));
+}
+
 template <typename Protocol, typename PResult, typename ErrorMapFunc>
 std::unique_ptr<folly::IOBuf> encode_stream_exception(
     folly::exception_wrapper ew) {
@@ -943,7 +958,7 @@ template <
 folly::Try<StreamPayload> encode_server_stream_payload(folly::Try<T>&& val) {
   if (val.hasValue()) {
     return folly::Try<StreamPayload>(
-        {encode_stream_payload<Protocol, PResult, T>(std::move(*val)), {}});
+        {encode_stream_payload<Protocol, PResult>(std::move(*val)), {}});
   } else if (val.hasException()) {
     return folly::Try<StreamPayload>(folly::exception_wrapper(
         EncodedError(encode_stream_exception<Protocol, PResult, ErrorMapFunc>(
@@ -954,7 +969,7 @@ folly::Try<StreamPayload> encode_server_stream_payload(folly::Try<T>&& val) {
 }
 
 template <typename Protocol, typename PResult, typename T>
-T decode_stream_payload(folly::IOBuf& payload) {
+T decode_stream_payload_impl(folly::IOBuf& payload, folly::tag_t<T>) {
   PResult args;
   T res{};
   args.template get<0>().value = &res;
@@ -963,6 +978,19 @@ T decode_stream_payload(folly::IOBuf& payload) {
   prot.setInput(&payload);
   args.read(&prot);
   return res;
+}
+
+template <typename Protocol, typename PResult, typename T>
+folly::IOBuf decode_stream_payload_impl(
+    folly::IOBuf& payload,
+    folly::tag_t<folly::IOBuf>) {
+  return std::move(payload);
+}
+
+template <typename Protocol, typename PResult, typename T>
+T decode_stream_payload(folly::IOBuf& payload) {
+  return decode_stream_payload_impl<Protocol, PResult, T>(
+      payload, folly::tag_t<T>{});
 }
 
 template <typename Protocol, typename PResult, typename T>
@@ -1080,10 +1108,8 @@ apache::thrift::detail::SinkConsumerImpl toSinkConsumerImpl(
             }
           }(std::move(gen)));
       co_return folly::Try<StreamPayload>(StreamPayload(
-          ap::encode_stream_payload<
-              ProtocolWriter,
-              FinalResponsePResult,
-              FinalResponseType>(std::move(finalResponse)),
+          ap::encode_stream_payload<ProtocolWriter, FinalResponsePResult>(
+              std::move(finalResponse)),
           {}));
     } catch (std::exception& e) {
       ew = folly::exception_wrapper(std::current_exception(), e);

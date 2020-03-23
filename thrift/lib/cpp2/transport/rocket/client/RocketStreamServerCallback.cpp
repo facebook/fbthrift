@@ -298,21 +298,26 @@ StreamChannelStatus RocketChannelServerCallback::onSinkCancel() {
 // RocketSinkServerCallback
 void RocketSinkServerCallback::onSinkNext(StreamPayload&& payload) {
   DCHECK(state_ == State::BothOpen);
-
-  // compress the payload if needed
-  if (client_.getAutoCompressSizeLimit().has_value() &&
-      *(client_.getAutoCompressSizeLimit()) <
-          int(payload.payload->computeChainDataLength())) {
-    if (client_.getNegotiatedCompressionAlgorithm().has_value()) {
-      rocket::compressPayload(
-          payload.metadata,
-          payload.payload,
-          *(client_.getNegotiatedCompressionAlgorithm()));
+  if (LIKELY(!pageAligned_)) {
+    // compress the payload if needed
+    if (client_.getAutoCompressSizeLimit().has_value() &&
+        *(client_.getAutoCompressSizeLimit()) <
+            int(payload.payload->computeChainDataLength())) {
+      if (client_.getNegotiatedCompressionAlgorithm().has_value()) {
+        rocket::compressPayload(
+            payload.metadata,
+            payload.payload,
+            *(client_.getNegotiatedCompressionAlgorithm()));
+      }
     }
+    client_.sendPayload(
+        streamId_, std::move(payload), rocket::Flags::none().next(true));
+  } else {
+    client_.sendExtAlignedPage(
+        streamId_,
+        std::move(payload).payload,
+        rocket::Flags::none().next(true));
   }
-
-  client_.sendPayload(
-      streamId_, std::move(payload), rocket::Flags::none().next(true));
 }
 void RocketSinkServerCallback::onSinkError(folly::exception_wrapper ew) {
   DCHECK(state_ == State::BothOpen);

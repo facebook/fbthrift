@@ -622,9 +622,7 @@ void ExtFrame::serialize(Serializer& writer) && {
 
   nwritten += writer.writeFrameTypeAndFlags(
       frameType(),
-      Flags::none()
-          .metadata(payload_.hasNonemptyMetadata())
-          .ignore(hasIgnore()));
+      flags_.metadata(payload_.hasNonemptyMetadata()).ignore(hasIgnore()));
 
   nwritten += writer.writeBE(folly::to_underlying(extFrameType_));
 

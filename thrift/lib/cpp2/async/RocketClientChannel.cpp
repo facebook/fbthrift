@@ -253,7 +253,8 @@ void RocketClientChannel::sendRequestSink(
   return rclient_->sendRequestSink(
       rocket::makePayload(metadata, std::move(buf)),
       firstResponseTimeout,
-      clientCallback);
+      clientCallback,
+      rpcOptions.getEnablePageAlignment());
 }
 
 void RocketClientChannel::sendThriftRequest(

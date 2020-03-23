@@ -54,6 +54,9 @@ class TestSinkService : public TestSinkServiceSvIf {
 
   apache::thrift::SinkConsumer<int32_t, bool> sinkFinalThrow() override;
 
+  apache::thrift::SinkConsumer<folly::IOBuf, int32_t> alignment(
+      std::unique_ptr<std::string> expected) override;
+
   void purge() override;
 
   apache::thrift::SinkConsumer<std::string, int32_t> sinkBlobs(

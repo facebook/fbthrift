@@ -516,6 +516,15 @@ class RpcOptions {
     return writeHeaders_;
   }
 
+  RpcOptions& setEnablePageAlignment(bool enablePageAlignment) {
+    enablePageAlignment_ = enablePageAlignment;
+    return *this;
+  }
+
+  bool getEnablePageAlignment() const {
+    return enablePageAlignment_;
+  }
+
   std::map<std::string, std::string> releaseWriteHeaders() {
     std::map<std::string, std::string> headers;
     writeHeaders_.swap(headers);
@@ -530,6 +539,7 @@ class RpcOptions {
   bool clientOnlyTimeouts_{false};
   bool enableChecksum_{false};
   int32_t chunkBufferSize_{100};
+  bool enablePageAlignment_{false};
 
   std::string routingKey_;
   std::string shardId_;

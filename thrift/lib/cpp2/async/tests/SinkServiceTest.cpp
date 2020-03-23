@@ -254,5 +254,23 @@ TEST_F(SinkServiceTest, NoCompressionSink) {
   EXPECT_GT(bytesWritten, kSize * count);
 }
 
+TEST_F(SinkServiceTest, AlignedSink) {
+  connectToServer(
+      [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
+        {
+          apache::thrift::RpcOptions option;
+          option.setEnablePageAlignment(true);
+          std::string s = "abcdefghijk";
+          auto sink = co_await client.co_alignment(option, s);
+          int32_t alignment =
+              co_await sink
+                  .sink([s]() -> folly::coro::AsyncGenerator<folly::IOBuf&&> {
+                    co_yield std::move(*folly::IOBuf::copyBuffer(s));
+                  }());
+          EXPECT_EQ(alignment, 0);
+        }
+      });
+}
+
 } // namespace thrift
 } // namespace apache

@@ -103,13 +103,18 @@ class RocketClient : public folly::DelayedDestruction,
   void sendRequestSink(
       Payload&& request,
       std::chrono::milliseconds firstResponseTimeout,
-      SinkClientCallback* clientCallback);
+      SinkClientCallback* clientCallback,
+      bool pageAligned = false);
 
   FOLLY_NODISCARD bool sendRequestN(StreamId streamId, int32_t n);
   void cancelStream(StreamId streamId);
   void sendPayload(StreamId streamId, StreamPayload&& payload, Flags flags);
   void sendError(StreamId streamId, RocketException&& rex);
   void sendComplete(StreamId streamId, bool closeStream);
+  void sendExtAlignedPage(
+      StreamId streamId,
+      std::unique_ptr<folly::IOBuf> payload,
+      Flags flags);
   FOLLY_NODISCARD bool sendExtHeaders(
       StreamId streamId,
       HeadersPayload&& payload);
