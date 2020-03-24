@@ -55,7 +55,8 @@ void RocketSinkClientCallback::onFirstResponse(
   if (UNLIKELY(serverCallbackOrError_ == kErrorFlag)) {
     serverCallback->onSinkError(TApplicationException(
         TApplicationException::TApplicationExceptionType::INTERRUPTION));
-    connection_.freeStream(streamId_);
+    firstResponse.payload.reset();
+    connection_.freeStream(streamId_, true);
     return;
   }
 
@@ -94,7 +95,9 @@ void RocketSinkClientCallback::onFirstResponseError(
       });
   DCHECK(isEncodedError);
 
-  connection_.freeStream(streamId_);
+  // In case of a first response error ThriftServerRequestSink is responsible
+  // for marking the request as complete (required for task timeout support).
+  connection_.freeStream(streamId_, false);
 }
 
 void RocketSinkClientCallback::onFinalResponse(StreamPayload&& finalResponse) {
@@ -116,7 +119,7 @@ void RocketSinkClientCallback::onFinalResponse(StreamPayload&& finalResponse) {
       Flags::none().next(true).complete(true));
   auto state = state_;
   auto& connection = connection_;
-  connection_.freeStream(streamId_);
+  connection_.freeStream(streamId_, true);
   if (state == State::StreamOpen) {
     connection.decInflightFinalResponse();
   }
@@ -136,7 +139,7 @@ void RocketSinkClientCallback::onFinalResponseError(
     connection_.sendError(
         streamId_, RocketException(ErrorCode::APPLICATION_ERROR, ew.what()));
   }
-  connection_.freeStream(streamId_);
+  connection_.freeStream(streamId_, true);
 }
 
 void RocketSinkClientCallback::onSinkRequestN(uint64_t n) {

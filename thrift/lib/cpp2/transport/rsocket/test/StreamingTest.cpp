@@ -1047,6 +1047,24 @@ TEST_F(StreamingTest, SetMaxRequests) {
   });
 }
 
+TEST_F(StreamingTest, SetMaxRequestsStreamCancel) {
+  server_->setMaxRequests(2);
+  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
+    apache::thrift::RpcOptions rpcOptions;
+    rpcOptions.setChunkBufferSize(0);
+    auto stream1 = client->sync_range(rpcOptions, 0, 10);
+    auto stream2 = client->sync_range(rpcOptions, 0, 10);
+
+    EXPECT_ANY_THROW(client->sync_range(rpcOptions, 0, 10));
+
+    { auto _ = std::move(stream2); }
+
+    auto stream3 = client->sync_range(rpcOptions, 0, 10);
+
+    EXPECT_ANY_THROW(client->sync_range(rpcOptions, 0, 10));
+  });
+}
+
 TEST_F(StreamingTest, LeakCallback) {
   server_->setMaxRequests(2);
   connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {

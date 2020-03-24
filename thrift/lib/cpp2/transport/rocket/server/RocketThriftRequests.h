@@ -59,8 +59,6 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
       intptr_t rootRequestContextId,
       RocketServerFrameContext&& context);
 
-  ~ThriftServerRequestResponse();
-
   void sendThriftResponse(
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>) noexcept override;
@@ -165,7 +163,7 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
 
  private:
   folly::EventBase& evb_;
-  const RocketServerFrameContext context_;
+  RocketServerFrameContext context_;
   RocketStreamClientCallback* clientCallback_;
 
   const std::shared_ptr<AsyncProcessor> cpp2Processor_;
@@ -217,7 +215,7 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
 
  private:
   folly::EventBase& evb_;
-  const RocketServerFrameContext context_;
+  RocketServerFrameContext context_;
   RocketSinkClientCallback* clientCallback_;
 
   const std::shared_ptr<AsyncProcessor> cpp2Processor_;

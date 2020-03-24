@@ -181,6 +181,7 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
   auto makeRequestResponse = [&](RequestRpcMetadata&& md,
                                  std::unique_ptr<folly::IOBuf> debugPayload,
                                  const folly::RequestContext* ctx) {
+    serverConfigs_->incActiveRequests();
     // Note, we're passing connContext by reference and rely on the next
     // chain of ownership to keep it alive: ThriftServerRequestResponse
     // stores RocketServerFrameContext, which keeps refcount on
@@ -207,6 +208,7 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
   auto makeRequestFnf = [&](RequestRpcMetadata&& md,
                             std::unique_ptr<folly::IOBuf> debugPayload,
                             const folly::RequestContext* ctx) {
+    serverConfigs_->incActiveRequests();
     // Note, we're passing connContext by reference and rely on a complex
     // chain of ownership (see handleRequestResponseFrame for detailed
     // explanation).
@@ -430,7 +432,7 @@ void ThriftRocketServerHandler::handleServerShutdown(
       kQueueOverloadedErrorCode);
 }
 
-void ThriftRocketServerHandler::streamingRequestComplete() {
+void ThriftRocketServerHandler::requestComplete() {
   serverConfigs_->decActiveRequests();
 }
 } // namespace rocket

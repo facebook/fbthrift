@@ -60,6 +60,11 @@ class RocketServerFrameContext {
     return *connection_;
   }
 
+  void unsetMarkRequestComplete() {
+    DCHECK(markRequestComplete_);
+    markRequestComplete_ = false;
+  }
+
   void onFullFrame(RequestResponseFrame&& fullFrame) &&;
   void onFullFrame(RequestFnfFrame&& fullFrame) &&;
   void onFullFrame(RequestStreamFrame&& fullFrame) &&;
@@ -68,6 +73,7 @@ class RocketServerFrameContext {
  private:
   RocketServerConnection* connection_{nullptr};
   const StreamId streamId_;
+  bool markRequestComplete_{true};
 };
 
 } // namespace rocket

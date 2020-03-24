@@ -42,12 +42,17 @@ RocketServerFrameContext::RocketServerFrameContext(
 
 RocketServerFrameContext::RocketServerFrameContext(
     RocketServerFrameContext&& other) noexcept
-    : connection_(other.connection_), streamId_(other.streamId_) {
+    : connection_(other.connection_),
+      streamId_(other.streamId_),
+      markRequestComplete_(other.markRequestComplete_) {
   other.connection_ = nullptr;
 }
 
 RocketServerFrameContext::~RocketServerFrameContext() {
   if (connection_) {
+    if (markRequestComplete_) {
+      connection_->requestComplete();
+    }
     connection_->decInflightRequests();
   }
 }

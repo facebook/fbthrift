@@ -68,7 +68,8 @@ bool RocketStreamClientCallback::onFirstResponse(
     StreamServerCallback* serverCallback) {
   if (UNLIKELY(serverCallbackOrCancelled_ == kCancelledFlag)) {
     serverCallback->onStreamCancel();
-    connection_.freeStream(streamId_);
+    firstResponse.payload.reset();
+    connection_.freeStream(streamId_, true);
     return false;
   }
 
@@ -121,7 +122,9 @@ void RocketStreamClientCallback::onFirstResponseError(
       });
   DCHECK(isEncodedError);
 
-  connection_.freeStream(streamId_);
+  // In case of a first response error ThriftServerRequestStream is responsible
+  // for marking the request as complete (required for task timeout support).
+  connection_.freeStream(streamId_, false);
 }
 
 bool RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
@@ -149,7 +152,7 @@ void RocketStreamClientCallback::onStreamComplete() {
       streamId_,
       Payload::makeFromData(std::unique_ptr<folly::IOBuf>{}),
       Flags::none().complete(true));
-  connection_.freeStream(streamId_);
+  connection_.freeStream(streamId_, true);
 }
 
 void RocketStreamClientCallback::onStreamError(folly::exception_wrapper ew) {
@@ -170,7 +173,7 @@ void RocketStreamClientCallback::onStreamError(folly::exception_wrapper ew) {
             streamId_,
             RocketException(ErrorCode::APPLICATION_ERROR, ew.what()));
       });
-  connection_.freeStream(streamId_);
+  connection_.freeStream(streamId_, true);
 }
 
 bool RocketStreamClientCallback::onStreamHeaders(HeadersPayload&& payload) {

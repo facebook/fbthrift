@@ -64,12 +64,7 @@ ThriftServerRequestResponse::ThriftServerRequestResponse(
       getProtoId(),
       std::move(debugPayload),
       rootRequestContextId);
-  serverConfigs_.incActiveRequests();
   scheduleTimeouts();
-}
-
-ThriftServerRequestResponse::~ThriftServerRequestResponse() {
-  serverConfigs_.decActiveRequests();
 }
 
 void ThriftServerRequestResponse::sendThriftResponse(
@@ -124,7 +119,6 @@ ThriftServerRequestFnf::ThriftServerRequestFnf(
       getProtoId(),
       std::move(debugPayload),
       rootRequestContextId);
-  serverConfigs_.incActiveRequests();
   scheduleTimeouts();
 }
 
@@ -132,7 +126,6 @@ ThriftServerRequestFnf::~ThriftServerRequestFnf() {
   if (auto f = std::move(onComplete_)) {
     f();
   }
-  serverConfigs_.decActiveRequests();
 }
 
 void ThriftServerRequestFnf::sendThriftResponse(
@@ -186,6 +179,7 @@ bool ThriftServerRequestStream::sendStreamThriftResponse(
     sendSerializedError(std::move(metadata), std::move(data));
     return false;
   }
+  context_.unsetMarkRequestComplete();
   stream->resetClientCallback(*clientCallback_);
   clientCallback_->setProtoId(getProtoId());
   return clientCallback_->onFirstResponse(
@@ -198,6 +192,7 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> data,
     apache::thrift::detail::ServerStreamFactory&& stream) noexcept {
+  context_.unsetMarkRequestComplete();
   clientCallback_->setProtoId(getProtoId());
   stream(
       apache::thrift::FirstResponsePayload{std::move(data),
@@ -263,6 +258,7 @@ void ThriftServerRequestSink::sendSinkThriftResponse(
     std::unique_ptr<folly::IOBuf> data,
     apache::thrift::detail::SinkConsumerImpl&& sinkConsumer) noexcept {
   if (sinkConsumer) {
+    context_.unsetMarkRequestComplete();
     auto* executor = sinkConsumer.executor.get();
     clientCallback_->setProtoId(getProtoId());
     clientCallback_->setChunkTimeout(sinkConsumer.chunkTimeout);

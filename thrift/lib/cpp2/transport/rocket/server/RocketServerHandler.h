@@ -56,7 +56,7 @@ class RocketServerHandler {
       // TODO current only Sink are supported by using channel
       RocketSinkClientCallback*) = 0;
 
-  virtual void streamingRequestComplete() {}
+  virtual void requestComplete() {}
 };
 
 } // namespace rocket

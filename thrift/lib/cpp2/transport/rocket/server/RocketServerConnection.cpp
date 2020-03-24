@@ -100,7 +100,7 @@ void RocketServerConnection::send(std::unique_ptr<folly::IOBuf> data) {
 
 RocketServerConnection::~RocketServerConnection() {
   DCHECK(inflightRequests_ == 0);
-  DCHECK(inflightWrites_ == 0);
+  DCHECK(inflightWritesQueue_.empty());
   DCHECK(inflightSinkFinalResponses_ == 0);
   DCHECK(writeBatcher_.empty());
   socket_.reset();
@@ -147,7 +147,7 @@ void RocketServerConnection::closeIfNeeded() {
               TApplicationException::TApplicationExceptionType::INTERRUPTION));
           DCHECK(state) << "onSinkError called after sink complete!";
         });
-    frameHandler_->streamingRequestComplete();
+    requestComplete();
   }
 
   writeBatcher_.drain();
@@ -338,7 +338,7 @@ void RocketServerConnection::handleStreamFrame(
 
     case FrameType::CANCEL: {
       clientCallback.onStreamCancel();
-      freeStream(streamId);
+      freeStream(streamId, true);
       return;
     }
 
@@ -350,7 +350,7 @@ void RocketServerConnection::handleStreamFrame(
           auto headers = unpack<HeadersPayload>(std::move(extFrame.payload()));
           if (headers.hasException()) {
             serverCallback.onStreamCancel();
-            freeStream(streamId);
+            freeStream(streamId, true);
             return;
           }
           std::ignore = serverCallback.onSinkHeaders(std::move(*headers));
@@ -418,7 +418,7 @@ void RocketServerConnection::handleSinkFrame(
           notViolateContract =
               clientCallback.onSinkError(std::move(streamPayload.exception()));
           if (notViolateContract) {
-            freeStream(streamId);
+            freeStream(streamId, true);
           }
         } else {
           notViolateContract =
@@ -463,7 +463,7 @@ void RocketServerConnection::handleSinkFrame(
 
       bool notViolateContract = clientCallback.onSinkError(std::move(ew));
       if (notViolateContract) {
-        freeStream(streamId);
+        freeStream(streamId, true);
       } else {
         close(folly::make_exception_wrapper<transport::TTransportException>(
             transport::TTransportException::TTransportExceptionType::
@@ -474,7 +474,7 @@ void RocketServerConnection::handleSinkFrame(
 
     case FrameType::CANCEL: {
       clientCallback.onStreamCancel();
-      return freeStream(streamId);
+      return freeStream(streamId, true);
     } break;
 
     case FrameType::EXT: {
@@ -525,7 +525,7 @@ void RocketServerConnection::timeoutExpired() noexcept {
 }
 
 bool RocketServerConnection::isBusy() const {
-  return inflightRequests_ != 0 || inflightWrites_ != 0 ||
+  return inflightRequests_ != 0 || !inflightWritesQueue_.empty() ||
       inflightSinkFinalResponses_ != 0 || !writeBatcher_.empty();
 }
 
@@ -556,8 +556,13 @@ void RocketServerConnection::closeWhenIdle() {
 }
 
 void RocketServerConnection::writeSuccess() noexcept {
-  DCHECK(inflightWrites_ != 0);
-  --inflightWrites_;
+  DCHECK(!inflightWritesQueue_.empty());
+  for (auto processingCompleteCount = inflightWritesQueue_.front();
+       processingCompleteCount > 0;
+       --processingCompleteCount) {
+    frameHandler_->requestComplete();
+  }
+  inflightWritesQueue_.pop();
   closeIfNeeded();
 }
 
@@ -565,8 +570,13 @@ void RocketServerConnection::writeErr(
     size_t bytesWritten,
     const folly::AsyncSocketException& ex) noexcept {
   DestructorGuard dg(this);
-  DCHECK(inflightWrites_ != 0);
-  --inflightWrites_;
+  DCHECK(!inflightWritesQueue_.empty());
+  for (auto processingCompleteCount = inflightWritesQueue_.front();
+       processingCompleteCount > 0;
+       --processingCompleteCount) {
+    frameHandler_->requestComplete();
+  }
+  inflightWritesQueue_.pop();
   close(folly::make_exception_wrapper<std::runtime_error>(fmt::format(
       "Failed to write to remote endpoint. Wrote {} bytes."
       " AsyncSocketException: {}",
@@ -647,18 +657,17 @@ void RocketServerConnection::sendExt(
   send(ExtFrame(streamId, std::move(payload), flags, extFrameType).serialize());
 }
 
-void RocketServerConnection::freeStream(StreamId streamId) {
+void RocketServerConnection::freeStream(
+    StreamId streamId,
+    bool markRequestComplete) {
   DestructorGuard dg(this);
 
   bufferedFragments_.erase(streamId);
 
-  auto it = streams_.find(streamId);
-  if (it != streams_.end()) {
-    // Avoid potentially erasing from streams_ map recursively via
-    // closeIfNeeded
-    auto ctx = std::move(*it);
-    streams_.erase(it);
-    frameHandler_->streamingRequestComplete();
+  DCHECK(streams_.find(streamId) != streams_.end());
+  streams_.erase(streamId);
+  if (markRequestComplete) {
+    requestComplete();
   }
 }
 
