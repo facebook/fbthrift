@@ -31,12 +31,11 @@ METHODS = [
     "has_value",
     "hasValue",
     "reset",
-    "clear",
     "value",
     "value_or",
 ]
 
-RETURN_VOID = ["assign", "clear", "reset"]
+RETURN_VOID = ["assign", "reset"]
 HAS_ARG = ["assign", "value_or", "emplace", "operator="]
 MAY_THROW = ["operator*", "value"]
 
