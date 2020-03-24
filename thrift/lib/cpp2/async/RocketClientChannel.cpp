@@ -342,7 +342,7 @@ void RocketClientChannel::sendSingleRequestNoResponse(
     finallyFunc(folly::makeTryWith(std::move(sendRequestFunc)));
   } else {
     auto& fm = getFiberManager();
-    fm.addTaskFinally(
+    fm.addTaskFinallyEager(
         std::move(sendRequestFunc),
         [finallyFunc = std::move(finallyFunc)](
             folly::Try<folly::Try<void>>&& arg) mutable {
@@ -422,7 +422,7 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
     finallyFunc(folly::makeTryWith(std::move(sendRequestFunc)));
   } else {
     auto& fm = getFiberManager();
-    fm.addTaskFinally(
+    fm.addTaskFinallyEager(
         std::move(sendRequestFunc),
         [finallyFunc = std::move(finallyFunc)](
             folly::Try<folly::Try<rocket::Payload>>&& arg) mutable {

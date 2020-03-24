@@ -1066,7 +1066,6 @@ TEST_F(StreamingTest, SetMaxRequestsStreamCancel) {
 }
 
 TEST_F(StreamingTest, LeakCallback) {
-  server_->setMaxRequests(2);
   connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
     try {
       client->sync_leakCallback();
@@ -1075,6 +1074,29 @@ TEST_F(StreamingTest, LeakCallback) {
       EXPECT_TRUE(folly::StringPiece(ex.what()).contains(
           "HandlerCallback not completed"));
     }
+  });
+}
+
+TEST_F(StreamingTest, RequestsOrder) {
+  connectToServer([&](std::unique_ptr<StreamServiceAsyncClient> client) {
+    folly::Baton<> b;
+    // Block IO thread to make sure all requests come in a single batch.
+    // Make sure we make PooledRequestChannel cache the protocol before we block
+    // the EventBase.
+    client->getChannel()->getProtocolId();
+    ioThread_->add([&] { b.wait(); });
+
+    auto r1 = client->semifuture_orderRequestResponse();
+    auto r2 = client->semifuture_orderRequestStream();
+    auto r3 = client->semifuture_orderRequestResponse();
+    auto r4 = client->semifuture_orderRequestStream();
+
+    b.post();
+
+    EXPECT_EQ(1, std::move(r1).get());
+    EXPECT_EQ(2, std::move(r2).get().response);
+    EXPECT_EQ(3, std::move(r3).get());
+    EXPECT_EQ(4, std::move(r4).get().response);
   });
 }
 } // namespace thrift

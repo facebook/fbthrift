@@ -76,6 +76,9 @@ service StreamService {
   stream<string> streamBlobs(1:i32 count);
 
   stream<i32> leakCallback() (thread = "eb");
+
+  i32, stream<i32> orderRequestStream() (thread = "eb");
+  i32 orderRequestResponse() (thread = "eb");
 }
 
 # OldVersion and NewVersion services will be used to test the behavior

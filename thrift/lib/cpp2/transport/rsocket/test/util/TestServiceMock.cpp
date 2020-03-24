@@ -269,5 +269,16 @@ apache::thrift::ServerStream<std::string> TestStreamServiceMock::streamBlobs(
 void TestStreamServiceMock::async_eb_leakCallback(
     std::unique_ptr<apache::thrift::HandlerCallback<
         apache::thrift::ServerStream<int32_t>>>) {}
+
+void TestStreamServiceMock::async_eb_orderRequestStream(
+    std::unique_ptr<apache::thrift::HandlerCallback<
+        apache::thrift::ResponseAndServerStream<int32_t, int32_t>>> cb) {
+  cb->result({++order_, apache::thrift::ServerStream<int32_t>::createEmpty()});
+}
+
+void TestStreamServiceMock::async_eb_orderRequestResponse(
+    std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> cb) {
+  cb->result(++order_);
+}
 } // namespace testservice
 } // namespace testutil
