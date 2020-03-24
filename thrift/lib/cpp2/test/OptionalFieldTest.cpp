@@ -529,7 +529,7 @@ TEST(DeprecatedOptionalField, Conversions) {
   EXPECT_TRUE(bool(mbool));
   EXPECT_TRUE(*mbool);
 
-  mbool = none;
+  mbool.reset();
   EXPECT_FALSE(bool(mbool));
 
   // No conversion allowed; does not compile
