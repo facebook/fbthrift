@@ -781,8 +781,7 @@ func (p *MyServicePingArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("MyServicePingArgs({})")
+  return fmt.Sprintf("MyServicePingArgs(%+v)", *p)
 }
 
 type MyServicePingResult struct {
@@ -832,8 +831,7 @@ func (p *MyServicePingResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("MyServicePingResult({})")
+  return fmt.Sprintf("MyServicePingResult(%+v)", *p)
 }
 
 type MyServiceGetRandomDataArgs struct {
@@ -883,8 +881,7 @@ func (p *MyServiceGetRandomDataArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("MyServiceGetRandomDataArgs({})")
+  return fmt.Sprintf("MyServiceGetRandomDataArgs(%+v)", *p)
 }
 
 // Attributes:
@@ -977,14 +974,7 @@ func (p *MyServiceGetRandomDataResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var successVal string
-  if p.Success == nil {
-    successVal = "<nil>"
-  }else{
-    successVal = fmt.Sprint(*p.Success)
-  }
-  return fmt.Sprintf("MyServiceGetRandomDataResult({Success:%s })", successVal)
+  return fmt.Sprintf("MyServiceGetRandomDataResult(%+v)", *p)
 }
 
 // Attributes:
@@ -1068,9 +1058,7 @@ func (p *MyServiceHasDataByIdArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  idVal := fmt.Sprint(p.Id)
-  return fmt.Sprintf("MyServiceHasDataByIdArgs({Id:%s })", idVal)
+  return fmt.Sprintf("MyServiceHasDataByIdArgs(%+v)", *p)
 }
 
 // Attributes:
@@ -1163,14 +1151,7 @@ func (p *MyServiceHasDataByIdResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var successVal string
-  if p.Success == nil {
-    successVal = "<nil>"
-  }else{
-    successVal = fmt.Sprint(*p.Success)
-  }
-  return fmt.Sprintf("MyServiceHasDataByIdResult({Success:%s })", successVal)
+  return fmt.Sprintf("MyServiceHasDataByIdResult(%+v)", *p)
 }
 
 // Attributes:
@@ -1254,9 +1235,7 @@ func (p *MyServiceGetDataByIdArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  idVal := fmt.Sprint(p.Id)
-  return fmt.Sprintf("MyServiceGetDataByIdArgs({Id:%s })", idVal)
+  return fmt.Sprintf("MyServiceGetDataByIdArgs(%+v)", *p)
 }
 
 // Attributes:
@@ -1349,14 +1328,7 @@ func (p *MyServiceGetDataByIdResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var successVal string
-  if p.Success == nil {
-    successVal = "<nil>"
-  }else{
-    successVal = fmt.Sprint(*p.Success)
-  }
-  return fmt.Sprintf("MyServiceGetDataByIdResult({Success:%s })", successVal)
+  return fmt.Sprintf("MyServiceGetDataByIdResult(%+v)", *p)
 }
 
 // Attributes:
@@ -1470,10 +1442,7 @@ func (p *MyServicePutDataByIdArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  idVal := fmt.Sprint(p.Id)
-  dataVal := fmt.Sprint(p.Data)
-  return fmt.Sprintf("MyServicePutDataByIdArgs({Id:%s Data:%s })", idVal, dataVal)
+  return fmt.Sprintf("MyServicePutDataByIdArgs(%+v)", *p)
 }
 
 type MyServicePutDataByIdResult struct {
@@ -1523,8 +1492,7 @@ func (p *MyServicePutDataByIdResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("MyServicePutDataByIdResult({})")
+  return fmt.Sprintf("MyServicePutDataByIdResult(%+v)", *p)
 }
 
 // Attributes:
@@ -1638,10 +1606,7 @@ func (p *MyServiceLobDataByIdArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  idVal := fmt.Sprint(p.Id)
-  dataVal := fmt.Sprint(p.Data)
-  return fmt.Sprintf("MyServiceLobDataByIdArgs({Id:%s Data:%s })", idVal, dataVal)
+  return fmt.Sprintf("MyServiceLobDataByIdArgs(%+v)", *p)
 }
 
 type MyServiceDoNothingArgs struct {
@@ -1691,8 +1656,7 @@ func (p *MyServiceDoNothingArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("MyServiceDoNothingArgs({})")
+  return fmt.Sprintf("MyServiceDoNothingArgs(%+v)", *p)
 }
 
 type MyServiceDoNothingResult struct {
@@ -1742,8 +1706,7 @@ func (p *MyServiceDoNothingResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("MyServiceDoNothingResult({})")
+  return fmt.Sprintf("MyServiceDoNothingResult(%+v)", *p)
 }
 
 

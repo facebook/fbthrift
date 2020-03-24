@@ -1248,14 +1248,7 @@ func (p *GetEntityGetEntityArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var rVal string
-  if p.R == nil {
-    rVal = "<nil>"
-  }else{
-    rVal = fmt.Sprint(*p.R)
-  }
-  return fmt.Sprintf("GetEntityGetEntityArgs({R:%s })", rVal)
+  return fmt.Sprintf("GetEntityGetEntityArgs(%+v)", *p)
 }
 
 // Attributes:
@@ -1348,14 +1341,7 @@ func (p *GetEntityGetEntityResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var successVal string
-  if p.Success == nil {
-    successVal = "<nil>"
-  }else{
-    successVal = fmt.Sprint(*p.Success)
-  }
-  return fmt.Sprintf("GetEntityGetEntityResult({Success:%s })", successVal)
+  return fmt.Sprintf("GetEntityGetEntityResult(%+v)", *p)
 }
 
 type GetEntityGetBoolArgs struct {
@@ -1405,8 +1391,7 @@ func (p *GetEntityGetBoolArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("GetEntityGetBoolArgs({})")
+  return fmt.Sprintf("GetEntityGetBoolArgs(%+v)", *p)
 }
 
 // Attributes:
@@ -1499,14 +1484,7 @@ func (p *GetEntityGetBoolResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var successVal string
-  if p.Success == nil {
-    successVal = "<nil>"
-  }else{
-    successVal = fmt.Sprint(*p.Success)
-  }
-  return fmt.Sprintf("GetEntityGetBoolResult({Success:%s })", successVal)
+  return fmt.Sprintf("GetEntityGetBoolResult(%+v)", *p)
 }
 
 type GetEntityGetByteArgs struct {
@@ -1556,8 +1534,7 @@ func (p *GetEntityGetByteArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("GetEntityGetByteArgs({})")
+  return fmt.Sprintf("GetEntityGetByteArgs(%+v)", *p)
 }
 
 // Attributes:
@@ -1651,14 +1628,7 @@ func (p *GetEntityGetByteResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var successVal string
-  if p.Success == nil {
-    successVal = "<nil>"
-  }else{
-    successVal = fmt.Sprint(*p.Success)
-  }
-  return fmt.Sprintf("GetEntityGetByteResult({Success:%s })", successVal)
+  return fmt.Sprintf("GetEntityGetByteResult(%+v)", *p)
 }
 
 type GetEntityGetI16Args struct {
@@ -1708,8 +1678,7 @@ func (p *GetEntityGetI16Args) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("GetEntityGetI16Args({})")
+  return fmt.Sprintf("GetEntityGetI16Args(%+v)", *p)
 }
 
 // Attributes:
@@ -1802,14 +1771,7 @@ func (p *GetEntityGetI16Result) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var successVal string
-  if p.Success == nil {
-    successVal = "<nil>"
-  }else{
-    successVal = fmt.Sprint(*p.Success)
-  }
-  return fmt.Sprintf("GetEntityGetI16Result({Success:%s })", successVal)
+  return fmt.Sprintf("GetEntityGetI16Result(%+v)", *p)
 }
 
 type GetEntityGetI32Args struct {
@@ -1859,8 +1821,7 @@ func (p *GetEntityGetI32Args) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("GetEntityGetI32Args({})")
+  return fmt.Sprintf("GetEntityGetI32Args(%+v)", *p)
 }
 
 // Attributes:
@@ -1953,14 +1914,7 @@ func (p *GetEntityGetI32Result) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var successVal string
-  if p.Success == nil {
-    successVal = "<nil>"
-  }else{
-    successVal = fmt.Sprint(*p.Success)
-  }
-  return fmt.Sprintf("GetEntityGetI32Result({Success:%s })", successVal)
+  return fmt.Sprintf("GetEntityGetI32Result(%+v)", *p)
 }
 
 type GetEntityGetI64Args struct {
@@ -2010,8 +1964,7 @@ func (p *GetEntityGetI64Args) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("GetEntityGetI64Args({})")
+  return fmt.Sprintf("GetEntityGetI64Args(%+v)", *p)
 }
 
 // Attributes:
@@ -2104,14 +2057,7 @@ func (p *GetEntityGetI64Result) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var successVal string
-  if p.Success == nil {
-    successVal = "<nil>"
-  }else{
-    successVal = fmt.Sprint(*p.Success)
-  }
-  return fmt.Sprintf("GetEntityGetI64Result({Success:%s })", successVal)
+  return fmt.Sprintf("GetEntityGetI64Result(%+v)", *p)
 }
 
 type GetEntityGetDoubleArgs struct {
@@ -2161,8 +2107,7 @@ func (p *GetEntityGetDoubleArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("GetEntityGetDoubleArgs({})")
+  return fmt.Sprintf("GetEntityGetDoubleArgs(%+v)", *p)
 }
 
 // Attributes:
@@ -2255,14 +2200,7 @@ func (p *GetEntityGetDoubleResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var successVal string
-  if p.Success == nil {
-    successVal = "<nil>"
-  }else{
-    successVal = fmt.Sprint(*p.Success)
-  }
-  return fmt.Sprintf("GetEntityGetDoubleResult({Success:%s })", successVal)
+  return fmt.Sprintf("GetEntityGetDoubleResult(%+v)", *p)
 }
 
 type GetEntityGetStringArgs struct {
@@ -2312,8 +2250,7 @@ func (p *GetEntityGetStringArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("GetEntityGetStringArgs({})")
+  return fmt.Sprintf("GetEntityGetStringArgs(%+v)", *p)
 }
 
 // Attributes:
@@ -2406,14 +2343,7 @@ func (p *GetEntityGetStringResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var successVal string
-  if p.Success == nil {
-    successVal = "<nil>"
-  }else{
-    successVal = fmt.Sprint(*p.Success)
-  }
-  return fmt.Sprintf("GetEntityGetStringResult({Success:%s })", successVal)
+  return fmt.Sprintf("GetEntityGetStringResult(%+v)", *p)
 }
 
 type GetEntityGetBinaryArgs struct {
@@ -2463,8 +2393,7 @@ func (p *GetEntityGetBinaryArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("GetEntityGetBinaryArgs({})")
+  return fmt.Sprintf("GetEntityGetBinaryArgs(%+v)", *p)
 }
 
 // Attributes:
@@ -2555,9 +2484,7 @@ func (p *GetEntityGetBinaryResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  successVal := fmt.Sprint(p.Success)
-  return fmt.Sprintf("GetEntityGetBinaryResult({Success:%s })", successVal)
+  return fmt.Sprintf("GetEntityGetBinaryResult(%+v)", *p)
 }
 
 type GetEntityGetMapArgs struct {
@@ -2607,8 +2534,7 @@ func (p *GetEntityGetMapArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("GetEntityGetMapArgs({})")
+  return fmt.Sprintf("GetEntityGetMapArgs(%+v)", *p)
 }
 
 // Attributes:
@@ -2728,9 +2654,7 @@ func (p *GetEntityGetMapResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  successVal := fmt.Sprint(p.Success)
-  return fmt.Sprintf("GetEntityGetMapResult({Success:%s })", successVal)
+  return fmt.Sprintf("GetEntityGetMapResult(%+v)", *p)
 }
 
 type GetEntityGetSetArgs struct {
@@ -2780,8 +2704,7 @@ func (p *GetEntityGetSetArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("GetEntityGetSetArgs({})")
+  return fmt.Sprintf("GetEntityGetSetArgs(%+v)", *p)
 }
 
 // Attributes:
@@ -2900,9 +2823,7 @@ func (p *GetEntityGetSetResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  successVal := fmt.Sprint(p.Success)
-  return fmt.Sprintf("GetEntityGetSetResult({Success:%s })", successVal)
+  return fmt.Sprintf("GetEntityGetSetResult(%+v)", *p)
 }
 
 type GetEntityGetListArgs struct {
@@ -2952,8 +2873,7 @@ func (p *GetEntityGetListArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("GetEntityGetListArgs({})")
+  return fmt.Sprintf("GetEntityGetListArgs(%+v)", *p)
 }
 
 // Attributes:
@@ -3065,9 +2985,7 @@ func (p *GetEntityGetListResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  successVal := fmt.Sprint(p.Success)
-  return fmt.Sprintf("GetEntityGetListResult({Success:%s })", successVal)
+  return fmt.Sprintf("GetEntityGetListResult(%+v)", *p)
 }
 
 

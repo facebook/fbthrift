@@ -67,8 +67,7 @@ func (p *Empty) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("Empty({})")
+  return fmt.Sprintf("Empty(%+v)", *p)
 }
 
 type Nada struct {
@@ -117,7 +116,6 @@ func (p *Nada) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("Nada({})")
+  return fmt.Sprintf("Nada(%+v)", *p)
 }
 

@@ -238,8 +238,7 @@ func (p *MyRootDoRootArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("MyRootDoRootArgs({})")
+  return fmt.Sprintf("MyRootDoRootArgs(%+v)", *p)
 }
 
 type MyRootDoRootResult struct {
@@ -289,8 +288,7 @@ func (p *MyRootDoRootResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("MyRootDoRootResult({})")
+  return fmt.Sprintf("MyRootDoRootResult(%+v)", *p)
 }
 
 

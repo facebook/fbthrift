@@ -223,8 +223,7 @@ func (p *MyLeafDoLeafArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("MyLeafDoLeafArgs({})")
+  return fmt.Sprintf("MyLeafDoLeafArgs(%+v)", *p)
 }
 
 type MyLeafDoLeafResult struct {
@@ -274,8 +273,7 @@ func (p *MyLeafDoLeafResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("MyLeafDoLeafResult({})")
+  return fmt.Sprintf("MyLeafDoLeafResult(%+v)", *p)
 }
 
 

@@ -452,20 +452,7 @@ func (p *MyServiceQueryArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var sVal string
-  if p.S == nil {
-    sVal = "<nil>"
-  }else{
-    sVal = fmt.Sprint(*p.S)
-  }
-  var iVal string
-  if p.I == nil {
-    iVal = "<nil>"
-  }else{
-    iVal = fmt.Sprint(*p.I)
-  }
-  return fmt.Sprintf("MyServiceQueryArgs({S:%s I:%s })", sVal, iVal)
+  return fmt.Sprintf("MyServiceQueryArgs(%+v)", *p)
 }
 
 type MyServiceQueryResult struct {
@@ -515,8 +502,7 @@ func (p *MyServiceQueryResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("MyServiceQueryResult({})")
+  return fmt.Sprintf("MyServiceQueryResult(%+v)", *p)
 }
 
 // Attributes:
@@ -648,20 +634,7 @@ func (p *MyServiceHasArgDocsArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var sVal string
-  if p.S == nil {
-    sVal = "<nil>"
-  }else{
-    sVal = fmt.Sprint(*p.S)
-  }
-  var iVal string
-  if p.I == nil {
-    iVal = "<nil>"
-  }else{
-    iVal = fmt.Sprint(*p.I)
-  }
-  return fmt.Sprintf("MyServiceHasArgDocsArgs({S:%s I:%s })", sVal, iVal)
+  return fmt.Sprintf("MyServiceHasArgDocsArgs(%+v)", *p)
 }
 
 type MyServiceHasArgDocsResult struct {
@@ -711,8 +684,7 @@ func (p *MyServiceHasArgDocsResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("MyServiceHasArgDocsResult({})")
+  return fmt.Sprintf("MyServiceHasArgDocsResult(%+v)", *p)
 }
 
 

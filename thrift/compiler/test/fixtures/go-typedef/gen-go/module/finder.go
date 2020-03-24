@@ -492,9 +492,7 @@ func (p *FinderByPlateArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  plateVal := fmt.Sprint(p.Plate)
-  return fmt.Sprintf("FinderByPlateArgs({Plate:%s })", plateVal)
+  return fmt.Sprintf("FinderByPlateArgs(%+v)", *p)
 }
 
 // Attributes:
@@ -587,14 +585,7 @@ func (p *FinderByPlateResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var successVal string
-  if p.Success == nil {
-    successVal = "<nil>"
-  }else{
-    successVal = fmt.Sprint(*p.Success)
-  }
-  return fmt.Sprintf("FinderByPlateResult({Success:%s })", successVal)
+  return fmt.Sprintf("FinderByPlateResult(%+v)", *p)
 }
 
 // Attributes:
@@ -679,9 +670,7 @@ func (p *FinderAliasByPlateArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  plateVal := fmt.Sprint(p.Plate)
-  return fmt.Sprintf("FinderAliasByPlateArgs({Plate:%s })", plateVal)
+  return fmt.Sprintf("FinderAliasByPlateArgs(%+v)", *p)
 }
 
 // Attributes:
@@ -774,14 +763,7 @@ func (p *FinderAliasByPlateResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var successVal string
-  if p.Success == nil {
-    successVal = "<nil>"
-  }else{
-    successVal = fmt.Sprint(*p.Success)
-  }
-  return fmt.Sprintf("FinderAliasByPlateResult({Success:%s })", successVal)
+  return fmt.Sprintf("FinderAliasByPlateResult(%+v)", *p)
 }
 
 // Attributes:
@@ -866,9 +848,7 @@ func (p *FinderPreviousPlateArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  plateVal := fmt.Sprint(p.Plate)
-  return fmt.Sprintf("FinderPreviousPlateArgs({Plate:%s })", plateVal)
+  return fmt.Sprintf("FinderPreviousPlateArgs(%+v)", *p)
 }
 
 // Attributes:
@@ -962,14 +942,7 @@ func (p *FinderPreviousPlateResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var successVal string
-  if p.Success == nil {
-    successVal = "<nil>"
-  }else{
-    successVal = fmt.Sprint(*p.Success)
-  }
-  return fmt.Sprintf("FinderPreviousPlateResult({Success:%s })", successVal)
+  return fmt.Sprintf("FinderPreviousPlateResult(%+v)", *p)
 }
 
 

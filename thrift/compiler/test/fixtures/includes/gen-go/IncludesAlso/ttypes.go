@@ -67,7 +67,6 @@ func (p *Also) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("Also({})")
+  return fmt.Sprintf("Also(%+v)", *p)
 }
 

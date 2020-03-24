@@ -294,16 +294,7 @@ func (p *Internship) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  weeksVal := fmt.Sprint(p.Weeks)
-  titleVal := fmt.Sprint(p.Title)
-  var employerVal string
-  if p.Employer == nil {
-    employerVal = "<nil>"
-  }else{
-    employerVal = fmt.Sprint(*p.Employer)
-  }
-  return fmt.Sprintf("Internship({Weeks:%s Title:%s Employer:%s })", weeksVal, titleVal, employerVal)
+  return fmt.Sprintf("Internship(%+v)", *p)
 }
 
 // Attributes:
@@ -426,10 +417,7 @@ func (p *Range) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  minVal := fmt.Sprint(p.Min)
-  maxVal := fmt.Sprint(p.Max)
-  return fmt.Sprintf("Range({Min:%s Max:%s })", minVal, maxVal)
+  return fmt.Sprintf("Range(%+v)", *p)
 }
 
 // Attributes:
@@ -546,10 +534,7 @@ func (p *Struct1) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  aVal := fmt.Sprint(p.A)
-  bVal := fmt.Sprint(p.B)
-  return fmt.Sprintf("Struct1({A:%s B:%s })", aVal, bVal)
+  return fmt.Sprintf("Struct1(%+v)", *p)
 }
 
 // Attributes:
@@ -752,17 +737,7 @@ func (p *Struct2) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  aVal := fmt.Sprint(p.A)
-  bVal := fmt.Sprint(p.B)
-  var cVal string
-  if p.C == nil {
-    cVal = "<nil>"
-  }else{
-    cVal = fmt.Sprint(*p.C)
-  }
-  dVal := fmt.Sprint(p.D)
-  return fmt.Sprintf("Struct2({A:%s B:%s C:%s D:%s })", aVal, bVal, cVal, dVal)
+  return fmt.Sprintf("Struct2(%+v)", *p)
 }
 
 // Attributes:
@@ -914,16 +889,7 @@ func (p *Struct3) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  aVal := fmt.Sprint(p.A)
-  bVal := fmt.Sprint(p.B)
-  var cVal string
-  if p.C == nil {
-    cVal = "<nil>"
-  }else{
-    cVal = fmt.Sprint(*p.C)
-  }
-  return fmt.Sprintf("Struct3({A:%s B:%s C:%s })", aVal, bVal, cVal)
+  return fmt.Sprintf("Struct3(%+v)", *p)
 }
 
 // Attributes:
@@ -1069,20 +1035,7 @@ func (p *Union1) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var iVal string
-  if p.I == nil {
-    iVal = "<nil>"
-  }else{
-    iVal = fmt.Sprint(*p.I)
-  }
-  var dVal string
-  if p.D == nil {
-    dVal = "<nil>"
-  }else{
-    dVal = fmt.Sprint(*p.D)
-  }
-  return fmt.Sprintf("Union1({I:%s D:%s })", iVal, dVal)
+  return fmt.Sprintf("Union1(%+v)", *p)
 }
 
 // Attributes:
@@ -1312,31 +1265,6 @@ func (p *Union2) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  var iVal string
-  if p.I == nil {
-    iVal = "<nil>"
-  }else{
-    iVal = fmt.Sprint(*p.I)
-  }
-  var dVal string
-  if p.D == nil {
-    dVal = "<nil>"
-  }else{
-    dVal = fmt.Sprint(*p.D)
-  }
-  var sVal string
-  if p.S == nil {
-    sVal = "<nil>"
-  }else{
-    sVal = fmt.Sprint(*p.S)
-  }
-  var uVal string
-  if p.U == nil {
-    uVal = "<nil>"
-  }else{
-    uVal = fmt.Sprint(*p.U)
-  }
-  return fmt.Sprintf("Union2({I:%s D:%s S:%s U:%s })", iVal, dVal, sVal, uVal)
+  return fmt.Sprintf("Union2(%+v)", *p)
 }
 

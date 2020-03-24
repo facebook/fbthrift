@@ -698,9 +698,7 @@ func (p *NestedContainersMapListArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  fooVal := fmt.Sprint(p.Foo)
-  return fmt.Sprintf("NestedContainersMapListArgs({Foo:%s })", fooVal)
+  return fmt.Sprintf("NestedContainersMapListArgs(%+v)", *p)
 }
 
 type NestedContainersMapListResult struct {
@@ -750,8 +748,7 @@ func (p *NestedContainersMapListResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("NestedContainersMapListResult({})")
+  return fmt.Sprintf("NestedContainersMapListResult(%+v)", *p)
 }
 
 // Attributes:
@@ -891,9 +888,7 @@ func (p *NestedContainersMapSetArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  fooVal := fmt.Sprint(p.Foo)
-  return fmt.Sprintf("NestedContainersMapSetArgs({Foo:%s })", fooVal)
+  return fmt.Sprintf("NestedContainersMapSetArgs(%+v)", *p)
 }
 
 type NestedContainersMapSetResult struct {
@@ -943,8 +938,7 @@ func (p *NestedContainersMapSetResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("NestedContainersMapSetResult({})")
+  return fmt.Sprintf("NestedContainersMapSetResult(%+v)", *p)
 }
 
 // Attributes:
@@ -1077,9 +1071,7 @@ func (p *NestedContainersListMapArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  fooVal := fmt.Sprint(p.Foo)
-  return fmt.Sprintf("NestedContainersListMapArgs({Foo:%s })", fooVal)
+  return fmt.Sprintf("NestedContainersListMapArgs(%+v)", *p)
 }
 
 type NestedContainersListMapResult struct {
@@ -1129,8 +1121,7 @@ func (p *NestedContainersListMapResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("NestedContainersListMapResult({})")
+  return fmt.Sprintf("NestedContainersListMapResult(%+v)", *p)
 }
 
 // Attributes:
@@ -1262,9 +1253,7 @@ func (p *NestedContainersListSetArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  fooVal := fmt.Sprint(p.Foo)
-  return fmt.Sprintf("NestedContainersListSetArgs({Foo:%s })", fooVal)
+  return fmt.Sprintf("NestedContainersListSetArgs(%+v)", *p)
 }
 
 type NestedContainersListSetResult struct {
@@ -1314,8 +1303,7 @@ func (p *NestedContainersListSetResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("NestedContainersListSetResult({})")
+  return fmt.Sprintf("NestedContainersListSetResult(%+v)", *p)
 }
 
 // Attributes:
@@ -1523,9 +1511,7 @@ func (p *NestedContainersTurtlesArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  fooVal := fmt.Sprint(p.Foo)
-  return fmt.Sprintf("NestedContainersTurtlesArgs({Foo:%s })", fooVal)
+  return fmt.Sprintf("NestedContainersTurtlesArgs(%+v)", *p)
 }
 
 type NestedContainersTurtlesResult struct {
@@ -1575,8 +1561,7 @@ func (p *NestedContainersTurtlesResult) String() string {
   if p == nil {
     return "<nil>"
   }
-
-  return fmt.Sprintf("NestedContainersTurtlesResult({})")
+  return fmt.Sprintf("NestedContainersTurtlesResult(%+v)", *p)
 }
 
 

@@ -1440,35 +1440,9 @@ void t_go_generator::generate_go_struct_definition(
       << endl;
   out << indent() << "  if p == nil {" << endl;
   out << indent() << "    return \"<nil>\"" << endl;
-  out << indent() << "  }" << endl << endl;
-
-  string format;
-  string values;
-  for (m_iter = sorted_members.begin(); m_iter != sorted_members.end();
-       ++m_iter) {
-    if (is_pointer_field(*m_iter)) {
-      out << indent() << "  var " << privatize((*m_iter)->get_name())
-          << "Val string" << endl;
-      out << indent() << "  if p." << publicize((*m_iter)->get_name())
-          << " == nil {" << endl;
-      out << indent() << "    " << privatize((*m_iter)->get_name())
-          << "Val = \"<nil>\"" << endl;
-      out << indent() << "  }else{" << endl;
-      out << indent() << "    " << privatize((*m_iter)->get_name())
-          << "Val = fmt.Sprint(*p." << publicize((*m_iter)->get_name()) << ")"
-          << endl;
-      out << indent() << "  }" << endl;
-    } else {
-      out << indent() << "  " << privatize((*m_iter)->get_name())
-          << "Val := fmt.Sprint(p." << publicize((*m_iter)->get_name()) << ")"
-          << endl;
-    }
-    format = format + publicize((*m_iter)->get_name()) + ":%s ";
-    values = values + ", " + privatize((*m_iter)->get_name()) + "Val";
-  }
+  out << indent() << "  }" << endl;
   out << indent() << "  return fmt.Sprintf(\"" << escape_string(tstruct_name)
-      << "({" << format << "})\"" << values << ")" << endl;
-
+      << "(%+v)\", *p)" << endl;
   out << indent() << "}" << endl << endl;
 
   if (is_exception) {
@@ -3895,8 +3869,8 @@ string strip_type_pointer(string tname) {
   return tname;
 }
 /**
- * Converts the parse type to a go map type, will throw an exception if it
- * will not produce a valid go map type.
+ * Converts the parse type to a go map type, will throw an exception if it will
+ * not produce a valid go map type.
  */
 string t_go_generator::type_to_go_key_type(t_type* type) {
   t_type* resolved_type = type;
