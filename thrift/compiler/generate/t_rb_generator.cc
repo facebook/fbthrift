@@ -330,7 +330,7 @@ void t_rb_generator::generate_enum(t_enum* tenum) {
     if (first) {
       first = false;
     } else {
-      f_service_ << ", ";
+      f_types_ << ", ";
     }
     f_types_ << value << " => \"" << capitalize((*c_iter)->get_name()) << "\"";
   }
@@ -344,7 +344,7 @@ void t_rb_generator::generate_enum(t_enum* tenum) {
     if (first) {
       first = false;
     } else {
-      f_service_ << ", ";
+      f_types_ << ", ";
     }
     f_types_ << capitalize((*c_iter)->get_name());
   }
