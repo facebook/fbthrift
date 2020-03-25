@@ -20,9 +20,9 @@
 
 #include <folly/Function.h>
 #include <folly/SocketAddress.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/ClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/util/ScopedServerThread.h>
@@ -34,10 +34,6 @@ class AsyncProcessorFactory;
 class BaseThriftServer;
 class ThriftServer;
 
-namespace async {
-class TAsyncSocket;
-} // namespace async
-
 /**
  * ScopedServerInterfaceThread spawns a thrift cpp2 server in a new thread.
  *
@@ -47,7 +43,7 @@ class ScopedServerInterfaceThread {
  public:
   using ServerConfigCb = folly::Function<void(ThriftServer&)>;
   using MakeChannelFunc =
-      folly::Function<ClientChannel::Ptr(async::TAsyncSocket::UniquePtr)>;
+      folly::Function<ClientChannel::Ptr(folly::AsyncSocket::UniquePtr)>;
 
   ScopedServerInterfaceThread(
       std::shared_ptr<AsyncProcessorFactory> apf,

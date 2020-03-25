@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
@@ -24,7 +25,6 @@
 using namespace cpp2;
 using namespace apache::thrift;
 using namespace apache::thrift::util;
-using namespace apache::thrift::async;
 using apache::thrift::transport::TTransportException;
 
 class PresultServiceInterface : public PresultServiceSvIf {
@@ -130,7 +130,7 @@ class PresultServiceInterface : public PresultServiceSvIf {
 std::shared_ptr<PresultServiceAsyncClient> getClient(
     const ScopedServerThread& sst,
     folly::EventBase& eb) {
-  auto socket = TAsyncSocket::newSocket(&eb, *sst.getAddress());
+  auto socket = folly::AsyncSocket::newSocket(&eb, *sst.getAddress());
   auto channel = HeaderClientChannel::newChannel(socket);
   auto client = std::make_shared<PresultServiceAsyncClient>(std::move(channel));
   return client;

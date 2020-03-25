@@ -20,9 +20,9 @@
 #include <glog/logging.h>
 
 #include <folly/Conv.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 
 DEFINE_string(transport, "http2", "The transport to use (http2)");
@@ -31,7 +31,6 @@ DEFINE_bool(use_ssl, false, "Create an encrypted client connection");
 namespace apache {
 namespace thrift {
 
-using apache::thrift::async::TAsyncSocket;
 using apache::thrift::async::TAsyncSSLSocket;
 
 ConnectionThread::~ConnectionThread() {
@@ -60,8 +59,8 @@ void ConnectionThread::maybeCreateConnection(
   connections_.withWLock([&, this](auto& connections) {
     std::shared_ptr<ClientConnectionIf>& connection = connections[serverKey];
     if (connection == nullptr || !connection->good()) {
-      TAsyncSocket::UniquePtr socket(
-          new TAsyncSocket(this->getEventBase(), addr, port));
+      folly::AsyncSocket::UniquePtr socket(
+          new folly::AsyncSocket(this->getEventBase(), addr, port));
       if (FLAGS_use_ssl) {
         auto sslContext = std::make_shared<folly::SSLContext>();
 #if FOLLY_OPENSSL_HAS_ALPN

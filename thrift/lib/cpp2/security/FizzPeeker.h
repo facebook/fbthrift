@@ -17,9 +17,9 @@
 #pragma once
 
 #include <fizz/server/AsyncFizzServer.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/net/NetworkSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersContext.h>
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersServerExtension.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -81,7 +81,7 @@ class ThriftFizzAcceptorHandshakeHelper
       const std::shared_ptr<const fizz::server::FizzServerContext>& fizzContext,
       const std::shared_ptr<fizz::ServerExtensions>& extensions) override {
     folly::AsyncSocket::UniquePtr asyncSock(
-        new apache::thrift::async::TAsyncSocket(std::move(sslSock)));
+        new folly::AsyncSocket(std::move(sslSock)));
     asyncSock->cacheAddresses();
     return fizz::server::AsyncFizzServer::UniquePtr(
         new fizz::server::AsyncFizzServer(

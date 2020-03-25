@@ -20,12 +20,12 @@ namespace apache {
 namespace thrift {
 namespace perf {
 
-TAsyncSocket::UniquePtr getSocket(
+folly::AsyncSocket::UniquePtr getSocket(
     folly::EventBase* evb,
     folly::SocketAddress const& addr,
     bool encrypted,
     std::list<std::string> advertizedProtocols) {
-  TAsyncSocket::UniquePtr sock(new TAsyncSocket(evb, addr));
+  folly::AsyncSocket::UniquePtr sock(new folly::AsyncSocket(evb, addr));
   if (encrypted) {
     auto sslContext = std::make_shared<folly::SSLContext>();
     sslContext->setAdvertisedNextProtocols(advertizedProtocols);

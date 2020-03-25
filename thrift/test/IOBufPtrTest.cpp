@@ -22,9 +22,9 @@
 
 #include <folly/Memory.h>
 #include <folly/io/IOBufQueue.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/portability/GTest.h>
 
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/test/gen-cpp2/IOBufPtrTestService.h>
@@ -91,8 +91,8 @@ IOBufPtrTest::IOBufPtrTest() : serverEventBase_(nullptr) {
     startedCond_.wait(lock);
   }
 
-  auto socket = apache::thrift::async::TAsyncSocket::newSocket(
-      getEventBase(), getServerAddress());
+  auto socket =
+      folly::AsyncSocket::newSocket(getEventBase(), getServerAddress());
 
   auto channel = apache::thrift::HeaderClientChannel::newChannel(socket);
   client_ =

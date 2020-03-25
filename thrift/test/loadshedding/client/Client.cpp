@@ -21,7 +21,7 @@
 #include <thread>
 
 #include <folly/Random.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/test/loadshedding/if/gen-cpp2/BackendService.h>
 
@@ -41,13 +41,12 @@ namespace test {
 using namespace facebook::thrift::test;
 
 using apache::thrift::HeaderClientChannel;
-using apache::thrift::async::TAsyncSocket;
 
 Client::Client(const std::string& addr, int port) {
   scopedEventBaseThread_.getEventBase()->runInEventBaseThreadAndWait(
       [this, &addr, port]() {
         auto eventBase = this->scopedEventBaseThread_.getEventBase();
-        auto socket = TAsyncSocket::newSocket(eventBase, addr, port);
+        auto socket = folly::AsyncSocket::newSocket(eventBase, addr, port);
         auto channel = HeaderClientChannel::newChannel(socket);
         this->client_ =
             std::make_unique<BackendServiceAsyncClient>(std::move(channel));

@@ -18,8 +18,8 @@
 
 #include <thrift/perf/cpp/ClientWorker2.h>
 
+#include <folly/io/async/AsyncSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/perf/cpp/ClientLoadConfig.h>
@@ -35,7 +35,7 @@ const int kTimeout = 60000;
 
 std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
   const std::shared_ptr<ClientLoadConfig>& config = getConfig();
-  std::shared_ptr<TAsyncSocket> socket;
+  std::shared_ptr<folly::AsyncSocket> socket;
   std::unique_ptr<RequestChannel, folly::DelayedDestruction::Destructor>
       channel;
   if (config->useSSL()) {
@@ -59,8 +59,8 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
     // Loop once to connect
     ebm_.getEventBase()->loop();
   } else {
-    socket =
-        TAsyncSocket::newSocket(ebm_.getEventBase(), *config->getAddress());
+    socket = folly::AsyncSocket::newSocket(
+        ebm_.getEventBase(), *config->getAddress());
   }
   std::unique_ptr<HeaderClientChannel, folly::DelayedDestruction::Destructor>
       headerChannel(HeaderClientChannel::newChannel(socket));

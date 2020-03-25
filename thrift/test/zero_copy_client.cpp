@@ -18,8 +18,8 @@
 #include <glog/logging.h>
 
 #include <folly/init/Init.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 
@@ -44,9 +44,8 @@ class Client {
  public:
   Client(const std::string& server, int port) {
     folly::SocketAddress addr(server, port, true);
-    auto socket = apache::thrift::async::TAsyncSocket::UniquePtr(
-        new apache::thrift::async::TAsyncSocket(
-            &evb_, addr, 0, (FLAGS_threshold > 0)));
+    auto socket = folly::AsyncSocket::UniquePtr(
+        new folly::AsyncSocket(&evb_, addr, 0, (FLAGS_threshold > 0)));
 
     if (FLAGS_threshold > 0) {
       LOG(INFO) << "Adding zerocopy enable func with threshold = "

@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <folly/io/async/AsyncSocket.h>
+#include <folly/io/async/AsyncSocketException.h>
 #include <folly/io/async/SSLContext.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/py3/client.h>
@@ -23,7 +25,6 @@
 namespace thrift {
 namespace py3 {
 
-using apache::thrift::async::TAsyncSocket;
 using apache::thrift::async::TAsyncSSLSocket;
 
 class ConnectHandler : public folly::AsyncSocket::ConnectCallback,
@@ -74,7 +75,7 @@ class ConnectHandler : public folly::AsyncSocket::ConnectCallback,
       }
       auto chan = configureClientChannel(
           apache::thrift::HeaderClientChannel::newChannel(
-              std::shared_ptr<TAsyncSocket>{std::move(socket_)}),
+              std::shared_ptr<folly::AsyncSocket>{std::move(socket_)}),
           client_t_,
           proto_);
       if (client_t_ == THRIFT_HTTP_CLIENT_TYPE) {

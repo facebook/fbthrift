@@ -19,9 +19,9 @@
 #include <folly/SocketAddress.h>
 #include <folly/experimental/coro/BlockingWait.h>
 #include <folly/experimental/coro/Task.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/synchronization/Baton.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/server/TServerEventHandler.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
@@ -74,8 +74,7 @@ class AsyncTestSetup : public TestSetup {
               executor, ioThread_, [&](folly::EventBase& evb) {
                 socket_ = new apache::thrift::async::TAsyncSocketIntercepted(
                     &evb, "::1", serverPort_);
-                auto socket =
-                    apache::thrift::async::TAsyncSocket::UniquePtr(socket_);
+                auto socket = folly::AsyncSocket::UniquePtr(socket_);
                 auto channel =
                     [&]() -> std::unique_ptr<
                               ClientChannel,

@@ -20,10 +20,10 @@
 
 #include <folly/String.h>
 #include <folly/io/async/AsyncSSLSocket.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBaseLocal.h>
 #include <folly/portability/Sockets.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
@@ -173,7 +173,7 @@ std::shared_ptr<folly::AsyncTransportWrapper> Cpp2Worker::createThriftTransport(
     folly::AsyncTransportWrapper::UniquePtr sock) {
   auto fizzServer = dynamic_cast<fizz::server::AsyncFizzServer*>(sock.get());
   if (fizzServer) {
-    auto asyncSock = sock->getUnderlyingTransport<async::TAsyncSocket>();
+    auto asyncSock = sock->getUnderlyingTransport<folly::AsyncSocket>();
     if (asyncSock) {
       markSocketAccepted(asyncSock);
     }
@@ -183,15 +183,15 @@ std::shared_ptr<folly::AsyncTransportWrapper> Cpp2Worker::createThriftTransport(
         fizzServer, fizz::server::AsyncFizzServer::Destructor());
   }
 
-  TAsyncSocket* tsock = dynamic_cast<TAsyncSocket*>(sock.release());
+  folly::AsyncSocket* tsock = dynamic_cast<folly::AsyncSocket*>(sock.release());
   CHECK(tsock);
-  auto asyncSocket =
-      std::shared_ptr<TAsyncSocket>(tsock, TAsyncSocket::Destructor());
+  auto asyncSocket = std::shared_ptr<folly::AsyncSocket>(
+      tsock, folly::AsyncSocket::Destructor());
   markSocketAccepted(asyncSocket.get());
   return asyncSocket;
 }
 
-void Cpp2Worker::markSocketAccepted(TAsyncSocket* sock) {
+void Cpp2Worker::markSocketAccepted(folly::AsyncSocket* sock) {
   sock->setShutdownSocketSet(server_->wShutdownSocketSet_);
 }
 

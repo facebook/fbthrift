@@ -15,6 +15,7 @@
  */
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
@@ -23,7 +24,6 @@
 #include <thrift/test/gen-cpp2/ExceptionThrowingService.h>
 
 using namespace apache::thrift;
-using namespace apache::thrift::async;
 using namespace apache::thrift::util;
 using folly::EventBase;
 using thrift::test::cpp2::ExceptionThrowingServiceAsyncClient;
@@ -55,8 +55,8 @@ TEST(ExceptionThrowingTest, Thrift2Client) {
   EventBase eb;
   auto serverThread = createThriftServer();
   auto* serverAddr = serverThread->getAddress();
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&eb, *serverAddr));
+  std::shared_ptr<folly::AsyncSocket> socket(
+      folly::AsyncSocket::newSocket(&eb, *serverAddr));
   auto channel = HeaderClientChannel::newChannel(socket);
   ExceptionThrowingServiceAsyncClient client(std::move(channel));
 

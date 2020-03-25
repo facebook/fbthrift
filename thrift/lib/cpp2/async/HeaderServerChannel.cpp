@@ -21,7 +21,6 @@
 
 #include <folly/String.h>
 #include <folly/io/Cursor.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
@@ -33,7 +32,6 @@ using std::unique_ptr;
 using namespace apache::thrift::transport;
 using namespace apache::thrift;
 using apache::thrift::TApplicationException;
-using apache::thrift::async::TAsyncSocket;
 using apache::thrift::protocol::PROTOCOL_TYPES;
 using apache::thrift::server::TServerObserver;
 using folly::EventBase;

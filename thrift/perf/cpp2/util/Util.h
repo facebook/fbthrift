@@ -17,10 +17,10 @@
 #pragma once
 
 #include <folly/SocketAddress.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
@@ -36,14 +36,13 @@ using apache::thrift::InMemoryConnection;
 using apache::thrift::RocketClientChannel;
 using apache::thrift::ThriftClient;
 using apache::thrift::ThriftServerAsyncProcessorFactory;
-using apache::thrift::async::TAsyncSocket;
 using apache::thrift::async::TAsyncSSLSocket;
 using apache::thrift::server::ServerConfigsMock;
 
 namespace apache {
 namespace thrift {
 namespace perf {
-TAsyncSocket::UniquePtr getSocket(
+folly::AsyncSocket::UniquePtr getSocket(
     folly::EventBase* evb,
     folly::SocketAddress const& addr,
     bool encrypted,

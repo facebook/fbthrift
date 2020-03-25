@@ -185,7 +185,7 @@ class Cpp2Worker : public wangle::Acceptor,
   virtual std::shared_ptr<folly::AsyncTransportWrapper> createThriftTransport(
       folly::AsyncTransportWrapper::UniquePtr);
 
-  void markSocketAccepted(async::TAsyncSocket* sock);
+  void markSocketAccepted(folly::AsyncSocket* sock);
 
   void plaintextConnectionReady(
       folly::AsyncTransportWrapper::UniquePtr sock,
@@ -223,8 +223,7 @@ class Cpp2Worker : public wangle::Acceptor,
       folly::EventBase* base,
       int fd) override {
     return folly::AsyncSocket::UniquePtr(
-        new apache::thrift::async::TAsyncSocket(
-            base, folly::NetworkSocket::fromFd(fd)));
+        new folly::AsyncSocket(base, folly::NetworkSocket::fromFd(fd)));
   }
 
   folly::AsyncSSLSocket::UniquePtr makeNewAsyncSSLSocket(

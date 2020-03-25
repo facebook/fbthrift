@@ -22,11 +22,11 @@
 
 #include <folly/experimental/coro/BlockingWait.h>
 #include <folly/experimental/coro/Sleep.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/portability/GTest.h>
 #include <folly/stop_watch.h>
 #include <folly/test/TestUtils.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
@@ -35,7 +35,6 @@
 using namespace std;
 using namespace folly;
 using namespace apache::thrift;
-using namespace apache::thrift::async;
 using namespace apache::thrift::util::cpp2;
 
 class SimpleServiceImpl : public virtual SimpleServiceSvIf {
@@ -79,7 +78,7 @@ TEST(ScopedServerInterfaceThread, example) {
 
   EventBase eb;
   SimpleServiceAsyncClient cli(HeaderClientChannel::newChannel(
-      TAsyncSocket::newSocket(&eb, ssit.getAddress())));
+      folly::AsyncSocket::newSocket(&eb, ssit.getAddress())));
 
   EXPECT_EQ(6, cli.sync_add(-3, 9));
 }
@@ -128,7 +127,7 @@ TEST(ScopedServerInterfaceThread, ctor_with_thriftserver) {
 
   EventBase eb;
   SimpleServiceAsyncClient cli(HeaderClientChannel::newChannel(
-      TAsyncSocket::newSocket(&eb, ssit.getAddress())));
+      folly::AsyncSocket::newSocket(&eb, ssit.getAddress())));
 
   EXPECT_EQ(6, cli.sync_add(-3, 9));
 }
@@ -203,8 +202,8 @@ struct ScopedServerInterfaceThreadTest : public testing::Test {
         folly::via(
             evb,
             [&] {
-              auto channel = Channel::newChannel(async::TAsyncSocket::UniquePtr(
-                  new async::TAsyncSocket(evb, ssit.getAddress())));
+              auto channel = Channel::newChannel(folly::AsyncSocket::UniquePtr(
+                  new folly::AsyncSocket(evb, ssit.getAddress())));
               channel->setTimeout(0);
               return channel;
             })

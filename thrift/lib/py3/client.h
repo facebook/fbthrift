@@ -24,7 +24,7 @@
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
@@ -96,16 +96,14 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
        endpoint{std::move(endpoint)}]() -> RequestChannel_ptr {
         if (client_t == THRIFT_ROCKET_CLIENT_TYPE) {
           auto chan = apache::thrift::RocketClientChannel::newChannel(
-              apache::thrift::async::TAsyncSocket::UniquePtr(
-                  new apache::thrift::async::TAsyncSocket(
-                      eb, host, port, connect_timeout)));
+              folly::AsyncSocket::UniquePtr(
+                  new folly::AsyncSocket(eb, host, port, connect_timeout)));
           chan->setProtocolId(proto);
           return chan;
         }
         auto chan = configureClientChannel(
             apache::thrift::HeaderClientChannel::newChannel(
-                apache::thrift::async::TAsyncSocket::newSocket(
-                    eb, host, port, connect_timeout)),
+                folly::AsyncSocket::newSocket(eb, host, port, connect_timeout)),
             client_t,
             proto);
         if (client_t == THRIFT_HTTP_CLIENT_TYPE) {
@@ -127,18 +125,17 @@ folly::Future<RequestChannel_ptr> createThriftChannelUnix(
   return folly::via(eb, [=, path{std::move(path)}]() -> RequestChannel_ptr {
     if (client_t == THRIFT_ROCKET_CLIENT_TYPE) {
       auto chan = apache::thrift::RocketClientChannel::newChannel(
-          apache::thrift::async::TAsyncSocket::UniquePtr(
-              new apache::thrift::async::TAsyncSocket(
-                  eb,
-                  folly::SocketAddress::makeFromPath(
-                      folly::StringPiece(path.data(), path.size())),
-                  connect_timeout)));
+          folly::AsyncSocket::UniquePtr(new folly::AsyncSocket(
+              eb,
+              folly::SocketAddress::makeFromPath(
+                  folly::StringPiece(path.data(), path.size())),
+              connect_timeout)));
       chan->setProtocolId(proto);
       return chan;
     }
     return configureClientChannel(
         apache::thrift::HeaderClientChannel::newChannel(
-            apache::thrift::async::TAsyncSocket::newSocket(
+            folly::AsyncSocket::newSocket(
                 eb,
                 folly::SocketAddress::makeFromPath(
                     folly::StringPiece(path.data(), path.size())),

@@ -15,15 +15,14 @@
  */
 
 #include <folly/init/Init.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/example/if/gen-cpp2/ChatRoomService.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 
 DEFINE_string(host, "::1", "ChatRoomServer host");
 DEFINE_int32(port, 7777, "ChatRoomServer port");
 
-using apache::thrift::async::TAsyncSocket;
 using example::chatroom::ChatRoomServiceAsyncClient;
 
 int main(int argc, char* argv[]) {
@@ -34,8 +33,8 @@ int main(int argc, char* argv[]) {
   folly::EventBase eventBase;
 
   // Create a Thrift client.
-  auto socket = TAsyncSocket::UniquePtr(
-      new TAsyncSocket(&eventBase, FLAGS_host, FLAGS_port));
+  auto socket = folly::AsyncSocket::UniquePtr(
+      new folly::AsyncSocket(&eventBase, FLAGS_host, FLAGS_port));
   auto channel =
       apache::thrift::RocketClientChannel::newChannel(std::move(socket));
   auto client =

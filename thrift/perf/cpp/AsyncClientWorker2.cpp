@@ -18,9 +18,9 @@
 
 #include <thrift/perf/cpp/AsyncClientWorker2.h>
 
+#include <folly/io/async/AsyncSocket.h>
 #include <proxygen/lib/http/codec/HTTP2Codec.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
 #include <thrift/lib/cpp/test/loadgen/ScoreBoard.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
@@ -158,7 +158,7 @@ class LoadCallback : public RequestCallback {
 LoadTestClientPtr AsyncClientWorker2::createConnection() {
   const std::shared_ptr<apache::thrift::test::ClientLoadConfig>& config =
       getConfig();
-  std::shared_ptr<TAsyncSocket> socket;
+  std::shared_ptr<folly::AsyncSocket> socket;
   if (config->useSSL()) {
     auto sslSocket = TAsyncSSLSocket::newSocket(sslContext_, &eb_);
     if (session_) {
@@ -174,7 +174,8 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
     }
     socket = std::move(sslSocket);
   } else {
-    socket = TAsyncSocket::newSocket(&eb_, *config->getAddress(), kTimeout);
+    socket =
+        folly::AsyncSocket::newSocket(&eb_, *config->getAddress(), kTimeout);
   }
 
   std::unique_ptr<

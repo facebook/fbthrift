@@ -15,7 +15,7 @@
  */
 
 #include <folly/executors/GlobalExecutor.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 
 namespace apache {
@@ -30,8 +30,8 @@ std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newClient(
       folly::getIOExecutor(),
       [makeChannel = std::move(makeChannel),
        address = getAddress()](folly::EventBase& eb) mutable {
-        return makeChannel(async::TAsyncSocket::UniquePtr(
-            new async::TAsyncSocket(&eb, address)));
+        return makeChannel(folly::AsyncSocket::UniquePtr(
+            new folly::AsyncSocket(&eb, address)));
       }));
 }
 
@@ -39,7 +39,7 @@ template <class AsyncClientT>
 std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newClient(
     folly::EventBase* eb) const {
   return std::make_unique<AsyncClientT>(HeaderClientChannel::newChannel(
-      async::TAsyncSocket::newSocket(eb, getAddress())));
+      folly::AsyncSocket::newSocket(eb, getAddress())));
 }
 
 template <class AsyncClientT>
