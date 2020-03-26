@@ -63,15 +63,13 @@ def gen_test_method(out):
         op = choice(COMPARISON)
         out(f"EXPECT_EQ(a1 {op} a2, b1 {op} b2);")
 
-    # test get_pointer() and operator->
+    # test operator->
     if random() < 0.1:
         out(
             """
             if (b1) {
-              EXPECT_EQ(*a1.get_pointer(), *b1.get_pointer());
               EXPECT_EQ(a1->size(), b1->size());
             } else {
-              EXPECT_EQ(a1.get_pointer(), nullptr);
               EXPECT_THROW(a1->size(), folly::OptionalEmptyException);
             }
         """
