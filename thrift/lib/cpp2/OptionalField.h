@@ -74,18 +74,6 @@ class DeprecatedOptionalField : private folly::Optional<T> {
     Base::operator=(std::move(other));
     return *this;
   }
-
-  auto&& operator=(const folly::Optional<T>& other) noexcept(
-      std::is_nothrow_copy_assignable<T>::value) {
-    Base::operator=(other);
-    return *this;
-  }
-
-  auto&& operator=(folly::Optional<T>&& other) noexcept(
-      std::is_nothrow_move_assignable<T>::value) {
-    Base::operator=(std::move(other));
-    return *this;
-  }
 };
 
 namespace detail {
