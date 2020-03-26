@@ -44,7 +44,6 @@ class DeprecatedOptionalField : private folly::Optional<T> {
   using Base::emplace;
   using Base::get_pointer;
   using Base::has_value;
-  using Base::hasValue;
   using Base::reset;
   using Base::value;
   using Base::value_or;

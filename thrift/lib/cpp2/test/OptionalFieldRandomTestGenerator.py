@@ -29,7 +29,6 @@ METHODS = [
     "assign",
     "emplace",
     "has_value",
-    "hasValue",
     "reset",
     "value",
     "value_or",
