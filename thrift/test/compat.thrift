@@ -19,7 +19,7 @@ namespace d test_d.cpp_compat
 namespace java test_java.cpp_compat
 namespace java.swift test_swift.cpp_compat
 namespace php test_php.cpp_compat
-namespace python test_py.cpp_compat
+namespace py3 test_py.cpp_compat
 
 cpp_include "thrift/test/fatal_custom_types.h"
 

@@ -21,7 +21,7 @@ namespace java test.regression
 namespace java.swift test.regression
 namespace hack test.regression
 namespace php test.regression
-namespace python test.regression
+namespace py3 test.regression
 
 struct template_arguments_struct {
   1: i32 T

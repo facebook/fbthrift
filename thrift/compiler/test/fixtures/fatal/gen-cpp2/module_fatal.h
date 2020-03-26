@@ -154,7 +154,7 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using php = ::fatal::sequence<char, 'p', 'h', 'p'>;
   using phrase = ::fatal::sequence<char, 'p', 'h', 'r', 'a', 's', 'e'>;
   using prefix_tree = ::fatal::sequence<char, 'p', 'r', 'e', 'f', 'i', 'x', '_', 't', 'r', 'e', 'e'>;
-  using python = ::fatal::sequence<char, 'p', 'y', 't', 'h', 'o', 'n'>;
+  using py3 = ::fatal::sequence<char, 'p', 'y', '3'>;
   using real = ::fatal::sequence<char, 'r', 'e', 'a', 'l'>;
   using result = ::fatal::sequence<char, 'r', 'e', 's', 'u', 'l', 't'>;
   using s = ::fatal::sequence<char, 's'>;
@@ -233,7 +233,7 @@ class module_tags {
     using java = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::java;
     using java_swift = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::java_swift;
     using php = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::php;
-    using python = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::python;
+    using py3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::py3;
   };
 
   struct test_cpp2_cpp_reflection_module__unique_enums_list {
@@ -307,7 +307,7 @@ THRIFT_REGISTER_REFLECTION_METADATA(
     ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::java, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_java_cpp_reflection>,
     ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::java_swift, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_swift_cpp_reflection>,
     ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::php, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_php_cpp_reflection>,
-    ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::python, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_py_cpp_reflection>
+    ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::py3, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_py_cpp_reflection>
   >,
   // enums
   ::fatal::list<

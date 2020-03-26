@@ -20,7 +20,7 @@ namespace d test_d.cpp_reflection
 namespace java test_java.cpp_reflection
 namespace java.swift test_swift.cpp_reflection
 namespace php test_php.cpp_reflection
-namespace python test_py.cpp_reflection
+namespace py3 test_py.cpp_reflection
 
 include "thrift/test/reflection_dep_B.thrift"
 include "thrift/test/reflection_dep_C.thrift"

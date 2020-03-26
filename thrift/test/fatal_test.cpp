@@ -36,7 +36,7 @@ FATAL_S(java_swift_s, "java.swift");
 FATAL_S(java_swift_ns, "test_swift.cpp_reflection");
 FATAL_S(php_s, "php");
 FATAL_S(php_ns, "test_php_cpp_reflection");
-FATAL_S(python_s, "python");
+FATAL_S(python_s, "py3");
 FATAL_S(python_ns, "test_py.cpp_reflection");
 
 FATAL_S(enum1s, "enum1");
@@ -87,7 +87,7 @@ TEST(fatal, tags) {
   EXPECT_SAME<java_s, reflection_tags::languages::java>();
   EXPECT_SAME<java_swift_s, reflection_tags::languages::java_swift>();
   EXPECT_SAME<php_s, reflection_tags::languages::php>();
-  EXPECT_SAME<python_s, reflection_tags::languages::python>();
+  EXPECT_SAME<python_s, reflection_tags::languages::py3>();
 
   EXPECT_SAME<enum1s, reflection_tags::enums::enum1>();
   EXPECT_SAME<enum2s, reflection_tags::enums::enum2>();
