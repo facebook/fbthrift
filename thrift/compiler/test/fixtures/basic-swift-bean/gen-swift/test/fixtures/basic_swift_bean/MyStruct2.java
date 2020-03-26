@@ -19,12 +19,11 @@ import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
-
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("MyStruct2")
+@ThriftStruct(value="MyStruct2", builder=MyStruct2.Builder.class)
 public final class MyStruct2 {
     @ThriftConstructor
     public MyStruct2() {}

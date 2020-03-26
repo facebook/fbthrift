@@ -19,12 +19,11 @@ import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
-
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("LegacyStruct")
+@ThriftStruct(value="LegacyStruct", builder=LegacyStruct.Builder.class)
 public final class LegacyStruct {
     @ThriftConstructor
     public LegacyStruct() {}

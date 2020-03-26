@@ -37,22 +37,44 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="{{struct:name}}", builder={{struct:javaCapitalName}}.Builder.class){{> common/ObjectCustomAnnotation}}
 public final class {{struct:javaCapitalName}} {
+    {{#struct:asBean?}}
+    @ThriftConstructor
+    public {{struct:javaCapitalName}}() {}
+    {{/struct:asBean?}}
+    {{^struct:asBean?}}
     {{> struct/ThriftConstructor}}
+    {{/struct:asBean?}}
 
     {{> struct/StructBuilder}}
 
     private static final TStruct STRUCT_DESC = new TStruct("{{struct:name}}");
-    {{#struct:fields}}
+    {{#struct:fields}}{{!
+    
+    }}{{#struct:asBean?}}
+    private {{> FieldType}} {{field:javaName}};
+    public static final int _{{field:javaAllCapsName}} = {{field:key}};
+    private static final TField {{field:javaTFieldName}} = {{#field:isSupportedApacheType?}}{{!
+    }}new TField("{{field:javaName}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});{{/field:isSupportedApacheType?}}{{!
+    }}{{^field:isSupportedApacheType?}}null;{{/field:isSupportedApacheType?}}
+    {{/struct:asBean?}}{{!
+
+    }}{{^struct:asBean?}}
     {{#field:javaAnnotations?}}{{field:javaAnnotations}} {{/field:javaAnnotations?}}private {{^struct:isBigStruct?}}final {{/struct:isBigStruct?}}{{> FieldType}} {{field:javaName}};
     public static final int _{{field:javaAllCapsName}} = {{field:key}};
     private static final TField {{field:javaTFieldName}} = {{#field:isSupportedApacheType?}}{{!
     }}new TField("{{field:javaName}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});{{/field:isSupportedApacheType?}}{{!
     }}{{^field:isSupportedApacheType?}}null;{{/field:isSupportedApacheType?}}
-    {{/struct:fields}}
+    {{/struct:asBean?}}{{!
+
+    }}{{/struct:fields}}
 
     {{#struct:fields}}
-    {{> struct/FieldGetter}}
-    {{/struct:fields}}
+    {{> struct/FieldGetter}}{{!
+    }}{{#struct:asBean?}}
+
+    {{> struct/FieldSetter}}
+    {{/struct:asBean?}}{{!
+    }}{{/struct:fields}}
 
     {{> struct/StructToString}}
 
