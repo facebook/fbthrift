@@ -42,7 +42,7 @@ struct SinkConsumerImpl {
   Consumer consumer;
   uint64_t bufferSize;
   std::chrono::milliseconds chunkTimeout;
-  folly::Executor::KeepAlive<folly::SequencedExecutor> executor;
+  folly::Executor::KeepAlive<> executor;
 
   explicit operator bool() const {
     return (bool)consumer;

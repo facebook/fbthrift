@@ -70,7 +70,7 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstream(apache::thrift::
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProcessor::return_returnstream(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<folly::SequencedExecutor> executor, apache::thrift::ServerStream<int32_t> _return) {
+apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProcessor::return_returnstream(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, apache::thrift::ServerStream<int32_t> _return) {
   ProtocolOut_ prot;
   PubSubStreamingService_returnstream_presult::FieldsType result;
   using StreamPResultType = PubSubStreamingService_returnstream_presult::StreamPResultType;
@@ -131,7 +131,7 @@ void PubSubStreamingServiceAsyncProcessor::process_streamthrows(apache::thrift::
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProcessor::return_streamthrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<folly::SequencedExecutor> executor, apache::thrift::ServerStream<int32_t> _return) {
+apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProcessor::return_streamthrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, apache::thrift::ServerStream<int32_t> _return) {
   ProtocolOut_ prot;
   PubSubStreamingService_streamthrows_presult::FieldsType result;
   using StreamPResultType = PubSubStreamingService_streamthrows_presult::StreamPResultType;
@@ -202,7 +202,7 @@ void PubSubStreamingServiceAsyncProcessor::process_boththrows(apache::thrift::Re
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProcessor::return_boththrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<folly::SequencedExecutor> executor, apache::thrift::ServerStream<int32_t> _return) {
+apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProcessor::return_boththrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, apache::thrift::ServerStream<int32_t> _return) {
   ProtocolOut_ prot;
   PubSubStreamingService_boththrows_presult::FieldsType result;
   using StreamPResultType = PubSubStreamingService_boththrows_presult::StreamPResultType;
@@ -284,7 +284,7 @@ void PubSubStreamingServiceAsyncProcessor::process_responseandstreamthrows(apach
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProcessor::return_responseandstreamthrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<folly::SequencedExecutor> executor, apache::thrift::ResponseAndServerStream<int32_t,int32_t> _return) {
+apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProcessor::return_responseandstreamthrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, apache::thrift::ResponseAndServerStream<int32_t,int32_t> _return) {
   ProtocolOut_ prot;
   PubSubStreamingService_responseandstreamthrows_presult::FieldsType result;
   using StreamPResultType = PubSubStreamingService_responseandstreamthrows_presult::StreamPResultType;

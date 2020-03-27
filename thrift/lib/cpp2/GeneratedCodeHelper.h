@@ -1079,7 +1079,7 @@ template <
     typename FinalResponseType>
 apache::thrift::detail::SinkConsumerImpl toSinkConsumerImpl(
     SinkConsumer<SinkType, FinalResponseType>&& sinkConsumer,
-    folly::Executor::KeepAlive<folly::SequencedExecutor> executor) {
+    folly::Executor::KeepAlive<> executor) {
   auto consumer =
       [innerConsumer = std::move(sinkConsumer.consumer)](
           folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> gen) mutable

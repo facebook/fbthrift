@@ -21,7 +21,6 @@
 #include <folly/ExceptionWrapper.h>
 #include <folly/String.h>
 #include <folly/container/F14Map.h>
-#include <folly/executors/SerialExecutor.h>
 #include <folly/futures/Future.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/TApplicationException.h>
@@ -768,7 +767,7 @@ struct HandlerCallbackHelperServerStream {
   using CobPtr = ResponseAndServerStreamFactory (*)(
       int32_t protoSeqId,
       apache::thrift::ContextStack*,
-      folly::Executor::KeepAlive<folly::SequencedExecutor>,
+      folly::Executor::KeepAlive<>,
       InputType);
   static ResponseAndServerStreamFactory call(
       CobPtr cob,
@@ -779,8 +778,7 @@ struct HandlerCallbackHelperServerStream {
     return cob(
         protoSeqId,
         ctx,
-        folly::SerialExecutor::create(
-            ServerInterface::getBlockingThreadManager(tm)),
+        ServerInterface::getBlockingThreadManager(tm),
         std::move(input));
   }
 };
@@ -802,7 +800,7 @@ struct HandlerCallbackHelperSink {
       pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> (*)(
           ContextStack*,
           InputType&&,
-          folly::Executor::KeepAlive<folly::SequencedExecutor>);
+          folly::Executor::KeepAlive<>);
   static std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl>
   call(
       CobPtr cob,
@@ -811,10 +809,7 @@ struct HandlerCallbackHelperSink {
       apache::thrift::concurrency::ThreadManager* tm,
       InputType input) {
     return cob(
-        ctx,
-        std::move(input),
-        folly::SerialExecutor::create(
-            ServerInterface::getBlockingThreadManager(tm)));
+        ctx, std::move(input), ServerInterface::getBlockingThreadManager(tm));
   }
 };
 

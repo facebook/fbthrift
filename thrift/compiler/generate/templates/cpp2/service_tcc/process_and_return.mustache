@@ -106,10 +106,10 @@ folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(i
 folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> const& _return) {
     <%/type:sink?%><%/type:streamresponse?%>
     <%#type:streamresponse?%>
-apache::thrift::ResponseAndServerStreamFactory <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<folly::SequencedExecutor> executor, <% > types/type%> _return) {
+apache::thrift::ResponseAndServerStreamFactory <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, <% > types/type%> _return) {
     <%/type:streamresponse?%>
     <%#type:sink?%>
-std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(apache::thrift::ContextStack* ctx, <% > types/type%>&& _return, folly::Executor::KeepAlive<folly::SequencedExecutor> executor) {
+std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(apache::thrift::ContextStack* ctx, <% > types/type%>&& _return, folly::Executor::KeepAlive<> executor) {
     <%/type:sink?%>
 <%/type:void?%>
   ProtocolOut_ prot;

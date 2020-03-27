@@ -22,7 +22,6 @@
 #include <folly/Portability.h>
 
 #include <folly/Try.h>
-#include <folly/executors/SequencedExecutor.h>
 #if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/AsyncGenerator.h>
 #include <folly/experimental/coro/Task.h>
