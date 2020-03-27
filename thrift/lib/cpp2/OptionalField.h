@@ -171,26 +171,6 @@ folly::Optional<T> castToFolly(DeprecatedOptionalField<T>&& t) {
 }
 
 template <class T>
-folly::Optional<T> castToFollyOrForward(const DeprecatedOptionalField<T>& t) {
-  return castToFolly(t);
-}
-
-template <class T>
-folly::Optional<T> castToFollyOrForward(DeprecatedOptionalField<T>& t) {
-  return castToFolly(t);
-}
-
-template <class T>
-folly::Optional<T> castToFollyOrForward(DeprecatedOptionalField<T>&& t) {
-  return castToFolly(std::move(t));
-}
-
-template <class T>
-T&& castToFollyOrForward(T&& t) {
-  return std::forward<T>(t);
-}
-
-template <class T>
 auto&& fromFollyOptional(
     DeprecatedOptionalField<T>& lhs,
     const folly::Optional<T>& rhs) {
