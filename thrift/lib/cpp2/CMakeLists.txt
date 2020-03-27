@@ -159,7 +159,6 @@ if(TARGET rsocket::ReactiveSocket)
   target_link_libraries(
     thriftcpp2
     PUBLIC
-      yarpl::yarpl
       rsocket::ReactiveSocket
   )
 endif()
