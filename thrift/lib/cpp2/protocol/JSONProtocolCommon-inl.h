@@ -314,7 +314,7 @@ uint32_t JSONProtocolWriterCommon::writeJSONBase64(folly::ByteRange v) {
 
   out_.write(detail::json::kJSONStringDelimiter);
   auto bytes = v.data();
-  auto len = v.size();
+  uint32_t len = folly::to_narrow(v.size());
   uint8_t b[4];
   while (len >= 3) {
     // Encode 3 bytes at a time

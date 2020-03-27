@@ -17,6 +17,7 @@
 #ifndef _THRIFT_TAPPLICATIONEXCEPTION_H_
 #define _THRIFT_TAPPLICATIONEXCEPTION_H_ 1
 
+#include <folly/Utility.h>
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 
@@ -180,7 +181,7 @@ class TApplicationException : public TException {
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot) {
-    uint32_t xfer = iprot->getCursorPosition();
+    uint32_t xfer = folly::to_narrow(iprot->getCursorPosition());
     std::string fname;
     apache::thrift::protocol::TType ftype;
     int16_t fid;
@@ -217,7 +218,7 @@ class TApplicationException : public TException {
     }
 
     iprot->readStructEnd();
-    return iprot->getCursorPosition() - xfer;
+    return folly::to_narrow(iprot->getCursorPosition() - xfer);
   }
 
   template <class Protocol_>

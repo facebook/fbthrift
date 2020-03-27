@@ -560,7 +560,9 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   static std::size_t write(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
 
-    xfer += protocol.writeListBegin(elem_methods::ttype_value, out.size());
+    xfer += protocol.writeListBegin(
+        elem_methods::ttype_value,
+        folly::to_narrow(folly::to_unsigned(out.size())));
     for (auto const& elem : out) {
       xfer += elem_methods::write(protocol, elem);
     }
@@ -572,8 +574,9 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   static std::size_t serializedSize(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
 
-    xfer +=
-        protocol.serializedSizeListBegin(elem_methods::ttype_value, out.size());
+    xfer += protocol.serializedSizeListBegin(
+        elem_methods::ttype_value,
+        folly::to_narrow(folly::to_unsigned(out.size())));
     for (auto const& elem : out) {
       xfer += elem_methods::template serializedSize<ZeroCopy>(protocol, elem);
     }
@@ -639,7 +642,9 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
   static std::size_t write(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
 
-    xfer += protocol.writeSetBegin(elem_methods::ttype_value, out.size());
+    xfer += protocol.writeSetBegin(
+        elem_methods::ttype_value,
+        folly::to_narrow(folly::to_unsigned(out.size())));
 
     if (!has_key_compare<Type>::value && protocol.kSortKeys()) {
       std::vector<typename Type::const_iterator> iters;
@@ -667,8 +672,9 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
   static std::size_t serializedSize(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
 
-    xfer +=
-        protocol.serializedSizeSetBegin(elem_methods::ttype_value, out.size());
+    xfer += protocol.serializedSizeSetBegin(
+        elem_methods::ttype_value,
+        folly::to_narrow(folly::to_unsigned(out.size())));
     for (auto const& elem : out) {
       xfer += elem_methods::template serializedSize<ZeroCopy>(protocol, elem);
     }
@@ -782,7 +788,9 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
     std::size_t xfer = 0;
 
     xfer += protocol.serializedSizeMapBegin(
-        key_methods::ttype_value, mapped_methods::ttype_value, out.size());
+        key_methods::ttype_value,
+        mapped_methods::ttype_value,
+        folly::to_narrow(folly::to_unsigned(out.size())));
     for (auto const& elem_pair : out) {
       xfer += key_methods::template serializedSize<ZeroCopy>(
           protocol, elem_pair.first);

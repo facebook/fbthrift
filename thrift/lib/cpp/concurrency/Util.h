@@ -23,6 +23,7 @@
 #include <cstdint>
 #include <ctime>
 
+#include <folly/Utility.h>
 #include <folly/portability/SysTime.h>
 
 namespace apache {
@@ -68,7 +69,7 @@ class Util {
   }
 
   static void toTimeval(struct timeval& result, int64_t value) {
-    result.tv_sec = value / MS_PER_S; // ms to s
+    result.tv_sec = folly::to_narrow(value / MS_PER_S); // ms to s
     result.tv_usec = (value % MS_PER_S) * US_PER_MS; // ms to us
   }
 

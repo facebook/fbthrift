@@ -323,7 +323,7 @@ class ThriftPresult : private std::tuple<Field...>,
     }
     prot->readStructEnd();
 
-    return prot->getCursorPosition() - xfer;
+    return folly::to_narrow(prot->getCursorPosition() - xfer);
   }
 
   template <class Protocol>
@@ -524,7 +524,7 @@ folly::exception_wrapper recv_wrapped_helper(
     ctx->onReadData(smsg);
     detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
-    ctx->postRead(state.header(), state.buf()->length());
+    ctx->postRead(state.header(), folly::to_narrow(state.buf()->length()));
     return folly::exception_wrapper();
   } catch (std::exception const& e) {
     return folly::exception_wrapper(std::current_exception(), e);

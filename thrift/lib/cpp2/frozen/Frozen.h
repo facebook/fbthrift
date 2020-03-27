@@ -35,6 +35,7 @@
 #include <folly/Memory.h>
 #include <folly/Optional.h>
 #include <folly/Range.h>
+#include <folly/Utility.h>
 #include <folly/container/F14Map-fwd.h>
 #include <folly/container/F14Set-fwd.h>
 #include <folly/experimental/Bits.h>
@@ -230,7 +231,8 @@ struct LayoutBase {
    * Convenience function for placing the first field for layout.
    */
   FieldPosition startFieldPosition() const {
-    return FieldPosition(inlined ? 0 : (bits + 7) / 8);
+    uint32_t offset = folly::to_narrow(inlined ? 0 : (bits + 7) / 8);
+    return FieldPosition(folly::to_signed(offset));
   }
 
   /**
@@ -495,7 +497,9 @@ FieldPosition maximizeField(FieldPosition fieldPos, Field<T, Layout>& field) {
       // only consumed bits, layout at bit offset
       layout.resize(after, true);
       field.pos = inlinedField;
-      nextPos.bitOffset += layout.bits;
+
+      uint32_t bits = folly::to_narrow(layout.bits);
+      nextPos.bitOffset += bits;
     }
   }
   if (!inlineBits) {
@@ -503,7 +507,8 @@ FieldPosition maximizeField(FieldPosition fieldPos, Field<T, Layout>& field) {
     FieldPosition after = layout.maximize();
     layout.resize(after, false);
     field.pos = normalField;
-    nextPos.offset += layout.size;
+    uint32_t size = folly::to_narrow(layout.size);
+    nextPos.offset += size;
   }
   return nextPos;
 }
@@ -684,7 +689,8 @@ class LayoutRoot : public FieldCycleHolder {
         resized_ = _layout.resize(after, true) || resized_;
         if (!_layout.empty()) {
           field.pos = inlinedField;
-          nextPos.bitOffset += _layout.bits;
+          uint32_t bits = folly::to_narrow(_layout.bits);
+          nextPos.bitOffset += bits;
         }
       }
     }
@@ -694,7 +700,8 @@ class LayoutRoot : public FieldCycleHolder {
       resized_ = _layout.resize(after, false) || resized_;
       if (!_layout.empty()) {
         field.pos = normalField;
-        nextPos.offset += _layout.size;
+        uint32_t size = folly::to_narrow(_layout.size);
+        nextPos.offset += size;
       }
     }
     return nextPos;

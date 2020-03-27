@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/Utility.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 
@@ -27,7 +28,7 @@ template <typename Protocol, typename Args>
 uint32_t deserializeRequestBody(Protocol* prot, Args* args) {
   auto xferStart = prot->getCursorPosition();
   ::apache::thrift::Cpp2Ops<Args>::read(prot, args);
-  return prot->getCursorPosition() - xferStart;
+  return folly::to_narrow(prot->getCursorPosition() - xferStart);
 }
 
 template <typename Protocol, typename Args>

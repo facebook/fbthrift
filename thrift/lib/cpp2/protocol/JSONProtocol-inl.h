@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/Utility.h>
 #include <folly/portability/Constexpr.h>
 
 namespace apache {
@@ -232,42 +233,43 @@ uint32_t JSONProtocolWriter::serializedFieldSize(
     TType /*fieldType*/,
     int16_t /*fieldId*/) const {
   // string plus ":"
-  return folly::constexpr_strlen(R"(,"32767":{"typ":})");
+  return folly::to_narrow(folly::constexpr_strlen(R"(,"32767":{"typ":})"));
 }
 
 uint32_t JSONProtocolWriter::serializedStructSize(const char* /*name*/) const {
-  return folly::constexpr_strlen(R"({})");
+  return folly::to_narrow(folly::constexpr_strlen(R"({})"));
 }
 
 uint32_t JSONProtocolWriter::serializedSizeMapBegin(
     TType /*keyType*/,
     TType /*valType*/,
     uint32_t /*size*/) const {
-  return folly::constexpr_strlen(R"(["typ","typ",4294967295,{)");
+  return folly::to_narrow(
+      folly::constexpr_strlen(R"(["typ","typ",4294967295,{)"));
 }
 
 uint32_t JSONProtocolWriter::serializedSizeMapEnd() const {
-  return folly::constexpr_strlen(R"(}])");
+  return folly::to_narrow(folly::constexpr_strlen(R"(}])"));
 }
 
 uint32_t JSONProtocolWriter::serializedSizeListBegin(
     TType /*elemType*/,
     uint32_t /*size*/) const {
-  return folly::constexpr_strlen(R"(["typ",4294967295)");
+  return folly::to_narrow(folly::constexpr_strlen(R"(["typ",4294967295)"));
 }
 
 uint32_t JSONProtocolWriter::serializedSizeListEnd() const {
-  return folly::constexpr_strlen(R"(])");
+  return folly::to_narrow(folly::constexpr_strlen(R"(])"));
 }
 
 uint32_t JSONProtocolWriter::serializedSizeSetBegin(
     TType /*elemType*/,
     uint32_t /*size*/) const {
-  return folly::constexpr_strlen(R"(["typ",4294967295)");
+  return folly::to_narrow(folly::constexpr_strlen(R"(["typ",4294967295)"));
 }
 
 uint32_t JSONProtocolWriter::serializedSizeSetEnd() const {
-  return folly::constexpr_strlen(R"(])");
+  return folly::to_narrow(folly::constexpr_strlen(R"(])"));
 }
 
 uint32_t JSONProtocolWriter::serializedSizeStop() const {

@@ -26,6 +26,7 @@
 #include <folly/ExceptionWrapper.h>
 #include <folly/Function.h>
 #include <folly/String.h>
+#include <folly/Utility.h>
 #include <folly/fibers/FiberManager.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/io/async/EventBase.h>
@@ -283,7 +284,7 @@ SerializedRequest preprocessSendT(
       smsg.protocolType = prot->protocolType();
       smsg.buffer = queue.front();
       ctx.onWriteData(smsg);
-      ctx.postWrite(queue.chainLength());
+      ctx.postWrite(folly::to_narrow(queue.chainLength()));
     } catch (const apache::thrift::TException& ex) {
       ctx.handlerErrorWrapped(
           folly::exception_wrapper(std::current_exception(), ex));

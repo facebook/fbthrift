@@ -21,6 +21,7 @@
 #include <type_traits>
 
 #include <folly/Traits.h>
+#include <folly/Utility.h>
 #include <folly/io/IOBuf.h>
 
 namespace apache {
@@ -475,8 +476,8 @@ class Cpp2Ops<L, folly::void_t<typename detail::push_back_result<L>::type>> {
   static uint32_t write(Protocol* prot, const Type* value) {
     typedef typename Type::value_type ElemType;
     uint32_t xfer = 0;
-    xfer +=
-        prot->writeListBegin(Cpp2Ops<ElemType>::thriftType(), value->size());
+    xfer += prot->writeListBegin(
+        Cpp2Ops<ElemType>::thriftType(), folly::to_narrow(value->size()));
     for (const auto& e : *value) {
       xfer += Cpp2Ops<ElemType>::write(prot, &e);
     }
@@ -510,7 +511,7 @@ class Cpp2Ops<L, folly::void_t<typename detail::push_back_result<L>::type>> {
     typedef typename Type::value_type ElemType;
     uint32_t xfer = 0;
     xfer += prot->serializedSizeListBegin(
-        Cpp2Ops<ElemType>::thriftType(), value->size());
+        Cpp2Ops<ElemType>::thriftType(), folly::to_narrow(value->size()));
     for (const auto& e : *value) {
       xfer += Cpp2Ops<ElemType>::serializedSizeZC(prot, &e);
     }

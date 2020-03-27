@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/Utility.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
@@ -80,13 +81,14 @@ class EnvelopeUtil {
       return folly::none;
     }
     // Remove the envelope.
-    removePrefix(payload, sz);
+    removePrefix(payload, folly::to_narrow(sz));
     return std::make_pair(std::move(envelope), std::move(payload));
   }
 
   static void removePrefix(std::unique_ptr<folly::IOBuf>& buf, uint32_t size) {
     while (buf->length() < size) {
-      size -= buf->length();
+      uint32_t len = folly::to_narrow(buf->length());
+      size -= len;
       buf = buf->pop();
     }
     buf->trimStart(size);

@@ -188,9 +188,9 @@ writeVarintSlow(Cursor& c, T value) {
     // clang-format on
   } while (false);
 
-  *p++ = unval;
+  *p++ = static_cast<uint8_t>(unval);
   c.append(p - orig_p);
-  return p - orig_p;
+  return static_cast<uint8_t>(p - orig_p);
 }
 
 } // namespace detail

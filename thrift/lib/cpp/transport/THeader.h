@@ -23,6 +23,7 @@
 
 #include <folly/Optional.h>
 #include <folly/String.h>
+#include <folly/Utility.h>
 #include <folly/portability/Unistd.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
@@ -173,7 +174,7 @@ class THeader {
   std::unique_ptr<THeader> clone();
 
   static uint16_t getNumTransforms(const std::vector<uint16_t>& transforms) {
-    return transforms.size();
+    return folly::to_narrow(transforms.size());
   }
 
   void setTransform(uint16_t transId) {
