@@ -62,8 +62,7 @@ class ExceptionTrackingEventHandler : public TProcessorEventHandler {
       void* ctx,
       const char* fn_name,
       const std::string& ex,
-      const std::string& ex_what,
-      bool /* declared */) override {
+      const std::string& ex_what) override {
     auto context = static_cast<Context*>(ctx);
     CHECK_EQ(context->name, fn_name);
     context->ex_type = ex;
