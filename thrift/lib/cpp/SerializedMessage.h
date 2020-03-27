@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/Range.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 
 namespace folly {
@@ -32,6 +33,7 @@ namespace thrift {
 struct SerializedMessage {
   protocol::PROTOCOL_TYPES protocolType;
   const folly::IOBuf* buffer;
+  folly::StringPiece methodName;
 };
 
 } // namespace thrift

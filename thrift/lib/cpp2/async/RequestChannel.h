@@ -263,6 +263,7 @@ SerializedRequest preprocessSendT(
     apache::thrift::RpcOptions& rpcOptions,
     apache::thrift::ContextStack& ctx,
     apache::thrift::transport::THeader& header,
+    folly::StringPiece methodName,
     folly::FunctionRef<void(Protocol*)> writefunc,
     folly::FunctionRef<size_t(Protocol*)> sizefunc) {
   return folly::fibers::runInMainContext([&] {
@@ -283,6 +284,7 @@ SerializedRequest preprocessSendT(
       ::apache::thrift::SerializedMessage smsg;
       smsg.protocolType = prot->protocolType();
       smsg.buffer = queue.front();
+      smsg.methodName = methodName;
       ctx.onWriteData(smsg);
       ctx.postWrite(folly::to_narrow(queue.chainLength()));
     } catch (const apache::thrift::TException& ex) {
@@ -307,12 +309,12 @@ void clientSendT(
     apache::thrift::ContextStack& ctx,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestChannel* channel,
-    const char* methodName,
+    folly::StringPiece methodName,
     folly::FunctionRef<void(Protocol*)> writefunc,
     folly::FunctionRef<size_t(Protocol*)> sizefunc,
     RpcKind kind) {
-  auto request =
-      preprocessSendT(prot, rpcOptions, ctx, *header, writefunc, sizefunc);
+  auto request = preprocessSendT(
+      prot, rpcOptions, ctx, *header, methodName, writefunc, sizefunc);
   channel->sendRequestAsync(
       rpcOptions,
       methodName,
@@ -330,11 +332,11 @@ void clientSendT(
     apache::thrift::ContextStack& ctx,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestChannel* channel,
-    const char* methodName,
+    folly::StringPiece methodName,
     folly::FunctionRef<void(Protocol*)> writefunc,
     folly::FunctionRef<size_t(Protocol*)> sizefunc) {
-  auto request =
-      preprocessSendT(prot, rpcOptions, ctx, *header, writefunc, sizefunc);
+  auto request = preprocessSendT(
+      prot, rpcOptions, ctx, *header, methodName, writefunc, sizefunc);
   channel->sendRequestAsync(
       rpcOptions,
       methodName,
