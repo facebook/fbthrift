@@ -76,10 +76,11 @@ void Parser<T>::readDataAvailable(size_t nbytes) noexcept {
           readFrameOrMetadataSize(cursor);
 
       readStreamId(cursor);
-      FrameType frameType;
-      Flags flags;
-      std::tie(frameType, flags) = readFrameTypeAndFlags(cursor);
-      if (UNLIKELY(frameType == FrameType::EXT && !aligning_)) {
+      uint8_t frameType;
+      std::tie(frameType, std::ignore) = readFrameTypeAndFlagsUnsafe(cursor);
+      if (UNLIKELY(
+              static_cast<FrameType>(frameType) == FrameType::EXT &&
+              !aligning_)) {
         if (readBuffer_.length() < Serializer::kBytesForFrameOrMetadataLength +
                 ExtFrame::frameHeaderSize()) {
           return;

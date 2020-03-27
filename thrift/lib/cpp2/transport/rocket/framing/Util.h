@@ -48,13 +48,18 @@ inline size_t readFrameOrMetadataSize(folly::io::Cursor& cursor) {
       (static_cast<size_t>(bytes[1]) << 8) | static_cast<size_t>(bytes[2]);
 }
 
-inline std::pair<FrameType, Flags> readFrameTypeAndFlags(
+inline std::pair<uint8_t, Flags> readFrameTypeAndFlagsUnsafe(
     folly::io::Cursor& cursor) {
   const uint16_t frameTypeAndFlags = cursor.readBE<uint16_t>();
   const uint8_t frameType = frameTypeAndFlags >> Flags::frameTypeOffset();
   const Flags flags(frameTypeAndFlags & Flags::mask());
+  return {frameType, flags};
+}
 
-  switch (static_cast<FrameType>(frameType)) {
+inline std::pair<FrameType, Flags> readFrameTypeAndFlags(
+    folly::io::Cursor& cursor) {
+  auto const pair = readFrameTypeAndFlagsUnsafe(cursor);
+  switch (static_cast<FrameType>(pair.first)) {
     case FrameType::SETUP:
     case FrameType::REQUEST_RESPONSE:
     case FrameType::REQUEST_FNF:
@@ -67,10 +72,10 @@ inline std::pair<FrameType, Flags> readFrameTypeAndFlags(
     case FrameType::METADATA_PUSH:
     case FrameType::KEEPALIVE:
     case FrameType::EXT:
-      return {static_cast<FrameType>(frameType), flags};
+      return {static_cast<FrameType>(pair.first), pair.second};
 
     default:
-      detail::throwUnexpectedFrameType(frameType);
+      detail::throwUnexpectedFrameType(pair.first);
   }
 }
 
