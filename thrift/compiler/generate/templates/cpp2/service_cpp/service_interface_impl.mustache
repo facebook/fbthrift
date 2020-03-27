@@ -69,8 +69,9 @@ void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:e
 <%/function:eb%>
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
-  auto task = co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>);
-  std::move(task).scheduleOn(params.getThreadManager()).start([callback = std::move(callback)](auto&&) {});
+  co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>)
+    .scheduleOn(params.getThreadManager())
+    .start([callback = std::move(callback)](auto&&) {});
 #else // FOLLY_HAS_COROUTINES
   apache::thrift::detail::si::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_oneway(this, std::move(callback), <%#function:eb%>[this<%function:comma%><% > service_common/param_list_move_assignment%>]() mutable<%/function:eb%><%^function:eb%>[&]<%/function:eb%> { return future_<%function:cpp_name%>(<% > service_common/param_list_move%>); });
 #endif // FOLLY_HAS_COROUTINES
@@ -97,8 +98,9 @@ void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:e
 <%/function:eb%>
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
-  auto task = co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>);
-  std::move(task).scheduleOn(params.getThreadManager()).start([callback = std::move(callback)](
+  co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>)
+    .scheduleOn(params.getThreadManager())
+    .start([callback = std::move(callback)](
       folly::Try<<% > types/service_type%>>&& tryResult) mutable {
         apache::thrift::HandlerCallback<<% > types/type%>>::completeInThread(std::move(callback), std::move(tryResult));
       });
@@ -129,8 +131,9 @@ void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:e
 <%/function:eb%>
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
-  auto task = co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>);
-  std::move(task).scheduleOn(params.getThreadManager()).start([callback = std::move(callback)](
+  co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>)
+    .scheduleOn(params.getThreadManager())
+    .start([callback = std::move(callback)](
       folly::Try<<% > types/unique_ptr_type%>>&& tryResult) mutable {
         apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>::completeInThread(std::move(callback), std::move(tryResult));
       });
