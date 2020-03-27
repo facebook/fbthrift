@@ -23,7 +23,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStruct2", builder=MyStruct2.Builder.class)
+@ThriftStruct("MyStruct2")
 public final class MyStruct2 {
     @ThriftConstructor
     public MyStruct2() {}

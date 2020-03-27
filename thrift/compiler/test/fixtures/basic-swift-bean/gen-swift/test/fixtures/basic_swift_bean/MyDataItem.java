@@ -23,7 +23,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyDataItem", builder=MyDataItem.Builder.class)
+@ThriftStruct("MyDataItem")
 public final class MyDataItem {
     @ThriftConstructor
     public MyDataItem() {}

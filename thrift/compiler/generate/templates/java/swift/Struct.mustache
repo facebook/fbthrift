@@ -35,7 +35,12 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
+{{#struct:asBean?}}
+@ThriftStruct("{{struct:name}}")
+{{/struct:asBean?}}
+{{^struct:asBean?}}
 @ThriftStruct(value="{{struct:name}}", builder={{struct:javaCapitalName}}.Builder.class){{> common/ObjectCustomAnnotation}}
+{{/struct:asBean?}}
 public final class {{struct:javaCapitalName}} {
     {{#struct:asBean?}}
     @ThriftConstructor
