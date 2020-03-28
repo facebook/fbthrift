@@ -180,33 +180,27 @@ TEST(TestWithFollyOptionals, EqualityTests) {
 }
 
 TEST(TestWithFollyOptionals, APITests) {
-  cpp2::HasOptionals obj1;
-  cpp2::HasOptionals obj2;
+  cpp2::HasOptionals obj;
 
-  obj1.int64Opt = 1;
-  EXPECT_TRUE(obj1.int64Opt.has_value());
-  EXPECT_FALSE(obj2.int64Opt.has_value());
-  EXPECT_EQ(obj1.int64Opt.value(), 1);
+  obj.int64Opt = 1;
+  EXPECT_TRUE(obj.int64Opt.has_value());
+  EXPECT_EQ(obj.int64Opt.value(), 1);
 
   folly::Optional<int64_t> f;
-  obj2.int64Opt = apache::thrift::fromFollyOptional(obj1.int64Opt, f);
-  EXPECT_FALSE(obj1.int64Opt.has_value());
-  EXPECT_FALSE(obj2.int64Opt.has_value());
+  apache::thrift::fromFollyOptional(obj.int64Opt, f);
+  EXPECT_FALSE(obj.int64Opt.has_value());
 
-  obj2.int64Opt = apache::thrift::fromFollyOptional(obj1.int64Opt, f = 2);
-  EXPECT_EQ(obj1.int64Opt.value(), 2);
-  EXPECT_EQ(obj2.int64Opt.value(), 2);
+  apache::thrift::fromFollyOptional(obj.int64Opt, f = 2);
+  EXPECT_EQ(obj.int64Opt.value(), 2);
 
-  obj2.int64Opt = apache::thrift::fromFollyOptional(
-      obj1.int64Opt, folly::Optional<int64_t>{3});
-  EXPECT_EQ(obj1.int64Opt.value(), 3);
-  EXPECT_EQ(obj2.int64Opt.value(), 3);
+  apache::thrift::fromFollyOptional(obj.int64Opt, folly::Optional<int64_t>{3});
+  EXPECT_EQ(obj.int64Opt.value(), 3);
 
   static_assert(std::is_same_v<
-                decltype(obj1.int64Opt),
+                decltype(obj.int64Opt),
                 apache::thrift::DeprecatedOptionalField<int64_t>>);
   static_assert(std::is_same_v<
-                decltype(castToFolly(obj1.int64Opt)),
+                decltype(castToFolly(obj.int64Opt)),
                 folly::Optional<int64_t>>);
 
   static_assert(!std::is_constructible_v<

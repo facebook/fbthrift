@@ -172,7 +172,7 @@ folly::Optional<T> castToFolly(DeprecatedOptionalField<T>&& t) {
 }
 
 template <class T>
-auto&& fromFollyOptional(
+void fromFollyOptional(
     DeprecatedOptionalField<T>& lhs,
     const folly::Optional<T>& rhs) {
   if (rhs) {
@@ -180,11 +180,10 @@ auto&& fromFollyOptional(
   } else {
     lhs.reset();
   }
-  return lhs;
 }
 
 template <class T>
-auto&& fromFollyOptional(
+void fromFollyOptional(
     DeprecatedOptionalField<T>& lhs,
     folly::Optional<T>&& rhs) {
   if (rhs) {
@@ -192,8 +191,6 @@ auto&& fromFollyOptional(
   } else {
     lhs.reset();
   }
-
-  return lhs;
 }
 
 template <class T>
