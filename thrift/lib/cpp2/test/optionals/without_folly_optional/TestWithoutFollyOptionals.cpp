@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <folly/container/Foreach.h>
 #include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
@@ -198,4 +199,20 @@ TEST(TestWithoutFollyOptionals, EqualityTests) {
   EXPECT_NE(obj1, obj2);
   obj2.structOpt_ref()->extraInt64Opt_ref() = 13;
   EXPECT_EQ(obj1, obj2);
+}
+
+TEST(TestWithoutFollyOptionals, emplace) {
+  cpp2::HasOptionals obj;
+  folly::for_each(
+      std::make_pair(obj.stringOpt_ref(), obj.stringReq_ref()), [](auto&& i) {
+        EXPECT_EQ(i.emplace(3, 'a'), "aaa");
+        EXPECT_EQ(i.value(), "aaa");
+        EXPECT_EQ(i.emplace(3, 'b'), "bbb");
+        EXPECT_EQ(i.value(), "bbb");
+        i.emplace() = "ccc";
+        EXPECT_EQ(i.value(), "ccc");
+        EXPECT_THROW(i.emplace(std::string(""), 1), std::out_of_range);
+        // C++ Standard requires *this to be empty if `emplace(...)` throws
+        EXPECT_EQ(i.has_value(), typeid(i) == typeid(field_ref<std::string&>));
+      });
 }

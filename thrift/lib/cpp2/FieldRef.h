@@ -121,6 +121,13 @@ class field_ref {
     return value_[index];
   }
 
+  template <typename... Args>
+  FOLLY_ERASE value_type& emplace(Args&&... args) {
+    value_ = value_type(static_cast<Args&&>(args)...);
+    is_set_ = true;
+    return value_;
+  }
+
  private:
   value_type& value_;
   detail::is_set_t<value_type>& is_set_;
@@ -277,6 +284,14 @@ class optional_field_ref {
 
   FOLLY_ERASE pointee_type* operator->() const {
     return &static_cast<pointee_type&>(value());
+  }
+
+  template <typename... Args>
+  FOLLY_ERASE value_type& emplace(Args&&... args) {
+    reset(); // C++ Standard requires *this to be empty if `emplace(...)` throws
+    value_ = value_type(static_cast<Args&&>(args)...);
+    is_set_ = true;
+    return value_;
   }
 
  private:
