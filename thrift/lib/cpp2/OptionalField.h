@@ -18,6 +18,7 @@
 
 #include <folly/Optional.h>
 #include <folly/Portability.h>
+#include <thrift/lib/cpp2/FieldRef.h>
 #include <type_traits>
 #include <utility>
 
@@ -195,6 +196,52 @@ auto&& fromFollyOptional(
   return lhs;
 }
 
+template <class T>
+[[deprecated(
+    "Use std::optional with optional_field_ref::to_optional() instead")]] folly::
+    Optional<T>
+    castToFolly(optional_field_ref<T&> t) {
+  if (t) {
+    return *t;
+  }
+  return {};
+}
+
+template <class T>
+[[deprecated(
+    "Use std::optional with optional_field_ref::to_optional() instead")]] folly::
+    Optional<T>
+    castToFolly(optional_field_ref<T&&> t) {
+  if (t) {
+    return std::move(*t);
+  }
+  return {};
+}
+
+template <class T>
+[[deprecated(
+    "Use std::optional with optional_field_ref::from_optional(...) instead")]] auto
+fromFollyOptional(optional_field_ref<T&> lhs, const folly::Optional<T>& rhs) {
+  if (rhs) {
+    lhs = *rhs;
+  } else {
+    lhs.reset();
+  }
+  return lhs;
+}
+
+template <class T>
+[[deprecated(
+    "Use std::optional with optional_field_ref::from_optional(...) instead")]] auto
+fromFollyOptional(optional_field_ref<T&> lhs, folly::Optional<T>&& rhs) {
+  if (rhs) {
+    lhs = std::move(*rhs);
+  } else {
+    lhs.reset();
+  }
+
+  return lhs;
+}
 } // namespace thrift
 } // namespace apache
 
