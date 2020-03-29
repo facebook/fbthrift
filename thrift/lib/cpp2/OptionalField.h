@@ -115,20 +115,20 @@ bool compare(const U& a, const V& b, Comp comp) {
 } // namespace detail
 
 #define THRIFT_DETAIL_DEPRECATED_OPTIONAL_FIELD_DEFINE_OP(OP)                 \
-  template <class U, class V>                                                 \
+  template <class T>                                                          \
   bool operator OP(                                                           \
-      const DeprecatedOptionalField<U>& a,                                    \
-      const DeprecatedOptionalField<V>& b) {                                  \
+      const DeprecatedOptionalField<T>& a,                                    \
+      const DeprecatedOptionalField<T>& b) {                                  \
     return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; });  \
   }                                                                           \
-  template <class U, class V>                                                 \
+  template <class T>                                                          \
   bool operator OP(                                                           \
-      const folly::Optional<U>& a, const DeprecatedOptionalField<V>& b) {     \
+      const folly::Optional<T>& a, const DeprecatedOptionalField<T>& b) {     \
     return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; });  \
   }                                                                           \
-  template <class U, class V>                                                 \
+  template <class T>                                                          \
   bool operator OP(                                                           \
-      const DeprecatedOptionalField<U>& a, const folly::Optional<V>& b) {     \
+      const DeprecatedOptionalField<T>& a, const folly::Optional<T>& b) {     \
     return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; });  \
   }                                                                           \
   template <class U, class V>                                                 \

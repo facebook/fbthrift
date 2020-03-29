@@ -41,20 +41,13 @@ MAY_THROW = ["operator*", "value"]
 
 def gen_define_variables(out):
     t = choice(["DeprecatedOptionalField", "Optional"])
-    u = choice(["std::string", "std::string_view"])
-
-    if t == "DeprecatedOptionalField":
-        # comparison between `DeprecatedOptionalField<std::string>`
-        # and `DeprecatedOptionalField<std::string_view>` are unsupported
-        u = "std::string"
 
     # Defining 2 variables since we want to test comparison operators
     out(f"DeprecatedOptionalField<std::string> a1;")
-    out(f"{t}<{u}> a2;")
+    out(f"{t}<std::string> a2;")
 
     # control group
-    out(f"Optional<std::string> b1;")
-    out(f"Optional<{u}> b2;")
+    out(f"Optional<std::string> b1, b2;")
 
 
 def gen_test_method(out):
@@ -109,7 +102,6 @@ def gen_cpp_file(install_dir, idx):
         out("#include <gtest/gtest.h>")
         out("#include <thrift/lib/cpp2/OptionalField.h>")
         out("#include <string>")
-        out("#include <string_view>")
         out("using apache::thrift::DeprecatedOptionalField;")
         out("using folly::Optional;")
         out(f"TEST(Test, Num{idx}) {{")
