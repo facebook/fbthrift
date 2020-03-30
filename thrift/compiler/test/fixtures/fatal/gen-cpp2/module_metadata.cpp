@@ -25,8 +25,9 @@ void EnumMetadata<::test_cpp2::cpp_reflection::enum1>::gen(ThriftMetadata& metad
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name = "module.enum1";
-  for (const auto& p : ::test_cpp2::cpp_reflection::_enum1_VALUES_TO_NAMES) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  using EnumTraits = TEnumTraits<::test_cpp2::cpp_reflection::enum1>;
+  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
   }
 }
 void EnumMetadata<::test_cpp2::cpp_reflection::enum2>::gen(ThriftMetadata& metadata) {
@@ -36,8 +37,9 @@ void EnumMetadata<::test_cpp2::cpp_reflection::enum2>::gen(ThriftMetadata& metad
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name = "module.enum2";
-  for (const auto& p : ::test_cpp2::cpp_reflection::_enum2_VALUES_TO_NAMES) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  using EnumTraits = TEnumTraits<::test_cpp2::cpp_reflection::enum2>;
+  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
   }
 }
 void EnumMetadata<::test_cpp2::cpp_reflection::enum3>::gen(ThriftMetadata& metadata) {
@@ -47,8 +49,9 @@ void EnumMetadata<::test_cpp2::cpp_reflection::enum3>::gen(ThriftMetadata& metad
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name = "module.enum3";
-  for (const auto& p : ::test_cpp2::cpp_reflection::_enum3_VALUES_TO_NAMES) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  using EnumTraits = TEnumTraits<::test_cpp2::cpp_reflection::enum3>;
+  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
   }
 }
 void EnumMetadata<::test_cpp2::cpp_reflection::enum_with_special_names>::gen(ThriftMetadata& metadata) {
@@ -58,8 +61,9 @@ void EnumMetadata<::test_cpp2::cpp_reflection::enum_with_special_names>::gen(Thr
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name = "module.enum_with_special_names";
-  for (const auto& p : ::test_cpp2::cpp_reflection::_enum_with_special_names_VALUES_TO_NAMES) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  using EnumTraits = TEnumTraits<::test_cpp2::cpp_reflection::enum_with_special_names>;
+  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
   }
 }
 

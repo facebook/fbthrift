@@ -25,8 +25,9 @@ void EnumMetadata<::test::fixtures::enumstrict::EmptyEnum>::gen(ThriftMetadata& 
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name = "module.EmptyEnum";
-  for (const auto& p : ::test::fixtures::enumstrict::_EmptyEnum_VALUES_TO_NAMES) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  using EnumTraits = TEnumTraits<::test::fixtures::enumstrict::EmptyEnum>;
+  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
   }
 }
 void EnumMetadata<::test::fixtures::enumstrict::MyEnum>::gen(ThriftMetadata& metadata) {
@@ -36,8 +37,9 @@ void EnumMetadata<::test::fixtures::enumstrict::MyEnum>::gen(ThriftMetadata& met
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name = "module.MyEnum";
-  for (const auto& p : ::test::fixtures::enumstrict::_MyEnum_VALUES_TO_NAMES) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  using EnumTraits = TEnumTraits<::test::fixtures::enumstrict::MyEnum>;
+  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
   }
 }
 void EnumMetadata<::test::fixtures::enumstrict::MyBigEnum>::gen(ThriftMetadata& metadata) {
@@ -47,8 +49,9 @@ void EnumMetadata<::test::fixtures::enumstrict::MyBigEnum>::gen(ThriftMetadata& 
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name = "module.MyBigEnum";
-  for (const auto& p : ::test::fixtures::enumstrict::_MyBigEnum_VALUES_TO_NAMES) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  using EnumTraits = TEnumTraits<::test::fixtures::enumstrict::MyBigEnum>;
+  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
   }
 }
 

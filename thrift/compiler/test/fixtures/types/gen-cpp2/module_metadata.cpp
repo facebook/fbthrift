@@ -25,8 +25,9 @@ void EnumMetadata<::apache::thrift::fixtures::types::has_bitwise_ops>::gen(Thrif
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name = "module.has_bitwise_ops";
-  for (const auto& p : ::apache::thrift::fixtures::types::_has_bitwise_ops_VALUES_TO_NAMES) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  using EnumTraits = TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>;
+  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
   }
 }
 void EnumMetadata<::apache::thrift::fixtures::types::is_unscoped>::gen(ThriftMetadata& metadata) {
@@ -36,8 +37,9 @@ void EnumMetadata<::apache::thrift::fixtures::types::is_unscoped>::gen(ThriftMet
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name = "module.is_unscoped";
-  for (const auto& p : ::apache::thrift::fixtures::types::_is_unscoped_VALUES_TO_NAMES) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  using EnumTraits = TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>;
+  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
   }
 }
 void EnumMetadata<::apache::thrift::fixtures::types::MyForwardRefEnum>::gen(ThriftMetadata& metadata) {
@@ -47,8 +49,9 @@ void EnumMetadata<::apache::thrift::fixtures::types::MyForwardRefEnum>::gen(Thri
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name = "module.MyForwardRefEnum";
-  for (const auto& p : ::apache::thrift::fixtures::types::_MyForwardRefEnum_VALUES_TO_NAMES) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  using EnumTraits = TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>;
+  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
   }
 }
 void EnumMetadata<::apache::thrift::fixtures::types::MyEnumA>::gen(ThriftMetadata& metadata) {
@@ -58,8 +61,9 @@ void EnumMetadata<::apache::thrift::fixtures::types::MyEnumA>::gen(ThriftMetadat
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name = "module.MyEnumA";
-  for (const auto& p : ::apache::thrift::fixtures::types::_MyEnumA_VALUES_TO_NAMES) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  using EnumTraits = TEnumTraits<::apache::thrift::fixtures::types::MyEnumA>;
+  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
   }
 }
 
