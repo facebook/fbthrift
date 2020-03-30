@@ -36,6 +36,8 @@ TEST_F(FatalOptionalsTest, isset) {
 
     EXPECT_FALSE(member::mark_set(obj, false));
     EXPECT_TRUE(member::is_set(obj));
+    static_assert(
+        std::is_same<decltype(member::getter::ref(obj)), int32_t&>::value, "");
   }
 
   {
@@ -49,6 +51,8 @@ TEST_F(FatalOptionalsTest, isset) {
 
     EXPECT_FALSE(member::mark_set(obj, false));
     EXPECT_TRUE(member::is_set(obj));
+    static_assert(
+        std::is_same<decltype(member::getter::ref(obj)), int32_t&>::value, "");
   }
 
   {
@@ -76,5 +80,11 @@ TEST_F(FatalOptionalsTest, isset) {
 
     EXPECT_FALSE(member::mark_set(obj, false));
     EXPECT_FALSE(member::is_set(obj));
+
+    static_assert(
+        std::is_same<
+            decltype(member::getter::ref(obj)),
+            apache::thrift::DeprecatedOptionalField<int32_t>&>::value,
+        "");
   }
 }
