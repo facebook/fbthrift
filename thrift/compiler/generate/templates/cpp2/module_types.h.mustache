@@ -209,8 +209,9 @@ class <%struct:name%> <%!
 <% > module_types_h/eq_overload%>
 <% > module_types_h/struct_operator_less%>
 <%/struct:cpp_noncomparable%>
-<%#struct:fields?%><%^struct:optionals?%>
+<%#struct:fields?%>
 <% > module_types_h/field_ref%>
+<%^struct:optionals?%>
 <%^struct:no_getters_setters?%>
 <% > module_types_h/getters_setters%>
 <%/struct:no_getters_setters?%>

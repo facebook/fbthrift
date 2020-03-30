@@ -17,6 +17,24 @@
 %><%#struct:fields%><%#field:type%><%^field:cpp_ref?%>
 <%#field:optional?%>
 
+<%#program:optionals?%>
+  FOLLY_ERASE auto <%field:cpp_name%>_ref() const& {
+    return ::apache::thrift::optional_field_ref<const <% > types/type%>&>(<%field:cpp_name%>);
+  }
+
+  FOLLY_ERASE auto <%field:cpp_name%>_ref() const&& {
+    return ::apache::thrift::optional_field_ref<const <% > types/type%>&&>(std::move(<%field:cpp_name%>));
+  }
+
+  FOLLY_ERASE auto <%field:cpp_name%>_ref() & {
+    return ::apache::thrift::optional_field_ref<<% > types/type%>&>(<%field:cpp_name%>);
+  }
+
+  FOLLY_ERASE auto <%field:cpp_name%>_ref() && {
+    return ::apache::thrift::optional_field_ref<<% > types/type%>&&>(std::move(<%field:cpp_name%>));
+  }
+<%/program:optionals?%>
+<%^program:optionals?%>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const <% > types/type%>&> <%field:cpp_name%>_ref() const& {
     return {<%field:cpp_name%>, __isset.<%field:cpp_name%>};
   }
@@ -32,8 +50,9 @@
   FOLLY_ERASE ::apache::thrift::optional_field_ref<<% > types/type%>&&> <%field:cpp_name%>_ref() && {
     return {std::move(<%field:cpp_name%>), __isset.<%field:cpp_name%>};
   }
+<%/program:optionals?%>
 <%/field:optional?%>
-<%^field:optional?%><%^field:required?%>
+<%^field:optional?%><%^field:required?%><%^program:optionals?%>
 
   template <typename..., typename T = <% > types/type%>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> <%field:cpp_name%>_ref() const& {
@@ -54,5 +73,5 @@
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> <%field:cpp_name%>_ref() && {
     return {std::move(this-><%field:cpp_name%>), __isset.<%field:cpp_name%>};
   }
-<%/field:required?%><%/field:optional?%>
+<%/program:optionals?%><%/field:required?%><%/field:optional?%>
 <%/field:cpp_ref?%><%/field:type%><%/struct:fields%>

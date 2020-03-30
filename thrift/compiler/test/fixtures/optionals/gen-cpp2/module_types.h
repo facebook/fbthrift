@@ -282,6 +282,70 @@ class Vehicle final : private apache::thrift::detail::st::ComparisonOperators<Ve
   bool operator==(const Vehicle& rhs) const;
   bool operator<(const Vehicle& rhs) const;
 
+  FOLLY_ERASE auto licensePlate_ref() const& {
+    return ::apache::thrift::optional_field_ref<const ::std::string&>(licensePlate);
+  }
+
+  FOLLY_ERASE auto licensePlate_ref() const&& {
+    return ::apache::thrift::optional_field_ref<const ::std::string&&>(std::move(licensePlate));
+  }
+
+  FOLLY_ERASE auto licensePlate_ref() & {
+    return ::apache::thrift::optional_field_ref<::std::string&>(licensePlate);
+  }
+
+  FOLLY_ERASE auto licensePlate_ref() && {
+    return ::apache::thrift::optional_field_ref<::std::string&&>(std::move(licensePlate));
+  }
+
+  FOLLY_ERASE auto description_ref() const& {
+    return ::apache::thrift::optional_field_ref<const ::std::string&>(description);
+  }
+
+  FOLLY_ERASE auto description_ref() const&& {
+    return ::apache::thrift::optional_field_ref<const ::std::string&&>(std::move(description));
+  }
+
+  FOLLY_ERASE auto description_ref() & {
+    return ::apache::thrift::optional_field_ref<::std::string&>(description);
+  }
+
+  FOLLY_ERASE auto description_ref() && {
+    return ::apache::thrift::optional_field_ref<::std::string&&>(std::move(description));
+  }
+
+  FOLLY_ERASE auto name_ref() const& {
+    return ::apache::thrift::optional_field_ref<const ::std::string&>(name);
+  }
+
+  FOLLY_ERASE auto name_ref() const&& {
+    return ::apache::thrift::optional_field_ref<const ::std::string&&>(std::move(name));
+  }
+
+  FOLLY_ERASE auto name_ref() & {
+    return ::apache::thrift::optional_field_ref<::std::string&>(name);
+  }
+
+  FOLLY_ERASE auto name_ref() && {
+    return ::apache::thrift::optional_field_ref<::std::string&&>(std::move(name));
+  }
+
+  FOLLY_ERASE auto hasAC_ref() const& {
+    return ::apache::thrift::optional_field_ref<const bool&>(hasAC);
+  }
+
+  FOLLY_ERASE auto hasAC_ref() const&& {
+    return ::apache::thrift::optional_field_ref<const bool&&>(std::move(hasAC));
+  }
+
+  FOLLY_ERASE auto hasAC_ref() & {
+    return ::apache::thrift::optional_field_ref<bool&>(hasAC);
+  }
+
+  FOLLY_ERASE auto hasAC_ref() && {
+    return ::apache::thrift::optional_field_ref<bool&&>(std::move(hasAC));
+  }
+
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
   template <class Protocol_>
@@ -353,6 +417,134 @@ class Person final : private apache::thrift::detail::st::ComparisonOperators<Per
  public:
   bool operator==(const Person& rhs) const;
   bool operator<(const Person& rhs) const;
+
+  FOLLY_ERASE auto age_ref() const& {
+    return ::apache::thrift::optional_field_ref<const int16_t&>(age);
+  }
+
+  FOLLY_ERASE auto age_ref() const&& {
+    return ::apache::thrift::optional_field_ref<const int16_t&&>(std::move(age));
+  }
+
+  FOLLY_ERASE auto age_ref() & {
+    return ::apache::thrift::optional_field_ref<int16_t&>(age);
+  }
+
+  FOLLY_ERASE auto age_ref() && {
+    return ::apache::thrift::optional_field_ref<int16_t&&>(std::move(age));
+  }
+
+  FOLLY_ERASE auto address_ref() const& {
+    return ::apache::thrift::optional_field_ref<const ::std::string&>(address);
+  }
+
+  FOLLY_ERASE auto address_ref() const&& {
+    return ::apache::thrift::optional_field_ref<const ::std::string&&>(std::move(address));
+  }
+
+  FOLLY_ERASE auto address_ref() & {
+    return ::apache::thrift::optional_field_ref<::std::string&>(address);
+  }
+
+  FOLLY_ERASE auto address_ref() && {
+    return ::apache::thrift::optional_field_ref<::std::string&&>(std::move(address));
+  }
+
+  FOLLY_ERASE auto favoriteColor_ref() const& {
+    return ::apache::thrift::optional_field_ref<const  ::cpp2::Color&>(favoriteColor);
+  }
+
+  FOLLY_ERASE auto favoriteColor_ref() const&& {
+    return ::apache::thrift::optional_field_ref<const  ::cpp2::Color&&>(std::move(favoriteColor));
+  }
+
+  FOLLY_ERASE auto favoriteColor_ref() & {
+    return ::apache::thrift::optional_field_ref< ::cpp2::Color&>(favoriteColor);
+  }
+
+  FOLLY_ERASE auto favoriteColor_ref() && {
+    return ::apache::thrift::optional_field_ref< ::cpp2::Color&&>(std::move(favoriteColor));
+  }
+
+  FOLLY_ERASE auto friends_ref() const& {
+    return ::apache::thrift::optional_field_ref<const ::std::set< ::cpp2::PersonID>&>(friends);
+  }
+
+  FOLLY_ERASE auto friends_ref() const&& {
+    return ::apache::thrift::optional_field_ref<const ::std::set< ::cpp2::PersonID>&&>(std::move(friends));
+  }
+
+  FOLLY_ERASE auto friends_ref() & {
+    return ::apache::thrift::optional_field_ref<::std::set< ::cpp2::PersonID>&>(friends);
+  }
+
+  FOLLY_ERASE auto friends_ref() && {
+    return ::apache::thrift::optional_field_ref<::std::set< ::cpp2::PersonID>&&>(std::move(friends));
+  }
+
+  FOLLY_ERASE auto bestFriend_ref() const& {
+    return ::apache::thrift::optional_field_ref<const  ::cpp2::PersonID&>(bestFriend);
+  }
+
+  FOLLY_ERASE auto bestFriend_ref() const&& {
+    return ::apache::thrift::optional_field_ref<const  ::cpp2::PersonID&&>(std::move(bestFriend));
+  }
+
+  FOLLY_ERASE auto bestFriend_ref() & {
+    return ::apache::thrift::optional_field_ref< ::cpp2::PersonID&>(bestFriend);
+  }
+
+  FOLLY_ERASE auto bestFriend_ref() && {
+    return ::apache::thrift::optional_field_ref< ::cpp2::PersonID&&>(std::move(bestFriend));
+  }
+
+  FOLLY_ERASE auto petNames_ref() const& {
+    return ::apache::thrift::optional_field_ref<const ::std::map< ::cpp2::Animal, ::std::string>&>(petNames);
+  }
+
+  FOLLY_ERASE auto petNames_ref() const&& {
+    return ::apache::thrift::optional_field_ref<const ::std::map< ::cpp2::Animal, ::std::string>&&>(std::move(petNames));
+  }
+
+  FOLLY_ERASE auto petNames_ref() & {
+    return ::apache::thrift::optional_field_ref<::std::map< ::cpp2::Animal, ::std::string>&>(petNames);
+  }
+
+  FOLLY_ERASE auto petNames_ref() && {
+    return ::apache::thrift::optional_field_ref<::std::map< ::cpp2::Animal, ::std::string>&&>(std::move(petNames));
+  }
+
+  FOLLY_ERASE auto afraidOfAnimal_ref() const& {
+    return ::apache::thrift::optional_field_ref<const  ::cpp2::Animal&>(afraidOfAnimal);
+  }
+
+  FOLLY_ERASE auto afraidOfAnimal_ref() const&& {
+    return ::apache::thrift::optional_field_ref<const  ::cpp2::Animal&&>(std::move(afraidOfAnimal));
+  }
+
+  FOLLY_ERASE auto afraidOfAnimal_ref() & {
+    return ::apache::thrift::optional_field_ref< ::cpp2::Animal&>(afraidOfAnimal);
+  }
+
+  FOLLY_ERASE auto afraidOfAnimal_ref() && {
+    return ::apache::thrift::optional_field_ref< ::cpp2::Animal&&>(std::move(afraidOfAnimal));
+  }
+
+  FOLLY_ERASE auto vehicles_ref() const& {
+    return ::apache::thrift::optional_field_ref<const ::std::vector< ::cpp2::Vehicle>&>(vehicles);
+  }
+
+  FOLLY_ERASE auto vehicles_ref() const&& {
+    return ::apache::thrift::optional_field_ref<const ::std::vector< ::cpp2::Vehicle>&&>(std::move(vehicles));
+  }
+
+  FOLLY_ERASE auto vehicles_ref() & {
+    return ::apache::thrift::optional_field_ref<::std::vector< ::cpp2::Vehicle>&>(vehicles);
+  }
+
+  FOLLY_ERASE auto vehicles_ref() && {
+    return ::apache::thrift::optional_field_ref<::std::vector< ::cpp2::Vehicle>&&>(std::move(vehicles));
+  }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

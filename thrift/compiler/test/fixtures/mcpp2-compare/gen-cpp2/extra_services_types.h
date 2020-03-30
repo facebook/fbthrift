@@ -154,6 +154,70 @@ class containerStruct2 final : private apache::thrift::detail::st::ComparisonOpe
   bool operator==(const containerStruct2& rhs) const;
   bool operator<(const containerStruct2& rhs) const;
 
+  FOLLY_ERASE auto opt_fieldA_ref() const& {
+    return ::apache::thrift::optional_field_ref<const bool&>(opt_fieldA);
+  }
+
+  FOLLY_ERASE auto opt_fieldA_ref() const&& {
+    return ::apache::thrift::optional_field_ref<const bool&&>(std::move(opt_fieldA));
+  }
+
+  FOLLY_ERASE auto opt_fieldA_ref() & {
+    return ::apache::thrift::optional_field_ref<bool&>(opt_fieldA);
+  }
+
+  FOLLY_ERASE auto opt_fieldA_ref() && {
+    return ::apache::thrift::optional_field_ref<bool&&>(std::move(opt_fieldA));
+  }
+
+  FOLLY_ERASE auto opt_fieldB_ref() const& {
+    return ::apache::thrift::optional_field_ref<const ::std::map<::std::string, bool>&>(opt_fieldB);
+  }
+
+  FOLLY_ERASE auto opt_fieldB_ref() const&& {
+    return ::apache::thrift::optional_field_ref<const ::std::map<::std::string, bool>&&>(std::move(opt_fieldB));
+  }
+
+  FOLLY_ERASE auto opt_fieldB_ref() & {
+    return ::apache::thrift::optional_field_ref<::std::map<::std::string, bool>&>(opt_fieldB);
+  }
+
+  FOLLY_ERASE auto opt_fieldB_ref() && {
+    return ::apache::thrift::optional_field_ref<::std::map<::std::string, bool>&&>(std::move(opt_fieldB));
+  }
+
+  FOLLY_ERASE auto opt_fieldC_ref() const& {
+    return ::apache::thrift::optional_field_ref<const ::std::set<int32_t>&>(opt_fieldC);
+  }
+
+  FOLLY_ERASE auto opt_fieldC_ref() const&& {
+    return ::apache::thrift::optional_field_ref<const ::std::set<int32_t>&&>(std::move(opt_fieldC));
+  }
+
+  FOLLY_ERASE auto opt_fieldC_ref() & {
+    return ::apache::thrift::optional_field_ref<::std::set<int32_t>&>(opt_fieldC);
+  }
+
+  FOLLY_ERASE auto opt_fieldC_ref() && {
+    return ::apache::thrift::optional_field_ref<::std::set<int32_t>&&>(std::move(opt_fieldC));
+  }
+
+  FOLLY_ERASE auto opt_fieldE_ref() const& {
+    return ::apache::thrift::optional_field_ref<const ::std::string&>(opt_fieldE);
+  }
+
+  FOLLY_ERASE auto opt_fieldE_ref() const&& {
+    return ::apache::thrift::optional_field_ref<const ::std::string&&>(std::move(opt_fieldE));
+  }
+
+  FOLLY_ERASE auto opt_fieldE_ref() & {
+    return ::apache::thrift::optional_field_ref<::std::string&>(opt_fieldE);
+  }
+
+  FOLLY_ERASE auto opt_fieldE_ref() && {
+    return ::apache::thrift::optional_field_ref<::std::string&&>(std::move(opt_fieldE));
+  }
+
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
   template <class Protocol_>

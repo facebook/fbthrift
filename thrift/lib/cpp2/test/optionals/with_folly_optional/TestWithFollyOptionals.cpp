@@ -210,3 +210,24 @@ TEST(TestWithFollyOptionals, APITests) {
                 folly::Optional<int>,
                 apache::thrift::DeprecatedOptionalField<int>>);
 }
+
+TEST(TestWithFollyOptionals, AddRef) {
+  cpp2::HasOptionals obj;
+  static_assert(std::is_same_v<
+                decltype(obj.int64Opt_ref()),
+                optional_field_ref<int64_t&>>);
+  static_assert(std::is_same_v<
+                decltype(std::as_const(obj).int64Opt_ref()),
+                optional_field_ref<const int64_t&>>);
+  static_assert(std::is_same_v<
+                decltype(std::move(obj).int64Opt_ref()),
+                optional_field_ref<int64_t&&>>);
+  static_assert(std::is_same_v<
+                decltype(std::move(std::as_const(obj)).int64Opt_ref()),
+                optional_field_ref<const int64_t&&>>);
+  obj.int64Opt_ref() = 42;
+  EXPECT_EQ(obj.int64Opt, 42);
+  auto value = std::map<int64_t, int64_t>{{1, 2}};
+  obj.mapOpt = value;
+  EXPECT_EQ(*obj.mapOpt_ref(), value);
+}

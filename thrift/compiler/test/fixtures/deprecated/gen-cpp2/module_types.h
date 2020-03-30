@@ -94,6 +94,22 @@ class House final : private apache::thrift::detail::st::ComparisonOperators<Hous
   bool operator==(const House& rhs) const;
   bool operator<(const House& rhs) const;
 
+  FOLLY_ERASE auto houseColors_ref() const& {
+    return ::apache::thrift::optional_field_ref<const ::std::set< ::cpp2::ColorID>&>(houseColors);
+  }
+
+  FOLLY_ERASE auto houseColors_ref() const&& {
+    return ::apache::thrift::optional_field_ref<const ::std::set< ::cpp2::ColorID>&&>(std::move(houseColors));
+  }
+
+  FOLLY_ERASE auto houseColors_ref() & {
+    return ::apache::thrift::optional_field_ref<::std::set< ::cpp2::ColorID>&>(houseColors);
+  }
+
+  FOLLY_ERASE auto houseColors_ref() && {
+    return ::apache::thrift::optional_field_ref<::std::set< ::cpp2::ColorID>&&>(std::move(houseColors));
+  }
+
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
   template <class Protocol_>
