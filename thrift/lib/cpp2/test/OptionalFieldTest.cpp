@@ -53,16 +53,10 @@ std::ostream& operator<<(
   return os;
 }
 
-struct NoDefault {
-  NoDefault(int, int) {}
-  char a, b, c;
-};
-
 } // namespace
 
 static_assert(sizeof(DeprecatedOptionalField<char>) == 2, "");
 static_assert(sizeof(DeprecatedOptionalField<int>) == 8, "");
-static_assert(sizeof(DeprecatedOptionalField<NoDefault>) == 4, "");
 static_assert(
     sizeof(DeprecatedOptionalField<char>) == sizeof(boost::optional<char>),
     "");
@@ -75,27 +69,6 @@ static_assert(
 static_assert(
     sizeof(DeprecatedOptionalField<double>) == sizeof(boost::optional<double>),
     "");
-
-TEST(DeprecatedOptionalField, ConstexprConstructible) {
-  // Use FOLLY_STORAGE_CONSTEXPR to work around MSVC not taking this.
-  static FOLLY_STORAGE_CONSTEXPR DeprecatedOptionalField<int> opt;
-  // NOTE: writing `opt = none` instead of `opt(none)` causes gcc to reject this
-  // code, claiming that the (non-constexpr) move ctor of
-  // `DeprecatedOptionalField` is being invoked.
-  static FOLLY_STORAGE_CONSTEXPR DeprecatedOptionalField<int> opt2;
-
-  EXPECT_FALSE(opt.has_value());
-  EXPECT_FALSE(opt2.has_value());
-}
-
-TEST(DeprecatedOptionalField, NoDefault) {
-  DeprecatedOptionalField<NoDefault> x;
-  EXPECT_FALSE(x);
-  x.emplace(4, 5);
-  EXPECT_TRUE(bool(x));
-  x.reset();
-  EXPECT_FALSE(x);
-}
 
 TEST(DeprecatedOptionalField, Emplace) {
   DeprecatedOptionalField<std::vector<int>> opt;
@@ -127,16 +100,6 @@ TEST(DeprecatedOptionalField, String) {
 }
 
 TEST(DeprecatedOptionalField, Const) {
-  { // default construct
-    DeprecatedOptionalField<const int> opt;
-    EXPECT_FALSE(bool(opt));
-    opt.emplace(4);
-    EXPECT_EQ(*opt, 4);
-    opt.emplace(5);
-    EXPECT_EQ(*opt, 5);
-    opt.reset();
-    EXPECT_FALSE(bool(opt));
-  }
   { // copy-constructed
     const int x = 6;
     DeprecatedOptionalField<const int> opt(x);
@@ -168,6 +131,7 @@ namespace {
 
 class MoveTester {
  public:
+  MoveTester() = default;
   /* implicit */ MoveTester(const char* s) : s_(s) {}
   MoveTester(const MoveTester&) = default;
   MoveTester(MoveTester&& other) noexcept {
@@ -635,41 +599,6 @@ TEST(DeprecatedOptionalField, Hash) {
   // Also check the std::hash template can be instantiated by the compiler
   std::hash<DeprecatedOptionalField<int>>()(DeprecatedOptionalField<int>());
   std::hash<DeprecatedOptionalField<int>>()(DeprecatedOptionalField<int>(3));
-}
-
-namespace {
-
-struct WithConstMember {
-  /* implicit */ WithConstMember(int val) : x(val) {}
-  const int x;
-};
-
-// Make this opaque to the optimizer by preventing inlining.
-FOLLY_NOINLINE void replaceWith2(DeprecatedOptionalField<WithConstMember>& o) {
-  o.emplace(2);
-}
-
-} // namespace
-
-TEST(DeprecatedOptionalField, ConstMember) {
-  // Verify that the compiler doesn't optimize out the second load of
-  // o->x based on the assumption that the field is const.
-  //
-  // Current DeprecatedOptionalField implementation doesn't defend against that
-  // assumption, thus replacing an optional where the object has const
-  // members is technically UB and would require wrapping each access
-  // to the storage with std::launder, but this prevents useful
-  // optimizations.
-  //
-  // Implementations of std::optional in both libstdc++ and libc++ are
-  // subject to the same UB. It is then reasonable to believe that
-  // major compilers don't rely on the constness assumption.
-  DeprecatedOptionalField<WithConstMember> o(1);
-  int sum = 0;
-  sum += o->x;
-  replaceWith2(o);
-  sum += o->x;
-  EXPECT_EQ(sum, 3);
 }
 
 } // namespace thrift

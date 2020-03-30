@@ -30,49 +30,147 @@ namespace thrift {
  * turned on. It will be eventually replaced by thrift::optional_field_ref.
  */
 template <typename T>
-class DeprecatedOptionalField : private folly::Optional<T> {
- private:
-  using Base = folly::Optional<T>;
-  const Base& toFolly() const {
-    return *this;
-  }
-
+class DeprecatedOptionalField {
  public:
-  using Base::operator->;
-  using Base::operator*;
-  using Base::operator bool;
-  using Base::assign;
-  using Base::emplace;
-  using Base::has_value;
-  using Base::reset;
-  using Base::value;
-  using Base::value_or;
-  using typename Base::value_type;
+  using value_type = T;
 
   DeprecatedOptionalField() = default;
   DeprecatedOptionalField(const DeprecatedOptionalField&) = default;
-  DeprecatedOptionalField(DeprecatedOptionalField&&) = default;
+  DeprecatedOptionalField(DeprecatedOptionalField&& other) noexcept(
+      std::is_nothrow_move_constructible<T>::value)
+      : value_(std::move(other.value_)), is_set_(other.is_set_) {
+    other.is_set_ = false; // TODO: do not unset moved-from Optional
+  }
+
   explicit DeprecatedOptionalField(const T& t) noexcept(
       std::is_nothrow_copy_constructible<T>::value)
-      : Base(t) {}
+      : value_(t), is_set_(true) {}
+
   explicit DeprecatedOptionalField(T&& t) noexcept(
       std::is_nothrow_move_constructible<T>::value)
-      : Base(std::move(t)) {}
+      : value_(std::move(t)), is_set_(true) {}
 
   DeprecatedOptionalField& operator=(const DeprecatedOptionalField&) = default;
-  DeprecatedOptionalField& operator=(DeprecatedOptionalField&&) = default;
+  DeprecatedOptionalField& operator=(DeprecatedOptionalField&& other) noexcept(
+      std::is_nothrow_move_assignable<T>::value) {
+    if (this != &other) {
+      value_ = std::move(other.value_);
+      is_set_ = other.is_set_;
+      other.is_set_ = false; // TODO: do not unset moved-from Optional
+    }
+    return *this;
+  }
 
   auto&& operator=(const T& other) noexcept(
       std::is_nothrow_copy_assignable<T>::value) {
-    Base::operator=(other);
+    is_set_ = true;
+    value_ = other;
     return *this;
   }
 
   auto&& operator=(T&& other) noexcept(
       std::is_nothrow_move_assignable<T>::value) {
-    Base::operator=(std::move(other));
+    is_set_ = true;
+    value_ = std::move(other);
     return *this;
   }
+
+  auto&& value() const& {
+    require_value();
+    return value_;
+  }
+  auto&& value() & {
+    require_value();
+    return value_;
+  }
+  auto&& value() && {
+    require_value();
+    return std::move(value_);
+  }
+  auto&& value() const&& {
+    require_value();
+    return std::move(value_);
+  }
+
+  auto&& operator*() const& {
+    return value();
+  }
+  auto&& operator*() & {
+    return value();
+  }
+  auto&& operator*() const&& {
+    return std::move(value());
+  }
+  auto&& operator*() && {
+    return std::move(value());
+  }
+
+  bool has_value() const noexcept {
+    return is_set_;
+  }
+  explicit operator bool() const noexcept {
+    return has_value();
+  }
+
+  const T* operator->() const {
+    return &value();
+  }
+  T* operator->() {
+    return &value();
+  }
+
+  void reset() noexcept {
+    // Thrift field's destructor shouldn't have side-effect, thus we could just
+    // clear the memory.
+    is_set_ = false;
+    value_ = T();
+  }
+
+  template <class... Args>
+  T& emplace(Args&&... args) {
+    is_set_ = true;
+    return value_ = T(std::forward<Args>(args)...);
+  }
+
+  template <class U>
+  T& emplace(std::initializer_list<U> ilist) {
+    is_set_ = true;
+    return value_ = T(ilist);
+  }
+
+  template <class U>
+  T value_or(U&& dflt) const& {
+    if (has_value()) {
+      return value_;
+    }
+    return std::forward<U>(dflt);
+  }
+  template <class U>
+  T value_or(U&& dflt) && {
+    if (has_value()) {
+      return std::move(value_);
+    }
+    return std::forward<U>(dflt);
+  }
+
+  // TODO: codemod following incompatbile APIs
+  void assign(T&& u) {
+    *this = std::move(u);
+  }
+
+  void assign(const T& u) {
+    *this = u;
+  }
+
+ private:
+  void require_value() const {
+    if (!has_value()) {
+      folly::throw_exception<folly::OptionalEmptyException>();
+    }
+  }
+
+  T value_{};
+  bool is_set_ = false;
 };
 
 namespace detail {
