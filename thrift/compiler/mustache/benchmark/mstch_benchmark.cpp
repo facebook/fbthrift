@@ -18,7 +18,6 @@
 #include <folly/init/Init.h>
 #include "thrift/compiler/mustache/mstch.h"
 
-using namespace std;
 using namespace apache::thrift;
 
 mstch::node test_data(size_t count) {

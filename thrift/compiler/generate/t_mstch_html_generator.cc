@@ -16,8 +16,6 @@
 
 #include <thrift/compiler/generate/t_mstch_generator.h>
 
-using namespace std;
-
 namespace apache {
 namespace thrift {
 namespace compiler {

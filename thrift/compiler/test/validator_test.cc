@@ -26,8 +26,6 @@
 #include <thrift/compiler/test/parser_test_helpers.h>
 #include <thrift/compiler/validator/validator.h>
 
-using namespace apache::thrift::compiler;
-
 namespace {
 
 class ValidatorTest : public testing::Test {};

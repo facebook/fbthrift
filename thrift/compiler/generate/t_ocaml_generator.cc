@@ -27,7 +27,6 @@
 #include <sstream>
 
 using namespace std;
-using namespace apache::thrift;
 
 namespace apache {
 namespace thrift {

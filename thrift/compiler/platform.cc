@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/platform.h>
-
 namespace apache {
 namespace thrift {
 namespace compiler {
