@@ -601,5 +601,50 @@ TEST(DeprecatedOptionalField, Hash) {
   std::hash<DeprecatedOptionalField<int>>()(DeprecatedOptionalField<int>(3));
 }
 
+TEST(DeprecatedOptionalField, optional_field_ref) {
+  {
+    DeprecatedOptionalField<int> a;
+    auto b = optional_field_ref<int&>(a);
+    b = 11;
+    EXPECT_EQ(a.value(), 11);
+    b.reset();
+    EXPECT_FALSE(a);
+  }
+  {
+    DeprecatedOptionalField<int> a;
+    auto b = optional_field_ref<const int&>(std::as_const(a));
+    a = 11;
+    EXPECT_EQ(b.value(), 11);
+    a.reset();
+    EXPECT_FALSE(b);
+  }
+  {
+    // use shared_ptr to test whether data is moved out
+    DeprecatedOptionalField<std::shared_ptr<int>> a{std::make_shared<int>(11)};
+    auto b = optional_field_ref<std::shared_ptr<int>&>(a);
+    auto c = b.value();
+    EXPECT_TRUE(a.value());
+    EXPECT_TRUE(c);
+    EXPECT_EQ(*c, 11);
+  }
+  {
+    DeprecatedOptionalField<std::shared_ptr<int>> a{std::make_shared<int>(11)};
+    auto b = optional_field_ref<std::shared_ptr<int>&&>(std::move(a));
+    auto c = b.value();
+    EXPECT_FALSE(a.value());
+    EXPECT_TRUE(c);
+    EXPECT_EQ(*c, 11);
+  }
+  {
+    DeprecatedOptionalField<std::shared_ptr<int>> a{std::make_shared<int>(11)};
+    auto b = optional_field_ref<const std::shared_ptr<int>&&>(
+        std::move(std::as_const(a)));
+    auto c = b.value();
+    EXPECT_TRUE(a.value());
+    EXPECT_TRUE(c);
+    EXPECT_EQ(*c, 11);
+  }
+}
+
 } // namespace thrift
 } // namespace apache

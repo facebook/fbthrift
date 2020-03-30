@@ -162,6 +162,22 @@ class DeprecatedOptionalField {
     *this = u;
   }
 
+  operator optional_field_ref<T&>() & {
+    return {value_, is_set_};
+  }
+
+  operator optional_field_ref<const T&>() const& {
+    return {value_, is_set_};
+  }
+
+  operator optional_field_ref<T&&>() && {
+    return {std::move(value_), is_set_};
+  }
+
+  operator optional_field_ref<const T&&>() const&& {
+    return {std::move(value_), is_set_};
+  }
+
  private:
   void require_value() const {
     if (!has_value()) {
