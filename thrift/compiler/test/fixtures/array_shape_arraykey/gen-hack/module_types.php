@@ -613,20 +613,20 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
 
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
-    $me->map_of_string_to_string = self::__stringifyMapKeys($shape['map_of_string_to_string'];
-    $me->map_of_string_to_i32 = self::__stringifyMapKeys($shape['map_of_string_to_i32'];
+    $me->map_of_string_to_string = self::__stringifyMapKeys($shape['map_of_string_to_string']);
+    $me->map_of_string_to_i32 = self::__stringifyMapKeys($shape['map_of_string_to_i32']);
     $me->map_of_string_to_A = self::__stringifyMapKeys($shape['map_of_string_to_A']
       |> Dict\map(
         $$,
         $_val0 ==> $_val0
           |> A::__fromShape($$),
-      );
+      ));
     $me->map_of_string_to_self = self::__stringifyMapKeys($shape['map_of_string_to_self']
       |> Dict\map(
         $$,
         $_val1 ==> $_val1
           |> B::__fromShape($$),
-      );
+      ));
     $me->map_of_string_to_list_of_A = self::__stringifyMapKeys($shape['map_of_string_to_list_of_A']
       |> Dict\map(
         $$,
@@ -636,8 +636,8 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_val3 ==> $_val3
               |> A::__fromShape($$),
           ),
-      );
-    $me->map_of_string_to_map_of_string_to_i32 = self::__stringifyMapKeys($shape['map_of_string_to_map_of_string_to_i32'];
+      ));
+    $me->map_of_string_to_map_of_string_to_i32 = self::__stringifyMapKeys($shape['map_of_string_to_map_of_string_to_i32']);
     $me->map_of_string_to_map_of_string_to_A = self::__stringifyMapKeys($shape['map_of_string_to_map_of_string_to_A']
       |> Dict\map(
         $$,
@@ -647,9 +647,9 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_val5 ==> $_val5
               |> A::__fromShape($$),
           ),
-      );
-    $me->map_of_string_to_list_of_i32 = self::__stringifyMapKeys($shape['map_of_string_to_list_of_i32'];
-    $me->map_of_string_to_set_of_i32 = self::__stringifyMapKeys($shape['map_of_string_to_set_of_i32'];
+      ));
+    $me->map_of_string_to_list_of_i32 = self::__stringifyMapKeys($shape['map_of_string_to_list_of_i32']);
+    $me->map_of_string_to_set_of_i32 = self::__stringifyMapKeys($shape['map_of_string_to_set_of_i32']);
     $me->list_of_string = $shape['list_of_string'];
     $me->list_of_i32 = $shape['list_of_i32'];
     $me->list_of_self = $shape['list_of_self']
@@ -1281,10 +1281,10 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       $me->optional_sef = C::__fromShape($shape['optional_sef']);
     }
     if (Shapes::idx($shape, 'map_of_string_to_string') !== null) {
-      $me->map_of_string_to_string = self::__stringifyMapKeys($shape['map_of_string_to_string'];
+      $me->map_of_string_to_string = self::__stringifyMapKeys($shape['map_of_string_to_string']);
     }
     if (Shapes::idx($shape, 'map_of_string_to_i32') !== null) {
-      $me->map_of_string_to_i32 = self::__stringifyMapKeys($shape['map_of_string_to_i32'];
+      $me->map_of_string_to_i32 = self::__stringifyMapKeys($shape['map_of_string_to_i32']);
     }
     if (Shapes::idx($shape, 'map_of_string_to_A') !== null) {
       $me->map_of_string_to_A = self::__stringifyMapKeys($shape['map_of_string_to_A']
@@ -1292,7 +1292,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
           $$,
           $_val0 ==> $_val0
             |> A::__fromShape($$),
-        );
+        ));
     }
     if (Shapes::idx($shape, 'map_of_string_to_self') !== null) {
       $me->map_of_string_to_self = self::__stringifyMapKeys($shape['map_of_string_to_self']
@@ -1300,7 +1300,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
           $$,
           $_val1 ==> $_val1
             |> B::__fromShape($$),
-        );
+        ));
     }
     if (Shapes::idx($shape, 'map_of_string_to_list_of_A') !== null) {
       $me->map_of_string_to_list_of_A = self::__stringifyMapKeys($shape['map_of_string_to_list_of_A']
@@ -1312,10 +1312,10 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
               $_val3 ==> $_val3
                 |> A::__fromShape($$),
             ),
-        );
+        ));
     }
     if (Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32') !== null) {
-      $me->map_of_string_to_map_of_string_to_i32 = self::__stringifyMapKeys($shape['map_of_string_to_map_of_string_to_i32'];
+      $me->map_of_string_to_map_of_string_to_i32 = self::__stringifyMapKeys($shape['map_of_string_to_map_of_string_to_i32']);
     }
     if (Shapes::idx($shape, 'map_of_string_to_map_of_string_to_A') !== null) {
       $me->map_of_string_to_map_of_string_to_A = self::__stringifyMapKeys($shape['map_of_string_to_map_of_string_to_A']
@@ -1327,13 +1327,13 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
               $_val5 ==> $_val5
                 |> A::__fromShape($$),
             ),
-        );
+        ));
     }
     if (Shapes::idx($shape, 'map_of_string_to_list_of_i32') !== null) {
-      $me->map_of_string_to_list_of_i32 = self::__stringifyMapKeys($shape['map_of_string_to_list_of_i32'];
+      $me->map_of_string_to_list_of_i32 = self::__stringifyMapKeys($shape['map_of_string_to_list_of_i32']);
     }
     if (Shapes::idx($shape, 'map_of_string_to_set_of_i32') !== null) {
-      $me->map_of_string_to_set_of_i32 = self::__stringifyMapKeys($shape['map_of_string_to_set_of_i32'];
+      $me->map_of_string_to_set_of_i32 = self::__stringifyMapKeys($shape['map_of_string_to_set_of_i32']);
     }
     if (Shapes::idx($shape, 'list_of_string') !== null) {
       $me->list_of_string = $shape['list_of_string'];
@@ -1390,7 +1390,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       $me->list_of_i32 = $shape['list_of_i32'];
     }
     if (Shapes::idx($shape, 'map_of_string_to_list_of_string') !== null) {
-      $me->map_of_string_to_list_of_string = self::__stringifyMapKeys($shape['map_of_string_to_list_of_string'];
+      $me->map_of_string_to_list_of_string = self::__stringifyMapKeys($shape['map_of_string_to_list_of_string']);
     }
     if (Shapes::idx($shape, 'set_of_i32') !== null) {
       $me->set_of_i32 = $shape['set_of_i32'];

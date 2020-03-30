@@ -2118,6 +2118,9 @@ void t_hack_generator::generate_php_struct_shape_methods(
           generate_hack_array_from_shape_lambda(val, namer, t);
           indent_down();
         }
+        if (stringify_map_keys) {
+          val << ")";
+        }
         val << ";\n";
       } else {
         val << (stringify_map_keys ? "" : "(");
