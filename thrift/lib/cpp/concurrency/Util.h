@@ -68,11 +68,6 @@ class Util {
     result.tv_nsec = (value % MS_PER_S) * NS_PER_MS; // ms to ns
   }
 
-  static void toTimeval(struct timeval& result, int64_t value) {
-    result.tv_sec = folly::to_narrow(value / MS_PER_S); // ms to s
-    result.tv_usec = (value % MS_PER_S) * US_PER_MS; // ms to us
-  }
-
   static void toTicks(
       int64_t& result,
       int64_t secs,
