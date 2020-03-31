@@ -61,10 +61,7 @@ TEST(BadInputTests, ParitialRequest) {
       0x17, 0x17, 0x17, 0x17};
   // clang-format on
   unsigned int length = 388;
-  folly::EventBase e;
-  auto sock = folly::AsyncTransportWrapper::UniquePtr(
-      new apache::thrift::rocket::test::FakeTransport(&e));
-  testOneInput(input, length, std::move(sock));
+  testServerOneInput(input, length);
 }
 
 TEST(BadInputTests, MetaDataCorruption) {
@@ -88,10 +85,7 @@ TEST(BadInputTests, MetaDataCorruption) {
   // clang-format on
   // 75 + 50
   unsigned int length = 125;
-  folly::EventBase e;
-  auto sock = folly::AsyncTransportWrapper::UniquePtr(
-      new apache::thrift::rocket::test::FakeTransport(&e));
-  testOneInput(input, length, std::move(sock));
+  testServerOneInput(input, length);
 }
 
 } // namespace test

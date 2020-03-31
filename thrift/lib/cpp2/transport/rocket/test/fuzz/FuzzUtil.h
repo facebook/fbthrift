@@ -16,9 +16,13 @@
 
 #include <folly/ExceptionWrapper.h>
 
+#include <folly/io/async/test/SocketPair.h>
+#include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Parser.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketSinkClientCallback.h>
@@ -136,15 +140,14 @@ class FakeProcessorFactory final
   }
 };
 
-void testOneInput(
-    const uint8_t* Data,
-    size_t Size,
-    folly::AsyncTransportWrapper::UniquePtr sock) {
+void testServerOneInput(const uint8_t* Data, size_t Size) {
+  folly::EventBase evb;
+  auto sock = folly::AsyncTransportWrapper::UniquePtr(
+      new apache::thrift::rocket::test::FakeTransport(&evb));
   auto* const sockPtr = sock.get();
-  auto evb = sockPtr->getEventBase();
   apache::thrift::ThriftServer server;
   server.setProcessorFactory(std::make_shared<FakeProcessorFactory>());
-  auto worker = apache::thrift::Cpp2Worker::create(&server, nullptr, evb);
+  auto worker = apache::thrift::Cpp2Worker::create(&server, nullptr, &evb);
   std::vector<std::unique_ptr<apache::thrift::rocket::SetupFrameHandler>> v;
   folly::SocketAddress address;
   auto connection = new apache::thrift::rocket::RocketServerConnection(
@@ -155,7 +158,7 @@ void testOneInput(
   folly::DelayedDestruction::DestructorGuard dg(connection);
   apache::thrift::rocket::Parser<apache::thrift::rocket::RocketServerConnection>
       p(*connection);
-  evb->runInEventBaseThread([&]() {
+  evb.runInEventBaseThread([&]() {
     size_t left = Size;
     while (left != 0) {
       void* buffer;
@@ -169,7 +172,53 @@ void testOneInput(
     }
     connection->close(folly::exception_wrapper());
   });
-  evb->loop();
+  evb.loop();
+}
+
+void testClientOneInput(const uint8_t* Data, size_t Size) {
+  folly::EventBase evb;
+  folly::SocketPair sp;
+  auto sock = folly::AsyncTransportWrapper::UniquePtr(
+      new folly::AsyncSocket(&evb, sp.extractNetworkSocket0()));
+  auto channel =
+      apache::thrift::RocketClientChannel::newChannel(std::move(sock));
+  apache::thrift::RpcOptions rpcOptions;
+  apache::thrift::SerializedRequest request(std::make_unique<folly::IOBuf>());
+  auto tHeader = std::make_shared<apache::thrift::transport::THeader>();
+  apache::thrift::ClientReceiveState _returnState;
+  class SyncCallback : public apache::thrift::ClientSyncCallback<false> {
+   public:
+    using ClientSyncCallback::ClientSyncCallback;
+    void onRequestSent() noexcept override {
+      sentBaton_.post();
+    }
+    void waitUntilSent(folly::EventBase* evb) {
+      if (evb) {
+        if (!evb->inRunningEventBaseThread() || !folly::fibers::onFiber()) {
+          while (!sentBaton_.ready()) {
+            evb->drive();
+          }
+        }
+      }
+      sentBaton_.wait();
+    }
+
+   private:
+    folly::fibers::Baton sentBaton_;
+  };
+
+  SyncCallback callback(&_returnState);
+  channel->sendRequestResponse(
+      rpcOptions,
+      "",
+      std::move(request),
+      std::move(tHeader),
+      apache::thrift::RequestClientCallback::Ptr(&callback));
+  callback.waitUntilSent(&evb);
+  int fd = sp.extractFD1();
+  write(fd, Data, Size);
+  close(fd);
+  callback.waitUntilDone(&evb);
 }
 
 } // namespace test
