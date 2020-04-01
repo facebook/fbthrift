@@ -47,6 +47,11 @@ public class TApplicationException extends TException {
   public static final int INVALID_TRANSFORM = 8;
   public static final int INVALID_PROTOCOL = 9;
   public static final int UNSUPPORTED_CLIENT_TYPE = 10;
+  public static final int LOADSHEDDING = 11;
+  public static final int TIMEOUT = 12;
+  public static final int INJECTED_FAILURE = 13;
+  public static final int CHECKSUM_MISMATCH = 14;
+  public static final int INTERRUPTION = 15;
 
   public static final int MESSAGE = 1;
 
