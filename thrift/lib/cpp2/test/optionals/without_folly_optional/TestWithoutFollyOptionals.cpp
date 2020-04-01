@@ -250,3 +250,22 @@ TEST(TestWithoutFollyOptionals, FollyOptionalConversion) {
                 folly::Optional<int>,
                 apache::thrift::optional_field_ref<int&>>);
 }
+
+TEST(DeprecatedOptionalField, NulloptComparisons) {
+  cpp2::HasOptionals obj;
+
+  EXPECT_TRUE(obj.int64Opt_ref() == std::nullopt);
+  EXPECT_TRUE(std::nullopt == obj.int64Opt_ref());
+
+  obj.int64Opt_ref() = 1;
+  EXPECT_FALSE(obj.int64Opt_ref() == std::nullopt);
+  EXPECT_FALSE(std::nullopt == obj.int64Opt_ref());
+
+  obj.int64Opt_ref().reset();
+  EXPECT_FALSE(obj.int64Opt_ref() != std::nullopt);
+  EXPECT_FALSE(std::nullopt != obj.int64Opt_ref());
+
+  obj.int64Opt_ref() = 1;
+  EXPECT_TRUE(obj.int64Opt_ref() != std::nullopt);
+  EXPECT_TRUE(std::nullopt != obj.int64Opt_ref());
+}

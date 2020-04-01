@@ -309,5 +309,24 @@ bool operator!=(optional_field_ref<T1> a, optional_field_ref<T2> b) {
   return !(a == b);
 }
 
+#ifdef THRIFT_HAS_OPTIONAL
+template <class T>
+bool operator==(const optional_field_ref<T>& a, std::nullopt_t) {
+  return !a.has_value();
+}
+template <class T>
+bool operator==(std::nullopt_t, const optional_field_ref<T>& a) {
+  return !a.has_value();
+}
+template <class T>
+bool operator!=(const optional_field_ref<T>& a, std::nullopt_t) {
+  return a.has_value();
+}
+template <class T>
+bool operator!=(std::nullopt_t, const optional_field_ref<T>& a) {
+  return a.has_value();
+}
+#endif
+
 } // namespace thrift
 } // namespace apache

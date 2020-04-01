@@ -459,6 +459,19 @@ TEST(DeprecatedOptionalField, NoneComparisons) {
   EXPECT_FALSE(none >= opt(1));
 }
 
+TEST(DeprecatedOptionalField, NulloptComparisons) {
+  using opt = DeprecatedOptionalField<int>;
+  EXPECT_TRUE(opt() == std::nullopt);
+  EXPECT_TRUE(std::nullopt == opt());
+  EXPECT_FALSE(opt(1) == std::nullopt);
+  EXPECT_FALSE(std::nullopt == opt(1));
+
+  EXPECT_FALSE(opt() != std::nullopt);
+  EXPECT_FALSE(std::nullopt != opt());
+  EXPECT_TRUE(opt(1) != std::nullopt);
+  EXPECT_TRUE(std::nullopt != opt(1));
+}
+
 TEST(DeprecatedOptionalField, Conversions) {
   DeprecatedOptionalField<bool> mbool;
   DeprecatedOptionalField<short> mshort;

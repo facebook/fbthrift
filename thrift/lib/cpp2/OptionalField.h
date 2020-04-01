@@ -269,6 +269,25 @@ THRIFT_DETAIL_DEPRECATED_OPTIONAL_FIELD_DEFINE_OP(>)
 THRIFT_DETAIL_DEPRECATED_OPTIONAL_FIELD_DEFINE_OP(>=)
 #undef THRIFT_DETAIL_DEPRECATED_OPTIONAL_FIELD_DEFINE_OP
 
+#ifdef THRIFT_HAS_OPTIONAL
+template <class T>
+bool operator==(const DeprecatedOptionalField<T>& a, std::nullopt_t) {
+  return !a.has_value();
+}
+template <class T>
+bool operator==(std::nullopt_t, const DeprecatedOptionalField<T>& a) {
+  return !a.has_value();
+}
+template <class T>
+bool operator!=(const DeprecatedOptionalField<T>& a, std::nullopt_t) {
+  return a.has_value();
+}
+template <class T>
+bool operator!=(std::nullopt_t, const DeprecatedOptionalField<T>& a) {
+  return a.has_value();
+}
+#endif
+
 template <class T>
 folly::Optional<T> castToFolly(const DeprecatedOptionalField<T>& t) {
   if (t) {
