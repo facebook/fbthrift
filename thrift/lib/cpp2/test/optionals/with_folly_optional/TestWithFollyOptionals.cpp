@@ -231,3 +231,28 @@ TEST(TestWithFollyOptionals, AddRef) {
   obj.mapOpt = value;
   EXPECT_EQ(*obj.mapOpt_ref(), value);
 }
+
+TEST(TestWithFollyOptionals, CopyFrom) {
+  cpp2::HasOptionals obj1;
+  cpp2::HasOptionals obj2;
+
+  obj1.int64Opt = 1;
+  obj2.int64Opt.copy_from(obj1.int64Opt);
+  EXPECT_EQ(obj1.int64Opt.value(), 1);
+  EXPECT_EQ(obj2.int64Opt.value(), 1);
+
+  obj1.int64Opt = 2;
+  obj2.int64Opt.copy_from(obj1.int64Opt_ref());
+  EXPECT_EQ(obj1.int64Opt.value(), 2);
+  EXPECT_EQ(obj2.int64Opt.value(), 2);
+
+  obj1.int64Opt = 3;
+  obj2.int64Opt_ref().copy_from(obj1.int64Opt);
+  EXPECT_EQ(obj1.int64Opt.value(), 3);
+  EXPECT_EQ(obj2.int64Opt.value(), 3);
+
+  obj1.int64Opt = 4;
+  obj2.int64Opt_ref().copy_from(obj1.int64Opt_ref());
+  EXPECT_EQ(obj1.int64Opt.value(), 4);
+  EXPECT_EQ(obj2.int64Opt.value(), 4);
+}

@@ -75,6 +75,16 @@ class DeprecatedOptionalField {
     return *this;
   }
 
+  void copy_from(optional_field_ref<const T&> other) {
+    if (other) {
+      value_ = *other;
+    }
+    is_set_ = other.has_value();
+  }
+
+  void copy_from(optional_field_ref<T&&> other) = delete;
+  void copy_from(DeprecatedOptionalField&& other) = delete;
+
   auto&& value() const& {
     require_value();
     return value_;
