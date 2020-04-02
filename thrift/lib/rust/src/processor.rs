@@ -107,7 +107,9 @@ impl<P, R> Default for NullServiceProcessor<P, R> {
 #[async_trait]
 impl<P, R> ServiceProcessor<P> for NullServiceProcessor<P, R>
 where
-    P: Protocol,
+    P: Protocol + Sync,
+    P::Deserializer: Send,
+    R: Sync,
 {
     type RequestContext = R;
 

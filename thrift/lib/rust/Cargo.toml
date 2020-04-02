@@ -8,7 +8,7 @@ include = ["src/**/*.rs"]
 
 [dependencies]
 anyhow = "1.0"
-async-trait = { version = "0.1", features = ["support_old_nightly"] }
+async-trait = "0.1.29"
 bufsize = "0.5"
 byteorder = "1.3"
 bytes = { version = "0.5", features = ["serde"] }

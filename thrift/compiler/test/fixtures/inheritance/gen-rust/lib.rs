@@ -944,6 +944,7 @@ pub mod server {
         SS: ThriftService<P::Frame>,
         SS::Handler: crate::server::MyRoot,
         P::Frame: Send + 'static,
+        R: Sync,
     {
         pub fn new(service: H, supa: SS) -> Self {
             Self {
@@ -1150,6 +1151,7 @@ pub mod server {
         SS: ThriftService<P::Frame>,
         SS::Handler: crate::server::MyNode,
         P::Frame: Send + 'static,
+        R: Sync,
     {
         pub fn new(service: H, supa: SS) -> Self {
             Self {

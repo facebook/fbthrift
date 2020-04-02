@@ -2781,6 +2781,7 @@ pub mod server {
         SS: ThriftService<P::Frame>,
         SS::Handler: crate::server::MyServicePrioParent,
         P::Frame: Send + 'static,
+        R: Sync,
     {
         pub fn new(service: H, supa: SS) -> Self {
             Self {

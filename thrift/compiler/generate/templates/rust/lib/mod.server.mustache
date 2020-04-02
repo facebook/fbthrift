@@ -24,7 +24,7 @@
     #[async_trait]
     pub trait {{service:name}}: Send + Sync + 'static {{>lib/block}}{{!
     }}{{#service:requestContext?}}
-        type RequestContext;{{!
+        type RequestContext: Sync;{{!
     }}{{/service:requestContext?}}
     {{#service:functions}}
         async fn {{function:name}}(
@@ -77,7 +77,8 @@
         }}{{#service:extends?}}
         SS: ThriftService<P::Frame>,
         SS::Handler: {{>lib/super}},
-        P::Frame: Send + 'static,{{!
+        P::Frame: Send + 'static,
+        R: Sync,{{!
         }}{{/service:extends?}}
     {
         pub fn new({{!

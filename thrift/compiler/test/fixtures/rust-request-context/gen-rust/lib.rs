@@ -1278,7 +1278,7 @@ pub mod server {
 
     #[async_trait]
     pub trait MyService: Send + Sync + 'static {
-        type RequestContext;
+        type RequestContext: Sync;
         async fn ping(
             &self,
             _request_context: &Self::RequestContext,
