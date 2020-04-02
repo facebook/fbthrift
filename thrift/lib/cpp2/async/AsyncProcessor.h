@@ -496,11 +496,13 @@ class HandlerCallbackBase {
   virtual ~HandlerCallbackBase() {
     // req must be deleted in the eb
     if (req_) {
-      if (ewp_) {
-        exception(TApplicationException(
-            TApplicationException::INTERNAL_ERROR,
-            "apache::thrift::HandlerCallback not completed"));
-        return;
+      if (req_->isActive()) {
+        if (ewp_) {
+          exception(TApplicationException(
+              TApplicationException::INTERNAL_ERROR,
+              "apache::thrift::HandlerCallback not completed"));
+          return;
+        }
       }
       DCHECK(eb_);
       if (eb_->inRunningEventBaseThread()) {
