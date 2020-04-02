@@ -264,6 +264,8 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof StructWithSharedConst))
+      return false;
     StructWithSharedConst that = (StructWithSharedConst)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetOpt_shared_const(), that.isSetOpt_shared_const(), this.opt_shared_const, that.opt_shared_const)) { return false; }

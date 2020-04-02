@@ -206,6 +206,8 @@ public class SecretStruct implements TBase, java.io.Serializable, Cloneable, Com
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof SecretStruct))
+      return false;
     SecretStruct that = (SecretStruct)_that;
 
     if (!TBaseHelper.equalsNobinary(this.id, that.id)) { return false; }

@@ -208,6 +208,8 @@ public class MyStructMapFloatThrowExp implements TBase, java.io.Serializable, Cl
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof MyStructMapFloatThrowExp))
+      return false;
     MyStructMapFloatThrowExp that = (MyStructMapFloatThrowExp)_that;
 
     if (!TBaseHelper.equalsNobinary(this.myLongField, that.myLongField)) { return false; }

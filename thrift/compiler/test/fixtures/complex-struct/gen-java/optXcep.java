@@ -203,6 +203,8 @@ public class optXcep extends Exception implements TBase, java.io.Serializable, C
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof optXcep))
+      return false;
     optXcep that = (optXcep)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetMessage(), that.isSetMessage(), this.message, that.message)) { return false; }

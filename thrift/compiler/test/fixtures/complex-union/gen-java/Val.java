@@ -258,6 +258,8 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof Val))
+      return false;
     Val that = (Val)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetStrVal(), that.isSetStrVal(), this.strVal, that.strVal)) { return false; }

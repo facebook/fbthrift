@@ -65,6 +65,8 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof Foo))
+      return false;
     Foo that = (Foo)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetA(), that.isSetA(), this.a, that.a)) { return false; }

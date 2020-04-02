@@ -623,6 +623,8 @@ public class Raiser {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof doBland_args))
+        return false;
       doBland_args that = (doBland_args)_that;
 
       return true;
@@ -754,6 +756,8 @@ public class Raiser {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof doBland_result))
+        return false;
       doBland_result that = (doBland_result)_that;
 
       return true;
@@ -884,6 +888,8 @@ public class Raiser {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof doRaise_args))
+        return false;
       doRaise_args that = (doRaise_args)_that;
 
       return true;
@@ -1158,6 +1164,8 @@ public class Raiser {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof doRaise_result))
+        return false;
       doRaise_result that = (doRaise_result)_that;
 
       if (!TBaseHelper.equalsNobinary(this.isSetB(), that.isSetB(), this.b, that.b)) { return false; }
@@ -1348,6 +1356,8 @@ public class Raiser {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof get200_args))
+        return false;
       get200_args that = (get200_args)_that;
 
       return true;
@@ -1532,6 +1542,8 @@ public class Raiser {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof get200_result))
+        return false;
       get200_result that = (get200_result)_that;
 
       if (!TBaseHelper.equalsNobinary(this.isSetSuccess(), that.isSetSuccess(), this.success, that.success)) { return false; }
@@ -1694,6 +1706,8 @@ public class Raiser {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof get500_args))
+        return false;
       get500_args that = (get500_args)_that;
 
       return true;
@@ -2013,6 +2027,8 @@ public class Raiser {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof get500_result))
+        return false;
       get500_result that = (get500_result)_that;
 
       if (!TBaseHelper.equalsNobinary(this.isSetSuccess(), that.isSetSuccess(), this.success, that.success)) { return false; }

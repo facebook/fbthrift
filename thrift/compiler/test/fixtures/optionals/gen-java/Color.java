@@ -313,6 +313,8 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof Color))
+      return false;
     Color that = (Color)_that;
 
     if (!TBaseHelper.equalsNobinary(this.red, that.red)) { return false; }

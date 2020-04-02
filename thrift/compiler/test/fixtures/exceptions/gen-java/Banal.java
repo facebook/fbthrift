@@ -84,6 +84,8 @@ public class Banal extends Exception implements TBase, java.io.Serializable, Clo
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof Banal))
+      return false;
     Banal that = (Banal)_that;
 
     return true;

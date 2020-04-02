@@ -264,6 +264,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof MyStruct))
+      return false;
     MyStruct that = (MyStruct)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetOpt_ref(), that.isSetOpt_ref(), this.opt_ref, that.opt_ref)) { return false; }

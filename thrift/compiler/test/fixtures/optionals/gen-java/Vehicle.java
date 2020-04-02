@@ -368,6 +368,8 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof Vehicle))
+      return false;
     Vehicle that = (Vehicle)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetColor(), that.isSetColor(), this.color, that.color)) { return false; }

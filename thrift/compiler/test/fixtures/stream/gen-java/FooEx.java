@@ -84,6 +84,8 @@ public class FooEx extends Exception implements TBase, java.io.Serializable, Clo
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof FooEx))
+      return false;
     FooEx that = (FooEx)_that;
 
     return true;

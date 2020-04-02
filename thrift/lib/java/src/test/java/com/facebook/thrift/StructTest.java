@@ -200,4 +200,12 @@ public class StructTest extends TestCase {
         new com.facebook.thrift.android.test.StructWithOptional(1L, "toto", null, "titi");
     assertThat(orig, not(equalTo(copy2)));
   }
+
+  @Test
+  public void testStructInequality() throws Exception {
+    MySimpleStruct struct1 = new MySimpleStruct(1, "Foo");
+    MySimpleStruct struct2 = new MySimpleStruct(2, "Bar");
+    assertThat(struct1, is(not(equalTo(struct2))));
+    assertThat(struct1, is(not(equalTo(new Object()))));
+  }
 }

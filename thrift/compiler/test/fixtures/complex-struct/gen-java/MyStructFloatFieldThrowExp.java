@@ -311,6 +311,8 @@ public class MyStructFloatFieldThrowExp implements TBase, java.io.Serializable, 
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof MyStructFloatFieldThrowExp))
+      return false;
     MyStructFloatFieldThrowExp that = (MyStructFloatFieldThrowExp)_that;
 
     if (!TBaseHelper.equalsNobinary(this.myLongField, that.myLongField)) { return false; }

@@ -151,6 +151,8 @@ public class NonCopyableStruct implements TBase, java.io.Serializable, Cloneable
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof NonCopyableStruct))
+      return false;
     NonCopyableStruct that = (NonCopyableStruct)_that;
 
     if (!TBaseHelper.equalsNobinary(this.num, that.num)) { return false; }

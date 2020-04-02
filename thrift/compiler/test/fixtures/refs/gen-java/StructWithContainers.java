@@ -412,6 +412,8 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof StructWithContainers))
+      return false;
     StructWithContainers that = (StructWithContainers)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetList_ref(), that.isSetList_ref(), this.list_ref, that.list_ref)) { return false; }

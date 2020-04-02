@@ -264,6 +264,8 @@ public class StructWithRefTypeUnique implements TBase, java.io.Serializable, Clo
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof StructWithRefTypeUnique))
+      return false;
     StructWithRefTypeUnique that = (StructWithRefTypeUnique)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetDef_field(), that.isSetDef_field(), this.def_field, that.def_field)) { return false; }

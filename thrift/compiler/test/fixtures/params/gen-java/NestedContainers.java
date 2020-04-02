@@ -728,6 +728,8 @@ public class NestedContainers {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof mapList_args))
+        return false;
       mapList_args that = (mapList_args)_that;
 
       if (!TBaseHelper.equalsNobinary(this.isSetFoo(), that.isSetFoo(), this.foo, that.foo)) { return false; }
@@ -930,6 +932,8 @@ public class NestedContainers {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof mapList_result))
+        return false;
       mapList_result that = (mapList_result)_that;
 
       return true;
@@ -1117,6 +1121,8 @@ public class NestedContainers {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof mapSet_args))
+        return false;
       mapSet_args that = (mapSet_args)_that;
 
       if (!TBaseHelper.equalsNobinary(this.isSetFoo(), that.isSetFoo(), this.foo, that.foo)) { return false; }
@@ -1319,6 +1325,8 @@ public class NestedContainers {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof mapSet_result))
+        return false;
       mapSet_result that = (mapSet_result)_that;
 
       return true;
@@ -1506,6 +1514,8 @@ public class NestedContainers {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof listMap_args))
+        return false;
       listMap_args that = (listMap_args)_that;
 
       if (!TBaseHelper.equalsNobinary(this.isSetFoo(), that.isSetFoo(), this.foo, that.foo)) { return false; }
@@ -1708,6 +1718,8 @@ public class NestedContainers {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof listMap_result))
+        return false;
       listMap_result that = (listMap_result)_that;
 
       return true;
@@ -1894,6 +1906,8 @@ public class NestedContainers {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof listSet_args))
+        return false;
       listSet_args that = (listSet_args)_that;
 
       if (!TBaseHelper.equalsNobinary(this.isSetFoo(), that.isSetFoo(), this.foo, that.foo)) { return false; }
@@ -2093,6 +2107,8 @@ public class NestedContainers {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof listSet_result))
+        return false;
       listSet_result that = (listSet_result)_that;
 
       return true;
@@ -2284,6 +2300,8 @@ public class NestedContainers {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof turtles_args))
+        return false;
       turtles_args that = (turtles_args)_that;
 
       if (!TBaseHelper.equalsNobinary(this.isSetFoo(), that.isSetFoo(), this.foo, that.foo)) { return false; }
@@ -2543,6 +2561,8 @@ public class NestedContainers {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof turtles_result))
+        return false;
       turtles_result that = (turtles_result)_that;
 
       return true;

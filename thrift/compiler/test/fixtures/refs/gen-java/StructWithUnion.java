@@ -255,6 +255,8 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable, 
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof StructWithUnion))
+      return false;
     StructWithUnion that = (StructWithUnion)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetU(), that.isSetU(), this.u, that.u)) { return false; }

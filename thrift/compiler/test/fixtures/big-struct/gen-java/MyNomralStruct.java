@@ -1699,6 +1699,8 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof MyNomralStruct))
+      return false;
     MyNomralStruct that = (MyNomralStruct)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetMsg1(), that.isSetMsg1(), this.msg1, that.msg1)) { return false; }

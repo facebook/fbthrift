@@ -84,6 +84,8 @@ public class Empty implements TBase, java.io.Serializable, Cloneable, Comparable
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof Empty))
+      return false;
     Empty that = (Empty)_that;
 
     return true;

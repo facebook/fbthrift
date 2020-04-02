@@ -1099,6 +1099,8 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof ComplexNestedStruct))
+      return false;
     ComplexNestedStruct that = (ComplexNestedStruct)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetSetOfSetOfInt(), that.isSetSetOfSetOfInt(), this.setOfSetOfInt, that.setOfSetOfInt)) { return false; }

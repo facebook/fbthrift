@@ -264,6 +264,8 @@ public class StructWithRefTypeSharedConst implements TBase, java.io.Serializable
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof StructWithRefTypeSharedConst))
+      return false;
     StructWithRefTypeSharedConst that = (StructWithRefTypeSharedConst)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetDef_field(), that.isSetDef_field(), this.def_field, that.def_field)) { return false; }

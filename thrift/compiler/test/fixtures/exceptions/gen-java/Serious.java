@@ -144,6 +144,8 @@ public class Serious extends Exception implements TBase, java.io.Serializable, C
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof Serious))
+      return false;
     Serious that = (Serious)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetSonnet(), that.isSetSonnet(), this.sonnet, that.sonnet)) { return false; }

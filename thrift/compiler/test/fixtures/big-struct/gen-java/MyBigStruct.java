@@ -12963,6 +12963,8 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof MyBigStruct))
+      return false;
     MyBigStruct that = (MyBigStruct)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetMsg1(), that.isSetMsg1(), this.msg1, that.msg1)) { return false; }

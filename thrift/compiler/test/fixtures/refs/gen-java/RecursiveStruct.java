@@ -146,6 +146,8 @@ public class RecursiveStruct implements TBase, java.io.Serializable, Cloneable {
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof RecursiveStruct))
+      return false;
     RecursiveStruct that = (RecursiveStruct)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetMes(), that.isSetMes(), this.mes, that.mes)) { return false; }

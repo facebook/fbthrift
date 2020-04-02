@@ -203,6 +203,8 @@ public class reqXcep extends Exception implements TBase, java.io.Serializable, C
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof reqXcep))
+      return false;
     reqXcep that = (reqXcep)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetMessage(), that.isSetMessage(), this.message, that.message)) { return false; }

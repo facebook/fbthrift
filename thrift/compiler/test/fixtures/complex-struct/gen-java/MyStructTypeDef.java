@@ -580,6 +580,8 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof MyStructTypeDef))
+      return false;
     MyStructTypeDef that = (MyStructTypeDef)_that;
 
     if (!TBaseHelper.equalsNobinary(this.myLongField, that.myLongField)) { return false; }

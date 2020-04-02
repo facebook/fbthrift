@@ -84,6 +84,8 @@ public class MyDataItem implements TBase, java.io.Serializable, Cloneable, Compa
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof MyDataItem))
+      return false;
     MyDataItem that = (MyDataItem)_that;
 
     return true;

@@ -650,6 +650,8 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof Person))
+      return false;
     Person that = (Person)_that;
 
     if (!TBaseHelper.equalsNobinary(this.id, that.id)) { return false; }

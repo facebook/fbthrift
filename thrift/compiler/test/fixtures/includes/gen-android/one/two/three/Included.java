@@ -86,6 +86,8 @@ public class Included implements TBase, java.io.Serializable, Cloneable {
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof Included))
+      return false;
     Included that = (Included)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetMyIntField(), that.isSetMyIntField(), this.MyIntField, that.MyIntField)) { return false; }

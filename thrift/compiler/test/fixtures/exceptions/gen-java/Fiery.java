@@ -144,6 +144,8 @@ public class Fiery extends Exception implements TBase, java.io.Serializable, Clo
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof Fiery))
+      return false;
     Fiery that = (Fiery)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetMessage(), that.isSetMessage(), this.message, that.message)) { return false; }

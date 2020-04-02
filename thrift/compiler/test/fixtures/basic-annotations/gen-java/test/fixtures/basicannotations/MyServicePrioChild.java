@@ -241,6 +241,8 @@ public class MyServicePrioChild {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof pang_args))
+        return false;
       pang_args that = (pang_args)_that;
 
       return true;
@@ -372,6 +374,8 @@ public class MyServicePrioChild {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof pang_result))
+        return false;
       pang_result that = (pang_result)_that;
 
       return true;

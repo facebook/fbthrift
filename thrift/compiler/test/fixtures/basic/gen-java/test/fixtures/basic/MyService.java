@@ -754,6 +754,8 @@ public class MyService {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof ping_args))
+        return false;
       ping_args that = (ping_args)_that;
 
       return true;
@@ -885,6 +887,8 @@ public class MyService {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof ping_result))
+        return false;
       ping_result that = (ping_result)_that;
 
       return true;
@@ -1015,6 +1019,8 @@ public class MyService {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof getRandomData_args))
+        return false;
       getRandomData_args that = (getRandomData_args)_that;
 
       return true;
@@ -1199,6 +1205,8 @@ public class MyService {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof getRandomData_result))
+        return false;
       getRandomData_result that = (getRandomData_result)_that;
 
       if (!TBaseHelper.equalsNobinary(this.isSetSuccess(), that.isSetSuccess(), this.success, that.success)) { return false; }
@@ -1416,6 +1424,8 @@ public class MyService {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof hasDataById_args))
+        return false;
       hasDataById_args that = (hasDataById_args)_that;
 
       if (!TBaseHelper.equalsNobinary(this.id, that.id)) { return false; }
@@ -1629,6 +1639,8 @@ public class MyService {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof hasDataById_result))
+        return false;
       hasDataById_result that = (hasDataById_result)_that;
 
       if (!TBaseHelper.equalsNobinary(this.success, that.success)) { return false; }
@@ -1843,6 +1855,8 @@ public class MyService {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof getDataById_args))
+        return false;
       getDataById_args that = (getDataById_args)_that;
 
       if (!TBaseHelper.equalsNobinary(this.id, that.id)) { return false; }
@@ -2054,6 +2068,8 @@ public class MyService {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof getDataById_result))
+        return false;
       getDataById_result that = (getDataById_result)_that;
 
       if (!TBaseHelper.equalsNobinary(this.isSetSuccess(), that.isSetSuccess(), this.success, that.success)) { return false; }
@@ -2316,6 +2332,8 @@ public class MyService {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof putDataById_args))
+        return false;
       putDataById_args that = (putDataById_args)_that;
 
       if (!TBaseHelper.equalsNobinary(this.id, that.id)) { return false; }
@@ -2507,6 +2525,8 @@ public class MyService {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof putDataById_result))
+        return false;
       putDataById_result that = (putDataById_result)_that;
 
       return true;
@@ -2737,6 +2757,8 @@ public class MyService {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof lobDataById_args))
+        return false;
       lobDataById_args that = (lobDataById_args)_that;
 
       if (!TBaseHelper.equalsNobinary(this.id, that.id)) { return false; }

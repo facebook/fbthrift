@@ -435,6 +435,8 @@ public class complexException extends Exception implements TBase, java.io.Serial
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof complexException))
+      return false;
     complexException that = (complexException)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetMessage(), that.isSetMessage(), this.message, that.message)) { return false; }

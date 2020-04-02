@@ -144,6 +144,8 @@ public class StructWithRefAndAnnotCppNoexceptMoveCtor implements TBase, java.io.
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof StructWithRefAndAnnotCppNoexceptMoveCtor))
+      return false;
     StructWithRefAndAnnotCppNoexceptMoveCtor that = (StructWithRefAndAnnotCppNoexceptMoveCtor)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetDef_field(), that.isSetDef_field(), this.def_field, that.def_field)) { return false; }

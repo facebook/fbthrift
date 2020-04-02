@@ -339,6 +339,8 @@ public class MyServicePrioParent {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof ping_args))
+        return false;
       ping_args that = (ping_args)_that;
 
       return true;
@@ -427,6 +429,8 @@ public class MyServicePrioParent {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof ping_result))
+        return false;
       ping_result that = (ping_result)_that;
 
       return true;
@@ -514,6 +518,8 @@ public class MyServicePrioParent {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof pong_args))
+        return false;
       pong_args that = (pong_args)_that;
 
       return true;
@@ -602,6 +608,8 @@ public class MyServicePrioParent {
         return false;
       if (this == _that)
         return true;
+      if (!(_that instanceof pong_result))
+        return false;
       pong_result that = (pong_result)_that;
 
       return true;

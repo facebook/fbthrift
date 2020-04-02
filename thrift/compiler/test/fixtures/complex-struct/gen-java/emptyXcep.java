@@ -84,6 +84,8 @@ public class emptyXcep extends Exception implements TBase, java.io.Serializable,
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof emptyXcep))
+      return false;
     emptyXcep that = (emptyXcep)_that;
 
     return true;

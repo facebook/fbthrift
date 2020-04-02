@@ -1464,6 +1464,10 @@ void t_java_generator::generate_java_struct_equality(
       << // to make up for an otherwise
       indent() << "  return true;" << endl; // slow equals and a bad hashCode
 
+  out << indent() << "if (!(_that instanceof " << tstruct->get_name() << "))"
+      << endl
+      << indent() << "  return false;" << endl;
+
   out << indent() << tstruct->get_name() << " that = (" << tstruct->get_name()
       << ")_that;" << endl;
   const vector<t_field*>& members = tstruct->get_members();

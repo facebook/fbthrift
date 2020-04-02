@@ -278,6 +278,8 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof MyField))
+      return false;
     MyField that = (MyField)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetOpt_value(), that.isSetOpt_value(), this.opt_value, that.opt_value)) { return false; }

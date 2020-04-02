@@ -314,6 +314,8 @@ public class TypeRemapped implements TBase, java.io.Serializable, Cloneable, Com
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof TypeRemapped))
+      return false;
     TypeRemapped that = (TypeRemapped)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetLsMap(), that.isSetLsMap(), this.lsMap, that.lsMap)) { return false; }

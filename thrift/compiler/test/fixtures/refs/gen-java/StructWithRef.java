@@ -264,6 +264,8 @@ public class StructWithRef implements TBase, java.io.Serializable, Cloneable, Co
       return false;
     if (this == _that)
       return true;
+    if (!(_that instanceof StructWithRef))
+      return false;
     StructWithRef that = (StructWithRef)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetDef_field(), that.isSetDef_field(), this.def_field, that.def_field)) { return false; }
