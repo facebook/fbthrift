@@ -82,6 +82,13 @@ class DeprecatedOptionalField {
     is_set_ = other.has_value();
   }
 
+  void move_from(optional_field_ref<T&&> other) {
+    if (other) {
+      value_ = std::move(*other);
+    }
+    is_set_ = other.has_value();
+  }
+
   void copy_from(optional_field_ref<T&&> other) = delete;
   void copy_from(DeprecatedOptionalField&& other) = delete;
 

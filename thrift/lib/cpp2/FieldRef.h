@@ -301,6 +301,10 @@ class optional_field_ref {
     copy_from(optional_field_ref<const value_type&>(other));
   }
 
+  FOLLY_ERASE void move_from(DeprecatedOptionalField<value_type>&& other) {
+    move_from(optional_field_ref<value_type&&>(std::move(other)));
+  }
+
   FOLLY_ERASE void copy_from(DeprecatedOptionalField<value_type>&& other) =
       delete;
 

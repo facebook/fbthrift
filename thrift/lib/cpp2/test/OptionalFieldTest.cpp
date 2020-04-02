@@ -659,5 +659,36 @@ TEST(DeprecatedOptionalField, optional_field_ref) {
   }
 }
 
+TEST(DeprecatedOptionalField, MoveFrom) {
+  // use shared_ptr to test whether data is moved out
+  DeprecatedOptionalField<std::shared_ptr<int>> a{std::make_shared<int>(1)};
+  DeprecatedOptionalField<std::shared_ptr<int>> b;
+
+  a.move_from(std::move(b));
+  EXPECT_FALSE(a);
+  EXPECT_FALSE(b);
+
+  b = std::make_shared<int>(2);
+  a.move_from(std::move(b));
+  EXPECT_EQ(*a.value(), 2);
+  EXPECT_FALSE(b.value());
+
+  b = std::make_shared<int>(3);
+  a.move_from(optional_field_ref<std::shared_ptr<int>&&>(std::move(b)));
+  EXPECT_EQ(*a.value(), 3);
+  EXPECT_FALSE(b.value());
+
+  b = std::make_shared<int>(4);
+  optional_field_ref<std::shared_ptr<int>&>(a).move_from(std::move(b));
+  EXPECT_EQ(*a.value(), 4);
+  EXPECT_FALSE(b.value());
+
+  b = std::make_shared<int>(5);
+  optional_field_ref<std::shared_ptr<int>&>(a).move_from(
+      optional_field_ref<std::shared_ptr<int>&&>(std::move(b)));
+  EXPECT_EQ(*a.value(), 5);
+  EXPECT_FALSE(b.value());
+}
+
 } // namespace thrift
 } // namespace apache
