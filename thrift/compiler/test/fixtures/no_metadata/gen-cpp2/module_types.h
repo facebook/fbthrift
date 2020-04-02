@@ -100,7 +100,9 @@ template <> struct TEnumTraits<::cpp2::MyEnum> {
 namespace cpp2 {
 
 using _MyEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnum>;
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
 extern const _MyEnum_EnumMapFactory::ValuesToNamesMapType _MyEnum_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUES;
 
 } // cpp2

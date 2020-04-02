@@ -433,19 +433,27 @@ template <> struct TEnumTraits<::apache::thrift::fixtures::types::MyEnumA> {
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 using _has_bitwise_ops_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<has_bitwise_ops>;
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
 extern const _has_bitwise_ops_EnumMapFactory::ValuesToNamesMapType _has_bitwise_ops_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _has_bitwise_ops_EnumMapFactory::NamesToValuesMapType _has_bitwise_ops_NAMES_TO_VALUES;
 
 using _is_unscoped_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<is_unscoped>;
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
 extern const _is_unscoped_EnumMapFactory::ValuesToNamesMapType _is_unscoped_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _is_unscoped_EnumMapFactory::NamesToValuesMapType _is_unscoped_NAMES_TO_VALUES;
 
 using _MyForwardRefEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyForwardRefEnum>;
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
 extern const _MyForwardRefEnum_EnumMapFactory::ValuesToNamesMapType _MyForwardRefEnum_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _MyForwardRefEnum_EnumMapFactory::NamesToValuesMapType _MyForwardRefEnum_NAMES_TO_VALUES;
 
 using _MyEnumA_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumA>;
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
 extern const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES;
 
 }}}} // apache::thrift::fixtures::types

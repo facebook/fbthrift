@@ -106,7 +106,9 @@ template <> struct TEnumTraits<::some::ns::EnumB> {
 namespace some { namespace ns {
 
 using _EnumB_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<EnumB>;
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
 extern const _EnumB_EnumMapFactory::ValuesToNamesMapType _EnumB_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _EnumB_EnumMapFactory::NamesToValuesMapType _EnumB_NAMES_TO_VALUES;
 
 }} // some::ns

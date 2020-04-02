@@ -222,15 +222,21 @@ template <> struct TEnumTraits<::cpp2::Company> {
 namespace cpp2 {
 
 using _EmptyEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<EmptyEnum>;
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
 extern const _EmptyEnum_EnumMapFactory::ValuesToNamesMapType _EmptyEnum_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _EmptyEnum_EnumMapFactory::NamesToValuesMapType _EmptyEnum_NAMES_TO_VALUES;
 
 using _City_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<City>;
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
 extern const _City_EnumMapFactory::ValuesToNamesMapType _City_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _City_EnumMapFactory::NamesToValuesMapType _City_NAMES_TO_VALUES;
 
 using _Company_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<Company>;
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
 extern const _Company_EnumMapFactory::ValuesToNamesMapType _Company_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _Company_EnumMapFactory::NamesToValuesMapType _Company_NAMES_TO_VALUES;
 
 } // cpp2

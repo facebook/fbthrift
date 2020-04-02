@@ -78,7 +78,9 @@ template <> struct TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>> {
 
 <%#program:enums%>
 using _<%enum:name%>_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<<%enum:name%>>;
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
 extern const _<%enum:name%>_EnumMapFactory::ValuesToNamesMapType _<%enum:name%>_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _<%enum:name%>_EnumMapFactory::NamesToValuesMapType _<%enum:name%>_NAMES_TO_VALUES;
 
 <%/program:enums%>
