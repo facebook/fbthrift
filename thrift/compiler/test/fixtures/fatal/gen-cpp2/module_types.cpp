@@ -37,9 +37,11 @@ bool TEnumTraits<::test_cpp2::cpp_reflection::enum1>::findValue(char const* name
 }} // apache::thrift
 
 namespace test_cpp2 { namespace cpp_reflection {
-
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
 const _enum1_EnumMapFactory::ValuesToNamesMapType _enum1_VALUES_TO_NAMES = _enum1_EnumMapFactory::makeValuesToNamesMap();
 const _enum1_EnumMapFactory::NamesToValuesMapType _enum1_NAMES_TO_VALUES = _enum1_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
 
 }} // test_cpp2::cpp_reflection
 
@@ -68,9 +70,11 @@ bool TEnumTraits<::test_cpp2::cpp_reflection::enum2>::findValue(char const* name
 }} // apache::thrift
 
 namespace test_cpp2 { namespace cpp_reflection {
-
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
 const _enum2_EnumMapFactory::ValuesToNamesMapType _enum2_VALUES_TO_NAMES = _enum2_EnumMapFactory::makeValuesToNamesMap();
 const _enum2_EnumMapFactory::NamesToValuesMapType _enum2_NAMES_TO_VALUES = _enum2_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
 
 }} // test_cpp2::cpp_reflection
 
@@ -99,9 +103,11 @@ bool TEnumTraits<::test_cpp2::cpp_reflection::enum3>::findValue(char const* name
 }} // apache::thrift
 
 namespace test_cpp2 { namespace cpp_reflection {
-
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
 const _enum3_EnumMapFactory::ValuesToNamesMapType _enum3_VALUES_TO_NAMES = _enum3_EnumMapFactory::makeValuesToNamesMap();
 const _enum3_EnumMapFactory::NamesToValuesMapType _enum3_NAMES_TO_VALUES = _enum3_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
 
 }} // test_cpp2::cpp_reflection
 
@@ -130,9 +136,11 @@ bool TEnumTraits<::test_cpp2::cpp_reflection::enum_with_special_names>::findValu
 }} // apache::thrift
 
 namespace test_cpp2 { namespace cpp_reflection {
-
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
 const _enum_with_special_names_EnumMapFactory::ValuesToNamesMapType _enum_with_special_names_VALUES_TO_NAMES = _enum_with_special_names_EnumMapFactory::makeValuesToNamesMap();
 const _enum_with_special_names_EnumMapFactory::NamesToValuesMapType _enum_with_special_names_NAMES_TO_VALUES = _enum_with_special_names_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
 
 }} // test_cpp2::cpp_reflection
 

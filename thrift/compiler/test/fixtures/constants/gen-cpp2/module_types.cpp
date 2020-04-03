@@ -37,9 +37,11 @@ bool TEnumTraits<::cpp2::EmptyEnum>::findValue(char const* name, type* out) {
 }} // apache::thrift
 
 namespace cpp2 {
-
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
 const _EmptyEnum_EnumMapFactory::ValuesToNamesMapType _EmptyEnum_VALUES_TO_NAMES = _EmptyEnum_EnumMapFactory::makeValuesToNamesMap();
 const _EmptyEnum_EnumMapFactory::NamesToValuesMapType _EmptyEnum_NAMES_TO_VALUES = _EmptyEnum_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
 
 } // cpp2
 
@@ -68,9 +70,11 @@ bool TEnumTraits<::cpp2::City>::findValue(char const* name, type* out) {
 }} // apache::thrift
 
 namespace cpp2 {
-
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
 const _City_EnumMapFactory::ValuesToNamesMapType _City_VALUES_TO_NAMES = _City_EnumMapFactory::makeValuesToNamesMap();
 const _City_EnumMapFactory::NamesToValuesMapType _City_NAMES_TO_VALUES = _City_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
 
 } // cpp2
 
@@ -99,9 +103,11 @@ bool TEnumTraits<::cpp2::Company>::findValue(char const* name, type* out) {
 }} // apache::thrift
 
 namespace cpp2 {
-
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
 const _Company_EnumMapFactory::ValuesToNamesMapType _Company_VALUES_TO_NAMES = _Company_EnumMapFactory::makeValuesToNamesMap();
 const _Company_EnumMapFactory::NamesToValuesMapType _Company_NAMES_TO_VALUES = _Company_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
 
 } // cpp2
 

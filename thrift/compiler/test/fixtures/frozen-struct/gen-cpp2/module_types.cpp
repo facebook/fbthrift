@@ -37,9 +37,11 @@ bool TEnumTraits<::some::ns::EnumB>::findValue(char const* name, type* out) {
 }} // apache::thrift
 
 namespace some { namespace ns {
-
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
 const _EnumB_EnumMapFactory::ValuesToNamesMapType _EnumB_VALUES_TO_NAMES = _EnumB_EnumMapFactory::makeValuesToNamesMap();
 const _EnumB_EnumMapFactory::NamesToValuesMapType _EnumB_NAMES_TO_VALUES = _EnumB_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
 
 }} // some::ns
 

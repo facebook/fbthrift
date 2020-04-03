@@ -37,9 +37,11 @@ bool TEnumTraits<::a::different::ns::AnEnum>::findValue(char const* name, type* 
 }} // apache::thrift
 
 namespace a { namespace different { namespace ns {
-
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
 const _AnEnum_EnumMapFactory::ValuesToNamesMapType _AnEnum_VALUES_TO_NAMES = _AnEnum_EnumMapFactory::makeValuesToNamesMap();
 const _AnEnum_EnumMapFactory::NamesToValuesMapType _AnEnum_NAMES_TO_VALUES = _AnEnum_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
 
 }}} // a::different::ns
 

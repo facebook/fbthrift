@@ -19,3 +19,4 @@
 #include <algorithm>
 
 #include <folly/Indestructible.h>
+#include <folly/Portability.h>

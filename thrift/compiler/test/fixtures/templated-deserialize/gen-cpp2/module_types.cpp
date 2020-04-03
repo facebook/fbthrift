@@ -37,9 +37,11 @@ bool TEnumTraits<::cpp2::MyEnumA>::findValue(char const* name, type* out) {
 }} // apache::thrift
 
 namespace cpp2 {
-
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
 const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES = _MyEnumA_EnumMapFactory::makeValuesToNamesMap();
 const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES = _MyEnumA_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
 
 } // cpp2
 
