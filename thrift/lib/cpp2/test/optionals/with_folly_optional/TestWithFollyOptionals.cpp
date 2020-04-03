@@ -277,3 +277,34 @@ TEST(TestWithFollyOptionals, MoveFrom) {
   obj2.int64Opt_ref().move_from(std::move(obj1).int64Opt_ref());
   EXPECT_EQ(obj2.int64Opt.value(), 4);
 }
+
+TEST(TestWithFollyOptionals, equalToFollyOptional) {
+  cpp2::HasOptionals obj;
+  folly::Optional<int64_t> opt;
+  EXPECT_TRUE(equalToFollyOptional(obj.int64Opt, opt));
+  EXPECT_TRUE(equalToFollyOptional(obj.int64Opt_ref(), opt));
+
+  obj.int64Opt = 1;
+  EXPECT_FALSE(equalToFollyOptional(obj.int64Opt, opt));
+  EXPECT_FALSE(equalToFollyOptional(obj.int64Opt_ref(), opt));
+
+  opt = 1;
+  EXPECT_TRUE(equalToFollyOptional(obj.int64Opt, opt));
+  EXPECT_TRUE(equalToFollyOptional(obj.int64Opt_ref(), opt));
+
+  opt = 2;
+  EXPECT_FALSE(equalToFollyOptional(obj.int64Opt, opt));
+  EXPECT_FALSE(equalToFollyOptional(obj.int64Opt_ref(), opt));
+
+  obj.int64Opt = 2;
+  EXPECT_TRUE(equalToFollyOptional(obj.int64Opt, opt));
+  EXPECT_TRUE(equalToFollyOptional(obj.int64Opt_ref(), opt));
+
+  obj.int64Opt.reset();
+  EXPECT_FALSE(equalToFollyOptional(obj.int64Opt, opt));
+  EXPECT_FALSE(equalToFollyOptional(obj.int64Opt_ref(), opt));
+
+  opt.reset();
+  EXPECT_TRUE(equalToFollyOptional(obj.int64Opt, opt));
+  EXPECT_TRUE(equalToFollyOptional(obj.int64Opt_ref(), opt));
+}

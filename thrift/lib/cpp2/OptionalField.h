@@ -18,6 +18,7 @@
 
 #include <folly/Optional.h>
 #include <folly/Portability.h>
+#include <folly/Traits.h>
 #include <thrift/lib/cpp2/FieldRef.h>
 #include <type_traits>
 #include <utility>
@@ -389,6 +390,21 @@ fromFollyOptional(optional_field_ref<T&> lhs, folly::Optional<T>&& rhs) {
 
   return lhs;
 }
+
+template <class T>
+bool equalToFollyOptional(
+    optional_field_ref<T> a,
+    const folly::Optional<folly::remove_cvref_t<T>>& b) {
+  return a && b ? *a == *b : a.has_value() == b.has_value();
+}
+
+template <class T>
+bool equalToFollyOptional(
+    const DeprecatedOptionalField<T>& a,
+    const folly::Optional<T>& b) {
+  return a && b ? *a == *b : a.has_value() == b.has_value();
+}
+
 } // namespace thrift
 } // namespace apache
 
