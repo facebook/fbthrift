@@ -17,7 +17,10 @@
 namespace cpp2 apache.thrift
 namespace java.swift org.apache.thrift
 namespace py thrift.lib.thrift.RpcMetadata
+namespace py.asyncio thrift.lib.thrift.asyncio.RpcMetadata
 namespace py3 thrift.lib.thrift
+namespace go thrift.lib.thrift.RpcMetadata
+
 
 cpp_include "thrift/lib/thrift/RpcMetadata_extra.h"
 
