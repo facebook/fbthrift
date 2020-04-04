@@ -246,38 +246,30 @@ bool compare(const U& a, const V& b, Comp comp) {
 }
 } // namespace detail
 
-#define THRIFT_DETAIL_DEPRECATED_OPTIONAL_FIELD_DEFINE_OP(OP)                 \
-  template <class T>                                                          \
-  bool operator OP(                                                           \
-      const DeprecatedOptionalField<T>& a,                                    \
-      const DeprecatedOptionalField<T>& b) {                                  \
-    return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; });  \
-  }                                                                           \
-  template <class T>                                                          \
-  bool operator OP(                                                           \
-      const folly::Optional<T>& a, const DeprecatedOptionalField<T>& b) {     \
-    return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; });  \
-  }                                                                           \
-  template <class T>                                                          \
-  bool operator OP(                                                           \
-      const DeprecatedOptionalField<T>& a, const folly::Optional<T>& b) {     \
-    return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; });  \
-  }                                                                           \
-  template <class U, class V>                                                 \
-  bool operator OP(const U& a, const DeprecatedOptionalField<V>& b) {         \
-    return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; });  \
-  }                                                                           \
-  template <class U, class V>                                                 \
-  bool operator OP(const DeprecatedOptionalField<U>& a, const V& b) {         \
-    return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; });  \
-  }                                                                           \
-  template <class T>                                                          \
-  bool operator OP(const folly::None&, const DeprecatedOptionalField<T>& t) { \
-    return false OP t.has_value();                                            \
-  }                                                                           \
-  template <class T>                                                          \
-  bool operator OP(const DeprecatedOptionalField<T>& t, const folly::None&) { \
-    return t.has_value() OP false;                                            \
+#define THRIFT_DETAIL_DEPRECATED_OPTIONAL_FIELD_DEFINE_OP(OP)                \
+  template <class T>                                                         \
+  bool operator OP(                                                          \
+      const DeprecatedOptionalField<T>& a,                                   \
+      const DeprecatedOptionalField<T>& b) {                                 \
+    return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; }); \
+  }                                                                          \
+  template <class T>                                                         \
+  bool operator OP(                                                          \
+      const folly::Optional<T>& a, const DeprecatedOptionalField<T>& b) {    \
+    return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; }); \
+  }                                                                          \
+  template <class T>                                                         \
+  bool operator OP(                                                          \
+      const DeprecatedOptionalField<T>& a, const folly::Optional<T>& b) {    \
+    return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; }); \
+  }                                                                          \
+  template <class U, class V>                                                \
+  bool operator OP(const U& a, const DeprecatedOptionalField<V>& b) {        \
+    return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; }); \
+  }                                                                          \
+  template <class U, class V>                                                \
+  bool operator OP(const DeprecatedOptionalField<U>& a, const V& b) {        \
+    return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; }); \
   }
 THRIFT_DETAIL_DEPRECATED_OPTIONAL_FIELD_DEFINE_OP(==)
 THRIFT_DETAIL_DEPRECATED_OPTIONAL_FIELD_DEFINE_OP(!=)

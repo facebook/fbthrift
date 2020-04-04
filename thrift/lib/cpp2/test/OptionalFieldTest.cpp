@@ -32,7 +32,6 @@
 
 #include <boost/optional.hpp>
 
-using folly::none;
 using std::shared_ptr;
 using std::unique_ptr;
 
@@ -424,39 +423,6 @@ void heterogeneousComparisonsTest() {
 TEST(DeprecatedOptionalField, HeterogeneousComparisons) {
   heterogeneousComparisonsTest<DeprecatedOptionalField, folly::Optional>();
   heterogeneousComparisonsTest<folly::Optional, DeprecatedOptionalField>();
-}
-
-TEST(DeprecatedOptionalField, NoneComparisons) {
-  using opt = DeprecatedOptionalField<int>;
-  EXPECT_TRUE(opt() == none);
-  EXPECT_TRUE(none == opt());
-  EXPECT_FALSE(opt(1) == none);
-  EXPECT_FALSE(none == opt(1));
-
-  EXPECT_FALSE(opt() != none);
-  EXPECT_FALSE(none != opt());
-  EXPECT_TRUE(opt(1) != none);
-  EXPECT_TRUE(none != opt(1));
-
-  EXPECT_FALSE(opt() < none);
-  EXPECT_FALSE(none < opt());
-  EXPECT_FALSE(opt(1) < none);
-  EXPECT_TRUE(none < opt(1));
-
-  EXPECT_FALSE(opt() > none);
-  EXPECT_FALSE(none > opt());
-  EXPECT_FALSE(none > opt(1));
-  EXPECT_TRUE(opt(1) > none);
-
-  EXPECT_TRUE(opt() <= none);
-  EXPECT_TRUE(none <= opt());
-  EXPECT_FALSE(opt(1) <= none);
-  EXPECT_TRUE(none <= opt(1));
-
-  EXPECT_TRUE(opt() >= none);
-  EXPECT_TRUE(none >= opt());
-  EXPECT_TRUE(opt(1) >= none);
-  EXPECT_FALSE(none >= opt(1));
 }
 
 TEST(DeprecatedOptionalField, NulloptComparisons) {
