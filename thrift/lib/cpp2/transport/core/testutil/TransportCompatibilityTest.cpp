@@ -421,7 +421,7 @@ void TransportCompatibilityTest::TestRequestResponse_MultipleClients() {
       promise.setValue();
     });
   }
-  folly::collectAllSemiFuture(futures).get();
+  folly::collectAll(futures).get();
   threads.clear();
 }
 

@@ -418,7 +418,7 @@ TEST_F(RequestInstrumentationTest, requestPayloadTest) {
   auto reqSnapshots = getRequestSnapshots(strList.size());
 
   auto interceptedPayloadList =
-      folly::collectSemiFuture(tasks.begin(), tasks.end()).get();
+      folly::collect(tasks.begin(), tasks.end()).get();
 
   std::set<const folly::IOBuf*, folly::IOBufLess> snapshotPayloadSet;
   for (const auto& reqSnapshot : reqSnapshots) {

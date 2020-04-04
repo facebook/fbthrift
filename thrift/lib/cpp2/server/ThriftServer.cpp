@@ -688,7 +688,7 @@ ThriftServer::snapshotActiveRequests() {
     tasks.emplace_back(std::move(fut));
   });
 
-  return folly::collectSemiFuture(tasks.begin(), tasks.end())
+  return folly::collect(tasks.begin(), tasks.end())
       .deferValue([](std::vector<std::vector<RequestSnapshot>> results) {
         std::vector<RequestSnapshot> flat_result;
         for (auto& vec : results) {
