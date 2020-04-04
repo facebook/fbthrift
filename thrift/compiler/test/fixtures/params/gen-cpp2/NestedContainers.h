@@ -89,7 +89,7 @@ class NestedContainersAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
  protected:
   NestedContainersSvIf* iface_;
  public:
-  void process(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
+  void processSerializedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
  protected:
   bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) override;
   std::shared_ptr<folly::RequestContext> getBaseContextForRequest() override;
@@ -105,41 +105,41 @@ class NestedContainersAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
    static const NestedContainersAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_mapList(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void _processInThread_mapList(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void process_mapList(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process_mapList(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_mapList(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_mapList(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_mapSet(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void _processInThread_mapSet(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void process_mapSet(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process_mapSet(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_mapSet(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_mapSet(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_listMap(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void _processInThread_listMap(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void process_listMap(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process_listMap(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_listMap(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_listMap(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_listSet(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void _processInThread_listSet(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void process_listSet(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process_listSet(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_listSet(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_listSet(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_turtles(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void _processInThread_turtles(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void process_turtles(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process_turtles(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_turtles(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>

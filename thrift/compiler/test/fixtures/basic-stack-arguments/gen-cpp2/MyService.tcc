@@ -19,12 +19,12 @@ typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache
 typedef apache::thrift::ThriftPresult<true> MyService_putDataById_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I64, int64_t*>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRING, ::std::string*>> MyService_lobDataById_pargs;
 template <typename ProtocolIn_, typename ProtocolOut_>
-void MyServiceAsyncProcessor::_processInThread_hasDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void MyServiceAsyncProcessor::_processInThread_hasDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::process_hasDataById<ProtocolIn_, ProtocolOut_>, this);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::process_hasDataById<ProtocolIn_, ProtocolOut_>, this);
 }
 template <typename ProtocolIn_, typename ProtocolOut_>
-void MyServiceAsyncProcessor::process_hasDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void MyServiceAsyncProcessor::process_hasDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -33,11 +33,7 @@ void MyServiceAsyncProcessor::process_hasDataById(apache::thrift::ResponseChanne
   args.get<0>().value = &uarg_id;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.hasDataById", ctx));
   try {
-    folly::io::Cursor cursor(buf.get());
-    cursor.skip(ctx->getMessageBeginSize());
-    ProtocolIn_ iprot;
-    iprot.setInput(cursor);
-    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
@@ -77,12 +73,12 @@ void MyServiceAsyncProcessor::throw_wrapped_hasDataById(apache::thrift::Response
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void MyServiceAsyncProcessor::_processInThread_getDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void MyServiceAsyncProcessor::_processInThread_getDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::process_getDataById<ProtocolIn_, ProtocolOut_>, this);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::process_getDataById<ProtocolIn_, ProtocolOut_>, this);
 }
 template <typename ProtocolIn_, typename ProtocolOut_>
-void MyServiceAsyncProcessor::process_getDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void MyServiceAsyncProcessor::process_getDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -91,11 +87,7 @@ void MyServiceAsyncProcessor::process_getDataById(apache::thrift::ResponseChanne
   args.get<0>().value = &uarg_id;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.getDataById", ctx));
   try {
-    folly::io::Cursor cursor(buf.get());
-    cursor.skip(ctx->getMessageBeginSize());
-    ProtocolIn_ iprot;
-    iprot.setInput(cursor);
-    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
@@ -135,12 +127,12 @@ void MyServiceAsyncProcessor::throw_wrapped_getDataById(apache::thrift::Response
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void MyServiceAsyncProcessor::_processInThread_putDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void MyServiceAsyncProcessor::_processInThread_putDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::process_putDataById<ProtocolIn_, ProtocolOut_>, this);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::process_putDataById<ProtocolIn_, ProtocolOut_>, this);
 }
 template <typename ProtocolIn_, typename ProtocolOut_>
-void MyServiceAsyncProcessor::process_putDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void MyServiceAsyncProcessor::process_putDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -151,11 +143,7 @@ void MyServiceAsyncProcessor::process_putDataById(apache::thrift::ResponseChanne
   args.get<1>().value = &uarg_data;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.putDataById", ctx));
   try {
-    folly::io::Cursor cursor(buf.get());
-    cursor.skip(ctx->getMessageBeginSize());
-    ProtocolIn_ iprot;
-    iprot.setInput(cursor);
-    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
@@ -193,12 +181,12 @@ void MyServiceAsyncProcessor::throw_wrapped_putDataById(apache::thrift::Response
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void MyServiceAsyncProcessor::_processInThread_lobDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void MyServiceAsyncProcessor::_processInThread_lobDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &MyServiceAsyncProcessor::process_lobDataById<ProtocolIn_, ProtocolOut_>, this);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &MyServiceAsyncProcessor::process_lobDataById<ProtocolIn_, ProtocolOut_>, this);
 }
 template <typename ProtocolIn_, typename ProtocolOut_>
-void MyServiceAsyncProcessor::process_lobDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void MyServiceAsyncProcessor::process_lobDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -209,11 +197,7 @@ void MyServiceAsyncProcessor::process_lobDataById(apache::thrift::ResponseChanne
   args.get<1>().value = &uarg_data;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.lobDataById", ctx));
   try {
-    folly::io::Cursor cursor(buf.get());
-    cursor.skip(ctx->getMessageBeginSize());
-    ProtocolIn_ iprot;
-    iprot.setInput(cursor);
-    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function lobDataById";

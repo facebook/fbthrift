@@ -103,6 +103,7 @@ add_library(
   async/RequestChannel.cpp
   async/ResponseChannel.cpp
   async/RocketClientChannel.cpp
+  async/RpcTypes.cpp
   security/extensions/ThriftParametersClientExtension.cpp
   security/extensions/ThriftParametersContext.cpp
   security/extensions/Types.cpp

@@ -22,12 +22,12 @@ typedef apache::thrift::ThriftPresult<true> NestedContainers_listSet_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_LIST, ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>*>> NestedContainers_turtles_pargs;
 typedef apache::thrift::ThriftPresult<true> NestedContainers_turtles_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
-void NestedContainersAsyncProcessor::_processInThread_mapList(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void NestedContainersAsyncProcessor::_processInThread_mapList(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &NestedContainersAsyncProcessor::process_mapList<ProtocolIn_, ProtocolOut_>, this);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &NestedContainersAsyncProcessor::process_mapList<ProtocolIn_, ProtocolOut_>, this);
 }
 template <typename ProtocolIn_, typename ProtocolOut_>
-void NestedContainersAsyncProcessor::process_mapList(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void NestedContainersAsyncProcessor::process_mapList(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -36,11 +36,7 @@ void NestedContainersAsyncProcessor::process_mapList(apache::thrift::ResponseCha
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.mapList", ctx));
   try {
-    folly::io::Cursor cursor(buf.get());
-    cursor.skip(ctx->getMessageBeginSize());
-    ProtocolIn_ iprot;
-    iprot.setInput(cursor);
-    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
@@ -78,12 +74,12 @@ void NestedContainersAsyncProcessor::throw_wrapped_mapList(apache::thrift::Respo
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void NestedContainersAsyncProcessor::_processInThread_mapSet(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void NestedContainersAsyncProcessor::_processInThread_mapSet(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &NestedContainersAsyncProcessor::process_mapSet<ProtocolIn_, ProtocolOut_>, this);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &NestedContainersAsyncProcessor::process_mapSet<ProtocolIn_, ProtocolOut_>, this);
 }
 template <typename ProtocolIn_, typename ProtocolOut_>
-void NestedContainersAsyncProcessor::process_mapSet(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void NestedContainersAsyncProcessor::process_mapSet(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -92,11 +88,7 @@ void NestedContainersAsyncProcessor::process_mapSet(apache::thrift::ResponseChan
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.mapSet", ctx));
   try {
-    folly::io::Cursor cursor(buf.get());
-    cursor.skip(ctx->getMessageBeginSize());
-    ProtocolIn_ iprot;
-    iprot.setInput(cursor);
-    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
@@ -134,12 +126,12 @@ void NestedContainersAsyncProcessor::throw_wrapped_mapSet(apache::thrift::Respon
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void NestedContainersAsyncProcessor::_processInThread_listMap(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void NestedContainersAsyncProcessor::_processInThread_listMap(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &NestedContainersAsyncProcessor::process_listMap<ProtocolIn_, ProtocolOut_>, this);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &NestedContainersAsyncProcessor::process_listMap<ProtocolIn_, ProtocolOut_>, this);
 }
 template <typename ProtocolIn_, typename ProtocolOut_>
-void NestedContainersAsyncProcessor::process_listMap(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void NestedContainersAsyncProcessor::process_listMap(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -148,11 +140,7 @@ void NestedContainersAsyncProcessor::process_listMap(apache::thrift::ResponseCha
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.listMap", ctx));
   try {
-    folly::io::Cursor cursor(buf.get());
-    cursor.skip(ctx->getMessageBeginSize());
-    ProtocolIn_ iprot;
-    iprot.setInput(cursor);
-    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
@@ -190,12 +178,12 @@ void NestedContainersAsyncProcessor::throw_wrapped_listMap(apache::thrift::Respo
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void NestedContainersAsyncProcessor::_processInThread_listSet(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void NestedContainersAsyncProcessor::_processInThread_listSet(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &NestedContainersAsyncProcessor::process_listSet<ProtocolIn_, ProtocolOut_>, this);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &NestedContainersAsyncProcessor::process_listSet<ProtocolIn_, ProtocolOut_>, this);
 }
 template <typename ProtocolIn_, typename ProtocolOut_>
-void NestedContainersAsyncProcessor::process_listSet(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void NestedContainersAsyncProcessor::process_listSet(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -204,11 +192,7 @@ void NestedContainersAsyncProcessor::process_listSet(apache::thrift::ResponseCha
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.listSet", ctx));
   try {
-    folly::io::Cursor cursor(buf.get());
-    cursor.skip(ctx->getMessageBeginSize());
-    ProtocolIn_ iprot;
-    iprot.setInput(cursor);
-    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
@@ -246,12 +230,12 @@ void NestedContainersAsyncProcessor::throw_wrapped_listSet(apache::thrift::Respo
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void NestedContainersAsyncProcessor::_processInThread_turtles(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void NestedContainersAsyncProcessor::_processInThread_turtles(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &NestedContainersAsyncProcessor::process_turtles<ProtocolIn_, ProtocolOut_>, this);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &NestedContainersAsyncProcessor::process_turtles<ProtocolIn_, ProtocolOut_>, this);
 }
 template <typename ProtocolIn_, typename ProtocolOut_>
-void NestedContainersAsyncProcessor::process_turtles(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void NestedContainersAsyncProcessor::process_turtles(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -260,11 +244,7 @@ void NestedContainersAsyncProcessor::process_turtles(apache::thrift::ResponseCha
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.turtles", ctx));
   try {
-    folly::io::Cursor cursor(buf.get());
-    cursor.skip(ctx->getMessageBeginSize());
-    ProtocolIn_ iprot;
-    iprot.setInput(cursor);
-    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(

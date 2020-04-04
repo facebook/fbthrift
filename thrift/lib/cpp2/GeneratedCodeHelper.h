@@ -799,7 +799,7 @@ process_missing(
     Processor*,
     const std::string& fname,
     ResponseChannelRequest::UniquePtr req,
-    std::unique_ptr<folly::IOBuf>,
+    apache::thrift::SerializedRequest&&,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager*,
@@ -817,14 +817,14 @@ process_missing(
     Processor* processor,
     const std::string& /*fname*/,
     ResponseChannelRequest::UniquePtr req,
-    std::unique_ptr<folly::IOBuf> buf,
+    apache::thrift::SerializedRequest&& serializedRequest,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm,
     int32_t /*protoSeqId*/) {
   auto protType = ProtocolReader::protocolType();
-  processor->Processor::BaseAsyncProcessor::process(
-      std::move(req), std::move(buf), protType, ctx, eb, tm);
+  processor->Processor::BaseAsyncProcessor::processSerializedRequest(
+      std::move(req), std::move(serializedRequest), protType, ctx, eb, tm);
 }
 
 struct MessageBegin {
@@ -858,7 +858,7 @@ void process_pmap(
     const typename GeneratedAsyncProcessor::ProcessMap<
         GeneratedAsyncProcessor::ProcessFunc<Processor>>& pmap,
     ResponseChannelRequest::UniquePtr req,
-    std::unique_ptr<folly::IOBuf> buf,
+    apache::thrift::SerializedRequest&& serializedRequest,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm) {
@@ -869,7 +869,7 @@ void process_pmap(
         proc,
         fname,
         std::move(req),
-        std::move(buf),
+        std::move(serializedRequest),
         ctx,
         eb,
         tm,
@@ -877,7 +877,8 @@ void process_pmap(
     return;
   }
 
-  (proc->*(pfn->second))(std::move(req), std::move(buf), ctx, eb, tm);
+  (proc->*(pfn->second))(
+      std::move(req), std::move(serializedRequest), ctx, eb, tm);
 }
 
 //  Generated AsyncProcessor::process just calls this.
@@ -885,7 +886,7 @@ template <class Processor>
 void process(
     Processor* processor,
     ResponseChannelRequest::UniquePtr req,
-    std::unique_ptr<folly::IOBuf> buf,
+    apache::thrift::SerializedRequest&& serializedRequest,
     protocol::PROTOCOL_TYPES protType,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
@@ -894,12 +895,24 @@ void process(
     case protocol::T_BINARY_PROTOCOL: {
       const auto& pmap = processor->getBinaryProtocolProcessMap();
       return process_pmap<BinaryProtocolReader>(
-          processor, pmap, std::move(req), std::move(buf), ctx, eb, tm);
+          processor,
+          pmap,
+          std::move(req),
+          std::move(serializedRequest),
+          ctx,
+          eb,
+          tm);
     }
     case protocol::T_COMPACT_PROTOCOL: {
       const auto& pmap = processor->getCompactProtocolProcessMap();
       return process_pmap<CompactProtocolReader>(
-          processor, pmap, std::move(req), std::move(buf), ctx, eb, tm);
+          processor,
+          pmap,
+          std::move(req),
+          std::move(serializedRequest),
+          ctx,
+          eb,
+          tm);
     }
     default:
       LOG(ERROR) << "invalid protType: " << folly::to_underlying(protType);

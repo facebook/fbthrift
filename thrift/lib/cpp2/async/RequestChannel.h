@@ -36,6 +36,7 @@
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/RequestCallback.h>
+#include <thrift/lib/cpp2/async/RpcTypes.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
 #include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
@@ -51,25 +52,6 @@ namespace thrift {
 
 class StreamClientCallback;
 class SinkClientCallback;
-
-struct SerializedRequest {
-  explicit SerializedRequest(std::unique_ptr<folly::IOBuf> buffer_)
-      : buffer(std::move(buffer_)) {}
-
-  std::unique_ptr<folly::IOBuf> buffer;
-};
-
-struct LegacySerializedRequest {
-  /* implicit */ LegacySerializedRequest(std::unique_ptr<folly::IOBuf> buffer_)
-      : buffer(std::move(buffer_)) {}
-
-  LegacySerializedRequest(
-      uint16_t protocolId,
-      folly::StringPiece methodName,
-      SerializedRequest&& serializedRequest);
-
-  std::unique_ptr<folly::IOBuf> buffer;
-};
 
 /**
  * RequestChannel defines an asynchronous API for request-based I/O.

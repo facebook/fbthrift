@@ -25,18 +25,14 @@ typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::MyStruct*>> ExtraService_oneway_void_ret_struct_param_pargs;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_LIST, ::std::vector< ::some::valid::ns::ComplexUnion>*>> ExtraService_oneway_void_ret_listunion_param_pargs;
 template <typename ProtocolIn_, typename ProtocolOut_>
-void ExtraServiceAsyncProcessor::process_simple_function(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void ExtraServiceAsyncProcessor::process_simple_function(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ExtraService_simple_function_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.simple_function", ctx));
   try {
-    folly::io::Cursor cursor(buf.get());
-    cursor.skip(ctx->getMessageBeginSize());
-    ProtocolIn_ iprot;
-    iprot.setInput(cursor);
-    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
@@ -72,18 +68,14 @@ void ExtraServiceAsyncProcessor::throw_wrapped_simple_function(apache::thrift::R
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void ExtraServiceAsyncProcessor::process_throws_function(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void ExtraServiceAsyncProcessor::process_throws_function(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ExtraService_throws_function_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.throws_function", ctx));
   try {
-    folly::io::Cursor cursor(buf.get());
-    cursor.skip(ctx->getMessageBeginSize());
-    ProtocolIn_ iprot;
-    iprot.setInput(cursor);
-    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
@@ -134,7 +126,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function(apache::thrift::R
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void ExtraServiceAsyncProcessor::process_throws_function2(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void ExtraServiceAsyncProcessor::process_throws_function2(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -143,11 +135,7 @@ void ExtraServiceAsyncProcessor::process_throws_function2(apache::thrift::Respon
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.throws_function2", ctx));
   try {
-    folly::io::Cursor cursor(buf.get());
-    cursor.skip(ctx->getMessageBeginSize());
-    ProtocolIn_ iprot;
-    iprot.setInput(cursor);
-    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
@@ -200,7 +188,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function2(apache::thrift::
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void ExtraServiceAsyncProcessor::process_throws_function3(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void ExtraServiceAsyncProcessor::process_throws_function3(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -211,11 +199,7 @@ void ExtraServiceAsyncProcessor::process_throws_function3(apache::thrift::Respon
   args.get<1>().value = &uarg_param2;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.throws_function3", ctx));
   try {
-    folly::io::Cursor cursor(buf.get());
-    cursor.skip(ctx->getMessageBeginSize());
-    ProtocolIn_ iprot;
-    iprot.setInput(cursor);
-    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
@@ -268,7 +252,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function3(apache::thrift::
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void ExtraServiceAsyncProcessor::process_oneway_void_ret(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void ExtraServiceAsyncProcessor::process_oneway_void_ret(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->isOneway()) {
     if (req->isStream()) {
       std::ignore = req->sendStreamReply(std::unique_ptr<folly::IOBuf>(), apache::thrift::StreamServerCallbackPtr(nullptr));
@@ -282,11 +266,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret(apache::thrift::Respons
   ExtraService_oneway_void_ret_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret", ctx));
   try {
-    folly::io::Cursor cursor(buf.get());
-    cursor.skip(ctx->getMessageBeginSize());
-    ProtocolIn_ iprot;
-    iprot.setInput(cursor);
-    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function oneway_void_ret";
@@ -298,7 +278,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret(apache::thrift::Respons
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void ExtraServiceAsyncProcessor::process_oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void ExtraServiceAsyncProcessor::process_oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->isOneway()) {
     if (req->isStream()) {
       std::ignore = req->sendStreamReply(std::unique_ptr<folly::IOBuf>(), apache::thrift::StreamServerCallbackPtr(nullptr));
@@ -322,11 +302,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_i32_i32_i32_i32_i32_par
   args.get<4>().value = &uarg_param5;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_i32_i32_i32_i32_i32_param", ctx));
   try {
-    folly::io::Cursor cursor(buf.get());
-    cursor.skip(ctx->getMessageBeginSize());
-    ProtocolIn_ iprot;
-    iprot.setInput(cursor);
-    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function oneway_void_ret_i32_i32_i32_i32_i32_param";
@@ -338,7 +314,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_i32_i32_i32_i32_i32_par
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void ExtraServiceAsyncProcessor::process_oneway_void_ret_map_setlist_param(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void ExtraServiceAsyncProcessor::process_oneway_void_ret_map_setlist_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->isOneway()) {
     if (req->isStream()) {
       std::ignore = req->sendStreamReply(std::unique_ptr<folly::IOBuf>(), apache::thrift::StreamServerCallbackPtr(nullptr));
@@ -356,11 +332,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_map_setlist_param(apach
   args.get<1>().value = &uarg_param2;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_map_setlist_param", ctx));
   try {
-    folly::io::Cursor cursor(buf.get());
-    cursor.skip(ctx->getMessageBeginSize());
-    ProtocolIn_ iprot;
-    iprot.setInput(cursor);
-    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function oneway_void_ret_map_setlist_param";
@@ -372,7 +344,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_map_setlist_param(apach
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->isOneway()) {
     if (req->isStream()) {
       std::ignore = req->sendStreamReply(std::unique_ptr<folly::IOBuf>(), apache::thrift::StreamServerCallbackPtr(nullptr));
@@ -388,11 +360,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param(apache::th
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_struct_param", ctx));
   try {
-    folly::io::Cursor cursor(buf.get());
-    cursor.skip(ctx->getMessageBeginSize());
-    ProtocolIn_ iprot;
-    iprot.setInput(cursor);
-    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function oneway_void_ret_struct_param";
@@ -404,7 +372,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param(apache::th
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->isOneway()) {
     if (req->isStream()) {
       std::ignore = req->sendStreamReply(std::unique_ptr<folly::IOBuf>(), apache::thrift::StreamServerCallbackPtr(nullptr));
@@ -420,11 +388,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param(apache:
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_listunion_param", ctx));
   try {
-    folly::io::Cursor cursor(buf.get());
-    cursor.skip(ctx->getMessageBeginSize());
-    ProtocolIn_ iprot;
-    iprot.setInput(cursor);
-    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function oneway_void_ret_listunion_param";

@@ -66,7 +66,7 @@ class SomeServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
  protected:
   SomeServiceSvIf* iface_;
  public:
-  void process(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
+  void processSerializedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
  protected:
   bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) override;
   std::shared_ptr<folly::RequestContext> getBaseContextForRequest() override;
@@ -82,17 +82,17 @@ class SomeServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
    static const SomeServiceAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_bounce_map(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void _processInThread_bounce_map(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void process_bounce_map(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process_bounce_map(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_bounce_map(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::apache::thrift::fixtures::types::SomeMap const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_bounce_map(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_binary_keyed_map(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void _processInThread_binary_keyed_map(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void process_binary_keyed_map(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process_binary_keyed_map(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_binary_keyed_map(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t> const& _return);
   template <class ProtocolIn_, class ProtocolOut_>

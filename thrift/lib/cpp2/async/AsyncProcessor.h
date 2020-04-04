@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
+#include <thrift/lib/cpp2/async/RpcTypes.h>
 #include <thrift/lib/cpp2/async/ServerStream.h>
 #if FOLLY_HAS_COROUTINES
 #include <thrift/lib/cpp2/async/Sink.h>
@@ -142,7 +143,32 @@ class AsyncProcessor : public TProcessorBase {
       apache::thrift::protocol::PROTOCOL_TYPES protType,
       Cpp2RequestContext* context,
       folly::EventBase* eb,
-      apache::thrift::concurrency::ThreadManager* tm) = 0;
+      apache::thrift::concurrency::ThreadManager* tm) {
+    if (context->getMessageBeginSize() > 0) {
+      folly::IOBufQueue bufQueue;
+      bufQueue.append(std::move(buf));
+      bufQueue.trimStart(context->getMessageBeginSize());
+      buf = bufQueue.move();
+      context->setMessageBeginSize(0);
+    }
+    processSerializedRequest(
+        std::move(req),
+        apache::thrift::SerializedRequest(std::move(buf)),
+        protType,
+        context,
+        eb,
+        tm);
+  }
+
+  virtual void processSerializedRequest(
+      ResponseChannelRequest::UniquePtr,
+      apache::thrift::SerializedRequest&&,
+      apache::thrift::protocol::PROTOCOL_TYPES,
+      Cpp2RequestContext*,
+      folly::EventBase*,
+      apache::thrift::concurrency::ThreadManager*) {
+    std::terminate();
+  }
 
   virtual bool isOnewayMethod(
       const folly::IOBuf* buf,
@@ -165,7 +191,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
   template <typename Derived>
   using ProcessFunc = void (Derived::*)(
       apache::thrift::ResponseChannelRequest::UniquePtr,
-      std::unique_ptr<folly::IOBuf>,
+      apache::thrift::SerializedRequest&&,
       apache::thrift::Cpp2RequestContext* context,
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
@@ -176,16 +202,19 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
   template <typename ProtocolIn, typename Args>
   static void deserializeRequest(
       Args& args,
-      folly::IOBuf* buf,
-      ProtocolIn* iprot,
+      folly::StringPiece methodName,
+      const apache::thrift::SerializedRequest& serializedRequest,
       apache::thrift::ContextStack* c) {
+    ProtocolIn iprot;
+    iprot.setInput(serializedRequest.buffer.get());
     c->preRead();
     apache::thrift::SerializedMessage smsg;
-    smsg.protocolType = iprot->protocolType();
-    smsg.buffer = buf;
+    smsg.protocolType = iprot.protocolType();
+    smsg.buffer = serializedRequest.buffer.get();
+    smsg.methodName = methodName;
     c->onReadData(smsg);
-    uint32_t bytes = detail::deserializeRequestBody(iprot, &args);
-    iprot->readMessageEnd();
+    uint32_t bytes = detail::deserializeRequestBody(&iprot, &args);
+    iprot.readMessageEnd();
     c->postRead(nullptr, bytes);
   }
 
@@ -227,7 +256,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       typename ChildType>
   static void processInThread(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
-      std::unique_ptr<folly::IOBuf> buf,
+      apache::thrift::SerializedRequest&& serializedRequest,
       apache::thrift::Cpp2RequestContext* ctx,
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm,
@@ -257,7 +286,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
     tm->add(
         std::make_shared<apache::thrift::PriorityEventTask>(
             pri,
-            [=, buf = std::move(buf)](
+            [=, serializedRequest = std::move(serializedRequest)](
                 apache::thrift::ResponseChannelRequest::UniquePtr rq) mutable {
               if (rq->getTimestamps().getSamplingStatus().isEnabled()) {
                 // Since this request was queued, reset the processBegin
@@ -275,7 +304,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
                 }
               }
               (childClass->*processFunc)(
-                  std::move(rq), std::move(buf), ctx, eb, tm);
+                  std::move(rq), std::move(serializedRequest), ctx, eb, tm);
             },
             std::move(req),
             eb,
@@ -496,13 +525,11 @@ class HandlerCallbackBase {
   virtual ~HandlerCallbackBase() {
     // req must be deleted in the eb
     if (req_) {
-      if (req_->isActive()) {
-        if (ewp_) {
-          exception(TApplicationException(
-              TApplicationException::INTERNAL_ERROR,
-              "apache::thrift::HandlerCallback not completed"));
-          return;
-        }
+      if (ewp_) {
+        exception(TApplicationException(
+            TApplicationException::INTERNAL_ERROR,
+            "apache::thrift::HandlerCallback not completed"));
+        return;
       }
       DCHECK(eb_);
       if (eb_->inRunningEventBaseThread()) {
