@@ -293,3 +293,15 @@ TEST(TestWithFollyOptionals, equalToFollyOptional) {
   opt.reset();
   EXPECT_TRUE(equalToFollyOptional(obj.int64Opt_ref(), opt));
 }
+
+TEST(TestWithoutFollyOptionals, Equality) {
+  cpp2::HasOptionals obj;
+  obj.int64Opt_ref() = 1;
+  EXPECT_EQ(obj.int64Opt_ref(), 1);
+  EXPECT_NE(obj.int64Opt_ref(), 2);
+  EXPECT_EQ(1, obj.int64Opt_ref());
+  EXPECT_NE(2, obj.int64Opt_ref());
+  obj.int64Opt_ref().reset();
+  EXPECT_NE(obj.int64Opt_ref(), 1);
+  EXPECT_NE(1, obj.int64Opt_ref());
+}
