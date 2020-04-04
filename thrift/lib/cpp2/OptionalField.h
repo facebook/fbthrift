@@ -360,6 +360,28 @@ template <class T>
 
 template <class T>
 [[deprecated(
+    "Use std::optional with optional_field_ref::to_optional() instead")]] folly::
+    Optional<T>
+    castToFolly(optional_field_ref<const T&> t) {
+  if (t) {
+    return *t;
+  }
+  return {};
+}
+
+template <class T>
+[[deprecated(
+    "Use std::optional with optional_field_ref::to_optional() instead")]] folly::
+    Optional<T>
+    castToFolly(optional_field_ref<const T&&> t) {
+  if (t) {
+    return std::move(*t);
+  }
+  return {};
+}
+
+template <class T>
+[[deprecated(
     "Use std::optional with optional_field_ref::from_optional(...) instead")]] auto
 fromFollyOptional(optional_field_ref<T&> lhs, const folly::Optional<T>& rhs) {
   if (rhs) {

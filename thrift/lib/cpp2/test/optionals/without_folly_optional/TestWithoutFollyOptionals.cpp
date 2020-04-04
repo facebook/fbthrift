@@ -233,6 +233,9 @@ TEST(TestWithoutFollyOptionals, FollyOptionalConversion) {
   EXPECT_EQ(obj.int64Opt_ref().value(), 2);
   EXPECT_EQ(castToFolly(obj.int64Opt_ref()), f);
 
+  auto foo = [](const folly::Optional<int64_t>& opt) { return opt; };
+  EXPECT_EQ(foo(castToFolly(std::as_const(obj).int64Opt_ref())), f);
+
   fromFollyOptional(obj.int64Opt_ref(), folly::Optional<int64_t>{3});
   EXPECT_EQ(obj.int64Opt_ref().value(), 3);
 
@@ -241,6 +244,9 @@ TEST(TestWithoutFollyOptionals, FollyOptionalConversion) {
                 apache::thrift::optional_field_ref<int64_t&>>);
   static_assert(std::is_same_v<
                 decltype(castToFolly(obj.int64Opt_ref())),
+                folly::Optional<int64_t>>);
+  static_assert(std::is_same_v<
+                decltype(castToFolly(std::as_const(obj).int64Opt_ref())),
                 folly::Optional<int64_t>>);
 
   static_assert(!std::is_constructible_v<
