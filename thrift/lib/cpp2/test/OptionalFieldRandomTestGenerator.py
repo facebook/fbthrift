@@ -34,17 +34,14 @@ METHODS = [
     "value_or",
 ]
 
-RETURN_VOID = ["assign", "reset"]
+DISCARD_RETURN = ["assign", "reset", "operator="]
 HAS_ARG = ["assign", "value_or", "emplace", "operator="]
 MAY_THROW = ["operator*", "value"]
 
 
 def gen_define_variables(out):
-    t = choice(["DeprecatedOptionalField", "Optional"])
-
     # Defining 2 variables since we want to test comparison operators
-    out(f"DeprecatedOptionalField<std::string> a1;")
-    out(f"{t}<std::string> a2;")
+    out(f"DeprecatedOptionalField<std::string> a1, a2;")
 
     # control group
     out(f"Optional<std::string> b1, b2;")
@@ -75,7 +72,7 @@ def gen_test_method(out):
     expr1 = f"a{var}.{method}{call}"
     expr2 = f"b{var}.{method}{call}"
 
-    if method in RETURN_VOID:
+    if method in DISCARD_RETURN:
         expr = f"{expr1}; {expr2};"
     else:
         expr = f"EXPECT_EQ({expr1}, {expr2});"

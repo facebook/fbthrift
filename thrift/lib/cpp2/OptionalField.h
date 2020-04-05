@@ -253,16 +253,6 @@ bool compare(const U& a, const V& b, Comp comp) {
       const DeprecatedOptionalField<T>& b) {                                 \
     return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; }); \
   }                                                                          \
-  template <class T>                                                         \
-  bool operator OP(                                                          \
-      const folly::Optional<T>& a, const DeprecatedOptionalField<T>& b) {    \
-    return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; }); \
-  }                                                                          \
-  template <class T>                                                         \
-  bool operator OP(                                                          \
-      const DeprecatedOptionalField<T>& a, const folly::Optional<T>& b) {    \
-    return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; }); \
-  }                                                                          \
   template <class U, class V>                                                \
   bool operator OP(const U& a, const DeprecatedOptionalField<V>& b) {        \
     return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; }); \

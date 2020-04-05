@@ -421,8 +421,9 @@ void heterogeneousComparisonsTest() {
 }
 
 TEST(DeprecatedOptionalField, HeterogeneousComparisons) {
-  heterogeneousComparisonsTest<DeprecatedOptionalField, folly::Optional>();
-  heterogeneousComparisonsTest<folly::Optional, DeprecatedOptionalField>();
+  heterogeneousComparisonsTest<
+      DeprecatedOptionalField,
+      DeprecatedOptionalField>();
 }
 
 TEST(DeprecatedOptionalField, NulloptComparisons) {
