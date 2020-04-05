@@ -32,6 +32,10 @@ namespace thrift {
  */
 template <typename T>
 class DeprecatedOptionalField {
+  static_assert(
+      !std::is_reference<T>::value,
+      "Optional may not be used with reference types");
+
  public:
   using value_type = T;
 
