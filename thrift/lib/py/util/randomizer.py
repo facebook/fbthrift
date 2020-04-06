@@ -533,11 +533,10 @@ class ListRandomizer(NonAssociativeContainerRandomizer):
             if element is not None:
                 elements.append(element)
 
-        return elements
+        return self.type_spec.construct_instance(elements)
 
     def _fuzz_insert(self, seed):
         """Fuzz a list seed by inserting a random element at a random index"""
-        seed = self.eval_seed(seed)
         randomizer = self._element_randomizer
         new_elem = randomizer.generate()
         insertion_index = random.randint(0, len(seed))
@@ -548,7 +547,6 @@ class ListRandomizer(NonAssociativeContainerRandomizer):
         """Fuzz a list seed by deleting a random element
 
         Requires len(seed) >= 1"""
-        seed = self.eval_seed(seed)
         delete_index = random.randint(0, len(seed) - 1)
         seed.pop(delete_index)
         return seed
@@ -561,15 +559,18 @@ class ListRandomizer(NonAssociativeContainerRandomizer):
         randomizer = self._element_randomizer
         fuzzed_elem = randomizer.generate(seed=seed[fuzz_index])
 
-        seed = self.eval_seed(seed)
         seed[fuzz_index] = fuzzed_elem
         return seed
 
     def _fuzz(self, seed):
+        seed = self.eval_seed(seed)
+        # Convert to list if needed. The thrift list type may be immutable
+        if not isinstance(seed, list):
+            seed = list(seed)
         if len(seed) == 0:
             # Seed is an empty list. The only valid fuzzer function
             # is the insert function
-            return self._fuzz_insert(seed)
+            fuzzed = self._fuzz_insert(seed)
         else:
             # All fuzzer functions are valid
             fuzz_fn = random.choice([
@@ -577,10 +578,13 @@ class ListRandomizer(NonAssociativeContainerRandomizer):
                 self._fuzz_delete,
                 self._fuzz_one_element
             ])
-            return fuzz_fn(seed)
+            fuzzed = fuzz_fn(seed)
+        return self.type_spec.construct_instance(fuzzed)
 
     def eval_seed(self, seed):
-        return [self._element_randomizer.eval_seed(e) for e in seed]
+        return self.type_spec.construct_instance(
+            [self._element_randomizer.eval_seed(e) for e in seed]
+        )
 
 class SetRandomizer(NonAssociativeContainerRandomizer):
     ttype = Thrift.TType.SET
@@ -605,10 +609,12 @@ class SetRandomizer(NonAssociativeContainerRandomizer):
                 elements.add(element)
             i += 1
 
-        return elements
+        return self.type_spec.construct_instance(elements)
 
     def eval_seed(self, seed):
-        return {self._element_randomizer.eval_seed(e) for e in seed}
+        return self.type_spec.construct_instance(
+            {self._element_randomizer.eval_seed(e) for e in seed}
+        )
 
 class MapRandomizer(CollectionTypeRandomizer):
     ttype = Thrift.TType.MAP
@@ -656,10 +662,10 @@ class MapRandomizer(CollectionTypeRandomizer):
                 # keys python doesn't like.
                 #
                 # For now just bail out.
-                return elements
+                return self.type_spec.construct_instance(elements)
             i += 1
 
-        return elements
+        return self.type_spec.construct_instance(elements)
 
     def eval_seed(self, seed):
         res = {}
@@ -667,7 +673,7 @@ class MapRandomizer(CollectionTypeRandomizer):
             key = self._key_randomizer.eval_seed(key)
             val = self._val_randomizer.eval_seed(val)
             res[key] = val
-        return res
+        return self.type_spec.construct_instance(res)
 
 class StructRandomizer(BaseRandomizer):
     ttype = Thrift.TType.STRUCT

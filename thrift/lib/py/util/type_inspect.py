@@ -181,13 +181,20 @@ class ThriftNonAssociativeContainerSpec(ThriftPyTypeSpec):
 class ThriftListSpec(ThriftNonAssociativeContainerSpec):
     name = "list"
 
+    def get_type(self):
+        return list
 
 class ThriftSetSpec(ThriftNonAssociativeContainerSpec):
     name = "set"
 
+    def get_type(self):
+        return set
 
 class ThriftMapSpec(ThriftPyTypeSpec):
     name = "map"
+
+    def get_type(self):
+        return dict
 
     def _init_subelements(self):
         key_ttype, key_spec_args, val_ttype, val_spec_args = self.spec_args
