@@ -66,8 +66,8 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     return 'A';
   }
 
-  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m): Map<string, T> {
-    $new_map = Map {};
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m): dict<string, T> {
+    $new_map = dict[];
     foreach ($m as $k => $v) {
       $new_map[(string)$k] = $v;
     }
@@ -603,8 +603,8 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     return 'B';
   }
 
-  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m): Map<string, T> {
-    $new_map = Map {};
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m): dict<string, T> {
+    $new_map = dict[];
     foreach ($m as $k => $v) {
       $new_map[(string)$k] = $v;
     }
@@ -1261,8 +1261,8 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     return 'C';
   }
 
-  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m): Map<string, T> {
-    $new_map = Map {};
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m): dict<string, T> {
+    $new_map = dict[];
     foreach ($m as $k => $v) {
       $new_map[(string)$k] = $v;
     }

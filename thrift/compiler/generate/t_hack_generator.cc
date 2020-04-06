@@ -2039,11 +2039,13 @@ void t_hack_generator::generate_php_struct_shape_methods(
     std::ofstream& out,
     t_struct* tstruct) {
   if (shape_arraykeys_) {
+    auto arg_return_type =
+        (arrays_ ? "dict" : const_collections_ ? "ConstMap" : "Map");
     indent(out) << "public static function __stringifyMapKeys<T>("
-                << (const_collections_ ? "Const" : "")
-                << "Map<arraykey, T> $m): "
-                << (const_collections_ ? "Const" : "") << "Map<string, T> {\n";
-    indent(out) << "  $new_map = Map {};\n";
+                << arg_return_type << "<arraykey, T> $m): " << arg_return_type
+                << "<string, T> {\n";
+    indent(out) << "  $new_map = " << arg_return_type
+                << (arrays_ ? "[]" : " {}") << ";\n";
     indent(out) << "  foreach ($m as $k => $v) {\n";
     indent(out) << "    $new_map[(string)$k] = $v;\n";
     indent(out) << "  }\n";
