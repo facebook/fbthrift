@@ -10,6 +10,7 @@ package test.fixtures.basic;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -287,1543 +288,1544 @@ public final class MyBigStruct {
     }
     
     public static class Builder {
-        private String msg1;
+        private String msg1 = null;
+        private String msg2 = null;
+        private String msg3 = null;
+        private String msg4 = null;
+        private String msg5 = null;
+        private String msg6 = null;
+        private String msg7 = null;
+        private String msg8 = null;
+        private String msg9 = null;
+        private int myIntField10 = 0;
+        private int myIntField11 = 0;
+        private int myIntField12 = 0;
+        private int myIntField13 = 0;
+        private int myIntField14 = 0;
+        private int myIntField15 = 0;
+        private int myIntField16 = 0;
+        private int myIntField17 = 0;
+        private int myIntField18 = 0;
+        private int myIntField19 = 0;
+        private int myIntField20 = 0;
+        private double myDoubleField21 = 0.;
+        private double myDoubleField22 = 0.;
+        private double myDoubleField23 = 0.;
+        private double myDoubleField24 = 0.;
+        private double myDoubleField25 = 0.;
+        private double myDoubleField26 = 0.;
+        private double myDoubleField27 = 0.;
+        private double myDoubleField28 = 0.;
+        private double myDoubleField29 = 0.;
+        private double myDoubleField30 = 0.;
+        private String msg31 = null;
+        private String msg32 = null;
+        private String msg33 = null;
+        private String msg34 = null;
+        private String msg35 = null;
+        private String msg36 = null;
+        private String msg37 = null;
+        private String msg38 = null;
+        private String msg39 = null;
+        private String msg40 = null;
+        private String msg41 = null;
+        private String msg42 = null;
+        private String msg43 = null;
+        private String msg44 = null;
+        private String msg45 = null;
+        private String msg46 = null;
+        private String msg47 = null;
+        private String msg48 = null;
+        private String msg49 = null;
+        private String msg50 = null;
+        private String msg51 = null;
+        private String msg52 = null;
+        private String msg53 = null;
+        private String msg54 = null;
+        private String msg55 = null;
+        private String msg56 = null;
+        private String msg57 = null;
+        private String msg58 = null;
+        private String msg59 = null;
+        private String msg60 = null;
+        private String msg61 = null;
+        private String msg62 = null;
+        private String msg63 = null;
+        private String msg64 = null;
+        private String msg65 = null;
+        private String msg66 = null;
+        private String msg67 = null;
+        private String msg68 = null;
+        private String msg69 = null;
+        private String msg70 = null;
+        private String msg71 = null;
+        private String msg72 = null;
+        private String msg73 = null;
+        private String msg74 = null;
+        private String msg75 = null;
+        private String msg76 = null;
+        private String msg77 = null;
+        private String msg78 = null;
+        private String msg79 = null;
+        private String msg80 = null;
+        private String msg81 = null;
+        private String msg82 = null;
+        private String msg83 = null;
+        private String msg84 = null;
+        private String msg85 = null;
+        private String msg86 = null;
+        private String msg87 = null;
+        private String msg88 = null;
+        private String msg89 = null;
+        private String msg90 = null;
+        private String msg91 = null;
+        private String msg92 = null;
+        private String msg93 = null;
+        private String msg94 = null;
+        private String msg95 = null;
+        private String msg96 = null;
+        private String msg97 = null;
+        private String msg98 = null;
+        private String msg99 = null;
+        private String msg100 = null;
+        private String msg101 = null;
+        private String msg102 = null;
+        private String msg103 = null;
+        private String msg104 = null;
+        private String msg105 = null;
+        private String msg106 = null;
+        private String msg107 = null;
+        private String msg108 = null;
+        private String msg109 = null;
+        private String msg110 = null;
+        private String msg111 = null;
+        private String msg112 = null;
+        private String msg113 = null;
+        private String msg114 = null;
+        private String msg115 = null;
+        private String msg116 = null;
+        private String msg117 = null;
+        private String msg118 = null;
+        private String msg119 = null;
+        private String msg120 = null;
+        private String msg121 = null;
+        private String msg122 = null;
+        private String msg123 = null;
+        private String msg124 = null;
+        private String msg125 = null;
+        private String msg126 = null;
+        private String msg127 = null;
+        private String msg128 = null;
+        private String msg129 = null;
+        private String msg130 = null;
+        private String msg131 = null;
+        private String msg132 = null;
+        private String msg133 = null;
+        private String msg134 = null;
+        private String msg135 = null;
+        private String msg136 = null;
+        private String msg137 = null;
+        private String msg138 = null;
+        private String msg139 = null;
+        private String msg140 = null;
+        private String msg141 = null;
+        private String msg142 = null;
+        private String msg143 = null;
+        private String msg144 = null;
+        private String msg145 = null;
+        private String msg146 = null;
+        private String msg147 = null;
+        private String msg148 = null;
+        private String msg149 = null;
+        private String msg150 = null;
+        private String msg151 = null;
+        private String msg152 = null;
+        private String msg153 = null;
+        private String msg154 = null;
+        private String msg155 = null;
+        private String msg156 = null;
+        private String msg157 = null;
+        private String msg158 = null;
+        private String msg159 = null;
+        private String msg160 = null;
+        private String msg161 = null;
+        private String msg162 = null;
+        private String msg163 = null;
+        private String msg164 = null;
+        private String msg165 = null;
+        private String msg166 = null;
+        private String msg167 = null;
+        private String msg168 = null;
+        private String msg169 = null;
+        private String msg170 = null;
+        private String msg171 = null;
+        private String msg172 = null;
+        private String msg173 = null;
+        private String msg174 = null;
+        private String msg175 = null;
+        private String msg176 = null;
+        private String msg177 = null;
+        private String msg178 = null;
+        private String msg179 = null;
+        private String msg180 = null;
+        private String msg181 = null;
+        private String msg182 = null;
+        private String msg183 = null;
+        private String msg184 = null;
+        private String msg185 = null;
+        private String msg186 = null;
+        private String msg187 = null;
+        private String msg188 = null;
+        private String msg189 = null;
+        private String msg190 = null;
+        private String msg191 = null;
+        private String msg192 = null;
+        private String msg193 = null;
+        private String msg194 = null;
+        private String msg195 = null;
+        private String msg196 = null;
+        private String msg197 = null;
+        private String msg198 = null;
+        private String msg199 = null;
+        private String msg200 = null;
+        private String msg201 = null;
+        private String msg202 = null;
+        private String msg203 = null;
+        private String msg204 = null;
+        private String msg205 = null;
+        private String msg206 = null;
+        private String msg207 = null;
+        private String msg208 = null;
+        private String msg209 = null;
+        private String msg210 = null;
+        private String msg211 = null;
+        private String msg212 = null;
+        private String msg213 = null;
+        private String msg214 = null;
+        private String msg215 = null;
+        private String msg216 = null;
+        private String msg217 = null;
+        private String msg218 = null;
+        private String msg219 = null;
+        private String msg220 = null;
+        private String msg221 = null;
+        private String msg222 = null;
+        private String msg223 = null;
+        private String msg224 = null;
+        private String msg225 = null;
+        private String msg226 = null;
+        private String msg227 = null;
+        private String msg228 = null;
+        private String msg229 = null;
+        private String msg230 = null;
+        private String msg231 = null;
+        private String msg232 = null;
+        private String msg233 = null;
+        private String msg234 = null;
+        private String msg235 = null;
+        private String msg236 = null;
+        private String msg237 = null;
+        private String msg238 = null;
+        private String msg239 = null;
+        private String msg240 = null;
+        private String msg241 = null;
+        private String msg242 = null;
+        private String msg243 = null;
+        private String msg244 = null;
+        private String msg245 = null;
+        private String msg246 = null;
+        private String msg247 = null;
+        private String msg248 = null;
+        private String msg249 = null;
+        private String msg250 = null;
+        private String msg251 = null;
+        private String msg252 = null;
+        private String msg253 = null;
+        private String msg254 = null;
+        private String msg255 = null;
+        private String msg256 = null;
+        private String msg257 = null;
+    
         @ThriftField(value=1, name="msg1", requiredness=Requiredness.NONE)
         public Builder setMsg1(String msg1) {
             this.msg1 = msg1;
             return this;
         }
-        private String msg2;
         @ThriftField(value=2, name="msg2", requiredness=Requiredness.NONE)
         public Builder setMsg2(String msg2) {
             this.msg2 = msg2;
             return this;
         }
-        private String msg3;
         @ThriftField(value=3, name="msg3", requiredness=Requiredness.NONE)
         public Builder setMsg3(String msg3) {
             this.msg3 = msg3;
             return this;
         }
-        private String msg4;
         @ThriftField(value=4, name="msg4", requiredness=Requiredness.NONE)
         public Builder setMsg4(String msg4) {
             this.msg4 = msg4;
             return this;
         }
-        private String msg5;
         @ThriftField(value=5, name="msg5", requiredness=Requiredness.NONE)
         public Builder setMsg5(String msg5) {
             this.msg5 = msg5;
             return this;
         }
-        private String msg6;
         @ThriftField(value=6, name="msg6", requiredness=Requiredness.NONE)
         public Builder setMsg6(String msg6) {
             this.msg6 = msg6;
             return this;
         }
-        private String msg7;
         @ThriftField(value=7, name="msg7", requiredness=Requiredness.NONE)
         public Builder setMsg7(String msg7) {
             this.msg7 = msg7;
             return this;
         }
-        private String msg8;
         @ThriftField(value=8, name="msg8", requiredness=Requiredness.NONE)
         public Builder setMsg8(String msg8) {
             this.msg8 = msg8;
             return this;
         }
-        private String msg9;
         @ThriftField(value=9, name="msg9", requiredness=Requiredness.NONE)
         public Builder setMsg9(String msg9) {
             this.msg9 = msg9;
             return this;
         }
-        private int myIntField10;
         @ThriftField(value=10, name="myIntField10", requiredness=Requiredness.NONE)
         public Builder setMyIntField10(int myIntField10) {
             this.myIntField10 = myIntField10;
             return this;
         }
-        private int myIntField11;
         @ThriftField(value=11, name="myIntField11", requiredness=Requiredness.NONE)
         public Builder setMyIntField11(int myIntField11) {
             this.myIntField11 = myIntField11;
             return this;
         }
-        private int myIntField12;
         @ThriftField(value=12, name="myIntField12", requiredness=Requiredness.NONE)
         public Builder setMyIntField12(int myIntField12) {
             this.myIntField12 = myIntField12;
             return this;
         }
-        private int myIntField13;
         @ThriftField(value=13, name="myIntField13", requiredness=Requiredness.NONE)
         public Builder setMyIntField13(int myIntField13) {
             this.myIntField13 = myIntField13;
             return this;
         }
-        private int myIntField14;
         @ThriftField(value=14, name="myIntField14", requiredness=Requiredness.NONE)
         public Builder setMyIntField14(int myIntField14) {
             this.myIntField14 = myIntField14;
             return this;
         }
-        private int myIntField15;
         @ThriftField(value=15, name="myIntField15", requiredness=Requiredness.NONE)
         public Builder setMyIntField15(int myIntField15) {
             this.myIntField15 = myIntField15;
             return this;
         }
-        private int myIntField16;
         @ThriftField(value=16, name="myIntField16", requiredness=Requiredness.NONE)
         public Builder setMyIntField16(int myIntField16) {
             this.myIntField16 = myIntField16;
             return this;
         }
-        private int myIntField17;
         @ThriftField(value=17, name="myIntField17", requiredness=Requiredness.NONE)
         public Builder setMyIntField17(int myIntField17) {
             this.myIntField17 = myIntField17;
             return this;
         }
-        private int myIntField18;
         @ThriftField(value=18, name="myIntField18", requiredness=Requiredness.NONE)
         public Builder setMyIntField18(int myIntField18) {
             this.myIntField18 = myIntField18;
             return this;
         }
-        private int myIntField19;
         @ThriftField(value=19, name="myIntField19", requiredness=Requiredness.NONE)
         public Builder setMyIntField19(int myIntField19) {
             this.myIntField19 = myIntField19;
             return this;
         }
-        private int myIntField20;
         @ThriftField(value=20, name="myIntField20", requiredness=Requiredness.NONE)
         public Builder setMyIntField20(int myIntField20) {
             this.myIntField20 = myIntField20;
             return this;
         }
-        private double myDoubleField21;
         @ThriftField(value=21, name="myDoubleField21", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField21(double myDoubleField21) {
             this.myDoubleField21 = myDoubleField21;
             return this;
         }
-        private double myDoubleField22;
         @ThriftField(value=22, name="myDoubleField22", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField22(double myDoubleField22) {
             this.myDoubleField22 = myDoubleField22;
             return this;
         }
-        private double myDoubleField23;
         @ThriftField(value=23, name="myDoubleField23", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField23(double myDoubleField23) {
             this.myDoubleField23 = myDoubleField23;
             return this;
         }
-        private double myDoubleField24;
         @ThriftField(value=24, name="myDoubleField24", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField24(double myDoubleField24) {
             this.myDoubleField24 = myDoubleField24;
             return this;
         }
-        private double myDoubleField25;
         @ThriftField(value=25, name="myDoubleField25", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField25(double myDoubleField25) {
             this.myDoubleField25 = myDoubleField25;
             return this;
         }
-        private double myDoubleField26;
         @ThriftField(value=26, name="myDoubleField26", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField26(double myDoubleField26) {
             this.myDoubleField26 = myDoubleField26;
             return this;
         }
-        private double myDoubleField27;
         @ThriftField(value=27, name="myDoubleField27", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField27(double myDoubleField27) {
             this.myDoubleField27 = myDoubleField27;
             return this;
         }
-        private double myDoubleField28;
         @ThriftField(value=28, name="myDoubleField28", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField28(double myDoubleField28) {
             this.myDoubleField28 = myDoubleField28;
             return this;
         }
-        private double myDoubleField29;
         @ThriftField(value=29, name="myDoubleField29", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField29(double myDoubleField29) {
             this.myDoubleField29 = myDoubleField29;
             return this;
         }
-        private double myDoubleField30;
         @ThriftField(value=30, name="myDoubleField30", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField30(double myDoubleField30) {
             this.myDoubleField30 = myDoubleField30;
             return this;
         }
-        private String msg31;
         @ThriftField(value=31, name="msg31", requiredness=Requiredness.NONE)
         public Builder setMsg31(String msg31) {
             this.msg31 = msg31;
             return this;
         }
-        private String msg32;
         @ThriftField(value=32, name="msg32", requiredness=Requiredness.NONE)
         public Builder setMsg32(String msg32) {
             this.msg32 = msg32;
             return this;
         }
-        private String msg33;
         @ThriftField(value=33, name="msg33", requiredness=Requiredness.NONE)
         public Builder setMsg33(String msg33) {
             this.msg33 = msg33;
             return this;
         }
-        private String msg34;
         @ThriftField(value=34, name="msg34", requiredness=Requiredness.NONE)
         public Builder setMsg34(String msg34) {
             this.msg34 = msg34;
             return this;
         }
-        private String msg35;
         @ThriftField(value=35, name="msg35", requiredness=Requiredness.NONE)
         public Builder setMsg35(String msg35) {
             this.msg35 = msg35;
             return this;
         }
-        private String msg36;
         @ThriftField(value=36, name="msg36", requiredness=Requiredness.NONE)
         public Builder setMsg36(String msg36) {
             this.msg36 = msg36;
             return this;
         }
-        private String msg37;
         @ThriftField(value=37, name="msg37", requiredness=Requiredness.NONE)
         public Builder setMsg37(String msg37) {
             this.msg37 = msg37;
             return this;
         }
-        private String msg38;
         @ThriftField(value=38, name="msg38", requiredness=Requiredness.NONE)
         public Builder setMsg38(String msg38) {
             this.msg38 = msg38;
             return this;
         }
-        private String msg39;
         @ThriftField(value=39, name="msg39", requiredness=Requiredness.NONE)
         public Builder setMsg39(String msg39) {
             this.msg39 = msg39;
             return this;
         }
-        private String msg40;
         @ThriftField(value=40, name="msg40", requiredness=Requiredness.NONE)
         public Builder setMsg40(String msg40) {
             this.msg40 = msg40;
             return this;
         }
-        private String msg41;
         @ThriftField(value=41, name="msg41", requiredness=Requiredness.NONE)
         public Builder setMsg41(String msg41) {
             this.msg41 = msg41;
             return this;
         }
-        private String msg42;
         @ThriftField(value=42, name="msg42", requiredness=Requiredness.NONE)
         public Builder setMsg42(String msg42) {
             this.msg42 = msg42;
             return this;
         }
-        private String msg43;
         @ThriftField(value=43, name="msg43", requiredness=Requiredness.NONE)
         public Builder setMsg43(String msg43) {
             this.msg43 = msg43;
             return this;
         }
-        private String msg44;
         @ThriftField(value=44, name="msg44", requiredness=Requiredness.NONE)
         public Builder setMsg44(String msg44) {
             this.msg44 = msg44;
             return this;
         }
-        private String msg45;
         @ThriftField(value=45, name="msg45", requiredness=Requiredness.NONE)
         public Builder setMsg45(String msg45) {
             this.msg45 = msg45;
             return this;
         }
-        private String msg46;
         @ThriftField(value=46, name="msg46", requiredness=Requiredness.NONE)
         public Builder setMsg46(String msg46) {
             this.msg46 = msg46;
             return this;
         }
-        private String msg47;
         @ThriftField(value=47, name="msg47", requiredness=Requiredness.NONE)
         public Builder setMsg47(String msg47) {
             this.msg47 = msg47;
             return this;
         }
-        private String msg48;
         @ThriftField(value=48, name="msg48", requiredness=Requiredness.NONE)
         public Builder setMsg48(String msg48) {
             this.msg48 = msg48;
             return this;
         }
-        private String msg49;
         @ThriftField(value=49, name="msg49", requiredness=Requiredness.NONE)
         public Builder setMsg49(String msg49) {
             this.msg49 = msg49;
             return this;
         }
-        private String msg50;
         @ThriftField(value=50, name="msg50", requiredness=Requiredness.NONE)
         public Builder setMsg50(String msg50) {
             this.msg50 = msg50;
             return this;
         }
-        private String msg51;
         @ThriftField(value=51, name="msg51", requiredness=Requiredness.NONE)
         public Builder setMsg51(String msg51) {
             this.msg51 = msg51;
             return this;
         }
-        private String msg52;
         @ThriftField(value=52, name="msg52", requiredness=Requiredness.NONE)
         public Builder setMsg52(String msg52) {
             this.msg52 = msg52;
             return this;
         }
-        private String msg53;
         @ThriftField(value=53, name="msg53", requiredness=Requiredness.NONE)
         public Builder setMsg53(String msg53) {
             this.msg53 = msg53;
             return this;
         }
-        private String msg54;
         @ThriftField(value=54, name="msg54", requiredness=Requiredness.NONE)
         public Builder setMsg54(String msg54) {
             this.msg54 = msg54;
             return this;
         }
-        private String msg55;
         @ThriftField(value=55, name="msg55", requiredness=Requiredness.NONE)
         public Builder setMsg55(String msg55) {
             this.msg55 = msg55;
             return this;
         }
-        private String msg56;
         @ThriftField(value=56, name="msg56", requiredness=Requiredness.NONE)
         public Builder setMsg56(String msg56) {
             this.msg56 = msg56;
             return this;
         }
-        private String msg57;
         @ThriftField(value=57, name="msg57", requiredness=Requiredness.NONE)
         public Builder setMsg57(String msg57) {
             this.msg57 = msg57;
             return this;
         }
-        private String msg58;
         @ThriftField(value=58, name="msg58", requiredness=Requiredness.NONE)
         public Builder setMsg58(String msg58) {
             this.msg58 = msg58;
             return this;
         }
-        private String msg59;
         @ThriftField(value=59, name="msg59", requiredness=Requiredness.NONE)
         public Builder setMsg59(String msg59) {
             this.msg59 = msg59;
             return this;
         }
-        private String msg60;
         @ThriftField(value=60, name="msg60", requiredness=Requiredness.NONE)
         public Builder setMsg60(String msg60) {
             this.msg60 = msg60;
             return this;
         }
-        private String msg61;
         @ThriftField(value=61, name="msg61", requiredness=Requiredness.NONE)
         public Builder setMsg61(String msg61) {
             this.msg61 = msg61;
             return this;
         }
-        private String msg62;
         @ThriftField(value=62, name="msg62", requiredness=Requiredness.NONE)
         public Builder setMsg62(String msg62) {
             this.msg62 = msg62;
             return this;
         }
-        private String msg63;
         @ThriftField(value=63, name="msg63", requiredness=Requiredness.NONE)
         public Builder setMsg63(String msg63) {
             this.msg63 = msg63;
             return this;
         }
-        private String msg64;
         @ThriftField(value=64, name="msg64", requiredness=Requiredness.NONE)
         public Builder setMsg64(String msg64) {
             this.msg64 = msg64;
             return this;
         }
-        private String msg65;
         @ThriftField(value=65, name="msg65", requiredness=Requiredness.NONE)
         public Builder setMsg65(String msg65) {
             this.msg65 = msg65;
             return this;
         }
-        private String msg66;
         @ThriftField(value=66, name="msg66", requiredness=Requiredness.NONE)
         public Builder setMsg66(String msg66) {
             this.msg66 = msg66;
             return this;
         }
-        private String msg67;
         @ThriftField(value=67, name="msg67", requiredness=Requiredness.NONE)
         public Builder setMsg67(String msg67) {
             this.msg67 = msg67;
             return this;
         }
-        private String msg68;
         @ThriftField(value=68, name="msg68", requiredness=Requiredness.NONE)
         public Builder setMsg68(String msg68) {
             this.msg68 = msg68;
             return this;
         }
-        private String msg69;
         @ThriftField(value=69, name="msg69", requiredness=Requiredness.NONE)
         public Builder setMsg69(String msg69) {
             this.msg69 = msg69;
             return this;
         }
-        private String msg70;
         @ThriftField(value=70, name="msg70", requiredness=Requiredness.NONE)
         public Builder setMsg70(String msg70) {
             this.msg70 = msg70;
             return this;
         }
-        private String msg71;
         @ThriftField(value=71, name="msg71", requiredness=Requiredness.NONE)
         public Builder setMsg71(String msg71) {
             this.msg71 = msg71;
             return this;
         }
-        private String msg72;
         @ThriftField(value=72, name="msg72", requiredness=Requiredness.NONE)
         public Builder setMsg72(String msg72) {
             this.msg72 = msg72;
             return this;
         }
-        private String msg73;
         @ThriftField(value=73, name="msg73", requiredness=Requiredness.NONE)
         public Builder setMsg73(String msg73) {
             this.msg73 = msg73;
             return this;
         }
-        private String msg74;
         @ThriftField(value=74, name="msg74", requiredness=Requiredness.NONE)
         public Builder setMsg74(String msg74) {
             this.msg74 = msg74;
             return this;
         }
-        private String msg75;
         @ThriftField(value=75, name="msg75", requiredness=Requiredness.NONE)
         public Builder setMsg75(String msg75) {
             this.msg75 = msg75;
             return this;
         }
-        private String msg76;
         @ThriftField(value=76, name="msg76", requiredness=Requiredness.NONE)
         public Builder setMsg76(String msg76) {
             this.msg76 = msg76;
             return this;
         }
-        private String msg77;
         @ThriftField(value=77, name="msg77", requiredness=Requiredness.NONE)
         public Builder setMsg77(String msg77) {
             this.msg77 = msg77;
             return this;
         }
-        private String msg78;
         @ThriftField(value=78, name="msg78", requiredness=Requiredness.NONE)
         public Builder setMsg78(String msg78) {
             this.msg78 = msg78;
             return this;
         }
-        private String msg79;
         @ThriftField(value=79, name="msg79", requiredness=Requiredness.NONE)
         public Builder setMsg79(String msg79) {
             this.msg79 = msg79;
             return this;
         }
-        private String msg80;
         @ThriftField(value=80, name="msg80", requiredness=Requiredness.NONE)
         public Builder setMsg80(String msg80) {
             this.msg80 = msg80;
             return this;
         }
-        private String msg81;
         @ThriftField(value=81, name="msg81", requiredness=Requiredness.NONE)
         public Builder setMsg81(String msg81) {
             this.msg81 = msg81;
             return this;
         }
-        private String msg82;
         @ThriftField(value=82, name="msg82", requiredness=Requiredness.NONE)
         public Builder setMsg82(String msg82) {
             this.msg82 = msg82;
             return this;
         }
-        private String msg83;
         @ThriftField(value=83, name="msg83", requiredness=Requiredness.NONE)
         public Builder setMsg83(String msg83) {
             this.msg83 = msg83;
             return this;
         }
-        private String msg84;
         @ThriftField(value=84, name="msg84", requiredness=Requiredness.NONE)
         public Builder setMsg84(String msg84) {
             this.msg84 = msg84;
             return this;
         }
-        private String msg85;
         @ThriftField(value=85, name="msg85", requiredness=Requiredness.NONE)
         public Builder setMsg85(String msg85) {
             this.msg85 = msg85;
             return this;
         }
-        private String msg86;
         @ThriftField(value=86, name="msg86", requiredness=Requiredness.NONE)
         public Builder setMsg86(String msg86) {
             this.msg86 = msg86;
             return this;
         }
-        private String msg87;
         @ThriftField(value=87, name="msg87", requiredness=Requiredness.NONE)
         public Builder setMsg87(String msg87) {
             this.msg87 = msg87;
             return this;
         }
-        private String msg88;
         @ThriftField(value=88, name="msg88", requiredness=Requiredness.NONE)
         public Builder setMsg88(String msg88) {
             this.msg88 = msg88;
             return this;
         }
-        private String msg89;
         @ThriftField(value=89, name="msg89", requiredness=Requiredness.NONE)
         public Builder setMsg89(String msg89) {
             this.msg89 = msg89;
             return this;
         }
-        private String msg90;
         @ThriftField(value=90, name="msg90", requiredness=Requiredness.NONE)
         public Builder setMsg90(String msg90) {
             this.msg90 = msg90;
             return this;
         }
-        private String msg91;
         @ThriftField(value=91, name="msg91", requiredness=Requiredness.NONE)
         public Builder setMsg91(String msg91) {
             this.msg91 = msg91;
             return this;
         }
-        private String msg92;
         @ThriftField(value=92, name="msg92", requiredness=Requiredness.NONE)
         public Builder setMsg92(String msg92) {
             this.msg92 = msg92;
             return this;
         }
-        private String msg93;
         @ThriftField(value=93, name="msg93", requiredness=Requiredness.NONE)
         public Builder setMsg93(String msg93) {
             this.msg93 = msg93;
             return this;
         }
-        private String msg94;
         @ThriftField(value=94, name="msg94", requiredness=Requiredness.NONE)
         public Builder setMsg94(String msg94) {
             this.msg94 = msg94;
             return this;
         }
-        private String msg95;
         @ThriftField(value=95, name="msg95", requiredness=Requiredness.NONE)
         public Builder setMsg95(String msg95) {
             this.msg95 = msg95;
             return this;
         }
-        private String msg96;
         @ThriftField(value=96, name="msg96", requiredness=Requiredness.NONE)
         public Builder setMsg96(String msg96) {
             this.msg96 = msg96;
             return this;
         }
-        private String msg97;
         @ThriftField(value=97, name="msg97", requiredness=Requiredness.NONE)
         public Builder setMsg97(String msg97) {
             this.msg97 = msg97;
             return this;
         }
-        private String msg98;
         @ThriftField(value=98, name="msg98", requiredness=Requiredness.NONE)
         public Builder setMsg98(String msg98) {
             this.msg98 = msg98;
             return this;
         }
-        private String msg99;
         @ThriftField(value=99, name="msg99", requiredness=Requiredness.NONE)
         public Builder setMsg99(String msg99) {
             this.msg99 = msg99;
             return this;
         }
-        private String msg100;
         @ThriftField(value=100, name="msg100", requiredness=Requiredness.NONE)
         public Builder setMsg100(String msg100) {
             this.msg100 = msg100;
             return this;
         }
-        private String msg101;
         @ThriftField(value=101, name="msg101", requiredness=Requiredness.NONE)
         public Builder setMsg101(String msg101) {
             this.msg101 = msg101;
             return this;
         }
-        private String msg102;
         @ThriftField(value=102, name="msg102", requiredness=Requiredness.NONE)
         public Builder setMsg102(String msg102) {
             this.msg102 = msg102;
             return this;
         }
-        private String msg103;
         @ThriftField(value=103, name="msg103", requiredness=Requiredness.NONE)
         public Builder setMsg103(String msg103) {
             this.msg103 = msg103;
             return this;
         }
-        private String msg104;
         @ThriftField(value=104, name="msg104", requiredness=Requiredness.NONE)
         public Builder setMsg104(String msg104) {
             this.msg104 = msg104;
             return this;
         }
-        private String msg105;
         @ThriftField(value=105, name="msg105", requiredness=Requiredness.NONE)
         public Builder setMsg105(String msg105) {
             this.msg105 = msg105;
             return this;
         }
-        private String msg106;
         @ThriftField(value=106, name="msg106", requiredness=Requiredness.NONE)
         public Builder setMsg106(String msg106) {
             this.msg106 = msg106;
             return this;
         }
-        private String msg107;
         @ThriftField(value=107, name="msg107", requiredness=Requiredness.NONE)
         public Builder setMsg107(String msg107) {
             this.msg107 = msg107;
             return this;
         }
-        private String msg108;
         @ThriftField(value=108, name="msg108", requiredness=Requiredness.NONE)
         public Builder setMsg108(String msg108) {
             this.msg108 = msg108;
             return this;
         }
-        private String msg109;
         @ThriftField(value=109, name="msg109", requiredness=Requiredness.NONE)
         public Builder setMsg109(String msg109) {
             this.msg109 = msg109;
             return this;
         }
-        private String msg110;
         @ThriftField(value=110, name="msg110", requiredness=Requiredness.NONE)
         public Builder setMsg110(String msg110) {
             this.msg110 = msg110;
             return this;
         }
-        private String msg111;
         @ThriftField(value=111, name="msg111", requiredness=Requiredness.NONE)
         public Builder setMsg111(String msg111) {
             this.msg111 = msg111;
             return this;
         }
-        private String msg112;
         @ThriftField(value=112, name="msg112", requiredness=Requiredness.NONE)
         public Builder setMsg112(String msg112) {
             this.msg112 = msg112;
             return this;
         }
-        private String msg113;
         @ThriftField(value=113, name="msg113", requiredness=Requiredness.NONE)
         public Builder setMsg113(String msg113) {
             this.msg113 = msg113;
             return this;
         }
-        private String msg114;
         @ThriftField(value=114, name="msg114", requiredness=Requiredness.NONE)
         public Builder setMsg114(String msg114) {
             this.msg114 = msg114;
             return this;
         }
-        private String msg115;
         @ThriftField(value=115, name="msg115", requiredness=Requiredness.NONE)
         public Builder setMsg115(String msg115) {
             this.msg115 = msg115;
             return this;
         }
-        private String msg116;
         @ThriftField(value=116, name="msg116", requiredness=Requiredness.NONE)
         public Builder setMsg116(String msg116) {
             this.msg116 = msg116;
             return this;
         }
-        private String msg117;
         @ThriftField(value=117, name="msg117", requiredness=Requiredness.NONE)
         public Builder setMsg117(String msg117) {
             this.msg117 = msg117;
             return this;
         }
-        private String msg118;
         @ThriftField(value=118, name="msg118", requiredness=Requiredness.NONE)
         public Builder setMsg118(String msg118) {
             this.msg118 = msg118;
             return this;
         }
-        private String msg119;
         @ThriftField(value=119, name="msg119", requiredness=Requiredness.NONE)
         public Builder setMsg119(String msg119) {
             this.msg119 = msg119;
             return this;
         }
-        private String msg120;
         @ThriftField(value=120, name="msg120", requiredness=Requiredness.NONE)
         public Builder setMsg120(String msg120) {
             this.msg120 = msg120;
             return this;
         }
-        private String msg121;
         @ThriftField(value=121, name="msg121", requiredness=Requiredness.NONE)
         public Builder setMsg121(String msg121) {
             this.msg121 = msg121;
             return this;
         }
-        private String msg122;
         @ThriftField(value=122, name="msg122", requiredness=Requiredness.NONE)
         public Builder setMsg122(String msg122) {
             this.msg122 = msg122;
             return this;
         }
-        private String msg123;
         @ThriftField(value=123, name="msg123", requiredness=Requiredness.NONE)
         public Builder setMsg123(String msg123) {
             this.msg123 = msg123;
             return this;
         }
-        private String msg124;
         @ThriftField(value=124, name="msg124", requiredness=Requiredness.NONE)
         public Builder setMsg124(String msg124) {
             this.msg124 = msg124;
             return this;
         }
-        private String msg125;
         @ThriftField(value=125, name="msg125", requiredness=Requiredness.NONE)
         public Builder setMsg125(String msg125) {
             this.msg125 = msg125;
             return this;
         }
-        private String msg126;
         @ThriftField(value=126, name="msg126", requiredness=Requiredness.NONE)
         public Builder setMsg126(String msg126) {
             this.msg126 = msg126;
             return this;
         }
-        private String msg127;
         @ThriftField(value=127, name="msg127", requiredness=Requiredness.NONE)
         public Builder setMsg127(String msg127) {
             this.msg127 = msg127;
             return this;
         }
-        private String msg128;
         @ThriftField(value=128, name="msg128", requiredness=Requiredness.NONE)
         public Builder setMsg128(String msg128) {
             this.msg128 = msg128;
             return this;
         }
-        private String msg129;
         @ThriftField(value=129, name="msg129", requiredness=Requiredness.NONE)
         public Builder setMsg129(String msg129) {
             this.msg129 = msg129;
             return this;
         }
-        private String msg130;
         @ThriftField(value=130, name="msg130", requiredness=Requiredness.NONE)
         public Builder setMsg130(String msg130) {
             this.msg130 = msg130;
             return this;
         }
-        private String msg131;
         @ThriftField(value=131, name="msg131", requiredness=Requiredness.NONE)
         public Builder setMsg131(String msg131) {
             this.msg131 = msg131;
             return this;
         }
-        private String msg132;
         @ThriftField(value=132, name="msg132", requiredness=Requiredness.NONE)
         public Builder setMsg132(String msg132) {
             this.msg132 = msg132;
             return this;
         }
-        private String msg133;
         @ThriftField(value=133, name="msg133", requiredness=Requiredness.NONE)
         public Builder setMsg133(String msg133) {
             this.msg133 = msg133;
             return this;
         }
-        private String msg134;
         @ThriftField(value=134, name="msg134", requiredness=Requiredness.NONE)
         public Builder setMsg134(String msg134) {
             this.msg134 = msg134;
             return this;
         }
-        private String msg135;
         @ThriftField(value=135, name="msg135", requiredness=Requiredness.NONE)
         public Builder setMsg135(String msg135) {
             this.msg135 = msg135;
             return this;
         }
-        private String msg136;
         @ThriftField(value=136, name="msg136", requiredness=Requiredness.NONE)
         public Builder setMsg136(String msg136) {
             this.msg136 = msg136;
             return this;
         }
-        private String msg137;
         @ThriftField(value=137, name="msg137", requiredness=Requiredness.NONE)
         public Builder setMsg137(String msg137) {
             this.msg137 = msg137;
             return this;
         }
-        private String msg138;
         @ThriftField(value=138, name="msg138", requiredness=Requiredness.NONE)
         public Builder setMsg138(String msg138) {
             this.msg138 = msg138;
             return this;
         }
-        private String msg139;
         @ThriftField(value=139, name="msg139", requiredness=Requiredness.NONE)
         public Builder setMsg139(String msg139) {
             this.msg139 = msg139;
             return this;
         }
-        private String msg140;
         @ThriftField(value=140, name="msg140", requiredness=Requiredness.NONE)
         public Builder setMsg140(String msg140) {
             this.msg140 = msg140;
             return this;
         }
-        private String msg141;
         @ThriftField(value=141, name="msg141", requiredness=Requiredness.NONE)
         public Builder setMsg141(String msg141) {
             this.msg141 = msg141;
             return this;
         }
-        private String msg142;
         @ThriftField(value=142, name="msg142", requiredness=Requiredness.NONE)
         public Builder setMsg142(String msg142) {
             this.msg142 = msg142;
             return this;
         }
-        private String msg143;
         @ThriftField(value=143, name="msg143", requiredness=Requiredness.NONE)
         public Builder setMsg143(String msg143) {
             this.msg143 = msg143;
             return this;
         }
-        private String msg144;
         @ThriftField(value=144, name="msg144", requiredness=Requiredness.NONE)
         public Builder setMsg144(String msg144) {
             this.msg144 = msg144;
             return this;
         }
-        private String msg145;
         @ThriftField(value=145, name="msg145", requiredness=Requiredness.NONE)
         public Builder setMsg145(String msg145) {
             this.msg145 = msg145;
             return this;
         }
-        private String msg146;
         @ThriftField(value=146, name="msg146", requiredness=Requiredness.NONE)
         public Builder setMsg146(String msg146) {
             this.msg146 = msg146;
             return this;
         }
-        private String msg147;
         @ThriftField(value=147, name="msg147", requiredness=Requiredness.NONE)
         public Builder setMsg147(String msg147) {
             this.msg147 = msg147;
             return this;
         }
-        private String msg148;
         @ThriftField(value=148, name="msg148", requiredness=Requiredness.NONE)
         public Builder setMsg148(String msg148) {
             this.msg148 = msg148;
             return this;
         }
-        private String msg149;
         @ThriftField(value=149, name="msg149", requiredness=Requiredness.NONE)
         public Builder setMsg149(String msg149) {
             this.msg149 = msg149;
             return this;
         }
-        private String msg150;
         @ThriftField(value=150, name="msg150", requiredness=Requiredness.NONE)
         public Builder setMsg150(String msg150) {
             this.msg150 = msg150;
             return this;
         }
-        private String msg151;
         @ThriftField(value=151, name="msg151", requiredness=Requiredness.NONE)
         public Builder setMsg151(String msg151) {
             this.msg151 = msg151;
             return this;
         }
-        private String msg152;
         @ThriftField(value=152, name="msg152", requiredness=Requiredness.NONE)
         public Builder setMsg152(String msg152) {
             this.msg152 = msg152;
             return this;
         }
-        private String msg153;
         @ThriftField(value=153, name="msg153", requiredness=Requiredness.NONE)
         public Builder setMsg153(String msg153) {
             this.msg153 = msg153;
             return this;
         }
-        private String msg154;
         @ThriftField(value=154, name="msg154", requiredness=Requiredness.NONE)
         public Builder setMsg154(String msg154) {
             this.msg154 = msg154;
             return this;
         }
-        private String msg155;
         @ThriftField(value=155, name="msg155", requiredness=Requiredness.NONE)
         public Builder setMsg155(String msg155) {
             this.msg155 = msg155;
             return this;
         }
-        private String msg156;
         @ThriftField(value=156, name="msg156", requiredness=Requiredness.NONE)
         public Builder setMsg156(String msg156) {
             this.msg156 = msg156;
             return this;
         }
-        private String msg157;
         @ThriftField(value=157, name="msg157", requiredness=Requiredness.NONE)
         public Builder setMsg157(String msg157) {
             this.msg157 = msg157;
             return this;
         }
-        private String msg158;
         @ThriftField(value=158, name="msg158", requiredness=Requiredness.NONE)
         public Builder setMsg158(String msg158) {
             this.msg158 = msg158;
             return this;
         }
-        private String msg159;
         @ThriftField(value=159, name="msg159", requiredness=Requiredness.NONE)
         public Builder setMsg159(String msg159) {
             this.msg159 = msg159;
             return this;
         }
-        private String msg160;
         @ThriftField(value=160, name="msg160", requiredness=Requiredness.NONE)
         public Builder setMsg160(String msg160) {
             this.msg160 = msg160;
             return this;
         }
-        private String msg161;
         @ThriftField(value=161, name="msg161", requiredness=Requiredness.NONE)
         public Builder setMsg161(String msg161) {
             this.msg161 = msg161;
             return this;
         }
-        private String msg162;
         @ThriftField(value=162, name="msg162", requiredness=Requiredness.NONE)
         public Builder setMsg162(String msg162) {
             this.msg162 = msg162;
             return this;
         }
-        private String msg163;
         @ThriftField(value=163, name="msg163", requiredness=Requiredness.NONE)
         public Builder setMsg163(String msg163) {
             this.msg163 = msg163;
             return this;
         }
-        private String msg164;
         @ThriftField(value=164, name="msg164", requiredness=Requiredness.NONE)
         public Builder setMsg164(String msg164) {
             this.msg164 = msg164;
             return this;
         }
-        private String msg165;
         @ThriftField(value=165, name="msg165", requiredness=Requiredness.NONE)
         public Builder setMsg165(String msg165) {
             this.msg165 = msg165;
             return this;
         }
-        private String msg166;
         @ThriftField(value=166, name="msg166", requiredness=Requiredness.NONE)
         public Builder setMsg166(String msg166) {
             this.msg166 = msg166;
             return this;
         }
-        private String msg167;
         @ThriftField(value=167, name="msg167", requiredness=Requiredness.NONE)
         public Builder setMsg167(String msg167) {
             this.msg167 = msg167;
             return this;
         }
-        private String msg168;
         @ThriftField(value=168, name="msg168", requiredness=Requiredness.NONE)
         public Builder setMsg168(String msg168) {
             this.msg168 = msg168;
             return this;
         }
-        private String msg169;
         @ThriftField(value=169, name="msg169", requiredness=Requiredness.NONE)
         public Builder setMsg169(String msg169) {
             this.msg169 = msg169;
             return this;
         }
-        private String msg170;
         @ThriftField(value=170, name="msg170", requiredness=Requiredness.NONE)
         public Builder setMsg170(String msg170) {
             this.msg170 = msg170;
             return this;
         }
-        private String msg171;
         @ThriftField(value=171, name="msg171", requiredness=Requiredness.NONE)
         public Builder setMsg171(String msg171) {
             this.msg171 = msg171;
             return this;
         }
-        private String msg172;
         @ThriftField(value=172, name="msg172", requiredness=Requiredness.NONE)
         public Builder setMsg172(String msg172) {
             this.msg172 = msg172;
             return this;
         }
-        private String msg173;
         @ThriftField(value=173, name="msg173", requiredness=Requiredness.NONE)
         public Builder setMsg173(String msg173) {
             this.msg173 = msg173;
             return this;
         }
-        private String msg174;
         @ThriftField(value=174, name="msg174", requiredness=Requiredness.NONE)
         public Builder setMsg174(String msg174) {
             this.msg174 = msg174;
             return this;
         }
-        private String msg175;
         @ThriftField(value=175, name="msg175", requiredness=Requiredness.NONE)
         public Builder setMsg175(String msg175) {
             this.msg175 = msg175;
             return this;
         }
-        private String msg176;
         @ThriftField(value=176, name="msg176", requiredness=Requiredness.NONE)
         public Builder setMsg176(String msg176) {
             this.msg176 = msg176;
             return this;
         }
-        private String msg177;
         @ThriftField(value=177, name="msg177", requiredness=Requiredness.NONE)
         public Builder setMsg177(String msg177) {
             this.msg177 = msg177;
             return this;
         }
-        private String msg178;
         @ThriftField(value=178, name="msg178", requiredness=Requiredness.NONE)
         public Builder setMsg178(String msg178) {
             this.msg178 = msg178;
             return this;
         }
-        private String msg179;
         @ThriftField(value=179, name="msg179", requiredness=Requiredness.NONE)
         public Builder setMsg179(String msg179) {
             this.msg179 = msg179;
             return this;
         }
-        private String msg180;
         @ThriftField(value=180, name="msg180", requiredness=Requiredness.NONE)
         public Builder setMsg180(String msg180) {
             this.msg180 = msg180;
             return this;
         }
-        private String msg181;
         @ThriftField(value=181, name="msg181", requiredness=Requiredness.NONE)
         public Builder setMsg181(String msg181) {
             this.msg181 = msg181;
             return this;
         }
-        private String msg182;
         @ThriftField(value=182, name="msg182", requiredness=Requiredness.NONE)
         public Builder setMsg182(String msg182) {
             this.msg182 = msg182;
             return this;
         }
-        private String msg183;
         @ThriftField(value=183, name="msg183", requiredness=Requiredness.NONE)
         public Builder setMsg183(String msg183) {
             this.msg183 = msg183;
             return this;
         }
-        private String msg184;
         @ThriftField(value=184, name="msg184", requiredness=Requiredness.NONE)
         public Builder setMsg184(String msg184) {
             this.msg184 = msg184;
             return this;
         }
-        private String msg185;
         @ThriftField(value=185, name="msg185", requiredness=Requiredness.NONE)
         public Builder setMsg185(String msg185) {
             this.msg185 = msg185;
             return this;
         }
-        private String msg186;
         @ThriftField(value=186, name="msg186", requiredness=Requiredness.NONE)
         public Builder setMsg186(String msg186) {
             this.msg186 = msg186;
             return this;
         }
-        private String msg187;
         @ThriftField(value=187, name="msg187", requiredness=Requiredness.NONE)
         public Builder setMsg187(String msg187) {
             this.msg187 = msg187;
             return this;
         }
-        private String msg188;
         @ThriftField(value=188, name="msg188", requiredness=Requiredness.NONE)
         public Builder setMsg188(String msg188) {
             this.msg188 = msg188;
             return this;
         }
-        private String msg189;
         @ThriftField(value=189, name="msg189", requiredness=Requiredness.NONE)
         public Builder setMsg189(String msg189) {
             this.msg189 = msg189;
             return this;
         }
-        private String msg190;
         @ThriftField(value=190, name="msg190", requiredness=Requiredness.NONE)
         public Builder setMsg190(String msg190) {
             this.msg190 = msg190;
             return this;
         }
-        private String msg191;
         @ThriftField(value=191, name="msg191", requiredness=Requiredness.NONE)
         public Builder setMsg191(String msg191) {
             this.msg191 = msg191;
             return this;
         }
-        private String msg192;
         @ThriftField(value=192, name="msg192", requiredness=Requiredness.NONE)
         public Builder setMsg192(String msg192) {
             this.msg192 = msg192;
             return this;
         }
-        private String msg193;
         @ThriftField(value=193, name="msg193", requiredness=Requiredness.NONE)
         public Builder setMsg193(String msg193) {
             this.msg193 = msg193;
             return this;
         }
-        private String msg194;
         @ThriftField(value=194, name="msg194", requiredness=Requiredness.NONE)
         public Builder setMsg194(String msg194) {
             this.msg194 = msg194;
             return this;
         }
-        private String msg195;
         @ThriftField(value=195, name="msg195", requiredness=Requiredness.NONE)
         public Builder setMsg195(String msg195) {
             this.msg195 = msg195;
             return this;
         }
-        private String msg196;
         @ThriftField(value=196, name="msg196", requiredness=Requiredness.NONE)
         public Builder setMsg196(String msg196) {
             this.msg196 = msg196;
             return this;
         }
-        private String msg197;
         @ThriftField(value=197, name="msg197", requiredness=Requiredness.NONE)
         public Builder setMsg197(String msg197) {
             this.msg197 = msg197;
             return this;
         }
-        private String msg198;
         @ThriftField(value=198, name="msg198", requiredness=Requiredness.NONE)
         public Builder setMsg198(String msg198) {
             this.msg198 = msg198;
             return this;
         }
-        private String msg199;
         @ThriftField(value=199, name="msg199", requiredness=Requiredness.NONE)
         public Builder setMsg199(String msg199) {
             this.msg199 = msg199;
             return this;
         }
-        private String msg200;
         @ThriftField(value=200, name="msg200", requiredness=Requiredness.NONE)
         public Builder setMsg200(String msg200) {
             this.msg200 = msg200;
             return this;
         }
-        private String msg201;
         @ThriftField(value=201, name="msg201", requiredness=Requiredness.NONE)
         public Builder setMsg201(String msg201) {
             this.msg201 = msg201;
             return this;
         }
-        private String msg202;
         @ThriftField(value=202, name="msg202", requiredness=Requiredness.NONE)
         public Builder setMsg202(String msg202) {
             this.msg202 = msg202;
             return this;
         }
-        private String msg203;
         @ThriftField(value=203, name="msg203", requiredness=Requiredness.NONE)
         public Builder setMsg203(String msg203) {
             this.msg203 = msg203;
             return this;
         }
-        private String msg204;
         @ThriftField(value=204, name="msg204", requiredness=Requiredness.NONE)
         public Builder setMsg204(String msg204) {
             this.msg204 = msg204;
             return this;
         }
-        private String msg205;
         @ThriftField(value=205, name="msg205", requiredness=Requiredness.NONE)
         public Builder setMsg205(String msg205) {
             this.msg205 = msg205;
             return this;
         }
-        private String msg206;
         @ThriftField(value=206, name="msg206", requiredness=Requiredness.NONE)
         public Builder setMsg206(String msg206) {
             this.msg206 = msg206;
             return this;
         }
-        private String msg207;
         @ThriftField(value=207, name="msg207", requiredness=Requiredness.NONE)
         public Builder setMsg207(String msg207) {
             this.msg207 = msg207;
             return this;
         }
-        private String msg208;
         @ThriftField(value=208, name="msg208", requiredness=Requiredness.NONE)
         public Builder setMsg208(String msg208) {
             this.msg208 = msg208;
             return this;
         }
-        private String msg209;
         @ThriftField(value=209, name="msg209", requiredness=Requiredness.NONE)
         public Builder setMsg209(String msg209) {
             this.msg209 = msg209;
             return this;
         }
-        private String msg210;
         @ThriftField(value=210, name="msg210", requiredness=Requiredness.NONE)
         public Builder setMsg210(String msg210) {
             this.msg210 = msg210;
             return this;
         }
-        private String msg211;
         @ThriftField(value=211, name="msg211", requiredness=Requiredness.NONE)
         public Builder setMsg211(String msg211) {
             this.msg211 = msg211;
             return this;
         }
-        private String msg212;
         @ThriftField(value=212, name="msg212", requiredness=Requiredness.NONE)
         public Builder setMsg212(String msg212) {
             this.msg212 = msg212;
             return this;
         }
-        private String msg213;
         @ThriftField(value=213, name="msg213", requiredness=Requiredness.NONE)
         public Builder setMsg213(String msg213) {
             this.msg213 = msg213;
             return this;
         }
-        private String msg214;
         @ThriftField(value=214, name="msg214", requiredness=Requiredness.NONE)
         public Builder setMsg214(String msg214) {
             this.msg214 = msg214;
             return this;
         }
-        private String msg215;
         @ThriftField(value=215, name="msg215", requiredness=Requiredness.NONE)
         public Builder setMsg215(String msg215) {
             this.msg215 = msg215;
             return this;
         }
-        private String msg216;
         @ThriftField(value=216, name="msg216", requiredness=Requiredness.NONE)
         public Builder setMsg216(String msg216) {
             this.msg216 = msg216;
             return this;
         }
-        private String msg217;
         @ThriftField(value=217, name="msg217", requiredness=Requiredness.NONE)
         public Builder setMsg217(String msg217) {
             this.msg217 = msg217;
             return this;
         }
-        private String msg218;
         @ThriftField(value=218, name="msg218", requiredness=Requiredness.NONE)
         public Builder setMsg218(String msg218) {
             this.msg218 = msg218;
             return this;
         }
-        private String msg219;
         @ThriftField(value=219, name="msg219", requiredness=Requiredness.NONE)
         public Builder setMsg219(String msg219) {
             this.msg219 = msg219;
             return this;
         }
-        private String msg220;
         @ThriftField(value=220, name="msg220", requiredness=Requiredness.NONE)
         public Builder setMsg220(String msg220) {
             this.msg220 = msg220;
             return this;
         }
-        private String msg221;
         @ThriftField(value=221, name="msg221", requiredness=Requiredness.NONE)
         public Builder setMsg221(String msg221) {
             this.msg221 = msg221;
             return this;
         }
-        private String msg222;
         @ThriftField(value=222, name="msg222", requiredness=Requiredness.NONE)
         public Builder setMsg222(String msg222) {
             this.msg222 = msg222;
             return this;
         }
-        private String msg223;
         @ThriftField(value=223, name="msg223", requiredness=Requiredness.NONE)
         public Builder setMsg223(String msg223) {
             this.msg223 = msg223;
             return this;
         }
-        private String msg224;
         @ThriftField(value=224, name="msg224", requiredness=Requiredness.NONE)
         public Builder setMsg224(String msg224) {
             this.msg224 = msg224;
             return this;
         }
-        private String msg225;
         @ThriftField(value=225, name="msg225", requiredness=Requiredness.NONE)
         public Builder setMsg225(String msg225) {
             this.msg225 = msg225;
             return this;
         }
-        private String msg226;
         @ThriftField(value=226, name="msg226", requiredness=Requiredness.NONE)
         public Builder setMsg226(String msg226) {
             this.msg226 = msg226;
             return this;
         }
-        private String msg227;
         @ThriftField(value=227, name="msg227", requiredness=Requiredness.NONE)
         public Builder setMsg227(String msg227) {
             this.msg227 = msg227;
             return this;
         }
-        private String msg228;
         @ThriftField(value=228, name="msg228", requiredness=Requiredness.NONE)
         public Builder setMsg228(String msg228) {
             this.msg228 = msg228;
             return this;
         }
-        private String msg229;
         @ThriftField(value=229, name="msg229", requiredness=Requiredness.NONE)
         public Builder setMsg229(String msg229) {
             this.msg229 = msg229;
             return this;
         }
-        private String msg230;
         @ThriftField(value=230, name="msg230", requiredness=Requiredness.NONE)
         public Builder setMsg230(String msg230) {
             this.msg230 = msg230;
             return this;
         }
-        private String msg231;
         @ThriftField(value=231, name="msg231", requiredness=Requiredness.NONE)
         public Builder setMsg231(String msg231) {
             this.msg231 = msg231;
             return this;
         }
-        private String msg232;
         @ThriftField(value=232, name="msg232", requiredness=Requiredness.NONE)
         public Builder setMsg232(String msg232) {
             this.msg232 = msg232;
             return this;
         }
-        private String msg233;
         @ThriftField(value=233, name="msg233", requiredness=Requiredness.NONE)
         public Builder setMsg233(String msg233) {
             this.msg233 = msg233;
             return this;
         }
-        private String msg234;
         @ThriftField(value=234, name="msg234", requiredness=Requiredness.NONE)
         public Builder setMsg234(String msg234) {
             this.msg234 = msg234;
             return this;
         }
-        private String msg235;
         @ThriftField(value=235, name="msg235", requiredness=Requiredness.NONE)
         public Builder setMsg235(String msg235) {
             this.msg235 = msg235;
             return this;
         }
-        private String msg236;
         @ThriftField(value=236, name="msg236", requiredness=Requiredness.NONE)
         public Builder setMsg236(String msg236) {
             this.msg236 = msg236;
             return this;
         }
-        private String msg237;
         @ThriftField(value=237, name="msg237", requiredness=Requiredness.NONE)
         public Builder setMsg237(String msg237) {
             this.msg237 = msg237;
             return this;
         }
-        private String msg238;
         @ThriftField(value=238, name="msg238", requiredness=Requiredness.NONE)
         public Builder setMsg238(String msg238) {
             this.msg238 = msg238;
             return this;
         }
-        private String msg239;
         @ThriftField(value=239, name="msg239", requiredness=Requiredness.NONE)
         public Builder setMsg239(String msg239) {
             this.msg239 = msg239;
             return this;
         }
-        private String msg240;
         @ThriftField(value=240, name="msg240", requiredness=Requiredness.NONE)
         public Builder setMsg240(String msg240) {
             this.msg240 = msg240;
             return this;
         }
-        private String msg241;
         @ThriftField(value=241, name="msg241", requiredness=Requiredness.NONE)
         public Builder setMsg241(String msg241) {
             this.msg241 = msg241;
             return this;
         }
-        private String msg242;
         @ThriftField(value=242, name="msg242", requiredness=Requiredness.NONE)
         public Builder setMsg242(String msg242) {
             this.msg242 = msg242;
             return this;
         }
-        private String msg243;
         @ThriftField(value=243, name="msg243", requiredness=Requiredness.NONE)
         public Builder setMsg243(String msg243) {
             this.msg243 = msg243;
             return this;
         }
-        private String msg244;
         @ThriftField(value=244, name="msg244", requiredness=Requiredness.NONE)
         public Builder setMsg244(String msg244) {
             this.msg244 = msg244;
             return this;
         }
-        private String msg245;
         @ThriftField(value=245, name="msg245", requiredness=Requiredness.NONE)
         public Builder setMsg245(String msg245) {
             this.msg245 = msg245;
             return this;
         }
-        private String msg246;
         @ThriftField(value=246, name="msg246", requiredness=Requiredness.NONE)
         public Builder setMsg246(String msg246) {
             this.msg246 = msg246;
             return this;
         }
-        private String msg247;
         @ThriftField(value=247, name="msg247", requiredness=Requiredness.NONE)
         public Builder setMsg247(String msg247) {
             this.msg247 = msg247;
             return this;
         }
-        private String msg248;
         @ThriftField(value=248, name="msg248", requiredness=Requiredness.NONE)
         public Builder setMsg248(String msg248) {
             this.msg248 = msg248;
             return this;
         }
-        private String msg249;
         @ThriftField(value=249, name="msg249", requiredness=Requiredness.NONE)
         public Builder setMsg249(String msg249) {
             this.msg249 = msg249;
             return this;
         }
-        private String msg250;
         @ThriftField(value=250, name="msg250", requiredness=Requiredness.NONE)
         public Builder setMsg250(String msg250) {
             this.msg250 = msg250;
             return this;
         }
-        private String msg251;
         @ThriftField(value=251, name="msg251", requiredness=Requiredness.NONE)
         public Builder setMsg251(String msg251) {
             this.msg251 = msg251;
             return this;
         }
-        private String msg252;
         @ThriftField(value=252, name="msg252", requiredness=Requiredness.NONE)
         public Builder setMsg252(String msg252) {
             this.msg252 = msg252;
             return this;
         }
-        private String msg253;
         @ThriftField(value=253, name="msg253", requiredness=Requiredness.NONE)
         public Builder setMsg253(String msg253) {
             this.msg253 = msg253;
             return this;
         }
-        private String msg254;
         @ThriftField(value=254, name="msg254", requiredness=Requiredness.NONE)
         public Builder setMsg254(String msg254) {
             this.msg254 = msg254;
             return this;
         }
-        private String msg255;
         @ThriftField(value=255, name="msg255", requiredness=Requiredness.NONE)
         public Builder setMsg255(String msg255) {
             this.msg255 = msg255;
             return this;
         }
-        private String msg256;
         @ThriftField(value=256, name="msg256", requiredness=Requiredness.NONE)
         public Builder setMsg256(String msg256) {
             this.msg256 = msg256;
             return this;
         }
-        private String msg257;
         @ThriftField(value=257, name="msg257", requiredness=Requiredness.NONE)
         public Builder setMsg257(String msg257) {
             this.msg257 = msg257;

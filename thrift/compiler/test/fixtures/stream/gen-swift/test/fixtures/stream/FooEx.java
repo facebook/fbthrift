@@ -36,6 +36,7 @@ public final class FooEx extends java.lang.Exception {
     
     public static class Builder {
     
+    
         public Builder() { }
         public Builder(FooEx other) {
         }

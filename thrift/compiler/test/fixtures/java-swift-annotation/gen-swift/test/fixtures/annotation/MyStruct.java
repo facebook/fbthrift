@@ -10,6 +10,7 @@ package test.fixtures.annotation;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -47,25 +48,26 @@ public final class MyStruct {
     }
     
     public static class Builder {
-        private long intField;
+        private long intField = 0L;
+        private String stringField = null;
+        private String detailField = null;
+        private com.foo.FastIntLongMap detailMap = null;
+    
         @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
         public Builder setIntField(long intField) {
             this.intField = intField;
             return this;
         }
-        private String stringField;
         @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
         public Builder setStringField(String stringField) {
             this.stringField = stringField;
             return this;
         }
-        private String detailField;
         @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)
         public Builder setDetailField(String detailField) {
             this.detailField = detailField;
             return this;
         }
-        private com.foo.FastIntLongMap detailMap;
         @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
         public Builder setDetailMap(com.foo.FastIntLongMap detailMap) {
             this.detailMap = detailMap;

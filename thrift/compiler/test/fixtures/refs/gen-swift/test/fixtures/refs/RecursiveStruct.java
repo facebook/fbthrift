@@ -10,6 +10,7 @@ package test.fixtures.refs;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -38,7 +39,8 @@ public final class RecursiveStruct {
     }
     
     public static class Builder {
-        private List<test.fixtures.refs.RecursiveStruct> mes;
+        private List<test.fixtures.refs.RecursiveStruct> mes = null;
+    
         @ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, isRecursive=Recursiveness.TRUE)
         public Builder setMes(List<test.fixtures.refs.RecursiveStruct> mes) {
             this.mes = mes;

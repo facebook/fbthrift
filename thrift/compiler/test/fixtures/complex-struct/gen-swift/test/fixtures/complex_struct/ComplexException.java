@@ -73,37 +73,38 @@ public final class ComplexException extends java.lang.Exception {
     }
     
     public static class Builder {
-        private String message;
+        private String message = null;
+        private List<String> listStrings = null;
+        private test.fixtures.complex_struct.MyEnum errorEnum = null;
+        private test.fixtures.complex_struct.MyUnion unionError = null;
+        private test.fixtures.complex_struct.MyStruct structError = null;
+        private it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap = null;
+    
         @ThriftField(value=1, name="message", requiredness=Requiredness.NONE)
         public Builder setMessage(String message) {
             this.message = message;
             return this;
         }
-        private List<String> listStrings;
         @ThriftField(value=2, name="listStrings", requiredness=Requiredness.NONE)
         public Builder setListStrings(List<String> listStrings) {
             this.listStrings = listStrings;
             return this;
         }
-        private test.fixtures.complex_struct.MyEnum errorEnum;
         @ThriftField(value=3, name="errorEnum", requiredness=Requiredness.NONE)
         public Builder setErrorEnum(test.fixtures.complex_struct.MyEnum errorEnum) {
             this.errorEnum = errorEnum;
             return this;
         }
-        private test.fixtures.complex_struct.MyUnion unionError;
         @ThriftField(value=4, name="unionError", requiredness=Requiredness.OPTIONAL)
         public Builder setUnionError(test.fixtures.complex_struct.MyUnion unionError) {
             this.unionError = unionError;
             return this;
         }
-        private test.fixtures.complex_struct.MyStruct structError;
         @ThriftField(value=5, name="structError", requiredness=Requiredness.NONE)
         public Builder setStructError(test.fixtures.complex_struct.MyStruct structError) {
             this.structError = structError;
             return this;
         }
-        private it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap;
         @ThriftField(value=6, name="lsMap", requiredness=Requiredness.NONE)
         public Builder setLsMap(it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap) {
             this.lsMap = lsMap;

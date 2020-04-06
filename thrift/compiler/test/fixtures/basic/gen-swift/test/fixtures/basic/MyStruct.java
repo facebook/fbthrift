@@ -10,6 +10,7 @@ package test.fixtures.basic;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -47,25 +48,26 @@ public final class MyStruct {
     }
     
     public static class Builder {
-        private long myIntField;
+        private long myIntField = 0L;
+        private String myStringField = null;
+        private test.fixtures.basic.MyDataItem myDataField = null;
+        private test.fixtures.basic.MyEnum myEnum = null;
+    
         @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
         public Builder setMyIntField(long myIntField) {
             this.myIntField = myIntField;
             return this;
         }
-        private String myStringField;
         @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
         public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
         }
-        private test.fixtures.basic.MyDataItem myDataField;
         @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
         public Builder setMyDataField(test.fixtures.basic.MyDataItem myDataField) {
             this.myDataField = myDataField;
             return this;
         }
-        private test.fixtures.basic.MyEnum myEnum;
         @ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
         public Builder setMyEnum(test.fixtures.basic.MyEnum myEnum) {
             this.myEnum = myEnum;

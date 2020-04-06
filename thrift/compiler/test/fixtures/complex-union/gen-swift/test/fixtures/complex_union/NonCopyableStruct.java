@@ -10,6 +10,7 @@ package test.fixtures.complex_union;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -38,7 +39,8 @@ public final class NonCopyableStruct {
     }
     
     public static class Builder {
-        private long num;
+        private long num = 0L;
+    
         @ThriftField(value=1, name="num", requiredness=Requiredness.NONE)
         public Builder setNum(long num) {
             this.num = num;

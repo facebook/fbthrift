@@ -10,6 +10,7 @@ package test.fixtures.req_opt;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -47,25 +48,26 @@ public final class Foo {
     }
     
     public static class Builder {
-        private int myInteger;
+        private int myInteger = 0;
+        private String myString = null;
+        private List<Boolean> myBools = null;
+        private List<Integer> myNumbers = null;
+    
         @ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED)
         public Builder setMyInteger(int myInteger) {
             this.myInteger = myInteger;
             return this;
         }
-        private String myString;
         @ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)
         public Builder setMyString(String myString) {
             this.myString = myString;
             return this;
         }
-        private List<Boolean> myBools;
         @ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)
         public Builder setMyBools(List<Boolean> myBools) {
             this.myBools = myBools;
             return this;
         }
-        private List<Integer> myNumbers;
         @ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)
         public Builder setMyNumbers(List<Integer> myNumbers) {
             this.myNumbers = myNumbers;

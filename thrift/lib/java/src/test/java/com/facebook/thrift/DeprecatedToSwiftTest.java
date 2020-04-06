@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 import com.facebook.thrift.javaswift.test.ComplexNestedStruct;
+import com.facebook.thrift.javaswift.test.DefaultValueStruct;
 import com.facebook.thrift.javaswift.test.MyOptioalStruct;
 import com.facebook.thrift.javaswift.test.MySimpleStruct;
 import com.facebook.thrift.javaswift.test.MySimpleUnion;
@@ -53,6 +54,8 @@ public class DeprecatedToSwiftTest extends junit.framework.TestCase {
     testReadEqualWriteSimpleUnion();
     testReadEqualWriteOptionalFields();
     testSwiftTypeAnnontationsFields();
+    testDefaultValues();
+    testWriteEqualDeprecatedReadSimpleDFValue();
   }
 
   public static void testWriteEqualDeprecatedReadSimple() throws Exception {
@@ -74,6 +77,24 @@ public class DeprecatedToSwiftTest extends junit.framework.TestCase {
     structJavaDeprecated.read(protocol);
     assertThat(structJavaDeprecated.getId(), equalTo(idValue));
     assertThat(structJavaDeprecated.getName(), equalTo(nameValue));
+  }
+
+  public static void testWriteEqualDeprecatedReadSimpleDFValue() throws Exception {
+    org.apache.thrift.transport.TMemoryBuffer buf =
+        new org.apache.thrift.transport.TMemoryBuffer(0);
+    org.apache.thrift.protocol.TProtocolFactory factory =
+        new org.apache.thrift.protocol.TCompactProtocol.Factory();
+
+    org.apache.thrift.protocol.TProtocol apacheProto = factory.getProtocol(buf);
+    MySimpleStruct struct1 = new MySimpleStruct.Builder().build();
+    struct1.write0(apacheProto);
+    com.facebook.thrift.java.test.MySimpleStruct structJavaDeprecated =
+        new com.facebook.thrift.java.test.MySimpleStruct();
+
+    ApacheToFacebookProtocolAdapter protocol = new ApacheToFacebookProtocolAdapter(apacheProto);
+    structJavaDeprecated.read(protocol);
+    assertThat(structJavaDeprecated.getId(), equalTo(99L));
+    assertThat(structJavaDeprecated.getName(), equalTo("Batman"));
   }
 
   public static void testWriteEqualDeprecatedReadSimpleUnion() throws Exception {
@@ -169,6 +190,133 @@ public class DeprecatedToSwiftTest extends junit.framework.TestCase {
     assertThat(structCreatedFromRead.getJ(), equalTo(j));
     assertThat(structCreatedFromRead.getK(), equalTo(k));
     assertThat(structCreatedFromRead.getD(), equalTo(d));
+  }
+
+  public static void testDefaultValuesSimpleStructTypes() throws Exception {
+    String defaultMsg = "Bye Thrift Team";
+    boolean defaultB = false;
+    byte defaultY = 97;
+    short defaultI = 1;
+    int defaultJ = -9999;
+    long defaultK = 14444444444444L;
+    double defaultD = 14;
+
+    org.apache.thrift.transport.TMemoryBuffer buf =
+        new org.apache.thrift.transport.TMemoryBuffer(0);
+    org.apache.thrift.protocol.TProtocolFactory factory =
+        new org.apache.thrift.protocol.TCompactProtocol.Factory();
+
+    org.apache.thrift.protocol.TProtocol apacheProto = factory.getProtocol(buf);
+    SimpleStructTypes struct1 = new SimpleStructTypes.Builder().build();
+    struct1.write0(apacheProto);
+
+    SimpleStructTypes structCreatedFromRead = SimpleStructTypes.read0(apacheProto);
+    assertThat(structCreatedFromRead.getMsg(), equalTo(defaultMsg));
+    assertThat(structCreatedFromRead.isB(), equalTo(defaultB));
+    assertThat(structCreatedFromRead.getY(), equalTo(defaultY));
+    assertThat(structCreatedFromRead.getI(), equalTo(defaultI));
+    assertThat(structCreatedFromRead.getJ(), equalTo(defaultJ));
+    assertThat(structCreatedFromRead.getK(), equalTo(defaultK));
+    assertThat(structCreatedFromRead.getD(), equalTo(defaultD));
+  }
+
+  public static void testDefaultValues() throws Exception {
+    long defaultMyLongDFset = 10L;
+    long defaultMyLongDF = 0L; // Default value
+    int defaultPortDFset = 3456; // Constant PortNum
+    int defaultPortNum = 0;
+    byte[] defaultMyBinaryDFset = "abc".getBytes(); // binary
+    byte[] defaultMyBinary = null; // Default binary
+    byte defaultByteDFSet = (byte) 17;
+    byte defaultMyByte = (byte) 0;
+    double defaultMyDoubleDFset = 99.7678;
+    double defaultMyDoubleDFZero = 0.0;
+    double defaultMyDouble = 0.0;
+    Map<Integer, String> defaultMapIntStr = new HashMap<Integer, String>(2);
+    defaultMapIntStr.put(15, "a_value");
+    defaultMapIntStr.put(2, "b_value");
+    MySimpleStruct simpleStruct = new MySimpleStruct.Builder().setId(40L).setName("John").build();
+    List<SmallEnum> defaultMyList = new ArrayList<SmallEnum>(3);
+    defaultMyList.add(SmallEnum.RED);
+    defaultMyList.add(SmallEnum.BLUE);
+    defaultMyList.add(SmallEnum.GREEN);
+    HashSet<String> defaultMySet = new HashSet<String>(3);
+    defaultMySet.add("house");
+    defaultMySet.add("car");
+    defaultMySet.add("dog");
+    List<MySimpleStruct> defaultListStructDFset = new ArrayList<MySimpleStruct>(2);
+    defaultListStructDFset.add(new MySimpleStruct.Builder().setId(40L).setName("IronMan").build());
+    defaultListStructDFset.add(new MySimpleStruct.Builder().setId(999L).setName("Thanos").build());
+    MySimpleUnion defaultMyUnion = MySimpleUnion.fromSmallEnum(SmallEnum.BLUE);
+    List<MySimpleUnion> defaultListUnionDFset = new ArrayList<MySimpleUnion>(2);
+    defaultListUnionDFset.add(MySimpleUnion.fromSmallEnum(SmallEnum.BLUE));
+    defaultListUnionDFset.add(MySimpleUnion.fromCaseTwo(123L));
+    Map<Integer, List<MySimpleStruct>> defaultMapNestlistStructDfSet =
+        new HashMap<Integer, List<MySimpleStruct>>(3);
+    defaultMapNestlistStructDfSet.put(1, defaultListStructDFset);
+    List<MySimpleStruct> defaultListStructDFsetTwo = new ArrayList<MySimpleStruct>(2);
+    defaultListStructDFsetTwo.add(
+        new MySimpleStruct.Builder().setId(28L).setName("BatMan").build());
+    defaultListStructDFsetTwo.add(new MySimpleStruct.Builder().setId(12L).setName("Robin").build());
+    defaultMapNestlistStructDfSet.put(2, defaultListStructDFsetTwo);
+    List<MySimpleStruct> defaultListStructDFsetThree = new ArrayList<MySimpleStruct>(2);
+    defaultListStructDFsetThree.add(
+        new MySimpleStruct.Builder().setId(12L).setName("RatMan").build());
+    defaultListStructDFsetThree.add(
+        new MySimpleStruct.Builder().setId(6L).setName("Catman").build());
+    defaultMapNestlistStructDfSet.put(5, defaultListStructDFsetThree);
+    Map<Long, Integer> defaultEmptyMap = new HashMap<Long, Integer>();
+    Map<String, Map<Integer, SmallEnum>> defaultEnumMapDFset =
+        new HashMap<String, Map<Integer, SmallEnum>>(3);
+    Map<Integer, SmallEnum> innerMap = new HashMap<Integer, SmallEnum>(2);
+    innerMap.put(16, SmallEnum.RED);
+    innerMap.put(144, SmallEnum.RED);
+    defaultEnumMapDFset.put("SANDY BRIDGE", innerMap);
+    Map<Integer, SmallEnum> innerMapTwo = new HashMap<Integer, SmallEnum>(2);
+    innerMapTwo.put(32, SmallEnum.GREEN);
+    innerMapTwo.put(144, SmallEnum.BLUE);
+    defaultEnumMapDFset.put("IVY BRIDGE", innerMapTwo);
+    Map<Integer, SmallEnum> innerMapThree = new HashMap<Integer, SmallEnum>(3);
+    innerMapThree.put(32, SmallEnum.RED);
+    innerMapThree.put(128, SmallEnum.BLUE);
+    innerMapThree.put(256, SmallEnum.GREEN);
+    defaultEnumMapDFset.put("HASWELL", innerMapThree);
+    Long2ObjectArrayMap<String> defaultMapJavaTypeDFset = new Long2ObjectArrayMap<String>();
+    defaultMapJavaTypeDFset.put(15L, "a_value");
+    defaultMapJavaTypeDFset.put(2L, "b_value");
+
+    org.apache.thrift.transport.TMemoryBuffer buf =
+        new org.apache.thrift.transport.TMemoryBuffer(0);
+    org.apache.thrift.protocol.TProtocolFactory factory =
+        new org.apache.thrift.protocol.TCompactProtocol.Factory();
+
+    org.apache.thrift.protocol.TProtocol apacheProto = factory.getProtocol(buf);
+    DefaultValueStruct struct1 = new DefaultValueStruct.Builder().build();
+    struct1.write0(apacheProto);
+
+    DefaultValueStruct structCreatedFromRead = DefaultValueStruct.read0(apacheProto);
+    assertThat(structCreatedFromRead.getMyLongDFset(), equalTo(defaultMyLongDFset));
+    assertThat(structCreatedFromRead.getMyLongDF(), equalTo(defaultMyLongDF));
+    assertThat(structCreatedFromRead.getPortDFset(), equalTo(defaultPortDFset));
+    assertThat(structCreatedFromRead.getPortNum(), equalTo(defaultPortNum));
+    assertThat(structCreatedFromRead.getMyByteDFSet(), equalTo(defaultByteDFSet));
+    assertThat(structCreatedFromRead.getMyByte(), equalTo(defaultMyByte));
+    assertThat(structCreatedFromRead.getMyDoubleDFset(), equalTo(defaultMyDoubleDFset));
+    assertThat(structCreatedFromRead.getMyDoubleDFZero(), equalTo(defaultMyDoubleDFZero));
+    assertThat(structCreatedFromRead.getMyDouble(), equalTo(defaultMyDouble));
+    assertThat(structCreatedFromRead.getMIntegerString(), equalTo(defaultMapIntStr));
+    assertThat(structCreatedFromRead.getMyList(), equalTo(defaultMyList));
+    assertThat(structCreatedFromRead.getMySet(), equalTo(defaultMySet));
+    assertThat(structCreatedFromRead.getListStructDFset(), equalTo(defaultListStructDFset));
+    assertThat(structCreatedFromRead.getMyUnion(), equalTo(defaultMyUnion));
+    assertThat(structCreatedFromRead.getListUnionDFset(), equalTo(defaultListUnionDFset));
+    assertThat(
+        structCreatedFromRead.getMapNestlistStructDfSet(), equalTo(defaultMapNestlistStructDfSet));
+    assertThat(structCreatedFromRead.getEmptyMap(), equalTo(defaultEmptyMap));
+    assertThat(structCreatedFromRead.getEnumMapDFset(), equalTo(defaultEnumMapDFset));
+    assertThat(structCreatedFromRead.getMapJavaTypeDFset(), equalTo(defaultMapJavaTypeDFset));
+    assertThat(structCreatedFromRead.getMyBinaryDFset(), equalTo(defaultMyBinaryDFset));
+    assertThat(structCreatedFromRead.getMyBinary(), equalTo(defaultMyBinary));
   }
 
   public static void testWriteEqualDeprecatedCollectionStructs() throws Exception {

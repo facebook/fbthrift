@@ -10,6 +10,7 @@ package test.fixtures.constants;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -41,13 +42,14 @@ public final class Struct1 {
     }
     
     public static class Builder {
-        private int a;
+        private int a = 1234567;
+        private String b = "<uninitialized>";
+    
         @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
         public Builder setA(int a) {
             this.a = a;
             return this;
         }
-        private String b;
         @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
         public Builder setB(String b) {
             this.b = b;

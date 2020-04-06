@@ -10,6 +10,7 @@ package test.fixtures.constants;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -44,19 +45,20 @@ public final class Internship {
     }
     
     public static class Builder {
-        private int weeks;
+        private int weeks = 0;
+        private String title = null;
+        private test.fixtures.constants.Company employer = null;
+    
         @ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
         public Builder setWeeks(int weeks) {
             this.weeks = weeks;
             return this;
         }
-        private String title;
         @ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
         public Builder setTitle(String title) {
             this.title = title;
             return this;
         }
-        private test.fixtures.constants.Company employer;
         @ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
         public Builder setEmployer(test.fixtures.constants.Company employer) {
             this.employer = employer;

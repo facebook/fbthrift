@@ -49,13 +49,14 @@ public final class ReqXcep extends java.lang.Exception {
     }
     
     public static class Builder {
-        private String message;
+        private String message = null;
+        private int errorCode = 0;
+    
         @ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
         public Builder setMessage(String message) {
             this.message = message;
             return this;
         }
-        private int errorCode;
         @ThriftField(value=2, name="errorCode", requiredness=Requiredness.REQUIRED)
         public Builder setErrorCode(int errorCode) {
             this.errorCode = errorCode;

@@ -10,6 +10,7 @@ package test.fixtures.includes.transitive;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -38,7 +39,8 @@ public final class Foo {
     }
     
     public static class Builder {
-        private long a;
+        private long a = 2L;
+    
         @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
         public Builder setA(long a) {
             this.a = a;

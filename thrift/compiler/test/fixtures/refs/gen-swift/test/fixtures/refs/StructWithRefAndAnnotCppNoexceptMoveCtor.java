@@ -10,6 +10,7 @@ package test.fixtures.refs;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -38,7 +39,8 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
     }
     
     public static class Builder {
-        private test.fixtures.refs.Empty defField;
+        private test.fixtures.refs.Empty defField = null;
+    
         @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
         public Builder setDefField(test.fixtures.refs.Empty defField) {
             this.defField = defField;

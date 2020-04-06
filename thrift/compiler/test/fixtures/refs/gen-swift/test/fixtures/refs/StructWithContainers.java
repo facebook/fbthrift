@@ -10,6 +10,7 @@ package test.fixtures.refs;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -53,37 +54,38 @@ public final class StructWithContainers {
     }
     
     public static class Builder {
-        private List<Integer> listRef;
+        private List<Integer> listRef = null;
+        private Set<Integer> setRef = null;
+        private Map<Integer, Integer> mapRef = null;
+        private List<Integer> listRefUnique = null;
+        private Set<Integer> setRefShared = null;
+        private List<Integer> listRefSharedConst = null;
+    
         @ThriftField(value=1, name="list_ref", requiredness=Requiredness.NONE)
         public Builder setListRef(List<Integer> listRef) {
             this.listRef = listRef;
             return this;
         }
-        private Set<Integer> setRef;
         @ThriftField(value=2, name="set_ref", requiredness=Requiredness.NONE)
         public Builder setSetRef(Set<Integer> setRef) {
             this.setRef = setRef;
             return this;
         }
-        private Map<Integer, Integer> mapRef;
         @ThriftField(value=3, name="map_ref", requiredness=Requiredness.NONE)
         public Builder setMapRef(Map<Integer, Integer> mapRef) {
             this.mapRef = mapRef;
             return this;
         }
-        private List<Integer> listRefUnique;
         @ThriftField(value=4, name="list_ref_unique", requiredness=Requiredness.NONE)
         public Builder setListRefUnique(List<Integer> listRefUnique) {
             this.listRefUnique = listRefUnique;
             return this;
         }
-        private Set<Integer> setRefShared;
         @ThriftField(value=5, name="set_ref_shared", requiredness=Requiredness.NONE)
         public Builder setSetRefShared(Set<Integer> setRefShared) {
             this.setRefShared = setRefShared;
             return this;
         }
-        private List<Integer> listRefSharedConst;
         @ThriftField(value=6, name="list_ref_shared_const", requiredness=Requiredness.NONE)
         public Builder setListRefSharedConst(List<Integer> listRefSharedConst) {
             this.listRefSharedConst = listRefSharedConst;

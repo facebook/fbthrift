@@ -10,6 +10,7 @@ package test.fixtures.annotation;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -41,13 +42,14 @@ public final class MyMapping {
     }
     
     public static class Builder {
-        private com.foo.FastLongStringMap lsMap;
+        private com.foo.FastLongStringMap lsMap = null;
+        private com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap = null;
+    
         @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
         public Builder setLsMap(com.foo.FastLongStringMap lsMap) {
             this.lsMap = lsMap;
             return this;
         }
-        private com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap;
         @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
         public Builder setIoMap(com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap) {
             this.ioMap = ioMap;

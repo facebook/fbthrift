@@ -10,6 +10,7 @@ package test.fixtures.sink;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -38,7 +39,8 @@ public final class CompatibleWithKeywordSink {
     }
     
     public static class Builder {
-        private String sink;
+        private String sink = null;
+    
         @ThriftField(value=1, name="sink", requiredness=Requiredness.NONE)
         public Builder setSink(String sink) {
             this.sink = sink;

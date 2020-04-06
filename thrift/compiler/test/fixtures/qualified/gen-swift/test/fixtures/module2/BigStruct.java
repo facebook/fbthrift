@@ -10,6 +10,7 @@ package test.fixtures.module2;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -41,13 +42,14 @@ public final class BigStruct {
     }
     
     public static class Builder {
-        private test.fixtures.module2.Struct s;
+        private test.fixtures.module2.Struct s = null;
+        private int id = 0;
+    
         @ThriftField(value=1, name="s", requiredness=Requiredness.NONE)
         public Builder setS(test.fixtures.module2.Struct s) {
             this.s = s;
             return this;
         }
-        private int id;
         @ThriftField(value=2, name="id", requiredness=Requiredness.NONE)
         public Builder setId(int id) {
             this.id = id;

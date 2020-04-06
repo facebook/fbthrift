@@ -10,6 +10,7 @@ package test.fixtures.complex_struct;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -41,13 +42,14 @@ public final class MyStructMapFloatThrowExp {
     }
     
     public static class Builder {
-        private long myLongField;
+        private long myLongField = 0L;
+        private Map<Integer, List<List<Float>>> mapListOfFloats = null;
+    
         @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
         public Builder setMyLongField(long myLongField) {
             this.myLongField = myLongField;
             return this;
         }
-        private Map<Integer, List<List<Float>>> mapListOfFloats;
         @ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE)
         public Builder setMapListOfFloats(Map<Integer, List<List<Float>>> mapListOfFloats) {
             this.mapListOfFloats = mapListOfFloats;

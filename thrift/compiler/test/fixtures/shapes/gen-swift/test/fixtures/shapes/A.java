@@ -10,6 +10,7 @@ package test.fixtures.shapes;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -38,7 +39,8 @@ public final class A {
     }
     
     public static class Builder {
-        private String a;
+        private String a = null;
+    
         @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
         public Builder setA(String a) {
             this.a = a;

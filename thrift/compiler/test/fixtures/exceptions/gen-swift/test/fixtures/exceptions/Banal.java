@@ -36,6 +36,7 @@ public final class Banal extends java.lang.RuntimeException {
     
     public static class Builder {
     
+    
         public Builder() { }
         public Builder(Banal other) {
         }

@@ -10,6 +10,7 @@ package test.fixtures.complex_struct;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -62,55 +63,56 @@ public final class MyStructTypeDef {
     }
     
     public static class Builder {
-        private long myLongField;
+        private long myLongField = 0L;
+        private long myLongTypeDef = 0L;
+        private String myStringField = null;
+        private String myStringTypedef = null;
+        private Map<Short, String> myMapField = null;
+        private Map<Short, String> myMapTypedef = null;
+        private List<Double> myListField = null;
+        private List<Double> myListTypedef = null;
+        private Map<Short, List<List<Double>>> myMapListOfTypeDef = null;
+    
         @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
         public Builder setMyLongField(long myLongField) {
             this.myLongField = myLongField;
             return this;
         }
-        private long myLongTypeDef;
         @ThriftField(value=2, name="myLongTypeDef", requiredness=Requiredness.NONE)
         public Builder setMyLongTypeDef(long myLongTypeDef) {
             this.myLongTypeDef = myLongTypeDef;
             return this;
         }
-        private String myStringField;
         @ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)
         public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
         }
-        private String myStringTypedef;
         @ThriftField(value=4, name="myStringTypedef", requiredness=Requiredness.NONE)
         public Builder setMyStringTypedef(String myStringTypedef) {
             this.myStringTypedef = myStringTypedef;
             return this;
         }
-        private Map<Short, String> myMapField;
         @ThriftField(value=5, name="myMapField", requiredness=Requiredness.NONE)
         public Builder setMyMapField(Map<Short, String> myMapField) {
             this.myMapField = myMapField;
             return this;
         }
-        private Map<Short, String> myMapTypedef;
         @ThriftField(value=6, name="myMapTypedef", requiredness=Requiredness.NONE)
         public Builder setMyMapTypedef(Map<Short, String> myMapTypedef) {
             this.myMapTypedef = myMapTypedef;
             return this;
         }
-        private List<Double> myListField;
         @ThriftField(value=7, name="myListField", requiredness=Requiredness.NONE)
         public Builder setMyListField(List<Double> myListField) {
             this.myListField = myListField;
             return this;
         }
-        private List<Double> myListTypedef;
         @ThriftField(value=8, name="myListTypedef", requiredness=Requiredness.NONE)
         public Builder setMyListTypedef(List<Double> myListTypedef) {
             this.myListTypedef = myListTypedef;
             return this;
         }
-        private Map<Short, List<List<Double>>> myMapListOfTypeDef;
         @ThriftField(value=9, name="myMapListOfTypeDef", requiredness=Requiredness.NONE)
         public Builder setMyMapListOfTypeDef(Map<Short, List<List<Double>>> myMapListOfTypeDef) {
             this.myMapListOfTypeDef = myMapListOfTypeDef;

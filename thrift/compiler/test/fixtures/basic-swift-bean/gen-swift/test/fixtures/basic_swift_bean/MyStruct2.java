@@ -10,6 +10,7 @@ package test.fixtures.basic_swift_bean;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -26,16 +27,20 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct("MyStruct2")
 public final class MyStruct2 {
     @ThriftConstructor
-    public MyStruct2() {}
-
+    public MyStruct2() {
+      this.myStruct1 = null;
+      this.myString = null;
+    }
+    
     public static class Builder {
-        private test.fixtures.basic_swift_bean.MyStruct1 myStruct1;
+        private test.fixtures.basic_swift_bean.MyStruct1 myStruct1 = null;
+        private String myString = null;
+    
         @ThriftField(value=1, name="myStruct1", requiredness=Requiredness.NONE)
         public Builder setMyStruct1(test.fixtures.basic_swift_bean.MyStruct1 myStruct1) {
             this.myStruct1 = myStruct1;
             return this;
         }
-        private String myString;
         @ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)
         public Builder setMyString(String myString) {
             this.myString = myString;

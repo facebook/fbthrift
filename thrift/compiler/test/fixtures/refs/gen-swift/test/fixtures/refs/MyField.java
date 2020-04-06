@@ -10,6 +10,7 @@ package test.fixtures.refs;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -44,19 +45,20 @@ public final class MyField {
     }
     
     public static class Builder {
-        private Long optValue;
+        private Long optValue = null;
+        private long value = 0L;
+        private long reqValue = 0L;
+    
         @ThriftField(value=1, name="opt_value", requiredness=Requiredness.OPTIONAL)
         public Builder setOptValue(Long optValue) {
             this.optValue = optValue;
             return this;
         }
-        private long value;
         @ThriftField(value=2, name="value", requiredness=Requiredness.NONE)
         public Builder setValue(long value) {
             this.value = value;
             return this;
         }
-        private long reqValue;
         @ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED)
         public Builder setReqValue(long reqValue) {
             this.reqValue = reqValue;
