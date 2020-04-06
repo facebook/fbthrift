@@ -111,8 +111,30 @@ TEST(EnumTestCpp2, test_unscoped) {
   EXPECT_EQ(int(MEU_A), value) << "implicit conversion";
 }
 
-TEST(EnumTest, test_enum_forward_reference) {
+TEST(EnumTestCpp2, test_enum_forward_reference) {
   MyStructWithForwardRefEnum obj;
   EXPECT_EQ(MyForwardRefEnum::NONZERO, obj.a);
   EXPECT_EQ(MyForwardRefEnum::NONZERO, obj.b);
+}
+
+namespace {
+
+enum NonThriftEnum {};
+
+struct HasType {
+  using type = void;
+};
+
+template <typename T, typename = folly::void_t<>>
+struct has_type_member : std::false_type {};
+
+template <typename T>
+struct has_type_member<T, folly::void_t<typename T::type>> : std::true_type {};
+
+} // namespace
+
+TEST(EnumTestCpp2, test_non_thrift_enum_trait) {
+  EXPECT_EQ(true, has_type_member<HasType>::value);
+  EXPECT_EQ(false, has_type_member<TEnumTraits<NonThriftEnum>>::value);
+  EXPECT_EQ(true, has_type_member<TEnumTraits<MyEnum1>>::value);
 }
