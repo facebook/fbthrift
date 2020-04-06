@@ -71,9 +71,10 @@ class OnWriteSuccess final : public rocket::RocketClientWriteCallback {
 void deserializeMetadata(ResponseRpcMetadata& dest, const rocket::Payload& p) {
   CompactProtocolReader reader;
   reader.setInput(p.buffer());
+  auto start = reader.getCursorPosition();
   dest.read(&reader);
-  if (reader.getCursorPosition() > p.metadataSize()) {
-    folly::throw_exception<std::out_of_range>("underflow");
+  if (reader.getCursorPosition() - start != p.metadataSize()) {
+    folly::throw_exception<std::out_of_range>("metadata size mismatch");
   }
 }
 } // namespace
