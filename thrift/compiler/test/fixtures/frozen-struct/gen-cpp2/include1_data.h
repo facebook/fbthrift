@@ -10,4 +10,11 @@
 
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include1_types.h"
 
+namespace some { namespace ns {
 
+}} // some::ns
+
+namespace apache { namespace thrift {
+
+
+}} // apache::thrift

@@ -10,4 +10,11 @@
 
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/service_types.h"
 
+namespace cpp2 {
 
+} // cpp2
+
+namespace apache { namespace thrift {
+
+
+}} // apache::thrift

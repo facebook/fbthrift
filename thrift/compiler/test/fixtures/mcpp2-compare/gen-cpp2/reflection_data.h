@@ -10,4 +10,11 @@
 
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/reflection_types.h"
 
+namespace cpp2 {
 
+} // cpp2
+
+namespace apache { namespace thrift {
+
+
+}} // apache::thrift

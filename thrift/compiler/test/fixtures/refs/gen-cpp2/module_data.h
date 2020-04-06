@@ -26,6 +26,7 @@ struct _TypedEnumEnumDataStorage {
 };
 
 } // cpp2
+
 namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage<::cpp2::TypedEnum> {
@@ -33,4 +34,3 @@ template <> struct TEnumDataStorage<::cpp2::TypedEnum> {
 };
 
 }} // apache::thrift
-

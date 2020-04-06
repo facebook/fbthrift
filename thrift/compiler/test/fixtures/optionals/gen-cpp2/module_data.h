@@ -28,6 +28,7 @@ struct _AnimalEnumDataStorage {
 };
 
 } // cpp2
+
 namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage<::cpp2::Animal> {
@@ -35,4 +36,3 @@ template <> struct TEnumDataStorage<::cpp2::Animal> {
 };
 
 }} // apache::thrift
-

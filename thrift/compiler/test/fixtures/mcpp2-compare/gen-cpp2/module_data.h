@@ -27,16 +27,6 @@ struct _MyEnumAEnumDataStorage {
   }};
 };
 
-}}} // some::valid::ns
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::some::valid::ns::MyEnumA> {
-  using storage_type = ::some::valid::ns::_MyEnumAEnumDataStorage;
-};
-
-}} // apache::thrift
-namespace some { namespace valid { namespace ns {
-
 struct _AnnotatedEnumEnumDataStorage {
   using type = AnnotatedEnum;
   static constexpr const std::size_t size = 3;
@@ -51,16 +41,6 @@ struct _AnnotatedEnumEnumDataStorage {
     "FIELDC",
   }};
 };
-
-}}} // some::valid::ns
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::some::valid::ns::AnnotatedEnum> {
-  using storage_type = ::some::valid::ns::_AnnotatedEnumEnumDataStorage;
-};
-
-}} // apache::thrift
-namespace some { namespace valid { namespace ns {
 
 struct _AnnotatedEnum2EnumDataStorage {
   using type = AnnotatedEnum2;
@@ -77,16 +57,6 @@ struct _AnnotatedEnum2EnumDataStorage {
   }};
 };
 
-}}} // some::valid::ns
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::some::valid::ns::AnnotatedEnum2> {
-  using storage_type = ::some::valid::ns::_AnnotatedEnum2EnumDataStorage;
-};
-
-}} // apache::thrift
-namespace some { namespace valid { namespace ns {
-
 struct _MyEnumBEnumDataStorage {
   using type = MyEnumB;
   static constexpr const std::size_t size = 1;
@@ -99,11 +69,20 @@ struct _MyEnumBEnumDataStorage {
 };
 
 }}} // some::valid::ns
+
 namespace apache { namespace thrift {
 
+template <> struct TEnumDataStorage<::some::valid::ns::MyEnumA> {
+  using storage_type = ::some::valid::ns::_MyEnumAEnumDataStorage;
+};
+template <> struct TEnumDataStorage<::some::valid::ns::AnnotatedEnum> {
+  using storage_type = ::some::valid::ns::_AnnotatedEnumEnumDataStorage;
+};
+template <> struct TEnumDataStorage<::some::valid::ns::AnnotatedEnum2> {
+  using storage_type = ::some::valid::ns::_AnnotatedEnum2EnumDataStorage;
+};
 template <> struct TEnumDataStorage<::some::valid::ns::MyEnumB> {
   using storage_type = ::some::valid::ns::_MyEnumBEnumDataStorage;
 };
 
 }} // apache::thrift
-

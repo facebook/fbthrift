@@ -26,6 +26,7 @@ struct _AnEnumEnumDataStorage {
 };
 
 }}} // a::different::ns
+
 namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage<::a::different::ns::AnEnum> {
@@ -33,4 +34,3 @@ template <> struct TEnumDataStorage<::a::different::ns::AnEnum> {
 };
 
 }} // apache::thrift
-

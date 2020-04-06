@@ -21,9 +21,9 @@
 
 #include "<%program:include_prefix%><%program:name%>_types.h"
 
-<%#program:enums%>
 <% > common/namespace_cpp2_begin%>
 
+<%#program:enums%>
 
 struct _<%enum:name%>EnumDataStorage {
   using type = <%enum:name%>;
@@ -39,16 +39,17 @@ struct _<%enum:name%>EnumDataStorage {
 <%/enum:values%>
   }};
 };
+<%/program:enums%>
 
 <% > common/namespace_cpp2_end%>
 
+
 namespace apache { namespace thrift {
 
+<%#program:enums%>
 template <> struct TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>> {
   using storage_type = <% > common/namespace_cpp2%>_<%enum:name%>EnumDataStorage;
 };
-
-}} // apache::thrift
 <%/program:enums%>
 
-
+}} // apache::thrift

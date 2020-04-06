@@ -27,16 +27,6 @@ struct _enum1EnumDataStorage {
   }};
 };
 
-}} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::enum1> {
-  using storage_type = ::test_cpp2::cpp_reflection::_enum1EnumDataStorage;
-};
-
-}} // apache::thrift
-namespace test_cpp2 { namespace cpp_reflection {
-
 struct _enum2EnumDataStorage {
   using type = enum2;
   static constexpr const std::size_t size = 3;
@@ -52,16 +42,6 @@ struct _enum2EnumDataStorage {
   }};
 };
 
-}} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::enum2> {
-  using storage_type = ::test_cpp2::cpp_reflection::_enum2EnumDataStorage;
-};
-
-}} // apache::thrift
-namespace test_cpp2 { namespace cpp_reflection {
-
 struct _enum3EnumDataStorage {
   using type = enum3;
   static constexpr const std::size_t size = 2;
@@ -74,16 +54,6 @@ struct _enum3EnumDataStorage {
     "field1_3",
   }};
 };
-
-}} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::enum3> {
-  using storage_type = ::test_cpp2::cpp_reflection::_enum3EnumDataStorage;
-};
-
-}} // apache::thrift
-namespace test_cpp2 { namespace cpp_reflection {
 
 struct _enum_with_special_namesEnumDataStorage {
   using type = enum_with_special_names;
@@ -151,11 +121,20 @@ struct _enum_with_special_namesEnumDataStorage {
 };
 
 }} // test_cpp2::cpp_reflection
+
 namespace apache { namespace thrift {
 
+template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::enum1> {
+  using storage_type = ::test_cpp2::cpp_reflection::_enum1EnumDataStorage;
+};
+template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::enum2> {
+  using storage_type = ::test_cpp2::cpp_reflection::_enum2EnumDataStorage;
+};
+template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::enum3> {
+  using storage_type = ::test_cpp2::cpp_reflection::_enum3EnumDataStorage;
+};
 template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::enum_with_special_names> {
   using storage_type = ::test_cpp2::cpp_reflection::_enum_with_special_namesEnumDataStorage;
 };
 
 }} // apache::thrift
-

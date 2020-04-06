@@ -24,6 +24,7 @@ struct _EnumBEnumDataStorage {
 };
 
 }} // some::ns
+
 namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage<::some::ns::EnumB> {
@@ -31,4 +32,3 @@ template <> struct TEnumDataStorage<::some::ns::EnumB> {
 };
 
 }} // apache::thrift
-

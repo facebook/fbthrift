@@ -21,16 +21,6 @@ struct _EmptyEnumEnumDataStorage {
   }};
 };
 
-}}} // test::fixtures::enumstrict
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::test::fixtures::enumstrict::EmptyEnum> {
-  using storage_type = ::test::fixtures::enumstrict::_EmptyEnumEnumDataStorage;
-};
-
-}} // apache::thrift
-namespace test { namespace fixtures { namespace enumstrict {
-
 struct _MyEnumEnumDataStorage {
   using type = MyEnum;
   static constexpr const std::size_t size = 2;
@@ -43,16 +33,6 @@ struct _MyEnumEnumDataStorage {
     "TWO",
   }};
 };
-
-}}} // test::fixtures::enumstrict
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::test::fixtures::enumstrict::MyEnum> {
-  using storage_type = ::test::fixtures::enumstrict::_MyEnumEnumDataStorage;
-};
-
-}} // apache::thrift
-namespace test { namespace fixtures { namespace enumstrict {
 
 struct _MyBigEnumEnumDataStorage {
   using type = MyBigEnum;
@@ -104,11 +84,17 @@ struct _MyBigEnumEnumDataStorage {
 };
 
 }}} // test::fixtures::enumstrict
+
 namespace apache { namespace thrift {
 
+template <> struct TEnumDataStorage<::test::fixtures::enumstrict::EmptyEnum> {
+  using storage_type = ::test::fixtures::enumstrict::_EmptyEnumEnumDataStorage;
+};
+template <> struct TEnumDataStorage<::test::fixtures::enumstrict::MyEnum> {
+  using storage_type = ::test::fixtures::enumstrict::_MyEnumEnumDataStorage;
+};
 template <> struct TEnumDataStorage<::test::fixtures::enumstrict::MyBigEnum> {
   using storage_type = ::test::fixtures::enumstrict::_MyBigEnumEnumDataStorage;
 };
 
 }} // apache::thrift
-

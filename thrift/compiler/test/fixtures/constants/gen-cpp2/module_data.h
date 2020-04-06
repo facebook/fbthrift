@@ -21,16 +21,6 @@ struct _EmptyEnumEnumDataStorage {
   }};
 };
 
-} // cpp2
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::cpp2::EmptyEnum> {
-  using storage_type = ::cpp2::_EmptyEnumEnumDataStorage;
-};
-
-}} // apache::thrift
-namespace cpp2 {
-
 struct _CityEnumDataStorage {
   using type = City;
   static constexpr const std::size_t size = 4;
@@ -47,16 +37,6 @@ struct _CityEnumDataStorage {
     "LON",
   }};
 };
-
-} // cpp2
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::cpp2::City> {
-  using storage_type = ::cpp2::_CityEnumDataStorage;
-};
-
-}} // apache::thrift
-namespace cpp2 {
 
 struct _CompanyEnumDataStorage {
   using type = Company;
@@ -76,11 +56,17 @@ struct _CompanyEnumDataStorage {
 };
 
 } // cpp2
+
 namespace apache { namespace thrift {
 
+template <> struct TEnumDataStorage<::cpp2::EmptyEnum> {
+  using storage_type = ::cpp2::_EmptyEnumEnumDataStorage;
+};
+template <> struct TEnumDataStorage<::cpp2::City> {
+  using storage_type = ::cpp2::_CityEnumDataStorage;
+};
 template <> struct TEnumDataStorage<::cpp2::Company> {
   using storage_type = ::cpp2::_CompanyEnumDataStorage;
 };
 
 }} // apache::thrift
-

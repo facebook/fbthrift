@@ -24,6 +24,7 @@ struct _BEnumDataStorage {
 };
 
 } // cpp2
+
 namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage<::cpp2::B> {
@@ -31,4 +32,3 @@ template <> struct TEnumDataStorage<::cpp2::B> {
 };
 
 }} // apache::thrift
-

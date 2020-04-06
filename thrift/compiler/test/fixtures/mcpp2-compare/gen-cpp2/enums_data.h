@@ -23,16 +23,6 @@ struct _AnEnumAEnumDataStorage {
   }};
 };
 
-}}} // facebook::ns::qwerty
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumA> {
-  using storage_type = ::facebook::ns::qwerty::_AnEnumAEnumDataStorage;
-};
-
-}} // apache::thrift
-namespace facebook { namespace ns { namespace qwerty {
-
 struct _AnEnumBEnumDataStorage {
   using type = AnEnumB;
   static constexpr const std::size_t size = 2;
@@ -46,16 +36,6 @@ struct _AnEnumBEnumDataStorage {
   }};
 };
 
-}}} // facebook::ns::qwerty
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumB> {
-  using storage_type = ::facebook::ns::qwerty::_AnEnumBEnumDataStorage;
-};
-
-}} // apache::thrift
-namespace facebook { namespace ns { namespace qwerty {
-
 struct _AnEnumCEnumDataStorage {
   using type = AnEnumC;
   static constexpr const std::size_t size = 1;
@@ -67,16 +47,6 @@ struct _AnEnumCEnumDataStorage {
   }};
 };
 
-}}} // facebook::ns::qwerty
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumC> {
-  using storage_type = ::facebook::ns::qwerty::_AnEnumCEnumDataStorage;
-};
-
-}} // apache::thrift
-namespace facebook { namespace ns { namespace qwerty {
-
 struct _AnEnumDEnumDataStorage {
   using type = AnEnumD;
   static constexpr const std::size_t size = 1;
@@ -87,16 +57,6 @@ struct _AnEnumDEnumDataStorage {
     "FIELDD",
   }};
 };
-
-}}} // facebook::ns::qwerty
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumD> {
-  using storage_type = ::facebook::ns::qwerty::_AnEnumDEnumDataStorage;
-};
-
-}} // apache::thrift
-namespace facebook { namespace ns { namespace qwerty {
 
 struct _AnEnumEEnumDataStorage {
   using type = AnEnumE;
@@ -110,11 +70,23 @@ struct _AnEnumEEnumDataStorage {
 };
 
 }}} // facebook::ns::qwerty
+
 namespace apache { namespace thrift {
 
+template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumA> {
+  using storage_type = ::facebook::ns::qwerty::_AnEnumAEnumDataStorage;
+};
+template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumB> {
+  using storage_type = ::facebook::ns::qwerty::_AnEnumBEnumDataStorage;
+};
+template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumC> {
+  using storage_type = ::facebook::ns::qwerty::_AnEnumCEnumDataStorage;
+};
+template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumD> {
+  using storage_type = ::facebook::ns::qwerty::_AnEnumDEnumDataStorage;
+};
 template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumE> {
   using storage_type = ::facebook::ns::qwerty::_AnEnumEEnumDataStorage;
 };
 
 }} // apache::thrift
-
