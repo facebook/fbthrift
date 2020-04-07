@@ -311,3 +311,27 @@ TEST(TestWithoutFollyOptionals, Equality) {
   EXPECT_NE(obj.int64Opt_ref(), 1);
   EXPECT_NE(1, obj.int64Opt_ref());
 }
+
+TEST(TestWithoutFollyOptionals, Comparison) {
+  cpp2::HasOptionals obj;
+  obj.int64Opt_ref() = 2;
+  EXPECT_LT(obj.int64Opt_ref(), 3);
+  EXPECT_LE(obj.int64Opt_ref(), 2);
+  EXPECT_LE(obj.int64Opt_ref(), 3);
+  EXPECT_LT(1, obj.int64Opt_ref());
+  EXPECT_LE(1, obj.int64Opt_ref());
+  EXPECT_LE(2, obj.int64Opt_ref());
+
+  EXPECT_GT(obj.int64Opt_ref(), 1);
+  EXPECT_GE(obj.int64Opt_ref(), 1);
+  EXPECT_GE(obj.int64Opt_ref(), 2);
+  EXPECT_GT(3, obj.int64Opt_ref());
+  EXPECT_GE(2, obj.int64Opt_ref());
+  EXPECT_GE(3, obj.int64Opt_ref());
+
+  obj.int64Opt_ref().reset();
+  EXPECT_LT(obj.int64Opt_ref(), -1);
+  EXPECT_LE(obj.int64Opt_ref(), -1);
+  EXPECT_GT(-1, obj.int64Opt_ref());
+  EXPECT_GE(-1, obj.int64Opt_ref());
+}

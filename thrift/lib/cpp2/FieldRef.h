@@ -351,6 +351,62 @@ bool operator!=(
   return b != a;
 }
 
+template <typename T>
+bool operator<(
+    optional_field_ref<T> a,
+    const typename optional_field_ref<T>::value_type& b) {
+  return a ? *a < b : true;
+}
+
+template <typename T>
+bool operator>(
+    optional_field_ref<T> a,
+    const typename optional_field_ref<T>::value_type& b) {
+  return a ? *a > b : false;
+}
+
+template <typename T>
+bool operator<=(
+    optional_field_ref<T> a,
+    const typename optional_field_ref<T>::value_type& b) {
+  return !(a > b);
+}
+
+template <typename T>
+bool operator>=(
+    optional_field_ref<T> a,
+    const typename optional_field_ref<T>::value_type& b) {
+  return !(a < b);
+}
+
+template <typename T>
+bool operator<(
+    const typename optional_field_ref<T>::value_type& a,
+    optional_field_ref<T> b) {
+  return b > a;
+}
+
+template <typename T>
+bool operator<=(
+    const typename optional_field_ref<T>::value_type& a,
+    optional_field_ref<T> b) {
+  return b >= a;
+}
+
+template <typename T>
+bool operator>(
+    const typename optional_field_ref<T>::value_type& a,
+    optional_field_ref<T> b) {
+  return b < a;
+}
+
+template <typename T>
+bool operator>=(
+    const typename optional_field_ref<T>::value_type& a,
+    optional_field_ref<T> b) {
+  return b <= a;
+}
+
 #ifdef THRIFT_HAS_OPTIONAL
 template <class T>
 bool operator==(const optional_field_ref<T>& a, std::nullopt_t) {
