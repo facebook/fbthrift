@@ -10,7 +10,6 @@ package test.fixtures.includes;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
-import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -45,20 +44,19 @@ public final class MyStruct {
     }
     
     public static class Builder {
-        private test.fixtures.includes.includes.Included myIncludedField = new test.fixtures.includes.includes.Included.Builder().setMyIntField(2L).setMyTransitiveField(test.fixtures.includes.transitive.Constants.EXAMPLE_FOO).build();
-        private test.fixtures.includes.includes.Included myOtherIncludedField = null;
-        private long myIncludedInt = 42L;
-    
+        private test.fixtures.includes.includes.Included myIncludedField;
         @ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE)
         public Builder setMyIncludedField(test.fixtures.includes.includes.Included myIncludedField) {
             this.myIncludedField = myIncludedField;
             return this;
         }
+        private test.fixtures.includes.includes.Included myOtherIncludedField;
         @ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE)
         public Builder setMyOtherIncludedField(test.fixtures.includes.includes.Included myOtherIncludedField) {
             this.myOtherIncludedField = myOtherIncludedField;
             return this;
         }
+        private long myIncludedInt;
         @ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE)
         public Builder setMyIncludedInt(long myIncludedInt) {
             this.myIncludedInt = myIncludedInt;

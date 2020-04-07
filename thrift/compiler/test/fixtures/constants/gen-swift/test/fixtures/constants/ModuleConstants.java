@@ -81,23 +81,23 @@ public final class ModuleConstants {
         .add(3)
         .build()).build()).build();
 
-    public static final test.fixtures.constants.Union1 U_1_1 = test.fixtures.constants.Union1.fromI(97);
+    public static final test.fixtures.constants.Union1 U_1_1 = new test.fixtures.constants.Union1(97);
 
-    public static final test.fixtures.constants.Union1 U_1_2 = test.fixtures.constants.Union1.fromD((double)5.6);
+    public static final test.fixtures.constants.Union1 U_1_2 = new test.fixtures.constants.Union1((double)5.6);
 
-    public static final test.fixtures.constants.Union1 U_1_3 = test.fixtures.constants.Union1;
+    public static final test.fixtures.constants.Union1 U_1_3 = new test.fixtures.constants.Union1();
 
-    public static final test.fixtures.constants.Union2 U_2_1 = test.fixtures.constants.Union2.fromI(51);
+    public static final test.fixtures.constants.Union2 U_2_1 = new test.fixtures.constants.Union2(51);
 
-    public static final test.fixtures.constants.Union2 U_2_2 = test.fixtures.constants.Union2.fromD((double)6.7);
+    public static final test.fixtures.constants.Union2 U_2_2 = new test.fixtures.constants.Union2((double)6.7);
 
-    public static final test.fixtures.constants.Union2 U_2_3 = test.fixtures.constants.Union2.fromS(new test.fixtures.constants.Struct1.Builder().setA(8).setB("abacabb").build());
+    public static final test.fixtures.constants.Union2 U_2_3 = new test.fixtures.constants.Union2(new test.fixtures.constants.Struct1.Builder().setA(8).setB("abacabb").build());
 
-    public static final test.fixtures.constants.Union2 U_2_4 = test.fixtures.constants.Union2.fromU(test.fixtures.constants.Union1.fromI(43));
+    public static final test.fixtures.constants.Union2 U_2_4 = new test.fixtures.constants.Union2(new test.fixtures.constants.Union1(43));
 
-    public static final test.fixtures.constants.Union2 U_2_5 = test.fixtures.constants.Union2.fromU(test.fixtures.constants.Union1.fromD((double)9.8));
+    public static final test.fixtures.constants.Union2 U_2_5 = new test.fixtures.constants.Union2(new test.fixtures.constants.Union1((double)9.8));
 
-    public static final test.fixtures.constants.Union2 U_2_6 = test.fixtures.constants.Union2.fromU(test.fixtures.constants.Union1);
+    public static final test.fixtures.constants.Union2 U_2_6 = new test.fixtures.constants.Union2(new test.fixtures.constants.Union1());
 
     public static final String APOSTROPHE = "'";
 

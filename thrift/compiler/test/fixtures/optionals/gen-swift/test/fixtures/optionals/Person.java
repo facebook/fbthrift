@@ -10,7 +10,6 @@ package test.fixtures.optionals;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
-import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -66,62 +65,61 @@ public final class Person {
     }
     
     public static class Builder {
-        private long id = 0L;
-        private String name = null;
-        private Short age = null;
-        private String address = null;
-        private test.fixtures.optionals.Color favoriteColor = null;
-        private Set<Long> friends = null;
-        private Long bestFriend = null;
-        private Map<test.fixtures.optionals.Animal, String> petNames = null;
-        private test.fixtures.optionals.Animal afraidOfAnimal = null;
-        private List<test.fixtures.optionals.Vehicle> vehicles = null;
-    
+        private long id;
         @ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
         public Builder setId(long id) {
             this.id = id;
             return this;
         }
+        private String name;
         @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
         public Builder setName(String name) {
             this.name = name;
             return this;
         }
+        private Short age;
         @ThriftField(value=3, name="age", requiredness=Requiredness.OPTIONAL)
         public Builder setAge(Short age) {
             this.age = age;
             return this;
         }
+        private String address;
         @ThriftField(value=4, name="address", requiredness=Requiredness.OPTIONAL)
         public Builder setAddress(String address) {
             this.address = address;
             return this;
         }
+        private test.fixtures.optionals.Color favoriteColor;
         @ThriftField(value=5, name="favoriteColor", requiredness=Requiredness.OPTIONAL)
         public Builder setFavoriteColor(test.fixtures.optionals.Color favoriteColor) {
             this.favoriteColor = favoriteColor;
             return this;
         }
+        private Set<Long> friends;
         @ThriftField(value=6, name="friends", requiredness=Requiredness.OPTIONAL)
         public Builder setFriends(Set<Long> friends) {
             this.friends = friends;
             return this;
         }
+        private Long bestFriend;
         @ThriftField(value=7, name="bestFriend", requiredness=Requiredness.OPTIONAL)
         public Builder setBestFriend(Long bestFriend) {
             this.bestFriend = bestFriend;
             return this;
         }
+        private Map<test.fixtures.optionals.Animal, String> petNames;
         @ThriftField(value=8, name="petNames", requiredness=Requiredness.OPTIONAL)
         public Builder setPetNames(Map<test.fixtures.optionals.Animal, String> petNames) {
             this.petNames = petNames;
             return this;
         }
+        private test.fixtures.optionals.Animal afraidOfAnimal;
         @ThriftField(value=9, name="afraidOfAnimal", requiredness=Requiredness.OPTIONAL)
         public Builder setAfraidOfAnimal(test.fixtures.optionals.Animal afraidOfAnimal) {
             this.afraidOfAnimal = afraidOfAnimal;
             return this;
         }
+        private List<test.fixtures.optionals.Vehicle> vehicles;
         @ThriftField(value=10, name="vehicles", requiredness=Requiredness.OPTIONAL)
         public Builder setVehicles(List<test.fixtures.optionals.Vehicle> vehicles) {
             this.vehicles = vehicles;

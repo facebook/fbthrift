@@ -10,7 +10,6 @@ package test.fixtures.basic;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
-import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -126,182 +125,181 @@ public final class MyNomralStruct {
     }
     
     public static class Builder {
-        private String msg1 = null;
-        private String msg2 = null;
-        private String msg3 = null;
-        private String msg4 = null;
-        private String msg5 = null;
-        private String msg6 = null;
-        private String msg7 = null;
-        private String msg8 = null;
-        private String msg9 = null;
-        private int myIntField10 = 0;
-        private int myIntField11 = 0;
-        private int myIntField12 = 0;
-        private int myIntField13 = 0;
-        private int myIntField14 = 0;
-        private int myIntField15 = 0;
-        private int myIntField16 = 0;
-        private int myIntField17 = 0;
-        private int myIntField18 = 0;
-        private int myIntField19 = 0;
-        private int myIntField20 = 0;
-        private double myDoubleField21 = 0.;
-        private double myDoubleField22 = 0.;
-        private double myDoubleField23 = 0.;
-        private double myDoubleField24 = 0.;
-        private double myDoubleField25 = 0.;
-        private double myDoubleField26 = 0.;
-        private double myDoubleField27 = 0.;
-        private double myDoubleField28 = 0.;
-        private double myDoubleField29 = 0.;
-        private double myDoubleField30 = 0.;
-    
+        private String msg1;
         @ThriftField(value=1, name="msg1", requiredness=Requiredness.NONE)
         public Builder setMsg1(String msg1) {
             this.msg1 = msg1;
             return this;
         }
+        private String msg2;
         @ThriftField(value=2, name="msg2", requiredness=Requiredness.NONE)
         public Builder setMsg2(String msg2) {
             this.msg2 = msg2;
             return this;
         }
+        private String msg3;
         @ThriftField(value=3, name="msg3", requiredness=Requiredness.NONE)
         public Builder setMsg3(String msg3) {
             this.msg3 = msg3;
             return this;
         }
+        private String msg4;
         @ThriftField(value=4, name="msg4", requiredness=Requiredness.NONE)
         public Builder setMsg4(String msg4) {
             this.msg4 = msg4;
             return this;
         }
+        private String msg5;
         @ThriftField(value=5, name="msg5", requiredness=Requiredness.NONE)
         public Builder setMsg5(String msg5) {
             this.msg5 = msg5;
             return this;
         }
+        private String msg6;
         @ThriftField(value=6, name="msg6", requiredness=Requiredness.NONE)
         public Builder setMsg6(String msg6) {
             this.msg6 = msg6;
             return this;
         }
+        private String msg7;
         @ThriftField(value=7, name="msg7", requiredness=Requiredness.NONE)
         public Builder setMsg7(String msg7) {
             this.msg7 = msg7;
             return this;
         }
+        private String msg8;
         @ThriftField(value=8, name="msg8", requiredness=Requiredness.NONE)
         public Builder setMsg8(String msg8) {
             this.msg8 = msg8;
             return this;
         }
+        private String msg9;
         @ThriftField(value=9, name="msg9", requiredness=Requiredness.NONE)
         public Builder setMsg9(String msg9) {
             this.msg9 = msg9;
             return this;
         }
+        private int myIntField10;
         @ThriftField(value=10, name="myIntField10", requiredness=Requiredness.NONE)
         public Builder setMyIntField10(int myIntField10) {
             this.myIntField10 = myIntField10;
             return this;
         }
+        private int myIntField11;
         @ThriftField(value=11, name="myIntField11", requiredness=Requiredness.NONE)
         public Builder setMyIntField11(int myIntField11) {
             this.myIntField11 = myIntField11;
             return this;
         }
+        private int myIntField12;
         @ThriftField(value=12, name="myIntField12", requiredness=Requiredness.NONE)
         public Builder setMyIntField12(int myIntField12) {
             this.myIntField12 = myIntField12;
             return this;
         }
+        private int myIntField13;
         @ThriftField(value=13, name="myIntField13", requiredness=Requiredness.NONE)
         public Builder setMyIntField13(int myIntField13) {
             this.myIntField13 = myIntField13;
             return this;
         }
+        private int myIntField14;
         @ThriftField(value=14, name="myIntField14", requiredness=Requiredness.NONE)
         public Builder setMyIntField14(int myIntField14) {
             this.myIntField14 = myIntField14;
             return this;
         }
+        private int myIntField15;
         @ThriftField(value=15, name="myIntField15", requiredness=Requiredness.NONE)
         public Builder setMyIntField15(int myIntField15) {
             this.myIntField15 = myIntField15;
             return this;
         }
+        private int myIntField16;
         @ThriftField(value=16, name="myIntField16", requiredness=Requiredness.NONE)
         public Builder setMyIntField16(int myIntField16) {
             this.myIntField16 = myIntField16;
             return this;
         }
+        private int myIntField17;
         @ThriftField(value=17, name="myIntField17", requiredness=Requiredness.NONE)
         public Builder setMyIntField17(int myIntField17) {
             this.myIntField17 = myIntField17;
             return this;
         }
+        private int myIntField18;
         @ThriftField(value=18, name="myIntField18", requiredness=Requiredness.NONE)
         public Builder setMyIntField18(int myIntField18) {
             this.myIntField18 = myIntField18;
             return this;
         }
+        private int myIntField19;
         @ThriftField(value=19, name="myIntField19", requiredness=Requiredness.NONE)
         public Builder setMyIntField19(int myIntField19) {
             this.myIntField19 = myIntField19;
             return this;
         }
+        private int myIntField20;
         @ThriftField(value=20, name="myIntField20", requiredness=Requiredness.NONE)
         public Builder setMyIntField20(int myIntField20) {
             this.myIntField20 = myIntField20;
             return this;
         }
+        private double myDoubleField21;
         @ThriftField(value=21, name="myDoubleField21", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField21(double myDoubleField21) {
             this.myDoubleField21 = myDoubleField21;
             return this;
         }
+        private double myDoubleField22;
         @ThriftField(value=22, name="myDoubleField22", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField22(double myDoubleField22) {
             this.myDoubleField22 = myDoubleField22;
             return this;
         }
+        private double myDoubleField23;
         @ThriftField(value=23, name="myDoubleField23", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField23(double myDoubleField23) {
             this.myDoubleField23 = myDoubleField23;
             return this;
         }
+        private double myDoubleField24;
         @ThriftField(value=24, name="myDoubleField24", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField24(double myDoubleField24) {
             this.myDoubleField24 = myDoubleField24;
             return this;
         }
+        private double myDoubleField25;
         @ThriftField(value=25, name="myDoubleField25", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField25(double myDoubleField25) {
             this.myDoubleField25 = myDoubleField25;
             return this;
         }
+        private double myDoubleField26;
         @ThriftField(value=26, name="myDoubleField26", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField26(double myDoubleField26) {
             this.myDoubleField26 = myDoubleField26;
             return this;
         }
+        private double myDoubleField27;
         @ThriftField(value=27, name="myDoubleField27", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField27(double myDoubleField27) {
             this.myDoubleField27 = myDoubleField27;
             return this;
         }
+        private double myDoubleField28;
         @ThriftField(value=28, name="myDoubleField28", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField28(double myDoubleField28) {
             this.myDoubleField28 = myDoubleField28;
             return this;
         }
+        private double myDoubleField29;
         @ThriftField(value=29, name="myDoubleField29", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField29(double myDoubleField29) {
             this.myDoubleField29 = myDoubleField29;
             return this;
         }
+        private double myDoubleField30;
         @ThriftField(value=30, name="myDoubleField30", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField30(double myDoubleField30) {
             this.myDoubleField30 = myDoubleField30;

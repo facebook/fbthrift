@@ -15,10 +15,10 @@
   limitations under the License.
 
 }}
-{{> BoxedType}}{{!
+new {{> BoxedType}}({{!
 }}{{#value:const_struct}}{{!
 }}{{#constant:type}}{{!
-  }}.from{{constant:javaFieldName}}({{#constant:value}}{{> DefaultValue}}{{/constant:value}}){{!
+  }}{{#constant:value}}{{> ConstantValue}}{{/constant:value}}{{!
 }}{{/constant:type}}{{!
 }}{{/value:const_struct}}{{!
-}}
+}})

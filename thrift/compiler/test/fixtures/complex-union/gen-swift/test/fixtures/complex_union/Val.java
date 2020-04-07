@@ -10,7 +10,6 @@ package test.fixtures.complex_union;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
-import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -45,20 +44,19 @@ public final class Val {
     }
     
     public static class Builder {
-        private String strVal = null;
-        private int intVal = 0;
-        private Map<Short, String> typedefValue = null;
-    
+        private String strVal;
         @ThriftField(value=1, name="strVal", requiredness=Requiredness.NONE)
         public Builder setStrVal(String strVal) {
             this.strVal = strVal;
             return this;
         }
+        private int intVal;
         @ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE)
         public Builder setIntVal(int intVal) {
             this.intVal = intVal;
             return this;
         }
+        private Map<Short, String> typedefValue;
         @ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE)
         public Builder setTypedefValue(Map<Short, String> typedefValue) {
             this.typedefValue = typedefValue;

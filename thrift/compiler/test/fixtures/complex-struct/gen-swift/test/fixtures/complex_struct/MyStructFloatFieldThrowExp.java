@@ -10,7 +10,6 @@ package test.fixtures.complex_struct;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
-import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -48,26 +47,25 @@ public final class MyStructFloatFieldThrowExp {
     }
     
     public static class Builder {
-        private long myLongField = 0L;
-        private byte myByteField = 0;
-        private String myStringField = null;
-        private float myFloatField = 0.f;
-    
+        private long myLongField;
         @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
         public Builder setMyLongField(long myLongField) {
             this.myLongField = myLongField;
             return this;
         }
+        private byte myByteField;
         @ThriftField(value=2, name="MyByteField", requiredness=Requiredness.NONE)
         public Builder setMyByteField(byte myByteField) {
             this.myByteField = myByteField;
             return this;
         }
+        private String myStringField;
         @ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)
         public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
         }
+        private float myFloatField;
         @ThriftField(value=4, name="myFloatField", requiredness=Requiredness.NONE)
         public Builder setMyFloatField(float myFloatField) {
             this.myFloatField = myFloatField;

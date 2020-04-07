@@ -10,7 +10,6 @@ package test.fixtures.includes.includes;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
-import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -42,14 +41,13 @@ public final class Included {
     }
     
     public static class Builder {
-        private long myIntField = 0L;
-        private test.fixtures.includes.transitive.Foo myTransitiveField = new test.fixtures.includes.transitive.Foo.Builder().setA(2L).build();
-    
+        private long myIntField;
         @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
         public Builder setMyIntField(long myIntField) {
             this.myIntField = myIntField;
             return this;
         }
+        private test.fixtures.includes.transitive.Foo myTransitiveField;
         @ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)
         public Builder setMyTransitiveField(test.fixtures.includes.transitive.Foo myTransitiveField) {
             this.myTransitiveField = myTransitiveField;

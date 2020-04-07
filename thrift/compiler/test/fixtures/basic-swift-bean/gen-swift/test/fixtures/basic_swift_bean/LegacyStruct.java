@@ -10,7 +10,6 @@ package test.fixtures.basic_swift_bean;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
-import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -27,20 +26,16 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct("LegacyStruct")
 public final class LegacyStruct {
     @ThriftConstructor
-    public LegacyStruct() {
-      this.normal = 0;
-      this.bad = 0;
-    }
-    
+    public LegacyStruct() {}
+
     public static class Builder {
-        private int normal = 0;
-        private int bad = 0;
-    
+        private int normal;
         @ThriftField(value=1, name="normal", requiredness=Requiredness.NONE)
         public Builder setNormal(int normal) {
             this.normal = normal;
             return this;
         }
+        private int bad;
         @ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE)
         public Builder setBad(int bad) {
             this.bad = bad;

@@ -10,7 +10,6 @@ package test.fixtures.basicannotations;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
-import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -42,14 +41,13 @@ public final class SecretStruct {
     }
     
     public static class Builder {
-        private long id = 0L;
-        private String password = null;
-    
+        private long id;
         @ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
         public Builder setId(long id) {
             this.id = id;
             return this;
         }
+        private String password;
         @ThriftField(value=2, name="password", requiredness=Requiredness.NONE)
         public Builder setPassword(String password) {
             this.password = password;

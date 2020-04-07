@@ -43,8 +43,7 @@ public final class Serious extends java.lang.RuntimeException {
     }
     
     public static class Builder {
-        private String sonnet = null;
-    
+        private String sonnet;
         @ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL)
         public Builder setSonnet(String sonnet) {
             this.sonnet = sonnet;

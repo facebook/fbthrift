@@ -49,14 +49,13 @@ public final class OptXcep extends java.lang.Exception {
     }
     
     public static class Builder {
-        private String message = null;
-        private Integer errorCode = null;
-    
+        private String message;
         @ThriftField(value=1, name="message", requiredness=Requiredness.OPTIONAL)
         public Builder setMessage(String message) {
             this.message = message;
             return this;
         }
+        private Integer errorCode;
         @ThriftField(value=2, name="errorCode", requiredness=Requiredness.OPTIONAL)
         public Builder setErrorCode(Integer errorCode) {
             this.errorCode = errorCode;

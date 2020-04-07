@@ -10,7 +10,6 @@ package test.fixtures.lazy_constants;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
-import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -42,14 +41,13 @@ public final class Range {
     }
     
     public static class Builder {
-        private int min = 0;
-        private int max = 0;
-    
+        private int min;
         @ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED)
         public Builder setMin(int min) {
             this.min = min;
             return this;
         }
+        private int max;
         @ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)
         public Builder setMax(int max) {
             this.max = max;

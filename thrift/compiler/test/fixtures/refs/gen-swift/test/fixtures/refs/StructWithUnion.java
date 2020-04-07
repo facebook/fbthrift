@@ -10,7 +10,6 @@ package test.fixtures.refs;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
-import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -45,20 +44,19 @@ public final class StructWithUnion {
     }
     
     public static class Builder {
-        private test.fixtures.refs.MyUnion u = null;
-        private double aDouble = 0.;
-        private test.fixtures.refs.MyField f = null;
-    
+        private test.fixtures.refs.MyUnion u;
         @ThriftField(value=1, name="u", requiredness=Requiredness.NONE)
         public Builder setU(test.fixtures.refs.MyUnion u) {
             this.u = u;
             return this;
         }
+        private double aDouble;
         @ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE)
         public Builder setADouble(double aDouble) {
             this.aDouble = aDouble;
             return this;
         }
+        private test.fixtures.refs.MyField f;
         @ThriftField(value=3, name="f", requiredness=Requiredness.NONE)
         public Builder setF(test.fixtures.refs.MyField f) {
             this.f = f;

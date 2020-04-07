@@ -26,7 +26,7 @@
 
 
 }}{{#type:typedef?}}{{!
-}}{{#type:typedefType}}{{> DefaultValue}}{{/type:typedefType}}{{!
+}}{{#type:typedefType}}{{> ConstantValue}}{{/type:typedefType}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
     Integer constants
@@ -53,15 +53,14 @@
 
     String constants
   }}{{#type:string?}}{{value:quotedString}}{{/type:string?}}{{!
-  }}{{#type:binary?}}{{value:quotedString}}.getBytes(){{/type:binary?}}{{!
 
     Map constants
   }}{{#type:map?}}{{!
 
       }}ImmutableMap.<{{#type:keyType}}{{> BoxedType}}{{/type:keyType}}, {{#type:valueType}}{{> BoxedType}}{{/type:valueType}}>builder()
         {{#value:mapElements}}
-        .put({{#element:key}}{{#type:keyType}}{{> DefaultValue}}{{/type:keyType}}{{/element:key}}, {{!
-        }}{{#element:value}}{{#type:valueType}}{{> DefaultValue}}{{/type:valueType}}{{/element:value}})
+        .put({{#element:key}}{{#type:keyType}}{{> ConstantValue}}{{/type:keyType}}{{/element:key}}, {{!
+        }}{{#element:value}}{{#type:valueType}}{{> ConstantValue}}{{/type:valueType}}{{/element:value}})
         {{/value:mapElements}}
         .build(){{!
 
@@ -72,7 +71,7 @@
 
       }}ImmutableList.<{{#type:listElemType}}{{> BoxedType}}{{/type:listElemType}}>builder()
         {{#value:listElements}}
-        .add({{#type:listElemType}}{{> DefaultValue}}{{/type:listElemType}})
+        .add({{#type:listElemType}}{{> ConstantValue}}{{/type:listElemType}})
         {{/value:listElements}}
         .build(){{!
 
@@ -83,7 +82,7 @@
 
       }}ImmutableSet.<{{#type:setElemType}}{{> BoxedType}}{{/type:setElemType}}>builder()
         {{#value:listElements}}
-        .add({{#type:setElemType}}{{> DefaultValue}}{{/type:setElemType}})
+        .add({{#type:setElemType}}{{> ConstantValue}}{{/type:setElemType}})
         {{/value:listElements}}
         .build(){{!
 

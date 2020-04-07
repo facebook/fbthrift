@@ -10,7 +10,6 @@ package test.fixtures.complex_struct;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
-import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -48,26 +47,25 @@ public final class TypeRemapped {
     }
     
     public static class Builder {
-        private it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap = null;
-        private it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap = null;
-        private java.math.BigInteger bigInteger = 0;
-        private java.nio.ByteBuffer binaryTestBuffer = null;
-    
+        private it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap;
         @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
         public Builder setLsMap(it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap) {
             this.lsMap = lsMap;
             return this;
         }
+        private it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap;
         @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
         public Builder setIoMap(it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap) {
             this.ioMap = ioMap;
             return this;
         }
+        private java.math.BigInteger bigInteger;
         @ThriftField(value=3, name="BigInteger", requiredness=Requiredness.NONE)
         public Builder setBigInteger(java.math.BigInteger bigInteger) {
             this.bigInteger = bigInteger;
             return this;
         }
+        private java.nio.ByteBuffer binaryTestBuffer;
         @ThriftField(value=4, name="binaryTestBuffer", requiredness=Requiredness.NONE)
         public Builder setBinaryTestBuffer(java.nio.ByteBuffer binaryTestBuffer) {
             this.binaryTestBuffer = binaryTestBuffer;

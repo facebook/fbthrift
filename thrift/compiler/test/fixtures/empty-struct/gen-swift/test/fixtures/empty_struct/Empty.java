@@ -10,7 +10,6 @@ package test.fixtures.empty_struct;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
-import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -34,7 +33,6 @@ public final class Empty {
     
     
     public static class Builder {
-    
     
         public Builder() { }
         public Builder(Empty other) {

@@ -10,7 +10,6 @@ package test.fixtures.complex_struct;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
-import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -117,164 +116,163 @@ public final class MyStruct {
     }
     
     public static class Builder {
-        private long myIntField = 0L;
-        private String myStringField = null;
-        private test.fixtures.complex_struct.MyDataItem myDataField = null;
-        private test.fixtures.complex_struct.MyEnum myEnum = null;
-        private boolean myBoolField = false;
-        private byte myByteField = 0;
-        private short myShortField = 0;
-        private long myLongField = 0L;
-        private double myDoubleField = 0.;
-        private List<Double> lDouble = null;
-        private List<Short> lShort = null;
-        private List<Integer> lInteger = null;
-        private List<Long> lLong = null;
-        private List<String> lString = null;
-        private List<Boolean> lBool = null;
-        private List<Byte> lByte = null;
-        private Map<Short, String> mShortString = null;
-        private Map<Integer, String> mIntegerString = null;
-        private Map<String, test.fixtures.complex_struct.MyStruct> mStringMyStruct = null;
-        private Map<String, Boolean> mStringBool = null;
-        private Map<Integer, Integer> mIntegerInteger = null;
-        private Map<Integer, Boolean> mIntegerBool = null;
-        private Set<Short> sShort = null;
-        private Set<test.fixtures.complex_struct.MyStruct> sMyStruct = null;
-        private Set<Long> sLong = null;
-        private Set<String> sString = null;
-        private Set<Byte> sByte = null;
-    
+        private long myIntField;
         @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
         public Builder setMyIntField(long myIntField) {
             this.myIntField = myIntField;
             return this;
         }
+        private String myStringField;
         @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
         public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
         }
+        private test.fixtures.complex_struct.MyDataItem myDataField;
         @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
         public Builder setMyDataField(test.fixtures.complex_struct.MyDataItem myDataField) {
             this.myDataField = myDataField;
             return this;
         }
+        private test.fixtures.complex_struct.MyEnum myEnum;
         @ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
         public Builder setMyEnum(test.fixtures.complex_struct.MyEnum myEnum) {
             this.myEnum = myEnum;
             return this;
         }
+        private boolean myBoolField;
         @ThriftField(value=5, name="MyBoolField", requiredness=Requiredness.NONE)
         public Builder setMyBoolField(boolean myBoolField) {
             this.myBoolField = myBoolField;
             return this;
         }
+        private byte myByteField;
         @ThriftField(value=6, name="MyByteField", requiredness=Requiredness.NONE)
         public Builder setMyByteField(byte myByteField) {
             this.myByteField = myByteField;
             return this;
         }
+        private short myShortField;
         @ThriftField(value=7, name="MyShortField", requiredness=Requiredness.NONE)
         public Builder setMyShortField(short myShortField) {
             this.myShortField = myShortField;
             return this;
         }
+        private long myLongField;
         @ThriftField(value=8, name="MyLongField", requiredness=Requiredness.NONE)
         public Builder setMyLongField(long myLongField) {
             this.myLongField = myLongField;
             return this;
         }
+        private double myDoubleField;
         @ThriftField(value=9, name="MyDoubleField", requiredness=Requiredness.NONE)
         public Builder setMyDoubleField(double myDoubleField) {
             this.myDoubleField = myDoubleField;
             return this;
         }
+        private List<Double> lDouble;
         @ThriftField(value=10, name="lDouble", requiredness=Requiredness.NONE)
         public Builder setLDouble(List<Double> lDouble) {
             this.lDouble = lDouble;
             return this;
         }
+        private List<Short> lShort;
         @ThriftField(value=11, name="lShort", requiredness=Requiredness.NONE)
         public Builder setLShort(List<Short> lShort) {
             this.lShort = lShort;
             return this;
         }
+        private List<Integer> lInteger;
         @ThriftField(value=12, name="lInteger", requiredness=Requiredness.NONE)
         public Builder setLInteger(List<Integer> lInteger) {
             this.lInteger = lInteger;
             return this;
         }
+        private List<Long> lLong;
         @ThriftField(value=13, name="lLong", requiredness=Requiredness.NONE)
         public Builder setLLong(List<Long> lLong) {
             this.lLong = lLong;
             return this;
         }
+        private List<String> lString;
         @ThriftField(value=14, name="lString", requiredness=Requiredness.NONE)
         public Builder setLString(List<String> lString) {
             this.lString = lString;
             return this;
         }
+        private List<Boolean> lBool;
         @ThriftField(value=15, name="lBool", requiredness=Requiredness.NONE)
         public Builder setLBool(List<Boolean> lBool) {
             this.lBool = lBool;
             return this;
         }
+        private List<Byte> lByte;
         @ThriftField(value=16, name="lByte", requiredness=Requiredness.NONE)
         public Builder setLByte(List<Byte> lByte) {
             this.lByte = lByte;
             return this;
         }
+        private Map<Short, String> mShortString;
         @ThriftField(value=17, name="mShortString", requiredness=Requiredness.NONE)
         public Builder setMShortString(Map<Short, String> mShortString) {
             this.mShortString = mShortString;
             return this;
         }
+        private Map<Integer, String> mIntegerString;
         @ThriftField(value=18, name="mIntegerString", requiredness=Requiredness.NONE)
         public Builder setMIntegerString(Map<Integer, String> mIntegerString) {
             this.mIntegerString = mIntegerString;
             return this;
         }
+        private Map<String, test.fixtures.complex_struct.MyStruct> mStringMyStruct;
         @ThriftField(value=19, name="mStringMyStruct", requiredness=Requiredness.NONE)
         public Builder setMStringMyStruct(Map<String, test.fixtures.complex_struct.MyStruct> mStringMyStruct) {
             this.mStringMyStruct = mStringMyStruct;
             return this;
         }
+        private Map<String, Boolean> mStringBool;
         @ThriftField(value=20, name="mStringBool", requiredness=Requiredness.NONE)
         public Builder setMStringBool(Map<String, Boolean> mStringBool) {
             this.mStringBool = mStringBool;
             return this;
         }
+        private Map<Integer, Integer> mIntegerInteger;
         @ThriftField(value=21, name="mIntegerInteger", requiredness=Requiredness.NONE)
         public Builder setMIntegerInteger(Map<Integer, Integer> mIntegerInteger) {
             this.mIntegerInteger = mIntegerInteger;
             return this;
         }
+        private Map<Integer, Boolean> mIntegerBool;
         @ThriftField(value=22, name="mIntegerBool", requiredness=Requiredness.NONE)
         public Builder setMIntegerBool(Map<Integer, Boolean> mIntegerBool) {
             this.mIntegerBool = mIntegerBool;
             return this;
         }
+        private Set<Short> sShort;
         @ThriftField(value=23, name="sShort", requiredness=Requiredness.NONE)
         public Builder setSShort(Set<Short> sShort) {
             this.sShort = sShort;
             return this;
         }
+        private Set<test.fixtures.complex_struct.MyStruct> sMyStruct;
         @ThriftField(value=24, name="sMyStruct", requiredness=Requiredness.NONE)
         public Builder setSMyStruct(Set<test.fixtures.complex_struct.MyStruct> sMyStruct) {
             this.sMyStruct = sMyStruct;
             return this;
         }
+        private Set<Long> sLong;
         @ThriftField(value=25, name="sLong", requiredness=Requiredness.NONE)
         public Builder setSLong(Set<Long> sLong) {
             this.sLong = sLong;
             return this;
         }
+        private Set<String> sString;
         @ThriftField(value=26, name="sString", requiredness=Requiredness.NONE)
         public Builder setSString(Set<String> sString) {
             this.sString = sString;
             return this;
         }
+        private Set<Byte> sByte;
         @ThriftField(value=27, name="sByte", requiredness=Requiredness.NONE)
         public Builder setSByte(Set<Byte> sByte) {
             this.sByte = sByte;
