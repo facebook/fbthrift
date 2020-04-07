@@ -188,7 +188,12 @@ impl EncState {
     }
 
     fn field_end(&mut self) {
-        debug_assert!(self.field.is_none())
+        debug_assert!(
+            // the field was consumed during the write, or
+            self.field.is_none() ||
+            // the field contains a void which wasn't written
+            matches!(self.field, Some((TType::Void, _)))
+        )
     }
 
     fn in_field(&self) -> bool {
