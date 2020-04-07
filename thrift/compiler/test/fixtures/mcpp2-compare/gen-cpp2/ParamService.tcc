@@ -71,6 +71,9 @@ typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_LIST, ::std::vector< ::some::valid::ns::ComplexUnion>*>> ParamService_listunion_string_param_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_void_ret_i16_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  if (!validateRpcKind(req, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)) {
+    return;
+  }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -758,6 +761,9 @@ void ParamServiceAsyncProcessor::throw_wrapped_i64_ret_string_typedef_param(apac
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  if (!validateRpcKind(req, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)) {
+    return;
+  }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -1191,6 +1197,9 @@ void ParamServiceAsyncProcessor::throw_wrapped_typedef_ret_i32_param(apache::thr
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  if (!validateRpcKind(req, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)) {
+    return;
+  }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -1400,6 +1409,9 @@ void ParamServiceAsyncProcessor::throw_wrapped_listenum_ret_map_param(apache::th
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_struct_ret_i16_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  if (!validateRpcKind(req, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)) {
+    return;
+  }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);

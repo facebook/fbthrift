@@ -179,6 +179,9 @@ void MyServiceAsyncProcessor::throw_wrapped_hasDataById(apache::thrift::Response
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::process_getDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  if (!validateRpcKind(req, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)) {
+    return;
+  }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);

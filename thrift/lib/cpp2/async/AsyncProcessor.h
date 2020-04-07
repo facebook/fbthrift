@@ -249,6 +249,45 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
     return queue;
   }
 
+  inline static bool validateRpcKind(
+      apache::thrift::ResponseChannelRequest::UniquePtr& req,
+      apache::thrift::RpcKind kind) {
+    switch (kind) {
+      case apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE:
+        switch (req->rpcKind()) {
+          case apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE:
+            return true;
+          case apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+            req->sendReply(std::unique_ptr<folly::IOBuf>());
+            return true;
+          default:
+            break;
+        }
+        break;
+      case apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+        switch (req->rpcKind()) {
+          case apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE:
+          case apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+            return true;
+          default:
+            break;
+        }
+        break;
+      default:
+        if (kind == req->rpcKind()) {
+          return true;
+        }
+    }
+    if (req->rpcKind() != apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
+      req->sendErrorWrapped(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
+              "Function kind mismatch"),
+          kRequestTypeDoesntMatchServiceFunctionType);
+    }
+    return false;
+  }
+
   template <
       typename ProtocolIn_,
       typename ProtocolOut_,
@@ -264,23 +303,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       apache::thrift::RpcKind kind,
       ProcessFunc processFunc,
       ChildType* childClass) {
-    if (kind == apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
-      if (!req->isOneway() && !req->isStream()) {
-        req->sendReply(std::unique_ptr<folly::IOBuf>());
-      }
-    }
-    if ((req->isStream() &&
-         kind != apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE) ||
-        (!req->isStream() &&
-         kind == apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE)) {
-      if (!req->isOneway()) {
-        req->sendErrorWrapped(
-            folly::make_exception_wrapper<TApplicationException>(
-                TApplicationException::TApplicationExceptionType::
-                    UNKNOWN_METHOD,
-                "Function kind mismatch"),
-            kRequestTypeDoesntMatchServiceFunctionType);
-      }
+    if (!validateRpcKind(req, kind)) {
       return;
     }
     tm->add(

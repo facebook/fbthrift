@@ -20,6 +20,9 @@ typedef apache::thrift::ThriftPresult<true> MyServiceFast_putDataById_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I64, int64_t*>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRING, ::std::string*>> MyServiceFast_lobDataById_pargs;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceFastAsyncProcessor::process_hasDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  if (!validateRpcKind(req, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)) {
+    return;
+  }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -65,6 +68,9 @@ void MyServiceFastAsyncProcessor::throw_wrapped_hasDataById(apache::thrift::Resp
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceFastAsyncProcessor::process_getDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  if (!validateRpcKind(req, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)) {
+    return;
+  }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -110,6 +116,9 @@ void MyServiceFastAsyncProcessor::throw_wrapped_getDataById(apache::thrift::Resp
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceFastAsyncProcessor::process_putDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  if (!validateRpcKind(req, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)) {
+    return;
+  }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -155,12 +164,8 @@ void MyServiceFastAsyncProcessor::throw_wrapped_putDataById(apache::thrift::Resp
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceFastAsyncProcessor::process_lobDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->isOneway()) {
-    if (req->isStream()) {
-      std::ignore = req->sendStreamReply(std::unique_ptr<folly::IOBuf>(), apache::thrift::StreamServerCallbackPtr(nullptr));
-    } else {
-      req->sendReply(std::unique_ptr<folly::IOBuf>());
-    }
+  if (!validateRpcKind(req, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE)) {
+    return;
   }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it

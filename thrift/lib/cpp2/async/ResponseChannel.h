@@ -89,6 +89,19 @@ class ResponseChannelRequest {
     return false;
   }
 
+  apache::thrift::RpcKind rpcKind() const {
+    if (isStream()) {
+      return apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE;
+    }
+    if (isSink()) {
+      return apache::thrift::RpcKind::SINK;
+    }
+    if (isOneway()) {
+      return apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE;
+    }
+    return apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
+  }
+
   virtual bool isReplyChecksumNeeded() const {
     return false;
   }

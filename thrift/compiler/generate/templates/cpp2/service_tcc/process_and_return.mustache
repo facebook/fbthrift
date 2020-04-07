@@ -24,15 +24,11 @@ void <%service:name%>AsyncProcessor::_processInThread_<%function:cpp_name%>(apac
 <%/function:eb%>
 template <typename ProtocolIn_, typename ProtocolOut_>
 void <%service:name%>AsyncProcessor::process_<%function:cpp_name%>(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-<%#function:oneway?%><%#function:eb%>
-  if (!req->isOneway()) {
-    if (req->isStream()) {
-      std::ignore = req->sendStreamReply(std::unique_ptr<folly::IOBuf>(), apache::thrift::StreamServerCallbackPtr(nullptr));
-    } else {
-      req->sendReply(std::unique_ptr<folly::IOBuf>());
-    }
+<%#function:eb%>
+  if (!validateRpcKind(req, <% > types/function_kind%>)) {
+    return;
   }
-<%/function:eb%><%/function:oneway?%>
+<%/function:eb%>
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
