@@ -203,17 +203,10 @@ void Cpp2Connection::killRequest(
 
   setServerHeaders(*req);
 
-  // Thrift1 oneway request doesn't use ONEWAY_REQUEST_ID and
-  // may end up here. No need to send error back for such requests
-  if (!processor_->isOnewayMethod(req->getBuf(), req->getHeader())) {
-    req->sendErrorWrapped(
-        folly::make_exception_wrapper<TApplicationException>(reason, comment),
-        errorCode,
-        nullptr);
-  } else {
-    // Send an empty response so reqId will be handled properly
-    req->sendReply(std::unique_ptr<folly::IOBuf>());
-  }
+  req->sendErrorWrapped(
+      folly::make_exception_wrapper<TApplicationException>(reason, comment),
+      errorCode,
+      nullptr);
 }
 
 // Response Channel callbacks
