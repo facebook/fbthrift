@@ -18,6 +18,201 @@ enum MyEnum: int {
 
 /**
  * Original thrift struct:-
+ * MyStructNestedAnnotation
+ */
+class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'name',
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'name' => 1,
+  ];
+  const type TShape = shape(
+    'name' => string,
+    ...
+  );
+  const int STRUCTURAL_ID = 2593878277785201336;
+  /**
+   * Original thrift field:-
+   * 1: string name
+   */
+  public string $name;
+
+  <<__Rx>>
+  public function __construct(?string $name = null  ) {
+    if ($name === null) {
+      $this->name = '';
+    } else {
+      $this->name = $name;
+    }
+  }
+
+  public function getName(): string {
+    return 'MyStructNestedAnnotation';
+  }
+
+  public static function __fromShape(self::TShape $shape): this {
+    $me = new static();
+    $me->name = $shape['name'];
+    return $me;
+  }
+
+  <<__Rx>>
+  public function __toShape(): self::TShape {
+    return shape(
+      'name' => $this->name,
+    );
+  }
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'name') !== null) {
+      $this->name = /* HH_FIXME[4110] */ $parsed['name'];
+    }    
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * MyStructAnnotation
+ */
+class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'count',
+      'type' => \TType::I64,
+    ),
+    2 => shape(
+      'var' => 'name',
+      'type' => \TType::STRING,
+    ),
+    3 => shape(
+      'var' => 'extra',
+      'type' => \TType::STRING,
+    ),
+    4 => shape(
+      'var' => 'nest',
+      'type' => \TType::STRUCT,
+      'class' => MyStructNestedAnnotation::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'count' => 1,
+    'name' => 2,
+    'extra' => 3,
+    'nest' => 4,
+  ];
+  const type TShape = shape(
+    'count' => int,
+    'name' => string,
+    ?'extra' => ?string,
+    ?'nest' => ?MyStructNestedAnnotation::TShape,
+    ...
+  );
+  const int STRUCTURAL_ID = 6634109792509290256;
+  /**
+   * Original thrift field:-
+   * 1: i64 count
+   */
+  public int $count;
+  /**
+   * Original thrift field:-
+   * 2: string name
+   */
+  public string $name;
+  /**
+   * Original thrift field:-
+   * 3: string extra
+   */
+  public ?string $extra;
+  /**
+   * Original thrift field:-
+   * 4: struct module.MyStructNestedAnnotation nest
+   */
+  public ?MyStructNestedAnnotation $nest;
+
+  <<__Rx>>
+  public function __construct(?int $count = null, ?string $name = null, ?string $extra = null, ?MyStructNestedAnnotation $nest = null  ) {
+    if ($count === null) {
+      $this->count = 0;
+    } else {
+      $this->count = $count;
+    }
+    if ($name === null) {
+      $this->name = '';
+    } else {
+      $this->name = $name;
+    }
+    $this->extra = $extra;
+    $this->nest = $nest;
+  }
+
+  public function getName(): string {
+    return 'MyStructAnnotation';
+  }
+
+  public static function __fromShape(self::TShape $shape): this {
+    $me = new static();
+    $me->count = $shape['count'];
+    $me->name = $shape['name'];
+    if (Shapes::idx($shape, 'extra') !== null) {
+      $me->extra = $shape['extra'];
+    }
+    if (Shapes::idx($shape, 'nest') !== null) {
+      $me->nest = MyStructNestedAnnotation::__fromShape($shape['nest']);
+    }
+    return $me;
+  }
+
+  <<__Rx>>
+  public function __toShape(): self::TShape {
+    return shape(
+      'count' => $this->count,
+      'name' => $this->name,
+      'extra' => $this->extra,
+      'nest' => $this->nest?->__toShape(),
+    );
+  }
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'count') !== null) {
+      $this->count = /* HH_FIXME[4110] */ $parsed['count'];
+    }    
+    if (idx($parsed, 'name') !== null) {
+      $this->name = /* HH_FIXME[4110] */ $parsed['name'];
+    }    
+    if (idx($parsed, 'extra') !== null) {
+      $this->extra = /* HH_FIXME[4110] */ $parsed['extra'];
+    }    
+    if (idx($parsed, 'nest') !== null) {
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['nest']);
+      $_tmp1 = new MyStructNestedAnnotation();
+      $_tmp1->readFromJson($_tmp0);
+      $this->nest = $_tmp1;
+    }    
+  }
+
+}
+
+/**
+ * Original thrift struct:-
  * MyStruct
  */
 class MyStruct implements \IThriftStruct, \IThriftShapishStruct {

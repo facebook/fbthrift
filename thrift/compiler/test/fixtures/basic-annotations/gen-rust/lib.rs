@@ -13,6 +13,19 @@ pub mod types {
     };
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct MyStructNestedAnnotation {
+        pub name: String,
+    }
+
+    #[derive(Clone, Debug, PartialEq)]
+    pub struct MyStructAnnotation {
+        pub count: i64,
+        pub name: String,
+        pub extra: Option<String>,
+        pub nest: crate::types::MyStructNestedAnnotation,
+    }
+
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MyStruct {
         pub major: i64,
         pub package: String,
@@ -110,6 +123,117 @@ pub mod types {
             Ok(MyEnum::from(p.read_i32()?))
         }
     }
+
+    impl Default for self::MyStructNestedAnnotation {
+        fn default() -> Self {
+            Self {
+                name: Default::default(),
+            }
+        }
+    }
+
+    impl GetTType for self::MyStructNestedAnnotation {
+        const TTYPE: TType = TType::Struct;
+    }
+
+    impl<P: ProtocolWriter> Serialize<P> for self::MyStructNestedAnnotation {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("MyStructNestedAnnotation");
+            p.write_field_begin("name", TType::String, 1);
+            Serialize::write(&self.name, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P: ProtocolReader> Deserialize<P> for self::MyStructNestedAnnotation {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
+            let mut field_name = None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| ())?;
+                match (fty, fid as i32) {
+                    (TType::Stop, _) => break,
+                    (TType::String, 1) => field_name = Some(Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            Ok(Self {
+                name: field_name.unwrap_or_default(),
+            })
+        }
+    }
+
+
+    impl Default for self::MyStructAnnotation {
+        fn default() -> Self {
+            Self {
+                count: Default::default(),
+                name: Default::default(),
+                extra: None,
+                nest: Default::default(),
+            }
+        }
+    }
+
+    impl GetTType for self::MyStructAnnotation {
+        const TTYPE: TType = TType::Struct;
+    }
+
+    impl<P: ProtocolWriter> Serialize<P> for self::MyStructAnnotation {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("MyStructAnnotation");
+            p.write_field_begin("count", TType::I64, 1);
+            Serialize::write(&self.count, p);
+            p.write_field_end();
+            p.write_field_begin("name", TType::String, 2);
+            Serialize::write(&self.name, p);
+            p.write_field_end();
+            if let Some(some) = &self.extra {
+                p.write_field_begin("extra", TType::String, 3);
+                Serialize::write(some, p);
+                p.write_field_end();
+            }
+            p.write_field_begin("nest", TType::Struct, 4);
+            Serialize::write(&self.nest, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P: ProtocolReader> Deserialize<P> for self::MyStructAnnotation {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
+            let mut field_count = None;
+            let mut field_name = None;
+            let mut field_extra = None;
+            let mut field_nest = None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| ())?;
+                match (fty, fid as i32) {
+                    (TType::Stop, _) => break,
+                    (TType::I64, 1) => field_count = Some(Deserialize::read(p)?),
+                    (TType::String, 2) => field_name = Some(Deserialize::read(p)?),
+                    (TType::String, 3) => field_extra = Some(Deserialize::read(p)?),
+                    (TType::Struct, 4) => field_nest = Some(Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            Ok(Self {
+                count: field_count.unwrap_or_default(),
+                name: field_name.unwrap_or_default(),
+                extra: field_extra,
+                nest: field_nest.unwrap_or_default(),
+            })
+        }
+    }
+
 
     impl Default for self::MyStruct {
         fn default() -> Self {

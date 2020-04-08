@@ -157,6 +157,517 @@ cdef inline cMyEnum MyEnum_to_cpp(MyEnum value):
         return MyEnum__DOMAIN
 
 @__cython.auto_pickle(False)
+cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
+
+    def __init__(
+        MyStructNestedAnnotation self, *,
+        str name=None
+    ):
+        self._cpp_obj = move(MyStructNestedAnnotation._make_instance(
+          NULL,
+          NULL,
+          name,
+        ))
+
+    def __call__(
+        MyStructNestedAnnotation self,
+        name=__NOTSET
+    ):
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[1] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if name is ___NOTSET:
+            __isNOTSET[0] = True
+            name = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
+
+        if not changes:
+            return self
+
+        if name is not None:
+            if not isinstance(name, str):
+                raise TypeError(f'name is not a { str !r}.')
+
+        inst = <MyStructNestedAnnotation>MyStructNestedAnnotation.__new__(MyStructNestedAnnotation)
+        inst._cpp_obj = move(MyStructNestedAnnotation._make_instance(
+          self._cpp_obj.get(),
+          __isNOTSET,
+          name,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cMyStructNestedAnnotation] _make_instance(
+        cMyStructNestedAnnotation* base_instance,
+        bint* __isNOTSET,
+        str name 
+    ) except *:
+        cdef unique_ptr[cMyStructNestedAnnotation] c_inst
+        if base_instance:
+            c_inst = make_unique[cMyStructNestedAnnotation](deref(base_instance))
+        else:
+            c_inst = make_unique[cMyStructNestedAnnotation]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if not __isNOTSET[0] and name is None:
+                deref(c_inst).name = default_inst[cMyStructNestedAnnotation]().name
+                deref(c_inst).__isset.name = False
+                pass
+
+        if name is not None:
+            deref(c_inst).name = thrift.py3.types.move(thrift.py3.types.bytes_to_string(name.encode('utf-8')))
+            deref(c_inst).__isset.name = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'name', self.name
+
+    def __bool__(self):
+        return True
+
+    @staticmethod
+    cdef create(shared_ptr[cMyStructNestedAnnotation] cpp_obj):
+        inst = <MyStructNestedAnnotation>MyStructNestedAnnotation.__new__(MyStructNestedAnnotation)
+        inst._cpp_obj = move_shared(cpp_obj)
+        return inst
+
+    @property
+    def name(self):
+
+        return (<bytes>deref(self._cpp_obj).name).decode('UTF-8')
+
+
+    def __hash__(MyStructNestedAnnotation self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.name,
+            ))
+        return self.__hash
+
+    def __repr__(MyStructNestedAnnotation self):
+        return f'MyStructNestedAnnotation(name={repr(self.name)})'
+    def __copy__(MyStructNestedAnnotation self):
+        cdef shared_ptr[cMyStructNestedAnnotation] cpp_obj = make_shared[cMyStructNestedAnnotation](
+            deref(self._cpp_obj)
+        )
+        return MyStructNestedAnnotation.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, MyStructNestedAnnotation) and
+                isinstance(other, MyStructNestedAnnotation)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cMyStructNestedAnnotation* cself = (<MyStructNestedAnnotation>self)._cpp_obj.get()
+        cdef cMyStructNestedAnnotation* cother = (<MyStructNestedAnnotation>other)._cpp_obj.get()
+        if cop == Py_EQ:
+            return deref(cself) == deref(cother)
+        elif cop == Py_NE:
+            return deref(cself) != deref(cother)
+        elif cop == Py_LT:
+            return deref(cself) < deref(cother)
+        elif cop == Py_LE:
+            return deref(cself) <= deref(cother)
+        elif cop == Py_GT:
+            return deref(cself) > deref(cother)
+        elif cop == Py_GE:
+            return deref(cself) >= deref(cother)
+        else:
+            return NotImplemented
+
+    @staticmethod
+    def __get_reflection__():
+      defaults = MyStructNestedAnnotation.create(constant_shared_ptr[cMyStructNestedAnnotation](default_inst[cMyStructNestedAnnotation]()))
+      return __StructSpec(
+        name="MyStructNestedAnnotation",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="name",
+  type=str,
+  kind=None,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    cdef __iobuf.IOBuf _serialize(MyStructNestedAnnotation self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cMyStructNestedAnnotation* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cMyStructNestedAnnotation](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cMyStructNestedAnnotation](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cMyStructNestedAnnotation](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cMyStructNestedAnnotation](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(MyStructNestedAnnotation self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cMyStructNestedAnnotation]()
+        cdef cMyStructNestedAnnotation* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cMyStructNestedAnnotation](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cMyStructNestedAnnotation](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cMyStructNestedAnnotation](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cMyStructNestedAnnotation](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (MyStructNestedAnnotation, serialize(self)))
+
+
+@__cython.auto_pickle(False)
+cdef class MyStructAnnotation(thrift.py3.types.Struct):
+
+    def __init__(
+        MyStructAnnotation self, *,
+        count=None,
+        str name=None,
+        str extra=None,
+        MyStructNestedAnnotation nest=None
+    ):
+        if count is not None:
+            if not isinstance(count, int):
+                raise TypeError(f'count is not a { int !r}.')
+            count = <int64_t> count
+
+        self._cpp_obj = move(MyStructAnnotation._make_instance(
+          NULL,
+          NULL,
+          count,
+          name,
+          extra,
+          nest,
+        ))
+
+    def __call__(
+        MyStructAnnotation self,
+        count=__NOTSET,
+        name=__NOTSET,
+        extra=__NOTSET,
+        nest=__NOTSET
+    ):
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[4] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if count is ___NOTSET:
+            __isNOTSET[0] = True
+            count = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
+        if name is ___NOTSET:
+            __isNOTSET[1] = True
+            name = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
+        if extra is ___NOTSET:
+            __isNOTSET[2] = True
+            extra = None
+        else:
+            __isNOTSET[2] = False
+            changes = True
+
+        if nest is ___NOTSET:
+            __isNOTSET[3] = True
+            nest = None
+        else:
+            __isNOTSET[3] = False
+            changes = True
+
+
+        if not changes:
+            return self
+
+        if count is not None:
+            if not isinstance(count, int):
+                raise TypeError(f'count is not a { int !r}.')
+            count = <int64_t> count
+
+        if name is not None:
+            if not isinstance(name, str):
+                raise TypeError(f'name is not a { str !r}.')
+
+        if extra is not None:
+            if not isinstance(extra, str):
+                raise TypeError(f'extra is not a { str !r}.')
+
+        if nest is not None:
+            if not isinstance(nest, MyStructNestedAnnotation):
+                raise TypeError(f'nest is not a { MyStructNestedAnnotation !r}.')
+
+        inst = <MyStructAnnotation>MyStructAnnotation.__new__(MyStructAnnotation)
+        inst._cpp_obj = move(MyStructAnnotation._make_instance(
+          self._cpp_obj.get(),
+          __isNOTSET,
+          count,
+          name,
+          extra,
+          nest,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cMyStructAnnotation] _make_instance(
+        cMyStructAnnotation* base_instance,
+        bint* __isNOTSET,
+        object count ,
+        str name ,
+        str extra ,
+        MyStructNestedAnnotation nest 
+    ) except *:
+        cdef unique_ptr[cMyStructAnnotation] c_inst
+        if base_instance:
+            c_inst = make_unique[cMyStructAnnotation](deref(base_instance))
+        else:
+            c_inst = make_unique[cMyStructAnnotation]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if not __isNOTSET[0] and count is None:
+                deref(c_inst).count = default_inst[cMyStructAnnotation]().count
+                deref(c_inst).__isset.count = False
+                pass
+
+            if not __isNOTSET[1] and name is None:
+                deref(c_inst).name = default_inst[cMyStructAnnotation]().name
+                deref(c_inst).__isset.name = False
+                pass
+
+            if not __isNOTSET[2] and extra is None:
+                deref(c_inst).__isset.extra = False
+                pass
+
+            if not __isNOTSET[3] and nest is None:
+                deref(c_inst).nest = default_inst[cMyStructAnnotation]().nest
+                deref(c_inst).__isset.nest = False
+                pass
+
+        if count is not None:
+            deref(c_inst).count = count
+            deref(c_inst).__isset.count = True
+        if name is not None:
+            deref(c_inst).name = thrift.py3.types.move(thrift.py3.types.bytes_to_string(name.encode('utf-8')))
+            deref(c_inst).__isset.name = True
+        if extra is not None:
+            deref(c_inst).extra_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(extra.encode('utf-8'))))
+            deref(c_inst).__isset.extra = True
+        if nest is not None:
+            deref(c_inst).nest = deref((<MyStructNestedAnnotation?> nest)._cpp_obj)
+            deref(c_inst).__isset.nest = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'count', self.count
+        yield 'name', self.name
+        yield 'extra', self.extra
+        yield 'nest', self.nest
+
+    def __bool__(self):
+        return True
+
+    @staticmethod
+    cdef create(shared_ptr[cMyStructAnnotation] cpp_obj):
+        inst = <MyStructAnnotation>MyStructAnnotation.__new__(MyStructAnnotation)
+        inst._cpp_obj = move_shared(cpp_obj)
+        return inst
+
+    @property
+    def count(self):
+
+        return deref(self._cpp_obj).count
+
+    @property
+    def name(self):
+
+        return (<bytes>deref(self._cpp_obj).name).decode('UTF-8')
+
+    @property
+    def extra(self):
+        if not deref(self._cpp_obj).__isset.extra:
+            return None
+
+        return (<bytes>deref(self._cpp_obj).extra_ref().value_unchecked()).decode('UTF-8')
+
+    @property
+    def nest(self):
+
+        if self.__field_nest is None:
+            self.__field_nest = MyStructNestedAnnotation.create(reference_shared_ptr_nest(self._cpp_obj, deref(self._cpp_obj).nest))
+        return self.__field_nest
+
+
+    def __hash__(MyStructAnnotation self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.count,
+            self.name,
+            self.extra,
+            self.nest,
+            ))
+        return self.__hash
+
+    def __repr__(MyStructAnnotation self):
+        return f'MyStructAnnotation(count={repr(self.count)}, name={repr(self.name)}, extra={repr(self.extra)}, nest={repr(self.nest)})'
+    def __copy__(MyStructAnnotation self):
+        cdef shared_ptr[cMyStructAnnotation] cpp_obj = make_shared[cMyStructAnnotation](
+            deref(self._cpp_obj)
+        )
+        return MyStructAnnotation.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, MyStructAnnotation) and
+                isinstance(other, MyStructAnnotation)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cMyStructAnnotation* cself = (<MyStructAnnotation>self)._cpp_obj.get()
+        cdef cMyStructAnnotation* cother = (<MyStructAnnotation>other)._cpp_obj.get()
+        if cop == Py_EQ:
+            return deref(cself) == deref(cother)
+        elif cop == Py_NE:
+            return deref(cself) != deref(cother)
+        elif cop == Py_LT:
+            return deref(cself) < deref(cother)
+        elif cop == Py_LE:
+            return deref(cself) <= deref(cother)
+        elif cop == Py_GT:
+            return deref(cself) > deref(cother)
+        elif cop == Py_GE:
+            return deref(cself) >= deref(cother)
+        else:
+            return NotImplemented
+
+    @staticmethod
+    def __get_reflection__():
+      defaults = MyStructAnnotation.create(constant_shared_ptr[cMyStructAnnotation](default_inst[cMyStructAnnotation]()))
+      return __StructSpec(
+        name="MyStructAnnotation",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="count",
+  type=int,
+  kind=__NumberType.I64,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="name",
+  type=str,
+  kind=None,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="extra",
+  type=str,
+  kind=None,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="nest",
+  type=MyStructNestedAnnotation,
+  kind=None,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    cdef __iobuf.IOBuf _serialize(MyStructAnnotation self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cMyStructAnnotation* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cMyStructAnnotation](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cMyStructAnnotation](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cMyStructAnnotation](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cMyStructAnnotation](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(MyStructAnnotation self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cMyStructAnnotation]()
+        cdef cMyStructAnnotation* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cMyStructAnnotation](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cMyStructAnnotation](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cMyStructAnnotation](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cMyStructAnnotation](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (MyStructAnnotation, serialize(self)))
+
+
+@__cython.auto_pickle(False)
 cdef class MyStruct(thrift.py3.types.Struct):
 
     def __init__(

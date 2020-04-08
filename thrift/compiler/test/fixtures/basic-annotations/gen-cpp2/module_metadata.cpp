@@ -31,6 +31,51 @@ void EnumMetadata<::cpp2::MyEnum>::gen(ThriftMetadata& metadata) {
   }
 }
 
+void StructMetadata<::cpp2::MyStructNestedAnnotation>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.MyStructNestedAnnotation", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_MyStructNestedAnnotation = res.first->second;
+  module_MyStructNestedAnnotation.name = "module.MyStructNestedAnnotation";
+  module_MyStructNestedAnnotation.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_MyStructNestedAnnotation_fields[] = {
+    std::make_tuple(1, "name", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+  };
+  for (const auto& f : module_MyStructNestedAnnotation_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
+    module_MyStructNestedAnnotation.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::cpp2::MyStructAnnotation>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.MyStructAnnotation", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_MyStructAnnotation = res.first->second;
+  module_MyStructAnnotation.name = "module.MyStructAnnotation";
+  module_MyStructAnnotation.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_MyStructAnnotation_fields[] = {
+    std::make_tuple(1, "count", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
+    std::make_tuple(2, "name", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(3, "extra", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(4, "nest", false, std::make_unique<Struct< ::cpp2::MyStructNestedAnnotation>>("module.MyStructNestedAnnotation")),
+  };
+  for (const auto& f : module_MyStructAnnotation_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
+    module_MyStructAnnotation.fields.push_back(std::move(field));
+  }
+}
 void StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {

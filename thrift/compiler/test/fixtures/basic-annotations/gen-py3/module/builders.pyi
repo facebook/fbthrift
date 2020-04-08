@@ -14,6 +14,21 @@ import thrift.py3.builder
 import module.types as _module_types
 
 
+class MyStructNestedAnnotation_Builder(thrift.py3.builder.StructBuilder):
+    name: _typing.Optional[str]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class MyStructAnnotation_Builder(thrift.py3.builder.StructBuilder):
+    count: _typing.Optional[int]
+    name: _typing.Optional[str]
+    extra: _typing.Optional[str]
+    nest: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
 class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     major: _typing.Optional[int]
     package: _typing.Optional[str]

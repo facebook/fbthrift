@@ -12,8 +12,47 @@
     }
   },
   "structs" : {
-    "MyStruct" : {
+    "MyStructNestedAnnotation" : {
       "lineno" : 26,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "name" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true
+        }
+      }
+    },
+    "MyStructAnnotation" : {
+      "lineno" : 30,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "count" : {
+          "type_enum" : "I64",
+          "spec_args" : null,
+          "required" : true
+        },
+        "name" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true
+        },
+        "extra" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : false
+        },
+        "nest" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "MyStructNestedAnnotation",
+          "required" : true
+        }
+      }
+    },
+    "MyStruct" : {
+      "lineno" : 37,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -40,7 +79,7 @@
       }
     },
     "SecretStruct" : {
-      "lineno" : 55,
+      "lineno" : 75,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -59,7 +98,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 36,
+      "lineno" : 56,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {
@@ -148,7 +187,7 @@
       }
     },
     "MyServicePrioParent" : {
-      "lineno" : 46,
+      "lineno" : 66,
       "functions" : {
         "MyServicePrioParent.ping" : {
           "return_type" : {
@@ -173,7 +212,7 @@
         "type_enum" : "SERVICE",
         "spec_args" : "MyServicePrioParent"
       },
-      "lineno" : 51,
+      "lineno" : 71,
       "functions" : {
         "MyServicePrioChild.pang" : {
           "return_type" : {

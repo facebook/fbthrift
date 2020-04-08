@@ -13,6 +13,11 @@
 namespace apache {
 namespace thrift {
 namespace tag {
+struct name;
+struct count;
+struct name;
+struct extra;
+struct nest;
 struct majorVer;
 struct package;
 struct annotation_with_quote;
@@ -21,6 +26,26 @@ struct id;
 struct password;
 } // namespace tag
 namespace detail {
+#ifndef APACHE_THRIFT_ACCESSOR_name
+#define APACHE_THRIFT_ACCESSOR_name
+APACHE_THRIFT_DEFINE_ACCESSOR(name);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_count
+#define APACHE_THRIFT_ACCESSOR_count
+APACHE_THRIFT_DEFINE_ACCESSOR(count);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_name
+#define APACHE_THRIFT_ACCESSOR_name
+APACHE_THRIFT_DEFINE_ACCESSOR(name);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_extra
+#define APACHE_THRIFT_ACCESSOR_extra
+APACHE_THRIFT_DEFINE_ACCESSOR(extra);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_nest
+#define APACHE_THRIFT_ACCESSOR_nest
+APACHE_THRIFT_DEFINE_ACCESSOR(nest);
+#endif
 #ifndef APACHE_THRIFT_ACCESSOR_majorVer
 #define APACHE_THRIFT_ACCESSOR_majorVer
 APACHE_THRIFT_DEFINE_ACCESSOR(majorVer);
@@ -109,6 +134,8 @@ extern const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUE
 // END struct_indirection
 // BEGIN forward_declare
 namespace cpp2 {
+class MyStructNestedAnnotation;
+class MyStructAnnotation;
 class MyStruct;
 class SecretStruct;
 } // cpp2
@@ -118,6 +145,283 @@ class SecretStruct;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+namespace cpp2 {
+class MyStructNestedAnnotation final : private apache::thrift::detail::st::ComparisonOperators<MyStructNestedAnnotation> {
+ public:
+
+  MyStructNestedAnnotation() {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  MyStructNestedAnnotation(apache::thrift::FragileConstructor, ::std::string name__arg);
+
+  MyStructNestedAnnotation(MyStructNestedAnnotation&&) = default;
+
+  MyStructNestedAnnotation(const MyStructNestedAnnotation&) = default;
+
+  MyStructNestedAnnotation& operator=(MyStructNestedAnnotation&&) = default;
+
+  MyStructNestedAnnotation& operator=(const MyStructNestedAnnotation&) = default;
+  void __clear();
+ public:
+  ::std::string name;
+
+ public:
+  struct __isset {
+    bool name;
+  } __isset = {};
+  bool operator==(const MyStructNestedAnnotation& rhs) const;
+  bool operator<(const MyStructNestedAnnotation& rhs) const;
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
+    return {this->name, __isset.name};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name_ref() const&& {
+    return {std::move(this->name), __isset.name};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> name_ref() & {
+    return {this->name, __isset.name};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
+    return {std::move(this->name), __isset.name};
+  }
+
+  const ::std::string& get_name() const& {
+    return name;
+  }
+
+  ::std::string get_name() && {
+    return std::move(name);
+  }
+
+  template <typename T_MyStructNestedAnnotation_name_struct_setter = ::std::string>
+  ::std::string& set_name(T_MyStructNestedAnnotation_name_struct_setter&& name_) {
+    name = std::forward<T_MyStructNestedAnnotation_name_struct_setter>(name_);
+    __isset.name = true;
+    return name;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< MyStructNestedAnnotation >;
+};
+
+void swap(MyStructNestedAnnotation& a, MyStructNestedAnnotation& b);
+
+template <class Protocol_>
+uint32_t MyStructNestedAnnotation::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+class MyStructAnnotation final : private apache::thrift::detail::st::ComparisonOperators<MyStructAnnotation> {
+ public:
+
+  MyStructAnnotation() :
+      count(0) {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  MyStructAnnotation(apache::thrift::FragileConstructor, int64_t count__arg, ::std::string name__arg, ::std::string extra__arg,  ::cpp2::MyStructNestedAnnotation nest__arg);
+
+  MyStructAnnotation(MyStructAnnotation&&) = default;
+
+  MyStructAnnotation(const MyStructAnnotation&) = default;
+
+  MyStructAnnotation& operator=(MyStructAnnotation&&) = default;
+
+  MyStructAnnotation& operator=(const MyStructAnnotation&) = default;
+  void __clear();
+ public:
+  int64_t count;
+ public:
+  ::std::string name;
+ private:
+  ::std::string extra;
+ public:
+   ::cpp2::MyStructNestedAnnotation nest;
+
+ public:
+  struct __isset {
+    bool count;
+    bool name;
+    bool extra;
+    bool nest;
+  } __isset = {};
+  bool operator==(const MyStructAnnotation& rhs) const;
+  bool operator<(const MyStructAnnotation& rhs) const;
+
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> count_ref() const& {
+    return {this->count, __isset.count};
+  }
+
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> count_ref() const&& {
+    return {std::move(this->count), __isset.count};
+  }
+
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> count_ref() & {
+    return {this->count, __isset.count};
+  }
+
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> count_ref() && {
+    return {std::move(this->count), __isset.count};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
+    return {this->name, __isset.name};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name_ref() const&& {
+    return {std::move(this->name), __isset.name};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> name_ref() & {
+    return {this->name, __isset.name};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
+    return {std::move(this->name), __isset.name};
+  }
+
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> extra_ref() const& {
+    return {extra, __isset.extra};
+  }
+
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&&> extra_ref() const&& {
+    return {std::move(extra), __isset.extra};
+  }
+
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&> extra_ref() & {
+    return {extra, __isset.extra};
+  }
+
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&&> extra_ref() && {
+    return {std::move(extra), __isset.extra};
+  }
+
+  template <typename..., typename T =  ::cpp2::MyStructNestedAnnotation>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> nest_ref() const& {
+    return {this->nest, __isset.nest};
+  }
+
+  template <typename..., typename T =  ::cpp2::MyStructNestedAnnotation>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> nest_ref() const&& {
+    return {std::move(this->nest), __isset.nest};
+  }
+
+  template <typename..., typename T =  ::cpp2::MyStructNestedAnnotation>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> nest_ref() & {
+    return {this->nest, __isset.nest};
+  }
+
+  template <typename..., typename T =  ::cpp2::MyStructNestedAnnotation>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> nest_ref() && {
+    return {std::move(this->nest), __isset.nest};
+  }
+
+  int64_t get_count() const {
+    return count;
+  }
+
+  int64_t& set_count(int64_t count_) {
+    count = count_;
+    __isset.count = true;
+    return count;
+  }
+
+  const ::std::string& get_name() const& {
+    return name;
+  }
+
+  ::std::string get_name() && {
+    return std::move(name);
+  }
+
+  template <typename T_MyStructAnnotation_name_struct_setter = ::std::string>
+  ::std::string& set_name(T_MyStructAnnotation_name_struct_setter&& name_) {
+    name = std::forward<T_MyStructAnnotation_name_struct_setter>(name_);
+    __isset.name = true;
+    return name;
+  }
+
+  const ::std::string* get_extra() const& {
+    return __isset.extra ? std::addressof(extra) : nullptr;
+  }
+
+  ::std::string* get_extra() & {
+    return __isset.extra ? std::addressof(extra) : nullptr;
+  }
+  ::std::string* get_extra() && = delete;
+
+  template <typename T_MyStructAnnotation_extra_struct_setter = ::std::string>
+  ::std::string& set_extra(T_MyStructAnnotation_extra_struct_setter&& extra_) {
+    extra = std::forward<T_MyStructAnnotation_extra_struct_setter>(extra_);
+    __isset.extra = true;
+    return extra;
+  }
+  const  ::cpp2::MyStructNestedAnnotation& get_nest() const&;
+   ::cpp2::MyStructNestedAnnotation get_nest() &&;
+
+  template <typename T_MyStructAnnotation_nest_struct_setter =  ::cpp2::MyStructNestedAnnotation>
+   ::cpp2::MyStructNestedAnnotation& set_nest(T_MyStructAnnotation_nest_struct_setter&& nest_) {
+    nest = std::forward<T_MyStructAnnotation_nest_struct_setter>(nest_);
+    __isset.nest = true;
+    return nest;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< MyStructAnnotation >;
+};
+
+void swap(MyStructAnnotation& a, MyStructAnnotation& b);
+
+template <class Protocol_>
+uint32_t MyStructAnnotation::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
 namespace cpp2 {
 class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:

@@ -20,18 +20,38 @@ namespace java.swift test.fixtures.basicannotations
 enum MyEnum {
   MyValue1 = 0,
   MyValue2 = 1,
-  DOMAIN = 2 (cpp.name = "REALM"),
+  DOMAIN = 2 (cpp.name = 'REALM'),
+}
+
+struct MyStructNestedAnnotation {
+  1: string name
+}
+
+struct MyStructAnnotation {
+  1: i64 count,
+  2: string name,
+  3: optional string extra,
+  4: MyStructNestedAnnotation nest
 }
 
 struct MyStruct {
   # glibc has macros with this name, Thrift should be able to prevent collisions
-  1: i64 major (cpp.name = "majorVer"),
+  1: i64 major (cpp.name = 'majorVer'),
   # package is a reserved keyword in Java, Thrift should be able to handle this
-  2: string package (java.swift.name = "_package"),
+  2: string package (java.swift.name = '_package'),
   # should generate valid code even with double quotes in an annotation
   3: string annotation_with_quote (go.tag = 'tag:"somevalue"'),
-  4: string class_ (java.swift.name = "class_")
-} (android.generate_builder)
+  4: string class_ (java.swift.name = 'class_')
+} (
+  android.generate_builder,
+  struct_annotation=MyStructAnnotation{
+    'count': 123,
+    'name': '"structy"',
+    'nest': {
+      'name': "'nesty'",
+    }
+  }
+)
 
 service MyService {
   void ping()

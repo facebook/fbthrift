@@ -49,6 +49,38 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+void TccStructTraits<::cpp2::MyStructNestedAnnotation>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "name") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+void TccStructTraits<::cpp2::MyStructAnnotation>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "count") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "name") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "extra") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "nest") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
 void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
@@ -90,6 +122,154 @@ void TccStructTraits<::cpp2::SecretStruct>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
+namespace cpp2 {
+
+MyStructNestedAnnotation::MyStructNestedAnnotation(apache::thrift::FragileConstructor, ::std::string name__arg) :
+    name(std::move(name__arg)) {
+  __isset.name = true;
+}
+
+void MyStructNestedAnnotation::__clear() {
+  // clear all fields
+  name = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  __isset = {};
+}
+
+bool MyStructNestedAnnotation::operator==(const MyStructNestedAnnotation& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.name == rhs.name)) {
+    return false;
+  }
+  return true;
+}
+
+bool MyStructNestedAnnotation::operator<(const MyStructNestedAnnotation& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.name == rhs.name)) {
+    return lhs.name < rhs.name;
+  }
+  return false;
+}
+
+
+void swap(MyStructNestedAnnotation& a, MyStructNestedAnnotation& b) {
+  using ::std::swap;
+  swap(a.name, b.name);
+  swap(a.__isset, b.__isset);
+}
+
+template void MyStructNestedAnnotation::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t MyStructNestedAnnotation::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyStructNestedAnnotation::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyStructNestedAnnotation::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void MyStructNestedAnnotation::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t MyStructNestedAnnotation::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyStructNestedAnnotation::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t MyStructNestedAnnotation::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+MyStructAnnotation::MyStructAnnotation(apache::thrift::FragileConstructor, int64_t count__arg, ::std::string name__arg, ::std::string extra__arg,  ::cpp2::MyStructNestedAnnotation nest__arg) :
+    count(std::move(count__arg)),
+    name(std::move(name__arg)),
+    extra(std::move(extra__arg)),
+    nest(std::move(nest__arg)) {
+  __isset.count = true;
+  __isset.name = true;
+  __isset.extra = true;
+  __isset.nest = true;
+}
+
+void MyStructAnnotation::__clear() {
+  // clear all fields
+  count = 0;
+  name = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  extra = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  ::apache::thrift::Cpp2Ops<  ::cpp2::MyStructNestedAnnotation>::clear(&nest);
+  __isset = {};
+}
+
+bool MyStructAnnotation::operator==(const MyStructAnnotation& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.count == rhs.count)) {
+    return false;
+  }
+  if (!(lhs.name == rhs.name)) {
+    return false;
+  }
+  if (lhs.__isset.extra != rhs.__isset.extra) {
+    return false;
+  }
+  if (lhs.__isset.extra) {
+    if (!(lhs.extra == rhs.extra)) {
+      return false;
+    }
+  }
+  if (!(lhs.nest == rhs.nest)) {
+    return false;
+  }
+  return true;
+}
+
+bool MyStructAnnotation::operator<(const MyStructAnnotation& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.count == rhs.count)) {
+    return lhs.count < rhs.count;
+  }
+  if (!(lhs.name == rhs.name)) {
+    return lhs.name < rhs.name;
+  }
+  if (lhs.__isset.extra != rhs.__isset.extra) {
+    return lhs.__isset.extra < rhs.__isset.extra;
+  }
+  if (lhs.__isset.extra) {
+    if (!(lhs.extra == rhs.extra)) {
+      return lhs.extra < rhs.extra;
+    }
+  }
+  if (!(lhs.nest == rhs.nest)) {
+    return lhs.nest < rhs.nest;
+  }
+  return false;
+}
+
+const  ::cpp2::MyStructNestedAnnotation& MyStructAnnotation::get_nest() const& {
+  return nest;
+}
+
+ ::cpp2::MyStructNestedAnnotation MyStructAnnotation::get_nest() && {
+  return std::move(nest);
+}
+
+
+void swap(MyStructAnnotation& a, MyStructAnnotation& b) {
+  using ::std::swap;
+  swap(a.count, b.count);
+  swap(a.name, b.name);
+  swap(a.extra_ref().value_unchecked(), b.extra_ref().value_unchecked());
+  swap(a.nest, b.nest);
+  swap(a.__isset, b.__isset);
+}
+
+template void MyStructAnnotation::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t MyStructAnnotation::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyStructAnnotation::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyStructAnnotation::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void MyStructAnnotation::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t MyStructAnnotation::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyStructAnnotation::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t MyStructAnnotation::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
 namespace cpp2 {
 
 MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg) :

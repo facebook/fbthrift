@@ -42,11 +42,51 @@ cdef cMyEnum MyEnum_to_cpp(MyEnum value)
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
     # Forward Declaration
+    cdef cppclass cMyStructNestedAnnotation "::cpp2::MyStructNestedAnnotation"
+    # Forward Declaration
+    cdef cppclass cMyStructAnnotation "::cpp2::MyStructAnnotation"
+    # Forward Declaration
     cdef cppclass cMyStruct "::cpp2::MyStruct"
     # Forward Declaration
     cdef cppclass cSecretStruct "::cpp2::SecretStruct"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
+    cdef cppclass cMyStructNestedAnnotation__isset "::cpp2::MyStructNestedAnnotation::__isset":
+        bint name
+
+    cdef cppclass cMyStructNestedAnnotation "::cpp2::MyStructNestedAnnotation":
+        cMyStructNestedAnnotation() except +
+        cMyStructNestedAnnotation(const cMyStructNestedAnnotation&) except +
+        bint operator==(cMyStructNestedAnnotation&)
+        bint operator!=(cMyStructNestedAnnotation&)
+        bint operator<(cMyStructNestedAnnotation&)
+        bint operator>(cMyStructNestedAnnotation&)
+        bint operator<=(cMyStructNestedAnnotation&)
+        bint operator>=(cMyStructNestedAnnotation&)
+        string name
+        cMyStructNestedAnnotation__isset __isset
+
+    cdef cppclass cMyStructAnnotation__isset "::cpp2::MyStructAnnotation::__isset":
+        bint count
+        bint name
+        bint extra
+        bint nest
+
+    cdef cppclass cMyStructAnnotation "::cpp2::MyStructAnnotation":
+        cMyStructAnnotation() except +
+        cMyStructAnnotation(const cMyStructAnnotation&) except +
+        bint operator==(cMyStructAnnotation&)
+        bint operator!=(cMyStructAnnotation&)
+        bint operator<(cMyStructAnnotation&)
+        bint operator>(cMyStructAnnotation&)
+        bint operator<=(cMyStructAnnotation&)
+        bint operator>=(cMyStructAnnotation&)
+        int64_t count
+        string name
+        optional_field_ref[string] extra_ref()
+        cMyStructNestedAnnotation nest
+        cMyStructAnnotation__isset __isset
+
     cdef cppclass cMyStruct__isset "::cpp2::MyStruct::__isset":
         bint major "majorVer"
         bint package
@@ -85,8 +125,15 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         string password
         cSecretStruct__isset __isset
 
+    cdef shared_ptr[cMyStructNestedAnnotation] reference_shared_ptr_nest "thrift::py3::reference_shared_ptr<::cpp2::MyStructNestedAnnotation>"(shared_ptr[cMyStructAnnotation]&, cMyStructNestedAnnotation&)
 
 cdef extern from "<utility>" namespace "std" nogil:
+    cdef shared_ptr[cMyStructNestedAnnotation] move(unique_ptr[cMyStructNestedAnnotation])
+    cdef shared_ptr[cMyStructNestedAnnotation] move_shared "std::move"(shared_ptr[cMyStructNestedAnnotation])
+    cdef unique_ptr[cMyStructNestedAnnotation] move_unique "std::move"(unique_ptr[cMyStructNestedAnnotation])
+    cdef shared_ptr[cMyStructAnnotation] move(unique_ptr[cMyStructAnnotation])
+    cdef shared_ptr[cMyStructAnnotation] move_shared "std::move"(shared_ptr[cMyStructAnnotation])
+    cdef unique_ptr[cMyStructAnnotation] move_unique "std::move"(unique_ptr[cMyStructAnnotation])
     cdef shared_ptr[cMyStruct] move(unique_ptr[cMyStruct])
     cdef shared_ptr[cMyStruct] move_shared "std::move"(shared_ptr[cMyStruct])
     cdef unique_ptr[cMyStruct] move_unique "std::move"(unique_ptr[cMyStruct])
@@ -95,8 +142,52 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cSecretStruct] move_unique "std::move"(unique_ptr[cSecretStruct])
 
 cdef extern from "<memory>" namespace "std" nogil:
+    cdef shared_ptr[const cMyStructNestedAnnotation] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyStructNestedAnnotation>"(shared_ptr[cMyStructNestedAnnotation])
+    cdef shared_ptr[const cMyStructAnnotation] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyStructAnnotation>"(shared_ptr[cMyStructAnnotation])
     cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyStruct>"(shared_ptr[cMyStruct])
     cdef shared_ptr[const cSecretStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::SecretStruct>"(shared_ptr[cSecretStruct])
+
+# Forward Definition of the cython struct
+cdef class MyStructNestedAnnotation(thrift.py3.types.Struct)
+
+
+cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cMyStructNestedAnnotation] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cMyStructNestedAnnotation] _make_instance(
+        cMyStructNestedAnnotation* base_instance,
+        bint* __isNOTSET,
+        str name
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cMyStructNestedAnnotation])
+
+# Forward Definition of the cython struct
+cdef class MyStructAnnotation(thrift.py3.types.Struct)
+
+
+cdef class MyStructAnnotation(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cMyStructAnnotation] _cpp_obj
+    cdef MyStructNestedAnnotation __field_nest
+
+    @staticmethod
+    cdef unique_ptr[cMyStructAnnotation] _make_instance(
+        cMyStructAnnotation* base_instance,
+        bint* __isNOTSET,
+        object count,
+        str name,
+        str extra,
+        MyStructNestedAnnotation nest
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cMyStructAnnotation])
 
 # Forward Definition of the cython struct
 cdef class MyStruct(thrift.py3.types.Struct)
