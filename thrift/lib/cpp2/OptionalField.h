@@ -40,23 +40,27 @@ class DeprecatedOptionalField {
   using value_type = T;
 
   DeprecatedOptionalField() = default;
-  DeprecatedOptionalField(const DeprecatedOptionalField&) = default;
-  DeprecatedOptionalField(DeprecatedOptionalField&& other) noexcept(
-      std::is_nothrow_move_constructible<T>::value)
+  [[deprecated]] DeprecatedOptionalField(const DeprecatedOptionalField&) =
+      default;
+  [[deprecated]] DeprecatedOptionalField(
+      DeprecatedOptionalField&&
+          other) noexcept(std::is_nothrow_move_constructible<T>::value)
       : value_(std::move(other.value_)), is_set_(other.is_set_) {
     other.is_set_ = false; // TODO: do not unset moved-from Optional
   }
 
-  explicit DeprecatedOptionalField(const T& t) noexcept(
+  [[deprecated]] explicit DeprecatedOptionalField(const T& t) noexcept(
       std::is_nothrow_copy_constructible<T>::value)
       : value_(t), is_set_(true) {}
 
-  explicit DeprecatedOptionalField(T&& t) noexcept(
+  [[deprecated]] explicit DeprecatedOptionalField(T&& t) noexcept(
       std::is_nothrow_move_constructible<T>::value)
       : value_(std::move(t)), is_set_(true) {}
 
-  DeprecatedOptionalField& operator=(const DeprecatedOptionalField&) = default;
-  DeprecatedOptionalField& operator=(DeprecatedOptionalField&& other) noexcept(
+  [[deprecated]] DeprecatedOptionalField& operator=(
+      const DeprecatedOptionalField&) = default;
+  [[deprecated]] DeprecatedOptionalField&
+  operator=(DeprecatedOptionalField&& other) noexcept(
       std::is_nothrow_move_assignable<T>::value) {
     if (this != &other) {
       value_ = std::move(other.value_);
@@ -176,11 +180,11 @@ class DeprecatedOptionalField {
   }
 
   // TODO: codemod following incompatbile APIs
-  void assign(T&& u) {
+  [[deprecated]] void assign(T&& u) {
     *this = std::move(u);
   }
 
-  void assign(const T& u) {
+  [[deprecated]] void assign(const T& u) {
     *this = u;
   }
 
