@@ -28,6 +28,7 @@ namespace {
 
 template <typename ProtocolWriter>
 std::unique_ptr<folly::IOBuf> serializeRequest(
+    int32_t seqid,
     folly::StringPiece methodName,
     std::unique_ptr<folly::IOBuf> buf) {
   ProtocolWriter writer;
@@ -46,7 +47,7 @@ std::unique_ptr<folly::IOBuf> serializeRequest(
 
     queue.append(std::move(buf), false);
     writer.setOutput(&queue);
-    writer.writeMessageBegin(methodName, T_CALL, 0);
+    writer.writeMessageBegin(methodName, T_CALL, seqid);
 
     // Move the new data to come right before the old data and restore the
     // old tail pointer.
@@ -59,7 +60,7 @@ std::unique_ptr<folly::IOBuf> serializeRequest(
     auto messageBeginBuf = folly::IOBuf::create(messageBeginSizeUpperBound);
     queue.append(std::move(messageBeginBuf));
     writer.setOutput(&queue);
-    writer.writeMessageBegin(methodName, T_CALL, 0);
+    writer.writeMessageBegin(methodName, T_CALL, seqid);
     queue.append(std::move(buf));
     return queue.move();
   }
@@ -70,20 +71,31 @@ std::unique_ptr<folly::IOBuf> serializeRequest(
 
 LegacySerializedRequest::LegacySerializedRequest(
     uint16_t protocolId,
+    int32_t seqid,
     folly::StringPiece methodName,
     SerializedRequest&& serializedRequest)
     : buffer([&] {
         switch (protocolId) {
           case protocol::T_BINARY_PROTOCOL:
             return serializeRequest<BinaryProtocolWriter>(
-                methodName, std::move(serializedRequest.buffer));
+                seqid, methodName, std::move(serializedRequest.buffer));
 
           case protocol::T_COMPACT_PROTOCOL:
             return serializeRequest<CompactProtocolWriter>(
-                methodName, std::move(serializedRequest.buffer));
+                seqid, methodName, std::move(serializedRequest.buffer));
           default:
             LOG(FATAL) << "Unsupported protocolId: " << protocolId;
         }
       }()) {}
+
+LegacySerializedRequest::LegacySerializedRequest(
+    uint16_t protocolId,
+    folly::StringPiece methodName,
+    SerializedRequest&& serializedRequest)
+    : LegacySerializedRequest(
+          protocolId,
+          0,
+          methodName,
+          std::move(serializedRequest)) {}
 } // namespace thrift
 } // namespace apache

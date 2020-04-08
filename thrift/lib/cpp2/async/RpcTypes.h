@@ -37,6 +37,12 @@ struct LegacySerializedRequest {
       folly::StringPiece methodName,
       SerializedRequest&& serializedRequest);
 
+  LegacySerializedRequest(
+      uint16_t protocolId,
+      int32_t seqid,
+      folly::StringPiece methodName,
+      SerializedRequest&& serializedRequest);
+
   std::unique_ptr<folly::IOBuf> buffer;
 };
 

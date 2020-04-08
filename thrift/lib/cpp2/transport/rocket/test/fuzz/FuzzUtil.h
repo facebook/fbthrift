@@ -109,9 +109,9 @@ class FakeTransport final : public folly::AsyncTransportWrapper {
 
 class FakeProcessor final : public apache::thrift::AsyncProcessor {
  public:
-  void process(
+  void processSerializedRequest(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
-      std::unique_ptr<folly::IOBuf>,
+      apache::thrift::SerializedRequest&&,
       apache::thrift::protocol::PROTOCOL_TYPES,
       apache::thrift::Cpp2RequestContext*,
       folly::EventBase*,
