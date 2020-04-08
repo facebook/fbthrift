@@ -170,10 +170,6 @@ class AsyncProcessor : public TProcessorBase {
     std::terminate();
   }
 
-  virtual bool isOnewayMethod(
-      const folly::IOBuf* buf,
-      const transport::THeader* header) = 0;
-
   virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest() {
     return nullptr;
   }

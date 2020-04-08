@@ -181,21 +181,10 @@ void ExtraServiceAsyncProcessor::processSerializedRequest(apache::thrift::Respon
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-bool ExtraServiceAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) {
-  return apache::thrift::detail::ap::is_oneway_method(buf, header, onewayMethods_);
-}
-
 std::shared_ptr<folly::RequestContext> ExtraServiceAsyncProcessor::getBaseContextForRequest() {
   return iface_->getBaseContextForRequest();
 }
 
-std::unordered_set<std::string> ExtraServiceAsyncProcessor::onewayMethods_ {
-  "oneway_void_ret",
-  "oneway_void_ret_i32_i32_i32_i32_i32_param",
-  "oneway_void_ret_map_setlist_param",
-  "oneway_void_ret_struct_param",
-  "oneway_void_ret_listunion_param"
-};
 const ExtraServiceAsyncProcessor::ProcessMap& ExtraServiceAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

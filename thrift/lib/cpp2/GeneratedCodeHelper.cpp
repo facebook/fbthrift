@@ -186,42 +186,6 @@ MessageBegin deserializeMessageBegin(
   }
   return msgBegin;
 }
-
-template <class ProtocolReader>
-static bool is_oneway_method(
-    const IOBuf* buf,
-    const unordered_set<string>& oneways) {
-  string fname;
-  MessageType mtype;
-  int32_t protoSeqId = 0;
-  ProtocolReader iprot;
-  iprot.setInput(buf);
-  try {
-    iprot.readMessageBegin(fname, mtype, protoSeqId);
-    auto it = oneways.find(fname);
-    return it != oneways.end();
-  } catch (const TException& ex) {
-    LOG(ERROR) << "received invalid message from client: " << ex.what();
-    return false;
-  }
-}
-
-bool is_oneway_method(
-    const IOBuf* buf,
-    const THeader* header,
-    const unordered_set<string>& oneways) {
-  auto protType = static_cast<PROTOCOL_TYPES>(header->getProtocolId());
-  switch (protType) {
-    case T_BINARY_PROTOCOL:
-      return is_oneway_method<BinaryProtocolReader>(buf, oneways);
-    case T_COMPACT_PROTOCOL:
-      return is_oneway_method<CompactProtocolReader>(buf, oneways);
-    default:
-      LOG(ERROR) << "invalid protType: " << folly::to_underlying(protType);
-      return false;
-  }
-}
-
 } // namespace ap
 } // namespace detail
 

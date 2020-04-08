@@ -48,15 +48,10 @@ void MyNodeAsyncProcessor::processSerializedRequest(apache::thrift::ResponseChan
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-bool MyNodeAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) {
-  return apache::thrift::detail::ap::is_oneway_method(buf, header, onewayMethods_);
-}
-
 std::shared_ptr<folly::RequestContext> MyNodeAsyncProcessor::getBaseContextForRequest() {
   return iface_->getBaseContextForRequest();
 }
 
-std::unordered_set<std::string> MyNodeAsyncProcessor::onewayMethods_ {};
 const MyNodeAsyncProcessor::ProcessMap& MyNodeAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

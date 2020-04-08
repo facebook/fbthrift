@@ -67,10 +67,7 @@ class MyServicePrioParentAsyncProcessor : public ::apache::thrift::GeneratedAsyn
  public:
   void processSerializedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
  protected:
-  bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) override;
   std::shared_ptr<folly::RequestContext> getBaseContextForRequest() override;
- private:
-  static std::unordered_set<std::string> onewayMethods_;
  public:
   using ProcessFunc = GeneratedAsyncProcessor::ProcessFunc<MyServicePrioParentAsyncProcessor>;
   using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFunc>;

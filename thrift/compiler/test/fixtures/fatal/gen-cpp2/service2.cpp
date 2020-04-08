@@ -151,15 +151,10 @@ void service2AsyncProcessor::processSerializedRequest(apache::thrift::ResponseCh
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-bool service2AsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) {
-  return apache::thrift::detail::ap::is_oneway_method(buf, header, onewayMethods_);
-}
-
 std::shared_ptr<folly::RequestContext> service2AsyncProcessor::getBaseContextForRequest() {
   return iface_->getBaseContextForRequest();
 }
 
-std::unordered_set<std::string> service2AsyncProcessor::onewayMethods_ {};
 const service2AsyncProcessor::ProcessMap& service2AsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

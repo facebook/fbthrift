@@ -96,17 +96,10 @@ void MyServiceFastAsyncProcessor::processSerializedRequest(apache::thrift::Respo
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-bool MyServiceFastAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) {
-  return apache::thrift::detail::ap::is_oneway_method(buf, header, onewayMethods_);
-}
-
 std::shared_ptr<folly::RequestContext> MyServiceFastAsyncProcessor::getBaseContextForRequest() {
   return iface_->getBaseContextForRequest();
 }
 
-std::unordered_set<std::string> MyServiceFastAsyncProcessor::onewayMethods_ {
-  "lobDataById"
-};
 const MyServiceFastAsyncProcessor::ProcessMap& MyServiceFastAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

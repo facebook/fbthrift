@@ -394,10 +394,6 @@ class PythonAsyncProcessor : public AsyncProcessor {
         oneway));
   }
 
-  bool isOnewayMethod(const folly::IOBuf* buf, const THeader* header) override {
-    return isOnewayMethod(getMethodName(buf, header));
-  }
-
   std::string getMethodName(const folly::IOBuf* buf, const THeader* header) {
     auto protType = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
         header->getProtocolId());
@@ -460,11 +456,6 @@ class PythonAsyncProcessor : public AsyncProcessor {
       LOG(ERROR) << "received invalid message from client: " << ex.what();
       return "";
     }
-  }
-
-  template <typename ProtocolReader>
-  bool isOnewayMethod(const folly::IOBuf* buf) {
-    return isOnewayMethod(getMethodName<ProtocolReader>(buf));
   }
 
   bool isOnewayMethod(std::string const& fname) {

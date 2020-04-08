@@ -109,15 +109,10 @@ void RaiserAsyncProcessor::processSerializedRequest(apache::thrift::ResponseChan
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-bool RaiserAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) {
-  return apache::thrift::detail::ap::is_oneway_method(buf, header, onewayMethods_);
-}
-
 std::shared_ptr<folly::RequestContext> RaiserAsyncProcessor::getBaseContextForRequest() {
   return iface_->getBaseContextForRequest();
 }
 
-std::unordered_set<std::string> RaiserAsyncProcessor::onewayMethods_ {};
 const RaiserAsyncProcessor::ProcessMap& RaiserAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

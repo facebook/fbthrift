@@ -920,12 +920,6 @@ void process(
   }
 }
 
-//  Generated AsyncProcessor::isOnewayMethod just calls this.
-bool is_oneway_method(
-    const folly::IOBuf* buf,
-    const transport::THeader* header,
-    const std::unordered_set<std::string>& oneways);
-
 template <typename Protocol, typename PResult, typename T>
 std::unique_ptr<folly::IOBuf> encode_stream_payload(T&& _item) {
   PResult res;

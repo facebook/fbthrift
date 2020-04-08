@@ -132,15 +132,10 @@ void NestedContainersAsyncProcessor::processSerializedRequest(apache::thrift::Re
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-bool NestedContainersAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) {
-  return apache::thrift::detail::ap::is_oneway_method(buf, header, onewayMethods_);
-}
-
 std::shared_ptr<folly::RequestContext> NestedContainersAsyncProcessor::getBaseContextForRequest() {
   return iface_->getBaseContextForRequest();
 }
 
-std::unordered_set<std::string> NestedContainersAsyncProcessor::onewayMethods_ {};
 const NestedContainersAsyncProcessor::ProcessMap& NestedContainersAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

@@ -109,13 +109,6 @@ class FakeTransport final : public folly::AsyncTransportWrapper {
 
 class FakeProcessor final : public apache::thrift::AsyncProcessor {
  public:
-  // not used by rocket
-  bool isOnewayMethod(
-      const folly::IOBuf*,
-      const apache::thrift::transport::THeader*) override {
-    return false;
-  }
-
   void process(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       std::unique_ptr<folly::IOBuf>,
