@@ -53,7 +53,7 @@ void MyServiceSvIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallbac
     callback->getThreadManager(), callback->getEventBase()};
   co_ping(params)
     .scheduleOn(params.getThreadManager())
-    .start([callback = std::move(callback)](
+    .startInlineUnsafe([callback = std::move(callback)](
       folly::Try<folly::Unit>&& tryResult) mutable {
         apache::thrift::HandlerCallback<void>::completeInThread(std::move(callback), std::move(tryResult));
       });
@@ -118,7 +118,7 @@ void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::Handler
     callback->getThreadManager(), callback->getEventBase()};
   co_hasDataById(params, id)
     .scheduleOn(params.getThreadManager())
-    .start([callback = std::move(callback)](
+    .startInlineUnsafe([callback = std::move(callback)](
       folly::Try<bool>&& tryResult) mutable {
         apache::thrift::HandlerCallback<bool>::completeInThread(std::move(callback), std::move(tryResult));
       });
