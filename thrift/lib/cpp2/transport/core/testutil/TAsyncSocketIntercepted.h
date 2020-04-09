@@ -19,28 +19,25 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <sys/types.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <memory>
 
 namespace apache {
 namespace thrift {
 namespace async {
 
-class TAsyncSocketIntercepted : public TAsyncSocket {
+class TAsyncSocketIntercepted : public folly::AsyncSocket {
  public:
   TAsyncSocketIntercepted(
       folly::EventBase* evb,
       const folly::SocketAddress& address,
       uint32_t connectTimeout = 0)
-      : folly::AsyncSocket(evb, address, connectTimeout),
-        TAsyncSocket(evb, address, connectTimeout) {}
+      : folly::AsyncSocket(evb, address, connectTimeout) {}
   TAsyncSocketIntercepted(
       folly::EventBase* evb,
       const std::string& ip,
       uint16_t port,
       uint32_t connectTimeout = 0)
-      : folly::AsyncSocket(evb, ip, port, connectTimeout),
-        TAsyncSocket(evb, ip, port, connectTimeout) {}
+      : folly::AsyncSocket(evb, ip, port, connectTimeout) {}
 
   ~TAsyncSocketIntercepted() override {}
 

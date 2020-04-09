@@ -38,7 +38,7 @@
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/async/ClientSinkBridge.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
@@ -709,8 +709,8 @@ TEST_F(RocketNetworkTest, RequestStreamNewApiBasic) {
 
   this->unsetExpectedSetupMetadata();
 
-  auto socket = async::TAsyncSocket::UniquePtr(
-      new async::TAsyncSocket(&evb, "::1", this->server_->getListeningPort()));
+  auto socket = folly::AsyncSocket::UniquePtr(
+      new folly::AsyncSocket(&evb, "::1", this->server_->getListeningPort()));
   auto channel = RocketClientChannel::newChannel(std::move(socket));
 
   constexpr uint64_t kNumRequestedPayloads = 200;
@@ -739,8 +739,8 @@ TEST_F(RocketNetworkTest, RequestStreamNewApiError) {
 
   this->unsetExpectedSetupMetadata();
 
-  auto socket = async::TAsyncSocket::UniquePtr(
-      new async::TAsyncSocket(&evb, "::1", this->server_->getListeningPort()));
+  auto socket = folly::AsyncSocket::UniquePtr(
+      new folly::AsyncSocket(&evb, "::1", this->server_->getListeningPort()));
   auto channel = RocketClientChannel::newChannel(std::move(socket));
 
   constexpr uint64_t kNumRequestedPayloads = 200;
@@ -767,8 +767,8 @@ TEST_F(RocketNetworkTest, RequestStreamNewApiHeadersPush) {
 
   this->unsetExpectedSetupMetadata();
 
-  auto socket = async::TAsyncSocket::UniquePtr(
-      new async::TAsyncSocket(&evb, "::1", this->server_->getListeningPort()));
+  auto socket = folly::AsyncSocket::UniquePtr(
+      new folly::AsyncSocket(&evb, "::1", this->server_->getListeningPort()));
   auto channel = RocketClientChannel::newChannel(std::move(socket));
 
   {

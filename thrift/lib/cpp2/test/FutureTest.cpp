@@ -25,7 +25,7 @@
 #include <folly/io/async/EventBase.h>
 #include <folly/portability/GTest.h>
 
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
@@ -39,7 +39,6 @@ using namespace apache::thrift;
 using namespace apache::thrift::concurrency;
 using namespace apache::thrift::test::cpp2;
 using namespace apache::thrift::util;
-using namespace apache::thrift::async;
 using namespace folly;
 
 class TestInterface : public FutureServiceSvIf {
@@ -129,8 +128,8 @@ TEST(ThriftServer, FutureExceptions) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
   EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<AsyncSocket> socket(
+      AsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto channel = HeaderClientChannel::newChannel(socket);
   FutureServiceAsyncClient client(std::move(channel));
@@ -147,8 +146,8 @@ TEST(ThriftServer, SemiFutureExceptions) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
   EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<AsyncSocket> socket(
+      AsyncSocket::newSocket(&base, *sst.getAddress()));
   auto channel = HeaderClientChannel::newChannel(socket);
   FutureServiceAsyncClient client(std::move(channel));
 
@@ -165,8 +164,8 @@ TEST(ThriftServer, FutureClientTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
   EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<AsyncSocket> socket(
+      AsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto channel = HeaderClientChannel::newChannel(socket);
   channel->setTimeout(10000);
@@ -264,8 +263,8 @@ TEST(ThriftServer, FutureGetOrderTest) {
   factory.useThreadManager(thm);
   ScopedServerThread sst(factory.create());
   EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<AsyncSocket> socket(
+      AsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto channel = HeaderClientChannel::newChannel(socket);
   channel->setTimeout(10000);
@@ -300,8 +299,8 @@ TEST(ThriftServer, OnewayFutureClientTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
   EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<AsyncSocket> socket(
+      AsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto channel = HeaderClientChannel::newChannel(socket);
   FutureServiceAsyncClient client(std::move(channel));

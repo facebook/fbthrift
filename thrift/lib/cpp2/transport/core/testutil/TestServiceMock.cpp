@@ -19,7 +19,7 @@
 #include <chrono>
 #include <thread>
 
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
@@ -30,7 +30,6 @@ namespace testutil {
 namespace testservice {
 
 using namespace apache::thrift;
-using namespace apache::thrift::async;
 
 int32_t TestServiceMock::sumTwoNumbers(int32_t x, int32_t y) {
   sumTwoNumbers_(x, y); // just inform that this function is called
@@ -127,8 +126,8 @@ IntermHeaderService::IntermHeaderService(
   if (FLAGS_transport == "rocket") {
     RocketClientChannel::Ptr channel;
     evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
-      channel = RocketClientChannel::newChannel(TAsyncSocket::UniquePtr(
-          new TAsyncSocket(evbThread_.getEventBase(), host, port)));
+      channel = RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
+          new folly::AsyncSocket(evbThread_.getEventBase(), host, port)));
     });
     client_ = std::make_unique<TestServiceAsyncClient>(std::move(channel));
   } else {

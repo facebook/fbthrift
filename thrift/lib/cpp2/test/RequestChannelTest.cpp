@@ -25,7 +25,7 @@
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
@@ -34,7 +34,6 @@ using namespace std;
 using namespace std::chrono;
 using namespace folly;
 using namespace apache::thrift;
-using namespace apache::thrift::async;
 using namespace apache::thrift::test;
 using namespace apache::thrift::transport;
 using namespace testing;
@@ -57,7 +56,7 @@ class FunctionSendRecvRequestCallbackTest : public Test {
 
   unique_ptr<TestServiceAsyncClient> newClient(SocketAddress const& addr) {
     return make_unique<TestServiceAsyncClient>(
-        HeaderClientChannel::newChannel(TAsyncSocket::newSocket(eb, addr)));
+        HeaderClientChannel::newChannel(AsyncSocket::newSocket(eb, addr)));
   }
 
   exception_wrapper ew;
@@ -138,7 +137,7 @@ class FunctionSendCallbackTest : public Test {
   unique_ptr<TestServiceAsyncClient> getClient(
       const folly::SocketAddress& addr) {
     return make_unique<TestServiceAsyncClient>(
-        HeaderClientChannel::newChannel(TAsyncSocket::newSocket(&eb, addr)));
+        HeaderClientChannel::newChannel(AsyncSocket::newSocket(&eb, addr)));
   }
   void sendOnewayMessage(
       const folly::SocketAddress& addr,

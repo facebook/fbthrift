@@ -83,7 +83,7 @@ TestSetup::connectToServer(
        onDetachable = std::move(onDetachable),
        socketSetup = std::move(socketSetup)](folly::EventBase& evb) mutable
       -> std::unique_ptr<ClientChannel, folly::DelayedDestruction::Destructor> {
-        auto socket = TAsyncSocket::UniquePtr(
+        auto socket = folly::AsyncSocket::UniquePtr(
             new TAsyncSocketIntercepted(&evb, "::1", port));
         if (socketSetup) {
           socketSetup(*static_cast<TAsyncSocketIntercepted*>(socket.get()));

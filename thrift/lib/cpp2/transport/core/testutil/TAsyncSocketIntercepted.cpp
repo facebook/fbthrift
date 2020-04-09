@@ -45,7 +45,7 @@ folly::AsyncSocket::WriteResult TAsyncSocketIntercepted::performWrite(
     }
     vec = newiov.data();
   }
-  WriteResult writeRes = TAsyncSocket::performWrite(
+  WriteResult writeRes = folly::AsyncSocket::performWrite(
       vec, count, flags, countWritten, partialWritten);
   totalBytesWritten_ += writeRes.writeReturn;
   return writeRes;
@@ -55,7 +55,7 @@ folly::AsyncSocket::ReadResult TAsyncSocketIntercepted::performRead(
     void** buf,
     size_t* buflen,
     size_t* offset) {
-  ReadResult res = TAsyncSocket::performRead(buf, buflen, offset);
+  ReadResult res = folly::AsyncSocket::performRead(buf, buflen, offset);
 
   if (params_.get() && params_->corruptLastReadByte_ && !res.exception &&
       res.readReturn > 0 &&

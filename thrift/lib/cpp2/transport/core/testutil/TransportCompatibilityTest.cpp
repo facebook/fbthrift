@@ -21,11 +21,11 @@
 #include <glog/logging.h>
 
 #include <folly/ScopeGuard.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/synchronization/Baton.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
@@ -193,7 +193,7 @@ void SampleServer<Service>::connectToServer(
   ASSERT_GT(port_, 0) << "Check if the server has started already";
   if (transport == "header") {
     auto addr = folly::SocketAddress(FLAGS_host, port_);
-    TAsyncSocket::UniquePtr sock(new TAsyncSocketIntercepted(
+    folly::AsyncSocket::UniquePtr sock(new TAsyncSocketIntercepted(
         folly::EventBaseManager::get()->getEventBase(), addr));
     auto chan = HeaderClientChannel::newChannel(std::move(sock));
     chan->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
@@ -202,7 +202,7 @@ void SampleServer<Service>::connectToServer(
     std::shared_ptr<RocketClientChannel> channel;
     evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
       channel = RocketClientChannel::newChannel(
-          TAsyncSocket::UniquePtr(new TAsyncSocketIntercepted(
+          folly::AsyncSocket::UniquePtr(new TAsyncSocketIntercepted(
               evbThread_.getEventBase(), FLAGS_host, port_)));
     });
     auto channelPtr = channel.get();
@@ -221,7 +221,7 @@ void SampleServer<Service>::connectToServer(
     auto eventBase = executor->getEventBase();
     auto channel = PooledRequestChannel::newChannel(
         eventBase, executor, [port = std::move(port_)](folly::EventBase& evb) {
-          TAsyncSocket::UniquePtr socket(
+          folly::AsyncSocket::UniquePtr socket(
               new TAsyncSocketIntercepted(&evb, FLAGS_host, port));
           if (FLAGS_use_ssl) {
             auto sslContext = std::make_shared<folly::SSLContext>();
@@ -310,7 +310,7 @@ void TransportCompatibilityTest::TestConnectionContext() {
     auto channel = dynamic_cast<ClientChannel*>(client->getChannel());
     int32_t port{0};
     channel->getEventBase()->runInEventBaseThreadAndWait([&] {
-      auto socket = dynamic_cast<TAsyncSocket*>(channel->getTransport());
+      auto socket = dynamic_cast<folly::AsyncSocket*>(channel->getTransport());
       folly::SocketAddress localAddress;
       socket->getLocalAddress(&localAddress);
       port = localAddress.getPort();

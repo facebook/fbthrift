@@ -24,7 +24,7 @@
 #include <folly/io/async/EventBase.h>
 #include <folly/portability/GTest.h>
 
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <thrift/lib/cpp2/async/DuplexChannel.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
@@ -38,7 +38,6 @@
 using namespace apache::thrift;
 using namespace apache::thrift::test;
 using namespace apache::thrift::util;
-using namespace apache::thrift::async;
 using namespace folly;
 using std::make_shared;
 using std::shared_ptr;
@@ -142,8 +141,8 @@ TEST(Duplex, DuplexTest) {
   ScopedServerThread sst(factory.create());
   EventBase base;
 
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<AsyncSocket> socket(
+      AsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto duplexChannel =
       std::make_shared<DuplexChannel>(DuplexChannel::Who::CLIENT, socket);
@@ -179,8 +178,8 @@ void testNonHeader(CLIENT_TYPE type) {
   ScopedServerThread sst(factory.create());
   EventBase base;
 
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<AsyncSocket> socket(
+      AsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto duplexChannel =
       std::make_shared<DuplexChannel>(DuplexChannel::Who::CLIENT, socket);

@@ -15,8 +15,8 @@
  */
 
 #include <thrift/lib/cpp2/async/HibernatingRequestChannel.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
@@ -27,8 +27,8 @@
 using namespace testing;
 using namespace apache::thrift;
 using namespace apache::thrift::test;
-using apache::thrift::async::TAsyncSocket;
 using apache::thrift::transport::TTransportException;
+using folly::AsyncSocket;
 
 class TestServiceServerMock : public TestServiceSvIf {
  public:
@@ -54,7 +54,7 @@ TEST_F(HibernatingRequestChannelTest, immediateHibernate) {
       [this, &connection_count](folly::EventBase& eb) mutable {
         connection_count++;
         return HeaderClientChannel::newChannel(
-            TAsyncSocket::newSocket(&eb, up_addr));
+            AsyncSocket::newSocket(&eb, up_addr));
       });
 
   TestServiceAsyncClient client(std::move(channel));
@@ -72,7 +72,7 @@ TEST_F(HibernatingRequestChannelTest, nonimmediateHibernate) {
       [this, &connection_count](folly::EventBase& eb) mutable {
         connection_count++;
         return HeaderClientChannel::newChannel(
-            TAsyncSocket::newSocket(&eb, up_addr));
+            AsyncSocket::newSocket(&eb, up_addr));
       });
 
   TestServiceAsyncClient client(std::move(channel));

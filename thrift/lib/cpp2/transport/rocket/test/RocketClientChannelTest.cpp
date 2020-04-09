@@ -28,7 +28,7 @@
 #include <folly/futures/Future.h>
 #include <folly/io/async/EventBase.h>
 
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
@@ -77,8 +77,8 @@ class RocketClientChannelTest : public testing::Test {
 
   test::TestServiceAsyncClient makeClient(folly::EventBase& evb) {
     return test::TestServiceAsyncClient(
-        RocketClientChannel::newChannel(async::TAsyncSocket::UniquePtr(
-            new async::TAsyncSocket(&evb, runner_.getAddress()))));
+        RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
+            new folly::AsyncSocket(&evb, runner_.getAddress()))));
   }
 
  protected:

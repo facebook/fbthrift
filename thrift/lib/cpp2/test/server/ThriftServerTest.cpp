@@ -37,8 +37,8 @@
 #include <folly/io/async/test/TestSSLServer.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
 
+#include <folly/io/async/AsyncSocket.h>
 #include <proxygen/httpserver/HTTPServerOptions.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
@@ -86,7 +86,8 @@ TEST(ThriftServer, H2ClientAddressTest) {
   thriftServer.addRoutingHandler(createHTTP2RoutingHandler(thriftServer));
 
   folly::EventBase base;
-  TAsyncSocket::UniquePtr socket(new TAsyncSocket(&base, runner.getAddress()));
+  folly::AsyncSocket::UniquePtr socket(
+      new folly::AsyncSocket(&base, runner.getAddress()));
   TestServiceAsyncClient client(
       HTTPClientChannel::newHTTP2Channel(std::move(socket)));
   auto channel =
@@ -112,8 +113,8 @@ TEST(ThriftServer, OnewayClientConnectionCloseTest) {
 
   {
     folly::EventBase base;
-    std::shared_ptr<TAsyncSocket> socket(
-        TAsyncSocket::newSocket(&base, *st.getAddress()));
+    std::shared_ptr<folly::AsyncSocket> socket(
+        folly::AsyncSocket::newSocket(&base, *st.getAddress()));
     TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
     client.sync_noResponse(10000);
@@ -153,8 +154,8 @@ TEST(ThriftServer, CompressionClientTest) {
   TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
   folly::EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<folly::AsyncSocket> socket(
+      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
@@ -210,7 +211,7 @@ TEST(ThriftServer, SSLClientOnPlaintextServerTest) {
   ScopedServerThread sst(factory.create());
   folly::EventBase base;
   auto sslCtx = std::make_shared<SSLContext>();
-  std::shared_ptr<TAsyncSocket> socket(
+  std::shared_ptr<folly::AsyncSocket> socket(
       TAsyncSSLSocket::newSocket(sslCtx, &base));
   TestConnCallback cb;
   socket->connect(&cb, *sst.getAddress());
@@ -228,8 +229,8 @@ TEST(ThriftServer, CompressionServerTest) {
   factory.minCompressBytes(100);
   ScopedServerThread sst(factory.create());
   folly::EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<folly::AsyncSocket> socket(
+      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
@@ -285,8 +286,8 @@ TEST(ThriftServer, DefaultCompressionTest) {
 
   // First, with minCompressBytes set low, ensure we compress even though the
   // client did not compress
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<folly::AsyncSocket> socket(
+      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
   client.sendResponse(
       std::make_unique<Callback>(
@@ -307,8 +308,8 @@ TEST(ThriftServer, DefaultCompressionTest) {
   // Ensure that minCompressBytes still works with default transforms. We
   // Do not expect compression
   server->setMinCompressBytes(1000);
-  std::shared_ptr<TAsyncSocket> socket2(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<folly::AsyncSocket> socket2(
+      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
   TestServiceAsyncClient client2(HeaderClientChannel::newChannel(socket2));
   client2.sendResponse(std::make_unique<Callback>(false, 0), 64);
   base.loop();
@@ -319,8 +320,8 @@ TEST(ThriftServer, HeaderTest) {
   auto serv = factory.create();
   ScopedServerThread sst(serv);
   folly::EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<folly::AsyncSocket> socket(
+      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
@@ -658,8 +659,8 @@ TEST(ThriftServer, ClientTimeoutTest) {
   folly::EventBase base;
 
   auto getClient = [&base, &sst]() {
-    std::shared_ptr<TAsyncSocket> socket(
-        TAsyncSocket::newSocket(&base, *sst.getAddress()));
+    std::shared_ptr<folly::AsyncSocket> socket(
+        folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
 
     return std::make_shared<TestServiceAsyncClient>(
         HeaderClientChannel::newChannel(socket));
@@ -760,8 +761,8 @@ TEST(ThriftServer, ConnectionIdleTimeoutTest) {
   apache::thrift::util::ScopedServerThread st(server);
 
   folly::EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *st.getAddress()));
+  std::shared_ptr<folly::AsyncSocket> socket(
+      folly::AsyncSocket::newSocket(&base, *st.getAddress()));
 
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
@@ -793,8 +794,8 @@ TEST(ThriftServer, BadSendTest) {
   TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
   folly::EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<folly::AsyncSocket> socket(
+      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
@@ -822,8 +823,8 @@ TEST(ThriftServer, ResetStateTest) {
   // the assertion failure was a lost race, which doesn't happen
   // reliably.
   for (int i = 0; i < 1000; ++i) {
-    std::shared_ptr<TAsyncSocket> socket(
-        TAsyncSocket::newSocket(&base, ssock->getAddresses()[0]));
+    std::shared_ptr<folly::AsyncSocket> socket(
+        folly::AsyncSocket::newSocket(&base, ssock->getAddresses()[0]));
 
     // Create a client.
     TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
@@ -897,8 +898,8 @@ TEST(ThriftServer, FailureInjection) {
   TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
   folly::EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<folly::AsyncSocket> socket(
+      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
@@ -963,8 +964,8 @@ TEST(ThriftServer, useExistingSocketAndConnectionIdleTimeout) {
   apache::thrift::util::ScopedServerThread st(server);
 
   folly::EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *st.getAddress()));
+  std::shared_ptr<folly::AsyncSocket> socket(
+      folly::AsyncSocket::newSocket(&base, *st.getAddress()));
 
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
@@ -998,8 +999,8 @@ TEST(ThriftServer, ShutdownSocketSetTest) {
   folly::EventBase base;
   ReadCallbackTest cb;
 
-  std::shared_ptr<TAsyncSocket> socket2(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<folly::AsyncSocket> socket2(
+      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
   socket2->setReadCB(&cb);
 
   base.tryRunAfterDelay(
@@ -1035,8 +1036,8 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
 
   folly::EventBase base;
 
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<folly::AsyncSocket> socket(
+      folly ::AsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
@@ -1053,8 +1054,8 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
   server->getServeEventBase()->runInEventBaseThreadAndWait(
       [=]() { iothreadpool->setNumThreads(30); });
 
-  std::shared_ptr<TAsyncSocket> socket2(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<folly::AsyncSocket> socket2(
+      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
 
   // Can't reuse client since the channel has gone bad
   TestServiceAsyncClient client2(HeaderClientChannel::newChannel(socket2));
@@ -1131,7 +1132,7 @@ TEST(ThriftServer, ClientIdentityHook) {
   apache::thrift::util::ScopedServerThread st(server);
 
   folly::EventBase base;
-  auto socket = TAsyncSocket::newSocket(&base, *st.getAddress());
+  auto socket = folly::AsyncSocket::newSocket(&base, *st.getAddress());
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
   std::string response;
   client.sync_sendResponse(response, 64);
@@ -1273,8 +1274,8 @@ TEST(ThriftServer, SSLRequiredRejectsPlaintext) {
   ScopedServerThread sst(std::move(server));
 
   folly::EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<folly::AsyncSocket> socket(
+      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
   std::string response;
@@ -1293,8 +1294,8 @@ TEST(ThriftServer, SSLRequiredAllowsLocalPlaintext) {
   // ensure that the address is loopback
   auto port = sst.getAddress()->getPort();
   folly::SocketAddress loopback("::1", port);
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, loopback));
+  std::shared_ptr<folly::AsyncSocket> socket(
+      folly::AsyncSocket::newSocket(&base, loopback));
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
   std::string response;
@@ -1338,8 +1339,8 @@ TEST(ThriftServer, SSLPermittedAcceptsPlaintextAndSSL) {
   folly::EventBase base;
   {
     SCOPED_TRACE("Plaintext");
-    std::shared_ptr<TAsyncSocket> socket(
-        TAsyncSocket::newSocket(&base, *sst.getAddress()));
+    std::shared_ptr<folly::AsyncSocket> socket(
+        folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
     TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
     std::string response;
@@ -1380,8 +1381,8 @@ TEST(ThriftServer, ClientOnlyTimeouts) {
   ScopedServerThread st(factory.create());
 
   folly::EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *st.getAddress()));
+  std::shared_ptr<folly::AsyncSocket> socket(
+      folly::AsyncSocket::newSocket(&base, *st.getAddress()));
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
   for (bool clientOnly : {false, true}) {

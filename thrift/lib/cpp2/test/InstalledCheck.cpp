@@ -19,7 +19,7 @@
 
 #include <folly/io/async/EventBase.h>
 
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
@@ -42,8 +42,8 @@ int SyncClientTest() {
 
   folly::EventBase base;
 
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+  std::shared_ptr<folly::AsyncSocket> socket(
+      folly::AsyncSocket::newSocket(&base, "127.0.0.1", port));
 
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 

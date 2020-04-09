@@ -22,8 +22,8 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTransport.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/util/ScopedServerThread.h>
 
@@ -50,7 +50,6 @@
 using namespace apache::thrift;
 using namespace apache::thrift::test;
 using namespace apache::thrift::util;
-using namespace apache::thrift::async;
 using namespace apache::thrift::transport;
 using apache::thrift::protocol::PROTOCOL_TYPES;
 using namespace std::literals;
@@ -197,7 +196,7 @@ class SharedServerTests
       startServer();
     }
     socket = folly::AsyncTransportWrapper::UniquePtr(
-        new TAsyncSocket(base.get(), *sst->getAddress()));
+        new folly::AsyncSocket(base.get(), *sst->getAddress()));
   }
 
   void createChannel() {

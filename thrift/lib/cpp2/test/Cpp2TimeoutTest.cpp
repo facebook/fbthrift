@@ -20,8 +20,8 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/util/ScopedServerThread.h>
 
 #include <thrift/lib/cpp2/test/util/TestInterface.h>
@@ -32,7 +32,6 @@
 using namespace apache::thrift;
 using namespace apache::thrift::test;
 using namespace apache::thrift::util;
-using namespace apache::thrift::async;
 
 class CloseChecker : public CloseCallback {
  public:
@@ -54,8 +53,8 @@ TEST(ThriftServer, IdleTimeoutTest) {
   ScopedServerThread sst(factory.create());
 
   folly::EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<folly::AsyncSocket> socket(
+      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto client_channel = HeaderClientChannel::newChannel(socket);
   CloseChecker checker;
@@ -72,8 +71,8 @@ TEST(ThriftServer, NoIdleTimeoutWhileWorkingTest) {
   ScopedServerThread sst(factory.create());
 
   folly::EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<folly::AsyncSocket> socket(
+      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto client_channel = HeaderClientChannel::newChannel(socket);
   auto client_channelp = client_channel.get();
@@ -97,8 +96,8 @@ TEST(ThriftServer, IdleTimeoutAfterTest) {
 
   folly::EventBase base;
 
-  std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  std::shared_ptr<folly::AsyncSocket> socket(
+      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto client_channel = HeaderClientChannel::newChannel(socket);
   auto client_channelp = client_channel.get();

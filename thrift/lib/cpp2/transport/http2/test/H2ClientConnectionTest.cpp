@@ -16,10 +16,10 @@
 
 #include <folly/portability/GTest.h>
 
+#include <folly/io/async/AsyncSocket.h>
 #include <proxygen/httpserver/HTTPServer.h>
 #include <proxygen/httpserver/HTTPServerOptions.h>
 #include <proxygen/httpserver/ScopedHTTPServer.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 
 namespace apache {
@@ -40,7 +40,7 @@ TEST(H2ClientConnectionTest, ServerCloseSocketImmediate) {
   folly::EventBase evb;
   folly::SocketAddress addr;
   addr.setFromLocalPort(port);
-  async::TAsyncSocket::UniquePtr sock(new async::TAsyncSocket(&evb, addr));
+  folly::AsyncSocket::UniquePtr sock(new folly::AsyncSocket(&evb, addr));
   auto conn = H2ClientConnection::newHTTP2Connection(std::move(sock));
   EXPECT_TRUE(conn->good());
 

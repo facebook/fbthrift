@@ -21,7 +21,7 @@
 #include <proxygen/httpserver/HTTPServerOptions.h>
 #include <proxygen/httpserver/ScopedHTTPServer.h>
 
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/CoreTestFixture.h>
@@ -287,7 +287,7 @@ TEST(SingleRpcChannel, ClientExceptions) {
   folly::SocketAddress addr;
   addr.setFromLocalPort(port);
 
-  async::TAsyncSocket::UniquePtr sock(new async::TAsyncSocket(&evb, addr));
+  folly::AsyncSocket::UniquePtr sock(new folly::AsyncSocket(&evb, addr));
   auto conn = H2ClientConnection::newHTTP2Connection(std::move(sock));
   EXPECT_TRUE(conn->good());
   auto channel = conn->getChannel();

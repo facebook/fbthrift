@@ -19,13 +19,13 @@
 #include <boost/random.hpp>
 #include <folly/portability/GTest.h>
 
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTimeout.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/test/SocketPair.h>
 #include <folly/io/async/test/Util.h>
 #include <folly/net/NetworkSocket.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TBinaryAsyncChannel.h>
 #include <thrift/lib/cpp/async/TFramedAsyncChannel.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
@@ -40,7 +40,6 @@ using std::string;
 using std::vector;
 
 using apache::thrift::async::TAsyncChannel;
-using apache::thrift::async::TAsyncSocket;
 using apache::thrift::async::TBinaryAsyncChannel;
 using apache::thrift::async::TFramedAsyncChannel;
 using apache::thrift::protocol::TBinaryProtocolT;
@@ -48,6 +47,7 @@ using apache::thrift::transport::TBufferBase;
 using apache::thrift::transport::TFramedTransport;
 using apache::thrift::transport::TMemoryBuffer;
 using apache::thrift::transport::TTransportException;
+using folly::AsyncSocket;
 using folly::AsyncTimeout;
 using folly::EventBase;
 
@@ -241,7 +241,7 @@ class ChunkSender : private AsyncTransportWrapper::WriteCallback,
  public:
   ChunkSender(
       EventBase* evb,
-      TAsyncSocket* socket,
+      AsyncSocket* socket,
       const Message* msg,
       const ChunkSchedule& schedule)
       : AsyncTimeout(evb),
@@ -339,7 +339,7 @@ class ChunkSender : private AsyncTransportWrapper::WriteCallback,
   uint32_t scheduleIndex_;
   uint32_t currentChunkLen_;
   bool error_;
-  TAsyncSocket* socket_;
+  AsyncSocket* socket_;
   const Message* message_;
   ChunkSchedule schedule_;
 };
@@ -370,7 +370,7 @@ class MultiMessageSenderReceiver : private AsyncTransportWrapper::WriteCallback,
  public:
   MultiMessageSenderReceiver(
       EventBase* evb,
-      TAsyncSocket* socket,
+      AsyncSocket* socket,
       const MultiMessageSize& multiMessage,
       bool framed,
       uint32_t writeTimes,
@@ -490,7 +490,7 @@ class MultiMessageSenderReceiver : private AsyncTransportWrapper::WriteCallback,
 
   bool writeError_;
   bool readError_;
-  TAsyncSocket* socket_;
+  AsyncSocket* socket_;
   vector<Message> writeMessages_;
   vector<std::shared_ptr<TMemoryBuffer>> readBuffers_;
   TMemoryBuffer writeMemoryBuffer_;
@@ -522,10 +522,10 @@ template <typename ChannelT>
 class SocketPairTest {
  public:
   SocketPairTest() : eventBase_(), socketPair_() {
-    socket0_ = TAsyncSocket::newSocket(
+    socket0_ = AsyncSocket::newSocket(
         &eventBase_, socketPair_.extractNetworkSocket0());
 
-    socket1_ = TAsyncSocket::newSocket(
+    socket1_ = AsyncSocket::newSocket(
         &eventBase_, socketPair_.extractNetworkSocket1());
 
     channel0_ = ChannelT::newChannel(socket0_);
@@ -554,8 +554,8 @@ class SocketPairTest {
  protected:
   EventBase eventBase_;
   SocketPair socketPair_;
-  std::shared_ptr<TAsyncSocket> socket0_;
-  std::shared_ptr<TAsyncSocket> socket1_;
+  std::shared_ptr<AsyncSocket> socket0_;
+  std::shared_ptr<AsyncSocket> socket1_;
   std::shared_ptr<ChannelT> channel0_;
   std::shared_ptr<ChannelT> channel1_;
 };
@@ -1160,7 +1160,7 @@ class SendClosedTest : public SocketPairTest<ChannelT> {
 
     // Close the other socket after 25ms
     this->eventBase_.tryRunAfterDelay(
-        std::bind(&TAsyncSocket::close, this->socket1_.get()),
+        std::bind(&AsyncSocket::close, this->socket1_.get()),
         closeTimeout_.count());
 
     start_.reset();

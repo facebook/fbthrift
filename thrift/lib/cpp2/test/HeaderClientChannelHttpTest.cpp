@@ -16,7 +16,7 @@
 
 #include <folly/portability/GTest.h>
 
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp2/server/proxygen/ProxygenThriftServer.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
@@ -28,7 +28,6 @@
 #include <boost/lexical_cast.hpp>
 
 using namespace apache::thrift;
-using namespace apache::thrift::async;
 using namespace apache::thrift::concurrency;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::test;
@@ -87,7 +86,8 @@ TEST(HeaderClientChannelHttpTest, SimpleTest) {
   auto const addr = runner.getAddress();
 
   folly::EventBase eb;
-  std::shared_ptr<TAsyncSocket> socket = TAsyncSocket::newSocket(&eb, addr);
+  std::shared_ptr<folly::AsyncSocket> socket =
+      folly::AsyncSocket::newSocket(&eb, addr);
   auto channel = HeaderClientChannel::newChannel(socket);
   channel->useAsHttpClient("127.0.0.1", "/meh");
   channel->setProtocolId(T_BINARY_PROTOCOL);
@@ -116,7 +116,8 @@ TEST(HeaderClientChannel, LongResponse) {
   auto const addr = runner.getAddress();
 
   folly::EventBase eb;
-  std::shared_ptr<TAsyncSocket> socket = TAsyncSocket::newSocket(&eb, addr);
+  std::shared_ptr<folly::AsyncSocket> socket =
+      folly::AsyncSocket::newSocket(&eb, addr);
   auto channel = HeaderClientChannel::newChannel(socket);
   channel->useAsHttpClient("127.0.0.1", "/meh");
   channel->setProtocolId(T_BINARY_PROTOCOL);

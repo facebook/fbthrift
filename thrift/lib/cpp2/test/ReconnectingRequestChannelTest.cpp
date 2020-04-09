@@ -15,9 +15,9 @@
  */
 
 #include <thrift/lib/cpp2/async/ReconnectingRequestChannel.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/test/ScopedBoundPort.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
@@ -29,8 +29,8 @@
 using namespace testing;
 using namespace apache::thrift;
 using namespace apache::thrift::test;
-using apache::thrift::async::TAsyncSocket;
 using apache::thrift::transport::TTransportException;
+using folly::AsyncSocket;
 
 class TestServiceServerMock : public TestServiceSvIf {
  public:
@@ -59,7 +59,7 @@ TEST_F(ReconnectingRequestChannelTest, ReconnectHeader) {
       *eb, [this](folly::EventBase& eb) mutable {
         connection_count_++;
         return HeaderClientChannel::newChannel(
-            TAsyncSocket::newSocket(&eb, up_addr));
+            AsyncSocket::newSocket(&eb, up_addr));
       });
   TestServiceAsyncClient client(std::move(channel));
   runReconnect(client);
@@ -70,7 +70,7 @@ TEST_F(ReconnectingRequestChannelTest, ReconnectRocket) {
       *eb, [this](folly::EventBase& eb) mutable {
         connection_count_++;
         return HeaderClientChannel::newChannel(
-            TAsyncSocket::newSocket(&eb, up_addr));
+            AsyncSocket::newSocket(&eb, up_addr));
       });
   TestServiceAsyncClient client(std::move(channel));
   runReconnect(client);

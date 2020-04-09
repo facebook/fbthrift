@@ -29,8 +29,8 @@
 #include <thrift/lib/cpp2/test/gen-cpp2/SampleService2.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/SampleService3.h>
 
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/util/ScopedServerThread.h>
 
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
@@ -40,7 +40,6 @@
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
 using namespace apache::thrift::util;
-using namespace apache::thrift::async;
 using apache::thrift::TApplicationException;
 
 class SampleServiceHandler : public SampleServiceSvIf {
@@ -62,7 +61,7 @@ int32_t call_return42(std::function<void(MyArgs2&)> isset_cb) {
   apache::thrift::TestThriftServerFactory<SampleServiceHandler> factory;
   ScopedServerThread sst(factory.create());
   folly::EventBase base;
-  auto socket(TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  auto socket(folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
 
   SampleService2AsyncClient client(HeaderClientChannel::newChannel(socket));
 
@@ -161,7 +160,7 @@ TEST(ProcessorExceptionTest, throw_if_method_missing) {
   apache::thrift::TestThriftServerFactory<SampleServiceHandler> factory;
   ScopedServerThread sst(factory.create());
   folly::EventBase base;
-  auto socket(TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  auto socket(folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
   SampleService3AsyncClient client(HeaderClientChannel::newChannel(socket));
 
   try {

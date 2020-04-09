@@ -15,10 +15,10 @@
  */
 
 #include <thrift/lib/cpp2/async/RetryingRequestChannel.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/io/async/test/ScopedBoundPort.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/ReconnectingRequestChannel.h>
@@ -31,8 +31,8 @@
 using namespace testing;
 using namespace apache::thrift;
 using namespace apache::thrift::test;
-using apache::thrift::async::TAsyncSocket;
 using apache::thrift::transport::TTransportException;
+using folly::AsyncSocket;
 
 class TestServiceServerMock : public TestServiceSvIf {
  public:
@@ -58,7 +58,7 @@ class RetryingRequestChannelTest : public Test {
 
 TEST_F(RetryingRequestChannelTest, noRetrySuccess) {
   std::shared_ptr<RequestChannel> up_chan =
-      HeaderClientChannel::newChannel(TAsyncSocket::newSocket(eb, up_addr));
+      HeaderClientChannel::newChannel(AsyncSocket::newSocket(eb, up_addr));
   auto channel = RetryingRequestChannel::newChannel(*eb, 0, up_chan);
 
   TestServiceAsyncClient client(std::move(channel));
@@ -74,7 +74,7 @@ TEST_F(RetryingRequestChannelTest, noRetryFail) {
       ReconnectingRequestChannel::newChannel(
           *eb, [this](folly::EventBase& eb) mutable {
             return HeaderClientChannel::newChannel(
-                TAsyncSocket::newSocket(&eb, up_addr));
+                AsyncSocket::newSocket(&eb, up_addr));
           }));
 
   TestServiceAsyncClient client(std::move(channel));
@@ -97,7 +97,7 @@ TEST_F(RetryingRequestChannelTest, retry) {
       ReconnectingRequestChannel::newChannel(
           *eb, [this](folly::EventBase& eb) mutable {
             return HeaderClientChannel::newChannel(
-                TAsyncSocket::newSocket(&eb, up_addr));
+                AsyncSocket::newSocket(&eb, up_addr));
           }));
 
   TestServiceAsyncClient client(std::move(channel));
@@ -122,7 +122,7 @@ TEST_F(RetryingRequestChannelTest, shutdown) {
   auto channel = PooledRequestChannel::newSyncChannel(
       evbThread, [&](folly::EventBase& evb) {
         auto headerChannel = HeaderClientChannel::newChannel(
-            TAsyncSocket::newSocket(&evb, up_addr));
+            AsyncSocket::newSocket(&evb, up_addr));
         headerChannel->setTimeout(1000);
         return RetryingRequestChannel::newChannel(
             evb, 2, std::move(headerChannel));

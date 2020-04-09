@@ -20,6 +20,7 @@
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTimeout.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
@@ -28,7 +29,6 @@
 #include <folly/lang/Bits.h>
 #include <thrift/lib/cpp/EventHandlerBase.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/Cpp2Channel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
@@ -168,9 +168,9 @@ class SocketPairTest {
       dynamic_cast<TAsyncSSLSocket*>(socket0_.get())->sslConn(nullptr);
       dynamic_cast<TAsyncSSLSocket*>(socket1_.get())->sslAccept(nullptr);
     } else {
-      socket0_ = TAsyncSocket::newSocket(
+      socket0_ = folly::AsyncSocket::newSocket(
           &eventBase_, socketPair.extractNetworkSocket0());
-      socket1_ = TAsyncSocket::newSocket(
+      socket1_ = folly::AsyncSocket::newSocket(
           &eventBase_, socketPair.extractNetworkSocket1());
     }
 
@@ -206,11 +206,11 @@ class SocketPairTest {
     return socket1_->getNetworkSocket().toFd();
   }
 
-  shared_ptr<TAsyncSocket> getSocket0() {
+  shared_ptr<folly::AsyncSocket> getSocket0() {
     return socket0_;
   }
 
-  shared_ptr<TAsyncSocket> getSocket1() {
+  shared_ptr<folly::AsyncSocket> getSocket1() {
     return socket1_;
   }
 
@@ -225,8 +225,8 @@ class SocketPairTest {
 
  protected:
   folly::EventBase eventBase_;
-  shared_ptr<TAsyncSocket> socket0_;
-  shared_ptr<TAsyncSocket> socket1_;
+  shared_ptr<folly::AsyncSocket> socket0_;
+  shared_ptr<folly::AsyncSocket> socket1_;
   unique_ptr<Channel1, folly::DelayedDestruction::Destructor> channel0_;
   unique_ptr<Channel2, folly::DelayedDestruction::Destructor> channel1_;
 };
@@ -404,7 +404,7 @@ class MessageCloseTest : public SocketPairTest<Cpp2Channel, Cpp2Channel>,
         &sendCallback_, makeTestBuf(1024 * 1024), header_.get());
     // Close the other socket after delay
     this->eventBase_.runInLoop(
-        std::bind(&TAsyncSocket::close, this->socket1_.get()));
+        std::bind(&folly::AsyncSocket::close, this->socket1_.get()));
     channel1_->setReceiveCallback(this);
   }
 
@@ -1229,7 +1229,7 @@ TEST(Channel, SetKeepRegisteredForClose) {
   rc = getsockname(lfd, (struct sockaddr*)&addr, &addrlen);
 
   folly::EventBase base;
-  auto transport = TAsyncSocket::newSocket(
+  auto transport = folly::AsyncSocket::newSocket(
       &base, "127.0.0.1", folly::Endian::big(addr.sin_port));
   auto channel = createChannel<HeaderClientChannel>(transport);
   NullCloseCallback ncc;

@@ -120,8 +120,9 @@ class StreamingTest : public TestSetup {
     folly::EventBase evb;
 
     auto makeChannel = [&] {
-      auto channel = RocketClientChannel::newChannel(TAsyncSocket::UniquePtr(
-          new TAsyncSocketIntercepted(&evb, "::1", port_)));
+      auto channel =
+          RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
+              new TAsyncSocketIntercepted(&evb, "::1", port_)));
       if (enableCompression) {
         // enable compression on client-side
         channel->setNegotiatedCompressionAlgorithm(CompressionAlgorithm::ZSTD);
@@ -887,8 +888,8 @@ TEST_F(StreamingTest, DetachAndAttachEventBase) {
   // TODO (T61528332) why does this fail??
   return;
   folly::EventBase mainEventBase;
-  auto socket =
-      TAsyncSocket::UniquePtr(new TAsyncSocket(&mainEventBase, "::1", port_));
+  auto socket = folly::AsyncSocket::UniquePtr(
+      new folly::AsyncSocket(&mainEventBase, "::1", port_));
   auto channel = [&]() -> std::shared_ptr<ClientChannel> {
     return RocketClientChannel::newChannel(std::move(socket));
   }();
@@ -960,8 +961,8 @@ TEST_F(StreamingTest, ServerCompletesFirstResponseAfterClientDisconnects) {
   folly::EventBase evb;
 
   auto makeChannel = [&] {
-    return RocketClientChannel::newChannel(
-        TAsyncSocket::UniquePtr(new TAsyncSocket(&evb, "::1", port_)));
+    return RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
+        new folly::AsyncSocket(&evb, "::1", port_)));
   };
 
   {
@@ -993,8 +994,8 @@ TEST_F(StreamingTest, ServerCompletesFirstResponseAfterClientTimeout) {
   folly::EventBase evb;
 
   auto makeChannel = [&] {
-    return RocketClientChannel::newChannel(
-        TAsyncSocket::UniquePtr(new TAsyncSocket(&evb, "::1", port_)));
+    return RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
+        new folly::AsyncSocket(&evb, "::1", port_)));
   };
 
   StreamServiceAsyncClient client{makeChannel()};
