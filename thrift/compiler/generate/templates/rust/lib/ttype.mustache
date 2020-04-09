@@ -17,7 +17,10 @@
 }}{{#type:typedef?}}{{!
     }}{{#type:typedefType}}{{>lib/ttype}}{{/type:typedefType}}{{!
 }}{{/type:typedef?}}{{!
-}}{{^type:typedef?}}TType::{{!
+}}{{#type:streamresponse?}}{{!
+    }}compile_error!("Thrift streaming in Rust is not implemented"){{!
+}}{{/type:streamresponse?}}{{!
+}}{{^type:typedef?}}{{^type:streamresponse?}}TType::{{!
 }}{{#type:void?}}Void{{/type:void?}}{{!
 }}{{#type:string?}}String{{/type:string?}}{{!
 }}{{#type:binary?}}String{{/type:binary?}}{{!
@@ -34,5 +37,5 @@
 }}{{#type:stream?}}Stream{{/type:stream?}}{{!
 }}{{#type:set?}}Set{{/type:set?}}{{!
 }}{{#type:map?}}Map{{/type:map?}}{{!
-}}{{/type:typedef?}}{{!
+}}{{/type:streamresponse?}}{{/type:typedef?}}{{!
 }}

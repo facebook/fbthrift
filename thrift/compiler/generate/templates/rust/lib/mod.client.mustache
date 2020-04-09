@@ -86,7 +86,7 @@
         }}{{#service:extends}}{{service:package}}::client::{{service:name}} + {{/service:extends}}{{!
         }}Send {{>lib/block}}{{!
 
-        }}{{#service:functions}}
+        }}{{#service:functions}}{{^function:any_streams?}}
         fn {{function:name}}(
             &self,{{!
             }}{{#function:args}}
@@ -96,7 +96,7 @@
             }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + Send + 'static>>;{{!
-        }}{{/service:functions}}
+        }}{{/function:any_streams?}}{{/service:functions}}
     }
 
     impl<P, T> {{service:name}} for {{service:name}}Impl<P, T>
@@ -107,7 +107,7 @@
         P::Frame: Framing<DecBuf = FramingDecoded<T>>,
         ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
     {{>lib/block}}{{!
-        }}{{#service:functions}}
+        }}{{#service:functions}}{{^function:any_streams?}}
         fn {{function:name}}(
             &self,{{!
             }}{{#function:args}}
@@ -182,7 +182,7 @@
                 }))
                 .boxed()
         }
-        {{/service:functions}}
+        {{/function:any_streams?}}{{/service:functions}}
     }
 
     impl<'a, T> {{service:name}} for T
@@ -195,7 +195,7 @@
         {{/service:extendedServices}}
         T: Send,
     {
-        {{#service:functions}}
+        {{#service:functions}}{{^function:any_streams?}}
         fn {{function:name}}(
             &self,
             {{#function:args}}
@@ -211,7 +211,7 @@
                 {{/function:args}}
             )
         }
-        {{/service:functions}}
+        {{/function:any_streams?}}{{/service:functions}}
     }
 
     pub struct make_{{service:name}};
