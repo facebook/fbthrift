@@ -218,7 +218,7 @@ bool has_value(const DeprecatedOptionalField<T>& a) {
   return a.has_value();
 }
 template <class T>
-bool has_value(const folly::Optional<T>& a) {
+bool has_value(optional_field_ref<T> a) {
   return a.has_value();
 }
 template <class T>
@@ -230,7 +230,7 @@ const auto& value(const DeprecatedOptionalField<T>& a) {
   return *a;
 }
 template <class T>
-const auto& value(const folly::Optional<T>& a) {
+const auto& value(optional_field_ref<T> a) {
   return *a;
 }
 template <class T>

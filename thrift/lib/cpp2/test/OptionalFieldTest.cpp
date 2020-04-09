@@ -359,71 +359,80 @@ TEST(DeprecatedOptionalField, Comparisons) {
   EXPECT_FALSE(o1 > o2);
 }
 
-template <template <class> class Optional1, template <class> class Optional2>
-void heterogeneousComparisonsTest() {
-  using opt8 = Optional1<uint8_t>;
-  using opt64 = Optional2<uint8_t>;
-  EXPECT_TRUE(opt8(4) == uint64_t(4));
-  EXPECT_FALSE(opt8(8) == uint64_t(4));
-  EXPECT_FALSE(opt8() == uint64_t(4));
+template <class T, class U>
+void heterogeneousComparisonsTest(T opt1, U opt2) {
+  EXPECT_TRUE(opt1(4) == int64_t(4));
+  EXPECT_FALSE(opt1(8) == int64_t(4));
+  EXPECT_FALSE(opt1() == int64_t(4));
 
-  EXPECT_TRUE(uint64_t(4) == opt8(4));
-  EXPECT_FALSE(uint64_t(4) == opt8(8));
-  EXPECT_FALSE(uint64_t(4) == opt8());
+  EXPECT_TRUE(int64_t(4) == opt1(4));
+  EXPECT_FALSE(int64_t(4) == opt1(8));
+  EXPECT_FALSE(int64_t(4) == opt1());
 
-  EXPECT_FALSE(opt8(4) != uint64_t(4));
-  EXPECT_TRUE(opt8(8) != uint64_t(4));
-  EXPECT_TRUE(opt8() != uint64_t(4));
+  EXPECT_FALSE(opt1(4) != int64_t(4));
+  EXPECT_TRUE(opt1(8) != int64_t(4));
+  EXPECT_TRUE(opt1() != int64_t(4));
 
-  EXPECT_FALSE(uint64_t(4) != opt8(4));
-  EXPECT_TRUE(uint64_t(4) != opt8(8));
-  EXPECT_TRUE(uint64_t(4) != opt8());
+  EXPECT_FALSE(int64_t(4) != opt1(4));
+  EXPECT_TRUE(int64_t(4) != opt1(8));
+  EXPECT_TRUE(int64_t(4) != opt1());
 
-  EXPECT_TRUE(opt8() == opt64());
-  EXPECT_TRUE(opt8(4) == opt64(4));
-  EXPECT_FALSE(opt8(8) == opt64(4));
-  EXPECT_FALSE(opt8() == opt64(4));
-  EXPECT_FALSE(opt8(4) == opt64());
+  EXPECT_TRUE(opt1() == opt2());
+  EXPECT_TRUE(opt1(4) == opt2(4));
+  EXPECT_FALSE(opt1(8) == opt2(4));
+  EXPECT_FALSE(opt1() == opt2(4));
+  EXPECT_FALSE(opt1(4) == opt2());
 
-  EXPECT_FALSE(opt8() != opt64());
-  EXPECT_FALSE(opt8(4) != opt64(4));
-  EXPECT_TRUE(opt8(8) != opt64(4));
-  EXPECT_TRUE(opt8() != opt64(4));
-  EXPECT_TRUE(opt8(4) != opt64());
+  EXPECT_FALSE(opt1() != opt2());
+  EXPECT_FALSE(opt1(4) != opt2(4));
+  EXPECT_TRUE(opt1(8) != opt2(4));
+  EXPECT_TRUE(opt1() != opt2(4));
+  EXPECT_TRUE(opt1(4) != opt2());
 
-  EXPECT_TRUE(opt8() < opt64(4));
-  EXPECT_TRUE(opt8(4) < opt64(8));
-  EXPECT_FALSE(opt8() < opt64());
-  EXPECT_FALSE(opt8(4) < opt64(4));
-  EXPECT_FALSE(opt8(8) < opt64(4));
-  EXPECT_FALSE(opt8(4) < opt64());
+  EXPECT_TRUE(opt1() < opt2(4));
+  EXPECT_TRUE(opt1(4) < opt2(8));
+  EXPECT_FALSE(opt1() < opt2());
+  EXPECT_FALSE(opt1(4) < opt2(4));
+  EXPECT_FALSE(opt1(8) < opt2(4));
+  EXPECT_FALSE(opt1(4) < opt2());
 
-  EXPECT_FALSE(opt8() > opt64(4));
-  EXPECT_FALSE(opt8(4) > opt64(8));
-  EXPECT_FALSE(opt8() > opt64());
-  EXPECT_FALSE(opt8(4) > opt64(4));
-  EXPECT_TRUE(opt8(8) > opt64(4));
-  EXPECT_TRUE(opt8(4) > opt64());
+  EXPECT_FALSE(opt1() > opt2(4));
+  EXPECT_FALSE(opt1(4) > opt2(8));
+  EXPECT_FALSE(opt1() > opt2());
+  EXPECT_FALSE(opt1(4) > opt2(4));
+  EXPECT_TRUE(opt1(8) > opt2(4));
+  EXPECT_TRUE(opt1(4) > opt2());
 
-  EXPECT_TRUE(opt8() <= opt64(4));
-  EXPECT_TRUE(opt8(4) <= opt64(8));
-  EXPECT_TRUE(opt8() <= opt64());
-  EXPECT_TRUE(opt8(4) <= opt64(4));
-  EXPECT_FALSE(opt8(8) <= opt64(4));
-  EXPECT_FALSE(opt8(4) <= opt64());
+  EXPECT_TRUE(opt1() <= opt2(4));
+  EXPECT_TRUE(opt1(4) <= opt2(8));
+  EXPECT_TRUE(opt1() <= opt2());
+  EXPECT_TRUE(opt1(4) <= opt2(4));
+  EXPECT_FALSE(opt1(8) <= opt2(4));
+  EXPECT_FALSE(opt1(4) <= opt2());
 
-  EXPECT_FALSE(opt8() >= opt64(4));
-  EXPECT_FALSE(opt8(4) >= opt64(8));
-  EXPECT_TRUE(opt8() >= opt64());
-  EXPECT_TRUE(opt8(4) >= opt64(4));
-  EXPECT_TRUE(opt8(8) >= opt64(4));
-  EXPECT_TRUE(opt8(4) >= opt64());
+  EXPECT_FALSE(opt1() >= opt2(4));
+  EXPECT_FALSE(opt1(4) >= opt2(8));
+  EXPECT_TRUE(opt1() >= opt2());
+  EXPECT_TRUE(opt1(4) >= opt2(4));
+  EXPECT_TRUE(opt1(8) >= opt2(4));
+  EXPECT_TRUE(opt1(4) >= opt2());
 }
 
 TEST(DeprecatedOptionalField, HeterogeneousComparisons) {
-  heterogeneousComparisonsTest<
-      DeprecatedOptionalField,
-      DeprecatedOptionalField>();
+  auto genDeprecatedOptionalField = [](auto... i) {
+    return DeprecatedOptionalField<int8_t>(i...);
+  };
+
+  int8_t i_;
+  bool b_;
+  auto genOptionalFieldRef = [&](auto... i) {
+    return optional_field_ref<const int8_t&>(i_ = int(i...), b_ = sizeof...(i));
+  };
+
+  heterogeneousComparisonsTest(
+      genDeprecatedOptionalField, genDeprecatedOptionalField);
+  heterogeneousComparisonsTest(genOptionalFieldRef, genDeprecatedOptionalField);
+  heterogeneousComparisonsTest(genDeprecatedOptionalField, genOptionalFieldRef);
 }
 
 TEST(DeprecatedOptionalField, NulloptComparisons) {
