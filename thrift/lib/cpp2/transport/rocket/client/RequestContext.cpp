@@ -108,12 +108,6 @@ void RequestContext::onPayloadFrame(PayloadFrame&& payloadFrame) {
   DCHECK(!responsePayload_.hasException());
   DCHECK(isRequestResponse());
 
-  // This function is only called on the response payload frame corresponding to
-  // a REQUEST_RESPONSE context. Each fragment of the response payload frame
-  // should have the next and complete flags.
-  DCHECK(payloadFrame.hasNext());
-  DCHECK(payloadFrame.hasComplete());
-
   if (LIKELY(!responsePayload_.hasValue())) {
     responsePayload_.emplace(std::move(payloadFrame.payload()));
   } else {
@@ -126,9 +120,6 @@ void RequestContext::onPayloadFrame(PayloadFrame&& payloadFrame) {
 }
 
 void RequestContext::onErrorFrame(ErrorFrame&& errorFrame) {
-  // Protocol specifies that partial PAYLOAD cannot have arrived before an ERROR
-  // frame.
-  DCHECK(!responsePayload_.hasValue());
   DCHECK(!responsePayload_.hasException());
   DCHECK(isRequestResponse());
 

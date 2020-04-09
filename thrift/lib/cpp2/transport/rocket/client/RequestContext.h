@@ -113,6 +113,10 @@ class RequestContext {
 
   void onWriteSuccess() noexcept;
 
+  bool hasPartialPayload() const {
+    return responsePayload_.hasValue();
+  }
+
  private:
   RequestContextQueue& queue_;
   folly::SafeIntrusiveListHook queueHook_;

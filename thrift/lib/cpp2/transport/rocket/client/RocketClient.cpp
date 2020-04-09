@@ -153,12 +153,28 @@ void RocketClient::handleRequestResponseFrame(
     FrameType frameType,
     std::unique_ptr<folly::IOBuf> frame) {
   switch (frameType) {
-    case FrameType::PAYLOAD:
-      return ctx.onPayloadFrame(PayloadFrame(std::move(frame)));
-
-    case FrameType::ERROR:
+    case FrameType::PAYLOAD: {
+      PayloadFrame payloadFrame(std::move(frame));
+      if (!payloadFrame.hasNext() || !payloadFrame.hasComplete()) {
+        return close(transport::TTransportException(
+            transport::TTransportException::TTransportExceptionType::
+                STREAMING_CONTRACT_VIOLATION,
+            "Client received single response payload without next or "
+            "complete flag"));
+      }
+      return ctx.onPayloadFrame(std::move(payloadFrame));
+    }
+    case FrameType::ERROR: {
+      // Protocol specifies that partial PAYLOAD cannot have arrived before an
+      // ERROR frame.
+      if (ctx.hasPartialPayload()) {
+        return close(transport::TTransportException(
+            transport::TTransportException::TTransportExceptionType::
+                STREAMING_CONTRACT_VIOLATION,
+            "Partial payload has arrived before an error frame."));
+      }
       return ctx.onErrorFrame(ErrorFrame(std::move(frame)));
-
+    }
     default:
       close(transport::TTransportException(
           transport::TTransportException::TTransportExceptionType::
