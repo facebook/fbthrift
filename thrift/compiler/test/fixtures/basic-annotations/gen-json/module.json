@@ -20,7 +20,9 @@
         "name" : {
           "type_enum" : "STRING",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "annotations" : {
+          }
         }
       }
     },
@@ -32,22 +34,30 @@
         "count" : {
           "type_enum" : "I64",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "annotations" : {
+          }
         },
         "name" : {
           "type_enum" : "STRING",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "annotations" : {
+          }
         },
         "extra" : {
           "type_enum" : "STRING",
           "spec_args" : null,
-          "required" : false
+          "required" : false,
+          "annotations" : {
+          }
         },
         "nest" : {
           "type_enum" : "STRUCT",
           "spec_args" : "MyStructNestedAnnotation",
-          "required" : true
+          "required" : true,
+          "annotations" : {
+          }
         }
       }
     },
@@ -59,22 +69,34 @@
         "major" : {
           "type_enum" : "I64",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "annotations" : {
+            "cpp.name" : "majorVer"
+          }
         },
         "package" : {
           "type_enum" : "STRING",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "annotations" : {
+            "java.swift.name" : "_package"
+          }
         },
         "annotation_with_quote" : {
           "type_enum" : "STRING",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "annotations" : {
+            "go.tag" : "tag:\"somevalue\""
+          }
         },
         "class_" : {
           "type_enum" : "STRING",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "annotations" : {
+            "java.swift.name" : "class_"
+          }
         }
       }
     },
@@ -86,12 +108,17 @@
         "id" : {
           "type_enum" : "I64",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "annotations" : {
+          }
         },
         "password" : {
           "type_enum" : "STRING",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "annotations" : {
+            "java.sensitive" : "1"
+          }
         }
       }
     }

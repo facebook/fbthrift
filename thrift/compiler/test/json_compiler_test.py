@@ -49,18 +49,21 @@ def write_file(path, content):
         f.write(content)
 
 
-def check_run_thrift(*args):
-    argsx = [thrift, "--gen", "json"] + list(args)
+def check_run_thrift(annotate, *args):
+    gen_str = "json"
+    if annotate:
+        gen_str = "json:annotate"
+    argsx = [thrift, "--gen", gen_str] + list(args)
     pipe = subprocess.PIPE
     return subprocess.check_call(argsx, stdout=pipe, stderr=pipe)
 
 
-def gen(path, content):
+def gen(path, content, annotate=False):
     base, ext = os.path.splitext(path)
     if ext != ".thrift":
         raise Exception("bad path: {}".format(path))
     write_file(path, content)
-    check_run_thrift("foo.thrift")
+    check_run_thrift(annotate, "foo.thrift")
     return json.loads(read_file(os.path.join("gen-json", base + ".json")))
 
 
@@ -205,6 +208,35 @@ class JsonCompilerTest(unittest.TestCase):
                             "required": True,
                             "type_enum": "STRUCT",
                             "spec_args": "DataItem",
+                        },
+                    },
+                    "is_exception": False,
+                    "is_union": False,
+                    "lineno": 1,
+                },
+            },
+        })
+
+    def test_struct_field_annotate(self):
+        obj = gen("foo.thrift", textwrap.dedent("""\
+            struct DataHolder {
+              1: string data (foo="bar", ignore)
+            }
+        """), annotate=True)
+        self.assertEqual(obj, {
+            "__fbthrift": {"@" + "generated": 0},
+            "thrift_module": "foo",
+            "structs": {
+                "DataHolder": {
+                    "fields": {
+                        "data": {
+                            "required": True,
+                            "type_enum": "STRING",
+                            "spec_args": None,
+                            "annotations": {
+                                "foo": "bar",
+                                "ignore": "1",
+                            },
                         },
                     },
                     "is_exception": False,

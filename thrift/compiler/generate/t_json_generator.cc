@@ -41,10 +41,13 @@ class t_json_generator : public t_concat_generator {
   t_json_generator(
       t_program* program,
       t_generation_context context,
-      const std::map<std::string, std::string>& /*parsed_options*/,
+      const std::map<std::string, std::string>& parsed_options,
       const std::string& /*option_string*/)
       : t_concat_generator(program, std::move(context)) {
     out_dir_base_ = "gen-json";
+
+    auto it = parsed_options.find("annotate");
+    annotate_ = (it != parsed_options.end());
   }
 
   void generate_program() override;
@@ -65,12 +68,19 @@ class t_json_generator : public t_concat_generator {
   void print_const_value(const t_const_value* tvalue);
   void print_const_key(t_const_value* tvalue);
   void print_lineno(int lineno);
+  void print_annotations(const std::map<std::string, std::string>& annotations);
   string type_to_string(t_type* type);
   string type_to_spec_args(t_type* ttype);
 
   bool should_resolve_to_true_type(const t_type* ttype);
 
   std::ofstream f_out_;
+
+ private:
+  /**
+   * True if we should generate annotations in json representation.
+   */
+  bool annotate_;
 };
 
 /**
@@ -388,6 +398,26 @@ void t_json_generator::print_lineno(int lineno) {
   indent(f_out_) << "\"lineno\" : " << lineno << "," << endl;
 }
 
+void t_json_generator::print_annotations(
+    const std::map<std::string, std::string>& annotations) {
+  indent(f_out_) << "\"annotations\" : {";
+  indent_up();
+  bool first = true;
+  std::map<std::string, std::string>::const_iterator iter;
+  for (iter = annotations.begin(); iter != annotations.end(); ++iter) {
+    if (!first) {
+      f_out_ << ",";
+    }
+    f_out_ << endl;
+    first = false;
+    indent(f_out_) << "\"" << iter->first << "\" : ";
+    json_quote_ascii(f_out_, iter->second);
+  }
+  f_out_ << endl;
+  indent_down();
+  indent(f_out_) << "}";
+}
+
 /**
  * Generates a typedef.
  *
@@ -494,6 +524,10 @@ void t_json_generator::generate_struct(t_struct* tstruct) {
     if (default_val != nullptr) {
       f_out_ << "," << endl << indent() << "\"default_value\" : ";
       print_const_value(default_val);
+    }
+    if (annotate_) {
+      f_out_ << "," << endl;
+      print_annotations((*mem_iter)->annotations_);
     }
     f_out_ << endl;
     indent_down();
@@ -625,8 +659,10 @@ bool t_json_generator::should_resolve_to_true_type(const t_type* ttype) {
   return false;
 }
 
-THRIFT_REGISTER_GENERATOR(json, "JSON", "");
-
+THRIFT_REGISTER_GENERATOR(
+    json,
+    "JSON",
+    "    annotate:        Generate annotations in json representation\n");
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
