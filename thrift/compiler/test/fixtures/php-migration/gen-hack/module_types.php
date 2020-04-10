@@ -101,6 +101,10 @@ class Foo implements \IThriftStruct {
     return 'Foo';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
 }
 
 /**
@@ -177,6 +181,10 @@ class Baz extends \TException implements \IThriftStruct {
     return 'Baz';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
 }
 
 /**
@@ -212,5 +220,9 @@ class OptBaz extends \TException implements \IThriftStruct {
     return 'OptBaz';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
 }
 

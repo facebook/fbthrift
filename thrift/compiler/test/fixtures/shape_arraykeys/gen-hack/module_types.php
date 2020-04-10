@@ -54,6 +54,10 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     return 'A';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public static function __stringifyMapKeys<T>(Map<arraykey, T> $m): Map<string, T> {
     $new_map = Map {};
     foreach ($m as $k => $v) {
@@ -740,6 +744,10 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     return 'B';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public static function __stringifyMapKeys<T>(Map<arraykey, T> $m): Map<string, T> {
     $new_map = Map {};
     foreach ($m as $k => $v) {

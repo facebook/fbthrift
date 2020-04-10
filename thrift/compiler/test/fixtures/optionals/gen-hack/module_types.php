@@ -97,6 +97,10 @@ class Color implements \IThriftStruct {
     return 'Color';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
 }
 
 /**
@@ -180,6 +184,10 @@ class Vehicle implements \IThriftStruct {
     return 'Vehicle';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
 }
 
 /**
@@ -344,5 +352,9 @@ class Person implements \IThriftStruct {
     return 'Person';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
 }
 

@@ -80,6 +80,10 @@ class MyException1 extends \TException implements \IThriftStruct {
     return 'MyException1';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
 }
 
 /**
@@ -147,6 +151,10 @@ class MyException2 extends \TException implements \IThriftStruct {
     return 'MyException2';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
 }
 
 /**
@@ -214,6 +222,10 @@ class MyException3 extends \TException implements \IThriftStruct {
     return 'MyException3';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
 }
 
 /**
@@ -281,6 +293,10 @@ class MyException4 extends \TException implements \IThriftStruct {
     return 'MyException4';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
 }
 
 /**
@@ -335,5 +351,9 @@ class MyException5 extends \TException implements \IThriftStruct {
     return 'MyException5';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
 }
 

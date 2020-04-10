@@ -82,6 +82,12 @@ class decorated_struct implements \IThriftStruct {
     return 'decorated_struct';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'cpp.declare_equal_to' => "1",
+      'cpp.declare_hash' => "1",
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -285,6 +291,10 @@ class ContainerStruct implements \IThriftStruct {
     return 'ContainerStruct';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -447,6 +457,10 @@ class CppTypeStruct implements \IThriftStruct {
     return 'CppTypeStruct';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -509,6 +523,11 @@ class VirtualStruct implements \IThriftStruct {
     return 'VirtualStruct';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'cpp.virtual' => "1",
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -576,6 +595,10 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
     return 'MyStructWithForwardRefEnum';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -642,6 +665,10 @@ class TrivialNumeric implements \IThriftStruct {
     return 'TrivialNumeric';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -712,6 +739,10 @@ class TrivialNestedWithDefault implements \IThriftStruct {
     return 'TrivialNestedWithDefault';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -797,6 +828,10 @@ class ComplexString implements \IThriftStruct {
     return 'ComplexString';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -874,6 +909,10 @@ class ComplexNestedWithDefault implements \IThriftStruct {
     return 'ComplexNestedWithDefault';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -990,6 +1029,11 @@ class MinPadding implements \IThriftStruct {
     return 'MinPadding';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'cpp.minimize_padding' => "1",
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1124,6 +1168,11 @@ class MyStruct implements \IThriftStruct {
     return 'MyStruct';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'cpp2.noncomparable' => "1",
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1171,6 +1220,11 @@ class MyDataItem implements \IThriftStruct {
     return 'MyDataItem';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'cpp2.noncomparable' => "1",
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1218,6 +1272,10 @@ class Renaming implements \IThriftStruct {
     return 'Renaming';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1297,6 +1355,10 @@ class AnnotatedTypes implements \IThriftStruct {
     return 'AnnotatedTypes';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1373,6 +1435,10 @@ class ForwardUsageRoot implements \IThriftStruct {
     return 'ForwardUsageRoot';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1429,6 +1495,10 @@ class ForwardUsageStruct implements \IThriftStruct {
     return 'ForwardUsageStruct';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1479,6 +1549,10 @@ class ForwardUsageByRef implements \IThriftStruct {
     return 'ForwardUsageByRef';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1517,6 +1591,11 @@ class NoexceptMoveEmpty implements \IThriftStruct {
     return 'NoexceptMoveEmpty';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'cpp.noexcept_move' => "1",
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1564,6 +1643,11 @@ class NoexceptMoveSimpleStruct implements \IThriftStruct {
     return 'NoexceptMoveSimpleStruct';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'cpp.noexcept_move' => "1",
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1748,6 +1832,11 @@ class NoexceptMoveComplexStruct implements \IThriftStruct {
     return 'NoexceptMoveComplexStruct';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'cpp.noexcept_move' => "1",
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1895,6 +1984,11 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
     return \nullthrows($this->i32_field);
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'cpp.noexcept_move' => "1",
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $this->_type = NoExceptMoveUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);

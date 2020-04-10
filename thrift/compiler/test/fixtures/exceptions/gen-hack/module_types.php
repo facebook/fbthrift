@@ -28,6 +28,10 @@ class Banal extends \TException implements \IThriftStruct {
     return 'Banal';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
 }
 
 /**
@@ -67,6 +71,11 @@ class Fiery extends \TException implements \IThriftStruct {
     return 'Fiery';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'message' => "message",
+    ];
+  }
 }
 
 /**
@@ -107,5 +116,10 @@ class Serious extends \TException implements \IThriftStruct {
     return $this->sonnet ?? '';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'message' => "sonnet",
+    ];
+  }
 }
 

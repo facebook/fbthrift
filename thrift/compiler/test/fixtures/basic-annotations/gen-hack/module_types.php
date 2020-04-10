@@ -56,6 +56,10 @@ class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct 
     return 'MyStructNestedAnnotation';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->name = $shape['name'];
@@ -163,6 +167,10 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
     return 'MyStructAnnotation';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->count = $shape['count'];
@@ -299,6 +307,19 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     return 'MyStruct';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'android.generate_builder' => "1",
+      'struct_annotation' => new MyStructAnnotation(
+        123,
+        "\"structy\"",
+        null,
+        new MyStructNestedAnnotation(
+          "'nesty'",
+        ),
+      ),
+    ];
+  }
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->major = $shape['major'];
@@ -396,6 +417,10 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
     return 'SecretStruct';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->id = $shape['id'];

@@ -305,6 +305,10 @@ class Baz_qux_args implements \IThriftStruct {
     return 'Baz_qux_args';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
 }
 
 class Baz_qux_result implements \IThriftStruct {
@@ -330,5 +334,9 @@ class Baz_qux_result implements \IThriftStruct {
     return 'Baz_qux_result';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
 }
 

@@ -42,6 +42,10 @@ class Foo implements \IThriftStruct {
     return 'Foo';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
 }
 
 /**
@@ -111,5 +115,9 @@ class Bar implements \IThriftStruct {
     return 'Bar';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
 }
 

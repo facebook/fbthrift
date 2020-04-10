@@ -49,5 +49,9 @@ class Foo implements \IThriftStruct {
     return 'Foo';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
 }
 

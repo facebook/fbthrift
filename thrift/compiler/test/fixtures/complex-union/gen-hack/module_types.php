@@ -242,6 +242,10 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     return \nullthrows($this->stringRef);
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $this->_type = ComplexUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
@@ -402,6 +406,10 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
     return \nullthrows($this->stringListValue);
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $this->_type = ListUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
@@ -529,6 +537,10 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
     return \nullthrows($this->stringData);
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $this->_type = DataUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
@@ -624,6 +636,10 @@ class Val implements \IThriftStruct {
     return 'Val';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -751,6 +767,10 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
     return \nullthrows($this->v2);
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $this->_type = ValUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
@@ -870,6 +890,11 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
     return \nullthrows($this->thingTwo);
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'cpp.virtual' => "1",
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $this->_type = VirtualComplexUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
@@ -926,6 +951,11 @@ class NonCopyableStruct implements \IThriftStruct {
     return 'NonCopyableStruct';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'cpp2.noncopyable' => "1",
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1003,6 +1033,11 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
     return \nullthrows($this->s);
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'cpp2.noncopyable' => "1",
+    ];
+  }
   public function readFromJson(string $jsonText): void {
     $this->_type = NonCopyableUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);

@@ -97,6 +97,10 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     return 'MyStruct';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->MyIntField = $shape['MyIntField'];
@@ -168,6 +172,10 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
     return 'MyDataItem';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     return $me;
@@ -322,6 +330,10 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     return \nullthrows($this->myDataItem);
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->_type = MyUnionEnum::_EMPTY_;

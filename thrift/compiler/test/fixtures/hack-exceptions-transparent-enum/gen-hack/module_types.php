@@ -77,5 +77,9 @@ class MyException extends \TException implements \IThriftStruct {
     return 'MyException';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
 }
 

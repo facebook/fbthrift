@@ -46,6 +46,10 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     return 'A';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->a = $shape['a'];
@@ -698,6 +702,10 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     return 'B';
   }
 
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+    ];
+  }
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     if (Shapes::idx($shape, 'just_an_A') !== null) {
