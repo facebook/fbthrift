@@ -423,9 +423,7 @@ TEST(DeprecatedOptionalField, HeterogeneousComparisons) {
     return DeprecatedOptionalField<int8_t>(i...);
   };
 
-  int8_t i_;
-  bool b_;
-  auto genOptionalFieldRef = [&](auto... i) {
+  auto genOptionalFieldRef = [i_ = int8_t(0), b_ = false](auto... i) mutable {
     return optional_field_ref<const int8_t&>(i_ = int(i...), b_ = sizeof...(i));
   };
 
@@ -433,6 +431,7 @@ TEST(DeprecatedOptionalField, HeterogeneousComparisons) {
       genDeprecatedOptionalField, genDeprecatedOptionalField);
   heterogeneousComparisonsTest(genOptionalFieldRef, genDeprecatedOptionalField);
   heterogeneousComparisonsTest(genDeprecatedOptionalField, genOptionalFieldRef);
+  heterogeneousComparisonsTest(genOptionalFieldRef, genOptionalFieldRef);
 }
 
 TEST(DeprecatedOptionalField, NulloptComparisons) {

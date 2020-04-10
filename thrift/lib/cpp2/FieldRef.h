@@ -323,6 +323,29 @@ bool operator!=(optional_field_ref<T1> a, optional_field_ref<T2> b) {
   return !(a == b);
 }
 
+template <typename T1, typename T2>
+bool operator<(optional_field_ref<T1> a, optional_field_ref<T2> b) {
+  if (a.has_value() != b.has_value()) {
+    return a.has_value() < b.has_value();
+  }
+  return a ? *a < *b : false;
+}
+
+template <typename T1, typename T2>
+bool operator>(optional_field_ref<T1> a, optional_field_ref<T2> b) {
+  return b < a;
+}
+
+template <typename T1, typename T2>
+bool operator<=(optional_field_ref<T1> a, optional_field_ref<T2> b) {
+  return !(a > b);
+}
+
+template <typename T1, typename T2>
+bool operator>=(optional_field_ref<T1> a, optional_field_ref<T2> b) {
+  return !(a < b);
+}
+
 template <typename T>
 bool operator==(
     optional_field_ref<T> a,
