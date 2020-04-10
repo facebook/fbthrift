@@ -492,6 +492,17 @@ TEST(optional_field_ref_test, move) {
   EXPECT_EQ(p.get(), rawp);
 }
 
+TEST(optional_field_ref_test, get_pointer) {
+  TestStruct s;
+  EXPECT_EQ(apache::thrift::get_pointer(s.opt_name()), nullptr);
+  s.opt_name() = "foo";
+  EXPECT_EQ(*apache::thrift::get_pointer(s.opt_name()), "foo");
+  s.opt_name() = "bar";
+  EXPECT_EQ(*apache::thrift::get_pointer(s.opt_name()), "bar");
+  s.opt_name().reset();
+  EXPECT_EQ(apache::thrift::get_pointer(s.opt_name()), nullptr);
+}
+
 #ifdef THRIFT_HAS_OPTIONAL
 TEST(optional_field_ref_test, copy_from_optional) {
   auto s = TestStruct();

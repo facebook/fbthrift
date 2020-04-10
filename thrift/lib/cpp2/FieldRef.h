@@ -426,5 +426,18 @@ bool operator!=(std::nullopt_t, const optional_field_ref<T>& a) {
 }
 #endif
 
+namespace detail {
+
+struct get_pointer_fn {
+  template <class T>
+  T* operator()(optional_field_ref<T&> field) const {
+    return field ? &*field : nullptr;
+  }
+};
+
+} // namespace detail
+
+constexpr detail::get_pointer_fn get_pointer;
+
 } // namespace thrift
 } // namespace apache
