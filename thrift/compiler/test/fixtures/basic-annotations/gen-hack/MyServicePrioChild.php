@@ -159,7 +159,18 @@ class MyServicePrioChildAsyncClient extends MyServicePrioParentAsyncClient imple
   public async function pang(): Awaitable<void> {
     await $this->asyncHandler_->genBefore("MyServicePrioChild", "pang");
     $currentseqid = $this->sendImpl_pang();
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     $this->recvImpl_pang($currentseqid);
   }
 
@@ -176,7 +187,18 @@ class MyServicePrioChildClient extends MyServicePrioParentClient implements MySe
   public async function pang(): Awaitable<void> {
     await $this->asyncHandler_->genBefore("MyServicePrioChild", "pang");
     $currentseqid = $this->sendImpl_pang();
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     $this->recvImpl_pang($currentseqid);
   }
 

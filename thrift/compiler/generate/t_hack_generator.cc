@@ -4449,7 +4449,23 @@ void t_hack_generator::_generate_service_client_children(
     out << ");\n";
 
     if (!(*f_iter)->is_oneway()) {
+      out << indent() << "$channel = $this->channel_;\n"
+          << indent() << "$out_transport = $this->output_->getTransport();\n"
+          << indent() << "$in_transport = $this->input_->getTransport();\n"
+          << indent()
+          << "if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {\n";
+      indent_up();
+      out << indent() << "$msg = $out_transport->getBuffer();\n"
+          << indent() << "$out_transport->resetBuffer();\n"
+          << indent()
+          << "list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);\n"
+          << indent() << "$in_transport->resetBuffer();\n"
+          << indent() << "$in_transport->write($result_msg);\n";
+      indent_down();
+      indent(out) << "} else {\n";
+      indent_up();
       indent(out) << "await $this->asyncHandler_->genWait($currentseqid);\n";
+      scope_down(out);
       out << indent();
       if (!(*f_iter)->get_returntype()->is_void()) {
         out << "return ";

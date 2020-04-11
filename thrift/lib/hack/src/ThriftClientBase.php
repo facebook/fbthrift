@@ -21,24 +21,34 @@
 abstract class ThriftClientBase implements IThriftClient {
   protected TProtocol $input_;
   protected TProtocol $output_;
+  protected ?IThriftAsyncChannel $channel_;
   protected TClientAsyncHandler $asyncHandler_;
   protected TClientEventHandler $eventHandler_;
 
   protected int $seqid_ = 0;
 
   final public static function factory(
-  ): (string, (function (TProtocol, ?TProtocol): this)) {
+  ): (string, (function (TProtocol, ?TProtocol, ?IThriftAsyncChannel): this)) {
     return tuple(
       get_called_class(),
-      function(TProtocol $input, ?TProtocol $output) {
-        return new static($input, $output);
+      function(
+        TProtocol $input,
+        ?TProtocol $output,
+        ?IThriftAsyncChannel $channel,
+      ) {
+        return new static($input, $output, $channel);
       },
     );
   }
 
-  public function __construct(TProtocol $input, ?TProtocol $output = null) {
+  public function __construct(
+    TProtocol $input,
+    ?TProtocol $output = null,
+    ?IThriftAsyncChannel $channel = null,
+  ) {
     $this->input_ = $input;
     $this->output_ = $output ?: $input;
+    $this->channel_ = $channel;
     $this->asyncHandler_ = new TClientAsyncHandler();
     $this->eventHandler_ = new TClientEventHandler();
   }

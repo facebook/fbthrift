@@ -173,7 +173,18 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
   public async function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b): Awaitable<string> {
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b);
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     return $this->recvImpl_baz($currentseqid);
   }
 
@@ -191,7 +202,18 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
   public async function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b): Awaitable<string> {
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b);
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     return $this->recvImpl_baz($currentseqid);
   }
 

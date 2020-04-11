@@ -825,7 +825,18 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
   public async function ping(): Awaitable<void> {
     await $this->asyncHandler_->genBefore("MyService", "ping");
     $currentseqid = $this->sendImpl_ping();
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     $this->recvImpl_ping($currentseqid);
   }
 
@@ -837,7 +848,18 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
   public async function getRandomData(): Awaitable<string> {
     await $this->asyncHandler_->genBefore("MyService", "getRandomData");
     $currentseqid = $this->sendImpl_getRandomData();
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     return $this->recvImpl_getRandomData($currentseqid);
   }
 
@@ -849,7 +871,18 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
   public async function hasDataById(int $id): Awaitable<bool> {
     await $this->asyncHandler_->genBefore("MyService", "hasDataById");
     $currentseqid = $this->sendImpl_hasDataById($id);
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     return $this->recvImpl_hasDataById($currentseqid);
   }
 
@@ -861,7 +894,18 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
   public async function getDataById(int $id): Awaitable<string> {
     await $this->asyncHandler_->genBefore("MyService", "getDataById");
     $currentseqid = $this->sendImpl_getDataById($id);
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     return $this->recvImpl_getDataById($currentseqid);
   }
 
@@ -874,7 +918,18 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
   public async function putDataById(int $id, string $data): Awaitable<void> {
     await $this->asyncHandler_->genBefore("MyService", "putDataById");
     $currentseqid = $this->sendImpl_putDataById($id, $data);
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     $this->recvImpl_putDataById($currentseqid);
   }
 
@@ -897,7 +952,18 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
   public async function doNothing(): Awaitable<void> {
     await $this->asyncHandler_->genBefore("MyService", "doNothing");
     $currentseqid = $this->sendImpl_doNothing();
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     $this->recvImpl_doNothing($currentseqid);
   }
 
@@ -914,7 +980,18 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   public async function ping(): Awaitable<void> {
     await $this->asyncHandler_->genBefore("MyService", "ping");
     $currentseqid = $this->sendImpl_ping();
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     $this->recvImpl_ping($currentseqid);
   }
 
@@ -926,7 +1003,18 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   public async function getRandomData(): Awaitable<string> {
     await $this->asyncHandler_->genBefore("MyService", "getRandomData");
     $currentseqid = $this->sendImpl_getRandomData();
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     return $this->recvImpl_getRandomData($currentseqid);
   }
 
@@ -938,7 +1026,18 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   public async function hasDataById(int $id): Awaitable<bool> {
     await $this->asyncHandler_->genBefore("MyService", "hasDataById");
     $currentseqid = $this->sendImpl_hasDataById($id);
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     return $this->recvImpl_hasDataById($currentseqid);
   }
 
@@ -950,7 +1049,18 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   public async function getDataById(int $id): Awaitable<string> {
     await $this->asyncHandler_->genBefore("MyService", "getDataById");
     $currentseqid = $this->sendImpl_getDataById($id);
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     return $this->recvImpl_getDataById($currentseqid);
   }
 
@@ -963,7 +1073,18 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   public async function putDataById(int $id, string $data): Awaitable<void> {
     await $this->asyncHandler_->genBefore("MyService", "putDataById");
     $currentseqid = $this->sendImpl_putDataById($id, $data);
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     $this->recvImpl_putDataById($currentseqid);
   }
 
@@ -986,7 +1107,18 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   public async function doNothing(): Awaitable<void> {
     await $this->asyncHandler_->genBefore("MyService", "doNothing");
     $currentseqid = $this->sendImpl_doNothing();
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     $this->recvImpl_doNothing($currentseqid);
   }
 

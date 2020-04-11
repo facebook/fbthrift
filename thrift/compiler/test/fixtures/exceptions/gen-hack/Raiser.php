@@ -564,7 +564,18 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncIf {
   public async function doBland(): Awaitable<void> {
     await $this->asyncHandler_->genBefore("Raiser", "doBland");
     $currentseqid = $this->sendImpl_doBland();
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     $this->recvImpl_doBland($currentseqid);
   }
 
@@ -579,7 +590,18 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncIf {
   public async function doRaise(): Awaitable<void> {
     await $this->asyncHandler_->genBefore("Raiser", "doRaise");
     $currentseqid = $this->sendImpl_doRaise();
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     $this->recvImpl_doRaise($currentseqid);
   }
 
@@ -591,7 +613,18 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncIf {
   public async function get200(): Awaitable<string> {
     await $this->asyncHandler_->genBefore("Raiser", "get200");
     $currentseqid = $this->sendImpl_get200();
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     return $this->recvImpl_get200($currentseqid);
   }
 
@@ -606,7 +639,18 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncIf {
   public async function get500(): Awaitable<string> {
     await $this->asyncHandler_->genBefore("Raiser", "get500");
     $currentseqid = $this->sendImpl_get500();
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     return $this->recvImpl_get500($currentseqid);
   }
 
@@ -623,7 +667,18 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
   public async function doBland(): Awaitable<void> {
     await $this->asyncHandler_->genBefore("Raiser", "doBland");
     $currentseqid = $this->sendImpl_doBland();
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     $this->recvImpl_doBland($currentseqid);
   }
 
@@ -638,7 +693,18 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
   public async function doRaise(): Awaitable<void> {
     await $this->asyncHandler_->genBefore("Raiser", "doRaise");
     $currentseqid = $this->sendImpl_doRaise();
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     $this->recvImpl_doRaise($currentseqid);
   }
 
@@ -650,7 +716,18 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
   public async function get200(): Awaitable<string> {
     await $this->asyncHandler_->genBefore("Raiser", "get200");
     $currentseqid = $this->sendImpl_get200();
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     return $this->recvImpl_get200($currentseqid);
   }
 
@@ -665,7 +742,18 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
   public async function get500(): Awaitable<string> {
     await $this->asyncHandler_->genBefore("Raiser", "get500");
     $currentseqid = $this->sendImpl_get500();
-    await $this->asyncHandler_->genWait($currentseqid);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     return $this->recvImpl_get500($currentseqid);
   }
 
