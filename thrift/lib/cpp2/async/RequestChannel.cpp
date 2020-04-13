@@ -24,7 +24,7 @@ namespace apache {
 namespace thrift {
 
 void RequestChannel::sendRequestAsync(
-    apache::thrift::RpcOptions& rpcOptions,
+    const apache::thrift::RpcOptions& rpcOptions,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
@@ -105,7 +105,7 @@ void RequestChannel::sendRequestAsync(
 }
 
 void RequestChannel::sendRequestAsync(
-    apache::thrift::RpcOptions& rpcOptions,
+    const apache::thrift::RpcOptions& rpcOptions,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
@@ -136,7 +136,7 @@ void RequestChannel::sendRequestAsync(
 }
 
 void RequestChannel::sendRequestResponse(
-    RpcOptions& rpcOptions,
+    const RpcOptions& rpcOptions,
     LegacySerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestClientCallback::Ptr clientCallback) {
@@ -156,7 +156,7 @@ void RequestChannel::sendRequestResponse(
 }
 
 void RequestChannel::sendRequestNoResponse(
-    RpcOptions& rpcOptions,
+    const RpcOptions& rpcOptions,
     LegacySerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestClientCallback::Ptr clientCallback) {
@@ -176,7 +176,7 @@ void RequestChannel::sendRequestNoResponse(
 }
 
 void RequestChannel::sendRequestStream(
-    RpcOptions&,
+    const RpcOptions&,
     folly::StringPiece,
     SerializedRequest&&,
     std::shared_ptr<transport::THeader>,
@@ -187,7 +187,7 @@ void RequestChannel::sendRequestStream(
 }
 
 void RequestChannel::sendRequestSink(
-    RpcOptions&,
+    const RpcOptions&,
     folly::StringPiece,
     SerializedRequest&&,
     std::shared_ptr<transport::THeader>,

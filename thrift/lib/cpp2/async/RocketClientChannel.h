@@ -67,28 +67,28 @@ class RocketClientChannel final : public ClientChannel {
   using RequestChannel::sendRequestStream;
 
   void sendRequestResponse(
-      RpcOptions& rpcOptions,
+      const RpcOptions& rpcOptions,
       folly::StringPiece methodName,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cb) override;
 
   void sendRequestNoResponse(
-      RpcOptions& rpcOptions,
+      const RpcOptions& rpcOptions,
       folly::StringPiece methodName,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cb) override;
 
   void sendRequestStream(
-      RpcOptions& rpcOptions,
+      const RpcOptions& rpcOptions,
       folly::StringPiece methodName,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* clientCallback) override;
 
   void sendRequestSink(
-      RpcOptions& rpcOptions,
+      const RpcOptions& rpcOptions,
       folly::StringPiece methodName,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
@@ -171,7 +171,7 @@ class RocketClientChannel final : public ClientChannel {
   virtual ~RocketClientChannel();
 
   void sendThriftRequest(
-      RpcOptions& rpcOptions,
+      const RpcOptions& rpcOptions,
       RpcKind kind,
       folly::StringPiece methodName,
       SerializedRequest&& request,
@@ -192,7 +192,7 @@ class RocketClientChannel final : public ClientChannel {
   template <typename CallbackPtr>
   bool preSendValidation(
       RequestRpcMetadata& metadata,
-      RpcOptions& rpcOptions,
+      const RpcOptions& rpcOptions,
       CallbackPtr& cb,
       std::chrono::milliseconds& firstResponseTimeout);
 

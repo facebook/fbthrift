@@ -47,7 +47,7 @@ class HibernatingRequestChannel::RequestCallback
 };
 
 void HibernatingRequestChannel::sendRequestResponse(
-    RpcOptions& options,
+    const RpcOptions& options,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,

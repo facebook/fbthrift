@@ -58,14 +58,14 @@ class ReconnectingRequestChannel : public RequestChannel {
   using RequestChannel::sendRequestResponse;
 
   void sendRequestResponse(
-      RpcOptions& options,
+      const RpcOptions& options,
       folly::StringPiece methodName,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
   void sendRequestNoResponse(
-      RpcOptions&,
+      const RpcOptions&,
       folly::StringPiece methodName,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader>,

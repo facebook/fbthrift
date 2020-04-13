@@ -65,7 +65,7 @@ void ThriftClient::setHTTPUrl(const std::string& url) {
 }
 
 void ThriftClient::sendRequestResponse(
-    RpcOptions& rpcOptions,
+    const RpcOptions& rpcOptions,
     folly::StringPiece methodName,
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
@@ -84,7 +84,7 @@ void ThriftClient::sendRequestResponse(
 }
 
 void ThriftClient::sendRequestNoResponse(
-    RpcOptions& rpcOptions,
+    const RpcOptions& rpcOptions,
     folly::StringPiece methodName,
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
@@ -103,7 +103,7 @@ void ThriftClient::sendRequestNoResponse(
 }
 
 std::unique_ptr<RequestRpcMetadata> ThriftClient::createRequestRpcMetadata(
-    RpcOptions& rpcOptions,
+    const RpcOptions& rpcOptions,
     RpcKind kind,
     apache::thrift::ProtocolId protocolId,
     THeader* header) {
@@ -151,7 +151,7 @@ std::unique_ptr<RequestRpcMetadata> ThriftClient::createRequestRpcMetadata(
 }
 
 void ThriftClient::sendRequestHelper(
-    RpcOptions& rpcOptions,
+    const RpcOptions& rpcOptions,
     RpcKind kind,
     std::unique_ptr<IOBuf> buf,
     std::shared_ptr<THeader> header,

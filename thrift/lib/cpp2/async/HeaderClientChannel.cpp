@@ -99,7 +99,7 @@ bool HeaderClientChannel::clientSupportHeader() {
 
 // Client Interface
 void HeaderClientChannel::sendRequestNoResponse(
-    RpcOptions& rpcOptions,
+    const RpcOptions& rpcOptions,
     folly::StringPiece methodName,
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
@@ -152,7 +152,7 @@ uint16_t HeaderClientChannel::getProtocolId() {
 }
 
 void HeaderClientChannel::sendRequestResponse(
-    RpcOptions& rpcOptions,
+    const RpcOptions& rpcOptions,
     folly::StringPiece methodName,
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,

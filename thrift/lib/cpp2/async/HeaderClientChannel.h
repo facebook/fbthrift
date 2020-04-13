@@ -93,14 +93,14 @@ class HeaderClientChannel : public ClientChannel,
   using RequestChannel::sendRequestResponse;
 
   void sendRequestResponse(
-      RpcOptions&,
+      const RpcOptions&,
       folly::StringPiece,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) override;
 
   void sendRequestNoResponse(
-      RpcOptions&,
+      const RpcOptions&,
       folly::StringPiece,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,

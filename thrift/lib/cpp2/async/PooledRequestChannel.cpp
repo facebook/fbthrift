@@ -104,7 +104,7 @@ class ExecutorRequestCallback final : public RequestClientCallback {
 } // namespace
 
 void PooledRequestChannel::sendRequestResponse(
-    RpcOptions& options,
+    const RpcOptions& options,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
@@ -113,7 +113,7 @@ void PooledRequestChannel::sendRequestResponse(
     cob = RequestClientCallback::Ptr(new ExecutorRequestCallback<false>(
         std::move(cob), getKeepAliveToken(callbackExecutor_)));
   }
-  sendRequestImpl([options = std::move(options),
+  sendRequestImpl([options,
                    methodNameStr = methodName.str(),
                    request = std::move(request),
                    header = std::move(header),
@@ -128,7 +128,7 @@ void PooledRequestChannel::sendRequestResponse(
 }
 
 void PooledRequestChannel::sendRequestNoResponse(
-    RpcOptions& options,
+    const RpcOptions& options,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
@@ -137,7 +137,7 @@ void PooledRequestChannel::sendRequestNoResponse(
     cob = RequestClientCallback::Ptr(new ExecutorRequestCallback<true>(
         std::move(cob), getKeepAliveToken(callbackExecutor_)));
   }
-  sendRequestImpl([options = std::move(options),
+  sendRequestImpl([options,
                    methodNameStr = methodName.str(),
                    request = std::move(request),
                    header = std::move(header),
@@ -152,12 +152,12 @@ void PooledRequestChannel::sendRequestNoResponse(
 }
 
 void PooledRequestChannel::sendRequestStream(
-    RpcOptions& options,
+    const RpcOptions& options,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     StreamClientCallback* cob) {
-  sendRequestImpl([options = std::move(options),
+  sendRequestImpl([options,
                    methodNameStr = methodName.str(),
                    request = std::move(request),
                    header = std::move(header),
@@ -168,12 +168,12 @@ void PooledRequestChannel::sendRequestStream(
 }
 
 void PooledRequestChannel::sendRequestSink(
-    RpcOptions& options,
+    const RpcOptions& options,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     SinkClientCallback* cob) {
-  sendRequestImpl([options = std::move(options),
+  sendRequestImpl([options,
                    methodNameStr = methodName.str(),
                    request = std::move(request),
                    header = std::move(header),

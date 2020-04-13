@@ -45,14 +45,14 @@ class HibernatingRequestChannel : public RequestChannel {
   }
 
   void sendRequestResponse(
-      RpcOptions& options,
+      const RpcOptions& options,
       folly::StringPiece,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
   void sendRequestNoResponse(
-      RpcOptions&,
+      const RpcOptions&,
       folly::StringPiece,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader>,

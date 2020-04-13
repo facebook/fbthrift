@@ -31,7 +31,7 @@ class HeaderChannel {
 
   void addRpcOptionHeaders(
       apache::thrift::transport::THeader* header,
-      RpcOptions& rpcOptions);
+      const RpcOptions& rpcOptions);
 
   void setPersistentHeader(const std::string& key, const std::string& value) {
     persistentWriteHeaders_[key] = value;

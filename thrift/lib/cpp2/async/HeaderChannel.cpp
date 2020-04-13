@@ -25,7 +25,7 @@ using apache::thrift::transport::THeader;
 
 void HeaderChannel::addRpcOptionHeaders(
     THeader* header,
-    RpcOptions& rpcOptions) {
+    const RpcOptions& rpcOptions) {
   if (!clientSupportHeader()) {
     return;
   }

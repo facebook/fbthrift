@@ -60,7 +60,7 @@ class ChannelKeepAlive : public RequestClientCallback {
 } // namespace
 
 void ReconnectingRequestChannel::sendRequestResponse(
-    RpcOptions& options,
+    const RpcOptions& options,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
@@ -77,7 +77,7 @@ void ReconnectingRequestChannel::sendRequestResponse(
 }
 
 void ReconnectingRequestChannel::sendRequestNoResponse(
-    RpcOptions& options,
+    const RpcOptions& options,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,

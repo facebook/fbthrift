@@ -148,7 +148,7 @@ RocketClientChannel::Ptr RocketClientChannel::newChannel(
 }
 
 void RocketClientChannel::sendRequestResponse(
-    RpcOptions& rpcOptions,
+    const RpcOptions& rpcOptions,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
@@ -163,7 +163,7 @@ void RocketClientChannel::sendRequestResponse(
 }
 
 void RocketClientChannel::sendRequestNoResponse(
-    RpcOptions& rpcOptions,
+    const RpcOptions& rpcOptions,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
@@ -178,7 +178,7 @@ void RocketClientChannel::sendRequestNoResponse(
 }
 
 void RocketClientChannel::sendRequestStream(
-    RpcOptions& rpcOptions,
+    const RpcOptions& rpcOptions,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<THeader> header,
@@ -219,7 +219,7 @@ void RocketClientChannel::sendRequestStream(
 }
 
 void RocketClientChannel::sendRequestSink(
-    RpcOptions& rpcOptions,
+    const RpcOptions& rpcOptions,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
@@ -259,7 +259,7 @@ void RocketClientChannel::sendRequestSink(
 }
 
 void RocketClientChannel::sendThriftRequest(
-    RpcOptions& rpcOptions,
+    const RpcOptions& rpcOptions,
     RpcKind kind,
     folly::StringPiece methodName,
     SerializedRequest&& request,
@@ -449,7 +449,7 @@ void onResponseError(SinkClientCallback* cb, folly::exception_wrapper ew) {
 template <typename CallbackPtr>
 bool RocketClientChannel::preSendValidation(
     RequestRpcMetadata& metadata,
-    RpcOptions& rpcOptions,
+    const RpcOptions& rpcOptions,
     CallbackPtr& cb,
     std::chrono::milliseconds& firstResponseTimeout) {
   metadata.seqId_ref().reset();

@@ -28,7 +28,7 @@ class RetryingRequestChannel::RequestCallback
       folly::Executor::KeepAlive<> ka,
       RetryingRequestChannel::ImplPtr impl,
       int retries,
-      apache::thrift::RpcOptions options,
+      const apache::thrift::RpcOptions& options,
       apache::thrift::RequestClientCallback::Ptr cob,
       folly::StringPiece methodName,
       SerializedRequest&& request,
@@ -96,7 +96,7 @@ class RetryingRequestChannel::RequestCallback
 };
 
 void RetryingRequestChannel::sendRequestResponse(
-    apache::thrift::RpcOptions& options,
+    const apache::thrift::RpcOptions& options,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,

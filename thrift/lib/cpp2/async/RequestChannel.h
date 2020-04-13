@@ -70,7 +70,7 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    * cb must not be null.
    */
   void sendRequestAsync(
-      apache::thrift::RpcOptions&,
+      const apache::thrift::RpcOptions&,
       folly::StringPiece methodName,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
@@ -78,7 +78,7 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       RpcKind kind);
 
   void sendRequestAsync(
-      apache::thrift::RpcOptions&,
+      const apache::thrift::RpcOptions&,
       folly::StringPiece methodName,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
@@ -92,14 +92,14 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    * cb must not be null.
    */
   virtual void sendRequestResponse(
-      RpcOptions&,
+      const RpcOptions&,
       folly::StringPiece methodName,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) = 0;
 
   void sendRequestResponse(
-      RpcOptions&,
+      const RpcOptions&,
       LegacySerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr);
@@ -109,14 +109,14 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    * Null RequestCallback is allowed for oneway requests
    */
   virtual void sendRequestNoResponse(
-      RpcOptions&,
+      const RpcOptions&,
       folly::StringPiece methodName,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) = 0;
 
   void sendRequestNoResponse(
-      RpcOptions&,
+      const RpcOptions&,
       LegacySerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr);
@@ -130,14 +130,14 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    * cb must not be null.
    */
   virtual void sendRequestStream(
-      RpcOptions& rpcOptions,
+      const RpcOptions& rpcOptions,
       folly::StringPiece methodName,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* clientCallback);
 
   virtual void sendRequestSink(
-      RpcOptions& rpcOptions,
+      const RpcOptions& rpcOptions,
       folly::StringPiece methodName,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
@@ -242,7 +242,7 @@ inline StreamClientCallback* createStreamClientCallback(
 template <class Protocol>
 SerializedRequest preprocessSendT(
     Protocol* prot,
-    apache::thrift::RpcOptions& rpcOptions,
+    const apache::thrift::RpcOptions& rpcOptions,
     apache::thrift::ContextStack& ctx,
     apache::thrift::transport::THeader& header,
     folly::StringPiece methodName,
@@ -286,7 +286,7 @@ SerializedRequest preprocessSendT(
 template <class Protocol>
 void clientSendT(
     Protocol* prot,
-    apache::thrift::RpcOptions& rpcOptions,
+    const apache::thrift::RpcOptions& rpcOptions,
     RequestClientCallback::Ptr callback,
     apache::thrift::ContextStack& ctx,
     std::shared_ptr<apache::thrift::transport::THeader> header,
@@ -309,7 +309,7 @@ void clientSendT(
 template <class Protocol>
 void clientSendT(
     Protocol* prot,
-    apache::thrift::RpcOptions& rpcOptions,
+    const apache::thrift::RpcOptions& rpcOptions,
     SinkClientCallback* callback,
     apache::thrift::ContextStack& ctx,
     std::shared_ptr<apache::thrift::transport::THeader> header,

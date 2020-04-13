@@ -88,14 +88,14 @@ class ThriftClient : public ClientChannel {
 
   // begin RequestChannel methods
   void sendRequestResponse(
-      RpcOptions& rpcOptions,
+      const RpcOptions& rpcOptions,
       folly::StringPiece,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       RequestClientCallback::Ptr cb) override;
 
   void sendRequestNoResponse(
-      RpcOptions& rpcOptions,
+      const RpcOptions& rpcOptions,
       folly::StringPiece,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader> header,
@@ -147,13 +147,13 @@ class ThriftClient : public ClientChannel {
   virtual ~ThriftClient();
 
   std::unique_ptr<RequestRpcMetadata> createRequestRpcMetadata(
-      RpcOptions& rpcOptions,
+      const RpcOptions& rpcOptions,
       RpcKind kind,
       apache::thrift::ProtocolId protocolId,
       transport::THeader* header);
 
   void sendRequestHelper(
-      RpcOptions& rpcOptions,
+      const RpcOptions& rpcOptions,
       RpcKind kind,
       std::unique_ptr<folly::IOBuf> buf,
       std::shared_ptr<apache::thrift::transport::THeader> header,

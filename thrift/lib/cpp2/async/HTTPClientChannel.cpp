@@ -162,7 +162,7 @@ void HTTPClientChannel::destroy() {
 // apache::thrift::RequestChannel methods
 
 void HTTPClientChannel::sendRequestNoResponse(
-    RpcOptions& rpcOptions,
+    const RpcOptions& rpcOptions,
     folly::StringPiece methodName,
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
@@ -177,7 +177,7 @@ void HTTPClientChannel::sendRequestNoResponse(
 }
 
 void HTTPClientChannel::sendRequestResponse(
-    RpcOptions& rpcOptions,
+    const RpcOptions& rpcOptions,
     folly::StringPiece methodName,
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
@@ -192,7 +192,7 @@ void HTTPClientChannel::sendRequestResponse(
 }
 
 void HTTPClientChannel::sendRequest_(
-    RpcOptions& rpcOptions,
+    const RpcOptions& rpcOptions,
     bool oneway,
     unique_ptr<IOBuf> buf,
     std::shared_ptr<THeader> header,

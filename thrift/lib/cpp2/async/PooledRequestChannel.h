@@ -57,28 +57,28 @@ class PooledRequestChannel : public RequestChannel {
   }
 
   void sendRequestResponse(
-      RpcOptions& options,
+      const RpcOptions& options,
       folly::StringPiece,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
   void sendRequestNoResponse(
-      RpcOptions& options,
+      const RpcOptions& options,
       folly::StringPiece,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
   void sendRequestStream(
-      RpcOptions& options,
+      const RpcOptions& options,
       folly::StringPiece,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* cob) override;
 
   void sendRequestSink(
-      RpcOptions& options,
+      const RpcOptions& options,
       folly::StringPiece,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
