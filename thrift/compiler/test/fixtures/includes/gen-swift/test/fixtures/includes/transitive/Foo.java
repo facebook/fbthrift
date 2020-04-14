@@ -44,6 +44,8 @@ public final class Foo {
             this.a = a;
             return this;
         }
+        
+        public long getA() { return a; }
     
         public Builder() { }
         public Builder(Foo other) {

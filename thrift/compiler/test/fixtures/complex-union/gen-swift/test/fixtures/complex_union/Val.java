@@ -50,18 +50,26 @@ public final class Val {
             this.strVal = strVal;
             return this;
         }
+        
+        public String getStrVal() { return strVal; }
+    
         private int intVal;
         @ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE)
         public Builder setIntVal(int intVal) {
             this.intVal = intVal;
             return this;
         }
+        
+        public int getIntVal() { return intVal; }
+    
         private Map<Short, String> typedefValue;
         @ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE)
         public Builder setTypedefValue(Map<Short, String> typedefValue) {
             this.typedefValue = typedefValue;
             return this;
         }
+        
+        public Map<Short, String> getTypedefValue() { return typedefValue; }
     
         public Builder() { }
         public Builder(Val other) {

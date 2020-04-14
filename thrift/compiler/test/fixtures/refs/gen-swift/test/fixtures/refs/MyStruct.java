@@ -50,18 +50,26 @@ public final class MyStruct {
             this.optRef = optRef;
             return this;
         }
+        
+        public test.fixtures.refs.MyField getOptRef() { return optRef; }
+    
         private test.fixtures.refs.MyField ref;
         @ThriftField(value=2, name="ref", requiredness=Requiredness.NONE)
         public Builder setRef(test.fixtures.refs.MyField ref) {
             this.ref = ref;
             return this;
         }
+        
+        public test.fixtures.refs.MyField getRef() { return ref; }
+    
         private test.fixtures.refs.MyField reqRef;
         @ThriftField(value=3, name="req_ref", requiredness=Requiredness.REQUIRED)
         public Builder setReqRef(test.fixtures.refs.MyField reqRef) {
             this.reqRef = reqRef;
             return this;
         }
+        
+        public test.fixtures.refs.MyField getReqRef() { return reqRef; }
     
         public Builder() { }
         public Builder(MyStruct other) {

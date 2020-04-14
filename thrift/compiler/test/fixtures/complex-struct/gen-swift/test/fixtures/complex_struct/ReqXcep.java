@@ -55,12 +55,17 @@ public final class ReqXcep extends java.lang.Exception {
             this.message = message;
             return this;
         }
+        
+        public String getMessage() { return message; }
+    
         private int errorCode;
         @ThriftField(value=2, name="errorCode", requiredness=Requiredness.REQUIRED)
         public Builder setErrorCode(int errorCode) {
             this.errorCode = errorCode;
             return this;
         }
+        
+        public int getErrorCode() { return errorCode; }
     
         public Builder() { }
         public Builder(ReqXcep other) {

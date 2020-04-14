@@ -50,18 +50,26 @@ public final class Internship {
             this.weeks = weeks;
             return this;
         }
+        
+        public int getWeeks() { return weeks; }
+    
         private String title;
         @ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
         public Builder setTitle(String title) {
             this.title = title;
             return this;
         }
+        
+        public String getTitle() { return title; }
+    
         private test.fixtures.constants.Company employer;
         @ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
         public Builder setEmployer(test.fixtures.constants.Company employer) {
             this.employer = employer;
             return this;
         }
+        
+        public test.fixtures.constants.Company getEmployer() { return employer; }
     
         public Builder() { }
         public Builder(Internship other) {

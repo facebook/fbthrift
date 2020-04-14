@@ -49,6 +49,8 @@ public final class InitialException extends java.lang.Exception {
             this.reason = reason;
             return this;
         }
+        
+        public String getReason() { return reason; }
     
         public Builder() { }
         public Builder(InitialException other) {

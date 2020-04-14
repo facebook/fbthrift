@@ -16,16 +16,19 @@
 
 }}
 public static class Builder {
-    {{#struct:fields}}
-    private {{> FieldType}} {{field:javaName}};
+    {{#struct:fields}}{{!
+    }}private {{> FieldType}} {{field:javaName}};
     {{> ThriftFieldAnnotation}}{{#field:javaAnnotation?}} @{{field:javaAnnotation}}{{/field:javaAnnotation?}}
     public Builder {{> SetterName}}({{> FieldType}} {{field:javaName}}) {
         this.{{field:javaName}} = {{field:javaName}};
         return this;
     }
-    {{/struct:fields}}
+    
+    public {{> FieldType}} {{> GetterName}}() { return {{field:javaName}}; }
 
-    public Builder() { }
+    {{/struct:fields}}{{!
+
+    }}public Builder() { }
     public Builder({{struct:javaCapitalName}} other) {
         {{#struct:fields}}
         this.{{field:javaName}} = other.{{field:javaName}};

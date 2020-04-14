@@ -53,24 +53,35 @@ public final class Color {
             this.red = red;
             return this;
         }
+        
+        public double getRed() { return red; }
+    
         private double green;
         @ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
         public Builder setGreen(double green) {
             this.green = green;
             return this;
         }
+        
+        public double getGreen() { return green; }
+    
         private double blue;
         @ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
         public Builder setBlue(double blue) {
             this.blue = blue;
             return this;
         }
+        
+        public double getBlue() { return blue; }
+    
         private double alpha;
         @ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)
         public Builder setAlpha(double alpha) {
             this.alpha = alpha;
             return this;
         }
+        
+        public double getAlpha() { return alpha; }
     
         public Builder() { }
         public Builder(Color other) {

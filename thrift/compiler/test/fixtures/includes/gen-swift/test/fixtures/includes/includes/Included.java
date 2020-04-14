@@ -47,12 +47,17 @@ public final class Included {
             this.myIntField = myIntField;
             return this;
         }
+        
+        public long getMyIntField() { return myIntField; }
+    
         private test.fixtures.includes.transitive.Foo myTransitiveField;
         @ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)
         public Builder setMyTransitiveField(test.fixtures.includes.transitive.Foo myTransitiveField) {
             this.myTransitiveField = myTransitiveField;
             return this;
         }
+        
+        public test.fixtures.includes.transitive.Foo getMyTransitiveField() { return myTransitiveField; }
     
         public Builder() { }
         public Builder(Included other) {

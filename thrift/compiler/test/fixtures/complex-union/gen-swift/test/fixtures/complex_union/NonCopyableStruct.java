@@ -44,6 +44,8 @@ public final class NonCopyableStruct {
             this.num = num;
             return this;
         }
+        
+        public long getNum() { return num; }
     
         public Builder() { }
         public Builder(NonCopyableStruct other) {

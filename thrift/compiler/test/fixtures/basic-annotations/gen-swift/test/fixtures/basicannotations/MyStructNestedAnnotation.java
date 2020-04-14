@@ -44,6 +44,8 @@ public final class MyStructNestedAnnotation {
             this.name = name;
             return this;
         }
+        
+        public String getName() { return name; }
     
         public Builder() { }
         public Builder(MyStructNestedAnnotation other) {

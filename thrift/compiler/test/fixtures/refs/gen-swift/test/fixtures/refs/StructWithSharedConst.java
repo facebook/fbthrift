@@ -50,18 +50,26 @@ public final class StructWithSharedConst {
             this.optSharedConst = optSharedConst;
             return this;
         }
+        
+        public test.fixtures.refs.MyField getOptSharedConst() { return optSharedConst; }
+    
         private test.fixtures.refs.MyField sharedConst;
         @ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE)
         public Builder setSharedConst(test.fixtures.refs.MyField sharedConst) {
             this.sharedConst = sharedConst;
             return this;
         }
+        
+        public test.fixtures.refs.MyField getSharedConst() { return sharedConst; }
+    
         private test.fixtures.refs.MyField reqSharedConst;
         @ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)
         public Builder setReqSharedConst(test.fixtures.refs.MyField reqSharedConst) {
             this.reqSharedConst = reqSharedConst;
             return this;
         }
+        
+        public test.fixtures.refs.MyField getReqSharedConst() { return reqSharedConst; }
     
         public Builder() { }
         public Builder(StructWithSharedConst other) {

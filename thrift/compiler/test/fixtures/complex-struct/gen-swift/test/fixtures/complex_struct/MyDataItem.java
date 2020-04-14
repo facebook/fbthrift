@@ -33,7 +33,6 @@ public final class MyDataItem {
     
     
     public static class Builder {
-    
         public Builder() { }
         public Builder(MyDataItem other) {
         }

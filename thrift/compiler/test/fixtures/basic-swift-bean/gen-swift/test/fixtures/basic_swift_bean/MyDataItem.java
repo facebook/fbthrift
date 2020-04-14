@@ -35,12 +35,17 @@ public final class MyDataItem {
             this.field1 = field1;
             return this;
         }
+        
+        public int getField1() { return field1; }
+    
         private int field2;
         @ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)
         public Builder setField2(int field2) {
             this.field2 = field2;
             return this;
         }
+        
+        public int getField2() { return field2; }
     
         public Builder() { }
         public Builder(MyDataItem other) {

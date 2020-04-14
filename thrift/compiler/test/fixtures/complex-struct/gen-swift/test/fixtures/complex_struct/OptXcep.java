@@ -55,12 +55,17 @@ public final class OptXcep extends java.lang.Exception {
             this.message = message;
             return this;
         }
+        
+        public String getMessage() { return message; }
+    
         private Integer errorCode;
         @ThriftField(value=2, name="errorCode", requiredness=Requiredness.OPTIONAL)
         public Builder setErrorCode(Integer errorCode) {
             this.errorCode = errorCode;
             return this;
         }
+        
+        public Integer getErrorCode() { return errorCode; }
     
         public Builder() { }
         public Builder(OptXcep other) {

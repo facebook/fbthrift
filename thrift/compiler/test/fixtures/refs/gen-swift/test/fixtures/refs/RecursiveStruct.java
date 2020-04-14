@@ -44,6 +44,8 @@ public final class RecursiveStruct {
             this.mes = mes;
             return this;
         }
+        
+        public List<test.fixtures.refs.RecursiveStruct> getMes() { return mes; }
     
         public Builder() { }
         public Builder(RecursiveStruct other) {

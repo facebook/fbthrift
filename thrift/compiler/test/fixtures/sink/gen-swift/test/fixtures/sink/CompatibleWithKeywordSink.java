@@ -44,6 +44,8 @@ public final class CompatibleWithKeywordSink {
             this.sink = sink;
             return this;
         }
+        
+        public String getSink() { return sink; }
     
         public Builder() { }
         public Builder(CompatibleWithKeywordSink other) {

@@ -53,24 +53,35 @@ public final class MyStruct {
             this.intField = intField;
             return this;
         }
+        
+        public long getIntField() { return intField; }
+    
         private String stringField;
         @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
         public Builder setStringField(String stringField) {
             this.stringField = stringField;
             return this;
         }
+        
+        public String getStringField() { return stringField; }
+    
         private String detailField;
         @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)
         public Builder setDetailField(String detailField) {
             this.detailField = detailField;
             return this;
         }
+        
+        public String getDetailField() { return detailField; }
+    
         private com.foo.FastIntLongMap detailMap;
         @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
         public Builder setDetailMap(com.foo.FastIntLongMap detailMap) {
             this.detailMap = detailMap;
             return this;
         }
+        
+        public com.foo.FastIntLongMap getDetailMap() { return detailMap; }
     
         public Builder() { }
         public Builder(MyStruct other) {

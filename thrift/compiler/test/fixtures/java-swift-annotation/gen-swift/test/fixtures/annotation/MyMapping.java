@@ -47,12 +47,17 @@ public final class MyMapping {
             this.lsMap = lsMap;
             return this;
         }
+        
+        public com.foo.FastLongStringMap getLsMap() { return lsMap; }
+    
         private com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap;
         @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
         public Builder setIoMap(com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap) {
             this.ioMap = ioMap;
             return this;
         }
+        
+        public com.foo.FastIntObjectMap<com.foo.FastIntLongMap> getIoMap() { return ioMap; }
     
         public Builder() { }
         public Builder(MyMapping other) {

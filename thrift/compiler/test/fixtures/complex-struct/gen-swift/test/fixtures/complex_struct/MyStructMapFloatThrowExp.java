@@ -47,12 +47,17 @@ public final class MyStructMapFloatThrowExp {
             this.myLongField = myLongField;
             return this;
         }
+        
+        public long getMyLongField() { return myLongField; }
+    
         private Map<Integer, List<List<Float>>> mapListOfFloats;
         @ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE)
         public Builder setMapListOfFloats(Map<Integer, List<List<Float>>> mapListOfFloats) {
             this.mapListOfFloats = mapListOfFloats;
             return this;
         }
+        
+        public Map<Integer, List<List<Float>>> getMapListOfFloats() { return mapListOfFloats; }
     
         public Builder() { }
         public Builder(MyStructMapFloatThrowExp other) {

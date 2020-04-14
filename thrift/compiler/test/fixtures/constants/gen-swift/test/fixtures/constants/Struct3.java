@@ -50,18 +50,26 @@ public final class Struct3 {
             this.a = a;
             return this;
         }
+        
+        public String getA() { return a; }
+    
         private int b;
         @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
         public Builder setB(int b) {
             this.b = b;
             return this;
         }
+        
+        public int getB() { return b; }
+    
         private test.fixtures.constants.Struct2 c;
         @ThriftField(value=3, name="c", requiredness=Requiredness.NONE)
         public Builder setC(test.fixtures.constants.Struct2 c) {
             this.c = c;
             return this;
         }
+        
+        public test.fixtures.constants.Struct2 getC() { return c; }
     
         public Builder() { }
         public Builder(Struct3 other) {

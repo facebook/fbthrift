@@ -47,12 +47,17 @@ public final class Struct1 {
             this.a = a;
             return this;
         }
+        
+        public int getA() { return a; }
+    
         private String b;
         @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
         public Builder setB(String b) {
             this.b = b;
             return this;
         }
+        
+        public String getB() { return b; }
     
         public Builder() { }
         public Builder(Struct1 other) {

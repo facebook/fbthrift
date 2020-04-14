@@ -47,12 +47,17 @@ public final class BigStruct {
             this.s = s;
             return this;
         }
+        
+        public test.fixtures.module2.Struct getS() { return s; }
+    
         private int id;
         @ThriftField(value=2, name="id", requiredness=Requiredness.NONE)
         public Builder setId(int id) {
             this.id = id;
             return this;
         }
+        
+        public int getId() { return id; }
     
         public Builder() { }
         public Builder(BigStruct other) {

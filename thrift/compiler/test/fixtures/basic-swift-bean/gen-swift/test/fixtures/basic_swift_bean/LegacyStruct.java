@@ -35,12 +35,17 @@ public final class LegacyStruct {
             this.normal = normal;
             return this;
         }
+        
+        public int getNormal() { return normal; }
+    
         private int bad;
         @ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE)
         public Builder setBad(int bad) {
             this.bad = bad;
             return this;
         }
+        
+        public int getBad() { return bad; }
     
         public Builder() { }
         public Builder(LegacyStruct other) {

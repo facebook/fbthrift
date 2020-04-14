@@ -44,6 +44,8 @@ public final class InitialResponse {
             this.content = content;
             return this;
         }
+        
+        public String getContent() { return content; }
     
         public Builder() { }
         public Builder(InitialResponse other) {

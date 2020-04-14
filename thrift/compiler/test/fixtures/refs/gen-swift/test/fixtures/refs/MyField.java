@@ -50,18 +50,26 @@ public final class MyField {
             this.optValue = optValue;
             return this;
         }
+        
+        public Long getOptValue() { return optValue; }
+    
         private long value;
         @ThriftField(value=2, name="value", requiredness=Requiredness.NONE)
         public Builder setValue(long value) {
             this.value = value;
             return this;
         }
+        
+        public long getValue() { return value; }
+    
         private long reqValue;
         @ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED)
         public Builder setReqValue(long reqValue) {
             this.reqValue = reqValue;
             return this;
         }
+        
+        public long getReqValue() { return reqValue; }
     
         public Builder() { }
         public Builder(MyField other) {

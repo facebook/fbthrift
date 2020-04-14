@@ -53,24 +53,35 @@ public final class MyStruct1 {
             this.myIntField = myIntField;
             return this;
         }
+        
+        public long getMyIntField() { return myIntField; }
+    
         private String myStringField;
         @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
         public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
         }
+        
+        public String getMyStringField() { return myStringField; }
+    
         private test.fixtures.basic_swift_bean.MyDataItem myDataField;
         @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
         public Builder setMyDataField(test.fixtures.basic_swift_bean.MyDataItem myDataField) {
             this.myDataField = myDataField;
             return this;
         }
+        
+        public test.fixtures.basic_swift_bean.MyDataItem getMyDataField() { return myDataField; }
+    
         private long major;
         @ThriftField(value=4, name="major", requiredness=Requiredness.NONE)
         public Builder setMajor(long major) {
             this.major = major;
             return this;
         }
+        
+        public long getMajor() { return major; }
     
         public Builder() { }
         public Builder(MyStruct1 other) {

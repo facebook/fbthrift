@@ -44,6 +44,8 @@ public final class SinkPayload {
             this.content = content;
             return this;
         }
+        
+        public String getContent() { return content; }
     
         public Builder() { }
         public Builder(SinkPayload other) {

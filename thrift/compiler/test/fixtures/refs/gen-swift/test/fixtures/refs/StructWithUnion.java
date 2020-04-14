@@ -50,18 +50,26 @@ public final class StructWithUnion {
             this.u = u;
             return this;
         }
+        
+        public test.fixtures.refs.MyUnion getU() { return u; }
+    
         private double aDouble;
         @ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE)
         public Builder setADouble(double aDouble) {
             this.aDouble = aDouble;
             return this;
         }
+        
+        public double getADouble() { return aDouble; }
+    
         private test.fixtures.refs.MyField f;
         @ThriftField(value=3, name="f", requiredness=Requiredness.NONE)
         public Builder setF(test.fixtures.refs.MyField f) {
             this.f = f;
             return this;
         }
+        
+        public test.fixtures.refs.MyField getF() { return f; }
     
         public Builder() { }
         public Builder(StructWithUnion other) {

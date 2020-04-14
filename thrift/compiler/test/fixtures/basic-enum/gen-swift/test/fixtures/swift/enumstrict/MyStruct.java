@@ -47,12 +47,17 @@ public final class MyStruct {
             this.myEnum = myEnum;
             return this;
         }
+        
+        public test.fixtures.swift.enumstrict.MyEnum getMyEnum() { return myEnum; }
+    
         private test.fixtures.swift.enumstrict.MyBigEnum myBigEnum;
         @ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE)
         public Builder setMyBigEnum(test.fixtures.swift.enumstrict.MyBigEnum myBigEnum) {
             this.myBigEnum = myBigEnum;
             return this;
         }
+        
+        public test.fixtures.swift.enumstrict.MyBigEnum getMyBigEnum() { return myBigEnum; }
     
         public Builder() { }
         public Builder(MyStruct other) {

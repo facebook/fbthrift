@@ -47,12 +47,17 @@ public final class Range {
             this.min = min;
             return this;
         }
+        
+        public int getMin() { return min; }
+    
         private int max;
         @ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)
         public Builder setMax(int max) {
             this.max = max;
             return this;
         }
+        
+        public int getMax() { return max; }
     
         public Builder() { }
         public Builder(Range other) {

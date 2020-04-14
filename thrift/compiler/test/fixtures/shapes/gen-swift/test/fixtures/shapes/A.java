@@ -44,6 +44,8 @@ public final class A {
             this.a = a;
             return this;
         }
+        
+        public String getA() { return a; }
     
         public Builder() { }
         public Builder(A other) {

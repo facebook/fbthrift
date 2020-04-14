@@ -79,36 +79,53 @@ public final class ComplexException extends java.lang.Exception {
             this.message = message;
             return this;
         }
+        
+        public String getMessage() { return message; }
+    
         private List<String> listStrings;
         @ThriftField(value=2, name="listStrings", requiredness=Requiredness.NONE)
         public Builder setListStrings(List<String> listStrings) {
             this.listStrings = listStrings;
             return this;
         }
+        
+        public List<String> getListStrings() { return listStrings; }
+    
         private test.fixtures.complex_struct.MyEnum errorEnum;
         @ThriftField(value=3, name="errorEnum", requiredness=Requiredness.NONE)
         public Builder setErrorEnum(test.fixtures.complex_struct.MyEnum errorEnum) {
             this.errorEnum = errorEnum;
             return this;
         }
+        
+        public test.fixtures.complex_struct.MyEnum getErrorEnum() { return errorEnum; }
+    
         private test.fixtures.complex_struct.MyUnion unionError;
         @ThriftField(value=4, name="unionError", requiredness=Requiredness.OPTIONAL)
         public Builder setUnionError(test.fixtures.complex_struct.MyUnion unionError) {
             this.unionError = unionError;
             return this;
         }
+        
+        public test.fixtures.complex_struct.MyUnion getUnionError() { return unionError; }
+    
         private test.fixtures.complex_struct.MyStruct structError;
         @ThriftField(value=5, name="structError", requiredness=Requiredness.NONE)
         public Builder setStructError(test.fixtures.complex_struct.MyStruct structError) {
             this.structError = structError;
             return this;
         }
+        
+        public test.fixtures.complex_struct.MyStruct getStructError() { return structError; }
+    
         private it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap;
         @ThriftField(value=6, name="lsMap", requiredness=Requiredness.NONE)
         public Builder setLsMap(it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap) {
             this.lsMap = lsMap;
             return this;
         }
+        
+        public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
     
         public Builder() { }
         public Builder(ComplexException other) {

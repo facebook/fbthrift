@@ -53,24 +53,35 @@ public final class Foo {
             this.myInteger = myInteger;
             return this;
         }
+        
+        public int getMyInteger() { return myInteger; }
+    
         private String myString;
         @ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)
         public Builder setMyString(String myString) {
             this.myString = myString;
             return this;
         }
+        
+        public String getMyString() { return myString; }
+    
         private List<Boolean> myBools;
         @ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)
         public Builder setMyBools(List<Boolean> myBools) {
             this.myBools = myBools;
             return this;
         }
+        
+        public List<Boolean> getMyBools() { return myBools; }
+    
         private List<Integer> myNumbers;
         @ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)
         public Builder setMyNumbers(List<Integer> myNumbers) {
             this.myNumbers = myNumbers;
             return this;
         }
+        
+        public List<Integer> getMyNumbers() { return myNumbers; }
     
         public Builder() { }
         public Builder(Foo other) {

@@ -49,6 +49,8 @@ public final class Fiery extends java.lang.RuntimeException {
             this.message = message;
             return this;
         }
+        
+        public String getMessage() { return message; }
     
         public Builder() { }
         public Builder(Fiery other) {

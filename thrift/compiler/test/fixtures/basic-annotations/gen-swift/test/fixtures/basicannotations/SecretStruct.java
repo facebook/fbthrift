@@ -47,12 +47,17 @@ public final class SecretStruct {
             this.id = id;
             return this;
         }
+        
+        public long getId() { return id; }
+    
         private String password;
         @ThriftField(value=2, name="password", requiredness=Requiredness.NONE)
         public Builder setPassword(String password) {
             this.password = password;
             return this;
         }
+        
+        public String getPassword() { return password; }
     
         public Builder() { }
         public Builder(SecretStruct other) {

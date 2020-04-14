@@ -53,24 +53,35 @@ public final class MyStruct {
             this.major = major;
             return this;
         }
+        
+        public long getMajor() { return major; }
+    
         private String _package;
         @ThriftField(value=2, name="package", requiredness=Requiredness.NONE)
         public Builder setPackage(String _package) {
             this._package = _package;
             return this;
         }
+        
+        public String getPackage() { return _package; }
+    
         private String annotationWithQuote;
         @ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE)
         public Builder setAnnotationWithQuote(String annotationWithQuote) {
             this.annotationWithQuote = annotationWithQuote;
             return this;
         }
+        
+        public String getAnnotationWithQuote() { return annotationWithQuote; }
+    
         private String class_;
         @ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)
         public Builder setClass_(String class_) {
             this.class_ = class_;
             return this;
         }
+        
+        public String getClass_() { return class_; }
     
         public Builder() { }
         public Builder(MyStruct other) {

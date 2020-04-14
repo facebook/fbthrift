@@ -35,12 +35,17 @@ public final class MyStruct2 {
             this.myStruct1 = myStruct1;
             return this;
         }
+        
+        public test.fixtures.basic_swift_bean.MyStruct1 getMyStruct1() { return myStruct1; }
+    
         private String myString;
         @ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)
         public Builder setMyString(String myString) {
             this.myString = myString;
             return this;
         }
+        
+        public String getMyString() { return myString; }
     
         public Builder() { }
         public Builder(MyStruct2 other) {

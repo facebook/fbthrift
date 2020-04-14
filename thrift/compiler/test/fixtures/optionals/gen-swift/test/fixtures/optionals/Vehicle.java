@@ -56,30 +56,44 @@ public final class Vehicle {
             this.color = color;
             return this;
         }
+        
+        public test.fixtures.optionals.Color getColor() { return color; }
+    
         private String licensePlate;
         @ThriftField(value=2, name="licensePlate", requiredness=Requiredness.OPTIONAL)
         public Builder setLicensePlate(String licensePlate) {
             this.licensePlate = licensePlate;
             return this;
         }
+        
+        public String getLicensePlate() { return licensePlate; }
+    
         private String description;
         @ThriftField(value=3, name="description", requiredness=Requiredness.OPTIONAL)
         public Builder setDescription(String description) {
             this.description = description;
             return this;
         }
+        
+        public String getDescription() { return description; }
+    
         private String name;
         @ThriftField(value=4, name="name", requiredness=Requiredness.OPTIONAL)
         public Builder setName(String name) {
             this.name = name;
             return this;
         }
+        
+        public String getName() { return name; }
+    
         private Boolean hasAC;
         @ThriftField(value=5, name="hasAC", requiredness=Requiredness.OPTIONAL)
         public Builder setHasAC(Boolean hasAC) {
             this.hasAC = hasAC;
             return this;
         }
+        
+        public Boolean isHasAC() { return hasAC; }
     
         public Builder() { }
         public Builder(Vehicle other) {

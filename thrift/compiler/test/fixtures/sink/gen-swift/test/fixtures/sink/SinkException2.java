@@ -49,6 +49,8 @@ public final class SinkException2 extends java.lang.Exception {
             this.reason = reason;
             return this;
         }
+        
+        public long getReason() { return reason; }
     
         public Builder() { }
         public Builder(SinkException2 other) {

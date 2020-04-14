@@ -47,12 +47,17 @@ public final class Struct {
             this.first = first;
             return this;
         }
+        
+        public test.fixtures.module0.Struct getFirst() { return first; }
+    
         private test.fixtures.module1.Struct second;
         @ThriftField(value=2, name="second", requiredness=Requiredness.NONE)
         public Builder setSecond(test.fixtures.module1.Struct second) {
             this.second = second;
             return this;
         }
+        
+        public test.fixtures.module1.Struct getSecond() { return second; }
     
         public Builder() { }
         public Builder(Struct other) {

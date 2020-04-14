@@ -49,6 +49,8 @@ public final class Serious extends java.lang.RuntimeException {
             this.sonnet = sonnet;
             return this;
         }
+        
+        public String getSonnet() { return sonnet; }
     
         public Builder() { }
         public Builder(Serious other) {

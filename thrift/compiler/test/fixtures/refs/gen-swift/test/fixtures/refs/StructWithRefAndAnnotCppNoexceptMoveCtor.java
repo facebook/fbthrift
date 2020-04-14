@@ -44,6 +44,8 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
             this.defField = defField;
             return this;
         }
+        
+        public test.fixtures.refs.Empty getDefField() { return defField; }
     
         public Builder() { }
         public Builder(StructWithRefAndAnnotCppNoexceptMoveCtor other) {

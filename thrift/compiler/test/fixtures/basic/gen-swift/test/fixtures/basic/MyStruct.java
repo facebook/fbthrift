@@ -53,24 +53,35 @@ public final class MyStruct {
             this.myIntField = myIntField;
             return this;
         }
+        
+        public long getMyIntField() { return myIntField; }
+    
         private String myStringField;
         @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
         public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
         }
+        
+        public String getMyStringField() { return myStringField; }
+    
         private test.fixtures.basic.MyDataItem myDataField;
         @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
         public Builder setMyDataField(test.fixtures.basic.MyDataItem myDataField) {
             this.myDataField = myDataField;
             return this;
         }
+        
+        public test.fixtures.basic.MyDataItem getMyDataField() { return myDataField; }
+    
         private test.fixtures.basic.MyEnum myEnum;
         @ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
         public Builder setMyEnum(test.fixtures.basic.MyEnum myEnum) {
             this.myEnum = myEnum;
             return this;
         }
+        
+        public test.fixtures.basic.MyEnum getMyEnum() { return myEnum; }
     
         public Builder() { }
         public Builder(MyStruct other) {

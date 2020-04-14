@@ -68,54 +68,80 @@ public final class MyStructTypeDef {
             this.myLongField = myLongField;
             return this;
         }
+        
+        public long getMyLongField() { return myLongField; }
+    
         private long myLongTypeDef;
         @ThriftField(value=2, name="myLongTypeDef", requiredness=Requiredness.NONE)
         public Builder setMyLongTypeDef(long myLongTypeDef) {
             this.myLongTypeDef = myLongTypeDef;
             return this;
         }
+        
+        public long getMyLongTypeDef() { return myLongTypeDef; }
+    
         private String myStringField;
         @ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)
         public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
         }
+        
+        public String getMyStringField() { return myStringField; }
+    
         private String myStringTypedef;
         @ThriftField(value=4, name="myStringTypedef", requiredness=Requiredness.NONE)
         public Builder setMyStringTypedef(String myStringTypedef) {
             this.myStringTypedef = myStringTypedef;
             return this;
         }
+        
+        public String getMyStringTypedef() { return myStringTypedef; }
+    
         private Map<Short, String> myMapField;
         @ThriftField(value=5, name="myMapField", requiredness=Requiredness.NONE)
         public Builder setMyMapField(Map<Short, String> myMapField) {
             this.myMapField = myMapField;
             return this;
         }
+        
+        public Map<Short, String> getMyMapField() { return myMapField; }
+    
         private Map<Short, String> myMapTypedef;
         @ThriftField(value=6, name="myMapTypedef", requiredness=Requiredness.NONE)
         public Builder setMyMapTypedef(Map<Short, String> myMapTypedef) {
             this.myMapTypedef = myMapTypedef;
             return this;
         }
+        
+        public Map<Short, String> getMyMapTypedef() { return myMapTypedef; }
+    
         private List<Double> myListField;
         @ThriftField(value=7, name="myListField", requiredness=Requiredness.NONE)
         public Builder setMyListField(List<Double> myListField) {
             this.myListField = myListField;
             return this;
         }
+        
+        public List<Double> getMyListField() { return myListField; }
+    
         private List<Double> myListTypedef;
         @ThriftField(value=8, name="myListTypedef", requiredness=Requiredness.NONE)
         public Builder setMyListTypedef(List<Double> myListTypedef) {
             this.myListTypedef = myListTypedef;
             return this;
         }
+        
+        public List<Double> getMyListTypedef() { return myListTypedef; }
+    
         private Map<Short, List<List<Double>>> myMapListOfTypeDef;
         @ThriftField(value=9, name="myMapListOfTypeDef", requiredness=Requiredness.NONE)
         public Builder setMyMapListOfTypeDef(Map<Short, List<List<Double>>> myMapListOfTypeDef) {
             this.myMapListOfTypeDef = myMapListOfTypeDef;
             return this;
         }
+        
+        public Map<Short, List<List<Double>>> getMyMapListOfTypeDef() { return myMapListOfTypeDef; }
     
         public Builder() { }
         public Builder(MyStructTypeDef other) {

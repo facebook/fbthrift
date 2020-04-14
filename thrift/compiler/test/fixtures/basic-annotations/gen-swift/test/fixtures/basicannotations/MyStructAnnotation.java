@@ -53,24 +53,35 @@ public final class MyStructAnnotation {
             this.count = count;
             return this;
         }
+        
+        public long getCount() { return count; }
+    
         private String name;
         @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
         public Builder setName(String name) {
             this.name = name;
             return this;
         }
+        
+        public String getName() { return name; }
+    
         private String extra;
         @ThriftField(value=3, name="extra", requiredness=Requiredness.OPTIONAL)
         public Builder setExtra(String extra) {
             this.extra = extra;
             return this;
         }
+        
+        public String getExtra() { return extra; }
+    
         private test.fixtures.basicannotations.MyStructNestedAnnotation nest;
         @ThriftField(value=4, name="nest", requiredness=Requiredness.NONE)
         public Builder setNest(test.fixtures.basicannotations.MyStructNestedAnnotation nest) {
             this.nest = nest;
             return this;
         }
+        
+        public test.fixtures.basicannotations.MyStructNestedAnnotation getNest() { return nest; }
     
         public Builder() { }
         public Builder(MyStructAnnotation other) {

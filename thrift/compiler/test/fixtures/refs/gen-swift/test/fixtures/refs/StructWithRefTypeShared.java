@@ -50,18 +50,26 @@ public final class StructWithRefTypeShared {
             this.defField = defField;
             return this;
         }
+        
+        public test.fixtures.refs.Empty getDefField() { return defField; }
+    
         private test.fixtures.refs.Empty optField;
         @ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL)
         public Builder setOptField(test.fixtures.refs.Empty optField) {
             this.optField = optField;
             return this;
         }
+        
+        public test.fixtures.refs.Empty getOptField() { return optField; }
+    
         private test.fixtures.refs.Empty reqField;
         @ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED)
         public Builder setReqField(test.fixtures.refs.Empty reqField) {
             this.reqField = reqField;
             return this;
         }
+        
+        public test.fixtures.refs.Empty getReqField() { return reqField; }
     
         public Builder() { }
         public Builder(StructWithRefTypeShared other) {

@@ -53,24 +53,35 @@ public final class MyStructFloatFieldThrowExp {
             this.myLongField = myLongField;
             return this;
         }
+        
+        public long getMyLongField() { return myLongField; }
+    
         private byte myByteField;
         @ThriftField(value=2, name="MyByteField", requiredness=Requiredness.NONE)
         public Builder setMyByteField(byte myByteField) {
             this.myByteField = myByteField;
             return this;
         }
+        
+        public byte getMyByteField() { return myByteField; }
+    
         private String myStringField;
         @ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)
         public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
         }
+        
+        public String getMyStringField() { return myStringField; }
+    
         private float myFloatField;
         @ThriftField(value=4, name="myFloatField", requiredness=Requiredness.NONE)
         public Builder setMyFloatField(float myFloatField) {
             this.myFloatField = myFloatField;
             return this;
         }
+        
+        public float getMyFloatField() { return myFloatField; }
     
         public Builder() { }
         public Builder(MyStructFloatFieldThrowExp other) {
