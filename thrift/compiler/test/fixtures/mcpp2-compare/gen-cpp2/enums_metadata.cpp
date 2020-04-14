@@ -27,7 +27,7 @@ void EnumMetadata<::facebook::ns::qwerty::AnEnumA>::gen(ThriftMetadata& metadata
   enum_metadata.name = "enums.AnEnumA";
   using EnumTraits = TEnumTraits<::facebook::ns::qwerty::AnEnumA>;
   for (std::size_t i = 0; i < EnumTraits::size; ++i) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
 void EnumMetadata<::facebook::ns::qwerty::AnEnumB>::gen(ThriftMetadata& metadata) {
@@ -39,7 +39,7 @@ void EnumMetadata<::facebook::ns::qwerty::AnEnumB>::gen(ThriftMetadata& metadata
   enum_metadata.name = "enums.AnEnumB";
   using EnumTraits = TEnumTraits<::facebook::ns::qwerty::AnEnumB>;
   for (std::size_t i = 0; i < EnumTraits::size; ++i) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
 void EnumMetadata<::facebook::ns::qwerty::AnEnumC>::gen(ThriftMetadata& metadata) {
@@ -51,7 +51,7 @@ void EnumMetadata<::facebook::ns::qwerty::AnEnumC>::gen(ThriftMetadata& metadata
   enum_metadata.name = "enums.AnEnumC";
   using EnumTraits = TEnumTraits<::facebook::ns::qwerty::AnEnumC>;
   for (std::size_t i = 0; i < EnumTraits::size; ++i) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
 void EnumMetadata<::facebook::ns::qwerty::AnEnumD>::gen(ThriftMetadata& metadata) {
@@ -63,7 +63,7 @@ void EnumMetadata<::facebook::ns::qwerty::AnEnumD>::gen(ThriftMetadata& metadata
   enum_metadata.name = "enums.AnEnumD";
   using EnumTraits = TEnumTraits<::facebook::ns::qwerty::AnEnumD>;
   for (std::size_t i = 0; i < EnumTraits::size; ++i) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
 void EnumMetadata<::facebook::ns::qwerty::AnEnumE>::gen(ThriftMetadata& metadata) {
@@ -75,7 +75,7 @@ void EnumMetadata<::facebook::ns::qwerty::AnEnumE>::gen(ThriftMetadata& metadata
   enum_metadata.name = "enums.AnEnumE";
   using EnumTraits = TEnumTraits<::facebook::ns::qwerty::AnEnumE>;
   for (std::size_t i = 0; i < EnumTraits::size; ++i) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
 

@@ -27,7 +27,7 @@ void EnumMetadata<::cpp2::TypedEnum>::gen(ThriftMetadata& metadata) {
   enum_metadata.name = "module.TypedEnum";
   using EnumTraits = TEnumTraits<::cpp2::TypedEnum>;
   for (std::size_t i = 0; i < EnumTraits::size; ++i) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
 

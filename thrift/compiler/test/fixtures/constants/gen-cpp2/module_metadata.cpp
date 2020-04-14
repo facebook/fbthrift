@@ -27,7 +27,7 @@ void EnumMetadata<::cpp2::EmptyEnum>::gen(ThriftMetadata& metadata) {
   enum_metadata.name = "module.EmptyEnum";
   using EnumTraits = TEnumTraits<::cpp2::EmptyEnum>;
   for (std::size_t i = 0; i < EnumTraits::size; ++i) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
 void EnumMetadata<::cpp2::City>::gen(ThriftMetadata& metadata) {
@@ -39,7 +39,7 @@ void EnumMetadata<::cpp2::City>::gen(ThriftMetadata& metadata) {
   enum_metadata.name = "module.City";
   using EnumTraits = TEnumTraits<::cpp2::City>;
   for (std::size_t i = 0; i < EnumTraits::size; ++i) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
 void EnumMetadata<::cpp2::Company>::gen(ThriftMetadata& metadata) {
@@ -51,7 +51,7 @@ void EnumMetadata<::cpp2::Company>::gen(ThriftMetadata& metadata) {
   enum_metadata.name = "module.Company";
   using EnumTraits = TEnumTraits<::cpp2::Company>;
   for (std::size_t i = 0; i < EnumTraits::size; ++i) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i]);
+    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
 
