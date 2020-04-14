@@ -106,9 +106,9 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
 
       // Getting the current time is moderately expensive,
       // so only get the time if we actually need it.
-      SystemClockTimePoint startTime;
+      std::chrono::steady_clock::time_point startTime;
       if (task->canExpire() || task->statsEnabled()) {
-        startTime = SystemClock::now();
+        startTime = std::chrono::steady_clock::now();
 
         // Codel auto-expire time algorithm
         auto delay = std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -150,7 +150,7 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
       }
 
       if (task->statsEnabled()) {
-        auto endTime = SystemClock::now();
+        auto endTime = std::chrono::steady_clock::now();
         manager_->reportTaskStats(*task, startTime, endTime);
       }
     }
@@ -528,8 +528,8 @@ void ThreadManager::ImplT<SemType>::getStats(
 template <typename SemType>
 void ThreadManager::ImplT<SemType>::reportTaskStats(
     const Task& task,
-    const SystemClockTimePoint& workBegin,
-    const SystemClockTimePoint& workEnd) {
+    const std::chrono::steady_clock::time_point& workBegin,
+    const std::chrono::steady_clock::time_point& workEnd) {
   auto queueBegin = task.getQueueBeginTime();
   auto waitTimeUs = std::chrono::duration_cast<std::chrono::microseconds>(
       workBegin - queueBegin);

@@ -245,9 +245,9 @@ class ThreadManager : public virtual folly::Executor {
 
   struct RunStats {
     const std::string& threadPoolName;
-    SystemClockTimePoint queueBegin;
-    SystemClockTimePoint workBegin;
-    SystemClockTimePoint workEnd;
+    std::chrono::steady_clock::time_point queueBegin;
+    std::chrono::steady_clock::time_point workBegin;
+    std::chrono::steady_clock::time_point workEnd;
   };
 
   class Observer {

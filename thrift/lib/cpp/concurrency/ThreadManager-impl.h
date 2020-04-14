@@ -55,11 +55,11 @@ class ThreadManager::Task {
       shared_ptr<Runnable> runnable,
       const std::chrono::milliseconds& expiration)
       : runnable_(std::move(runnable)),
-        queueBeginTime_(SystemClock::now()),
+        queueBeginTime_(std::chrono::steady_clock::now()),
         expireTime_(
             expiration > std::chrono::milliseconds::zero()
                 ? queueBeginTime_ + expiration
-                : SystemClockTimePoint()),
+                : std::chrono::steady_clock::time_point()),
         context_(folly::RequestContext::saveContext()) {}
 
   ~Task() {}
@@ -73,20 +73,20 @@ class ThreadManager::Task {
     return runnable_;
   }
 
-  SystemClockTimePoint getExpireTime() const {
+  std::chrono::steady_clock::time_point getExpireTime() const {
     return expireTime_;
   }
 
-  SystemClockTimePoint getQueueBeginTime() const {
+  std::chrono::steady_clock::time_point getQueueBeginTime() const {
     return queueBeginTime_;
   }
 
   bool canExpire() const {
-    return expireTime_ != SystemClockTimePoint();
+    return expireTime_ != std::chrono::steady_clock::time_point();
   }
 
   bool statsEnabled() const {
-    return queueBeginTime_ != SystemClockTimePoint();
+    return queueBeginTime_ != std::chrono::steady_clock::time_point();
   }
 
   const std::shared_ptr<folly::RequestContext>& getContext() const {
@@ -95,8 +95,8 @@ class ThreadManager::Task {
 
  private:
   shared_ptr<Runnable> runnable_;
-  SystemClockTimePoint queueBeginTime_;
-  SystemClockTimePoint expireTime_;
+  std::chrono::steady_clock::time_point queueBeginTime_;
+  std::chrono::steady_clock::time_point expireTime_;
   std::shared_ptr<folly::RequestContext> context_;
 };
 
@@ -230,8 +230,8 @@ class ThreadManager::ImplT : public ThreadManager,
   void workerExiting(Worker<SemType>* worker);
   void reportTaskStats(
       const Task& task,
-      const SystemClockTimePoint& workBegin,
-      const SystemClockTimePoint& workEnd);
+      const std::chrono::steady_clock::time_point& workBegin,
+      const std::chrono::steady_clock::time_point& workEnd);
   std::unique_ptr<Task> waitOnTask();
   void onTaskExpired(const Task& task);
 
