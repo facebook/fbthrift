@@ -200,7 +200,13 @@ TEST(TestWithFollyOptionals, APITests) {
                 decltype(obj.int64Opt),
                 apache::thrift::DeprecatedOptionalField<int64_t>>);
   static_assert(std::is_same_v<
-                decltype(castToFolly(obj.int64Opt)),
+                decltype(copyToFollyOptional(obj.int64Opt)),
+                folly::Optional<int64_t>>);
+  static_assert(std::is_same_v<
+                decltype(moveToFollyOptional(obj.int64Opt)),
+                folly::Optional<int64_t>>);
+  static_assert(std::is_same_v<
+                decltype(moveToFollyOptional(std::move(obj.int64Opt))),
                 folly::Optional<int64_t>>);
 
   static_assert(!std::is_constructible_v<

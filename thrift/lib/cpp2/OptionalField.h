@@ -309,6 +309,27 @@ folly::Optional<T> castToFolly(DeprecatedOptionalField<T>&& t) {
 }
 
 template <class T>
+folly::Optional<T> copyToFollyOptional(const DeprecatedOptionalField<T>& t) {
+  if (t) {
+    return *t;
+  }
+  return {};
+}
+
+template <class T>
+folly::Optional<T> moveToFollyOptional(DeprecatedOptionalField<T>&& t) {
+  if (t) {
+    return std::move(*t);
+  }
+  return {};
+}
+
+template <class T>
+folly::Optional<T> moveToFollyOptional(DeprecatedOptionalField<T>& t) {
+  return moveToFollyOptional(std::move(t));
+}
+
+template <class T>
 void fromFollyOptional(
     DeprecatedOptionalField<T>& lhs,
     const folly::Optional<T>& rhs) {
@@ -372,6 +393,36 @@ template <class T>
     return std::move(*t);
   }
   return {};
+}
+
+template <class T>
+[[deprecated(
+    "Use std::optional with optional_field_ref::to_optional() instead")]] folly::
+    Optional<std::remove_const_t<T>>
+    copyToFollyOptional(optional_field_ref<T&> t) {
+  if (t) {
+    return *t;
+  }
+  return {};
+}
+
+template <class T>
+[[deprecated(
+    "Use std::optional with optional_field_ref::to_optional() instead")]] folly::
+    Optional<std::remove_const_t<T>>
+    moveToFollyOptional(optional_field_ref<T&&> t) {
+  if (t) {
+    return std::move(*t);
+  }
+  return {};
+}
+
+template <class T>
+[[deprecated(
+    "Use std::optional with optional_field_ref::to_optional() instead")]] folly::
+    Optional<T>
+    moveToFollyOptional(optional_field_ref<T&> t) {
+  return moveToFollyOptional(static_cast<optional_field_ref<T&>>(t));
 }
 
 template <class T>
