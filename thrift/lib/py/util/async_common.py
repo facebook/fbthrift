@@ -380,8 +380,8 @@ class ThriftHeaderClientProtocolBase(FramedProtocol):
         try:
             method(iprot, mtype, seqid)
         except (
-            asyncio.futures.InvalidStateError,
             asyncio.CancelledError,
+            asyncio.InvalidStateError,
         ) as e:
             logger.warning("Method %r cancelled: %s", fname, str(e))
 
