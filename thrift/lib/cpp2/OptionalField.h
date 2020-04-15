@@ -422,7 +422,10 @@ template <class T>
     "Use std::optional with optional_field_ref::to_optional() instead")]] folly::
     Optional<T>
     moveToFollyOptional(optional_field_ref<T&> t) {
-  return moveToFollyOptional(static_cast<optional_field_ref<T&>>(t));
+  if (t) {
+    return std::move(*t);
+  }
+  return {};
 }
 
 template <class T>
