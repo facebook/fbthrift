@@ -413,7 +413,6 @@ void ThriftRocketServerHandler::handleRequestOverloadedServer(
     ThriftRequestCoreUniquePtr request) {
   if (auto* observer = serverConfigs_->getObserver()) {
     observer->serverOverloaded();
-    observer->taskKilled();
   }
   request->sendErrorWrapped(
       folly::make_exception_wrapper<TApplicationException>(

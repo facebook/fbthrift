@@ -96,6 +96,7 @@ class TransportCompatibilityTest {
   void TestRequestResponse_Header_ExpectedException();
   void TestRequestResponse_Header_UnexpectedException();
   void TestRequestResponse_Saturation();
+  void TestRequestResponse_IsOverloaded();
   void TestRequestResponse_Connection_CloseNow();
   void TestRequestResponse_ServerQueueTimeout();
   void TestRequestResponse_ResponseSizeTooBig();

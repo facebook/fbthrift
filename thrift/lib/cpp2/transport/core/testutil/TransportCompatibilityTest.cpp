@@ -619,6 +619,25 @@ void TransportCompatibilityTest::TestRequestResponse_Saturation() {
   });
 }
 
+void TransportCompatibilityTest::TestRequestResponse_IsOverloaded() {
+  // make sure server is overloaded
+  server_->getServer()->setIsOverloaded(
+      [](const transport::THeader::StringToStringMap*, const std::string*) {
+        return true;
+      });
+  connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
+    try {
+      RpcOptions rpcOptions;
+      auto resultAndHeaders = client->header_future_headers(rpcOptions).get();
+      EXPECT_TRUE(false) << "header_future_headers should have thrown";
+    } catch (TApplicationException& ex) {
+      EXPECT_EQ(TApplicationException::LOADSHEDDING, ex.getType());
+      EXPECT_EQ(1, server_->observer_->serverOverloaded_);
+      EXPECT_EQ(0, server_->observer_->taskKilled_);
+    }
+  });
+}
+
 void TransportCompatibilityTest::TestRequestResponse_Connection_CloseNow() {
   connectToServer([](std::unique_ptr<TestServiceAsyncClient> client) {
     // It should not reach to server: no EXPECT_CALL for add_(3)

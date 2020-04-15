@@ -143,6 +143,10 @@ TEST_F(RSCompatibilityTest, RequestResponse_Saturation) {
   });
 }
 
+TEST_F(RSCompatibilityTest, RequestResponse_IsOverloaded) {
+  compatibilityTest_->TestRequestResponse_IsOverloaded();
+}
+
 TEST_F(RSCompatibilityTest, RequestResponse_Connection_CloseNow) {
   compatibilityTest_->TestRequestResponse_Connection_CloseNow();
 }
