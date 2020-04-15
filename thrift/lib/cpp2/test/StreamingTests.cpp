@@ -17,6 +17,7 @@
 #include <folly/portability/GTest.h>
 
 #include <folly/Portability.h>
+#include <folly/executors/GlobalExecutor.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp2/async/ServerStream.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DiffTypesStreamingService.h>
@@ -67,84 +68,33 @@ TEST(StreamingTest, DifferentStreamClientCompiles) {
 }
 
 TEST(StreamingTest, StreamPublisherCancellation) {
-  class SlowExecutor : public folly::SequencedExecutor,
-                       public folly::DefaultKeepAliveExecutor {
-   public:
-    ~SlowExecutor() override {
-      joinKeepAlive();
-    }
-
-    void add(folly::Func func) override {
-      impl_.add([f = std::move(func)]() mutable {
-        /* sleep override */ std::this_thread::sleep_for(
-            std::chrono::milliseconds{5});
-        f();
-      });
-    }
-
-   private:
-    folly::ScopedEventBaseThread impl_;
-  };
-  SlowExecutor executor;
-
-  auto streamAndPublisher =
-      apache::thrift::ServerStream<int>::createPublisher();
+  std::atomic<bool> stop{false};
+  auto streamAndPublisher = apache::thrift::ServerStream<int>::createPublisher(
+      [&]() { stop = true; });
 
   int count = 0;
-
   auto subscription =
       std::move(streamAndPublisher.first)
           .toClientStream()
-          .subscribeExTry(
-              folly::getKeepAliveToken(executor), [&count](auto value) mutable {
-                if (value.hasValue()) {
-                  EXPECT_EQ(count++, *value);
-                }
-              });
+          .subscribeExTry(folly::getEventBase(), [&count](auto value) mutable {
+            if (value.hasValue()) {
+              EXPECT_EQ(count++, *value);
+            }
+          });
 
-  std::atomic<bool> stop{false};
   std::thread publisherThread([&] {
     for (int i = 0; !stop; ++i) {
       streamAndPublisher.second.next(i);
-      /* sleep override */ std::this_thread::sleep_for(
-          std::chrono::milliseconds{1});
     }
   });
 
-  /* sleep override */ std::this_thread::sleep_for(
-      std::chrono::milliseconds{10});
   subscription.cancel();
-  /* sleep override */ std::this_thread::sleep_for(
-      std::chrono::milliseconds{100});
-  stop = true;
 
   std::move(subscription).join();
-  EXPECT_GT(count, 0);
-
   publisherThread.join();
 }
 
 TEST(StreamingTest, StreamPublisherNoSubscription) {
-  class SlowExecutor : public folly::SequencedExecutor,
-                       public folly::DefaultKeepAliveExecutor {
-   public:
-    ~SlowExecutor() override {
-      joinKeepAlive();
-    }
-
-    void add(folly::Func func) override {
-      impl_.add([f = std::move(func)]() mutable {
-        /* sleep override */ std::this_thread::sleep_for(
-            std::chrono::milliseconds{5});
-        f();
-      });
-    }
-
-   private:
-    folly::ScopedEventBaseThread impl_;
-  };
-  SlowExecutor executor;
-
   auto streamAndPublisher =
       apache::thrift::ServerStream<int>::createPublisher();
   std::exchange(
