@@ -15,7 +15,6 @@
  */
 
 #include <thrift/lib/cpp2/async/RequestChannel.h>
-#include <thrift/lib/cpp2/async/StreamCallbacks.h>
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -23,116 +22,107 @@
 namespace apache {
 namespace thrift {
 
-void RequestChannel::sendRequestAsync(
+template <typename F>
+static void maybeRunInEb(folly::EventBase* eb, F func) {
+  if (!eb || eb->isInEventBaseThread()) {
+    func();
+  } else {
+    eb->runInEventBaseThread(std::forward<F>(func));
+  }
+}
+
+template <>
+void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
     const apache::thrift::RpcOptions& rpcOptions,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
-    RequestClientCallback::Ptr callback,
-    RpcKind kind) {
-  auto eb = getEventBase();
-  if (!eb || eb->isInEventBaseThread()) {
-    switch (kind) {
-      case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
+    RequestClientCallback::Ptr callback) {
+  maybeRunInEb(
+      getEventBase(),
+      [this,
+       rpcOptions,
+       methodNameStr = std::string(methodName),
+       request = std::move(request),
+       header = std::move(header),
+       callback = std::move(callback)]() mutable {
         sendRequestNoResponse(
             rpcOptions,
-            methodName,
+            methodNameStr.c_str(),
             std::move(request),
             std::move(header),
             std::move(callback));
-        break;
-      case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+      });
+}
+template <>
+void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
+    const apache::thrift::RpcOptions& rpcOptions,
+    folly::StringPiece methodName,
+    SerializedRequest&& request,
+    std::shared_ptr<apache::thrift::transport::THeader> header,
+    RequestClientCallback::Ptr callback) {
+  maybeRunInEb(
+      getEventBase(),
+      [this,
+       rpcOptions,
+       methodNameStr = std::string(methodName),
+       request = std::move(request),
+       header = std::move(header),
+       callback = std::move(callback)]() mutable {
         sendRequestResponse(
             rpcOptions,
-            methodName,
+            methodNameStr.c_str(),
             std::move(request),
             std::move(header),
             std::move(callback));
-        break;
-      case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
+      });
+}
+template <>
+void RequestChannel::sendRequestAsync<
+    RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE>(
+    const apache::thrift::RpcOptions& rpcOptions,
+    folly::StringPiece methodName,
+    SerializedRequest&& request,
+    std::shared_ptr<apache::thrift::transport::THeader> header,
+    StreamClientCallback* callback) {
+  maybeRunInEb(
+      getEventBase(),
+      [this,
+       rpcOptions,
+       methodNameStr = std::string(methodName),
+       request = std::move(request),
+       header = std::move(header),
+       callback = std::move(callback)]() mutable {
         sendRequestStream(
             rpcOptions,
-            methodName,
+            methodNameStr.c_str(),
             std::move(request),
             std::move(header),
-            createStreamClientCallback(
-                std::move(callback), rpcOptions.getChunkBufferSize()));
-        break;
-      default:
-        folly::assume_unreachable();
-        break;
-    }
-  } else {
-    eb->runInEventBaseThread([this,
-                              rpcOptions,
-                              methodNameStr = std::string(methodName),
-                              request = std::move(request),
-                              header = std::move(header),
-                              callback = std::move(callback),
-                              kind]() mutable {
-      switch (kind) {
-        case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
-          sendRequestNoResponse(
-              rpcOptions,
-              methodNameStr.c_str(),
-              std::move(request),
-              std::move(header),
-              std::move(callback));
-          break;
-        case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
-          sendRequestResponse(
-              rpcOptions,
-              methodNameStr.c_str(),
-              std::move(request),
-              std::move(header),
-              std::move(callback));
-          break;
-        case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
-          sendRequestStream(
-              rpcOptions,
-              methodNameStr.c_str(),
-              std::move(request),
-              std::move(header),
-              createStreamClientCallback(
-                  std::move(callback), rpcOptions.getChunkBufferSize()));
-          break;
-        default:
-          folly::assume_unreachable();
-          break;
-      }
-    });
-  }
+            callback);
+      });
 }
-
-void RequestChannel::sendRequestAsync(
+template <>
+void RequestChannel::sendRequestAsync<RpcKind::SINK>(
     const apache::thrift::RpcOptions& rpcOptions,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     SinkClientCallback* callback) {
-  auto eb = getEventBase();
-  if (!eb || eb->inRunningEventBaseThread()) {
-    sendRequestSink(
-        rpcOptions,
-        methodName,
-        std::move(request),
-        std::move(header),
-        std::move(callback));
-  } else {
-    eb->runInEventBaseThread([this,
-                              rpcOptions,
-                              methodNameStr = std::string(methodName),
-                              request = std::move(request),
-                              header = std::move(header),
-                              callback = std::move(callback)]() mutable {
-      sendRequestSink(
-          rpcOptions,
-          methodNameStr.c_str(),
-          std::move(request),
-          std::move(header),
-          std::move(callback));
-    });
-  }
+  maybeRunInEb(
+      getEventBase(),
+      [this,
+       rpcOptions,
+       methodNameStr = std::string(methodName),
+       request = std::move(request),
+       header = std::move(header),
+       callback = std::move(callback)]() mutable {
+        sendRequestSink(
+            rpcOptions,
+            methodNameStr.c_str(),
+            std::move(request),
+            std::move(header),
+            callback);
+      });
 }
 
 void RequestChannel::sendRequestResponse(

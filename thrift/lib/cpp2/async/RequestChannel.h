@@ -53,6 +53,21 @@ namespace thrift {
 class StreamClientCallback;
 class SinkClientCallback;
 
+namespace detail {
+template <RpcKind Kind>
+struct RequestClientCallbackType {
+  using Ptr = RequestClientCallback::Ptr;
+};
+template <>
+struct RequestClientCallbackType<RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE> {
+  using Ptr = StreamClientCallback*;
+};
+template <>
+struct RequestClientCallbackType<RpcKind::SINK> {
+  using Ptr = SinkClientCallback*;
+};
+} // namespace detail
+
 /**
  * RequestChannel defines an asynchronous API for request-based I/O.
  */
@@ -69,20 +84,14 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    *
    * cb must not be null.
    */
+  template <RpcKind Kind>
   void sendRequestAsync(
       const apache::thrift::RpcOptions&,
       folly::StringPiece methodName,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
-      RequestClientCallback::Ptr,
-      RpcKind kind);
+      typename detail::RequestClientCallbackType<Kind>::Ptr) = delete;
 
-  void sendRequestAsync(
-      const apache::thrift::RpcOptions&,
-      folly::StringPiece methodName,
-      SerializedRequest&&,
-      std::shared_ptr<apache::thrift::transport::THeader>,
-      SinkClientCallback*);
   /**
    * ReplyCallback will be invoked when the reply to this request is
    * received.  TRequestChannel is responsible for associating requests with
@@ -149,6 +158,36 @@ class RequestChannel : virtual public folly::DelayedDestruction {
 
   virtual uint16_t getProtocolId() = 0;
 };
+
+template <>
+void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
+    const apache::thrift::RpcOptions&,
+    folly::StringPiece methodName,
+    SerializedRequest&&,
+    std::shared_ptr<apache::thrift::transport::THeader>,
+    RequestClientCallback::Ptr);
+template <>
+void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
+    const apache::thrift::RpcOptions&,
+    folly::StringPiece methodName,
+    SerializedRequest&&,
+    std::shared_ptr<apache::thrift::transport::THeader>,
+    RequestClientCallback::Ptr);
+template <>
+void RequestChannel::sendRequestAsync<
+    RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE>(
+    const apache::thrift::RpcOptions&,
+    folly::StringPiece methodName,
+    SerializedRequest&&,
+    std::shared_ptr<apache::thrift::transport::THeader>,
+    StreamClientCallback*);
+template <>
+void RequestChannel::sendRequestAsync<RpcKind::SINK>(
+    const apache::thrift::RpcOptions&,
+    folly::StringPiece methodName,
+    SerializedRequest&&,
+    std::shared_ptr<apache::thrift::transport::THeader>,
+    SinkClientCallback*);
 
 template <bool oneWay>
 class ClientSyncCallback : public RequestClientCallback {
@@ -283,34 +322,11 @@ SerializedRequest preprocessSendT(
   });
 }
 
-template <class Protocol>
+template <RpcKind Kind, class Protocol>
 void clientSendT(
     Protocol* prot,
     const apache::thrift::RpcOptions& rpcOptions,
-    RequestClientCallback::Ptr callback,
-    apache::thrift::ContextStack& ctx,
-    std::shared_ptr<apache::thrift::transport::THeader> header,
-    RequestChannel* channel,
-    folly::StringPiece methodName,
-    folly::FunctionRef<void(Protocol*)> writefunc,
-    folly::FunctionRef<size_t(Protocol*)> sizefunc,
-    RpcKind kind) {
-  auto request = preprocessSendT(
-      prot, rpcOptions, ctx, *header, methodName, writefunc, sizefunc);
-  channel->sendRequestAsync(
-      rpcOptions,
-      methodName,
-      std::move(request),
-      std::move(header),
-      std::move(callback),
-      kind);
-}
-
-template <class Protocol>
-void clientSendT(
-    Protocol* prot,
-    const apache::thrift::RpcOptions& rpcOptions,
-    SinkClientCallback* callback,
+    typename detail::RequestClientCallbackType<Kind>::Ptr callback,
     apache::thrift::ContextStack& ctx,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestChannel* channel,
@@ -319,7 +335,8 @@ void clientSendT(
     folly::FunctionRef<size_t(Protocol*)> sizefunc) {
   auto request = preprocessSendT(
       prot, rpcOptions, ctx, *header, methodName, writefunc, sizefunc);
-  channel->sendRequestAsync(
+
+  channel->sendRequestAsync<Kind>(
       rpcOptions,
       methodName,
       std::move(request),
