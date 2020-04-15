@@ -143,7 +143,7 @@ class AsyncProcessor : public TProcessorBase {
       apache::thrift::protocol::PROTOCOL_TYPES protType,
       Cpp2RequestContext* context,
       folly::EventBase* eb,
-      apache::thrift::concurrency::ThreadManager* tm) {
+      apache::thrift::concurrency::ThreadManager* tm) final {
     if (context->getMessageBeginSize() > 0) {
       folly::IOBufQueue bufQueue;
       bufQueue.append(std::move(buf));

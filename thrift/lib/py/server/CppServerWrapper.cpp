@@ -250,14 +250,14 @@ class PythonAsyncProcessor : public AsyncProcessor {
 
   // Create a task and add it to thread manager's queue. Essentially the same
   // as GeneratedAsyncProcessor's processInThread method.
-  void process(
+  void processSerializedRequest(
       ResponseChannelRequest::UniquePtr req,
-      std::unique_ptr<folly::IOBuf> buf,
+      apache::thrift::SerializedRequest&& serializedRequest,
       apache::thrift::protocol::PROTOCOL_TYPES protType,
       Cpp2RequestContext* context,
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm) override {
-    auto fname = getMethodName(buf.get(), context->getHeader());
+    auto fname = context->getMethodName();
     auto priority = getMethodPriority(fname, context);
     bool oneway = isOnewayMethod(fname);
 
@@ -267,7 +267,13 @@ class PythonAsyncProcessor : public AsyncProcessor {
 
     tm->add(std::make_shared<apache::thrift::PriorityEventTask>(
         priority,
-        [=, buf = std::move(buf)](
+        [=,
+         buf = apache::thrift::LegacySerializedRequest(
+                   protType,
+                   context->getProtoSeqId(),
+                   context->getMethodName(),
+                   std::move(serializedRequest))
+                   .buffer](
             apache::thrift::ResponseChannelRequest::UniquePtr req_up) mutable {
           SCOPE_EXIT {
             eb->runInEventBaseThread(
@@ -394,20 +400,6 @@ class PythonAsyncProcessor : public AsyncProcessor {
         oneway));
   }
 
-  std::string getMethodName(const folly::IOBuf* buf, const THeader* header) {
-    auto protType = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
-        header->getProtocolId());
-    switch (protType) {
-      case apache::thrift::protocol::T_BINARY_PROTOCOL:
-        return getMethodName<apache::thrift::BinaryProtocolReader>(buf);
-      case apache::thrift::protocol::T_COMPACT_PROTOCOL:
-        return getMethodName<apache::thrift::CompactProtocolReader>(buf);
-      default:
-        LOG(ERROR) << "Invalid protType: " << folly::to_underlying(protType);
-        return "";
-    }
-  }
-
   /**
    * Get the priority of the request
    * Check the headers directly in C++ since noone seems to override that logic
@@ -442,22 +434,6 @@ class PythonAsyncProcessor : public AsyncProcessor {
   }
 
  private:
-  template <typename ProtocolReader>
-  std::string getMethodName(const folly::IOBuf* buf) {
-    std::string fname;
-    MessageType mtype;
-    int32_t protoSeqId = 0;
-    ProtocolReader iprot;
-    iprot.setInput(buf);
-    try {
-      iprot.readMessageBegin(fname, mtype, protoSeqId);
-      return fname;
-    } catch (const std::exception& ex) {
-      LOG(ERROR) << "received invalid message from client: " << ex.what();
-      return "";
-    }
-  }
-
   bool isOnewayMethod(std::string const& fname) {
     return onewayMethods_.find(fname) != onewayMethods_.end();
   }
