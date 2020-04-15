@@ -101,6 +101,9 @@ void RSRoutingHandler::handleConnection(
   auto compression = static_cast<FizzPeeker*>(worker->getFizzPeeker())
                          ->getNegotiatedParameters()
                          .compression;
+  if (compression == CompressionAlgorithm::NONE && defaultCompression_) {
+    compression = *defaultCompression_;
+  }
   if (compression != CompressionAlgorithm::NONE) {
     connection->setNegotiatedCompressionAlgorithm(compression);
   }
@@ -118,6 +121,10 @@ void RSRoutingHandler::handleConnection(
 void RSRoutingHandler::addSetupFrameHandler(
     std::unique_ptr<rocket::SetupFrameHandler> handler) {
   setupFrameHandlers_.push_back(std::move(handler));
+}
+
+void RSRoutingHandler::setDefaultCompression(CompressionAlgorithm compression) {
+  defaultCompression_ = compression;
 }
 
 } // namespace thrift

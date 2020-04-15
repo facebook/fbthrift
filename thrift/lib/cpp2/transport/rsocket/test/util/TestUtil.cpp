@@ -55,10 +55,13 @@ std::unique_ptr<ThriftServer> TestSetup::createServer(
   }
 
   server->setProcessorFactory(processorFactory);
-  if (!enableCompressionForRocketServer) {
-    server->addRoutingHandler(std::make_unique<RSRoutingHandler>());
-  } else {
-    server->addRoutingHandler(std::make_unique<TestRSRoutingHandler>());
+  if (enableCompressionForRocketServer) {
+    for (const auto& rh : *server->getRoutingHandlers()) {
+      if (auto rs = dynamic_cast<RSRoutingHandler*>(rh.get())) {
+        rs->setDefaultCompression(CompressionAlgorithm::ZSTD);
+        break;
+      }
+    }
   }
 
   auto eventHandler = std::make_shared<TestEventHandler>();

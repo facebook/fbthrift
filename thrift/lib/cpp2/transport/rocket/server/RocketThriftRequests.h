@@ -22,7 +22,6 @@
 
 #include <folly/Function.h>
 
-#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>

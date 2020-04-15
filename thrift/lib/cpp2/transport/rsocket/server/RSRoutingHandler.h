@@ -44,9 +44,12 @@ class RSRoutingHandler : public TransportRoutingHandler {
 
   void addSetupFrameHandler(std::unique_ptr<rocket::SetupFrameHandler> handler);
 
+  void setDefaultCompression(CompressionAlgorithm compression);
+
  private:
   std::atomic<bool> listening_{true};
   std::vector<std::unique_ptr<rocket::SetupFrameHandler>> setupFrameHandlers_;
+  folly::Optional<CompressionAlgorithm> defaultCompression_;
 };
 } // namespace thrift
 } // namespace apache

@@ -113,42 +113,5 @@ class TestSetup : public testing::Test {
   std::shared_ptr<folly::IOExecutor> ioThread_{
       std::make_shared<folly::ScopedEventBaseThread>()};
 };
-
-// A test RoutingHandler to always apply compression
-class TestRSRoutingHandler : public apache::thrift::RSRoutingHandler {
- public:
-  TestRSRoutingHandler() = default;
-  TestRSRoutingHandler(const TestRSRoutingHandler&) = delete;
-  TestRSRoutingHandler& operator=(const TestRSRoutingHandler&) = delete;
-
-  void handleConnection(
-      wangle::ConnectionManager* connectionManager,
-      folly::AsyncTransportWrapper::UniquePtr sock,
-      folly::SocketAddress const* address,
-      wangle::TransportInfo const& /*tinfo*/,
-      std::shared_ptr<Cpp2Worker> worker) override {
-    auto* const sockPtr = sock.get();
-    auto* const server = worker->getServer();
-    auto* const connection = new rocket::RocketServerConnection(
-        std::move(sock),
-        std::make_shared<rocket::ThriftRocketServerHandler>(
-            worker, *address, sockPtr, setupFrameHandlers_),
-        server->getStreamExpireTime());
-    // set compression algorithm to be used on this connection
-    connection->setNegotiatedCompressionAlgorithm(CompressionAlgorithm::ZSTD);
-    connection->setMinCompressBytes(server->getMinCompressBytes());
-    connectionManager->addConnection(connection);
-
-    if (auto* observer = server->getObserver()) {
-      observer->connAccepted();
-      observer->activeConnections(
-          connectionManager->getNumConnections() *
-          server->getNumIOWorkerThreads());
-    }
-  }
-
- private:
-  std::vector<std::unique_ptr<rocket::SetupFrameHandler>> setupFrameHandlers_;
-};
 } // namespace thrift
 } // namespace apache
