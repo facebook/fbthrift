@@ -418,7 +418,7 @@ TEST(fatal_debug, ref_shared_const) {
 
 TEST(fatal_debug, optional_members) {
   struct1 field1Set;
-  field1Set.set_field1(2);
+  field1Set.field1_ref() = 2;
   struct1 field1Unset;
   struct1 field1SetButNotIsset;
   field1SetButNotIsset.field1_ref().value_unchecked() = "2";

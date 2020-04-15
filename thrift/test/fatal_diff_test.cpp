@@ -540,7 +540,7 @@ TEST(fatal_diff, ref_shared_const) {
 
 TEST(fatal_diff, optional_members) {
   struct1 field1Set;
-  field1Set.set_field1("1");
+  field1Set.field1_ref() = "1";
   struct1 field1Unset;
   struct1 field1SetButNotIsset;
   field1SetButNotIsset.field1_ref() = "2";

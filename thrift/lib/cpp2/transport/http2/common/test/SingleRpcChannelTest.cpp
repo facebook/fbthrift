@@ -250,9 +250,9 @@ folly::Future<RequestState> sendRequest(
   evb.runInEventBaseThread(
       [&channel, url = std::move(url), cb = std::move(cb)]() mutable {
         RequestRpcMetadata metadata;
-        metadata.set_url(url);
-        metadata.set_kind(
-            ::apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+        metadata.url_ref() = url;
+        metadata.kind_ref() =
+            ::apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
         channel.sendThriftRequest(
             std::move(metadata), folly::IOBuf::create(1), std::move(cb));
       });

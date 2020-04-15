@@ -84,7 +84,7 @@ void InMemoryChannel::sendThriftRequest(
     CHECK(callback);
     callback_ = std::move(callback);
   }
-  metadata.set_seqId(0);
+  metadata.seqId_ref() = 0;
   processor_->onThriftRequest(
       std::move(metadata), std::move(payload), shared_from_this());
 }

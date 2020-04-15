@@ -257,7 +257,7 @@ class RequestInstrumentationTest : public testing::Test {
     return server().newClient<DebugTestServiceAsyncClient>(
         nullptr, [](auto socket) mutable {
           RequestSetupMetadata meta;
-          meta.set_interfaceKind(InterfaceKind::DEBUGGING);
+          meta.interfaceKind_ref() = InterfaceKind::DEBUGGING;
           return apache::thrift::RocketClientChannel::newChannel(
               std::move(socket), std::move(meta));
         });

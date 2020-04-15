@@ -40,13 +40,13 @@ TEST(GetterSetter, BasicOptionalFields) {
   EXPECT_FALSE(obj.__isset.optionalBuf);
   EXPECT_EQ(nullptr, obj.get_optionalBuf());
 
-  obj.set_optionalInt(42);
+  obj.optionalInt_ref() = 42;
   EXPECT_EQ(42, *obj.get_optionalInt());
   EXPECT_TRUE(obj.__isset.optionalInt);
-  obj.set_optionalList(vec);
+  obj.optionalList_ref() = vec;
   EXPECT_EQ(vec, *obj.get_optionalList());
   EXPECT_TRUE(obj.__isset.optionalList);
-  obj.set_optionalBuf(std::move(buf));
+  obj.optionalBuf_ref() = std::move(buf);
   EXPECT_TRUE((*obj.get_optionalBuf())->empty());
   EXPECT_TRUE(obj.__isset.optionalBuf);
 }

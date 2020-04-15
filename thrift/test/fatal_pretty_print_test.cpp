@@ -712,7 +712,7 @@ TEST(fatal_pretty_print, ref_shared_const) {
 
 TEST(fatal_pretty_print, optional_member) {
   struct1 v;
-  v.set_field1(4);
+  v.field1_ref() = 4;
 
   const char* expectedStr = R"(
     <struct>{

@@ -46,7 +46,7 @@ void EchoProcessor::onThriftRequestHelper(
   CHECK(channel);
   ResponseRpcMetadata responseMetadata;
   if (auto seqId = requestMetadata.seqId_ref()) {
-    responseMetadata.set_seqId(*seqId);
+    responseMetadata.seqId_ref() = *seqId;
   }
   if (auto otherMetadata = requestMetadata.otherMetadata_ref()) {
     responseMetadata.otherMetadata_ref() = std::move(*otherMetadata);

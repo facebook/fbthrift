@@ -148,11 +148,11 @@ TEST(FrozenUnion, union_as_member) {
   thatStruct.adId = 2015;
   thatStruct.name = "Jayden";
   std::vector<int64_t> thatCreativeIds{9, 5, 376, 28};
-  thatStruct.set_creativeIds(thatCreativeIds);
+  thatStruct.creativeIds_ref() = thatCreativeIds;
   u.set_aStruct(thatStruct);
 
   Big big;
-  big.set_anOptionalString("so good!!");
+  big.anOptionalString_ref() = "so good!!";
   big.anId = 9527;
   std::vector<int64_t> thatList{19, 15, 1376, 7, 128};
   big.anOptionalList_ref() = thatList;
