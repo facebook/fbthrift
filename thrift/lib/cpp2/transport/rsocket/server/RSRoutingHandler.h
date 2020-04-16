@@ -43,6 +43,8 @@ class RSRoutingHandler : public TransportRoutingHandler {
       std::shared_ptr<Cpp2Worker> worker) override;
 
   void addSetupFrameHandler(std::unique_ptr<rocket::SetupFrameHandler> handler);
+  const std::vector<std::unique_ptr<rocket::SetupFrameHandler>>&
+  getSetupFrameHandlers() const;
 
   void setDefaultCompression(CompressionAlgorithm compression);
 

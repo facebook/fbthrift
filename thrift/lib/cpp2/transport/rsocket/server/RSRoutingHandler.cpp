@@ -127,5 +127,10 @@ void RSRoutingHandler::setDefaultCompression(CompressionAlgorithm compression) {
   defaultCompression_ = compression;
 }
 
+const std::vector<std::unique_ptr<rocket::SetupFrameHandler>>&
+RSRoutingHandler::getSetupFrameHandlers() const {
+  return setupFrameHandlers_;
+}
+
 } // namespace thrift
 } // namespace apache
