@@ -17,13 +17,12 @@
  * @package thrift
  */
 
-final class RPCOptions {
-  // TODO: move per-request headers logic here
+final class RpcOptionsTemp {
   private function __construct() {}
 
   // Temporary singleton for migration purposes
   <<__Memoize>>
   public static function get(): this {
-    return new RPCOptions();
+    return new RpcOptionsTemp();
   }
 }

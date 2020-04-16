@@ -194,7 +194,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
     if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RpcOptionsTemp::get(), $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -226,7 +226,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
     if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RpcOptionsTemp::get(), $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {

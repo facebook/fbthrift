@@ -23,12 +23,12 @@ type TAsyncChannelResponse = (string, darray<string, string>);
 <<Oncalls('thrift')>>
 interface IThriftAsyncChannel {
   public function genSendRequestResponse(
-    RPCOptions $options,
+    RPCOptionsTemp $options,
     string $msg,
   ): Awaitable<TAsyncChannelResponse>;
 
   public function genSendRequestNoResponse(
-    RPCOptions $options,
+    RPCOptionsTemp $options,
     string $msg,
   ): Awaitable<void>;
 }

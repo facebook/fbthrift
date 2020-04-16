@@ -4458,7 +4458,7 @@ void t_hack_generator::_generate_service_client_children(
       out << indent() << "$msg = $out_transport->getBuffer();\n"
           << indent() << "$out_transport->resetBuffer();\n"
           << indent()
-          << "list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RPCOptions::get(), $msg);\n"
+          << "list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RpcOptionsTemp::get(), $msg);\n"
           << indent() << "$in_transport->resetBuffer();\n"
           << indent() << "$in_transport->write($result_msg);\n";
       indent_down();
