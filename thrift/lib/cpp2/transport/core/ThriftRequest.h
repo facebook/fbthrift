@@ -140,7 +140,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
   void sendReply(
       std::unique_ptr<folly::IOBuf>&& buf,
-      apache::thrift::MessageChannel::SendCallback*,
+      apache::thrift::MessageChannel::SendCallback* cb,
       folly::Optional<uint32_t> crc32c) override final {
     if (active_.exchange(false)) {
       cancelTimeout();
@@ -149,7 +149,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
         if (crc32c) {
           metadata.crc32c_ref() = *crc32c;
         }
-        sendReplyInternal(std::move(metadata), std::move(buf));
+        sendReplyInternal(std::move(metadata), std::move(buf), cb);
         if (auto* observer = serverConfigs_.getObserver()) {
           observer->sentReply();
         }
@@ -234,7 +234,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
  protected:
   virtual void sendThriftResponse(
       ResponseRpcMetadata&& metadata,
-      std::unique_ptr<folly::IOBuf> response) noexcept = 0;
+      std::unique_ptr<folly::IOBuf> response,
+      apache::thrift::MessageChannel::SendCallback*) noexcept = 0;
 
   virtual void sendSerializedError(
       ResponseRpcMetadata&& metadata,
@@ -290,9 +291,10 @@ class ThriftRequestCore : public ResponseChannelRequest {
  private:
   void sendReplyInternal(
       ResponseRpcMetadata&& metadata,
-      std::unique_ptr<folly::IOBuf> buf) {
+      std::unique_ptr<folly::IOBuf> buf,
+      apache::thrift::MessageChannel::SendCallback* cb) {
     if (checkResponseSize(*buf)) {
-      sendThriftResponse(std::move(metadata), std::move(buf));
+      sendThriftResponse(std::move(metadata), std::move(buf), cb);
     } else {
       sendResponseTooBigEx();
     }
@@ -503,7 +505,8 @@ class ThriftRequest final : public ThriftRequestCore {
  private:
   void sendThriftResponse(
       ResponseRpcMetadata&& metadata,
-      std::unique_ptr<folly::IOBuf> response) noexcept override {
+      std::unique_ptr<folly::IOBuf> response,
+      apache::thrift::MessageChannel::SendCallback*) noexcept override {
     channel_->sendThriftResponse(std::move(metadata), std::move(response));
   }
 
@@ -513,7 +516,7 @@ class ThriftRequest final : public ThriftRequestCore {
     switch (kind_) {
       case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
       case RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE:
-        sendThriftResponse(std::move(metadata), std::move(exbuf));
+        sendThriftResponse(std::move(metadata), std::move(exbuf), nullptr);
         break;
       case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
       case RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE:

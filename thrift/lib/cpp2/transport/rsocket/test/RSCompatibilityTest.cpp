@@ -50,6 +50,20 @@ class RSCompatibilityTest : public testing::Test {
   std::unique_ptr<TransportCompatibilityTest> compatibilityTest_;
 };
 
+class RSCompatibilityManuallyStartServerTest : public testing::Test {
+ public:
+  RSCompatibilityManuallyStartServerTest() {
+    FLAGS_transport = "rocket";
+
+    compatibilityTest_ = std::make_unique<TransportCompatibilityTest>();
+    compatibilityTest_->addRoutingHandler(
+        std::make_unique<apache::thrift::RSRoutingHandler>());
+  }
+
+ protected:
+  std::unique_ptr<TransportCompatibilityTest> compatibilityTest_;
+};
+
 TEST_F(RSCompatibilityTest, RequestResponse_Simple) {
   compatibilityTest_->TestRequestResponse_Simple();
 }
@@ -320,6 +334,10 @@ TEST_F(RSCompatibilityTest2, RequestResponse_CompressRequestResponse) {
     // check that compression actually kicked in
     EXPECT_LT(numRead, asString.size());
   });
+}
+
+TEST_F(RSCompatibilityManuallyStartServerTest, TestCustomAsyncProcessor) {
+  compatibilityTest_->TestCustomAsyncProcessor();
 }
 
 } // namespace thrift

@@ -19,6 +19,7 @@
 #include <boost/variant.hpp>
 #include <folly/io/async/HHWheelTimer.h>
 
+#include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
@@ -46,8 +47,13 @@ class RocketServerFrameContext {
   RocketServerFrameContext& operator=(RocketServerFrameContext&&) = delete;
   ~RocketServerFrameContext();
 
-  void sendPayload(Payload&& payload, Flags flags);
-  void sendError(RocketException&& rex);
+  void sendPayload(
+      Payload&& payload,
+      Flags flags,
+      apache::thrift::MessageChannel::SendCallback* cb);
+  void sendError(
+      RocketException&& rex,
+      apache::thrift::MessageChannel::SendCallback* cb);
 
   folly::EventBase& getEventBase() const;
 

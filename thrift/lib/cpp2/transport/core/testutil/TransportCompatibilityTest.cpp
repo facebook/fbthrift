@@ -1094,5 +1094,125 @@ void TransportCompatibilityTest::TestCloseCallback() {
   });
 }
 
+void TransportCompatibilityTest::TestCustomAsyncProcessor() {
+  class TestSendCallback : public MessageChannel::SendCallback {
+   public:
+    explicit TestSendCallback(MessageChannel::SendCallback* cb) : cb_(cb) {}
+    void sendQueued() override {
+      if (cb_) {
+        cb_->sendQueued();
+      }
+    }
+
+    void messageSent() override {
+      if (cb_) {
+        cb_->messageSent();
+      }
+      delete this;
+    }
+
+    void messageSendError(folly::exception_wrapper&& ex) override {
+      if (cb_) {
+        cb_->messageSendError(std::move(ex));
+      }
+      delete this;
+    }
+
+   private:
+    MessageChannel::SendCallback* cb_;
+  };
+
+  class TestResponseChannelRequest
+      : public apache::thrift::ResponseChannelRequest {
+   public:
+    explicit TestResponseChannelRequest(
+        apache::thrift::ResponseChannelRequest::UniquePtr req)
+        : req_(std::move(req)) {}
+
+    bool isActive() const override {
+      return req_->isActive();
+    }
+
+    void cancel() override {
+      return req_->cancel();
+    }
+
+    bool isOneway() const override {
+      return req_->isOneway();
+    }
+
+    void sendReply(
+        std::unique_ptr<folly::IOBuf>&& buf,
+        MessageChannel::SendCallback* cb,
+        folly::Optional<uint32_t> crc32) override {
+      req_->sendReply(std::move(buf), new TestSendCallback(cb), crc32);
+    }
+
+    void sendErrorWrapped(
+        folly::exception_wrapper ex,
+        std::string exCode,
+        MessageChannel::SendCallback* cb) override {
+      req_->sendErrorWrapped(
+          std::move(ex), std::move(exCode), new TestSendCallback(cb));
+    }
+
+   private:
+    apache::thrift::ResponseChannelRequest::UniquePtr req_;
+  };
+
+  class TestAsyncProcessor : public apache::thrift::AsyncProcessor {
+   public:
+    TestAsyncProcessor(
+        std::unique_ptr<apache::thrift::AsyncProcessor> processor)
+        : underlyingProcessor_(std::move(processor)) {}
+
+    void processSerializedRequest(
+        apache::thrift::ResponseChannelRequest::UniquePtr req,
+        apache::thrift::SerializedRequest&& serializedRequest,
+        apache::thrift::protocol::PROTOCOL_TYPES protType,
+        apache::thrift::Cpp2RequestContext* context,
+        folly::EventBase* eb,
+        apache::thrift::concurrency::ThreadManager* tm) override {
+      underlyingProcessor_->processSerializedRequest(
+          apache::thrift::ResponseChannelRequest::UniquePtr(
+              new TestResponseChannelRequest(std::move(req))),
+          std::move(serializedRequest),
+          protType,
+          context,
+          eb,
+          tm);
+    }
+
+   private:
+    std::unique_ptr<apache::thrift::AsyncProcessor> underlyingProcessor_;
+  };
+
+  class TestAsyncProcessorFactory
+      : public apache::thrift::AsyncProcessorFactory {
+   public:
+    explicit TestAsyncProcessorFactory(
+        std::shared_ptr<ThriftServerAsyncProcessorFactory<
+            testutil::testservice::TestServiceMock>> fac)
+        : underlyingFac_(std::move(fac)) {}
+    std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
+      return std::make_unique<TestAsyncProcessor>(
+          underlyingFac_->getProcessor());
+    }
+
+   private:
+    std::shared_ptr<ThriftServerAsyncProcessorFactory<
+        testutil::testservice::TestServiceMock>>
+        underlyingFac_;
+  };
+
+  auto cpp2PFac = std::make_shared<ThriftServerAsyncProcessorFactory<
+      testutil::testservice::TestServiceMock>>(handler_);
+
+  server_->getServer()->setProcessorFactory(
+      std::make_shared<TestAsyncProcessorFactory>(std::move(cpp2PFac)));
+  startServer();
+  TestRequestResponse_Simple();
+}
+
 } // namespace thrift
 } // namespace apache

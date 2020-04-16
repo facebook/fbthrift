@@ -88,14 +88,16 @@ RocketSinkClientCallback& RocketServerConnection::createSinkClientCallback(
   return callbackRef;
 }
 
-void RocketServerConnection::send(std::unique_ptr<folly::IOBuf> data) {
+void RocketServerConnection::send(
+    std::unique_ptr<folly::IOBuf> data,
+    apache::thrift::MessageChannel::SendCallback* cb) {
   evb_.dcheckIsInEventBaseThread();
 
   if (state_ != ConnectionState::ALIVE && state_ != ConnectionState::DRAINING) {
     return;
   }
 
-  writeBatcher_.enqueueWrite(std::move(data));
+  writeBatcher_.enqueueWrite(std::move(data), cb);
 }
 
 RocketServerConnection::~RocketServerConnection() {
@@ -557,11 +559,17 @@ void RocketServerConnection::closeWhenIdle() {
 
 void RocketServerConnection::writeSuccess() noexcept {
   DCHECK(!inflightWritesQueue_.empty());
-  for (auto processingCompleteCount = inflightWritesQueue_.front();
+  auto& context = inflightWritesQueue_.front();
+  for (auto processingCompleteCount = context.requestCompleteCount;
        processingCompleteCount > 0;
        --processingCompleteCount) {
     frameHandler_->requestComplete();
   }
+
+  for (auto* cb : context.sendCallbacks) {
+    cb->messageSent();
+  }
+
   inflightWritesQueue_.pop();
   closeIfNeeded();
 }
@@ -571,11 +579,17 @@ void RocketServerConnection::writeErr(
     const folly::AsyncSocketException& ex) noexcept {
   DestructorGuard dg(this);
   DCHECK(!inflightWritesQueue_.empty());
-  for (auto processingCompleteCount = inflightWritesQueue_.front();
+  auto& context = inflightWritesQueue_.front();
+  for (auto processingCompleteCount = context.requestCompleteCount;
        processingCompleteCount > 0;
        --processingCompleteCount) {
     frameHandler_->requestComplete();
   }
+
+  for (auto* cb : context.sendCallbacks) {
+    cb->messageSendError(ex);
+  }
+
   inflightWritesQueue_.pop();
   close(folly::make_exception_wrapper<std::runtime_error>(fmt::format(
       "Failed to write to remote endpoint. Wrote {} bytes."
@@ -631,14 +645,16 @@ folly::Optional<Payload> RocketServerConnection::bufferOrGetFullPayload(
 void RocketServerConnection::sendPayload(
     StreamId streamId,
     Payload&& payload,
-    Flags flags) {
-  send(PayloadFrame(streamId, std::move(payload), flags).serialize());
+    Flags flags,
+    apache::thrift::MessageChannel::SendCallback* cb) {
+  send(PayloadFrame(streamId, std::move(payload), flags).serialize(), cb);
 }
 
 void RocketServerConnection::sendError(
     StreamId streamId,
-    RocketException&& rex) {
-  send(ErrorFrame(streamId, std::move(rex)).serialize());
+    RocketException&& rex,
+    apache::thrift::MessageChannel::SendCallback* cb) {
+  send(ErrorFrame(streamId, std::move(rex)).serialize(), cb);
 }
 
 void RocketServerConnection::sendRequestN(StreamId streamId, int32_t n) {

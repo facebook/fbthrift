@@ -121,6 +121,8 @@ class TransportCompatibilityTest {
   void TestConnectionContext();
   void TestClientIdentityHook();
 
+  void TestCustomAsyncProcessor();
+
  protected:
   void connectToServer(
       folly::Function<void(

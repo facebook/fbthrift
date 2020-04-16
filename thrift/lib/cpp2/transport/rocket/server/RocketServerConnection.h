@@ -35,6 +35,7 @@
 
 #include <wangle/acceptor/ManagedConnection.h>
 
+#include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Parser.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
@@ -64,7 +65,9 @@ class RocketServerConnection final
           std::chrono::milliseconds::zero(),
       size_t writeBatchingSize = 0);
 
-  void send(std::unique_ptr<folly::IOBuf> data);
+  void send(
+      std::unique_ptr<folly::IOBuf> data,
+      apache::thrift::MessageChannel::SendCallback* cb = nullptr);
 
   RocketStreamClientCallback& createStreamClientCallback(
       StreamId streamId,
@@ -112,8 +115,15 @@ class RocketServerConnection final
     return minCompressBytes_;
   }
 
-  void sendPayload(StreamId streamId, Payload&& payload, Flags flags);
-  void sendError(StreamId streamId, RocketException&& rex);
+  void sendPayload(
+      StreamId streamId,
+      Payload&& payload,
+      Flags flags,
+      apache::thrift::MessageChannel::SendCallback* cb = nullptr);
+  void sendError(
+      StreamId streamId,
+      RocketException&& rex,
+      apache::thrift::MessageChannel::SendCallback* cb = nullptr);
   void sendRequestN(StreamId streamId, int32_t n);
   void sendCancel(StreamId streamId);
   void sendExt(
@@ -159,11 +169,18 @@ class RocketServerConnection final
 
   // Total number of active Request* frames ("streams" in protocol parlance)
   size_t inflightRequests_{0};
-  // Queue of the counts of completed requests in each inflight write to the
-  // underlying transport. (The size of the queue is equal to the total number
-  // of inflight writes to the underlying transport, i.e., writes for which the
-  // writeSuccess()/writeErr() has not yet been called).
-  std::queue<size_t> inflightWritesQueue_;
+
+  // Context for each inflight write to the underlying transport.
+  struct WriteBatchContext {
+    // the counts of completed requests in each inflight write
+    size_t requestCompleteCount{0};
+    // the counts of valid sendCallbacks in each inflight write
+    std::vector<apache::thrift::MessageChannel::SendCallback*> sendCallbacks;
+  };
+  // The size of the queue is equal to the total number of inflight writes to
+  // the underlying transport, i.e., writes for which the
+  // writeSuccess()/writeErr() has not yet been called.
+  std::queue<WriteBatchContext> inflightWritesQueue_;
   // Totoal number of inflight final response for sink semantic, the counter
   // only bumps when sink is in waiting for final response state,
   // (onSinkComplete get called)
@@ -201,7 +218,13 @@ class RocketServerConnection final
           batchingInterval_(batchingInterval),
           batchingSize_(batchingSize) {}
 
-    void enqueueWrite(std::unique_ptr<folly::IOBuf> data) {
+    void enqueueWrite(
+        std::unique_ptr<folly::IOBuf> data,
+        apache::thrift::MessageChannel::SendCallback* cb) {
+      if (cb) {
+        cb->sendQueued();
+        bufferedWritesContext_.sendCallbacks.push_back(cb);
+      }
       if (!bufferedWrites_) {
         bufferedWrites_ = std::move(data);
         if (batchingInterval_ != std::chrono::milliseconds::zero()) {
@@ -223,7 +246,7 @@ class RocketServerConnection final
 
     void enqueueRequestComplete() {
       DCHECK(!empty());
-      bufferedRequestCompleteCount_++;
+      bufferedWritesContext_.requestCompleteCount++;
     }
 
     void drain() noexcept {
@@ -252,7 +275,7 @@ class RocketServerConnection final
       bufferedWritesCount_ = 0;
       connection_.flushWrites(
           std::move(bufferedWrites_),
-          std::exchange(bufferedRequestCompleteCount_, 0));
+          std::exchange(bufferedWritesContext_, WriteBatchContext{}));
     }
 
     RocketServerConnection& connection_;
@@ -261,7 +284,7 @@ class RocketServerConnection final
     // Callback is scheduled iff bufferedWrites_ is not empty.
     std::unique_ptr<folly::IOBuf> bufferedWrites_;
     size_t bufferedWritesCount_{0};
-    size_t bufferedRequestCompleteCount_{0};
+    WriteBatchContext bufferedWritesContext_;
   };
   WriteBatcher writeBatcher_;
   class SocketDrainer : private folly::HHWheelTimer::Callback {
@@ -320,8 +343,8 @@ class RocketServerConnection final
   void closeIfNeeded();
   void flushWrites(
       std::unique_ptr<folly::IOBuf> writes,
-      size_t processingCompleteCount) {
-    inflightWritesQueue_.push(processingCompleteCount);
+      WriteBatchContext&& context) {
+    inflightWritesQueue_.push(std::move(context));
     socket_->writeChain(this, std::move(writes));
   }
 
@@ -381,7 +404,7 @@ class RocketServerConnection final
       return;
     }
     if (!inflightWritesQueue_.empty()) {
-      inflightWritesQueue_.back()++;
+      inflightWritesQueue_.back().requestCompleteCount++;
       return;
     }
     frameHandler_->requestComplete();
