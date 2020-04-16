@@ -286,6 +286,16 @@ TEST(field_ref_test, copy_list_initialization) {
   s.name() = {};
 }
 
+TEST(field_ref_test, emplace) {
+  TestStruct s;
+  s.name().emplace({'f', 'o', 'o'});
+  EXPECT_EQ(s.name().value(), "foo");
+  s.name().emplace({'b', 'a', 'r'});
+  EXPECT_EQ(s.name().value(), "bar");
+  s.name().emplace({'b', 'a', 'z'}, std::allocator<char>());
+  EXPECT_EQ(s.name().value(), "baz");
+}
+
 TEST(field_ref_test, move) {
   TestStruct s;
   s.uptr() = std::make_unique<int>(42);
@@ -509,6 +519,16 @@ TEST(optional_field_ref_test, conversions) {
 TEST(optional_field_ref_test, copy_list_initialization) {
   TestStruct s;
   s.opt_name() = {};
+}
+
+TEST(optional_field_ref_test, emplace) {
+  TestStruct s;
+  s.opt_name().emplace({'f', 'o', 'o'});
+  EXPECT_EQ(s.opt_name().value(), "foo");
+  s.opt_name().emplace({'b', 'a', 'r'});
+  EXPECT_EQ(s.opt_name().value(), "bar");
+  s.opt_name().emplace({'b', 'a', 'z'}, std::allocator<char>());
+  EXPECT_EQ(s.opt_name().value(), "baz");
 }
 
 TEST(optional_field_ref_test, move) {

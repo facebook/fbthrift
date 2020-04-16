@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <initializer_list>
 #include <type_traits>
 #include <utility>
 
@@ -127,6 +128,17 @@ class field_ref {
   template <typename... Args>
   FOLLY_ERASE value_type& emplace(Args&&... args) {
     value_ = value_type(static_cast<Args&&>(args)...);
+    is_set_ = true;
+    return value_;
+  }
+
+  template <class U, class... Args>
+  FOLLY_ERASE std::enable_if_t<
+      std::is_constructible<value_type, std::initializer_list<U>&, Args&&...>::
+          value,
+      value_type&>
+  emplace(std::initializer_list<U> ilist, Args&&... args) {
+    value_ = value_type(ilist, std::forward<Args>(args)...);
     is_set_ = true;
     return value_;
   }
@@ -293,6 +305,18 @@ class optional_field_ref {
   FOLLY_ERASE value_type& emplace(Args&&... args) {
     reset(); // C++ Standard requires *this to be empty if `emplace(...)` throws
     value_ = value_type(static_cast<Args&&>(args)...);
+    is_set_ = true;
+    return value_;
+  }
+
+  template <class U, class... Args>
+  FOLLY_ERASE std::enable_if_t<
+      std::is_constructible<value_type, std::initializer_list<U>&, Args&&...>::
+          value,
+      value_type&>
+  emplace(std::initializer_list<U> ilist, Args&&... args) {
+    reset();
+    value_ = value_type(ilist, std::forward<Args>(args)...);
     is_set_ = true;
     return value_;
   }
