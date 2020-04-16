@@ -23,7 +23,6 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/admission_strategy/GlobalAdmissionStrategy.h>
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 #include <thrift/perf/cpp2/server/BenchmarkHandler.h>
 #include <thrift/perf/cpp2/util/QPSStats.h>
 
@@ -83,8 +82,6 @@ int main(int argc, char** argv) {
   server->setNumCPUWorkerThreads(FLAGS_cpu_threads);
   server->setProcessorFactory(cpp2PFac);
 
-  server->addRoutingHandler(
-      std::make_unique<apache::thrift::RSRoutingHandler>());
   server->addRoutingHandler(createHTTP2RoutingHandler(server));
   if (FLAGS_use_admission_control) {
     auto strategy = std::make_shared<GlobalAdmissionStrategy>(seconds(1));

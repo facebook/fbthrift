@@ -17,7 +17,6 @@
 #pragma once
 
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 #include <thrift/lib/py3/test/stream/if/gen-cpp2/StreamTestService.tcc>
 
 namespace thrift {
@@ -67,11 +66,6 @@ class StreamTestService : public StreamTestServiceSvIf {
     return {std::move(resp), std::move(stream)};
   }
 };
-
-std::unique_ptr<apache::thrift::TransportRoutingHandler>
-createRSRoutingHandler() {
-  return std::make_unique<apache::thrift::RSRoutingHandler>();
-}
 
 } // namespace test
 } // namespace py3

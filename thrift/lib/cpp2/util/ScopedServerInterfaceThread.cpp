@@ -20,7 +20,6 @@
 
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 
 using namespace std;
 using namespace folly;
@@ -42,7 +41,6 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
   ts->setProcessorFactory(move(apf));
   ts->setNumIOWorkerThreads(1);
   ts->setThreadManager(tm);
-  ts->addRoutingHandler(std::make_unique<RSRoutingHandler>());
   if (configCb) {
     configCb(*ts);
   }

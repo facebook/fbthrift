@@ -81,7 +81,6 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         void setAddress(string ip, uint16_t port) nogil
         void setInterface(shared_ptr[cServerInterface]) nogil
         void setProcessorFactory(shared_ptr[cAsyncProcessorFactory]) nogil
-        void addRoutingHandler(unique_ptr[cTransportRoutingHandler]) nogil
         void serve() nogil except +
         void stop() nogil except +
         cSSLPolicy getSSLPolicy() nogil
@@ -149,8 +148,6 @@ cdef class ThriftServer:
     cdef AsyncProcessorFactory factory
     cdef object loop
     cdef object address_future
-
-    cdef add_routing_handler(ThriftServer self, unique_ptr[cTransportRoutingHandler] transport_routing_handler)
 
 
 cdef class ConnectionContext:

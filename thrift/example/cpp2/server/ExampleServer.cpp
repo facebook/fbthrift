@@ -23,7 +23,6 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 
 DEFINE_int32(chatroom_port, 7777, "Chatroom Server port");
 DEFINE_int32(echo_port, 7778, "Echo Server port");
@@ -54,8 +53,6 @@ std::shared_ptr<ThriftServer> newServer(int32_t port) {
   auto server = std::make_shared<ThriftServer>();
   server->setPort(port);
   server->setProcessorFactory(proc_factory);
-  server->addRoutingHandler(
-      std::make_unique<apache::thrift::RSRoutingHandler>());
   server->addRoutingHandler(createHTTP2RoutingHandler(server));
   return server;
 }

@@ -20,5 +20,3 @@ cdef extern from "thrift/lib/py3/test/stream/server.h" namespace "::thrift::py3:
     cdef cppclass cStreamTestService "::thrift::py3::test::StreamTestService"(cServerInterface):
         @staticmethod
         shared_ptr[cAsyncProcessorFactory] createInstance()
-
-    cdef unique_ptr[cTransportRoutingHandler] createRSRoutingHandler()

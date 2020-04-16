@@ -29,10 +29,6 @@ cdef class TestServer:
 
     def __init__(self, ip=None):
         self.server = ThriftServer(Handler(), ip=ip)
-        self.server.add_routing_handler(createRSRoutingHandler())
-
-    cdef addRoutingHandler(self):
-        (<ThriftServer>self.server).add_routing_handler(createRSRoutingHandler())
 
     async def __aenter__(self):
         self.serve_task = asyncio.get_event_loop().create_task(self.server.serve())
@@ -41,4 +37,3 @@ cdef class TestServer:
     async def __aexit__(self, *exc_info):
         self.server.stop()
         await self.serve_task
-

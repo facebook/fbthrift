@@ -41,8 +41,6 @@ class RSCompatibilityTest : public testing::Test {
     FLAGS_transport = "rocket";
 
     compatibilityTest_ = std::make_unique<TransportCompatibilityTest>();
-    compatibilityTest_->addRoutingHandler(
-        std::make_unique<apache::thrift::RSRoutingHandler>());
     compatibilityTest_->startServer();
   }
 

@@ -31,7 +31,6 @@
 #include <folly/io/async/AsyncSocket.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 using namespace apache::thrift;
@@ -70,11 +69,6 @@ class Handler : public test::TestServiceSvIf {
 
 class RocketClientChannelTest : public testing::Test {
  public:
-  void SetUp() override {
-    dynamic_cast<ThriftServer&>(runner_.getThriftServer())
-        .addRoutingHandler(std::make_unique<RSRoutingHandler>());
-  }
-
   test::TestServiceAsyncClient makeClient(folly::EventBase& evb) {
     return test::TestServiceAsyncClient(
         RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
