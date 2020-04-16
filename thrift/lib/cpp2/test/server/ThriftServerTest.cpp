@@ -1113,6 +1113,49 @@ TEST(ThriftServer, ServerConfigTest) {
       serverConfig.sslHandshakeTimeout, std::chrono::milliseconds::zero());
 }
 
+TEST(ThriftServer, MultiPort) {
+  class MultiPortThriftServer : public ThriftServer {
+   public:
+    using ServerBootstrap::getSockets;
+  };
+
+  auto server = std::make_shared<MultiPortThriftServer>();
+  server->setInterface(std::make_shared<TestInterface>());
+  server->setNumIOWorkerThreads(1);
+  server->setNumCPUWorkerThreads(1);
+
+  // Add two ports 0 to trigger listening on two random ports.
+  folly::SocketAddress addr;
+  addr.setFromLocalPort(static_cast<uint16_t>(0));
+  server->setAddresses({addr, addr});
+
+  ScopedServerThread t(server);
+
+  auto sockets = server->getSockets();
+  ASSERT_EQ(sockets.size(), 2);
+
+  folly::SocketAddress addr1, addr2;
+  sockets[0]->getAddress(&addr1);
+  sockets[1]->getAddress(&addr2);
+
+  EXPECT_NE(addr1.getPort(), addr2.getPort());
+
+  // Test that we can talk via first port.
+  folly::EventBase base;
+
+  auto testFn = [&](folly::SocketAddress& address) {
+    std::shared_ptr<TAsyncSocket> socket(
+        TAsyncSocket::newSocket(&base, address));
+    TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+    std::string response;
+    client.sync_sendResponse(response, 42);
+    EXPECT_EQ(response, "test42");
+  };
+
+  testFn(addr1);
+  testFn(addr2);
+}
+
 TEST(ThriftServer, ClientIdentityHook) {
   /* Tests that the server calls the client identity hook when creating a new
      connection context */

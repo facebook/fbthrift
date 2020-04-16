@@ -315,13 +315,15 @@ void ThriftServer::setup() {
       } else if (port_ != -1) {
         ServerBootstrap::bind(port_);
       } else {
-        ServerBootstrap::bind(address_);
+        for (auto& address : addresses_) {
+          ServerBootstrap::bind(address);
+        }
       }
       // Update address_ with the address that we are actually bound to.
       // (This is needed if we were supplied a pre-bound socket, or if
       // address_'s port was set to 0, so an ephemeral port was chosen by
       // the kernel.)
-      ServerBootstrap::getSockets()[0]->getAddress(&address_);
+      ServerBootstrap::getSockets()[0]->getAddress(&addresses_.at(0));
 
       // we enable zerocopy for the server socket if the
       // zeroCopyEnableFunc_ is valid
@@ -341,7 +343,7 @@ void ThriftServer::setup() {
 
       // Notify handler of the preServe event
       if (eventHandler_ != nullptr) {
-        eventHandler_->preServe(&address_);
+        eventHandler_->preServe(&addresses_.at(0));
       }
 
     } else {

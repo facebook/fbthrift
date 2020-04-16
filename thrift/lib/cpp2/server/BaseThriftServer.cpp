@@ -56,7 +56,8 @@ const std::chrono::milliseconds BaseThriftServer::DEFAULT_TIMEOUT =
     std::chrono::milliseconds(60000);
 
 BaseThriftServer::BaseThriftServer()
-    : admissionStrategy_(std::make_shared<AcceptAllAdmissionStrategy>()) {}
+    : admissionStrategy_(std::make_shared<AcceptAllAdmissionStrategy>()),
+      addresses_(1) {}
 
 void BaseThriftServer::CumulativeFailureInjection::set(
     const FailureInjection& fi) {

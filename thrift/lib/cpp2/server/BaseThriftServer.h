@@ -238,8 +238,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   ServerAttribute<size_t> writeBatchingSize_{0};
 
  protected:
-  //! The server's listening address
-  folly::SocketAddress address_;
+  //! The server's listening addresses
+  std::vector<folly::SocketAddress> addresses_;
 
   //! The server's listening port
   int port_ = -1;
@@ -507,29 +507,29 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   }
 
   /**
-   * Set the address to listen on.
+   * Set the address(es) to listen on.
    */
   void setAddress(const folly::SocketAddress& address) {
-    CHECK(configMutable());
-    port_ = -1;
-    address_ = address;
+    setAddresses({address});
   }
 
   void setAddress(folly::SocketAddress&& address) {
-    CHECK(configMutable());
-    port_ = -1;
-    address_ = std::move(address);
+    setAddresses({std::move(address)});
   }
 
   void setAddress(const char* ip, uint16_t port) {
-    CHECK(configMutable());
-    port_ = -1;
-    address_.setFromIpPort(ip, port);
+    setAddresses({folly::SocketAddress(ip, port)});
   }
+
   void setAddress(const std::string& ip, uint16_t port) {
+    setAddresses({folly::SocketAddress(ip, port)});
+  }
+
+  void setAddresses(std::vector<folly::SocketAddress> addresses) {
+    CHECK(!addresses.empty());
     CHECK(configMutable());
     port_ = -1;
-    setAddress(ip.c_str(), port);
+    addresses_ = std::move(addresses);
   }
 
   /**
@@ -543,7 +543,11 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * modifying the address while they are using it.)
    */
   const folly::SocketAddress& getAddress() const {
-    return address_;
+    return addresses_.at(0);
+  }
+
+  const std::vector<folly::SocketAddress>& getAddresses() const {
+    return addresses_;
   }
 
   /**

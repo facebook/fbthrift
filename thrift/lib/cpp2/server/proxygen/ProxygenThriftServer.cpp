@@ -371,7 +371,9 @@ void ProxygenThriftServer::serve() {
   if (port_ != -1) {
     IPs.emplace_back(SocketAddress("::", port_, true), httpProtocol_);
   } else {
-    IPs.emplace_back(address_, httpProtocol_);
+    for (const auto& address : addresses_) {
+      IPs.emplace_back(address, httpProtocol_);
+    }
   }
 
   HTTPServerOptions options;
