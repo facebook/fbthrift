@@ -16,6 +16,7 @@
 
 namespace cpp2 apache.thrift
 namespace java.swift org.apache.thrift
+namespace php Thrift_RpcMetadata
 namespace py thrift.lib.thrift.RpcMetadata
 namespace py.asyncio thrift.lib.thrift.asyncio.RpcMetadata
 namespace py3 thrift.lib.thrift
