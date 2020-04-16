@@ -80,8 +80,13 @@ void ThriftProcessor::onThriftRequest(
 
   auto protoId = request->getProtoId();
   auto reqContext = request->getRequestContext();
-  cpp2Processor_->process(
-      std::move(request), std::move(payload), protoId, reqContext, evb, tm_);
+  cpp2Processor_->processSerializedRequest(
+      std::move(request),
+      SerializedRequest(std::move(payload)),
+      protoId,
+      reqContext,
+      evb,
+      tm_);
 }
 } // namespace thrift
 } // namespace apache

@@ -147,9 +147,16 @@ void ProxygenThriftServer::ThriftRequestHandler::onEOM() noexcept {
     return;
   }
 
-  worker_->getProcessor()->process(
+  auto serializedRequest = [&] {
+    folly::IOBufQueue bufQueue;
+    bufQueue.append(std::move(body_));
+    bufQueue.trimStart(msgBegin.size);
+    return SerializedRequest(bufQueue.move());
+  }();
+
+  worker_->getProcessor()->processSerializedRequest(
       std::move(req),
-      std::move(body_),
+      std::move(serializedRequest),
       protoId,
       reqCtx_.get(),
       worker_->evb_,

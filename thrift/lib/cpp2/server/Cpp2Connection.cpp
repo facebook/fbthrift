@@ -337,14 +337,17 @@ void Cpp2Connection::requestReceived(
 
   // After this, the request buffer is no longer owned by the request
   // and will be released after deserializeRequest.
-  unique_ptr<folly::IOBuf> buf = hreq->extractBuf();
+  auto serializedRequest = [&] {
+    folly::IOBufQueue bufQueue;
+    bufQueue.append(hreq->extractBuf());
+    bufQueue.trimStart(msgBegin.size);
+    return SerializedRequest(bufQueue.move());
+  }();
 
   // We keep a clone of the request payload buffer for debugging purposes, but
   // the lifetime of payload should not necessarily be the same as its request
   // object's.
-  folly::IOBufQueue debugPayloadQueue;
-  debugPayloadQueue.append(buf->clone());
-  debugPayloadQueue.trimStart(msgBegin.size);
+  auto debugPayload = serializedRequest.buffer->clone();
 
   std::chrono::milliseconds queueTimeout;
   std::chrono::milliseconds taskTimeout;
@@ -352,7 +355,7 @@ void Cpp2Connection::requestReceived(
       *(hreq->getHeader()), queueTimeout, taskTimeout);
 
   auto t2r = RequestsRegistry::makeRequest<Cpp2Request>(
-      std::move(hreq), this_, debugPayloadQueue.move(), reqCtx->getRootId());
+      std::move(hreq), this_, std::move(debugPayload), reqCtx->getRootId());
   if (admissionController) {
     t2r->setAdmissionController(std::move(admissionController));
   }
@@ -381,9 +384,9 @@ void Cpp2Connection::requestReceived(
       return;
     }
 
-    processor_->process(
+    processor_->processSerializedRequest(
         std::move(req),
-        std::move(buf),
+        std::move(serializedRequest),
         protoId,
         reqContext,
         worker_->getEventBase(),

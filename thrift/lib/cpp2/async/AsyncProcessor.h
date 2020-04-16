@@ -137,38 +137,13 @@ class AsyncProcessor : public TProcessorBase {
  public:
   virtual ~AsyncProcessor() {}
 
-  virtual void process(
-      ResponseChannelRequest::UniquePtr req,
-      std::unique_ptr<folly::IOBuf> buf,
-      apache::thrift::protocol::PROTOCOL_TYPES protType,
-      Cpp2RequestContext* context,
-      folly::EventBase* eb,
-      apache::thrift::concurrency::ThreadManager* tm) final {
-    if (context->getMessageBeginSize() > 0) {
-      folly::IOBufQueue bufQueue;
-      bufQueue.append(std::move(buf));
-      bufQueue.trimStart(context->getMessageBeginSize());
-      buf = bufQueue.move();
-      context->setMessageBeginSize(0);
-    }
-    processSerializedRequest(
-        std::move(req),
-        apache::thrift::SerializedRequest(std::move(buf)),
-        protType,
-        context,
-        eb,
-        tm);
-  }
-
   virtual void processSerializedRequest(
       ResponseChannelRequest::UniquePtr,
       apache::thrift::SerializedRequest&&,
       apache::thrift::protocol::PROTOCOL_TYPES,
       Cpp2RequestContext*,
       folly::EventBase*,
-      apache::thrift::concurrency::ThreadManager*) {
-    std::terminate();
-  }
+      apache::thrift::concurrency::ThreadManager*) = 0;
 
   virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest() {
     return nullptr;

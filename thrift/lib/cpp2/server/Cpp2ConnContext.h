@@ -425,14 +425,6 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return protoSeqId_;
   }
 
-  void setMessageBeginSize(uint32_t messageBeginSize) {
-    messageBeginSize_ = messageBeginSize;
-  }
-
-  uint32_t getMessageBeginSize() {
-    return messageBeginSize_;
-  }
-
  protected:
   static void no_op_destructor(void* /*ptr*/) {}
 
@@ -444,7 +436,6 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   folly::Optional<std::chrono::steady_clock::time_point> processingStartTime_;
   std::string methodName_;
   int32_t protoSeqId_{0};
-  uint32_t messageBeginSize_{0};
 };
 
 } // namespace thrift

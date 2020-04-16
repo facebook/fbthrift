@@ -94,7 +94,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
       header_.setReadHeaders(std::move(*otherMetadata));
     }
 
-    reqContext_.setMessageBeginSize(0);
     if (auto methodName = metadata.name_ref()) {
       reqContext_.setMethodName(std::move(*methodName));
     }

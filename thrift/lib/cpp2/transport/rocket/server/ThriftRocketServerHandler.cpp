@@ -360,9 +360,9 @@ void ThriftRocketServerHandler::handleRequestCommon(
     }
   }
   try {
-    cpp2Processor_->process(
+    cpp2Processor_->processSerializedRequest(
         std::move(request),
-        std::move(data),
+        SerializedRequest(std::move(data)),
         protocolId,
         cpp2ReqCtx,
         eventBase_,

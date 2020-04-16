@@ -111,9 +111,7 @@ static bool setupRequestContextWithMessageBegin(
     folly::EventBase* eb) {
   using h = helper_r<ProtocolReader>;
   const char* fn = "process";
-  if (msgBegin.isValid) {
-    ctx->setMessageBeginSize(msgBegin.size);
-  } else {
+  if (!msgBegin.isValid) {
     LOG(ERROR) << "received invalid message from client: "
                << msgBegin.errMessage;
     auto type = TApplicationException::TApplicationExceptionType::UNKNOWN;
