@@ -1616,7 +1616,8 @@ void t_hack_generator::generate_php_struct_shape_spec(
       dval = render_default_value(t);
     }
 
-    bool nullable = field_is_nullable(tstruct, *m_iter, dval);
+    bool nullable =
+        field_is_nullable(tstruct, *m_iter, dval) || nullable_everything_;
 
     string namePrefix = nullable ? "?" : "";
 
@@ -2077,7 +2078,8 @@ void t_hack_generator::generate_php_struct_shape_methods(
       dval = render_default_value(t);
     }
 
-    bool nullable = field_is_nullable(tstruct, *m_iter, dval);
+    bool nullable =
+        field_is_nullable(tstruct, *m_iter, dval) || nullable_everything_;
 
     stringstream source;
     source << "$shape['" << (*m_iter)->get_name() << "']";
@@ -2238,7 +2240,8 @@ void t_hack_generator::generate_php_struct_shape_methods(
     stringstream val;
 
     bool nullable =
-        field_is_nullable(tstruct, *m_iter, render_default_value(t));
+        field_is_nullable(tstruct, *m_iter, render_default_value(t)) ||
+        nullable_everything_;
 
     if (t->is_container()) {
       if (t->is_map() || t->is_list()) {
