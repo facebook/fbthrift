@@ -4471,6 +4471,17 @@ void t_hack_generator::_generate_service_client_children(
         out << "return ";
       }
       out << "$this->recvImpl_" << funname << "($currentseqid);\n";
+    } else {
+      out << indent() << "$channel = $this->channel_;\n"
+          << indent() << "$out_transport = $this->output_->getTransport();\n"
+          << indent()
+          << "if ($channel !== null && $out_transport is TMemoryBuffer) {\n";
+      indent_up();
+      out << indent() << "$msg = $out_transport->getBuffer();\n"
+          << indent() << "$out_transport->resetBuffer();\n"
+          << indent()
+          << "await $channel->genSendRequestNoResponse(RpcOptionsTemp::get(), $msg);\n";
+      scope_down(out);
     }
     scope_down(out);
     out << "\n";

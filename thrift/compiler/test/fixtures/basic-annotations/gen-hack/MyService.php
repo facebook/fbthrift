@@ -942,6 +942,13 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
   public async function lobDataById(int $id, string $data): Awaitable<void> {
     await $this->asyncHandler_->genBefore("MyService", "lobDataById");
     $currentseqid = $this->sendImpl_lobDataById($id, $data);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      await $channel->genSendRequestNoResponse(RpcOptionsTemp::get(), $msg);
+    }
   }
 
   /**
@@ -1097,6 +1104,13 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   public async function lobDataById(int $id, string $data): Awaitable<void> {
     await $this->asyncHandler_->genBefore("MyService", "lobDataById");
     $currentseqid = $this->sendImpl_lobDataById($id, $data);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    if ($channel !== null && $out_transport is TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      await $channel->genSendRequestNoResponse(RpcOptionsTemp::get(), $msg);
+    }
   }
 
   /**
