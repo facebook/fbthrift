@@ -127,6 +127,26 @@ class ServerAttributeSharedMutex final
 };
 
 template <typename T>
+class ServerAttributeUnsafe final
+    : public detail::ServerAttributeBase<T, ServerAttributeUnsafe<T>> {
+ public:
+  explicit ServerAttributeUnsafe(const T& value)
+      : detail::ServerAttributeBase<T, ServerAttributeUnsafe<T>>(value),
+        deduced_(this->default_) {}
+
+  const T& get() const {
+    return deduced_;
+  }
+
+  void mergeImpl() {
+    deduced_ = this->getMergedValue();
+  }
+
+ protected:
+  T deduced_;
+};
+
+template <typename T>
 using ServerAttribute = std::conditional_t<
     sizeof(T) <= sizeof(std::uint64_t) && std::is_trivially_copyable<T>::value,
     ServerAttributeAtomic<T>,

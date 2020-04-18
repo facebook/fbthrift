@@ -237,6 +237,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   ServerAttribute<size_t> writeBatchingSize_{0};
 
+  ServerAttributeUnsafe<folly::sorted_vector_set<std::string>>
+      methodsBypassMaxRequestsLimit_{{}};
+
  protected:
   //! The server's listening addresses
   std::vector<folly::SocketAddress> addresses_;
@@ -873,6 +876,20 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   void setIsOverloaded(IsOverloadedFunc isOverloaded) {
     isOverloaded_ = std::move(isOverloaded);
+  }
+
+  void setMethodsBypassMaxRequestsLimit(
+      const std::vector<std::string>& methods,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    CHECK(configMutable());
+    methodsBypassMaxRequestsLimit_.set(
+        folly::sorted_vector_set<std::string>{methods.begin(), methods.end()},
+        source);
+  }
+
+  const folly::sorted_vector_set<std::string>&
+  getMethodsBypassMaxRequestsLimit() const {
+    return methodsBypassMaxRequestsLimit_.get();
   }
 
   void setGetLoad(std::function<int64_t(const std::string&)> getLoad) {

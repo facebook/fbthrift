@@ -637,7 +637,9 @@ bool ThriftServer::isOverloaded(
   }
 
   uint32_t maxRequests = getMaxRequests();
-  if (maxRequests > 0) {
+  if (maxRequests > 0 &&
+      (method == nullptr ||
+       getMethodsBypassMaxRequestsLimit().count(*method) == 0)) {
     return static_cast<uint32_t>(getActiveRequests()) >= maxRequests;
   }
 

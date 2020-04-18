@@ -137,6 +137,14 @@ class TestInterface : public InstrumentationTestServiceSvIf {
     }
   }
 
+  void neverBlock() override {
+    return;
+  }
+
+  void neverBlock2() override {
+    return;
+  }
+
   folly::coro::Task<void> co_wait(int value, bool busyWait, bool shallowRC)
       override {
     std::unique_ptr<folly::ShallowCopyRequestContextScopeGuard> g;
@@ -635,3 +643,32 @@ TEST(RegistryTests, ManyRegistriesDeathTest) {
       ::testing::KilledBySignal(SIGABRT),
       "");
 }
+
+class MaxRequestsTest : public RequestInstrumentationTest,
+                        public ::testing::WithParamInterface<bool> {
+ protected:
+  bool rocket;
+  void SetUp() override {
+    rocket = GetParam();
+    impl_ = std::make_unique<Impl>([&](auto& ts) {
+      ts.setMaxRequests(1);
+      ts.setMethodsBypassMaxRequestsLimit({"neverBlock2"});
+    });
+  }
+};
+
+TEST_P(MaxRequestsTest, Bypass) {
+  auto client = rocket ? makeRocketClient() : makeHeaderClient();
+
+  client->semifuture_sendRequest();
+  handler()->waitForRequests(1);
+
+  EXPECT_ANY_THROW(client->sync_neverBlock());
+  EXPECT_NO_THROW(client->sync_neverBlock2());
+  handler()->stopRequests();
+}
+
+INSTANTIATE_TEST_CASE_P(
+    MaxRequestsTestsSequence,
+    MaxRequestsTest,
+    testing::Values(true, false));
