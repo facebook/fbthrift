@@ -47,11 +47,6 @@ using parsing_driver = apache::thrift::compiler::parsing_driver;
 
 YY_DECL;
 
-static void thrift_reserved_keyword(parsing_driver& driver, char* keyword) {
-  driver.yyerror("Cannot use reserved language keyword: \"%s\"\n", keyword);
-  driver.end_parsing();
-}
-
 static void integer_overflow(parsing_driver& driver, char* text) {
   driver.yyerror("This integer is too big: \"%s\"\n", text);
   driver.end_parsing();
@@ -191,81 +186,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "const"              { return apache::thrift::compiler::yy::parser::make_tok_const();                }
 "required"           { return apache::thrift::compiler::yy::parser::make_tok_required();             }
 "optional"           { return apache::thrift::compiler::yy::parser::make_tok_optional();             }
-
-
-"abstract"           { thrift_reserved_keyword(driver, yytext); }
-"and"                { thrift_reserved_keyword(driver, yytext); }
-"args"               { thrift_reserved_keyword(driver, yytext); }
-"as"                 { thrift_reserved_keyword(driver, yytext); }
-"assert"             { thrift_reserved_keyword(driver, yytext); }
-"auto"               { thrift_reserved_keyword(driver, yytext); }
-"break"              { thrift_reserved_keyword(driver, yytext); }
-"case"               { thrift_reserved_keyword(driver, yytext); }
-"char"               { thrift_reserved_keyword(driver, yytext); }
-"class"              { thrift_reserved_keyword(driver, yytext); }
-"continue"           { thrift_reserved_keyword(driver, yytext); }
-"declare"            { thrift_reserved_keyword(driver, yytext); }
-"def"                { thrift_reserved_keyword(driver, yytext); }
-"default"            { thrift_reserved_keyword(driver, yytext); }
-"del"                { thrift_reserved_keyword(driver, yytext); }
-"do"                 { thrift_reserved_keyword(driver, yytext); }
-"elif"               { thrift_reserved_keyword(driver, yytext); }
-"else"               { thrift_reserved_keyword(driver, yytext); }
-"elseif"             { thrift_reserved_keyword(driver, yytext); }
-"except"             { thrift_reserved_keyword(driver, yytext); }
-"exec"               { thrift_reserved_keyword(driver, yytext); }
-"extern"             { thrift_reserved_keyword(driver, yytext); }
-"finally"            { thrift_reserved_keyword(driver, yytext); }
-"for"                { thrift_reserved_keyword(driver, yytext); }
-"foreach"            { thrift_reserved_keyword(driver, yytext); }
-"function"           { thrift_reserved_keyword(driver, yytext); }
-"global"             { thrift_reserved_keyword(driver, yytext); }
-"goto"               { thrift_reserved_keyword(driver, yytext); }
-"if"                 { thrift_reserved_keyword(driver, yytext); }
-"implements"         { thrift_reserved_keyword(driver, yytext); }
-"import"             { thrift_reserved_keyword(driver, yytext); }
-"in"                 { thrift_reserved_keyword(driver, yytext); }
-"int"                { thrift_reserved_keyword(driver, yytext); }
-"inline"             { thrift_reserved_keyword(driver, yytext); }
-"instanceof"         { thrift_reserved_keyword(driver, yytext); }
-"interface"          { thrift_reserved_keyword(driver, yytext); }
-"is"                 { thrift_reserved_keyword(driver, yytext); }
-"lambda"             { thrift_reserved_keyword(driver, yytext); }
-"long"               { thrift_reserved_keyword(driver, yytext); }
-"native"             { thrift_reserved_keyword(driver, yytext); }
-"new"                { thrift_reserved_keyword(driver, yytext); }
-"not"                { thrift_reserved_keyword(driver, yytext); }
-"or"                 { thrift_reserved_keyword(driver, yytext); }
-"pass"               { thrift_reserved_keyword(driver, yytext); }
-"public"             { thrift_reserved_keyword(driver, yytext); }
-"print"              { thrift_reserved_keyword(driver, yytext); }
-"private"            { thrift_reserved_keyword(driver, yytext); }
-"protected"          { thrift_reserved_keyword(driver, yytext); }
-"raise"              { thrift_reserved_keyword(driver, yytext); }
-"register"           { thrift_reserved_keyword(driver, yytext); }
-"return"             { thrift_reserved_keyword(driver, yytext); }
-"short"              { thrift_reserved_keyword(driver, yytext); }
-"signed"             { thrift_reserved_keyword(driver, yytext); }
-"sizeof"             { thrift_reserved_keyword(driver, yytext); }
-"static"             { thrift_reserved_keyword(driver, yytext); }
-"switch"             { thrift_reserved_keyword(driver, yytext); }
-"synchronized"       { thrift_reserved_keyword(driver, yytext); }
-"template"           { thrift_reserved_keyword(driver, yytext); }
-"this"               { thrift_reserved_keyword(driver, yytext); }
-"throw"              { thrift_reserved_keyword(driver, yytext); }
-"transient"          { thrift_reserved_keyword(driver, yytext); }
-"try"                { thrift_reserved_keyword(driver, yytext); }
-"unsigned"           { thrift_reserved_keyword(driver, yytext); }
-"var"                { thrift_reserved_keyword(driver, yytext); }
-"virtual"            { thrift_reserved_keyword(driver, yytext); }
-"volatile"           { thrift_reserved_keyword(driver, yytext); }
-"while"              { thrift_reserved_keyword(driver, yytext); }
-"with"               { thrift_reserved_keyword(driver, yytext); }
-"yield"              { thrift_reserved_keyword(driver, yytext); }
-"Object"             { thrift_reserved_keyword(driver, yytext); }
-"Client"             { thrift_reserved_keyword(driver, yytext); }
-"IFace"              { thrift_reserved_keyword(driver, yytext); }
-"Processor"          { thrift_reserved_keyword(driver, yytext); }
 
 {octconstant} {
   errno = 0;
