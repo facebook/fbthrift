@@ -126,7 +126,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     return $me;
   }
 
-  <<__Rx>>
+  <<__Rx, __ProvenanceSkipFrame>>
   public function __toShape(): self::TShape {
     return shape(
       'a' => $this->a,

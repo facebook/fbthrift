@@ -77,6 +77,8 @@ class t_hack_generator : public t_oop_generator {
     enum_transparenttype_ =
         option_is_specified(parsed_options, "enum_transparenttype");
     soft_attribute_ = option_is_specified(parsed_options, "soft_attribute");
+    arrprov_skip_frames_ =
+        option_is_specified(parsed_options, "arrprov_skip_frames");
 
     // no_use_hack_collections_ is only used to migrate away from php gen
     if (no_use_hack_collections_ && strict_types_) {
@@ -655,6 +657,14 @@ class t_hack_generator : public t_oop_generator {
    * True to generate soft typehints as __Soft instead of @
    */
   bool soft_attribute_;
+
+  /**
+   * True to add the `__ProvenanceSkipFrame` attribute to applicable methods.
+   * This will allow array provenance (arrprov) instrumentation to pretend that
+   * arrays created inside a given function were "created" at the particular
+   * callsite of said function.
+   */
+  bool arrprov_skip_frames_;
 
   std::string array_keyword_;
 };
@@ -2226,7 +2236,11 @@ void t_hack_generator::generate_php_struct_shape_methods(
   indent(out) << "}\n";
   out << "\n";
 
-  indent(out) << "<<__Rx>>\n";
+  indent(out) << "<<__Rx";
+  if (arrprov_skip_frames_) {
+    out << ", __ProvenanceSkipFrame";
+  }
+  out << ">>\n";
   indent(out) << "public function __toShape(): self::TShape {\n";
   indent_up();
   indent(out) << "return shape(\n";
