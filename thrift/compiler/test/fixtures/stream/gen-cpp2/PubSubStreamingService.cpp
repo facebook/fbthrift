@@ -20,7 +20,9 @@ apache::thrift::ServerStream<int32_t> PubSubStreamingServiceSvIf::returnstream(i
 }
 
 folly::SemiFuture<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::semifuture_returnstream(int32_t i32_from, int32_t i32_to) {
-  return apache::thrift::detail::si::semifuture([&] { return returnstream(i32_from, i32_to); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return returnstream(i32_from, i32_to);
+  });
 }
 
 folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::future_returnstream(int32_t i32_from, int32_t i32_to) {
@@ -29,7 +31,9 @@ folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf:
 
 
 void PubSubStreamingServiceSvIf::async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t i32_from, int32_t i32_to) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_returnstream(i32_from, i32_to); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_returnstream(i32_from, i32_to);
+  });
 }
 
 apache::thrift::ServerStream<int32_t> PubSubStreamingServiceSvIf::streamthrows(int32_t /*foo*/) {
@@ -37,7 +41,9 @@ apache::thrift::ServerStream<int32_t> PubSubStreamingServiceSvIf::streamthrows(i
 }
 
 folly::SemiFuture<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::semifuture_streamthrows(int32_t foo) {
-  return apache::thrift::detail::si::semifuture([&] { return streamthrows(foo); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return streamthrows(foo);
+  });
 }
 
 folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::future_streamthrows(int32_t foo) {
@@ -46,7 +52,9 @@ folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf:
 
 
 void PubSubStreamingServiceSvIf::async_tm_streamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t foo) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_streamthrows(foo); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_streamthrows(foo);
+  });
 }
 
 apache::thrift::ServerStream<int32_t> PubSubStreamingServiceSvIf::boththrows(int32_t /*foo*/) {
@@ -54,7 +62,9 @@ apache::thrift::ServerStream<int32_t> PubSubStreamingServiceSvIf::boththrows(int
 }
 
 folly::SemiFuture<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::semifuture_boththrows(int32_t foo) {
-  return apache::thrift::detail::si::semifuture([&] { return boththrows(foo); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return boththrows(foo);
+  });
 }
 
 folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::future_boththrows(int32_t foo) {
@@ -63,7 +73,9 @@ folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf:
 
 
 void PubSubStreamingServiceSvIf::async_tm_boththrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t foo) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_boththrows(foo); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_boththrows(foo);
+  });
 }
 
 apache::thrift::ResponseAndServerStream<int32_t,int32_t> PubSubStreamingServiceSvIf::responseandstreamthrows(int32_t /*foo*/) {
@@ -71,7 +83,9 @@ apache::thrift::ResponseAndServerStream<int32_t,int32_t> PubSubStreamingServiceS
 }
 
 folly::SemiFuture<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> PubSubStreamingServiceSvIf::semifuture_responseandstreamthrows(int32_t foo) {
-  return apache::thrift::detail::si::semifuture([&] { return responseandstreamthrows(foo); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return responseandstreamthrows(foo);
+  });
 }
 
 folly::Future<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> PubSubStreamingServiceSvIf::future_responseandstreamthrows(int32_t foo) {
@@ -80,7 +94,9 @@ folly::Future<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> PubSubSt
 
 
 void PubSubStreamingServiceSvIf::async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>> callback, int32_t foo) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_responseandstreamthrows(foo); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_responseandstreamthrows(foo);
+  });
 }
 
 const char* PubSubStreamingServiceAsyncProcessor::getServiceName() {

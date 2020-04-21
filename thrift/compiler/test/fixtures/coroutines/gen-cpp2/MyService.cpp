@@ -20,7 +20,9 @@ void MyServiceSvIf::ping() {
 }
 
 folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_ping() {
-  return apache::thrift::detail::si::semifuture([&] { return ping(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return ping();
+  });
 }
 
 folly::Future<folly::Unit> MyServiceSvIf::future_ping() {
@@ -58,7 +60,9 @@ void MyServiceSvIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallbac
         apache::thrift::HandlerCallback<void>::completeInThread(std::move(callback), std::move(tryResult));
       });
 #else // FOLLY_HAS_COROUTINES
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_ping(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_ping();
+  });
 #endif // FOLLY_HAS_COROUTINES
 }
 
@@ -76,7 +80,9 @@ folly::Future<std::unique_ptr<::std::string>> MyServiceSvIf::future_getRandomDat
 
 
 void MyServiceSvIf::async_tm_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_getRandomData(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_getRandomData();
+  });
 }
 
 
@@ -85,7 +91,9 @@ bool MyServiceSvIf::hasDataById(int64_t /*id*/) {
 }
 
 folly::SemiFuture<bool> MyServiceSvIf::semifuture_hasDataById(int64_t id) {
-  return apache::thrift::detail::si::semifuture([&] { return hasDataById(id); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return hasDataById(id);
+  });
 }
 
 folly::Future<bool> MyServiceSvIf::future_hasDataById(int64_t id) {
@@ -123,7 +131,9 @@ void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::Handler
         apache::thrift::HandlerCallback<bool>::completeInThread(std::move(callback), std::move(tryResult));
       });
 #else // FOLLY_HAS_COROUTINES
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_hasDataById(id); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_hasDataById(id);
+  });
 #endif // FOLLY_HAS_COROUTINES
 }
 
@@ -163,7 +173,9 @@ void MyServiceSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::Handler
         apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>::completeInThread(std::move(callback), std::move(tryResult));
       });
 #else // FOLLY_HAS_COROUTINES
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [this, id]() mutable { return future_getDataById(id); });
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this, id]() mutable {
+    return future_getDataById(id);
+  });
 #endif // FOLLY_HAS_COROUTINES
 }
 
@@ -173,7 +185,9 @@ void MyServiceSvIf::putDataById(int64_t /*id*/, std::unique_ptr<::std::string> /
 }
 
 folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_putDataById(int64_t id, std::unique_ptr<::std::string> data) {
-  return apache::thrift::detail::si::semifuture([&] { return putDataById(id, std::move(data)); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return putDataById(id, std::move(data));
+  });
 }
 
 folly::Future<folly::Unit> MyServiceSvIf::future_putDataById(int64_t id, std::unique_ptr<::std::string> data) {
@@ -182,7 +196,9 @@ folly::Future<folly::Unit> MyServiceSvIf::future_putDataById(int64_t id, std::un
 
 
 void MyServiceSvIf::async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<::std::string> data) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_putDataById(id, std::move(data)); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_putDataById(id, std::move(data));
+  });
 }
 
 void MyServiceSvNull::ping() {

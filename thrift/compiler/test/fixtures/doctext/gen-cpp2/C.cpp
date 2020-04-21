@@ -20,7 +20,9 @@ void CSvIf::f() {
 }
 
 folly::SemiFuture<folly::Unit> CSvIf::semifuture_f() {
-  return apache::thrift::detail::si::semifuture([&] { return f(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return f();
+  });
 }
 
 folly::Future<folly::Unit> CSvIf::future_f() {
@@ -29,7 +31,9 @@ folly::Future<folly::Unit> CSvIf::future_f() {
 
 
 void CSvIf::async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_f(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_f();
+  });
 }
 
 void CSvNull::f() {

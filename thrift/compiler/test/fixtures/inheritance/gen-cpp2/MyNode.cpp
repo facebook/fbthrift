@@ -20,7 +20,9 @@ void MyNodeSvIf::do_mid() {
 }
 
 folly::SemiFuture<folly::Unit> MyNodeSvIf::semifuture_do_mid() {
-  return apache::thrift::detail::si::semifuture([&] { return do_mid(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return do_mid();
+  });
 }
 
 folly::Future<folly::Unit> MyNodeSvIf::future_do_mid() {
@@ -29,7 +31,9 @@ folly::Future<folly::Unit> MyNodeSvIf::future_do_mid() {
 
 
 void MyNodeSvIf::async_tm_do_mid(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_do_mid(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_do_mid();
+  });
 }
 
 void MyNodeSvNull::do_mid() {

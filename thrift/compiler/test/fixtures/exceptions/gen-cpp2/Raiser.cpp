@@ -20,7 +20,9 @@ void RaiserSvIf::doBland() {
 }
 
 folly::SemiFuture<folly::Unit> RaiserSvIf::semifuture_doBland() {
-  return apache::thrift::detail::si::semifuture([&] { return doBland(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return doBland();
+  });
 }
 
 folly::Future<folly::Unit> RaiserSvIf::future_doBland() {
@@ -29,7 +31,9 @@ folly::Future<folly::Unit> RaiserSvIf::future_doBland() {
 
 
 void RaiserSvIf::async_tm_doBland(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_doBland(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_doBland();
+  });
 }
 
 void RaiserSvIf::doRaise() {
@@ -37,7 +41,9 @@ void RaiserSvIf::doRaise() {
 }
 
 folly::SemiFuture<folly::Unit> RaiserSvIf::semifuture_doRaise() {
-  return apache::thrift::detail::si::semifuture([&] { return doRaise(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return doRaise();
+  });
 }
 
 folly::Future<folly::Unit> RaiserSvIf::future_doRaise() {
@@ -46,7 +52,9 @@ folly::Future<folly::Unit> RaiserSvIf::future_doRaise() {
 
 
 void RaiserSvIf::async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_doRaise(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_doRaise();
+  });
 }
 
 void RaiserSvIf::get200(::std::string& /*_return*/) {
@@ -63,7 +71,9 @@ folly::Future<std::unique_ptr<::std::string>> RaiserSvIf::future_get200() {
 
 
 void RaiserSvIf::async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_get200(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_get200();
+  });
 }
 
 
@@ -81,7 +91,9 @@ folly::Future<std::unique_ptr<::std::string>> RaiserSvIf::future_get500() {
 
 
 void RaiserSvIf::async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_get500(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_get500();
+  });
 }
 
 

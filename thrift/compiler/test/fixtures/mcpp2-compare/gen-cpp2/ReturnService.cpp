@@ -20,7 +20,9 @@ void ReturnServiceSvIf::noReturn() {
 }
 
 folly::SemiFuture<folly::Unit> ReturnServiceSvIf::semifuture_noReturn() {
-  return apache::thrift::detail::si::semifuture([&] { return noReturn(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return noReturn();
+  });
 }
 
 folly::Future<folly::Unit> ReturnServiceSvIf::future_noReturn() {
@@ -29,7 +31,9 @@ folly::Future<folly::Unit> ReturnServiceSvIf::future_noReturn() {
 
 
 void ReturnServiceSvIf::async_eb_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable { return future_noReturn(); });
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable {
+    return future_noReturn();
+  });
 }
 
 bool ReturnServiceSvIf::boolReturn() {
@@ -37,7 +41,9 @@ bool ReturnServiceSvIf::boolReturn() {
 }
 
 folly::SemiFuture<bool> ReturnServiceSvIf::semifuture_boolReturn() {
-  return apache::thrift::detail::si::semifuture([&] { return boolReturn(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return boolReturn();
+  });
 }
 
 folly::Future<bool> ReturnServiceSvIf::future_boolReturn() {
@@ -46,7 +52,9 @@ folly::Future<bool> ReturnServiceSvIf::future_boolReturn() {
 
 
 void ReturnServiceSvIf::async_tm_boolReturn(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_boolReturn(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_boolReturn();
+  });
 }
 
 int16_t ReturnServiceSvIf::i16Return() {
@@ -54,7 +62,9 @@ int16_t ReturnServiceSvIf::i16Return() {
 }
 
 folly::SemiFuture<int16_t> ReturnServiceSvIf::semifuture_i16Return() {
-  return apache::thrift::detail::si::semifuture([&] { return i16Return(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return i16Return();
+  });
 }
 
 folly::Future<int16_t> ReturnServiceSvIf::future_i16Return() {
@@ -63,7 +73,9 @@ folly::Future<int16_t> ReturnServiceSvIf::future_i16Return() {
 
 
 void ReturnServiceSvIf::async_tm_i16Return(std::unique_ptr<apache::thrift::HandlerCallback<int16_t>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_i16Return(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_i16Return();
+  });
 }
 
 int32_t ReturnServiceSvIf::i32Return() {
@@ -71,7 +83,9 @@ int32_t ReturnServiceSvIf::i32Return() {
 }
 
 folly::SemiFuture<int32_t> ReturnServiceSvIf::semifuture_i32Return() {
-  return apache::thrift::detail::si::semifuture([&] { return i32Return(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return i32Return();
+  });
 }
 
 folly::Future<int32_t> ReturnServiceSvIf::future_i32Return() {
@@ -80,7 +94,9 @@ folly::Future<int32_t> ReturnServiceSvIf::future_i32Return() {
 
 
 void ReturnServiceSvIf::async_tm_i32Return(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_i32Return(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_i32Return();
+  });
 }
 
 int64_t ReturnServiceSvIf::i64Return() {
@@ -88,7 +104,9 @@ int64_t ReturnServiceSvIf::i64Return() {
 }
 
 folly::SemiFuture<int64_t> ReturnServiceSvIf::semifuture_i64Return() {
-  return apache::thrift::detail::si::semifuture([&] { return i64Return(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return i64Return();
+  });
 }
 
 folly::Future<int64_t> ReturnServiceSvIf::future_i64Return() {
@@ -97,7 +115,9 @@ folly::Future<int64_t> ReturnServiceSvIf::future_i64Return() {
 
 
 void ReturnServiceSvIf::async_tm_i64Return(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_i64Return(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_i64Return();
+  });
 }
 
 float ReturnServiceSvIf::floatReturn() {
@@ -105,7 +125,9 @@ float ReturnServiceSvIf::floatReturn() {
 }
 
 folly::SemiFuture<float> ReturnServiceSvIf::semifuture_floatReturn() {
-  return apache::thrift::detail::si::semifuture([&] { return floatReturn(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return floatReturn();
+  });
 }
 
 folly::Future<float> ReturnServiceSvIf::future_floatReturn() {
@@ -114,7 +136,9 @@ folly::Future<float> ReturnServiceSvIf::future_floatReturn() {
 
 
 void ReturnServiceSvIf::async_tm_floatReturn(std::unique_ptr<apache::thrift::HandlerCallback<float>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_floatReturn(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_floatReturn();
+  });
 }
 
 double ReturnServiceSvIf::doubleReturn() {
@@ -122,7 +146,9 @@ double ReturnServiceSvIf::doubleReturn() {
 }
 
 folly::SemiFuture<double> ReturnServiceSvIf::semifuture_doubleReturn() {
-  return apache::thrift::detail::si::semifuture([&] { return doubleReturn(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return doubleReturn();
+  });
 }
 
 folly::Future<double> ReturnServiceSvIf::future_doubleReturn() {
@@ -131,7 +157,9 @@ folly::Future<double> ReturnServiceSvIf::future_doubleReturn() {
 
 
 void ReturnServiceSvIf::async_tm_doubleReturn(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_doubleReturn(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_doubleReturn();
+  });
 }
 
 void ReturnServiceSvIf::stringReturn(::std::string& /*_return*/) {
@@ -148,7 +176,9 @@ folly::Future<std::unique_ptr<::std::string>> ReturnServiceSvIf::future_stringRe
 
 
 void ReturnServiceSvIf::async_eb_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable { return future_stringReturn(); });
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable {
+    return future_stringReturn();
+  });
 }
 
 
@@ -166,7 +196,9 @@ folly::Future<std::unique_ptr<::std::string>> ReturnServiceSvIf::future_binaryRe
 
 
 void ReturnServiceSvIf::async_tm_binaryReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_binaryReturn(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_binaryReturn();
+  });
 }
 
 
@@ -184,7 +216,9 @@ folly::Future<std::unique_ptr<::std::map<::std::string, int64_t>>> ReturnService
 
 
 void ReturnServiceSvIf::async_tm_mapReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, int64_t>>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_mapReturn(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_mapReturn();
+  });
 }
 
 
@@ -193,7 +227,9 @@ void ReturnServiceSvIf::async_tm_mapReturn(std::unique_ptr<apache::thrift::Handl
 }
 
 folly::SemiFuture< ::some::valid::ns::simpleTypeDef> ReturnServiceSvIf::semifuture_simpleTypedefReturn() {
-  return apache::thrift::detail::si::semifuture([&] { return simpleTypedefReturn(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return simpleTypedefReturn();
+  });
 }
 
 folly::Future< ::some::valid::ns::simpleTypeDef> ReturnServiceSvIf::future_simpleTypedefReturn() {
@@ -202,7 +238,9 @@ folly::Future< ::some::valid::ns::simpleTypeDef> ReturnServiceSvIf::future_simpl
 
 
 void ReturnServiceSvIf::async_tm_simpleTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::simpleTypeDef>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_simpleTypedefReturn(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_simpleTypedefReturn();
+  });
 }
 
 void ReturnServiceSvIf::complexTypedefReturn( ::some::valid::ns::complexStructTypeDef& /*_return*/) {
@@ -219,7 +257,9 @@ folly::Future<std::unique_ptr< ::some::valid::ns::complexStructTypeDef>> ReturnS
 
 
 void ReturnServiceSvIf::async_tm_complexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::complexStructTypeDef>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_complexTypedefReturn(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_complexTypedefReturn();
+  });
 }
 
 
@@ -237,7 +277,9 @@ folly::Future<std::unique_ptr<::std::vector< ::some::valid::ns::mostComplexTypeD
 
 
 void ReturnServiceSvIf::async_tm_list_mostComplexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::mostComplexTypeDef>>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_list_mostComplexTypedefReturn(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_list_mostComplexTypedefReturn();
+  });
 }
 
 
@@ -246,7 +288,9 @@ void ReturnServiceSvIf::async_tm_list_mostComplexTypedefReturn(std::unique_ptr<a
 }
 
 folly::SemiFuture< ::some::valid::ns::MyEnumA> ReturnServiceSvIf::semifuture_enumReturn() {
-  return apache::thrift::detail::si::semifuture([&] { return enumReturn(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return enumReturn();
+  });
 }
 
 folly::Future< ::some::valid::ns::MyEnumA> ReturnServiceSvIf::future_enumReturn() {
@@ -255,7 +299,9 @@ folly::Future< ::some::valid::ns::MyEnumA> ReturnServiceSvIf::future_enumReturn(
 
 
 void ReturnServiceSvIf::async_eb_enumReturn(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback) {
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable { return future_enumReturn(); });
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable {
+    return future_enumReturn();
+  });
 }
 
 void ReturnServiceSvIf::list_EnumReturn(::std::vector< ::some::valid::ns::MyEnumA>& /*_return*/) {
@@ -272,7 +318,9 @@ folly::Future<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>> Retur
 
 
 void ReturnServiceSvIf::async_eb_list_EnumReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>>> callback) {
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable { return future_list_EnumReturn(); });
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable {
+    return future_list_EnumReturn();
+  });
 }
 
 
@@ -290,7 +338,9 @@ folly::Future<std::unique_ptr< ::some::valid::ns::MyStruct>> ReturnServiceSvIf::
 
 
 void ReturnServiceSvIf::async_tm_structReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_structReturn(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_structReturn();
+  });
 }
 
 
@@ -308,7 +358,9 @@ folly::Future<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>> ReturnS
 
 
 void ReturnServiceSvIf::async_tm_set_StructReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_set_StructReturn(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_set_StructReturn();
+  });
 }
 
 
@@ -326,7 +378,9 @@ folly::Future<std::unique_ptr< ::some::valid::ns::ComplexUnion>> ReturnServiceSv
 
 
 void ReturnServiceSvIf::async_eb_unionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>> callback) {
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable { return future_unionReturn(); });
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable {
+    return future_unionReturn();
+  });
 }
 
 
@@ -344,7 +398,9 @@ folly::Future<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>> 
 
 
 void ReturnServiceSvIf::async_tm_list_UnionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_list_UnionReturn(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_list_UnionReturn();
+  });
 }
 
 
@@ -362,7 +418,9 @@ folly::Future<std::unique_ptr< ::some::valid::ns::IOBuf>> ReturnServiceSvIf::fut
 
 
 void ReturnServiceSvIf::async_eb_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBuf>>> callback, int64_t size) {
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [this, size]() mutable { return future_readDataEb(size); });
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this, size]() mutable {
+    return future_readDataEb(size);
+  });
 }
 
 
@@ -380,7 +438,9 @@ folly::Future<std::unique_ptr< ::some::valid::ns::IOBufPtr>> ReturnServiceSvIf::
 
 
 void ReturnServiceSvIf::async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBufPtr>>> callback, int64_t size) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_readData(size); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_readData(size);
+  });
 }
 
 

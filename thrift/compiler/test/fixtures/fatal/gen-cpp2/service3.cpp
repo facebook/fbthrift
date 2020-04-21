@@ -20,7 +20,9 @@ void service3SvIf::methodA() {
 }
 
 folly::SemiFuture<folly::Unit> service3SvIf::semifuture_methodA() {
-  return apache::thrift::detail::si::semifuture([&] { return methodA(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return methodA();
+  });
 }
 
 folly::Future<folly::Unit> service3SvIf::future_methodA() {
@@ -29,7 +31,9 @@ folly::Future<folly::Unit> service3SvIf::future_methodA() {
 
 
 void service3SvIf::async_tm_methodA(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_methodA(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_methodA();
+  });
 }
 
 void service3SvIf::methodB(int32_t /*x*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*y*/, double /*z*/) {
@@ -37,7 +41,9 @@ void service3SvIf::methodB(int32_t /*x*/, std::unique_ptr< ::test_cpp2::cpp_refl
 }
 
 folly::SemiFuture<folly::Unit> service3SvIf::semifuture_methodB(int32_t x, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> y, double z) {
-  return apache::thrift::detail::si::semifuture([&] { return methodB(x, std::move(y), z); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return methodB(x, std::move(y), z);
+  });
 }
 
 folly::Future<folly::Unit> service3SvIf::future_methodB(int32_t x, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> y, double z) {
@@ -46,7 +52,9 @@ folly::Future<folly::Unit> service3SvIf::future_methodB(int32_t x, std::unique_p
 
 
 void service3SvIf::async_tm_methodB(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t x, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> y, double z) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_methodB(x, std::move(y), z); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_methodB(x, std::move(y), z);
+  });
 }
 
 int32_t service3SvIf::methodC() {
@@ -54,7 +62,9 @@ int32_t service3SvIf::methodC() {
 }
 
 folly::SemiFuture<int32_t> service3SvIf::semifuture_methodC() {
-  return apache::thrift::detail::si::semifuture([&] { return methodC(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return methodC();
+  });
 }
 
 folly::Future<int32_t> service3SvIf::future_methodC() {
@@ -63,7 +73,9 @@ folly::Future<int32_t> service3SvIf::future_methodC() {
 
 
 void service3SvIf::async_tm_methodC(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_methodC(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_methodC();
+  });
 }
 
 int32_t service3SvIf::methodD(int32_t /*i*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*j*/, double /*k*/) {
@@ -71,7 +83,9 @@ int32_t service3SvIf::methodD(int32_t /*i*/, std::unique_ptr< ::test_cpp2::cpp_r
 }
 
 folly::SemiFuture<int32_t> service3SvIf::semifuture_methodD(int32_t i, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> j, double k) {
-  return apache::thrift::detail::si::semifuture([&] { return methodD(i, std::move(j), k); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return methodD(i, std::move(j), k);
+  });
 }
 
 folly::Future<int32_t> service3SvIf::future_methodD(int32_t i, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> j, double k) {
@@ -80,7 +94,9 @@ folly::Future<int32_t> service3SvIf::future_methodD(int32_t i, std::unique_ptr< 
 
 
 void service3SvIf::async_tm_methodD(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback, int32_t i, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> j, double k) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_methodD(i, std::move(j), k); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_methodD(i, std::move(j), k);
+  });
 }
 
 void service3SvIf::methodE( ::test_cpp2::cpp_reflection::struct2& /*_return*/) {
@@ -97,7 +113,9 @@ folly::Future<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>> service3Sv
 
 
 void service3SvIf::async_tm_methodE(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_methodE(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_methodE();
+  });
 }
 
 
@@ -115,7 +133,9 @@ folly::Future<std::unique_ptr< ::test_cpp2::cpp_reflection::struct3>> service3Sv
 
 
 void service3SvIf::async_tm_methodF(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct3>>> callback, int32_t l, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> m, double n) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_methodF(l, std::move(m), n); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_methodF(l, std::move(m), n);
+  });
 }
 
 

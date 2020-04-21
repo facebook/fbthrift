@@ -29,7 +29,9 @@ folly::Future<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> Some
 
 
 void SomeServiceSvIf::async_tm_bounce_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>>> callback, std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> m) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_bounce_map(std::move(m)); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_bounce_map(std::move(m));
+  });
 }
 
 
@@ -47,7 +49,9 @@ folly::Future<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBi
 
 
 void SomeServiceSvIf::async_tm_binary_keyed_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>>> callback, std::unique_ptr<::std::vector<int64_t>> r) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_binary_keyed_map(std::move(r)); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_binary_keyed_map(std::move(r));
+  });
 }
 
 

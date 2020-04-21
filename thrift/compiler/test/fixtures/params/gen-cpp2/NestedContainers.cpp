@@ -20,7 +20,9 @@ void NestedContainersSvIf::mapList(std::unique_ptr<::std::map<int32_t, ::std::ve
 }
 
 folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_mapList(std::unique_ptr<::std::map<int32_t, ::std::vector<int32_t>>> foo) {
-  return apache::thrift::detail::si::semifuture([&] { return mapList(std::move(foo)); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return mapList(std::move(foo));
+  });
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_mapList(std::unique_ptr<::std::map<int32_t, ::std::vector<int32_t>>> foo) {
@@ -29,7 +31,9 @@ folly::Future<folly::Unit> NestedContainersSvIf::future_mapList(std::unique_ptr<
 
 
 void NestedContainersSvIf::async_tm_mapList(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<int32_t, ::std::vector<int32_t>>> foo) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_mapList(std::move(foo)); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_mapList(std::move(foo));
+  });
 }
 
 void NestedContainersSvIf::mapSet(std::unique_ptr<::std::map<int32_t, ::std::set<int32_t>>> /*foo*/) {
@@ -37,7 +41,9 @@ void NestedContainersSvIf::mapSet(std::unique_ptr<::std::map<int32_t, ::std::set
 }
 
 folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_mapSet(std::unique_ptr<::std::map<int32_t, ::std::set<int32_t>>> foo) {
-  return apache::thrift::detail::si::semifuture([&] { return mapSet(std::move(foo)); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return mapSet(std::move(foo));
+  });
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_mapSet(std::unique_ptr<::std::map<int32_t, ::std::set<int32_t>>> foo) {
@@ -46,7 +52,9 @@ folly::Future<folly::Unit> NestedContainersSvIf::future_mapSet(std::unique_ptr<:
 
 
 void NestedContainersSvIf::async_tm_mapSet(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<int32_t, ::std::set<int32_t>>> foo) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_mapSet(std::move(foo)); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_mapSet(std::move(foo));
+  });
 }
 
 void NestedContainersSvIf::listMap(std::unique_ptr<::std::vector<::std::map<int32_t, int32_t>>> /*foo*/) {
@@ -54,7 +62,9 @@ void NestedContainersSvIf::listMap(std::unique_ptr<::std::vector<::std::map<int3
 }
 
 folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_listMap(std::unique_ptr<::std::vector<::std::map<int32_t, int32_t>>> foo) {
-  return apache::thrift::detail::si::semifuture([&] { return listMap(std::move(foo)); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return listMap(std::move(foo));
+  });
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_listMap(std::unique_ptr<::std::vector<::std::map<int32_t, int32_t>>> foo) {
@@ -63,7 +73,9 @@ folly::Future<folly::Unit> NestedContainersSvIf::future_listMap(std::unique_ptr<
 
 
 void NestedContainersSvIf::async_tm_listMap(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::map<int32_t, int32_t>>> foo) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_listMap(std::move(foo)); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_listMap(std::move(foo));
+  });
 }
 
 void NestedContainersSvIf::listSet(std::unique_ptr<::std::vector<::std::set<int32_t>>> /*foo*/) {
@@ -71,7 +83,9 @@ void NestedContainersSvIf::listSet(std::unique_ptr<::std::vector<::std::set<int3
 }
 
 folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_listSet(std::unique_ptr<::std::vector<::std::set<int32_t>>> foo) {
-  return apache::thrift::detail::si::semifuture([&] { return listSet(std::move(foo)); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return listSet(std::move(foo));
+  });
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_listSet(std::unique_ptr<::std::vector<::std::set<int32_t>>> foo) {
@@ -80,7 +94,9 @@ folly::Future<folly::Unit> NestedContainersSvIf::future_listSet(std::unique_ptr<
 
 
 void NestedContainersSvIf::async_tm_listSet(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::set<int32_t>>> foo) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_listSet(std::move(foo)); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_listSet(std::move(foo));
+  });
 }
 
 void NestedContainersSvIf::turtles(std::unique_ptr<::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>> /*foo*/) {
@@ -88,7 +104,9 @@ void NestedContainersSvIf::turtles(std::unique_ptr<::std::vector<::std::vector<:
 }
 
 folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_turtles(std::unique_ptr<::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>> foo) {
-  return apache::thrift::detail::si::semifuture([&] { return turtles(std::move(foo)); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return turtles(std::move(foo));
+  });
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_turtles(std::unique_ptr<::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>> foo) {
@@ -97,7 +115,9 @@ folly::Future<folly::Unit> NestedContainersSvIf::future_turtles(std::unique_ptr<
 
 
 void NestedContainersSvIf::async_tm_turtles(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>> foo) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_turtles(std::move(foo)); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_turtles(std::move(foo));
+  });
 }
 
 void NestedContainersSvNull::mapList(std::unique_ptr<::std::map<int32_t, ::std::vector<int32_t>>> /*foo*/) {

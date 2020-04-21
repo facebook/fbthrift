@@ -20,7 +20,9 @@ apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkSe
 }
 
 folly::SemiFuture<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::semifuture_method() {
-  return apache::thrift::detail::si::semifuture([&] { return method(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return method();
+  });
 }
 
 folly::Future<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::future_method() {
@@ -29,7 +31,9 @@ folly::Future<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalRe
 
 
 void SinkServiceSvIf::async_tm_method(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_method(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_method();
+  });
 }
 
 apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvIf::methodAndReponse() {
@@ -37,7 +41,9 @@ apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPa
 }
 
 folly::SemiFuture<apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::semifuture_methodAndReponse() {
-  return apache::thrift::detail::si::semifuture([&] { return methodAndReponse(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return methodAndReponse();
+  });
 }
 
 folly::Future<apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::future_methodAndReponse() {
@@ -46,7 +52,9 @@ folly::Future<apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, 
 
 
 void SinkServiceSvIf::async_tm_methodAndReponse(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_methodAndReponse(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_methodAndReponse();
+  });
 }
 
 apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvIf::methodThrow() {
@@ -54,7 +62,9 @@ apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkSe
 }
 
 folly::SemiFuture<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::semifuture_methodThrow() {
-  return apache::thrift::detail::si::semifuture([&] { return methodThrow(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return methodThrow();
+  });
 }
 
 folly::Future<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::future_methodThrow() {
@@ -63,7 +73,9 @@ folly::Future<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalRe
 
 
 void SinkServiceSvIf::async_tm_methodThrow(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_methodThrow(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_methodThrow();
+  });
 }
 
 apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvIf::methodSinkThrow() {
@@ -71,7 +83,9 @@ apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkSe
 }
 
 folly::SemiFuture<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::semifuture_methodSinkThrow() {
-  return apache::thrift::detail::si::semifuture([&] { return methodSinkThrow(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return methodSinkThrow();
+  });
 }
 
 folly::Future<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::future_methodSinkThrow() {
@@ -80,7 +94,9 @@ folly::Future<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalRe
 
 
 void SinkServiceSvIf::async_tm_methodSinkThrow(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_methodSinkThrow(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_methodSinkThrow();
+  });
 }
 
 apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvIf::methodFinalThrow() {
@@ -88,7 +104,9 @@ apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkSe
 }
 
 folly::SemiFuture<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::semifuture_methodFinalThrow() {
-  return apache::thrift::detail::si::semifuture([&] { return methodFinalThrow(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return methodFinalThrow();
+  });
 }
 
 folly::Future<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::future_methodFinalThrow() {
@@ -97,7 +115,9 @@ folly::Future<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalRe
 
 
 void SinkServiceSvIf::async_tm_methodFinalThrow(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_methodFinalThrow(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_methodFinalThrow();
+  });
 }
 
 apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvIf::methodBothThrow() {
@@ -105,7 +125,9 @@ apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkSe
 }
 
 folly::SemiFuture<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::semifuture_methodBothThrow() {
-  return apache::thrift::detail::si::semifuture([&] { return methodBothThrow(); });
+  return apache::thrift::detail::si::semifuture([&] {
+    return methodBothThrow();
+  });
 }
 
 folly::Future<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::future_methodBothThrow() {
@@ -114,7 +136,9 @@ folly::Future<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalRe
 
 
 void SinkServiceSvIf::async_tm_methodBothThrow(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_methodBothThrow(); });
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_methodBothThrow();
+  });
 }
 
 apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvNull::method() {
