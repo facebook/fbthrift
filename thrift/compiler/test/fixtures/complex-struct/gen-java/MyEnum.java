@@ -12,7 +12,10 @@ import java.util.HashMap;
 @SuppressWarnings({ "unused" })
 public enum MyEnum implements com.facebook.thrift.TEnum {
   MyValue1(0),
-  MyValue2(1);
+  MyValue2(1),
+  MyValue3(3),
+  MyValue4(4),
+  MyValue5(5);
 
   private final int value;
 
@@ -37,6 +40,12 @@ public enum MyEnum implements com.facebook.thrift.TEnum {
         return MyValue1;
       case 1:
         return MyValue2;
+      case 3:
+        return MyValue3;
+      case 4:
+        return MyValue4;
+      case 5:
+        return MyValue5;
       default:
         return null;
     }

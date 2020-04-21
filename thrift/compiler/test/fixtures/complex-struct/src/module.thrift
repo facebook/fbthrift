@@ -27,6 +27,9 @@ typedef map<i32, i64>
 enum MyEnum {
   MyValue1 = 0,
   MyValue2 = 1,
+  MyValue3 = 3,
+  MyValue4 = 4,
+  MyValue5 = 5,
 }
 
 struct MyStructFloatFieldThrowExp {
@@ -70,6 +73,64 @@ struct MyStruct {
   27: set<byte> sByte,
 }
 
+struct SimpleStruct {
+  1: i64 age = 60,
+  2: string name = "Batman",
+}
+
+const i32 DEFAULT_PORT_NUM = 3456
+
+const MyUnion constEnumUnion = { "myEnum" : MyEnum.MyValue2, }
+
+struct defaultStruct {
+  1: i64 myLongDFset = 10,  // default value is 10
+  2: i64 myLongDF,  // default value is 0
+  3: i32 portDFset = DEFAULT_PORT_NUM,
+  4: i32 portNum,
+  5: binary myBinaryDFset = "abc",
+  6: binary myBinary,
+  7: byte myByteDFSet = 17,
+  8: byte myByte,
+  9: double myDoubleDFset = 99.7678,
+  10: double myDoubleDFZero = 0.0,
+  12: double myDouble,
+  13: map<i32, string> field3 = {15 : 'a_value', 2: 'b_value'},
+  14: list<MyEnum> myList = [MyEnum.MyValue1, MyEnum.MyValue1, MyEnum.MyValue2],
+  15: set<string> mySet = ["house", "car", "dog"],
+  16: SimpleStruct simpleStruct = { "age": 40, "name": "John"},
+  17: list<SimpleStruct> listStructDFset = [
+    {"age": 40, "name": "IronMan"},{ "age": 999, "name": "Thanos"}],
+  18: MyUnion myUnion = constEnumUnion,
+  19: list<MyUnion> listUnionDFset = [
+    {"myEnum" : MyEnum.MyValue2},
+    {"intValue" : 123},
+    ],
+  20: map<i32, list<SimpleStruct>> mapNestlistStructDfSet = {
+       1: [ {"age": 40, "name": "IronMan"},{ "age": 999, "name": "Thanos"} ],
+       2: [ {"age": 28, "name": "BatMan"},{ "age": 12, "name": "Robin"} ],
+       5: [ {"age": 12, "name": "RatMan"},{ "age": 6, "name": "Catman"} ],
+  },
+  21: map<i64, string> (
+    java.swift.type = "it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>")
+    mapJavaTypeDFset = {15 : 'a_value', 2: 'b_value'},
+  22: map<i64, i32>  emptyMap = { },
+  23: map<string, map<i32, MyEnum>> enumMapDFset = {
+     "SANDY BRIDGE": {
+       16: MyEnum.MyValue1,
+       144: MyEnum.MyValue1,
+     },
+     "IVY BRIDGE": {
+       32: MyEnum.MyValue2,
+       144: MyEnum.MyValue2,
+     },
+     "HASWELL": {
+       32: MyEnum.MyValue3,
+       128: MyEnum.MyValue3,
+       256: MyEnum.MyValue3,
+     },
+  },
+}
+
 struct MyStructTypeDef {
   1: i64 myLongField,
   2: longTypeDef  myLongTypeDef,
@@ -89,6 +150,8 @@ union MyUnion {
   2: MyStruct myStruct,
   3: MyDataItem myDataItem,
   4: ComplexNestedStruct complexNestedStruct,
+  5: i64 longValue,
+  6: i32 intValue,
 }
 
 union MyUnionFloatFieldThrowExp {

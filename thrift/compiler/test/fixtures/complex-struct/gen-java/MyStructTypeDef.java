@@ -741,17 +741,17 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
         case MYMAPFIELD:
           if (__field.type == TType.MAP) {
             {
-              TMap _map91 = iprot.readMapBegin();
-              this.myMapField = new HashMap<Short,String>(Math.max(0, 2*_map91.size));
-              for (int _i92 = 0; 
-                   (_map91.size < 0) ? iprot.peekMap() : (_i92 < _map91.size); 
-                   ++_i92)
+              TMap _map157 = iprot.readMapBegin();
+              this.myMapField = new HashMap<Short,String>(Math.max(0, 2*_map157.size));
+              for (int _i158 = 0; 
+                   (_map157.size < 0) ? iprot.peekMap() : (_i158 < _map157.size); 
+                   ++_i158)
               {
-                short _key93;
-                String _val94;
-                _key93 = iprot.readI16();
-                _val94 = iprot.readString();
-                this.myMapField.put(_key93, _val94);
+                short _key159;
+                String _val160;
+                _key159 = iprot.readI16();
+                _val160 = iprot.readString();
+                this.myMapField.put(_key159, _val160);
               }
               iprot.readMapEnd();
             }
@@ -762,17 +762,17 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
         case MYMAPTYPEDEF:
           if (__field.type == TType.MAP) {
             {
-              TMap _map95 = iprot.readMapBegin();
-              this.myMapTypedef = new HashMap<Short,String>(Math.max(0, 2*_map95.size));
-              for (int _i96 = 0; 
-                   (_map95.size < 0) ? iprot.peekMap() : (_i96 < _map95.size); 
-                   ++_i96)
+              TMap _map161 = iprot.readMapBegin();
+              this.myMapTypedef = new HashMap<Short,String>(Math.max(0, 2*_map161.size));
+              for (int _i162 = 0; 
+                   (_map161.size < 0) ? iprot.peekMap() : (_i162 < _map161.size); 
+                   ++_i162)
               {
-                short _key97;
-                String _val98;
-                _key97 = iprot.readI16();
-                _val98 = iprot.readString();
-                this.myMapTypedef.put(_key97, _val98);
+                short _key163;
+                String _val164;
+                _key163 = iprot.readI16();
+                _val164 = iprot.readString();
+                this.myMapTypedef.put(_key163, _val164);
               }
               iprot.readMapEnd();
             }
@@ -783,15 +783,15 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
         case MYLISTFIELD:
           if (__field.type == TType.LIST) {
             {
-              TList _list99 = iprot.readListBegin();
-              this.myListField = new ArrayList<Double>(Math.max(0, _list99.size));
-              for (int _i100 = 0; 
-                   (_list99.size < 0) ? iprot.peekList() : (_i100 < _list99.size); 
-                   ++_i100)
+              TList _list165 = iprot.readListBegin();
+              this.myListField = new ArrayList<Double>(Math.max(0, _list165.size));
+              for (int _i166 = 0; 
+                   (_list165.size < 0) ? iprot.peekList() : (_i166 < _list165.size); 
+                   ++_i166)
               {
-                double _elem101;
-                _elem101 = iprot.readDouble();
-                this.myListField.add(_elem101);
+                double _elem167;
+                _elem167 = iprot.readDouble();
+                this.myListField.add(_elem167);
               }
               iprot.readListEnd();
             }
@@ -802,15 +802,15 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
         case MYLISTTYPEDEF:
           if (__field.type == TType.LIST) {
             {
-              TList _list102 = iprot.readListBegin();
-              this.myListTypedef = new ArrayList<Double>(Math.max(0, _list102.size));
-              for (int _i103 = 0; 
-                   (_list102.size < 0) ? iprot.peekList() : (_i103 < _list102.size); 
-                   ++_i103)
+              TList _list168 = iprot.readListBegin();
+              this.myListTypedef = new ArrayList<Double>(Math.max(0, _list168.size));
+              for (int _i169 = 0; 
+                   (_list168.size < 0) ? iprot.peekList() : (_i169 < _list168.size); 
+                   ++_i169)
               {
-                double _elem104;
-                _elem104 = iprot.readDouble();
-                this.myListTypedef.add(_elem104);
+                double _elem170;
+                _elem170 = iprot.readDouble();
+                this.myListTypedef.add(_elem170);
               }
               iprot.readListEnd();
             }
@@ -821,41 +821,41 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
         case MYMAPLISTOFTYPEDEF:
           if (__field.type == TType.MAP) {
             {
-              TMap _map105 = iprot.readMapBegin();
-              this.myMapListOfTypeDef = new HashMap<Short,List<List<Double>>>(Math.max(0, 2*_map105.size));
-              for (int _i106 = 0; 
-                   (_map105.size < 0) ? iprot.peekMap() : (_i106 < _map105.size); 
-                   ++_i106)
+              TMap _map171 = iprot.readMapBegin();
+              this.myMapListOfTypeDef = new HashMap<Short,List<List<Double>>>(Math.max(0, 2*_map171.size));
+              for (int _i172 = 0; 
+                   (_map171.size < 0) ? iprot.peekMap() : (_i172 < _map171.size); 
+                   ++_i172)
               {
-                short _key107;
-                List<List<Double>> _val108;
-                _key107 = iprot.readI16();
+                short _key173;
+                List<List<Double>> _val174;
+                _key173 = iprot.readI16();
                 {
-                  TList _list109 = iprot.readListBegin();
-                  _val108 = new ArrayList<List<Double>>(Math.max(0, _list109.size));
-                  for (int _i110 = 0; 
-                       (_list109.size < 0) ? iprot.peekList() : (_i110 < _list109.size); 
-                       ++_i110)
+                  TList _list175 = iprot.readListBegin();
+                  _val174 = new ArrayList<List<Double>>(Math.max(0, _list175.size));
+                  for (int _i176 = 0; 
+                       (_list175.size < 0) ? iprot.peekList() : (_i176 < _list175.size); 
+                       ++_i176)
                   {
-                    List<Double> _elem111;
+                    List<Double> _elem177;
                     {
-                      TList _list112 = iprot.readListBegin();
-                      _elem111 = new ArrayList<Double>(Math.max(0, _list112.size));
-                      for (int _i113 = 0; 
-                           (_list112.size < 0) ? iprot.peekList() : (_i113 < _list112.size); 
-                           ++_i113)
+                      TList _list178 = iprot.readListBegin();
+                      _elem177 = new ArrayList<Double>(Math.max(0, _list178.size));
+                      for (int _i179 = 0; 
+                           (_list178.size < 0) ? iprot.peekList() : (_i179 < _list178.size); 
+                           ++_i179)
                       {
-                        double _elem114;
-                        _elem114 = iprot.readDouble();
-                        _elem111.add(_elem114);
+                        double _elem180;
+                        _elem180 = iprot.readDouble();
+                        _elem177.add(_elem180);
                       }
                       iprot.readListEnd();
                     }
-                    _val108.add(_elem111);
+                    _val174.add(_elem177);
                   }
                   iprot.readListEnd();
                 }
-                this.myMapListOfTypeDef.put(_key107, _val108);
+                this.myMapListOfTypeDef.put(_key173, _val174);
               }
               iprot.readMapEnd();
             }
@@ -900,9 +900,9 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
       oprot.writeFieldBegin(MY_MAP_FIELD_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, this.myMapField.size()));
-        for (Map.Entry<Short, String> _iter115 : this.myMapField.entrySet())        {
-          oprot.writeI16(_iter115.getKey());
-          oprot.writeString(_iter115.getValue());
+        for (Map.Entry<Short, String> _iter181 : this.myMapField.entrySet())        {
+          oprot.writeI16(_iter181.getKey());
+          oprot.writeString(_iter181.getValue());
         }
         oprot.writeMapEnd();
       }
@@ -912,9 +912,9 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
       oprot.writeFieldBegin(MY_MAP_TYPEDEF_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, this.myMapTypedef.size()));
-        for (Map.Entry<Short, String> _iter116 : this.myMapTypedef.entrySet())        {
-          oprot.writeI16(_iter116.getKey());
-          oprot.writeString(_iter116.getValue());
+        for (Map.Entry<Short, String> _iter182 : this.myMapTypedef.entrySet())        {
+          oprot.writeI16(_iter182.getKey());
+          oprot.writeString(_iter182.getValue());
         }
         oprot.writeMapEnd();
       }
@@ -924,8 +924,8 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
       oprot.writeFieldBegin(MY_LIST_FIELD_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.DOUBLE, this.myListField.size()));
-        for (double _iter117 : this.myListField)        {
-          oprot.writeDouble(_iter117);
+        for (double _iter183 : this.myListField)        {
+          oprot.writeDouble(_iter183);
         }
         oprot.writeListEnd();
       }
@@ -935,8 +935,8 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
       oprot.writeFieldBegin(MY_LIST_TYPEDEF_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.DOUBLE, this.myListTypedef.size()));
-        for (double _iter118 : this.myListTypedef)        {
-          oprot.writeDouble(_iter118);
+        for (double _iter184 : this.myListTypedef)        {
+          oprot.writeDouble(_iter184);
         }
         oprot.writeListEnd();
       }
@@ -946,15 +946,15 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
       oprot.writeFieldBegin(MY_MAP_LIST_OF_TYPE_DEF_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I16, TType.LIST, this.myMapListOfTypeDef.size()));
-        for (Map.Entry<Short, List<List<Double>>> _iter119 : this.myMapListOfTypeDef.entrySet())        {
-          oprot.writeI16(_iter119.getKey());
+        for (Map.Entry<Short, List<List<Double>>> _iter185 : this.myMapListOfTypeDef.entrySet())        {
+          oprot.writeI16(_iter185.getKey());
           {
-            oprot.writeListBegin(new TList(TType.LIST, _iter119.getValue().size()));
-            for (List<Double> _iter120 : _iter119.getValue())            {
+            oprot.writeListBegin(new TList(TType.LIST, _iter185.getValue().size()));
+            for (List<Double> _iter186 : _iter185.getValue())            {
               {
-                oprot.writeListBegin(new TList(TType.DOUBLE, _iter120.size()));
-                for (double _iter121 : _iter120)                {
-                  oprot.writeDouble(_iter121);
+                oprot.writeListBegin(new TList(TType.DOUBLE, _iter186.size()));
+                for (double _iter187 : _iter186)                {
+                  oprot.writeDouble(_iter187);
                 }
                 oprot.writeListEnd();
               }

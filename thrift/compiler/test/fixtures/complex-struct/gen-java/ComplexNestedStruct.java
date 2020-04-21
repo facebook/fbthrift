@@ -1161,27 +1161,27 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
         case SETOFSETOFINT:
           if (__field.type == TType.SET) {
             {
-              TSet _set130 = iprot.readSetBegin();
-              this.setOfSetOfInt = new HashSet<Set<Integer>>(Math.max(0, 2*_set130.size));
-              for (int _i131 = 0; 
-                   (_set130.size < 0) ? iprot.peekSet() : (_i131 < _set130.size); 
-                   ++_i131)
+              TSet _set196 = iprot.readSetBegin();
+              this.setOfSetOfInt = new HashSet<Set<Integer>>(Math.max(0, 2*_set196.size));
+              for (int _i197 = 0; 
+                   (_set196.size < 0) ? iprot.peekSet() : (_i197 < _set196.size); 
+                   ++_i197)
               {
-                Set<Integer> _elem132;
+                Set<Integer> _elem198;
                 {
-                  TSet _set133 = iprot.readSetBegin();
-                  _elem132 = new HashSet<Integer>(Math.max(0, 2*_set133.size));
-                  for (int _i134 = 0; 
-                       (_set133.size < 0) ? iprot.peekSet() : (_i134 < _set133.size); 
-                       ++_i134)
+                  TSet _set199 = iprot.readSetBegin();
+                  _elem198 = new HashSet<Integer>(Math.max(0, 2*_set199.size));
+                  for (int _i200 = 0; 
+                       (_set199.size < 0) ? iprot.peekSet() : (_i200 < _set199.size); 
+                       ++_i200)
                   {
-                    int _elem135;
-                    _elem135 = iprot.readI32();
-                    _elem132.add(_elem135);
+                    int _elem201;
+                    _elem201 = iprot.readI32();
+                    _elem198.add(_elem201);
                   }
                   iprot.readSetEnd();
                 }
-                this.setOfSetOfInt.add(_elem132);
+                this.setOfSetOfInt.add(_elem198);
               }
               iprot.readSetEnd();
             }
@@ -1192,51 +1192,51 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
         case LISTOFLISTOFLISTOFLISTOFENUM:
           if (__field.type == TType.LIST) {
             {
-              TList _list136 = iprot.readListBegin();
-              this.listofListOfListOfListOfEnum = new ArrayList<List<List<List<MyEnum>>>>(Math.max(0, _list136.size));
-              for (int _i137 = 0; 
-                   (_list136.size < 0) ? iprot.peekList() : (_i137 < _list136.size); 
-                   ++_i137)
+              TList _list202 = iprot.readListBegin();
+              this.listofListOfListOfListOfEnum = new ArrayList<List<List<List<MyEnum>>>>(Math.max(0, _list202.size));
+              for (int _i203 = 0; 
+                   (_list202.size < 0) ? iprot.peekList() : (_i203 < _list202.size); 
+                   ++_i203)
               {
-                List<List<List<MyEnum>>> _elem138;
+                List<List<List<MyEnum>>> _elem204;
                 {
-                  TList _list139 = iprot.readListBegin();
-                  _elem138 = new ArrayList<List<List<MyEnum>>>(Math.max(0, _list139.size));
-                  for (int _i140 = 0; 
-                       (_list139.size < 0) ? iprot.peekList() : (_i140 < _list139.size); 
-                       ++_i140)
+                  TList _list205 = iprot.readListBegin();
+                  _elem204 = new ArrayList<List<List<MyEnum>>>(Math.max(0, _list205.size));
+                  for (int _i206 = 0; 
+                       (_list205.size < 0) ? iprot.peekList() : (_i206 < _list205.size); 
+                       ++_i206)
                   {
-                    List<List<MyEnum>> _elem141;
+                    List<List<MyEnum>> _elem207;
                     {
-                      TList _list142 = iprot.readListBegin();
-                      _elem141 = new ArrayList<List<MyEnum>>(Math.max(0, _list142.size));
-                      for (int _i143 = 0; 
-                           (_list142.size < 0) ? iprot.peekList() : (_i143 < _list142.size); 
-                           ++_i143)
+                      TList _list208 = iprot.readListBegin();
+                      _elem207 = new ArrayList<List<MyEnum>>(Math.max(0, _list208.size));
+                      for (int _i209 = 0; 
+                           (_list208.size < 0) ? iprot.peekList() : (_i209 < _list208.size); 
+                           ++_i209)
                       {
-                        List<MyEnum> _elem144;
+                        List<MyEnum> _elem210;
                         {
-                          TList _list145 = iprot.readListBegin();
-                          _elem144 = new ArrayList<MyEnum>(Math.max(0, _list145.size));
-                          for (int _i146 = 0; 
-                               (_list145.size < 0) ? iprot.peekList() : (_i146 < _list145.size); 
-                               ++_i146)
+                          TList _list211 = iprot.readListBegin();
+                          _elem210 = new ArrayList<MyEnum>(Math.max(0, _list211.size));
+                          for (int _i212 = 0; 
+                               (_list211.size < 0) ? iprot.peekList() : (_i212 < _list211.size); 
+                               ++_i212)
                           {
-                            MyEnum _elem147;
-                            _elem147 = MyEnum.findByValue(iprot.readI32());
-                            _elem144.add(_elem147);
+                            MyEnum _elem213;
+                            _elem213 = MyEnum.findByValue(iprot.readI32());
+                            _elem210.add(_elem213);
                           }
                           iprot.readListEnd();
                         }
-                        _elem141.add(_elem144);
+                        _elem207.add(_elem210);
                       }
                       iprot.readListEnd();
                     }
-                    _elem138.add(_elem141);
+                    _elem204.add(_elem207);
                   }
                   iprot.readListEnd();
                 }
-                this.listofListOfListOfListOfEnum.add(_elem138);
+                this.listofListOfListOfListOfEnum.add(_elem204);
               }
               iprot.readListEnd();
             }
@@ -1247,28 +1247,28 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
         case LISTOFLISTOFMYSTRUCT:
           if (__field.type == TType.LIST) {
             {
-              TList _list148 = iprot.readListBegin();
-              this.listOfListOfMyStruct = new ArrayList<List<MyStruct>>(Math.max(0, _list148.size));
-              for (int _i149 = 0; 
-                   (_list148.size < 0) ? iprot.peekList() : (_i149 < _list148.size); 
-                   ++_i149)
+              TList _list214 = iprot.readListBegin();
+              this.listOfListOfMyStruct = new ArrayList<List<MyStruct>>(Math.max(0, _list214.size));
+              for (int _i215 = 0; 
+                   (_list214.size < 0) ? iprot.peekList() : (_i215 < _list214.size); 
+                   ++_i215)
               {
-                List<MyStruct> _elem150;
+                List<MyStruct> _elem216;
                 {
-                  TList _list151 = iprot.readListBegin();
-                  _elem150 = new ArrayList<MyStruct>(Math.max(0, _list151.size));
-                  for (int _i152 = 0; 
-                       (_list151.size < 0) ? iprot.peekList() : (_i152 < _list151.size); 
-                       ++_i152)
+                  TList _list217 = iprot.readListBegin();
+                  _elem216 = new ArrayList<MyStruct>(Math.max(0, _list217.size));
+                  for (int _i218 = 0; 
+                       (_list217.size < 0) ? iprot.peekList() : (_i218 < _list217.size); 
+                       ++_i218)
                   {
-                    MyStruct _elem153;
-                    _elem153 = new MyStruct();
-                    _elem153.read(iprot);
-                    _elem150.add(_elem153);
+                    MyStruct _elem219;
+                    _elem219 = new MyStruct();
+                    _elem219.read(iprot);
+                    _elem216.add(_elem219);
                   }
                   iprot.readListEnd();
                 }
-                this.listOfListOfMyStruct.add(_elem150);
+                this.listOfListOfMyStruct.add(_elem216);
               }
               iprot.readListEnd();
             }
@@ -1279,39 +1279,39 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
         case SETOFLISTOFLISTOFLONG:
           if (__field.type == TType.SET) {
             {
-              TSet _set154 = iprot.readSetBegin();
-              this.setOfListOfListOfLong = new HashSet<List<List<Long>>>(Math.max(0, 2*_set154.size));
-              for (int _i155 = 0; 
-                   (_set154.size < 0) ? iprot.peekSet() : (_i155 < _set154.size); 
-                   ++_i155)
+              TSet _set220 = iprot.readSetBegin();
+              this.setOfListOfListOfLong = new HashSet<List<List<Long>>>(Math.max(0, 2*_set220.size));
+              for (int _i221 = 0; 
+                   (_set220.size < 0) ? iprot.peekSet() : (_i221 < _set220.size); 
+                   ++_i221)
               {
-                List<List<Long>> _elem156;
+                List<List<Long>> _elem222;
                 {
-                  TList _list157 = iprot.readListBegin();
-                  _elem156 = new ArrayList<List<Long>>(Math.max(0, _list157.size));
-                  for (int _i158 = 0; 
-                       (_list157.size < 0) ? iprot.peekList() : (_i158 < _list157.size); 
-                       ++_i158)
+                  TList _list223 = iprot.readListBegin();
+                  _elem222 = new ArrayList<List<Long>>(Math.max(0, _list223.size));
+                  for (int _i224 = 0; 
+                       (_list223.size < 0) ? iprot.peekList() : (_i224 < _list223.size); 
+                       ++_i224)
                   {
-                    List<Long> _elem159;
+                    List<Long> _elem225;
                     {
-                      TList _list160 = iprot.readListBegin();
-                      _elem159 = new ArrayList<Long>(Math.max(0, _list160.size));
-                      for (int _i161 = 0; 
-                           (_list160.size < 0) ? iprot.peekList() : (_i161 < _list160.size); 
-                           ++_i161)
+                      TList _list226 = iprot.readListBegin();
+                      _elem225 = new ArrayList<Long>(Math.max(0, _list226.size));
+                      for (int _i227 = 0; 
+                           (_list226.size < 0) ? iprot.peekList() : (_i227 < _list226.size); 
+                           ++_i227)
                       {
-                        long _elem162;
-                        _elem162 = iprot.readI64();
-                        _elem159.add(_elem162);
+                        long _elem228;
+                        _elem228 = iprot.readI64();
+                        _elem225.add(_elem228);
                       }
                       iprot.readListEnd();
                     }
-                    _elem156.add(_elem159);
+                    _elem222.add(_elem225);
                   }
                   iprot.readListEnd();
                 }
-                this.setOfListOfListOfLong.add(_elem156);
+                this.setOfListOfListOfLong.add(_elem222);
               }
               iprot.readSetEnd();
             }
@@ -1322,39 +1322,39 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
         case SETOFSETOFSETOFLONG:
           if (__field.type == TType.SET) {
             {
-              TSet _set163 = iprot.readSetBegin();
-              this.setOfSetOfsetOfLong = new HashSet<Set<Set<Long>>>(Math.max(0, 2*_set163.size));
-              for (int _i164 = 0; 
-                   (_set163.size < 0) ? iprot.peekSet() : (_i164 < _set163.size); 
-                   ++_i164)
+              TSet _set229 = iprot.readSetBegin();
+              this.setOfSetOfsetOfLong = new HashSet<Set<Set<Long>>>(Math.max(0, 2*_set229.size));
+              for (int _i230 = 0; 
+                   (_set229.size < 0) ? iprot.peekSet() : (_i230 < _set229.size); 
+                   ++_i230)
               {
-                Set<Set<Long>> _elem165;
+                Set<Set<Long>> _elem231;
                 {
-                  TSet _set166 = iprot.readSetBegin();
-                  _elem165 = new HashSet<Set<Long>>(Math.max(0, 2*_set166.size));
-                  for (int _i167 = 0; 
-                       (_set166.size < 0) ? iprot.peekSet() : (_i167 < _set166.size); 
-                       ++_i167)
+                  TSet _set232 = iprot.readSetBegin();
+                  _elem231 = new HashSet<Set<Long>>(Math.max(0, 2*_set232.size));
+                  for (int _i233 = 0; 
+                       (_set232.size < 0) ? iprot.peekSet() : (_i233 < _set232.size); 
+                       ++_i233)
                   {
-                    Set<Long> _elem168;
+                    Set<Long> _elem234;
                     {
-                      TSet _set169 = iprot.readSetBegin();
-                      _elem168 = new HashSet<Long>(Math.max(0, 2*_set169.size));
-                      for (int _i170 = 0; 
-                           (_set169.size < 0) ? iprot.peekSet() : (_i170 < _set169.size); 
-                           ++_i170)
+                      TSet _set235 = iprot.readSetBegin();
+                      _elem234 = new HashSet<Long>(Math.max(0, 2*_set235.size));
+                      for (int _i236 = 0; 
+                           (_set235.size < 0) ? iprot.peekSet() : (_i236 < _set235.size); 
+                           ++_i236)
                       {
-                        long _elem171;
-                        _elem171 = iprot.readI64();
-                        _elem168.add(_elem171);
+                        long _elem237;
+                        _elem237 = iprot.readI64();
+                        _elem234.add(_elem237);
                       }
                       iprot.readSetEnd();
                     }
-                    _elem165.add(_elem168);
+                    _elem231.add(_elem234);
                   }
                   iprot.readSetEnd();
                 }
-                this.setOfSetOfsetOfLong.add(_elem165);
+                this.setOfSetOfsetOfLong.add(_elem231);
               }
               iprot.readSetEnd();
             }
@@ -1365,42 +1365,42 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
         case MAPSTRUCTLISTOFLISTOFLONG:
           if (__field.type == TType.MAP) {
             {
-              TMap _map172 = iprot.readMapBegin();
-              this.mapStructListOfListOfLong = new HashMap<Integer,List<List<MyStruct>>>(Math.max(0, 2*_map172.size));
-              for (int _i173 = 0; 
-                   (_map172.size < 0) ? iprot.peekMap() : (_i173 < _map172.size); 
-                   ++_i173)
+              TMap _map238 = iprot.readMapBegin();
+              this.mapStructListOfListOfLong = new HashMap<Integer,List<List<MyStruct>>>(Math.max(0, 2*_map238.size));
+              for (int _i239 = 0; 
+                   (_map238.size < 0) ? iprot.peekMap() : (_i239 < _map238.size); 
+                   ++_i239)
               {
-                int _key174;
-                List<List<MyStruct>> _val175;
-                _key174 = iprot.readI32();
+                int _key240;
+                List<List<MyStruct>> _val241;
+                _key240 = iprot.readI32();
                 {
-                  TList _list176 = iprot.readListBegin();
-                  _val175 = new ArrayList<List<MyStruct>>(Math.max(0, _list176.size));
-                  for (int _i177 = 0; 
-                       (_list176.size < 0) ? iprot.peekList() : (_i177 < _list176.size); 
-                       ++_i177)
+                  TList _list242 = iprot.readListBegin();
+                  _val241 = new ArrayList<List<MyStruct>>(Math.max(0, _list242.size));
+                  for (int _i243 = 0; 
+                       (_list242.size < 0) ? iprot.peekList() : (_i243 < _list242.size); 
+                       ++_i243)
                   {
-                    List<MyStruct> _elem178;
+                    List<MyStruct> _elem244;
                     {
-                      TList _list179 = iprot.readListBegin();
-                      _elem178 = new ArrayList<MyStruct>(Math.max(0, _list179.size));
-                      for (int _i180 = 0; 
-                           (_list179.size < 0) ? iprot.peekList() : (_i180 < _list179.size); 
-                           ++_i180)
+                      TList _list245 = iprot.readListBegin();
+                      _elem244 = new ArrayList<MyStruct>(Math.max(0, _list245.size));
+                      for (int _i246 = 0; 
+                           (_list245.size < 0) ? iprot.peekList() : (_i246 < _list245.size); 
+                           ++_i246)
                       {
-                        MyStruct _elem181;
-                        _elem181 = new MyStruct();
-                        _elem181.read(iprot);
-                        _elem178.add(_elem181);
+                        MyStruct _elem247;
+                        _elem247 = new MyStruct();
+                        _elem247.read(iprot);
+                        _elem244.add(_elem247);
                       }
                       iprot.readListEnd();
                     }
-                    _val175.add(_elem178);
+                    _val241.add(_elem244);
                   }
                   iprot.readListEnd();
                 }
-                this.mapStructListOfListOfLong.put(_key174, _val175);
+                this.mapStructListOfListOfLong.put(_key240, _val241);
               }
               iprot.readMapEnd();
             }
@@ -1411,18 +1411,18 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
         case MKEYSTRUCTVALINT:
           if (__field.type == TType.MAP) {
             {
-              TMap _map182 = iprot.readMapBegin();
-              this.mKeyStructValInt = new HashMap<MyStruct,Integer>(Math.max(0, 2*_map182.size));
-              for (int _i183 = 0; 
-                   (_map182.size < 0) ? iprot.peekMap() : (_i183 < _map182.size); 
-                   ++_i183)
+              TMap _map248 = iprot.readMapBegin();
+              this.mKeyStructValInt = new HashMap<MyStruct,Integer>(Math.max(0, 2*_map248.size));
+              for (int _i249 = 0; 
+                   (_map248.size < 0) ? iprot.peekMap() : (_i249 < _map248.size); 
+                   ++_i249)
               {
-                MyStruct _key184;
-                int _val185;
-                _key184 = new MyStruct();
-                _key184.read(iprot);
-                _val185 = iprot.readI32();
-                this.mKeyStructValInt.put(_key184, _val185);
+                MyStruct _key250;
+                int _val251;
+                _key250 = new MyStruct();
+                _key250.read(iprot);
+                _val251 = iprot.readI32();
+                this.mKeyStructValInt.put(_key250, _val251);
               }
               iprot.readMapEnd();
             }
@@ -1433,29 +1433,29 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
         case LISTOFMAPKEYINTVALINT:
           if (__field.type == TType.LIST) {
             {
-              TList _list186 = iprot.readListBegin();
-              this.listOfMapKeyIntValInt = new ArrayList<Map<Integer,Integer>>(Math.max(0, _list186.size));
-              for (int _i187 = 0; 
-                   (_list186.size < 0) ? iprot.peekList() : (_i187 < _list186.size); 
-                   ++_i187)
+              TList _list252 = iprot.readListBegin();
+              this.listOfMapKeyIntValInt = new ArrayList<Map<Integer,Integer>>(Math.max(0, _list252.size));
+              for (int _i253 = 0; 
+                   (_list252.size < 0) ? iprot.peekList() : (_i253 < _list252.size); 
+                   ++_i253)
               {
-                Map<Integer,Integer> _elem188;
+                Map<Integer,Integer> _elem254;
                 {
-                  TMap _map189 = iprot.readMapBegin();
-                  _elem188 = new HashMap<Integer,Integer>(Math.max(0, 2*_map189.size));
-                  for (int _i190 = 0; 
-                       (_map189.size < 0) ? iprot.peekMap() : (_i190 < _map189.size); 
-                       ++_i190)
+                  TMap _map255 = iprot.readMapBegin();
+                  _elem254 = new HashMap<Integer,Integer>(Math.max(0, 2*_map255.size));
+                  for (int _i256 = 0; 
+                       (_map255.size < 0) ? iprot.peekMap() : (_i256 < _map255.size); 
+                       ++_i256)
                   {
-                    int _key191;
-                    int _val192;
-                    _key191 = iprot.readI32();
-                    _val192 = iprot.readI32();
-                    _elem188.put(_key191, _val192);
+                    int _key257;
+                    int _val258;
+                    _key257 = iprot.readI32();
+                    _val258 = iprot.readI32();
+                    _elem254.put(_key257, _val258);
                   }
                   iprot.readMapEnd();
                 }
-                this.listOfMapKeyIntValInt.add(_elem188);
+                this.listOfMapKeyIntValInt.add(_elem254);
               }
               iprot.readListEnd();
             }
@@ -1466,42 +1466,42 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
         case LISTOFMAPKEYSTRVALLIST:
           if (__field.type == TType.LIST) {
             {
-              TList _list193 = iprot.readListBegin();
-              this.listOfMapKeyStrValList = new ArrayList<Map<String,List<MyStruct>>>(Math.max(0, _list193.size));
-              for (int _i194 = 0; 
-                   (_list193.size < 0) ? iprot.peekList() : (_i194 < _list193.size); 
-                   ++_i194)
+              TList _list259 = iprot.readListBegin();
+              this.listOfMapKeyStrValList = new ArrayList<Map<String,List<MyStruct>>>(Math.max(0, _list259.size));
+              for (int _i260 = 0; 
+                   (_list259.size < 0) ? iprot.peekList() : (_i260 < _list259.size); 
+                   ++_i260)
               {
-                Map<String,List<MyStruct>> _elem195;
+                Map<String,List<MyStruct>> _elem261;
                 {
-                  TMap _map196 = iprot.readMapBegin();
-                  _elem195 = new HashMap<String,List<MyStruct>>(Math.max(0, 2*_map196.size));
-                  for (int _i197 = 0; 
-                       (_map196.size < 0) ? iprot.peekMap() : (_i197 < _map196.size); 
-                       ++_i197)
+                  TMap _map262 = iprot.readMapBegin();
+                  _elem261 = new HashMap<String,List<MyStruct>>(Math.max(0, 2*_map262.size));
+                  for (int _i263 = 0; 
+                       (_map262.size < 0) ? iprot.peekMap() : (_i263 < _map262.size); 
+                       ++_i263)
                   {
-                    String _key198;
-                    List<MyStruct> _val199;
-                    _key198 = iprot.readString();
+                    String _key264;
+                    List<MyStruct> _val265;
+                    _key264 = iprot.readString();
                     {
-                      TList _list200 = iprot.readListBegin();
-                      _val199 = new ArrayList<MyStruct>(Math.max(0, _list200.size));
-                      for (int _i201 = 0; 
-                           (_list200.size < 0) ? iprot.peekList() : (_i201 < _list200.size); 
-                           ++_i201)
+                      TList _list266 = iprot.readListBegin();
+                      _val265 = new ArrayList<MyStruct>(Math.max(0, _list266.size));
+                      for (int _i267 = 0; 
+                           (_list266.size < 0) ? iprot.peekList() : (_i267 < _list266.size); 
+                           ++_i267)
                       {
-                        MyStruct _elem202;
-                        _elem202 = new MyStruct();
-                        _elem202.read(iprot);
-                        _val199.add(_elem202);
+                        MyStruct _elem268;
+                        _elem268 = new MyStruct();
+                        _elem268.read(iprot);
+                        _val265.add(_elem268);
                       }
                       iprot.readListEnd();
                     }
-                    _elem195.put(_key198, _val199);
+                    _elem261.put(_key264, _val265);
                   }
                   iprot.readMapEnd();
                 }
-                this.listOfMapKeyStrValList.add(_elem195);
+                this.listOfMapKeyStrValList.add(_elem261);
               }
               iprot.readListEnd();
             }
@@ -1512,29 +1512,29 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
         case MAPKEYSETVALLONG:
           if (__field.type == TType.MAP) {
             {
-              TMap _map203 = iprot.readMapBegin();
-              this.mapKeySetValLong = new HashMap<Set<Integer>,Long>(Math.max(0, 2*_map203.size));
-              for (int _i204 = 0; 
-                   (_map203.size < 0) ? iprot.peekMap() : (_i204 < _map203.size); 
-                   ++_i204)
+              TMap _map269 = iprot.readMapBegin();
+              this.mapKeySetValLong = new HashMap<Set<Integer>,Long>(Math.max(0, 2*_map269.size));
+              for (int _i270 = 0; 
+                   (_map269.size < 0) ? iprot.peekMap() : (_i270 < _map269.size); 
+                   ++_i270)
               {
-                Set<Integer> _key205;
-                long _val206;
+                Set<Integer> _key271;
+                long _val272;
                 {
-                  TSet _set207 = iprot.readSetBegin();
-                  _key205 = new HashSet<Integer>(Math.max(0, 2*_set207.size));
-                  for (int _i208 = 0; 
-                       (_set207.size < 0) ? iprot.peekSet() : (_i208 < _set207.size); 
-                       ++_i208)
+                  TSet _set273 = iprot.readSetBegin();
+                  _key271 = new HashSet<Integer>(Math.max(0, 2*_set273.size));
+                  for (int _i274 = 0; 
+                       (_set273.size < 0) ? iprot.peekSet() : (_i274 < _set273.size); 
+                       ++_i274)
                   {
-                    int _elem209;
-                    _elem209 = iprot.readI32();
-                    _key205.add(_elem209);
+                    int _elem275;
+                    _elem275 = iprot.readI32();
+                    _key271.add(_elem275);
                   }
                   iprot.readSetEnd();
                 }
-                _val206 = iprot.readI64();
-                this.mapKeySetValLong.put(_key205, _val206);
+                _val272 = iprot.readI64();
+                this.mapKeySetValLong.put(_key271, _val272);
               }
               iprot.readMapEnd();
             }
@@ -1545,29 +1545,29 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
         case MAPKEYLISTVALLONG:
           if (__field.type == TType.MAP) {
             {
-              TMap _map210 = iprot.readMapBegin();
-              this.mapKeyListValLong = new HashMap<List<String>,Integer>(Math.max(0, 2*_map210.size));
-              for (int _i211 = 0; 
-                   (_map210.size < 0) ? iprot.peekMap() : (_i211 < _map210.size); 
-                   ++_i211)
+              TMap _map276 = iprot.readMapBegin();
+              this.mapKeyListValLong = new HashMap<List<String>,Integer>(Math.max(0, 2*_map276.size));
+              for (int _i277 = 0; 
+                   (_map276.size < 0) ? iprot.peekMap() : (_i277 < _map276.size); 
+                   ++_i277)
               {
-                List<String> _key212;
-                int _val213;
+                List<String> _key278;
+                int _val279;
                 {
-                  TList _list214 = iprot.readListBegin();
-                  _key212 = new ArrayList<String>(Math.max(0, _list214.size));
-                  for (int _i215 = 0; 
-                       (_list214.size < 0) ? iprot.peekList() : (_i215 < _list214.size); 
-                       ++_i215)
+                  TList _list280 = iprot.readListBegin();
+                  _key278 = new ArrayList<String>(Math.max(0, _list280.size));
+                  for (int _i281 = 0; 
+                       (_list280.size < 0) ? iprot.peekList() : (_i281 < _list280.size); 
+                       ++_i281)
                   {
-                    String _elem216;
-                    _elem216 = iprot.readString();
-                    _key212.add(_elem216);
+                    String _elem282;
+                    _elem282 = iprot.readString();
+                    _key278.add(_elem282);
                   }
                   iprot.readListEnd();
                 }
-                _val213 = iprot.readI32();
-                this.mapKeyListValLong.put(_key212, _val213);
+                _val279 = iprot.readI32();
+                this.mapKeyListValLong.put(_key278, _val279);
               }
               iprot.readMapEnd();
             }
@@ -1578,45 +1578,45 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
         case MAPKEYMAPVALMAP:
           if (__field.type == TType.MAP) {
             {
-              TMap _map217 = iprot.readMapBegin();
-              this.mapKeyMapValMap = new HashMap<Map<Integer,String>,Map<Integer,String>>(Math.max(0, 2*_map217.size));
-              for (int _i218 = 0; 
-                   (_map217.size < 0) ? iprot.peekMap() : (_i218 < _map217.size); 
-                   ++_i218)
+              TMap _map283 = iprot.readMapBegin();
+              this.mapKeyMapValMap = new HashMap<Map<Integer,String>,Map<Integer,String>>(Math.max(0, 2*_map283.size));
+              for (int _i284 = 0; 
+                   (_map283.size < 0) ? iprot.peekMap() : (_i284 < _map283.size); 
+                   ++_i284)
               {
-                Map<Integer,String> _key219;
-                Map<Integer,String> _val220;
+                Map<Integer,String> _key285;
+                Map<Integer,String> _val286;
                 {
-                  TMap _map221 = iprot.readMapBegin();
-                  _key219 = new HashMap<Integer,String>(Math.max(0, 2*_map221.size));
-                  for (int _i222 = 0; 
-                       (_map221.size < 0) ? iprot.peekMap() : (_i222 < _map221.size); 
-                       ++_i222)
+                  TMap _map287 = iprot.readMapBegin();
+                  _key285 = new HashMap<Integer,String>(Math.max(0, 2*_map287.size));
+                  for (int _i288 = 0; 
+                       (_map287.size < 0) ? iprot.peekMap() : (_i288 < _map287.size); 
+                       ++_i288)
                   {
-                    int _key223;
-                    String _val224;
-                    _key223 = iprot.readI32();
-                    _val224 = iprot.readString();
-                    _key219.put(_key223, _val224);
+                    int _key289;
+                    String _val290;
+                    _key289 = iprot.readI32();
+                    _val290 = iprot.readString();
+                    _key285.put(_key289, _val290);
                   }
                   iprot.readMapEnd();
                 }
                 {
-                  TMap _map225 = iprot.readMapBegin();
-                  _val220 = new HashMap<Integer,String>(Math.max(0, 2*_map225.size));
-                  for (int _i226 = 0; 
-                       (_map225.size < 0) ? iprot.peekMap() : (_i226 < _map225.size); 
-                       ++_i226)
+                  TMap _map291 = iprot.readMapBegin();
+                  _val286 = new HashMap<Integer,String>(Math.max(0, 2*_map291.size));
+                  for (int _i292 = 0; 
+                       (_map291.size < 0) ? iprot.peekMap() : (_i292 < _map291.size); 
+                       ++_i292)
                   {
-                    int _key227;
-                    String _val228;
-                    _key227 = iprot.readI32();
-                    _val228 = iprot.readString();
-                    _val220.put(_key227, _val228);
+                    int _key293;
+                    String _val294;
+                    _key293 = iprot.readI32();
+                    _val294 = iprot.readString();
+                    _val286.put(_key293, _val294);
                   }
                   iprot.readMapEnd();
                 }
-                this.mapKeyMapValMap.put(_key219, _val220);
+                this.mapKeyMapValMap.put(_key285, _val286);
               }
               iprot.readMapEnd();
             }
@@ -1627,79 +1627,79 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
         case MAPKEYSETVALMAP:
           if (__field.type == TType.MAP) {
             {
-              TMap _map229 = iprot.readMapBegin();
-              this.mapKeySetValMap = new HashMap<Set<List<Integer>>,Map<List<Set<String>>,String>>(Math.max(0, 2*_map229.size));
-              for (int _i230 = 0; 
-                   (_map229.size < 0) ? iprot.peekMap() : (_i230 < _map229.size); 
-                   ++_i230)
+              TMap _map295 = iprot.readMapBegin();
+              this.mapKeySetValMap = new HashMap<Set<List<Integer>>,Map<List<Set<String>>,String>>(Math.max(0, 2*_map295.size));
+              for (int _i296 = 0; 
+                   (_map295.size < 0) ? iprot.peekMap() : (_i296 < _map295.size); 
+                   ++_i296)
               {
-                Set<List<Integer>> _key231;
-                Map<List<Set<String>>,String> _val232;
+                Set<List<Integer>> _key297;
+                Map<List<Set<String>>,String> _val298;
                 {
-                  TSet _set233 = iprot.readSetBegin();
-                  _key231 = new HashSet<List<Integer>>(Math.max(0, 2*_set233.size));
-                  for (int _i234 = 0; 
-                       (_set233.size < 0) ? iprot.peekSet() : (_i234 < _set233.size); 
-                       ++_i234)
+                  TSet _set299 = iprot.readSetBegin();
+                  _key297 = new HashSet<List<Integer>>(Math.max(0, 2*_set299.size));
+                  for (int _i300 = 0; 
+                       (_set299.size < 0) ? iprot.peekSet() : (_i300 < _set299.size); 
+                       ++_i300)
                   {
-                    List<Integer> _elem235;
+                    List<Integer> _elem301;
                     {
-                      TList _list236 = iprot.readListBegin();
-                      _elem235 = new ArrayList<Integer>(Math.max(0, _list236.size));
-                      for (int _i237 = 0; 
-                           (_list236.size < 0) ? iprot.peekList() : (_i237 < _list236.size); 
-                           ++_i237)
+                      TList _list302 = iprot.readListBegin();
+                      _elem301 = new ArrayList<Integer>(Math.max(0, _list302.size));
+                      for (int _i303 = 0; 
+                           (_list302.size < 0) ? iprot.peekList() : (_i303 < _list302.size); 
+                           ++_i303)
                       {
-                        int _elem238;
-                        _elem238 = iprot.readI32();
-                        _elem235.add(_elem238);
+                        int _elem304;
+                        _elem304 = iprot.readI32();
+                        _elem301.add(_elem304);
                       }
                       iprot.readListEnd();
                     }
-                    _key231.add(_elem235);
+                    _key297.add(_elem301);
                   }
                   iprot.readSetEnd();
                 }
                 {
-                  TMap _map239 = iprot.readMapBegin();
-                  _val232 = new HashMap<List<Set<String>>,String>(Math.max(0, 2*_map239.size));
-                  for (int _i240 = 0; 
-                       (_map239.size < 0) ? iprot.peekMap() : (_i240 < _map239.size); 
-                       ++_i240)
+                  TMap _map305 = iprot.readMapBegin();
+                  _val298 = new HashMap<List<Set<String>>,String>(Math.max(0, 2*_map305.size));
+                  for (int _i306 = 0; 
+                       (_map305.size < 0) ? iprot.peekMap() : (_i306 < _map305.size); 
+                       ++_i306)
                   {
-                    List<Set<String>> _key241;
-                    String _val242;
+                    List<Set<String>> _key307;
+                    String _val308;
                     {
-                      TList _list243 = iprot.readListBegin();
-                      _key241 = new ArrayList<Set<String>>(Math.max(0, _list243.size));
-                      for (int _i244 = 0; 
-                           (_list243.size < 0) ? iprot.peekList() : (_i244 < _list243.size); 
-                           ++_i244)
+                      TList _list309 = iprot.readListBegin();
+                      _key307 = new ArrayList<Set<String>>(Math.max(0, _list309.size));
+                      for (int _i310 = 0; 
+                           (_list309.size < 0) ? iprot.peekList() : (_i310 < _list309.size); 
+                           ++_i310)
                       {
-                        Set<String> _elem245;
+                        Set<String> _elem311;
                         {
-                          TSet _set246 = iprot.readSetBegin();
-                          _elem245 = new HashSet<String>(Math.max(0, 2*_set246.size));
-                          for (int _i247 = 0; 
-                               (_set246.size < 0) ? iprot.peekSet() : (_i247 < _set246.size); 
-                               ++_i247)
+                          TSet _set312 = iprot.readSetBegin();
+                          _elem311 = new HashSet<String>(Math.max(0, 2*_set312.size));
+                          for (int _i313 = 0; 
+                               (_set312.size < 0) ? iprot.peekSet() : (_i313 < _set312.size); 
+                               ++_i313)
                           {
-                            String _elem248;
-                            _elem248 = iprot.readString();
-                            _elem245.add(_elem248);
+                            String _elem314;
+                            _elem314 = iprot.readString();
+                            _elem311.add(_elem314);
                           }
                           iprot.readSetEnd();
                         }
-                        _key241.add(_elem245);
+                        _key307.add(_elem311);
                       }
                       iprot.readListEnd();
                     }
-                    _val242 = iprot.readString();
-                    _val232.put(_key241, _val242);
+                    _val308 = iprot.readString();
+                    _val298.put(_key307, _val308);
                   }
                   iprot.readMapEnd();
                 }
-                this.mapKeySetValMap.put(_key231, _val232);
+                this.mapKeySetValMap.put(_key297, _val298);
               }
               iprot.readMapEnd();
             }
@@ -1710,59 +1710,59 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
         case NESTEDMAPS:
           if (__field.type == TType.MAP) {
             {
-              TMap _map249 = iprot.readMapBegin();
-              this.NestedMaps = new HashMap<Map<Map<Integer,String>,String>,Map<Integer,String>>(Math.max(0, 2*_map249.size));
-              for (int _i250 = 0; 
-                   (_map249.size < 0) ? iprot.peekMap() : (_i250 < _map249.size); 
-                   ++_i250)
+              TMap _map315 = iprot.readMapBegin();
+              this.NestedMaps = new HashMap<Map<Map<Integer,String>,String>,Map<Integer,String>>(Math.max(0, 2*_map315.size));
+              for (int _i316 = 0; 
+                   (_map315.size < 0) ? iprot.peekMap() : (_i316 < _map315.size); 
+                   ++_i316)
               {
-                Map<Map<Integer,String>,String> _key251;
-                Map<Integer,String> _val252;
+                Map<Map<Integer,String>,String> _key317;
+                Map<Integer,String> _val318;
                 {
-                  TMap _map253 = iprot.readMapBegin();
-                  _key251 = new HashMap<Map<Integer,String>,String>(Math.max(0, 2*_map253.size));
-                  for (int _i254 = 0; 
-                       (_map253.size < 0) ? iprot.peekMap() : (_i254 < _map253.size); 
-                       ++_i254)
+                  TMap _map319 = iprot.readMapBegin();
+                  _key317 = new HashMap<Map<Integer,String>,String>(Math.max(0, 2*_map319.size));
+                  for (int _i320 = 0; 
+                       (_map319.size < 0) ? iprot.peekMap() : (_i320 < _map319.size); 
+                       ++_i320)
                   {
-                    Map<Integer,String> _key255;
-                    String _val256;
+                    Map<Integer,String> _key321;
+                    String _val322;
                     {
-                      TMap _map257 = iprot.readMapBegin();
-                      _key255 = new HashMap<Integer,String>(Math.max(0, 2*_map257.size));
-                      for (int _i258 = 0; 
-                           (_map257.size < 0) ? iprot.peekMap() : (_i258 < _map257.size); 
-                           ++_i258)
+                      TMap _map323 = iprot.readMapBegin();
+                      _key321 = new HashMap<Integer,String>(Math.max(0, 2*_map323.size));
+                      for (int _i324 = 0; 
+                           (_map323.size < 0) ? iprot.peekMap() : (_i324 < _map323.size); 
+                           ++_i324)
                       {
-                        int _key259;
-                        String _val260;
-                        _key259 = iprot.readI32();
-                        _val260 = iprot.readString();
-                        _key255.put(_key259, _val260);
+                        int _key325;
+                        String _val326;
+                        _key325 = iprot.readI32();
+                        _val326 = iprot.readString();
+                        _key321.put(_key325, _val326);
                       }
                       iprot.readMapEnd();
                     }
-                    _val256 = iprot.readString();
-                    _key251.put(_key255, _val256);
+                    _val322 = iprot.readString();
+                    _key317.put(_key321, _val322);
                   }
                   iprot.readMapEnd();
                 }
                 {
-                  TMap _map261 = iprot.readMapBegin();
-                  _val252 = new HashMap<Integer,String>(Math.max(0, 2*_map261.size));
-                  for (int _i262 = 0; 
-                       (_map261.size < 0) ? iprot.peekMap() : (_i262 < _map261.size); 
-                       ++_i262)
+                  TMap _map327 = iprot.readMapBegin();
+                  _val318 = new HashMap<Integer,String>(Math.max(0, 2*_map327.size));
+                  for (int _i328 = 0; 
+                       (_map327.size < 0) ? iprot.peekMap() : (_i328 < _map327.size); 
+                       ++_i328)
                   {
-                    int _key263;
-                    String _val264;
-                    _key263 = iprot.readI32();
-                    _val264 = iprot.readString();
-                    _val252.put(_key263, _val264);
+                    int _key329;
+                    String _val330;
+                    _key329 = iprot.readI32();
+                    _val330 = iprot.readString();
+                    _val318.put(_key329, _val330);
                   }
                   iprot.readMapEnd();
                 }
-                this.NestedMaps.put(_key251, _val252);
+                this.NestedMaps.put(_key317, _val318);
               }
               iprot.readMapEnd();
             }
@@ -1773,30 +1773,30 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
         case MAPKEYINTVALLIST:
           if (__field.type == TType.MAP) {
             {
-              TMap _map265 = iprot.readMapBegin();
-              this.mapKeyIntValList = new HashMap<Integer,List<MyStruct>>(Math.max(0, 2*_map265.size));
-              for (int _i266 = 0; 
-                   (_map265.size < 0) ? iprot.peekMap() : (_i266 < _map265.size); 
-                   ++_i266)
+              TMap _map331 = iprot.readMapBegin();
+              this.mapKeyIntValList = new HashMap<Integer,List<MyStruct>>(Math.max(0, 2*_map331.size));
+              for (int _i332 = 0; 
+                   (_map331.size < 0) ? iprot.peekMap() : (_i332 < _map331.size); 
+                   ++_i332)
               {
-                int _key267;
-                List<MyStruct> _val268;
-                _key267 = iprot.readI32();
+                int _key333;
+                List<MyStruct> _val334;
+                _key333 = iprot.readI32();
                 {
-                  TList _list269 = iprot.readListBegin();
-                  _val268 = new ArrayList<MyStruct>(Math.max(0, _list269.size));
-                  for (int _i270 = 0; 
-                       (_list269.size < 0) ? iprot.peekList() : (_i270 < _list269.size); 
-                       ++_i270)
+                  TList _list335 = iprot.readListBegin();
+                  _val334 = new ArrayList<MyStruct>(Math.max(0, _list335.size));
+                  for (int _i336 = 0; 
+                       (_list335.size < 0) ? iprot.peekList() : (_i336 < _list335.size); 
+                       ++_i336)
                   {
-                    MyStruct _elem271;
-                    _elem271 = new MyStruct();
-                    _elem271.read(iprot);
-                    _val268.add(_elem271);
+                    MyStruct _elem337;
+                    _elem337 = new MyStruct();
+                    _elem337.read(iprot);
+                    _val334.add(_elem337);
                   }
                   iprot.readListEnd();
                 }
-                this.mapKeyIntValList.put(_key267, _val268);
+                this.mapKeyIntValList.put(_key333, _val334);
               }
               iprot.readMapEnd();
             }
@@ -1807,29 +1807,29 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
         case MAPKEYINTVALSET:
           if (__field.type == TType.MAP) {
             {
-              TMap _map272 = iprot.readMapBegin();
-              this.mapKeyIntValSet = new HashMap<Integer,Set<Boolean>>(Math.max(0, 2*_map272.size));
-              for (int _i273 = 0; 
-                   (_map272.size < 0) ? iprot.peekMap() : (_i273 < _map272.size); 
-                   ++_i273)
+              TMap _map338 = iprot.readMapBegin();
+              this.mapKeyIntValSet = new HashMap<Integer,Set<Boolean>>(Math.max(0, 2*_map338.size));
+              for (int _i339 = 0; 
+                   (_map338.size < 0) ? iprot.peekMap() : (_i339 < _map338.size); 
+                   ++_i339)
               {
-                int _key274;
-                Set<Boolean> _val275;
-                _key274 = iprot.readI32();
+                int _key340;
+                Set<Boolean> _val341;
+                _key340 = iprot.readI32();
                 {
-                  TSet _set276 = iprot.readSetBegin();
-                  _val275 = new HashSet<Boolean>(Math.max(0, 2*_set276.size));
-                  for (int _i277 = 0; 
-                       (_set276.size < 0) ? iprot.peekSet() : (_i277 < _set276.size); 
-                       ++_i277)
+                  TSet _set342 = iprot.readSetBegin();
+                  _val341 = new HashSet<Boolean>(Math.max(0, 2*_set342.size));
+                  for (int _i343 = 0; 
+                       (_set342.size < 0) ? iprot.peekSet() : (_i343 < _set342.size); 
+                       ++_i343)
                   {
-                    boolean _elem278;
-                    _elem278 = iprot.readBool();
-                    _val275.add(_elem278);
+                    boolean _elem344;
+                    _elem344 = iprot.readBool();
+                    _val341.add(_elem344);
                   }
                   iprot.readSetEnd();
                 }
-                this.mapKeyIntValSet.put(_key274, _val275);
+                this.mapKeyIntValSet.put(_key340, _val341);
               }
               iprot.readMapEnd();
             }
@@ -1840,29 +1840,29 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
         case MAPKEYSETVALINT:
           if (__field.type == TType.MAP) {
             {
-              TMap _map279 = iprot.readMapBegin();
-              this.mapKeySetValInt = new HashMap<Set<Boolean>,MyEnum>(Math.max(0, 2*_map279.size));
-              for (int _i280 = 0; 
-                   (_map279.size < 0) ? iprot.peekMap() : (_i280 < _map279.size); 
-                   ++_i280)
+              TMap _map345 = iprot.readMapBegin();
+              this.mapKeySetValInt = new HashMap<Set<Boolean>,MyEnum>(Math.max(0, 2*_map345.size));
+              for (int _i346 = 0; 
+                   (_map345.size < 0) ? iprot.peekMap() : (_i346 < _map345.size); 
+                   ++_i346)
               {
-                Set<Boolean> _key281;
-                MyEnum _val282;
+                Set<Boolean> _key347;
+                MyEnum _val348;
                 {
-                  TSet _set283 = iprot.readSetBegin();
-                  _key281 = new HashSet<Boolean>(Math.max(0, 2*_set283.size));
-                  for (int _i284 = 0; 
-                       (_set283.size < 0) ? iprot.peekSet() : (_i284 < _set283.size); 
-                       ++_i284)
+                  TSet _set349 = iprot.readSetBegin();
+                  _key347 = new HashSet<Boolean>(Math.max(0, 2*_set349.size));
+                  for (int _i350 = 0; 
+                       (_set349.size < 0) ? iprot.peekSet() : (_i350 < _set349.size); 
+                       ++_i350)
                   {
-                    boolean _elem285;
-                    _elem285 = iprot.readBool();
-                    _key281.add(_elem285);
+                    boolean _elem351;
+                    _elem351 = iprot.readBool();
+                    _key347.add(_elem351);
                   }
                   iprot.readSetEnd();
                 }
-                _val282 = MyEnum.findByValue(iprot.readI32());
-                this.mapKeySetValInt.put(_key281, _val282);
+                _val348 = MyEnum.findByValue(iprot.readI32());
+                this.mapKeySetValInt.put(_key347, _val348);
               }
               iprot.readMapEnd();
             }
@@ -1873,55 +1873,55 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
         case MAPKEYLISTVALSET:
           if (__field.type == TType.MAP) {
             {
-              TMap _map286 = iprot.readMapBegin();
-              this.mapKeyListValSet = new HashMap<List<Integer>,Set<Map<Double,String>>>(Math.max(0, 2*_map286.size));
-              for (int _i287 = 0; 
-                   (_map286.size < 0) ? iprot.peekMap() : (_i287 < _map286.size); 
-                   ++_i287)
+              TMap _map352 = iprot.readMapBegin();
+              this.mapKeyListValSet = new HashMap<List<Integer>,Set<Map<Double,String>>>(Math.max(0, 2*_map352.size));
+              for (int _i353 = 0; 
+                   (_map352.size < 0) ? iprot.peekMap() : (_i353 < _map352.size); 
+                   ++_i353)
               {
-                List<Integer> _key288;
-                Set<Map<Double,String>> _val289;
+                List<Integer> _key354;
+                Set<Map<Double,String>> _val355;
                 {
-                  TList _list290 = iprot.readListBegin();
-                  _key288 = new ArrayList<Integer>(Math.max(0, _list290.size));
-                  for (int _i291 = 0; 
-                       (_list290.size < 0) ? iprot.peekList() : (_i291 < _list290.size); 
-                       ++_i291)
+                  TList _list356 = iprot.readListBegin();
+                  _key354 = new ArrayList<Integer>(Math.max(0, _list356.size));
+                  for (int _i357 = 0; 
+                       (_list356.size < 0) ? iprot.peekList() : (_i357 < _list356.size); 
+                       ++_i357)
                   {
-                    int _elem292;
-                    _elem292 = iprot.readI32();
-                    _key288.add(_elem292);
+                    int _elem358;
+                    _elem358 = iprot.readI32();
+                    _key354.add(_elem358);
                   }
                   iprot.readListEnd();
                 }
                 {
-                  TSet _set293 = iprot.readSetBegin();
-                  _val289 = new HashSet<Map<Double,String>>(Math.max(0, 2*_set293.size));
-                  for (int _i294 = 0; 
-                       (_set293.size < 0) ? iprot.peekSet() : (_i294 < _set293.size); 
-                       ++_i294)
+                  TSet _set359 = iprot.readSetBegin();
+                  _val355 = new HashSet<Map<Double,String>>(Math.max(0, 2*_set359.size));
+                  for (int _i360 = 0; 
+                       (_set359.size < 0) ? iprot.peekSet() : (_i360 < _set359.size); 
+                       ++_i360)
                   {
-                    Map<Double,String> _elem295;
+                    Map<Double,String> _elem361;
                     {
-                      TMap _map296 = iprot.readMapBegin();
-                      _elem295 = new HashMap<Double,String>(Math.max(0, 2*_map296.size));
-                      for (int _i297 = 0; 
-                           (_map296.size < 0) ? iprot.peekMap() : (_i297 < _map296.size); 
-                           ++_i297)
+                      TMap _map362 = iprot.readMapBegin();
+                      _elem361 = new HashMap<Double,String>(Math.max(0, 2*_map362.size));
+                      for (int _i363 = 0; 
+                           (_map362.size < 0) ? iprot.peekMap() : (_i363 < _map362.size); 
+                           ++_i363)
                       {
-                        double _key298;
-                        String _val299;
-                        _key298 = iprot.readDouble();
-                        _val299 = iprot.readString();
-                        _elem295.put(_key298, _val299);
+                        double _key364;
+                        String _val365;
+                        _key364 = iprot.readDouble();
+                        _val365 = iprot.readString();
+                        _elem361.put(_key364, _val365);
                       }
                       iprot.readMapEnd();
                     }
-                    _val289.add(_elem295);
+                    _val355.add(_elem361);
                   }
                   iprot.readSetEnd();
                 }
-                this.mapKeyListValSet.put(_key288, _val289);
+                this.mapKeyListValSet.put(_key354, _val355);
               }
               iprot.readMapEnd();
             }
@@ -1950,11 +1950,11 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       oprot.writeFieldBegin(SET_OF_SET_OF_INT_FIELD_DESC);
       {
         oprot.writeSetBegin(new TSet(TType.SET, this.setOfSetOfInt.size()));
-        for (Set<Integer> _iter300 : this.setOfSetOfInt)        {
+        for (Set<Integer> _iter366 : this.setOfSetOfInt)        {
           {
-            oprot.writeSetBegin(new TSet(TType.I32, _iter300.size()));
-            for (int _iter301 : _iter300)            {
-              oprot.writeI32(_iter301);
+            oprot.writeSetBegin(new TSet(TType.I32, _iter366.size()));
+            for (int _iter367 : _iter366)            {
+              oprot.writeI32(_iter367);
             }
             oprot.writeSetEnd();
           }
@@ -1967,17 +1967,17 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       oprot.writeFieldBegin(LISTOF_LIST_OF_LIST_OF_LIST_OF_ENUM_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.LIST, this.listofListOfListOfListOfEnum.size()));
-        for (List<List<List<MyEnum>>> _iter302 : this.listofListOfListOfListOfEnum)        {
+        for (List<List<List<MyEnum>>> _iter368 : this.listofListOfListOfListOfEnum)        {
           {
-            oprot.writeListBegin(new TList(TType.LIST, _iter302.size()));
-            for (List<List<MyEnum>> _iter303 : _iter302)            {
+            oprot.writeListBegin(new TList(TType.LIST, _iter368.size()));
+            for (List<List<MyEnum>> _iter369 : _iter368)            {
               {
-                oprot.writeListBegin(new TList(TType.LIST, _iter303.size()));
-                for (List<MyEnum> _iter304 : _iter303)                {
+                oprot.writeListBegin(new TList(TType.LIST, _iter369.size()));
+                for (List<MyEnum> _iter370 : _iter369)                {
                   {
-                    oprot.writeListBegin(new TList(TType.I32, _iter304.size()));
-                    for (MyEnum _iter305 : _iter304)                    {
-                      oprot.writeI32(_iter305 == null ? 0 : _iter305.getValue());
+                    oprot.writeListBegin(new TList(TType.I32, _iter370.size()));
+                    for (MyEnum _iter371 : _iter370)                    {
+                      oprot.writeI32(_iter371 == null ? 0 : _iter371.getValue());
                     }
                     oprot.writeListEnd();
                   }
@@ -1996,11 +1996,11 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       oprot.writeFieldBegin(LIST_OF_LIST_OF_MY_STRUCT_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.LIST, this.listOfListOfMyStruct.size()));
-        for (List<MyStruct> _iter306 : this.listOfListOfMyStruct)        {
+        for (List<MyStruct> _iter372 : this.listOfListOfMyStruct)        {
           {
-            oprot.writeListBegin(new TList(TType.STRUCT, _iter306.size()));
-            for (MyStruct _iter307 : _iter306)            {
-              _iter307.write(oprot);
+            oprot.writeListBegin(new TList(TType.STRUCT, _iter372.size()));
+            for (MyStruct _iter373 : _iter372)            {
+              _iter373.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -2013,14 +2013,14 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       oprot.writeFieldBegin(SET_OF_LIST_OF_LIST_OF_LONG_FIELD_DESC);
       {
         oprot.writeSetBegin(new TSet(TType.LIST, this.setOfListOfListOfLong.size()));
-        for (List<List<Long>> _iter308 : this.setOfListOfListOfLong)        {
+        for (List<List<Long>> _iter374 : this.setOfListOfListOfLong)        {
           {
-            oprot.writeListBegin(new TList(TType.LIST, _iter308.size()));
-            for (List<Long> _iter309 : _iter308)            {
+            oprot.writeListBegin(new TList(TType.LIST, _iter374.size()));
+            for (List<Long> _iter375 : _iter374)            {
               {
-                oprot.writeListBegin(new TList(TType.I64, _iter309.size()));
-                for (long _iter310 : _iter309)                {
-                  oprot.writeI64(_iter310);
+                oprot.writeListBegin(new TList(TType.I64, _iter375.size()));
+                for (long _iter376 : _iter375)                {
+                  oprot.writeI64(_iter376);
                 }
                 oprot.writeListEnd();
               }
@@ -2036,14 +2036,14 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       oprot.writeFieldBegin(SET_OF_SET_OFSET_OF_LONG_FIELD_DESC);
       {
         oprot.writeSetBegin(new TSet(TType.SET, this.setOfSetOfsetOfLong.size()));
-        for (Set<Set<Long>> _iter311 : this.setOfSetOfsetOfLong)        {
+        for (Set<Set<Long>> _iter377 : this.setOfSetOfsetOfLong)        {
           {
-            oprot.writeSetBegin(new TSet(TType.SET, _iter311.size()));
-            for (Set<Long> _iter312 : _iter311)            {
+            oprot.writeSetBegin(new TSet(TType.SET, _iter377.size()));
+            for (Set<Long> _iter378 : _iter377)            {
               {
-                oprot.writeSetBegin(new TSet(TType.I64, _iter312.size()));
-                for (long _iter313 : _iter312)                {
-                  oprot.writeI64(_iter313);
+                oprot.writeSetBegin(new TSet(TType.I64, _iter378.size()));
+                for (long _iter379 : _iter378)                {
+                  oprot.writeI64(_iter379);
                 }
                 oprot.writeSetEnd();
               }
@@ -2059,15 +2059,15 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       oprot.writeFieldBegin(MAP_STRUCT_LIST_OF_LIST_OF_LONG_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, this.mapStructListOfListOfLong.size()));
-        for (Map.Entry<Integer, List<List<MyStruct>>> _iter314 : this.mapStructListOfListOfLong.entrySet())        {
-          oprot.writeI32(_iter314.getKey());
+        for (Map.Entry<Integer, List<List<MyStruct>>> _iter380 : this.mapStructListOfListOfLong.entrySet())        {
+          oprot.writeI32(_iter380.getKey());
           {
-            oprot.writeListBegin(new TList(TType.LIST, _iter314.getValue().size()));
-            for (List<MyStruct> _iter315 : _iter314.getValue())            {
+            oprot.writeListBegin(new TList(TType.LIST, _iter380.getValue().size()));
+            for (List<MyStruct> _iter381 : _iter380.getValue())            {
               {
-                oprot.writeListBegin(new TList(TType.STRUCT, _iter315.size()));
-                for (MyStruct _iter316 : _iter315)                {
-                  _iter316.write(oprot);
+                oprot.writeListBegin(new TList(TType.STRUCT, _iter381.size()));
+                for (MyStruct _iter382 : _iter381)                {
+                  _iter382.write(oprot);
                 }
                 oprot.writeListEnd();
               }
@@ -2083,9 +2083,9 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       oprot.writeFieldBegin(M_KEY_STRUCT_VAL_INT_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I32, this.mKeyStructValInt.size()));
-        for (Map.Entry<MyStruct, Integer> _iter317 : this.mKeyStructValInt.entrySet())        {
-          _iter317.getKey().write(oprot);
-          oprot.writeI32(_iter317.getValue());
+        for (Map.Entry<MyStruct, Integer> _iter383 : this.mKeyStructValInt.entrySet())        {
+          _iter383.getKey().write(oprot);
+          oprot.writeI32(_iter383.getValue());
         }
         oprot.writeMapEnd();
       }
@@ -2095,12 +2095,12 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       oprot.writeFieldBegin(LIST_OF_MAP_KEY_INT_VAL_INT_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.MAP, this.listOfMapKeyIntValInt.size()));
-        for (Map<Integer,Integer> _iter318 : this.listOfMapKeyIntValInt)        {
+        for (Map<Integer,Integer> _iter384 : this.listOfMapKeyIntValInt)        {
           {
-            oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter318.size()));
-            for (Map.Entry<Integer, Integer> _iter319 : _iter318.entrySet())            {
-              oprot.writeI32(_iter319.getKey());
-              oprot.writeI32(_iter319.getValue());
+            oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter384.size()));
+            for (Map.Entry<Integer, Integer> _iter385 : _iter384.entrySet())            {
+              oprot.writeI32(_iter385.getKey());
+              oprot.writeI32(_iter385.getValue());
             }
             oprot.writeMapEnd();
           }
@@ -2113,15 +2113,15 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       oprot.writeFieldBegin(LIST_OF_MAP_KEY_STR_VAL_LIST_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.MAP, this.listOfMapKeyStrValList.size()));
-        for (Map<String,List<MyStruct>> _iter320 : this.listOfMapKeyStrValList)        {
+        for (Map<String,List<MyStruct>> _iter386 : this.listOfMapKeyStrValList)        {
           {
-            oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter320.size()));
-            for (Map.Entry<String, List<MyStruct>> _iter321 : _iter320.entrySet())            {
-              oprot.writeString(_iter321.getKey());
+            oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter386.size()));
+            for (Map.Entry<String, List<MyStruct>> _iter387 : _iter386.entrySet())            {
+              oprot.writeString(_iter387.getKey());
               {
-                oprot.writeListBegin(new TList(TType.STRUCT, _iter321.getValue().size()));
-                for (MyStruct _iter322 : _iter321.getValue())                {
-                  _iter322.write(oprot);
+                oprot.writeListBegin(new TList(TType.STRUCT, _iter387.getValue().size()));
+                for (MyStruct _iter388 : _iter387.getValue())                {
+                  _iter388.write(oprot);
                 }
                 oprot.writeListEnd();
               }
@@ -2137,15 +2137,15 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       oprot.writeFieldBegin(MAP_KEY_SET_VAL_LONG_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.SET, TType.I64, this.mapKeySetValLong.size()));
-        for (Map.Entry<Set<Integer>, Long> _iter323 : this.mapKeySetValLong.entrySet())        {
+        for (Map.Entry<Set<Integer>, Long> _iter389 : this.mapKeySetValLong.entrySet())        {
           {
-            oprot.writeSetBegin(new TSet(TType.I32, _iter323.getKey().size()));
-            for (int _iter324 : _iter323.getKey())            {
-              oprot.writeI32(_iter324);
+            oprot.writeSetBegin(new TSet(TType.I32, _iter389.getKey().size()));
+            for (int _iter390 : _iter389.getKey())            {
+              oprot.writeI32(_iter390);
             }
             oprot.writeSetEnd();
           }
-          oprot.writeI64(_iter323.getValue());
+          oprot.writeI64(_iter389.getValue());
         }
         oprot.writeMapEnd();
       }
@@ -2155,15 +2155,15 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       oprot.writeFieldBegin(MAP_KEY_LIST_VAL_LONG_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.LIST, TType.I32, this.mapKeyListValLong.size()));
-        for (Map.Entry<List<String>, Integer> _iter325 : this.mapKeyListValLong.entrySet())        {
+        for (Map.Entry<List<String>, Integer> _iter391 : this.mapKeyListValLong.entrySet())        {
           {
-            oprot.writeListBegin(new TList(TType.STRING, _iter325.getKey().size()));
-            for (String _iter326 : _iter325.getKey())            {
-              oprot.writeString(_iter326);
+            oprot.writeListBegin(new TList(TType.STRING, _iter391.getKey().size()));
+            for (String _iter392 : _iter391.getKey())            {
+              oprot.writeString(_iter392);
             }
             oprot.writeListEnd();
           }
-          oprot.writeI32(_iter325.getValue());
+          oprot.writeI32(_iter391.getValue());
         }
         oprot.writeMapEnd();
       }
@@ -2173,20 +2173,20 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       oprot.writeFieldBegin(MAP_KEY_MAP_VAL_MAP_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.MAP, TType.MAP, this.mapKeyMapValMap.size()));
-        for (Map.Entry<Map<Integer,String>, Map<Integer,String>> _iter327 : this.mapKeyMapValMap.entrySet())        {
+        for (Map.Entry<Map<Integer,String>, Map<Integer,String>> _iter393 : this.mapKeyMapValMap.entrySet())        {
           {
-            oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter327.getKey().size()));
-            for (Map.Entry<Integer, String> _iter328 : _iter327.getKey().entrySet())            {
-              oprot.writeI32(_iter328.getKey());
-              oprot.writeString(_iter328.getValue());
+            oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter393.getKey().size()));
+            for (Map.Entry<Integer, String> _iter394 : _iter393.getKey().entrySet())            {
+              oprot.writeI32(_iter394.getKey());
+              oprot.writeString(_iter394.getValue());
             }
             oprot.writeMapEnd();
           }
           {
-            oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter327.getValue().size()));
-            for (Map.Entry<Integer, String> _iter329 : _iter327.getValue().entrySet())            {
-              oprot.writeI32(_iter329.getKey());
-              oprot.writeString(_iter329.getValue());
+            oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter393.getValue().size()));
+            for (Map.Entry<Integer, String> _iter395 : _iter393.getValue().entrySet())            {
+              oprot.writeI32(_iter395.getKey());
+              oprot.writeString(_iter395.getValue());
             }
             oprot.writeMapEnd();
           }
@@ -2199,14 +2199,14 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       oprot.writeFieldBegin(MAP_KEY_SET_VAL_MAP_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.SET, TType.MAP, this.mapKeySetValMap.size()));
-        for (Map.Entry<Set<List<Integer>>, Map<List<Set<String>>,String>> _iter330 : this.mapKeySetValMap.entrySet())        {
+        for (Map.Entry<Set<List<Integer>>, Map<List<Set<String>>,String>> _iter396 : this.mapKeySetValMap.entrySet())        {
           {
-            oprot.writeSetBegin(new TSet(TType.LIST, _iter330.getKey().size()));
-            for (List<Integer> _iter331 : _iter330.getKey())            {
+            oprot.writeSetBegin(new TSet(TType.LIST, _iter396.getKey().size()));
+            for (List<Integer> _iter397 : _iter396.getKey())            {
               {
-                oprot.writeListBegin(new TList(TType.I32, _iter331.size()));
-                for (int _iter332 : _iter331)                {
-                  oprot.writeI32(_iter332);
+                oprot.writeListBegin(new TList(TType.I32, _iter397.size()));
+                for (int _iter398 : _iter397)                {
+                  oprot.writeI32(_iter398);
                 }
                 oprot.writeListEnd();
               }
@@ -2214,22 +2214,22 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
             oprot.writeSetEnd();
           }
           {
-            oprot.writeMapBegin(new TMap(TType.LIST, TType.STRING, _iter330.getValue().size()));
-            for (Map.Entry<List<Set<String>>, String> _iter333 : _iter330.getValue().entrySet())            {
+            oprot.writeMapBegin(new TMap(TType.LIST, TType.STRING, _iter396.getValue().size()));
+            for (Map.Entry<List<Set<String>>, String> _iter399 : _iter396.getValue().entrySet())            {
               {
-                oprot.writeListBegin(new TList(TType.SET, _iter333.getKey().size()));
-                for (Set<String> _iter334 : _iter333.getKey())                {
+                oprot.writeListBegin(new TList(TType.SET, _iter399.getKey().size()));
+                for (Set<String> _iter400 : _iter399.getKey())                {
                   {
-                    oprot.writeSetBegin(new TSet(TType.STRING, _iter334.size()));
-                    for (String _iter335 : _iter334)                    {
-                      oprot.writeString(_iter335);
+                    oprot.writeSetBegin(new TSet(TType.STRING, _iter400.size()));
+                    for (String _iter401 : _iter400)                    {
+                      oprot.writeString(_iter401);
                     }
                     oprot.writeSetEnd();
                   }
                 }
                 oprot.writeListEnd();
               }
-              oprot.writeString(_iter333.getValue());
+              oprot.writeString(_iter399.getValue());
             }
             oprot.writeMapEnd();
           }
@@ -2242,27 +2242,27 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       oprot.writeFieldBegin(NESTED_MAPS_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.MAP, TType.MAP, this.NestedMaps.size()));
-        for (Map.Entry<Map<Map<Integer,String>,String>, Map<Integer,String>> _iter336 : this.NestedMaps.entrySet())        {
+        for (Map.Entry<Map<Map<Integer,String>,String>, Map<Integer,String>> _iter402 : this.NestedMaps.entrySet())        {
           {
-            oprot.writeMapBegin(new TMap(TType.MAP, TType.STRING, _iter336.getKey().size()));
-            for (Map.Entry<Map<Integer,String>, String> _iter337 : _iter336.getKey().entrySet())            {
+            oprot.writeMapBegin(new TMap(TType.MAP, TType.STRING, _iter402.getKey().size()));
+            for (Map.Entry<Map<Integer,String>, String> _iter403 : _iter402.getKey().entrySet())            {
               {
-                oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter337.getKey().size()));
-                for (Map.Entry<Integer, String> _iter338 : _iter337.getKey().entrySet())                {
-                  oprot.writeI32(_iter338.getKey());
-                  oprot.writeString(_iter338.getValue());
+                oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter403.getKey().size()));
+                for (Map.Entry<Integer, String> _iter404 : _iter403.getKey().entrySet())                {
+                  oprot.writeI32(_iter404.getKey());
+                  oprot.writeString(_iter404.getValue());
                 }
                 oprot.writeMapEnd();
               }
-              oprot.writeString(_iter337.getValue());
+              oprot.writeString(_iter403.getValue());
             }
             oprot.writeMapEnd();
           }
           {
-            oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter336.getValue().size()));
-            for (Map.Entry<Integer, String> _iter339 : _iter336.getValue().entrySet())            {
-              oprot.writeI32(_iter339.getKey());
-              oprot.writeString(_iter339.getValue());
+            oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter402.getValue().size()));
+            for (Map.Entry<Integer, String> _iter405 : _iter402.getValue().entrySet())            {
+              oprot.writeI32(_iter405.getKey());
+              oprot.writeString(_iter405.getValue());
             }
             oprot.writeMapEnd();
           }
@@ -2275,12 +2275,12 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       oprot.writeFieldBegin(MAP_KEY_INT_VAL_LIST_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, this.mapKeyIntValList.size()));
-        for (Map.Entry<Integer, List<MyStruct>> _iter340 : this.mapKeyIntValList.entrySet())        {
-          oprot.writeI32(_iter340.getKey());
+        for (Map.Entry<Integer, List<MyStruct>> _iter406 : this.mapKeyIntValList.entrySet())        {
+          oprot.writeI32(_iter406.getKey());
           {
-            oprot.writeListBegin(new TList(TType.STRUCT, _iter340.getValue().size()));
-            for (MyStruct _iter341 : _iter340.getValue())            {
-              _iter341.write(oprot);
+            oprot.writeListBegin(new TList(TType.STRUCT, _iter406.getValue().size()));
+            for (MyStruct _iter407 : _iter406.getValue())            {
+              _iter407.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -2293,12 +2293,12 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       oprot.writeFieldBegin(MAP_KEY_INT_VAL_SET_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I32, TType.SET, this.mapKeyIntValSet.size()));
-        for (Map.Entry<Integer, Set<Boolean>> _iter342 : this.mapKeyIntValSet.entrySet())        {
-          oprot.writeI32(_iter342.getKey());
+        for (Map.Entry<Integer, Set<Boolean>> _iter408 : this.mapKeyIntValSet.entrySet())        {
+          oprot.writeI32(_iter408.getKey());
           {
-            oprot.writeSetBegin(new TSet(TType.BOOL, _iter342.getValue().size()));
-            for (boolean _iter343 : _iter342.getValue())            {
-              oprot.writeBool(_iter343);
+            oprot.writeSetBegin(new TSet(TType.BOOL, _iter408.getValue().size()));
+            for (boolean _iter409 : _iter408.getValue())            {
+              oprot.writeBool(_iter409);
             }
             oprot.writeSetEnd();
           }
@@ -2311,15 +2311,15 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       oprot.writeFieldBegin(MAP_KEY_SET_VAL_INT_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.SET, TType.I32, this.mapKeySetValInt.size()));
-        for (Map.Entry<Set<Boolean>, MyEnum> _iter344 : this.mapKeySetValInt.entrySet())        {
+        for (Map.Entry<Set<Boolean>, MyEnum> _iter410 : this.mapKeySetValInt.entrySet())        {
           {
-            oprot.writeSetBegin(new TSet(TType.BOOL, _iter344.getKey().size()));
-            for (boolean _iter345 : _iter344.getKey())            {
-              oprot.writeBool(_iter345);
+            oprot.writeSetBegin(new TSet(TType.BOOL, _iter410.getKey().size()));
+            for (boolean _iter411 : _iter410.getKey())            {
+              oprot.writeBool(_iter411);
             }
             oprot.writeSetEnd();
           }
-          oprot.writeI32(_iter344.getValue() == null ? 0 : _iter344.getValue().getValue());
+          oprot.writeI32(_iter410.getValue() == null ? 0 : _iter410.getValue().getValue());
         }
         oprot.writeMapEnd();
       }
@@ -2329,22 +2329,22 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
       oprot.writeFieldBegin(MAP_KEY_LIST_VAL_SET_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.LIST, TType.SET, this.mapKeyListValSet.size()));
-        for (Map.Entry<List<Integer>, Set<Map<Double,String>>> _iter346 : this.mapKeyListValSet.entrySet())        {
+        for (Map.Entry<List<Integer>, Set<Map<Double,String>>> _iter412 : this.mapKeyListValSet.entrySet())        {
           {
-            oprot.writeListBegin(new TList(TType.I32, _iter346.getKey().size()));
-            for (int _iter347 : _iter346.getKey())            {
-              oprot.writeI32(_iter347);
+            oprot.writeListBegin(new TList(TType.I32, _iter412.getKey().size()));
+            for (int _iter413 : _iter412.getKey())            {
+              oprot.writeI32(_iter413);
             }
             oprot.writeListEnd();
           }
           {
-            oprot.writeSetBegin(new TSet(TType.MAP, _iter346.getValue().size()));
-            for (Map<Double,String> _iter348 : _iter346.getValue())            {
+            oprot.writeSetBegin(new TSet(TType.MAP, _iter412.getValue().size()));
+            for (Map<Double,String> _iter414 : _iter412.getValue())            {
               {
-                oprot.writeMapBegin(new TMap(TType.DOUBLE, TType.STRING, _iter348.size()));
-                for (Map.Entry<Double, String> _iter349 : _iter348.entrySet())                {
-                  oprot.writeDouble(_iter349.getKey());
-                  oprot.writeString(_iter349.getValue());
+                oprot.writeMapBegin(new TMap(TType.DOUBLE, TType.STRING, _iter414.size()));
+                for (Map.Entry<Double, String> _iter415 : _iter414.entrySet())                {
+                  oprot.writeDouble(_iter415.getKey());
+                  oprot.writeString(_iter415.getValue());
                 }
                 oprot.writeMapEnd();
               }

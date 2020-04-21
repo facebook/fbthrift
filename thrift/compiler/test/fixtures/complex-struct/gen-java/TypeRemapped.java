@@ -395,17 +395,17 @@ public class TypeRemapped implements TBase, java.io.Serializable, Cloneable, Com
         case LSMAP:
           if (__field.type == TType.MAP) {
             {
-              TMap _map350 = iprot.readMapBegin();
-              this.lsMap = new HashMap<Long,String>(Math.max(0, 2*_map350.size));
-              for (int _i351 = 0; 
-                   (_map350.size < 0) ? iprot.peekMap() : (_i351 < _map350.size); 
-                   ++_i351)
+              TMap _map416 = iprot.readMapBegin();
+              this.lsMap = new HashMap<Long,String>(Math.max(0, 2*_map416.size));
+              for (int _i417 = 0; 
+                   (_map416.size < 0) ? iprot.peekMap() : (_i417 < _map416.size); 
+                   ++_i417)
               {
-                long _key352;
-                String _val353;
-                _key352 = iprot.readI64();
-                _val353 = iprot.readString();
-                this.lsMap.put(_key352, _val353);
+                long _key418;
+                String _val419;
+                _key418 = iprot.readI64();
+                _val419 = iprot.readString();
+                this.lsMap.put(_key418, _val419);
               }
               iprot.readMapEnd();
             }
@@ -416,31 +416,31 @@ public class TypeRemapped implements TBase, java.io.Serializable, Cloneable, Com
         case IOMAP:
           if (__field.type == TType.MAP) {
             {
-              TMap _map354 = iprot.readMapBegin();
-              this.ioMap = new HashMap<Integer,Map<Integer,Long>>(Math.max(0, 2*_map354.size));
-              for (int _i355 = 0; 
-                   (_map354.size < 0) ? iprot.peekMap() : (_i355 < _map354.size); 
-                   ++_i355)
+              TMap _map420 = iprot.readMapBegin();
+              this.ioMap = new HashMap<Integer,Map<Integer,Long>>(Math.max(0, 2*_map420.size));
+              for (int _i421 = 0; 
+                   (_map420.size < 0) ? iprot.peekMap() : (_i421 < _map420.size); 
+                   ++_i421)
               {
-                int _key356;
-                Map<Integer,Long> _val357;
-                _key356 = iprot.readI32();
+                int _key422;
+                Map<Integer,Long> _val423;
+                _key422 = iprot.readI32();
                 {
-                  TMap _map358 = iprot.readMapBegin();
-                  _val357 = new HashMap<Integer,Long>(Math.max(0, 2*_map358.size));
-                  for (int _i359 = 0; 
-                       (_map358.size < 0) ? iprot.peekMap() : (_i359 < _map358.size); 
-                       ++_i359)
+                  TMap _map424 = iprot.readMapBegin();
+                  _val423 = new HashMap<Integer,Long>(Math.max(0, 2*_map424.size));
+                  for (int _i425 = 0; 
+                       (_map424.size < 0) ? iprot.peekMap() : (_i425 < _map424.size); 
+                       ++_i425)
                   {
-                    int _key360;
-                    long _val361;
-                    _key360 = iprot.readI32();
-                    _val361 = iprot.readI64();
-                    _val357.put(_key360, _val361);
+                    int _key426;
+                    long _val427;
+                    _key426 = iprot.readI32();
+                    _val427 = iprot.readI64();
+                    _val423.put(_key426, _val427);
                   }
                   iprot.readMapEnd();
                 }
-                this.ioMap.put(_key356, _val357);
+                this.ioMap.put(_key422, _val423);
               }
               iprot.readMapEnd();
             }
@@ -484,9 +484,9 @@ public class TypeRemapped implements TBase, java.io.Serializable, Cloneable, Com
       oprot.writeFieldBegin(LS_MAP_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, this.lsMap.size()));
-        for (Map.Entry<Long, String> _iter362 : this.lsMap.entrySet())        {
-          oprot.writeI64(_iter362.getKey());
-          oprot.writeString(_iter362.getValue());
+        for (Map.Entry<Long, String> _iter428 : this.lsMap.entrySet())        {
+          oprot.writeI64(_iter428.getKey());
+          oprot.writeString(_iter428.getValue());
         }
         oprot.writeMapEnd();
       }
@@ -496,13 +496,13 @@ public class TypeRemapped implements TBase, java.io.Serializable, Cloneable, Com
       oprot.writeFieldBegin(IO_MAP_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I32, TType.MAP, this.ioMap.size()));
-        for (Map.Entry<Integer, Map<Integer,Long>> _iter363 : this.ioMap.entrySet())        {
-          oprot.writeI32(_iter363.getKey());
+        for (Map.Entry<Integer, Map<Integer,Long>> _iter429 : this.ioMap.entrySet())        {
+          oprot.writeI32(_iter429.getKey());
           {
-            oprot.writeMapBegin(new TMap(TType.I32, TType.I64, _iter363.getValue().size()));
-            for (Map.Entry<Integer, Long> _iter364 : _iter363.getValue().entrySet())            {
-              oprot.writeI32(_iter364.getKey());
-              oprot.writeI64(_iter364.getValue());
+            oprot.writeMapBegin(new TMap(TType.I32, TType.I64, _iter429.getValue().size()));
+            for (Map.Entry<Integer, Long> _iter430 : _iter429.getValue().entrySet())            {
+              oprot.writeI32(_iter430.getKey());
+              oprot.writeI64(_iter430.getValue());
             }
             oprot.writeMapEnd();
           }

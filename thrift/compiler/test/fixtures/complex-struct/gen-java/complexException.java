@@ -480,15 +480,15 @@ public class complexException extends Exception implements TBase, java.io.Serial
         case LISTSTRINGS:
           if (__field.type == TType.LIST) {
             {
-              TList _list365 = iprot.readListBegin();
-              this.listStrings = new ArrayList<String>(Math.max(0, _list365.size));
-              for (int _i366 = 0; 
-                   (_list365.size < 0) ? iprot.peekList() : (_i366 < _list365.size); 
-                   ++_i366)
+              TList _list431 = iprot.readListBegin();
+              this.listStrings = new ArrayList<String>(Math.max(0, _list431.size));
+              for (int _i432 = 0; 
+                   (_list431.size < 0) ? iprot.peekList() : (_i432 < _list431.size); 
+                   ++_i432)
               {
-                String _elem367;
-                _elem367 = iprot.readString();
-                this.listStrings.add(_elem367);
+                String _elem433;
+                _elem433 = iprot.readString();
+                this.listStrings.add(_elem433);
               }
               iprot.readListEnd();
             }
@@ -522,17 +522,17 @@ public class complexException extends Exception implements TBase, java.io.Serial
         case LSMAP:
           if (__field.type == TType.MAP) {
             {
-              TMap _map368 = iprot.readMapBegin();
-              this.lsMap = new HashMap<Long,String>(Math.max(0, 2*_map368.size));
-              for (int _i369 = 0; 
-                   (_map368.size < 0) ? iprot.peekMap() : (_i369 < _map368.size); 
-                   ++_i369)
+              TMap _map434 = iprot.readMapBegin();
+              this.lsMap = new HashMap<Long,String>(Math.max(0, 2*_map434.size));
+              for (int _i435 = 0; 
+                   (_map434.size < 0) ? iprot.peekMap() : (_i435 < _map434.size); 
+                   ++_i435)
               {
-                long _key370;
-                String _val371;
-                _key370 = iprot.readI64();
-                _val371 = iprot.readString();
-                this.lsMap.put(_key370, _val371);
+                long _key436;
+                String _val437;
+                _key436 = iprot.readI64();
+                _val437 = iprot.readString();
+                this.lsMap.put(_key436, _val437);
               }
               iprot.readMapEnd();
             }
@@ -566,8 +566,8 @@ public class complexException extends Exception implements TBase, java.io.Serial
       oprot.writeFieldBegin(LIST_STRINGS_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.STRING, this.listStrings.size()));
-        for (String _iter372 : this.listStrings)        {
-          oprot.writeString(_iter372);
+        for (String _iter438 : this.listStrings)        {
+          oprot.writeString(_iter438);
         }
         oprot.writeListEnd();
       }
@@ -594,9 +594,9 @@ public class complexException extends Exception implements TBase, java.io.Serial
       oprot.writeFieldBegin(LS_MAP_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, this.lsMap.size()));
-        for (Map.Entry<Long, String> _iter373 : this.lsMap.entrySet())        {
-          oprot.writeI64(_iter373.getKey());
-          oprot.writeString(_iter373.getValue());
+        for (Map.Entry<Long, String> _iter439 : this.lsMap.entrySet())        {
+          oprot.writeI64(_iter439.getKey());
+          oprot.writeString(_iter439.getValue());
         }
         oprot.writeMapEnd();
       }

@@ -28,11 +28,15 @@ public class MyUnion extends TUnion<MyUnion> {
   private static final TField MY_STRUCT_FIELD_DESC = new TField("myStruct", TType.STRUCT, (short)2);
   private static final TField MY_DATA_ITEM_FIELD_DESC = new TField("myDataItem", TType.STRUCT, (short)3);
   private static final TField COMPLEX_NESTED_STRUCT_FIELD_DESC = new TField("complexNestedStruct", TType.STRUCT, (short)4);
+  private static final TField LONG_VALUE_FIELD_DESC = new TField("longValue", TType.I64, (short)5);
+  private static final TField INT_VALUE_FIELD_DESC = new TField("intValue", TType.I32, (short)6);
 
   public static final int MYENUM = 1;
   public static final int MYSTRUCT = 2;
   public static final int MYDATAITEM = 3;
   public static final int COMPLEXNESTEDSTRUCT = 4;
+  public static final int LONGVALUE = 5;
+  public static final int INTVALUE = 6;
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -46,6 +50,10 @@ public class MyUnion extends TUnion<MyUnion> {
         new StructMetaData(TType.STRUCT, MyDataItem.class)));
     tmpMetaDataMap.put(COMPLEXNESTEDSTRUCT, new FieldMetaData("complexNestedStruct", TFieldRequirementType.DEFAULT, 
         new StructMetaData(TType.STRUCT, ComplexNestedStruct.class)));
+    tmpMetaDataMap.put(LONGVALUE, new FieldMetaData("longValue", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.I64)));
+    tmpMetaDataMap.put(INTVALUE, new FieldMetaData("intValue", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -89,6 +97,18 @@ public class MyUnion extends TUnion<MyUnion> {
     return x;
   }
 
+  public static MyUnion longValue(long __value) {
+    MyUnion x = new MyUnion();
+    x.setLongValue(__value);
+    return x;
+  }
+
+  public static MyUnion intValue(int __value) {
+    MyUnion x = new MyUnion();
+    x.setIntValue(__value);
+    return x;
+  }
+
 
   @Override
   protected void checkType(short setField, Object __value) throws ClassCastException {
@@ -113,6 +133,16 @@ public class MyUnion extends TUnion<MyUnion> {
           break;
         }
         throw new ClassCastException("Was expecting value of type ComplexNestedStruct for field 'complexNestedStruct', but got " + __value.getClass().getSimpleName());
+      case LONGVALUE:
+        if (__value instanceof Long) {
+          break;
+        }
+        throw new ClassCastException("Was expecting value of type Long for field 'longValue', but got " + __value.getClass().getSimpleName());
+      case INTVALUE:
+        if (__value instanceof Integer) {
+          break;
+        }
+        throw new ClassCastException("Was expecting value of type Integer for field 'intValue', but got " + __value.getClass().getSimpleName());
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -147,6 +177,16 @@ public class MyUnion extends TUnion<MyUnion> {
             break;
           case COMPLEXNESTEDSTRUCT:
             if (__field.type == COMPLEX_NESTED_STRUCT_FIELD_DESC.type) {
+              setField_ = __field.id;
+            }
+            break;
+          case LONGVALUE:
+            if (__field.type == LONG_VALUE_FIELD_DESC.type) {
+              setField_ = __field.id;
+            }
+            break;
+          case INTVALUE:
+            if (__field.type == INT_VALUE_FIELD_DESC.type) {
               setField_ = __field.id;
             }
             break;
@@ -193,6 +233,20 @@ public class MyUnion extends TUnion<MyUnion> {
           return complexNestedStruct;
         }
         break;
+      case LONGVALUE:
+        if (__field.type == LONG_VALUE_FIELD_DESC.type) {
+          Long longValue;
+          longValue = iprot.readI64();
+          return longValue;
+        }
+        break;
+      case INTVALUE:
+        if (__field.type == INT_VALUE_FIELD_DESC.type) {
+          Integer intValue;
+          intValue = iprot.readI32();
+          return intValue;
+        }
+        break;
     }
     TProtocolUtil.skip(iprot, __field.type);
     return null;
@@ -217,6 +271,14 @@ public class MyUnion extends TUnion<MyUnion> {
         ComplexNestedStruct complexNestedStruct = (ComplexNestedStruct)getFieldValue();
         complexNestedStruct.write(oprot);
         return;
+      case LONGVALUE:
+        Long longValue = (Long)getFieldValue();
+        oprot.writeI64(longValue);
+        return;
+      case INTVALUE:
+        Integer intValue = (Integer)getFieldValue();
+        oprot.writeI32(intValue);
+        return;
       default:
         throw new IllegalStateException("Cannot write union with unknown field " + setField);
     }
@@ -233,6 +295,10 @@ public class MyUnion extends TUnion<MyUnion> {
         return MY_DATA_ITEM_FIELD_DESC;
       case COMPLEXNESTEDSTRUCT:
         return COMPLEX_NESTED_STRUCT_FIELD_DESC;
+      case LONGVALUE:
+        return LONG_VALUE_FIELD_DESC;
+      case INTVALUE:
+        return INT_VALUE_FIELD_DESC;
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -298,6 +364,24 @@ public class MyUnion extends TUnion<MyUnion> {
 
   public void setComplexNestedStruct(ComplexNestedStruct __value) {
     __setValue(COMPLEXNESTEDSTRUCT, __value);
+  }
+
+  public long getLongValue() {
+    return (Long) __getValue(LONGVALUE);
+  }
+
+  public void setLongValue(long __value) {
+    setField_ = LONGVALUE;
+    value_ = __value;
+  }
+
+  public int getIntValue() {
+    return (Integer) __getValue(INTVALUE);
+  }
+
+  public void setIntValue(int __value) {
+    setField_ = INTVALUE;
+    value_ = __value;
   }
 
   public boolean equals(Object other) {

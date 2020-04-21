@@ -28,6 +28,8 @@ public final class MyUnion {
       ID_TO_THRIFT_NAME.put((short) 2, "myStruct");
       ID_TO_THRIFT_NAME.put((short) 3, "myDataItem");
       ID_TO_THRIFT_NAME.put((short) 4, "complexNestedStruct");
+      ID_TO_THRIFT_NAME.put((short) 5, "longValue");
+      ID_TO_THRIFT_NAME.put((short) 6, "intValue");
     }
     private Object value;
     private short id;
@@ -41,6 +43,10 @@ public final class MyUnion {
     private static final TField MY_DATA_ITEM_FIELD_DESC = new TField("myDataItem", TType.STRUCT, (short)3);
     public static final int _COMPLEXNESTEDSTRUCT = 4;
     private static final TField COMPLEX_NESTED_STRUCT_FIELD_DESC = new TField("complexNestedStruct", TType.STRUCT, (short)4);
+    public static final int _LONGVALUE = 5;
+    private static final TField LONG_VALUE_FIELD_DESC = new TField("longValue", TType.I64, (short)5);
+    public static final int _INTVALUE = 6;
+    private static final TField INT_VALUE_FIELD_DESC = new TField("intValue", TType.I32, (short)6);
     
     @ThriftConstructor
     public MyUnion() {
@@ -74,6 +80,20 @@ public final class MyUnion {
         this.id = 4;
     }
     
+    @ThriftConstructor
+    @Deprecated
+    public MyUnion(final long longValue) {
+        this.value = longValue;
+        this.id = 5;
+    }
+    
+    @ThriftConstructor
+    @Deprecated
+    public MyUnion(final int intValue) {
+        this.value = intValue;
+        this.id = 6;
+    }
+    
     public static MyUnion fromMyEnum(final test.fixtures.complex_struct.MyEnum myEnum) {
         MyUnion res = new MyUnion();
         res.value = myEnum;
@@ -99,6 +119,20 @@ public final class MyUnion {
         MyUnion res = new MyUnion();
         res.value = complexNestedStruct;
         res.id = 4;
+        return res;
+    }
+    
+    public static MyUnion fromLongValue(final long longValue) {
+        MyUnion res = new MyUnion();
+        res.value = longValue;
+        res.id = 5;
+        return res;
+    }
+    
+    public static MyUnion fromIntValue(final int intValue) {
+        MyUnion res = new MyUnion();
+        res.value = intValue;
+        res.id = 6;
         return res;
     }
     
@@ -151,6 +185,30 @@ public final class MyUnion {
         return this.id == 4;
     }
 
+    @ThriftField(value=5, name="longValue", requiredness=Requiredness.NONE)
+    public long getLongValue() {
+        if (this.id != 5) {
+            throw new IllegalStateException("Not a longValue element!");
+        }
+        return (long) value;
+    }
+
+    public boolean isSetLongValue() {
+        return this.id == 5;
+    }
+
+    @ThriftField(value=6, name="intValue", requiredness=Requiredness.NONE)
+    public int getIntValue() {
+        if (this.id != 6) {
+            throw new IllegalStateException("Not a intValue element!");
+        }
+        return (int) value;
+    }
+
+    public boolean isSetIntValue() {
+        return this.id == 6;
+    }
+
     @ThriftUnionId
     public short getThriftId() {
         return this.id;
@@ -175,6 +233,14 @@ public final class MyUnion {
         }
         if (isSetComplexNestedStruct()) {
             visitor.visitComplexNestedStruct(getComplexNestedStruct());
+            return;
+        }
+        if (isSetLongValue()) {
+            visitor.visitLongValue(getLongValue());
+            return;
+        }
+        if (isSetIntValue()) {
+            visitor.visitIntValue(getIntValue());
             return;
         }
     }
@@ -217,6 +283,8 @@ public final class MyUnion {
         void visitMyStruct(test.fixtures.complex_struct.MyStruct myStruct);
         void visitMyDataItem(test.fixtures.complex_struct.MyDataItem myDataItem);
         void visitComplexNestedStruct(test.fixtures.complex_struct.ComplexNestedStruct complexNestedStruct);
+        void visitLongValue(long longValue);
+        void visitIntValue(int intValue);
     }
 
     public void write0(TProtocol oprot) throws TException {
@@ -250,6 +318,20 @@ public final class MyUnion {
         oprot.writeFieldBegin(COMPLEX_NESTED_STRUCT_FIELD_DESC);
         test.fixtures.complex_struct.ComplexNestedStruct complexNestedStruct = (test.fixtures.complex_struct.ComplexNestedStruct)this.value;
         complexNestedStruct.write0(oprot);
+        oprot.writeFieldEnd();
+        break;
+      }
+      case _LONGVALUE: {
+        oprot.writeFieldBegin(LONG_VALUE_FIELD_DESC);
+        long longValue = (long)this.value;
+        oprot.writeI64(longValue);
+        oprot.writeFieldEnd();
+        break;
+      }
+      case _INTVALUE: {
+        oprot.writeFieldBegin(INT_VALUE_FIELD_DESC);
+        int intValue = (int)this.value;
+        oprot.writeI32(intValue);
         oprot.writeFieldEnd();
         break;
       }
@@ -290,6 +372,18 @@ public final class MyUnion {
             if (__field.type == COMPLEX_NESTED_STRUCT_FIELD_DESC.type) {
               test.fixtures.complex_struct.ComplexNestedStruct complexNestedStruct = test.fixtures.complex_struct.ComplexNestedStruct.read0(oprot);
               res.value = complexNestedStruct;
+            }
+            break;
+          case _LONGVALUE:
+            if (__field.type == LONG_VALUE_FIELD_DESC.type) {
+              long longValue = oprot.readI64();
+              res.value = longValue;
+            }
+            break;
+          case _INTVALUE:
+            if (__field.type == INT_VALUE_FIELD_DESC.type) {
+              int intValue = oprot.readI32();
+              res.value = intValue;
             }
             break;
           }
