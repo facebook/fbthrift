@@ -10,6 +10,7 @@ package test.fixtures.shapes;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -149,7 +150,66 @@ public final class B {
     }
     
     public static class Builder {
-        private test.fixtures.shapes.A justAnA;
+        private test.fixtures.shapes.A justAnA = null;
+        private Set<Integer> setOfI32 = null;
+        private List<Integer> listOfI32 = null;
+        private List<String> listOfString = null;
+        private Map<String, Integer> mapOfStringToI32 = null;
+        private Map<String, test.fixtures.shapes.A> mapOfStringToA = null;
+        private Map<String, List<Integer>> mapOfStringToListOfI32 = null;
+        private Map<String, List<test.fixtures.shapes.A>> mapOfStringToListOfA = null;
+        private Map<String, Set<Integer>> mapOfStringToSetOfI32 = null;
+        private Map<String, Map<String, Integer>> mapOfStringToMapOfStringToI32 = null;
+        private Map<String, Map<String, test.fixtures.shapes.A>> mapOfStringToMapOfStringToA = null;
+        private List<Set<Integer>> listOfSetOfI32 = null;
+        private List<Map<String, List<test.fixtures.shapes.A>>> listOfMapOfStringToListOfA = null;
+        private List<Map<String, test.fixtures.shapes.A>> listOfMapOfStringToA = null;
+        private List<test.fixtures.shapes.B> listOfSelf = null;
+        private Map<String, test.fixtures.shapes.B> mapOfStringToSelf = null;
+        private test.fixtures.shapes.Enum justAnEnum = null;
+        private test.fixtures.shapes.Union justAUnion = null;
+        private test.fixtures.shapes.A optionalJustAnA = null;
+        private Set<Integer> optionalSetOfI32 = null;
+        private List<Integer> optionalListOfI32 = null;
+        private List<String> optionalListOfString = null;
+        private Map<String, Integer> optionalMapOfStringToI32 = null;
+        private Map<String, test.fixtures.shapes.A> optionalMapOfStringToA = null;
+        private Map<String, List<Integer>> optionalMapOfStringToListOfI32 = null;
+        private Map<String, List<test.fixtures.shapes.A>> optionalMapOfStringToListOfA = null;
+        private Map<String, Set<Integer>> optionalMapOfStringToSetOfI32 = null;
+        private test.fixtures.shapes.Enum optionalEnum = null;
+        private test.fixtures.shapes.Enum requiredEnumWithDefault = test.fixtures.shapes.Enum.ENUM;
+        private String stringWithDefaultValue = "de_fault_in_our_stars";
+        private int i32WithDefaultValue = 1729;
+        private double doubleWithDefaultValue = (double)3.1415926;
+        private test.fixtures.shapes.Enum enumWithDefaultValue = test.fixtures.shapes.Enum.ENUM;
+        private test.fixtures.shapes.A aWithDefaultValue = new test.fixtures.shapes.A.Builder().setA("bc").build();
+        private Set<Integer> setOfI32WithDefaultValue = ImmutableSet.<Integer>builder()
+        .add(3)
+        .add(7)
+        .add(31)
+        .add(127)
+        .build();
+        private Map<Integer, String> mapOfI32ToStringWithDefaultValue = ImmutableMap.<Integer, String>builder()
+        .put(1, "fish")
+        .put(2, "fish")
+        .build();
+        private List<String> listOfStringWithDefaultValue = ImmutableList.<String>builder()
+        .add("red fish")
+        .add("blue fish")
+        .build();
+        private Map<String, List<Integer>> mapOfStringToListOfI32WithDefaultValue = ImmutableMap.<String, List<Integer>>builder()
+        .put("Jenny", ImmutableList.<Integer>builder()
+        .add(8)
+        .add(6)
+        .add(7)
+        .add(5)
+        .add(3)
+        .add(0)
+        .add(9)
+        .build())
+        .build();
+    
         @ThriftField(value=1, name="just_an_A", requiredness=Requiredness.NONE)
         public Builder setJustAnA(test.fixtures.shapes.A justAnA) {
             this.justAnA = justAnA;
@@ -158,8 +218,7 @@ public final class B {
         
         public test.fixtures.shapes.A getJustAnA() { return justAnA; }
     
-        private Set<Integer> setOfI32;
-        @ThriftField(value=2, name="set_of_i32", requiredness=Requiredness.NONE)
+            @ThriftField(value=2, name="set_of_i32", requiredness=Requiredness.NONE)
         public Builder setSetOfI32(Set<Integer> setOfI32) {
             this.setOfI32 = setOfI32;
             return this;
@@ -167,8 +226,7 @@ public final class B {
         
         public Set<Integer> getSetOfI32() { return setOfI32; }
     
-        private List<Integer> listOfI32;
-        @ThriftField(value=3, name="list_of_i32", requiredness=Requiredness.NONE)
+            @ThriftField(value=3, name="list_of_i32", requiredness=Requiredness.NONE)
         public Builder setListOfI32(List<Integer> listOfI32) {
             this.listOfI32 = listOfI32;
             return this;
@@ -176,8 +234,7 @@ public final class B {
         
         public List<Integer> getListOfI32() { return listOfI32; }
     
-        private List<String> listOfString;
-        @ThriftField(value=4, name="list_of_string", requiredness=Requiredness.NONE)
+            @ThriftField(value=4, name="list_of_string", requiredness=Requiredness.NONE)
         public Builder setListOfString(List<String> listOfString) {
             this.listOfString = listOfString;
             return this;
@@ -185,8 +242,7 @@ public final class B {
         
         public List<String> getListOfString() { return listOfString; }
     
-        private Map<String, Integer> mapOfStringToI32;
-        @ThriftField(value=5, name="map_of_string_to_i32", requiredness=Requiredness.NONE)
+            @ThriftField(value=5, name="map_of_string_to_i32", requiredness=Requiredness.NONE)
         public Builder setMapOfStringToI32(Map<String, Integer> mapOfStringToI32) {
             this.mapOfStringToI32 = mapOfStringToI32;
             return this;
@@ -194,8 +250,7 @@ public final class B {
         
         public Map<String, Integer> getMapOfStringToI32() { return mapOfStringToI32; }
     
-        private Map<String, test.fixtures.shapes.A> mapOfStringToA;
-        @ThriftField(value=6, name="map_of_string_to_A", requiredness=Requiredness.NONE)
+            @ThriftField(value=6, name="map_of_string_to_A", requiredness=Requiredness.NONE)
         public Builder setMapOfStringToA(Map<String, test.fixtures.shapes.A> mapOfStringToA) {
             this.mapOfStringToA = mapOfStringToA;
             return this;
@@ -203,8 +258,7 @@ public final class B {
         
         public Map<String, test.fixtures.shapes.A> getMapOfStringToA() { return mapOfStringToA; }
     
-        private Map<String, List<Integer>> mapOfStringToListOfI32;
-        @ThriftField(value=7, name="map_of_string_to_list_of_i32", requiredness=Requiredness.NONE)
+            @ThriftField(value=7, name="map_of_string_to_list_of_i32", requiredness=Requiredness.NONE)
         public Builder setMapOfStringToListOfI32(Map<String, List<Integer>> mapOfStringToListOfI32) {
             this.mapOfStringToListOfI32 = mapOfStringToListOfI32;
             return this;
@@ -212,8 +266,7 @@ public final class B {
         
         public Map<String, List<Integer>> getMapOfStringToListOfI32() { return mapOfStringToListOfI32; }
     
-        private Map<String, List<test.fixtures.shapes.A>> mapOfStringToListOfA;
-        @ThriftField(value=8, name="map_of_string_to_list_of_A", requiredness=Requiredness.NONE)
+            @ThriftField(value=8, name="map_of_string_to_list_of_A", requiredness=Requiredness.NONE)
         public Builder setMapOfStringToListOfA(Map<String, List<test.fixtures.shapes.A>> mapOfStringToListOfA) {
             this.mapOfStringToListOfA = mapOfStringToListOfA;
             return this;
@@ -221,8 +274,7 @@ public final class B {
         
         public Map<String, List<test.fixtures.shapes.A>> getMapOfStringToListOfA() { return mapOfStringToListOfA; }
     
-        private Map<String, Set<Integer>> mapOfStringToSetOfI32;
-        @ThriftField(value=9, name="map_of_string_to_set_of_i32", requiredness=Requiredness.NONE)
+            @ThriftField(value=9, name="map_of_string_to_set_of_i32", requiredness=Requiredness.NONE)
         public Builder setMapOfStringToSetOfI32(Map<String, Set<Integer>> mapOfStringToSetOfI32) {
             this.mapOfStringToSetOfI32 = mapOfStringToSetOfI32;
             return this;
@@ -230,8 +282,7 @@ public final class B {
         
         public Map<String, Set<Integer>> getMapOfStringToSetOfI32() { return mapOfStringToSetOfI32; }
     
-        private Map<String, Map<String, Integer>> mapOfStringToMapOfStringToI32;
-        @ThriftField(value=10, name="map_of_string_to_map_of_string_to_i32", requiredness=Requiredness.NONE)
+            @ThriftField(value=10, name="map_of_string_to_map_of_string_to_i32", requiredness=Requiredness.NONE)
         public Builder setMapOfStringToMapOfStringToI32(Map<String, Map<String, Integer>> mapOfStringToMapOfStringToI32) {
             this.mapOfStringToMapOfStringToI32 = mapOfStringToMapOfStringToI32;
             return this;
@@ -239,8 +290,7 @@ public final class B {
         
         public Map<String, Map<String, Integer>> getMapOfStringToMapOfStringToI32() { return mapOfStringToMapOfStringToI32; }
     
-        private Map<String, Map<String, test.fixtures.shapes.A>> mapOfStringToMapOfStringToA;
-        @ThriftField(value=11, name="map_of_string_to_map_of_string_to_A", requiredness=Requiredness.NONE)
+            @ThriftField(value=11, name="map_of_string_to_map_of_string_to_A", requiredness=Requiredness.NONE)
         public Builder setMapOfStringToMapOfStringToA(Map<String, Map<String, test.fixtures.shapes.A>> mapOfStringToMapOfStringToA) {
             this.mapOfStringToMapOfStringToA = mapOfStringToMapOfStringToA;
             return this;
@@ -248,8 +298,7 @@ public final class B {
         
         public Map<String, Map<String, test.fixtures.shapes.A>> getMapOfStringToMapOfStringToA() { return mapOfStringToMapOfStringToA; }
     
-        private List<Set<Integer>> listOfSetOfI32;
-        @ThriftField(value=12, name="list_of_set_of_i32", requiredness=Requiredness.NONE)
+            @ThriftField(value=12, name="list_of_set_of_i32", requiredness=Requiredness.NONE)
         public Builder setListOfSetOfI32(List<Set<Integer>> listOfSetOfI32) {
             this.listOfSetOfI32 = listOfSetOfI32;
             return this;
@@ -257,8 +306,7 @@ public final class B {
         
         public List<Set<Integer>> getListOfSetOfI32() { return listOfSetOfI32; }
     
-        private List<Map<String, List<test.fixtures.shapes.A>>> listOfMapOfStringToListOfA;
-        @ThriftField(value=13, name="list_of_map_of_string_to_list_of_A", requiredness=Requiredness.NONE)
+            @ThriftField(value=13, name="list_of_map_of_string_to_list_of_A", requiredness=Requiredness.NONE)
         public Builder setListOfMapOfStringToListOfA(List<Map<String, List<test.fixtures.shapes.A>>> listOfMapOfStringToListOfA) {
             this.listOfMapOfStringToListOfA = listOfMapOfStringToListOfA;
             return this;
@@ -266,8 +314,7 @@ public final class B {
         
         public List<Map<String, List<test.fixtures.shapes.A>>> getListOfMapOfStringToListOfA() { return listOfMapOfStringToListOfA; }
     
-        private List<Map<String, test.fixtures.shapes.A>> listOfMapOfStringToA;
-        @ThriftField(value=14, name="list_of_map_of_string_to_A", requiredness=Requiredness.NONE)
+            @ThriftField(value=14, name="list_of_map_of_string_to_A", requiredness=Requiredness.NONE)
         public Builder setListOfMapOfStringToA(List<Map<String, test.fixtures.shapes.A>> listOfMapOfStringToA) {
             this.listOfMapOfStringToA = listOfMapOfStringToA;
             return this;
@@ -275,8 +322,7 @@ public final class B {
         
         public List<Map<String, test.fixtures.shapes.A>> getListOfMapOfStringToA() { return listOfMapOfStringToA; }
     
-        private List<test.fixtures.shapes.B> listOfSelf;
-        @ThriftField(value=15, name="list_of_self", requiredness=Requiredness.NONE)
+            @ThriftField(value=15, name="list_of_self", requiredness=Requiredness.NONE)
         public Builder setListOfSelf(List<test.fixtures.shapes.B> listOfSelf) {
             this.listOfSelf = listOfSelf;
             return this;
@@ -284,8 +330,7 @@ public final class B {
         
         public List<test.fixtures.shapes.B> getListOfSelf() { return listOfSelf; }
     
-        private Map<String, test.fixtures.shapes.B> mapOfStringToSelf;
-        @ThriftField(value=16, name="map_of_string_to_self", requiredness=Requiredness.NONE)
+            @ThriftField(value=16, name="map_of_string_to_self", requiredness=Requiredness.NONE)
         public Builder setMapOfStringToSelf(Map<String, test.fixtures.shapes.B> mapOfStringToSelf) {
             this.mapOfStringToSelf = mapOfStringToSelf;
             return this;
@@ -293,8 +338,7 @@ public final class B {
         
         public Map<String, test.fixtures.shapes.B> getMapOfStringToSelf() { return mapOfStringToSelf; }
     
-        private test.fixtures.shapes.Enum justAnEnum;
-        @ThriftField(value=17, name="just_an_enum", requiredness=Requiredness.NONE)
+            @ThriftField(value=17, name="just_an_enum", requiredness=Requiredness.NONE)
         public Builder setJustAnEnum(test.fixtures.shapes.Enum justAnEnum) {
             this.justAnEnum = justAnEnum;
             return this;
@@ -302,8 +346,7 @@ public final class B {
         
         public test.fixtures.shapes.Enum getJustAnEnum() { return justAnEnum; }
     
-        private test.fixtures.shapes.Union justAUnion;
-        @ThriftField(value=18, name="just_a_union", requiredness=Requiredness.NONE)
+            @ThriftField(value=18, name="just_a_union", requiredness=Requiredness.NONE)
         public Builder setJustAUnion(test.fixtures.shapes.Union justAUnion) {
             this.justAUnion = justAUnion;
             return this;
@@ -311,8 +354,7 @@ public final class B {
         
         public test.fixtures.shapes.Union getJustAUnion() { return justAUnion; }
     
-        private test.fixtures.shapes.A optionalJustAnA;
-        @ThriftField(value=51, name="optional_just_an_A", requiredness=Requiredness.OPTIONAL)
+            @ThriftField(value=51, name="optional_just_an_A", requiredness=Requiredness.OPTIONAL)
         public Builder setOptionalJustAnA(test.fixtures.shapes.A optionalJustAnA) {
             this.optionalJustAnA = optionalJustAnA;
             return this;
@@ -320,8 +362,7 @@ public final class B {
         
         public test.fixtures.shapes.A getOptionalJustAnA() { return optionalJustAnA; }
     
-        private Set<Integer> optionalSetOfI32;
-        @ThriftField(value=52, name="optional_set_of_i32", requiredness=Requiredness.OPTIONAL)
+            @ThriftField(value=52, name="optional_set_of_i32", requiredness=Requiredness.OPTIONAL)
         public Builder setOptionalSetOfI32(Set<Integer> optionalSetOfI32) {
             this.optionalSetOfI32 = optionalSetOfI32;
             return this;
@@ -329,8 +370,7 @@ public final class B {
         
         public Set<Integer> getOptionalSetOfI32() { return optionalSetOfI32; }
     
-        private List<Integer> optionalListOfI32;
-        @ThriftField(value=53, name="optional_list_of_i32", requiredness=Requiredness.OPTIONAL)
+            @ThriftField(value=53, name="optional_list_of_i32", requiredness=Requiredness.OPTIONAL)
         public Builder setOptionalListOfI32(List<Integer> optionalListOfI32) {
             this.optionalListOfI32 = optionalListOfI32;
             return this;
@@ -338,8 +378,7 @@ public final class B {
         
         public List<Integer> getOptionalListOfI32() { return optionalListOfI32; }
     
-        private List<String> optionalListOfString;
-        @ThriftField(value=54, name="optional_list_of_string", requiredness=Requiredness.OPTIONAL)
+            @ThriftField(value=54, name="optional_list_of_string", requiredness=Requiredness.OPTIONAL)
         public Builder setOptionalListOfString(List<String> optionalListOfString) {
             this.optionalListOfString = optionalListOfString;
             return this;
@@ -347,8 +386,7 @@ public final class B {
         
         public List<String> getOptionalListOfString() { return optionalListOfString; }
     
-        private Map<String, Integer> optionalMapOfStringToI32;
-        @ThriftField(value=55, name="optional_map_of_string_to_i32", requiredness=Requiredness.OPTIONAL)
+            @ThriftField(value=55, name="optional_map_of_string_to_i32", requiredness=Requiredness.OPTIONAL)
         public Builder setOptionalMapOfStringToI32(Map<String, Integer> optionalMapOfStringToI32) {
             this.optionalMapOfStringToI32 = optionalMapOfStringToI32;
             return this;
@@ -356,8 +394,7 @@ public final class B {
         
         public Map<String, Integer> getOptionalMapOfStringToI32() { return optionalMapOfStringToI32; }
     
-        private Map<String, test.fixtures.shapes.A> optionalMapOfStringToA;
-        @ThriftField(value=56, name="optional_map_of_string_to_A", requiredness=Requiredness.OPTIONAL)
+            @ThriftField(value=56, name="optional_map_of_string_to_A", requiredness=Requiredness.OPTIONAL)
         public Builder setOptionalMapOfStringToA(Map<String, test.fixtures.shapes.A> optionalMapOfStringToA) {
             this.optionalMapOfStringToA = optionalMapOfStringToA;
             return this;
@@ -365,8 +402,7 @@ public final class B {
         
         public Map<String, test.fixtures.shapes.A> getOptionalMapOfStringToA() { return optionalMapOfStringToA; }
     
-        private Map<String, List<Integer>> optionalMapOfStringToListOfI32;
-        @ThriftField(value=57, name="optional_map_of_string_to_list_of_i32", requiredness=Requiredness.OPTIONAL)
+            @ThriftField(value=57, name="optional_map_of_string_to_list_of_i32", requiredness=Requiredness.OPTIONAL)
         public Builder setOptionalMapOfStringToListOfI32(Map<String, List<Integer>> optionalMapOfStringToListOfI32) {
             this.optionalMapOfStringToListOfI32 = optionalMapOfStringToListOfI32;
             return this;
@@ -374,8 +410,7 @@ public final class B {
         
         public Map<String, List<Integer>> getOptionalMapOfStringToListOfI32() { return optionalMapOfStringToListOfI32; }
     
-        private Map<String, List<test.fixtures.shapes.A>> optionalMapOfStringToListOfA;
-        @ThriftField(value=58, name="optional_map_of_string_to_list_of_A", requiredness=Requiredness.OPTIONAL)
+            @ThriftField(value=58, name="optional_map_of_string_to_list_of_A", requiredness=Requiredness.OPTIONAL)
         public Builder setOptionalMapOfStringToListOfA(Map<String, List<test.fixtures.shapes.A>> optionalMapOfStringToListOfA) {
             this.optionalMapOfStringToListOfA = optionalMapOfStringToListOfA;
             return this;
@@ -383,8 +418,7 @@ public final class B {
         
         public Map<String, List<test.fixtures.shapes.A>> getOptionalMapOfStringToListOfA() { return optionalMapOfStringToListOfA; }
     
-        private Map<String, Set<Integer>> optionalMapOfStringToSetOfI32;
-        @ThriftField(value=59, name="optional_map_of_string_to_set_of_i32", requiredness=Requiredness.OPTIONAL)
+            @ThriftField(value=59, name="optional_map_of_string_to_set_of_i32", requiredness=Requiredness.OPTIONAL)
         public Builder setOptionalMapOfStringToSetOfI32(Map<String, Set<Integer>> optionalMapOfStringToSetOfI32) {
             this.optionalMapOfStringToSetOfI32 = optionalMapOfStringToSetOfI32;
             return this;
@@ -392,8 +426,7 @@ public final class B {
         
         public Map<String, Set<Integer>> getOptionalMapOfStringToSetOfI32() { return optionalMapOfStringToSetOfI32; }
     
-        private test.fixtures.shapes.Enum optionalEnum;
-        @ThriftField(value=60, name="optional_enum", requiredness=Requiredness.OPTIONAL)
+            @ThriftField(value=60, name="optional_enum", requiredness=Requiredness.OPTIONAL)
         public Builder setOptionalEnum(test.fixtures.shapes.Enum optionalEnum) {
             this.optionalEnum = optionalEnum;
             return this;
@@ -401,8 +434,7 @@ public final class B {
         
         public test.fixtures.shapes.Enum getOptionalEnum() { return optionalEnum; }
     
-        private test.fixtures.shapes.Enum requiredEnumWithDefault;
-        @ThriftField(value=70, name="required_enum_with_default", requiredness=Requiredness.REQUIRED)
+            @ThriftField(value=70, name="required_enum_with_default", requiredness=Requiredness.REQUIRED)
         public Builder setRequiredEnumWithDefault(test.fixtures.shapes.Enum requiredEnumWithDefault) {
             this.requiredEnumWithDefault = requiredEnumWithDefault;
             return this;
@@ -410,8 +442,7 @@ public final class B {
         
         public test.fixtures.shapes.Enum getRequiredEnumWithDefault() { return requiredEnumWithDefault; }
     
-        private String stringWithDefaultValue;
-        @ThriftField(value=80, name="string_with_default_value", requiredness=Requiredness.NONE)
+            @ThriftField(value=80, name="string_with_default_value", requiredness=Requiredness.NONE)
         public Builder setStringWithDefaultValue(String stringWithDefaultValue) {
             this.stringWithDefaultValue = stringWithDefaultValue;
             return this;
@@ -419,8 +450,7 @@ public final class B {
         
         public String getStringWithDefaultValue() { return stringWithDefaultValue; }
     
-        private int i32WithDefaultValue;
-        @ThriftField(value=81, name="i32_with_default_value", requiredness=Requiredness.NONE)
+            @ThriftField(value=81, name="i32_with_default_value", requiredness=Requiredness.NONE)
         public Builder setI32WithDefaultValue(int i32WithDefaultValue) {
             this.i32WithDefaultValue = i32WithDefaultValue;
             return this;
@@ -428,8 +458,7 @@ public final class B {
         
         public int getI32WithDefaultValue() { return i32WithDefaultValue; }
     
-        private double doubleWithDefaultValue;
-        @ThriftField(value=82, name="double_with_default_value", requiredness=Requiredness.NONE)
+            @ThriftField(value=82, name="double_with_default_value", requiredness=Requiredness.NONE)
         public Builder setDoubleWithDefaultValue(double doubleWithDefaultValue) {
             this.doubleWithDefaultValue = doubleWithDefaultValue;
             return this;
@@ -437,8 +466,7 @@ public final class B {
         
         public double getDoubleWithDefaultValue() { return doubleWithDefaultValue; }
     
-        private test.fixtures.shapes.Enum enumWithDefaultValue;
-        @ThriftField(value=83, name="enum_with_default_value", requiredness=Requiredness.NONE)
+            @ThriftField(value=83, name="enum_with_default_value", requiredness=Requiredness.NONE)
         public Builder setEnumWithDefaultValue(test.fixtures.shapes.Enum enumWithDefaultValue) {
             this.enumWithDefaultValue = enumWithDefaultValue;
             return this;
@@ -446,8 +474,7 @@ public final class B {
         
         public test.fixtures.shapes.Enum getEnumWithDefaultValue() { return enumWithDefaultValue; }
     
-        private test.fixtures.shapes.A aWithDefaultValue;
-        @ThriftField(value=84, name="A_with_default_value", requiredness=Requiredness.NONE)
+            @ThriftField(value=84, name="A_with_default_value", requiredness=Requiredness.NONE)
         public Builder setAWithDefaultValue(test.fixtures.shapes.A aWithDefaultValue) {
             this.aWithDefaultValue = aWithDefaultValue;
             return this;
@@ -455,8 +482,7 @@ public final class B {
         
         public test.fixtures.shapes.A getAWithDefaultValue() { return aWithDefaultValue; }
     
-        private Set<Integer> setOfI32WithDefaultValue;
-        @ThriftField(value=85, name="set_of_i32_with_default_value", requiredness=Requiredness.NONE)
+            @ThriftField(value=85, name="set_of_i32_with_default_value", requiredness=Requiredness.NONE)
         public Builder setSetOfI32WithDefaultValue(Set<Integer> setOfI32WithDefaultValue) {
             this.setOfI32WithDefaultValue = setOfI32WithDefaultValue;
             return this;
@@ -464,8 +490,7 @@ public final class B {
         
         public Set<Integer> getSetOfI32WithDefaultValue() { return setOfI32WithDefaultValue; }
     
-        private Map<Integer, String> mapOfI32ToStringWithDefaultValue;
-        @ThriftField(value=86, name="map_of_i32_to_string_with_default_value", requiredness=Requiredness.NONE)
+            @ThriftField(value=86, name="map_of_i32_to_string_with_default_value", requiredness=Requiredness.NONE)
         public Builder setMapOfI32ToStringWithDefaultValue(Map<Integer, String> mapOfI32ToStringWithDefaultValue) {
             this.mapOfI32ToStringWithDefaultValue = mapOfI32ToStringWithDefaultValue;
             return this;
@@ -473,8 +498,7 @@ public final class B {
         
         public Map<Integer, String> getMapOfI32ToStringWithDefaultValue() { return mapOfI32ToStringWithDefaultValue; }
     
-        private List<String> listOfStringWithDefaultValue;
-        @ThriftField(value=87, name="list_of_string_with_default_value", requiredness=Requiredness.NONE)
+            @ThriftField(value=87, name="list_of_string_with_default_value", requiredness=Requiredness.NONE)
         public Builder setListOfStringWithDefaultValue(List<String> listOfStringWithDefaultValue) {
             this.listOfStringWithDefaultValue = listOfStringWithDefaultValue;
             return this;
@@ -482,8 +506,7 @@ public final class B {
         
         public List<String> getListOfStringWithDefaultValue() { return listOfStringWithDefaultValue; }
     
-        private Map<String, List<Integer>> mapOfStringToListOfI32WithDefaultValue;
-        @ThriftField(value=88, name="map_of_string_to_list_of_i32_with_default_value", requiredness=Requiredness.NONE)
+            @ThriftField(value=88, name="map_of_string_to_list_of_i32_with_default_value", requiredness=Requiredness.NONE)
         public Builder setMapOfStringToListOfI32WithDefaultValue(Map<String, List<Integer>> mapOfStringToListOfI32WithDefaultValue) {
             this.mapOfStringToListOfI32WithDefaultValue = mapOfStringToListOfI32WithDefaultValue;
             return this;

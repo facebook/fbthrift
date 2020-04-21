@@ -10,6 +10,7 @@ package test.fixtures.basicannotations;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -47,7 +48,11 @@ public final class MyStructAnnotation {
     }
     
     public static class Builder {
-        private long count;
+        private long count = 0L;
+        private String name = null;
+        private String extra = null;
+        private test.fixtures.basicannotations.MyStructNestedAnnotation nest = null;
+    
         @ThriftField(value=1, name="count", requiredness=Requiredness.NONE)
         public Builder setCount(long count) {
             this.count = count;
@@ -56,8 +61,7 @@ public final class MyStructAnnotation {
         
         public long getCount() { return count; }
     
-        private String name;
-        @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
+            @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
         public Builder setName(String name) {
             this.name = name;
             return this;
@@ -65,8 +69,7 @@ public final class MyStructAnnotation {
         
         public String getName() { return name; }
     
-        private String extra;
-        @ThriftField(value=3, name="extra", requiredness=Requiredness.OPTIONAL)
+            @ThriftField(value=3, name="extra", requiredness=Requiredness.OPTIONAL)
         public Builder setExtra(String extra) {
             this.extra = extra;
             return this;
@@ -74,8 +77,7 @@ public final class MyStructAnnotation {
         
         public String getExtra() { return extra; }
     
-        private test.fixtures.basicannotations.MyStructNestedAnnotation nest;
-        @ThriftField(value=4, name="nest", requiredness=Requiredness.NONE)
+            @ThriftField(value=4, name="nest", requiredness=Requiredness.NONE)
         public Builder setNest(test.fixtures.basicannotations.MyStructNestedAnnotation nest) {
             this.nest = nest;
             return this;

@@ -10,6 +10,7 @@ package test.fixtures.basicannotations;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -47,7 +48,11 @@ public final class MyStruct {
     }
     
     public static class Builder {
-        private long major;
+        private long major = 0L;
+        private String _package = null;
+        private String annotationWithQuote = null;
+        private String class_ = null;
+    
         @ThriftField(value=1, name="major", requiredness=Requiredness.NONE)
         public Builder setMajor(long major) {
             this.major = major;
@@ -56,8 +61,7 @@ public final class MyStruct {
         
         public long getMajor() { return major; }
     
-        private String _package;
-        @ThriftField(value=2, name="package", requiredness=Requiredness.NONE)
+            @ThriftField(value=2, name="package", requiredness=Requiredness.NONE)
         public Builder setPackage(String _package) {
             this._package = _package;
             return this;
@@ -65,8 +69,7 @@ public final class MyStruct {
         
         public String getPackage() { return _package; }
     
-        private String annotationWithQuote;
-        @ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE)
+            @ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE)
         public Builder setAnnotationWithQuote(String annotationWithQuote) {
             this.annotationWithQuote = annotationWithQuote;
             return this;
@@ -74,8 +77,7 @@ public final class MyStruct {
         
         public String getAnnotationWithQuote() { return annotationWithQuote; }
     
-        private String class_;
-        @ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)
+            @ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)
         public Builder setClass_(String class_) {
             this.class_ = class_;
             return this;

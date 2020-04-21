@@ -43,7 +43,8 @@ public final class SinkException1 extends java.lang.Exception {
     }
     
     public static class Builder {
-        private String reason;
+        private String reason = null;
+    
         @ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
         public Builder setReason(String reason) {
             this.reason = reason;

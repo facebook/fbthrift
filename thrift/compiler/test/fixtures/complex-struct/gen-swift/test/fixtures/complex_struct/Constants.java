@@ -17,5 +17,5 @@ public final class Constants {
 
     public static final int DEFAULT_PORT_NUM = 3456;
 
-    public static final test.fixtures.complex_struct.MyUnion CONST_ENUM_UNION = new test.fixtures.complex_struct.MyUnion(test.fixtures.complex_struct.MyEnum.MY_VALUE2);
+    public static final test.fixtures.complex_struct.MyUnion CONST_ENUM_UNION = test.fixtures.complex_struct.MyUnion.fromMyEnum(test.fixtures.complex_struct.MyEnum.MY_VALUE2);
 }

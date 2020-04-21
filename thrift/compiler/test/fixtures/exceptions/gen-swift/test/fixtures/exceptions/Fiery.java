@@ -43,7 +43,8 @@ public final class Fiery extends java.lang.RuntimeException {
     }
     
     public static class Builder {
-        private String message;
+        private String message = null;
+    
         @ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
         public Builder setMessage(String message) {
             this.message = message;

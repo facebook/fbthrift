@@ -10,6 +10,7 @@ package test.fixtures.swift.enumstrict;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -41,7 +42,9 @@ public final class MyStruct {
     }
     
     public static class Builder {
-        private test.fixtures.swift.enumstrict.MyEnum myEnum;
+        private test.fixtures.swift.enumstrict.MyEnum myEnum = null;
+        private test.fixtures.swift.enumstrict.MyBigEnum myBigEnum = test.fixtures.swift.enumstrict.MyBigEnum.ONE;
+    
         @ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
         public Builder setMyEnum(test.fixtures.swift.enumstrict.MyEnum myEnum) {
             this.myEnum = myEnum;
@@ -50,8 +53,7 @@ public final class MyStruct {
         
         public test.fixtures.swift.enumstrict.MyEnum getMyEnum() { return myEnum; }
     
-        private test.fixtures.swift.enumstrict.MyBigEnum myBigEnum;
-        @ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE)
+            @ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE)
         public Builder setMyBigEnum(test.fixtures.swift.enumstrict.MyBigEnum myBigEnum) {
             this.myBigEnum = myBigEnum;
             return this;

@@ -18,6 +18,9 @@
 {{#struct:asBean?}}
 @ThriftConstructor
 public {{struct:javaCapitalName}}() {
+  {{#struct:fields}}
+  this.{{field:javaName}} = {{field:javaDefaultValue}};
+  {{/struct:fields}}
 }
 {{/struct:asBean?}}
 {{^struct:asBean?}}

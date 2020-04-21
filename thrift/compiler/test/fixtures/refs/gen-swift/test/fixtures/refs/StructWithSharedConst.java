@@ -10,6 +10,7 @@ package test.fixtures.refs;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -44,7 +45,10 @@ public final class StructWithSharedConst {
     }
     
     public static class Builder {
-        private test.fixtures.refs.MyField optSharedConst;
+        private test.fixtures.refs.MyField optSharedConst = null;
+        private test.fixtures.refs.MyField sharedConst = null;
+        private test.fixtures.refs.MyField reqSharedConst = null;
+    
         @ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL)
         public Builder setOptSharedConst(test.fixtures.refs.MyField optSharedConst) {
             this.optSharedConst = optSharedConst;
@@ -53,8 +57,7 @@ public final class StructWithSharedConst {
         
         public test.fixtures.refs.MyField getOptSharedConst() { return optSharedConst; }
     
-        private test.fixtures.refs.MyField sharedConst;
-        @ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE)
+            @ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE)
         public Builder setSharedConst(test.fixtures.refs.MyField sharedConst) {
             this.sharedConst = sharedConst;
             return this;
@@ -62,8 +65,7 @@ public final class StructWithSharedConst {
         
         public test.fixtures.refs.MyField getSharedConst() { return sharedConst; }
     
-        private test.fixtures.refs.MyField reqSharedConst;
-        @ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)
+            @ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)
         public Builder setReqSharedConst(test.fixtures.refs.MyField reqSharedConst) {
             this.reqSharedConst = reqSharedConst;
             return this;

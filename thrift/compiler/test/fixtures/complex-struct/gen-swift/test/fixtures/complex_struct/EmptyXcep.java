@@ -35,7 +35,8 @@ public final class EmptyXcep extends java.lang.Exception {
     
     
     public static class Builder {
-        public Builder() { }
+    
+    public Builder() { }
         public Builder(EmptyXcep other) {
         }
     

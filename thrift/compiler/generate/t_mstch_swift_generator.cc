@@ -347,12 +347,20 @@ class mstch_swift_field : public mstch_field {
              &mstch_swift_field::set_nested_container_flag},
             {"field:typeFieldName", &mstch_swift_field::type_field_name},
             {"field:isSensitive?", &mstch_swift_field::is_sensitive},
+            {"field:hasInitialValue?", &mstch_swift_field::has_initial_value},
         });
   }
 
   int32_t nestedDepth = 0;
   bool isNestedContainerFlag = false;
 
+  mstch::node has_initial_value() {
+    if (field_->get_req() == t_field::e_req::T_OPTIONAL) {
+      // default values are ignored for optional fields
+      return false;
+    }
+    return field_->get_value();
+  }
   mstch::node get_nested_depth() {
     return nestedDepth;
   }

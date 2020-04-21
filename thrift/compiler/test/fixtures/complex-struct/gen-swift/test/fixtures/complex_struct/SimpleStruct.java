@@ -10,6 +10,7 @@ package test.fixtures.complex_struct;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -41,7 +42,9 @@ public final class SimpleStruct {
     }
     
     public static class Builder {
-        private long age;
+        private long age = 60L;
+        private String name = "Batman";
+    
         @ThriftField(value=1, name="age", requiredness=Requiredness.NONE)
         public Builder setAge(long age) {
             this.age = age;
@@ -50,8 +53,7 @@ public final class SimpleStruct {
         
         public long getAge() { return age; }
     
-        private String name;
-        @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
+            @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
         public Builder setName(String name) {
             this.name = name;
             return this;

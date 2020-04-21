@@ -10,6 +10,7 @@ package test.fixtures.basicannotations;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -38,7 +39,8 @@ public final class MyStructNestedAnnotation {
     }
     
     public static class Builder {
-        private String name;
+        private String name = null;
+    
         @ThriftField(value=1, name="name", requiredness=Requiredness.NONE)
         public Builder setName(String name) {
             this.name = name;

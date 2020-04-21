@@ -22,7 +22,7 @@
 new {{> BoxedType}}.Builder(){{!
 }}{{#value:const_struct}}{{!
   }}{{#constant:type}}{{!
-    }}{{#constant:value}}.set{{constant:javaFieldName}}({{> ConstantValue}}){{!
+    }}{{#constant:value}}.set{{constant:javaFieldName}}({{> DefaultValue}}){{!
     }}{{/constant:value}}{{!
   }}{{/constant:type}}{{!
 }}{{/value:const_struct}}.build()

@@ -10,6 +10,7 @@ package test.fixtures.basic_swift_bean;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -47,7 +48,11 @@ public final class MyStruct1 {
     }
     
     public static class Builder {
-        private long myIntField;
+        private long myIntField = 0L;
+        private String myStringField = null;
+        private test.fixtures.basic_swift_bean.MyDataItem myDataField = null;
+        private long major = 0L;
+    
         @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
         public Builder setMyIntField(long myIntField) {
             this.myIntField = myIntField;
@@ -56,8 +61,7 @@ public final class MyStruct1 {
         
         public long getMyIntField() { return myIntField; }
     
-        private String myStringField;
-        @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
+            @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
         public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
@@ -65,8 +69,7 @@ public final class MyStruct1 {
         
         public String getMyStringField() { return myStringField; }
     
-        private test.fixtures.basic_swift_bean.MyDataItem myDataField;
-        @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
+            @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
         public Builder setMyDataField(test.fixtures.basic_swift_bean.MyDataItem myDataField) {
             this.myDataField = myDataField;
             return this;
@@ -74,8 +77,7 @@ public final class MyStruct1 {
         
         public test.fixtures.basic_swift_bean.MyDataItem getMyDataField() { return myDataField; }
     
-        private long major;
-        @ThriftField(value=4, name="major", requiredness=Requiredness.NONE)
+            @ThriftField(value=4, name="major", requiredness=Requiredness.NONE)
         public Builder setMajor(long major) {
             this.major = major;
             return this;

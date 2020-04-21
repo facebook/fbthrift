@@ -10,6 +10,7 @@ package test.fixtures.refs;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -44,7 +45,10 @@ public final class MyStruct {
     }
     
     public static class Builder {
-        private test.fixtures.refs.MyField optRef;
+        private test.fixtures.refs.MyField optRef = null;
+        private test.fixtures.refs.MyField ref = null;
+        private test.fixtures.refs.MyField reqRef = null;
+    
         @ThriftField(value=1, name="opt_ref", requiredness=Requiredness.OPTIONAL)
         public Builder setOptRef(test.fixtures.refs.MyField optRef) {
             this.optRef = optRef;
@@ -53,8 +57,7 @@ public final class MyStruct {
         
         public test.fixtures.refs.MyField getOptRef() { return optRef; }
     
-        private test.fixtures.refs.MyField ref;
-        @ThriftField(value=2, name="ref", requiredness=Requiredness.NONE)
+            @ThriftField(value=2, name="ref", requiredness=Requiredness.NONE)
         public Builder setRef(test.fixtures.refs.MyField ref) {
             this.ref = ref;
             return this;
@@ -62,8 +65,7 @@ public final class MyStruct {
         
         public test.fixtures.refs.MyField getRef() { return ref; }
     
-        private test.fixtures.refs.MyField reqRef;
-        @ThriftField(value=3, name="req_ref", requiredness=Requiredness.REQUIRED)
+            @ThriftField(value=3, name="req_ref", requiredness=Requiredness.REQUIRED)
         public Builder setReqRef(test.fixtures.refs.MyField reqRef) {
             this.reqRef = reqRef;
             return this;

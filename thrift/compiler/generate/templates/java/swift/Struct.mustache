@@ -22,6 +22,7 @@ package {{struct:javaPackage}};
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -42,19 +43,13 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="{{struct:name}}", builder={{struct:javaCapitalName}}.Builder.class){{> common/ObjectCustomAnnotation}}
 {{/struct:asBean?}}
 public final class {{struct:javaCapitalName}} {
-    {{#struct:asBean?}}
-    @ThriftConstructor
-    public {{struct:javaCapitalName}}() {}
-    {{/struct:asBean?}}
-    {{^struct:asBean?}}
     {{> struct/ThriftConstructor}}
-    {{/struct:asBean?}}
 
     {{> struct/StructBuilder}}
 
     private static final TStruct STRUCT_DESC = new TStruct("{{struct:name}}");
     {{#struct:fields}}{{!
-    
+
     }}{{#struct:asBean?}}
     private {{> FieldType}} {{field:javaName}};
     public static final int _{{field:javaAllCapsName}} = {{field:key}};

@@ -10,6 +10,7 @@ package test.fixtures.optionals;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -47,7 +48,11 @@ public final class Color {
     }
     
     public static class Builder {
-        private double red;
+        private double red = 0.;
+        private double green = 0.;
+        private double blue = 0.;
+        private double alpha = 0.;
+    
         @ThriftField(value=1, name="red", requiredness=Requiredness.NONE)
         public Builder setRed(double red) {
             this.red = red;
@@ -56,8 +61,7 @@ public final class Color {
         
         public double getRed() { return red; }
     
-        private double green;
-        @ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
+            @ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
         public Builder setGreen(double green) {
             this.green = green;
             return this;
@@ -65,8 +69,7 @@ public final class Color {
         
         public double getGreen() { return green; }
     
-        private double blue;
-        @ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
+            @ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
         public Builder setBlue(double blue) {
             this.blue = blue;
             return this;
@@ -74,8 +77,7 @@ public final class Color {
         
         public double getBlue() { return blue; }
     
-        private double alpha;
-        @ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)
+            @ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)
         public Builder setAlpha(double alpha) {
             this.alpha = alpha;
             return this;

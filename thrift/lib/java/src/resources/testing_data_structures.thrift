@@ -23,8 +23,8 @@ typedef map<i32, i64>
 
 
 struct MySimpleStruct {
-  1: i64 id,
-  2: string name,
+  1: i64 id = 99,
+  2: string name = "Batman",
 }
 
 struct MySensitiveStruct {
@@ -43,6 +43,7 @@ union MySimpleUnion {
   3: string caseThree,
   4: MySimpleStruct caseFour,
   5: list<string> caseFive,
+  6: SmallEnum smallEnum,
 }
 
 struct NestedStruct {
@@ -64,13 +65,13 @@ struct ComplexNestedStruct {
 }
 
 struct SimpleStructTypes  {
-  1: string msg,
-  2: bool b,
-  3: byte y,
-  4: i16 i,
-  5: i32 j,
-  6: i64 k,
-  7: double d,
+  1: string msg = "Bye Thrift Team",
+  2: bool b = false,
+  3: byte y = 97,
+  4: i16 i = 1,
+  5: i32 j = -9999,
+  6: i64 k = 14444444444444,
+  7: double d = 14,
 }
 
 struct SimpleCollectionStruct {
@@ -80,6 +81,8 @@ struct SimpleCollectionStruct {
    4: map<string,string> mStringString,
    5: set<i64> sLong,
 }
+
+const i32 DEFAULT_PORT_NUM = 3456
 
 enum SmallEnum {
   UNKNOWN = 0, // default value
@@ -109,6 +112,57 @@ enum BigEnum {
   EIGHTEEN = 18,
   NINETEEN = 19,
   TWENTY = 20,
+}
+
+const MySimpleUnion constEnumUnion = { "smallEnum" : SmallEnum.BLUE, }
+
+struct defaultValueStruct {
+  1: i64 myLongDFset = 10,  // default value is 10L
+  2: i64 myLongDF,  // default value is 0
+  3: i32 portDFset = DEFAULT_PORT_NUM,
+  4: i32 portNum,
+  5: binary myBinaryDFset = "abc",
+  6: binary myBinary,
+  7: byte myByteDFSet = 17,
+  8: byte myByte,
+  9: double myDoubleDFset = 99.7678,
+  10: double myDoubleDFZero = 0.0,
+  11: double myDouble,
+  12: map<i32, string> mIntegerString = {15 : 'a_value', 2: 'b_value'},
+  13: list<SmallEnum> myList = [SmallEnum.RED, SmallEnum.BLUE, SmallEnum.GREEN],
+  14: set<string> mySet = ["house", "car", "dog"],
+  15: MySimpleStruct simpleStruct = { "id": 40, "name": "John"},
+
+  16: list<MySimpleStruct> listStructDFset = [
+    {"id": 40, "name": "IronMan"},{ "id": 999, "name": "Thanos"}],
+  17: MySimpleUnion myUnion = constEnumUnion,
+
+  18: list<MySimpleUnion> listUnionDFset = [
+    {"smallEnum" : SmallEnum.BLUE},
+    {"caseTwo" : 123},
+    ],
+  19: map<i32, list<MySimpleStruct>> mapNestlistStructDfSet = {
+       1: [ {"id": 40, "name": "IronMan"},{ "id": 999, "name": "Thanos"} ],
+       2: [ {"id": 28, "name": "BatMan"},{ "id": 12, "name": "Robin"} ],
+       5: [ {"id": 12, "name": "RatMan"},{ "id": 6, "name": "Catman"} ],
+  },
+  20: map<i64, string> mapJavaTypeDFset = {15 : 'a_value', 2: 'b_value'},
+  21: map<i64, i32>  emptyMap = { },
+  22: map<string, map<i32, SmallEnum>> enumMapDFset = {
+     "SANDY BRIDGE": {
+       16: SmallEnum.RED,
+       144: SmallEnum.RED,
+     },
+     "IVY BRIDGE": {
+       32: SmallEnum.GREEN,
+       144: SmallEnum.BLUE,
+     },
+     "HASWELL": {
+       32: SmallEnum.RED,
+       128: SmallEnum.BLUE,
+       256: SmallEnum.GREEN,
+     },
+  },
 }
 
 struct MyListStruct {

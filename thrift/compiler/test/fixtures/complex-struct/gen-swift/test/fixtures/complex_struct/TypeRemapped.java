@@ -10,6 +10,7 @@ package test.fixtures.complex_struct;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -47,7 +48,11 @@ public final class TypeRemapped {
     }
     
     public static class Builder {
-        private it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap;
+        private it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap = null;
+        private it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap = null;
+        private java.math.BigInteger bigInteger = 0;
+        private java.nio.ByteBuffer binaryTestBuffer = null;
+    
         @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
         public Builder setLsMap(it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap) {
             this.lsMap = lsMap;
@@ -56,8 +61,7 @@ public final class TypeRemapped {
         
         public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
     
-        private it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap;
-        @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
+            @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
         public Builder setIoMap(it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap) {
             this.ioMap = ioMap;
             return this;
@@ -65,8 +69,7 @@ public final class TypeRemapped {
         
         public it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> getIoMap() { return ioMap; }
     
-        private java.math.BigInteger bigInteger;
-        @ThriftField(value=3, name="BigInteger", requiredness=Requiredness.NONE)
+            @ThriftField(value=3, name="BigInteger", requiredness=Requiredness.NONE)
         public Builder setBigInteger(java.math.BigInteger bigInteger) {
             this.bigInteger = bigInteger;
             return this;
@@ -74,8 +77,7 @@ public final class TypeRemapped {
         
         public java.math.BigInteger getBigInteger() { return bigInteger; }
     
-        private java.nio.ByteBuffer binaryTestBuffer;
-        @ThriftField(value=4, name="binaryTestBuffer", requiredness=Requiredness.NONE)
+            @ThriftField(value=4, name="binaryTestBuffer", requiredness=Requiredness.NONE)
         public Builder setBinaryTestBuffer(java.nio.ByteBuffer binaryTestBuffer) {
             this.binaryTestBuffer = binaryTestBuffer;
             return this;

@@ -10,6 +10,7 @@ package test.fixtures.complex_struct;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
+import com.google.common.collect.*;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
@@ -101,7 +102,77 @@ public final class DefaultStruct {
     }
     
     public static class Builder {
-        private long myLongDFset;
+        private long myLongDFset = 10L;
+        private long myLongDF = 0L;
+        private int portDFset = 3456;
+        private int portNum = 0;
+        private byte[] myBinaryDFset = "abc".getBytes();
+        private byte[] myBinary = null;
+        private byte myByteDFSet = (byte)17;
+        private byte myByte = 0;
+        private double myDoubleDFset = (double)99.7678;
+        private double myDoubleDFZero = (double)0;
+        private double myDouble = 0.;
+        private Map<Integer, String> field3 = ImmutableMap.<Integer, String>builder()
+        .put(15, "a_value")
+        .put(2, "b_value")
+        .build();
+        private List<test.fixtures.complex_struct.MyEnum> myList = ImmutableList.<test.fixtures.complex_struct.MyEnum>builder()
+        .add(test.fixtures.complex_struct.MyEnum.MY_VALUE1)
+        .add(test.fixtures.complex_struct.MyEnum.MY_VALUE1)
+        .add(test.fixtures.complex_struct.MyEnum.MY_VALUE2)
+        .build();
+        private Set<String> mySet = ImmutableSet.<String>builder()
+        .add("house")
+        .add("car")
+        .add("dog")
+        .build();
+        private test.fixtures.complex_struct.SimpleStruct simpleStruct = new test.fixtures.complex_struct.SimpleStruct.Builder().setAge(40L).setName("John").build();
+        private List<test.fixtures.complex_struct.SimpleStruct> listStructDFset = ImmutableList.<test.fixtures.complex_struct.SimpleStruct>builder()
+        .add(new test.fixtures.complex_struct.SimpleStruct.Builder().setAge(40L).setName("IronMan").build())
+        .add(new test.fixtures.complex_struct.SimpleStruct.Builder().setAge(999L).setName("Thanos").build())
+        .build();
+        private test.fixtures.complex_struct.MyUnion myUnion = test.fixtures.complex_struct.MyUnion.fromMyEnum(test.fixtures.complex_struct.MyEnum.MY_VALUE2);
+        private List<test.fixtures.complex_struct.MyUnion> listUnionDFset = ImmutableList.<test.fixtures.complex_struct.MyUnion>builder()
+        .add(test.fixtures.complex_struct.MyUnion.fromMyEnum(test.fixtures.complex_struct.MyEnum.MY_VALUE2))
+        .add(test.fixtures.complex_struct.MyUnion.fromIntValue(123))
+        .build();
+        private Map<Integer, List<test.fixtures.complex_struct.SimpleStruct>> mapNestlistStructDfSet = ImmutableMap.<Integer, List<test.fixtures.complex_struct.SimpleStruct>>builder()
+        .put(1, ImmutableList.<test.fixtures.complex_struct.SimpleStruct>builder()
+        .add(new test.fixtures.complex_struct.SimpleStruct.Builder().setAge(40L).setName("IronMan").build())
+        .add(new test.fixtures.complex_struct.SimpleStruct.Builder().setAge(999L).setName("Thanos").build())
+        .build())
+        .put(2, ImmutableList.<test.fixtures.complex_struct.SimpleStruct>builder()
+        .add(new test.fixtures.complex_struct.SimpleStruct.Builder().setAge(28L).setName("BatMan").build())
+        .add(new test.fixtures.complex_struct.SimpleStruct.Builder().setAge(12L).setName("Robin").build())
+        .build())
+        .put(5, ImmutableList.<test.fixtures.complex_struct.SimpleStruct>builder()
+        .add(new test.fixtures.complex_struct.SimpleStruct.Builder().setAge(12L).setName("RatMan").build())
+        .add(new test.fixtures.complex_struct.SimpleStruct.Builder().setAge(6L).setName("Catman").build())
+        .build())
+        .build();
+        private it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> mapJavaTypeDFset = ImmutableMap.<Long, String>builder()
+        .put(15L, "a_value")
+        .put(2L, "b_value")
+        .build();
+        private Map<Long, Integer> emptyMap = ImmutableMap.<Long, Integer>builder()
+        .build();
+        private Map<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> enumMapDFset = ImmutableMap.<String, Map<Integer, test.fixtures.complex_struct.MyEnum>>builder()
+        .put("SANDY BRIDGE", ImmutableMap.<Integer, test.fixtures.complex_struct.MyEnum>builder()
+        .put(16, test.fixtures.complex_struct.MyEnum.MY_VALUE1)
+        .put(144, test.fixtures.complex_struct.MyEnum.MY_VALUE1)
+        .build())
+        .put("IVY BRIDGE", ImmutableMap.<Integer, test.fixtures.complex_struct.MyEnum>builder()
+        .put(32, test.fixtures.complex_struct.MyEnum.MY_VALUE2)
+        .put(144, test.fixtures.complex_struct.MyEnum.MY_VALUE2)
+        .build())
+        .put("HASWELL", ImmutableMap.<Integer, test.fixtures.complex_struct.MyEnum>builder()
+        .put(32, test.fixtures.complex_struct.MyEnum.MY_VALUE3)
+        .put(128, test.fixtures.complex_struct.MyEnum.MY_VALUE3)
+        .put(256, test.fixtures.complex_struct.MyEnum.MY_VALUE3)
+        .build())
+        .build();
+    
         @ThriftField(value=1, name="myLongDFset", requiredness=Requiredness.NONE)
         public Builder setMyLongDFset(long myLongDFset) {
             this.myLongDFset = myLongDFset;
@@ -110,8 +181,7 @@ public final class DefaultStruct {
         
         public long getMyLongDFset() { return myLongDFset; }
     
-        private long myLongDF;
-        @ThriftField(value=2, name="myLongDF", requiredness=Requiredness.NONE)
+            @ThriftField(value=2, name="myLongDF", requiredness=Requiredness.NONE)
         public Builder setMyLongDF(long myLongDF) {
             this.myLongDF = myLongDF;
             return this;
@@ -119,8 +189,7 @@ public final class DefaultStruct {
         
         public long getMyLongDF() { return myLongDF; }
     
-        private int portDFset;
-        @ThriftField(value=3, name="portDFset", requiredness=Requiredness.NONE)
+            @ThriftField(value=3, name="portDFset", requiredness=Requiredness.NONE)
         public Builder setPortDFset(int portDFset) {
             this.portDFset = portDFset;
             return this;
@@ -128,8 +197,7 @@ public final class DefaultStruct {
         
         public int getPortDFset() { return portDFset; }
     
-        private int portNum;
-        @ThriftField(value=4, name="portNum", requiredness=Requiredness.NONE)
+            @ThriftField(value=4, name="portNum", requiredness=Requiredness.NONE)
         public Builder setPortNum(int portNum) {
             this.portNum = portNum;
             return this;
@@ -137,8 +205,7 @@ public final class DefaultStruct {
         
         public int getPortNum() { return portNum; }
     
-        private byte[] myBinaryDFset;
-        @ThriftField(value=5, name="myBinaryDFset", requiredness=Requiredness.NONE)
+            @ThriftField(value=5, name="myBinaryDFset", requiredness=Requiredness.NONE)
         public Builder setMyBinaryDFset(byte[] myBinaryDFset) {
             this.myBinaryDFset = myBinaryDFset;
             return this;
@@ -146,8 +213,7 @@ public final class DefaultStruct {
         
         public byte[] getMyBinaryDFset() { return myBinaryDFset; }
     
-        private byte[] myBinary;
-        @ThriftField(value=6, name="myBinary", requiredness=Requiredness.NONE)
+            @ThriftField(value=6, name="myBinary", requiredness=Requiredness.NONE)
         public Builder setMyBinary(byte[] myBinary) {
             this.myBinary = myBinary;
             return this;
@@ -155,8 +221,7 @@ public final class DefaultStruct {
         
         public byte[] getMyBinary() { return myBinary; }
     
-        private byte myByteDFSet;
-        @ThriftField(value=7, name="myByteDFSet", requiredness=Requiredness.NONE)
+            @ThriftField(value=7, name="myByteDFSet", requiredness=Requiredness.NONE)
         public Builder setMyByteDFSet(byte myByteDFSet) {
             this.myByteDFSet = myByteDFSet;
             return this;
@@ -164,8 +229,7 @@ public final class DefaultStruct {
         
         public byte getMyByteDFSet() { return myByteDFSet; }
     
-        private byte myByte;
-        @ThriftField(value=8, name="myByte", requiredness=Requiredness.NONE)
+            @ThriftField(value=8, name="myByte", requiredness=Requiredness.NONE)
         public Builder setMyByte(byte myByte) {
             this.myByte = myByte;
             return this;
@@ -173,8 +237,7 @@ public final class DefaultStruct {
         
         public byte getMyByte() { return myByte; }
     
-        private double myDoubleDFset;
-        @ThriftField(value=9, name="myDoubleDFset", requiredness=Requiredness.NONE)
+            @ThriftField(value=9, name="myDoubleDFset", requiredness=Requiredness.NONE)
         public Builder setMyDoubleDFset(double myDoubleDFset) {
             this.myDoubleDFset = myDoubleDFset;
             return this;
@@ -182,8 +245,7 @@ public final class DefaultStruct {
         
         public double getMyDoubleDFset() { return myDoubleDFset; }
     
-        private double myDoubleDFZero;
-        @ThriftField(value=10, name="myDoubleDFZero", requiredness=Requiredness.NONE)
+            @ThriftField(value=10, name="myDoubleDFZero", requiredness=Requiredness.NONE)
         public Builder setMyDoubleDFZero(double myDoubleDFZero) {
             this.myDoubleDFZero = myDoubleDFZero;
             return this;
@@ -191,8 +253,7 @@ public final class DefaultStruct {
         
         public double getMyDoubleDFZero() { return myDoubleDFZero; }
     
-        private double myDouble;
-        @ThriftField(value=12, name="myDouble", requiredness=Requiredness.NONE)
+            @ThriftField(value=12, name="myDouble", requiredness=Requiredness.NONE)
         public Builder setMyDouble(double myDouble) {
             this.myDouble = myDouble;
             return this;
@@ -200,8 +261,7 @@ public final class DefaultStruct {
         
         public double getMyDouble() { return myDouble; }
     
-        private Map<Integer, String> field3;
-        @ThriftField(value=13, name="field3", requiredness=Requiredness.NONE)
+            @ThriftField(value=13, name="field3", requiredness=Requiredness.NONE)
         public Builder setField3(Map<Integer, String> field3) {
             this.field3 = field3;
             return this;
@@ -209,8 +269,7 @@ public final class DefaultStruct {
         
         public Map<Integer, String> getField3() { return field3; }
     
-        private List<test.fixtures.complex_struct.MyEnum> myList;
-        @ThriftField(value=14, name="myList", requiredness=Requiredness.NONE)
+            @ThriftField(value=14, name="myList", requiredness=Requiredness.NONE)
         public Builder setMyList(List<test.fixtures.complex_struct.MyEnum> myList) {
             this.myList = myList;
             return this;
@@ -218,8 +277,7 @@ public final class DefaultStruct {
         
         public List<test.fixtures.complex_struct.MyEnum> getMyList() { return myList; }
     
-        private Set<String> mySet;
-        @ThriftField(value=15, name="mySet", requiredness=Requiredness.NONE)
+            @ThriftField(value=15, name="mySet", requiredness=Requiredness.NONE)
         public Builder setMySet(Set<String> mySet) {
             this.mySet = mySet;
             return this;
@@ -227,8 +285,7 @@ public final class DefaultStruct {
         
         public Set<String> getMySet() { return mySet; }
     
-        private test.fixtures.complex_struct.SimpleStruct simpleStruct;
-        @ThriftField(value=16, name="simpleStruct", requiredness=Requiredness.NONE)
+            @ThriftField(value=16, name="simpleStruct", requiredness=Requiredness.NONE)
         public Builder setSimpleStruct(test.fixtures.complex_struct.SimpleStruct simpleStruct) {
             this.simpleStruct = simpleStruct;
             return this;
@@ -236,8 +293,7 @@ public final class DefaultStruct {
         
         public test.fixtures.complex_struct.SimpleStruct getSimpleStruct() { return simpleStruct; }
     
-        private List<test.fixtures.complex_struct.SimpleStruct> listStructDFset;
-        @ThriftField(value=17, name="listStructDFset", requiredness=Requiredness.NONE)
+            @ThriftField(value=17, name="listStructDFset", requiredness=Requiredness.NONE)
         public Builder setListStructDFset(List<test.fixtures.complex_struct.SimpleStruct> listStructDFset) {
             this.listStructDFset = listStructDFset;
             return this;
@@ -245,8 +301,7 @@ public final class DefaultStruct {
         
         public List<test.fixtures.complex_struct.SimpleStruct> getListStructDFset() { return listStructDFset; }
     
-        private test.fixtures.complex_struct.MyUnion myUnion;
-        @ThriftField(value=18, name="myUnion", requiredness=Requiredness.NONE)
+            @ThriftField(value=18, name="myUnion", requiredness=Requiredness.NONE)
         public Builder setMyUnion(test.fixtures.complex_struct.MyUnion myUnion) {
             this.myUnion = myUnion;
             return this;
@@ -254,8 +309,7 @@ public final class DefaultStruct {
         
         public test.fixtures.complex_struct.MyUnion getMyUnion() { return myUnion; }
     
-        private List<test.fixtures.complex_struct.MyUnion> listUnionDFset;
-        @ThriftField(value=19, name="listUnionDFset", requiredness=Requiredness.NONE)
+            @ThriftField(value=19, name="listUnionDFset", requiredness=Requiredness.NONE)
         public Builder setListUnionDFset(List<test.fixtures.complex_struct.MyUnion> listUnionDFset) {
             this.listUnionDFset = listUnionDFset;
             return this;
@@ -263,8 +317,7 @@ public final class DefaultStruct {
         
         public List<test.fixtures.complex_struct.MyUnion> getListUnionDFset() { return listUnionDFset; }
     
-        private Map<Integer, List<test.fixtures.complex_struct.SimpleStruct>> mapNestlistStructDfSet;
-        @ThriftField(value=20, name="mapNestlistStructDfSet", requiredness=Requiredness.NONE)
+            @ThriftField(value=20, name="mapNestlistStructDfSet", requiredness=Requiredness.NONE)
         public Builder setMapNestlistStructDfSet(Map<Integer, List<test.fixtures.complex_struct.SimpleStruct>> mapNestlistStructDfSet) {
             this.mapNestlistStructDfSet = mapNestlistStructDfSet;
             return this;
@@ -272,8 +325,7 @@ public final class DefaultStruct {
         
         public Map<Integer, List<test.fixtures.complex_struct.SimpleStruct>> getMapNestlistStructDfSet() { return mapNestlistStructDfSet; }
     
-        private it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> mapJavaTypeDFset;
-        @ThriftField(value=21, name="mapJavaTypeDFset", requiredness=Requiredness.NONE)
+            @ThriftField(value=21, name="mapJavaTypeDFset", requiredness=Requiredness.NONE)
         public Builder setMapJavaTypeDFset(it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> mapJavaTypeDFset) {
             this.mapJavaTypeDFset = mapJavaTypeDFset;
             return this;
@@ -281,8 +333,7 @@ public final class DefaultStruct {
         
         public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getMapJavaTypeDFset() { return mapJavaTypeDFset; }
     
-        private Map<Long, Integer> emptyMap;
-        @ThriftField(value=22, name="emptyMap", requiredness=Requiredness.NONE)
+            @ThriftField(value=22, name="emptyMap", requiredness=Requiredness.NONE)
         public Builder setEmptyMap(Map<Long, Integer> emptyMap) {
             this.emptyMap = emptyMap;
             return this;
@@ -290,8 +341,7 @@ public final class DefaultStruct {
         
         public Map<Long, Integer> getEmptyMap() { return emptyMap; }
     
-        private Map<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> enumMapDFset;
-        @ThriftField(value=23, name="enumMapDFset", requiredness=Requiredness.NONE)
+            @ThriftField(value=23, name="enumMapDFset", requiredness=Requiredness.NONE)
         public Builder setEnumMapDFset(Map<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> enumMapDFset) {
             this.enumMapDFset = enumMapDFset;
             return this;
