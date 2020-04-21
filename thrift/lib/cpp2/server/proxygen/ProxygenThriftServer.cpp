@@ -257,8 +257,7 @@ void ProxygenThriftServer::ThriftRequestHandler::sendReply(
 
 void ProxygenThriftServer::ThriftRequestHandler::sendErrorWrapped(
     folly::exception_wrapper ew,
-    std::string exCode,
-    apache::thrift::MessageChannel::MessageChannel::SendCallback* cb) {
+    std::string exCode) {
   // Other types are unimplemented.
   DCHECK(ew.is_compatible_with<apache::thrift::TApplicationException>());
 
@@ -285,7 +284,7 @@ void ProxygenThriftServer::ThriftRequestHandler::sendErrorWrapped(
           return;
         }
 
-        sendReply(std::move(exbuf), cb);
+        sendReply(std::move(exbuf), nullptr);
       });
 }
 

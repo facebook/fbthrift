@@ -555,12 +555,7 @@ class RegistryTests : public testing::TestWithParam<std::tuple<size_t, bool>> {
             std::unique_ptr<folly::IOBuf>&&,
             MessageChannel::SendCallback*,
             folly::Optional<uint32_t>));
-    MOCK_METHOD3(
-        sendErrorWrapped,
-        void(
-            folly::exception_wrapper,
-            std::string,
-            MessageChannel::SendCallback*));
+    MOCK_METHOD2(sendErrorWrapped, void(folly::exception_wrapper, std::string));
   };
 };
 

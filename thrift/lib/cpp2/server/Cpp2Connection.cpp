@@ -205,8 +205,7 @@ void Cpp2Connection::killRequest(
 
   req->sendErrorWrapped(
       folly::make_exception_wrapper<TApplicationException>(reason, comment),
-      errorCode,
-      nullptr);
+      errorCode);
 }
 
 // Response Channel callbacks
@@ -486,8 +485,7 @@ void Cpp2Connection::Cpp2Request::sendReply(
 
 void Cpp2Connection::Cpp2Request::sendErrorWrapped(
     folly::exception_wrapper ew,
-    std::string exCode,
-    MessageChannel::SendCallback* sendCallback) {
+    std::string exCode) {
   if (req_->isActive()) {
     setServerHeaders();
     markProcessEnd();
@@ -497,7 +495,7 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
         std::move(exCode),
         reqContext_.getMethodName(),
         reqContext_.getProtoSeqId(),
-        prepareSendCallback(sendCallback, observer));
+        prepareSendCallback(nullptr, observer));
     cancelTimeout();
   }
 }

@@ -134,10 +134,8 @@ class ProxygenThriftServer : public BaseThriftServer,
         apache::thrift::MessageChannel::SendCallback* cb = nullptr,
         folly::Optional<uint32_t> crc32c = folly::none) override;
 
-    void sendErrorWrapped(
-        folly::exception_wrapper ex,
-        std::string exCode,
-        apache::thrift::MessageChannel::SendCallback* cb = nullptr) override;
+    void sendErrorWrapped(folly::exception_wrapper ex, std::string exCode)
+        override;
 
     class ProxygenRequest : public apache::thrift::ResponseChannelRequest {
      public:
@@ -196,12 +194,10 @@ class ProxygenThriftServer : public BaseThriftServer,
         }
       }
 
-      void sendErrorWrapped(
-          folly::exception_wrapper ex,
-          std::string exCode,
-          apache::thrift::MessageChannel::SendCallback* cb = nullptr) override {
+      void sendErrorWrapped(folly::exception_wrapper ex, std::string exCode)
+          override {
         if (handler_) {
-          handler_->sendErrorWrapped(ex, exCode, cb);
+          handler_->sendErrorWrapped(ex, exCode);
         }
       }
 

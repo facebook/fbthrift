@@ -1148,12 +1148,9 @@ void TransportCompatibilityTest::TestCustomAsyncProcessor() {
       req_->sendReply(std::move(buf), new TestSendCallback(cb), crc32);
     }
 
-    void sendErrorWrapped(
-        folly::exception_wrapper ex,
-        std::string exCode,
-        MessageChannel::SendCallback* cb) override {
-      req_->sendErrorWrapped(
-          std::move(ex), std::move(exCode), new TestSendCallback(cb));
+    void sendErrorWrapped(folly::exception_wrapper ex, std::string exCode)
+        override {
+      req_->sendErrorWrapped(std::move(ex), std::move(exCode));
     }
 
    private:

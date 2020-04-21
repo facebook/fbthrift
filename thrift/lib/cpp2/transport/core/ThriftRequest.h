@@ -217,10 +217,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   }
 #endif
 
-  void sendErrorWrapped(
-      folly::exception_wrapper ew,
-      std::string exCode,
-      apache::thrift::MessageChannel::SendCallback* = nullptr) final {
+  void sendErrorWrapped(folly::exception_wrapper ew, std::string exCode) final {
     if (active_.exchange(false)) {
       cancelTimeout();
       sendErrorWrappedInternal(std::move(ew), exCode);

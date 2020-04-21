@@ -136,8 +136,7 @@ class ResponseChannelRequest {
 
   virtual void sendErrorWrapped(
       folly::exception_wrapper ex,
-      std::string exCode,
-      MessageChannel::SendCallback* cb = nullptr) = 0;
+      std::string exCode) = 0;
 
   virtual ~ResponseChannelRequest() {
     if (admissionController_ != nullptr) {

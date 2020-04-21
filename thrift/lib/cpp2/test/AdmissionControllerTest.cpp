@@ -46,10 +46,7 @@ class DummyRequest : public ResponseChannelRequest {
       MessageChannel::SendCallback*,
       folly::Optional<uint32_t>) override {}
 
-  void sendErrorWrapped(
-      folly::exception_wrapper,
-      std::string,
-      MessageChannel::SendCallback*) override {}
+  void sendErrorWrapped(folly::exception_wrapper, std::string) override {}
 };
 
 class AdmissionControllerTest : public testing::Test {};

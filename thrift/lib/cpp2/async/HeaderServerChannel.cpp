@@ -283,8 +283,7 @@ void HeaderServerChannel::HeaderRequest::serializeAndSendError(
  */
 void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
     folly::exception_wrapper ew,
-    std::string exCode,
-    MessageChannel::SendCallback* cb) {
+    std::string exCode) {
   // Other types are unimplemented.
   DCHECK(ew.is_compatible_with<TApplicationException>());
 
@@ -304,7 +303,7 @@ void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
         std::move(exbuf),
         header_->getWriteTransforms(),
         header_->getMinCompressBytes());
-    sendReply(std::move(exbuf), cb);
+    sendReply(std::move(exbuf), nullptr);
   });
 }
 

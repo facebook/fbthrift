@@ -142,10 +142,8 @@ class HeaderServerChannel : public ServerChannel,
         int32_t protoSeqId,
         MessageChannel::SendCallback* cb);
 
-    void sendErrorWrapped(
-        folly::exception_wrapper ex,
-        std::string exCode,
-        MessageChannel::SendCallback* cb = nullptr) override;
+    void sendErrorWrapped(folly::exception_wrapper ex, std::string exCode)
+        override;
 
     void sendErrorWrapped(
         folly::exception_wrapper ex,
