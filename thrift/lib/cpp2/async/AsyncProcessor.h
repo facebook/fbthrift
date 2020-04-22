@@ -355,7 +355,7 @@ class ServerInterface : public AsyncProcessorFactory {
  public:
   ~ServerInterface() override {}
 
-  Cpp2RequestContext* getConnectionContext() {
+  Cpp2RequestContext* getConnectionContext() const {
     return requestParams_.requestContext_;
   }
 
