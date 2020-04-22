@@ -72,7 +72,7 @@ TEST_F(FatalOptionalsTest, isset) {
     using member = meta::member::optl;
 
     type obj;
-    obj.optl = 3;
+    obj.optl_ref() = 3;
     EXPECT_TRUE(meta::member::optl::is_set(obj));
 
     EXPECT_TRUE(member::mark_set(obj, true));
