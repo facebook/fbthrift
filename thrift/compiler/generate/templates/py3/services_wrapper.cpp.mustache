@@ -60,7 +60,7 @@ defined in ServicesCallbacks, along with appropriate arguments.
   }
 {{/service:extends?}}
 
-{{#service:functions}}
+{{#service:functions}}{{^function:returns_sink?}}
 folly::Future<{{#function:returnType}}{{!
         }}{{> services/CppReturnType}}{{!
     }}{{/function:returnType}}>{{!
@@ -93,7 +93,7 @@ folly::Future<{{#function:returnType}}{{!
   return future;
 }
 
-{{/service:functions}}
+{{/function:returns_sink?}}{{/service:functions}}
 std::shared_ptr<apache::thrift::ServerInterface> {{service:name}}Interface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<{{service:name}}Wrapper>(if_object, exc);
 }

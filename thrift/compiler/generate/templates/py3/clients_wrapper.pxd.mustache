@@ -82,10 +82,10 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrap
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
     {{/service:extends?}}
 
-    {{#service:functions}}
+    {{#service:functions}}{{^function:returns_sink?}}
     cFollyFuture[{{#function:returnType}}{{> clients/CythonReturnTypeCppType}}{{/function:returnType}}] {{function:name}}(cRpcOptions, {{#function:args}}
       {{#field:type}}{{> types/CythonCppType}}{{/field:type}} arg_{{field:py_name}},{{/function:args}})
-    {{/service:functions}}
+    {{/function:returns_sink?}}{{/service:functions}}
     {{!
       If this is an empty service definition that extends another service
       Then we need to put pass, otherwise cython will complain about the

@@ -626,6 +626,8 @@ class mstch_py3_program : public mstch_program {
         const auto& elemTypeName = visit_type(elemType);
         extra += elemTypeName;
         streamTypes_.emplace(elemTypeName, elemType);
+      } else if (trueType->is_sink()) {
+        return "";
       } else {
         extra = trueType->get_name();
       }

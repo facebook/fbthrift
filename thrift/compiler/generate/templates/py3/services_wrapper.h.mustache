@@ -51,7 +51,7 @@ class {{service:name}}Wrapper : {{!
 {{/service:extends?}}
   public:
     explicit {{service:name}}Wrapper(PyObject *if_object, folly::Executor *exc);
-    {{#service:functions}}
+    {{#service:functions}}{{^function:returns_sink?}}
     folly::Future<{{#function:returnType}}{{!
             }}{{> services/CppReturnType}}{{!
         }}{{/function:returnType}}>{{!
@@ -61,7 +61,7 @@ class {{service:name}}Wrapper : {{!
                 }}{{#program:stack_arguments?}}{{> types/CppStackArgType}}{{/program:stack_arguments?}}{{!
             }}{{/field:type}} {{field:py_name}}{{^last?}},{{/last?}}{{#last?}}
     {{/last?}}{{/function:args}}) override;
-{{/service:functions}}};
+{{/function:returns_sink?}}{{/service:functions}}};
 
 std::shared_ptr<apache::thrift::ServerInterface> {{service:name}}Interface(PyObject *if_object, folly::Executor *exc);
 {{^last?}}
