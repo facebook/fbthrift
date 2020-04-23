@@ -17,6 +17,7 @@ import unittest
 
 import testing.types as _types
 from testing.builders import (
+    ColorGroups_Builder,
     Digits_Builder,
     File_Builder,
     HardError_Builder,
@@ -114,3 +115,9 @@ class BuilderTest(unittest.TestCase):
         self.assertEqual(obj.from_, "from")
         self.assertEqual(obj.nonlocal_, 42)
         self.assertTrue(obj.is_cpdef)
+
+    def test_build_map_field(self) -> None:
+        builder = ColorGroups_Builder()
+        builder.color_map = {_types.Color.red: _types.Color.blue}
+        obj = builder()
+        self.assertEqual(obj.color_map[_types.Color.red], _types.Color.blue)

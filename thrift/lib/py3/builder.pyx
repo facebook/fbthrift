@@ -25,7 +25,7 @@ cdef class StructBuilder:
         if isinstance(obj, (list, tuple, set)):
             return [StructBuilder.__from_obj__(e) for e in obj]
         if isinstance(obj, dict):
-            return {k: StructBuilder.__from_obj__(v) for k, v in obj}
+            return {k: StructBuilder.__from_obj__(v) for k, v in obj.items()}
         return obj
 
     def __call__(self):
@@ -36,5 +36,3 @@ cdef class StructBuilder:
 
     cdef object __build__(self):
         return self._struct_type(**{name: StructBuilder.__from_obj__(value) for name, value in self})
-
-
