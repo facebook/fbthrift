@@ -316,7 +316,7 @@ def write_results_after_future(
             reply_type = TMessageType.REPLY
         except TException as e:
             for exc_name, exc_type in known_exceptions.items():
-                if type(e) is exc_type:
+                if isinstance(e, exc_type):
                     setattr(result, exc_name, e)
                     reply_type = TMessageType.REPLY
                     event_handler.handlerException(handler_ctx, fn_name, e)
