@@ -6837,19 +6837,19 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         if cpp2_unique_ref is not None:
             deref(c_inst).cpp2_unique_ref = make_unique[ccontainerStruct](deref((<containerStruct?>cpp2_unique_ref)._cpp_obj))
         if container_with_ref is not None:
-            deref(c_inst).container_with_ref = make_unique[cmap[int32_t,vector[string]]](deref((<Map__i32_List__string?>container_with_ref)._cpp_obj))
+            deref(c_inst).container_with_ref = make_unique[cmap[int32_t,vector[string]]](deref(Map__i32_List__string(container_with_ref)._cpp_obj))
         if req_cpp_unique_ref is not None:
             deref(c_inst).req_cpp_unique_ref = make_unique[ccontainerStruct](deref((<containerStruct?>req_cpp_unique_ref)._cpp_obj))
         if req_cpp2_unique_ref is not None:
             deref(c_inst).req_cpp2_unique_ref = make_unique[ccontainerStruct](deref((<containerStruct?>req_cpp2_unique_ref)._cpp_obj))
         if req_container_with_ref is not None:
-            deref(c_inst).req_container_with_ref = make_unique[vector[string]](deref((<List__string?>req_container_with_ref)._cpp_obj))
+            deref(c_inst).req_container_with_ref = make_unique[vector[string]](deref(List__string(req_container_with_ref)._cpp_obj))
         if opt_cpp_unique_ref is not None:
             deref(c_inst).opt_cpp_unique_ref = make_unique[ccontainerStruct](deref((<containerStruct?>opt_cpp_unique_ref)._cpp_obj))
         if opt_cpp2_unique_ref is not None:
             deref(c_inst).opt_cpp2_unique_ref = make_unique[ccontainerStruct](deref((<containerStruct?>opt_cpp2_unique_ref)._cpp_obj))
         if opt_container_with_ref is not None:
-            deref(c_inst).opt_container_with_ref = make_unique[cset[int32_t]](deref((<Set__i32?>opt_container_with_ref)._cpp_obj))
+            deref(c_inst).opt_container_with_ref = make_unique[cset[int32_t]](deref(Set__i32(opt_container_with_ref)._cpp_obj))
         if ref_type_unique is not None:
             deref(c_inst).ref_type_unique = make_unique[ccontainerStruct](deref((<containerStruct?>ref_type_unique)._cpp_obj))
         if ref_type_shared is not None:
@@ -6861,7 +6861,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         if req_ref_type_const is not None:
             deref(c_inst).req_ref_type_const = const_pointer_cast((<containerStruct?>req_ref_type_const)._cpp_obj)
         if req_ref_type_unique is not None:
-            deref(c_inst).req_ref_type_unique = make_unique[vector[string]](deref((<List__string?>req_ref_type_unique)._cpp_obj))
+            deref(c_inst).req_ref_type_unique = make_unique[vector[string]](deref(List__string(req_ref_type_unique)._cpp_obj))
         if opt_ref_type_const is not None:
             deref(c_inst).opt_ref_type_const = const_pointer_cast((<containerStruct?>opt_ref_type_const)._cpp_obj)
         if opt_ref_type_unique is not None:

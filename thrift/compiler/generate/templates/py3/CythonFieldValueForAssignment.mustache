@@ -33,7 +33,12 @@ on a struct.
   }}{{#field:unique_ref?}}{{!
     For unique references, we just make a copy of the target object - it's not
     especially efficient but there isn't much else we can do from a shared ptr
-    }}make_unique[{{> types/CythonCppType}}](deref((<{{> types/CythonPythonType}}?>{{field:py_name}})._cpp_obj)){{!
+    }}make_unique[{{> types/CythonCppType}}](deref({{!
+      }}{{^type:container?}}{{!
+        }}(<{{> types/CythonPythonType}}?>{{field:py_name}}){{!
+      }}{{/type:container?}}{{#type:container?}}{{!
+        }}{{> types/CythonPythonType }}({{field:py_name}}){{!
+      }}{{/type:container?}}._cpp_obj)){{!
   }}{{/field:unique_ref?}}{{!
   }}{{#field:shared_ref?}}{{!
     }}(<{{> types/CythonPythonType}}?>{{field:py_name}})._cpp_obj{{!

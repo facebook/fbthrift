@@ -892,7 +892,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).fieldQ = MyEnumA_to_cpp(fieldQ)
             deref(c_inst).__isset.fieldQ = True
         if fieldR is not None:
-            deref(c_inst).fieldR = make_unique[cmap[string,cbool]](deref((<Map__string_bool?>fieldR)._cpp_obj))
+            deref(c_inst).fieldR = make_unique[cmap[string,cbool]](deref(Map__string_bool(fieldR)._cpp_obj))
         if fieldS is not None:
             deref(c_inst).fieldS = make_unique[cSmallStruct](deref((<SmallStruct?>fieldS)._cpp_obj))
         if fieldT is not None:

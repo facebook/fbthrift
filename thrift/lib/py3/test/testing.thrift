@@ -246,6 +246,18 @@ struct Messy {
     }
 }
 
+
+struct ComplexRef {
+    1: string name,
+    2: optional ComplexRef ref (cpp2.ref="true"),
+    3: optional list<i16> list_basetype_ref (cpp2.ref="true"),
+    4: optional list<ComplexRef> list_recursive_ref (cpp2.ref="true"),
+    5: optional set<i16> set_basetype_ref (cpp2.ref="true"),
+    6: optional set<ComplexRef> set_recursive_ref (cpp2.ref="true"),
+    7: optional map<i16, i16> map_basetype_ref (cpp2.ref="true"),
+    8: optional map<i16, ComplexRef> map_recursive_ref (cpp2.ref="true"),
+}
+
 service TestingService {
     string getName()
     oneway void shutdown()

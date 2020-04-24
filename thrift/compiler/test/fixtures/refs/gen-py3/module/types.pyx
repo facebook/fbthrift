@@ -1637,13 +1637,13 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
                 pass
 
         if list_ref is not None:
-            deref(c_inst).list_ref = make_unique[vector[int32_t]](deref((<List__i32?>list_ref)._cpp_obj))
+            deref(c_inst).list_ref = make_unique[vector[int32_t]](deref(List__i32(list_ref)._cpp_obj))
         if set_ref is not None:
-            deref(c_inst).set_ref = make_unique[cset[int32_t]](deref((<Set__i32?>set_ref)._cpp_obj))
+            deref(c_inst).set_ref = make_unique[cset[int32_t]](deref(Set__i32(set_ref)._cpp_obj))
         if map_ref is not None:
-            deref(c_inst).map_ref = make_unique[cmap[int32_t,int32_t]](deref((<Map__i32_i32?>map_ref)._cpp_obj))
+            deref(c_inst).map_ref = make_unique[cmap[int32_t,int32_t]](deref(Map__i32_i32(map_ref)._cpp_obj))
         if list_ref_unique is not None:
-            deref(c_inst).list_ref_unique = make_unique[vector[int32_t]](deref((<List__i32?>list_ref_unique)._cpp_obj))
+            deref(c_inst).list_ref_unique = make_unique[vector[int32_t]](deref(List__i32(list_ref_unique)._cpp_obj))
         if set_ref_shared is not None:
             deref(c_inst).set_ref_shared = (<Set__i32?>set_ref_shared)._cpp_obj
         if list_ref_shared_const is not None:
