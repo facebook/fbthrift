@@ -25,10 +25,12 @@ typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::MyStruct*>> ExtraService_oneway_void_ret_struct_param_pargs;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_LIST, ::std::vector< ::some::valid::ns::ComplexUnion>*>> ExtraService_oneway_void_ret_listunion_param_pargs;
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ExtraServiceAsyncProcessor::_processInThread_simple_function(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ExtraServiceAsyncProcessor::process_simple_function<ProtocolIn_, ProtocolOut_>, this);
+}
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::process_simple_function(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!validateRpcKind(req, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)) {
-    return;
-  }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -44,8 +46,12 @@ void ExtraServiceAsyncProcessor::process_simple_function(apache::thrift::Respons
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_simple_function<ProtocolIn_,ProtocolOut_>, throw_wrapped_simple_function<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  if (!callback->isRequestActive()) {
+    callback.release()->deleteInThread();
+    return;
+  }
   ctx->setStartedProcessing();
-  iface_->async_eb_simple_function(std::move(callback));
+  iface_->async_tm_simple_function(std::move(callback));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -132,10 +138,12 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function(apache::thrift::R
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ExtraServiceAsyncProcessor::_processInThread_throws_function2(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::HIGH);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ExtraServiceAsyncProcessor::process_throws_function2<ProtocolIn_, ProtocolOut_>, this);
+}
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::process_throws_function2(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!validateRpcKind(req, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)) {
-    return;
-  }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -153,8 +161,12 @@ void ExtraServiceAsyncProcessor::process_throws_function2(apache::thrift::Respon
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_throws_function2<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function2<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  if (!callback->isRequestActive()) {
+    callback.release()->deleteInThread();
+    return;
+  }
   ctx->setStartedProcessing();
-  iface_->async_eb_throws_function2(std::move(callback), args.get<0>().ref());
+  iface_->async_tm_throws_function2(std::move(callback), args.get<0>().ref());
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -197,10 +209,12 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function2(apache::thrift::
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ExtraServiceAsyncProcessor::_processInThread_throws_function3(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ExtraServiceAsyncProcessor::process_throws_function3<ProtocolIn_, ProtocolOut_>, this);
+}
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::process_throws_function3(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!validateRpcKind(req, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)) {
-    return;
-  }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -220,8 +234,12 @@ void ExtraServiceAsyncProcessor::process_throws_function3(apache::thrift::Respon
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::map<int32_t, ::std::string>>>(std::move(req), std::move(ctxStack), return_throws_function3<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function3<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  if (!callback->isRequestActive()) {
+    callback.release()->deleteInThread();
+    return;
+  }
   ctx->setStartedProcessing();
-  iface_->async_eb_throws_function3(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
+  iface_->async_tm_throws_function3(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -264,10 +282,12 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function3(apache::thrift::
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ExtraServiceAsyncProcessor::_processInThread_oneway_void_ret(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &ExtraServiceAsyncProcessor::process_oneway_void_ret<ProtocolIn_, ProtocolOut_>, this);
+}
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::process_oneway_void_ret(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!validateRpcKind(req, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE)) {
-    return;
-  }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -282,14 +302,16 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret(apache::thrift::Respons
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
   ctx->setStartedProcessing();
-  iface_->async_eb_oneway_void_ret(std::move(callback));
+  iface_->async_tm_oneway_void_ret(std::move(callback));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ExtraServiceAsyncProcessor::_processInThread_oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &ExtraServiceAsyncProcessor::process_oneway_void_ret_i32_i32_i32_i32_i32_param<ProtocolIn_, ProtocolOut_>, this);
+}
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::process_oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!validateRpcKind(req, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE)) {
-    return;
-  }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -314,7 +336,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_i32_i32_i32_i32_i32_par
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
   ctx->setStartedProcessing();
-  iface_->async_eb_oneway_void_ret_i32_i32_i32_i32_i32_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref(), args.get<2>().ref(), args.get<3>().ref(), args.get<4>().ref());
+  iface_->async_tm_oneway_void_ret_i32_i32_i32_i32_i32_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref(), args.get<2>().ref(), args.get<3>().ref(), args.get<4>().ref());
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -344,10 +366,12 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_map_setlist_param(apach
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ExtraServiceAsyncProcessor::_processInThread_oneway_void_ret_struct_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param<ProtocolIn_, ProtocolOut_>, this);
+}
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!validateRpcKind(req, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE)) {
-    return;
-  }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -364,14 +388,16 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param(apache::th
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
   ctx->setStartedProcessing();
-  iface_->async_eb_oneway_void_ret_struct_param(std::move(callback), args.get<0>().ref());
+  iface_->async_tm_oneway_void_ret_struct_param(std::move(callback), args.get<0>().ref());
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ExtraServiceAsyncProcessor::_processInThread_oneway_void_ret_listunion_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param<ProtocolIn_, ProtocolOut_>, this);
+}
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!validateRpcKind(req, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE)) {
-    return;
-  }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -388,7 +414,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param(apache:
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
   ctx->setStartedProcessing();
-  iface_->async_eb_oneway_void_ret_listunion_param(std::move(callback), args.get<0>().ref());
+  iface_->async_tm_oneway_void_ret_listunion_param(std::move(callback), args.get<0>().ref());
 }
 
 }} // extra::svc

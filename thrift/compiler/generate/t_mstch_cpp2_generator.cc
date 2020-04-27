@@ -1091,14 +1091,8 @@ class mstch_cpp2_function : public mstch_function {
     return bool(function_->annotations_.count("cpp.coroutine"));
   }
   mstch::node event_based() {
-    if (function_->annotations_.count("thread") &&
-        function_->annotations_.at("thread") == "eb") {
-      return true;
-    }
-    if (cache_->parsed_options_.count("process_in_event_base") != 0) {
-      return true;
-    }
-    return false;
+    return function_->annotations_.count("thread") &&
+        function_->annotations_.at("thread") == "eb";
   }
   mstch::node cpp_name() {
     return get_cpp_name(function_);
