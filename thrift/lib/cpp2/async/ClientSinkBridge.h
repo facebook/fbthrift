@@ -130,7 +130,7 @@ class ClientSinkBridge : public TwoWayBridge<
   }
 
   // SinkClientCallback method
-  void onFirstResponse(
+  bool onFirstResponse(
       FirstResponsePayload&& firstPayload,
       folly::EventBase* evb,
       SinkServerCallback* serverCallback) override {
@@ -140,6 +140,7 @@ class ClientSinkBridge : public TwoWayBridge<
     DCHECK(scheduledWait);
     firstResponse_.emplace(std::move(firstPayload));
     firstResponseBaton_.post();
+    return true;
   }
 
   void onFirstResponseError(folly::exception_wrapper ew) override {
@@ -166,8 +167,9 @@ class ClientSinkBridge : public TwoWayBridge<
     close();
   }
 
-  void onSinkRequestN(uint64_t n) override {
+  bool onSinkRequestN(uint64_t n) override {
     serverPush(n);
+    return true;
   }
 
   void consume() {
@@ -196,14 +198,17 @@ class ClientSinkBridge : public TwoWayBridge<
                 serverCallback_->onSinkError(std::move(payload).exception());
                 terminated = true;
               } else {
-                serverCallback_->onSinkNext(std::move(payload).value());
+                terminated =
+                    !serverCallback_->onSinkNext(std::move(payload).value());
               }
             },
             [&](const StreamCancel&) {
               serverCallback_->onStreamCancel();
               terminated = true;
             },
-            [&](const SinkComplete&) { serverCallback_->onSinkComplete(); });
+            [&](const SinkComplete&) {
+              terminated = !serverCallback_->onSinkComplete();
+            });
         if (terminated) {
           close();
           return;

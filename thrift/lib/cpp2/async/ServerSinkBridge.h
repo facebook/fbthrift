@@ -66,8 +66,9 @@ class ServerSinkBridge : public TwoWayBridge<
   }
 
   // SinkServerCallback method
-  void onSinkNext(StreamPayload&& payload) override {
+  bool onSinkNext(StreamPayload&& payload) override {
     clientPush(folly::Try<StreamPayload>(std::move(payload)));
+    return true;
   }
 
   void onSinkError(folly::exception_wrapper ew) override {
@@ -83,9 +84,10 @@ class ServerSinkBridge : public TwoWayBridge<
     close();
   }
 
-  void onSinkComplete() override {
+  bool onSinkComplete() override {
     clientPush(SinkComplete{});
     sinkComplete_ = true;
+    return true;
   }
 
   void onStreamCancel() override {
@@ -205,7 +207,7 @@ class ServerSinkBridge : public TwoWayBridge<
     } while (!clientWait(this));
 
     if (!sinkComplete_ && credits > 0) {
-      clientCallback_->onSinkRequestN(credits);
+      std::ignore = clientCallback_->onSinkRequestN(credits);
     }
   }
 

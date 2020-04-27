@@ -36,7 +36,7 @@ class RocketSinkClientCallback final : public SinkClientCallback {
       StreamId streamId,
       RocketServerConnection& connection);
   ~RocketSinkClientCallback() override = default;
-  void onFirstResponse(
+  bool onFirstResponse(
       FirstResponsePayload&&,
       folly::EventBase*,
       SinkServerCallback*) override;
@@ -45,7 +45,7 @@ class RocketSinkClientCallback final : public SinkClientCallback {
   void onFinalResponse(StreamPayload&&) override;
   void onFinalResponseError(folly::exception_wrapper) override;
 
-  void onSinkRequestN(uint64_t) override;
+  bool onSinkRequestN(uint64_t) override;
 
   bool onSinkNext(StreamPayload&&);
   bool onSinkError(folly::exception_wrapper);

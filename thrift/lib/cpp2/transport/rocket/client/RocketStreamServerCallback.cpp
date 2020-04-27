@@ -296,7 +296,7 @@ StreamChannelStatus RocketChannelServerCallback::onSinkCancel() {
 }
 
 // RocketSinkServerCallback
-void RocketSinkServerCallback::onSinkNext(StreamPayload&& payload) {
+bool RocketSinkServerCallback::onSinkNext(StreamPayload&& payload) {
   DCHECK(state_ == State::BothOpen);
   if (LIKELY(!pageAligned_)) {
     // compress the payload if needed
@@ -318,6 +318,7 @@ void RocketSinkServerCallback::onSinkNext(StreamPayload&& payload) {
         std::move(payload).payload,
         rocket::Flags::none().next(true));
   }
+  return true;
 }
 void RocketSinkServerCallback::onSinkError(folly::exception_wrapper ew) {
   DCHECK(state_ == State::BothOpen);
@@ -333,10 +334,11 @@ void RocketSinkServerCallback::onSinkError(folly::exception_wrapper ew) {
             rocket::ErrorCode::APPLICATION_ERROR, ew.what()));
   }
 }
-void RocketSinkServerCallback::onSinkComplete() {
+bool RocketSinkServerCallback::onSinkComplete() {
   DCHECK(state_ == State::BothOpen);
   state_ = State::StreamOpen;
   client_.sendComplete(streamId_, false);
+  return true;
 }
 
 void RocketSinkServerCallback::onStreamCancel() {
@@ -347,7 +349,7 @@ void RocketSinkServerCallback::onStreamCancel() {
 void RocketSinkServerCallback::onInitialPayload(
     FirstResponsePayload&& payload,
     folly::EventBase* evb) {
-  clientCallback_.onFirstResponse(std::move(payload), evb, this);
+  std::ignore = clientCallback_.onFirstResponse(std::move(payload), evb, this);
 }
 void RocketSinkServerCallback::onInitialError(folly::exception_wrapper ew) {
   clientCallback_.onFirstResponseError(std::move(ew));
@@ -388,7 +390,7 @@ void RocketSinkServerCallback::onStreamHeaders(HeadersPayload&&) {}
 StreamChannelStatus RocketSinkServerCallback::onSinkRequestN(uint64_t tokens) {
   switch (state_) {
     case State::BothOpen:
-      clientCallback_.onSinkRequestN(tokens);
+      std::ignore = clientCallback_.onSinkRequestN(tokens);
       return StreamChannelStatus::Alive;
     case State::StreamOpen:
       return StreamChannelStatus::Alive;

@@ -48,7 +48,7 @@ RocketSinkClientCallback::RocketSinkClientCallback(
     RocketServerConnection& connection)
     : streamId_(streamId), connection_(connection) {}
 
-void RocketSinkClientCallback::onFirstResponse(
+bool RocketSinkClientCallback::onFirstResponse(
     FirstResponsePayload&& firstResponse,
     folly::EventBase* /* unused */,
     SinkServerCallback* serverCallback) {
@@ -57,7 +57,7 @@ void RocketSinkClientCallback::onFirstResponse(
         TApplicationException::TApplicationExceptionType::INTERRUPTION));
     firstResponse.payload.reset();
     connection_.freeStream(streamId_, true);
-    return;
+    return false;
   }
 
   serverCallbackOrError_ = reinterpret_cast<intptr_t>(serverCallback);
@@ -75,6 +75,7 @@ void RocketSinkClientCallback::onFirstResponse(
       streamId_,
       pack(std::move(firstResponse)).value(),
       Flags::none().next(true));
+  return true;
 }
 
 void RocketSinkClientCallback::onFirstResponseError(
@@ -142,12 +143,13 @@ void RocketSinkClientCallback::onFinalResponseError(
   connection_.freeStream(streamId_, true);
 }
 
-void RocketSinkClientCallback::onSinkRequestN(uint64_t n) {
+bool RocketSinkClientCallback::onSinkRequestN(uint64_t n) {
   if (timeout_) {
     timeout_->incCredits(n);
   }
   DCHECK(state_ == State::BothOpen);
   connection_.sendRequestN(streamId_, n);
+  return true;
 }
 
 bool RocketSinkClientCallback::onSinkNext(StreamPayload&& payload) {
@@ -160,8 +162,7 @@ bool RocketSinkClientCallback::onSinkNext(StreamPayload&& payload) {
     timeout_->decCredits();
   }
 
-  serverCallback()->onSinkNext(std::move(payload));
-  return true;
+  return serverCallback()->onSinkNext(std::move(payload));
 }
 
 bool RocketSinkClientCallback::onSinkError(folly::exception_wrapper ew) {
@@ -180,8 +181,7 @@ bool RocketSinkClientCallback::onSinkComplete() {
   }
   state_ = State::StreamOpen;
   connection_.incInflightFinalResponse();
-  serverCallback()->onSinkComplete();
-  return true;
+  return serverCallback()->onSinkComplete();
 }
 
 void RocketSinkClientCallback::onStreamCancel() {

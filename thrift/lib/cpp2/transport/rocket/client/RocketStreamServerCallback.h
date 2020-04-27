@@ -164,9 +164,9 @@ class RocketSinkServerCallback : public SinkServerCallback {
         streamId_(streamId),
         pageAligned_(pageAligned) {}
 
-  void onSinkNext(StreamPayload&&) override;
+  bool onSinkNext(StreamPayload&&) override;
   void onSinkError(folly::exception_wrapper) override;
-  void onSinkComplete() override;
+  bool onSinkComplete() override;
 
   void onStreamCancel() override;
 

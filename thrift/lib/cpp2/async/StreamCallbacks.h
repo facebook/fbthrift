@@ -151,16 +151,20 @@ using StreamServerCallbackPtr =
  * to terminate the contract.
  * After the first response the server may call onSinkRequestN repeatedly.
  *
- * TODO(T64321978): make nonterminating methods return bool
+ * on* methods that return void terminate the contract. No method may be called
+ * on either callback after a terminating method is called on either callback.
+ * Methods that return bool are not terminating unless they return false.
+ * These methods must return false if they called a terminating method inline,
+ * or true otherwise.
  */
 
 class SinkServerCallback {
  public:
   virtual ~SinkServerCallback() = default;
 
-  virtual void onSinkNext(StreamPayload&&) = 0;
+  FOLLY_NODISCARD virtual bool onSinkNext(StreamPayload&&) = 0;
   virtual void onSinkError(folly::exception_wrapper) = 0;
-  virtual void onSinkComplete() = 0;
+  FOLLY_NODISCARD virtual bool onSinkComplete() = 0;
 
   virtual void onStreamCancel() = 0;
 };
@@ -168,7 +172,7 @@ class SinkServerCallback {
 class SinkClientCallback {
  public:
   virtual ~SinkClientCallback() = default;
-  virtual void onFirstResponse(
+  FOLLY_NODISCARD virtual bool onFirstResponse(
       FirstResponsePayload&&,
       folly::EventBase*,
       SinkServerCallback*) = 0;
@@ -177,7 +181,7 @@ class SinkClientCallback {
   virtual void onFinalResponse(StreamPayload&&) = 0;
   virtual void onFinalResponseError(folly::exception_wrapper) = 0;
 
-  virtual void onSinkRequestN(uint64_t) = 0;
+  FOLLY_NODISCARD virtual bool onSinkRequestN(uint64_t) = 0;
 };
 
 /**
