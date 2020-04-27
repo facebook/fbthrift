@@ -52,20 +52,6 @@ set(CMAKE_MODULE_PATH
 
 # Find required dependencies
 find_package(OpenSSL REQUIRED)
-if(MSVC)
-  set(Boost_USE_STATIC_LIBS ON) #Force static lib in msvc
-endif(MSVC)
-find_package(
-  Boost 1.54.0 REQUIRED #1.54.0 or greater
-  COMPONENTS
-    context
-    filesystem
-    program_options
-    regex
-    system
-    thread
-)
-include_directories(${Boost_INCLUDE_DIRS})
 
 # Provide an option to control the -std argument for the C++ compiler.
 # We don't use CMAKE_CXX_STANDARD since it requires at least CMake 3.8
@@ -134,6 +120,7 @@ if(lib_only OR build_all)
     ${OPENSSL_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIRS}
     ${ZSTD_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIRS}
   )
   add_definitions("-DTHRIFT_HAVE_LIBSNAPPY=0")
   if(lib_only)
