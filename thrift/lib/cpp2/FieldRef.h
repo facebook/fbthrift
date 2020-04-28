@@ -482,9 +482,26 @@ struct get_pointer_fn {
   }
 };
 
+struct can_throw_fn {
+  template <typename T>
+  FOLLY_ERASE T&& operator()(T&& value) const {
+    return static_cast<T&&>(value);
+  }
+};
+
 } // namespace detail
 
 constexpr detail::get_pointer_fn get_pointer;
+
+//  can_throw
+//
+//  Used to annotate optional field accesses that can throw,
+//  suppressing any linter warning about unchecked access.
+//
+//  Example:
+//
+//    auto value = apache::thrift::can_throw(*obj.field_ref());
+constexpr detail::can_throw_fn can_throw;
 
 } // namespace thrift
 } // namespace apache
