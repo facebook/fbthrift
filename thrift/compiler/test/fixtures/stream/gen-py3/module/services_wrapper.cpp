@@ -18,93 +18,97 @@ PubSubStreamingServiceWrapper::PubSubStreamingServiceWrapper(PyObject *obj, foll
   }
 
 
-folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceWrapper::future_returnstream(
-  int32_t i32_from,
-  int32_t i32_to
+void PubSubStreamingServiceWrapper::async_tm_returnstream(
+  std::unique_ptr<apache::thrift::HandlerCallback<>> callback
+    , int32_t i32_from
+    , int32_t i32_to
 ) {
-  folly::Promise<apache::thrift::ServerStream<int32_t>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 i32_from,
 i32_to    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<apache::thrift::ServerStream<int32_t>>();
         call_cy_PubSubStreamingService_returnstream(
             this->if_object,
             ctx,
             std::move(promise),
             i32_from,
             i32_to        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<apache::thrift::ServerStream<int32_t>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceWrapper::future_streamthrows(
-  int32_t foo
+void PubSubStreamingServiceWrapper::async_tm_streamthrows(
+  std::unique_ptr<apache::thrift::HandlerCallback<>> callback
+    , int32_t foo
 ) {
-  folly::Promise<apache::thrift::ServerStream<int32_t>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 foo    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<apache::thrift::ServerStream<int32_t>>();
         call_cy_PubSubStreamingService_streamthrows(
             this->if_object,
             ctx,
             std::move(promise),
             foo        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<apache::thrift::ServerStream<int32_t>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceWrapper::future_boththrows(
-  int32_t foo
+void PubSubStreamingServiceWrapper::async_tm_boththrows(
+  std::unique_ptr<apache::thrift::HandlerCallback<>> callback
+    , int32_t foo
 ) {
-  folly::Promise<apache::thrift::ServerStream<int32_t>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 foo    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<apache::thrift::ServerStream<int32_t>>();
         call_cy_PubSubStreamingService_boththrows(
             this->if_object,
             ctx,
             std::move(promise),
             foo        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<apache::thrift::ServerStream<int32_t>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> PubSubStreamingServiceWrapper::future_responseandstreamthrows(
-  int32_t foo
+void PubSubStreamingServiceWrapper::async_tm_responseandstreamthrows(
+  std::unique_ptr<apache::thrift::HandlerCallback<>> callback
+    , int32_t foo
 ) {
-  folly::Promise<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 foo    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>();
         call_cy_PubSubStreamingService_responseandstreamthrows(
             this->if_object,
             ctx,
             std::move(promise),
             foo        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
 std::shared_ptr<apache::thrift::ServerInterface> PubSubStreamingServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<PubSubStreamingServiceWrapper>(if_object, exc);
 }

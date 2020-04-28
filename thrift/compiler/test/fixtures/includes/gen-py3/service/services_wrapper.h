@@ -20,13 +20,13 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
     folly::Executor *executor;
   public:
     explicit MyServiceWrapper(PyObject *if_object, folly::Executor *exc);
-    folly::Future<folly::Unit> future_query(
-        std::unique_ptr<::cpp2::MyStruct> s,
-        std::unique_ptr<::cpp2::Included> i
+    void async_tm_query(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+        , std::unique_ptr<::cpp2::MyStruct> s
+        , std::unique_ptr<::cpp2::Included> i
     ) override;
-    folly::Future<folly::Unit> future_has_arg_docs(
-        std::unique_ptr<::cpp2::MyStruct> s,
-        std::unique_ptr<::cpp2::Included> i
+    void async_tm_has_arg_docs(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+        , std::unique_ptr<::cpp2::MyStruct> s
+        , std::unique_ptr<::cpp2::Included> i
     ) override;
 };
 

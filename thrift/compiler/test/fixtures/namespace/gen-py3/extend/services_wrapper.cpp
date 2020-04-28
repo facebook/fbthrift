@@ -17,27 +17,28 @@ ExtendTestServiceWrapper::ExtendTestServiceWrapper(PyObject *obj, folly::Executo
     import_my__namespacing__extend__test__extend__services();
   }
 
-folly::Future<bool> ExtendTestServiceWrapper::future_check(
-  std::unique_ptr<::cpp2::HsFoo> struct1
+void ExtendTestServiceWrapper::async_tm_check(
+  std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback
+    , std::unique_ptr<::cpp2::HsFoo> struct1
 ) {
-  folly::Promise<bool> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 struct1 = std::move(struct1)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<bool>();
         call_cy_ExtendTestService_check(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(struct1)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<bool>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
 std::shared_ptr<apache::thrift::ServerInterface> ExtendTestServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<ExtendTestServiceWrapper>(if_object, exc);
 }

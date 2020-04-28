@@ -61,26 +61,22 @@ defined in ServicesCallbacks, along with appropriate arguments.
 {{/service:extends?}}
 
 {{#service:functions}}{{^function:returns_sink?}}
-folly::Future<{{#function:returnType}}{{!
-        }}{{> services/CppReturnType}}{{!
-    }}{{/function:returnType}}>{{!
-}} {{service:name}}Wrapper::future_{{function:name}}({{#function:args}}
-  {{#field:type}}{{!
-          }}{{^program:stack_arguments?}}{{> types/CppArgType}}{{/program:stack_arguments?}}{{!
-          }}{{#program:stack_arguments?}}{{> types/CppStackArgType}}{{/program:stack_arguments?}}{{!
-      }}{{/field:type}} {{field:py_name}}{{^last?}},{{/last?}}{{#last?}}
+void {{service:name}}Wrapper::async_{{#function:eb}}eb{{/function:eb}}{{^function:eb}}tm{{/function:eb}}_{{function:name}}(
+  {{> services/CppHandlerCallbackType}} callback{{#function:args}}
+    , {{#field:type}}{{!
+            }}{{^program:stack_arguments?}}{{> types/CppArgType}}{{/program:stack_arguments?}}{{!
+            }}{{#program:stack_arguments?}}{{> types/CppStackArgType}}{{/program:stack_arguments?}}{{!
+        }}{{/field:type}} {{field:py_name}}{{#last?}}
 {{/last?}}{{/function:args}}) {
-  {{#function:returnType}}folly::Promise<{{!
-          }}{{> services/CppReturnType}}{{!
-      }}{{/function:returnType}}> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise){{#function:args}},
+     callback = std::move(callback){{#function:args}},
      {{#field:type}}{{> CppFieldCapture}}{{/field:type}}{{/function:args}}
     ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<{{!
+            }}{{#function:returnType}}{{> services/CppReturnType}}{{/function:returnType}}>();
         call_cy_{{service:name}}_{{function:name}}(
             this->if_object,
             ctx,
@@ -88,11 +84,13 @@ folly::Future<{{#function:returnType}}{{!
             {{> CppPassField}}
 {{/field:type}}{{/function:args}}
         );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<{{!
+            }}{{#function:returnType}}{{> services/CppReturnType}}{{/function:returnType}}>&& t) {
+          (void)t;
+          {{^function:oneway?}}callback->complete(std::move(t));{{/function:oneway?}}
+        });
     });
-
-  return future;
 }
-
 {{/function:returns_sink?}}{{/service:functions}}
 std::shared_ptr<apache::thrift::ServerInterface> {{service:name}}Interface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<{{service:name}}Wrapper>(if_object, exc);

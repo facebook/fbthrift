@@ -52,14 +52,11 @@ class {{service:name}}Wrapper : {{!
   public:
     explicit {{service:name}}Wrapper(PyObject *if_object, folly::Executor *exc);
     {{#service:functions}}{{^function:returns_sink?}}
-    folly::Future<{{#function:returnType}}{{!
-            }}{{> services/CppReturnType}}{{!
-        }}{{/function:returnType}}>{{!
-      }} future_{{function:name}}({{#function:args}}
-        {{#field:type}}{{!
+    void async_{{#function:eb}}eb{{/function:eb}}{{^function:eb}}tm{{/function:eb}}_{{function:name}}({{> services/CppHandlerCallbackType}} callback{{#function:args}}
+        , {{#field:type}}{{!
                 }}{{^program:stack_arguments?}}{{> types/CppArgType}}{{/program:stack_arguments?}}{{!
                 }}{{#program:stack_arguments?}}{{> types/CppStackArgType}}{{/program:stack_arguments?}}{{!
-            }}{{/field:type}} {{field:py_name}}{{^last?}},{{/last?}}{{#last?}}
+            }}{{/field:type}} {{field:py_name}}{{#last?}}
     {{/last?}}{{/function:args}}) override;
 {{/function:returns_sink?}}{{/service:functions}}};
 

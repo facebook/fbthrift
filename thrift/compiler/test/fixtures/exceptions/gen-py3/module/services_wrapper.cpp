@@ -18,74 +18,78 @@ RaiserWrapper::RaiserWrapper(PyObject *obj, folly::Executor* exc)
   }
 
 
-folly::Future<folly::Unit> RaiserWrapper::future_doBland() {
-  folly::Promise<folly::Unit> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void RaiserWrapper::async_tm_doBland(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
         call_cy_Raiser_doBland(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<folly::Unit> RaiserWrapper::future_doRaise() {
-  folly::Promise<folly::Unit> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void RaiserWrapper::async_tm_doRaise(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
         call_cy_Raiser_doRaise(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::string>> RaiserWrapper::future_get200() {
-  folly::Promise<std::unique_ptr<std::string>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void RaiserWrapper::async_tm_get200(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::string>>();
         call_cy_Raiser_get200(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::string>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::string>> RaiserWrapper::future_get500() {
-  folly::Promise<std::unique_ptr<std::string>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void RaiserWrapper::async_tm_get500(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::string>>();
         call_cy_Raiser_get500(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::string>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
 std::shared_ptr<apache::thrift::ServerInterface> RaiserInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<RaiserWrapper>(if_object, exc);
 }

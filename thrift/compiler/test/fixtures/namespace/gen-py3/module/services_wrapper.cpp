@@ -18,27 +18,28 @@ TestServiceWrapper::TestServiceWrapper(PyObject *obj, folly::Executor* exc)
   }
 
 
-folly::Future<int64_t> TestServiceWrapper::future_init(
-  int64_t int1
+void TestServiceWrapper::async_tm_init(
+  std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback
+    , int64_t int1
 ) {
-  folly::Promise<int64_t> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 int1    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<int64_t>();
         call_cy_TestService_init(
             this->if_object,
             ctx,
             std::move(promise),
             int1        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<int64_t>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
 std::shared_ptr<apache::thrift::ServerInterface> TestServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<TestServiceWrapper>(if_object, exc);
 }

@@ -20,8 +20,8 @@ class TestServiceWrapper : virtual public TestServiceSvIf {
     folly::Executor *executor;
   public:
     explicit TestServiceWrapper(PyObject *if_object, folly::Executor *exc);
-    folly::Future<int64_t> future_init(
-        int64_t int1
+    void async_tm_init(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback
+        , int64_t int1
     ) override;
 };
 

@@ -21,48 +21,50 @@ SomeServiceWrapper::SomeServiceWrapper(PyObject *obj, folly::Executor* exc)
   }
 
 
-folly::Future<std::unique_ptr<std::unordered_map<int32_t,std::string>>> SomeServiceWrapper::future_bounce_map(
-  std::unique_ptr<std::unordered_map<int32_t,std::string>> m
+void SomeServiceWrapper::async_tm_bounce_map(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::unordered_map<int32_t,std::string>>>> callback
+    , std::unique_ptr<std::unordered_map<int32_t,std::string>> m
 ) {
-  folly::Promise<std::unique_ptr<std::unordered_map<int32_t,std::string>>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 m = std::move(m)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::unordered_map<int32_t,std::string>>>();
         call_cy_SomeService_bounce_map(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(m)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::unordered_map<int32_t,std::string>>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::map<std::string,int64_t>>> SomeServiceWrapper::future_binary_keyed_map(
-  std::unique_ptr<std::vector<int64_t>> r
+void SomeServiceWrapper::async_tm_binary_keyed_map(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::string,int64_t>>>> callback
+    , std::unique_ptr<std::vector<int64_t>> r
 ) {
-  folly::Promise<std::unique_ptr<std::map<std::string,int64_t>>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 r = std::move(r)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::map<std::string,int64_t>>>();
         call_cy_SomeService_binary_keyed_map(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(r)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::map<std::string,int64_t>>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
 std::shared_ptr<apache::thrift::ServerInterface> SomeServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<SomeServiceWrapper>(if_object, exc);
 }

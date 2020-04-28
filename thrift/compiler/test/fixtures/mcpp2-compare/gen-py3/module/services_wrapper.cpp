@@ -32,371 +32,392 @@ ReturnServiceWrapper::ReturnServiceWrapper(PyObject *obj, folly::Executor* exc)
   }
 
 
-folly::Future<folly::Unit> ReturnServiceWrapper::future_noReturn() {
-  folly::Promise<folly::Unit> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_eb_noReturn(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
         call_cy_ReturnService_noReturn(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<bool> ReturnServiceWrapper::future_boolReturn() {
-  folly::Promise<bool> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_tm_boolReturn(
+  std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<bool>();
         call_cy_ReturnService_boolReturn(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<bool>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<int16_t> ReturnServiceWrapper::future_i16Return() {
-  folly::Promise<int16_t> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_tm_i16Return(
+  std::unique_ptr<apache::thrift::HandlerCallback<int16_t>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<int16_t>();
         call_cy_ReturnService_i16Return(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<int16_t>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<int32_t> ReturnServiceWrapper::future_i32Return() {
-  folly::Promise<int32_t> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_tm_i32Return(
+  std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<int32_t>();
         call_cy_ReturnService_i32Return(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<int32_t>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<int64_t> ReturnServiceWrapper::future_i64Return() {
-  folly::Promise<int64_t> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_tm_i64Return(
+  std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<int64_t>();
         call_cy_ReturnService_i64Return(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<int64_t>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<float> ReturnServiceWrapper::future_floatReturn() {
-  folly::Promise<float> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_tm_floatReturn(
+  std::unique_ptr<apache::thrift::HandlerCallback<float>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<float>();
         call_cy_ReturnService_floatReturn(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<float>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<double> ReturnServiceWrapper::future_doubleReturn() {
-  folly::Promise<double> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_tm_doubleReturn(
+  std::unique_ptr<apache::thrift::HandlerCallback<double>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<double>();
         call_cy_ReturnService_doubleReturn(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<double>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::string>> ReturnServiceWrapper::future_stringReturn() {
-  folly::Promise<std::unique_ptr<std::string>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_eb_stringReturn(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::string>>();
         call_cy_ReturnService_stringReturn(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::string>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::string>> ReturnServiceWrapper::future_binaryReturn() {
-  folly::Promise<std::unique_ptr<std::string>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_tm_binaryReturn(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::string>>();
         call_cy_ReturnService_binaryReturn(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::string>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::map<std::string,int64_t>>> ReturnServiceWrapper::future_mapReturn() {
-  folly::Promise<std::unique_ptr<std::map<std::string,int64_t>>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_tm_mapReturn(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::string,int64_t>>>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::map<std::string,int64_t>>>();
         call_cy_ReturnService_mapReturn(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::map<std::string,int64_t>>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<int32_t> ReturnServiceWrapper::future_simpleTypedefReturn() {
-  folly::Promise<int32_t> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_tm_simpleTypedefReturn(
+  std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<int32_t>();
         call_cy_ReturnService_simpleTypedefReturn(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<int32_t>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>> ReturnServiceWrapper::future_complexTypedefReturn() {
-  folly::Promise<std::unique_ptr<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_tm_complexTypedefReturn(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>();
         call_cy_ReturnService_complexTypedefReturn(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::vector<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>>> ReturnServiceWrapper::future_list_mostComplexTypedefReturn() {
-  folly::Promise<std::unique_ptr<std::vector<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_tm_list_mostComplexTypedefReturn(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>>>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::vector<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>>>();
         call_cy_ReturnService_list_mostComplexTypedefReturn(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::vector<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<::some::valid::ns::MyEnumA> ReturnServiceWrapper::future_enumReturn() {
-  folly::Promise<::some::valid::ns::MyEnumA> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_eb_enumReturn(
+  std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<::some::valid::ns::MyEnumA>();
         call_cy_ReturnService_enumReturn(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<::some::valid::ns::MyEnumA>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::vector<::some::valid::ns::MyEnumA>>> ReturnServiceWrapper::future_list_EnumReturn() {
-  folly::Promise<std::unique_ptr<std::vector<::some::valid::ns::MyEnumA>>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_eb_list_EnumReturn(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<::some::valid::ns::MyEnumA>>>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::vector<::some::valid::ns::MyEnumA>>>();
         call_cy_ReturnService_list_EnumReturn(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::vector<::some::valid::ns::MyEnumA>>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<::some::valid::ns::MyStruct>> ReturnServiceWrapper::future_structReturn() {
-  folly::Promise<std::unique_ptr<::some::valid::ns::MyStruct>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_tm_structReturn(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<::some::valid::ns::MyStruct>>();
         call_cy_ReturnService_structReturn(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<::some::valid::ns::MyStruct>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::set<::some::valid::ns::MyStruct>>> ReturnServiceWrapper::future_set_StructReturn() {
-  folly::Promise<std::unique_ptr<std::set<::some::valid::ns::MyStruct>>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_tm_set_StructReturn(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::set<::some::valid::ns::MyStruct>>>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::set<::some::valid::ns::MyStruct>>>();
         call_cy_ReturnService_set_StructReturn(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::set<::some::valid::ns::MyStruct>>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<::some::valid::ns::ComplexUnion>> ReturnServiceWrapper::future_unionReturn() {
-  folly::Promise<std::unique_ptr<::some::valid::ns::ComplexUnion>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_eb_unionReturn(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::ComplexUnion>>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<::some::valid::ns::ComplexUnion>>();
         call_cy_ReturnService_unionReturn(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<::some::valid::ns::ComplexUnion>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>>> ReturnServiceWrapper::future_list_UnionReturn() {
-  folly::Promise<std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void ReturnServiceWrapper::async_tm_list_UnionReturn(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>>>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>>>();
         call_cy_ReturnService_list_UnionReturn(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<folly::IOBuf>> ReturnServiceWrapper::future_readDataEb(
-  int64_t size
+void ReturnServiceWrapper::async_eb_readDataEb(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<folly::IOBuf>>> callback
+    , int64_t size
 ) {
-  folly::Promise<std::unique_ptr<folly::IOBuf>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 size    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<folly::IOBuf>>();
         call_cy_ReturnService_readDataEb(
             this->if_object,
             ctx,
             std::move(promise),
             size        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<folly::IOBuf>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::unique_ptr<folly::IOBuf>>> ReturnServiceWrapper::future_readData(
-  int64_t size
+void ReturnServiceWrapper::async_tm_readData(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::unique_ptr<folly::IOBuf>>>> callback
+    , int64_t size
 ) {
-  folly::Promise<std::unique_ptr<std::unique_ptr<folly::IOBuf>>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 size    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::unique_ptr<folly::IOBuf>>>();
         call_cy_ReturnService_readData(
             this->if_object,
             ctx,
             std::move(promise),
             size        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::unique_ptr<folly::IOBuf>>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
 std::shared_ptr<apache::thrift::ServerInterface> ReturnServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<ReturnServiceWrapper>(if_object, exc);
 }
@@ -409,313 +430,326 @@ ParamServiceWrapper::ParamServiceWrapper(PyObject *obj, folly::Executor* exc)
   }
 
 
-folly::Future<folly::Unit> ParamServiceWrapper::future_void_ret_i16_param(
-  int16_t param1
+void ParamServiceWrapper::async_eb_void_ret_i16_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+    , int16_t param1
 ) {
-  folly::Promise<folly::Unit> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
         call_cy_ParamService_void_ret_i16_param(
             this->if_object,
             ctx,
             std::move(promise),
             param1        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<folly::Unit> ParamServiceWrapper::future_void_ret_byte_i16_param(
-  int8_t param1,
-  int16_t param2
+void ParamServiceWrapper::async_tm_void_ret_byte_i16_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+    , int8_t param1
+    , int16_t param2
 ) {
-  folly::Promise<folly::Unit> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1,
 param2    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
         call_cy_ParamService_void_ret_byte_i16_param(
             this->if_object,
             ctx,
             std::move(promise),
             param1,
             param2        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<folly::Unit> ParamServiceWrapper::future_void_ret_map_param(
-  std::unique_ptr<std::map<std::string,int64_t>> param1
+void ParamServiceWrapper::async_tm_void_ret_map_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+    , std::unique_ptr<std::map<std::string,int64_t>> param1
 ) {
-  folly::Promise<folly::Unit> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1 = std::move(param1)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
         call_cy_ParamService_void_ret_map_param(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(param1)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<folly::Unit> ParamServiceWrapper::future_void_ret_map_setlist_param(
-  std::unique_ptr<std::map<std::string,int64_t>> param1,
-  std::unique_ptr<std::set<std::vector<std::string>>> param2
+void ParamServiceWrapper::async_tm_void_ret_map_setlist_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+    , std::unique_ptr<std::map<std::string,int64_t>> param1
+    , std::unique_ptr<std::set<std::vector<std::string>>> param2
 ) {
-  folly::Promise<folly::Unit> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1 = std::move(param1),
 param2 = std::move(param2)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
         call_cy_ParamService_void_ret_map_setlist_param(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(param1),
             std::move(param2)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<folly::Unit> ParamServiceWrapper::future_void_ret_map_typedef_param(
-  int32_t param1
+void ParamServiceWrapper::async_tm_void_ret_map_typedef_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+    , int32_t param1
 ) {
-  folly::Promise<folly::Unit> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
         call_cy_ParamService_void_ret_map_typedef_param(
             this->if_object,
             ctx,
             std::move(promise),
             param1        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<folly::Unit> ParamServiceWrapper::future_void_ret_enum_param(
-  ::some::valid::ns::MyEnumA param1
+void ParamServiceWrapper::async_tm_void_ret_enum_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+    , ::some::valid::ns::MyEnumA param1
 ) {
-  folly::Promise<folly::Unit> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
         call_cy_ParamService_void_ret_enum_param(
             this->if_object,
             ctx,
             std::move(promise),
             param1        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<folly::Unit> ParamServiceWrapper::future_void_ret_struct_param(
-  std::unique_ptr<::some::valid::ns::MyStruct> param1
+void ParamServiceWrapper::async_tm_void_ret_struct_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+    , std::unique_ptr<::some::valid::ns::MyStruct> param1
 ) {
-  folly::Promise<folly::Unit> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1 = std::move(param1)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
         call_cy_ParamService_void_ret_struct_param(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(param1)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<folly::Unit> ParamServiceWrapper::future_void_ret_listunion_param(
-  std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>> param1
+void ParamServiceWrapper::async_tm_void_ret_listunion_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+    , std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>> param1
 ) {
-  folly::Promise<folly::Unit> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1 = std::move(param1)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
         call_cy_ParamService_void_ret_listunion_param(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(param1)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<bool> ParamServiceWrapper::future_bool_ret_i32_i64_param(
-  int32_t param1,
-  int64_t param2
+void ParamServiceWrapper::async_tm_bool_ret_i32_i64_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback
+    , int32_t param1
+    , int64_t param2
 ) {
-  folly::Promise<bool> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1,
 param2    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<bool>();
         call_cy_ParamService_bool_ret_i32_i64_param(
             this->if_object,
             ctx,
             std::move(promise),
             param1,
             param2        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<bool>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<bool> ParamServiceWrapper::future_bool_ret_map_param(
-  std::unique_ptr<std::map<std::string,int64_t>> param1
+void ParamServiceWrapper::async_tm_bool_ret_map_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback
+    , std::unique_ptr<std::map<std::string,int64_t>> param1
 ) {
-  folly::Promise<bool> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1 = std::move(param1)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<bool>();
         call_cy_ParamService_bool_ret_map_param(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(param1)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<bool>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<bool> ParamServiceWrapper::future_bool_ret_union_param(
-  std::unique_ptr<::some::valid::ns::ComplexUnion> param1
+void ParamServiceWrapper::async_tm_bool_ret_union_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback
+    , std::unique_ptr<::some::valid::ns::ComplexUnion> param1
 ) {
-  folly::Promise<bool> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1 = std::move(param1)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<bool>();
         call_cy_ParamService_bool_ret_union_param(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(param1)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<bool>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<int64_t> ParamServiceWrapper::future_i64_ret_float_double_param(
-  float param1,
-  double param2
+void ParamServiceWrapper::async_tm_i64_ret_float_double_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback
+    , float param1
+    , double param2
 ) {
-  folly::Promise<int64_t> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1,
 param2    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<int64_t>();
         call_cy_ParamService_i64_ret_float_double_param(
             this->if_object,
             ctx,
             std::move(promise),
             param1,
             param2        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<int64_t>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<int64_t> ParamServiceWrapper::future_i64_ret_string_typedef_param(
-  std::unique_ptr<std::string> param1,
-  std::unique_ptr<std::set<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>> param2
+void ParamServiceWrapper::async_tm_i64_ret_string_typedef_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback
+    , std::unique_ptr<std::string> param1
+    , std::unique_ptr<std::set<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>> param2
 ) {
-  folly::Promise<int64_t> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1 = std::move(param1),
 param2 = std::move(param2)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<int64_t>();
         call_cy_ParamService_i64_ret_string_typedef_param(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(param1),
             std::move(param2)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<int64_t>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<int64_t> ParamServiceWrapper::future_i64_ret_i32_i32_i32_i32_i32_param(
-  int32_t param1,
-  int32_t param2,
-  int32_t param3,
-  int32_t param4,
-  int32_t param5
+void ParamServiceWrapper::async_eb_i64_ret_i32_i32_i32_i32_i32_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback
+    , int32_t param1
+    , int32_t param2
+    , int32_t param3
+    , int32_t param4
+    , int32_t param5
 ) {
-  folly::Promise<int64_t> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1,
 param2,
 param3,
 param4,
 param5    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<int64_t>();
         call_cy_ParamService_i64_ret_i32_i32_i32_i32_i32_param(
             this->if_object,
             ctx,
@@ -725,335 +759,351 @@ param5    ]() mutable {
             param3,
             param4,
             param5        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<int64_t>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<double> ParamServiceWrapper::future_double_ret_setstruct_param(
-  std::unique_ptr<std::set<::some::valid::ns::MyStruct>> param1
+void ParamServiceWrapper::async_tm_double_ret_setstruct_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<double>> callback
+    , std::unique_ptr<std::set<::some::valid::ns::MyStruct>> param1
 ) {
-  folly::Promise<double> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1 = std::move(param1)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<double>();
         call_cy_ParamService_double_ret_setstruct_param(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(param1)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<double>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::string>> ParamServiceWrapper::future_string_ret_string_param(
-  std::unique_ptr<std::string> param1
+void ParamServiceWrapper::async_tm_string_ret_string_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback
+    , std::unique_ptr<std::string> param1
 ) {
-  folly::Promise<std::unique_ptr<std::string>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1 = std::move(param1)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::string>>();
         call_cy_ParamService_string_ret_string_param(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(param1)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::string>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::string>> ParamServiceWrapper::future_binary_ret_binary_param(
-  std::unique_ptr<std::string> param1
+void ParamServiceWrapper::async_tm_binary_ret_binary_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback
+    , std::unique_ptr<std::string> param1
 ) {
-  folly::Promise<std::unique_ptr<std::string>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1 = std::move(param1)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::string>>();
         call_cy_ParamService_binary_ret_binary_param(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(param1)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::string>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::map<std::string,int64_t>>> ParamServiceWrapper::future_map_ret_bool_param(
-  bool param1
+void ParamServiceWrapper::async_tm_map_ret_bool_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::string,int64_t>>>> callback
+    , bool param1
 ) {
-  folly::Promise<std::unique_ptr<std::map<std::string,int64_t>>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::map<std::string,int64_t>>>();
         call_cy_ParamService_map_ret_bool_param(
             this->if_object,
             ctx,
             std::move(promise),
             param1        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::map<std::string,int64_t>>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::vector<bool>>> ParamServiceWrapper::future_list_ret_map_setlist_param(
-  std::unique_ptr<std::map<int32_t,std::vector<std::string>>> param1,
-  std::unique_ptr<std::vector<std::string>> param2
+void ParamServiceWrapper::async_tm_list_ret_map_setlist_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<bool>>>> callback
+    , std::unique_ptr<std::map<int32_t,std::vector<std::string>>> param1
+    , std::unique_ptr<std::vector<std::string>> param2
 ) {
-  folly::Promise<std::unique_ptr<std::vector<bool>>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1 = std::move(param1),
 param2 = std::move(param2)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::vector<bool>>>();
         call_cy_ParamService_list_ret_map_setlist_param(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(param1),
             std::move(param2)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::vector<bool>>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::map<std::set<std::vector<int32_t>>,std::map<std::vector<std::set<std::string>>,std::string>>>> ParamServiceWrapper::future_mapsetlistmapliststring_ret_listlistlist_param(
-  std::unique_ptr<std::vector<std::vector<std::vector<std::vector<int32_t>>>>> param1
+void ParamServiceWrapper::async_tm_mapsetlistmapliststring_ret_listlistlist_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::set<std::vector<int32_t>>,std::map<std::vector<std::set<std::string>>,std::string>>>>> callback
+    , std::unique_ptr<std::vector<std::vector<std::vector<std::vector<int32_t>>>>> param1
 ) {
-  folly::Promise<std::unique_ptr<std::map<std::set<std::vector<int32_t>>,std::map<std::vector<std::set<std::string>>,std::string>>>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1 = std::move(param1)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::map<std::set<std::vector<int32_t>>,std::map<std::vector<std::set<std::string>>,std::string>>>>();
         call_cy_ParamService_mapsetlistmapliststring_ret_listlistlist_param(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(param1)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::map<std::set<std::vector<int32_t>>,std::map<std::vector<std::set<std::string>>,std::string>>>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<int32_t> ParamServiceWrapper::future_typedef_ret_i32_param(
-  int32_t param1
+void ParamServiceWrapper::async_tm_typedef_ret_i32_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback
+    , int32_t param1
 ) {
-  folly::Promise<int32_t> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<int32_t>();
         call_cy_ParamService_typedef_ret_i32_param(
             this->if_object,
             ctx,
             std::move(promise),
             param1        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<int32_t>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::vector<int32_t>>> ParamServiceWrapper::future_listtypedef_ret_typedef_param(
-  std::unique_ptr<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>> param1
+void ParamServiceWrapper::async_eb_listtypedef_ret_typedef_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<int32_t>>>> callback
+    , std::unique_ptr<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>> param1
 ) {
-  folly::Promise<std::unique_ptr<std::vector<int32_t>>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1 = std::move(param1)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::vector<int32_t>>>();
         call_cy_ParamService_listtypedef_ret_typedef_param(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(param1)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::vector<int32_t>>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<::some::valid::ns::MyEnumA> ParamServiceWrapper::future_enum_ret_double_param(
-  double param1
+void ParamServiceWrapper::async_tm_enum_ret_double_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback
+    , double param1
 ) {
-  folly::Promise<::some::valid::ns::MyEnumA> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<::some::valid::ns::MyEnumA>();
         call_cy_ParamService_enum_ret_double_param(
             this->if_object,
             ctx,
             std::move(promise),
             param1        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<::some::valid::ns::MyEnumA>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<::some::valid::ns::MyEnumA> ParamServiceWrapper::future_enum_ret_double_enum_param(
-  double param1,
-  ::some::valid::ns::MyEnumA param2
+void ParamServiceWrapper::async_tm_enum_ret_double_enum_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback
+    , double param1
+    , ::some::valid::ns::MyEnumA param2
 ) {
-  folly::Promise<::some::valid::ns::MyEnumA> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1,
 param2    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<::some::valid::ns::MyEnumA>();
         call_cy_ParamService_enum_ret_double_enum_param(
             this->if_object,
             ctx,
             std::move(promise),
             param1,
             param2        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<::some::valid::ns::MyEnumA>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::vector<::some::valid::ns::MyEnumA>>> ParamServiceWrapper::future_listenum_ret_map_param(
-  std::unique_ptr<std::map<std::string,int64_t>> param1
+void ParamServiceWrapper::async_tm_listenum_ret_map_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<::some::valid::ns::MyEnumA>>>> callback
+    , std::unique_ptr<std::map<std::string,int64_t>> param1
 ) {
-  folly::Promise<std::unique_ptr<std::vector<::some::valid::ns::MyEnumA>>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1 = std::move(param1)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::vector<::some::valid::ns::MyEnumA>>>();
         call_cy_ParamService_listenum_ret_map_param(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(param1)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::vector<::some::valid::ns::MyEnumA>>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<::some::valid::ns::MyStruct>> ParamServiceWrapper::future_struct_ret_i16_param(
-  int16_t param1
+void ParamServiceWrapper::async_eb_struct_ret_i16_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>> callback
+    , int16_t param1
 ) {
-  folly::Promise<std::unique_ptr<::some::valid::ns::MyStruct>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<::some::valid::ns::MyStruct>>();
         call_cy_ParamService_struct_ret_i16_param(
             this->if_object,
             ctx,
             std::move(promise),
             param1        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<::some::valid::ns::MyStruct>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::set<::some::valid::ns::MyStruct>>> ParamServiceWrapper::future_setstruct_ret_set_param(
-  std::unique_ptr<std::set<std::string>> param1
+void ParamServiceWrapper::async_tm_setstruct_ret_set_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::set<::some::valid::ns::MyStruct>>>> callback
+    , std::unique_ptr<std::set<std::string>> param1
 ) {
-  folly::Promise<std::unique_ptr<std::set<::some::valid::ns::MyStruct>>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1 = std::move(param1)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::set<::some::valid::ns::MyStruct>>>();
         call_cy_ParamService_setstruct_ret_set_param(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(param1)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::set<::some::valid::ns::MyStruct>>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<::some::valid::ns::ComplexUnion>> ParamServiceWrapper::future_union_ret_i32_i32_param(
-  int32_t param1,
-  int32_t param2
+void ParamServiceWrapper::async_tm_union_ret_i32_i32_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::ComplexUnion>>> callback
+    , int32_t param1
+    , int32_t param2
 ) {
-  folly::Promise<std::unique_ptr<::some::valid::ns::ComplexUnion>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1,
 param2    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<::some::valid::ns::ComplexUnion>>();
         call_cy_ParamService_union_ret_i32_i32_param(
             this->if_object,
             ctx,
             std::move(promise),
             param1,
             param2        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<::some::valid::ns::ComplexUnion>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>>> ParamServiceWrapper::future_listunion_string_param(
-  std::unique_ptr<std::string> param1
+void ParamServiceWrapper::async_tm_listunion_string_param(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>>>> callback
+    , std::unique_ptr<std::string> param1
 ) {
-  folly::Promise<std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 param1 = std::move(param1)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>>>();
         call_cy_ParamService_listunion_string_param(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(param1)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
 std::shared_ptr<apache::thrift::ServerInterface> ParamServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<ParamServiceWrapper>(if_object, exc);
 }

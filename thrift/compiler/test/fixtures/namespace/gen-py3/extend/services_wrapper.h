@@ -18,8 +18,8 @@ namespace cpp2 {
 class ExtendTestServiceWrapper : public ::cpp2::HsTestServiceWrapper, virtual public ExtendTestServiceSvIf {
   public:
     explicit ExtendTestServiceWrapper(PyObject *if_object, folly::Executor *exc);
-    folly::Future<bool> future_check(
-        std::unique_ptr<::cpp2::HsFoo> struct1
+    void async_tm_check(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback
+        , std::unique_ptr<::cpp2::HsFoo> struct1
     ) override;
 };
 

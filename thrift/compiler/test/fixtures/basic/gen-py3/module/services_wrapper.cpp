@@ -18,130 +18,136 @@ MyServiceWrapper::MyServiceWrapper(PyObject *obj, folly::Executor* exc)
   }
 
 
-folly::Future<folly::Unit> MyServiceWrapper::future_ping() {
-  folly::Promise<folly::Unit> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void MyServiceWrapper::async_tm_ping(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
         call_cy_MyService_ping(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::string>> MyServiceWrapper::future_getRandomData() {
-  folly::Promise<std::unique_ptr<std::string>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+void MyServiceWrapper::async_tm_getRandomData(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise)    ]() mutable {
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::string>>();
         call_cy_MyService_getRandomData(
             this->if_object,
             ctx,
             std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::string>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<bool> MyServiceWrapper::future_hasDataById(
-  int64_t id
+void MyServiceWrapper::async_tm_hasDataById(
+  std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback
+    , int64_t id
 ) {
-  folly::Promise<bool> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 id    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<bool>();
         call_cy_MyService_hasDataById(
             this->if_object,
             ctx,
             std::move(promise),
             id        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<bool>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<std::unique_ptr<std::string>> MyServiceWrapper::future_getDataById(
-  int64_t id
+void MyServiceWrapper::async_tm_getDataById(
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback
+    , int64_t id
 ) {
-  folly::Promise<std::unique_ptr<std::string>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 id    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::string>>();
         call_cy_MyService_getDataById(
             this->if_object,
             ctx,
             std::move(promise),
             id        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::string>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<folly::Unit> MyServiceWrapper::future_putDataById(
-  int64_t id,
-  std::unique_ptr<std::string> data
+void MyServiceWrapper::async_tm_putDataById(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+    , int64_t id
+    , std::unique_ptr<std::string> data
 ) {
-  folly::Promise<folly::Unit> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 id,
 data = std::move(data)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
         call_cy_MyService_putDataById(
             this->if_object,
             ctx,
             std::move(promise),
             id,
             std::move(data)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<folly::Unit> MyServiceWrapper::future_lobDataById(
-  int64_t id,
-  std::unique_ptr<std::string> data
+void MyServiceWrapper::async_tm_lobDataById(
+  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback
+    , int64_t id
+    , std::unique_ptr<std::string> data
 ) {
-  folly::Promise<folly::Unit> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 id,
 data = std::move(data)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
         call_cy_MyService_lobDataById(
             this->if_object,
             ctx,
             std::move(promise),
             id,
             std::move(data)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          
+        });
     });
-
-  return future;
 }
-
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<MyServiceWrapper>(if_object, exc);
 }

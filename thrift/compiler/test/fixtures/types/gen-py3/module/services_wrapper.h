@@ -23,11 +23,11 @@ class SomeServiceWrapper : virtual public SomeServiceSvIf {
     folly::Executor *executor;
   public:
     explicit SomeServiceWrapper(PyObject *if_object, folly::Executor *exc);
-    folly::Future<std::unique_ptr<std::unordered_map<int32_t,std::string>>> future_bounce_map(
-        std::unique_ptr<std::unordered_map<int32_t,std::string>> m
+    void async_tm_bounce_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::unordered_map<int32_t,std::string>>>> callback
+        , std::unique_ptr<std::unordered_map<int32_t,std::string>> m
     ) override;
-    folly::Future<std::unique_ptr<std::map<std::string,int64_t>>> future_binary_keyed_map(
-        std::unique_ptr<std::vector<int64_t>> r
+    void async_tm_binary_keyed_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::string,int64_t>>>> callback
+        , std::unique_ptr<std::vector<int64_t>> r
     ) override;
 };
 

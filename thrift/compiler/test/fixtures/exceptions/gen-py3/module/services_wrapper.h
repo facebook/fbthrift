@@ -20,10 +20,10 @@ class RaiserWrapper : virtual public RaiserSvIf {
     folly::Executor *executor;
   public:
     explicit RaiserWrapper(PyObject *if_object, folly::Executor *exc);
-    folly::Future<folly::Unit> future_doBland() override;
-    folly::Future<folly::Unit> future_doRaise() override;
-    folly::Future<std::unique_ptr<std::string>> future_get200() override;
-    folly::Future<std::unique_ptr<std::string>> future_get500() override;
+    void async_tm_doBland(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+    void async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+    void async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) override;
+    void async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> RaiserInterface(PyObject *if_object, folly::Executor *exc);

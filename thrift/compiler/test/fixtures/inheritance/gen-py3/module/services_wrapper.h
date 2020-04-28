@@ -22,7 +22,7 @@ class MyRootWrapper : virtual public MyRootSvIf {
     folly::Executor *executor;
   public:
     explicit MyRootWrapper(PyObject *if_object, folly::Executor *exc);
-    folly::Future<folly::Unit> future_do_root() override;
+    void async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyRootInterface(PyObject *if_object, folly::Executor *exc);
@@ -31,7 +31,7 @@ std::shared_ptr<apache::thrift::ServerInterface> MyRootInterface(PyObject *if_ob
 class MyNodeWrapper : public ::cpp2::MyRootWrapper, virtual public MyNodeSvIf {
   public:
     explicit MyNodeWrapper(PyObject *if_object, folly::Executor *exc);
-    folly::Future<folly::Unit> future_do_mid() override;
+    void async_tm_do_mid(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyNodeInterface(PyObject *if_object, folly::Executor *exc);
@@ -40,7 +40,7 @@ std::shared_ptr<apache::thrift::ServerInterface> MyNodeInterface(PyObject *if_ob
 class MyLeafWrapper : public ::cpp2::MyNodeWrapper, virtual public MyLeafSvIf {
   public:
     explicit MyLeafWrapper(PyObject *if_object, folly::Executor *exc);
-    folly::Future<folly::Unit> future_do_leaf() override;
+    void async_tm_do_leaf(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyLeafInterface(PyObject *if_object, folly::Executor *exc);

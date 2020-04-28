@@ -155,7 +155,8 @@ class mstch_py3_type : public mstch_type {
             {"type:hasCustomTypeBehavior?",
              &mstch_py3_type::hasCustomTypeBehavior},
             {"type:simple?", &mstch_py3_type::isSimple},
-
+            {"type:resolves_to_complex_return?",
+             &mstch_py3_type::resolves_to_complex_return},
         });
   }
 
@@ -239,6 +240,12 @@ class mstch_py3_type : public mstch_type {
   mstch::node isSimple() {
     return (type_->is_base_type() || type_->is_enum()) &&
         !has_custom_type_behavior();
+  }
+
+  mstch::node resolves_to_complex_return() {
+    return resolved_type_->is_container() ||
+        resolved_type_->is_string_or_binary() || resolved_type_->is_struct() ||
+        resolved_type_->is_xception();
   }
 
   const std::string& get_flat_name() const {
@@ -672,6 +679,26 @@ class mstch_py3_program : public mstch_program {
   std::vector<const t_type*> responseAndStreamTypes_;
   std::map<std::string, const t_type*> streamTypes_;
   std::map<std::string, const t_type*> streamExceptions_;
+};
+
+class mstch_py3_function : public mstch_function {
+ public:
+  mstch_py3_function(
+      t_function const* function,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos)
+      : mstch_function(function, generators, cache, pos) {
+    register_methods(
+        this,
+        {
+            {"function:eb", &mstch_py3_function::event_based},
+        });
+  }
+  mstch::node event_based() {
+    return function_->annotations_.count("thread") &&
+        function_->annotations_.at("thread") == "eb";
+  }
 };
 
 class mstch_py3_service : public mstch_service {
@@ -1119,6 +1146,21 @@ class struct_py3_generator : public struct_generator {
   }
 };
 
+class function_py3_generator : public function_generator {
+ public:
+  function_py3_generator() = default;
+  ~function_py3_generator() override = default;
+  std::shared_ptr<mstch_base> generate(
+      t_function const* function,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const override {
+    return std::make_shared<mstch_py3_function>(
+        function, generators, cache, pos);
+  }
+};
+
 class service_py3_generator : public service_generator {
  public:
   explicit service_py3_generator(const t_program* prog) : prog_{prog} {}
@@ -1278,6 +1320,8 @@ std::shared_ptr<mstch_base> type_py3_generator<ForContainers>::generate(
 void t_mstch_py3_generator::set_mstch_generators() {
   generators_->set_program_generator(std::make_unique<program_py3_generator>());
   generators_->set_struct_generator(std::make_unique<struct_py3_generator>());
+  generators_->set_function_generator(
+      std::make_unique<function_py3_generator>());
   generators_->set_service_generator(
       std::make_unique<service_py3_generator>(get_program()));
   generators_->set_field_generator(std::make_unique<field_py3_generator>());

@@ -18,54 +18,56 @@ MyServiceWrapper::MyServiceWrapper(PyObject *obj, folly::Executor* exc)
   }
 
 
-folly::Future<folly::Unit> MyServiceWrapper::future_query(
-  std::unique_ptr<::cpp2::MyStruct> s,
-  std::unique_ptr<::cpp2::Included> i
+void MyServiceWrapper::async_tm_query(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+    , std::unique_ptr<::cpp2::MyStruct> s
+    , std::unique_ptr<::cpp2::Included> i
 ) {
-  folly::Promise<folly::Unit> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 s = std::move(s),
 i = std::move(i)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
         call_cy_MyService_query(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(s),
             std::move(i)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
-folly::Future<folly::Unit> MyServiceWrapper::future_has_arg_docs(
-  std::unique_ptr<::cpp2::MyStruct> s,
-  std::unique_ptr<::cpp2::Included> i
+void MyServiceWrapper::async_tm_has_arg_docs(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+    , std::unique_ptr<::cpp2::MyStruct> s
+    , std::unique_ptr<::cpp2::Included> i
 ) {
-  folly::Promise<folly::Unit> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
+  auto ctx = callback->getConnectionContext();
   folly::via(
     this->executor,
     [this, ctx,
-     promise = std::move(promise),
+     callback = std::move(callback),
 s = std::move(s),
 i = std::move(i)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
         call_cy_MyService_has_arg_docs(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(s),
             std::move(i)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
     });
-
-  return future;
 }
-
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<MyServiceWrapper>(if_object, exc);
 }
