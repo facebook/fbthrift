@@ -15,7 +15,7 @@
 from typing import Any, Type
 
 from thrift.py3.reflection import inspect
-from thrift.py3.types import CompiledEnum, Container, MapSpec, Struct
+from thrift.py3.types import CompiledEnum, Container, MapSpec, Struct, StructType
 
 
 def to_py3_struct(cls, obj):
@@ -24,14 +24,26 @@ def to_py3_struct(cls, obj):
 
 cdef object _to_py3_struct(object cls, object obj):
     struct_spec = inspect(cls)
-    return cls(
-        **{
-            field_spec.name: _to_py3_field(
-                field_spec.type, getattr(obj, field_spec.name)
-            )
-            for field_spec in struct_spec.fields
-        }
-    )
+    if struct_spec.kind == StructType.STRUCT:
+        return cls(
+            **{
+                field_spec.name: _to_py3_field(
+                    field_spec.type, getattr(obj, field_spec.name)
+                )
+                for field_spec in struct_spec.fields
+            }
+        )
+    elif struct_spec.kind == StructType.UNION:
+        for field_spec in struct_spec.fields:
+            try:
+                value = getattr(obj, "get_" + field_spec.name)()
+                field = _to_py3_field(field_spec.type, value)
+                return cls(**{field_spec.name: field})
+            except AssertionError:
+                pass
+        return cls()
+    else:
+        raise NotImplementedError("Can not convert {}".format(struct_spec.kind))
 
 
 cdef object _to_py3_field(object cls, object obj):

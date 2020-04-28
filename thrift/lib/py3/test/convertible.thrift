@@ -35,3 +35,10 @@ struct Nested {
   2: list<Simple> simpleList,
   3: map<Color, Simple> colorToSimpleMap,
 }
+
+union Union {
+  1: i32 intField,
+  2: string strField,
+  3: list<i32> intList,
+  4: Simple simpleField,
+}

@@ -88,3 +88,30 @@ class ConverterTest(unittest.TestCase):
         self.assertEqual(
             nested.colorToSimpleMap[types.Color.BLUE].color, types.Color.BLUE
         )
+
+    def test_simple_union(self) -> None:
+        simple_union = to_py3_struct(types.Union, ttypes.Union(intField=42))
+        self.assertEqual(simple_union.type, types.Union.Type.intField)
+        self.assertEqual(simple_union.value, 42)
+
+    def test_union_with_containers(self) -> None:
+        union_with_list = to_py3_struct(types.Union, ttypes.Union(intList=[1, 2, 3]))
+        self.assertEqual(union_with_list.type, types.Union.Type.intList)
+        self.assertEqual(union_with_list.value, [1, 2, 3])
+
+    def test_complex_union(self) -> None:
+        complex_union = to_py3_struct(
+            types.Union,
+            ttypes.Union(
+                simpleField=ttypes.Simple(
+                    intField=42,
+                    strField="simple",
+                    intList=[1, 2, 3],
+                    strSet={"hello", "world"},
+                    strToIntMap={"one": 1, "two": 2},
+                    color=ttypes.Color.NONE,
+                )
+            ),
+        )
+        self.assertEqual(complex_union.type, types.Union.Type.simpleField)
+        self.assertEqual(complex_union.simpleField.intField, 42)
