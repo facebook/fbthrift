@@ -551,6 +551,10 @@ class CppServerWrapper : public ThriftServer {
     ThriftServer::setFastOpenOptions(enabled, tfoMaxQueue);
   }
 
+  void useCppExistingSocket(int socket) {
+    ThriftServer::useExistingSocket(socket);
+  }
+
   void setCppSSLCacheOptions(object cacheOptions) {
     SSLCacheOptions options = {
         .sslCacheTimeout = std::chrono::seconds(
@@ -760,6 +764,7 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
       .def("setCppFastOpenOptions", &CppServerWrapper::setCppFastOpenOptions)
       .def("getCppTicketSeeds", &CppServerWrapper::getCppTicketSeeds)
       .def("setWorkersJoinTimeout", &CppServerWrapper::setWorkersJoinTimeout)
+      .def("useCppExistingSocket", &CppServerWrapper::useCppExistingSocket)
 
       // methods directly passed to the C++ impl
       .def("setup", &CppServerWrapper::setup)

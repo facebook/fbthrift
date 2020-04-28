@@ -267,6 +267,9 @@ class TCppServer(CppServerWrapper, TServer):
     def setFastOpenOptions(self, enabled, tfo_max_queue):
         self.setCppFastOpenOptions(enabled, tfo_max_queue)
 
+    def useExistingSocket(self, socket):
+        self.useCppExistingSocket(socket)
+
     def getTicketSeeds(self):
         return self.getCppTicketSeeds()
 
