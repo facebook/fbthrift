@@ -28,16 +28,32 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 public final class MyStruct3 {
     @ThriftConstructor
     public MyStruct3() {
-      this.myInt16 = 0;
-      this.myInt32 = 0;
-      this.myInt64 = 0L;
-      this.myString = null;
-      this.myBool = false;
-      this.myDouble = 0.;
-      this.mySet = null;
-      this.myDataItem = null;
-      this.myList = null;
-      this.myMapList = null;
+      this.myInt16 = (short)42;
+      this.myInt32 = 422;
+      this.myInt64 = 422222222L;
+      this.myString = "foo";
+      this.myBool = true;
+      this.myDouble = (double)42.42;
+      this.mySet = ImmutableSet.<String>builder()
+        .add("foo")
+        .add("bar")
+        .add("baz")
+        .build();
+      this.myDataItem = new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(29).setField2(30).build();
+      this.myList = ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+        .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(29).setField2(30).build())
+        .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(31).setField2(32).build())
+        .build();
+      this.myMapList = ImmutableMap.<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>builder()
+        .put(1, ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+        .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(29).setField2(30).build())
+        .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(31).setField2(32).build())
+        .build())
+        .put(2, ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+        .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(33).setField2(34).build())
+        .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(35).setField2(36).build())
+        .build())
+        .build();
     }
     
     public static class Builder {

@@ -25,6 +25,7 @@ import com.facebook.thrift.java.test.BigEnum;
 import com.facebook.thrift.java.test.MySimpleStruct;
 import com.facebook.thrift.java.test.MySimpleUnion;
 import com.facebook.thrift.java.test.SmallEnum;
+import com.facebook.thrift.java.test.StructMutable;
 import com.facebook.thrift.java.test.StructWithAllTypes;
 import com.facebook.thrift.java.test.StructWithOptional;
 import java.util.ArrayList;
@@ -207,5 +208,17 @@ public class StructTest extends TestCase {
     MySimpleStruct struct2 = new MySimpleStruct(2, "Bar");
     assertThat(struct1, is(not(equalTo(struct2))));
     assertThat(struct1, is(not(equalTo(new Object()))));
+  }
+
+  @Test
+  public void testMutableDefaultValues() throws Exception {
+    StructMutable structMutable = new StructMutable();
+    assertThat(structMutable.getMyInt16(), equalTo((short) 42));
+    assertThat(structMutable.getMyInt32(), equalTo(422));
+    assertThat(structMutable.getMyInt64(), equalTo((long) 422222222));
+    assertThat(structMutable.getMyString(), equalTo("foo"));
+    assertThat(structMutable.isMyBool(), equalTo(true));
+    assertThat(structMutable.getMyDouble(), equalTo(42.42));
+    assertThat(structMutable.getMySet().size(), equalTo(3));
   }
 }

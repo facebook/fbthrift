@@ -235,3 +235,13 @@ struct StructWithAllTypes {
   14: MySimpleStruct myStruct,
   15: MySimpleUnion myUnion,
 }
+
+struct StructMutable {
+  1: i16 myInt16 = 42,
+  2: i32 myInt32 = 422,
+  3: i64 myInt64 = 422222222,
+  4: string myString = "foo",
+  5: bool myBool = true,
+  6: double myDouble = 42.42,
+  7: set<string> mySet = ["foo", "bar", "baz"],
+} (java.swift.mutable = "true")
