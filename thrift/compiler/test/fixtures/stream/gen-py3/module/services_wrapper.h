@@ -20,17 +20,17 @@ class PubSubStreamingServiceWrapper : virtual public PubSubStreamingServiceSvIf 
     folly::Executor *executor;
   public:
     explicit PubSubStreamingServiceWrapper(PyObject *if_object, folly::Executor *exc);
-    void async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<>> callback
+    void async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback
         , int32_t i32_from
         , int32_t i32_to
     ) override;
-    void async_tm_streamthrows(std::unique_ptr<apache::thrift::HandlerCallback<>> callback
+    void async_tm_streamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback
         , int32_t foo
     ) override;
-    void async_tm_boththrows(std::unique_ptr<apache::thrift::HandlerCallback<>> callback
+    void async_tm_boththrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback
         , int32_t foo
     ) override;
-    void async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<>> callback
+    void async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>> callback
         , int32_t foo
     ) override;
 };

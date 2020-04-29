@@ -21,8 +21,6 @@ Used for overriding methods with (thread="eb") annotation
 }}std::unique_ptr<{{!
 }}{{#function:oneway?}}apache::thrift::HandlerCallbackBase{{/function:oneway?}}{{!
 }}{{^function:oneway?}}apache::thrift::HandlerCallback<{{#function:returnType}}{{!
-}}{{#type:resolves_to_complex_return?}}{{^program:stack_arguments?}}std::unique_ptr<{{/program:stack_arguments?}}{{/type:resolves_to_complex_return?}}{{!
 }}{{#type:void?}}void{{/type:void?}}{{!
-}}{{^type:void?}}{{> types/CppValueType}}{{/type:void?}}{{!
-}}{{#type:resolves_to_complex_return?}}{{^program:stack_arguments?}}>{{/program:stack_arguments?}}{{/type:resolves_to_complex_return?}}{{!
+}}{{^type:void?}}{{> services/CppReturnType}}{{/type:void?}}{{!
 }}{{/function:returnType}}>{{/function:oneway?}}>
