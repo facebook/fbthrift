@@ -186,6 +186,15 @@ class THeader {
     writeTrans_.push_back(transId);
   }
 
+  void setReadTransform(uint16_t transId) {
+    for (auto& trans : readTrans_) {
+      if (trans == transId) {
+        return;
+      }
+    }
+    readTrans_.push_back(transId);
+  }
+
   void setTransforms(const std::vector<uint16_t>& trans) {
     writeTrans_ = trans;
   }

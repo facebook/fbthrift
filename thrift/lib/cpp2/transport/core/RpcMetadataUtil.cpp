@@ -106,6 +106,25 @@ void fillTHeaderFromResponseRpcMetadata(
   if (auto crc32c = responseMetadata.crc32c_ref()) {
     header.setCrc32c(*crc32c);
   }
+  if (auto compression = responseMetadata.compression_ref()) {
+    // for fb internal logging purpose only; does not actually do transformation
+    // based on THeader
+    transport::THeader::TRANSFORMS transform;
+    switch (*compression) {
+      case apache::thrift::CompressionAlgorithm::ZSTD:
+        transform = transport::THeader::ZSTD_TRANSFORM;
+        break;
+      case apache::thrift::CompressionAlgorithm::ZLIB:
+        transform = transport::THeader::ZLIB_TRANSFORM;
+        break;
+      default:
+        transform = transport::THeader::NONE;
+        break;
+    }
+    if (transform != transport::THeader::NONE) {
+      header.setReadTransform(static_cast<uint16_t>(transform));
+    }
+  }
   header.setReadHeaders(std::move(otherMetadata));
 }
 

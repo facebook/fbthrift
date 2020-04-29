@@ -133,6 +133,11 @@ void RocketClientChannel::setNegotiatedCompressionAlgorithm(
   }
 }
 
+folly::Optional<CompressionAlgorithm>
+RocketClientChannel::getNegotiatedCompressionAlgorithm() {
+  return negotiatedCompressionAlgo_;
+}
+
 void RocketClientChannel::setAutoCompressSizeLimit(int32_t size) {
   autoCompressSizeLimit_ = size;
   if (rclient_) {
