@@ -55,6 +55,6 @@ abstract class ThriftAsyncProcessor extends ThriftProcessorBase
   }
 
   final public function process(TProtocol $input, TProtocol $output): bool {
-    return HH\Asio\join($this->processAsync($input, $output)->getWaitHandle());
+    return HH\Asio\join($this->processAsync($input, $output));
   }
 }
