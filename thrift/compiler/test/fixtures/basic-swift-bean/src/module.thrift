@@ -36,6 +36,22 @@ struct MyStruct2 {
   2: string myString,
 } (java.swift.mutable = "true")
 
+struct MyStruct3 {
+  1: i16 myInt16 = 42,
+  2: i32 myInt32 = 422,
+  3: i64 myInt64 = 422222222,
+  4: string myString = "foo",
+  5: bool myBool = true,
+  6: double myDouble = 42.42,
+  7: set<string> mySet = ["foo", "bar", "baz"],
+  8: MyDataItem MyDataItem = {"field1": 29, "field2": 30},
+  9: list<MyDataItem> myList = [
+    {"field1": 29, "field2": 30}, {"field1": 31, "field2": 32}],
+  10: map<i32, list<MyDataItem>> myMapList = {
+       1: [{"field1": 29, "field2": 30}, {"field1": 31, "field2": 32}],
+       2: [{"field1": 33, "field2": 34}, {"field1": 35, "field2": 36}]}
+} (java.swift.mutable = "true")
+
 struct MyDataItem {
   1: i32 field1,
   2: i32 field2,
