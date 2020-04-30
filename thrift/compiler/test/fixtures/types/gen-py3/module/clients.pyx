@@ -4,11 +4,16 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+)
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.vector cimport vector as vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
@@ -53,7 +58,7 @@ from module.clients_wrapper cimport cSomeServiceAsyncClient, cSomeServiceClientW
 
 
 cdef void SomeService_bounce_map_callback(
-    cFollyTry[_module_types.std_unordered_map[int32_t,string]]&& result,
+    cFollyTry[_module_types.std_unordered_map[cint32_t,string]]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -61,12 +66,12 @@ cdef void SomeService_bounce_map_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(_module_types.std_unordered_map__Map__i32_string.create(make_shared[_module_types.std_unordered_map[int32_t,string]](result.value())))
+            pyfuture.set_result(_module_types.std_unordered_map__Map__i32_string.create(make_shared[_module_types.std_unordered_map[cint32_t,string]](result.value())))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SomeService_binary_keyed_map_callback(
-    cFollyTry[cmap[string,int64_t]]&& result,
+    cFollyTry[cmap[string,cint64_t]]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -74,7 +79,7 @@ cdef void SomeService_binary_keyed_map_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(_module_types.Map__binary_i64.create(make_shared[cmap[string,int64_t]](result.value())))
+            pyfuture.set_result(_module_types.Map__binary_i64.create(make_shared[cmap[string,cint64_t]](result.value())))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
@@ -109,7 +114,7 @@ cdef class SomeService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[_module_types.std_unordered_map[int32_t,string]](
+        bridgeFutureWith[_module_types.std_unordered_map[cint32_t,string]](
             self._executor,
             down_cast_ptr[cSomeServiceClientWrapper, cClientWrapper](self._client.get()).bounce_map(rpc_options._cpp_obj, 
                 deref((<_module_types.std_unordered_map__Map__i32_string>m)._cpp_obj),
@@ -133,7 +138,7 @@ cdef class SomeService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cmap[string,int64_t]](
+        bridgeFutureWith[cmap[string,cint64_t]](
             self._executor,
             down_cast_ptr[cSomeServiceClientWrapper, cClientWrapper](self._client.get()).binary_keyed_map(rpc_options._cpp_obj, 
                 deref((<_module_types.List__i64>r)._cpp_obj),

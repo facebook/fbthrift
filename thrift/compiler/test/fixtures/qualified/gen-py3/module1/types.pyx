@@ -12,7 +12,6 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
@@ -167,7 +166,7 @@ cdef class Struct(thrift.py3.types.Struct):
         if first is not None:
             if not isinstance(first, int):
                 raise TypeError(f'first is not a { int !r}.')
-            first = <int32_t> first
+            first = <cint32_t> first
 
         self._cpp_obj = move(Struct._make_instance(
           NULL,
@@ -206,7 +205,7 @@ cdef class Struct(thrift.py3.types.Struct):
         if first is not None:
             if not isinstance(first, int):
                 raise TypeError(f'first is not a { int !r}.')
-            first = <int32_t> first
+            first = <cint32_t> first
 
         if second is not None:
             if not isinstance(second, str):
@@ -371,8 +370,8 @@ cdef class Struct(thrift.py3.types.Struct):
                 serializer.CompactJSONSerialize[cStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef uint32_t _deserialize(Struct self, const __iobuf.cIOBuf* buf, proto) except? 0:
-        cdef uint32_t needed
+    cdef cuint32_t _deserialize(Struct self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
         self._cpp_obj = make_shared[cStruct]()
         cdef cStruct* cpp_obj = self._cpp_obj.get()
         if proto is __Protocol.COMPACT:
@@ -531,13 +530,13 @@ cdef class List__Enum(thrift.py3.types.Container):
 
         if not isinstance(item, Enum):
             raise err
-        cdef vector[cEnum].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
+        cdef vector[cEnum].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
         cdef vector[cEnum].iterator loc = std_libcpp.find[vector[cEnum].iterator, cEnum](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
+            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
             end,
             Enum_to_cpp(item)        )
         if loc != end:
-            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
+            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -545,7 +544,7 @@ cdef class List__Enum(thrift.py3.types.Container):
             return 0
         if not isinstance(item, Enum):
             return 0
-        return <int64_t> std_libcpp.count[vector[cEnum].iterator, cEnum](
+        return <cint64_t> std_libcpp.count[vector[cEnum].iterator, cEnum](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), Enum_to_cpp(item))
 
     def __reduce__(self):

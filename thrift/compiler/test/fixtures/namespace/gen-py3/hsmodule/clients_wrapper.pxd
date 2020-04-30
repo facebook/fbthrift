@@ -6,7 +6,12 @@
 #
 
 from cpython.ref cimport PyObject
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+)
 from libcpp cimport bool as cbool
 from libcpp.map cimport map as cmap, pair as cpair
 from libcpp.memory cimport shared_ptr, unique_ptr
@@ -38,6 +43,6 @@ cdef extern from "gen-py3/hsmodule/clients_wrapper.h" namespace "::cpp2":
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
-    cFollyFuture[int64_t] init(cRpcOptions, 
-      int64_t arg_int1,)
+    cFollyFuture[cint64_t] init(cRpcOptions, 
+      cint64_t arg_int1,)
 

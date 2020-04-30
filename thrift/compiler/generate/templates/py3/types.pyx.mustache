@@ -41,7 +41,6 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
@@ -639,8 +638,8 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
                 serializer.CompactJSONSerialize[c{{struct:name}}](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef uint32_t _deserialize({{struct:name}} self, const __iobuf.cIOBuf* buf, proto) except? 0:
-        cdef uint32_t needed
+    cdef cuint32_t _deserialize({{struct:name}} self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
         {{!
             This is a special case, we need to construct an empty _cpp_obj because
             thrift.py3.serializer.deserialize will just call __new__ to skip
@@ -868,16 +867,16 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.Container):
         if not isinstance(item, {{> types/PythonType}}):
             raise err
         {{/type:listElemType}}
-        cdef {{>types/CythonCppType}}.iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
+        cdef {{>types/CythonCppType}}.iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
         cdef {{>types/CythonCppType}}.iterator loc = {{!
             }}std_libcpp.find[{{>types/CythonCppType}}.iterator, {{#type:listElemType}}{{>types/CythonCppType}}](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
+            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
             end,
             {{> CythonPythonToCppItem}}
         )
         {{/type:listElemType}}
         if loc != end:
-            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
+            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -894,7 +893,7 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.Container):
         if not isinstance(item, {{> types/PythonType}}):
             return 0
         {{/type:listElemType}}
-        return <int64_t> std_libcpp.count[{{>types/CythonCppType}}.iterator, {{#type:listElemType}}{{>types/CythonCppType}}](
+        return <cint64_t> std_libcpp.count[{{>types/CythonCppType}}.iterator, {{#type:listElemType}}{{>types/CythonCppType}}](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), {{> CythonPythonToCppItem}})
         {{/type:listElemType}}
 

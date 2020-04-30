@@ -12,7 +12,6 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
@@ -59,25 +58,25 @@ cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
             self._cpp_obj = std_unordered_map__Map__i32_string._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[std_unordered_map[int32_t,string]] c_items):
+    cdef create(shared_ptr[std_unordered_map[cint32_t,string]] c_items):
         inst = <std_unordered_map__Map__i32_string>std_unordered_map__Map__i32_string.__new__(std_unordered_map__Map__i32_string)
         inst._cpp_obj = move_shared(c_items)
         return inst
 
     def __copy__(std_unordered_map__Map__i32_string self):
-        cdef shared_ptr[std_unordered_map[int32_t,string]] cpp_obj = make_shared[std_unordered_map[int32_t,string]](
+        cdef shared_ptr[std_unordered_map[cint32_t,string]] cpp_obj = make_shared[std_unordered_map[cint32_t,string]](
             deref(self._cpp_obj)
         )
         return std_unordered_map__Map__i32_string.create(move_shared(cpp_obj))
 
     @staticmethod
-    cdef shared_ptr[std_unordered_map[int32_t,string]] _make_instance(object items) except *:
-        cdef shared_ptr[std_unordered_map[int32_t,string]] c_inst = make_shared[std_unordered_map[int32_t,string]]()
+    cdef shared_ptr[std_unordered_map[cint32_t,string]] _make_instance(object items) except *:
+        cdef shared_ptr[std_unordered_map[cint32_t,string]] c_inst = make_shared[std_unordered_map[cint32_t,string]]()
         if items is not None:
             for key, item in items.items():
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
-                key = <int32_t> key
+                key = <cint32_t> key
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 
@@ -90,7 +89,7 @@ cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
             raise err
         if not isinstance(key, int):
             raise err from None
-        cdef std_unordered_map[int32_t,string].iterator iter = deref(
+        cdef std_unordered_map[cint32_t,string].iterator iter = deref(
             self._cpp_obj).find(key)
         if iter == deref(self._cpp_obj).end():
             raise err
@@ -103,8 +102,8 @@ cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
     def __iter__(self):
         if not self:
             return
-        cdef int32_t citem
-        cdef std_unordered_map[int32_t,string].iterator loc = deref(self._cpp_obj).begin()
+        cdef cint32_t citem
+        cdef std_unordered_map[cint32_t,string].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = deref(loc).first
             yield citem
@@ -142,7 +141,7 @@ cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
             return False
         if not isinstance(key, int):
             return False
-        cdef int32_t ckey = key
+        cdef cint32_t ckey = key
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
@@ -161,7 +160,7 @@ cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
         if not self:
             return
         cdef string citem
-        cdef std_unordered_map[int32_t,string].iterator loc = deref(self._cpp_obj).begin()
+        cdef std_unordered_map[cint32_t,string].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = deref(loc).second
             yield bytes(citem).decode('UTF-8')
@@ -170,9 +169,9 @@ cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
     def items(self):
         if not self:
             return
-        cdef int32_t ckey
+        cdef cint32_t ckey
         cdef string citem
-        cdef std_unordered_map[int32_t,string].iterator loc = deref(self._cpp_obj).begin()
+        cdef std_unordered_map[cint32_t,string].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = deref(loc).second
@@ -198,20 +197,20 @@ cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
             self._cpp_obj = List__std_unordered_map__Map__i32_string._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[vector[std_unordered_map[int32_t,string]]] c_items):
+    cdef create(shared_ptr[vector[std_unordered_map[cint32_t,string]]] c_items):
         inst = <List__std_unordered_map__Map__i32_string>List__std_unordered_map__Map__i32_string.__new__(List__std_unordered_map__Map__i32_string)
         inst._cpp_obj = move_shared(c_items)
         return inst
 
     def __copy__(List__std_unordered_map__Map__i32_string self):
-        cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] cpp_obj = make_shared[vector[std_unordered_map[int32_t,string]]](
+        cdef shared_ptr[vector[std_unordered_map[cint32_t,string]]] cpp_obj = make_shared[vector[std_unordered_map[cint32_t,string]]](
             deref(self._cpp_obj)
         )
         return List__std_unordered_map__Map__i32_string.create(move_shared(cpp_obj))
 
     @staticmethod
-    cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] _make_instance(object items) except *:
-        cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] c_inst = make_shared[vector[std_unordered_map[int32_t,string]]]()
+    cdef shared_ptr[vector[std_unordered_map[cint32_t,string]]] _make_instance(object items) except *:
+        cdef shared_ptr[vector[std_unordered_map[cint32_t,string]]] c_inst = make_shared[vector[std_unordered_map[cint32_t,string]]]()
         if items is not None:
             for item in items:
                 if item is None:
@@ -225,10 +224,10 @@ cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
         return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
-        cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] c_inst
-        cdef shared_ptr[std_unordered_map[int32_t,string]] citem
+        cdef shared_ptr[vector[std_unordered_map[cint32_t,string]]] c_inst
+        cdef shared_ptr[std_unordered_map[cint32_t,string]] citem
         if isinstance(index_obj, slice):
-            c_inst = make_shared[vector[std_unordered_map[int32_t,string]]]()
+            c_inst = make_shared[vector[std_unordered_map[cint32_t,string]]]()
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
@@ -282,13 +281,13 @@ cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
             return False
         if not isinstance(item, std_unordered_map__Map__i32_string):
             return False
-        return std_libcpp.find[vector[std_unordered_map[int32_t,string]].iterator, std_unordered_map[int32_t,string]](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<std_unordered_map__Map__i32_string>item)._cpp_obj)) != deref(self._cpp_obj).end()
+        return std_libcpp.find[vector[std_unordered_map[cint32_t,string]].iterator, std_unordered_map[cint32_t,string]](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<std_unordered_map__Map__i32_string>item)._cpp_obj)) != deref(self._cpp_obj).end()
 
     def __iter__(self):
         if not self:
             return
-        cdef shared_ptr[std_unordered_map[int32_t,string]] citem
-        cdef vector[std_unordered_map[int32_t,string]].iterator loc = deref(self._cpp_obj).begin()
+        cdef shared_ptr[std_unordered_map[cint32_t,string]] citem
+        cdef vector[std_unordered_map[cint32_t,string]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = reference_shared_ptr_List__std_unordered_map__Map__i32_string(self._cpp_obj, deref(loc))
             yield std_unordered_map__Map__i32_string.create(citem)
@@ -302,8 +301,8 @@ cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
     def __reversed__(self):
         if not self:
             return
-        cdef shared_ptr[std_unordered_map[int32_t,string]] citem
-        cdef vector[std_unordered_map[int32_t,string]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
+        cdef shared_ptr[std_unordered_map[cint32_t,string]] citem
+        cdef vector[std_unordered_map[cint32_t,string]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
             citem = reference_shared_ptr_List__std_unordered_map__Map__i32_string(self._cpp_obj, deref(loc))
             yield std_unordered_map__Map__i32_string.create(citem)
@@ -339,13 +338,13 @@ cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
             raise err from None
         if not isinstance(item, std_unordered_map__Map__i32_string):
             raise err
-        cdef vector[std_unordered_map[int32_t,string]].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
-        cdef vector[std_unordered_map[int32_t,string]].iterator loc = std_libcpp.find[vector[std_unordered_map[int32_t,string]].iterator, std_unordered_map[int32_t,string]](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
+        cdef vector[std_unordered_map[cint32_t,string]].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
+        cdef vector[std_unordered_map[cint32_t,string]].iterator loc = std_libcpp.find[vector[std_unordered_map[cint32_t,string]].iterator, std_unordered_map[cint32_t,string]](
+            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
             end,
             deref((<std_unordered_map__Map__i32_string>item)._cpp_obj)        )
         if loc != end:
-            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
+            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -358,7 +357,7 @@ cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
             return 0
         if not isinstance(item, std_unordered_map__Map__i32_string):
             return 0
-        return <int64_t> std_libcpp.count[vector[std_unordered_map[int32_t,string]].iterator, std_unordered_map[int32_t,string]](
+        return <cint64_t> std_libcpp.count[vector[std_unordered_map[cint32_t,string]].iterator, std_unordered_map[cint32_t,string]](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<std_unordered_map__Map__i32_string>item)._cpp_obj))
 
     def __reduce__(self):

@@ -6,7 +6,12 @@
 #
 
 from cpython.ref cimport PyObject
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+)
 from libcpp cimport bool as cbool
 from libcpp.map cimport map as cmap, pair as cpair
 from libcpp.memory cimport shared_ptr, unique_ptr
@@ -39,8 +44,8 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::apache::thr
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
-    cFollyFuture[_module_types.std_unordered_map[int32_t,string]] bounce_map(cRpcOptions, 
-      _module_types.std_unordered_map[int32_t,string] arg_m,)
-    cFollyFuture[cmap[string,int64_t]] binary_keyed_map(cRpcOptions, 
-      vector[int64_t] arg_r,)
+    cFollyFuture[_module_types.std_unordered_map[cint32_t,string]] bounce_map(cRpcOptions, 
+      _module_types.std_unordered_map[cint32_t,string] arg_m,)
+    cFollyFuture[cmap[string,cint64_t]] binary_keyed_map(cRpcOptions, 
+      vector[cint64_t] arg_r,)
 

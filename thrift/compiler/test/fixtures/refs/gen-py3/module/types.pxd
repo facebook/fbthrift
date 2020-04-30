@@ -5,10 +5,16 @@
 #  @generated
 #
 
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+    uint32_t as cuint32_t,
+)
 from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
@@ -83,8 +89,8 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator<=(cMyUnion&)
         bint operator>=(cMyUnion&)
         cMyUnion__type getType() const
-        const int32_t& get_anInteger() const
-        int32_t& set_anInteger(const int32_t&)
+        const cint32_t& get_anInteger() const
+        cint32_t& set_anInteger(const cint32_t&)
         const string& get_aString() const
         string& set_aString(const string&)
 
@@ -102,9 +108,9 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator>(cMyField&)
         bint operator<=(cMyField&)
         bint operator>=(cMyField&)
-        optional_field_ref[int64_t] opt_value_ref()
-        int64_t value
-        int64_t req_value
+        optional_field_ref[cint64_t] opt_value_ref()
+        cint64_t value
+        cint64_t req_value
         cMyField__isset __isset
 
     cdef cppclass cMyStruct__isset "::cpp2::MyStruct::__isset":
@@ -177,12 +183,12 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator>(cStructWithContainers&)
         bint operator<=(cStructWithContainers&)
         bint operator>=(cStructWithContainers&)
-        unique_ptr[vector[int32_t]] list_ref
-        unique_ptr[cset[int32_t]] set_ref
-        unique_ptr[cmap[int32_t,int32_t]] map_ref
-        unique_ptr[vector[int32_t]] list_ref_unique
-        shared_ptr[cset[int32_t]] set_ref_shared
-        shared_ptr[const vector[int32_t]] list_ref_shared_const
+        unique_ptr[vector[cint32_t]] list_ref
+        unique_ptr[cset[cint32_t]] set_ref
+        unique_ptr[cmap[cint32_t,cint32_t]] map_ref
+        unique_ptr[vector[cint32_t]] list_ref_unique
+        shared_ptr[cset[cint32_t]] set_ref_shared
+        shared_ptr[const vector[cint32_t]] list_ref_shared_const
         cStructWithContainers__isset __isset
 
     cdef cppclass cStructWithSharedConst__isset "::cpp2::StructWithSharedConst::__isset":
@@ -315,12 +321,12 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef shared_ptr[cMyUnion] reference_shared_ptr_u "thrift::py3::reference_shared_ptr<::cpp2::MyUnion>"(shared_ptr[cStructWithUnion]&, cMyUnion&)
     cdef shared_ptr[cMyField] reference_shared_ptr_f "thrift::py3::reference_shared_ptr<::cpp2::MyField>"(shared_ptr[cStructWithUnion]&, cMyField&)
     cdef shared_ptr[vector[cRecursiveStruct]] reference_shared_ptr_mes "thrift::py3::reference_shared_ptr<std::vector<::cpp2::RecursiveStruct>>"(shared_ptr[cRecursiveStruct]&, vector[cRecursiveStruct]&)
-    cdef shared_ptr[vector[int32_t]] reference_shared_ptr_list_ref "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cStructWithContainers]&, vector[int32_t]&)
-    cdef shared_ptr[cset[int32_t]] reference_shared_ptr_set_ref "thrift::py3::reference_shared_ptr<std::set<int32_t>>"(shared_ptr[cStructWithContainers]&, cset[int32_t]&)
-    cdef shared_ptr[cmap[int32_t,int32_t]] reference_shared_ptr_map_ref "thrift::py3::reference_shared_ptr<std::map<int32_t,int32_t>>"(shared_ptr[cStructWithContainers]&, cmap[int32_t,int32_t]&)
-    cdef shared_ptr[vector[int32_t]] reference_shared_ptr_list_ref_unique "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cStructWithContainers]&, vector[int32_t]&)
-    cdef shared_ptr[cset[int32_t]] reference_shared_ptr_set_ref_shared "thrift::py3::reference_shared_ptr<std::set<int32_t>>"(shared_ptr[cStructWithContainers]&, cset[int32_t]&)
-    cdef shared_ptr[vector[int32_t]] reference_shared_ptr_list_ref_shared_const "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cStructWithContainers]&, vector[int32_t]&)
+    cdef shared_ptr[vector[cint32_t]] reference_shared_ptr_list_ref "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cStructWithContainers]&, vector[cint32_t]&)
+    cdef shared_ptr[cset[cint32_t]] reference_shared_ptr_set_ref "thrift::py3::reference_shared_ptr<std::set<int32_t>>"(shared_ptr[cStructWithContainers]&, cset[cint32_t]&)
+    cdef shared_ptr[cmap[cint32_t,cint32_t]] reference_shared_ptr_map_ref "thrift::py3::reference_shared_ptr<std::map<int32_t,int32_t>>"(shared_ptr[cStructWithContainers]&, cmap[cint32_t,cint32_t]&)
+    cdef shared_ptr[vector[cint32_t]] reference_shared_ptr_list_ref_unique "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cStructWithContainers]&, vector[cint32_t]&)
+    cdef shared_ptr[cset[cint32_t]] reference_shared_ptr_set_ref_shared "thrift::py3::reference_shared_ptr<std::set<int32_t>>"(shared_ptr[cStructWithContainers]&, cset[cint32_t]&)
+    cdef shared_ptr[vector[cint32_t]] reference_shared_ptr_list_ref_shared_const "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cStructWithContainers]&, vector[cint32_t]&)
     cdef shared_ptr[cMyField] reference_shared_ptr_opt_shared_const "thrift::py3::reference_shared_ptr<::cpp2::MyField>"(shared_ptr[cStructWithSharedConst]&, cMyField&)
     cdef shared_ptr[cMyField] reference_shared_ptr_shared_const "thrift::py3::reference_shared_ptr<::cpp2::MyField>"(shared_ptr[cStructWithSharedConst]&, cMyField&)
     cdef shared_ptr[cMyField] reference_shared_ptr_req_shared_const "thrift::py3::reference_shared_ptr<::cpp2::MyField>"(shared_ptr[cStructWithSharedConst]&, cMyField&)
@@ -705,43 +711,43 @@ cdef class List__RecursiveStruct(thrift.py3.types.Container):
     cdef shared_ptr[vector[cRecursiveStruct]] _make_instance(object items) except *
 
 cdef class List__i32(thrift.py3.types.Container):
-    cdef shared_ptr[vector[int32_t]] _cpp_obj
+    cdef shared_ptr[vector[cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[int32_t]])
+    cdef create(shared_ptr[vector[cint32_t]])
     @staticmethod
-    cdef shared_ptr[vector[int32_t]] _make_instance(object items) except *
+    cdef shared_ptr[vector[cint32_t]] _make_instance(object items) except *
 
 cdef class Set__i32(thrift.py3.types.Container):
-    cdef shared_ptr[cset[int32_t]] _cpp_obj
+    cdef shared_ptr[cset[cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[int32_t]])
+    cdef create(shared_ptr[cset[cint32_t]])
     @staticmethod
-    cdef shared_ptr[cset[int32_t]] _make_instance(object items) except *
+    cdef shared_ptr[cset[cint32_t]] _make_instance(object items) except *
 
 cdef class Map__i32_i32(thrift.py3.types.Container):
-    cdef shared_ptr[cmap[int32_t,int32_t]] _cpp_obj
+    cdef shared_ptr[cmap[cint32_t,cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[int32_t,int32_t]])
+    cdef create(shared_ptr[cmap[cint32_t,cint32_t]])
     @staticmethod
-    cdef shared_ptr[cmap[int32_t,int32_t]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[cint32_t,cint32_t]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[cRecursiveStruct]] move "std::move"(unique_ptr[vector[cRecursiveStruct]])
     cdef shared_ptr[vector[cRecursiveStruct]] move_shared "std::move"(shared_ptr[vector[cRecursiveStruct]])
-    cdef shared_ptr[vector[int32_t]] move "std::move"(unique_ptr[vector[int32_t]])
-    cdef shared_ptr[vector[int32_t]] move_shared "std::move"(shared_ptr[vector[int32_t]])
-    cdef shared_ptr[cmap[int32_t,int32_t]] move "std::move"(unique_ptr[cmap[int32_t,int32_t]])
-    cdef shared_ptr[cmap[int32_t,int32_t]] move_shared "std::move"(shared_ptr[cmap[int32_t,int32_t]])
-    cdef shared_ptr[cset[int32_t]] move "std::move"(unique_ptr[cset[int32_t]])
-    cdef shared_ptr[cset[int32_t]] move_shared "std::move"(shared_ptr[cset[int32_t]])
+    cdef shared_ptr[vector[cint32_t]] move "std::move"(unique_ptr[vector[cint32_t]])
+    cdef shared_ptr[vector[cint32_t]] move_shared "std::move"(shared_ptr[vector[cint32_t]])
+    cdef shared_ptr[cmap[cint32_t,cint32_t]] move "std::move"(unique_ptr[cmap[cint32_t,cint32_t]])
+    cdef shared_ptr[cmap[cint32_t,cint32_t]] move_shared "std::move"(shared_ptr[cmap[cint32_t,cint32_t]])
+    cdef shared_ptr[cset[cint32_t]] move "std::move"(unique_ptr[cset[cint32_t]])
+    cdef shared_ptr[cset[cint32_t]] move_shared "std::move"(shared_ptr[cset[cint32_t]])
 cdef extern from "<utility>" nogil:
     pass  
     shared_ptr[cRecursiveStruct] reference_shared_ptr_List__RecursiveStruct "thrift::py3::reference_shared_ptr<::cpp2::RecursiveStruct>"(...)
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[cRecursiveStruct]] const_pointer_cast "std::const_pointer_cast<const std::vector<::cpp2::RecursiveStruct>>"(shared_ptr[vector[cRecursiveStruct]])
-    cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int32_t>>"(shared_ptr[vector[int32_t]])
-    cdef shared_ptr[const cmap[int32_t,int32_t]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,int32_t>>"(shared_ptr[cmap[int32_t,int32_t]])
-    cdef shared_ptr[const cset[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int32_t>>"(shared_ptr[cset[int32_t]])
+    cdef shared_ptr[const vector[cint32_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int32_t>>"(shared_ptr[vector[cint32_t]])
+    cdef shared_ptr[const cmap[cint32_t,cint32_t]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,int32_t>>"(shared_ptr[cmap[cint32_t,cint32_t]])
+    cdef shared_ptr[const cset[cint32_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int32_t>>"(shared_ptr[cset[cint32_t]])
 
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "::cpp2":
     cdef cStructWithRef ckStructWithRef "::cpp2::module_constants::kStructWithRef"()

@@ -4,11 +4,16 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+)
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.vector cimport vector as vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
@@ -81,7 +86,7 @@ cdef void ReturnService_boolReturn_callback(
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void ReturnService_i16Return_callback(
-    cFollyTry[int16_t]&& result,
+    cFollyTry[cint16_t]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -94,7 +99,7 @@ cdef void ReturnService_i16Return_callback(
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void ReturnService_i32Return_callback(
-    cFollyTry[int32_t]&& result,
+    cFollyTry[cint32_t]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -107,7 +112,7 @@ cdef void ReturnService_i32Return_callback(
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void ReturnService_i64Return_callback(
-    cFollyTry[int64_t]&& result,
+    cFollyTry[cint64_t]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -172,7 +177,7 @@ cdef void ReturnService_binaryReturn_callback(
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void ReturnService_mapReturn_callback(
-    cFollyTry[cmap[string,int64_t]]&& result,
+    cFollyTry[cmap[string,cint64_t]]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -180,12 +185,12 @@ cdef void ReturnService_mapReturn_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(_module_types.Map__string_i64.create(make_shared[cmap[string,int64_t]](result.value())))
+            pyfuture.set_result(_module_types.Map__string_i64.create(make_shared[cmap[string,cint64_t]](result.value())))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void ReturnService_simpleTypedefReturn_callback(
-    cFollyTry[int32_t]&& result,
+    cFollyTry[cint32_t]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -471,7 +476,7 @@ cdef void ParamService_bool_ret_union_param_callback(
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void ParamService_i64_ret_float_double_param_callback(
-    cFollyTry[int64_t]&& result,
+    cFollyTry[cint64_t]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -484,7 +489,7 @@ cdef void ParamService_i64_ret_float_double_param_callback(
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void ParamService_i64_ret_string_typedef_param_callback(
-    cFollyTry[int64_t]&& result,
+    cFollyTry[cint64_t]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -497,7 +502,7 @@ cdef void ParamService_i64_ret_string_typedef_param_callback(
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void ParamService_i64_ret_i32_i32_i32_i32_i32_param_callback(
-    cFollyTry[int64_t]&& result,
+    cFollyTry[cint64_t]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -549,7 +554,7 @@ cdef void ParamService_binary_ret_binary_param_callback(
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void ParamService_map_ret_bool_param_callback(
-    cFollyTry[cmap[string,int64_t]]&& result,
+    cFollyTry[cmap[string,cint64_t]]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -557,7 +562,7 @@ cdef void ParamService_map_ret_bool_param_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(_module_types.Map__string_i64.create(make_shared[cmap[string,int64_t]](result.value())))
+            pyfuture.set_result(_module_types.Map__string_i64.create(make_shared[cmap[string,cint64_t]](result.value())))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
@@ -575,7 +580,7 @@ cdef void ParamService_list_ret_map_setlist_param_callback(
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void ParamService_mapsetlistmapliststring_ret_listlistlist_param_callback(
-    cFollyTry[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]]&& result,
+    cFollyTry[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -583,12 +588,12 @@ cdef void ParamService_mapsetlistmapliststring_ret_listlistlist_param_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(_module_types.Map__Set__List__i32_Map__List__Set__string_string.create(make_shared[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]](result.value())))
+            pyfuture.set_result(_module_types.Map__Set__List__i32_Map__List__Set__string_string.create(make_shared[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]](result.value())))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void ParamService_typedef_ret_i32_param_callback(
-    cFollyTry[int32_t]&& result,
+    cFollyTry[cint32_t]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -601,7 +606,7 @@ cdef void ParamService_typedef_ret_i32_param_callback(
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void ParamService_listtypedef_ret_typedef_param_callback(
-    cFollyTry[vector[int32_t]]&& result,
+    cFollyTry[vector[cint32_t]]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -609,7 +614,7 @@ cdef void ParamService_listtypedef_ret_typedef_param_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(_module_types.List__i32.create(make_shared[vector[int32_t]](result.value())))
+            pyfuture.set_result(_module_types.List__i32.create(make_shared[vector[cint32_t]](result.value())))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
@@ -799,7 +804,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[int16_t](
+        bridgeFutureWith[cint16_t](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).i16Return(rpc_options._cpp_obj, 
             ),
@@ -819,7 +824,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[int32_t](
+        bridgeFutureWith[cint32_t](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).i32Return(rpc_options._cpp_obj, 
             ),
@@ -839,7 +844,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[int64_t](
+        bridgeFutureWith[cint64_t](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).i64Return(rpc_options._cpp_obj, 
             ),
@@ -939,7 +944,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cmap[string,int64_t]](
+        bridgeFutureWith[cmap[string,cint64_t]](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).mapReturn(rpc_options._cpp_obj, 
             ),
@@ -959,7 +964,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[int32_t](
+        bridgeFutureWith[cint32_t](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).simpleTypedefReturn(rpc_options._cpp_obj, 
             ),
@@ -1139,7 +1144,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         if not isinstance(size, int):
             raise TypeError(f'size is not a {int !r}.')
         else:
-            size = <int64_t> size
+            size = <cint64_t> size
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -1165,7 +1170,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         if not isinstance(size, int):
             raise TypeError(f'size is not a {int !r}.')
         else:
-            size = <int64_t> size
+            size = <cint64_t> size
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -1553,7 +1558,7 @@ cdef class ParamService(thrift.py3.client.Client):
         if not isinstance(param1, int):
             raise TypeError(f'param1 is not a {int !r}.')
         else:
-            param1 = <int16_t> param1
+            param1 = <cint16_t> param1
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -1580,11 +1585,11 @@ cdef class ParamService(thrift.py3.client.Client):
         if not isinstance(param1, int):
             raise TypeError(f'param1 is not a {int !r}.')
         else:
-            param1 = <int8_t> param1
+            param1 = <cint8_t> param1
         if not isinstance(param2, int):
             raise TypeError(f'param2 is not a {int !r}.')
         else:
-            param2 = <int16_t> param2
+            param2 = <cint16_t> param2
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -1663,7 +1668,7 @@ cdef class ParamService(thrift.py3.client.Client):
         if not isinstance(param1, int):
             raise TypeError(f'param1 is not a {int !r}.')
         else:
-            param1 = <int32_t> param1
+            param1 = <cint32_t> param1
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -1758,11 +1763,11 @@ cdef class ParamService(thrift.py3.client.Client):
         if not isinstance(param1, int):
             raise TypeError(f'param1 is not a {int !r}.')
         else:
-            param1 = <int32_t> param1
+            param1 = <cint32_t> param1
         if not isinstance(param2, int):
             raise TypeError(f'param2 is not a {int !r}.')
         else:
-            param2 = <int64_t> param2
+            param2 = <cint64_t> param2
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -1837,7 +1842,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[int64_t](
+        bridgeFutureWith[cint64_t](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).i64_ret_float_double_param(rpc_options._cpp_obj, 
                 param1,
@@ -1863,7 +1868,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[int64_t](
+        bridgeFutureWith[cint64_t](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).i64_ret_string_typedef_param(rpc_options._cpp_obj, 
                 param1.encode('UTF-8'),
@@ -1889,28 +1894,28 @@ cdef class ParamService(thrift.py3.client.Client):
         if not isinstance(param1, int):
             raise TypeError(f'param1 is not a {int !r}.')
         else:
-            param1 = <int32_t> param1
+            param1 = <cint32_t> param1
         if not isinstance(param2, int):
             raise TypeError(f'param2 is not a {int !r}.')
         else:
-            param2 = <int32_t> param2
+            param2 = <cint32_t> param2
         if not isinstance(param3, int):
             raise TypeError(f'param3 is not a {int !r}.')
         else:
-            param3 = <int32_t> param3
+            param3 = <cint32_t> param3
         if not isinstance(param4, int):
             raise TypeError(f'param4 is not a {int !r}.')
         else:
-            param4 = <int32_t> param4
+            param4 = <cint32_t> param4
         if not isinstance(param5, int):
             raise TypeError(f'param5 is not a {int !r}.')
         else:
-            param5 = <int32_t> param5
+            param5 = <cint32_t> param5
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[int64_t](
+        bridgeFutureWith[cint64_t](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).i64_ret_i32_i32_i32_i32_i32_param(rpc_options._cpp_obj, 
                 param1,
@@ -2004,7 +2009,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cmap[string,int64_t]](
+        bridgeFutureWith[cmap[string,cint64_t]](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).map_ret_bool_param(rpc_options._cpp_obj, 
                 param1,
@@ -2056,7 +2061,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]](
+        bridgeFutureWith[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).mapsetlistmapliststring_ret_listlistlist_param(rpc_options._cpp_obj, 
                 deref((<_module_types.List__List__List__List__i32>param1)._cpp_obj),
@@ -2077,12 +2082,12 @@ cdef class ParamService(thrift.py3.client.Client):
         if not isinstance(param1, int):
             raise TypeError(f'param1 is not a {int !r}.')
         else:
-            param1 = <int32_t> param1
+            param1 = <cint32_t> param1
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[int32_t](
+        bridgeFutureWith[cint32_t](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).typedef_ret_i32_param(rpc_options._cpp_obj, 
                 param1,
@@ -2106,7 +2111,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[vector[int32_t]](
+        bridgeFutureWith[vector[cint32_t]](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).listtypedef_ret_typedef_param(rpc_options._cpp_obj, 
                 deref((<_module_types.List__Map__Empty_MyStruct>param1)._cpp_obj),
@@ -2197,7 +2202,7 @@ cdef class ParamService(thrift.py3.client.Client):
         if not isinstance(param1, int):
             raise TypeError(f'param1 is not a {int !r}.')
         else:
-            param1 = <int16_t> param1
+            param1 = <cint16_t> param1
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -2248,11 +2253,11 @@ cdef class ParamService(thrift.py3.client.Client):
         if not isinstance(param1, int):
             raise TypeError(f'param1 is not a {int !r}.')
         else:
-            param1 = <int32_t> param1
+            param1 = <cint32_t> param1
         if not isinstance(param2, int):
             raise TypeError(f'param2 is not a {int !r}.')
         else:
-            param2 = <int32_t> param2
+            param2 = <cint32_t> param2
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()

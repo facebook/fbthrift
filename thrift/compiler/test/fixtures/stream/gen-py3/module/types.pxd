@@ -5,10 +5,16 @@
 #  @generated
 #
 
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+    uint32_t as cuint32_t,
+)
 from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
@@ -84,17 +90,17 @@ cdef class FooEx(thrift.py3.exceptions.Error):
 
 
 cdef extern from "<utility>" namespace "std" nogil:
-    cdef cClientBufferedStream[int32_t] move_semistream "std::move"(cClientBufferedStream[int32_t])
+    cdef cClientBufferedStream[cint32_t] move_semistream "std::move"(cClientBufferedStream[cint32_t])
 
 cdef class ClientBufferedStream__i32(ClientBufferedStream):
-    cdef unique_ptr[cClientBufferedStreamWrapper[int32_t]] _gen
+    cdef unique_ptr[cClientBufferedStreamWrapper[cint32_t]] _gen
 
     @staticmethod
-    cdef create(cClientBufferedStream[int32_t]& c_obj, __RpcOptions rpc_options)
+    cdef create(cClientBufferedStream[cint32_t]& c_obj, __RpcOptions rpc_options)
 
     @staticmethod
     cdef void callback(
-        cFollyTry[cOptional[int32_t]]&& res,
+        cFollyTry[cOptional[cint32_t]]&& res,
         PyObject* userdata,
     )
 
@@ -104,10 +110,10 @@ cdef class ServerStream__i32(ServerStream):
 
 cdef class ResponseAndClientBufferedStream__i32_i32(ResponseAndClientBufferedStream):
     cdef ClientBufferedStream__i32 _stream
-    cdef int32_t _response
+    cdef cint32_t _response
 
     @staticmethod
-    cdef create(cResponseAndClientBufferedStream[int32_t, int32_t]& c_obj, __RpcOptions rpc_options)
+    cdef create(cResponseAndClientBufferedStream[cint32_t, cint32_t]& c_obj, __RpcOptions rpc_options)
 
 
 cdef class ResponseAndServerStream__i32_i32(ResponseAndServerStream):

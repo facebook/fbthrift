@@ -5,10 +5,16 @@
 #  @generated
 #
 
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+    uint32_t as cuint32_t,
+)
 from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
@@ -64,7 +70,7 @@ cdef extern from "src/gen-cpp2/module2_types.h" namespace "::module2":
         bint operator<=(cBigStruct&)
         bint operator>=(cBigStruct&)
         cStruct s
-        int32_t id
+        cint32_t id
         cBigStruct__isset __isset
 
     cdef shared_ptr[_module0_types.cStruct] reference_shared_ptr_first "thrift::py3::reference_shared_ptr<::module0::Struct>"(shared_ptr[cStruct]&, _module0_types.cStruct&)

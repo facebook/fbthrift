@@ -5,10 +5,16 @@
 #  @generated
 #
 
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+    uint32_t as cuint32_t,
+)
 from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
@@ -62,16 +68,16 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator<=(cComplexUnion&)
         bint operator>=(cComplexUnion&)
         cComplexUnion__type getType() const
-        const int64_t& get_intValue() const
-        int64_t& set_intValue(const int64_t&)
+        const cint64_t& get_intValue() const
+        cint64_t& set_intValue(const cint64_t&)
         const string& get_stringValue() const
         string& set_stringValue(const string&)
-        const vector[int64_t]& get_intListValue() const
-        vector[int64_t]& set_intListValue(const vector[int64_t]&)
+        const vector[cint64_t]& get_intListValue() const
+        vector[cint64_t]& set_intListValue(const vector[cint64_t]&)
         const vector[string]& get_stringListValue() const
         vector[string]& set_stringListValue(const vector[string]&)
-        const cmap[int16_t,string]& get_typedefValue() const
-        cmap[int16_t,string]& set_typedefValue(const cmap[int16_t,string]&)
+        const cmap[cint16_t,string]& get_typedefValue() const
+        cmap[cint16_t,string]& set_typedefValue(const cmap[cint16_t,string]&)
         const unique_ptr[string]& get_stringRef() const
         unique_ptr[string]& set_stringRef(const string&)
 
@@ -90,8 +96,8 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator<=(cListUnion&)
         bint operator>=(cListUnion&)
         cListUnion__type getType() const
-        const vector[int64_t]& get_intListValue() const
-        vector[int64_t]& set_intListValue(const vector[int64_t]&)
+        const vector[cint64_t]& get_intListValue() const
+        vector[cint64_t]& set_intListValue(const vector[cint64_t]&)
         const vector[string]& get_stringListValue() const
         vector[string]& set_stringListValue(const vector[string]&)
 
@@ -130,8 +136,8 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator<=(cVal&)
         bint operator>=(cVal&)
         string strVal
-        int32_t intVal
-        cmap[int16_t,string] typedefValue
+        cint32_t intVal
+        cmap[cint16_t,string] typedefValue
         cVal__isset __isset
 
     cdef enum cValUnion__type "::cpp2::ValUnion::Type":
@@ -186,7 +192,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator>(cNonCopyableStruct&)
         bint operator<=(cNonCopyableStruct&)
         bint operator>=(cNonCopyableStruct&)
-        int64_t num
+        cint64_t num
         cNonCopyableStruct__isset __isset
 
     cdef enum cNonCopyableUnion__type "::cpp2::NonCopyableUnion::Type":
@@ -206,13 +212,13 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         const cNonCopyableStruct& get_s() const
         cNonCopyableStruct& set_s(const cNonCopyableStruct&)
 
-    cdef shared_ptr[vector[int64_t]] reference_shared_ptr_intListValue "thrift::py3::reference_shared_ptr<std::vector<int64_t>>"(shared_ptr[cComplexUnion]&, vector[int64_t]&)
+    cdef shared_ptr[vector[cint64_t]] reference_shared_ptr_intListValue "thrift::py3::reference_shared_ptr<std::vector<int64_t>>"(shared_ptr[cComplexUnion]&, vector[cint64_t]&)
     cdef shared_ptr[vector[string]] reference_shared_ptr_stringListValue "thrift::py3::reference_shared_ptr<std::vector<std::string>>"(shared_ptr[cComplexUnion]&, vector[string]&)
-    cdef shared_ptr[cmap[int16_t,string]] reference_shared_ptr_typedefValue "thrift::py3::reference_shared_ptr<std::map<int16_t,std::string>>"(shared_ptr[cComplexUnion]&, cmap[int16_t,string]&)
+    cdef shared_ptr[cmap[cint16_t,string]] reference_shared_ptr_typedefValue "thrift::py3::reference_shared_ptr<std::map<int16_t,std::string>>"(shared_ptr[cComplexUnion]&, cmap[cint16_t,string]&)
     cdef shared_ptr[string] reference_shared_ptr_stringRef "thrift::py3::reference_shared_ptr<std::string>"(shared_ptr[cComplexUnion]&, string&)
-    cdef shared_ptr[vector[int64_t]] reference_shared_ptr_intListValue "thrift::py3::reference_shared_ptr<std::vector<int64_t>>"(shared_ptr[cListUnion]&, vector[int64_t]&)
+    cdef shared_ptr[vector[cint64_t]] reference_shared_ptr_intListValue "thrift::py3::reference_shared_ptr<std::vector<int64_t>>"(shared_ptr[cListUnion]&, vector[cint64_t]&)
     cdef shared_ptr[vector[string]] reference_shared_ptr_stringListValue "thrift::py3::reference_shared_ptr<std::vector<std::string>>"(shared_ptr[cListUnion]&, vector[string]&)
-    cdef shared_ptr[cmap[int16_t,string]] reference_shared_ptr_typedefValue "thrift::py3::reference_shared_ptr<std::map<int16_t,std::string>>"(shared_ptr[cVal]&, cmap[int16_t,string]&)
+    cdef shared_ptr[cmap[cint16_t,string]] reference_shared_ptr_typedefValue "thrift::py3::reference_shared_ptr<std::map<int16_t,std::string>>"(shared_ptr[cVal]&, cmap[cint16_t,string]&)
     cdef shared_ptr[cVal] reference_shared_ptr_v1 "thrift::py3::reference_shared_ptr<::cpp2::Val>"(shared_ptr[cValUnion]&, cVal&)
     cdef shared_ptr[cVal] reference_shared_ptr_v2 "thrift::py3::reference_shared_ptr<::cpp2::Val>"(shared_ptr[cValUnion]&, cVal&)
     cdef shared_ptr[cNonCopyableStruct] reference_shared_ptr_s "thrift::py3::reference_shared_ptr<::cpp2::NonCopyableStruct>"(shared_ptr[cNonCopyableUnion]&, cNonCopyableStruct&)
@@ -455,11 +461,11 @@ cdef class NonCopyableUnion(thrift.py3.types.Union):
 
 
 cdef class List__i64(thrift.py3.types.Container):
-    cdef shared_ptr[vector[int64_t]] _cpp_obj
+    cdef shared_ptr[vector[cint64_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[int64_t]])
+    cdef create(shared_ptr[vector[cint64_t]])
     @staticmethod
-    cdef shared_ptr[vector[int64_t]] _make_instance(object items) except *
+    cdef shared_ptr[vector[cint64_t]] _make_instance(object items) except *
 
 cdef class List__string(thrift.py3.types.Container):
     cdef shared_ptr[vector[string]] _cpp_obj
@@ -469,23 +475,23 @@ cdef class List__string(thrift.py3.types.Container):
     cdef shared_ptr[vector[string]] _make_instance(object items) except *
 
 cdef class Map__i16_string(thrift.py3.types.Container):
-    cdef shared_ptr[cmap[int16_t,string]] _cpp_obj
+    cdef shared_ptr[cmap[cint16_t,string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[int16_t,string]])
+    cdef create(shared_ptr[cmap[cint16_t,string]])
     @staticmethod
-    cdef shared_ptr[cmap[int16_t,string]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[cint16_t,string]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[vector[int64_t]] move "std::move"(unique_ptr[vector[int64_t]])
-    cdef shared_ptr[vector[int64_t]] move_shared "std::move"(shared_ptr[vector[int64_t]])
+    cdef shared_ptr[vector[cint64_t]] move "std::move"(unique_ptr[vector[cint64_t]])
+    cdef shared_ptr[vector[cint64_t]] move_shared "std::move"(shared_ptr[vector[cint64_t]])
     cdef shared_ptr[vector[string]] move "std::move"(unique_ptr[vector[string]])
     cdef shared_ptr[vector[string]] move_shared "std::move"(shared_ptr[vector[string]])
-    cdef shared_ptr[cmap[int16_t,string]] move "std::move"(unique_ptr[cmap[int16_t,string]])
-    cdef shared_ptr[cmap[int16_t,string]] move_shared "std::move"(shared_ptr[cmap[int16_t,string]])
+    cdef shared_ptr[cmap[cint16_t,string]] move "std::move"(unique_ptr[cmap[cint16_t,string]])
+    cdef shared_ptr[cmap[cint16_t,string]] move_shared "std::move"(shared_ptr[cmap[cint16_t,string]])
 cdef extern from "<utility>" nogil:
     pass  
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const vector[int64_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int64_t>>"(shared_ptr[vector[int64_t]])
+    cdef shared_ptr[const vector[cint64_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int64_t>>"(shared_ptr[vector[cint64_t]])
     cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::string>>"(shared_ptr[vector[string]])
-    cdef shared_ptr[const cmap[int16_t,string]] const_pointer_cast "std::const_pointer_cast<const std::map<int16_t,std::string>>"(shared_ptr[cmap[int16_t,string]])
+    cdef shared_ptr[const cmap[cint16_t,string]] const_pointer_cast "std::const_pointer_cast<const std::map<int16_t,std::string>>"(shared_ptr[cmap[cint16_t,string]])
 

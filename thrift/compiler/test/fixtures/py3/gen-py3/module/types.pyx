@@ -12,7 +12,6 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
@@ -433,7 +432,7 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
         if err_code is not None:
             if not isinstance(err_code, int):
                 raise TypeError(f'err_code is not a { int !r}.')
-            err_code = <int16_t> err_code
+            err_code = <cint16_t> err_code
 
         self._cpp_obj = move(SimpleException._make_instance(
           NULL,
@@ -718,8 +717,8 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
                 serializer.CompactJSONSerialize[cOptionalRefStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef uint32_t _deserialize(OptionalRefStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
-        cdef uint32_t needed
+    cdef cuint32_t _deserialize(OptionalRefStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
         self._cpp_obj = make_shared[cOptionalRefStruct]()
         cdef cOptionalRefStruct* cpp_obj = self._cpp_obj.get()
         if proto is __Protocol.COMPACT:
@@ -756,22 +755,22 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         if tiny_int is not None:
             if not isinstance(tiny_int, int):
                 raise TypeError(f'tiny_int is not a { int !r}.')
-            tiny_int = <int8_t> tiny_int
+            tiny_int = <cint8_t> tiny_int
 
         if small_int is not None:
             if not isinstance(small_int, int):
                 raise TypeError(f'small_int is not a { int !r}.')
-            small_int = <int16_t> small_int
+            small_int = <cint16_t> small_int
 
         if nice_sized_int is not None:
             if not isinstance(nice_sized_int, int):
                 raise TypeError(f'nice_sized_int is not a { int !r}.')
-            nice_sized_int = <int32_t> nice_sized_int
+            nice_sized_int = <cint32_t> nice_sized_int
 
         if big_int is not None:
             if not isinstance(big_int, int):
                 raise TypeError(f'big_int is not a { int !r}.')
-            big_int = <int64_t> big_int
+            big_int = <cint64_t> big_int
 
         if real is not None:
             if not isinstance(real, (float, int)):
@@ -867,22 +866,22 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         if tiny_int is not None:
             if not isinstance(tiny_int, int):
                 raise TypeError(f'tiny_int is not a { int !r}.')
-            tiny_int = <int8_t> tiny_int
+            tiny_int = <cint8_t> tiny_int
 
         if small_int is not None:
             if not isinstance(small_int, int):
                 raise TypeError(f'small_int is not a { int !r}.')
-            small_int = <int16_t> small_int
+            small_int = <cint16_t> small_int
 
         if nice_sized_int is not None:
             if not isinstance(nice_sized_int, int):
                 raise TypeError(f'nice_sized_int is not a { int !r}.')
-            nice_sized_int = <int32_t> nice_sized_int
+            nice_sized_int = <cint32_t> nice_sized_int
 
         if big_int is not None:
             if not isinstance(big_int, int):
                 raise TypeError(f'big_int is not a { int !r}.')
-            big_int = <int64_t> big_int
+            big_int = <cint64_t> big_int
 
         if real is not None:
             if not isinstance(real, (float, int)):
@@ -1181,8 +1180,8 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
                 serializer.CompactJSONSerialize[cSimpleStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef uint32_t _deserialize(SimpleStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
-        cdef uint32_t needed
+    cdef cuint32_t _deserialize(SimpleStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
         self._cpp_obj = make_shared[cSimpleStruct]()
         cdef cSimpleStruct* cpp_obj = self._cpp_obj.get()
         if proto is __Protocol.COMPACT:
@@ -1221,7 +1220,7 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         if an_integer is not None:
             if not isinstance(an_integer, int):
                 raise TypeError(f'an_integer is not a { int !r}.')
-            an_integer = <int32_t> an_integer
+            an_integer = <cint32_t> an_integer
 
         self._cpp_obj = move(ComplexStruct._make_instance(
           NULL,
@@ -1331,7 +1330,7 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         if an_integer is not None:
             if not isinstance(an_integer, int):
                 raise TypeError(f'an_integer is not a { int !r}.')
-            an_integer = <int32_t> an_integer
+            an_integer = <cint32_t> an_integer
 
         if name is not None:
             if not isinstance(name, str):
@@ -1702,8 +1701,8 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
                 serializer.CompactJSONSerialize[cComplexStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef uint32_t _deserialize(ComplexStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
-        cdef uint32_t needed
+    cdef cuint32_t _deserialize(ComplexStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
         self._cpp_obj = make_shared[cComplexStruct]()
         cdef cComplexStruct* cpp_obj = self._cpp_obj.get()
         if proto is __Protocol.COMPACT:
@@ -1867,8 +1866,8 @@ cdef class BinaryUnion(thrift.py3.types.Union):
                 serializer.CompactJSONSerialize[cBinaryUnion](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef uint32_t _deserialize(BinaryUnion self, const __iobuf.cIOBuf* buf, proto) except? 0:
-        cdef uint32_t needed
+    cdef cuint32_t _deserialize(BinaryUnion self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
         self._cpp_obj = make_shared[cBinaryUnion]()
         cdef cBinaryUnion* cpp_obj = self._cpp_obj.get()
         if proto is __Protocol.COMPACT:
@@ -2057,8 +2056,8 @@ cdef class BinaryUnionStruct(thrift.py3.types.Struct):
                 serializer.CompactJSONSerialize[cBinaryUnionStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef uint32_t _deserialize(BinaryUnionStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
-        cdef uint32_t needed
+    cdef cuint32_t _deserialize(BinaryUnionStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
         self._cpp_obj = make_shared[cBinaryUnionStruct]()
         cdef cBinaryUnionStruct* cpp_obj = self._cpp_obj.get()
         if proto is __Protocol.COMPACT:
@@ -2088,25 +2087,25 @@ cdef class List__i16(thrift.py3.types.Container):
             self._cpp_obj = List__i16._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[vector[int16_t]] c_items):
+    cdef create(shared_ptr[vector[cint16_t]] c_items):
         inst = <List__i16>List__i16.__new__(List__i16)
         inst._cpp_obj = move_shared(c_items)
         return inst
 
     def __copy__(List__i16 self):
-        cdef shared_ptr[vector[int16_t]] cpp_obj = make_shared[vector[int16_t]](
+        cdef shared_ptr[vector[cint16_t]] cpp_obj = make_shared[vector[cint16_t]](
             deref(self._cpp_obj)
         )
         return List__i16.create(move_shared(cpp_obj))
 
     @staticmethod
-    cdef shared_ptr[vector[int16_t]] _make_instance(object items) except *:
-        cdef shared_ptr[vector[int16_t]] c_inst = make_shared[vector[int16_t]]()
+    cdef shared_ptr[vector[cint16_t]] _make_instance(object items) except *:
+        cdef shared_ptr[vector[cint16_t]] c_inst = make_shared[vector[cint16_t]]()
         if items is not None:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                item = <int16_t> item
+                item = <cint16_t> item
                 deref(c_inst).push_back(item)
         return c_inst
 
@@ -2114,10 +2113,10 @@ cdef class List__i16(thrift.py3.types.Container):
         return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
-        cdef shared_ptr[vector[int16_t]] c_inst
-        cdef int16_t citem
+        cdef shared_ptr[vector[cint16_t]] c_inst
+        cdef cint16_t citem
         if isinstance(index_obj, slice):
-            c_inst = make_shared[vector[int16_t]]()
+            c_inst = make_shared[vector[cint16_t]]()
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
@@ -2166,13 +2165,13 @@ cdef class List__i16(thrift.py3.types.Container):
             return False
         if not isinstance(item, int):
             return False
-        return std_libcpp.find[vector[int16_t].iterator, int16_t](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item) != deref(self._cpp_obj).end()
+        return std_libcpp.find[vector[cint16_t].iterator, cint16_t](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item) != deref(self._cpp_obj).end()
 
     def __iter__(self):
         if not self:
             return
-        cdef int16_t citem
-        cdef vector[int16_t].iterator loc = deref(self._cpp_obj).begin()
+        cdef cint16_t citem
+        cdef vector[cint16_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = deref(loc)
             yield citem
@@ -2186,8 +2185,8 @@ cdef class List__i16(thrift.py3.types.Container):
     def __reversed__(self):
         if not self:
             return
-        cdef int16_t citem
-        cdef vector[int16_t].reverse_iterator loc = deref(self._cpp_obj).rbegin()
+        cdef cint16_t citem
+        cdef vector[cint16_t].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
             citem = deref(loc)
             yield citem
@@ -2218,13 +2217,13 @@ cdef class List__i16(thrift.py3.types.Container):
 
         if not isinstance(item, int):
             raise err
-        cdef vector[int16_t].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
-        cdef vector[int16_t].iterator loc = std_libcpp.find[vector[int16_t].iterator, int16_t](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
+        cdef vector[cint16_t].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
+        cdef vector[cint16_t].iterator loc = std_libcpp.find[vector[cint16_t].iterator, cint16_t](
+            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
             end,
             item        )
         if loc != end:
-            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
+            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -2232,7 +2231,7 @@ cdef class List__i16(thrift.py3.types.Container):
             return 0
         if not isinstance(item, int):
             return 0
-        return <int64_t> std_libcpp.count[vector[int16_t].iterator, int16_t](
+        return <cint64_t> std_libcpp.count[vector[cint16_t].iterator, cint16_t](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
 
     def __reduce__(self):
@@ -2254,25 +2253,25 @@ cdef class List__i32(thrift.py3.types.Container):
             self._cpp_obj = List__i32._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[vector[int32_t]] c_items):
+    cdef create(shared_ptr[vector[cint32_t]] c_items):
         inst = <List__i32>List__i32.__new__(List__i32)
         inst._cpp_obj = move_shared(c_items)
         return inst
 
     def __copy__(List__i32 self):
-        cdef shared_ptr[vector[int32_t]] cpp_obj = make_shared[vector[int32_t]](
+        cdef shared_ptr[vector[cint32_t]] cpp_obj = make_shared[vector[cint32_t]](
             deref(self._cpp_obj)
         )
         return List__i32.create(move_shared(cpp_obj))
 
     @staticmethod
-    cdef shared_ptr[vector[int32_t]] _make_instance(object items) except *:
-        cdef shared_ptr[vector[int32_t]] c_inst = make_shared[vector[int32_t]]()
+    cdef shared_ptr[vector[cint32_t]] _make_instance(object items) except *:
+        cdef shared_ptr[vector[cint32_t]] c_inst = make_shared[vector[cint32_t]]()
         if items is not None:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                item = <int32_t> item
+                item = <cint32_t> item
                 deref(c_inst).push_back(item)
         return c_inst
 
@@ -2280,10 +2279,10 @@ cdef class List__i32(thrift.py3.types.Container):
         return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
-        cdef shared_ptr[vector[int32_t]] c_inst
-        cdef int32_t citem
+        cdef shared_ptr[vector[cint32_t]] c_inst
+        cdef cint32_t citem
         if isinstance(index_obj, slice):
-            c_inst = make_shared[vector[int32_t]]()
+            c_inst = make_shared[vector[cint32_t]]()
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
@@ -2332,13 +2331,13 @@ cdef class List__i32(thrift.py3.types.Container):
             return False
         if not isinstance(item, int):
             return False
-        return std_libcpp.find[vector[int32_t].iterator, int32_t](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item) != deref(self._cpp_obj).end()
+        return std_libcpp.find[vector[cint32_t].iterator, cint32_t](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item) != deref(self._cpp_obj).end()
 
     def __iter__(self):
         if not self:
             return
-        cdef int32_t citem
-        cdef vector[int32_t].iterator loc = deref(self._cpp_obj).begin()
+        cdef cint32_t citem
+        cdef vector[cint32_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = deref(loc)
             yield citem
@@ -2352,8 +2351,8 @@ cdef class List__i32(thrift.py3.types.Container):
     def __reversed__(self):
         if not self:
             return
-        cdef int32_t citem
-        cdef vector[int32_t].reverse_iterator loc = deref(self._cpp_obj).rbegin()
+        cdef cint32_t citem
+        cdef vector[cint32_t].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
             citem = deref(loc)
             yield citem
@@ -2384,13 +2383,13 @@ cdef class List__i32(thrift.py3.types.Container):
 
         if not isinstance(item, int):
             raise err
-        cdef vector[int32_t].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
-        cdef vector[int32_t].iterator loc = std_libcpp.find[vector[int32_t].iterator, int32_t](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
+        cdef vector[cint32_t].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
+        cdef vector[cint32_t].iterator loc = std_libcpp.find[vector[cint32_t].iterator, cint32_t](
+            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
             end,
             item        )
         if loc != end:
-            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
+            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -2398,7 +2397,7 @@ cdef class List__i32(thrift.py3.types.Container):
             return 0
         if not isinstance(item, int):
             return 0
-        return <int64_t> std_libcpp.count[vector[int32_t].iterator, int32_t](
+        return <cint64_t> std_libcpp.count[vector[cint32_t].iterator, cint32_t](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
 
     def __reduce__(self):
@@ -2420,25 +2419,25 @@ cdef class List__i64(thrift.py3.types.Container):
             self._cpp_obj = List__i64._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[vector[int64_t]] c_items):
+    cdef create(shared_ptr[vector[cint64_t]] c_items):
         inst = <List__i64>List__i64.__new__(List__i64)
         inst._cpp_obj = move_shared(c_items)
         return inst
 
     def __copy__(List__i64 self):
-        cdef shared_ptr[vector[int64_t]] cpp_obj = make_shared[vector[int64_t]](
+        cdef shared_ptr[vector[cint64_t]] cpp_obj = make_shared[vector[cint64_t]](
             deref(self._cpp_obj)
         )
         return List__i64.create(move_shared(cpp_obj))
 
     @staticmethod
-    cdef shared_ptr[vector[int64_t]] _make_instance(object items) except *:
-        cdef shared_ptr[vector[int64_t]] c_inst = make_shared[vector[int64_t]]()
+    cdef shared_ptr[vector[cint64_t]] _make_instance(object items) except *:
+        cdef shared_ptr[vector[cint64_t]] c_inst = make_shared[vector[cint64_t]]()
         if items is not None:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                item = <int64_t> item
+                item = <cint64_t> item
                 deref(c_inst).push_back(item)
         return c_inst
 
@@ -2446,10 +2445,10 @@ cdef class List__i64(thrift.py3.types.Container):
         return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
-        cdef shared_ptr[vector[int64_t]] c_inst
-        cdef int64_t citem
+        cdef shared_ptr[vector[cint64_t]] c_inst
+        cdef cint64_t citem
         if isinstance(index_obj, slice):
-            c_inst = make_shared[vector[int64_t]]()
+            c_inst = make_shared[vector[cint64_t]]()
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
@@ -2498,13 +2497,13 @@ cdef class List__i64(thrift.py3.types.Container):
             return False
         if not isinstance(item, int):
             return False
-        return std_libcpp.find[vector[int64_t].iterator, int64_t](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item) != deref(self._cpp_obj).end()
+        return std_libcpp.find[vector[cint64_t].iterator, cint64_t](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item) != deref(self._cpp_obj).end()
 
     def __iter__(self):
         if not self:
             return
-        cdef int64_t citem
-        cdef vector[int64_t].iterator loc = deref(self._cpp_obj).begin()
+        cdef cint64_t citem
+        cdef vector[cint64_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = deref(loc)
             yield citem
@@ -2518,8 +2517,8 @@ cdef class List__i64(thrift.py3.types.Container):
     def __reversed__(self):
         if not self:
             return
-        cdef int64_t citem
-        cdef vector[int64_t].reverse_iterator loc = deref(self._cpp_obj).rbegin()
+        cdef cint64_t citem
+        cdef vector[cint64_t].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
             citem = deref(loc)
             yield citem
@@ -2550,13 +2549,13 @@ cdef class List__i64(thrift.py3.types.Container):
 
         if not isinstance(item, int):
             raise err
-        cdef vector[int64_t].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
-        cdef vector[int64_t].iterator loc = std_libcpp.find[vector[int64_t].iterator, int64_t](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
+        cdef vector[cint64_t].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
+        cdef vector[cint64_t].iterator loc = std_libcpp.find[vector[cint64_t].iterator, cint64_t](
+            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
             end,
             item        )
         if loc != end:
-            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
+            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -2564,7 +2563,7 @@ cdef class List__i64(thrift.py3.types.Container):
             return 0
         if not isinstance(item, int):
             return 0
-        return <int64_t> std_libcpp.count[vector[int64_t].iterator, int64_t](
+        return <cint64_t> std_libcpp.count[vector[cint64_t].iterator, cint64_t](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
 
     def __reduce__(self):
@@ -2715,13 +2714,13 @@ cdef class List__string(thrift.py3.types.Container):
 
         if not isinstance(item, str):
             raise err
-        cdef vector[string].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
+        cdef vector[string].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
         cdef vector[string].iterator loc = std_libcpp.find[vector[string].iterator, string](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
+            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
             end,
             item.encode('UTF-8')        )
         if loc != end:
-            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
+            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -2729,7 +2728,7 @@ cdef class List__string(thrift.py3.types.Container):
             return 0
         if not isinstance(item, str):
             return 0
-        return <int64_t> std_libcpp.count[vector[string].iterator, string](
+        return <cint64_t> std_libcpp.count[vector[string].iterator, string](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item.encode('UTF-8'))
 
     def __reduce__(self):
@@ -2880,13 +2879,13 @@ cdef class List__SimpleStruct(thrift.py3.types.Container):
 
         if not isinstance(item, SimpleStruct):
             raise err
-        cdef vector[cSimpleStruct].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
+        cdef vector[cSimpleStruct].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
         cdef vector[cSimpleStruct].iterator loc = std_libcpp.find[vector[cSimpleStruct].iterator, cSimpleStruct](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
+            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
             end,
             deref((<SimpleStruct>item)._cpp_obj)        )
         if loc != end:
-            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
+            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -2894,7 +2893,7 @@ cdef class List__SimpleStruct(thrift.py3.types.Container):
             return 0
         if not isinstance(item, SimpleStruct):
             return 0
-        return <int64_t> std_libcpp.count[vector[cSimpleStruct].iterator, cSimpleStruct](
+        return <cint64_t> std_libcpp.count[vector[cSimpleStruct].iterator, cSimpleStruct](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<SimpleStruct>item)._cpp_obj))
 
     def __reduce__(self):
@@ -2916,25 +2915,25 @@ cdef class Set__i32(thrift.py3.types.Container):
             self._cpp_obj = Set__i32._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[cset[int32_t]] c_items):
+    cdef create(shared_ptr[cset[cint32_t]] c_items):
         inst = <Set__i32>Set__i32.__new__(Set__i32)
         inst._cpp_obj = move_shared(c_items)
         return inst
 
     def __copy__(Set__i32 self):
-        cdef shared_ptr[cset[int32_t]] cpp_obj = make_shared[cset[int32_t]](
+        cdef shared_ptr[cset[cint32_t]] cpp_obj = make_shared[cset[cint32_t]](
             deref(self._cpp_obj)
         )
         return Set__i32.create(move_shared(cpp_obj))
 
     @staticmethod
-    cdef shared_ptr[cset[int32_t]] _make_instance(object items) except *:
-        cdef shared_ptr[cset[int32_t]] c_inst = make_shared[cset[int32_t]]()
+    cdef shared_ptr[cset[cint32_t]] _make_instance(object items) except *:
+        cdef shared_ptr[cset[cint32_t]] c_inst = make_shared[cset[cint32_t]]()
         if items is not None:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                item = <int32_t> item
+                item = <cint32_t> item
                 deref(c_inst).insert(item)
         return c_inst
 
@@ -2952,8 +2951,8 @@ cdef class Set__i32(thrift.py3.types.Container):
     def __iter__(self):
         if not self:
             return
-        cdef int32_t citem
-        cdef cset[int32_t].iterator loc = deref(self._cpp_obj).begin()
+        cdef cint32_t citem
+        cdef cset[cint32_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = deref(loc)
             yield citem
@@ -2966,8 +2965,8 @@ cdef class Set__i32(thrift.py3.types.Container):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        cdef shared_ptr[cset[int32_t]] cself, cother
-        cdef cset[int32_t].iterator loc
+        cdef shared_ptr[cset[cint32_t]] cself, cother
+        cdef cset[cint32_t].iterator loc
         if (isinstance(self, Set__i32) and
                 isinstance(other, Set__i32)):
             cself = (<Set__i32> self)._cpp_obj
@@ -3047,13 +3046,13 @@ cdef class Set__i32(thrift.py3.types.Container):
         if not isinstance(other, Set__i32):
             other = Set__i32(other)
 
-        cdef shared_ptr[cset[int32_t]] shretval = \
-            make_shared[cset[int32_t]]()
+        cdef shared_ptr[cset[cint32_t]] shretval = \
+            make_shared[cset[cint32_t]]()
 
-        cdef shared_ptr[cset[int32_t]] cself = (<Set__i32> self)._cpp_obj
-        cdef shared_ptr[cset[int32_t]] cother = (<Set__i32> other)._cpp_obj
+        cdef shared_ptr[cset[cint32_t]] cself = (<Set__i32> self)._cpp_obj
+        cdef shared_ptr[cset[cint32_t]] cother = (<Set__i32> other)._cpp_obj
 
-        cdef cset[int32_t].iterator loc = deref(cself).begin()
+        cdef cset[cint32_t].iterator loc = deref(cself).begin()
         while loc != deref(cself).end():
             if deref(cother).count(deref(loc)) > 0:
                 deref(shretval).insert(deref(loc))
@@ -3066,13 +3065,13 @@ cdef class Set__i32(thrift.py3.types.Container):
         if not isinstance(other, Set__i32):
             other = Set__i32(other)
 
-        cdef shared_ptr[cset[int32_t]] shretval = \
-            make_shared[cset[int32_t]]()
+        cdef shared_ptr[cset[cint32_t]] shretval = \
+            make_shared[cset[cint32_t]]()
 
-        cdef shared_ptr[cset[int32_t]] cself = (<Set__i32> self)._cpp_obj
-        cdef shared_ptr[cset[int32_t]] cother = (<Set__i32> other)._cpp_obj
+        cdef shared_ptr[cset[cint32_t]] cself = (<Set__i32> self)._cpp_obj
+        cdef shared_ptr[cset[cint32_t]] cother = (<Set__i32> other)._cpp_obj
 
-        cdef cset[int32_t].iterator loc = deref(cself).begin()
+        cdef cset[cint32_t].iterator loc = deref(cself).begin()
         while loc != deref(cself).end():
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -3085,13 +3084,13 @@ cdef class Set__i32(thrift.py3.types.Container):
         if not isinstance(other, Set__i32):
             other = Set__i32(other)
 
-        cdef shared_ptr[cset[int32_t]] shretval = \
-            make_shared[cset[int32_t]]()
+        cdef shared_ptr[cset[cint32_t]] shretval = \
+            make_shared[cset[cint32_t]]()
 
-        cdef shared_ptr[cset[int32_t]] cself = (<Set__i32> self)._cpp_obj
-        cdef shared_ptr[cset[int32_t]] cother = (<Set__i32> other)._cpp_obj
+        cdef shared_ptr[cset[cint32_t]] cself = (<Set__i32> self)._cpp_obj
+        cdef shared_ptr[cset[cint32_t]] cother = (<Set__i32> other)._cpp_obj
 
-        cdef cset[int32_t].iterator loc = deref(cself).begin()
+        cdef cset[cint32_t].iterator loc = deref(cself).begin()
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -3107,13 +3106,13 @@ cdef class Set__i32(thrift.py3.types.Container):
         if not isinstance(other, Set__i32):
             other = Set__i32(other)
 
-        cdef shared_ptr[cset[int32_t]] shretval = \
-            make_shared[cset[int32_t]]()
+        cdef shared_ptr[cset[cint32_t]] shretval = \
+            make_shared[cset[cint32_t]]()
 
-        cdef shared_ptr[cset[int32_t]] cself = (<Set__i32> self)._cpp_obj
-        cdef shared_ptr[cset[int32_t]] cother = (<Set__i32> other)._cpp_obj
+        cdef shared_ptr[cset[cint32_t]] cself = (<Set__i32> self)._cpp_obj
+        cdef shared_ptr[cset[cint32_t]] cother = (<Set__i32> other)._cpp_obj
 
-        cdef cset[int32_t].iterator loc = deref(cself).begin()
+        cdef cset[cint32_t].iterator loc = deref(cself).begin()
         while loc != deref(cself).end():
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -3691,27 +3690,27 @@ cdef class Map__string_i16(thrift.py3.types.Container):
             self._cpp_obj = Map__string_i16._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[cmap[string,int16_t]] c_items):
+    cdef create(shared_ptr[cmap[string,cint16_t]] c_items):
         inst = <Map__string_i16>Map__string_i16.__new__(Map__string_i16)
         inst._cpp_obj = move_shared(c_items)
         return inst
 
     def __copy__(Map__string_i16 self):
-        cdef shared_ptr[cmap[string,int16_t]] cpp_obj = make_shared[cmap[string,int16_t]](
+        cdef shared_ptr[cmap[string,cint16_t]] cpp_obj = make_shared[cmap[string,cint16_t]](
             deref(self._cpp_obj)
         )
         return Map__string_i16.create(move_shared(cpp_obj))
 
     @staticmethod
-    cdef shared_ptr[cmap[string,int16_t]] _make_instance(object items) except *:
-        cdef shared_ptr[cmap[string,int16_t]] c_inst = make_shared[cmap[string,int16_t]]()
+    cdef shared_ptr[cmap[string,cint16_t]] _make_instance(object items) except *:
+        cdef shared_ptr[cmap[string,cint16_t]] c_inst = make_shared[cmap[string,cint16_t]]()
         if items is not None:
             for key, item in items.items():
                 if not isinstance(key, str):
                     raise TypeError(f"{key!r} is not of type str")
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                item = <int16_t> item
+                item = <cint16_t> item
 
                 deref(c_inst)[key.encode('UTF-8')] = item
         return c_inst
@@ -3722,11 +3721,11 @@ cdef class Map__string_i16(thrift.py3.types.Container):
             raise err
         if not isinstance(key, str):
             raise err from None
-        cdef cmap[string,int16_t].iterator iter = deref(
+        cdef cmap[string,cint16_t].iterator iter = deref(
             self._cpp_obj).find(key.encode('UTF-8'))
         if iter == deref(self._cpp_obj).end():
             raise err
-        cdef int16_t citem = deref(iter).second
+        cdef cint16_t citem = deref(iter).second
         return citem
 
     def __len__(self):
@@ -3736,7 +3735,7 @@ cdef class Map__string_i16(thrift.py3.types.Container):
         if not self:
             return
         cdef string citem
-        cdef cmap[string,int16_t].iterator loc = deref(self._cpp_obj).begin()
+        cdef cmap[string,cint16_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = deref(loc).first
             yield bytes(citem).decode('UTF-8')
@@ -3792,8 +3791,8 @@ cdef class Map__string_i16(thrift.py3.types.Container):
     def values(self):
         if not self:
             return
-        cdef int16_t citem
-        cdef cmap[string,int16_t].iterator loc = deref(self._cpp_obj).begin()
+        cdef cint16_t citem
+        cdef cmap[string,cint16_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = deref(loc).second
             yield citem
@@ -3803,8 +3802,8 @@ cdef class Map__string_i16(thrift.py3.types.Container):
         if not self:
             return
         cdef string ckey
-        cdef int16_t citem
-        cdef cmap[string,int16_t].iterator loc = deref(self._cpp_obj).begin()
+        cdef cint16_t citem
+        cdef cmap[string,cint16_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = deref(loc).second
@@ -3830,20 +3829,20 @@ cdef class List__List__i32(thrift.py3.types.Container):
             self._cpp_obj = List__List__i32._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[vector[vector[int32_t]]] c_items):
+    cdef create(shared_ptr[vector[vector[cint32_t]]] c_items):
         inst = <List__List__i32>List__List__i32.__new__(List__List__i32)
         inst._cpp_obj = move_shared(c_items)
         return inst
 
     def __copy__(List__List__i32 self):
-        cdef shared_ptr[vector[vector[int32_t]]] cpp_obj = make_shared[vector[vector[int32_t]]](
+        cdef shared_ptr[vector[vector[cint32_t]]] cpp_obj = make_shared[vector[vector[cint32_t]]](
             deref(self._cpp_obj)
         )
         return List__List__i32.create(move_shared(cpp_obj))
 
     @staticmethod
-    cdef shared_ptr[vector[vector[int32_t]]] _make_instance(object items) except *:
-        cdef shared_ptr[vector[vector[int32_t]]] c_inst = make_shared[vector[vector[int32_t]]]()
+    cdef shared_ptr[vector[vector[cint32_t]]] _make_instance(object items) except *:
+        cdef shared_ptr[vector[vector[cint32_t]]] c_inst = make_shared[vector[vector[cint32_t]]]()
         if items is not None:
             for item in items:
                 if item is None:
@@ -3857,10 +3856,10 @@ cdef class List__List__i32(thrift.py3.types.Container):
         return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
-        cdef shared_ptr[vector[vector[int32_t]]] c_inst
-        cdef shared_ptr[vector[int32_t]] citem
+        cdef shared_ptr[vector[vector[cint32_t]]] c_inst
+        cdef shared_ptr[vector[cint32_t]] citem
         if isinstance(index_obj, slice):
-            c_inst = make_shared[vector[vector[int32_t]]]()
+            c_inst = make_shared[vector[vector[cint32_t]]]()
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
@@ -3914,13 +3913,13 @@ cdef class List__List__i32(thrift.py3.types.Container):
             return False
         if not isinstance(item, List__i32):
             return False
-        return std_libcpp.find[vector[vector[int32_t]].iterator, vector[int32_t]](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<List__i32>item)._cpp_obj)) != deref(self._cpp_obj).end()
+        return std_libcpp.find[vector[vector[cint32_t]].iterator, vector[cint32_t]](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<List__i32>item)._cpp_obj)) != deref(self._cpp_obj).end()
 
     def __iter__(self):
         if not self:
             return
-        cdef shared_ptr[vector[int32_t]] citem
-        cdef vector[vector[int32_t]].iterator loc = deref(self._cpp_obj).begin()
+        cdef shared_ptr[vector[cint32_t]] citem
+        cdef vector[vector[cint32_t]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = reference_shared_ptr_List__List__i32(self._cpp_obj, deref(loc))
             yield List__i32.create(citem)
@@ -3934,8 +3933,8 @@ cdef class List__List__i32(thrift.py3.types.Container):
     def __reversed__(self):
         if not self:
             return
-        cdef shared_ptr[vector[int32_t]] citem
-        cdef vector[vector[int32_t]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
+        cdef shared_ptr[vector[cint32_t]] citem
+        cdef vector[vector[cint32_t]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
             citem = reference_shared_ptr_List__List__i32(self._cpp_obj, deref(loc))
             yield List__i32.create(citem)
@@ -3971,13 +3970,13 @@ cdef class List__List__i32(thrift.py3.types.Container):
             raise err from None
         if not isinstance(item, List__i32):
             raise err
-        cdef vector[vector[int32_t]].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
-        cdef vector[vector[int32_t]].iterator loc = std_libcpp.find[vector[vector[int32_t]].iterator, vector[int32_t]](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
+        cdef vector[vector[cint32_t]].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
+        cdef vector[vector[cint32_t]].iterator loc = std_libcpp.find[vector[vector[cint32_t]].iterator, vector[cint32_t]](
+            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
             end,
             deref((<List__i32>item)._cpp_obj)        )
         if loc != end:
-            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
+            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -3990,7 +3989,7 @@ cdef class List__List__i32(thrift.py3.types.Container):
             return 0
         if not isinstance(item, List__i32):
             return 0
-        return <int64_t> std_libcpp.count[vector[vector[int32_t]].iterator, vector[int32_t]](
+        return <cint64_t> std_libcpp.count[vector[vector[cint32_t]].iterator, vector[cint32_t]](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<List__i32>item)._cpp_obj))
 
     def __reduce__(self):
@@ -4012,27 +4011,27 @@ cdef class Map__string_i32(thrift.py3.types.Container):
             self._cpp_obj = Map__string_i32._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[cmap[string,int32_t]] c_items):
+    cdef create(shared_ptr[cmap[string,cint32_t]] c_items):
         inst = <Map__string_i32>Map__string_i32.__new__(Map__string_i32)
         inst._cpp_obj = move_shared(c_items)
         return inst
 
     def __copy__(Map__string_i32 self):
-        cdef shared_ptr[cmap[string,int32_t]] cpp_obj = make_shared[cmap[string,int32_t]](
+        cdef shared_ptr[cmap[string,cint32_t]] cpp_obj = make_shared[cmap[string,cint32_t]](
             deref(self._cpp_obj)
         )
         return Map__string_i32.create(move_shared(cpp_obj))
 
     @staticmethod
-    cdef shared_ptr[cmap[string,int32_t]] _make_instance(object items) except *:
-        cdef shared_ptr[cmap[string,int32_t]] c_inst = make_shared[cmap[string,int32_t]]()
+    cdef shared_ptr[cmap[string,cint32_t]] _make_instance(object items) except *:
+        cdef shared_ptr[cmap[string,cint32_t]] c_inst = make_shared[cmap[string,cint32_t]]()
         if items is not None:
             for key, item in items.items():
                 if not isinstance(key, str):
                     raise TypeError(f"{key!r} is not of type str")
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                item = <int32_t> item
+                item = <cint32_t> item
 
                 deref(c_inst)[key.encode('UTF-8')] = item
         return c_inst
@@ -4043,11 +4042,11 @@ cdef class Map__string_i32(thrift.py3.types.Container):
             raise err
         if not isinstance(key, str):
             raise err from None
-        cdef cmap[string,int32_t].iterator iter = deref(
+        cdef cmap[string,cint32_t].iterator iter = deref(
             self._cpp_obj).find(key.encode('UTF-8'))
         if iter == deref(self._cpp_obj).end():
             raise err
-        cdef int32_t citem = deref(iter).second
+        cdef cint32_t citem = deref(iter).second
         return citem
 
     def __len__(self):
@@ -4057,7 +4056,7 @@ cdef class Map__string_i32(thrift.py3.types.Container):
         if not self:
             return
         cdef string citem
-        cdef cmap[string,int32_t].iterator loc = deref(self._cpp_obj).begin()
+        cdef cmap[string,cint32_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = deref(loc).first
             yield bytes(citem).decode('UTF-8')
@@ -4113,8 +4112,8 @@ cdef class Map__string_i32(thrift.py3.types.Container):
     def values(self):
         if not self:
             return
-        cdef int32_t citem
-        cdef cmap[string,int32_t].iterator loc = deref(self._cpp_obj).begin()
+        cdef cint32_t citem
+        cdef cmap[string,cint32_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = deref(loc).second
             yield citem
@@ -4124,8 +4123,8 @@ cdef class Map__string_i32(thrift.py3.types.Container):
         if not self:
             return
         cdef string ckey
-        cdef int32_t citem
-        cdef cmap[string,int32_t].iterator loc = deref(self._cpp_obj).begin()
+        cdef cint32_t citem
+        cdef cmap[string,cint32_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = deref(loc).second
@@ -4151,20 +4150,20 @@ cdef class Map__string_Map__string_i32(thrift.py3.types.Container):
             self._cpp_obj = Map__string_Map__string_i32._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[cmap[string,cmap[string,int32_t]]] c_items):
+    cdef create(shared_ptr[cmap[string,cmap[string,cint32_t]]] c_items):
         inst = <Map__string_Map__string_i32>Map__string_Map__string_i32.__new__(Map__string_Map__string_i32)
         inst._cpp_obj = move_shared(c_items)
         return inst
 
     def __copy__(Map__string_Map__string_i32 self):
-        cdef shared_ptr[cmap[string,cmap[string,int32_t]]] cpp_obj = make_shared[cmap[string,cmap[string,int32_t]]](
+        cdef shared_ptr[cmap[string,cmap[string,cint32_t]]] cpp_obj = make_shared[cmap[string,cmap[string,cint32_t]]](
             deref(self._cpp_obj)
         )
         return Map__string_Map__string_i32.create(move_shared(cpp_obj))
 
     @staticmethod
-    cdef shared_ptr[cmap[string,cmap[string,int32_t]]] _make_instance(object items) except *:
-        cdef shared_ptr[cmap[string,cmap[string,int32_t]]] c_inst = make_shared[cmap[string,cmap[string,int32_t]]]()
+    cdef shared_ptr[cmap[string,cmap[string,cint32_t]]] _make_instance(object items) except *:
+        cdef shared_ptr[cmap[string,cmap[string,cint32_t]]] c_inst = make_shared[cmap[string,cmap[string,cint32_t]]]()
         if items is not None:
             for key, item in items.items():
                 if not isinstance(key, str):
@@ -4183,11 +4182,11 @@ cdef class Map__string_Map__string_i32(thrift.py3.types.Container):
             raise err
         if not isinstance(key, str):
             raise err from None
-        cdef cmap[string,cmap[string,int32_t]].iterator iter = deref(
+        cdef cmap[string,cmap[string,cint32_t]].iterator iter = deref(
             self._cpp_obj).find(key.encode('UTF-8'))
         if iter == deref(self._cpp_obj).end():
             raise err
-        cdef shared_ptr[cmap[string,int32_t]] citem = reference_shared_ptr_Map__string_Map__string_i32(self._cpp_obj, deref(iter).second)
+        cdef shared_ptr[cmap[string,cint32_t]] citem = reference_shared_ptr_Map__string_Map__string_i32(self._cpp_obj, deref(iter).second)
         return Map__string_i32.create(citem)
 
     def __len__(self):
@@ -4197,7 +4196,7 @@ cdef class Map__string_Map__string_i32(thrift.py3.types.Container):
         if not self:
             return
         cdef string citem
-        cdef cmap[string,cmap[string,int32_t]].iterator loc = deref(self._cpp_obj).begin()
+        cdef cmap[string,cmap[string,cint32_t]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = deref(loc).first
             yield bytes(citem).decode('UTF-8')
@@ -4253,8 +4252,8 @@ cdef class Map__string_Map__string_i32(thrift.py3.types.Container):
     def values(self):
         if not self:
             return
-        cdef shared_ptr[cmap[string,int32_t]] citem
-        cdef cmap[string,cmap[string,int32_t]].iterator loc = deref(self._cpp_obj).begin()
+        cdef shared_ptr[cmap[string,cint32_t]] citem
+        cdef cmap[string,cmap[string,cint32_t]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = reference_shared_ptr_Map__string_Map__string_i32(self._cpp_obj, deref(loc).second)
             yield Map__string_i32.create(citem)
@@ -4264,8 +4263,8 @@ cdef class Map__string_Map__string_i32(thrift.py3.types.Container):
         if not self:
             return
         cdef string ckey
-        cdef shared_ptr[cmap[string,int32_t]] citem
-        cdef cmap[string,cmap[string,int32_t]].iterator loc = deref(self._cpp_obj).begin()
+        cdef shared_ptr[cmap[string,cint32_t]] citem
+        cdef cmap[string,cmap[string,cint32_t]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = reference_shared_ptr_Map__string_Map__string_i32(self._cpp_obj, deref(loc).second)
@@ -4432,13 +4431,13 @@ cdef class List__Set__string(thrift.py3.types.Container):
             raise err from None
         if not isinstance(item, Set__string):
             raise err
-        cdef vector[cset[string]].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
+        cdef vector[cset[string]].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
         cdef vector[cset[string]].iterator loc = std_libcpp.find[vector[cset[string]].iterator, cset[string]](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
+            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
             end,
             deref((<Set__string>item)._cpp_obj)        )
         if loc != end:
-            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
+            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -4451,7 +4450,7 @@ cdef class List__Set__string(thrift.py3.types.Container):
             return 0
         if not isinstance(item, Set__string):
             return 0
-        return <int64_t> std_libcpp.count[vector[cset[string]].iterator, cset[string]](
+        return <cint64_t> std_libcpp.count[vector[cset[string]].iterator, cset[string]](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<Set__string>item)._cpp_obj))
 
     def __reduce__(self):
@@ -4754,13 +4753,13 @@ cdef class List__List__string(thrift.py3.types.Container):
             raise err from None
         if not isinstance(item, List__string):
             raise err
-        cdef vector[vector[string]].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
+        cdef vector[vector[string]].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
         cdef vector[vector[string]].iterator loc = std_libcpp.find[vector[vector[string]].iterator, vector[string]](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
+            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
             end,
             deref((<List__string>item)._cpp_obj)        )
         if loc != end:
-            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
+            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -4773,7 +4772,7 @@ cdef class List__List__string(thrift.py3.types.Container):
             return 0
         if not isinstance(item, List__string):
             return 0
-        return <int64_t> std_libcpp.count[vector[vector[string]].iterator, vector[string]](
+        return <cint64_t> std_libcpp.count[vector[vector[string]].iterator, vector[string]](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<List__string>item)._cpp_obj))
 
     def __reduce__(self):
@@ -4795,20 +4794,20 @@ cdef class List__Set__i32(thrift.py3.types.Container):
             self._cpp_obj = List__Set__i32._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[vector[cset[int32_t]]] c_items):
+    cdef create(shared_ptr[vector[cset[cint32_t]]] c_items):
         inst = <List__Set__i32>List__Set__i32.__new__(List__Set__i32)
         inst._cpp_obj = move_shared(c_items)
         return inst
 
     def __copy__(List__Set__i32 self):
-        cdef shared_ptr[vector[cset[int32_t]]] cpp_obj = make_shared[vector[cset[int32_t]]](
+        cdef shared_ptr[vector[cset[cint32_t]]] cpp_obj = make_shared[vector[cset[cint32_t]]](
             deref(self._cpp_obj)
         )
         return List__Set__i32.create(move_shared(cpp_obj))
 
     @staticmethod
-    cdef shared_ptr[vector[cset[int32_t]]] _make_instance(object items) except *:
-        cdef shared_ptr[vector[cset[int32_t]]] c_inst = make_shared[vector[cset[int32_t]]]()
+    cdef shared_ptr[vector[cset[cint32_t]]] _make_instance(object items) except *:
+        cdef shared_ptr[vector[cset[cint32_t]]] c_inst = make_shared[vector[cset[cint32_t]]]()
         if items is not None:
             for item in items:
                 if item is None:
@@ -4822,10 +4821,10 @@ cdef class List__Set__i32(thrift.py3.types.Container):
         return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
-        cdef shared_ptr[vector[cset[int32_t]]] c_inst
-        cdef shared_ptr[cset[int32_t]] citem
+        cdef shared_ptr[vector[cset[cint32_t]]] c_inst
+        cdef shared_ptr[cset[cint32_t]] citem
         if isinstance(index_obj, slice):
-            c_inst = make_shared[vector[cset[int32_t]]]()
+            c_inst = make_shared[vector[cset[cint32_t]]]()
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
@@ -4879,13 +4878,13 @@ cdef class List__Set__i32(thrift.py3.types.Container):
             return False
         if not isinstance(item, Set__i32):
             return False
-        return std_libcpp.find[vector[cset[int32_t]].iterator, cset[int32_t]](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<Set__i32>item)._cpp_obj)) != deref(self._cpp_obj).end()
+        return std_libcpp.find[vector[cset[cint32_t]].iterator, cset[cint32_t]](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<Set__i32>item)._cpp_obj)) != deref(self._cpp_obj).end()
 
     def __iter__(self):
         if not self:
             return
-        cdef shared_ptr[cset[int32_t]] citem
-        cdef vector[cset[int32_t]].iterator loc = deref(self._cpp_obj).begin()
+        cdef shared_ptr[cset[cint32_t]] citem
+        cdef vector[cset[cint32_t]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = reference_shared_ptr_List__Set__i32(self._cpp_obj, deref(loc))
             yield Set__i32.create(citem)
@@ -4899,8 +4898,8 @@ cdef class List__Set__i32(thrift.py3.types.Container):
     def __reversed__(self):
         if not self:
             return
-        cdef shared_ptr[cset[int32_t]] citem
-        cdef vector[cset[int32_t]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
+        cdef shared_ptr[cset[cint32_t]] citem
+        cdef vector[cset[cint32_t]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
             citem = reference_shared_ptr_List__Set__i32(self._cpp_obj, deref(loc))
             yield Set__i32.create(citem)
@@ -4936,13 +4935,13 @@ cdef class List__Set__i32(thrift.py3.types.Container):
             raise err from None
         if not isinstance(item, Set__i32):
             raise err
-        cdef vector[cset[int32_t]].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
-        cdef vector[cset[int32_t]].iterator loc = std_libcpp.find[vector[cset[int32_t]].iterator, cset[int32_t]](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
+        cdef vector[cset[cint32_t]].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
+        cdef vector[cset[cint32_t]].iterator loc = std_libcpp.find[vector[cset[cint32_t]].iterator, cset[cint32_t]](
+            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
             end,
             deref((<Set__i32>item)._cpp_obj)        )
         if loc != end:
-            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
+            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -4955,7 +4954,7 @@ cdef class List__Set__i32(thrift.py3.types.Container):
             return 0
         if not isinstance(item, Set__i32):
             return 0
-        return <int64_t> std_libcpp.count[vector[cset[int32_t]].iterator, cset[int32_t]](
+        return <cint64_t> std_libcpp.count[vector[cset[cint32_t]].iterator, cset[cint32_t]](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<Set__i32>item)._cpp_obj))
 
     def __reduce__(self):
@@ -5118,13 +5117,13 @@ cdef class List__Map__string_string(thrift.py3.types.Container):
             raise err from None
         if not isinstance(item, Map__string_string):
             raise err
-        cdef vector[cmap[string,string]].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
+        cdef vector[cmap[string,string]].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
         cdef vector[cmap[string,string]].iterator loc = std_libcpp.find[vector[cmap[string,string]].iterator, cmap[string,string]](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
+            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
             end,
             deref((<Map__string_string>item)._cpp_obj)        )
         if loc != end:
-            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
+            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -5137,7 +5136,7 @@ cdef class List__Map__string_string(thrift.py3.types.Container):
             return 0
         if not isinstance(item, Map__string_string):
             return 0
-        return <int64_t> std_libcpp.count[vector[cmap[string,string]].iterator, cmap[string,string]](
+        return <cint64_t> std_libcpp.count[vector[cmap[string,string]].iterator, cmap[string,string]](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<Map__string_string>item)._cpp_obj))
 
     def __reduce__(self):
@@ -5288,13 +5287,13 @@ cdef class List__binary(thrift.py3.types.Container):
 
         if not isinstance(item, bytes):
             raise err
-        cdef vector[string].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
+        cdef vector[string].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
         cdef vector[string].iterator loc = std_libcpp.find[vector[string].iterator, string](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
+            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
             end,
             item        )
         if loc != end:
-            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
+            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -5302,7 +5301,7 @@ cdef class List__binary(thrift.py3.types.Container):
             return 0
         if not isinstance(item, bytes):
             return 0
-        return <int64_t> std_libcpp.count[vector[string].iterator, string](
+        return <cint64_t> std_libcpp.count[vector[string].iterator, string](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
 
     def __reduce__(self):
@@ -5702,13 +5701,13 @@ cdef class List__AnEnum(thrift.py3.types.Container):
 
         if not isinstance(item, AnEnum):
             raise err
-        cdef vector[cAnEnum].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
+        cdef vector[cAnEnum].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
         cdef vector[cAnEnum].iterator loc = std_libcpp.find[vector[cAnEnum].iterator, cAnEnum](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
+            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
             end,
             AnEnum_to_cpp(item)        )
         if loc != end:
-            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
+            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -5716,7 +5715,7 @@ cdef class List__AnEnum(thrift.py3.types.Container):
             return 0
         if not isinstance(item, AnEnum):
             return 0
-        return <int64_t> std_libcpp.count[vector[cAnEnum].iterator, cAnEnum](
+        return <cint64_t> std_libcpp.count[vector[cAnEnum].iterator, cAnEnum](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), AnEnum_to_cpp(item))
 
     def __reduce__(self):
@@ -5738,25 +5737,25 @@ cdef class Map__i32_double(thrift.py3.types.Container):
             self._cpp_obj = Map__i32_double._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[cmap[int32_t,double]] c_items):
+    cdef create(shared_ptr[cmap[cint32_t,double]] c_items):
         inst = <Map__i32_double>Map__i32_double.__new__(Map__i32_double)
         inst._cpp_obj = move_shared(c_items)
         return inst
 
     def __copy__(Map__i32_double self):
-        cdef shared_ptr[cmap[int32_t,double]] cpp_obj = make_shared[cmap[int32_t,double]](
+        cdef shared_ptr[cmap[cint32_t,double]] cpp_obj = make_shared[cmap[cint32_t,double]](
             deref(self._cpp_obj)
         )
         return Map__i32_double.create(move_shared(cpp_obj))
 
     @staticmethod
-    cdef shared_ptr[cmap[int32_t,double]] _make_instance(object items) except *:
-        cdef shared_ptr[cmap[int32_t,double]] c_inst = make_shared[cmap[int32_t,double]]()
+    cdef shared_ptr[cmap[cint32_t,double]] _make_instance(object items) except *:
+        cdef shared_ptr[cmap[cint32_t,double]] c_inst = make_shared[cmap[cint32_t,double]]()
         if items is not None:
             for key, item in items.items():
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
-                key = <int32_t> key
+                key = <cint32_t> key
                 if not isinstance(item, (float, int)):
                     raise TypeError(f"{item!r} is not of type float")
 
@@ -5769,7 +5768,7 @@ cdef class Map__i32_double(thrift.py3.types.Container):
             raise err
         if not isinstance(key, int):
             raise err from None
-        cdef cmap[int32_t,double].iterator iter = deref(
+        cdef cmap[cint32_t,double].iterator iter = deref(
             self._cpp_obj).find(key)
         if iter == deref(self._cpp_obj).end():
             raise err
@@ -5782,8 +5781,8 @@ cdef class Map__i32_double(thrift.py3.types.Container):
     def __iter__(self):
         if not self:
             return
-        cdef int32_t citem
-        cdef cmap[int32_t,double].iterator loc = deref(self._cpp_obj).begin()
+        cdef cint32_t citem
+        cdef cmap[cint32_t,double].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = deref(loc).first
             yield citem
@@ -5821,7 +5820,7 @@ cdef class Map__i32_double(thrift.py3.types.Container):
             return False
         if not isinstance(key, int):
             return False
-        cdef int32_t ckey = key
+        cdef cint32_t ckey = key
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
@@ -5840,7 +5839,7 @@ cdef class Map__i32_double(thrift.py3.types.Container):
         if not self:
             return
         cdef double citem
-        cdef cmap[int32_t,double].iterator loc = deref(self._cpp_obj).begin()
+        cdef cmap[cint32_t,double].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = deref(loc).second
             yield citem
@@ -5849,9 +5848,9 @@ cdef class Map__i32_double(thrift.py3.types.Container):
     def items(self):
         if not self:
             return
-        cdef int32_t ckey
+        cdef cint32_t ckey
         cdef double citem
-        cdef cmap[int32_t,double].iterator loc = deref(self._cpp_obj).begin()
+        cdef cmap[cint32_t,double].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = deref(loc).second
@@ -5877,20 +5876,20 @@ cdef class List__Map__i32_double(thrift.py3.types.Container):
             self._cpp_obj = List__Map__i32_double._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[vector[cmap[int32_t,double]]] c_items):
+    cdef create(shared_ptr[vector[cmap[cint32_t,double]]] c_items):
         inst = <List__Map__i32_double>List__Map__i32_double.__new__(List__Map__i32_double)
         inst._cpp_obj = move_shared(c_items)
         return inst
 
     def __copy__(List__Map__i32_double self):
-        cdef shared_ptr[vector[cmap[int32_t,double]]] cpp_obj = make_shared[vector[cmap[int32_t,double]]](
+        cdef shared_ptr[vector[cmap[cint32_t,double]]] cpp_obj = make_shared[vector[cmap[cint32_t,double]]](
             deref(self._cpp_obj)
         )
         return List__Map__i32_double.create(move_shared(cpp_obj))
 
     @staticmethod
-    cdef shared_ptr[vector[cmap[int32_t,double]]] _make_instance(object items) except *:
-        cdef shared_ptr[vector[cmap[int32_t,double]]] c_inst = make_shared[vector[cmap[int32_t,double]]]()
+    cdef shared_ptr[vector[cmap[cint32_t,double]]] _make_instance(object items) except *:
+        cdef shared_ptr[vector[cmap[cint32_t,double]]] c_inst = make_shared[vector[cmap[cint32_t,double]]]()
         if items is not None:
             for item in items:
                 if item is None:
@@ -5904,10 +5903,10 @@ cdef class List__Map__i32_double(thrift.py3.types.Container):
         return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
-        cdef shared_ptr[vector[cmap[int32_t,double]]] c_inst
-        cdef shared_ptr[cmap[int32_t,double]] citem
+        cdef shared_ptr[vector[cmap[cint32_t,double]]] c_inst
+        cdef shared_ptr[cmap[cint32_t,double]] citem
         if isinstance(index_obj, slice):
-            c_inst = make_shared[vector[cmap[int32_t,double]]]()
+            c_inst = make_shared[vector[cmap[cint32_t,double]]]()
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
@@ -5961,13 +5960,13 @@ cdef class List__Map__i32_double(thrift.py3.types.Container):
             return False
         if not isinstance(item, Map__i32_double):
             return False
-        return std_libcpp.find[vector[cmap[int32_t,double]].iterator, cmap[int32_t,double]](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<Map__i32_double>item)._cpp_obj)) != deref(self._cpp_obj).end()
+        return std_libcpp.find[vector[cmap[cint32_t,double]].iterator, cmap[cint32_t,double]](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<Map__i32_double>item)._cpp_obj)) != deref(self._cpp_obj).end()
 
     def __iter__(self):
         if not self:
             return
-        cdef shared_ptr[cmap[int32_t,double]] citem
-        cdef vector[cmap[int32_t,double]].iterator loc = deref(self._cpp_obj).begin()
+        cdef shared_ptr[cmap[cint32_t,double]] citem
+        cdef vector[cmap[cint32_t,double]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = reference_shared_ptr_List__Map__i32_double(self._cpp_obj, deref(loc))
             yield Map__i32_double.create(citem)
@@ -5981,8 +5980,8 @@ cdef class List__Map__i32_double(thrift.py3.types.Container):
     def __reversed__(self):
         if not self:
             return
-        cdef shared_ptr[cmap[int32_t,double]] citem
-        cdef vector[cmap[int32_t,double]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
+        cdef shared_ptr[cmap[cint32_t,double]] citem
+        cdef vector[cmap[cint32_t,double]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
             citem = reference_shared_ptr_List__Map__i32_double(self._cpp_obj, deref(loc))
             yield Map__i32_double.create(citem)
@@ -6018,13 +6017,13 @@ cdef class List__Map__i32_double(thrift.py3.types.Container):
             raise err from None
         if not isinstance(item, Map__i32_double):
             raise err
-        cdef vector[cmap[int32_t,double]].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
-        cdef vector[cmap[int32_t,double]].iterator loc = std_libcpp.find[vector[cmap[int32_t,double]].iterator, cmap[int32_t,double]](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
+        cdef vector[cmap[cint32_t,double]].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
+        cdef vector[cmap[cint32_t,double]].iterator loc = std_libcpp.find[vector[cmap[cint32_t,double]].iterator, cmap[cint32_t,double]](
+            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
             end,
             deref((<Map__i32_double>item)._cpp_obj)        )
         if loc != end:
-            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
+            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -6037,7 +6036,7 @@ cdef class List__Map__i32_double(thrift.py3.types.Container):
             return 0
         if not isinstance(item, Map__i32_double):
             return 0
-        return <int64_t> std_libcpp.count[vector[cmap[int32_t,double]].iterator, cmap[int32_t,double]](
+        return <cint64_t> std_libcpp.count[vector[cmap[cint32_t,double]].iterator, cmap[cint32_t,double]](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<Map__i32_double>item)._cpp_obj))
 
     def __reduce__(self):

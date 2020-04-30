@@ -5,10 +5,16 @@
 #  @generated
 #
 
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+    uint32_t as cuint32_t,
+)
 from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
@@ -41,7 +47,7 @@ cdef extern from "gen-cpp2/hsmodule_types.h" namespace "::cpp2":
         bint operator>(cHsFoo&)
         bint operator<=(cHsFoo&)
         bint operator>=(cHsFoo&)
-        int64_t MyInt
+        cint64_t MyInt
         cHsFoo__isset __isset
 
 

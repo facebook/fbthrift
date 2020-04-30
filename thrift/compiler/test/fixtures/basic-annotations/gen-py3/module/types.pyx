@@ -12,7 +12,6 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
@@ -325,8 +324,8 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
                 serializer.CompactJSONSerialize[cMyStructNestedAnnotation](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef uint32_t _deserialize(MyStructNestedAnnotation self, const __iobuf.cIOBuf* buf, proto) except? 0:
-        cdef uint32_t needed
+    cdef cuint32_t _deserialize(MyStructNestedAnnotation self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
         self._cpp_obj = make_shared[cMyStructNestedAnnotation]()
         cdef cMyStructNestedAnnotation* cpp_obj = self._cpp_obj.get()
         if proto is __Protocol.COMPACT:
@@ -360,7 +359,7 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
         if count is not None:
             if not isinstance(count, int):
                 raise TypeError(f'count is not a { int !r}.')
-            count = <int64_t> count
+            count = <cint64_t> count
 
         self._cpp_obj = move(MyStructAnnotation._make_instance(
           NULL,
@@ -417,7 +416,7 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
         if count is not None:
             if not isinstance(count, int):
                 raise TypeError(f'count is not a { int !r}.')
-            count = <int64_t> count
+            count = <cint64_t> count
 
         if name is not None:
             if not isinstance(name, str):
@@ -645,8 +644,8 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
                 serializer.CompactJSONSerialize[cMyStructAnnotation](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef uint32_t _deserialize(MyStructAnnotation self, const __iobuf.cIOBuf* buf, proto) except? 0:
-        cdef uint32_t needed
+    cdef cuint32_t _deserialize(MyStructAnnotation self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
         self._cpp_obj = make_shared[cMyStructAnnotation]()
         cdef cMyStructAnnotation* cpp_obj = self._cpp_obj.get()
         if proto is __Protocol.COMPACT:
@@ -680,7 +679,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if major is not None:
             if not isinstance(major, int):
                 raise TypeError(f'major is not a { int !r}.')
-            major = <int64_t> major
+            major = <cint64_t> major
 
         self._cpp_obj = move(MyStruct._make_instance(
           NULL,
@@ -737,7 +736,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if major is not None:
             if not isinstance(major, int):
                 raise TypeError(f'major is not a { int !r}.')
-            major = <int64_t> major
+            major = <cint64_t> major
 
         if package is not None:
             if not isinstance(package, str):
@@ -962,8 +961,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 serializer.CompactJSONSerialize[cMyStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef uint32_t _deserialize(MyStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
-        cdef uint32_t needed
+    cdef cuint32_t _deserialize(MyStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
         self._cpp_obj = make_shared[cMyStruct]()
         cdef cMyStruct* cpp_obj = self._cpp_obj.get()
         if proto is __Protocol.COMPACT:
@@ -995,7 +994,7 @@ cdef class SecretStruct(thrift.py3.types.Struct):
         if id is not None:
             if not isinstance(id, int):
                 raise TypeError(f'id is not a { int !r}.')
-            id = <int64_t> id
+            id = <cint64_t> id
 
         self._cpp_obj = move(SecretStruct._make_instance(
           NULL,
@@ -1034,7 +1033,7 @@ cdef class SecretStruct(thrift.py3.types.Struct):
         if id is not None:
             if not isinstance(id, int):
                 raise TypeError(f'id is not a { int !r}.')
-            id = <int64_t> id
+            id = <cint64_t> id
 
         if password is not None:
             if not isinstance(password, str):
@@ -1199,8 +1198,8 @@ cdef class SecretStruct(thrift.py3.types.Struct):
                 serializer.CompactJSONSerialize[cSecretStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef uint32_t _deserialize(SecretStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
-        cdef uint32_t needed
+    cdef cuint32_t _deserialize(SecretStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
         self._cpp_obj = make_shared[cSecretStruct]()
         cdef cSecretStruct* cpp_obj = self._cpp_obj.get()
         if proto is __Protocol.COMPACT:

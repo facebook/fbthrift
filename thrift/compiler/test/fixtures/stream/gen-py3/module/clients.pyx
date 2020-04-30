@@ -4,11 +4,16 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+)
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.vector cimport vector as vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
@@ -52,7 +57,7 @@ from module.clients_wrapper cimport cPubSubStreamingServiceAsyncClient, cPubSubS
 
 
 cdef void PubSubStreamingService_returnstream_callback(
-    cFollyTry[cClientBufferedStream[int32_t]]&& result,
+    cFollyTry[cClientBufferedStream[cint32_t]]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -65,7 +70,7 @@ cdef void PubSubStreamingService_returnstream_callback(
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void PubSubStreamingService_streamthrows_callback(
-    cFollyTry[cClientBufferedStream[int32_t]]&& result,
+    cFollyTry[cClientBufferedStream[cint32_t]]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -78,7 +83,7 @@ cdef void PubSubStreamingService_streamthrows_callback(
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void PubSubStreamingService_boththrows_callback(
-    cFollyTry[cClientBufferedStream[int32_t]]&& result,
+    cFollyTry[cClientBufferedStream[cint32_t]]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -93,7 +98,7 @@ cdef void PubSubStreamingService_boththrows_callback(
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void PubSubStreamingService_responseandstreamthrows_callback(
-    cFollyTry[cResponseAndClientBufferedStream[int32_t,int32_t]]&& result,
+    cFollyTry[cResponseAndClientBufferedStream[cint32_t,cint32_t]]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -136,16 +141,16 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
         if not isinstance(i32_from, int):
             raise TypeError(f'i32_from is not a {int !r}.')
         else:
-            i32_from = <int32_t> i32_from
+            i32_from = <cint32_t> i32_from
         if not isinstance(i32_to, int):
             raise TypeError(f'i32_to is not a {int !r}.')
         else:
-            i32_to = <int32_t> i32_to
+            i32_to = <cint32_t> i32_to
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cClientBufferedStream[int32_t]](
+        bridgeFutureWith[cClientBufferedStream[cint32_t]](
             self._executor,
             down_cast_ptr[cPubSubStreamingServiceClientWrapper, cClientWrapper](self._client.get()).returnstream(rpc_options._cpp_obj, 
                 i32_from,
@@ -167,12 +172,12 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
         if not isinstance(foo, int):
             raise TypeError(f'foo is not a {int !r}.')
         else:
-            foo = <int32_t> foo
+            foo = <cint32_t> foo
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cClientBufferedStream[int32_t]](
+        bridgeFutureWith[cClientBufferedStream[cint32_t]](
             self._executor,
             down_cast_ptr[cPubSubStreamingServiceClientWrapper, cClientWrapper](self._client.get()).streamthrows(rpc_options._cpp_obj, 
                 foo,
@@ -193,12 +198,12 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
         if not isinstance(foo, int):
             raise TypeError(f'foo is not a {int !r}.')
         else:
-            foo = <int32_t> foo
+            foo = <cint32_t> foo
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cClientBufferedStream[int32_t]](
+        bridgeFutureWith[cClientBufferedStream[cint32_t]](
             self._executor,
             down_cast_ptr[cPubSubStreamingServiceClientWrapper, cClientWrapper](self._client.get()).boththrows(rpc_options._cpp_obj, 
                 foo,
@@ -219,12 +224,12 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
         if not isinstance(foo, int):
             raise TypeError(f'foo is not a {int !r}.')
         else:
-            foo = <int32_t> foo
+            foo = <cint32_t> foo
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cResponseAndClientBufferedStream[int32_t,int32_t]](
+        bridgeFutureWith[cResponseAndClientBufferedStream[cint32_t,cint32_t]](
             self._executor,
             down_cast_ptr[cPubSubStreamingServiceClientWrapper, cClientWrapper](self._client.get()).responseandstreamthrows(rpc_options._cpp_obj, 
                 foo,

@@ -12,7 +12,6 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
@@ -151,18 +150,18 @@ cdef class FooEx(thrift.py3.exceptions.Error):
 cdef class ClientBufferedStream__i32(ClientBufferedStream):
 
     @staticmethod
-    cdef create(cClientBufferedStream[int32_t]& c_obj, __RpcOptions rpc_options):
+    cdef create(cClientBufferedStream[cint32_t]& c_obj, __RpcOptions rpc_options):
         inst = ClientBufferedStream__i32(rpc_options)
-        inst._gen = make_unique[cClientBufferedStreamWrapper[int32_t]](c_obj)
+        inst._gen = make_unique[cClientBufferedStreamWrapper[cint32_t]](c_obj)
         return inst
 
     @staticmethod
     cdef void callback(
-        cFollyTry[cOptional[int32_t]]&& result,
+        cFollyTry[cOptional[cint32_t]]&& result,
         PyObject* userdata,
     ):
-        cdef cOptional[int32_t] opt_val
-        cdef int32_t _value
+        cdef cOptional[cint32_t] opt_val
+        cdef cint32_t _value
         stream, pyfuture, rpc_options = <object> userdata
         if result.hasException[cFooEx]():
             pyfuture.set_exception(FooEx.create(thrift.py3.exceptions.try_make_shared_exception[cFooEx](result.exception())))
@@ -185,7 +184,7 @@ cdef class ClientBufferedStream__i32(ClientBufferedStream):
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, self._rpc_options)
-        bridgeCoroTaskWith[cOptional[int32_t]](
+        bridgeCoroTaskWith[cOptional[cint32_t]](
             self._executor,
             deref(self._gen).getNext(),
             ClientBufferedStream__i32.callback,
@@ -199,12 +198,12 @@ cdef class ServerStream__i32(ServerStream):
 cdef class ResponseAndClientBufferedStream__i32_i32(ResponseAndClientBufferedStream):
 
     @staticmethod
-    cdef create(cResponseAndClientBufferedStream[int32_t, int32_t]& c_obj, __RpcOptions rpc_options):
+    cdef create(cResponseAndClientBufferedStream[cint32_t, cint32_t]& c_obj, __RpcOptions rpc_options):
         inst = ResponseAndClientBufferedStream__i32_i32()
         inst._stream = ClientBufferedStream__i32.create(
             c_obj.stream, rpc_options,
         )
-        cdef int32_t _value = c_obj.response
+        cdef cint32_t _value = c_obj.response
         inst._response = _value
         return inst
 

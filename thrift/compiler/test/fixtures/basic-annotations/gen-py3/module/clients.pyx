@@ -4,11 +4,16 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+)
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.vector cimport vector as vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
@@ -250,7 +255,7 @@ cdef class MyService(thrift.py3.client.Client):
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
-            id = <int64_t> id
+            id = <cint64_t> id
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -276,7 +281,7 @@ cdef class MyService(thrift.py3.client.Client):
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
-            id = <int64_t> id
+            id = <cint64_t> id
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -303,7 +308,7 @@ cdef class MyService(thrift.py3.client.Client):
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
-            id = <int64_t> id
+            id = <cint64_t> id
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -331,7 +336,7 @@ cdef class MyService(thrift.py3.client.Client):
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
-            id = <int64_t> id
+            id = <cint64_t> id
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()

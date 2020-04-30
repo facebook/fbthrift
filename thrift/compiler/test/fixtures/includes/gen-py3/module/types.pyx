@@ -12,7 +12,6 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
@@ -64,7 +63,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if MyIncludedInt is not None:
             if not isinstance(MyIncludedInt, int):
                 raise TypeError(f'MyIncludedInt is not a { int !r}.')
-            MyIncludedInt = <int64_t> MyIncludedInt
+            MyIncludedInt = <cint64_t> MyIncludedInt
 
         self._cpp_obj = move(MyStruct._make_instance(
           NULL,
@@ -120,7 +119,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if MyIncludedInt is not None:
             if not isinstance(MyIncludedInt, int):
                 raise TypeError(f'MyIncludedInt is not a { int !r}.')
-            MyIncludedInt = <int64_t> MyIncludedInt
+            MyIncludedInt = <cint64_t> MyIncludedInt
 
         inst = <MyStruct>MyStruct.__new__(MyStruct)
         inst._cpp_obj = move(MyStruct._make_instance(
@@ -311,8 +310,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 serializer.CompactJSONSerialize[cMyStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef uint32_t _deserialize(MyStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
-        cdef uint32_t needed
+    cdef cuint32_t _deserialize(MyStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
         self._cpp_obj = make_shared[cMyStruct]()
         cdef cMyStruct* cpp_obj = self._cpp_obj.get()
         if proto is __Protocol.COMPACT:

@@ -5,10 +5,16 @@
 #  @generated
 #
 
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+    uint32_t as cuint32_t,
+)
 from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
@@ -44,14 +50,14 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator>(cFoo&)
         bint operator<=(cFoo&)
         bint operator>=(cFoo&)
-        int32_t myInteger
+        cint32_t myInteger
         optional_field_ref[string] myString_ref()
         vector[cbool] myBools
-        vector[int32_t] myNumbers
+        vector[cint32_t] myNumbers
         cFoo__isset __isset
 
     cdef shared_ptr[vector[cbool]] reference_shared_ptr_myBools "thrift::py3::reference_shared_ptr<std::vector<bool>>"(shared_ptr[cFoo]&, vector[cbool]&)
-    cdef shared_ptr[vector[int32_t]] reference_shared_ptr_myNumbers "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cFoo]&, vector[int32_t]&)
+    cdef shared_ptr[vector[cint32_t]] reference_shared_ptr_myNumbers "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cFoo]&, vector[cint32_t]&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cFoo] move(unique_ptr[cFoo])
@@ -94,20 +100,20 @@ cdef class List__bool(thrift.py3.types.Container):
     cdef shared_ptr[vector[cbool]] _make_instance(object items) except *
 
 cdef class List__i32(thrift.py3.types.Container):
-    cdef shared_ptr[vector[int32_t]] _cpp_obj
+    cdef shared_ptr[vector[cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[int32_t]])
+    cdef create(shared_ptr[vector[cint32_t]])
     @staticmethod
-    cdef shared_ptr[vector[int32_t]] _make_instance(object items) except *
+    cdef shared_ptr[vector[cint32_t]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[cbool]] move "std::move"(unique_ptr[vector[cbool]])
     cdef shared_ptr[vector[cbool]] move_shared "std::move"(shared_ptr[vector[cbool]])
-    cdef shared_ptr[vector[int32_t]] move "std::move"(unique_ptr[vector[int32_t]])
-    cdef shared_ptr[vector[int32_t]] move_shared "std::move"(shared_ptr[vector[int32_t]])
+    cdef shared_ptr[vector[cint32_t]] move "std::move"(unique_ptr[vector[cint32_t]])
+    cdef shared_ptr[vector[cint32_t]] move_shared "std::move"(shared_ptr[vector[cint32_t]])
 cdef extern from "<utility>" nogil:
     pass  
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[cbool]] const_pointer_cast "std::const_pointer_cast<const std::vector<bool>>"(shared_ptr[vector[cbool]])
-    cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int32_t>>"(shared_ptr[vector[int32_t]])
+    cdef shared_ptr[const vector[cint32_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int32_t>>"(shared_ptr[vector[cint32_t]])
 

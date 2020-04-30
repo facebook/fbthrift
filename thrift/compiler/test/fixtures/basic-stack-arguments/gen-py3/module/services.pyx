@@ -7,11 +7,16 @@
 
 cimport cython
 from cpython.version cimport PY_VERSION_HEX
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+)
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
@@ -438,7 +443,7 @@ cdef api void call_cy_MyService_hasDataById(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cbool] cPromise,
-    int64_t id
+    cint64_t id
 ):
     cdef MyServiceInterface __iface
     __iface = self
@@ -494,7 +499,7 @@ cdef api void call_cy_MyService_getDataById(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[string] cPromise,
-    int64_t id
+    cint64_t id
 ):
     cdef MyServiceInterface __iface
     __iface = self
@@ -550,7 +555,7 @@ cdef api void call_cy_MyService_putDataById(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
-    int64_t id,
+    cint64_t id,
     string data
 ):
     cdef MyServiceInterface __iface
@@ -612,7 +617,7 @@ cdef api void call_cy_MyService_lobDataById(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
-    int64_t id,
+    cint64_t id,
     string data
 ):
     cdef MyServiceInterface __iface
@@ -674,7 +679,7 @@ cdef api void call_cy_MyServiceFast_hasDataById(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cbool] cPromise,
-    int64_t id
+    cint64_t id
 ):
     cdef MyServiceFastInterface __iface
     __iface = self
@@ -730,7 +735,7 @@ cdef api void call_cy_MyServiceFast_getDataById(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[string] cPromise,
-    int64_t id
+    cint64_t id
 ):
     cdef MyServiceFastInterface __iface
     __iface = self
@@ -786,7 +791,7 @@ cdef api void call_cy_MyServiceFast_putDataById(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
-    int64_t id,
+    cint64_t id,
     string data
 ):
     cdef MyServiceFastInterface __iface
@@ -848,7 +853,7 @@ cdef api void call_cy_MyServiceFast_lobDataById(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
-    int64_t id,
+    cint64_t id,
     string data
 ):
     cdef MyServiceFastInterface __iface

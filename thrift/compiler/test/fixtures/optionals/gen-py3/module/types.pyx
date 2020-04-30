@@ -12,7 +12,6 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
@@ -461,8 +460,8 @@ cdef class Color(thrift.py3.types.Struct):
                 serializer.CompactJSONSerialize[cColor](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef uint32_t _deserialize(Color self, const __iobuf.cIOBuf* buf, proto) except? 0:
-        cdef uint32_t needed
+    cdef cuint32_t _deserialize(Color self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
         self._cpp_obj = make_shared[cColor]()
         cdef cColor* cpp_obj = self._cpp_obj.get()
         if proto is __Protocol.COMPACT:
@@ -817,8 +816,8 @@ cdef class Vehicle(thrift.py3.types.Struct):
                 serializer.CompactJSONSerialize[cVehicle](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef uint32_t _deserialize(Vehicle self, const __iobuf.cIOBuf* buf, proto) except? 0:
-        cdef uint32_t needed
+    cdef cuint32_t _deserialize(Vehicle self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
         self._cpp_obj = make_shared[cVehicle]()
         cdef cVehicle* cpp_obj = self._cpp_obj.get()
         if proto is __Protocol.COMPACT:
@@ -858,17 +857,17 @@ cdef class Person(thrift.py3.types.Struct):
         if id is not None:
             if not isinstance(id, int):
                 raise TypeError(f'id is not a { int !r}.')
-            id = <int64_t> id
+            id = <cint64_t> id
 
         if age is not None:
             if not isinstance(age, int):
                 raise TypeError(f'age is not a { int !r}.')
-            age = <int16_t> age
+            age = <cint16_t> age
 
         if bestFriend is not None:
             if not isinstance(bestFriend, int):
                 raise TypeError(f'bestFriend is not a { int !r}.')
-            bestFriend = <int64_t> bestFriend
+            bestFriend = <cint64_t> bestFriend
 
         self._cpp_obj = move(Person._make_instance(
           NULL,
@@ -979,7 +978,7 @@ cdef class Person(thrift.py3.types.Struct):
         if id is not None:
             if not isinstance(id, int):
                 raise TypeError(f'id is not a { int !r}.')
-            id = <int64_t> id
+            id = <cint64_t> id
 
         if name is not None:
             if not isinstance(name, str):
@@ -988,7 +987,7 @@ cdef class Person(thrift.py3.types.Struct):
         if age is not None:
             if not isinstance(age, int):
                 raise TypeError(f'age is not a { int !r}.')
-            age = <int16_t> age
+            age = <cint16_t> age
 
         if address is not None:
             if not isinstance(address, str):
@@ -1001,7 +1000,7 @@ cdef class Person(thrift.py3.types.Struct):
         if bestFriend is not None:
             if not isinstance(bestFriend, int):
                 raise TypeError(f'bestFriend is not a { int !r}.')
-            bestFriend = <int64_t> bestFriend
+            bestFriend = <cint64_t> bestFriend
 
         if afraidOfAnimal is not None:
             if not isinstance(afraidOfAnimal, Animal):
@@ -1390,8 +1389,8 @@ cdef class Person(thrift.py3.types.Struct):
                 serializer.CompactJSONSerialize[cPerson](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef uint32_t _deserialize(Person self, const __iobuf.cIOBuf* buf, proto) except? 0:
-        cdef uint32_t needed
+    cdef cuint32_t _deserialize(Person self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
         self._cpp_obj = make_shared[cPerson]()
         cdef cPerson* cpp_obj = self._cpp_obj.get()
         if proto is __Protocol.COMPACT:
@@ -1421,25 +1420,25 @@ cdef class Set__i64(thrift.py3.types.Container):
             self._cpp_obj = Set__i64._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[cset[int64_t]] c_items):
+    cdef create(shared_ptr[cset[cint64_t]] c_items):
         inst = <Set__i64>Set__i64.__new__(Set__i64)
         inst._cpp_obj = move_shared(c_items)
         return inst
 
     def __copy__(Set__i64 self):
-        cdef shared_ptr[cset[int64_t]] cpp_obj = make_shared[cset[int64_t]](
+        cdef shared_ptr[cset[cint64_t]] cpp_obj = make_shared[cset[cint64_t]](
             deref(self._cpp_obj)
         )
         return Set__i64.create(move_shared(cpp_obj))
 
     @staticmethod
-    cdef shared_ptr[cset[int64_t]] _make_instance(object items) except *:
-        cdef shared_ptr[cset[int64_t]] c_inst = make_shared[cset[int64_t]]()
+    cdef shared_ptr[cset[cint64_t]] _make_instance(object items) except *:
+        cdef shared_ptr[cset[cint64_t]] c_inst = make_shared[cset[cint64_t]]()
         if items is not None:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                item = <int64_t> item
+                item = <cint64_t> item
                 deref(c_inst).insert(item)
         return c_inst
 
@@ -1457,8 +1456,8 @@ cdef class Set__i64(thrift.py3.types.Container):
     def __iter__(self):
         if not self:
             return
-        cdef int64_t citem
-        cdef cset[int64_t].iterator loc = deref(self._cpp_obj).begin()
+        cdef cint64_t citem
+        cdef cset[cint64_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             citem = deref(loc)
             yield citem
@@ -1471,8 +1470,8 @@ cdef class Set__i64(thrift.py3.types.Container):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        cdef shared_ptr[cset[int64_t]] cself, cother
-        cdef cset[int64_t].iterator loc
+        cdef shared_ptr[cset[cint64_t]] cself, cother
+        cdef cset[cint64_t].iterator loc
         if (isinstance(self, Set__i64) and
                 isinstance(other, Set__i64)):
             cself = (<Set__i64> self)._cpp_obj
@@ -1552,13 +1551,13 @@ cdef class Set__i64(thrift.py3.types.Container):
         if not isinstance(other, Set__i64):
             other = Set__i64(other)
 
-        cdef shared_ptr[cset[int64_t]] shretval = \
-            make_shared[cset[int64_t]]()
+        cdef shared_ptr[cset[cint64_t]] shretval = \
+            make_shared[cset[cint64_t]]()
 
-        cdef shared_ptr[cset[int64_t]] cself = (<Set__i64> self)._cpp_obj
-        cdef shared_ptr[cset[int64_t]] cother = (<Set__i64> other)._cpp_obj
+        cdef shared_ptr[cset[cint64_t]] cself = (<Set__i64> self)._cpp_obj
+        cdef shared_ptr[cset[cint64_t]] cother = (<Set__i64> other)._cpp_obj
 
-        cdef cset[int64_t].iterator loc = deref(cself).begin()
+        cdef cset[cint64_t].iterator loc = deref(cself).begin()
         while loc != deref(cself).end():
             if deref(cother).count(deref(loc)) > 0:
                 deref(shretval).insert(deref(loc))
@@ -1571,13 +1570,13 @@ cdef class Set__i64(thrift.py3.types.Container):
         if not isinstance(other, Set__i64):
             other = Set__i64(other)
 
-        cdef shared_ptr[cset[int64_t]] shretval = \
-            make_shared[cset[int64_t]]()
+        cdef shared_ptr[cset[cint64_t]] shretval = \
+            make_shared[cset[cint64_t]]()
 
-        cdef shared_ptr[cset[int64_t]] cself = (<Set__i64> self)._cpp_obj
-        cdef shared_ptr[cset[int64_t]] cother = (<Set__i64> other)._cpp_obj
+        cdef shared_ptr[cset[cint64_t]] cself = (<Set__i64> self)._cpp_obj
+        cdef shared_ptr[cset[cint64_t]] cother = (<Set__i64> other)._cpp_obj
 
-        cdef cset[int64_t].iterator loc = deref(cself).begin()
+        cdef cset[cint64_t].iterator loc = deref(cself).begin()
         while loc != deref(cself).end():
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -1590,13 +1589,13 @@ cdef class Set__i64(thrift.py3.types.Container):
         if not isinstance(other, Set__i64):
             other = Set__i64(other)
 
-        cdef shared_ptr[cset[int64_t]] shretval = \
-            make_shared[cset[int64_t]]()
+        cdef shared_ptr[cset[cint64_t]] shretval = \
+            make_shared[cset[cint64_t]]()
 
-        cdef shared_ptr[cset[int64_t]] cself = (<Set__i64> self)._cpp_obj
-        cdef shared_ptr[cset[int64_t]] cother = (<Set__i64> other)._cpp_obj
+        cdef shared_ptr[cset[cint64_t]] cself = (<Set__i64> self)._cpp_obj
+        cdef shared_ptr[cset[cint64_t]] cother = (<Set__i64> other)._cpp_obj
 
-        cdef cset[int64_t].iterator loc = deref(cself).begin()
+        cdef cset[cint64_t].iterator loc = deref(cself).begin()
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -1612,13 +1611,13 @@ cdef class Set__i64(thrift.py3.types.Container):
         if not isinstance(other, Set__i64):
             other = Set__i64(other)
 
-        cdef shared_ptr[cset[int64_t]] shretval = \
-            make_shared[cset[int64_t]]()
+        cdef shared_ptr[cset[cint64_t]] shretval = \
+            make_shared[cset[cint64_t]]()
 
-        cdef shared_ptr[cset[int64_t]] cself = (<Set__i64> self)._cpp_obj
-        cdef shared_ptr[cset[int64_t]] cother = (<Set__i64> other)._cpp_obj
+        cdef shared_ptr[cset[cint64_t]] cself = (<Set__i64> self)._cpp_obj
+        cdef shared_ptr[cset[cint64_t]] cother = (<Set__i64> other)._cpp_obj
 
-        cdef cset[int64_t].iterator loc = deref(cself).begin()
+        cdef cset[cint64_t].iterator loc = deref(cself).begin()
         while loc != deref(cself).end():
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -1938,13 +1937,13 @@ cdef class List__Vehicle(thrift.py3.types.Container):
 
         if not isinstance(item, Vehicle):
             raise err
-        cdef vector[cVehicle].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
+        cdef vector[cVehicle].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
         cdef vector[cVehicle].iterator loc = std_libcpp.find[vector[cVehicle].iterator, cVehicle](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
+            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
             end,
             deref((<Vehicle>item)._cpp_obj)        )
         if loc != end:
-            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
+            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -1952,7 +1951,7 @@ cdef class List__Vehicle(thrift.py3.types.Container):
             return 0
         if not isinstance(item, Vehicle):
             return 0
-        return <int64_t> std_libcpp.count[vector[cVehicle].iterator, cVehicle](
+        return <cint64_t> std_libcpp.count[vector[cVehicle].iterator, cVehicle](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<Vehicle>item)._cpp_obj))
 
     def __reduce__(self):

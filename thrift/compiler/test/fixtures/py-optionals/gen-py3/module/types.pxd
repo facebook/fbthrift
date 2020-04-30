@@ -5,10 +5,16 @@
 #  @generated
 #
 
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+    uint32_t as cuint32_t,
+)
 from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
@@ -114,13 +120,13 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator>(cPerson&)
         bint operator<=(cPerson&)
         bint operator>=(cPerson&)
-        int64_t id
+        cint64_t id
         string name
-        cOptional[int16_t] age
+        cOptional[cint16_t] age
         cOptional[string] address
         cOptional[cColor] favoriteColor
-        cOptional[cset[int64_t]] friends
-        cOptional[int64_t] bestFriend
+        cOptional[cset[cint64_t]] friends
+        cOptional[cint64_t] bestFriend
         cOptional[cmap[cAnimal,string]] petNames
         cOptional[cAnimal] afraidOfAnimal
         cOptional[vector[cVehicle]] vehicles
@@ -128,7 +134,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
 
     cdef shared_ptr[cColor] reference_shared_ptr_color "thrift::py3::reference_shared_ptr<::cpp2::Color>"(shared_ptr[cVehicle]&, cColor&)
     cdef shared_ptr[cColor] reference_shared_ptr_favoriteColor "thrift::py3::reference_shared_ptr<::cpp2::Color>"(shared_ptr[cPerson]&, cColor&)
-    cdef shared_ptr[cset[int64_t]] reference_shared_ptr_friends "thrift::py3::reference_shared_ptr<std::set<int64_t>>"(shared_ptr[cPerson]&, cset[int64_t]&)
+    cdef shared_ptr[cset[cint64_t]] reference_shared_ptr_friends "thrift::py3::reference_shared_ptr<std::set<int64_t>>"(shared_ptr[cPerson]&, cset[cint64_t]&)
     cdef shared_ptr[cmap[cAnimal,string]] reference_shared_ptr_petNames "thrift::py3::reference_shared_ptr<std::map<::cpp2::Animal,std::string>>"(shared_ptr[cPerson]&, cmap[cAnimal,string]&)
     cdef shared_ptr[vector[cVehicle]] reference_shared_ptr_vehicles "thrift::py3::reference_shared_ptr<std::vector<::cpp2::Vehicle>>"(shared_ptr[cPerson]&, vector[cVehicle]&)
 
@@ -228,11 +234,11 @@ cdef class Person(thrift.py3.types.Struct):
 
 
 cdef class Set__i64(thrift.py3.types.Container):
-    cdef shared_ptr[cset[int64_t]] _cpp_obj
+    cdef shared_ptr[cset[cint64_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[int64_t]])
+    cdef create(shared_ptr[cset[cint64_t]])
     @staticmethod
-    cdef shared_ptr[cset[int64_t]] _make_instance(object items) except *
+    cdef shared_ptr[cset[cint64_t]] _make_instance(object items) except *
 
 cdef class Map__Animal_string(thrift.py3.types.Container):
     cdef shared_ptr[cmap[cAnimal,string]] _cpp_obj
@@ -253,13 +259,13 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[cVehicle]] move_shared "std::move"(shared_ptr[vector[cVehicle]])
     cdef shared_ptr[cmap[cAnimal,string]] move "std::move"(unique_ptr[cmap[cAnimal,string]])
     cdef shared_ptr[cmap[cAnimal,string]] move_shared "std::move"(shared_ptr[cmap[cAnimal,string]])
-    cdef shared_ptr[cset[int64_t]] move "std::move"(unique_ptr[cset[int64_t]])
-    cdef shared_ptr[cset[int64_t]] move_shared "std::move"(shared_ptr[cset[int64_t]])
+    cdef shared_ptr[cset[cint64_t]] move "std::move"(unique_ptr[cset[cint64_t]])
+    cdef shared_ptr[cset[cint64_t]] move_shared "std::move"(shared_ptr[cset[cint64_t]])
 cdef extern from "<utility>" nogil:
     pass  
     shared_ptr[cVehicle] reference_shared_ptr_List__Vehicle "thrift::py3::reference_shared_ptr<::cpp2::Vehicle>"(...)
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[cVehicle]] const_pointer_cast "std::const_pointer_cast<const std::vector<::cpp2::Vehicle>>"(shared_ptr[vector[cVehicle]])
     cdef shared_ptr[const cmap[cAnimal,string]] const_pointer_cast "std::const_pointer_cast<const std::map<::cpp2::Animal,std::string>>"(shared_ptr[cmap[cAnimal,string]])
-    cdef shared_ptr[const cset[int64_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int64_t>>"(shared_ptr[cset[int64_t]])
+    cdef shared_ptr[const cset[cint64_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int64_t>>"(shared_ptr[cset[cint64_t]])
 

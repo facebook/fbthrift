@@ -71,3 +71,7 @@ class CustomTests(unittest.TestCase):
     def test_cpp_name(self) -> None:
         c = customized(foo=3)
         self.assertEqual(c.foo, 3)
+
+    def test_list_of_uint32(self) -> None:
+        c = customized(list_of_uint32=[1, 2, 3])
+        self.assertEqual(c.list_of_uint32, [1, 2, 3])

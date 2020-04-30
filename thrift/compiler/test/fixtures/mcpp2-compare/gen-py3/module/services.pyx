@@ -7,11 +7,16 @@
 
 cimport cython
 from cpython.version cimport PY_VERSION_HEX
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+)
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
@@ -74,12 +79,12 @@ cdef extern from "<utility>" namespace "std":
         cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]])
     cdef cFollyPromise[unique_ptr[vector[cbool]]] move_promise_vector__cbool "std::move"(
         cFollyPromise[unique_ptr[vector[cbool]]])
-    cdef cFollyPromise[unique_ptr[vector[int32_t]]] move_promise_vector__int32_t "std::move"(
-        cFollyPromise[unique_ptr[vector[int32_t]]])
-    cdef cFollyPromise[unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]]] move_promise_cmap__cset__vector__int32_t_cmap__vector__cset__string_string "std::move"(
-        cFollyPromise[unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]]])
-    cdef cFollyPromise[unique_ptr[cmap[string,int64_t]]] move_promise_cmap__string_int64_t "std::move"(
-        cFollyPromise[unique_ptr[cmap[string,int64_t]]])
+    cdef cFollyPromise[unique_ptr[vector[cint32_t]]] move_promise_vector__cint32_t "std::move"(
+        cFollyPromise[unique_ptr[vector[cint32_t]]])
+    cdef cFollyPromise[unique_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]]] move_promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string "std::move"(
+        cFollyPromise[unique_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]]])
+    cdef cFollyPromise[unique_ptr[cmap[string,cint64_t]]] move_promise_cmap__string_cint64_t "std::move"(
+        cFollyPromise[unique_ptr[cmap[string,cint64_t]]])
     cdef cFollyPromise[_module_types.cMyEnumA] move_promise__module_types_cMyEnumA "std::move"(
         cFollyPromise[_module_types.cMyEnumA])
     cdef cFollyPromise[unique_ptr[_module_types.cMyStruct]] move_promise__module_types_cMyStruct "std::move"(
@@ -96,12 +101,12 @@ cdef extern from "<utility>" namespace "std":
         cFollyPromise[float])
     cdef cFollyPromise[unique_ptr[__iobuf.cIOBuf]] move_promise___iobuf_cIOBuf "std::move"(
         cFollyPromise[unique_ptr[__iobuf.cIOBuf]])
-    cdef cFollyPromise[int16_t] move_promise_int16_t "std::move"(
-        cFollyPromise[int16_t])
-    cdef cFollyPromise[int32_t] move_promise_int32_t "std::move"(
-        cFollyPromise[int32_t])
-    cdef cFollyPromise[int64_t] move_promise_int64_t "std::move"(
-        cFollyPromise[int64_t])
+    cdef cFollyPromise[cint16_t] move_promise_cint16_t "std::move"(
+        cFollyPromise[cint16_t])
+    cdef cFollyPromise[cint32_t] move_promise_cint32_t "std::move"(
+        cFollyPromise[cint32_t])
+    cdef cFollyPromise[cint64_t] move_promise_cint64_t "std::move"(
+        cFollyPromise[cint64_t])
     cdef cFollyPromise[unique_ptr[unique_ptr[__iobuf.cIOBuf]]] move_promise_unique_ptr__iobuf_cIOBuf "std::move"(
         cFollyPromise[unique_ptr[unique_ptr[__iobuf.cIOBuf]]])
     cdef cFollyPromise[unique_ptr[string]] move_promise_string "std::move"(
@@ -170,33 +175,33 @@ cdef class Promise_vector__cbool:
         return inst
 
 @cython.auto_pickle(False)
-cdef class Promise_vector__int32_t:
-    cdef cFollyPromise[unique_ptr[vector[int32_t]]] cPromise
+cdef class Promise_vector__cint32_t:
+    cdef cFollyPromise[unique_ptr[vector[cint32_t]]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[vector[int32_t]]] cPromise):
-        inst = <Promise_vector__int32_t>Promise_vector__int32_t.__new__(Promise_vector__int32_t)
-        inst.cPromise = move_promise_vector__int32_t(cPromise)
+    cdef create(cFollyPromise[unique_ptr[vector[cint32_t]]] cPromise):
+        inst = <Promise_vector__cint32_t>Promise_vector__cint32_t.__new__(Promise_vector__cint32_t)
+        inst.cPromise = move_promise_vector__cint32_t(cPromise)
         return inst
 
 @cython.auto_pickle(False)
-cdef class Promise_cmap__cset__vector__int32_t_cmap__vector__cset__string_string:
-    cdef cFollyPromise[unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]]] cPromise
+cdef class Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string:
+    cdef cFollyPromise[unique_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]]] cPromise):
-        inst = <Promise_cmap__cset__vector__int32_t_cmap__vector__cset__string_string>Promise_cmap__cset__vector__int32_t_cmap__vector__cset__string_string.__new__(Promise_cmap__cset__vector__int32_t_cmap__vector__cset__string_string)
-        inst.cPromise = move_promise_cmap__cset__vector__int32_t_cmap__vector__cset__string_string(cPromise)
+    cdef create(cFollyPromise[unique_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]]] cPromise):
+        inst = <Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string>Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string.__new__(Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string)
+        inst.cPromise = move_promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string(cPromise)
         return inst
 
 @cython.auto_pickle(False)
-cdef class Promise_cmap__string_int64_t:
-    cdef cFollyPromise[unique_ptr[cmap[string,int64_t]]] cPromise
+cdef class Promise_cmap__string_cint64_t:
+    cdef cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[cmap[string,int64_t]]] cPromise):
-        inst = <Promise_cmap__string_int64_t>Promise_cmap__string_int64_t.__new__(Promise_cmap__string_int64_t)
-        inst.cPromise = move_promise_cmap__string_int64_t(cPromise)
+    cdef create(cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise):
+        inst = <Promise_cmap__string_cint64_t>Promise_cmap__string_cint64_t.__new__(Promise_cmap__string_cint64_t)
+        inst.cPromise = move_promise_cmap__string_cint64_t(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -280,33 +285,33 @@ cdef class Promise___iobuf_cIOBuf:
         return inst
 
 @cython.auto_pickle(False)
-cdef class Promise_int16_t:
-    cdef cFollyPromise[int16_t] cPromise
+cdef class Promise_cint16_t:
+    cdef cFollyPromise[cint16_t] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[int16_t] cPromise):
-        inst = <Promise_int16_t>Promise_int16_t.__new__(Promise_int16_t)
-        inst.cPromise = move_promise_int16_t(cPromise)
+    cdef create(cFollyPromise[cint16_t] cPromise):
+        inst = <Promise_cint16_t>Promise_cint16_t.__new__(Promise_cint16_t)
+        inst.cPromise = move_promise_cint16_t(cPromise)
         return inst
 
 @cython.auto_pickle(False)
-cdef class Promise_int32_t:
-    cdef cFollyPromise[int32_t] cPromise
+cdef class Promise_cint32_t:
+    cdef cFollyPromise[cint32_t] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[int32_t] cPromise):
-        inst = <Promise_int32_t>Promise_int32_t.__new__(Promise_int32_t)
-        inst.cPromise = move_promise_int32_t(cPromise)
+    cdef create(cFollyPromise[cint32_t] cPromise):
+        inst = <Promise_cint32_t>Promise_cint32_t.__new__(Promise_cint32_t)
+        inst.cPromise = move_promise_cint32_t(cPromise)
         return inst
 
 @cython.auto_pickle(False)
-cdef class Promise_int64_t:
-    cdef cFollyPromise[int64_t] cPromise
+cdef class Promise_cint64_t:
+    cdef cFollyPromise[cint64_t] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[int64_t] cPromise):
-        inst = <Promise_int64_t>Promise_int64_t.__new__(Promise_int64_t)
-        inst.cPromise = move_promise_int64_t(cPromise)
+    cdef create(cFollyPromise[cint64_t] cPromise):
+        inst = <Promise_cint64_t>Promise_cint64_t.__new__(Promise_cint64_t)
+        inst.cPromise = move_promise_cint64_t(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -2026,11 +2031,11 @@ async def ReturnService_boolReturn_coro(
 cdef api void call_cy_ReturnService_i16Return(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[int16_t] cPromise
+    cFollyPromise[cint16_t] cPromise
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_int16_t.create(move_promise_int16_t(cPromise))
+    __promise = Promise_cint16_t.create(move_promise_cint16_t(cPromise))
     __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_i16Return:
@@ -2050,7 +2055,7 @@ cdef api void call_cy_ReturnService_i16Return(
 async def ReturnService_i16Return_coro(
     object self,
     object ctx,
-    Promise_int16_t promise
+    Promise_cint16_t promise
 ):
     try:
         if ctx is not None:
@@ -2071,16 +2076,16 @@ async def ReturnService_i16Return_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(<int16_t> result)
+        promise.cPromise.setValue(<cint16_t> result)
 
 cdef api void call_cy_ReturnService_i32Return(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[int32_t] cPromise
+    cFollyPromise[cint32_t] cPromise
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
+    __promise = Promise_cint32_t.create(move_promise_cint32_t(cPromise))
     __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_i32Return:
@@ -2100,7 +2105,7 @@ cdef api void call_cy_ReturnService_i32Return(
 async def ReturnService_i32Return_coro(
     object self,
     object ctx,
-    Promise_int32_t promise
+    Promise_cint32_t promise
 ):
     try:
         if ctx is not None:
@@ -2121,16 +2126,16 @@ async def ReturnService_i32Return_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(<int32_t> result)
+        promise.cPromise.setValue(<cint32_t> result)
 
 cdef api void call_cy_ReturnService_i64Return(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[int64_t] cPromise
+    cFollyPromise[cint64_t] cPromise
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_int64_t.create(move_promise_int64_t(cPromise))
+    __promise = Promise_cint64_t.create(move_promise_cint64_t(cPromise))
     __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_i64Return:
@@ -2150,7 +2155,7 @@ cdef api void call_cy_ReturnService_i64Return(
 async def ReturnService_i64Return_coro(
     object self,
     object ctx,
-    Promise_int64_t promise
+    Promise_cint64_t promise
 ):
     try:
         if ctx is not None:
@@ -2171,7 +2176,7 @@ async def ReturnService_i64Return_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(<int64_t> result)
+        promise.cPromise.setValue(<cint64_t> result)
 
 cdef api void call_cy_ReturnService_floatReturn(
     object self,
@@ -2376,11 +2381,11 @@ async def ReturnService_binaryReturn_coro(
 cdef api void call_cy_ReturnService_mapReturn(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[cmap[string,int64_t]]] cPromise
+    cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_cmap__string_int64_t.create(move_promise_cmap__string_int64_t(cPromise))
+    __promise = Promise_cmap__string_cint64_t.create(move_promise_cmap__string_cint64_t(cPromise))
     __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_mapReturn:
@@ -2400,7 +2405,7 @@ cdef api void call_cy_ReturnService_mapReturn(
 async def ReturnService_mapReturn_coro(
     object self,
     object ctx,
-    Promise_cmap__string_int64_t promise
+    Promise_cmap__string_cint64_t promise
 ):
     try:
         if ctx is not None:
@@ -2422,16 +2427,16 @@ async def ReturnService_mapReturn_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cmap[string,int64_t]](deref((<_module_types.Map__string_i64?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[cmap[string,cint64_t]](deref((<_module_types.Map__string_i64?> result)._cpp_obj)))
 
 cdef api void call_cy_ReturnService_simpleTypedefReturn(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[int32_t] cPromise
+    cFollyPromise[cint32_t] cPromise
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
+    __promise = Promise_cint32_t.create(move_promise_cint32_t(cPromise))
     __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_simpleTypedefReturn:
@@ -2451,7 +2456,7 @@ cdef api void call_cy_ReturnService_simpleTypedefReturn(
 async def ReturnService_simpleTypedefReturn_coro(
     object self,
     object ctx,
-    Promise_int32_t promise
+    Promise_cint32_t promise
 ):
     try:
         if ctx is not None:
@@ -2472,7 +2477,7 @@ async def ReturnService_simpleTypedefReturn_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(<int32_t> result)
+        promise.cPromise.setValue(<cint32_t> result)
 
 cdef api void call_cy_ReturnService_complexTypedefReturn(
     object self,
@@ -2883,7 +2888,7 @@ cdef api void call_cy_ReturnService_readDataEb(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[__iobuf.cIOBuf]] cPromise,
-    int64_t size
+    cint64_t size
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
@@ -2939,7 +2944,7 @@ cdef api void call_cy_ReturnService_readData(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[unique_ptr[__iobuf.cIOBuf]]] cPromise,
-    int64_t size
+    cint64_t size
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
@@ -2995,7 +3000,7 @@ cdef api void call_cy_ParamService_void_ret_i16_param(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
-    int16_t param1
+    cint16_t param1
 ):
     cdef ParamServiceInterface __iface
     __iface = self
@@ -3051,8 +3056,8 @@ cdef api void call_cy_ParamService_void_ret_byte_i16_param(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
-    int8_t param1,
-    int16_t param2
+    cint8_t param1,
+    cint16_t param2
 ):
     cdef ParamServiceInterface __iface
     __iface = self
@@ -3113,7 +3118,7 @@ cdef api void call_cy_ParamService_void_ret_map_param(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[cmap[string,int64_t]] param1
+    unique_ptr[cmap[string,cint64_t]] param1
 ):
     cdef ParamServiceInterface __iface
     __iface = self
@@ -3169,7 +3174,7 @@ cdef api void call_cy_ParamService_void_ret_map_setlist_param(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[cmap[string,int64_t]] param1,
+    unique_ptr[cmap[string,cint64_t]] param1,
     unique_ptr[cset[vector[string]]] param2
 ):
     cdef ParamServiceInterface __iface
@@ -3231,7 +3236,7 @@ cdef api void call_cy_ParamService_void_ret_map_typedef_param(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
-    int32_t param1
+    cint32_t param1
 ):
     cdef ParamServiceInterface __iface
     __iface = self
@@ -3455,8 +3460,8 @@ cdef api void call_cy_ParamService_bool_ret_i32_i64_param(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cbool] cPromise,
-    int32_t param1,
-    int64_t param2
+    cint32_t param1,
+    cint64_t param2
 ):
     cdef ParamServiceInterface __iface
     __iface = self
@@ -3517,7 +3522,7 @@ cdef api void call_cy_ParamService_bool_ret_map_param(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cbool] cPromise,
-    unique_ptr[cmap[string,int64_t]] param1
+    unique_ptr[cmap[string,cint64_t]] param1
 ):
     cdef ParamServiceInterface __iface
     __iface = self
@@ -3628,13 +3633,13 @@ async def ParamService_bool_ret_union_param_coro(
 cdef api void call_cy_ParamService_i64_ret_float_double_param(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[int64_t] cPromise,
+    cFollyPromise[cint64_t] cPromise,
     float param1,
     double param2
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_int64_t.create(move_promise_int64_t(cPromise))
+    __promise = Promise_cint64_t.create(move_promise_cint64_t(cPromise))
     arg_param1 = param1
     arg_param2 = param2
     __context_obj = RequestContext.create(ctx)
@@ -3658,7 +3663,7 @@ cdef api void call_cy_ParamService_i64_ret_float_double_param(
 async def ParamService_i64_ret_float_double_param_coro(
     object self,
     object ctx,
-    Promise_int64_t promise,
+    Promise_cint64_t promise,
     param1,
     param2
 ):
@@ -3685,18 +3690,18 @@ async def ParamService_i64_ret_float_double_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(<int64_t> result)
+        promise.cPromise.setValue(<cint64_t> result)
 
 cdef api void call_cy_ParamService_i64_ret_string_typedef_param(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[int64_t] cPromise,
+    cFollyPromise[cint64_t] cPromise,
     unique_ptr[string] param1,
     unique_ptr[cset[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]] param2
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_int64_t.create(move_promise_int64_t(cPromise))
+    __promise = Promise_cint64_t.create(move_promise_cint64_t(cPromise))
     arg_param1 = (deref(param1)).data().decode('UTF-8')
     arg_param2 = _module_types.Set__List__List__Map__Empty_MyStruct.create(_module_types.move(param2))
     __context_obj = RequestContext.create(ctx)
@@ -3720,7 +3725,7 @@ cdef api void call_cy_ParamService_i64_ret_string_typedef_param(
 async def ParamService_i64_ret_string_typedef_param_coro(
     object self,
     object ctx,
-    Promise_int64_t promise,
+    Promise_cint64_t promise,
     param1,
     param2
 ):
@@ -3747,21 +3752,21 @@ async def ParamService_i64_ret_string_typedef_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(<int64_t> result)
+        promise.cPromise.setValue(<cint64_t> result)
 
 cdef api void call_cy_ParamService_i64_ret_i32_i32_i32_i32_i32_param(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[int64_t] cPromise,
-    int32_t param1,
-    int32_t param2,
-    int32_t param3,
-    int32_t param4,
-    int32_t param5
+    cFollyPromise[cint64_t] cPromise,
+    cint32_t param1,
+    cint32_t param2,
+    cint32_t param3,
+    cint32_t param4,
+    cint32_t param5
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_int64_t.create(move_promise_int64_t(cPromise))
+    __promise = Promise_cint64_t.create(move_promise_cint64_t(cPromise))
     arg_param1 = param1
     arg_param2 = param2
     arg_param3 = param3
@@ -3791,7 +3796,7 @@ cdef api void call_cy_ParamService_i64_ret_i32_i32_i32_i32_i32_param(
 async def ParamService_i64_ret_i32_i32_i32_i32_i32_param_coro(
     object self,
     object ctx,
-    Promise_int64_t promise,
+    Promise_cint64_t promise,
     param1,
     param2,
     param3,
@@ -3827,7 +3832,7 @@ async def ParamService_i64_ret_i32_i32_i32_i32_i32_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(<int64_t> result)
+        promise.cPromise.setValue(<cint64_t> result)
 
 cdef api void call_cy_ParamService_double_ret_setstruct_param(
     object self,
@@ -4000,12 +4005,12 @@ async def ParamService_binary_ret_binary_param_coro(
 cdef api void call_cy_ParamService_map_ret_bool_param(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[cmap[string,int64_t]]] cPromise,
+    cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise,
     cbool param1
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_cmap__string_int64_t.create(move_promise_cmap__string_int64_t(cPromise))
+    __promise = Promise_cmap__string_cint64_t.create(move_promise_cmap__string_cint64_t(cPromise))
     arg_param1 = param1
     __context_obj = RequestContext.create(ctx)
     __context = None
@@ -4027,7 +4032,7 @@ cdef api void call_cy_ParamService_map_ret_bool_param(
 async def ParamService_map_ret_bool_param_coro(
     object self,
     object ctx,
-    Promise_cmap__string_int64_t promise,
+    Promise_cmap__string_cint64_t promise,
     param1
 ):
     try:
@@ -4052,13 +4057,13 @@ async def ParamService_map_ret_bool_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cmap[string,int64_t]](deref((<_module_types.Map__string_i64?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[cmap[string,cint64_t]](deref((<_module_types.Map__string_i64?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_list_ret_map_setlist_param(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[cbool]]] cPromise,
-    unique_ptr[cmap[int32_t,vector[string]]] param1,
+    unique_ptr[cmap[cint32_t,vector[string]]] param1,
     unique_ptr[vector[string]] param2
 ):
     cdef ParamServiceInterface __iface
@@ -4120,12 +4125,12 @@ async def ParamService_list_ret_map_setlist_param_coro(
 cdef api void call_cy_ParamService_mapsetlistmapliststring_ret_listlistlist_param(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]]] cPromise,
-    unique_ptr[vector[vector[vector[vector[int32_t]]]]] param1
+    cFollyPromise[unique_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]]] cPromise,
+    unique_ptr[vector[vector[vector[vector[cint32_t]]]]] param1
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_cmap__cset__vector__int32_t_cmap__vector__cset__string_string.create(move_promise_cmap__cset__vector__int32_t_cmap__vector__cset__string_string(cPromise))
+    __promise = Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string.create(move_promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string(cPromise))
     arg_param1 = _module_types.List__List__List__List__i32.create(_module_types.move(param1))
     __context_obj = RequestContext.create(ctx)
     __context = None
@@ -4147,7 +4152,7 @@ cdef api void call_cy_ParamService_mapsetlistmapliststring_ret_listlistlist_para
 async def ParamService_mapsetlistmapliststring_ret_listlistlist_param_coro(
     object self,
     object ctx,
-    Promise_cmap__cset__vector__int32_t_cmap__vector__cset__string_string promise,
+    Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string promise,
     param1
 ):
     try:
@@ -4172,17 +4177,17 @@ async def ParamService_mapsetlistmapliststring_ret_listlistlist_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]](deref((<_module_types.Map__Set__List__i32_Map__List__Set__string_string?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]](deref((<_module_types.Map__Set__List__i32_Map__List__Set__string_string?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_typedef_ret_i32_param(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[int32_t] cPromise,
-    int32_t param1
+    cFollyPromise[cint32_t] cPromise,
+    cint32_t param1
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
+    __promise = Promise_cint32_t.create(move_promise_cint32_t(cPromise))
     arg_param1 = param1
     __context_obj = RequestContext.create(ctx)
     __context = None
@@ -4204,7 +4209,7 @@ cdef api void call_cy_ParamService_typedef_ret_i32_param(
 async def ParamService_typedef_ret_i32_param_coro(
     object self,
     object ctx,
-    Promise_int32_t promise,
+    Promise_cint32_t promise,
     param1
 ):
     try:
@@ -4228,17 +4233,17 @@ async def ParamService_typedef_ret_i32_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(<int32_t> result)
+        promise.cPromise.setValue(<cint32_t> result)
 
 cdef api void call_cy_ParamService_listtypedef_ret_typedef_param(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[vector[int32_t]]] cPromise,
+    cFollyPromise[unique_ptr[vector[cint32_t]]] cPromise,
     unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]] param1
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_vector__int32_t.create(move_promise_vector__int32_t(cPromise))
+    __promise = Promise_vector__cint32_t.create(move_promise_vector__cint32_t(cPromise))
     arg_param1 = _module_types.List__Map__Empty_MyStruct.create(_module_types.move(param1))
     __context_obj = RequestContext.create(ctx)
     __context = None
@@ -4260,7 +4265,7 @@ cdef api void call_cy_ParamService_listtypedef_ret_typedef_param(
 async def ParamService_listtypedef_ret_typedef_param_coro(
     object self,
     object ctx,
-    Promise_vector__int32_t promise,
+    Promise_vector__cint32_t promise,
     param1
 ):
     try:
@@ -4285,7 +4290,7 @@ async def ParamService_listtypedef_ret_typedef_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[int32_t]](deref((<_module_types.List__i32?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[vector[cint32_t]](deref((<_module_types.List__i32?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_enum_ret_double_param(
     object self,
@@ -4409,7 +4414,7 @@ cdef api void call_cy_ParamService_listenum_ret_map_param(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] cPromise,
-    unique_ptr[cmap[string,int64_t]] param1
+    unique_ptr[cmap[string,cint64_t]] param1
 ):
     cdef ParamServiceInterface __iface
     __iface = self
@@ -4466,7 +4471,7 @@ cdef api void call_cy_ParamService_struct_ret_i16_param(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[_module_types.cMyStruct]] cPromise,
-    int16_t param1
+    cint16_t param1
 ):
     cdef ParamServiceInterface __iface
     __iface = self
@@ -4579,8 +4584,8 @@ cdef api void call_cy_ParamService_union_ret_i32_i32_param(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[_module_types.cComplexUnion]] cPromise,
-    int32_t param1,
-    int32_t param2
+    cint32_t param1,
+    cint32_t param2
 ):
     cdef ParamServiceInterface __iface
     __iface = self

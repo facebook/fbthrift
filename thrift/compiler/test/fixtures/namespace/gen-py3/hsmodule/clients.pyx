@@ -4,11 +4,16 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+)
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.vector cimport vector as vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
@@ -51,7 +56,7 @@ from hsmodule.clients_wrapper cimport cHsTestServiceAsyncClient, cHsTestServiceC
 
 
 cdef void HsTestService_init_callback(
-    cFollyTry[int64_t]&& result,
+    cFollyTry[cint64_t]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -91,12 +96,12 @@ cdef class HsTestService(thrift.py3.client.Client):
         if not isinstance(int1, int):
             raise TypeError(f'int1 is not a {int !r}.')
         else:
-            int1 = <int64_t> int1
+            int1 = <cint64_t> int1
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[int64_t](
+        bridgeFutureWith[cint64_t](
             self._executor,
             down_cast_ptr[cHsTestServiceClientWrapper, cClientWrapper](self._client.get()).init(rpc_options._cpp_obj, 
                 int1,

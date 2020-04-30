@@ -212,6 +212,7 @@ struct customized {
   6: map_typedef map_type,
   7: string_typedef string_type,
   8: i32 foo (cpp.name="bar")
+  9: list<i32 (cpp.type = "uint32_t")> list_of_uint32
 }
 
 struct Reserved {

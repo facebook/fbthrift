@@ -5,10 +5,16 @@
 #  @generated
 #
 
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+    uint32_t as cuint32_t,
+)
 from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
@@ -81,7 +87,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator>(cMyStructAnnotation&)
         bint operator<=(cMyStructAnnotation&)
         bint operator>=(cMyStructAnnotation&)
-        int64_t count
+        cint64_t count
         string name
         optional_field_ref[string] extra_ref()
         cMyStructNestedAnnotation nest
@@ -102,7 +108,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
-        int64_t major "majorVer"
+        cint64_t major "majorVer"
         string package
         string annotation_with_quote
         string class_
@@ -121,7 +127,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator>(cSecretStruct&)
         bint operator<=(cSecretStruct&)
         bint operator>=(cSecretStruct&)
-        int64_t id
+        cint64_t id
         string password
         cSecretStruct__isset __isset
 

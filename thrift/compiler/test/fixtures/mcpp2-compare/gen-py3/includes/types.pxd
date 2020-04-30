@@ -5,10 +5,16 @@
 #  @generated
 #
 
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+    uint32_t as cuint32_t,
+)
 from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
@@ -60,7 +66,7 @@ cdef extern from "gen-cpp2/includes_types.h" namespace "::a::different::ns":
         bint operator>(cAStruct&)
         bint operator<=(cAStruct&)
         bint operator>=(cAStruct&)
-        int32_t FieldA
+        cint32_t FieldA
         cAStruct__isset __isset
 
     cdef cppclass cAStructB__isset "::a::different::ns::AStructB::__isset":
@@ -136,4 +142,4 @@ cdef class AStructB(thrift.py3.types.Struct):
 
 
 cdef extern from "gen-cpp2/includes_constants.h" namespace "::a::different::ns":
-    cdef int64_t cIncludedConstant "::a::different::ns::includes_constants::IncludedConstant"
+    cdef cint64_t cIncludedConstant "::a::different::ns::includes_constants::IncludedConstant"

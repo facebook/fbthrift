@@ -5,10 +5,16 @@
 #  @generated
 #
 
+from libc.stdint cimport (
+    int8_t as cint8_t,
+    int16_t as cint16_t,
+    int32_t as cint32_t,
+    int64_t as cint64_t,
+    uint32_t as cuint32_t,
+)
 from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
@@ -39,23 +45,23 @@ cdef class List__string(thrift.py3.types.Container):
     cdef shared_ptr[vector[string]] _make_instance(object items) except *
 
 cdef class Map__i64_List__string(thrift.py3.types.Container):
-    cdef shared_ptr[cmap[int64_t,vector[string]]] _cpp_obj
+    cdef shared_ptr[cmap[cint64_t,vector[string]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[int64_t,vector[string]]])
+    cdef create(shared_ptr[cmap[cint64_t,vector[string]]])
     @staticmethod
-    cdef shared_ptr[cmap[int64_t,vector[string]]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[cint64_t,vector[string]]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[string]] move "std::move"(unique_ptr[vector[string]])
     cdef shared_ptr[vector[string]] move_shared "std::move"(shared_ptr[vector[string]])
-    cdef shared_ptr[cmap[int64_t,vector[string]]] move "std::move"(unique_ptr[cmap[int64_t,vector[string]]])
-    cdef shared_ptr[cmap[int64_t,vector[string]]] move_shared "std::move"(shared_ptr[cmap[int64_t,vector[string]]])
+    cdef shared_ptr[cmap[cint64_t,vector[string]]] move "std::move"(unique_ptr[cmap[cint64_t,vector[string]]])
+    cdef shared_ptr[cmap[cint64_t,vector[string]]] move_shared "std::move"(shared_ptr[cmap[cint64_t,vector[string]]])
 cdef extern from "<utility>" nogil:
     pass  
     shared_ptr[vector[string]] reference_shared_ptr_Map__i64_List__string "thrift::py3::reference_shared_ptr<std::vector<std::string>>"(...)
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::string>>"(shared_ptr[vector[string]])
-    cdef shared_ptr[const cmap[int64_t,vector[string]]] const_pointer_cast "std::const_pointer_cast<const std::map<int64_t,std::vector<std::string>>>"(shared_ptr[cmap[int64_t,vector[string]]])
+    cdef shared_ptr[const cmap[cint64_t,vector[string]]] const_pointer_cast "std::const_pointer_cast<const std::map<int64_t,std::vector<std::string>>>"(shared_ptr[cmap[cint64_t,vector[string]]])
 
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "::cpp2":
-    cdef cmap[int64_t,vector[string]] cTEST_MAP "::cpp2::module_constants::TEST_MAP"()
+    cdef cmap[cint64_t,vector[string]] cTEST_MAP "::cpp2::module_constants::TEST_MAP"()

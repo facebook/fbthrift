@@ -12,7 +12,6 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
@@ -63,7 +62,7 @@ cdef class Included(thrift.py3.types.Struct):
         if MyIntField is not None:
             if not isinstance(MyIntField, int):
                 raise TypeError(f'MyIntField is not a { int !r}.')
-            MyIntField = <int64_t> MyIntField
+            MyIntField = <cint64_t> MyIntField
 
         self._cpp_obj = move(Included._make_instance(
           NULL,
@@ -102,7 +101,7 @@ cdef class Included(thrift.py3.types.Struct):
         if MyIntField is not None:
             if not isinstance(MyIntField, int):
                 raise TypeError(f'MyIntField is not a { int !r}.')
-            MyIntField = <int64_t> MyIntField
+            MyIntField = <cint64_t> MyIntField
 
         if MyTransitiveField is not None:
             if not isinstance(MyTransitiveField, _transitive_types.Foo):
@@ -269,8 +268,8 @@ cdef class Included(thrift.py3.types.Struct):
                 serializer.CompactJSONSerialize[cIncluded](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef uint32_t _deserialize(Included self, const __iobuf.cIOBuf* buf, proto) except? 0:
-        cdef uint32_t needed
+    cdef cuint32_t _deserialize(Included self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
         self._cpp_obj = make_shared[cIncluded]()
         cdef cIncluded* cpp_obj = self._cpp_obj.get()
         if proto is __Protocol.COMPACT:

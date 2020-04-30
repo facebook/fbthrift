@@ -12,7 +12,6 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
@@ -160,7 +159,7 @@ cdef class AStruct(thrift.py3.types.Struct):
         if FieldA is not None:
             if not isinstance(FieldA, int):
                 raise TypeError(f'FieldA is not a { int !r}.')
-            FieldA = <int32_t> FieldA
+            FieldA = <cint32_t> FieldA
 
         self._cpp_obj = move(AStruct._make_instance(
           NULL,
@@ -190,7 +189,7 @@ cdef class AStruct(thrift.py3.types.Struct):
         if FieldA is not None:
             if not isinstance(FieldA, int):
                 raise TypeError(f'FieldA is not a { int !r}.')
-            FieldA = <int32_t> FieldA
+            FieldA = <cint32_t> FieldA
 
         inst = <AStruct>AStruct.__new__(AStruct)
         inst._cpp_obj = move(AStruct._make_instance(
@@ -325,8 +324,8 @@ cdef class AStruct(thrift.py3.types.Struct):
                 serializer.CompactJSONSerialize[cAStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef uint32_t _deserialize(AStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
-        cdef uint32_t needed
+    cdef cuint32_t _deserialize(AStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
         self._cpp_obj = make_shared[cAStruct]()
         cdef cAStruct* cpp_obj = self._cpp_obj.get()
         if proto is __Protocol.COMPACT:
@@ -518,8 +517,8 @@ cdef class AStructB(thrift.py3.types.Struct):
                 serializer.CompactJSONSerialize[cAStructB](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef uint32_t _deserialize(AStructB self, const __iobuf.cIOBuf* buf, proto) except? 0:
-        cdef uint32_t needed
+    cdef cuint32_t _deserialize(AStructB self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
         self._cpp_obj = make_shared[cAStructB]()
         cdef cAStructB* cpp_obj = self._cpp_obj.get()
         if proto is __Protocol.COMPACT:
