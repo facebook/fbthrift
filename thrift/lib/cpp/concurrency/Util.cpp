@@ -41,7 +41,7 @@ int64_t Util::currentTimeTicks(int64_t ticksPerSec) {
 #elif defined(THRIFT_HAVE_GETTIMEOFDAY)
   struct timeval now;
   int ret = gettimeofday(&now, nullptr);
-  assert(ret == 0);
+  DCHECK(ret == 0);
   toTicks(result, now, ticksPerSec);
 #else
 #error "No high-precision clock is available."
