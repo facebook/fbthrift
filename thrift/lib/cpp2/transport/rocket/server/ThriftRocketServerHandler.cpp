@@ -417,7 +417,7 @@ void ThriftRocketServerHandler::handleRequestOverloadedServer(
   request->sendErrorWrapped(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::LOADSHEDDING, "Loadshedding request"),
-      serverConfigs_->getOverloadedErrorCode());
+      kOverloadedErrorCode);
 }
 
 void ThriftRocketServerHandler::handleServerShutdown(

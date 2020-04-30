@@ -65,10 +65,6 @@ class ServerConfigsMock : public ServerConfigs {
     return 123;
   }
 
-  const std::string& getOverloadedErrorCode() const override {
-    return kOverloadedErrorCode;
-  }
-
   bool isOverloaded(
       const transport::THeader::StringToStringMap*,
       const std::string*) const override {

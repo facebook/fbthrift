@@ -264,7 +264,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   folly::Synchronized<std::shared_ptr<server::TServerObserver>> observer_;
   std::atomic<server::TServerObserver*> observerPtr_{nullptr};
 
-  std::string overloadedErrorCode_ = kOverloadedErrorCode;
   IsOverloadedFunc isOverloaded_;
   std::function<int64_t(const std::string&)> getLoad_;
 
@@ -864,14 +863,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   int getListenBacklog() const {
     return listenBacklog_.get();
-  }
-
-  void setOverloadedErrorCode(const std::string& errorCode) {
-    overloadedErrorCode_ = errorCode;
-  }
-
-  const std::string& getOverloadedErrorCode() const final {
-    return overloadedErrorCode_;
   }
 
   void setIsOverloaded(IsOverloadedFunc isOverloaded) {

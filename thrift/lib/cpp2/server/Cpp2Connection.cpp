@@ -296,7 +296,7 @@ void Cpp2Connection::requestReceived(
     killRequest(
         std::move(hreq),
         TApplicationException::TApplicationExceptionType::LOADSHEDDING,
-        server->getOverloadedErrorCode(),
+        kOverloadedErrorCode,
         "loadshedding request");
     return;
   }
@@ -308,7 +308,7 @@ void Cpp2Connection::requestReceived(
     killRequest(
         std::move(hreq),
         TApplicationException::TApplicationExceptionType::LOADSHEDDING,
-        server->getOverloadedErrorCode(),
+        kOverloadedErrorCode,
         "adaptive loadshedding rejection");
     return;
   }
