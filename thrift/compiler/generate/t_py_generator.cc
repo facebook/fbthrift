@@ -21,9 +21,9 @@
 #include <cassert>
 #include <fstream>
 #include <iostream>
-#include <set>
 #include <sstream>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 #include <boost/filesystem.hpp>
@@ -31,18 +31,13 @@
 #include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
 #include <thrift/compiler/generate/t_generator.h>
+#include <thrift/compiler/lib/py3/util.h>
 
 using namespace std;
 
 namespace apache {
 namespace thrift {
 namespace compiler {
-
-// All other Python keywords (as of 2.7) are reserved by the Thrift
-// compiler.
-static const char* py_reserved_keywords[] = {
-    "from",
-};
 
 /**
  * Python code generator.
@@ -93,12 +88,6 @@ class t_py_generator : public t_concat_generator {
     compare_t_fields_only_ = (iter != parsed_options.end());
 
     out_dir_base_ = "gen-py";
-
-    for (size_t i = 0;
-         i < sizeof py_reserved_keywords / sizeof py_reserved_keywords[0];
-         ++i) {
-      reserved_keywords_.insert(py_reserved_keywords[i]);
-    }
   }
 
   /**
@@ -375,8 +364,6 @@ class t_py_generator : public t_concat_generator {
   std::ofstream f_service_;
 
   std::string package_dir_;
-
-  set<string> reserved_keywords_;
 
   void generate_json_reader_fn_signature(ofstream& out);
 };
@@ -839,7 +826,8 @@ void t_py_generator::init_generator() {
  * Ensures the string is not a reserved Python keyword.
  */
 string t_py_generator::rename_reserved_keywords(const string& value) {
-  if (reserved_keywords_.find(value) != reserved_keywords_.end()) {
+  const auto& reserved_keywords = get_python_reserved_names();
+  if (reserved_keywords.find(value) != reserved_keywords.end()) {
     return value + "_PY_RESERVED_KEYWORD";
   } else {
     return value;
