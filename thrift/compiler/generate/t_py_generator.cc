@@ -404,7 +404,8 @@ void t_py_generator::generate_json_field(
         tfield->get_name();
   }
 
-  string name = prefix_thrift + tfield->get_name() + suffix_thrift;
+  string name = prefix_thrift + rename_reserved_keywords(tfield->get_name()) +
+      suffix_thrift;
 
   if (type->is_struct() || type->is_xception()) {
     generate_json_struct(out, (t_struct*)type, name, prefix_json);
