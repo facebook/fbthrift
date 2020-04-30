@@ -87,6 +87,14 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
     'map_of_string_to_ints' => 5,
     'struct_foo' => 6,
   ];
+  const type TConstructorShape = shape(
+    ?'int_value' => ?int,
+    ?'str_value' => ?string,
+    ?'double_value' => ?float,
+    ?'list_of_strings' => ?Vector<string>,
+    ?'map_of_string_to_ints' => ?Map<string, int>,
+    ?'struct_foo' => ?Foo,
+  );
   const int STRUCTURAL_ID = 872350750526219001;
   /**
    * Original thrift field:-
@@ -121,31 +129,31 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   protected TestUnionEnum $_type = TestUnionEnum::_EMPTY_;
 
   <<__Rx>>
-  public function __construct(?int $int_value = null, ?string $str_value = null, ?float $double_value = null, ?Vector<string> $list_of_strings = null, ?Map<string, int> $map_of_string_to_ints = null, ?Foo $struct_foo = null  ) {
+  public function __construct(self::TConstructorShape $shape = shape()) {
     $this->_type = TestUnionEnum::_EMPTY_;
-    if ($int_value !== null) {
-      $this->int_value = $int_value;
-      $this->_type = TestUnionEnum::int_value;
+    $this->int_value = Shapes::idx($shape, 'int_value');
+    if ($this->int_value !== null) {
+        $this->_type = TestUnionEnum::int_value;
     }
-    if ($str_value !== null) {
-      $this->str_value = $str_value;
-      $this->_type = TestUnionEnum::str_value;
+    $this->str_value = Shapes::idx($shape, 'str_value');
+    if ($this->str_value !== null) {
+        $this->_type = TestUnionEnum::str_value;
     }
-    if ($double_value !== null) {
-      $this->double_value = $double_value;
-      $this->_type = TestUnionEnum::double_value;
+    $this->double_value = Shapes::idx($shape, 'double_value');
+    if ($this->double_value !== null) {
+        $this->_type = TestUnionEnum::double_value;
     }
-    if ($list_of_strings !== null) {
-      $this->list_of_strings = $list_of_strings;
-      $this->_type = TestUnionEnum::list_of_strings;
+    $this->list_of_strings = Shapes::idx($shape, 'list_of_strings');
+    if ($this->list_of_strings !== null) {
+        $this->_type = TestUnionEnum::list_of_strings;
     }
-    if ($map_of_string_to_ints !== null) {
-      $this->map_of_string_to_ints = $map_of_string_to_ints;
-      $this->_type = TestUnionEnum::map_of_string_to_ints;
+    $this->map_of_string_to_ints = Shapes::idx($shape, 'map_of_string_to_ints');
+    if ($this->map_of_string_to_ints !== null) {
+        $this->_type = TestUnionEnum::map_of_string_to_ints;
     }
-    if ($struct_foo !== null) {
-      $this->struct_foo = $struct_foo;
-      $this->_type = TestUnionEnum::struct_foo;
+    $this->struct_foo = Shapes::idx($shape, 'struct_foo');
+    if ($this->struct_foo !== null) {
+        $this->_type = TestUnionEnum::struct_foo;
     }
   }
 
@@ -313,6 +321,13 @@ class Foo implements \IThriftStruct {
     'd' => 4,
     'str_value' => 5,
   ];
+  const type TConstructorShape = shape(
+    ?'a' => Vector<string>,
+    ?'b' => ?Map<string, Vector<Set<int>>>,
+    ?'c' => int,
+    ?'d' => bool,
+    ?'str_value' => string,
+  );
   const int STRUCTURAL_ID = 5952652426480946901;
   /**
    * Original thrift field:-
@@ -341,28 +356,12 @@ class Foo implements \IThriftStruct {
   public string $str_value;
 
   <<__Rx>>
-  public function __construct(?Vector<string> $a = null, ?Map<string, Vector<Set<int>>> $b = null, ?int $c = null, ?bool $d = null, ?string $str_value = null  ) {
-    if ($a === null) {
-      $this->a = Vector {};
-    } else {
-      $this->a = $a;
-    }
-    $this->b = $b;
-    if ($c === null) {
-      $this->c = 7;
-    } else {
-      $this->c = $c;
-    }
-    if ($d === null) {
-      $this->d = false;
-    } else {
-      $this->d = $d;
-    }
-    if ($str_value === null) {
-      $this->str_value = "hello";
-    } else {
-      $this->str_value = $str_value;
-    }
+  public function __construct(self::TConstructorShape $shape = shape()) {
+    $this->a = Shapes::idx($shape, 'a') ?? Vector {};
+    $this->b = Shapes::idx($shape, 'b') ?? Map {};
+    $this->c = Shapes::idx($shape, 'c') ?? 7;
+    $this->d = Shapes::idx($shape, 'd') ?? false;
+    $this->str_value = Shapes::idx($shape, 'str_value') ?? "hello";
   }
 
   public function getName(): string {
@@ -441,6 +440,14 @@ class TestStruct implements \IThriftStruct {
     'map_of_string_to_struct_foo' => 5,
     'list_of_struct_self' => 6,
   ];
+  const type TConstructorShape = shape(
+    ?'foo_struct' => ?Foo,
+    ?'union_value' => ?TestUnion,
+    ?'struct_of_self' => ?TestStruct,
+    ?'list_of_struct_foo' => Vector<Foo>,
+    ?'map_of_string_to_struct_foo' => Map<string, Foo>,
+    ?'list_of_struct_self' => Vector<TestStruct>,
+  );
   const int STRUCTURAL_ID = 6681594433718475023;
   /**
    * Original thrift field:-
@@ -474,25 +481,13 @@ class TestStruct implements \IThriftStruct {
   public Vector<TestStruct> $list_of_struct_self;
 
   <<__Rx>>
-  public function __construct(?Foo $foo_struct = null, ?TestUnion $union_value = null, ?TestStruct $struct_of_self = null, ?Vector<Foo> $list_of_struct_foo = null, ?Map<string, Foo> $map_of_string_to_struct_foo = null, ?Vector<TestStruct> $list_of_struct_self = null  ) {
-    $this->foo_struct = $foo_struct;
-    $this->union_value = $union_value;
-    $this->struct_of_self = $struct_of_self;
-    if ($list_of_struct_foo === null) {
-      $this->list_of_struct_foo = Vector {};
-    } else {
-      $this->list_of_struct_foo = $list_of_struct_foo;
-    }
-    if ($map_of_string_to_struct_foo === null) {
-      $this->map_of_string_to_struct_foo = Map {};
-    } else {
-      $this->map_of_string_to_struct_foo = $map_of_string_to_struct_foo;
-    }
-    if ($list_of_struct_self === null) {
-      $this->list_of_struct_self = Vector {};
-    } else {
-      $this->list_of_struct_self = $list_of_struct_self;
-    }
+  public function __construct(self::TConstructorShape $shape = shape()) {
+    $this->foo_struct = Shapes::idx($shape, 'foo_struct');
+    $this->union_value = Shapes::idx($shape, 'union_value');
+    $this->struct_of_self = Shapes::idx($shape, 'struct_of_self');
+    $this->list_of_struct_foo = Shapes::idx($shape, 'list_of_struct_foo') ?? Vector {};
+    $this->map_of_string_to_struct_foo = Shapes::idx($shape, 'map_of_string_to_struct_foo') ?? Map {};
+    $this->list_of_struct_self = Shapes::idx($shape, 'list_of_struct_self') ?? Vector {};
   }
 
   public function getName(): string {
@@ -542,6 +537,12 @@ class Baz extends \TException implements \IThriftStruct {
     'some_container' => 3,
     'code' => 4,
   ];
+  const type TConstructorShape = shape(
+    ?'message' => string,
+    ?'some_field' => ?Foo,
+    ?'some_container' => Set<string>,
+    ?'code' => int,
+  );
   const int STRUCTURAL_ID = 1663976252517274137;
   /**
    * Original thrift field:-
@@ -565,24 +566,12 @@ class Baz extends \TException implements \IThriftStruct {
   public int $code;
 
   <<__Rx>>
-  public function __construct(?string $message = null, ?Foo $some_field = null, ?Set<string> $some_container = null, ?int $code = null  ) {
+  public function __construct(self::TConstructorShape $shape = shape()) {
     parent::__construct();
-    if ($message === null) {
-      $this->message = '';
-    } else {
-      $this->message = $message;
-    }
-    $this->some_field = $some_field;
-    if ($some_container === null) {
-      $this->some_container = Set {};
-    } else {
-      $this->some_container = $some_container;
-    }
-    if ($code === null) {
-      $this->code = 0;
-    } else {
-      $this->code = $code;
-    }
+    $this->message = Shapes::idx($shape, 'message') ?? '';
+    $this->some_field = Shapes::idx($shape, 'some_field');
+    $this->some_container = Shapes::idx($shape, 'some_container') ?? Set {};
+    $this->code = Shapes::idx($shape, 'code') ?? 0;
   }
 
   public function getName(): string {
@@ -611,6 +600,9 @@ class OptBaz extends \TException implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'message' => 1,
   ];
+  const type TConstructorShape = shape(
+    ?'message' => ?string,
+  );
   const int STRUCTURAL_ID = 546500496397478593;
   /**
    * Original thrift field:-
@@ -619,13 +611,9 @@ class OptBaz extends \TException implements \IThriftStruct {
   public string $message;
 
   <<__Rx>>
-  public function __construct(?string $message = null  ) {
+  public function __construct(self::TConstructorShape $shape = shape()) {
     parent::__construct();
-    if ($message === null) {
-      $this->message = '';
-    } else {
-      $this->message = $message;
-    }
+    $this->message = Shapes::idx($shape, 'message') ?? '';
   }
 
   public function getName(): string {
