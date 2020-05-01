@@ -24,6 +24,7 @@ from folly.range cimport StringPiece
 
 import asyncio
 import collections
+import functools
 import inspect
 import ipaddress
 from pathlib import Path
@@ -56,8 +57,18 @@ cdef inline _get_SocketAddress(const cfollySocketAddress* sadr):
 
 def pass_context(func):
     """Decorate a handler as wanting the Request Context"""
-    func.pass_context = True
-    return func
+    if PY_VERSION_HEX < 0x030702F0:  # 3.7.2 Final
+        func.pass_context = True
+        return func
+
+    @functools.wraps(func)
+    def decorated(self, *args, **kwargs):
+        ctx = get_context(None)
+        if ctx is None:
+            return func(self, *args, **kwargs)
+        return func(self, get_context(), *args, **kwargs)
+    return decorated
+
 
 
 class SSLPolicy(Enum):
@@ -71,12 +82,6 @@ cdef class AsyncProcessorFactory:
 
 
 cdef class ServiceInterface(AsyncProcessorFactory):
-    def __cinit__(self, *args, **kws):
-        # Figure out which methods want context and mark them on the handler
-        for name, method in inspect.getmembers(self, inspect.iscoroutinefunction):
-            if hasattr(method, 'pass_context'):
-                setattr(self, f'_pass_context_{name}', True)
-
     async def __aenter__(self):
         # Establish async context managers as a way for end users to async initalize
         # internal structures used by Service Handlers.

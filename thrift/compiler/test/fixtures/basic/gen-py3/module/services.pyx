@@ -319,15 +319,11 @@ cdef api void call_cy_MyService_ping(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef MyServiceInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_ping:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         MyService_ping_coro(
             self,
@@ -344,7 +340,7 @@ async def MyService_ping_coro(
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.ping, "pass_context", False):
             result = await self.ping(ctx,)
         else:
             result = await self.ping()
@@ -369,15 +365,11 @@ cdef api void call_cy_MyService_getRandomData(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    cdef MyServiceInterface __iface
-    __iface = self
     __promise = Promise_string.create(move_promise_string(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_getRandomData:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         MyService_getRandomData_coro(
             self,
@@ -394,7 +386,7 @@ async def MyService_getRandomData_coro(
     Promise_string promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.getRandomData, "pass_context", False):
             result = await self.getRandomData(ctx,)
         else:
             result = await self.getRandomData()
@@ -420,16 +412,12 @@ cdef api void call_cy_MyService_hasDataById(
     cFollyPromise[cbool] cPromise,
     cint64_t id
 ):
-    cdef MyServiceInterface __iface
-    __iface = self
     __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_id = id
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_hasDataById:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         MyService_hasDataById_coro(
             self,
@@ -448,7 +436,7 @@ async def MyService_hasDataById_coro(
     id
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.hasDataById, "pass_context", False):
             result = await self.hasDataById(ctx,
                       id)
         else:
@@ -476,16 +464,12 @@ cdef api void call_cy_MyService_getDataById(
     cFollyPromise[unique_ptr[string]] cPromise,
     cint64_t id
 ):
-    cdef MyServiceInterface __iface
-    __iface = self
     __promise = Promise_string.create(move_promise_string(cPromise))
     arg_id = id
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_getDataById:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         MyService_getDataById_coro(
             self,
@@ -504,7 +488,7 @@ async def MyService_getDataById_coro(
     id
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.getDataById, "pass_context", False):
             result = await self.getDataById(ctx,
                       id)
         else:
@@ -533,17 +517,13 @@ cdef api void call_cy_MyService_putDataById(
     cint64_t id,
     unique_ptr[string] data
 ):
-    cdef MyServiceInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_id = id
     arg_data = (deref(data)).data().decode('UTF-8')
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_putDataById:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         MyService_putDataById_coro(
             self,
@@ -564,7 +544,7 @@ async def MyService_putDataById_coro(
     data
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.putDataById, "pass_context", False):
             result = await self.putDataById(ctx,
                       id,
                       data)
@@ -595,17 +575,13 @@ cdef api void call_cy_MyService_lobDataById(
     cint64_t id,
     unique_ptr[string] data
 ):
-    cdef MyServiceInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_id = id
     arg_data = (deref(data)).data().decode('UTF-8')
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_lobDataById:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         MyService_lobDataById_coro(
             self,
@@ -626,7 +602,7 @@ async def MyService_lobDataById_coro(
     data
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.lobDataById, "pass_context", False):
             result = await self.lobDataById(ctx,
                       id,
                       data)

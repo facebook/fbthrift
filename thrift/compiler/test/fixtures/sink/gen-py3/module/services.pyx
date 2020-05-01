@@ -115,15 +115,11 @@ cdef api void call_cy_SinkService_method(
     Cpp2RequestContext* ctx,
     cFollyPromise[] cPromise
 ):
-    cdef SinkServiceInterface __iface
-    __iface = self
     __promise = Promise_.create(move_promise_(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_method:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         SinkService_method_coro(
             self,
@@ -140,7 +136,7 @@ async def SinkService_method_coro(
     Promise_ promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.method, "pass_context", False):
             result = await self.method(ctx,)
         else:
             result = await self.method()
@@ -165,15 +161,11 @@ cdef api void call_cy_SinkService_methodAndReponse(
     Cpp2RequestContext* ctx,
     cFollyPromise[] cPromise
 ):
-    cdef SinkServiceInterface __iface
-    __iface = self
     __promise = Promise_.create(move_promise_(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_methodAndReponse:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         SinkService_methodAndReponse_coro(
             self,
@@ -190,7 +182,7 @@ async def SinkService_methodAndReponse_coro(
     Promise_ promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.methodAndReponse, "pass_context", False):
             result = await self.methodAndReponse(ctx,)
         else:
             result = await self.methodAndReponse()
@@ -215,15 +207,11 @@ cdef api void call_cy_SinkService_methodThrow(
     Cpp2RequestContext* ctx,
     cFollyPromise[] cPromise
 ):
-    cdef SinkServiceInterface __iface
-    __iface = self
     __promise = Promise_.create(move_promise_(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_methodThrow:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         SinkService_methodThrow_coro(
             self,
@@ -240,7 +228,7 @@ async def SinkService_methodThrow_coro(
     Promise_ promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.methodThrow, "pass_context", False):
             result = await self.methodThrow(ctx,)
         else:
             result = await self.methodThrow()
@@ -267,15 +255,11 @@ cdef api void call_cy_SinkService_methodSinkThrow(
     Cpp2RequestContext* ctx,
     cFollyPromise[] cPromise
 ):
-    cdef SinkServiceInterface __iface
-    __iface = self
     __promise = Promise_.create(move_promise_(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_methodSinkThrow:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         SinkService_methodSinkThrow_coro(
             self,
@@ -292,7 +276,7 @@ async def SinkService_methodSinkThrow_coro(
     Promise_ promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.methodSinkThrow, "pass_context", False):
             result = await self.methodSinkThrow(ctx,)
         else:
             result = await self.methodSinkThrow()
@@ -317,15 +301,11 @@ cdef api void call_cy_SinkService_methodFinalThrow(
     Cpp2RequestContext* ctx,
     cFollyPromise[] cPromise
 ):
-    cdef SinkServiceInterface __iface
-    __iface = self
     __promise = Promise_.create(move_promise_(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_methodFinalThrow:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         SinkService_methodFinalThrow_coro(
             self,
@@ -342,7 +322,7 @@ async def SinkService_methodFinalThrow_coro(
     Promise_ promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.methodFinalThrow, "pass_context", False):
             result = await self.methodFinalThrow(ctx,)
         else:
             result = await self.methodFinalThrow()
@@ -367,15 +347,11 @@ cdef api void call_cy_SinkService_methodBothThrow(
     Cpp2RequestContext* ctx,
     cFollyPromise[] cPromise
 ):
-    cdef SinkServiceInterface __iface
-    __iface = self
     __promise = Promise_.create(move_promise_(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_methodBothThrow:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         SinkService_methodBothThrow_coro(
             self,
@@ -392,7 +368,7 @@ async def SinkService_methodBothThrow_coro(
     Promise_ promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.methodBothThrow, "pass_context", False):
             result = await self.methodBothThrow(ctx,)
         else:
             result = await self.methodBothThrow()

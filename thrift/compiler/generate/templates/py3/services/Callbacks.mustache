@@ -44,8 +44,6 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
             }}{{#program:stack_arguments?}}{{> types/CythonCppType}}{{/program:stack_arguments?}}{{!
         }}{{/field:type}} {{field:py_name}}{{/function:args}}
 ):{{! Gets called from a python Executor }}
-    cdef {{service:name}}Interface __iface
-    __iface = self
     __promise = Promise_{{#function:returnType}}{{> types/CythonCppTypeIdent}}{{/function:returnType}}.create(move_promise_{{#function:returnType}}{{> types/CythonCppTypeIdent}}{{/function:returnType}}(cPromise))
     {{#function:args}}
     arg_{{field:py_name}} = {{#field:type}}{{!
@@ -53,13 +51,11 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
             }}{{#program:stack_arguments?}}{{> types/CythonCppValueToPython}}{{/program:stack_arguments?}}{{!
         }}{{/field:type}}
     {{/function:args}}
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_{{function:name}}:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         {{! python 3.7 contextvars support }}
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         {{service:name}}_{{function:name}}_coro(
             self,
@@ -79,7 +75,8 @@ async def {{service:name}}_{{function:name}}_coro(
     {{field:py_name}}{{/function:args}}
 ):
     try:
-        if ctx is not None:
+        {{! only use this path if python < 3.7.2 Final (where ctx is not None) and has pass_context }}
+        if ctx and getattr(self.{{function:name}}, "pass_context", False):
             result = await self.{{function:name}}(ctx,{{#function:args}}
                       {{field:py_name}}{{^last?}},{{/last?}}{{/function:args}})
         else:

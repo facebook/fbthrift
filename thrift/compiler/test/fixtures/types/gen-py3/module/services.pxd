@@ -9,7 +9,8 @@ from thrift.py3.server cimport ServiceInterface
 
 
 cdef class SomeServiceInterface(ServiceInterface):
-    cdef public bint _pass_context_bounce_map
-    cdef public bint _pass_context_binary_keyed_map
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_bounce_map
+    cdef bint _for_cython_binary_keyed_map
     pass
 

@@ -219,15 +219,11 @@ cdef api void call_cy_Raiser_doBland(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef RaiserInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_doBland:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         Raiser_doBland_coro(
             self,
@@ -244,7 +240,7 @@ async def Raiser_doBland_coro(
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.doBland, "pass_context", False):
             result = await self.doBland(ctx,)
         else:
             result = await self.doBland()
@@ -269,15 +265,11 @@ cdef api void call_cy_Raiser_doRaise(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef RaiserInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_doRaise:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         Raiser_doRaise_coro(
             self,
@@ -294,7 +286,7 @@ async def Raiser_doRaise_coro(
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.doRaise, "pass_context", False):
             result = await self.doRaise(ctx,)
         else:
             result = await self.doRaise()
@@ -325,15 +317,11 @@ cdef api void call_cy_Raiser_get200(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    cdef RaiserInterface __iface
-    __iface = self
     __promise = Promise_string.create(move_promise_string(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_get200:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         Raiser_get200_coro(
             self,
@@ -350,7 +338,7 @@ async def Raiser_get200_coro(
     Promise_string promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.get200, "pass_context", False):
             result = await self.get200(ctx,)
         else:
             result = await self.get200()
@@ -375,15 +363,11 @@ cdef api void call_cy_Raiser_get500(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    cdef RaiserInterface __iface
-    __iface = self
     __promise = Promise_string.create(move_promise_string(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_get500:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         Raiser_get500_coro(
             self,
@@ -400,7 +384,7 @@ async def Raiser_get500_coro(
     Promise_string promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.get500, "pass_context", False):
             result = await self.get500(ctx,)
         else:
             result = await self.get500()

@@ -9,6 +9,7 @@ from thrift.py3.server cimport ServiceInterface
 
 
 cdef class HsTestServiceInterface(ServiceInterface):
-    cdef public bint _pass_context_init
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_init
     pass
 

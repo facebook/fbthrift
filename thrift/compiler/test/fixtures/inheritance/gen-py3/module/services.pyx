@@ -232,15 +232,11 @@ cdef api void call_cy_MyRoot_do_root(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef MyRootInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_do_root:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         MyRoot_do_root_coro(
             self,
@@ -257,7 +253,7 @@ async def MyRoot_do_root_coro(
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.do_root, "pass_context", False):
             result = await self.do_root(ctx,)
         else:
             result = await self.do_root()
@@ -282,15 +278,11 @@ cdef api void call_cy_MyNode_do_mid(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef MyNodeInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_do_mid:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         MyNode_do_mid_coro(
             self,
@@ -307,7 +299,7 @@ async def MyNode_do_mid_coro(
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.do_mid, "pass_context", False):
             result = await self.do_mid(ctx,)
         else:
             result = await self.do_mid()
@@ -332,15 +324,11 @@ cdef api void call_cy_MyLeaf_do_leaf(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef MyLeafInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_do_leaf:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         MyLeaf_do_leaf_coro(
             self,
@@ -357,7 +345,7 @@ async def MyLeaf_do_leaf_coro(
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.do_leaf, "pass_context", False):
             result = await self.do_leaf(ctx,)
         else:
             result = await self.do_leaf()

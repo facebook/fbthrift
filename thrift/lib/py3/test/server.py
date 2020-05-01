@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import asyncio
+import sys
 import types
 import unittest
 from typing import Sequence
@@ -98,6 +99,9 @@ class ServicesTests(unittest.TestCase):
             # You can't set attributes on builtin/extension types
             TestingServiceInterface.annotations = {}
 
+    @unittest.skipIf(
+        sys.version_info[:2] >= (3, 7), "py3.7 will use get_context() instead"
+    )
     def test_ctx_unittest_call(self) -> None:
         # Create a broken client
         h = Handler()

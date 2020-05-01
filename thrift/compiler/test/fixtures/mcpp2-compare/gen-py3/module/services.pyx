@@ -1933,15 +1933,11 @@ cdef api void call_cy_ReturnService_noReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_noReturn:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_noReturn_coro(
             self,
@@ -1958,7 +1954,7 @@ async def ReturnService_noReturn_coro(
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.noReturn, "pass_context", False):
             result = await self.noReturn(ctx,)
         else:
             result = await self.noReturn()
@@ -1983,15 +1979,11 @@ cdef api void call_cy_ReturnService_boolReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[cbool] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise_cbool.create(move_promise_cbool(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_boolReturn:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_boolReturn_coro(
             self,
@@ -2008,7 +2000,7 @@ async def ReturnService_boolReturn_coro(
     Promise_cbool promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.boolReturn, "pass_context", False):
             result = await self.boolReturn(ctx,)
         else:
             result = await self.boolReturn()
@@ -2033,15 +2025,11 @@ cdef api void call_cy_ReturnService_i16Return(
     Cpp2RequestContext* ctx,
     cFollyPromise[cint16_t] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise_cint16_t.create(move_promise_cint16_t(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_i16Return:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_i16Return_coro(
             self,
@@ -2058,7 +2046,7 @@ async def ReturnService_i16Return_coro(
     Promise_cint16_t promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.i16Return, "pass_context", False):
             result = await self.i16Return(ctx,)
         else:
             result = await self.i16Return()
@@ -2083,15 +2071,11 @@ cdef api void call_cy_ReturnService_i32Return(
     Cpp2RequestContext* ctx,
     cFollyPromise[cint32_t] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise_cint32_t.create(move_promise_cint32_t(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_i32Return:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_i32Return_coro(
             self,
@@ -2108,7 +2092,7 @@ async def ReturnService_i32Return_coro(
     Promise_cint32_t promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.i32Return, "pass_context", False):
             result = await self.i32Return(ctx,)
         else:
             result = await self.i32Return()
@@ -2133,15 +2117,11 @@ cdef api void call_cy_ReturnService_i64Return(
     Cpp2RequestContext* ctx,
     cFollyPromise[cint64_t] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise_cint64_t.create(move_promise_cint64_t(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_i64Return:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_i64Return_coro(
             self,
@@ -2158,7 +2138,7 @@ async def ReturnService_i64Return_coro(
     Promise_cint64_t promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.i64Return, "pass_context", False):
             result = await self.i64Return(ctx,)
         else:
             result = await self.i64Return()
@@ -2183,15 +2163,11 @@ cdef api void call_cy_ReturnService_floatReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[float] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise_float.create(move_promise_float(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_floatReturn:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_floatReturn_coro(
             self,
@@ -2208,7 +2184,7 @@ async def ReturnService_floatReturn_coro(
     Promise_float promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.floatReturn, "pass_context", False):
             result = await self.floatReturn(ctx,)
         else:
             result = await self.floatReturn()
@@ -2233,15 +2209,11 @@ cdef api void call_cy_ReturnService_doubleReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[double] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise_double.create(move_promise_double(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_doubleReturn:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_doubleReturn_coro(
             self,
@@ -2258,7 +2230,7 @@ async def ReturnService_doubleReturn_coro(
     Promise_double promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.doubleReturn, "pass_context", False):
             result = await self.doubleReturn(ctx,)
         else:
             result = await self.doubleReturn()
@@ -2283,15 +2255,11 @@ cdef api void call_cy_ReturnService_stringReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise_string.create(move_promise_string(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_stringReturn:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_stringReturn_coro(
             self,
@@ -2308,7 +2276,7 @@ async def ReturnService_stringReturn_coro(
     Promise_string promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.stringReturn, "pass_context", False):
             result = await self.stringReturn(ctx,)
         else:
             result = await self.stringReturn()
@@ -2333,15 +2301,11 @@ cdef api void call_cy_ReturnService_binaryReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise_binary.create(move_promise_binary(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_binaryReturn:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_binaryReturn_coro(
             self,
@@ -2358,7 +2322,7 @@ async def ReturnService_binaryReturn_coro(
     Promise_binary promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.binaryReturn, "pass_context", False):
             result = await self.binaryReturn(ctx,)
         else:
             result = await self.binaryReturn()
@@ -2383,15 +2347,11 @@ cdef api void call_cy_ReturnService_mapReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise_cmap__string_cint64_t.create(move_promise_cmap__string_cint64_t(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_mapReturn:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_mapReturn_coro(
             self,
@@ -2408,7 +2368,7 @@ async def ReturnService_mapReturn_coro(
     Promise_cmap__string_cint64_t promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.mapReturn, "pass_context", False):
             result = await self.mapReturn(ctx,)
         else:
             result = await self.mapReturn()
@@ -2434,15 +2394,11 @@ cdef api void call_cy_ReturnService_simpleTypedefReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[cint32_t] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise_cint32_t.create(move_promise_cint32_t(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_simpleTypedefReturn:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_simpleTypedefReturn_coro(
             self,
@@ -2459,7 +2415,7 @@ async def ReturnService_simpleTypedefReturn_coro(
     Promise_cint32_t promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.simpleTypedefReturn, "pass_context", False):
             result = await self.simpleTypedefReturn(ctx,)
         else:
             result = await self.simpleTypedefReturn()
@@ -2484,15 +2440,11 @@ cdef api void call_cy_ReturnService_complexTypedefReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct.create(move_promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_complexTypedefReturn:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_complexTypedefReturn_coro(
             self,
@@ -2509,7 +2461,7 @@ async def ReturnService_complexTypedefReturn_coro(
     Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.complexTypedefReturn, "pass_context", False):
             result = await self.complexTypedefReturn(ctx,)
         else:
             result = await self.complexTypedefReturn()
@@ -2535,15 +2487,11 @@ cdef api void call_cy_ReturnService_list_mostComplexTypedefReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct.create(move_promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_list_mostComplexTypedefReturn:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_list_mostComplexTypedefReturn_coro(
             self,
@@ -2560,7 +2508,7 @@ async def ReturnService_list_mostComplexTypedefReturn_coro(
     Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.list_mostComplexTypedefReturn, "pass_context", False):
             result = await self.list_mostComplexTypedefReturn(ctx,)
         else:
             result = await self.list_mostComplexTypedefReturn()
@@ -2586,15 +2534,11 @@ cdef api void call_cy_ReturnService_enumReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[_module_types.cMyEnumA] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise__module_types_cMyEnumA.create(move_promise__module_types_cMyEnumA(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_enumReturn:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_enumReturn_coro(
             self,
@@ -2611,7 +2555,7 @@ async def ReturnService_enumReturn_coro(
     Promise__module_types_cMyEnumA promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.enumReturn, "pass_context", False):
             result = await self.enumReturn(ctx,)
         else:
             result = await self.enumReturn()
@@ -2636,15 +2580,11 @@ cdef api void call_cy_ReturnService_list_EnumReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise_vector___module_types_cMyEnumA.create(move_promise_vector___module_types_cMyEnumA(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_list_EnumReturn:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_list_EnumReturn_coro(
             self,
@@ -2661,7 +2601,7 @@ async def ReturnService_list_EnumReturn_coro(
     Promise_vector___module_types_cMyEnumA promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.list_EnumReturn, "pass_context", False):
             result = await self.list_EnumReturn(ctx,)
         else:
             result = await self.list_EnumReturn()
@@ -2687,15 +2627,11 @@ cdef api void call_cy_ReturnService_structReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[_module_types.cMyStruct]] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise__module_types_cMyStruct.create(move_promise__module_types_cMyStruct(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_structReturn:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_structReturn_coro(
             self,
@@ -2712,7 +2648,7 @@ async def ReturnService_structReturn_coro(
     Promise__module_types_cMyStruct promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.structReturn, "pass_context", False):
             result = await self.structReturn(ctx,)
         else:
             result = await self.structReturn()
@@ -2737,15 +2673,11 @@ cdef api void call_cy_ReturnService_set_StructReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise_cset___module_types_cMyStruct.create(move_promise_cset___module_types_cMyStruct(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_set_StructReturn:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_set_StructReturn_coro(
             self,
@@ -2762,7 +2694,7 @@ async def ReturnService_set_StructReturn_coro(
     Promise_cset___module_types_cMyStruct promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.set_StructReturn, "pass_context", False):
             result = await self.set_StructReturn(ctx,)
         else:
             result = await self.set_StructReturn()
@@ -2788,15 +2720,11 @@ cdef api void call_cy_ReturnService_unionReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[_module_types.cComplexUnion]] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise__module_types_cComplexUnion.create(move_promise__module_types_cComplexUnion(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_unionReturn:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_unionReturn_coro(
             self,
@@ -2813,7 +2741,7 @@ async def ReturnService_unionReturn_coro(
     Promise__module_types_cComplexUnion promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.unionReturn, "pass_context", False):
             result = await self.unionReturn(ctx,)
         else:
             result = await self.unionReturn()
@@ -2838,15 +2766,11 @@ cdef api void call_cy_ReturnService_list_UnionReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] cPromise
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise_vector___module_types_cComplexUnion.create(move_promise_vector___module_types_cComplexUnion(cPromise))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_list_UnionReturn:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_list_UnionReturn_coro(
             self,
@@ -2863,7 +2787,7 @@ async def ReturnService_list_UnionReturn_coro(
     Promise_vector___module_types_cComplexUnion promise
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.list_UnionReturn, "pass_context", False):
             result = await self.list_UnionReturn(ctx,)
         else:
             result = await self.list_UnionReturn()
@@ -2890,16 +2814,12 @@ cdef api void call_cy_ReturnService_readDataEb(
     cFollyPromise[unique_ptr[__iobuf.cIOBuf]] cPromise,
     cint64_t size
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise___iobuf_cIOBuf.create(move_promise___iobuf_cIOBuf(cPromise))
     arg_size = size
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_readDataEb:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_readDataEb_coro(
             self,
@@ -2918,7 +2838,7 @@ async def ReturnService_readDataEb_coro(
     size
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.readDataEb, "pass_context", False):
             result = await self.readDataEb(ctx,
                       size)
         else:
@@ -2946,16 +2866,12 @@ cdef api void call_cy_ReturnService_readData(
     cFollyPromise[unique_ptr[unique_ptr[__iobuf.cIOBuf]]] cPromise,
     cint64_t size
 ):
-    cdef ReturnServiceInterface __iface
-    __iface = self
     __promise = Promise_unique_ptr__iobuf_cIOBuf.create(move_promise_unique_ptr__iobuf_cIOBuf(cPromise))
     arg_size = size
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_readData:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ReturnService_readData_coro(
             self,
@@ -2974,7 +2890,7 @@ async def ReturnService_readData_coro(
     size
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.readData, "pass_context", False):
             result = await self.readData(ctx,
                       size)
         else:
@@ -3002,16 +2918,12 @@ cdef api void call_cy_ParamService_void_ret_i16_param(
     cFollyPromise[cFollyUnit] cPromise,
     cint16_t param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_param1 = param1
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_void_ret_i16_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_i16_param_coro(
             self,
@@ -3030,7 +2942,7 @@ async def ParamService_void_ret_i16_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.void_ret_i16_param, "pass_context", False):
             result = await self.void_ret_i16_param(ctx,
                       param1)
         else:
@@ -3059,17 +2971,13 @@ cdef api void call_cy_ParamService_void_ret_byte_i16_param(
     cint8_t param1,
     cint16_t param2
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_param1 = param1
     arg_param2 = param2
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_void_ret_byte_i16_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_byte_i16_param_coro(
             self,
@@ -3090,7 +2998,7 @@ async def ParamService_void_ret_byte_i16_param_coro(
     param2
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.void_ret_byte_i16_param, "pass_context", False):
             result = await self.void_ret_byte_i16_param(ctx,
                       param1,
                       param2)
@@ -3120,16 +3028,12 @@ cdef api void call_cy_ParamService_void_ret_map_param(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[cmap[string,cint64_t]] param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(_module_types.move(param1))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_void_ret_map_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_map_param_coro(
             self,
@@ -3148,7 +3052,7 @@ async def ParamService_void_ret_map_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.void_ret_map_param, "pass_context", False):
             result = await self.void_ret_map_param(ctx,
                       param1)
         else:
@@ -3177,17 +3081,13 @@ cdef api void call_cy_ParamService_void_ret_map_setlist_param(
     unique_ptr[cmap[string,cint64_t]] param1,
     unique_ptr[cset[vector[string]]] param2
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(_module_types.move(param1))
     arg_param2 = _module_types.Set__List__string.create(_module_types.move(param2))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_void_ret_map_setlist_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_map_setlist_param_coro(
             self,
@@ -3208,7 +3108,7 @@ async def ParamService_void_ret_map_setlist_param_coro(
     param2
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.void_ret_map_setlist_param, "pass_context", False):
             result = await self.void_ret_map_setlist_param(ctx,
                       param1,
                       param2)
@@ -3238,16 +3138,12 @@ cdef api void call_cy_ParamService_void_ret_map_typedef_param(
     cFollyPromise[cFollyUnit] cPromise,
     cint32_t param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_param1 = param1
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_void_ret_map_typedef_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_map_typedef_param_coro(
             self,
@@ -3266,7 +3162,7 @@ async def ParamService_void_ret_map_typedef_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.void_ret_map_typedef_param, "pass_context", False):
             result = await self.void_ret_map_typedef_param(ctx,
                       param1)
         else:
@@ -3294,16 +3190,12 @@ cdef api void call_cy_ParamService_void_ret_enum_param(
     cFollyPromise[cFollyUnit] cPromise,
     _module_types.cMyEnumA param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_param1 = _module_types.MyEnumA(<int> param1)
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_void_ret_enum_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_enum_param_coro(
             self,
@@ -3322,7 +3214,7 @@ async def ParamService_void_ret_enum_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.void_ret_enum_param, "pass_context", False):
             result = await self.void_ret_enum_param(ctx,
                       param1)
         else:
@@ -3350,16 +3242,12 @@ cdef api void call_cy_ParamService_void_ret_struct_param(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[_module_types.cMyStruct] param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_param1 = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](param1.release()))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_void_ret_struct_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_struct_param_coro(
             self,
@@ -3378,7 +3266,7 @@ async def ParamService_void_ret_struct_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.void_ret_struct_param, "pass_context", False):
             result = await self.void_ret_struct_param(ctx,
                       param1)
         else:
@@ -3406,16 +3294,12 @@ cdef api void call_cy_ParamService_void_ret_listunion_param(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[_module_types.cComplexUnion]] param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_param1 = _module_types.List__ComplexUnion.create(_module_types.move(param1))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_void_ret_listunion_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_listunion_param_coro(
             self,
@@ -3434,7 +3318,7 @@ async def ParamService_void_ret_listunion_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.void_ret_listunion_param, "pass_context", False):
             result = await self.void_ret_listunion_param(ctx,
                       param1)
         else:
@@ -3463,17 +3347,13 @@ cdef api void call_cy_ParamService_bool_ret_i32_i64_param(
     cint32_t param1,
     cint64_t param2
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_param1 = param1
     arg_param2 = param2
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_bool_ret_i32_i64_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_bool_ret_i32_i64_param_coro(
             self,
@@ -3494,7 +3374,7 @@ async def ParamService_bool_ret_i32_i64_param_coro(
     param2
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.bool_ret_i32_i64_param, "pass_context", False):
             result = await self.bool_ret_i32_i64_param(ctx,
                       param1,
                       param2)
@@ -3524,16 +3404,12 @@ cdef api void call_cy_ParamService_bool_ret_map_param(
     cFollyPromise[cbool] cPromise,
     unique_ptr[cmap[string,cint64_t]] param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(_module_types.move(param1))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_bool_ret_map_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_bool_ret_map_param_coro(
             self,
@@ -3552,7 +3428,7 @@ async def ParamService_bool_ret_map_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.bool_ret_map_param, "pass_context", False):
             result = await self.bool_ret_map_param(ctx,
                       param1)
         else:
@@ -3580,16 +3456,12 @@ cdef api void call_cy_ParamService_bool_ret_union_param(
     cFollyPromise[cbool] cPromise,
     unique_ptr[_module_types.cComplexUnion] param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_param1 = _module_types.ComplexUnion.create(shared_ptr[_module_types.cComplexUnion](param1.release()))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_bool_ret_union_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_bool_ret_union_param_coro(
             self,
@@ -3608,7 +3480,7 @@ async def ParamService_bool_ret_union_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.bool_ret_union_param, "pass_context", False):
             result = await self.bool_ret_union_param(ctx,
                       param1)
         else:
@@ -3637,17 +3509,13 @@ cdef api void call_cy_ParamService_i64_ret_float_double_param(
     float param1,
     double param2
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_cint64_t.create(move_promise_cint64_t(cPromise))
     arg_param1 = param1
     arg_param2 = param2
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_i64_ret_float_double_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_i64_ret_float_double_param_coro(
             self,
@@ -3668,7 +3536,7 @@ async def ParamService_i64_ret_float_double_param_coro(
     param2
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.i64_ret_float_double_param, "pass_context", False):
             result = await self.i64_ret_float_double_param(ctx,
                       param1,
                       param2)
@@ -3699,17 +3567,13 @@ cdef api void call_cy_ParamService_i64_ret_string_typedef_param(
     unique_ptr[string] param1,
     unique_ptr[cset[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]] param2
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_cint64_t.create(move_promise_cint64_t(cPromise))
     arg_param1 = (deref(param1)).data().decode('UTF-8')
     arg_param2 = _module_types.Set__List__List__Map__Empty_MyStruct.create(_module_types.move(param2))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_i64_ret_string_typedef_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_i64_ret_string_typedef_param_coro(
             self,
@@ -3730,7 +3594,7 @@ async def ParamService_i64_ret_string_typedef_param_coro(
     param2
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.i64_ret_string_typedef_param, "pass_context", False):
             result = await self.i64_ret_string_typedef_param(ctx,
                       param1,
                       param2)
@@ -3764,20 +3628,16 @@ cdef api void call_cy_ParamService_i64_ret_i32_i32_i32_i32_i32_param(
     cint32_t param4,
     cint32_t param5
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_cint64_t.create(move_promise_cint64_t(cPromise))
     arg_param1 = param1
     arg_param2 = param2
     arg_param3 = param3
     arg_param4 = param4
     arg_param5 = param5
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_i64_ret_i32_i32_i32_i32_i32_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_i64_ret_i32_i32_i32_i32_i32_param_coro(
             self,
@@ -3804,7 +3664,7 @@ async def ParamService_i64_ret_i32_i32_i32_i32_i32_param_coro(
     param5
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.i64_ret_i32_i32_i32_i32_i32_param, "pass_context", False):
             result = await self.i64_ret_i32_i32_i32_i32_i32_param(ctx,
                       param1,
                       param2,
@@ -3840,16 +3700,12 @@ cdef api void call_cy_ParamService_double_ret_setstruct_param(
     cFollyPromise[double] cPromise,
     unique_ptr[cset[_module_types.cMyStruct]] param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_double.create(move_promise_double(cPromise))
     arg_param1 = _module_types.Set__MyStruct.create(_module_types.move(param1))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_double_ret_setstruct_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_double_ret_setstruct_param_coro(
             self,
@@ -3868,7 +3724,7 @@ async def ParamService_double_ret_setstruct_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.double_ret_setstruct_param, "pass_context", False):
             result = await self.double_ret_setstruct_param(ctx,
                       param1)
         else:
@@ -3896,16 +3752,12 @@ cdef api void call_cy_ParamService_string_ret_string_param(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_string.create(move_promise_string(cPromise))
     arg_param1 = (deref(param1)).data().decode('UTF-8')
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_string_ret_string_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_string_ret_string_param_coro(
             self,
@@ -3924,7 +3776,7 @@ async def ParamService_string_ret_string_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.string_ret_string_param, "pass_context", False):
             result = await self.string_ret_string_param(ctx,
                       param1)
         else:
@@ -3952,16 +3804,12 @@ cdef api void call_cy_ParamService_binary_ret_binary_param(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_binary.create(move_promise_binary(cPromise))
     arg_param1 = (deref(param1))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_binary_ret_binary_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_binary_ret_binary_param_coro(
             self,
@@ -3980,7 +3828,7 @@ async def ParamService_binary_ret_binary_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.binary_ret_binary_param, "pass_context", False):
             result = await self.binary_ret_binary_param(ctx,
                       param1)
         else:
@@ -4008,16 +3856,12 @@ cdef api void call_cy_ParamService_map_ret_bool_param(
     cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise,
     cbool param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_cmap__string_cint64_t.create(move_promise_cmap__string_cint64_t(cPromise))
     arg_param1 = param1
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_map_ret_bool_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_map_ret_bool_param_coro(
             self,
@@ -4036,7 +3880,7 @@ async def ParamService_map_ret_bool_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.map_ret_bool_param, "pass_context", False):
             result = await self.map_ret_bool_param(ctx,
                       param1)
         else:
@@ -4066,17 +3910,13 @@ cdef api void call_cy_ParamService_list_ret_map_setlist_param(
     unique_ptr[cmap[cint32_t,vector[string]]] param1,
     unique_ptr[vector[string]] param2
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_vector__cbool.create(move_promise_vector__cbool(cPromise))
     arg_param1 = _module_types.Map__i32_List__string.create(_module_types.move(param1))
     arg_param2 = _module_types.List__string.create(_module_types.move(param2))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_list_ret_map_setlist_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_list_ret_map_setlist_param_coro(
             self,
@@ -4097,7 +3937,7 @@ async def ParamService_list_ret_map_setlist_param_coro(
     param2
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.list_ret_map_setlist_param, "pass_context", False):
             result = await self.list_ret_map_setlist_param(ctx,
                       param1,
                       param2)
@@ -4128,16 +3968,12 @@ cdef api void call_cy_ParamService_mapsetlistmapliststring_ret_listlistlist_para
     cFollyPromise[unique_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]]] cPromise,
     unique_ptr[vector[vector[vector[vector[cint32_t]]]]] param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string.create(move_promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string(cPromise))
     arg_param1 = _module_types.List__List__List__List__i32.create(_module_types.move(param1))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_mapsetlistmapliststring_ret_listlistlist_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_mapsetlistmapliststring_ret_listlistlist_param_coro(
             self,
@@ -4156,7 +3992,7 @@ async def ParamService_mapsetlistmapliststring_ret_listlistlist_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.mapsetlistmapliststring_ret_listlistlist_param, "pass_context", False):
             result = await self.mapsetlistmapliststring_ret_listlistlist_param(ctx,
                       param1)
         else:
@@ -4185,16 +4021,12 @@ cdef api void call_cy_ParamService_typedef_ret_i32_param(
     cFollyPromise[cint32_t] cPromise,
     cint32_t param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_cint32_t.create(move_promise_cint32_t(cPromise))
     arg_param1 = param1
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_typedef_ret_i32_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_typedef_ret_i32_param_coro(
             self,
@@ -4213,7 +4045,7 @@ async def ParamService_typedef_ret_i32_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.typedef_ret_i32_param, "pass_context", False):
             result = await self.typedef_ret_i32_param(ctx,
                       param1)
         else:
@@ -4241,16 +4073,12 @@ cdef api void call_cy_ParamService_listtypedef_ret_typedef_param(
     cFollyPromise[unique_ptr[vector[cint32_t]]] cPromise,
     unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]] param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_vector__cint32_t.create(move_promise_vector__cint32_t(cPromise))
     arg_param1 = _module_types.List__Map__Empty_MyStruct.create(_module_types.move(param1))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_listtypedef_ret_typedef_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_listtypedef_ret_typedef_param_coro(
             self,
@@ -4269,7 +4097,7 @@ async def ParamService_listtypedef_ret_typedef_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.listtypedef_ret_typedef_param, "pass_context", False):
             result = await self.listtypedef_ret_typedef_param(ctx,
                       param1)
         else:
@@ -4298,16 +4126,12 @@ cdef api void call_cy_ParamService_enum_ret_double_param(
     cFollyPromise[_module_types.cMyEnumA] cPromise,
     double param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise__module_types_cMyEnumA.create(move_promise__module_types_cMyEnumA(cPromise))
     arg_param1 = param1
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_enum_ret_double_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_enum_ret_double_param_coro(
             self,
@@ -4326,7 +4150,7 @@ async def ParamService_enum_ret_double_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.enum_ret_double_param, "pass_context", False):
             result = await self.enum_ret_double_param(ctx,
                       param1)
         else:
@@ -4355,17 +4179,13 @@ cdef api void call_cy_ParamService_enum_ret_double_enum_param(
     double param1,
     _module_types.cMyEnumA param2
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise__module_types_cMyEnumA.create(move_promise__module_types_cMyEnumA(cPromise))
     arg_param1 = param1
     arg_param2 = _module_types.MyEnumA(<int> param2)
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_enum_ret_double_enum_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_enum_ret_double_enum_param_coro(
             self,
@@ -4386,7 +4206,7 @@ async def ParamService_enum_ret_double_enum_param_coro(
     param2
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.enum_ret_double_enum_param, "pass_context", False):
             result = await self.enum_ret_double_enum_param(ctx,
                       param1,
                       param2)
@@ -4416,16 +4236,12 @@ cdef api void call_cy_ParamService_listenum_ret_map_param(
     cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] cPromise,
     unique_ptr[cmap[string,cint64_t]] param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_vector___module_types_cMyEnumA.create(move_promise_vector___module_types_cMyEnumA(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(_module_types.move(param1))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_listenum_ret_map_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_listenum_ret_map_param_coro(
             self,
@@ -4444,7 +4260,7 @@ async def ParamService_listenum_ret_map_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.listenum_ret_map_param, "pass_context", False):
             result = await self.listenum_ret_map_param(ctx,
                       param1)
         else:
@@ -4473,16 +4289,12 @@ cdef api void call_cy_ParamService_struct_ret_i16_param(
     cFollyPromise[unique_ptr[_module_types.cMyStruct]] cPromise,
     cint16_t param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise__module_types_cMyStruct.create(move_promise__module_types_cMyStruct(cPromise))
     arg_param1 = param1
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_struct_ret_i16_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_struct_ret_i16_param_coro(
             self,
@@ -4501,7 +4313,7 @@ async def ParamService_struct_ret_i16_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.struct_ret_i16_param, "pass_context", False):
             result = await self.struct_ret_i16_param(ctx,
                       param1)
         else:
@@ -4529,16 +4341,12 @@ cdef api void call_cy_ParamService_setstruct_ret_set_param(
     cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] cPromise,
     unique_ptr[cset[string]] param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_cset___module_types_cMyStruct.create(move_promise_cset___module_types_cMyStruct(cPromise))
     arg_param1 = _module_types.Set__string.create(_module_types.move(param1))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_setstruct_ret_set_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_setstruct_ret_set_param_coro(
             self,
@@ -4557,7 +4365,7 @@ async def ParamService_setstruct_ret_set_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.setstruct_ret_set_param, "pass_context", False):
             result = await self.setstruct_ret_set_param(ctx,
                       param1)
         else:
@@ -4587,17 +4395,13 @@ cdef api void call_cy_ParamService_union_ret_i32_i32_param(
     cint32_t param1,
     cint32_t param2
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise__module_types_cComplexUnion.create(move_promise__module_types_cComplexUnion(cPromise))
     arg_param1 = param1
     arg_param2 = param2
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_union_ret_i32_i32_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_union_ret_i32_i32_param_coro(
             self,
@@ -4618,7 +4422,7 @@ async def ParamService_union_ret_i32_i32_param_coro(
     param2
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.union_ret_i32_i32_param, "pass_context", False):
             result = await self.union_ret_i32_i32_param(ctx,
                       param1,
                       param2)
@@ -4648,16 +4452,12 @@ cdef api void call_cy_ParamService_listunion_string_param(
     cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] cPromise,
     unique_ptr[string] param1
 ):
-    cdef ParamServiceInterface __iface
-    __iface = self
     __promise = Promise_vector___module_types_cComplexUnion.create(move_promise_vector___module_types_cComplexUnion(cPromise))
     arg_param1 = (deref(param1)).data().decode('UTF-8')
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_listunion_string_param:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ParamService_listunion_string_param_coro(
             self,
@@ -4676,7 +4476,7 @@ async def ParamService_listunion_string_param_coro(
     param1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.listunion_string_param, "pass_context", False):
             result = await self.listunion_string_param(ctx,
                       param1)
         else:

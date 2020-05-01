@@ -10,6 +10,7 @@ from thrift.py3.server cimport ServiceInterface
 cimport hsmodule.services as _hsmodule_services
 
 cdef class ExtendTestServiceInterface(_hsmodule_services.HsTestServiceInterface):
-    cdef public bint _pass_context_check
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_check
     pass
 

@@ -9,11 +9,12 @@ from thrift.py3.server cimport ServiceInterface
 
 
 cdef class SinkServiceInterface(ServiceInterface):
-    cdef public bint _pass_context_method
-    cdef public bint _pass_context_methodAndReponse
-    cdef public bint _pass_context_methodThrow
-    cdef public bint _pass_context_methodSinkThrow
-    cdef public bint _pass_context_methodFinalThrow
-    cdef public bint _pass_context_methodBothThrow
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_method
+    cdef bint _for_cython_methodAndReponse
+    cdef bint _for_cython_methodThrow
+    cdef bint _for_cython_methodSinkThrow
+    cdef bint _for_cython_methodFinalThrow
+    cdef bint _for_cython_methodBothThrow
     pass
 

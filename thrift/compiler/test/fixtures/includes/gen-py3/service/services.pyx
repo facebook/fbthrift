@@ -195,17 +195,13 @@ cdef api void call_cy_MyService_query(
     unique_ptr[_module_types.cMyStruct] s,
     unique_ptr[_includes_types.cIncluded] i
 ):
-    cdef MyServiceInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_s = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](s.release()))
     arg_i = _includes_types.Included.create(shared_ptr[_includes_types.cIncluded](i.release()))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_query:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         MyService_query_coro(
             self,
@@ -226,7 +222,7 @@ async def MyService_query_coro(
     i
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.query, "pass_context", False):
             result = await self.query(ctx,
                       s,
                       i)
@@ -257,17 +253,13 @@ cdef api void call_cy_MyService_has_arg_docs(
     unique_ptr[_module_types.cMyStruct] s,
     unique_ptr[_includes_types.cIncluded] i
 ):
-    cdef MyServiceInterface __iface
-    __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_s = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](s.release()))
     arg_i = _includes_types.Included.create(shared_ptr[_includes_types.cIncluded](i.release()))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_has_arg_docs:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         MyService_has_arg_docs_coro(
             self,
@@ -288,7 +280,7 @@ async def MyService_has_arg_docs_coro(
     i
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.has_arg_docs, "pass_context", False):
             result = await self.has_arg_docs(ctx,
                       s,
                       i)

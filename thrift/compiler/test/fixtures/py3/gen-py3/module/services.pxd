@@ -9,54 +9,57 @@ from thrift.py3.server cimport ServiceInterface
 
 
 cdef class SimpleServiceInterface(ServiceInterface):
-    cdef public bint _pass_context_get_five
-    cdef public bint _pass_context_add_five
-    cdef public bint _pass_context_do_nothing
-    cdef public bint _pass_context_concat
-    cdef public bint _pass_context_get_value
-    cdef public bint _pass_context_negate
-    cdef public bint _pass_context_tiny
-    cdef public bint _pass_context_small
-    cdef public bint _pass_context_big
-    cdef public bint _pass_context_two
-    cdef public bint _pass_context_expected_exception
-    cdef public bint _pass_context_unexpected_exception
-    cdef public bint _pass_context_sum_i16_list
-    cdef public bint _pass_context_sum_i32_list
-    cdef public bint _pass_context_sum_i64_list
-    cdef public bint _pass_context_concat_many
-    cdef public bint _pass_context_count_structs
-    cdef public bint _pass_context_sum_set
-    cdef public bint _pass_context_contains_word
-    cdef public bint _pass_context_get_map_value
-    cdef public bint _pass_context_map_length
-    cdef public bint _pass_context_sum_map_values
-    cdef public bint _pass_context_complex_sum_i32
-    cdef public bint _pass_context_repeat_name
-    cdef public bint _pass_context_get_struct
-    cdef public bint _pass_context_fib
-    cdef public bint _pass_context_unique_words
-    cdef public bint _pass_context_words_count
-    cdef public bint _pass_context_set_enum
-    cdef public bint _pass_context_list_of_lists
-    cdef public bint _pass_context_word_character_frequency
-    cdef public bint _pass_context_list_of_sets
-    cdef public bint _pass_context_nested_map_argument
-    cdef public bint _pass_context_make_sentence
-    cdef public bint _pass_context_get_union
-    cdef public bint _pass_context_get_keys
-    cdef public bint _pass_context_lookup_double
-    cdef public bint _pass_context_retrieve_binary
-    cdef public bint _pass_context_contain_binary
-    cdef public bint _pass_context_contain_enum
-    cdef public bint _pass_context_get_binary_union_struct
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_get_five
+    cdef bint _for_cython_add_five
+    cdef bint _for_cython_do_nothing
+    cdef bint _for_cython_concat
+    cdef bint _for_cython_get_value
+    cdef bint _for_cython_negate
+    cdef bint _for_cython_tiny
+    cdef bint _for_cython_small
+    cdef bint _for_cython_big
+    cdef bint _for_cython_two
+    cdef bint _for_cython_expected_exception
+    cdef bint _for_cython_unexpected_exception
+    cdef bint _for_cython_sum_i16_list
+    cdef bint _for_cython_sum_i32_list
+    cdef bint _for_cython_sum_i64_list
+    cdef bint _for_cython_concat_many
+    cdef bint _for_cython_count_structs
+    cdef bint _for_cython_sum_set
+    cdef bint _for_cython_contains_word
+    cdef bint _for_cython_get_map_value
+    cdef bint _for_cython_map_length
+    cdef bint _for_cython_sum_map_values
+    cdef bint _for_cython_complex_sum_i32
+    cdef bint _for_cython_repeat_name
+    cdef bint _for_cython_get_struct
+    cdef bint _for_cython_fib
+    cdef bint _for_cython_unique_words
+    cdef bint _for_cython_words_count
+    cdef bint _for_cython_set_enum
+    cdef bint _for_cython_list_of_lists
+    cdef bint _for_cython_word_character_frequency
+    cdef bint _for_cython_list_of_sets
+    cdef bint _for_cython_nested_map_argument
+    cdef bint _for_cython_make_sentence
+    cdef bint _for_cython_get_union
+    cdef bint _for_cython_get_keys
+    cdef bint _for_cython_lookup_double
+    cdef bint _for_cython_retrieve_binary
+    cdef bint _for_cython_contain_binary
+    cdef bint _for_cython_contain_enum
+    cdef bint _for_cython_get_binary_union_struct
     pass
 
 cdef class DerivedServiceInterface(SimpleServiceInterface):
-    cdef public bint _pass_context_get_six
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_get_six
     pass
 
 cdef class RederivedServiceInterface(DerivedServiceInterface):
-    cdef public bint _pass_context_get_seven
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_get_seven
     pass
 

@@ -9,21 +9,24 @@ from thrift.py3.server cimport ServiceInterface
 
 
 cdef class MyServiceInterface(ServiceInterface):
-    cdef public bint _pass_context_ping
-    cdef public bint _pass_context_getRandomData
-    cdef public bint _pass_context_hasDataById
-    cdef public bint _pass_context_getDataById
-    cdef public bint _pass_context_putDataById
-    cdef public bint _pass_context_lobDataById
-    cdef public bint _pass_context_doNothing
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_ping
+    cdef bint _for_cython_getRandomData
+    cdef bint _for_cython_hasDataById
+    cdef bint _for_cython_getDataById
+    cdef bint _for_cython_putDataById
+    cdef bint _for_cython_lobDataById
+    cdef bint _for_cython_doNothing
     pass
 
 cdef class MyServicePrioParentInterface(ServiceInterface):
-    cdef public bint _pass_context_ping
-    cdef public bint _pass_context_pong
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_ping
+    cdef bint _for_cython_pong
     pass
 
 cdef class MyServicePrioChildInterface(MyServicePrioParentInterface):
-    cdef public bint _pass_context_pang
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_pang
     pass
 

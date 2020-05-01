@@ -9,14 +9,17 @@ from thrift.py3.server cimport ServiceInterface
 
 
 cdef class MyRootInterface(ServiceInterface):
-    cdef public bint _pass_context_do_root
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_do_root
     pass
 
 cdef class MyNodeInterface(MyRootInterface):
-    cdef public bint _pass_context_do_mid
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_do_mid
     pass
 
 cdef class MyLeafInterface(MyNodeInterface):
-    cdef public bint _pass_context_do_leaf
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_do_leaf
     pass
 

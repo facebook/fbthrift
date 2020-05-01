@@ -9,9 +9,10 @@ from thrift.py3.server cimport ServiceInterface
 
 
 cdef class RaiserInterface(ServiceInterface):
-    cdef public bint _pass_context_doBland
-    cdef public bint _pass_context_doRaise
-    cdef public bint _pass_context_get200
-    cdef public bint _pass_context_get500
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_doBland
+    cdef bint _for_cython_doRaise
+    cdef bint _for_cython_get200
+    cdef bint _for_cython_get500
     pass
 

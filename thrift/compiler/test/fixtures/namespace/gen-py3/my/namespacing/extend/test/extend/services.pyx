@@ -145,16 +145,12 @@ cdef api void call_cy_ExtendTestService_check(
     cFollyPromise[cbool] cPromise,
     unique_ptr[_hsmodule_types.cHsFoo] struct1
 ):
-    cdef ExtendTestServiceInterface __iface
-    __iface = self
     __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_struct1 = _hsmodule_types.HsFoo.create(shared_ptr[_hsmodule_types.cHsFoo](struct1.release()))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_check:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         ExtendTestService_check_coro(
             self,
@@ -173,7 +169,7 @@ async def ExtendTestService_check_coro(
     struct1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.check, "pass_context", False):
             result = await self.check(ctx,
                       struct1)
         else:

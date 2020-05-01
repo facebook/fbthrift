@@ -9,9 +9,10 @@ from thrift.py3.server cimport ServiceInterface
 
 
 cdef class PubSubStreamingServiceInterface(ServiceInterface):
-    cdef public bint _pass_context_returnstream
-    cdef public bint _pass_context_streamthrows
-    cdef public bint _pass_context_boththrows
-    cdef public bint _pass_context_responseandstreamthrows
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_returnstream
+    cdef bint _for_cython_streamthrows
+    cdef bint _for_cython_boththrows
+    cdef bint _for_cython_responseandstreamthrows
     pass
 

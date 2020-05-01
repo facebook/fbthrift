@@ -186,16 +186,12 @@ cdef api void call_cy_SomeService_bounce_map(
     cFollyPromise[unique_ptr[_module_types.std_unordered_map[cint32_t,string]]] cPromise,
     unique_ptr[_module_types.std_unordered_map[cint32_t,string]] m
 ):
-    cdef SomeServiceInterface __iface
-    __iface = self
     __promise = Promise__module_types_std_unordered_map__cint32_t_string.create(move_promise__module_types_std_unordered_map__cint32_t_string(cPromise))
     arg_m = _module_types.std_unordered_map__Map__i32_string.create(_module_types.move(m))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_bounce_map:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         SomeService_bounce_map_coro(
             self,
@@ -214,7 +210,7 @@ async def SomeService_bounce_map_coro(
     m
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.bounce_map, "pass_context", False):
             result = await self.bounce_map(ctx,
                       m)
         else:
@@ -243,16 +239,12 @@ cdef api void call_cy_SomeService_binary_keyed_map(
     cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise,
     unique_ptr[vector[cint64_t]] r
 ):
-    cdef SomeServiceInterface __iface
-    __iface = self
     __promise = Promise_cmap__binary_cint64_t.create(move_promise_cmap__binary_cint64_t(cPromise))
     arg_r = _module_types.List__i64.create(_module_types.move(r))
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_binary_keyed_map:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         SomeService_binary_keyed_map_coro(
             self,
@@ -271,7 +263,7 @@ async def SomeService_binary_keyed_map_coro(
     r
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.binary_keyed_map, "pass_context", False):
             result = await self.binary_keyed_map(ctx,
                       r)
         else:

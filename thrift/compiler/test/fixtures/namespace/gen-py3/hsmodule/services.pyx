@@ -141,16 +141,12 @@ cdef api void call_cy_HsTestService_init(
     cFollyPromise[cint64_t] cPromise,
     cint64_t int1
 ):
-    cdef HsTestServiceInterface __iface
-    __iface = self
     __promise = Promise_cint64_t.create(move_promise_cint64_t(cPromise))
     arg_int1 = int1
-    __context_obj = RequestContext.create(ctx)
-    __context = None
-    if __iface._pass_context_init:
-        __context = __context_obj
+    __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
     asyncio.get_event_loop().create_task(
         HsTestService_init_coro(
             self,
@@ -169,7 +165,7 @@ async def HsTestService_init_coro(
     int1
 ):
     try:
-        if ctx is not None:
+        if ctx and getattr(self.init, "pass_context", False):
             result = await self.init(ctx,
                       int1)
         else:
