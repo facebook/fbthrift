@@ -59,7 +59,7 @@ class RocketServerConnection final
 
   RocketServerConnection(
       folly::AsyncTransportWrapper::UniquePtr socket,
-      std::shared_ptr<RocketServerHandler> frameHandler,
+      std::unique_ptr<RocketServerHandler> frameHandler,
       std::chrono::milliseconds streamStarvationTimeout,
       std::chrono::milliseconds writeBatchingInterval =
           std::chrono::milliseconds::zero(),
@@ -155,7 +155,7 @@ class RocketServerConnection final
   folly::AsyncTransportWrapper::UniquePtr socket_;
 
   Parser<RocketServerConnection> parser_{*this};
-  const std::shared_ptr<RocketServerHandler> frameHandler_;
+  std::unique_ptr<RocketServerHandler> frameHandler_;
   bool setupFrameReceived_{false};
   folly::F14NodeMap<
       StreamId,

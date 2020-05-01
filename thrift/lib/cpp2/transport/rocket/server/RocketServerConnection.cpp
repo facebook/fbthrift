@@ -52,7 +52,7 @@ constexpr std::chrono::seconds RocketServerConnection::SocketDrainer::kTimeout;
 
 RocketServerConnection::RocketServerConnection(
     folly::AsyncTransportWrapper::UniquePtr socket,
-    std::shared_ptr<RocketServerHandler> frameHandler,
+    std::unique_ptr<RocketServerHandler> frameHandler,
     std::chrono::milliseconds streamStarvationTimeout,
     std::chrono::milliseconds writeBatchingInterval,
     size_t writeBatchingSize)

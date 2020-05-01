@@ -92,7 +92,7 @@ void RSRoutingHandler::handleConnection(
   auto* const server = worker->getServer();
   auto* const connection = new rocket::RocketServerConnection(
       std::move(sock),
-      std::make_shared<rocket::ThriftRocketServerHandler>(
+      std::make_unique<rocket::ThriftRocketServerHandler>(
           worker, *address, sockPtr, setupFrameHandlers_),
       server->getStreamExpireTime(),
       server->getWriteBatchingInterval(),

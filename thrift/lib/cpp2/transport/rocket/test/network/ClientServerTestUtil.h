@@ -121,7 +121,8 @@ class RocketTestServer {
   folly::ScopedEventBaseThread ioThread_;
   folly::EventBase& evb_;
   folly::AsyncServerSocket::UniquePtr listeningSocket_;
-  const std::shared_ptr<RocketTestServerHandler> handler_;
+  MetadataOpaqueMap<std::string, std::string> expectedSetupMetadata_{
+      {"rando_key", "setup_data"}};
   std::unique_ptr<wangle::Acceptor> acceptor_;
   std::future<void> shutdownFuture_;
 

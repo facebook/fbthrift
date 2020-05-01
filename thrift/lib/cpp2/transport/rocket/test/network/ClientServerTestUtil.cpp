@@ -27,6 +27,7 @@
 #include <gtest/gtest.h>
 
 #include <folly/Conv.h>
+#include <folly/Function.h>
 #include <folly/Optional.h>
 #include <folly/SocketAddress.h>
 #include <folly/executors/InlineExecutor.h>
@@ -308,11 +309,12 @@ void RocketTestClient::disconnect() {
 namespace {
 class RocketTestServerAcceptor final : public wangle::Acceptor {
  public:
-  explicit RocketTestServerAcceptor(
-      std::shared_ptr<RocketServerHandler> frameHandler,
+  RocketTestServerAcceptor(
+      folly::Function<std::unique_ptr<RocketServerHandler>()>
+          frameHandlerFactory,
       std::promise<void> shutdownPromise)
       : Acceptor(wangle::ServerSocketConfig{}),
-        frameHandler_(std::move(frameHandler)),
+        frameHandlerFactory_(std::move(frameHandlerFactory)),
         shutdownPromise_(std::move(shutdownPromise)) {}
 
   ~RocketTestServerAcceptor() override {
@@ -326,7 +328,9 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
       wangle::SecureTransportType,
       const wangle::TransportInfo&) override {
     auto* connection = new RocketServerConnection(
-        std::move(socket), frameHandler_, std::chrono::milliseconds::zero());
+        std::move(socket),
+        frameHandlerFactory_(),
+        std::chrono::milliseconds::zero());
     getConnectionManager()->addConnection(connection);
   }
 
@@ -353,7 +357,7 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
   }
 
  private:
-  const std::shared_ptr<RocketServerHandler> frameHandler_;
+  folly::Function<std::unique_ptr<RocketServerHandler>()> frameHandlerFactory_;
   std::promise<void> shutdownPromise_;
   size_t connections_{0};
   folly::Optional<size_t> expectedRemainingStreams_ = folly::none;
@@ -362,7 +366,10 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
 
 class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
  public:
-  explicit RocketTestServerHandler(folly::EventBase& ioEvb) : ioEvb_(ioEvb) {}
+  explicit RocketTestServerHandler(
+      folly::EventBase& ioEvb,
+      const MetadataOpaqueMap<std::string, std::string>& expectedSetupMetadata)
+      : ioEvb_(ioEvb), expectedSetupMetadata_(expectedSetupMetadata) {}
   void handleSetupFrame(SetupFrame&& frame, RocketServerConnection&) final {
     folly::io::Cursor cursor(frame.payload().buffer());
     // Validate Thrift major/minor version
@@ -545,27 +552,24 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
         .start();
   }
 
-  void setExpectedSetupMetadata(
-      MetadataOpaqueMap<std::string, std::string> md) {
-    expectedSetupMetadata_ = std::move(md);
-  }
-
  private:
-  MetadataOpaqueMap<std::string, std::string> expectedSetupMetadata_{
-      {"rando_key", "setup_data"}};
   folly::EventBase& ioEvb_;
+  const MetadataOpaqueMap<std::string, std::string>& expectedSetupMetadata_;
   folly::ScopedEventBaseThread threadManagerThread_;
 };
 
 RocketTestServer::RocketTestServer()
     : evb_(*ioThread_.getEventBase()),
-      listeningSocket_(new folly::AsyncServerSocket(&evb_)),
-      handler_(std::make_shared<RocketTestServerHandler>(evb_)) {
+      listeningSocket_(new folly::AsyncServerSocket(&evb_)) {
   std::promise<void> shutdownPromise;
   shutdownFuture_ = shutdownPromise.get_future();
 
   acceptor_ = std::make_unique<RocketTestServerAcceptor>(
-      handler_, std::move(shutdownPromise));
+      [this] {
+        return std::make_unique<RocketTestServerHandler>(
+            evb_, expectedSetupMetadata_);
+      },
+      std::move(shutdownPromise));
   start();
 }
 
@@ -606,7 +610,7 @@ void RocketTestServer::setExpectedRemainingStreams(size_t n) {
 
 void RocketTestServer::setExpectedSetupMetadata(
     MetadataOpaqueMap<std::string, std::string> md) {
-  handler_->setExpectedSetupMetadata(std::move(md));
+  expectedSetupMetadata_ = std::move(md);
 }
 
 } // namespace test

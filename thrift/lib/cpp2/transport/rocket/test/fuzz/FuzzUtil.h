@@ -145,7 +145,7 @@ void testServerOneInput(const uint8_t* Data, size_t Size) {
   folly::SocketAddress address;
   auto connection = new apache::thrift::rocket::RocketServerConnection(
       std::move(sock),
-      std::make_shared<apache::thrift::rocket::ThriftRocketServerHandler>(
+      std::make_unique<apache::thrift::rocket::ThriftRocketServerHandler>(
           worker, address, sockPtr, v),
       std::chrono::milliseconds::zero());
   folly::DelayedDestruction::DestructorGuard dg(connection);
