@@ -42,7 +42,8 @@ syn region thriftComment start="/\*" end="\*/" contains=thriftTodo
 syn match thriftComment "//.\{-}\(?>\|$\)\@="
 
 " String
-syn region thriftStringDouble matchgroup=None start=+"+  end=+"+
+syn region thriftString start=+"+ skip=+\\"+ end=+"+
+syn region thriftString start=+'+ skip=+\\'+ end=+'+
 
 " Number
 syn match thriftNumber "-\=\<\d\+\>" contained
@@ -51,8 +52,8 @@ syn match thriftNumber "-\=\<\d\+\>" contained
 syn keyword thriftKeyword namespace
 syn keyword thriftKeyword xsd_all xsd_optional xsd_nillable xsd_attrs
 syn keyword thriftKeyword include cpp_include cpp_type const optional required
-syn keyword thriftBasicTypes void bool byte i16 i32 i64 double string binary
-syn keyword thriftStructure map list set struct typedef exception enum throws
+syn keyword thriftBasicTypes void bool byte i8 i16 i32 i64 double string binary
+syn keyword thriftStructure map list set struct union typedef exception enum throws
 
 " Special
 syn match thriftSpecial "\d\+:"
