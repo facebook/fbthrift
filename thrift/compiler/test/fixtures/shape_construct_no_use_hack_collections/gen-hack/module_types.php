@@ -56,7 +56,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
       'elem' => shape(
         'type' => \TType::STRING,
       ),
-      'format' => 'collection',
+      'format' => 'array',
     ),
     5 => shape(
       'var' => 'map_of_string_to_ints',
@@ -70,7 +70,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
       'val' => shape(
         'type' => \TType::I32,
       ),
-      'format' => 'collection',
+      'format' => 'array',
     ),
     6 => shape(
       'var' => 'struct_foo',
@@ -91,16 +91,16 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
     ?'int_value' => ?int,
     ?'str_value' => ?string,
     ?'double_value' => ?float,
-    ?'list_of_strings' => ?Vector<string>,
-    ?'map_of_string_to_ints' => ?Map<string, int>,
+    ?'list_of_strings' => ?varray<string>,
+    ?'map_of_string_to_ints' => ?darray<string, int>,
     ?'struct_foo' => ?Foo,
   );
   const type TShape = shape(
     ?'int_value' => ?int,
     ?'str_value' => ?string,
     ?'double_value' => ?float,
-    ?'list_of_strings' => ?vec<string>,
-    ?'map_of_string_to_ints' => ?dict<string, int>,
+    ?'list_of_strings' => ?varray<string>,
+    ?'map_of_string_to_ints' => ?darray<string, int>,
     ?'struct_foo' => ?Foo::TShape,
   );
   const int STRUCTURAL_ID = 872350750526219001;
@@ -123,12 +123,12 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
    * Original thrift field:-
    * 4: list<string> list_of_strings
    */
-  public ?Vector<string> $list_of_strings;
+  public ?varray<string> $list_of_strings;
   /**
    * Original thrift field:-
    * 5: map<string, i32> map_of_string_to_ints
    */
-  public ?Map<string, int> $map_of_string_to_ints;
+  public ?darray<string, int> $map_of_string_to_ints;
   /**
    * Original thrift field:-
    * 6: struct module.Foo struct_foo
@@ -218,13 +218,13 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
     return \nullthrows($this->double_value);
   }
 
-  public function set_list_of_strings(Vector<string> $list_of_strings): this {
+  public function set_list_of_strings(varray<string> $list_of_strings): this {
     $this->_type = TestUnionEnum::list_of_strings;
     $this->list_of_strings = $list_of_strings;
     return $this;
   }
 
-  public function get_list_of_strings(): Vector<string> {
+  public function get_list_of_strings(): varray<string> {
     invariant(
       $this->_type === TestUnionEnum::list_of_strings,
       'get_list_of_strings called on an instance of TestUnion whose current type is %s',
@@ -233,13 +233,13 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
     return \nullthrows($this->list_of_strings);
   }
 
-  public function set_map_of_string_to_ints(Map<string, int> $map_of_string_to_ints): this {
+  public function set_map_of_string_to_ints(darray<string, int> $map_of_string_to_ints): this {
     $this->_type = TestUnionEnum::map_of_string_to_ints;
     $this->map_of_string_to_ints = $map_of_string_to_ints;
     return $this;
   }
 
-  public function get_map_of_string_to_ints(): Map<string, int> {
+  public function get_map_of_string_to_ints(): darray<string, int> {
     invariant(
       $this->_type === TestUnionEnum::map_of_string_to_ints,
       'get_map_of_string_to_ints called on an instance of TestUnion whose current type is %s',
@@ -283,11 +283,11 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
       $me->_type = TestUnionEnum::double_value;
     }
     if (Shapes::idx($shape, 'list_of_strings') !== null) {
-      $me->list_of_strings = (new Vector($shape['list_of_strings']));
+      $me->list_of_strings = $shape['list_of_strings'];
       $me->_type = TestUnionEnum::list_of_strings;
     }
     if (Shapes::idx($shape, 'map_of_string_to_ints') !== null) {
-      $me->map_of_string_to_ints = (new Map($shape['map_of_string_to_ints']));
+      $me->map_of_string_to_ints = $shape['map_of_string_to_ints'];
       $me->_type = TestUnionEnum::map_of_string_to_ints;
     }
     if (Shapes::idx($shape, 'struct_foo') !== null) {
@@ -303,10 +303,8 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
       'int_value' => $this->int_value,
       'str_value' => $this->str_value,
       'double_value' => $this->double_value,
-      'list_of_strings' => $this->list_of_strings
-        |> $$ === null ? null : vec($$),
-      'map_of_string_to_ints' => $this->map_of_string_to_ints
-        |> $$ === null ? null : dict($$),
+      'list_of_strings' => $this->list_of_strings,
+      'map_of_string_to_ints' => $this->map_of_string_to_ints,
       'struct_foo' => $this->struct_foo?->__toShape(),
     );
   }
@@ -327,7 +325,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
       'elem' => shape(
         'type' => \TType::STRING,
       ),
-      'format' => 'collection',
+      'format' => 'array',
     ),
     2 => shape(
       'var' => 'b',
@@ -348,9 +346,9 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
           ),
           'format' => 'array',
         ),
-        'format' => 'collection',
+        'format' => 'array',
       ),
-      'format' => 'collection',
+      'format' => 'array',
     ),
     3 => shape(
       'var' => 'c',
@@ -373,15 +371,15 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     'str_value' => 5,
   ];
   const type TConstructorShape = shape(
-    ?'a' => Vector<string>,
-    ?'b' => ?Map<string, Vector<dict<int, bool>>>,
+    ?'a' => varray<string>,
+    ?'b' => ?darray<string, varray<dict<int, bool>>>,
     ?'c' => int,
     ?'d' => bool,
     ?'str_value' => string,
   );
   const type TShape = shape(
-    'a' => vec<string>,
-    ?'b' => ?dict<string, vec<dict<int, bool>>>,
+    'a' => varray<string>,
+    ?'b' => ?darray<string, varray<dict<int, bool>>>,
     'c' => int,
     'd' => bool,
     'str_value' => string,
@@ -391,12 +389,12 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
    * Original thrift field:-
    * 1: list<string> a
    */
-  public Vector<string> $a;
+  public varray<string> $a;
   /**
    * Original thrift field:-
    * 2: map<string, list<set<i32>>> b
    */
-  public ?Map<string, Vector<dict<int, bool>>> $b;
+  public ?darray<string, varray<dict<int, bool>>> $b;
   /**
    * Original thrift field:-
    * 3: i64 c
@@ -415,8 +413,8 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public function __construct(self::TConstructorShape $shape = shape()) {
-    $this->a = Shapes::idx($shape, 'a') ?? Vector {};
-    $this->b = Shapes::idx($shape, 'b') ?? Map {};
+    $this->a = Shapes::idx($shape, 'a') ?? varray[];
+    $this->b = Shapes::idx($shape, 'b') ?? darray[];
     $this->c = Shapes::idx($shape, 'c') ?? 7;
     $this->d = Shapes::idx($shape, 'd') ?? false;
     $this->str_value = Shapes::idx($shape, 'str_value') ?? "hello";
@@ -432,11 +430,9 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   }
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
-    $me->a = (new Vector($shape['a']));
+    $me->a = $shape['a'];
     if (Shapes::idx($shape, 'b') !== null) {
-      $me->b = (new Map($shape['b']))->map(
-        $val0 ==> (new Vector($val0)),
-      );
+      $me->b = $shape['b'];
     }
     $me->c = $shape['c'];
     $me->d = $shape['d'];
@@ -447,14 +443,8 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
-      'a' => vec($this->a),
-      'b' => $this->b?->map(
-        $_val0 ==> $_val0->map(
-          $_val1 ==> ThriftUtil::toDArray(Dict\fill_keys($_val1, true)),
-        )
-          |> vec($$),
-      )
-        |> $$ === null ? null : dict($$),
+      'a' => $this->a,
+      'b' => $this->b,
       'c' => $this->c,
       'd' => $this->d,
       'str_value' => $this->str_value,
@@ -493,7 +483,7 @@ class TestStruct implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::STRUCT,
         'class' => Foo::class,
       ),
-      'format' => 'collection',
+      'format' => 'array',
     ),
     5 => shape(
       'var' => 'map_of_string_to_struct_foo',
@@ -507,7 +497,7 @@ class TestStruct implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::STRUCT,
         'class' => Foo::class,
       ),
-      'format' => 'collection',
+      'format' => 'array',
     ),
     6 => shape(
       'var' => 'list_of_struct_self',
@@ -517,7 +507,7 @@ class TestStruct implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::STRUCT,
         'class' => TestStruct::class,
       ),
-      'format' => 'collection',
+      'format' => 'array',
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -532,17 +522,17 @@ class TestStruct implements \IThriftStruct, \IThriftShapishStruct {
     ?'foo_struct' => ?Foo,
     ?'union_value' => ?TestUnion,
     ?'struct_of_self' => ?TestStruct,
-    ?'list_of_struct_foo' => Vector<Foo>,
-    ?'map_of_string_to_struct_foo' => Map<string, Foo>,
-    ?'list_of_struct_self' => Vector<TestStruct>,
+    ?'list_of_struct_foo' => varray<Foo>,
+    ?'map_of_string_to_struct_foo' => darray<string, Foo>,
+    ?'list_of_struct_self' => varray<TestStruct>,
   );
   const type TShape = shape(
     ?'foo_struct' => ?Foo::TShape,
     ?'union_value' => ?TestUnion::TShape,
     ?'struct_of_self' => ?TestStruct::TShape,
-    'list_of_struct_foo' => vec<Foo::TShape>,
-    'map_of_string_to_struct_foo' => dict<string, Foo::TShape>,
-    'list_of_struct_self' => vec<TestStruct::TShape>,
+    'list_of_struct_foo' => varray<Foo::TShape>,
+    'map_of_string_to_struct_foo' => darray<string, Foo::TShape>,
+    'list_of_struct_self' => varray<TestStruct::TShape>,
   );
   const int STRUCTURAL_ID = 6681594433718475023;
   /**
@@ -564,26 +554,26 @@ class TestStruct implements \IThriftStruct, \IThriftShapishStruct {
    * Original thrift field:-
    * 4: list<struct module.Foo> list_of_struct_foo
    */
-  public Vector<Foo> $list_of_struct_foo;
+  public varray<Foo> $list_of_struct_foo;
   /**
    * Original thrift field:-
    * 5: map<string, struct module.Foo> map_of_string_to_struct_foo
    */
-  public Map<string, Foo> $map_of_string_to_struct_foo;
+  public darray<string, Foo> $map_of_string_to_struct_foo;
   /**
    * Original thrift field:-
    * 6: list<struct module.TestStruct> list_of_struct_self
    */
-  public Vector<TestStruct> $list_of_struct_self;
+  public varray<TestStruct> $list_of_struct_self;
 
   <<__Rx>>
   public function __construct(self::TConstructorShape $shape = shape()) {
     $this->foo_struct = Shapes::idx($shape, 'foo_struct');
     $this->union_value = Shapes::idx($shape, 'union_value');
     $this->struct_of_self = Shapes::idx($shape, 'struct_of_self');
-    $this->list_of_struct_foo = Shapes::idx($shape, 'list_of_struct_foo') ?? Vector {};
-    $this->map_of_string_to_struct_foo = Shapes::idx($shape, 'map_of_string_to_struct_foo') ?? Map {};
-    $this->list_of_struct_self = Shapes::idx($shape, 'list_of_struct_self') ?? Vector {};
+    $this->list_of_struct_foo = Shapes::idx($shape, 'list_of_struct_foo') ?? varray[];
+    $this->map_of_string_to_struct_foo = Shapes::idx($shape, 'map_of_string_to_struct_foo') ?? darray[];
+    $this->list_of_struct_self = Shapes::idx($shape, 'list_of_struct_self') ?? varray[];
   }
 
   public function getName(): string {
@@ -605,15 +595,24 @@ class TestStruct implements \IThriftStruct, \IThriftShapishStruct {
     if (Shapes::idx($shape, 'struct_of_self') !== null) {
       $me->struct_of_self = TestStruct::__fromShape($shape['struct_of_self']);
     }
-    $me->list_of_struct_foo = (new Vector($shape['list_of_struct_foo']))->map(
-      $val0 ==> Foo::__fromShape($val0),
-    );
-    $me->map_of_string_to_struct_foo = (new Map($shape['map_of_string_to_struct_foo']))->map(
-      $val1 ==> Foo::__fromShape($val1),
-    );
-    $me->list_of_struct_self = (new Vector($shape['list_of_struct_self']))->map(
-      $val2 ==> TestStruct::__fromShape($val2),
-    );
+    $me->list_of_struct_foo = $shape['list_of_struct_foo']
+      |> Vec\map(
+        $$,
+        $_val0 ==> $_val0
+          |> Foo::__fromShape($$),
+      ) |> varray($$);
+    $me->map_of_string_to_struct_foo = $shape['map_of_string_to_struct_foo']
+      |> Dict\map(
+        $$,
+        $_val1 ==> $_val1
+          |> Foo::__fromShape($$),
+      ) |> darray($$);
+    $me->list_of_struct_self = $shape['list_of_struct_self']
+      |> Vec\map(
+        $$,
+        $_val2 ==> $_val2
+          |> TestStruct::__fromShape($$),
+      ) |> varray($$);
     return $me;
   }
 
@@ -623,18 +622,27 @@ class TestStruct implements \IThriftStruct, \IThriftShapishStruct {
       'foo_struct' => $this->foo_struct?->__toShape(),
       'union_value' => $this->union_value?->__toShape(),
       'struct_of_self' => $this->struct_of_self?->__toShape(),
-      'list_of_struct_foo' => $this->list_of_struct_foo->map(
-        $_val0 ==> $_val0->__toShape(),
-      )
-        |> vec($$),
-      'map_of_string_to_struct_foo' => $this->map_of_string_to_struct_foo->map(
-        $_val0 ==> $_val0->__toShape(),
-      )
-        |> dict($$),
-      'list_of_struct_self' => $this->list_of_struct_self->map(
-        $_val0 ==> $_val0->__toShape(),
-      )
-        |> vec($$),
+      'list_of_struct_foo' => $this->list_of_struct_foo
+        |> (
+          Vec\map(
+            $$,
+            $_val0 ==> $_val0->__toShape(),
+          ) |> varray($$)
+        ),
+      'map_of_string_to_struct_foo' => $this->map_of_string_to_struct_foo
+        |> (
+          Dict\map(
+            $$,
+            $_val0 ==> $_val0->__toShape(),
+          ) |> darray($$)
+        ),
+      'list_of_struct_self' => $this->list_of_struct_self
+        |> (
+          Vec\map(
+            $$,
+            $_val0 ==> $_val0->__toShape(),
+          ) |> varray($$)
+        ),
     );
   }
 }

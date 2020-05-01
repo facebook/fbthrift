@@ -68,9 +68,9 @@ trait BarClientBase {
     $currentseqid = $this->getNextSequenceID();
     $args = new Bar_baz_args(shape(
       'a' => $a,
-      'b' => (new Vector($b))->map(
-        $_val0 ==> new Map($_val0)
-      ),
+      'b' => varray(Vec\map($b, 
+        $_val0 ==> darray($_val0)
+      )),
       'c' => $c,
       'd' => $d,
       'e' => $e,
@@ -278,9 +278,9 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
           ),
           'format' => 'array',
         ),
-        'format' => 'collection',
+        'format' => 'array',
       ),
-      'format' => 'collection',
+      'format' => 'array',
     ),
     3 => shape(
       'var' => 'c',
@@ -305,21 +305,21 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
   ];
   const type TConstructorShape = shape(
     ?'a' => dict<int, bool>,
-    ?'b' => Vector<Map<int, dict<string, bool>>>,
+    ?'b' => varray<darray<int, dict<string, bool>>>,
     ?'c' => int,
     ?'d' => ?Foo,
     ?'e' => int,
   );
   const type TShape = shape(
     'a' => dict<int, bool>,
-    'b' => vec<dict<int, dict<string, bool>>>,
+    'b' => varray<darray<int, dict<string, bool>>>,
     'c' => int,
     ?'d' => ?Foo::TShape,
     'e' => int,
   );
   const int STRUCTURAL_ID = 7865027497865509792;
   public dict<int, bool> $a;
-  public Vector<Map<int, dict<string, bool>>> $b;
+  public varray<darray<int, dict<string, bool>>> $b;
   public int $c;
   public ?Foo $d;
   public int $e;
@@ -327,7 +327,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
   <<__Rx>>
   public function __construct(self::TConstructorShape $shape = shape()) {
     $this->a = Shapes::idx($shape, 'a') ?? dict[];
-    $this->b = Shapes::idx($shape, 'b') ?? Vector {};
+    $this->b = Shapes::idx($shape, 'b') ?? varray[];
     $this->c = Shapes::idx($shape, 'c') ?? 0;
     $this->d = Shapes::idx($shape, 'd');
     $this->e = Shapes::idx($shape, 'e') ?? 4;
@@ -344,9 +344,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->a = $shape['a'];
-    $me->b = (new Vector($shape['b']))->map(
-      $val0 ==> (new Map($val0)),
-    );
+    $me->b = $shape['b'];
     $me->c = $shape['c'];
     if (Shapes::idx($shape, 'd') !== null) {
       $me->d = Foo::__fromShape($shape['d']);
@@ -359,13 +357,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
   public function __toShape(): self::TShape {
     return shape(
       'a' => $this->a,
-      'b' => $this->b->map(
-        $_val0 ==> $_val0->map(
-          $_val1 ==> ThriftUtil::toDArray(Dict\fill_keys($_val1, true)),
-        )
-          |> dict($$),
-      )
-        |> vec($$),
+      'b' => $this->b,
       'c' => $this->c,
       'd' => $this->d?->__toShape(),
       'e' => $this->e,

@@ -85,8 +85,6 @@ class t_hack_generator : public t_oop_generator {
     if (no_use_hack_collections_ && strict_types_) {
       throw std::runtime_error(
           "Don't use no_use_hack_collections with strict_types");
-    } else if (shapes_ && no_use_hack_collections_) {
-      throw std::runtime_error("Don't use no_use_hack_collections with shapes");
     } else if (no_use_hack_collections_ && !arraysets_) {
       throw std::runtime_error(
           "Don't use no_use_hack_collections without arraysets");
@@ -96,10 +94,6 @@ class t_hack_generator : public t_oop_generator {
     } else if (map_construct_ && shape_construct_) {
       throw std::runtime_error(
           "Don't use mapconstruct and shape_construct together."
-          " Just use shape_construct");
-    } else if (no_use_hack_collections_ && shape_construct_) {
-      throw std::runtime_error(
-          "Don't use no_use_hack_collections and shape_construct together."
           " Just use shape_construct");
     }
 
@@ -1766,12 +1760,24 @@ void t_hack_generator::generate_hack_array_from_shape_lambda(
 
   indent_down();
   indent(out) << ")";
+  if (no_use_hack_collections_) {
+    if (t->is_map()) {
+      out << " |> darray($$)";
+    } else {
+      out << " |> varray($$)";
+    }
+  }
 }
 
 void t_hack_generator::generate_shape_from_hack_array_lambda(
     std::ostream& out,
     t_name_generator& namer,
     t_type* t) {
+  if (no_use_hack_collections_) {
+    out << "(\n";
+    indent_up();
+    indent(out);
+  }
   if (t->is_map()) {
     out << "Dict\\map(\n";
   } else {
@@ -1803,6 +1809,14 @@ void t_hack_generator::generate_shape_from_hack_array_lambda(
   }
 
   indent_down();
+  if (no_use_hack_collections_) {
+    if (t->is_map()) {
+      indent(out) << ") |> darray($$)\n";
+    } else {
+      indent(out) << ") |> varray($$)\n";
+    }
+    indent_down();
+  }
   indent(out) << "),\n";
 }
 
@@ -2071,13 +2085,22 @@ void t_hack_generator::generate_php_struct_shape_methods(
     std::ofstream& out,
     t_struct* tstruct) {
   if (shape_arraykeys_) {
-    auto arg_return_type =
-        (arrays_ ? "dict" : const_collections_ ? "ConstMap" : "Map");
+    string arg_return_type;
+    if (arrays_) {
+      arg_return_type = "dict";
+    } else if (no_use_hack_collections_) {
+      arg_return_type = "darray";
+    } else if (const_collections_) {
+      arg_return_type = "ConstMap";
+    } else {
+      arg_return_type = "Map";
+    }
     indent(out) << "public static function __stringifyMapKeys<T>("
                 << arg_return_type << "<arraykey, T> $m): " << arg_return_type
                 << "<string, T> {\n";
     indent(out) << "  $new_map = " << arg_return_type
-                << (arrays_ ? "[]" : " {}") << ";\n";
+                << ((arrays_ || no_use_hack_collections_) ? "[]" : " {}")
+                << ";\n";
     indent(out) << "  foreach ($m as $k => $v) {\n";
     indent(out) << "    $new_map[(string)$k] = $v;\n";
     indent(out) << "  }\n";
@@ -2125,7 +2148,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
 
     indent(val) << "$me->" << (*m_iter)->get_name() << " = ";
     if (t->is_set()) {
-      if (arraysets_ || arrays_) {
+      if (arraysets_ || arrays_ || no_use_hack_collections_) {
         val << source.str() << ";\n";
       } else {
         val << "new Set(Keyset\\keys(" << source.str() << "));\n";
@@ -2143,7 +2166,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
         val << "self::__stringifyMapKeys(";
       }
 
-      if (arrays_) {
+      if (arrays_ || no_use_hack_collections_) {
         val << source.str();
         if (type_has_nested_struct(t)) {
           indent_up();
@@ -2280,7 +2303,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
 
     if (t->is_container()) {
       if (t->is_map() || t->is_list()) {
-        if (arrays_) {
+        if (arrays_ || no_use_hack_collections_) {
           val << "$this->" << (*m_iter)->get_name();
           if (type_has_nested_struct(t)) {
             val << "\n";
@@ -2329,7 +2352,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
                 << (*m_iter)->get_name() << "),\n";
           }
         }
-      } else if (arraysets_ || arrays_) {
+      } else if (arraysets_ || arrays_ || no_use_hack_collections_) {
         val << "$this->" << (*m_iter)->get_name() << ",\n";
       } else {
         if (nullable) {
