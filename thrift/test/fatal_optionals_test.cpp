@@ -87,4 +87,18 @@ TEST_F(FatalOptionalsTest, isset) {
             apache::thrift::DeprecatedOptionalField<int32_t>&>::value,
         "");
   }
+
+  {
+    meta::member::optl::field_ref_getter f;
+    type obj;
+    f(obj) = 3;
+    EXPECT_EQ(*obj.optl, 3);
+    obj.optl = 2;
+    EXPECT_EQ(*f(obj), 2);
+    static_assert(
+        std::is_same<
+            apache::thrift::optional_field_ref<int32_t&>,
+            decltype(f(obj))>::value,
+        "");
+  }
 }

@@ -392,6 +392,9 @@ TEST(optional_field_ref_test, move_to_folly_optional) {
   s.opt_uptr() = std::make_unique<int>(2);
   EXPECT_EQ(**s.opt_uptr(), 2);
   {
+    static_assert(std::is_same_v<
+                  decltype(std::move(s).opt_uptr()),
+                  optional_field_ref<std::unique_ptr<int>&&>>);
     auto f = apache::thrift::moveToFollyOptional(std::move(s).opt_uptr());
     EXPECT_EQ(**f, 2);
     EXPECT_EQ(*s.opt_uptr(), nullptr);

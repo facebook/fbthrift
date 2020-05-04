@@ -880,6 +880,7 @@ template <
     field_id_t Id,
     optionality Optionality,
     typename Getter,
+    typename FieldRefGetter,
     typename TypeClass,
     template <typename> class Pod,
     typename Annotations,
@@ -1054,6 +1055,11 @@ struct reflected_struct_data_member {
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
   using getter = Getter;
+
+  /**
+   * Similar to getter, but return `(optional_)?field_ref` instead.
+   */
+  using field_ref_getter = FieldRefGetter;
 
   /**
    * The type class for this member.

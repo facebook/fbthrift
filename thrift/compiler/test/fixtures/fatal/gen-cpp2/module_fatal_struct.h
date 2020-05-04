@@ -632,6 +632,9 @@ struct structA_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::a
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::a
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_a,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structA_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::a>,
@@ -646,6 +649,9 @@ struct structA_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::b
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::b
     >,
     ::apache::thrift::type_class::string,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_b,
@@ -745,6 +751,9 @@ struct structB_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::c
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::c
+    >,
     ::apache::thrift::type_class::floating_point,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_c,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structB_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::c>,
@@ -759,6 +768,9 @@ struct structB_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::d
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::d
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_d,
@@ -1067,6 +1079,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::a
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::a
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_a,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::a>,
@@ -1081,6 +1096,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::b
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::b
     >,
     ::apache::thrift::type_class::string,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_b,
@@ -1097,6 +1115,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::c
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::c
+    >,
     ::apache::thrift::type_class::floating_point,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_c,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::c>,
@@ -1111,6 +1132,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::d
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::d
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_d,
@@ -1127,6 +1151,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::e
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::e
+    >,
     ::apache::thrift::type_class::enumeration,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_e,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::e>,
@@ -1141,6 +1168,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::f
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::f
     >,
     ::apache::thrift::type_class::enumeration,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_f,
@@ -1157,6 +1187,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::g
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::g
+    >,
     ::apache::thrift::type_class::variant,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_g,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::g>,
@@ -1171,6 +1204,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::h
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::h
     >,
     ::apache::thrift::type_class::variant,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_h,
@@ -1187,6 +1223,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::i
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::i
+    >,
     ::apache::thrift::type_class::variant,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_i,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::i>,
@@ -1201,6 +1240,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::j
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::j
     >,
     ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_j,
@@ -1217,6 +1259,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::j1
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::j1
+    >,
     ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_j1,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::j1>,
@@ -1231,6 +1276,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::j2
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::j2
     >,
     ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_j2,
@@ -1247,6 +1295,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::j3
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::j3
+    >,
     ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_j3,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::j3>,
@@ -1261,6 +1312,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::k
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::k
     >,
     ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_k,
@@ -1277,6 +1331,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::k1
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::k1
+    >,
     ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_k1,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::k1>,
@@ -1291,6 +1348,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::k2
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::k2
     >,
     ::apache::thrift::type_class::set<::apache::thrift::type_class::enumeration>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_k2,
@@ -1307,6 +1367,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::k3
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::k3
+    >,
     ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_k3,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::k3>,
@@ -1321,6 +1384,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::l
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::l
     >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_l,
@@ -1337,6 +1403,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::l1
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::l1
+    >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_l1,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::l1>,
@@ -1351,6 +1420,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::l2
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::l2
     >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::enumeration>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_l2,
@@ -1367,6 +1439,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::l3
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::l3
+    >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::structure>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_l3,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::l3>,
@@ -1381,6 +1456,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::m1
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::m1
     >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_m1,
@@ -1397,6 +1475,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::m2
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::m2
+    >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::enumeration>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_m2,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::m2>,
@@ -1411,6 +1492,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::m3
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::m3
     >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::structure>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_m3,
@@ -1427,6 +1511,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::n1
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::n1
+    >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_n1,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::n1>,
@@ -1441,6 +1528,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::n2
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::n2
     >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::enumeration>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_n2,
@@ -1457,6 +1547,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::n3
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::n3
+    >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_n3,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::n3>,
@@ -1471,6 +1564,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::o1
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::o1
     >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_o1,
@@ -1487,6 +1583,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::o2
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::o2
+    >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::enumeration>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_o2,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::o2>,
@@ -1501,6 +1600,9 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::o3
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::o3
     >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_o3,
@@ -1593,6 +1695,9 @@ struct struct1_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::field0
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::field0
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field0,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::field0>,
@@ -1607,6 +1712,9 @@ struct struct1_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::field1
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::field1
     >,
     ::apache::thrift::type_class::string,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field1,
@@ -1623,6 +1731,9 @@ struct struct1_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::field2
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::field2
+    >,
     ::apache::thrift::type_class::enumeration,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field2,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::field2>,
@@ -1637,6 +1748,9 @@ struct struct1_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::field3
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::field3
     >,
     ::apache::thrift::type_class::enumeration,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field3,
@@ -1653,6 +1767,9 @@ struct struct1_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::field4
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::field4
+    >,
     ::apache::thrift::type_class::variant,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field4,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::field4>,
@@ -1667,6 +1784,9 @@ struct struct1_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::field5
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::field5
     >,
     ::apache::thrift::type_class::variant,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field5,
@@ -1768,6 +1888,9 @@ struct struct2_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::fieldA
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldA
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldA,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::fieldA>,
@@ -1782,6 +1905,9 @@ struct struct2_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::fieldB
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldB
     >,
     ::apache::thrift::type_class::string,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldB,
@@ -1798,6 +1924,9 @@ struct struct2_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::fieldC
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldC
+    >,
     ::apache::thrift::type_class::enumeration,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldC,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::fieldC>,
@@ -1812,6 +1941,9 @@ struct struct2_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::fieldD
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldD
     >,
     ::apache::thrift::type_class::enumeration,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldD,
@@ -1828,6 +1960,9 @@ struct struct2_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::fieldE
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldE
+    >,
     ::apache::thrift::type_class::variant,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldE,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::fieldE>,
@@ -1843,6 +1978,9 @@ struct struct2_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::fieldF
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldF
+    >,
     ::apache::thrift::type_class::variant,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldF,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::fieldF>,
@@ -1857,6 +1995,9 @@ struct struct2_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::fieldG
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldG
     >,
     ::apache::thrift::type_class::structure,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldG,
@@ -2057,6 +2198,9 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::fieldA
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldA
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldA,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::fieldA>,
@@ -2071,6 +2215,9 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::fieldB
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldB
     >,
     ::apache::thrift::type_class::string,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldB,
@@ -2087,6 +2234,9 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::fieldC
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldC
+    >,
     ::apache::thrift::type_class::enumeration,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldC,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::fieldC>,
@@ -2101,6 +2251,9 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::fieldD
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldD
     >,
     ::apache::thrift::type_class::enumeration,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldD,
@@ -2117,6 +2270,9 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::fieldE
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldE
+    >,
     ::apache::thrift::type_class::variant,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldE,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::fieldE>,
@@ -2131,6 +2287,9 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::fieldF
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldF
     >,
     ::apache::thrift::type_class::variant,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldF,
@@ -2147,6 +2306,9 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::fieldG
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldG
+    >,
     ::apache::thrift::type_class::structure,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldG,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::fieldG>,
@@ -2161,6 +2323,9 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::fieldH
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldH
     >,
     ::apache::thrift::type_class::variant,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldH,
@@ -2177,6 +2342,9 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::fieldI
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldI
+    >,
     ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldI,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::fieldI>,
@@ -2191,6 +2359,9 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::fieldJ
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldJ
     >,
     ::apache::thrift::type_class::list<::apache::thrift::type_class::string>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldJ,
@@ -2207,6 +2378,9 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::fieldK
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldK
+    >,
     ::apache::thrift::type_class::list<::apache::thrift::type_class::string>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldK,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::fieldK>,
@@ -2221,6 +2395,9 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::fieldL
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldL
     >,
     ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldL,
@@ -2237,6 +2414,9 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::fieldM
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldM
+    >,
     ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldM,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::fieldM>,
@@ -2251,6 +2431,9 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::fieldN
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldN
     >,
     ::apache::thrift::type_class::set<::apache::thrift::type_class::string>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldN,
@@ -2267,6 +2450,9 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::fieldO
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldO
+    >,
     ::apache::thrift::type_class::set<::apache::thrift::type_class::string>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldO,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::fieldO>,
@@ -2281,6 +2467,9 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::fieldP
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldP
     >,
     ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldP,
@@ -2297,6 +2486,9 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::fieldQ
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldQ
+    >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldQ,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::fieldQ>,
@@ -2311,6 +2503,9 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::fieldR
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldR
     >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fieldR,
@@ -2385,6 +2580,9 @@ struct struct4_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::field0
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::field0
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field0,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::field0>,
@@ -2399,6 +2597,9 @@ struct struct4_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::field1
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::field1
     >,
     ::apache::thrift::type_class::string,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field1,
@@ -2415,6 +2616,9 @@ struct struct4_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::field2
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::field2
+    >,
     ::apache::thrift::type_class::enumeration,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field2,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::field2>,
@@ -2429,6 +2633,9 @@ struct struct4_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::field3
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::field3
     >,
     ::apache::thrift::type_class::structure,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field3,
@@ -2524,6 +2731,9 @@ struct struct5_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::field0
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::field0
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field0,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::field0>,
@@ -2538,6 +2748,9 @@ struct struct5_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::field1
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::field1
     >,
     ::apache::thrift::type_class::string,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field1,
@@ -2554,6 +2767,9 @@ struct struct5_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::field2
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::field2
+    >,
     ::apache::thrift::type_class::enumeration,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field2,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::field2>,
@@ -2569,6 +2785,9 @@ struct struct5_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
         ::apache::thrift::tag::field3
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::field3
+    >,
     ::apache::thrift::type_class::structure,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field3,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::field3>,
@@ -2583,6 +2802,9 @@ struct struct5_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::field4
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::field4
     >,
     ::apache::thrift::type_class::structure,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field4,
@@ -2629,6 +2851,9 @@ struct struct_binary_test_cpp2_cpp_reflection_module__struct_unique_member_info_
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::bi
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::bi
     >,
     ::apache::thrift::type_class::binary,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_bi,
@@ -2694,6 +2919,9 @@ struct dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_member_info_l
         ::apache::thrift::tag::b
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::b
+    >,
     ::apache::thrift::type_class::structure,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_b,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::b>,
@@ -2709,6 +2937,9 @@ struct dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_member_info_l
         ::apache::thrift::tag::c
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::c
+    >,
     ::apache::thrift::type_class::structure,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_c,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::c>,
@@ -2723,6 +2954,9 @@ struct dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_member_info_l
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::i_a
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::i_a
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_i_a,
@@ -2788,6 +3022,9 @@ struct dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_member_info_l
         ::apache::thrift::tag::b
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::b
+    >,
     ::apache::thrift::type_class::structure,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_b,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::b>,
@@ -2803,6 +3040,9 @@ struct dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_member_info_l
         ::apache::thrift::tag::c
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::c
+    >,
     ::apache::thrift::type_class::structure,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_c,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::c>,
@@ -2817,6 +3057,9 @@ struct dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_member_info_l
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::i_a
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::i_a
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_i_a,
@@ -2996,6 +3239,9 @@ struct annotated_test_cpp2_cpp_reflection_module__struct_unique_member_info_list
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::a
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::a
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_a,
@@ -3286,6 +3532,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
         ::apache::thrift::tag::get
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::get
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_get,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::get>,
@@ -3300,6 +3549,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::getter
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::getter
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_getter,
@@ -3316,6 +3568,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
         ::apache::thrift::tag::lists
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::lists
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_lists,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::lists>,
@@ -3330,6 +3585,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::maps
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::maps
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_maps,
@@ -3346,6 +3604,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
         ::apache::thrift::tag::name
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::name
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_name,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::name>,
@@ -3360,6 +3621,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::name_to_value
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::name_to_value
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_name_to_value,
@@ -3376,6 +3640,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
         ::apache::thrift::tag::names
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::names
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_names,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::names>,
@@ -3390,6 +3657,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::prefix_tree
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::prefix_tree
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_prefix_tree,
@@ -3406,6 +3676,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
         ::apache::thrift::tag::sets
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::sets
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_sets,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::sets>,
@@ -3420,6 +3693,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::setter
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::setter
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_setter,
@@ -3436,6 +3712,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
         ::apache::thrift::tag::str
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::str
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_str,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::str>,
@@ -3450,6 +3729,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::strings
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::strings
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_strings,
@@ -3466,6 +3748,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
         ::apache::thrift::tag::type
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::type
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_type,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::type>,
@@ -3480,6 +3765,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::value
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::value
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_value,
@@ -3496,6 +3784,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
         ::apache::thrift::tag::value_to_name
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::value_to_name
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_value_to_name,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::value_to_name>,
@@ -3510,6 +3801,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::values
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::values
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_values,
@@ -3526,6 +3820,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
         ::apache::thrift::tag::id
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::id
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_id,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::id>,
@@ -3540,6 +3837,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::ids
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::ids
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_ids,
@@ -3556,6 +3856,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
         ::apache::thrift::tag::descriptor
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::descriptor
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_descriptor,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::descriptor>,
@@ -3570,6 +3873,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::descriptors
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::descriptors
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_descriptors,
@@ -3586,6 +3892,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
         ::apache::thrift::tag::key
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::key
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_key,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::key>,
@@ -3600,6 +3909,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::keys
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::keys
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_keys,
@@ -3616,6 +3928,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
         ::apache::thrift::tag::annotation
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::annotation
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_annotation,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::annotation>,
@@ -3630,6 +3945,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::annotations
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::annotations
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_annotations,
@@ -3646,6 +3964,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
         ::apache::thrift::tag::member
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::member
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_member,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::member>,
@@ -3660,6 +3981,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::members
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::members
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_members,
@@ -3676,6 +4000,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
         ::apache::thrift::tag::field
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::field
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::field>,
@@ -3690,6 +4017,9 @@ struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::fields
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fields
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fields,
@@ -3773,6 +4103,9 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
         ::apache::thrift::tag::real
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::real
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_real,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::real>,
@@ -3787,6 +4120,9 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::fake
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fake
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_fake,
@@ -3806,6 +4142,12 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
         thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::number
       >
     >,
+    ::apache::thrift::detail::reflection_impl::chained_data_member_accessor<
+      ::apache::thrift::detail::invoke_reffer<
+        ::apache::thrift::tag::number
+      >,
+      thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::number
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_number,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::number>,
@@ -3824,6 +4166,12 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
         thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::result
       >
     >,
+    ::apache::thrift::detail::reflection_impl::chained_data_member_accessor<
+      ::apache::thrift::detail::invoke_reffer<
+        ::apache::thrift::tag::result
+      >,
+      thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::result
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_result,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::result>,
@@ -3841,6 +4189,12 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
         >,
         thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::phrase
       >
+    >,
+    ::apache::thrift::detail::reflection_impl::chained_data_member_accessor<
+      ::apache::thrift::detail::invoke_reffer<
+        ::apache::thrift::tag::phrase
+      >,
+      thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::phrase
     >,
     ::apache::thrift::type_class::string,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_phrase,
@@ -3861,6 +4215,9 @@ struct my_structA_test_cpp2_cpp_reflection_module__struct_unique_member_info_lis
         ::apache::thrift::tag::a
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::a
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_a,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structA_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::a>,
@@ -3875,6 +4232,9 @@ struct my_structA_test_cpp2_cpp_reflection_module__struct_unique_member_info_lis
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
         ::apache::thrift::tag::b
       >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::b
     >,
     ::apache::thrift::type_class::string,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_b,

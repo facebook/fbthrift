@@ -67,6 +67,9 @@ struct ReflectionStruct_cpp2_reflection__struct_unique_member_info_list {
         ::apache::thrift::tag::fieldA
       >
     >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::fieldA
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::cpp2_reflection__struct_unique_member_pod_list::cpp2_reflection_struct_member_pod_fieldA,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::ReflectionStruct_cpp2_reflection__struct_unique_annotations::members::fieldA>,
