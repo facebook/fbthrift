@@ -39,3 +39,4 @@ const std::string kProxyAclCheckExceptionErrorCode{"18"};
 const std::string kProxyOverloadedErrorCode{"19"};
 const std::string kProxyLoopbackErrorCode{"20"};
 const std::string kRequestTypeDoesntMatchServiceFunctionType{"21"};
+const std::string kAppOverloadedErrorCode{"22"};

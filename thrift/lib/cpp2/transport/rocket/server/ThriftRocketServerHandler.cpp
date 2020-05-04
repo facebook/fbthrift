@@ -310,12 +310,13 @@ void ThriftRocketServerHandler::handleRequestCommon(
     return;
   }
   // check if server is overloaded
-  if (UNLIKELY(serverConfigs_->isOverloaded(
-          metadata.otherMetadata_ref() ? &*metadata.otherMetadata_ref()
-                                       : nullptr,
-          &*metadata.name_ref()))) {
-    handleRequestOverloadedServer(makeRequest(
-        std::move(metadata), std::move(debugPayload), reqCtx.get()));
+  auto errorCode = serverConfigs_->checkOverload(
+      metadata.otherMetadata_ref() ? &*metadata.otherMetadata_ref() : nullptr,
+      &*metadata.name_ref());
+  if (UNLIKELY(errorCode.has_value())) {
+    handleRequestOverloadedServer(
+        makeRequest(std::move(metadata), std::move(debugPayload), reqCtx.get()),
+        errorCode.value());
     return;
   }
 
@@ -410,7 +411,8 @@ void ThriftRocketServerHandler::handleDecompressionFailure(
 }
 
 void ThriftRocketServerHandler::handleRequestOverloadedServer(
-    ThriftRequestCoreUniquePtr request) {
+    ThriftRequestCoreUniquePtr request,
+    const std::string& /*errorCode*/) {
   if (auto* observer = serverConfigs_->getObserver()) {
     observer->serverOverloaded();
   }

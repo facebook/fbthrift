@@ -262,7 +262,7 @@ class ProxygenThriftServer : public BaseThriftServer,
     folly::SocketAddress peerAddress_;
   };
 
-  bool isOverloaded(
+  folly::Optional<std::string> checkOverload(
       const transport::THeader::StringToStringMap* readHeaders = nullptr,
       const std::string* method = nullptr) const final;
 

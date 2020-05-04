@@ -65,10 +65,10 @@ class ServerConfigsMock : public ServerConfigs {
     return 123;
   }
 
-  bool isOverloaded(
+  folly::Optional<std::string> checkOverload(
       const transport::THeader::StringToStringMap*,
       const std::string*) const override {
-    return false;
+    return {};
   }
 
  public:

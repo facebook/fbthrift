@@ -308,16 +308,16 @@ void ProxygenThriftServer::ThriftRequestHandler::TaskTimeout::
   }
 }
 
-bool ProxygenThriftServer::isOverloaded(
+folly::Optional<std::string> ProxygenThriftServer::checkOverload(
     const transport::THeader::StringToStringMap* headers,
     const std::string* method) const {
   if (UNLIKELY(isOverloaded_ && isOverloaded_(headers, method))) {
-    return true;
+    return kAppOverloadedErrorCode;
   }
 
   LOG(WARNING) << "isOverloaded is not implemented";
 
-  return false;
+  return {};
 }
 
 uint64_t ProxygenThriftServer::getNumDroppedConnections() const {

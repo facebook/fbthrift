@@ -292,7 +292,8 @@ void Cpp2Connection::requestReceived(
   const auto msgBegin = apache::thrift::detail::ap::deserializeMessageBegin(
       *hreq->getBuf(), protoId);
   const std::string& methodName = msgBegin.methodName;
-  if (server->isOverloaded(&hreq->getHeader()->getHeaders(), &methodName)) {
+  if (auto errorCode = server->checkOverload(
+          &hreq->getHeader()->getHeaders(), &methodName)) {
     killRequest(
         std::move(hreq),
         TApplicationException::TApplicationExceptionType::LOADSHEDDING,

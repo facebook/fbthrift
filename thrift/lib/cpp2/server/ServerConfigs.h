@@ -67,8 +67,8 @@ class ServerConfigs {
       const std::string& counter = "",
       bool check_custom = true) const = 0;
 
-  // @see ThriftServer::isOverloaded function.
-  virtual bool isOverloaded(
+  // @see ThriftServer::checkOverload function.
+  virtual folly::Optional<std::string> checkOverload(
       const transport::THeader::StringToStringMap* readHeaders,
       const std::string* method) const = 0;
 

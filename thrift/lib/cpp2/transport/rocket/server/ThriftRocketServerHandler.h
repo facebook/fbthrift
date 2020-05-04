@@ -116,7 +116,8 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   FOLLY_NOINLINE void handleRequestWithBadChecksum(
       ThriftRequestCoreUniquePtr request);
   FOLLY_NOINLINE void handleRequestOverloadedServer(
-      ThriftRequestCoreUniquePtr request);
+      ThriftRequestCoreUniquePtr request,
+      const std::string& errorCode);
   FOLLY_NOINLINE void handleDecompressionFailure(
       ThriftRequestCoreUniquePtr request,
       std::string&& reason);

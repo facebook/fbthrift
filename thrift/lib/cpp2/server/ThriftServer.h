@@ -301,7 +301,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     namedFactory->setNamePrefix(cpp2WorkerThreadName);
   }
 
-  bool isOverloaded(
+  // if overloaded, returns applicable overloaded exception code.
+  folly::Optional<std::string> checkOverload(
       const transport::THeader::StringToStringMap* readHeaders = nullptr,
       const std::string* = nullptr) const final;
 

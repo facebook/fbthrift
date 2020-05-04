@@ -629,21 +629,23 @@ TLSCredProcessor& ThriftServer::getCredProcessor() {
   return *tlsCredProcessor_;
 }
 
-bool ThriftServer::isOverloaded(
+folly::Optional<std::string> ThriftServer::checkOverload(
     const transport::THeader::StringToStringMap* readHeaders,
     const std::string* method) const {
   if (UNLIKELY(isOverloaded_ && isOverloaded_(readHeaders, method))) {
-    return true;
+    return kAppOverloadedErrorCode;
   }
 
   uint32_t maxRequests = getMaxRequests();
   if (maxRequests > 0 &&
       (method == nullptr ||
        getMethodsBypassMaxRequestsLimit().count(*method) == 0)) {
-    return static_cast<uint32_t>(getActiveRequests()) >= maxRequests;
+    if (static_cast<uint32_t>(getActiveRequests()) >= maxRequests) {
+      return kOverloadedErrorCode;
+    }
   }
 
-  return false;
+  return {};
 }
 
 std::string ThriftServer::getLoadInfo(int64_t load) const {
