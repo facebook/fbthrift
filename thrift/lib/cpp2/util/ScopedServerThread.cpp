@@ -308,13 +308,15 @@ void ScopedServerThread::stop() {
   }
 
   helper_->stop();
-  thread_->join();
+  join();
   helper_.reset();
-  thread_.reset();
 }
 
 void ScopedServerThread::join() {
-  thread_->join();
+  if (thread_) {
+    thread_->join();
+    thread_.reset();
+  }
 }
 
 const folly::SocketAddress* ScopedServerThread::getAddress() const {
