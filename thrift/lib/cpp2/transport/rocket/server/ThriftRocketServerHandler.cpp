@@ -89,10 +89,9 @@ ThriftRocketServerHandler::ThriftRocketServerHandler(
       setupFrameHandlers_(handlers) {}
 
 ThriftRocketServerHandler::~ThriftRocketServerHandler() {
-  if (serverConfigs_) {
-    if (auto* observer = serverConfigs_->getObserver()) {
-      observer->connClosed();
-    }
+  // Ensure each connAccepted() call has a matching connClosed()
+  if (auto* observer = worker_->getServer()->getObserver()) {
+    observer->connClosed();
   }
 }
 
