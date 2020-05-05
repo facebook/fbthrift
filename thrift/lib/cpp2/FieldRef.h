@@ -148,6 +148,16 @@ class field_ref {
   detail::is_set_t<value_type>& is_set_;
 };
 
+template <typename T1, typename T2>
+bool operator==(field_ref<T1> a, field_ref<T2> b) {
+  return *a == *b;
+}
+
+template <typename T1, typename T2>
+bool operator!=(field_ref<T1> a, field_ref<T2> b) {
+  return !(a == b);
+}
+
 // A reference to an optional field of the possibly const-qualified type
 // std::remove_reference_t<T> in a Thrift-generated struct.
 template <typename T>

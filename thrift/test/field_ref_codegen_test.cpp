@@ -38,7 +38,7 @@ TEST(field_ref_codegen_test, getter) {
   EXPECT_EQ(*ref, 42);
 }
 
-TEST(field_ref_codegen_test, comparison) {
+TEST(field_ref_codegen_test, optional_comparison) {
   {
     test_struct s1;
     test_struct s2;
@@ -121,5 +121,91 @@ TEST(field_ref_codegen_test, comparison) {
     s2.foo_ref() = 1;
     const auto& const_s2 = s2;
     EXPECT_NE(const_s1.foo_ref(), const_s2.foo_ref());
+  }
+}
+
+TEST(field_ref_codegen_test, comparison) {
+  {
+    test_struct s1;
+    test_struct s2;
+    EXPECT_EQ(s1.bar_ref(), s2.bar_ref());
+  }
+  {
+    test_struct s1;
+    s1.bar_ref() = 1;
+    test_struct s2;
+    EXPECT_NE(s1.bar_ref(), s2.bar_ref());
+  }
+  {
+    test_struct s1;
+    test_struct s2;
+    s2.bar_ref() = 1;
+    EXPECT_NE(s1.bar_ref(), s2.bar_ref());
+  }
+  {
+    test_struct s1;
+    s1.bar_ref() = 1;
+    test_struct s2;
+    s2.bar_ref() = 2;
+    EXPECT_NE(s1.bar_ref(), s2.bar_ref());
+  }
+  {
+    test_struct s1;
+    s1.bar_ref() = 1;
+    test_struct s2;
+    s2.bar_ref() = 1;
+    EXPECT_EQ(s1.bar_ref(), s2.bar_ref());
+  }
+
+  // const version
+
+  {
+    test_struct s1;
+    s1.bar_ref() = 1;
+    const auto& const_s1 = s1;
+
+    test_struct s2;
+    s2.bar_ref() = 1;
+    EXPECT_EQ(const_s1.bar_ref(), s2.bar_ref());
+  }
+
+  {
+    test_struct s1;
+    s1.bar_ref() = 1;
+    const auto& const_s1 = s1;
+
+    test_struct s2;
+    s2.bar_ref() = 1;
+    const auto& const_s2 = s2;
+    EXPECT_EQ(const_s1.bar_ref(), const_s2.bar_ref());
+  }
+
+  {
+    test_struct s1;
+    s1.bar_ref() = 1;
+    const auto& const_s1 = s1;
+
+    test_struct s2;
+    const auto& const_s2 = s2;
+    EXPECT_NE(const_s1.bar_ref(), const_s2.bar_ref());
+  }
+
+  {
+    test_struct s1;
+    const auto& const_s1 = s1;
+
+    test_struct s2;
+    const auto& const_s2 = s2;
+    EXPECT_EQ(const_s1.bar_ref(), const_s2.bar_ref());
+  }
+
+  {
+    test_struct s1;
+    const auto& const_s1 = s1;
+
+    test_struct s2;
+    s2.bar_ref() = 1;
+    const auto& const_s2 = s2;
+    EXPECT_NE(const_s1.bar_ref(), const_s2.bar_ref());
   }
 }
