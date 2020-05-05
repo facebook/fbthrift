@@ -31,12 +31,14 @@ public final class MyStruct {
         @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE) final long intField,
         @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE) final String stringField,
         @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE) final String detailField,
-        @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE) final com.foo.FastIntLongMap detailMap
+        @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE) final com.foo.FastIntLongMap detailMap,
+        @ThriftField(value=5, name="titi", requiredness=Requiredness.NONE) final String toto
     ) {
         this.intField = intField;
         this.stringField = stringField;
         this.detailField = detailField;
         this.detailMap = detailMap;
+        this.toto = toto;
     }
     
     @ThriftConstructor
@@ -45,6 +47,7 @@ public final class MyStruct {
       this.stringField = null;
       this.detailField = null;
       this.detailMap = null;
+      this.toto = null;
     }
     
     public static class Builder {
@@ -52,6 +55,7 @@ public final class MyStruct {
         private String stringField = null;
         private String detailField = null;
         private com.foo.FastIntLongMap detailMap = null;
+        private String toto = null;
     
         @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
         public Builder setIntField(long intField) {
@@ -85,12 +89,21 @@ public final class MyStruct {
         
         public com.foo.FastIntLongMap getDetailMap() { return detailMap; }
     
+            @ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)
+        public Builder setTiti(String toto) {
+            this.toto = toto;
+            return this;
+        }
+        
+        public String getTiti() { return toto; }
+    
         public Builder() { }
         public Builder(MyStruct other) {
             this.intField = other.intField;
             this.stringField = other.stringField;
             this.detailField = other.detailField;
             this.detailMap = other.detailMap;
+            this.toto = other.toto;
         }
     
         @ThriftConstructor
@@ -99,7 +112,8 @@ public final class MyStruct {
                 this.intField,
                 this.stringField,
                 this.detailField,
-                this.detailMap
+                this.detailMap,
+                this.toto
             );
         }
     }
@@ -117,6 +131,9 @@ public final class MyStruct {
     @com.foo.Ignored private final com.foo.FastIntLongMap detailMap;
     public static final int _DETAILMAP = 4;
     private static final TField DETAIL_MAP_FIELD_DESC = new TField("detailMap", TType.MAP, (short)4);
+    private final String toto;
+    public static final int _TITI = 5;
+    private static final TField TITI_FIELD_DESC = new TField("toto", TType.STRING, (short)5);
 
     
     @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
@@ -130,6 +147,9 @@ public final class MyStruct {
         
     @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
     public com.foo.FastIntLongMap getDetailMap() { return detailMap; }
+        
+    @ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)
+    public String getTiti() { return toto; }
     
     @Override
     public String toString() {
@@ -138,6 +158,7 @@ public final class MyStruct {
         helper.add("stringField", stringField);
         helper.add("detailField", detailField);
         helper.add("detailMap", detailMap);
+        helper.add("toto", toto);
         return helper.toString();
     }
     
@@ -157,6 +178,7 @@ public final class MyStruct {
             Objects.equals(stringField, other.stringField) &&
             Objects.equals(detailField, other.detailField) &&
             Objects.equals(detailMap, other.detailMap) &&
+            Objects.equals(toto, other.toto) &&
             true;
     }
     
@@ -166,7 +188,8 @@ public final class MyStruct {
             intField,
             stringField,
             detailField,
-            detailMap
+            detailMap,
+            toto
         });
     }
     
@@ -225,6 +248,14 @@ public final class MyStruct {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _TITI:
+          if (__field.type == TType.STRING) {
+            String toto = oprot.readString();
+            builder.setTiti(toto);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -259,6 +290,11 @@ public final class MyStruct {
           oprot.writeI64(_iter1.getValue());
         }
         oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.toto != null) {
+        oprot.writeFieldBegin(TITI_FIELD_DESC);
+        oprot.writeString(this.toto);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

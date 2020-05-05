@@ -23,6 +23,7 @@ struct MyStruct {
   2: string stringField,
   3: string detailField (java.swift.annotations = "@com.foo.Ignored"),
   4: FMap detailMap (java.swift.annotations = "@com.foo.Ignored"),
+  5: string titi (java.swift.name = "toto"),
 } (java.swift.annotations = "@com.foo.Enabled @com.bar.AnotherAnnotation(val = 1)")
 
 struct MyMapping {
