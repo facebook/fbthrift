@@ -2925,7 +2925,7 @@ void t_py_generator::generate_process_function(
                << "  self._event_handler.handlerError(handler_ctx, '" << fn_name
                << "', ex)" << endl
                << indent() << "  result = Thrift.TApplicationException(message="
-               << "str(ex))" << endl
+               << "repr(ex))" << endl
                << indent() << "return reply_type, result" << endl;
     indent_down();
     f_service_ << endl;
@@ -3044,7 +3044,7 @@ void t_py_generator::generate_process_function(
                << "  self._event_handler.handlerError(handler_ctx, '" << fn_name
                << "', ex)" << endl
                << indent() << "  result = Thrift.TApplicationException(message="
-               << "str(ex))" << endl;
+               << "repr(ex))" << endl;
     if (!tfunction->is_oneway()) {
       f_service_ << indent() << "return result" << endl;
     }
