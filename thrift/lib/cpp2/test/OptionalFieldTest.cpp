@@ -431,7 +431,17 @@ TEST(DeprecatedOptionalField, HeterogeneousComparisons) {
       genDeprecatedOptionalField, genDeprecatedOptionalField);
   heterogeneousComparisonsTest(genOptionalFieldRef, genDeprecatedOptionalField);
   heterogeneousComparisonsTest(genDeprecatedOptionalField, genOptionalFieldRef);
+
+  // This tests optional_field_ref comparisons and must be preserved after
+  // DeprecatedOptionalField is removed.
   heterogeneousComparisonsTest(genOptionalFieldRef, genOptionalFieldRef);
+}
+
+TEST(FieldRefTest, HeterogeneousComparisons) {
+  auto genFieldRef = [i_ = int8_t(0), b_ = false](auto... i) mutable {
+    return field_ref<const int8_t&>(i_ = int(i...), b_ = sizeof...(i));
+  };
+  heterogeneousComparisonsTest(genFieldRef, genFieldRef);
 }
 
 TEST(DeprecatedOptionalField, NulloptComparisons) {
