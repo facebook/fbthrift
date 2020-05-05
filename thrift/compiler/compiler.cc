@@ -85,6 +85,9 @@ static void usage() {
       "  --allow-64bit-consts  Do not print warnings about using 64-bit constants\n");
   fprintf(
       stderr,
+      "  --enable-experimental-mixins Enable the experimental mixin support\n");
+  fprintf(
+      stderr,
       "  --gen STR   Generate code with a dynamically-registered generator.\n");
   fprintf(
       stderr,
@@ -238,6 +241,7 @@ int compile(std::vector<std::string> arguments) {
   bool allow_neg_field_keys = false;
   bool allow_neg_enum_vals = false;
   bool allow_64bit_consts = false;
+  bool enable_experimental_mixins = false;
 
   // Hacky parameter handling... I didn't feel like using a library sorry!
   size_t i;
@@ -264,6 +268,8 @@ int compile(std::vector<std::string> arguments) {
       allow_neg_enum_vals = true;
     } else if (arguments[i] == "-allow-64bit-consts") {
       allow_64bit_consts = true;
+    } else if (arguments[i] == "-enable-experimental-mixins") {
+      enable_experimental_mixins = true;
     } else if (arguments[i] == "-record-genfiles") {
       record_genfiles = true;
       if (i + 1 == arguments.size() - 1) {
@@ -382,6 +388,7 @@ int compile(std::vector<std::string> arguments) {
   params.allow_neg_field_keys = allow_neg_field_keys;
   params.allow_neg_enum_vals = allow_neg_enum_vals;
   params.allow_64bit_consts = allow_64bit_consts;
+  params.enable_experimental_mixins = enable_experimental_mixins;
   params.incl_searchpath = std::move(incl_searchpath);
 
   auto program = parse_and_dump_diagnostics(input_file, std::move(params));
