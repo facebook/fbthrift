@@ -412,7 +412,10 @@ class mstch_swift_field : public mstch_field {
     return constant_name(field_->get_name()) + "_FIELD_DESC";
   }
   mstch::node java_capital_name() {
-    return java::mangle_java_name(field_->get_name(), true);
+    auto it = field_->annotations_.find("java.swift.name");
+    auto name =
+        it != field_->annotations_.end() ? it->second : field_->get_name();
+    return java::mangle_java_name(name, true);
   }
   mstch::node java_all_caps_name() {
     auto field_name = field_->get_name();

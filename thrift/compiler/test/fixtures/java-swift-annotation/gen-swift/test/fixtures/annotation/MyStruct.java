@@ -90,12 +90,12 @@ public final class MyStruct {
         public com.foo.FastIntLongMap getDetailMap() { return detailMap; }
     
             @ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)
-        public Builder setTiti(String toto) {
+        public Builder setToto(String toto) {
             this.toto = toto;
             return this;
         }
         
-        public String getTiti() { return toto; }
+        public String getToto() { return toto; }
     
         public Builder() { }
         public Builder(MyStruct other) {
@@ -149,7 +149,7 @@ public final class MyStruct {
     public com.foo.FastIntLongMap getDetailMap() { return detailMap; }
         
     @ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)
-    public String getTiti() { return toto; }
+    public String getToto() { return toto; }
     
     @Override
     public String toString() {
@@ -251,7 +251,7 @@ public final class MyStruct {
         case _TITI:
           if (__field.type == TType.STRING) {
             String toto = oprot.readString();
-            builder.setTiti(toto);
+            builder.setToto(toto);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
