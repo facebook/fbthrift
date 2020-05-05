@@ -53,12 +53,16 @@ void MyServiceSvIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallbac
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
-  co_ping(params)
-    .scheduleOn(params.getThreadManager())
-    .startInlineUnsafe([callback = std::move(callback)](
-      folly::Try<folly::Unit>&& tryResult) mutable {
-        apache::thrift::HandlerCallback<void>::completeInThread(std::move(callback), std::move(tryResult));
-      });
+  try {
+    co_ping(params)
+      .scheduleOn(params.getThreadManager())
+      .startInlineUnsafe([callback = std::move(callback)](
+        folly::Try<folly::Unit>&& tryResult) mutable {
+          apache::thrift::HandlerCallback<void>::completeInThread(std::move(callback), std::move(tryResult));
+        });
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
 #else // FOLLY_HAS_COROUTINES
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_ping();
@@ -124,12 +128,16 @@ void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::Handler
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
-  co_hasDataById(params, id)
-    .scheduleOn(params.getThreadManager())
-    .startInlineUnsafe([callback = std::move(callback)](
-      folly::Try<bool>&& tryResult) mutable {
-        apache::thrift::HandlerCallback<bool>::completeInThread(std::move(callback), std::move(tryResult));
-      });
+  try {
+    co_hasDataById(params, id)
+      .scheduleOn(params.getThreadManager())
+      .startInlineUnsafe([callback = std::move(callback)](
+        folly::Try<bool>&& tryResult) mutable {
+          apache::thrift::HandlerCallback<bool>::completeInThread(std::move(callback), std::move(tryResult));
+        });
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
 #else // FOLLY_HAS_COROUTINES
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_hasDataById(id);
@@ -166,12 +174,16 @@ void MyServiceSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::Handler
 #if FOLLY_HAS_COROUTINES
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
-  co_getDataById(params, id)
-    .scheduleOn(params.getThreadManager())
-    .start([callback = std::move(callback)](
-      folly::Try<std::unique_ptr<::std::string>>&& tryResult) mutable {
-        apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>::completeInThread(std::move(callback), std::move(tryResult));
-      });
+  try {
+    co_getDataById(params, id)
+      .scheduleOn(params.getThreadManager())
+      .start([callback = std::move(callback)](
+        folly::Try<std::unique_ptr<::std::string>>&& tryResult) mutable {
+          apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>::completeInThread(std::move(callback), std::move(tryResult));
+        });
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
 #else // FOLLY_HAS_COROUTINES
   apache::thrift::detail::si::async_eb(this, std::move(callback), [this, id]() mutable {
     return future_getDataById(id);

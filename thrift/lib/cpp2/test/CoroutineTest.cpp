@@ -16,6 +16,7 @@
 
 #include <exception>
 
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/test/gen-cpp2/Coroutine.h>
@@ -31,6 +32,7 @@ using folly::EventBaseManager;
 using apache::thrift::test::CoroutineAsyncClient;
 using apache::thrift::test::CoroutineSvIf;
 using apache::thrift::test::CoroutineSvNull;
+using apache::thrift::test::Ex;
 using apache::thrift::test::SumRequest;
 using apache::thrift::test::SumResponse;
 
@@ -116,6 +118,28 @@ class CoroutineServiceHandlerCoro : virtual public CoroutineSvIf {
     co_return;
   }
 
+  folly::coro::Task<std::unique_ptr<SumResponse>> co_computeSumThrowsUserEx(
+      std::unique_ptr<SumRequest>) override {
+    throw Ex();
+  }
+
+  folly::coro::Task<int32_t> co_computeSumThrowsUserExPrimitive(
+      int32_t,
+      int32_t) override {
+    throw Ex();
+  }
+
+  folly::coro::Task<std::unique_ptr<SumResponse>> co_computeSumThrowsUserExEb(
+      std::unique_ptr<SumRequest>) override {
+    throw Ex();
+  }
+
+  folly::coro::Task<int32_t> co_computeSumThrowsUserExPrimitiveEb(
+      int32_t,
+      int32_t) override {
+    throw Ex();
+  }
+
   folly::Promise<int32_t> onewayRequestPromise;
 };
 
@@ -191,6 +215,32 @@ class CoroutineServiceHandlerFuture : virtual public CoroutineSvIf {
   folly::Future<folly::Unit> future_onewayRequest(int32_t x) override {
     onewayRequestPromise.setValue(x);
     return folly::makeFuture(folly::Unit());
+  }
+
+  folly::Future<std::unique_ptr<SumResponse>> future_computeSumThrowsUserEx(
+      std::unique_ptr<SumRequest> /* request */) override {
+    return folly::makeFuture<std::unique_ptr<SumResponse>>(
+        folly::exception_wrapper(folly::in_place, Ex()));
+  }
+
+  folly::Future<int32_t> future_computeSumThrowsUserExPrimitive(
+      int32_t,
+      int32_t) override {
+    return folly::makeFuture<int32_t>(
+        folly::exception_wrapper(folly::in_place, Ex()));
+  }
+
+  folly::Future<std::unique_ptr<SumResponse>> future_computeSumThrowsUserExEb(
+      std::unique_ptr<SumRequest> /* request */) override {
+    return folly::makeFuture<std::unique_ptr<SumResponse>>(
+        folly::exception_wrapper(folly::in_place, Ex()));
+  }
+
+  folly::Future<int32_t> future_computeSumThrowsUserExPrimitiveEb(
+      int32_t,
+      int32_t) override {
+    return folly::makeFuture<int32_t>(
+        folly::exception_wrapper(folly::in_place, Ex()));
   }
 
   folly::Promise<int32_t> onewayRequestPromise;
@@ -378,6 +428,62 @@ TYPED_TEST_P(CoroutineTest, TakesRequestParams) {
   this->client_->sync_takesRequestParams();
 }
 
+TYPED_TEST_P(CoroutineTest, SumThrowsUserEx) {
+  for (int i = 0; i < 10; ++i) {
+    bool error = false;
+    try {
+      SumRequest request;
+      request.x = i;
+      request.y = i;
+      SumResponse response;
+      this->client_->sync_computeSumThrowsUserEx(response, request);
+    } catch (const Ex&) {
+      error = true;
+    }
+    EXPECT_TRUE(error);
+  }
+}
+
+TYPED_TEST_P(CoroutineTest, SumThrowsUserExPrimitive) {
+  for (int i = 0; i < 10; ++i) {
+    bool error = false;
+    try {
+      this->client_->sync_computeSumThrowsUserExPrimitive(i, i);
+    } catch (const Ex&) {
+      error = true;
+    }
+    EXPECT_TRUE(error);
+  }
+}
+
+TYPED_TEST_P(CoroutineTest, SumThrowsUserExEb) {
+  for (int i = 0; i < 10; ++i) {
+    bool error = false;
+    try {
+      SumRequest request;
+      request.x = i;
+      request.y = i;
+      SumResponse response;
+      this->client_->sync_computeSumThrowsUserExEb(response, request);
+    } catch (const Ex&) {
+      error = true;
+    }
+    EXPECT_TRUE(error);
+  }
+}
+
+TYPED_TEST_P(CoroutineTest, SumThrowsUserExPrimitiveEb) {
+  for (int i = 0; i < 10; ++i) {
+    bool error = false;
+    try {
+      this->client_->sync_computeSumThrowsUserExPrimitiveEb(i, i);
+    } catch (const Ex&) {
+      error = true;
+    }
+    EXPECT_TRUE(error);
+  }
+}
+
 REGISTER_TYPED_TEST_CASE_P(
     CoroutineTest,
     SumNoCoro,
@@ -393,7 +499,11 @@ REGISTER_TYPED_TEST_CASE_P(
     ImplemetedWithFutures,
     ImplemetedWithFuturesPrimitive,
     Oneway,
-    TakesRequestParams);
+    TakesRequestParams,
+    SumThrowsUserEx,
+    SumThrowsUserExPrimitive,
+    SumThrowsUserExEb,
+    SumThrowsUserExPrimitiveEb);
 
 INSTANTIATE_TYPED_TEST_CASE_P(
     CoroutineTest,
@@ -576,5 +686,56 @@ TEST_F(CoroutineClientTest, takesRequestParamsCoroClient) {
       .via(&eventBase_)
       .then([&](folly::Try<int32_t> result) { EXPECT_EQ(0, *result); })
       .getVia(&eventBase_);
+}
+
+TEST(CoroutineExceptionTest, completesHandlerCallback) {
+  class CoroutineServiceHandlerThrowing : virtual public CoroutineSvIf {
+   public:
+    folly::coro::Task<std::unique_ptr<SumResponse>> co_computeSumThrows(
+        std::unique_ptr<SumRequest> /* request */) override {
+      throw std::runtime_error("Not implemented");
+    }
+
+    folly::coro::Task<int32_t> co_computeSumThrowsPrimitive(int32_t, int32_t)
+        override {
+      throw std::runtime_error("Not implemented");
+    }
+
+    folly::coro::Task<void> co_onewayRequest(int32_t) override {
+      throw std::runtime_error("Not implemented");
+    }
+  };
+
+  CoroutineServiceHandlerThrowing handler;
+
+  folly::ScopedEventBaseThread ebt;
+  auto tm = ThreadManager::newSimpleThreadManager(1, true);
+
+  auto cb = std::make_unique<
+      apache::thrift::HandlerCallback<std::unique_ptr<SumResponse>>>(
+      nullptr,
+      nullptr,
+      nullptr,
+      nullptr,
+      0,
+      ebt.getEventBase(),
+      tm.get(),
+      nullptr);
+  handler.async_tm_computeSumThrows(std::move(cb), nullptr);
+
+  auto cb2 = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(
+      nullptr,
+      nullptr,
+      nullptr,
+      nullptr,
+      0,
+      ebt.getEventBase(),
+      tm.get(),
+      nullptr);
+  handler.async_tm_computeSumThrowsPrimitive(std::move(cb2), 0, 0);
+
+  auto cb3 = std::make_unique<apache::thrift::HandlerCallbackBase>(
+      nullptr, nullptr, nullptr, ebt.getEventBase(), tm.get(), nullptr);
+  handler.async_tm_onewayRequest(std::move(cb3), 0);
 }
 #endif

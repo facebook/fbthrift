@@ -25,6 +25,8 @@ struct SumResponse {
   1: i32 sum,
 }
 
+exception Ex {}
+
 service Coroutine {
   SumResponse computeSumNoCoro(1: SumRequest request);
 
@@ -48,4 +50,13 @@ service Coroutine {
   i32 takesRequestParams() (cpp.coroutine);
 
   oneway void onewayRequest(1: i32 x) (cpp.coroutine);
+
+  SumResponse computeSumThrowsUserEx(1: SumRequest request) throws (1: Ex e)
+    (cpp.coroutine);
+  i32 computeSumThrowsUserExPrimitive(1: i32 x, 2: i32 y) throws (1: Ex e)
+    (cpp.coroutine);
+  SumResponse computeSumThrowsUserExEb(1: SumRequest request) throws (1: Ex e)
+    (cpp.coroutine, thread='eb');
+  i32 computeSumThrowsUserExPrimitiveEb(1: i32 x, 2: i32 y) throws (1: Ex e)
+    (cpp.coroutine, thread='eb');
 }
