@@ -17,6 +17,7 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 
+#include <fizz/client/AsyncFizzClient.h>
 #include <folly/init/Init.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
@@ -37,6 +38,7 @@ DEFINE_int32(num, 1, "Number of iterations");
 DEFINE_int32(size, 4096, "Payload size");
 DEFINE_int32(threshold, 32 * 1024, "Zerocopy threshold");
 DEFINE_bool(debug_logs, false, "Debug logs");
+DEFINE_bool(use_crypto, true, "Use crypto");
 
 using namespace thrift::zerocopy::cpp2;
 
@@ -44,8 +46,23 @@ class Client {
  public:
   Client(const std::string& server, int port) {
     folly::SocketAddress addr(server, port, true);
-    auto socket = folly::AsyncSocket::UniquePtr(
-        new folly::AsyncSocket(&evb_, addr, 0, (FLAGS_threshold > 0)));
+    std::shared_ptr<fizz::client::FizzClientContext> fizzCtx;
+    folly::AsyncTransportWrapper::UniquePtr socket;
+    if (FLAGS_use_crypto) {
+      auto* fizzClient = new fizz::client::AsyncFizzClient(
+          &evb_, std::make_shared<fizz::client::FizzClientContext>());
+      socket.reset(fizzClient);
+      fizzClient->connect(
+          addr,
+          nullptr,
+          nullptr,
+          folly::Optional<std::string>(),
+          folly::Optional<std::string>());
+
+    } else {
+      socket.reset(
+          new folly::AsyncSocket(&evb_, addr, 0, (FLAGS_threshold > 0)));
+    }
 
     if (FLAGS_threshold > 0) {
       LOG(INFO) << "Adding zerocopy enable func with threshold = "
