@@ -217,3 +217,18 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             "[FAILURE:foo.thrift:4] Type \"Random.Type\" not defined.\n"
         )
+
+    def test_mixin_without_thrift_arg(self):
+        write_file("foo.thrift", textwrap.dedent("""\
+            struct A { 1: i32 i }
+            struct B { 1: mixin A a }
+        """))
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[ERROR:foo.thrift:2] (last token was 'mixin')\n"
+            "Mixin support is not enabled\n"
+        )

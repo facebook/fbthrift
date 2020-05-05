@@ -142,7 +142,7 @@ class CompilerTest(unittest.TestCase):
                 "-r",
                 "--gen",
                 args[0],
-                args[1],
+                *args[1:],
             ]
 
             # Do not recurse in py generators due to a bug in the py generator

@@ -117,6 +117,11 @@ class parsing_driver;
 using t_structpair = std::pair<t_struct*, t_struct*>;
 using t_typestructpair = std::pair<t_type*, t_struct*>;
 
+struct t_field_qualifiers {
+  bool is_mixin{false};
+  t_field::e_req req{t_field::T_OPT_IN_REQ_OUT};
+};
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
@@ -210,6 +215,7 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 %token tok_const
 %token tok_required
 %token tok_optional
+%token tok_mixin
 %token tok_union
 
 %token tok_eof 0
@@ -239,7 +245,7 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 
 %type<t_field*>         Field
 %type<t_field_id>       FieldIdentifier
-%type<t_field::e_req>   FieldRequiredness
+%type<t_field_qualifiers> FieldQualifiers
 %type<t_type*>          FieldType
 %type<t_type*>          ResponseAndStreamReturnType
 %type<t_type*>          ResponseAndSinkReturnType
@@ -995,7 +1001,7 @@ FieldList:
     }
 
 Field:
-  CaptureDocText FieldIdentifier FieldRequiredness FieldType tok_identifier FieldValue TypeAnnotations CommaOrSemicolonOptional
+  CaptureDocText FieldIdentifier FieldQualifiers FieldType tok_identifier FieldValue TypeAnnotations CommaOrSemicolonOptional
     {
       driver.debug("tok_int_constant : Field -> FieldType tok_identifier");
       if ($2.auto_assigned) {
@@ -1007,7 +1013,10 @@ Field:
       }
 
       $$ = new t_field($4, $5, $2.value);
-      $$->set_req($3);
+      $$->set_req($3.req);
+      if ($3.is_mixin) {
+        $$->mark_as_mixin();
+      }
       $$->set_lineno(lineno_stack.pop(LineType::kField));
       if ($6 != NULL) {
         driver.validate_field_value($$, $6);
@@ -1019,7 +1028,7 @@ Field:
       if ($7 != NULL) {
         for (const auto& it : $7->annotations_) {
           if (it.first == "cpp.ref" || it.first == "cpp2.ref") {
-            if ($3 != t_field::T_OPTIONAL) {
+            if ($3.req != t_field::T_OPTIONAL) {
               driver.warning(1, "cpp.ref field must be optional if it is recursive");
             }
             break;
@@ -1075,16 +1084,16 @@ FieldIdentifier:
       lineno_stack.push(LineType::kField, driver.scanner->get_lineno());
     }
 
-FieldRequiredness:
+FieldQualifiers:
   tok_required
     {
       if (g_arglist) {
         if (driver.mode == parsing_mode::PROGRAM) {
           driver.warning(1, "required keyword is ignored in argument lists.");
         }
-        $$ = t_field::T_OPT_IN_REQ_OUT;
+        $$.req = t_field::T_OPT_IN_REQ_OUT;
       } else {
-        $$ = t_field::T_REQUIRED;
+        $$.req = t_field::T_REQUIRED;
       }
     }
 | tok_optional
@@ -1093,14 +1102,23 @@ FieldRequiredness:
         if (driver.mode == parsing_mode::PROGRAM) {
           driver.warning(1, "optional keyword is ignored in argument lists.");
         }
-        $$ = t_field::T_OPT_IN_REQ_OUT;
+        $$.req = t_field::T_OPT_IN_REQ_OUT;
       } else {
-        $$ = t_field::T_OPTIONAL;
+        $$.req = t_field::T_OPTIONAL;
       }
+    }
+| tok_mixin
+    {
+      if (!driver.params.enable_experimental_mixins) {
+        driver.yyerror("Mixin support is not enabled");
+        driver.end_parsing();
+      }
+      $$.is_mixin = true;
+      $$.req = t_field::T_OPT_IN_REQ_OUT;
     }
 |
     {
-      $$ = t_field::T_OPT_IN_REQ_OUT;
+      $$.req = t_field::T_OPT_IN_REQ_OUT;
     }
 
 FieldValue:
