@@ -104,7 +104,8 @@ void process_throw_wrapped_handler_error(
   LOG(ERROR) << ew << " in function " << method;
   stack->userExceptionWrapped(false, ew);
   stack->handlerErrorWrapped(ew);
-  TApplicationException x(ew.what().toStdString());
+  auto xp = ew.get_exception<TApplicationException>();
+  auto x = xp ? std::move(*xp) : TApplicationException(ew.what().toStdString());
   auto buf = process_serialize_xform_app_exn<Prot>(x, ctx, method);
   if (req->isStream()) {
     std::ignore =
