@@ -2809,9 +2809,12 @@ void t_hack_generator::_generate_php_struct_definition(
       }
     } else if (shape_construct_) {
       string field_name = (*m_iter)->get_name();
+      bool nullable =
+          (nullable_everything_ || field_is_nullable(tstruct, *m_iter, dval)) &&
+          !(is_exception && is_base_exception_property(*m_iter));
       out << indent() << "$this->" << field_name << " = "
           << "Shapes::idx($shape, '" << field_name << "')"
-          << (dval != "null" ? " ?? " + dval : "") << ";\n";
+          << (nullable ? "" : " ?? " + dval) << ";\n";
       if (tstruct->is_union()) {
         out << indent() << "if ($this->" << field_name << " !== null) {\n";
         out << indent() << indent()

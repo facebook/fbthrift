@@ -358,7 +358,7 @@ class Foo implements \IThriftStruct {
   <<__Rx>>
   public function __construct(self::TConstructorShape $shape = shape()) {
     $this->a = Shapes::idx($shape, 'a') ?? Vector {};
-    $this->b = Shapes::idx($shape, 'b') ?? Map {};
+    $this->b = Shapes::idx($shape, 'b');
     $this->c = Shapes::idx($shape, 'c') ?? 7;
     $this->d = Shapes::idx($shape, 'd') ?? false;
     $this->str_value = Shapes::idx($shape, 'str_value') ?? "hello";
