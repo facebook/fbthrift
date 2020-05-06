@@ -136,6 +136,7 @@ const folly::SocketAddress* RequestsRegistry::DebugStub::getPeerAddress()
 
 void RequestsRegistry::DebugStub::prepareAsFinished() {
   finished_ = std::chrono::steady_clock::now();
+  rctx_.reset();
   methodNameIfFinished_ =
       const_cast<Cpp2RequestContext*>(reqContext_)->releaseMethodName();
   peerAddressIfFinished_ =

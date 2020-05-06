@@ -355,7 +355,7 @@ void Cpp2Connection::requestReceived(
       *(hreq->getHeader()), queueTimeout, taskTimeout);
 
   auto t2r = RequestsRegistry::makeRequest<Cpp2Request>(
-      std::move(hreq), this_, std::move(debugPayload), reqCtx->getRootId());
+      std::move(hreq), std::move(reqCtx), this_, std::move(debugPayload));
   if (admissionController) {
     t2r->setAdmissionController(std::move(admissionController));
   }
@@ -415,9 +415,9 @@ void Cpp2Connection::removeRequest(Cpp2Request* req) {
 Cpp2Connection::Cpp2Request::Cpp2Request(
     RequestsRegistry::DebugStub& debugStubToInit,
     std::unique_ptr<HeaderServerChannel::HeaderRequest> req,
+    std::shared_ptr<folly::RequestContext> rctx,
     std::shared_ptr<Cpp2Connection> con,
-    std::unique_ptr<folly::IOBuf> debugPayload,
-    intptr_t rootRequestContextId)
+    std::unique_ptr<folly::IOBuf> debugPayload)
     : req_(std::move(req)),
       connection_(std::move(con)),
       // Note: tricky ordering here; see the note on connection_ in the class
@@ -428,9 +428,9 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
       *connection_->getWorker()->getRequestsRegistry(),
       *this,
       reqContext_,
+      std::move(rctx),
       protocol::PROTOCOL_TYPES(req_->getHeader()->getProtocolId()),
-      std::move(debugPayload),
-      rootRequestContextId);
+      std::move(debugPayload));
   queueTimeout_.request_ = this;
   taskTimeout_.request_ = this;
 }

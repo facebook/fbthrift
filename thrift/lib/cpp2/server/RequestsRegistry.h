@@ -102,16 +102,17 @@ class RequestsRegistry {
         RequestsRegistry& reqRegistry,
         const ResponseChannelRequest& req,
         const Cpp2RequestContext& reqContext,
+        std::shared_ptr<folly::RequestContext> rctx,
         protocol::PROTOCOL_TYPES protoId,
-        std::unique_ptr<folly::IOBuf> payload,
-        intptr_t rootRequestContextId)
+        std::unique_ptr<folly::IOBuf> payload)
         : req_(&req),
           reqContext_(&reqContext),
+          rctx_(std::move(rctx)),
           protoId_(protoId),
           payload_(std::move(payload)),
           timestamp_(std::chrono::steady_clock::now()),
           registry_(&reqRegistry),
-          rootRequestContextId_(rootRequestContextId) {
+          rootRequestContextId_(rctx_->getRootId()) {
       reqRegistry.registerStub(*this);
     }
 
@@ -181,6 +182,7 @@ class RequestsRegistry {
     folly::SocketAddress peerAddressIfFinished_;
     const ResponseChannelRequest* req_;
     const Cpp2RequestContext* reqContext_;
+    std::shared_ptr<folly::RequestContext> rctx_;
     const protocol::PROTOCOL_TYPES protoId_;
     DebugPayload payload_;
     std::chrono::steady_clock::time_point timestamp_;

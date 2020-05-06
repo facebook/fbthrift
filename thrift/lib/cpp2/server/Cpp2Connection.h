@@ -151,9 +151,9 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
     Cpp2Request(
         RequestsRegistry::DebugStub& debugStubToInit,
         std::unique_ptr<HeaderServerChannel::HeaderRequest> req,
+        std::shared_ptr<folly::RequestContext> rctx,
         std::shared_ptr<Cpp2Connection> con,
-        std::unique_ptr<folly::IOBuf> debugPayload,
-        intptr_t rootRequestContextId);
+        std::unique_ptr<folly::IOBuf> debugPayload);
 
     // Delegates to wrapped request.
     bool isActive() const override {

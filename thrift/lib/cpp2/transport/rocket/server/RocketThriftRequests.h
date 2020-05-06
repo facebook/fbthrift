@@ -53,9 +53,9 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
       server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
       Cpp2ConnContext& connContext,
+      std::shared_ptr<folly::RequestContext> rctx,
       RequestsRegistry& reqRegistry,
       std::unique_ptr<folly::IOBuf> debugPayload,
-      intptr_t rootRequestContextId,
       RocketServerFrameContext&& context);
 
   void sendThriftResponse(
@@ -90,9 +90,9 @@ class ThriftServerRequestFnf final : public ThriftRequestCore {
       server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
       Cpp2ConnContext& connContext,
+      std::shared_ptr<folly::RequestContext> rctx,
       RequestsRegistry& reqRegistry,
       std::unique_ptr<folly::IOBuf> debugPayload,
-      intptr_t rootRequestContextId,
       RocketServerFrameContext&& context,
       folly::Function<void()> onComplete);
 
@@ -127,9 +127,9 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
       server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
       Cpp2ConnContext& connContext,
+      std::shared_ptr<folly::RequestContext> rctx,
       RequestsRegistry& reqRegistry,
       std::unique_ptr<folly::IOBuf> debugPayload,
-      intptr_t rootRequestContextId,
       RocketServerFrameContext&& context,
       RocketStreamClientCallback* clientCallback,
       std::shared_ptr<AsyncProcessor> cpp2Processor);
@@ -181,9 +181,9 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
       server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
       Cpp2ConnContext& connContext,
+      std::shared_ptr<folly::RequestContext> rctx,
       RequestsRegistry& reqRegistry,
       std::unique_ptr<folly::IOBuf> debugPayload,
-      intptr_t rootRequestContextId,
       RocketServerFrameContext&& context,
       RocketSinkClientCallback* clientCallback,
       std::shared_ptr<AsyncProcessor> cpp2Processor);

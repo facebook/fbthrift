@@ -537,9 +537,9 @@ class RegistryTests : public testing::TestWithParam<std::tuple<size_t, bool>> {
           *registry,
           *this,
           mockReqCtx_,
+          std::make_shared<folly::RequestContext>(0),
           apache::thrift::protocol::PROTOCOL_TYPES::T_COMPACT_PROTOCOL,
-          std::unique_ptr<folly::IOBuf>(),
-          0);
+          std::unique_ptr<folly::IOBuf>());
     }
 
     auto registry() {
