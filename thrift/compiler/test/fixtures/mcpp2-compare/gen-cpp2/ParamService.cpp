@@ -349,7 +349,6 @@ void ParamServiceSvIf::async_tm_string_ret_string_param(std::unique_ptr<apache::
   });
 }
 
-
 void ParamServiceSvIf::binary_ret_binary_param(::std::string& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("binary_ret_binary_param");
 }
@@ -368,7 +367,6 @@ void ParamServiceSvIf::async_tm_binary_ret_binary_param(std::unique_ptr<apache::
     return future_binary_ret_binary_param(std::move(param1));
   });
 }
-
 
 void ParamServiceSvIf::map_ret_bool_param(::std::map<::std::string, int64_t>& /*_return*/, bool /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("map_ret_bool_param");
@@ -389,7 +387,6 @@ void ParamServiceSvIf::async_tm_map_ret_bool_param(std::unique_ptr<apache::thrif
   });
 }
 
-
 void ParamServiceSvIf::list_ret_map_setlist_param(::std::vector<bool>& /*_return*/, std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> /*param1*/, std::unique_ptr<::std::vector<::std::string>> /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("list_ret_map_setlist_param");
 }
@@ -409,7 +406,6 @@ void ParamServiceSvIf::async_tm_list_ret_map_setlist_param(std::unique_ptr<apach
   });
 }
 
-
 void ParamServiceSvIf::mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& /*_return*/, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("mapsetlistmapliststring_ret_listlistlist_param");
 }
@@ -428,7 +424,6 @@ void ParamServiceSvIf::async_tm_mapsetlistmapliststring_ret_listlistlist_param(s
     return future_mapsetlistmapliststring_ret_listlistlist_param(std::move(param1));
   });
 }
-
 
  ::some::valid::ns::simpleTypeDef ParamServiceSvIf::typedef_ret_i32_param(int32_t /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("typedef_ret_i32_param");
@@ -469,7 +464,6 @@ void ParamServiceSvIf::async_eb_listtypedef_ret_typedef_param(std::unique_ptr<ap
     return future_listtypedef_ret_typedef_param(std::move(param1));
   });
 }
-
 
  ::some::valid::ns::MyEnumA ParamServiceSvIf::enum_ret_double_param(double /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("enum_ret_double_param");
@@ -532,7 +526,6 @@ void ParamServiceSvIf::async_tm_listenum_ret_map_param(std::unique_ptr<apache::t
   });
 }
 
-
 void ParamServiceSvIf::struct_ret_i16_param( ::some::valid::ns::MyStruct& /*_return*/, int16_t /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("struct_ret_i16_param");
 }
@@ -551,7 +544,6 @@ void ParamServiceSvIf::async_eb_struct_ret_i16_param(std::unique_ptr<apache::thr
     return future_struct_ret_i16_param(param1);
   });
 }
-
 
 void ParamServiceSvIf::setstruct_ret_set_param(::std::set< ::some::valid::ns::MyStruct>& /*_return*/, std::unique_ptr<::std::set<::std::string>> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("setstruct_ret_set_param");
@@ -572,7 +564,6 @@ void ParamServiceSvIf::async_tm_setstruct_ret_set_param(std::unique_ptr<apache::
   });
 }
 
-
 void ParamServiceSvIf::union_ret_i32_i32_param( ::some::valid::ns::ComplexUnion& /*_return*/, int32_t /*param1*/, int32_t /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("union_ret_i32_i32_param");
 }
@@ -592,7 +583,6 @@ void ParamServiceSvIf::async_tm_union_ret_i32_i32_param(std::unique_ptr<apache::
   });
 }
 
-
 void ParamServiceSvIf::listunion_string_param(::std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("listunion_string_param");
 }
@@ -611,7 +601,6 @@ void ParamServiceSvIf::async_tm_listunion_string_param(std::unique_ptr<apache::t
     return future_listunion_string_param(std::move(param1));
   });
 }
-
 
 void ParamServiceSvNull::void_ret_byte_i16_param(int8_t /*param1*/, int16_t /*param2*/) {
   return;

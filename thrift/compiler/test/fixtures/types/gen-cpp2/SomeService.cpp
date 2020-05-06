@@ -34,7 +34,6 @@ void SomeServiceSvIf::async_tm_bounce_map(std::unique_ptr<apache::thrift::Handle
   });
 }
 
-
 void SomeServiceSvIf::binary_keyed_map(::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>& /*_return*/, std::unique_ptr<::std::vector<int64_t>> /*r*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("binary_keyed_map");
 }
@@ -53,7 +52,6 @@ void SomeServiceSvIf::async_tm_binary_keyed_map(std::unique_ptr<apache::thrift::
     return future_binary_keyed_map(std::move(r));
   });
 }
-
 
 void SomeServiceSvNull::bounce_map( ::apache::thrift::fixtures::types::SomeMap& /*_return*/, std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> /*m*/) {}
 

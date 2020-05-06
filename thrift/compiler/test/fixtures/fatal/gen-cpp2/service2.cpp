@@ -118,7 +118,6 @@ void service2SvIf::async_tm_methodE(std::unique_ptr<apache::thrift::HandlerCallb
   });
 }
 
-
 void service2SvIf::methodF( ::test_cpp2::cpp_reflection::struct2& /*_return*/, int32_t /*l*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*m*/, double /*n*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("methodF");
 }
@@ -137,7 +136,6 @@ void service2SvIf::async_tm_methodF(std::unique_ptr<apache::thrift::HandlerCallb
     return future_methodF(l, std::move(m), n);
   });
 }
-
 
 void service2SvNull::methodA() {
   return;

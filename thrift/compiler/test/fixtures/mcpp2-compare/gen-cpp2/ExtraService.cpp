@@ -97,7 +97,6 @@ void ExtraServiceSvIf::async_tm_throws_function3(std::unique_ptr<apache::thrift:
   });
 }
 
-
 void ExtraServiceSvIf::oneway_void_ret() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("oneway_void_ret");
 }

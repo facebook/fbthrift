@@ -55,7 +55,6 @@ void MyServiceSvIf::async_tm_getDataById(std::unique_ptr<apache::thrift::Handler
   });
 }
 
-
 void MyServiceSvIf::putDataById(int64_t /*id*/, const ::std::string& /*data*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("putDataById");
 }

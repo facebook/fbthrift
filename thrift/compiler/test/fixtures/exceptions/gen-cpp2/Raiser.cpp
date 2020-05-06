@@ -76,7 +76,6 @@ void RaiserSvIf::async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback
   });
 }
 
-
 void RaiserSvIf::get500(::std::string& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get500");
 }
@@ -95,7 +94,6 @@ void RaiserSvIf::async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback
     return future_get500();
   });
 }
-
 
 void RaiserSvNull::doBland() {
   return;

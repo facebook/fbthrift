@@ -181,7 +181,6 @@ void ReturnServiceSvIf::async_eb_stringReturn(std::unique_ptr<apache::thrift::Ha
   });
 }
 
-
 void ReturnServiceSvIf::binaryReturn(::std::string& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("binaryReturn");
 }
@@ -201,7 +200,6 @@ void ReturnServiceSvIf::async_tm_binaryReturn(std::unique_ptr<apache::thrift::Ha
   });
 }
 
-
 void ReturnServiceSvIf::mapReturn(::std::map<::std::string, int64_t>& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("mapReturn");
 }
@@ -220,7 +218,6 @@ void ReturnServiceSvIf::async_tm_mapReturn(std::unique_ptr<apache::thrift::Handl
     return future_mapReturn();
   });
 }
-
 
  ::some::valid::ns::simpleTypeDef ReturnServiceSvIf::simpleTypedefReturn() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("simpleTypedefReturn");
@@ -262,7 +259,6 @@ void ReturnServiceSvIf::async_tm_complexTypedefReturn(std::unique_ptr<apache::th
   });
 }
 
-
 void ReturnServiceSvIf::list_mostComplexTypedefReturn(::std::vector< ::some::valid::ns::mostComplexTypeDef>& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("list_mostComplexTypedefReturn");
 }
@@ -281,7 +277,6 @@ void ReturnServiceSvIf::async_tm_list_mostComplexTypedefReturn(std::unique_ptr<a
     return future_list_mostComplexTypedefReturn();
   });
 }
-
 
  ::some::valid::ns::MyEnumA ReturnServiceSvIf::enumReturn() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("enumReturn");
@@ -323,7 +318,6 @@ void ReturnServiceSvIf::async_eb_list_EnumReturn(std::unique_ptr<apache::thrift:
   });
 }
 
-
 void ReturnServiceSvIf::structReturn( ::some::valid::ns::MyStruct& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("structReturn");
 }
@@ -342,7 +336,6 @@ void ReturnServiceSvIf::async_tm_structReturn(std::unique_ptr<apache::thrift::Ha
     return future_structReturn();
   });
 }
-
 
 void ReturnServiceSvIf::set_StructReturn(::std::set< ::some::valid::ns::MyStruct>& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("set_StructReturn");
@@ -363,7 +356,6 @@ void ReturnServiceSvIf::async_tm_set_StructReturn(std::unique_ptr<apache::thrift
   });
 }
 
-
 void ReturnServiceSvIf::unionReturn( ::some::valid::ns::ComplexUnion& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("unionReturn");
 }
@@ -382,7 +374,6 @@ void ReturnServiceSvIf::async_eb_unionReturn(std::unique_ptr<apache::thrift::Han
     return future_unionReturn();
   });
 }
-
 
 void ReturnServiceSvIf::list_UnionReturn(::std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("list_UnionReturn");
@@ -403,7 +394,6 @@ void ReturnServiceSvIf::async_tm_list_UnionReturn(std::unique_ptr<apache::thrift
   });
 }
 
-
 void ReturnServiceSvIf::readDataEb( ::some::valid::ns::IOBuf& /*_return*/, int64_t /*size*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("readDataEb");
 }
@@ -423,7 +413,6 @@ void ReturnServiceSvIf::async_eb_readDataEb(std::unique_ptr<apache::thrift::Hand
   });
 }
 
-
 void ReturnServiceSvIf::readData( ::some::valid::ns::IOBufPtr& /*_return*/, int64_t /*size*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("readData");
 }
@@ -442,7 +431,6 @@ void ReturnServiceSvIf::async_tm_readData(std::unique_ptr<apache::thrift::Handle
     return future_readData(size);
   });
 }
-
 
 bool ReturnServiceSvNull::boolReturn() {
   return 0;

@@ -28,16 +28,11 @@
   virtual folly::coro::Task<<% > service_common/callback_type %>> co_<%function:cpp_name%>(apache::thrift::RequestParams params<%function:comma%><% > service_common/function_param_list%>);
 #endif
 <%/function:coroutine?%>
-<%^type:resolves_to_complex_return?%>
 <%#function:oneway?%>
   void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list%>) override;
 <%/function:oneway?%>
 <%^function:oneway?%>
-  void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/type%>>> callback<%function:comma%><% > service_common/function_param_list%>) override;
-<%/function:oneway?%>
-<%/type:resolves_to_complex_return?%>
-<%#type:resolves_to_complex_return?%>
   void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list%>) override;
-<%/type:resolves_to_complex_return?%>
+<%/function:oneway?%>
 <%/function:returnType%><%/service:functions%>
 };
