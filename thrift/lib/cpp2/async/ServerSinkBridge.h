@@ -95,6 +95,11 @@ class ServerSinkBridge : public TwoWayBridge<
     close();
   }
 
+  void resetClientCallback(SinkClientCallback& clientCallback) override {
+    DCHECK(clientCallback_);
+    clientCallback_ = &clientCallback;
+  }
+
   // start should be called on threadmanager's thread
   folly::coro::Task<void> start() {
     serverPush(consumer_.bufferSize);

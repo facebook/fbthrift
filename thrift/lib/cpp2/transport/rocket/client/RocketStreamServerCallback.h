@@ -160,7 +160,7 @@ class RocketSinkServerCallback : public SinkServerCallback {
       SinkClientCallback& clientCallback,
       bool pageAligned)
       : client_(client),
-        clientCallback_(clientCallback),
+        clientCallback_(&clientCallback),
         streamId_(streamId),
         pageAligned_(pageAligned) {}
 
@@ -169,6 +169,10 @@ class RocketSinkServerCallback : public SinkServerCallback {
   bool onSinkComplete() override;
 
   void onStreamCancel() override;
+
+  void resetClientCallback(SinkClientCallback& clientCallback) override {
+    clientCallback_ = &clientCallback;
+  }
 
   void onInitialPayload(FirstResponsePayload&&, folly::EventBase*);
   void onInitialError(folly::exception_wrapper);
@@ -189,7 +193,7 @@ class RocketSinkServerCallback : public SinkServerCallback {
 
  private:
   rocket::RocketClient& client_;
-  SinkClientCallback& clientCallback_;
+  SinkClientCallback* clientCallback_;
   rocket::StreamId streamId_;
   bool pageAligned_;
   enum class State { BothOpen, StreamOpen };

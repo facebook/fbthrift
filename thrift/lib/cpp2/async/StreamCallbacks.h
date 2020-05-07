@@ -158,6 +158,8 @@ using StreamServerCallbackPtr =
  * or true otherwise.
  */
 
+class SinkClientCallback;
+
 class SinkServerCallback {
  public:
   virtual ~SinkServerCallback() = default;
@@ -167,6 +169,9 @@ class SinkServerCallback {
   FOLLY_NODISCARD virtual bool onSinkComplete() = 0;
 
   virtual void onStreamCancel() = 0;
+
+  // not terminating
+  virtual void resetClientCallback(SinkClientCallback&) = 0;
 };
 
 class SinkClientCallback {
@@ -182,6 +187,9 @@ class SinkClientCallback {
   virtual void onFinalResponseError(folly::exception_wrapper) = 0;
 
   FOLLY_NODISCARD virtual bool onSinkRequestN(uint64_t) = 0;
+
+  // not terminating
+  virtual void resetServerCallback(SinkServerCallback&) = 0;
 };
 
 /**

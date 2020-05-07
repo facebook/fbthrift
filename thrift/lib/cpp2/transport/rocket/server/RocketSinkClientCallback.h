@@ -63,6 +63,11 @@ class RocketSinkClientCallback final : public SinkClientCallback {
     serverCallbackOrError_ = kErrorFlag;
   }
 
+  void resetServerCallback(SinkServerCallback& serverCallback) override {
+    DCHECK(serverCallbackReady());
+    serverCallbackOrError_ = reinterpret_cast<intptr_t>(&serverCallback);
+  }
+
  private:
   SinkServerCallback* serverCallback() const {
     return reinterpret_cast<SinkServerCallback*>(serverCallbackOrError_);

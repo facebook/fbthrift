@@ -172,6 +172,10 @@ class ClientSinkBridge : public TwoWayBridge<
     return true;
   }
 
+  void resetServerCallback(SinkServerCallback& serverCallback) override {
+    serverCallback_ = &serverCallback;
+  }
+
   void consume() {
     DCHECK(evb_);
     evb_->runInEventBaseThread(
