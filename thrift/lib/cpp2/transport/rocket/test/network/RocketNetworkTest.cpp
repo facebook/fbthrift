@@ -926,3 +926,102 @@ TEST_F(RocketNetworkTest, SinkCloseClient) {
     EXPECT_TRUE(exceptionThrows);
   });
 }
+
+TEST_F(RocketNetworkTest, CloseNowWithPendingWriteCallback) {
+  class FakeTransport final : public folly::AsyncTransportWrapper {
+   public:
+    explicit FakeTransport(folly::EventBase* e) : eventBase_(e) {}
+    void setReadCB(ReadCallback*) override {}
+    ReadCallback* getReadCallback() const override {
+      return nullptr;
+    }
+    void write(WriteCallback* cb, const void*, size_t, folly::WriteFlags)
+        override {
+      callbacks_.push_back(cb);
+    }
+    void writev(WriteCallback* cb, const iovec*, size_t, folly::WriteFlags)
+        override {
+      callbacks_.push_back(cb);
+    }
+    void writeChain(
+        WriteCallback* cb,
+        std::unique_ptr<folly::IOBuf>&&,
+        folly::WriteFlags) override {
+      callbacks_.push_back(cb);
+    }
+    folly::EventBase* getEventBase() const override {
+      return eventBase_;
+    }
+    void getAddress(folly::SocketAddress*) const override {}
+    void close() override {}
+    void closeNow() override {
+      // delaying callback to be fullfilled during closeNow()
+      for (auto cb : callbacks_) {
+        folly::AsyncSocketException ex(
+            folly::AsyncSocketException::AsyncSocketExceptionType::UNKNOWN,
+            "test");
+        cb->writeErr(0, ex);
+      }
+    }
+    void shutdownWrite() override {}
+    void shutdownWriteNow() override {}
+    bool good() const override {
+      return true;
+    }
+    bool readable() const override {
+      return true;
+    }
+    bool connecting() const override {
+      return true;
+    }
+    bool error() const override {
+      return true;
+    }
+    void attachEventBase(folly::EventBase*) override {}
+    void detachEventBase() override {}
+    bool isDetachable() const override {
+      return true;
+    }
+    void setSendTimeout(uint32_t) override {}
+    uint32_t getSendTimeout() const override {
+      return 0u;
+    }
+    void getLocalAddress(folly::SocketAddress*) const override {}
+    void getPeerAddress(folly::SocketAddress*) const override {}
+    bool isEorTrackingEnabled() const override {
+      return true;
+    }
+    void setEorTracking(bool) override {}
+    size_t getAppBytesWritten() const override {
+      return 0u;
+    }
+    size_t getRawBytesWritten() const override {
+      return 0u;
+    }
+    size_t getAppBytesReceived() const override {
+      return 0u;
+    }
+    size_t getRawBytesReceived() const override {
+      return 0u;
+    }
+
+   private:
+    folly::EventBase* eventBase_;
+    std::vector<WriteCallback*> callbacks_;
+  };
+
+  auto evb = std::make_unique<folly::EventBase>();
+  auto sock =
+      folly::AsyncTransportWrapper::UniquePtr(new FakeTransport(evb.get()));
+  auto client = RocketClient::create(
+      *evb,
+      std::move(sock),
+      std::make_unique<SetupFrame>(this->client_->makeTestSetupFrame()));
+  // write something to the socket, without holding keepalive of evb and waiting
+  // for write callback
+  client->cancelStream(StreamId(1));
+  evb->loopOnce();
+  // will invoke closeNow() with some write callbacks not fullfilled yet, that
+  // should not in any invalid state
+  evb.reset();
+}

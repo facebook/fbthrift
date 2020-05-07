@@ -900,18 +900,16 @@ void RocketClient::close(transport::TTransportException ex) noexcept {
 
 void RocketClient::closeNowImpl() noexcept {
   DestructorGuard dg(this);
-
   DCHECK(state_ == ConnectionState::ERROR);
-  state_ = ConnectionState::CLOSED;
 
+  DCHECK(socket_);
+  socket_->closeNow();
+  socket_.reset();
+
+  state_ = ConnectionState::CLOSED;
   if (auto closeCallback = std::move(closeCallback_)) {
     closeCallback();
   }
-
-  DCHECK(socket_);
-
-  socket_->closeNow();
-  socket_.reset();
 
   queue_.failAllSentWrites(error_);
 
