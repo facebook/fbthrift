@@ -78,9 +78,9 @@ folly::Try<T> unpack(rocket::Payload&& payload) {
   return folly::makeTryWith([&] {
     T t{{}, {}};
     if (payload.hasNonemptyMetadata()) {
-      if (unpackCompact(t.metadata, payload.buffer()) >
+      if (unpackCompact(t.metadata, payload.buffer()) !=
           payload.metadataSize()) {
-        folly::throw_exception<std::out_of_range>("underflow");
+        folly::throw_exception<std::out_of_range>("metadata size mismatch");
       }
     }
 

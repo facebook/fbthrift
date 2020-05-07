@@ -68,15 +68,106 @@ class OnWriteSuccess final : public rocket::RocketClientWriteCallback {
   RequestClientCallback& requestCallback_;
 };
 
-void deserializeMetadata(ResponseRpcMetadata& dest, const rocket::Payload& p) {
-  CompactProtocolReader reader;
-  reader.setInput(p.buffer());
-  auto start = reader.getCursorPosition();
-  dest.read(&reader);
-  if (reader.getCursorPosition() - start != p.metadataSize()) {
-    folly::throw_exception<std::out_of_range>("metadata size mismatch");
-  }
+folly::Try<FirstResponsePayload> processFirstResponse(
+    FirstResponsePayload&& firstResponsePayload) {
+  return folly::Try<FirstResponsePayload>(std::move(firstResponsePayload));
 }
+
+class FirstRequestProcessorStream : public StreamClientCallback {
+ public:
+  explicit FirstRequestProcessorStream(StreamClientCallback* clientCallback)
+      : clientCallback_(clientCallback) {}
+
+  FOLLY_NODISCARD bool onFirstResponse(
+      FirstResponsePayload&& firstResponse,
+      folly::EventBase* evb,
+      StreamServerCallback* serverCallback) override {
+    SCOPE_EXIT {
+      delete this;
+    };
+    auto processedFirstResponse =
+        processFirstResponse(std::move(firstResponse));
+    if (processedFirstResponse.hasException()) {
+      serverCallback->onStreamCancel();
+      clientCallback_->onFirstResponseError(
+          std::move(processedFirstResponse).exception());
+      return false;
+    }
+    serverCallback->resetClientCallback(*clientCallback_);
+    return clientCallback_->onFirstResponse(
+        std::move(*processedFirstResponse), evb, serverCallback);
+  }
+  void onFirstResponseError(folly::exception_wrapper ew) override {
+    SCOPE_EXIT {
+      delete this;
+    };
+    clientCallback_->onFirstResponseError(std::move(ew));
+  }
+
+  bool onStreamNext(StreamPayload&&) override {
+    std::terminate();
+  }
+  void onStreamError(folly::exception_wrapper) override {
+    std::terminate();
+  }
+  void onStreamComplete() override {
+    std::terminate();
+  }
+  void resetServerCallback(StreamServerCallback&) override {
+    std::terminate();
+  }
+
+ private:
+  StreamClientCallback* const clientCallback_;
+};
+
+class FirstRequestProcessorSink : public SinkClientCallback {
+ public:
+  explicit FirstRequestProcessorSink(SinkClientCallback* clientCallback)
+      : clientCallback_(clientCallback) {}
+
+  FOLLY_NODISCARD bool onFirstResponse(
+      FirstResponsePayload&& firstResponse,
+      folly::EventBase* evb,
+      SinkServerCallback* serverCallback) override {
+    SCOPE_EXIT {
+      delete this;
+    };
+    auto processedFirstResponse =
+        processFirstResponse(std::move(firstResponse));
+    if (processedFirstResponse.hasException()) {
+      serverCallback->onStreamCancel();
+      clientCallback_->onFirstResponseError(
+          std::move(processedFirstResponse).exception());
+      return false;
+    }
+    serverCallback->resetClientCallback(*clientCallback_);
+    return clientCallback_->onFirstResponse(
+        std::move(*processedFirstResponse), evb, serverCallback);
+  }
+  void onFirstResponseError(folly::exception_wrapper ew) override {
+    SCOPE_EXIT {
+      delete this;
+    };
+    clientCallback_->onFirstResponseError(std::move(ew));
+  }
+
+  void onFinalResponse(StreamPayload&&) override {
+    std::terminate();
+  }
+  void onFinalResponseError(folly::exception_wrapper) override {
+    std::terminate();
+  }
+  FOLLY_NODISCARD bool onSinkRequestN(uint64_t) override {
+    std::terminate();
+  }
+  void resetServerCallback(SinkServerCallback&) override {
+    std::terminate();
+  }
+
+ private:
+  SinkClientCallback* const clientCallback_;
+};
 } // namespace
 
 rocket::SetupFrame RocketClientChannel::makeSetupFrame(
@@ -220,7 +311,7 @@ void RocketClientChannel::sendRequestStream(
       firstResponseTimeout,
       rpcOptions.getChunkTimeout(),
       rpcOptions.getChunkBufferSize(),
-      clientCallback);
+      new FirstRequestProcessorStream(clientCallback));
 }
 
 void RocketClientChannel::sendRequestSink(
@@ -259,7 +350,7 @@ void RocketClientChannel::sendRequestSink(
   return rclient_->sendRequestSink(
       rocket::makePayload(metadata, std::move(buf)),
       firstResponseTimeout,
-      clientCallback,
+      new FirstRequestProcessorSink(clientCallback),
       rpcOptions.getEnablePageAlignment());
 }
 
@@ -378,8 +469,17 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
       };
 
   auto finallyFunc = [cb = std::move(cb), g = inflightGuard()](
-                         folly::Try<rocket::Payload>&& response) mutable {
-    if (UNLIKELY(response.hasException())) {
+                         folly::Try<rocket::Payload>&& payload) mutable {
+    if (UNLIKELY(payload.hasException())) {
+      cb.release()->onResponseError(std::move(payload.exception()));
+      return;
+    }
+
+    auto response = rocket::unpack<FirstResponsePayload>(std::move(*payload));
+    if (response.hasValue()) {
+      response = processFirstResponse(std::move(*response));
+    }
+    if (response.hasException()) {
       cb.release()->onResponseError(std::move(response.exception()));
       return;
     }
@@ -387,39 +487,10 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
     auto tHeader = std::make_unique<transport::THeader>();
     tHeader->setClientType(THRIFT_ROCKET_CLIENT_TYPE);
 
-    std::unique_ptr<folly::IOBuf> uncompressedResponse;
-    if (response.value().hasNonemptyMetadata()) {
-      ResponseRpcMetadata responseMetadata;
-      try {
-        deserializeMetadata(responseMetadata, response.value());
-        detail::fillTHeaderFromResponseRpcMetadata(responseMetadata, *tHeader);
-        // unfortunately we can only std::move the response payload here due to
-        // deserializeMetadata() above still need to reference it
-        uncompressedResponse = std::move(response.value()).data();
-        if (auto compress = responseMetadata.compression_ref()) {
-          auto result = rocket::uncompressPayload(
-              *compress, std::move(uncompressedResponse));
-          if (!result) {
-            folly::throw_exception<TApplicationException>(
-                TApplicationException::INVALID_TRANSFORM,
-                fmt::format(
-                    "decompression failure: {}", std::move(result.error())));
-          }
-          uncompressedResponse = std::move(result.value());
-        }
-      } catch (const std::exception& e) {
-        FB_LOG_EVERY_MS(ERROR, 10000) << "Exception on deserializing metadata: "
-                                      << folly::exceptionStr(e);
-        cb.release()->onResponseError(
-            folly::exception_wrapper(std::current_exception(), e));
-        return;
-      }
-    } else {
-      uncompressedResponse = std::move(response.value()).data();
-    }
+    detail::fillTHeaderFromResponseRpcMetadata(response->metadata, *tHeader);
     cb.release()->onResponse(ClientReceiveState(
         static_cast<uint16_t>(-1),
-        std::move(uncompressedResponse),
+        std::move(response->payload),
         std::move(tHeader),
         nullptr));
   };
