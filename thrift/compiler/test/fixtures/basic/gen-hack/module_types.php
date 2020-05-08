@@ -297,7 +297,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
       'get_myEnum called on an instance of MyUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->myEnum);
+    return \nullthrows($this->myEnum, 'Got unexpected null');
   }
 
   public function set_myStruct(MyStruct $myStruct): this {
@@ -312,7 +312,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
       'get_myStruct called on an instance of MyUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->myStruct);
+    return \nullthrows($this->myStruct, 'Got unexpected null');
   }
 
   public function set_myDataItem(MyDataItem $myDataItem): this {
@@ -327,7 +327,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
       'get_myDataItem called on an instance of MyUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->myDataItem);
+    return \nullthrows($this->myDataItem, 'Got unexpected null');
   }
 
   public static function getAnnotations(): darray<string, mixed> {

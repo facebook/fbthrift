@@ -164,7 +164,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       'get_intValue called on an instance of ComplexUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->intValue);
+    return \nullthrows($this->intValue, 'Got unexpected null');
   }
 
   public function set_stringValue(string $stringValue): this {
@@ -179,7 +179,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       'get_stringValue called on an instance of ComplexUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->stringValue);
+    return \nullthrows($this->stringValue, 'Got unexpected null');
   }
 
   public function set_intListValue(Vector<int> $intListValue): this {
@@ -194,7 +194,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       'get_intListValue called on an instance of ComplexUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->intListValue);
+    return \nullthrows($this->intListValue, 'Got unexpected null');
   }
 
   public function set_stringListValue(Vector<string> $stringListValue): this {
@@ -209,7 +209,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       'get_stringListValue called on an instance of ComplexUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->stringListValue);
+    return \nullthrows($this->stringListValue, 'Got unexpected null');
   }
 
   public function set_typedefValue(Map<int, string> $typedefValue): this {
@@ -224,7 +224,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       'get_typedefValue called on an instance of ComplexUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->typedefValue);
+    return \nullthrows($this->typedefValue, 'Got unexpected null');
   }
 
   public function set_stringRef(string $stringRef): this {
@@ -239,7 +239,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       'get_stringRef called on an instance of ComplexUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->stringRef);
+    return \nullthrows($this->stringRef, 'Got unexpected null');
   }
 
   public static function getAnnotations(): darray<string, mixed> {
@@ -388,7 +388,7 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
       'get_intListValue called on an instance of ListUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->intListValue);
+    return \nullthrows($this->intListValue, 'Got unexpected null');
   }
 
   public function set_stringListValue(Vector<string> $stringListValue): this {
@@ -403,7 +403,7 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
       'get_stringListValue called on an instance of ListUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->stringListValue);
+    return \nullthrows($this->stringListValue, 'Got unexpected null');
   }
 
   public static function getAnnotations(): darray<string, mixed> {
@@ -519,7 +519,7 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
       'get_binaryData called on an instance of DataUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->binaryData);
+    return \nullthrows($this->binaryData, 'Got unexpected null');
   }
 
   public function set_stringData(string $stringData): this {
@@ -534,7 +534,7 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
       'get_stringData called on an instance of DataUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->stringData);
+    return \nullthrows($this->stringData, 'Got unexpected null');
   }
 
   public static function getAnnotations(): darray<string, mixed> {
@@ -749,7 +749,7 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
       'get_v1 called on an instance of ValUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->v1);
+    return \nullthrows($this->v1, 'Got unexpected null');
   }
 
   public function set_v2(Val $v2): this {
@@ -764,7 +764,7 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
       'get_v2 called on an instance of ValUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->v2);
+    return \nullthrows($this->v2, 'Got unexpected null');
   }
 
   public static function getAnnotations(): darray<string, mixed> {
@@ -872,7 +872,7 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
       'get_thingOne called on an instance of VirtualComplexUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->thingOne);
+    return \nullthrows($this->thingOne, 'Got unexpected null');
   }
 
   public function set_thingTwo(string $thingTwo): this {
@@ -887,7 +887,7 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
       'get_thingTwo called on an instance of VirtualComplexUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->thingTwo);
+    return \nullthrows($this->thingTwo, 'Got unexpected null');
   }
 
   public static function getAnnotations(): darray<string, mixed> {
@@ -1030,7 +1030,7 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
       'get_s called on an instance of NonCopyableUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->s);
+    return \nullthrows($this->s, 'Got unexpected null');
   }
 
   public static function getAnnotations(): darray<string, mixed> {
