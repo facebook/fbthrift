@@ -81,19 +81,20 @@ bool RocketSinkClientCallback::onFirstResponse(
 void RocketSinkClientCallback::onFirstResponseError(
     folly::exception_wrapper ew) {
   bool isEncodedError =
-      ew.with_exception<thrift::detail::EncodedError>([&](auto&& encodedError) {
-        if (encodedError.encoded) {
-          connection_.sendPayload(
-              streamId_,
-              Payload::makeFromData(std::move(encodedError.encoded)),
-              Flags::none().next(true).complete(true));
-        } else {
-          connection_.sendError(
-              streamId_,
-              RocketException(
-                  ErrorCode::INVALID, "serialization failed for response"));
-        }
-      });
+      ew.with_exception<thrift::detail::EncodedFirstResponseError>(
+          [&](auto&& encodedError) {
+            if (encodedError.encoded.payload) {
+              connection_.sendPayload(
+                  streamId_,
+                  pack(std::move(encodedError.encoded)).value(),
+                  Flags::none().next(true).complete(true));
+            } else {
+              connection_.sendError(
+                  streamId_,
+                  RocketException(
+                      ErrorCode::INVALID, "serialization failed for response"));
+            }
+          });
   DCHECK(isEncodedError);
 
   // In case of a first response error ThriftServerRequestSink is responsible

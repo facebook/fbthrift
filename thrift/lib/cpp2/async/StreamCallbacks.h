@@ -69,6 +69,23 @@ struct EncodedError : std::exception {
   std::unique_ptr<folly::IOBuf> encoded;
 };
 
+struct EncodedFirstResponseError : std::exception {
+  explicit EncodedFirstResponseError(FirstResponsePayload payload)
+      : encoded(std::move(payload)) {}
+
+  EncodedFirstResponseError(const EncodedFirstResponseError& other)
+      : encoded(other.encoded.payload->clone(), other.encoded.metadata) {}
+  EncodedFirstResponseError& operator=(const EncodedFirstResponseError& other) {
+    encoded = FirstResponsePayload(
+        other.encoded.payload->clone(), other.encoded.metadata);
+    return *this;
+  }
+  EncodedFirstResponseError(EncodedFirstResponseError&&) = default;
+  EncodedFirstResponseError& operator=(EncodedFirstResponseError&&) = default;
+
+  FirstResponsePayload encoded;
+};
+
 } // namespace detail
 
 /**

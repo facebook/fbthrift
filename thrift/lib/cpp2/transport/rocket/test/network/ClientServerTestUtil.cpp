@@ -481,8 +481,9 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
     folly::StringPiece data(std::move(frame.payload()).data()->coalesce());
     if (data.removePrefix("error:application")) {
       clientCallback->onFirstResponseError(
-          folly::make_exception_wrapper<thrift::detail::EncodedError>(
-              folly::IOBuf::copyBuffer("error:application")));
+          folly::make_exception_wrapper<
+              thrift::detail::EncodedFirstResponseError>(FirstResponsePayload(
+              folly::IOBuf::copyBuffer("error:application"), {})));
       return;
     }
     const size_t nHeaders =

@@ -208,12 +208,12 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
 }
 
 void ThriftServerRequestStream::sendSerializedError(
-    ResponseRpcMetadata&&,
+    ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> exbuf) noexcept {
   std::exchange(clientCallback_, nullptr)
-      ->onFirstResponseError(
-          folly::make_exception_wrapper<thrift::detail::EncodedError>(
-              std::move(exbuf)));
+      ->onFirstResponseError(folly::make_exception_wrapper<
+                             thrift::detail::EncodedFirstResponseError>(
+          FirstResponsePayload(std::move(exbuf), std::move(metadata))));
 }
 
 ThriftServerRequestSink::ThriftServerRequestSink(
@@ -251,12 +251,12 @@ void ThriftServerRequestSink::sendThriftResponse(
 }
 
 void ThriftServerRequestSink::sendSerializedError(
-    ResponseRpcMetadata&&,
+    ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> exbuf) noexcept {
   std::exchange(clientCallback_, nullptr)
-      ->onFirstResponseError(
-          folly::make_exception_wrapper<thrift::detail::EncodedError>(
-              std::move(exbuf)));
+      ->onFirstResponseError(folly::make_exception_wrapper<
+                             thrift::detail::EncodedFirstResponseError>(
+          FirstResponsePayload(std::move(exbuf), std::move(metadata))));
 }
 
 #if FOLLY_HAS_COROUTINES
@@ -264,31 +264,28 @@ void ThriftServerRequestSink::sendSinkThriftResponse(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> data,
     apache::thrift::detail::SinkConsumerImpl&& sinkConsumer) noexcept {
-  if (sinkConsumer) {
-    context_.unsetMarkRequestComplete();
-    auto* executor = sinkConsumer.executor.get();
-    clientCallback_->setProtoId(getProtoId());
-    clientCallback_->setChunkTimeout(sinkConsumer.chunkTimeout);
-    auto serverCallback = apache::thrift::detail::ServerSinkBridge::create(
-        std::move(sinkConsumer), *getEventBase(), clientCallback_);
-    clientCallback_->onFirstResponse(
-        FirstResponsePayload{std::move(data), std::move(metadata)},
-        nullptr /* evb */,
-        serverCallback.get());
-
-    folly::coro::co_invoke(
-        [serverCallback =
-             std::move(serverCallback)]() -> folly::coro::Task<void> {
-          co_return co_await serverCallback->start();
-        })
-        .scheduleOn(executor)
-        .start();
-  } else {
-    std::exchange(clientCallback_, nullptr)
-        ->onFirstResponseError(
-            folly::make_exception_wrapper<thrift::detail::EncodedError>(
-                std::move(data)));
+  if (!sinkConsumer) {
+    sendSerializedError(std::move(metadata), std::move(data));
+    return;
   }
+  context_.unsetMarkRequestComplete();
+  auto* executor = sinkConsumer.executor.get();
+  clientCallback_->setProtoId(getProtoId());
+  clientCallback_->setChunkTimeout(sinkConsumer.chunkTimeout);
+  auto serverCallback = apache::thrift::detail::ServerSinkBridge::create(
+      std::move(sinkConsumer), *getEventBase(), clientCallback_);
+  clientCallback_->onFirstResponse(
+      FirstResponsePayload{std::move(data), std::move(metadata)},
+      nullptr /* evb */,
+      serverCallback.get());
+
+  folly::coro::co_invoke(
+      [serverCallback =
+           std::move(serverCallback)]() -> folly::coro::Task<void> {
+        co_return co_await serverCallback->start();
+      })
+      .scheduleOn(executor)
+      .start();
 }
 #endif
 
