@@ -1692,7 +1692,11 @@ void t_hack_generator::generate_php_struct_shape_collection_value_lambda(
   if (t->is_struct()) {
     out << "$" << tmp << "->__toShape(),\n";
   } else if (t->is_set()) {
-    out << "ThriftUtil::toDArray(Dict\\fill_keys($" << tmp << ", true)),\n";
+    if (arraysets_ || no_use_hack_collections_) {
+      out << "darray($" << tmp << "),\n";
+    } else {
+      out << "ThriftUtil::toDArray(Dict\\fill_keys($" << tmp << ", true)),\n";
+    }
   } else if (t->is_map() || t->is_list()) {
     t_type* val_type;
     if (t->is_map()) {

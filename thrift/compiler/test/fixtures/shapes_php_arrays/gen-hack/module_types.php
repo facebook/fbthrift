@@ -236,7 +236,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
       )
         |> ThriftUtil::toDArray($$),
       'map_of_set_of_strings' => $this->map_of_set_of_strings->map(
-        $_val0 ==> ThriftUtil::toDArray(Dict\fill_keys($_val0, true)),
+        $_val0 ==> darray($_val0),
       )
         |> ThriftUtil::toDArray($$),
       'map_of_strings_to_map_of_string_ints' => $this->map_of_strings_to_map_of_string_ints->map(
@@ -245,7 +245,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
         |> ThriftUtil::toDArray($$),
       'optional_map_of_map_of_sets' => $this->optional_map_of_map_of_sets?->map(
         $_val0 ==> $_val0->map(
-          $_val1 ==> ThriftUtil::toDArray(Dict\fill_keys($_val1, true)),
+          $_val1 ==> darray($_val1),
         )
           |> ThriftUtil::toDArray($$),
       )
