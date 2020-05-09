@@ -62,15 +62,6 @@ bool RocketSinkClientCallback::onFirstResponse(
 
   serverCallbackOrError_ = reinterpret_cast<intptr_t>(serverCallback);
 
-  // compress the response if needed
-  folly::Optional<CompressionAlgorithm> compression =
-      connection_.getNegotiatedCompressionAlgorithm();
-  if (compression.has_value() &&
-      firstResponse.payload->computeChainDataLength() >=
-          connection_.getMinCompressBytes()) {
-    rocket::compressPayload(
-        firstResponse.metadata, firstResponse.payload, *compression);
-  }
   connection_.sendPayload(
       streamId_,
       pack(std::move(firstResponse)).value(),

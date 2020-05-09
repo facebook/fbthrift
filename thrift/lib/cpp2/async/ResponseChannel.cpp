@@ -18,6 +18,7 @@
 
 #include <folly/io/IOBuf.h>
 
+const std::string kUnknownErrorCode{"0"};
 const std::string kOverloadedErrorCode{"1"};
 const std::string kTaskExpiredErrorCode{"2"};
 const std::string kProxyTransportExceptionErrorCode{"3"};

@@ -83,16 +83,6 @@ bool RocketStreamClientCallback::onFirstResponse(
     scheduleTimeout();
   }
 
-  // compress the payload if needed
-  folly::Optional<CompressionAlgorithm> compression =
-      connection_.getNegotiatedCompressionAlgorithm();
-  if (compression.has_value() &&
-      firstResponse.payload->computeChainDataLength() >=
-          connection_.getMinCompressBytes()) {
-    rocket::compressPayload(
-        firstResponse.metadata, firstResponse.payload, *compression);
-  }
-
   connection_.sendPayload(
       streamId_,
       pack(std::move(firstResponse)).value(),

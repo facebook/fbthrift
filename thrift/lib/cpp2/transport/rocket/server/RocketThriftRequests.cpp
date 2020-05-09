@@ -44,6 +44,28 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
+namespace {
+FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
+    ResponseRpcMetadata& metadata,
+    std::unique_ptr<folly::IOBuf>& payload,
+    RocketServerFrameContext& frameContext) {
+  if (!payload) {
+    return {};
+  }
+  // transform (e.g. compress) the response if needed
+  RocketServerConnection& connection = frameContext.connection();
+  folly::Optional<CompressionAlgorithm> compressionAlgo =
+      connection.getNegotiatedCompressionAlgorithm();
+  // only compress response if compressionAlgo is negotiated during TLS
+  // handshake and the response size is greater than minCompressTypes
+  if (compressionAlgo.has_value() &&
+      payload->computeChainDataLength() >= connection.getMinCompressBytes()) {
+    compressPayload(metadata, payload, *compressionAlgo);
+  }
+  return {};
+}
+} // namespace
+
 ThriftServerRequestResponse::ThriftServerRequestResponse(
     RequestsRegistry::DebugStub& debugStubToInit,
     folly::EventBase& evb,
@@ -79,16 +101,11 @@ void ThriftServerRequestResponse::sendThriftResponse(
     return;
   }
 
-  // transform (e.g. compress) the response if needed
-  RocketServerConnection& connection = context_.connection();
-  folly::Optional<CompressionAlgorithm> compressionAlgo =
-      connection.getNegotiatedCompressionAlgorithm();
-  // only compress response if compressionAlgo is negotiated during TLS
-  // handshake and the response size is greater than minCompressTypes
-  if (compressionAlgo.has_value() &&
-      data->computeChainDataLength() >= connection.getMinCompressBytes()) {
-    compressPayload(metadata, data, *compressionAlgo);
+  if (auto error = processFirstResponse(metadata, data, context_)) {
+    sendErrorWrapped(std::move(error), kUnknownErrorCode);
+    return;
   }
+
   context_.sendPayload(
       makePayload(metadata, std::move(data)),
       Flags::none().next(true).complete(true),
@@ -185,6 +202,10 @@ bool ThriftServerRequestStream::sendStreamThriftResponse(
     sendSerializedError(std::move(metadata), std::move(data));
     return false;
   }
+  if (auto error = processFirstResponse(metadata, data, context_)) {
+    sendErrorWrapped(std::move(error), kUnknownErrorCode);
+    return false;
+  }
   context_.unsetMarkRequestComplete();
   stream->resetClientCallback(*clientCallback_);
   clientCallback_->setProtoId(getProtoId());
@@ -198,6 +219,10 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> data,
     apache::thrift::detail::ServerStreamFactory&& stream) noexcept {
+  if (auto error = processFirstResponse(metadata, data, context_)) {
+    sendErrorWrapped(std::move(error), kUnknownErrorCode);
+    return;
+  }
   context_.unsetMarkRequestComplete();
   clientCallback_->setProtoId(getProtoId());
   stream(
@@ -210,6 +235,10 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
 void ThriftServerRequestStream::sendSerializedError(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> exbuf) noexcept {
+  if (auto error = processFirstResponse(metadata, exbuf, context_)) {
+    sendErrorWrapped(std::move(error), kUnknownErrorCode);
+    return;
+  }
   std::exchange(clientCallback_, nullptr)
       ->onFirstResponseError(folly::make_exception_wrapper<
                              thrift::detail::EncodedFirstResponseError>(
@@ -253,6 +282,10 @@ void ThriftServerRequestSink::sendThriftResponse(
 void ThriftServerRequestSink::sendSerializedError(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> exbuf) noexcept {
+  if (auto error = processFirstResponse(metadata, exbuf, context_)) {
+    sendErrorWrapped(std::move(error), kUnknownErrorCode);
+    return;
+  }
   std::exchange(clientCallback_, nullptr)
       ->onFirstResponseError(folly::make_exception_wrapper<
                              thrift::detail::EncodedFirstResponseError>(
@@ -266,6 +299,10 @@ void ThriftServerRequestSink::sendSinkThriftResponse(
     apache::thrift::detail::SinkConsumerImpl&& sinkConsumer) noexcept {
   if (!sinkConsumer) {
     sendSerializedError(std::move(metadata), std::move(data));
+    return;
+  }
+  if (auto error = processFirstResponse(metadata, data, context_)) {
+    sendErrorWrapped(std::move(error), kUnknownErrorCode);
     return;
   }
   context_.unsetMarkRequestComplete();
