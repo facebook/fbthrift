@@ -106,7 +106,7 @@ class ServicesTests(unittest.TestCase):
         # Create a broken client
         h = Handler()
         loop = asyncio.get_event_loop()
-        coro = h.invert(RequestContext(), False)  # type: ignore
+        coro = h.invert(RequestContext(), False)
         value = loop.run_until_complete(coro)
         self.assertTrue(value)
 

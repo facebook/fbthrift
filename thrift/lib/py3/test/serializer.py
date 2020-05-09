@@ -59,20 +59,28 @@ class SerializerTests(unittest.TestCase):
 
     def test_None(self) -> None:
         with self.assertRaises(TypeError):
-            serialize(None, Protocol.JSON)  # type: ignore
+            # pyre-fixme[6]: Expected `sT` for 1st param but got `None`.
+            serialize(None, Protocol.JSON)
 
     def test_sanity(self) -> None:
         with self.assertRaises(TypeError):
-            serialize(1, Protocol.COMPACT)  # type: ignore
+            # pyre-fixme[6]: Expected `sT` for 1st param but got `int`.
+            serialize(1, Protocol.COMPACT)
 
         with self.assertRaises(TypeError):
-            serialize(easy(), None)  # type: ignore
+            # pyre-fixme[6]: Expected `Protocol` for 2nd param but got `None`.
+            serialize(easy(), None)
 
         with self.assertRaises(TypeError):
-            deserialize(Protocol, b"")  # type: ignore
+            # pyre-fixme[6]: Expected `Type[Variable[thrift.py3.serializer.sT (bound
+            #  to thrift.py3.types.Struct)]]` for 1st param but got
+            #  `Type[thrift.py3.common.Protocol]`.
+            deserialize(Protocol, b"")
 
         with self.assertRaises(TypeError):
-            deserialize(easy, Protocol)  # type: ignore
+            # pyre-fixme[6]: Expected `Union[bytearray, bytes, folly.iobuf.IOBuf,
+            #  memoryview]` for 2nd param but got `Type[thrift.py3.common.Protocol]`.
+            deserialize(easy, Protocol)
 
     def test_from_thread_pool(self) -> None:
         control = easy(val=5, val_list=[1, 2, 3, 4])

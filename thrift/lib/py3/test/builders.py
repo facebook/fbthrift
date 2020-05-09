@@ -91,7 +91,8 @@ class BuilderTest(unittest.TestCase):
     def test_build_with_wrong_type_field(self) -> None:
         easy_builder = easy_Builder()
         with self.assertRaises(TypeError):
-            easy_builder.val = "123"  # type: ignore
+            # pyre-fixme[8]: Attribute has type `Optional[int]`; used as `str`.
+            easy_builder.val = "123"
         easy_builder = easy_Builder()
         easy_builder.val_list = [
             "123",
@@ -101,8 +102,8 @@ class BuilderTest(unittest.TestCase):
             easy_builder()  # caught at build step
         value_or_error_builder = ValueOrError_Builder()
         value_or_error_builder.error = (
-            "wrong!"
-        )  # OK now as builder takes any type for struct field
+            "wrong!"  # OK now as builder takes any type for struct field
+        )
         with self.assertRaises(TypeError):
             value_or_error_builder()  # caught at build step
 
