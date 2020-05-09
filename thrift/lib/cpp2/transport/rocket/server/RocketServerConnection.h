@@ -100,19 +100,16 @@ class RocketServerConnection final
     negotiatedCompressionAlgo_ = compressionAlgo;
   }
 
-  folly::Optional<CompressionAlgorithm> getNegotiatedCompressionAlgorithm() {
-    return negotiatedCompressionAlgo_;
-  }
-
   void setMinCompressBytes(uint32_t bytes) {
     minCompressBytes_ = bytes;
   }
 
-  /**
-   * Get the minimum response compression size
-   */
-  uint32_t getMinCompressBytes() const {
-    return minCompressBytes_;
+  folly::Optional<CompressionAlgorithm> getCompressionAlgorithm(
+      ssize_t payloadSize) {
+    if (payloadSize < minCompressBytes_) {
+      return folly::none;
+    }
+    return negotiatedCompressionAlgo_;
   }
 
   void sendPayload(

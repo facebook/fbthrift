@@ -16,11 +16,10 @@
 
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 
-#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
-
 namespace apache {
 namespace thrift {
 namespace rocket {
+namespace detail {
 
 template <class Metadata>
 Payload makePayload(
@@ -34,8 +33,8 @@ Payload makePayload(
   folly::IOBufQueue queue;
 
   // If possible, serialize metadata into the headeroom of data.
-  if (!data->isChained() && data->headroom() >= serSize + kHeadroomBytes &&
-      !data->isSharedOne()) {
+  if (data && !data->isChained() &&
+      data->headroom() >= serSize + kHeadroomBytes && !data->isSharedOne()) {
     // Store previous state of the buffer pointers and rewind it.
     auto startBuffer = data->buffer();
     auto start = data->data();
@@ -73,24 +72,26 @@ template Payload makePayload<>(
 template Payload makePayload<>(
     const ResponseRpcMetadata&,
     std::unique_ptr<folly::IOBuf> data);
+template Payload makePayload<>(
+    const StreamPayloadMetadata&,
+    std::unique_ptr<folly::IOBuf> data);
+template Payload makePayload<>(
+    const HeadersPayloadMetadata&,
+    std::unique_ptr<folly::IOBuf> data);
 
 /**
  * Helper method to compress the request before sending to the server.
  */
-template <class Metadata>
 void compressPayload(
-    Metadata& metadata,
     std::unique_ptr<folly::IOBuf>& data,
     CompressionAlgorithm compression) {
   folly::io::CodecType codec;
   switch (compression) {
     case CompressionAlgorithm::ZSTD:
       codec = folly::io::CodecType::ZSTD;
-      metadata.compression_ref() = compression;
       break;
     case CompressionAlgorithm::ZLIB:
       codec = folly::io::CodecType::ZLIB;
-      metadata.compression_ref() = compression;
       break;
     case CompressionAlgorithm::NONE:
       codec = folly::io::CodecType::NO_COMPRESSION;
@@ -98,21 +99,6 @@ void compressPayload(
   }
   data = folly::io::getCodec(codec)->compress(data.get());
 }
-
-template void compressPayload<>(
-    RequestRpcMetadata& metadata,
-    std::unique_ptr<folly::IOBuf>& data,
-    CompressionAlgorithm compression);
-
-template void compressPayload<>(
-    ResponseRpcMetadata& metadata,
-    std::unique_ptr<folly::IOBuf>& data,
-    CompressionAlgorithm compression);
-
-template void compressPayload<>(
-    StreamPayloadMetadata& metadata,
-    std::unique_ptr<folly::IOBuf>& data,
-    CompressionAlgorithm compression);
 
 folly::Expected<std::unique_ptr<folly::IOBuf>, std::string> uncompressPayload(
     CompressionAlgorithm compression,
@@ -136,7 +122,7 @@ folly::Expected<std::unique_ptr<folly::IOBuf>, std::string> uncompressPayload(
     return folly::makeUnexpected(std::string(e.what()));
   }
 }
-
+} // namespace detail
 } // namespace rocket
 } // namespace thrift
 } // namespace apache

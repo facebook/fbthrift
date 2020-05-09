@@ -686,11 +686,7 @@ void RocketClient::sendPayload(
        streamId,
        payload = pack(std::move(payload)),
        flags]() mutable {
-        if (payload.hasException()) {
-          return folly::Try<void>(std::move(payload).exception());
-        }
-
-        return sendPayloadSync(streamId, std::move(payload.value()), flags);
+        return sendPayloadSync(streamId, std::move(payload), flags);
       },
       [dg = DestructorGuard(this),
        this](folly::Try<folly::Try<void>>&& result) {
@@ -740,16 +736,10 @@ bool RocketClient::sendExtHeaders(StreamId streamId, HeadersPayload&& payload) {
         << "sendExtHeaders failed, closing now: " << ex.what();
     close(std::move(ex));
   };
-  auto packedPayload = pack(std::move(payload));
-  if (packedPayload.hasException()) {
-    onError(toTransportException(std::move(packedPayload.exception())));
-    return false;
-  }
-
   return sendFrame(
       ExtFrame(
           streamId,
-          std::move(packedPayload.value()),
+          pack(std::move(payload)),
           rocket::Flags::none().ignore(true),
           ExtFrameType::HEADERS_PUSH),
       std::move(onError));

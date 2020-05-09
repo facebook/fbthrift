@@ -68,9 +68,10 @@ class OnWriteSuccess final : public rocket::RocketClientWriteCallback {
   RequestClientCallback& requestCallback_;
 };
 
-folly::Try<FirstResponsePayload> processFirstResponse(
-    FirstResponsePayload&& firstResponsePayload) {
-  return folly::Try<FirstResponsePayload>(std::move(firstResponsePayload));
+FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
+    ResponseRpcMetadata&,
+    std::unique_ptr<folly::IOBuf>&) {
+  return {};
 }
 
 class FirstRequestProcessorStream : public StreamClientCallback {
@@ -85,17 +86,15 @@ class FirstRequestProcessorStream : public StreamClientCallback {
     SCOPE_EXIT {
       delete this;
     };
-    auto processedFirstResponse =
-        processFirstResponse(std::move(firstResponse));
-    if (processedFirstResponse.hasException()) {
+    if (auto error = processFirstResponse(
+            firstResponse.metadata, firstResponse.payload)) {
       serverCallback->onStreamCancel();
-      clientCallback_->onFirstResponseError(
-          std::move(processedFirstResponse).exception());
+      clientCallback_->onFirstResponseError(std::move(error));
       return false;
     }
     serverCallback->resetClientCallback(*clientCallback_);
     return clientCallback_->onFirstResponse(
-        std::move(*processedFirstResponse), evb, serverCallback);
+        std::move(firstResponse), evb, serverCallback);
   }
   void onFirstResponseError(folly::exception_wrapper ew) override {
     SCOPE_EXIT {
@@ -133,17 +132,15 @@ class FirstRequestProcessorSink : public SinkClientCallback {
     SCOPE_EXIT {
       delete this;
     };
-    auto processedFirstResponse =
-        processFirstResponse(std::move(firstResponse));
-    if (processedFirstResponse.hasException()) {
+    if (auto error = processFirstResponse(
+            firstResponse.metadata, firstResponse.payload)) {
       serverCallback->onStreamCancel();
-      clientCallback_->onFirstResponseError(
-          std::move(processedFirstResponse).exception());
+      clientCallback_->onFirstResponseError(std::move(error));
       return false;
     }
     serverCallback->resetClientCallback(*clientCallback_);
     return clientCallback_->onFirstResponse(
-        std::move(*processedFirstResponse), evb, serverCallback);
+        std::move(firstResponse), evb, serverCallback);
   }
   void onFirstResponseError(folly::exception_wrapper ew) override {
     SCOPE_EXIT {
@@ -218,7 +215,6 @@ void RocketClientChannel::setFlushList(FlushList* flushList) {
 
 void RocketClientChannel::setNegotiatedCompressionAlgorithm(
     CompressionAlgorithm compressionAlgo) {
-  negotiatedCompressionAlgo_ = compressionAlgo;
   if (rclient_) {
     rclient_->setNegotiatedCompressionAlgorithm(compressionAlgo);
   }
@@ -226,11 +222,13 @@ void RocketClientChannel::setNegotiatedCompressionAlgorithm(
 
 folly::Optional<CompressionAlgorithm>
 RocketClientChannel::getNegotiatedCompressionAlgorithm() {
-  return negotiatedCompressionAlgo_;
+  if (!rclient_) {
+    return folly::none;
+  }
+  return rclient_->getNegotiatedCompressionAlgorithm();
 }
 
 void RocketClientChannel::setAutoCompressSizeLimit(int32_t size) {
-  autoCompressSizeLimit_ = size;
   if (rclient_) {
     rclient_->setAutoCompressSizeLimit(size);
   }
@@ -298,16 +296,13 @@ void RocketClientChannel::sendRequestStream(
 
   auto buf = std::move(request.buffer);
 
-  // compress the request if needed
-  if (autoCompressSizeLimit_.has_value() &&
-      *autoCompressSizeLimit_ < int(buf->computeChainDataLength())) {
-    if (negotiatedCompressionAlgo_.has_value()) {
-      rocket::compressPayload(metadata, buf, *negotiatedCompressionAlgo_);
-    }
+  if (auto compression =
+          rclient_->getCompressionAlgorithm(buf->computeChainDataLength())) {
+    metadata.compression_ref() = *compression;
   }
 
   return rclient_->sendRequestStream(
-      rocket::makePayload(metadata, std::move(buf)),
+      rocket::pack(metadata, std::move(buf)),
       firstResponseTimeout,
       rpcOptions.getChunkTimeout(),
       rpcOptions.getChunkBufferSize(),
@@ -339,16 +334,13 @@ void RocketClientChannel::sendRequestSink(
 
   auto buf = std::move(request.buffer);
 
-  // compress the request if needed
-  if (autoCompressSizeLimit_.hasValue() &&
-      *autoCompressSizeLimit_ < int(buf->computeChainDataLength())) {
-    if (negotiatedCompressionAlgo_.hasValue()) {
-      rocket::compressPayload(metadata, buf, *negotiatedCompressionAlgo_);
-    }
+  if (auto compression =
+          rclient_->getCompressionAlgorithm(buf->computeChainDataLength())) {
+    metadata.compression_ref() = *compression;
   }
 
   return rclient_->sendRequestSink(
-      rocket::makePayload(metadata, std::move(buf)),
+      rocket::pack(metadata, std::move(buf)),
       firstResponseTimeout,
       new FirstRequestProcessorSink(clientCallback),
       rpcOptions.getEnablePageAlignment());
@@ -379,12 +371,9 @@ void RocketClientChannel::sendThriftRequest(
 
   auto buf = std::move(request.buffer);
 
-  // compress the request if needed
-  if (autoCompressSizeLimit_.has_value() &&
-      *autoCompressSizeLimit_ < int(buf->computeChainDataLength())) {
-    if (negotiatedCompressionAlgo_.has_value()) {
-      rocket::compressPayload(metadata, buf, *negotiatedCompressionAlgo_);
-    }
+  if (auto compression =
+          rclient_->getCompressionAlgorithm(buf->computeChainDataLength())) {
+    metadata.compression_ref() = *compression;
   }
 
   switch (kind) {
@@ -418,8 +407,7 @@ void RocketClientChannel::sendSingleRequestNoResponse(
        rclientGuard =
            folly::DelayedDestruction::DestructorGuard(rclient_.get()),
        rclientPtr = rclient_.get(),
-       requestPayload =
-           rocket::makePayload(metadata, std::move(buf))]() mutable {
+       requestPayload = rocket::pack(metadata, std::move(buf))]() mutable {
         OnWriteSuccess writeCallback(cbRef);
         return rclientPtr->sendRequestFnfSync(
             std::move(requestPayload), &writeCallback);
@@ -461,8 +449,7 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
        rclientGuard =
            folly::DelayedDestruction::DestructorGuard(rclient_.get()),
        rclientPtr = rclient_.get(),
-       requestPayload =
-           rocket::makePayload(metadata, std::move(buf))]() mutable {
+       requestPayload = rocket::pack(metadata, std::move(buf))]() mutable {
         OnWriteSuccess writeCallback(cbRef);
         return rclientPtr->sendRequestResponseSync(
             std::move(requestPayload), timeout, &writeCallback);
@@ -476,11 +463,13 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
     }
 
     auto response = rocket::unpack<FirstResponsePayload>(std::move(*payload));
-    if (response.hasValue()) {
-      response = processFirstResponse(std::move(*response));
-    }
     if (response.hasException()) {
       cb.release()->onResponseError(std::move(response.exception()));
+      return;
+    }
+    if (auto error =
+            processFirstResponse(response->metadata, response->payload)) {
+      cb.release()->onResponseError(std::move(error));
       return;
     }
 

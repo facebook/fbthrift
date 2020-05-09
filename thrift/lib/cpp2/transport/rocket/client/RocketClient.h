@@ -217,8 +217,15 @@ class RocketClient : public folly::DelayedDestruction,
     return negotiatedCompressionAlgo_;
   }
 
-  folly::Optional<int32_t> getAutoCompressSizeLimit() {
-    return autoCompressSizeLimit_;
+  folly::Optional<CompressionAlgorithm> getCompressionAlgorithm(
+      ssize_t payloadSize) {
+    if (!autoCompressSizeLimit_) {
+      return folly::none;
+    }
+    if (payloadSize <= *autoCompressSizeLimit_) {
+      return folly::none;
+    }
+    return negotiatedCompressionAlgo_;
   }
 
  private:

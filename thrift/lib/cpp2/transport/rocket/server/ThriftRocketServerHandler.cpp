@@ -53,19 +53,6 @@ namespace rocket {
 thread_local uint32_t ThriftRocketServerHandler::sample_{0};
 
 namespace {
-bool deserializeMetadata(const Payload& p, RequestRpcMetadata& metadata) {
-  try {
-    CompactProtocolReader reader;
-    reader.setInput(p.buffer());
-    metadata.read(&reader);
-    return reader.getCursorPosition() <= p.metadataSize();
-  } catch (const std::exception& ex) {
-    FB_LOG_EVERY_MS(ERROR, 10000)
-        << "Exception on deserializing metadata: " << folly::exceptionStr(ex);
-    return false;
-  }
-}
-
 bool isMetadataValid(const RequestRpcMetadata& metadata) {
   return metadata.protocol_ref() && metadata.name_ref() && metadata.kind_ref();
 }
@@ -285,19 +272,21 @@ void ThriftRocketServerHandler::handleRequestCommon(
       : std::make_shared<folly::RequestContext>(rootid);
   folly::RequestContextScopeGuard rctx(reqCtx);
 
-  RequestRpcMetadata metadata;
-  const bool parseOk = payload.metadataSize() <= payload.buffer()->length() &&
-      deserializeMetadata(payload, metadata);
-  bool validMetadata = parseOk && isMetadataValid(metadata);
+  auto requestPayloadTry = unpack<RequestPayload>(std::move(payload));
 
-  // it is not safe get debug payload if metadata is not valid, the metadata
-  // size may be unbounded.
-  auto debugPayload = validMetadata
-      ? Payload::makeCombined(payload.buffer()->clone(), payload.metadataSize())
-            .data()
-      : nullptr;
+  if (requestPayloadTry.hasException()) {
+    handleDecompressionFailure(
+        makeRequest(RequestRpcMetadata(), {}, std::move(reqCtx)),
+        requestPayloadTry.exception().what().toStdString());
+    return;
+  }
 
-  if (!validMetadata) {
+  auto& data = requestPayloadTry->payload;
+  auto& metadata = requestPayloadTry->metadata;
+
+  auto debugPayload = data->clone();
+
+  if (!isMetadataValid(metadata)) {
     handleRequestWithBadMetadata(makeRequest(
         std::move(metadata), std::move(debugPayload), std::move(reqCtx)));
     return;
@@ -318,21 +307,6 @@ void ThriftRocketServerHandler::handleRequestCommon(
             std::move(metadata), std::move(debugPayload), std::move(reqCtx)),
         errorCode.value());
     return;
-  }
-
-  auto data = std::move(payload).data();
-  // uncompress the request if it's compressed
-  if (auto compression = metadata.compression_ref()) {
-    auto result =
-        rocket::uncompressPayload(*metadata.compression_ref(), std::move(data));
-    if (!result) {
-      handleDecompressionFailure(
-          makeRequest(
-              std::move(metadata), std::move(debugPayload), std::move(reqCtx)),
-          std::move(result).error());
-      return;
-    }
-    data = std::move(result.value());
   }
 
   // check the checksum

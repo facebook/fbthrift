@@ -84,9 +84,7 @@ bool RocketStreamClientCallback::onFirstResponse(
   }
 
   connection_.sendPayload(
-      streamId_,
-      pack(std::move(firstResponse)).value(),
-      Flags::none().next(true));
+      streamId_, pack(std::move(firstResponse)), Flags::none().next(true));
 
   if (tokens) {
     return request(tokens);
@@ -102,7 +100,7 @@ void RocketStreamClientCallback::onFirstResponseError(
             if (encodedError.encoded.payload) {
               connection_.sendPayload(
                   streamId_,
-                  pack(std::move(encodedError.encoded)).value(),
+                  pack(std::move(encodedError.encoded)),
                   Flags::none().next(true).complete(true));
             } else {
               connection_.sendError(
@@ -124,17 +122,13 @@ bool RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
     scheduleTimeout();
   }
 
-  // compress the payload if needed
-  folly::Optional<CompressionAlgorithm> compression =
-      connection_.getNegotiatedCompressionAlgorithm();
-  if (compression.has_value() &&
-      payload.payload->computeChainDataLength() >=
-          connection_.getMinCompressBytes()) {
-    rocket::compressPayload(payload.metadata, payload.payload, *compression);
+  if (auto compression = connection_.getCompressionAlgorithm(
+          payload.payload->computeChainDataLength())) {
+    payload.metadata.compression_ref() = *compression;
   }
 
   connection_.sendPayload(
-      streamId_, pack(std::move(payload)).value(), Flags::none().next(true));
+      streamId_, pack(std::move(payload)), Flags::none().next(true));
   return true;
 }
 
@@ -170,7 +164,7 @@ void RocketStreamClientCallback::onStreamError(folly::exception_wrapper ew) {
 bool RocketStreamClientCallback::onStreamHeaders(HeadersPayload&& payload) {
   connection_.sendExt(
       streamId_,
-      pack(payload).value(),
+      pack(payload),
       Flags::none().ignore(true),
       ExtFrameType::HEADERS_PUSH);
   return true;

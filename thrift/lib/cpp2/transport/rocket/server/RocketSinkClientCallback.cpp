@@ -63,9 +63,7 @@ bool RocketSinkClientCallback::onFirstResponse(
   serverCallbackOrError_ = reinterpret_cast<intptr_t>(serverCallback);
 
   connection_.sendPayload(
-      streamId_,
-      pack(std::move(firstResponse)).value(),
-      Flags::none().next(true));
+      streamId_, pack(std::move(firstResponse)), Flags::none().next(true));
   return true;
 }
 
@@ -77,7 +75,7 @@ void RocketSinkClientCallback::onFirstResponseError(
             if (encodedError.encoded.payload) {
               connection_.sendPayload(
                   streamId_,
-                  pack(std::move(encodedError.encoded)).value(),
+                  pack(std::move(encodedError.encoded)),
                   Flags::none().next(true).complete(true));
             } else {
               connection_.sendError(
@@ -96,19 +94,14 @@ void RocketSinkClientCallback::onFirstResponseError(
 void RocketSinkClientCallback::onFinalResponse(StreamPayload&& finalResponse) {
   DCHECK(state_ == State::BothOpen || state_ == State::StreamOpen);
 
-  // compress the response if needed
-  folly::Optional<CompressionAlgorithm> compression =
-      connection_.getNegotiatedCompressionAlgorithm();
-  if (compression.has_value() &&
-      finalResponse.payload->computeChainDataLength() >=
-          connection_.getMinCompressBytes()) {
-    rocket::compressPayload(
-        finalResponse.metadata, finalResponse.payload, *compression);
+  if (auto compression = connection_.getCompressionAlgorithm(
+          finalResponse.payload->computeChainDataLength())) {
+    finalResponse.metadata.compression_ref() = *compression;
   }
 
   connection_.sendPayload(
       streamId_,
-      pack(std::move(finalResponse)).value(),
+      pack(std::move(finalResponse)),
       Flags::none().next(true).complete(true));
   auto state = state_;
   auto& connection = connection_;

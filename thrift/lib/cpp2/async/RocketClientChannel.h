@@ -154,8 +154,6 @@ class RocketClientChannel final : public ClientChannel {
       rclient_;
   uint16_t protocolId_{apache::thrift::protocol::T_COMPACT_PROTOCOL};
   std::chrono::milliseconds timeout_{kDefaultRpcTimeout};
-  folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;
-  folly::Optional<int32_t> autoCompressSizeLimit_;
 
   uint32_t maxInflightRequestsAndStreams_{std::numeric_limits<uint32_t>::max()};
   struct Shared {

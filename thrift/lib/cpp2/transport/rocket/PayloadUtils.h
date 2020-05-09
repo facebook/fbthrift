@@ -28,11 +28,16 @@
 namespace apache {
 namespace thrift {
 
-class RequestRpcMetadata;
-class ResponseRpcMetadata;
+struct RequestPayload {
+  RequestPayload(std::unique_ptr<folly::IOBuf> p, RequestRpcMetadata md)
+      : payload(std::move(p)), metadata(std::move(md)) {}
+
+  std::unique_ptr<folly::IOBuf> payload;
+  RequestRpcMetadata metadata;
+};
 
 namespace rocket {
-
+namespace detail {
 template <class Metadata>
 Payload makePayload(
     const Metadata& metadata,
@@ -44,6 +49,27 @@ extern template Payload makePayload<>(
 extern template Payload makePayload<>(
     const ResponseRpcMetadata&,
     std::unique_ptr<folly::IOBuf> data);
+extern template Payload makePayload<>(
+    const StreamPayloadMetadata&,
+    std::unique_ptr<folly::IOBuf> data);
+extern template Payload makePayload<>(
+    const HeadersPayloadMetadata&,
+    std::unique_ptr<folly::IOBuf> data);
+
+/**
+ * Helper method to compress the payload before sending to the remote endpoint.
+ */
+void compressPayload(
+    std::unique_ptr<folly::IOBuf>& data,
+    CompressionAlgorithm compression);
+
+/**
+ * Helper method to uncompress the request on server side.
+ */
+folly::Expected<std::unique_ptr<folly::IOBuf>, std::string> uncompressPayload(
+    CompressionAlgorithm compression,
+    std::unique_ptr<folly::IOBuf> data);
+} // namespace detail
 
 template <typename T>
 size_t unpackCompact(T& output, const folly::IOBuf* buffer) {
@@ -66,13 +92,6 @@ inline size_t unpackCompact(
   return 0;
 }
 
-/**
- * Helper method to uncompress the request on server side.
- */
-folly::Expected<std::unique_ptr<folly::IOBuf>, std::string> uncompressPayload(
-    CompressionAlgorithm compression,
-    std::unique_ptr<folly::IOBuf> data);
-
 template <class T>
 folly::Try<T> unpack(rocket::Payload&& payload) {
   return folly::makeTryWith([&] {
@@ -87,7 +106,7 @@ folly::Try<T> unpack(rocket::Payload&& payload) {
     auto data = std::move(payload).data();
     // uncompress the payload if needed
     if (auto compress = t.metadata.compression_ref()) {
-      auto result = uncompressPayload(*compress, std::move(data));
+      auto result = detail::uncompressPayload(*compress, std::move(data));
       if (!result) {
         folly::throw_exception<TApplicationException>(
             TApplicationException::INVALID_TRANSFORM,
@@ -118,38 +137,20 @@ inline std::unique_ptr<folly::IOBuf> packCompact(
   return std::move(data);
 }
 
-template <class T>
-folly::Try<rocket::Payload> pack(T&& payload) {
-  return folly::makeTryWith([&] {
-    return rocket::Payload::makeFromMetadataAndData(
-        packCompact(std::forward<T>(payload).metadata),
-        packCompact(std::forward<T>(payload).payload));
-  });
+template <typename Payload, typename Metadata>
+rocket::Payload pack(const Metadata& metadata, Payload&& payload) {
+  auto serializedPayload = packCompact(std::forward<Payload>(payload));
+  if (auto compress = metadata.compression_ref()) {
+    detail::compressPayload(serializedPayload, *compress);
+  }
+  return detail::makePayload(metadata, std::move(serializedPayload));
 }
 
-/**
- * Helper method to compress the payload before sending to the remote endpoint.
- */
-template <class Metadata>
-void compressPayload(
-    Metadata& metadata,
-    std::unique_ptr<folly::IOBuf>& data,
-    CompressionAlgorithm compression);
-
-extern template void compressPayload<>(
-    RequestRpcMetadata& metadata,
-    std::unique_ptr<folly::IOBuf>& data,
-    CompressionAlgorithm compression);
-
-extern template void compressPayload<>(
-    ResponseRpcMetadata& metadata,
-    std::unique_ptr<folly::IOBuf>& data,
-    CompressionAlgorithm compression);
-
-extern template void compressPayload<>(
-    StreamPayloadMetadata& metadata,
-    std::unique_ptr<folly::IOBuf>& data,
-    CompressionAlgorithm compression);
+template <class T>
+rocket::Payload pack(T&& payload) {
+  return pack(
+      std::forward<T>(payload).metadata, std::forward<T>(payload).payload);
+}
 } // namespace rocket
 } // namespace thrift
 } // namespace apache

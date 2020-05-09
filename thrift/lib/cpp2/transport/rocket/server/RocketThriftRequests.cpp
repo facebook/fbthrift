@@ -22,7 +22,6 @@
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/Function.h>
-#include <folly/compression/Compression.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 
@@ -52,15 +51,9 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
   if (!payload) {
     return {};
   }
-  // transform (e.g. compress) the response if needed
-  RocketServerConnection& connection = frameContext.connection();
-  folly::Optional<CompressionAlgorithm> compressionAlgo =
-      connection.getNegotiatedCompressionAlgorithm();
-  // only compress response if compressionAlgo is negotiated during TLS
-  // handshake and the response size is greater than minCompressTypes
-  if (compressionAlgo.has_value() &&
-      payload->computeChainDataLength() >= connection.getMinCompressBytes()) {
-    compressPayload(metadata, payload, *compressionAlgo);
+  if (auto compression = frameContext.connection().getCompressionAlgorithm(
+          payload->computeChainDataLength())) {
+    metadata.compression_ref() = *compression;
   }
   return {};
 }
@@ -107,7 +100,7 @@ void ThriftServerRequestResponse::sendThriftResponse(
   }
 
   context_.sendPayload(
-      makePayload(metadata, std::move(data)),
+      pack(metadata, std::move(data)),
       Flags::none().next(true).complete(true),
       cb);
 }
