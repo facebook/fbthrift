@@ -276,6 +276,10 @@ class t_java_generator : public t_oop_generator {
   std::string java_suppress_warnings_union();
   std::string java_suppress_warnings_struct();
   std::string java_suppress_warnings_service();
+  virtual boost::optional<std::string> java_struct_parent_class(
+      t_struct* tstruct,
+      StructGenParams params);
+
   virtual std::string type_name(
       t_type* ttype,
       bool in_container = false,

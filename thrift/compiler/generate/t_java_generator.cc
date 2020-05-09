@@ -76,6 +76,15 @@ string t_java_generator::java_package() {
 }
 
 /**
+ * @return String indicating the parent class for the generated struct
+ */
+boost::optional<string> t_java_generator::java_struct_parent_class(
+    t_struct* /* unused */,
+    StructGenParams params) {
+  return boost::make_optional(params.is_exception, std::string("Exception"));
+}
+
+/**
  * Prints standard java imports for a thrift service
  *
  * @return List of imports for Java types that are used in here
@@ -1225,9 +1234,11 @@ void t_java_generator::generate_java_struct_definition(
               << (params.in_class ? "static " : "") << "class "
               << tstruct->get_name() << " ";
 
-  if (params.is_exception) {
-    out << "extends Exception ";
+  boost::optional<string> parent = java_struct_parent_class(tstruct, params);
+  if (parent) {
+    out << "extends " << *parent << " ";
   }
+
   out << "implements TBase, java.io.Serializable, Cloneable";
 
   if (is_comparable(tstruct)) {
