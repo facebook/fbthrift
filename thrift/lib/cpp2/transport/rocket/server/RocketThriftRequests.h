@@ -56,7 +56,8 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
       std::shared_ptr<folly::RequestContext> rctx,
       RequestsRegistry& reqRegistry,
       std::unique_ptr<folly::IOBuf> debugPayload,
-      RocketServerFrameContext&& context);
+      RocketServerFrameContext&& context,
+      int32_t version);
 
   void sendThriftResponse(
       ResponseRpcMetadata&&,
@@ -78,6 +79,7 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
  private:
   folly::EventBase& evb_;
   RocketServerFrameContext context_;
+  const int32_t version_;
 };
 
 // Object corresponding to rsocket REQUEST_FNF request (one-way request) handled
@@ -131,6 +133,7 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
       RequestsRegistry& reqRegistry,
       std::unique_ptr<folly::IOBuf> debugPayload,
       RocketServerFrameContext&& context,
+      int32_t version,
       RocketStreamClientCallback* clientCallback,
       std::shared_ptr<AsyncProcessor> cpp2Processor);
 
@@ -166,6 +169,7 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
  private:
   folly::EventBase& evb_;
   RocketServerFrameContext context_;
+  const int32_t version_;
   RocketStreamClientCallback* clientCallback_;
 
   const std::shared_ptr<AsyncProcessor> cpp2Processor_;
@@ -185,6 +189,7 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
       RequestsRegistry& reqRegistry,
       std::unique_ptr<folly::IOBuf> debugPayload,
       RocketServerFrameContext&& context,
+      int32_t version,
       RocketSinkClientCallback* clientCallback,
       std::shared_ptr<AsyncProcessor> cpp2Processor);
 
@@ -219,6 +224,7 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
  private:
   folly::EventBase& evb_;
   RocketServerFrameContext context_;
+  const int32_t version_;
   RocketSinkClientCallback* clientCallback_;
 
   const std::shared_ptr<AsyncProcessor> cpp2Processor_;

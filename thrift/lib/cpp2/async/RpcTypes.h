@@ -46,5 +46,30 @@ struct LegacySerializedRequest {
   std::unique_ptr<folly::IOBuf> buffer;
 };
 
+struct SerializedResponse {
+  explicit SerializedResponse(std::unique_ptr<folly::IOBuf> buffer_)
+      : buffer(std::move(buffer_)) {}
+
+  std::unique_ptr<folly::IOBuf> buffer;
+};
+
+struct LegacySerializedResponse {
+  /* implicit */ LegacySerializedResponse(std::unique_ptr<folly::IOBuf> buffer_)
+      : buffer(std::move(buffer_)) {}
+
+  LegacySerializedResponse(
+      uint16_t protocolId,
+      folly::StringPiece methodName,
+      SerializedResponse&& serializedResponse);
+
+  LegacySerializedResponse(
+      uint16_t protocolId,
+      int32_t seqid,
+      folly::StringPiece methodName,
+      SerializedResponse&& serializedResponse);
+
+  std::unique_ptr<folly::IOBuf> buffer;
+};
+
 } // namespace thrift
 } // namespace apache

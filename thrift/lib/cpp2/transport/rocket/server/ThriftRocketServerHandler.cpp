@@ -123,6 +123,21 @@ void ThriftRocketServerHandler::handleSetupFrame(
           ErrorCode::INVALID_SETUP,
           "Error deserializing SETUP payload: underflow"));
     }
+
+    auto minVersion = meta->minVersion_ref().value_or(0);
+    auto maxVersion = meta->maxVersion_ref().value_or(0);
+
+    if (minVersion > version_) {
+      return connection.close(folly::make_exception_wrapper<RocketException>(
+          ErrorCode::INVALID_SETUP, "Incompatible Rocket version"));
+    }
+
+    if (maxVersion < 0) {
+      return connection.close(folly::make_exception_wrapper<RocketException>(
+          ErrorCode::INVALID_SETUP, "Incompatible Rocket version"));
+    }
+    version_ = std::min(version_, maxVersion);
+
     eventBase_ = connContext_.getTransport()->getEventBase();
     for (const auto& h : setupFrameHandlers_) {
       auto processorInfo = h->tryHandle(*meta);
@@ -181,7 +196,8 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
         std::move(ctx),
         *requestsRegistry_,
         std::move(debugPayload),
-        std::move(context));
+        std::move(context),
+        version_);
   };
 
   handleRequestCommon(
@@ -230,6 +246,7 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
         *requestsRegistry_,
         std::move(debugPayload),
         std::move(context),
+        version_,
         clientCallback,
         cpp2Processor_);
   };
@@ -254,6 +271,7 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
         *requestsRegistry_,
         std::move(debugPayload),
         std::move(context),
+        version_,
         clientCallback,
         cpp2Processor_);
   };

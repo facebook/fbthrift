@@ -44,18 +44,98 @@ namespace thrift {
 namespace rocket {
 
 namespace {
+template <typename ProtocolReader>
+FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
+    ResponseRpcMetadata& metadata,
+    std::unique_ptr<folly::IOBuf>& payload) noexcept {
+  try {
+    std::string methodNameIgnore;
+    MessageType mtype;
+    int32_t seqIdIgnore;
+    ProtocolReader reader;
+    reader.setInput(payload.get());
+    reader.readMessageBegin(methodNameIgnore, mtype, seqIdIgnore);
+
+    if (mtype != T_REPLY) {
+      return {};
+    }
+
+    auto prefixSize = reader.getCursorPosition();
+
+    protocol::TType ftype;
+    int16_t fid;
+    reader.readStructBegin(methodNameIgnore);
+    reader.readFieldBegin(methodNameIgnore, ftype, fid);
+
+    while (payload->length() < prefixSize) {
+      prefixSize -= payload->length();
+      payload = payload->pop();
+    }
+    payload->trimStart(prefixSize);
+
+    PayloadMetadata payloadMetadata;
+    if (fid == 0) {
+      payloadMetadata.set_responseMetadata(PayloadResponseMetadata());
+    } else {
+      PayloadExceptionMetadataBase exceptionMetadataBase;
+
+      if (auto otherMetadataRef = metadata.otherMetadata_ref()) {
+        if (auto uexPtr = folly::get_ptr(*otherMetadataRef, "uex")) {
+          exceptionMetadataBase.name_utf8_ref() = *uexPtr;
+          otherMetadataRef->erase("uex");
+        }
+        if (auto uexwPtr = folly::get_ptr(*otherMetadataRef, "uexw")) {
+          exceptionMetadataBase.what_utf8_ref() = *uexwPtr;
+          otherMetadataRef->erase("uexw");
+        }
+      }
+
+      PayloadExceptionMetadata exceptionMetadata;
+      exceptionMetadata.set_declaredException(
+          PayloadDeclaredExceptionMetadata());
+
+      exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
+      payloadMetadata.set_exceptionMetadata(std::move(exceptionMetadataBase));
+    }
+    metadata.payloadMetadata_ref() = std::move(payloadMetadata);
+  } catch (...) {
+    return TApplicationException(fmt::format(
+        "Invalid response payload envelope: {}",
+        folly::exceptionStr(std::current_exception()).toStdString()));
+  }
+  return {};
+}
+
 FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
     ResponseRpcMetadata& metadata,
     std::unique_ptr<folly::IOBuf>& payload,
-    RocketServerFrameContext& frameContext) {
+    RocketServerFrameContext& frameContext,
+    apache::thrift::protocol::PROTOCOL_TYPES protType,
+    int32_t version) noexcept {
   if (!payload) {
     return {};
   }
+
   if (auto compression = frameContext.connection().getCompressionAlgorithm(
           payload->computeChainDataLength())) {
     metadata.compression_ref() = *compression;
   }
-  return {};
+
+  DCHECK(version >= 0);
+  if (version == 0) {
+    return {};
+  }
+
+  switch (protType) {
+    case protocol::T_BINARY_PROTOCOL:
+      return processFirstResponseHelper<BinaryProtocolReader>(
+          metadata, payload);
+    case protocol::T_COMPACT_PROTOCOL:
+      return processFirstResponseHelper<CompactProtocolReader>(
+          metadata, payload);
+    default:
+      return TApplicationException("Invalid response payload protocol id");
+  }
 }
 } // namespace
 
@@ -68,10 +148,12 @@ ThriftServerRequestResponse::ThriftServerRequestResponse(
     std::shared_ptr<folly::RequestContext> rctx,
     RequestsRegistry& reqRegistry,
     std::unique_ptr<folly::IOBuf> debugPayload,
-    RocketServerFrameContext&& context)
+    RocketServerFrameContext&& context,
+    int32_t version)
     : ThriftRequestCore(serverConfigs, std::move(metadata), connContext),
       evb_(evb),
-      context_(std::move(context)) {
+      context_(std::move(context)),
+      version_(version) {
   new (&debugStubToInit) RequestsRegistry::DebugStub(
       reqRegistry,
       *this,
@@ -94,7 +176,8 @@ void ThriftServerRequestResponse::sendThriftResponse(
     return;
   }
 
-  if (auto error = processFirstResponse(metadata, data, context_)) {
+  if (auto error = processFirstResponse(
+          metadata, data, context_, getProtoId(), version_)) {
     sendErrorWrapped(std::move(error), kUnknownErrorCode);
     return;
   }
@@ -163,11 +246,13 @@ ThriftServerRequestStream::ThriftServerRequestStream(
     RequestsRegistry& reqRegistry,
     std::unique_ptr<folly::IOBuf> debugPayload,
     RocketServerFrameContext&& context,
+    int32_t version,
     RocketStreamClientCallback* clientCallback,
     std::shared_ptr<AsyncProcessor> cpp2Processor)
     : ThriftRequestCore(serverConfigs, std::move(metadata), connContext),
       evb_(evb),
       context_(std::move(context)),
+      version_(version),
       clientCallback_(clientCallback),
       cpp2Processor_(std::move(cpp2Processor)) {
   new (&debugStubToInit) RequestsRegistry::DebugStub(
@@ -195,7 +280,8 @@ bool ThriftServerRequestStream::sendStreamThriftResponse(
     sendSerializedError(std::move(metadata), std::move(data));
     return false;
   }
-  if (auto error = processFirstResponse(metadata, data, context_)) {
+  if (auto error = processFirstResponse(
+          metadata, data, context_, getProtoId(), version_)) {
     sendErrorWrapped(std::move(error), kUnknownErrorCode);
     return false;
   }
@@ -212,7 +298,8 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> data,
     apache::thrift::detail::ServerStreamFactory&& stream) noexcept {
-  if (auto error = processFirstResponse(metadata, data, context_)) {
+  if (auto error = processFirstResponse(
+          metadata, data, context_, getProtoId(), version_)) {
     sendErrorWrapped(std::move(error), kUnknownErrorCode);
     return;
   }
@@ -228,7 +315,8 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
 void ThriftServerRequestStream::sendSerializedError(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> exbuf) noexcept {
-  if (auto error = processFirstResponse(metadata, exbuf, context_)) {
+  if (auto error = processFirstResponse(
+          metadata, exbuf, context_, getProtoId(), version_)) {
     sendErrorWrapped(std::move(error), kUnknownErrorCode);
     return;
   }
@@ -248,11 +336,13 @@ ThriftServerRequestSink::ThriftServerRequestSink(
     RequestsRegistry& reqRegistry,
     std::unique_ptr<folly::IOBuf> debugPayload,
     RocketServerFrameContext&& context,
+    int32_t version,
     RocketSinkClientCallback* clientCallback,
     std::shared_ptr<AsyncProcessor> cpp2Processor)
     : ThriftRequestCore(serverConfigs, std::move(metadata), connContext),
       evb_(evb),
       context_(std::move(context)),
+      version_(version),
       clientCallback_(clientCallback),
       cpp2Processor_(std::move(cpp2Processor)) {
   new (&debugStubToInit) RequestsRegistry::DebugStub(
@@ -275,7 +365,8 @@ void ThriftServerRequestSink::sendThriftResponse(
 void ThriftServerRequestSink::sendSerializedError(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> exbuf) noexcept {
-  if (auto error = processFirstResponse(metadata, exbuf, context_)) {
+  if (auto error = processFirstResponse(
+          metadata, exbuf, context_, getProtoId(), version_)) {
     sendErrorWrapped(std::move(error), kUnknownErrorCode);
     return;
   }
@@ -294,7 +385,8 @@ void ThriftServerRequestSink::sendSinkThriftResponse(
     sendSerializedError(std::move(metadata), std::move(data));
     return;
   }
-  if (auto error = processFirstResponse(metadata, data, context_)) {
+  if (auto error = processFirstResponse(
+          metadata, data, context_, getProtoId(), version_)) {
     sendErrorWrapped(std::move(error), kUnknownErrorCode);
     return;
   }

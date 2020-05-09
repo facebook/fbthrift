@@ -27,7 +27,8 @@ namespace thrift {
 namespace {
 
 template <typename ProtocolWriter>
-std::unique_ptr<folly::IOBuf> serializeRequest(
+std::unique_ptr<folly::IOBuf> addEnvelope(
+    MessageType mtype,
     int32_t seqid,
     folly::StringPiece methodName,
     std::unique_ptr<folly::IOBuf> buf) {
@@ -47,7 +48,7 @@ std::unique_ptr<folly::IOBuf> serializeRequest(
 
     queue.append(std::move(buf), false);
     writer.setOutput(&queue);
-    writer.writeMessageBegin(methodName, T_CALL, seqid);
+    writer.writeMessageBegin(methodName, mtype, seqid);
 
     // Move the new data to come right before the old data and restore the
     // old tail pointer.
@@ -60,12 +61,31 @@ std::unique_ptr<folly::IOBuf> serializeRequest(
     auto messageBeginBuf = folly::IOBuf::create(messageBeginSizeUpperBound);
     queue.append(std::move(messageBeginBuf));
     writer.setOutput(&queue);
-    writer.writeMessageBegin(methodName, T_CALL, seqid);
+    writer.writeMessageBegin(methodName, mtype, seqid);
     queue.append(std::move(buf));
     return queue.move();
   }
 
   // We skip writeMessageEnd because for both Binary and Compact it's a noop.
+}
+
+std::unique_ptr<folly::IOBuf> addEnvelope(
+    uint16_t protocolId,
+    MessageType mtype,
+    int32_t seqid,
+    folly::StringPiece methodName,
+    std::unique_ptr<folly::IOBuf> buf) {
+  switch (protocolId) {
+    case protocol::T_BINARY_PROTOCOL:
+      return addEnvelope<BinaryProtocolWriter>(
+          mtype, seqid, methodName, std::move(buf));
+
+    case protocol::T_COMPACT_PROTOCOL:
+      return addEnvelope<CompactProtocolWriter>(
+          mtype, seqid, methodName, std::move(buf));
+    default:
+      LOG(FATAL) << "Unsupported protocolId: " << protocolId;
+  }
 }
 } // namespace
 
@@ -74,19 +94,12 @@ LegacySerializedRequest::LegacySerializedRequest(
     int32_t seqid,
     folly::StringPiece methodName,
     SerializedRequest&& serializedRequest)
-    : buffer([&] {
-        switch (protocolId) {
-          case protocol::T_BINARY_PROTOCOL:
-            return serializeRequest<BinaryProtocolWriter>(
-                seqid, methodName, std::move(serializedRequest.buffer));
-
-          case protocol::T_COMPACT_PROTOCOL:
-            return serializeRequest<CompactProtocolWriter>(
-                seqid, methodName, std::move(serializedRequest.buffer));
-          default:
-            LOG(FATAL) << "Unsupported protocolId: " << protocolId;
-        }
-      }()) {}
+    : buffer(addEnvelope(
+          protocolId,
+          T_CALL,
+          seqid,
+          methodName,
+          std::move(serializedRequest.buffer))) {}
 
 LegacySerializedRequest::LegacySerializedRequest(
     uint16_t protocolId,
@@ -97,5 +110,27 @@ LegacySerializedRequest::LegacySerializedRequest(
           0,
           methodName,
           std::move(serializedRequest)) {}
+
+LegacySerializedResponse::LegacySerializedResponse(
+    uint16_t protocolId,
+    int32_t seqid,
+    folly::StringPiece methodName,
+    SerializedResponse&& serializedResponse)
+    : buffer(addEnvelope(
+          protocolId,
+          T_REPLY,
+          seqid,
+          methodName,
+          std::move(serializedResponse.buffer))) {}
+
+LegacySerializedResponse::LegacySerializedResponse(
+    uint16_t protocolId,
+    folly::StringPiece methodName,
+    SerializedResponse&& serializedResponse)
+    : LegacySerializedResponse(
+          protocolId,
+          0,
+          methodName,
+          std::move(serializedResponse)) {}
 } // namespace thrift
 } // namespace apache

@@ -125,6 +125,28 @@ struct RequestRpcMetadata {
   14: optional CompressionAlgorithm compression;
 }
 
+struct PayloadResponseMetadata {
+}
+
+struct PayloadDeclaredExceptionMetadata {
+  1: optional i32 exceptionId;
+}
+
+union PayloadExceptionMetadata {
+  1: PayloadDeclaredExceptionMetadata declaredException;
+}
+
+struct PayloadExceptionMetadataBase {
+  1: optional string name_utf8;
+  2: optional string what_utf8;
+  3: optional PayloadExceptionMetadata metadata;
+}
+
+union PayloadMetadata {
+  1: PayloadResponseMetadata responseMetadata;
+  2: PayloadExceptionMetadataBase exceptionMetadata;
+}
+
 // RPC metadata sent from the server to the client.  The lifetime of
 // objects of this type starts at the generated server code and ends
 // as a return value to the application code that initiated the RPC on
@@ -150,6 +172,8 @@ struct ResponseRpcMetadata {
   5: optional i32 (cpp.type = "std::uint32_t") crc32c;
   // The CompressionAlgorithm used to compress responses (if any)
   6: optional CompressionAlgorithm compression;
+  // Additional metadata for the response payload
+  7: optional PayloadMetadata payloadMetadata;
 }
 
 struct StreamPayloadMetadata {
@@ -175,6 +199,10 @@ struct RequestSetupMetadata {
       (cpp.template = "apache::thrift::MetadataOpaqueMap") opaque;
   // Indicates client wants to use admin interface
   2: optional InterfaceKind interfaceKind;
+  // Min Rocket protocol version supported by the client
+  3: optional i32 minVersion;
+  // Max Rocket protocol version supported by the client
+  4: optional i32 maxVersion;
 }
 
 struct HeadersPayloadContent {
