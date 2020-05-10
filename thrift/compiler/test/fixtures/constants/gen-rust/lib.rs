@@ -156,7 +156,7 @@ pub mod consts {
     }
 
     lazy_static::lazy_static! {
-        pub static ref u_1_3: crate::types::union1 = ;
+        pub static ref u_1_3: crate::types::union1 = crate::types::union1::default();
     }
 
     lazy_static::lazy_static! {
@@ -183,7 +183,7 @@ pub mod consts {
     }
 
     lazy_static::lazy_static! {
-        pub static ref u_2_6: crate::types::union2 = crate::types::union2::u();
+        pub static ref u_2_6: crate::types::union2 = crate::types::union2::u(crate::types::union1::default());
     }
 
     pub const apostrophe: &str = "'";

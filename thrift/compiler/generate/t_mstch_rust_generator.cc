@@ -730,13 +730,21 @@ class mstch_rust_value : public mstch_base {
   }
   mstch::node struct_fields();
   mstch::node is_union() {
-    return type_->is_union() &&
-        const_value_->get_type() == value_type::CV_MAP &&
-        const_value_->get_map().size() == 1 &&
+    if (!type_->is_union() || const_value_->get_type() != value_type::CV_MAP) {
+      return false;
+    }
+    if (const_value_->get_map().empty()) {
+      // value will be the union's Default
+      return true;
+    }
+    return const_value_->get_map().size() == 1 &&
         const_value_->get_map().at(0).first->get_type() ==
         value_type::CV_STRING;
   }
   mstch::node union_variant() {
+    if (const_value_->get_map().empty()) {
+      return mstch::node();
+    }
     return const_value_->get_map().at(0).first->get_string();
   }
   mstch::node union_value() {

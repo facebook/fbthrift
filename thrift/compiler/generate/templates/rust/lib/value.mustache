@@ -95,9 +95,14 @@
         {{value:indent}}}{{!
 }}{{/value:struct?}}{{!
 }}{{#value:union?}}{{!
-    }}{{>lib/type}}::{{value:unionVariant}}({{!
-        }}{{#value:unionValue}}{{>lib/value}}{{/value:unionValue}}{{!
-    }}){{!
+    }}{{#value:unionVariant}}{{!
+        }}{{>lib/type}}::{{value:unionVariant}}({{!
+            }}{{#value:unionValue}}{{>lib/value}}{{/value:unionValue}}{{!
+        }}){{!
+    }}{{/value:unionVariant}}{{!
+    }}{{^value:unionVariant}}{{!
+        }}{{>lib/type}}::default(){{!
+    }}{{/value:unionVariant}}{{!
 }}{{/value:union?}}{{!
 }}{{#value:enum?}}{{!
     }}{{value:enumPackage}}::types::{{value:enumName}}{{!
