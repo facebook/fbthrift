@@ -63,7 +63,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.maxDiff = None
 
     def run_thrift(self, *args):
-        argsx = [thrift, "--gen", "cpp2"]
+        argsx = [thrift, "--gen", "mstch_cpp2"]
         argsx.extend(args)
         pipe = subprocess.PIPE
         p = subprocess.Popen(argsx, stdout=pipe, stderr=pipe)
@@ -231,4 +231,85 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             "[ERROR:foo.thrift:2] (last token was 'mixin')\n"
             "Mixin support is not enabled\n"
+        )
+
+    def test_mixin_duplicated_members(self):
+        write_file("foo.thrift", textwrap.dedent("""\
+            struct A { 1: i32 i }
+            struct B { 2: i64 i }
+            struct C {
+              1: mixin A a;
+              2: mixin B b;
+            }
+        """))
+
+        ret, out, err = self.run_thrift("--enable-experimental-mixins", "foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            '[FAILURE:foo.thrift:5] Field `a.i` and `b.i` can not have same name in struct `C`\n',
+        )
+
+        write_file("bar.thrift", textwrap.dedent("""\
+            struct A { 1: i32 i }
+            struct B {
+              1: mixin A a;
+              2: i64 i;
+            }
+        """))
+
+        ret, out, err = self.run_thrift("--enable-experimental-mixins", "bar.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            '[FAILURE:bar.thrift:3] Field `B.i` and `a.i` can not have same name in struct `B`\n',
+        )
+
+    def test_mixin_nonstruct_members(self):
+        write_file("foo.thrift", textwrap.dedent("""\
+            struct A {
+              1: mixin i32 i;
+            }
+        """))
+
+        ret, out, err = self.run_thrift("--enable-experimental-mixins", "foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            '[FAILURE:foo.thrift:2] Mixin field `i` is not a struct but i32\n',
+        )
+
+    def test_mixin_in_union(self):
+        write_file("foo.thrift", textwrap.dedent("""\
+            struct A { 1: i32 i }
+            union B {
+              1: mixin A a;
+            }
+        """))
+
+        ret, out, err = self.run_thrift("--enable-experimental-mixins", "foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            '[FAILURE:foo.thrift:2] Union `B` can not have mixin field `a`\n',
+        )
+
+    def test_union_as_mixin(self):
+        write_file("foo.thrift", textwrap.dedent("""\
+            union A { 1: i32 i }
+            struct B {
+              1: mixin A a;
+            }
+        """))
+
+        ret, out, err = self.run_thrift("--enable-experimental-mixins", "foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            '[FAILURE:foo.thrift:3] Mixin field `a` is not a struct but union\n',
         )

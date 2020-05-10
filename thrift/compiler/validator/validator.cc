@@ -147,6 +147,7 @@ static void fill_validators(validator_list& vs) {
   vs.add<enum_values_set_validator>();
   vs.add<exception_list_is_all_exceptions_validator>();
   vs.add<union_no_required_fields_validator>();
+  vs.add<mixin_fields_validator>();
 
   // add more validators here ...
 }
@@ -283,6 +284,53 @@ bool union_no_required_fields_validator::visit(t_struct* s) {
       ss << "Unions cannot contain fields with required qualifier. Remove "
          << "required qualifier from field '" << field->get_name() << "'";
       add_error(field->get_lineno(), ss.str());
+    }
+  }
+  return true;
+}
+
+bool mixin_fields_validator::visit(t_struct* s) {
+  bool foundError = false;
+  for (auto* member : s->get_members()) {
+    if (member->is_mixin()) {
+      if (s->is_union()) {
+        add_error(
+            s->get_lineno(),
+            "Union `" + s->get_name() + "` can not have mixin field `" +
+                member->get_name() + '`');
+        foundError = true;
+      } else if (!member->get_type()->is_struct()) {
+        add_error(
+            member->get_lineno(),
+            "Mixin field `" + member->get_name() + "` is not a struct but " +
+                member->get_type()->get_name());
+        foundError = true;
+      } else if (member->get_type()->is_union()) {
+        add_error(
+            member->get_lineno(),
+            "Mixin field `" + member->get_name() + "` is not a struct but union");
+        foundError = true;
+      }
+    }
+  }
+
+  if (foundError) {
+    return true;
+  }
+
+  std::map<std::string, std::string> memberToParent;
+  for (auto* member : s->get_members()) {
+    memberToParent[member->get_name()] = s->get_name();
+  }
+  for (auto i : s->get_mixins_and_members()) {
+    auto res =
+        memberToParent.emplace(i.member->get_name(), i.mixin->get_name());
+    if (!res.second) {
+      add_error(
+          i.mixin->get_lineno(),
+          "Field `" + res.first->second + "." + i.member->get_name() + "` and `" +
+              i.mixin->get_name() + "." + i.member->get_name() +
+              "` can not have same name in struct `" + s->get_name() + '`');
     }
   }
   return true;

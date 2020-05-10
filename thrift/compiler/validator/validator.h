@@ -155,6 +155,14 @@ class union_no_required_fields_validator : virtual public validator {
    */
   bool visit(t_struct* s) override;
 };
+
+class mixin_fields_validator : virtual public validator {
+ public:
+  using validator::visit;
+
+  bool visit(t_struct* s) override;
+};
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

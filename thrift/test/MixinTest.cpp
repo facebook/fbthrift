@@ -23,4 +23,18 @@ TEST(Mixin, Simple) {
   s.m2_ref()->field2_ref() = "2";
   s.m3_ref()->field3_ref() = "3";
   s.field4_ref() = "4";
+  EXPECT_EQ(s.field1_ref().value(), "1");
+  EXPECT_EQ(s.field2_ref().value(), "2");
+  EXPECT_EQ(s.field3_ref().value(), "3");
+  EXPECT_EQ(s.field4_ref().value(), "4");
+
+  s.field1_ref() = "11";
+  s.field2_ref() = "22";
+  s.field3_ref() = "33";
+  s.field4_ref() = "44";
+
+  EXPECT_EQ(s.m2_ref()->m1_ref()->field1_ref().value(), "11");
+  EXPECT_EQ(s.m2_ref()->field2_ref().value(), "22");
+  EXPECT_EQ(s.m3_ref()->field3_ref().value(), "33");
+  EXPECT_EQ(s.field4_ref().value(), "44");
 }

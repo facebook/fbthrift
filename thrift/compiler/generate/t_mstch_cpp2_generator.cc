@@ -783,6 +783,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:fatal_annotations", &mstch_cpp2_struct::fatal_annotations},
             {"struct:legacy_type_id", &mstch_cpp2_struct::get_legacy_type_id},
             {"struct:metadata_name", &mstch_cpp2_struct::metadata_name},
+            {"struct:mixin_fields", &mstch_cpp2_struct::mixin_fields},
         });
   }
   mstch::node filtered_fields() {
@@ -831,6 +832,16 @@ class mstch_cpp2_struct : public mstch_struct {
         generators_,
         cache_);
   }
+
+  mstch::node mixin_fields() {
+    mstch::array fields;
+    for (auto i : strct_->get_mixins_and_members()) {
+      fields.push_back(mstch::map{{"mixin:name", i.mixin->get_name()},
+                                  {"mixin:field_name", i.member->get_name()}});
+    }
+    return fields;
+  }
+
   mstch::node is_struct_orderable() {
     return context_->is_orderable(*strct_) &&
         !strct_->annotations_.count("no_default_comparators");
