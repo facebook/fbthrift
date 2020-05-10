@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/server/VisitorHelper.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
@@ -326,6 +327,24 @@ void ThriftRocketServerHandler::handleRequestCommon(
         errorCode.value());
     return;
   }
+  auto preprocessResult = serverConfigs_->preprocess(
+      metadata.otherMetadata_ref() ? &*metadata.otherMetadata_ref() : nullptr,
+      &*metadata.name_ref());
+  if (UNLIKELY(preprocessResult.has_value())) {
+    auto req = makeRequest(
+        std::move(metadata), std::move(debugPayload), std::move(reqCtx));
+    preprocessResult->apply_visitor(
+        apache::thrift::detail::VisitorHelper()
+            .with([&](AppClientException& ace) {
+              handleAppError(
+                  std::move(req), ace.name(), ace.getMessage(), true);
+            })
+            .with([&](const AppServerException& ase) {
+              handleAppError(
+                  std::move(req), ase.name(), ase.getMessage(), false);
+            }));
+    return;
+  }
 
   // check the checksum
   const bool badChecksum = metadata.crc32c_ref() &&
@@ -410,8 +429,24 @@ void ThriftRocketServerHandler::handleRequestOverloadedServer(
   }
   request->sendErrorWrapped(
       folly::make_exception_wrapper<TApplicationException>(
-          TApplicationException::LOADSHEDDING, "Loadshedding request"),
+          TApplicationException::LOADSHEDDING, "loadshedding request"),
       kOverloadedErrorCode);
+}
+
+void ThriftRocketServerHandler::handleAppError(
+    ThriftRequestCoreUniquePtr request,
+    const std::string& name,
+    const std::string& message,
+    bool isClientError) {
+  static const std::string headerEx = "uex";
+  static const std::string headerExWhat = "uexw";
+  auto header = request->getRequestContext()->getHeader();
+  header->setHeader(headerEx, name);
+  header->setHeader(headerExWhat, message);
+  request->sendErrorWrapped(
+      folly::make_exception_wrapper<TApplicationException>(
+          TApplicationException::UNKNOWN, std::move(message)),
+      isClientError ? kAppClientErrorCode : kAppServerErrorCode);
 }
 
 void ThriftRocketServerHandler::handleServerShutdown(

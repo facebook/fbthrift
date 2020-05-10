@@ -263,8 +263,16 @@ class ProxygenThriftServer : public BaseThriftServer,
   };
 
   folly::Optional<std::string> checkOverload(
-      const transport::THeader::StringToStringMap* readHeaders = nullptr,
-      const std::string* method = nullptr) const final;
+      const transport::THeader::StringToStringMap*,
+      const std::string*) const override {
+    return {};
+  }
+
+  PreprocessResult preprocess(
+      const transport::THeader::StringToStringMap*,
+      const std::string*) const override {
+    return {};
+  }
 
   /**
    * Get the number of connections dropped by the AsyncServerSocket

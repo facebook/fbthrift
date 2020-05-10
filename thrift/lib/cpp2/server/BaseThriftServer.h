@@ -61,6 +61,10 @@ using IsOverloadedFunc = folly::Function<bool(
     const transport::THeader::StringToStringMap*,
     const std::string*) const>;
 
+using PreprocessFunc = folly::Function<PreprocessResult(
+    const transport::THeader::StringToStringMap*,
+    const std::string*) const>;
+
 template <typename T>
 class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
  public:
@@ -265,6 +269,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   std::atomic<server::TServerObserver*> observerPtr_{nullptr};
 
   IsOverloadedFunc isOverloaded_;
+  PreprocessFunc preprocess_;
   std::function<int64_t(const std::string&)> getLoad_;
 
   enum class InjectedFailure { NONE, ERROR, DROP, DISCONNECT };
@@ -867,6 +872,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   void setIsOverloaded(IsOverloadedFunc isOverloaded) {
     isOverloaded_ = std::move(isOverloaded);
+  }
+
+  void setPreprocess(PreprocessFunc preprocess) {
+    preprocess_ = std::move(preprocess);
   }
 
   void setMethodsBypassMaxRequestsLimit(

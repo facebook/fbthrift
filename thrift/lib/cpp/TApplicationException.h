@@ -274,6 +274,39 @@ class TApplicationException : public TException {
   TApplicationExceptionType type_;
 };
 
+/*
+ * @AppClientError
+ * An error Thrift application can return from preprocess callback.
+ * Indicates the error has been caused by the client
+ */
+struct AppClientException : public TApplicationException {
+  AppClientException(std::string&& name, std::string&& message)
+      : TApplicationException(std::move(message)), name_(std::move(name)) {}
+  const auto& name() const noexcept {
+    return name_;
+  }
+
+ private:
+  std::string name_;
+};
+
+/*
+ * @AppServerError
+ * An error Thrift application can return from preprocess callback.
+ * Indicates the server is aware it has encountered an error and is incapable
+ * of performing the request.
+ */
+struct AppServerException : TApplicationException {
+  AppServerException(std::string&& name, std::string&& message)
+      : TApplicationException(std::move(message)), name_(std::move(name)) {}
+  const auto& name() const noexcept {
+    return name_;
+  }
+
+ private:
+  std::string name_;
+};
+
 } // namespace thrift
 } // namespace apache
 

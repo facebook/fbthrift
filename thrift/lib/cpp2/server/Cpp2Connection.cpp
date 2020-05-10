@@ -22,6 +22,7 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/server/VisitorHelper.h>
 #include <thrift/lib/cpp2/server/admission_strategy/AdmissionStrategy.h>
 
 namespace apache {
@@ -178,6 +179,22 @@ bool Cpp2Connection::pending() {
   return transport_ ? transport_->isPending() : false;
 }
 
+void Cpp2Connection::handleAppError(
+    std::unique_ptr<HeaderServerChannel::HeaderRequest> req,
+    const std::string& name,
+    const std::string& message,
+    bool isClientError) {
+  static const std::string headerEx = "uex";
+  static const std::string headerExWhat = "uexw";
+  req->getHeader()->setHeader(headerEx, name);
+  req->getHeader()->setHeader(headerExWhat, message);
+  killRequest(
+      std::move(req),
+      TApplicationException::UNKNOWN,
+      isClientError ? kAppClientErrorCode : kAppServerErrorCode,
+      message.c_str());
+}
+
 void Cpp2Connection::killRequest(
     std::unique_ptr<HeaderServerChannel::HeaderRequest> req,
     TApplicationException::TApplicationExceptionType reason,
@@ -292,13 +309,28 @@ void Cpp2Connection::requestReceived(
   const auto msgBegin = apache::thrift::detail::ap::deserializeMessageBegin(
       *hreq->getBuf(), protoId);
   const std::string& methodName = msgBegin.methodName;
-  if (auto errorCode = server->checkOverload(
+  if (auto overloadResult = server->checkOverload(
           &hreq->getHeader()->getHeaders(), &methodName)) {
     killRequest(
         std::move(hreq),
-        TApplicationException::TApplicationExceptionType::LOADSHEDDING,
+        TApplicationException::LOADSHEDDING,
         kOverloadedErrorCode,
         "loadshedding request");
+    return;
+  }
+
+  if (auto preprocessResult =
+          server->preprocess(&hreq->getHeader()->getHeaders(), &methodName)) {
+    preprocessResult.value().apply_visitor(
+        detail::VisitorHelper() //
+            .with([&](AppClientException& ace) {
+              handleAppError(
+                  std::move(hreq), ace.name(), ace.getMessage(), true);
+            })
+            .with([&](AppServerException& ase) {
+              handleAppError(
+                  std::move(hreq), ase.name(), ase.getMessage(), false);
+            }));
     return;
   }
 

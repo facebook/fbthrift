@@ -71,6 +71,12 @@ class ServerConfigsMock : public ServerConfigs {
     return {};
   }
 
+  PreprocessResult preprocess(
+      const transport::THeader::StringToStringMap*,
+      const std::string*) const override {
+    return {};
+  }
+
  public:
   uint64_t maxResponseSize_{0};
   std::chrono::milliseconds queueTimeout_{std::chrono::milliseconds(500)};

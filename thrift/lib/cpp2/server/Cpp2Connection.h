@@ -251,6 +251,11 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
   std::unordered_set<Cpp2Request*> activeRequests_;
 
   void removeRequest(Cpp2Request* req);
+  void handleAppError(
+      std::unique_ptr<HeaderServerChannel::HeaderRequest> req,
+      const std::string& name,
+      const std::string& message,
+      bool isClientError);
   void killRequest(
       std::unique_ptr<HeaderServerChannel::HeaderRequest> req,
       TApplicationException::TApplicationExceptionType reason,

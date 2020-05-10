@@ -20,12 +20,18 @@
 #include <chrono>
 #include <string>
 
+#include <boost/variant.hpp>
+
+#include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
 namespace thrift {
+
+using PreprocessResult =
+    folly::Optional<boost::variant<AppClientException, AppServerException>>;
 
 namespace server {
 
@@ -69,6 +75,11 @@ class ServerConfigs {
 
   // @see ThriftServer::checkOverload function.
   virtual folly::Optional<std::string> checkOverload(
+      const transport::THeader::StringToStringMap* readHeaders,
+      const std::string* method) const = 0;
+
+  // @see ThriftServer::checkOverload function.
+  virtual PreprocessResult preprocess(
       const transport::THeader::StringToStringMap* readHeaders,
       const std::string* method) const = 0;
 

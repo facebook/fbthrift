@@ -306,6 +306,11 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
       const transport::THeader::StringToStringMap* readHeaders = nullptr,
       const std::string* = nullptr) const final;
 
+  // returns descriptive error if application is unable to process request
+  PreprocessResult preprocess(
+      const transport::THeader::StringToStringMap* readHeaders,
+      const std::string* method) const final;
+
   std::string getLoadInfo(int64_t load) const override;
 
   /*

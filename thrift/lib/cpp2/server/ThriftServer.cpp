@@ -629,6 +629,15 @@ TLSCredProcessor& ThriftServer::getCredProcessor() {
   return *tlsCredProcessor_;
 }
 
+PreprocessResult ThriftServer::preprocess(
+    const transport::THeader::StringToStringMap* readHeaders,
+    const std::string* method) const {
+  if (preprocess_) {
+    return preprocess_(readHeaders, method);
+  }
+  return {};
+}
+
 folly::Optional<std::string> ThriftServer::checkOverload(
     const transport::THeader::StringToStringMap* readHeaders,
     const std::string* method) const {

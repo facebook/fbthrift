@@ -41,6 +41,8 @@ class IOBuf;
 extern const std::string kUnknownErrorCode;
 extern const std::string kOverloadedErrorCode;
 extern const std::string kAppOverloadedErrorCode;
+extern const std::string kAppClientErrorCode;
+extern const std::string kAppServerErrorCode;
 extern const std::string kTaskExpiredErrorCode;
 extern const std::string kProxyTransportExceptionErrorCode;
 extern const std::string kProxyClientProtocolExceptionErrorCode;

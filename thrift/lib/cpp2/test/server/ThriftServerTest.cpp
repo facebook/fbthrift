@@ -482,18 +482,85 @@ TEST(ThriftServer, LatencyHeader_LoggingDisabled) {
 }
 
 namespace {
-template <class MakeClientFunc>
-void doServerOverloadedTest(MakeClientFunc&& makeClient) {
+enum class TransportType { Header, Rocket };
+enum class Compression { Enabled, Disabled };
+enum class ErrorType { Overload, Client, Server };
+} // namespace
+
+class OverloadTest : public ::testing::TestWithParam<
+                         std::tuple<TransportType, Compression, ErrorType>> {
+ public:
+  TransportType transport;
+  Compression compression;
+  ErrorType errorType;
+
+  auto makeClient(ScopedServerInterfaceThread& runner, folly::EventBase* evb) {
+    if (transport == TransportType::Header) {
+      return runner.newClient<TestServiceAsyncClient>(
+          evb, [&](auto socket) mutable {
+            auto channel = HeaderClientChannel::newChannel(std::move(socket));
+            if (compression == Compression::Enabled) {
+              channel->setTransform(
+                  apache::thrift::transport::THeader::ZSTD_TRANSFORM);
+            }
+            return channel;
+          });
+    } else {
+      return runner.newClient<TestServiceAsyncClient>(
+          evb, [&](auto socket) mutable {
+            auto channel = RocketClientChannel::newChannel(std::move(socket));
+            if (compression == Compression::Enabled) {
+              channel->setNegotiatedCompressionAlgorithm(
+                  CompressionAlgorithm::ZSTD);
+            }
+            return channel;
+          });
+    }
+  }
+  void validateErrorHeaders(const RpcOptions& rpc) {
+    auto& headers = rpc.getReadHeaders();
+    if (errorType == ErrorType::Client) {
+      EXPECT_EQ(*folly::get_ptr(headers, "ex"), kAppClientErrorCode);
+      EXPECT_EQ(*folly::get_ptr(headers, "uex"), "name");
+      EXPECT_EQ(*folly::get_ptr(headers, "uexw"), "message");
+    } else if (errorType == ErrorType::Server) {
+      EXPECT_EQ(*folly::get_ptr(headers, "ex"), kAppServerErrorCode);
+      EXPECT_EQ(*folly::get_ptr(headers, "uex"), "name");
+      EXPECT_EQ(*folly::get_ptr(headers, "uexw"), "message");
+    } else {
+      EXPECT_EQ(*folly::get_ptr(headers, "ex"), kOverloadedErrorCode);
+      EXPECT_EQ(folly::get_ptr(headers, "uex"), nullptr);
+      EXPECT_EQ(folly::get_ptr(headers, "uexw"), nullptr);
+    }
+  }
+
+  void SetUp() override {
+    std::tie(transport, compression, errorType) = GetParam();
+  }
+};
+
+TEST_P(OverloadTest, Test) {
   ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
   folly::EventBase base;
   auto client = makeClient(runner, &base);
 
   // force overloaded
   runner.getThriftServer().setIsOverloaded(
-      [](const auto*, const string* method) {
+      [&](const auto*, const string* method) {
         EXPECT_EQ("voidResponse", *method);
-        return true;
+        if (errorType == ErrorType::Overload) {
+          return true;
+        }
+        return false;
       });
+  runner.getThriftServer().setPreprocess([&](auto, auto) -> PreprocessResult {
+    if (errorType == ErrorType::Client) {
+      return {AppClientException("name", "message")};
+    } else if (errorType == ErrorType::Server) {
+      return {AppServerException("name", "message")};
+    }
+    return {};
+  });
 
   // avoid compressing loadshedding errors even if compression is enabled
   static_cast<ThriftServer*>(&runner.getThriftServer())
@@ -505,10 +572,15 @@ void doServerOverloadedTest(MakeClientFunc&& makeClient) {
     client->sync_voidResponse(rpcOptions);
     FAIL() << "Expected that the service call throws TApplicationException";
   } catch (const apache::thrift::TApplicationException& ex) {
-    EXPECT_EQ(
-        ex.getType(),
-        apache::thrift::TApplicationException::TApplicationExceptionType::
-            LOADSHEDDING);
+    auto expectType = errorType == ErrorType::Overload
+        ? TApplicationException::LOADSHEDDING
+        : TApplicationException::UNKNOWN;
+    EXPECT_EQ(expectType, ex.getType());
+    auto expectMessage =
+        errorType == ErrorType::Overload ? "loadshedding request" : "message";
+    EXPECT_EQ(expectMessage, ex.getMessage());
+
+    validateErrorHeaders(rpcOptions);
 
     // Latency headers are NOT set, when server is overloaded
     validateLatencyHeaders(
@@ -519,50 +591,17 @@ void doServerOverloadedTest(MakeClientFunc&& makeClient) {
         << std::current_exception;
   }
 }
-} // namespace
 
-TEST(ThriftServer, LatencyHeader_ServerOverloaded_HeaderClientChannel) {
-  doServerOverloadedTest([](auto& runner, auto* evb) {
-    return runner.template newClient<TestServiceAsyncClient>(evb);
-  });
-}
-
-TEST(
-    ThriftServer,
-    LatencyHeader_ServerOverloaded_HeaderClientChannel_WithCompression) {
-  doServerOverloadedTest([](auto& runner, auto* evb) {
-    return runner.template newClient<TestServiceAsyncClient>(
-        evb, [](auto socket) mutable {
-          auto channel = HeaderClientChannel::newChannel(std::move(socket));
-          channel->setTransform(
-              apache::thrift::transport::THeader::ZSTD_TRANSFORM);
-          return channel;
-        });
-  });
-}
-
-TEST(ThriftServer, LatencyHeader_ServerOverloaded_RocketClientChannel) {
-  doServerOverloadedTest([](auto& runner, auto* evb) {
-    return runner.template newClient<TestServiceAsyncClient>(
-        evb, [](auto socket) mutable {
-          return RocketClientChannel::newChannel(std::move(socket));
-        });
-  });
-}
-
-TEST(
-    ThriftServer,
-    LatencyHeader_ServerOverloaded_RocketClientChannel_WithCompression) {
-  doServerOverloadedTest([](auto& runner, auto* evb) {
-    return runner.template newClient<TestServiceAsyncClient>(
-        evb, [](auto socket) mutable {
-          auto channel = RocketClientChannel::newChannel(std::move(socket));
-          channel->setNegotiatedCompressionAlgorithm(
-              CompressionAlgorithm::ZSTD);
-          return channel;
-        });
-  });
-}
+INSTANTIATE_TEST_CASE_P(
+    OverloadTestsFixture,
+    OverloadTest,
+    ::testing::Combine(
+        testing::Values(TransportType::Header, TransportType::Rocket),
+        testing::Values(Compression::Enabled, Compression::Disabled),
+        testing::Values(
+            ErrorType::Overload,
+            ErrorType::Client,
+            ErrorType::Server)));
 
 TEST(ThriftServer, LatencyHeader_ClientTimeout) {
   ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
