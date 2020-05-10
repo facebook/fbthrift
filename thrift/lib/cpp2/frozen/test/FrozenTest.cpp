@@ -101,6 +101,7 @@ auto tom2 = [] {
 TEST(Frozen, EndToEnd) {
   auto view = freeze(tom1);
   EXPECT_EQ(tom1.name, view.name());
+  EXPECT_EQ(tom1.name, *view.name_ref());
   ASSERT_TRUE(view.age().has_value());
   EXPECT_EQ(*tom1.age_ref(), view.age().value());
   EXPECT_EQ(tom1.height, view.height());

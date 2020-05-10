@@ -29,14 +29,19 @@
 #define FROZEN_FIELD_SHARED_REF(NAME, ID, /*TYPE*/...) \
   Field<std::shared_ptr<__VA_ARGS__>> NAME##Field;
 
-#define FROZEN_VIEW_FIELD(NAME, /*TYPE*/...)              \
-  typename Layout<__VA_ARGS__>::View NAME() const {       \
-    return this->layout_->NAME##Field.layout.view(        \
-        this->position_(this->layout_->NAME##Field.pos)); \
-  }                                                       \
-  typename Layout<__VA_ARGS__>::View get_##NAME() const { \
-    return this->layout_->NAME##Field.layout.view(        \
-        this->position_(this->layout_->NAME##Field.pos)); \
+#define FROZEN_VIEW_FIELD(NAME, /*TYPE*/...)                   \
+  typename Layout<__VA_ARGS__>::View NAME() const {            \
+    return this->layout_->NAME##Field.layout.view(             \
+        this->position_(this->layout_->NAME##Field.pos));      \
+  }                                                            \
+  auto NAME##_ref() const {                                    \
+    return FieldView<typename Layout<__VA_ARGS__>::View>(      \
+        this->layout_->NAME##Field.layout.view(                \
+            this->position_(this->layout_->NAME##Field.pos))); \
+  }                                                            \
+  typename Layout<__VA_ARGS__>::View get_##NAME() const {      \
+    return this->layout_->NAME##Field.layout.view(             \
+        this->position_(this->layout_->NAME##Field.pos));      \
   }
 #define FROZEN_VIEW_FIELD_OPT(NAME, /*TYPE*/...)                     \
   typename Layout<folly::Optional<__VA_ARGS__>>::View NAME() const { \

@@ -416,6 +416,37 @@ struct Field final : public FieldBase {
 };
 
 /**
+ * A view of an unqualified field of a Frozen object. It provides a consistent
+ * interface between Frozen and Thrift.
+ */
+template <typename T>
+class FieldView {
+ public:
+  using value_type = T;
+
+  explicit FieldView(T value) : value_(value) {}
+
+  bool is_set() const noexcept {
+    return true;
+  }
+
+  T value() const noexcept {
+    return value_;
+  }
+
+  const T& operator*() const noexcept {
+    return value_;
+  }
+
+  const T* operator->() const noexcept {
+    return &value_;
+  }
+
+ private:
+  T value_;
+};
+
+/**
  * Views (which all inherit from ViewBase) represent a view of a frozen object
  * for use. Note that the storage of the layout used by a view must be managed
  * separately.
