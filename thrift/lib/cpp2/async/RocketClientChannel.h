@@ -196,10 +196,7 @@ class RocketClientChannel final : public ClientChannel {
       CallbackPtr& cb,
       std::chrono::milliseconds& firstResponseTimeout);
 
-  folly::fibers::FiberManager& getFiberManager() const {
-    DCHECK(evb_);
-    return folly::fibers::getFiberManager(*evb_);
-  }
+  folly::fibers::FiberManager& getFiberManager() const;
 
   rocket::SetupFrame makeSetupFrame(RequestSetupMetadata meta);
 

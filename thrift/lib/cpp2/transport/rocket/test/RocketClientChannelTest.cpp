@@ -181,3 +181,14 @@ TEST_F(RocketClientChannelTest, ThriftClientLifetime) {
   // Wait for the response.
   future.getVia(&evb);
 }
+
+TEST_F(RocketClientChannelTest, SeparateFiberManager) {
+  folly::EventBase evb;
+  folly::Optional<test::TestServiceAsyncClient> client = makeClient(evb);
+
+  folly::fibers::FiberManager::Options opts;
+  opts.stackSize = 123456;
+  opts.stackSizeMultiplier = 1;
+  auto& fm = folly::fibers::getFiberManager(evb, opts);
+  EXPECT_EQ(123456, fm.getOptions().stackSize);
+}

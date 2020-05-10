@@ -228,8 +228,15 @@ class RocketClient : public folly::DelayedDestruction,
     return negotiatedCompressionAlgo_;
   }
 
+  folly::fibers::FiberManager& getFiberManager() const {
+    DCHECK(fm_);
+    return *fm_;
+  }
+
  private:
   folly::EventBase* evb_;
+  folly::fibers::FiberManager::FrozenOptions fmOpts_{
+      folly::fibers::FiberManager::Options()};
   folly::fibers::FiberManager* fm_;
   folly::AsyncTransportWrapper::UniquePtr socket_;
   folly::Function<void()> onDetachable_;

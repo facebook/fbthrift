@@ -70,7 +70,7 @@ RocketClient::RocketClient(
     folly::AsyncTransportWrapper::UniquePtr socket,
     std::unique_ptr<SetupFrame> setupFrame)
     : evb_(&evb),
-      fm_(&folly::fibers::getFiberManager(*evb_)),
+      fm_(&folly::fibers::getFiberManager(*evb_, fmOpts_)),
       socket_(std::move(socket)),
       setupFrame_(std::move(setupFrame)),
       parser_(*this),
@@ -989,7 +989,7 @@ void RocketClient::attachEventBase(folly::EventBase& evb) {
   evb.dcheckIsInEventBaseThread();
 
   evb_ = &evb;
-  fm_ = &folly::fibers::getFiberManager(*evb_);
+  fm_ = &folly::fibers::getFiberManager(*evb_, fmOpts_);
   socket_->attachEventBase(evb_);
   evb_->runOnDestruction(eventBaseDestructionCallback_);
 }
