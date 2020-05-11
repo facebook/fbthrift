@@ -372,27 +372,11 @@ class Foo implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?Vector<string> $a = null, ?Map<string, Vector<Set<int>>> $b = null, ?int $c = null, ?bool $d = null, ?string $str_value = null  ) {
-    if ($a === null) {
-      $this->a = Vector {};
-    } else {
-      $this->a = $a;
-    }
+    $this->a = $a ?? Vector {};
     $this->b = $b;
-    if ($c === null) {
-      $this->c = 7;
-    } else {
-      $this->c = $c;
-    }
-    if ($d === null) {
-      $this->d = false;
-    } else {
-      $this->d = $d;
-    }
-    if ($str_value === null) {
-      $this->str_value = "hello";
-    } else {
-      $this->str_value = $str_value;
-    }
+    $this->c = $c ?? 7;
+    $this->d = $d ?? false;
+    $this->str_value = $str_value ?? "hello";
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -528,21 +512,9 @@ class TestStruct implements \IThriftStruct {
     $this->foo_struct = $foo_struct;
     $this->union_value = $union_value;
     $this->struct_of_self = $struct_of_self;
-    if ($list_of_struct_foo === null) {
-      $this->list_of_struct_foo = Vector {};
-    } else {
-      $this->list_of_struct_foo = $list_of_struct_foo;
-    }
-    if ($map_of_string_to_struct_foo === null) {
-      $this->map_of_string_to_struct_foo = Map {};
-    } else {
-      $this->map_of_string_to_struct_foo = $map_of_string_to_struct_foo;
-    }
-    if ($list_of_struct_self === null) {
-      $this->list_of_struct_self = Vector {};
-    } else {
-      $this->list_of_struct_self = $list_of_struct_self;
-    }
+    $this->list_of_struct_foo = $list_of_struct_foo ?? Vector {};
+    $this->map_of_string_to_struct_foo = $map_of_string_to_struct_foo ?? Map {};
+    $this->list_of_struct_self = $list_of_struct_self ?? Vector {};
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -636,22 +608,10 @@ class Baz extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(?string $message = null, ?Foo $some_field = null, ?Set<string> $some_container = null, ?int $code = null  ) {
     parent::__construct();
-    if ($message === null) {
-      $this->message = '';
-    } else {
-      $this->message = $message;
-    }
+    $this->message = $message ?? '';
     $this->some_field = $some_field;
-    if ($some_container === null) {
-      $this->some_container = Set {};
-    } else {
-      $this->some_container = $some_container;
-    }
-    if ($code === null) {
-      $this->code = 0;
-    } else {
-      $this->code = $code;
-    }
+    $this->some_container = $some_container ?? Set {};
+    $this->code = $code ?? 0;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -704,11 +664,7 @@ class OptBaz extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(?string $message = null  ) {
     parent::__construct();
-    if ($message === null) {
-      $this->message = '';
-    } else {
-      $this->message = $message;
-    }
+    $this->message = $message ?? '';
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

@@ -71,16 +71,8 @@ class Foo implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?vec<string> $a = null, ?dict<string, vec<keyset<int>>> $b = null  ) {
-    if ($a === null) {
-      $this->a = vec[];
-    } else {
-      $this->a = $a;
-    }
-    if ($b === null) {
-      $this->b = dict[];
-    } else {
-      $this->b = $b;
-    }
+    $this->a = $a ?? vec[];
+    $this->b = $b ?? dict[];
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

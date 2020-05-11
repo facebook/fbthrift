@@ -93,22 +93,10 @@ class Foo implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?ConstVector<string> $a = null, ?ConstMap<string, ConstVector<ConstSet<int>>> $b = null, ?int $c = null, ?bool $d = null  ) {
-    if ($a === null) {
-      $this->a = Vector {};
-    } else {
-      $this->a = $a;
-    }
+    $this->a = $a ?? Vector {};
     $this->b = $b;
-    if ($c === null) {
-      $this->c = 7;
-    } else {
-      $this->c = $c;
-    }
-    if ($d === null) {
-      $this->d = false;
-    } else {
-      $this->d = $d;
-    }
+    $this->c = $c ?? 7;
+    $this->d = $d ?? false;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -161,11 +149,7 @@ class Baz extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(?string $message = null  ) {
     parent::__construct();
-    if ($message === null) {
-      $this->message = '';
-    } else {
-      $this->message = $message;
-    }
+    $this->message = $message ?? '';
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

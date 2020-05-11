@@ -81,16 +81,8 @@ class Internship implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?int $weeks = null, ?string $title = null, ?Company $employer = null  ) {
-    if ($weeks === null) {
-      $this->weeks = 0;
-    } else {
-      $this->weeks = $weeks;
-    }
-    if ($title === null) {
-      $this->title = '';
-    } else {
-      $this->title = $title;
-    }
+    $this->weeks = $weeks ?? 0;
+    $this->title = $title ?? '';
     $this->employer = $employer;
   }
 
@@ -153,16 +145,8 @@ class Range implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?int $min = null, ?int $max = null  ) {
-    if ($min === null) {
-      $this->min = 0;
-    } else {
-      $this->min = $min;
-    }
-    if ($max === null) {
-      $this->max = 0;
-    } else {
-      $this->max = $max;
-    }
+    $this->min = $min ?? 0;
+    $this->max = $max ?? 0;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

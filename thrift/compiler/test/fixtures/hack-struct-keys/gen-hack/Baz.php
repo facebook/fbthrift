@@ -313,21 +313,9 @@ class Baz_qux_args implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?Set<arraykey> $a = null, ?Vector<Bar> $b = null, ?Map<arraykey, string> $c = null  ) {
-    if ($a === null) {
-      $this->a = Set {};
-    } else {
-      $this->a = $a;
-    }
-    if ($b === null) {
-      $this->b = Vector {};
-    } else {
-      $this->b = $b;
-    }
-    if ($c === null) {
-      $this->c = Map {};
-    } else {
-      $this->c = $c;
-    }
+    $this->a = $a ?? Set {};
+    $this->b = $b ?? Vector {};
+    $this->c = $c ?? Map {};
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

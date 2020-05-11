@@ -249,11 +249,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public function __construct(?string $a = null  ) {
-    if ($a === null) {
-      $this->a = '';
-    } else {
-      $this->a = $a;
-    }
+    $this->a = $a ?? '';
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -1104,81 +1100,21 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
   <<__Rx>>
   public function __construct(?\test\fixtures\A $just_an_A = null, ?Set<int> $set_of_i32 = null, ?Vector<int> $list_of_i32 = null, ?Vector<string> $list_of_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, \test\fixtures\A> $map_of_string_to_A = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32 = null, ?Map<string, Vector<\test\fixtures\A>> $map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $map_of_string_to_set_of_i32 = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, \test\fixtures\A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<Set<int>> $list_of_set_of_i32 = null, ?Vector<Map<string, Vector<\test\fixtures\A>>> $list_of_map_of_string_to_list_of_A = null, ?Vector<Map<string, \test\fixtures\A>> $list_of_map_of_string_to_A = null, ?Vector<\test\fixtures\B> $list_of_self = null, ?Map<string, \test\fixtures\B> $map_of_string_to_self = null, ?\test\fixtures\Enum $just_an_enum = null, ?\test\fixtures\Union $just_a_union = null, ?\test\fixtures\A $optional_just_an_A = null, ?Set<int> $optional_set_of_i32 = null, ?Vector<int> $optional_list_of_i32 = null, ?Vector<string> $optional_list_of_string = null, ?Map<string, int> $optional_map_of_string_to_i32 = null, ?Map<string, \test\fixtures\A> $optional_map_of_string_to_A = null, ?Map<string, Vector<int>> $optional_map_of_string_to_list_of_i32 = null, ?Map<string, Vector<\test\fixtures\A>> $optional_map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $optional_map_of_string_to_set_of_i32 = null, ?\test\fixtures\Enum $optional_enum = null, ?\test\fixtures\Enum $required_enum_with_default = null, ?string $string_with_default_value = null, ?int $i32_with_default_value = null, ?float $double_with_default_value = null, ?\test\fixtures\Enum $enum_with_default_value = null, ?\test\fixtures\A $A_with_default_value = null, ?Set<int> $set_of_i32_with_default_value = null, ?Map<int, string> $map_of_i32_to_string_with_default_value = null, ?Vector<string> $list_of_string_with_default_value = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32_with_default_value = null  ) {
     $this->just_an_A = $just_an_A;
-    if ($set_of_i32 === null) {
-      $this->set_of_i32 = Set {};
-    } else {
-      $this->set_of_i32 = $set_of_i32;
-    }
-    if ($list_of_i32 === null) {
-      $this->list_of_i32 = Vector {};
-    } else {
-      $this->list_of_i32 = $list_of_i32;
-    }
-    if ($list_of_string === null) {
-      $this->list_of_string = Vector {};
-    } else {
-      $this->list_of_string = $list_of_string;
-    }
-    if ($map_of_string_to_i32 === null) {
-      $this->map_of_string_to_i32 = Map {};
-    } else {
-      $this->map_of_string_to_i32 = $map_of_string_to_i32;
-    }
-    if ($map_of_string_to_A === null) {
-      $this->map_of_string_to_A = Map {};
-    } else {
-      $this->map_of_string_to_A = $map_of_string_to_A;
-    }
-    if ($map_of_string_to_list_of_i32 === null) {
-      $this->map_of_string_to_list_of_i32 = Map {};
-    } else {
-      $this->map_of_string_to_list_of_i32 = $map_of_string_to_list_of_i32;
-    }
-    if ($map_of_string_to_list_of_A === null) {
-      $this->map_of_string_to_list_of_A = Map {};
-    } else {
-      $this->map_of_string_to_list_of_A = $map_of_string_to_list_of_A;
-    }
-    if ($map_of_string_to_set_of_i32 === null) {
-      $this->map_of_string_to_set_of_i32 = Map {};
-    } else {
-      $this->map_of_string_to_set_of_i32 = $map_of_string_to_set_of_i32;
-    }
-    if ($map_of_string_to_map_of_string_to_i32 === null) {
-      $this->map_of_string_to_map_of_string_to_i32 = Map {};
-    } else {
-      $this->map_of_string_to_map_of_string_to_i32 = $map_of_string_to_map_of_string_to_i32;
-    }
-    if ($map_of_string_to_map_of_string_to_A === null) {
-      $this->map_of_string_to_map_of_string_to_A = Map {};
-    } else {
-      $this->map_of_string_to_map_of_string_to_A = $map_of_string_to_map_of_string_to_A;
-    }
-    if ($list_of_set_of_i32 === null) {
-      $this->list_of_set_of_i32 = Vector {};
-    } else {
-      $this->list_of_set_of_i32 = $list_of_set_of_i32;
-    }
-    if ($list_of_map_of_string_to_list_of_A === null) {
-      $this->list_of_map_of_string_to_list_of_A = Vector {};
-    } else {
-      $this->list_of_map_of_string_to_list_of_A = $list_of_map_of_string_to_list_of_A;
-    }
-    if ($list_of_map_of_string_to_A === null) {
-      $this->list_of_map_of_string_to_A = Vector {};
-    } else {
-      $this->list_of_map_of_string_to_A = $list_of_map_of_string_to_A;
-    }
-    if ($list_of_self === null) {
-      $this->list_of_self = Vector {};
-    } else {
-      $this->list_of_self = $list_of_self;
-    }
-    if ($map_of_string_to_self === null) {
-      $this->map_of_string_to_self = Map {};
-    } else {
-      $this->map_of_string_to_self = $map_of_string_to_self;
-    }
+    $this->set_of_i32 = $set_of_i32 ?? Set {};
+    $this->list_of_i32 = $list_of_i32 ?? Vector {};
+    $this->list_of_string = $list_of_string ?? Vector {};
+    $this->map_of_string_to_i32 = $map_of_string_to_i32 ?? Map {};
+    $this->map_of_string_to_A = $map_of_string_to_A ?? Map {};
+    $this->map_of_string_to_list_of_i32 = $map_of_string_to_list_of_i32 ?? Map {};
+    $this->map_of_string_to_list_of_A = $map_of_string_to_list_of_A ?? Map {};
+    $this->map_of_string_to_set_of_i32 = $map_of_string_to_set_of_i32 ?? Map {};
+    $this->map_of_string_to_map_of_string_to_i32 = $map_of_string_to_map_of_string_to_i32 ?? Map {};
+    $this->map_of_string_to_map_of_string_to_A = $map_of_string_to_map_of_string_to_A ?? Map {};
+    $this->list_of_set_of_i32 = $list_of_set_of_i32 ?? Vector {};
+    $this->list_of_map_of_string_to_list_of_A = $list_of_map_of_string_to_list_of_A ?? Vector {};
+    $this->list_of_map_of_string_to_A = $list_of_map_of_string_to_A ?? Vector {};
+    $this->list_of_self = $list_of_self ?? Vector {};
+    $this->map_of_string_to_self = $map_of_string_to_self ?? Map {};
     $this->just_an_enum = $just_an_enum;
     $this->just_a_union = $just_a_union;
     $this->optional_just_an_A = $optional_just_an_A;
@@ -1191,60 +1127,27 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $this->optional_map_of_string_to_list_of_A = $optional_map_of_string_to_list_of_A;
     $this->optional_map_of_string_to_set_of_i32 = $optional_map_of_string_to_set_of_i32;
     $this->optional_enum = $optional_enum;
-    if ($required_enum_with_default === null) {
-      $this->required_enum_with_default = \test\fixtures\Enum::ENUM;
-    } else {
-      $this->required_enum_with_default = $required_enum_with_default;
-    }
-    if ($string_with_default_value === null) {
-      $this->string_with_default_value = "de_fault_in_our_stars";
-    } else {
-      $this->string_with_default_value = $string_with_default_value;
-    }
-    if ($i32_with_default_value === null) {
-      $this->i32_with_default_value = 1729;
-    } else {
-      $this->i32_with_default_value = $i32_with_default_value;
-    }
-    if ($double_with_default_value === null) {
-      $this->double_with_default_value = 3.14159;
-    } else {
-      $this->double_with_default_value = $double_with_default_value;
-    }
-    if ($enum_with_default_value === null) {
-      $this->enum_with_default_value = \test\fixtures\Enum::ENUM;
-    } else {
-      $this->enum_with_default_value = $enum_with_default_value;
-    }
+    $this->required_enum_with_default = $required_enum_with_default ?? \test\fixtures\Enum::ENUM;
+    $this->string_with_default_value = $string_with_default_value ?? "de_fault_in_our_stars";
+    $this->i32_with_default_value = $i32_with_default_value ?? 1729;
+    $this->double_with_default_value = $double_with_default_value ?? 3.14159;
+    $this->enum_with_default_value = $enum_with_default_value ?? \test\fixtures\Enum::ENUM;
     $this->A_with_default_value = $A_with_default_value;
-    if ($set_of_i32_with_default_value === null) {
-      $this->set_of_i32_with_default_value = Set {
+    $this->set_of_i32_with_default_value = $set_of_i32_with_default_value ?? Set {
       3,
       7,
       31,
       127,
     };
-    } else {
-      $this->set_of_i32_with_default_value = $set_of_i32_with_default_value;
-    }
-    if ($map_of_i32_to_string_with_default_value === null) {
-      $this->map_of_i32_to_string_with_default_value = Map {
+    $this->map_of_i32_to_string_with_default_value = $map_of_i32_to_string_with_default_value ?? Map {
       1 => "fish",
       2 => "fish",
     };
-    } else {
-      $this->map_of_i32_to_string_with_default_value = $map_of_i32_to_string_with_default_value;
-    }
-    if ($list_of_string_with_default_value === null) {
-      $this->list_of_string_with_default_value = Vector {
+    $this->list_of_string_with_default_value = $list_of_string_with_default_value ?? Vector {
       "red fish",
       "blue fish",
     };
-    } else {
-      $this->list_of_string_with_default_value = $list_of_string_with_default_value;
-    }
-    if ($map_of_string_to_list_of_i32_with_default_value === null) {
-      $this->map_of_string_to_list_of_i32_with_default_value = Map {
+    $this->map_of_string_to_list_of_i32_with_default_value = $map_of_string_to_list_of_i32_with_default_value ?? Map {
       "Jenny" => Vector {
         8,
         6,
@@ -1255,9 +1158,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         9,
       },
     };
-    } else {
-      $this->map_of_string_to_list_of_i32_with_default_value = $map_of_string_to_list_of_i32_with_default_value;
-    }
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

@@ -669,21 +669,9 @@ class Val implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?string $strVal = null, ?int $intVal = null, ?Map<int, string> $typedefValue = null  ) {
-    if ($strVal === null) {
-      $this->strVal = '';
-    } else {
-      $this->strVal = $strVal;
-    }
-    if ($intVal === null) {
-      $this->intVal = 0;
-    } else {
-      $this->intVal = $intVal;
-    }
-    if ($typedefValue === null) {
-      $this->typedefValue = Map {};
-    } else {
-      $this->typedefValue = $typedefValue;
-    }
+    $this->strVal = $strVal ?? '';
+    $this->intVal = $intVal ?? 0;
+    $this->typedefValue = $typedefValue ?? Map {};
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -1033,11 +1021,7 @@ class NonCopyableStruct implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?int $num = null  ) {
-    if ($num === null) {
-      $this->num = 0;
-    } else {
-      $this->num = $num;
-    }
+    $this->num = $num ?? 0;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

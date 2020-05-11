@@ -50,11 +50,7 @@ class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct 
 
   <<__Rx>>
   public function __construct(?string $name = null  ) {
-    if ($name === null) {
-      $this->name = '';
-    } else {
-      $this->name = $name;
-    }
+    $this->name = $name ?? '';
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -168,16 +164,8 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public function __construct(?int $count = null, ?string $name = null, ?string $extra = null, ?MyStructNestedAnnotation $nest = null  ) {
-    if ($count === null) {
-      $this->count = 0;
-    } else {
-      $this->count = $count;
-    }
-    if ($name === null) {
-      $this->name = '';
-    } else {
-      $this->name = $name;
-    }
+    $this->count = $count ?? 0;
+    $this->name = $name ?? '';
     $this->extra = $extra;
     $this->nest = $nest;
   }
@@ -317,26 +305,10 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public function __construct(?int $major = null, ?string $package = null, ?string $annotation_with_quote = null, ?string $class_ = null  ) {
-    if ($major === null) {
-      $this->major = 0;
-    } else {
-      $this->major = $major;
-    }
-    if ($package === null) {
-      $this->package = '';
-    } else {
-      $this->package = $package;
-    }
-    if ($annotation_with_quote === null) {
-      $this->annotation_with_quote = '';
-    } else {
-      $this->annotation_with_quote = $annotation_with_quote;
-    }
-    if ($class_ === null) {
-      $this->class_ = '';
-    } else {
-      $this->class_ = $class_;
-    }
+    $this->major = $major ?? 0;
+    $this->package = $package ?? '';
+    $this->annotation_with_quote = $annotation_with_quote ?? '';
+    $this->class_ = $class_ ?? '';
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -452,16 +424,8 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public function __construct(?int $id = null, ?string $password = null  ) {
-    if ($id === null) {
-      $this->id = 0;
-    } else {
-      $this->id = $id;
-    }
-    if ($password === null) {
-      $this->password = '';
-    } else {
-      $this->password = $password;
-    }
+    $this->id = $id ?? 0;
+    $this->password = $password ?? '';
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

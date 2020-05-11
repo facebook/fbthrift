@@ -36,11 +36,7 @@ class Foo implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?int $fiels = null  ) {
-    if ($fiels === null) {
-      $this->fiels = 0;
-    } else {
-      $this->fiels = $fiels;
-    }
+    $this->fiels = $fiels ?? 0;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -116,16 +112,8 @@ class Bar implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?Set<arraykey> $a = null, ?Map<arraykey, int> $b = null  ) {
-    if ($a === null) {
-      $this->a = Set {};
-    } else {
-      $this->a = $a;
-    }
-    if ($b === null) {
-      $this->b = Map {};
-    } else {
-      $this->b = $b;
-    }
+    $this->a = $a ?? Set {};
+    $this->b = $b ?? Map {};
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

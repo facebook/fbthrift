@@ -76,11 +76,7 @@ class decorated_struct implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?string $field = null  ) {
-    if ($field === null) {
-      $this->field = '';
-    } else {
-      $this->field = $field;
-    }
+    $this->field = $field ?? '';
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -268,46 +264,14 @@ class ContainerStruct implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?Vector<int> $fieldA = null, ?Vector<int> $fieldB = null, ?Vector<int> $fieldC = null, ?Vector<int> $fieldD = null, ?Vector<int> $fieldE = null, ?Set<int> $fieldF = null, ?Map<int, string> $fieldG = null, ?Map<int, string> $fieldH = null  ) {
-    if ($fieldA === null) {
-      $this->fieldA = Vector {};
-    } else {
-      $this->fieldA = $fieldA;
-    }
-    if ($fieldB === null) {
-      $this->fieldB = Vector {};
-    } else {
-      $this->fieldB = $fieldB;
-    }
-    if ($fieldC === null) {
-      $this->fieldC = Vector {};
-    } else {
-      $this->fieldC = $fieldC;
-    }
-    if ($fieldD === null) {
-      $this->fieldD = Vector {};
-    } else {
-      $this->fieldD = $fieldD;
-    }
-    if ($fieldE === null) {
-      $this->fieldE = Vector {};
-    } else {
-      $this->fieldE = $fieldE;
-    }
-    if ($fieldF === null) {
-      $this->fieldF = Set {};
-    } else {
-      $this->fieldF = $fieldF;
-    }
-    if ($fieldG === null) {
-      $this->fieldG = Map {};
-    } else {
-      $this->fieldG = $fieldG;
-    }
-    if ($fieldH === null) {
-      $this->fieldH = Map {};
-    } else {
-      $this->fieldH = $fieldH;
-    }
+    $this->fieldA = $fieldA ?? Vector {};
+    $this->fieldB = $fieldB ?? Vector {};
+    $this->fieldC = $fieldC ?? Vector {};
+    $this->fieldD = $fieldD ?? Vector {};
+    $this->fieldE = $fieldE ?? Vector {};
+    $this->fieldF = $fieldF ?? Set {};
+    $this->fieldG = $fieldG ?? Map {};
+    $this->fieldH = $fieldH ?? Map {};
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -487,11 +451,7 @@ class CppTypeStruct implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?Vector<int> $fieldA = null  ) {
-    if ($fieldA === null) {
-      $this->fieldA = Vector {};
-    } else {
-      $this->fieldA = $fieldA;
-    }
+    $this->fieldA = $fieldA ?? Vector {};
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -564,11 +524,7 @@ class VirtualStruct implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?int $MyIntField = null  ) {
-    if ($MyIntField === null) {
-      $this->MyIntField = 0;
-    } else {
-      $this->MyIntField = $MyIntField;
-    }
+    $this->MyIntField = $MyIntField ?? 0;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -643,16 +599,8 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?MyForwardRefEnum $a = null, ?MyForwardRefEnum $b = null  ) {
-    if ($a === null) {
-      $this->a = MyForwardRefEnum::NONZERO;
-    } else {
-      $this->a = $a;
-    }
-    if ($b === null) {
-      $this->b = MyForwardRefEnum::NONZERO;
-    } else {
-      $this->b = $b;
-    }
+    $this->a = $a ?? MyForwardRefEnum::NONZERO;
+    $this->b = $b ?? MyForwardRefEnum::NONZERO;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -726,16 +674,8 @@ class TrivialNumeric implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?int $a = null, ?bool $b = null  ) {
-    if ($a === null) {
-      $this->a = 0;
-    } else {
-      $this->a = $a;
-    }
-    if ($b === null) {
-      $this->b = false;
-    } else {
-      $this->b = $b;
-    }
+    $this->a = $a ?? 0;
+    $this->b = $b ?? false;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -817,11 +757,7 @@ class TrivialNestedWithDefault implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?int $z = null, ?TrivialNumeric $n = null  ) {
-    if ($z === null) {
-      $this->z = 4;
-    } else {
-      $this->z = $z;
-    }
+    $this->z = $z ?? 4;
     $this->n = $n;
   }
 
@@ -915,16 +851,8 @@ class ComplexString implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?string $a = null, ?Map<string, int> $b = null  ) {
-    if ($a === null) {
-      $this->a = '';
-    } else {
-      $this->a = $a;
-    }
-    if ($b === null) {
-      $this->b = Map {};
-    } else {
-      $this->b = $b;
-    }
+    $this->a = $a ?? '';
+    $this->b = $b ?? Map {};
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -1013,11 +941,7 @@ class ComplexNestedWithDefault implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?string $z = null, ?ComplexString $n = null  ) {
-    if ($z === null) {
-      $this->z = "4";
-    } else {
-      $this->z = $z;
-    }
+    $this->z = $z ?? "4";
     $this->n = $n;
   }
 
@@ -1130,31 +1054,11 @@ class MinPadding implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?int $small = null, ?int $big = null, ?int $medium = null, ?int $biggish = null, ?int $tiny = null  ) {
-    if ($small === null) {
-      $this->small = 0;
-    } else {
-      $this->small = $small;
-    }
-    if ($big === null) {
-      $this->big = 0;
-    } else {
-      $this->big = $big;
-    }
-    if ($medium === null) {
-      $this->medium = 0;
-    } else {
-      $this->medium = $medium;
-    }
-    if ($biggish === null) {
-      $this->biggish = 0;
-    } else {
-      $this->biggish = $biggish;
-    }
-    if ($tiny === null) {
-      $this->tiny = 0;
-    } else {
-      $this->tiny = $tiny;
-    }
+    $this->small = $small ?? 0;
+    $this->big = $big ?? 0;
+    $this->medium = $medium ?? 0;
+    $this->biggish = $biggish ?? 0;
+    $this->tiny = $tiny ?? 0;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -1296,21 +1200,9 @@ class MyStruct implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?int $majorVer = null, ?MyDataItem $data = null  ) {
-    if ($MyIntField === null) {
-      $this->MyIntField = 0;
-    } else {
-      $this->MyIntField = $MyIntField;
-    }
-    if ($MyStringField === null) {
-      $this->MyStringField = '';
-    } else {
-      $this->MyStringField = $MyStringField;
-    }
-    if ($majorVer === null) {
-      $this->majorVer = 0;
-    } else {
-      $this->majorVer = $majorVer;
-    }
+    $this->MyIntField = $MyIntField ?? 0;
+    $this->MyStringField = $MyStringField ?? '';
+    $this->majorVer = $majorVer ?? 0;
     $this->data = $data;
   }
 
@@ -1434,11 +1326,7 @@ class Renaming implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?int $foo = null  ) {
-    if ($foo === null) {
-      $this->foo = 0;
-    } else {
-      $this->foo = $foo;
-    }
+    $this->foo = $foo ?? 0;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -1524,16 +1412,8 @@ class AnnotatedTypes implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?string $binary_field = null, ?Vector<Map<int, string>> $list_field = null  ) {
-    if ($binary_field === null) {
-      $this->binary_field = '';
-    } else {
-      $this->binary_field = $binary_field;
-    }
-    if ($list_field === null) {
-      $this->list_field = Vector {};
-    } else {
-      $this->list_field = $list_field;
-    }
+    $this->binary_field = $binary_field ?? '';
+    $this->list_field = $list_field ?? Vector {};
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -1873,11 +1753,7 @@ class NoexceptMoveSimpleStruct implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?int $boolField = null  ) {
-    if ($boolField === null) {
-      $this->boolField = 0;
-    } else {
-      $this->boolField = $boolField;
-    }
+    $this->boolField = $boolField ?? 0;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -2042,50 +1918,18 @@ class NoexceptMoveComplexStruct implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?bool $MyBoolField = null, ?int $MyIntField = null, ?string $MyStringField = null, ?string $MyStringField2 = null, ?string $MyBinaryField = null, ?string $MyBinaryField2 = null, ?string $MyBinaryField3 = null, ?Vector<string> $MyBinaryListField4 = null, ?Map<MyEnumA, string> $MyMapEnumAndInt = null  ) {
-    if ($MyBoolField === null) {
-      $this->MyBoolField = false;
-    } else {
-      $this->MyBoolField = $MyBoolField;
-    }
-    if ($MyIntField === null) {
-      $this->MyIntField = 12;
-    } else {
-      $this->MyIntField = $MyIntField;
-    }
-    if ($MyStringField === null) {
-      $this->MyStringField = "test";
-    } else {
-      $this->MyStringField = $MyStringField;
-    }
-    if ($MyStringField2 === null) {
-      $this->MyStringField2 = '';
-    } else {
-      $this->MyStringField2 = $MyStringField2;
-    }
-    if ($MyBinaryField === null) {
-      $this->MyBinaryField = '';
-    } else {
-      $this->MyBinaryField = $MyBinaryField;
-    }
+    $this->MyBoolField = $MyBoolField ?? false;
+    $this->MyIntField = $MyIntField ?? 12;
+    $this->MyStringField = $MyStringField ?? "test";
+    $this->MyStringField2 = $MyStringField2 ?? '';
+    $this->MyBinaryField = $MyBinaryField ?? '';
     $this->MyBinaryField2 = $MyBinaryField2;
-    if ($MyBinaryField3 === null) {
-      $this->MyBinaryField3 = '';
-    } else {
-      $this->MyBinaryField3 = $MyBinaryField3;
-    }
-    if ($MyBinaryListField4 === null) {
-      $this->MyBinaryListField4 = Vector {};
-    } else {
-      $this->MyBinaryListField4 = $MyBinaryListField4;
-    }
-    if ($MyMapEnumAndInt === null) {
-      $this->MyMapEnumAndInt = Map {
+    $this->MyBinaryField3 = $MyBinaryField3 ?? '';
+    $this->MyBinaryListField4 = $MyBinaryListField4 ?? Vector {};
+    $this->MyMapEnumAndInt = $MyMapEnumAndInt ?? Map {
       MyEnumA::fieldA => "fieldA",
       MyEnumA::fieldC => "fieldC",
     };
-    } else {
-      $this->MyMapEnumAndInt = $MyMapEnumAndInt;
-    }
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

@@ -2764,38 +2764,22 @@ void t_hack_generator::_generate_php_struct_definition(
           (dval == "null" || is_result ||
            ((*m_iter)->get_req() == t_field::T_OPTIONAL &&
             (*m_iter)->get_value() == nullptr));
-
+      string name = (*m_iter)->get_name();
+      bool need_enum_code_fixme = is_exception && name == "code" &&
+          t->is_enum() && !enum_transparenttype_;
       if (tstruct->is_union()) {
         // Capture value from constructor and update _type field
-        out << indent() << "if ($" << (*m_iter)->get_name() << " !== null) {"
-            << "\n"
-            << indent() << "  $this->" << (*m_iter)->get_name() << " = $"
-            << (*m_iter)->get_name() << ";\n"
-            << indent()
+        out << indent() << "if ($" << name << " !== null) {\n";
+      }
+      if (need_enum_code_fixme) {
+        out << indent() << "  /* HH_FIXME[4110] nontransparent Enum */\n";
+      }
+      out << indent() << (tstruct->is_union() ? "  " : "") << "$this->" << name
+          << " = $" << name << (!nullable ? " ?? " + dval : "") << ";\n";
+      if (tstruct->is_union()) {
+        out << indent()
             << "  $this->_type = " << union_field_to_enum(tstruct, *m_iter)
             << ";\n"
-            << indent() << "}\n";
-      } else if (nullable) {
-        indent(out) << "$this->" << (*m_iter)->get_name() << " = $"
-                    << (*m_iter)->get_name() << ";\n";
-      } else {
-        bool need_enum_code_fixme = is_exception &&
-            (*m_iter)->get_name() == "code" && t->is_enum() &&
-            !enum_transparenttype_;
-
-        out << indent() << "if ($" << (*m_iter)->get_name() << " === null) {"
-            << "\n";
-        if (need_enum_code_fixme) {
-          out << indent() << "  /* HH_FIXME[4110] nontransparent Enum */\n";
-        }
-        out << indent() << "  $this->" << (*m_iter)->get_name() << " = " << dval
-            << ";\n"
-            << indent() << "} else {\n";
-        if (need_enum_code_fixme) {
-          out << indent() << "  /* HH_FIXME[4110] nontransparent Enum */\n";
-        }
-        out << indent() << "  $this->" << (*m_iter)->get_name() << " = $"
-            << (*m_iter)->get_name() << ";\n"
             << indent() << "}\n";
       }
     }

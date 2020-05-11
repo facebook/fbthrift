@@ -99,17 +99,9 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public function __construct(?vec<string> $a = null, ?dict<string, vec<keyset<int>>> $b = null, ?int $c = null, ?bool $d = null  ) {
-    if ($a === null) {
-      $this->a = vec[];
-    } else {
-      $this->a = $a;
-    }
+    $this->a = $a ?? vec[];
     $this->b = $b;
-    if ($c === null) {
-      $this->c = 7;
-    } else {
-      $this->c = $c;
-    }
+    $this->c = $c ?? 7;
     $this->d = $d;
   }
 
@@ -224,22 +216,10 @@ class Baz extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(?string $message = null, ?Foo $some_field = null, ?keyset<string> $some_container = null, ?int $code = null  ) {
     parent::__construct();
-    if ($message === null) {
-      $this->message = '';
-    } else {
-      $this->message = $message;
-    }
+    $this->message = $message ?? '';
     $this->some_field = $some_field;
-    if ($some_container === null) {
-      $this->some_container = keyset[];
-    } else {
-      $this->some_container = $some_container;
-    }
-    if ($code === null) {
-      $this->code = 0;
-    } else {
-      $this->code = $code;
-    }
+    $this->some_container = $some_container ?? keyset[];
+    $this->code = $code ?? 0;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -292,11 +272,7 @@ class OptBaz extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(?string $message = null  ) {
     parent::__construct();
-    if ($message === null) {
-      $this->message = '';
-    } else {
-      $this->message = $message;
-    }
+    $this->message = $message ?? '';
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

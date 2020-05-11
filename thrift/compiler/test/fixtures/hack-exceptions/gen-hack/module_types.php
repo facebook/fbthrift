@@ -68,18 +68,9 @@ class MyException1 extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(?string $message = null, ?MyEnum $code = null  ) {
     parent::__construct();
-    if ($message === null) {
-      $this->message = '';
-    } else {
-      $this->message = $message;
-    }
-    if ($code === null) {
+    $this->message = $message ?? '';
       /* HH_FIXME[4110] nontransparent Enum */
-      $this->code = MyEnum::MyValue1;
-    } else {
-      /* HH_FIXME[4110] nontransparent Enum */
-      $this->code = $code;
-    }
+    $this->code = $code ?? MyEnum::MyValue1;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -152,18 +143,9 @@ class MyException2 extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(?string $message = null, ?MyEnum $code = null  ) {
     parent::__construct();
-    if ($message === null) {
-      $this->message = '';
-    } else {
-      $this->message = $message;
-    }
-    if ($code === null) {
+    $this->message = $message ?? '';
       /* HH_FIXME[4110] nontransparent Enum */
-      $this->code = MyEnum::MyValue1;
-    } else {
-      /* HH_FIXME[4110] nontransparent Enum */
-      $this->code = $code;
-    }
+    $this->code = $code ?? MyEnum::MyValue1;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -236,18 +218,9 @@ class MyException3 extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(?string $message = null, ?MyEnum $code = null  ) {
     parent::__construct();
-    if ($message === null) {
-      $this->message = '';
-    } else {
-      $this->message = $message;
-    }
-    if ($code === null) {
+    $this->message = $message ?? '';
       /* HH_FIXME[4110] nontransparent Enum */
-      $this->code = MyEnum::MyValue1;
-    } else {
-      /* HH_FIXME[4110] nontransparent Enum */
-      $this->code = $code;
-    }
+    $this->code = $code ?? MyEnum::MyValue1;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -320,18 +293,9 @@ class MyException4 extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(?string $message = null, ?MyEnum $code = null  ) {
     parent::__construct();
-    if ($message === null) {
-      $this->message = '';
-    } else {
-      $this->message = $message;
-    }
-    if ($code === null) {
+    $this->message = $message ?? '';
       /* HH_FIXME[4110] nontransparent Enum */
-      $this->code = MyEnum::MyValue2;
-    } else {
-      /* HH_FIXME[4110] nontransparent Enum */
-      $this->code = $code;
-    }
+    $this->code = $code ?? MyEnum::MyValue2;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -393,16 +357,8 @@ class MyException5 extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(?string $message = null, ?int $code = null  ) {
     parent::__construct();
-    if ($message === null) {
-      $this->message = '';
-    } else {
-      $this->message = $message;
-    }
-    if ($code === null) {
-      $this->code = 0;
-    } else {
-      $this->code = $code;
-    }
+    $this->message = $message ?? '';
+    $this->code = $code ?? 0;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

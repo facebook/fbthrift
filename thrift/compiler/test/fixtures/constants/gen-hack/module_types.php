@@ -88,16 +88,8 @@ class Internship implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?int $weeks = null, ?string $title = null, ?Company $employer = null  ) {
-    if ($weeks === null) {
-      $this->weeks = 0;
-    } else {
-      $this->weeks = $weeks;
-    }
-    if ($title === null) {
-      $this->title = '';
-    } else {
-      $this->title = $title;
-    }
+    $this->weeks = $weeks ?? 0;
+    $this->title = $title ?? '';
     $this->employer = $employer;
   }
 
@@ -160,16 +152,8 @@ class Range implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?int $min = null, ?int $max = null  ) {
-    if ($min === null) {
-      $this->min = 0;
-    } else {
-      $this->min = $min;
-    }
-    if ($max === null) {
-      $this->max = 0;
-    } else {
-      $this->max = $max;
-    }
+    $this->min = $min ?? 0;
+    $this->max = $max ?? 0;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -230,16 +214,8 @@ class struct1 implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?int $a = null, ?string $b = null  ) {
-    if ($a === null) {
-      $this->a = 1234567;
-    } else {
-      $this->a = $a;
-    }
-    if ($b === null) {
-      $this->b = "<uninitialized>";
-    } else {
-      $this->b = $b;
-    }
+    $this->a = $a ?? 1234567;
+    $this->b = $b ?? "<uninitialized>";
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -328,22 +304,10 @@ class struct2 implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?int $a = null, ?string $b = null, ?struct1 $c = null, ?Vector<int> $d = null  ) {
-    if ($a === null) {
-      $this->a = 0;
-    } else {
-      $this->a = $a;
-    }
-    if ($b === null) {
-      $this->b = '';
-    } else {
-      $this->b = $b;
-    }
+    $this->a = $a ?? 0;
+    $this->b = $b ?? '';
     $this->c = $c;
-    if ($d === null) {
-      $this->d = Vector {};
-    } else {
-      $this->d = $d;
-    }
+    $this->d = $d ?? Vector {};
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -418,16 +382,8 @@ class struct3 implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?string $a = null, ?int $b = null, ?struct2 $c = null  ) {
-    if ($a === null) {
-      $this->a = '';
-    } else {
-      $this->a = $a;
-    }
-    if ($b === null) {
-      $this->b = 0;
-    } else {
-      $this->b = $b;
-    }
+    $this->a = $a ?? '';
+    $this->b = $b ?? 0;
     $this->c = $c;
   }
 

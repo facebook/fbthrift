@@ -78,16 +78,8 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public function __construct(?Map<FooEnum, FooEnum> $e = null, ?Set<FooEnum> $s = null  ) {
-    if ($e === null) {
-      $this->e = Map {};
-    } else {
-      $this->e = $e;
-    }
-    if ($s === null) {
-      $this->s = Set {};
-    } else {
-      $this->s = $s;
-    }
+    $this->e = $e ?? Map {};
+    $this->s = $s ?? Set {};
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

@@ -1392,11 +1392,7 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
 
   <<__Rx>>
   public function __construct(?Map<int, Vector<int>> $foo = null  ) {
-    if ($foo === null) {
-      $this->foo = Map {};
-    } else {
-      $this->foo = $foo;
-    }
+    $this->foo = $foo ?? Map {};
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -1504,11 +1500,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
 
   <<__Rx>>
   public function __construct(?Map<int, Set<int>> $foo = null  ) {
-    if ($foo === null) {
-      $this->foo = Map {};
-    } else {
-      $this->foo = $foo;
-    }
+    $this->foo = $foo ?? Map {};
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -1616,11 +1608,7 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
 
   <<__Rx>>
   public function __construct(?Vector<Map<int, int>> $foo = null  ) {
-    if ($foo === null) {
-      $this->foo = Vector {};
-    } else {
-      $this->foo = $foo;
-    }
+    $this->foo = $foo ?? Vector {};
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -1724,11 +1712,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
 
   <<__Rx>>
   public function __construct(?Vector<Set<int>> $foo = null  ) {
-    if ($foo === null) {
-      $this->foo = Vector {};
-    } else {
-      $this->foo = $foo;
-    }
+    $this->foo = $foo ?? Vector {};
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -1855,11 +1839,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
 
   <<__Rx>>
   public function __construct(?Vector<Vector<Map<int, Map<int, Set<int>>>>> $foo = null  ) {
-    if ($foo === null) {
-      $this->foo = Vector {};
-    } else {
-      $this->foo = $foo;
-    }
+    $this->foo = $foo ?? Vector {};
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

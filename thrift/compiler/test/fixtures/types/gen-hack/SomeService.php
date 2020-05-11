@@ -425,11 +425,7 @@ class SomeService_bounce_map_args implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?Map<int, string> $m = null  ) {
-    if ($m === null) {
-      $this->m = Map {};
-    } else {
-      $this->m = $m;
-    }
+    $this->m = $m ?? Map {};
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -562,11 +558,7 @@ class SomeService_binary_keyed_map_args implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?Vector<int> $r = null  ) {
-    if ($r === null) {
-      $this->r = Vector {};
-    } else {
-      $this->r = $r;
-    }
+    $this->r = $r ?? Vector {};
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

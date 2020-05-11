@@ -73,21 +73,9 @@ class MyThriftStruct implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?string $foo = null, ?string $bar = null, ?string $baz = null  ) {
-    if ($foo === null) {
-      $this->foo = '';
-    } else {
-      $this->foo = $foo;
-    }
-    if ($bar === null) {
-      $this->bar = '';
-    } else {
-      $this->bar = $bar;
-    }
-    if ($baz === null) {
-      $this->baz = '';
-    } else {
-      $this->baz = $baz;
-    }
+    $this->foo = $foo ?? '';
+    $this->bar = $bar ?? '';
+    $this->baz = $baz ?? '';
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -165,11 +153,7 @@ class MySecondThriftStruct implements \IThriftStruct {
   public function __construct(?\test\fixtures\jsenum\MyThriftEnum $foo = null, ?\test\fixtures\jsenum\MyThriftStruct $bar = null, ?int $baz = null  ) {
     $this->foo = $foo;
     $this->bar = $bar;
-    if ($baz === null) {
-      $this->baz = 0;
-    } else {
-      $this->baz = $baz;
-    }
+    $this->baz = $baz ?? 0;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

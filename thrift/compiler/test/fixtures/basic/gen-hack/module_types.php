@@ -87,16 +87,8 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?MyDataItem $MyDataField = null, ?MyEnum $myEnum = null  ) {
-    if ($MyIntField === null) {
-      $this->MyIntField = 0;
-    } else {
-      $this->MyIntField = $MyIntField;
-    }
-    if ($MyStringField === null) {
-      $this->MyStringField = '';
-    } else {
-      $this->MyStringField = $MyStringField;
-    }
+    $this->MyIntField = $MyIntField ?? 0;
+    $this->MyStringField = $MyStringField ?? '';
     $this->MyDataField = $MyDataField;
     $this->myEnum = $myEnum;
   }

@@ -74,11 +74,7 @@ class Fiery extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(?string $message = null  ) {
     parent::__construct();
-    if ($message === null) {
-      $this->message = '';
-    } else {
-      $this->message = $message;
-    }
+    $this->message = $message ?? '';
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

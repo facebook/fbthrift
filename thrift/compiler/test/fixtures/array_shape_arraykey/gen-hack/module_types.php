@@ -61,11 +61,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   <<__Rx>>
   public function __construct(?Enum $just_an_enum = null, ?string $a = null  ) {
     $this->just_an_enum = $just_an_enum;
-    if ($a === null) {
-      $this->a = '';
-    } else {
-      $this->a = $a;
-    }
+    $this->a = $a ?? '';
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -546,96 +542,24 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public function __construct(?dict<string, string> $map_of_string_to_string = null, ?dict<string, int> $map_of_string_to_i32 = null, ?dict<string, A> $map_of_string_to_A = null, ?dict<string, B> $map_of_string_to_self = null, ?dict<string, vec<A>> $map_of_string_to_list_of_A = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, A>> $map_of_string_to_map_of_string_to_A = null, ?dict<string, vec<int>> $map_of_string_to_list_of_i32 = null, ?dict<string, keyset<int>> $map_of_string_to_set_of_i32 = null, ?vec<string> $list_of_string = null, ?vec<int> $list_of_i32 = null, ?vec<B> $list_of_self = null, ?vec<vec<B>> $list_of_list_of_self = null, ?vec<keyset<int>> $list_of_set_of_i32 = null, ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A = null, ?vec<dict<string, A>> $list_of_map_of_string_to_A = null, ?keyset<int> $set_of_i32 = null, ?keyset<string> $set_of_string = null  ) {
-    if ($map_of_string_to_string === null) {
-      $this->map_of_string_to_string = dict[];
-    } else {
-      $this->map_of_string_to_string = $map_of_string_to_string;
-    }
-    if ($map_of_string_to_i32 === null) {
-      $this->map_of_string_to_i32 = dict[];
-    } else {
-      $this->map_of_string_to_i32 = $map_of_string_to_i32;
-    }
-    if ($map_of_string_to_A === null) {
-      $this->map_of_string_to_A = dict[];
-    } else {
-      $this->map_of_string_to_A = $map_of_string_to_A;
-    }
-    if ($map_of_string_to_self === null) {
-      $this->map_of_string_to_self = dict[];
-    } else {
-      $this->map_of_string_to_self = $map_of_string_to_self;
-    }
-    if ($map_of_string_to_list_of_A === null) {
-      $this->map_of_string_to_list_of_A = dict[];
-    } else {
-      $this->map_of_string_to_list_of_A = $map_of_string_to_list_of_A;
-    }
-    if ($map_of_string_to_map_of_string_to_i32 === null) {
-      $this->map_of_string_to_map_of_string_to_i32 = dict[];
-    } else {
-      $this->map_of_string_to_map_of_string_to_i32 = $map_of_string_to_map_of_string_to_i32;
-    }
-    if ($map_of_string_to_map_of_string_to_A === null) {
-      $this->map_of_string_to_map_of_string_to_A = dict[];
-    } else {
-      $this->map_of_string_to_map_of_string_to_A = $map_of_string_to_map_of_string_to_A;
-    }
-    if ($map_of_string_to_list_of_i32 === null) {
-      $this->map_of_string_to_list_of_i32 = dict[];
-    } else {
-      $this->map_of_string_to_list_of_i32 = $map_of_string_to_list_of_i32;
-    }
-    if ($map_of_string_to_set_of_i32 === null) {
-      $this->map_of_string_to_set_of_i32 = dict[];
-    } else {
-      $this->map_of_string_to_set_of_i32 = $map_of_string_to_set_of_i32;
-    }
-    if ($list_of_string === null) {
-      $this->list_of_string = vec[];
-    } else {
-      $this->list_of_string = $list_of_string;
-    }
-    if ($list_of_i32 === null) {
-      $this->list_of_i32 = vec[];
-    } else {
-      $this->list_of_i32 = $list_of_i32;
-    }
-    if ($list_of_self === null) {
-      $this->list_of_self = vec[];
-    } else {
-      $this->list_of_self = $list_of_self;
-    }
-    if ($list_of_list_of_self === null) {
-      $this->list_of_list_of_self = vec[];
-    } else {
-      $this->list_of_list_of_self = $list_of_list_of_self;
-    }
-    if ($list_of_set_of_i32 === null) {
-      $this->list_of_set_of_i32 = vec[];
-    } else {
-      $this->list_of_set_of_i32 = $list_of_set_of_i32;
-    }
-    if ($list_of_map_of_string_to_list_of_A === null) {
-      $this->list_of_map_of_string_to_list_of_A = vec[];
-    } else {
-      $this->list_of_map_of_string_to_list_of_A = $list_of_map_of_string_to_list_of_A;
-    }
-    if ($list_of_map_of_string_to_A === null) {
-      $this->list_of_map_of_string_to_A = vec[];
-    } else {
-      $this->list_of_map_of_string_to_A = $list_of_map_of_string_to_A;
-    }
-    if ($set_of_i32 === null) {
-      $this->set_of_i32 = keyset[];
-    } else {
-      $this->set_of_i32 = $set_of_i32;
-    }
-    if ($set_of_string === null) {
-      $this->set_of_string = keyset[];
-    } else {
-      $this->set_of_string = $set_of_string;
-    }
+    $this->map_of_string_to_string = $map_of_string_to_string ?? dict[];
+    $this->map_of_string_to_i32 = $map_of_string_to_i32 ?? dict[];
+    $this->map_of_string_to_A = $map_of_string_to_A ?? dict[];
+    $this->map_of_string_to_self = $map_of_string_to_self ?? dict[];
+    $this->map_of_string_to_list_of_A = $map_of_string_to_list_of_A ?? dict[];
+    $this->map_of_string_to_map_of_string_to_i32 = $map_of_string_to_map_of_string_to_i32 ?? dict[];
+    $this->map_of_string_to_map_of_string_to_A = $map_of_string_to_map_of_string_to_A ?? dict[];
+    $this->map_of_string_to_list_of_i32 = $map_of_string_to_list_of_i32 ?? dict[];
+    $this->map_of_string_to_set_of_i32 = $map_of_string_to_set_of_i32 ?? dict[];
+    $this->list_of_string = $list_of_string ?? vec[];
+    $this->list_of_i32 = $list_of_i32 ?? vec[];
+    $this->list_of_self = $list_of_self ?? vec[];
+    $this->list_of_list_of_self = $list_of_list_of_self ?? vec[];
+    $this->list_of_set_of_i32 = $list_of_set_of_i32 ?? vec[];
+    $this->list_of_map_of_string_to_list_of_A = $list_of_map_of_string_to_list_of_A ?? vec[];
+    $this->list_of_map_of_string_to_A = $list_of_map_of_string_to_A ?? vec[];
+    $this->set_of_i32 = $set_of_i32 ?? keyset[];
+    $this->set_of_string = $set_of_string ?? keyset[];
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

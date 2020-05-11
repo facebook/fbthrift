@@ -2003,11 +2003,7 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
 
   <<__Rx>>
   public function __construct(?int $id = null  ) {
-    if ($id === null) {
-      $this->id = 0;
-    } else {
-      $this->id = $id;
-    }
+    $this->id = $id ?? 0;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -2128,11 +2124,7 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
 
   <<__Rx>>
   public function __construct(?int $id = null  ) {
-    if ($id === null) {
-      $this->id = 0;
-    } else {
-      $this->id = $id;
-    }
+    $this->id = $id ?? 0;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -2261,16 +2253,8 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
 
   <<__Rx>>
   public function __construct(?int $id = null, ?string $data = null  ) {
-    if ($id === null) {
-      $this->id = 0;
-    } else {
-      $this->id = $id;
-    }
-    if ($data === null) {
-      $this->data = '';
-    } else {
-      $this->data = $data;
-    }
+    $this->id = $id ?? 0;
+    $this->data = $data ?? '';
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -2394,16 +2378,8 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
 
   <<__Rx>>
   public function __construct(?int $id = null, ?string $data = null  ) {
-    if ($id === null) {
-      $this->id = 0;
-    } else {
-      $this->id = $id;
-    }
-    if ($data === null) {
-      $this->data = '';
-    } else {
-      $this->data = $data;
-    }
+    $this->id = $id ?? 0;
+    $this->data = $data ?? '';
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

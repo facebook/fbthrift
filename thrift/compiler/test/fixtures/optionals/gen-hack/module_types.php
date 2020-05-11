@@ -79,26 +79,10 @@ class Color implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?float $red = null, ?float $green = null, ?float $blue = null, ?float $alpha = null  ) {
-    if ($red === null) {
-      $this->red = 0.0;
-    } else {
-      $this->red = $red;
-    }
-    if ($green === null) {
-      $this->green = 0.0;
-    } else {
-      $this->green = $green;
-    }
-    if ($blue === null) {
-      $this->blue = 0.0;
-    } else {
-      $this->blue = $blue;
-    }
-    if ($alpha === null) {
-      $this->alpha = 0.0;
-    } else {
-      $this->alpha = $alpha;
-    }
+    $this->red = $red ?? 0.0;
+    $this->green = $green ?? 0.0;
+    $this->blue = $blue ?? 0.0;
+    $this->alpha = $alpha ?? 0.0;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -199,11 +183,7 @@ class Vehicle implements \IThriftStruct {
     $this->licensePlate = $licensePlate;
     $this->description = $description;
     $this->name = $name;
-    if ($hasAC === null) {
-      $this->hasAC = false;
-    } else {
-      $this->hasAC = $hasAC;
-    }
+    $this->hasAC = $hasAC ?? false;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -378,16 +358,8 @@ class Person implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?int $id = null, ?string $name = null, ?int $age = null, ?string $address = null, ?Color $favoriteColor = null, ?Set<int> $friends = null, ?int $bestFriend = null, ?Map<Animal, string> $petNames = null, ?Animal $afraidOfAnimal = null, ?Vector<Vehicle> $vehicles = null  ) {
-    if ($id === null) {
-      $this->id = 0;
-    } else {
-      $this->id = $id;
-    }
-    if ($name === null) {
-      $this->name = '';
-    } else {
-      $this->name = $name;
-    }
+    $this->id = $id ?? 0;
+    $this->name = $name ?? '';
     $this->age = $age;
     $this->address = $address;
     $this->favoriteColor = $favoriteColor;

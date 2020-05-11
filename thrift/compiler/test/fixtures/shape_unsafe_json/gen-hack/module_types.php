@@ -40,11 +40,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public function __construct(?string $a = null  ) {
-    if ($a === null) {
-      $this->a = '';
-    } else {
-      $this->a = $a;
-    }
+    $this->a = $a ?? '';
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -652,81 +648,21 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
   <<__Rx>>
   public function __construct(?A $just_an_A = null, ?Set<int> $set_of_i32 = null, ?Vector<int> $list_of_i32 = null, ?Vector<string> $list_of_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, A> $map_of_string_to_A = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32 = null, ?Map<string, Vector<A>> $map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $map_of_string_to_set_of_i32 = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<Set<int>> $list_of_set_of_i32 = null, ?Vector<Map<string, Vector<A>>> $list_of_map_of_string_to_list_of_A = null, ?Vector<Map<string, A>> $list_of_map_of_string_to_A = null, ?Vector<B> $list_of_self = null, ?Map<string, B> $map_of_string_to_self = null, ?A $optional_just_an_A = null, ?Set<int> $optional_set_of_i32 = null, ?Vector<int> $optional_list_of_i32 = null, ?Vector<string> $optional_list_of_string = null, ?Map<string, int> $optional_map_of_string_to_i32 = null, ?Map<string, A> $optional_map_of_string_to_A = null, ?Map<string, Vector<int>> $optional_map_of_string_to_list_of_i32 = null, ?Map<string, Vector<A>> $optional_map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $optional_map_of_string_to_set_of_i32 = null  ) {
     $this->just_an_A = $just_an_A;
-    if ($set_of_i32 === null) {
-      $this->set_of_i32 = Set {};
-    } else {
-      $this->set_of_i32 = $set_of_i32;
-    }
-    if ($list_of_i32 === null) {
-      $this->list_of_i32 = Vector {};
-    } else {
-      $this->list_of_i32 = $list_of_i32;
-    }
-    if ($list_of_string === null) {
-      $this->list_of_string = Vector {};
-    } else {
-      $this->list_of_string = $list_of_string;
-    }
-    if ($map_of_string_to_i32 === null) {
-      $this->map_of_string_to_i32 = Map {};
-    } else {
-      $this->map_of_string_to_i32 = $map_of_string_to_i32;
-    }
-    if ($map_of_string_to_A === null) {
-      $this->map_of_string_to_A = Map {};
-    } else {
-      $this->map_of_string_to_A = $map_of_string_to_A;
-    }
-    if ($map_of_string_to_list_of_i32 === null) {
-      $this->map_of_string_to_list_of_i32 = Map {};
-    } else {
-      $this->map_of_string_to_list_of_i32 = $map_of_string_to_list_of_i32;
-    }
-    if ($map_of_string_to_list_of_A === null) {
-      $this->map_of_string_to_list_of_A = Map {};
-    } else {
-      $this->map_of_string_to_list_of_A = $map_of_string_to_list_of_A;
-    }
-    if ($map_of_string_to_set_of_i32 === null) {
-      $this->map_of_string_to_set_of_i32 = Map {};
-    } else {
-      $this->map_of_string_to_set_of_i32 = $map_of_string_to_set_of_i32;
-    }
-    if ($map_of_string_to_map_of_string_to_i32 === null) {
-      $this->map_of_string_to_map_of_string_to_i32 = Map {};
-    } else {
-      $this->map_of_string_to_map_of_string_to_i32 = $map_of_string_to_map_of_string_to_i32;
-    }
-    if ($map_of_string_to_map_of_string_to_A === null) {
-      $this->map_of_string_to_map_of_string_to_A = Map {};
-    } else {
-      $this->map_of_string_to_map_of_string_to_A = $map_of_string_to_map_of_string_to_A;
-    }
-    if ($list_of_set_of_i32 === null) {
-      $this->list_of_set_of_i32 = Vector {};
-    } else {
-      $this->list_of_set_of_i32 = $list_of_set_of_i32;
-    }
-    if ($list_of_map_of_string_to_list_of_A === null) {
-      $this->list_of_map_of_string_to_list_of_A = Vector {};
-    } else {
-      $this->list_of_map_of_string_to_list_of_A = $list_of_map_of_string_to_list_of_A;
-    }
-    if ($list_of_map_of_string_to_A === null) {
-      $this->list_of_map_of_string_to_A = Vector {};
-    } else {
-      $this->list_of_map_of_string_to_A = $list_of_map_of_string_to_A;
-    }
-    if ($list_of_self === null) {
-      $this->list_of_self = Vector {};
-    } else {
-      $this->list_of_self = $list_of_self;
-    }
-    if ($map_of_string_to_self === null) {
-      $this->map_of_string_to_self = Map {};
-    } else {
-      $this->map_of_string_to_self = $map_of_string_to_self;
-    }
+    $this->set_of_i32 = $set_of_i32 ?? Set {};
+    $this->list_of_i32 = $list_of_i32 ?? Vector {};
+    $this->list_of_string = $list_of_string ?? Vector {};
+    $this->map_of_string_to_i32 = $map_of_string_to_i32 ?? Map {};
+    $this->map_of_string_to_A = $map_of_string_to_A ?? Map {};
+    $this->map_of_string_to_list_of_i32 = $map_of_string_to_list_of_i32 ?? Map {};
+    $this->map_of_string_to_list_of_A = $map_of_string_to_list_of_A ?? Map {};
+    $this->map_of_string_to_set_of_i32 = $map_of_string_to_set_of_i32 ?? Map {};
+    $this->map_of_string_to_map_of_string_to_i32 = $map_of_string_to_map_of_string_to_i32 ?? Map {};
+    $this->map_of_string_to_map_of_string_to_A = $map_of_string_to_map_of_string_to_A ?? Map {};
+    $this->list_of_set_of_i32 = $list_of_set_of_i32 ?? Vector {};
+    $this->list_of_map_of_string_to_list_of_A = $list_of_map_of_string_to_list_of_A ?? Vector {};
+    $this->list_of_map_of_string_to_A = $list_of_map_of_string_to_A ?? Vector {};
+    $this->list_of_self = $list_of_self ?? Vector {};
+    $this->map_of_string_to_self = $map_of_string_to_self ?? Map {};
     $this->optional_just_an_A = $optional_just_an_A;
     $this->optional_set_of_i32 = $optional_set_of_i32;
     $this->optional_list_of_i32 = $optional_list_of_i32;

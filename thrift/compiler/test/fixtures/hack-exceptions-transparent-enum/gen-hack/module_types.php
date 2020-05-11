@@ -67,16 +67,8 @@ class MyException extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(?string $message = null, ?MyEnum $code = null  ) {
     parent::__construct();
-    if ($message === null) {
-      $this->message = '';
-    } else {
-      $this->message = $message;
-    }
-    if ($code === null) {
-      $this->code = MyEnum::MyValue1;
-    } else {
-      $this->code = $code;
-    }
+    $this->message = $message ?? '';
+    $this->code = $code ?? MyEnum::MyValue1;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

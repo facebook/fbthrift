@@ -281,16 +281,8 @@ class Bar_baz_args implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?keyset<int> $a = null, ?vec<dict<int, keyset<string>>> $b = null  ) {
-    if ($a === null) {
-      $this->a = keyset[];
-    } else {
-      $this->a = $a;
-    }
-    if ($b === null) {
-      $this->b = vec[];
-    } else {
-      $this->b = $b;
-    }
+    $this->a = $a ?? keyset[];
+    $this->b = $b ?? vec[];
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {

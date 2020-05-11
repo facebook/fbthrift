@@ -328,27 +328,11 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public function __construct(?dict<int, bool> $a = null, ?varray<darray<int, dict<string, bool>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null  ) {
-    if ($a === null) {
-      $this->a = dict[];
-    } else {
-      $this->a = $a;
-    }
-    if ($b === null) {
-      $this->b = varray[];
-    } else {
-      $this->b = $b;
-    }
-    if ($c === null) {
-      $this->c = 0;
-    } else {
-      $this->c = $c;
-    }
+    $this->a = $a ?? dict[];
+    $this->b = $b ?? varray[];
+    $this->c = $c ?? 0;
     $this->d = $d;
-    if ($e === null) {
-      $this->e = 4;
-    } else {
-      $this->e = $e;
-    }
+    $this->e = $e ?? 4;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
