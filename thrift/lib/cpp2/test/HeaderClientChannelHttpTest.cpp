@@ -53,8 +53,11 @@ class TestServiceHandler : public TestServiceSvIf {
     _return = string(4096, 'a');
   }
 
-  void eventBaseAsync(string& _return) override {
-    _return = "hello world";
+  void async_eb_eventBaseAsync(
+      std::unique_ptr<
+          apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>
+          callback) override {
+    callback->result(std::make_unique<std::string>("hello world"));
   }
 
   void notCalledBack() override {}
