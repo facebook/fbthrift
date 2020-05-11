@@ -2432,12 +2432,6 @@ void t_hack_generator::generate_php_union_methods(
   const vector<t_field*>& members = tstruct->get_members();
   auto enumName = union_enum_name(tstruct);
 
-  // getType() : <UnionName>Enum {}
-  string const* union_type_getter_attributes =
-      get_hack_annotation(tstruct, "union_type_getter_attributes");
-  if (union_type_getter_attributes) {
-    indent(out) << "<<" << *union_type_getter_attributes << ">>\n";
-  }
   indent(out) << "public function getType(): " << enumName << " {\n";
   indent(out) << indent() << "return $this->_type;\n";
   indent(out) << "}\n\n";
@@ -2456,12 +2450,6 @@ void t_hack_generator::generate_php_union_methods(
     indent_down();
     indent(out) << "}\n\n";
 
-    // get_<fieldName>()
-    string const* getter_attributes =
-        get_hack_annotation(*m_iter, "getter_attributes");
-    if (getter_attributes) {
-      indent(out) << "<<" << *getter_attributes << ">>\n";
-    }
     indent(out) << "public function get_" << fieldName << "(): " << typehint
                 << " {\n";
     indent_up();
@@ -2638,18 +2626,6 @@ void t_hack_generator::_generate_php_struct_definition(
     }
 
     string visibility = "public";
-    string const* visibility_annotation =
-        get_hack_annotation(*m_iter, "visibility");
-
-    if (visibility_annotation) {
-      string const& value = *visibility_annotation;
-      if (value == "public" || value == "protected" || value == "private") {
-        visibility = value;
-      } else {
-        throw tstruct->get_name() + "::" + (*m_iter)->get_name() +
-            " doesn't have a valid visibility (public|protected|private)";
-      }
-    }
 
     indent(out) << visibility << " " << typehint << " $"
                 << (*m_iter)->get_name() << ";\n";
@@ -2670,26 +2646,6 @@ void t_hack_generator::_generate_php_struct_definition(
           << "  /* HH_FIXME[4110] retain HHVM enforcement semantics */\n"
           << indent() << "  return $this->code;" << indent() << "\n"
           << indent() << "}\n";
-    }
-
-    if (!tstruct->is_union()) {
-      bool hack_getter = (*m_iter)->annotations_.find("hack.getter") !=
-          (*m_iter)->annotations_.end();
-      string const* getter_attributes =
-          get_hack_annotation(*m_iter, "getter_attributes");
-      if (hack_getter) {
-        if (getter_attributes) {
-          indent(out) << "<<" << *getter_attributes << ">>\n";
-        }
-        indent(out) << "public function get_" << (*m_iter)->get_name()
-                    << "(): " << typehint << " {\n";
-        indent(indent(out))
-            << "return $this->" << (*m_iter)->get_name() << ";" << endl;
-        indent(out) << "}\n";
-      } else if (getter_attributes) {
-        throw tstruct->get_name() + "::" + (*m_iter)->get_name() +
-            " declares hack.getter_attributes without enabling hack.getter";
-      }
     }
   }
 

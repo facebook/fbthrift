@@ -57,20 +57,12 @@ class MyThriftStruct implements \IThriftStruct {
    * Original thrift field:-
    * 2: string bar
    */
-  private string $bar;
-  <<FieldGetterAttribute>>
-  public function get_bar(): string {
-    return $this->bar;
-  }
+  public string $bar;
   /**
    * Original thrift field:-
    * 3: string baz
    */
   public string $baz;
-  <<FieldGetterAttribute>>
-  public function get_baz(): string {
-    return $this->baz;
-  }
 
   <<__Rx>>
   public function __construct(?string $foo = null, ?string $bar = null, ?string $baz = null  ) {
@@ -135,25 +127,17 @@ class MySecondThriftStruct implements \IThriftStruct {
    * Original thrift field:-
    * 1: enum module1.MyThriftEnum foo
    */
-  private ?\test\fixtures\jsenum\MyThriftEnum $foo;
+  public ?\test\fixtures\jsenum\MyThriftEnum $foo;
   /**
    * Original thrift field:-
    * 2: struct module1.MyThriftStruct bar
    */
-  protected ?\test\fixtures\jsenum\MyThriftStruct $bar;
-  <<FieldStructGetterAttribute>>
-  public function get_bar(): ?\test\fixtures\jsenum\MyThriftStruct {
-    return $this->bar;
-  }
+  public ?\test\fixtures\jsenum\MyThriftStruct $bar;
   /**
    * Original thrift field:-
    * 3: i64 baz
    */
   public int $baz;
-  <<FieldGetterAttribute>>
-  public function get_baz(): int {
-    return $this->baz;
-  }
 
   <<__Rx>>
   public function __construct(?\test\fixtures\jsenum\MyThriftEnum $foo = null, ?\test\fixtures\jsenum\MyThriftStruct $bar = null, ?int $baz = null  ) {
@@ -211,7 +195,7 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
    * Original thrift field:-
    * 1: string foo
    */
-  protected ?string $foo;
+  public ?string $foo;
   /**
    * Original thrift field:-
    * 3: i64 bar
@@ -236,7 +220,6 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
     return 'UnionTesting';
   }
 
-  <<GetTypeAttribute>>
   public function getType(): \test\fixtures\jsenum\UnionTestingEnum {
     return $this->_type;
   }
@@ -247,7 +230,6 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
     return $this;
   }
 
-  <<FieldUnionGetterAttribute>>
   public function get_foo(): string {
     invariant(
       $this->_type === \test\fixtures\jsenum\UnionTestingEnum::foo,
@@ -263,7 +245,6 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
     return $this;
   }
 
-  <<FieldGetterAttribute>>
   public function get_bar(): int {
     invariant(
       $this->_type === \test\fixtures\jsenum\UnionTestingEnum::bar,
@@ -276,7 +257,6 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
       'hack.union_enum_attributes' => "EnumAttributes",
-      'hack.union_type_getter_attributes' => "GetTypeAttribute",
     ];
   }
 }

@@ -24,21 +24,17 @@ enum MyThriftEnum {
 
 struct MyThriftStruct {
   1: string foo (hack.attributes="FieldAttribute"),
-  2: string bar (hack.visibility="private" hack.getter
-    hack.getter_attributes="FieldGetterAttribute"),
-  3: string baz (hack.getter hack.getter_attributes="FieldGetterAttribute"),
+  2: string bar,
+  3: string baz,
 } (hack.attributes="ClassAttribute")
 
 struct MySecondThriftStruct {
-  1: MyThriftEnum foo (hack.visibility="private"),
-  2: MyThriftStruct bar (hack.visibility="protected" hack.getter
-    hack.getter_attributes="FieldStructGetterAttribute"),
-  3: i64 baz (hack.getter hack.getter_attributes="FieldGetterAttribute"),
+  1: MyThriftEnum foo,
+  2: MyThriftStruct bar,
+  3: i64 baz,
 }
 
 union UnionTesting {
-  1: string foo (hack.visibility="protected" hack.getter
-    hack.getter_attributes="FieldUnionGetterAttribute"),
-  3: i64 bar (hack.getter hack.getter_attributes="FieldGetterAttribute"),
-} (hack.union_enum_attributes="EnumAttributes"
-    hack.union_type_getter_attributes="GetTypeAttribute")
+  1: string foo,
+  3: i64 bar,
+} (hack.union_enum_attributes="EnumAttributes")
