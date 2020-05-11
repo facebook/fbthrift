@@ -36,6 +36,12 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     'a' => 1,
     'map_of_string_to_string' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => string,
+    ?'map_of_string_to_string' => dict<string, string>,
+  );
+
   const type TShape = shape(
     'a' => string,
     'map_of_string_to_string' => dict<string, string>,
@@ -65,6 +71,13 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     } else {
       $this->map_of_string_to_string = $map_of_string_to_string;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'map_of_string_to_string'),
+    );
   }
 
   public function getName(): string {
@@ -309,6 +322,22 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'list_of_list_of_self' => 11,
     'list_of_map_of_string_to_list_of_A' => 12,
   ];
+
+  const type TConstructorShape = shape(
+    ?'map_of_string_to_string' => dict<string, string>,
+    ?'map_of_string_to_i32' => dict<string, int>,
+    ?'map_of_string_to_A' => dict<string, A>,
+    ?'map_of_string_to_self' => dict<string, B>,
+    ?'map_of_string_to_list_of_A' => dict<string, vec<A>>,
+    ?'map_of_string_to_map_of_string_to_i32' => dict<string, dict<string, int>>,
+    ?'map_of_string_to_map_of_string_to_A' => dict<string, dict<string, A>>,
+    ?'list_of_string' => vec<string>,
+    ?'list_of_map_of_string_to_A' => vec<dict<string, A>>,
+    ?'list_of_self' => vec<B>,
+    ?'list_of_list_of_self' => vec<vec<B>>,
+    ?'list_of_map_of_string_to_list_of_A' => vec<dict<string, vec<A>>>,
+  );
+
   const type TShape = shape(
     'map_of_string_to_string' => dict<string, string>,
     'map_of_string_to_i32' => dict<string, int>,
@@ -448,6 +477,23 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     } else {
       $this->list_of_map_of_string_to_list_of_A = $list_of_map_of_string_to_list_of_A;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'map_of_string_to_string'),
+      Shapes::idx($shape, 'map_of_string_to_i32'),
+      Shapes::idx($shape, 'map_of_string_to_A'),
+      Shapes::idx($shape, 'map_of_string_to_self'),
+      Shapes::idx($shape, 'map_of_string_to_list_of_A'),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32'),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_A'),
+      Shapes::idx($shape, 'list_of_string'),
+      Shapes::idx($shape, 'list_of_map_of_string_to_A'),
+      Shapes::idx($shape, 'list_of_self'),
+      Shapes::idx($shape, 'list_of_list_of_self'),
+      Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A'),
+    );
   }
 
   public function getName(): string {
@@ -832,6 +878,22 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     'list_of_list_of_self' => 11,
     'list_of_map_of_string_to_list_of_A' => 12,
   ];
+
+  const type TConstructorShape = shape(
+    ?'map_of_string_to_string' => ?dict<string, string>,
+    ?'map_of_string_to_i32' => ?dict<string, int>,
+    ?'map_of_string_to_A' => ?dict<string, A>,
+    ?'map_of_string_to_self' => ?dict<string, B>,
+    ?'map_of_string_to_list_of_A' => ?dict<string, vec<A>>,
+    ?'map_of_string_to_map_of_string_to_i32' => ?dict<string, dict<string, int>>,
+    ?'map_of_string_to_map_of_string_to_A' => ?dict<string, dict<string, A>>,
+    ?'list_of_string' => ?vec<string>,
+    ?'list_of_map_of_string_to_A' => ?vec<dict<string, A>>,
+    ?'list_of_self' => ?vec<B>,
+    ?'list_of_list_of_self' => ?vec<vec<B>>,
+    ?'list_of_map_of_string_to_list_of_A' => ?vec<dict<string, vec<A>>>,
+  );
+
   const type TShape = shape(
     ?'map_of_string_to_string' => ?dict<string, string>,
     ?'map_of_string_to_i32' => ?dict<string, int>,
@@ -923,6 +985,23 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     $this->list_of_self = $list_of_self;
     $this->list_of_list_of_self = $list_of_list_of_self;
     $this->list_of_map_of_string_to_list_of_A = $list_of_map_of_string_to_list_of_A;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'map_of_string_to_string'),
+      Shapes::idx($shape, 'map_of_string_to_i32'),
+      Shapes::idx($shape, 'map_of_string_to_A'),
+      Shapes::idx($shape, 'map_of_string_to_self'),
+      Shapes::idx($shape, 'map_of_string_to_list_of_A'),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32'),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_A'),
+      Shapes::idx($shape, 'list_of_string'),
+      Shapes::idx($shape, 'list_of_map_of_string_to_A'),
+      Shapes::idx($shape, 'list_of_self'),
+      Shapes::idx($shape, 'list_of_list_of_self'),
+      Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A'),
+    );
   }
 
   public function getName(): string {

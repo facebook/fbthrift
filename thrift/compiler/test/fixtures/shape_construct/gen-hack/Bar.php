@@ -66,15 +66,15 @@ trait BarClientBase {
 
   protected function sendImpl_baz(Set<int> $a, KeyedContainer<int, KeyedContainer<int, Set<string>>> $b, int $c, ?Foo $d, int $e): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new Bar_baz_args(shape(
-      'a' => $a,
-      'b' => (new Vector($b))->map(
+    $args = new Bar_baz_args(
+      $a,
+      (new Vector($b))->map(
         $_val0 ==> new Map($_val0)
       ),
-      'c' => $c,
-      'd' => $d,
-      'e' => $e,
-    ));
+      $c,
+      $d,
+      $e,
+    );
     try {
       $this->eventHandler_->preSend('baz', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -303,6 +303,7 @@ class Bar_baz_args implements \IThriftStruct {
     'd' => 4,
     'e' => 5,
   ];
+
   const type TConstructorShape = shape(
     ?'a' => Set<int>,
     ?'b' => Vector<Map<int, Set<string>>>,
@@ -310,6 +311,7 @@ class Bar_baz_args implements \IThriftStruct {
     ?'d' => ?Foo,
     ?'e' => int,
   );
+
   const int STRUCTURAL_ID = 7865027497865509792;
   public Set<int> $a;
   public Vector<Map<int, Set<string>>> $b;
@@ -318,12 +320,38 @@ class Bar_baz_args implements \IThriftStruct {
   public int $e;
 
   <<__Rx>>
-  public function __construct(self::TConstructorShape $shape = shape()) {
-    $this->a = Shapes::idx($shape, 'a') ?? Set {};
-    $this->b = Shapes::idx($shape, 'b') ?? Vector {};
-    $this->c = Shapes::idx($shape, 'c') ?? 0;
-    $this->d = Shapes::idx($shape, 'd');
-    $this->e = Shapes::idx($shape, 'e') ?? 4;
+  public function __construct(?Set<int> $a = null, ?Vector<Map<int, Set<string>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null  ) {
+    if ($a === null) {
+      $this->a = Set {};
+    } else {
+      $this->a = $a;
+    }
+    if ($b === null) {
+      $this->b = Vector {};
+    } else {
+      $this->b = $b;
+    }
+    if ($c === null) {
+      $this->c = 0;
+    } else {
+      $this->c = $c;
+    }
+    $this->d = $d;
+    if ($e === null) {
+      $this->e = 4;
+    } else {
+      $this->e = $e;
+    }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
+      Shapes::idx($shape, 'c'),
+      Shapes::idx($shape, 'd'),
+      Shapes::idx($shape, 'e'),
+    );
   }
 
   public function getName(): string {
@@ -348,14 +376,22 @@ class Bar_baz_result implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,
   ];
+
   const type TConstructorShape = shape(
     ?'success' => string,
   );
+
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
   <<__Rx>>
-  public function __construct(self::TConstructorShape $shape = shape()) {
+  public function __construct(?string $success = null  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
   }
 
   public function getName(): string {

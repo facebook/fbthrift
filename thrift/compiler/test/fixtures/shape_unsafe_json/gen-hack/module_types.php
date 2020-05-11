@@ -22,6 +22,11 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   const dict<string, int> FIELDMAP = dict[
     'a' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => string,
+  );
+
   const type TShape = shape(
     'a' => string,
     ...
@@ -40,6 +45,12 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     } else {
       $this->a = $a;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'a'),
+    );
   }
 
   public function getName(): string {
@@ -454,6 +465,35 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'optional_map_of_string_to_list_of_A' => 58,
     'optional_map_of_string_to_set_of_i32' => 59,
   ];
+
+  const type TConstructorShape = shape(
+    ?'just_an_A' => ?A,
+    ?'set_of_i32' => Set<int>,
+    ?'list_of_i32' => Vector<int>,
+    ?'list_of_string' => Vector<string>,
+    ?'map_of_string_to_i32' => Map<string, int>,
+    ?'map_of_string_to_A' => Map<string, A>,
+    ?'map_of_string_to_list_of_i32' => Map<string, Vector<int>>,
+    ?'map_of_string_to_list_of_A' => Map<string, Vector<A>>,
+    ?'map_of_string_to_set_of_i32' => Map<string, Set<int>>,
+    ?'map_of_string_to_map_of_string_to_i32' => Map<string, Map<string, int>>,
+    ?'map_of_string_to_map_of_string_to_A' => Map<string, Map<string, A>>,
+    ?'list_of_set_of_i32' => Vector<Set<int>>,
+    ?'list_of_map_of_string_to_list_of_A' => Vector<Map<string, Vector<A>>>,
+    ?'list_of_map_of_string_to_A' => Vector<Map<string, A>>,
+    ?'list_of_self' => Vector<B>,
+    ?'map_of_string_to_self' => Map<string, B>,
+    ?'optional_just_an_A' => ?A,
+    ?'optional_set_of_i32' => ?Set<int>,
+    ?'optional_list_of_i32' => ?Vector<int>,
+    ?'optional_list_of_string' => ?Vector<string>,
+    ?'optional_map_of_string_to_i32' => ?Map<string, int>,
+    ?'optional_map_of_string_to_A' => ?Map<string, A>,
+    ?'optional_map_of_string_to_list_of_i32' => ?Map<string, Vector<int>>,
+    ?'optional_map_of_string_to_list_of_A' => ?Map<string, Vector<A>>,
+    ?'optional_map_of_string_to_set_of_i32' => ?Map<string, Set<int>>,
+  );
+
   const type TShape = shape(
     ?'just_an_A' => ?A::TShape,
     'set_of_i32' => dict<int, bool>,
@@ -696,6 +736,36 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $this->optional_map_of_string_to_list_of_i32 = $optional_map_of_string_to_list_of_i32;
     $this->optional_map_of_string_to_list_of_A = $optional_map_of_string_to_list_of_A;
     $this->optional_map_of_string_to_set_of_i32 = $optional_map_of_string_to_set_of_i32;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'just_an_A'),
+      Shapes::idx($shape, 'set_of_i32'),
+      Shapes::idx($shape, 'list_of_i32'),
+      Shapes::idx($shape, 'list_of_string'),
+      Shapes::idx($shape, 'map_of_string_to_i32'),
+      Shapes::idx($shape, 'map_of_string_to_A'),
+      Shapes::idx($shape, 'map_of_string_to_list_of_i32'),
+      Shapes::idx($shape, 'map_of_string_to_list_of_A'),
+      Shapes::idx($shape, 'map_of_string_to_set_of_i32'),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32'),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_A'),
+      Shapes::idx($shape, 'list_of_set_of_i32'),
+      Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A'),
+      Shapes::idx($shape, 'list_of_map_of_string_to_A'),
+      Shapes::idx($shape, 'list_of_self'),
+      Shapes::idx($shape, 'map_of_string_to_self'),
+      Shapes::idx($shape, 'optional_just_an_A'),
+      Shapes::idx($shape, 'optional_set_of_i32'),
+      Shapes::idx($shape, 'optional_list_of_i32'),
+      Shapes::idx($shape, 'optional_list_of_string'),
+      Shapes::idx($shape, 'optional_map_of_string_to_i32'),
+      Shapes::idx($shape, 'optional_map_of_string_to_A'),
+      Shapes::idx($shape, 'optional_map_of_string_to_list_of_i32'),
+      Shapes::idx($shape, 'optional_map_of_string_to_list_of_A'),
+      Shapes::idx($shape, 'optional_map_of_string_to_set_of_i32'),
+    );
   }
 
   public function getName(): string {

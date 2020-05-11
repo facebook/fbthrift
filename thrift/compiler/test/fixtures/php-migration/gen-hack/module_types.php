@@ -61,6 +61,14 @@ class Foo implements \IThriftStruct {
     'c' => 3,
     'd' => 4,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => ?varray<string>,
+    ?'b' => ?darray<string, varray<darray<int, bool>>>,
+    ?'c' => ?int,
+    ?'d' => ?bool,
+  );
+
   const int STRUCTURAL_ID = 3946809642153193229;
   /**
    * Original thrift field:-
@@ -95,6 +103,17 @@ class Foo implements \IThriftStruct {
     $this->c = idx($vals, 'c', 7);
     /* HH_FIXME[4110] previously hidden by unsafe */
     $this->d = idx($vals, 'd', false);
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Map {
+        'a' => Shapes::idx($shape, 'a'),
+        'b' => Shapes::idx($shape, 'b'),
+        'c' => Shapes::idx($shape, 'c'),
+        'd' => Shapes::idx($shape, 'd'),
+      },
+    );
   }
 
   public function getName(): string {
@@ -144,6 +163,14 @@ class Baz extends \TException implements \IThriftStruct {
     'some_container' => 3,
     'code' => 4,
   ];
+
+  const type TConstructorShape = shape(
+    ?'message' => ?string,
+    ?'some_field' => ?Foo,
+    ?'some_container' => ?darray<string, bool>,
+    ?'code' => ?int,
+  );
+
   const int STRUCTURAL_ID = 1663976252517274137;
   /**
    * Original thrift field:-
@@ -177,6 +204,17 @@ class Baz extends \TException implements \IThriftStruct {
     $this->code = (int)idx($vals, 'code', 0);
   }
 
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Map {
+        'message' => Shapes::idx($shape, 'message'),
+        'some_field' => Shapes::idx($shape, 'some_field'),
+        'some_container' => Shapes::idx($shape, 'some_container'),
+        'code' => Shapes::idx($shape, 'code'),
+      },
+    );
+  }
+
   public function getName(): string {
     return 'Baz';
   }
@@ -203,6 +241,11 @@ class OptBaz extends \TException implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'message' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'message' => ?string,
+  );
+
   const int STRUCTURAL_ID = 546500496397478593;
   /**
    * Original thrift field:-
@@ -214,6 +257,14 @@ class OptBaz extends \TException implements \IThriftStruct {
   public function __construct(@KeyedContainer<string, mixed> $vals = darray[]) {
     parent::__construct();
     $this->message = (string)idx($vals, 'message', '');
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Map {
+        'message' => Shapes::idx($shape, 'message'),
+      },
+    );
   }
 
   public function getName(): string {

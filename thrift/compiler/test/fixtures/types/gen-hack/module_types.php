@@ -62,6 +62,11 @@ class decorated_struct implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'field' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'field' => string,
+  );
+
   const int STRUCTURAL_ID = 6158382972310209096;
   /**
    * Original thrift field:-
@@ -76,6 +81,12 @@ class decorated_struct implements \IThriftStruct {
     } else {
       $this->field = $field;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'field'),
+    );
   }
 
   public function getName(): string {
@@ -201,6 +212,18 @@ class ContainerStruct implements \IThriftStruct {
     'fieldG' => 7,
     'fieldH' => 8,
   ];
+
+  const type TConstructorShape = shape(
+    ?'fieldA' => Vector<int>,
+    ?'fieldB' => Vector<int>,
+    ?'fieldC' => Vector<int>,
+    ?'fieldD' => Vector<int>,
+    ?'fieldE' => Vector<int>,
+    ?'fieldF' => Set<int>,
+    ?'fieldG' => Map<int, string>,
+    ?'fieldH' => Map<int, string>,
+  );
+
   const int STRUCTURAL_ID = 2901459969892394021;
   /**
    * Original thrift field:-
@@ -285,6 +308,19 @@ class ContainerStruct implements \IThriftStruct {
     } else {
       $this->fieldH = $fieldH;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'fieldA'),
+      Shapes::idx($shape, 'fieldB'),
+      Shapes::idx($shape, 'fieldC'),
+      Shapes::idx($shape, 'fieldD'),
+      Shapes::idx($shape, 'fieldE'),
+      Shapes::idx($shape, 'fieldF'),
+      Shapes::idx($shape, 'fieldG'),
+      Shapes::idx($shape, 'fieldH'),
+    );
   }
 
   public function getName(): string {
@@ -437,6 +473,11 @@ class CppTypeStruct implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'fieldA' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'fieldA' => Vector<int>,
+  );
+
   const int STRUCTURAL_ID = 9369458949141941;
   /**
    * Original thrift field:-
@@ -451,6 +492,12 @@ class CppTypeStruct implements \IThriftStruct {
     } else {
       $this->fieldA = $fieldA;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'fieldA'),
+    );
   }
 
   public function getName(): string {
@@ -503,6 +550,11 @@ class VirtualStruct implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'MyIntField' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'MyIntField' => int,
+  );
+
   const int STRUCTURAL_ID = 7014352813131039231;
   /**
    * Original thrift field:-
@@ -517,6 +569,12 @@ class VirtualStruct implements \IThriftStruct {
     } else {
       $this->MyIntField = $MyIntField;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'MyIntField'),
+    );
   }
 
   public function getName(): string {
@@ -565,6 +623,12 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
     'a' => 1,
     'b' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => ?MyForwardRefEnum,
+    ?'b' => ?MyForwardRefEnum,
+  );
+
   const int STRUCTURAL_ID = 6098225215594902198;
   /**
    * Original thrift field:-
@@ -589,6 +653,13 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
     } else {
       $this->b = $b;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
+    );
   }
 
   public function getName(): string {
@@ -635,6 +706,12 @@ class TrivialNumeric implements \IThriftStruct {
     'a' => 1,
     'b' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => int,
+    ?'b' => bool,
+  );
+
   const int STRUCTURAL_ID = 3920068475021763685;
   /**
    * Original thrift field:-
@@ -659,6 +736,13 @@ class TrivialNumeric implements \IThriftStruct {
     } else {
       $this->b = $b;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
+    );
   }
 
   public function getName(): string {
@@ -713,6 +797,12 @@ class TrivialNestedWithDefault implements \IThriftStruct {
     'z' => 1,
     'n' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'z' => int,
+    ?'n' => ?TrivialNumeric,
+  );
+
   const int STRUCTURAL_ID = 5012136746274172257;
   /**
    * Original thrift field:-
@@ -733,6 +823,13 @@ class TrivialNestedWithDefault implements \IThriftStruct {
       $this->z = $z;
     }
     $this->n = $n;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'z'),
+      Shapes::idx($shape, 'n'),
+    );
   }
 
   public function getName(): string {
@@ -798,6 +895,12 @@ class ComplexString implements \IThriftStruct {
     'a' => 1,
     'b' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => string,
+    ?'b' => Map<string, int>,
+  );
+
   const int STRUCTURAL_ID = 5460740530481786095;
   /**
    * Original thrift field:-
@@ -822,6 +925,13 @@ class ComplexString implements \IThriftStruct {
     } else {
       $this->b = $b;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
+    );
   }
 
   public function getName(): string {
@@ -883,6 +993,12 @@ class ComplexNestedWithDefault implements \IThriftStruct {
     'z' => 1,
     'n' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'z' => string,
+    ?'n' => ?ComplexString,
+  );
+
   const int STRUCTURAL_ID = 2913723608362321564;
   /**
    * Original thrift field:-
@@ -903,6 +1019,13 @@ class ComplexNestedWithDefault implements \IThriftStruct {
       $this->z = $z;
     }
     $this->n = $n;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'z'),
+      Shapes::idx($shape, 'n'),
+    );
   }
 
   public function getName(): string {
@@ -969,6 +1092,15 @@ class MinPadding implements \IThriftStruct {
     'biggish' => 4,
     'tiny' => 5,
   ];
+
+  const type TConstructorShape = shape(
+    ?'small' => int,
+    ?'big' => int,
+    ?'medium' => int,
+    ?'biggish' => int,
+    ?'tiny' => int,
+  );
+
   const int STRUCTURAL_ID = 723753448680843528;
   /**
    * Original thrift field:-
@@ -1023,6 +1155,16 @@ class MinPadding implements \IThriftStruct {
     } else {
       $this->tiny = $tiny;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'small'),
+      Shapes::idx($shape, 'big'),
+      Shapes::idx($shape, 'medium'),
+      Shapes::idx($shape, 'biggish'),
+      Shapes::idx($shape, 'tiny'),
+    );
   }
 
   public function getName(): string {
@@ -1122,6 +1264,14 @@ class MyStruct implements \IThriftStruct {
     'majorVer' => 3,
     'data' => 4,
   ];
+
+  const type TConstructorShape = shape(
+    ?'MyIntField' => int,
+    ?'MyStringField' => string,
+    ?'majorVer' => int,
+    ?'data' => ?MyDataItem,
+  );
+
   const int STRUCTURAL_ID = 2472338421128341558;
   /**
    * Original thrift field:-
@@ -1162,6 +1312,15 @@ class MyStruct implements \IThriftStruct {
       $this->majorVer = $majorVer;
     }
     $this->data = $data;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'MyIntField'),
+      Shapes::idx($shape, 'MyStringField'),
+      Shapes::idx($shape, 'majorVer'),
+      Shapes::idx($shape, 'data'),
+    );
   }
 
   public function getName(): string {
@@ -1210,10 +1369,19 @@ class MyDataItem implements \IThriftStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -1252,6 +1420,11 @@ class Renaming implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'foo' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'foo' => int,
+  );
+
   const int STRUCTURAL_ID = 2811793053530639830;
   /**
    * Original thrift field:-
@@ -1266,6 +1439,12 @@ class Renaming implements \IThriftStruct {
     } else {
       $this->foo = $foo;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'foo'),
+    );
   }
 
   public function getName(): string {
@@ -1325,6 +1504,12 @@ class AnnotatedTypes implements \IThriftStruct {
     'binary_field' => 1,
     'list_field' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'binary_field' => string,
+    ?'list_field' => Vector<Map<int, string>>,
+  );
+
   const int STRUCTURAL_ID = 7799859984459418183;
   /**
    * Original thrift field:-
@@ -1349,6 +1534,13 @@ class AnnotatedTypes implements \IThriftStruct {
     } else {
       $this->list_field = $list_field;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'binary_field'),
+      Shapes::idx($shape, 'list_field'),
+    );
   }
 
   public function getName(): string {
@@ -1413,6 +1605,12 @@ class ForwardUsageRoot implements \IThriftStruct {
     'ForwardUsageStruct' => 1,
     'ForwardUsageByRef' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'ForwardUsageStruct' => ?ForwardUsageStruct,
+    ?'ForwardUsageByRef' => ?ForwardUsageByRef,
+  );
+
   const int STRUCTURAL_ID = 839155360071855827;
   /**
    * Original thrift field:-
@@ -1429,6 +1627,13 @@ class ForwardUsageRoot implements \IThriftStruct {
   public function __construct(?ForwardUsageStruct $ForwardUsageStruct = null, ?ForwardUsageByRef $ForwardUsageByRef = null  ) {
     $this->ForwardUsageStruct = $ForwardUsageStruct;
     $this->ForwardUsageByRef = $ForwardUsageByRef;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'ForwardUsageStruct'),
+      Shapes::idx($shape, 'ForwardUsageByRef'),
+    );
   }
 
   public function getName(): string {
@@ -1479,6 +1684,11 @@ class ForwardUsageStruct implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'foo' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'foo' => ?ForwardUsageRoot,
+  );
+
   const int STRUCTURAL_ID = 7148256645166217470;
   /**
    * Original thrift field:-
@@ -1489,6 +1699,12 @@ class ForwardUsageStruct implements \IThriftStruct {
   <<__Rx>>
   public function __construct(?ForwardUsageRoot $foo = null  ) {
     $this->foo = $foo;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'foo'),
+    );
   }
 
   public function getName(): string {
@@ -1533,6 +1749,11 @@ class ForwardUsageByRef implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'foo' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'foo' => ?ForwardUsageRoot,
+  );
+
   const int STRUCTURAL_ID = 7148256645166217470;
   /**
    * Original thrift field:-
@@ -1543,6 +1764,12 @@ class ForwardUsageByRef implements \IThriftStruct {
   <<__Rx>>
   public function __construct(?ForwardUsageRoot $foo = null  ) {
     $this->foo = $foo;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'foo'),
+    );
   }
 
   public function getName(): string {
@@ -1581,10 +1808,19 @@ class NoexceptMoveEmpty implements \IThriftStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -1623,6 +1859,11 @@ class NoexceptMoveSimpleStruct implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'boolField' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'boolField' => int,
+  );
+
   const int STRUCTURAL_ID = 7058232826271171943;
   /**
    * Original thrift field:-
@@ -1637,6 +1878,12 @@ class NoexceptMoveSimpleStruct implements \IThriftStruct {
     } else {
       $this->boolField = $boolField;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'boolField'),
+    );
   }
 
   public function getName(): string {
@@ -1733,6 +1980,19 @@ class NoexceptMoveComplexStruct implements \IThriftStruct {
     'MyBinaryListField4' => 8,
     'MyMapEnumAndInt' => 9,
   ];
+
+  const type TConstructorShape = shape(
+    ?'MyBoolField' => bool,
+    ?'MyIntField' => int,
+    ?'MyStringField' => string,
+    ?'MyStringField2' => string,
+    ?'MyBinaryField' => string,
+    ?'MyBinaryField2' => ?string,
+    ?'MyBinaryField3' => string,
+    ?'MyBinaryListField4' => Vector<string>,
+    ?'MyMapEnumAndInt' => Map<MyEnumA, string>,
+  );
+
   const int STRUCTURAL_ID = 8958221528844030164;
   /**
    * Original thrift field:-
@@ -1828,6 +2088,20 @@ class NoexceptMoveComplexStruct implements \IThriftStruct {
     }
   }
 
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'MyBoolField'),
+      Shapes::idx($shape, 'MyIntField'),
+      Shapes::idx($shape, 'MyStringField'),
+      Shapes::idx($shape, 'MyStringField2'),
+      Shapes::idx($shape, 'MyBinaryField'),
+      Shapes::idx($shape, 'MyBinaryField2'),
+      Shapes::idx($shape, 'MyBinaryField3'),
+      Shapes::idx($shape, 'MyBinaryListField4'),
+      Shapes::idx($shape, 'MyMapEnumAndInt'),
+    );
+  }
+
   public function getName(): string {
     return 'NoexceptMoveComplexStruct';
   }
@@ -1920,6 +2194,12 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
     'string_field' => 1,
     'i32_field' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'string_field' => ?string,
+    ?'i32_field' => ?int,
+  );
+
   const int STRUCTURAL_ID = 5659539827624892912;
   /**
    * Original thrift field:-
@@ -1944,6 +2224,13 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
       $this->i32_field = $i32_field;
       $this->_type = NoExceptMoveUnionEnum::i32_field;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'string_field'),
+      Shapes::idx($shape, 'i32_field'),
+    );
   }
 
   public function getName(): string {

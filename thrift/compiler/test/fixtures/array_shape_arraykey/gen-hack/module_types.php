@@ -36,6 +36,12 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     'just_an_enum' => 1,
     'a' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'just_an_enum' => ?Enum,
+    ?'a' => string,
+  );
+
   const type TShape = shape(
     ?'just_an_enum' => ?Enum,
     'a' => string,
@@ -60,6 +66,13 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     } else {
       $this->a = $a;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'just_an_enum'),
+      Shapes::idx($shape, 'a'),
+    );
   }
 
   public function getName(): string {
@@ -397,6 +410,28 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'set_of_i32' => 17,
     'set_of_string' => 18,
   ];
+
+  const type TConstructorShape = shape(
+    ?'map_of_string_to_string' => dict<string, string>,
+    ?'map_of_string_to_i32' => dict<string, int>,
+    ?'map_of_string_to_A' => dict<string, A>,
+    ?'map_of_string_to_self' => dict<string, B>,
+    ?'map_of_string_to_list_of_A' => dict<string, vec<A>>,
+    ?'map_of_string_to_map_of_string_to_i32' => dict<string, dict<string, int>>,
+    ?'map_of_string_to_map_of_string_to_A' => dict<string, dict<string, A>>,
+    ?'map_of_string_to_list_of_i32' => dict<string, vec<int>>,
+    ?'map_of_string_to_set_of_i32' => dict<string, keyset<int>>,
+    ?'list_of_string' => vec<string>,
+    ?'list_of_i32' => vec<int>,
+    ?'list_of_self' => vec<B>,
+    ?'list_of_list_of_self' => vec<vec<B>>,
+    ?'list_of_set_of_i32' => vec<keyset<int>>,
+    ?'list_of_map_of_string_to_list_of_A' => vec<dict<string, vec<A>>>,
+    ?'list_of_map_of_string_to_A' => vec<dict<string, A>>,
+    ?'set_of_i32' => keyset<int>,
+    ?'set_of_string' => keyset<string>,
+  );
+
   const type TShape = shape(
     'map_of_string_to_string' => dict<arraykey, string>,
     'map_of_string_to_i32' => dict<arraykey, int>,
@@ -601,6 +636,29 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     } else {
       $this->set_of_string = $set_of_string;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'map_of_string_to_string'),
+      Shapes::idx($shape, 'map_of_string_to_i32'),
+      Shapes::idx($shape, 'map_of_string_to_A'),
+      Shapes::idx($shape, 'map_of_string_to_self'),
+      Shapes::idx($shape, 'map_of_string_to_list_of_A'),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32'),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_A'),
+      Shapes::idx($shape, 'map_of_string_to_list_of_i32'),
+      Shapes::idx($shape, 'map_of_string_to_set_of_i32'),
+      Shapes::idx($shape, 'list_of_string'),
+      Shapes::idx($shape, 'list_of_i32'),
+      Shapes::idx($shape, 'list_of_self'),
+      Shapes::idx($shape, 'list_of_list_of_self'),
+      Shapes::idx($shape, 'list_of_set_of_i32'),
+      Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A'),
+      Shapes::idx($shape, 'list_of_map_of_string_to_A'),
+      Shapes::idx($shape, 'set_of_i32'),
+      Shapes::idx($shape, 'set_of_string'),
+    );
   }
 
   public function getName(): string {
@@ -1110,6 +1168,31 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     'set_of_i32' => 20,
     'set_of_string' => 21,
   ];
+
+  const type TConstructorShape = shape(
+    ?'just_an_A' => ?A,
+    ?'just_an_enum' => ?Enum,
+    ?'optional_sef' => ?C,
+    ?'map_of_string_to_string' => ?dict<string, string>,
+    ?'map_of_string_to_i32' => ?dict<string, int>,
+    ?'map_of_string_to_A' => ?dict<string, A>,
+    ?'map_of_string_to_self' => ?dict<string, B>,
+    ?'map_of_string_to_list_of_A' => ?dict<string, vec<A>>,
+    ?'map_of_string_to_map_of_string_to_i32' => ?dict<string, dict<string, int>>,
+    ?'map_of_string_to_map_of_string_to_A' => ?dict<string, dict<string, A>>,
+    ?'map_of_string_to_list_of_i32' => ?dict<string, vec<int>>,
+    ?'map_of_string_to_set_of_i32' => ?dict<string, keyset<int>>,
+    ?'list_of_string' => ?vec<string>,
+    ?'list_of_map_of_string_to_A' => ?vec<dict<string, A>>,
+    ?'list_of_self' => ?vec<B>,
+    ?'list_of_list_of_self' => ?vec<vec<B>>,
+    ?'list_of_map_of_string_to_list_of_A' => ?vec<dict<string, vec<A>>>,
+    ?'list_of_i32' => ?vec<int>,
+    ?'map_of_string_to_list_of_string' => ?dict<string, vec<string>>,
+    ?'set_of_i32' => ?keyset<int>,
+    ?'set_of_string' => ?keyset<string>,
+  );
+
   const type TShape = shape(
     ?'just_an_A' => ?A::TShape,
     ?'just_an_enum' => ?Enum,
@@ -1263,6 +1346,32 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     $this->map_of_string_to_list_of_string = $map_of_string_to_list_of_string;
     $this->set_of_i32 = $set_of_i32;
     $this->set_of_string = $set_of_string;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'just_an_A'),
+      Shapes::idx($shape, 'just_an_enum'),
+      Shapes::idx($shape, 'optional_sef'),
+      Shapes::idx($shape, 'map_of_string_to_string'),
+      Shapes::idx($shape, 'map_of_string_to_i32'),
+      Shapes::idx($shape, 'map_of_string_to_A'),
+      Shapes::idx($shape, 'map_of_string_to_self'),
+      Shapes::idx($shape, 'map_of_string_to_list_of_A'),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32'),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_A'),
+      Shapes::idx($shape, 'map_of_string_to_list_of_i32'),
+      Shapes::idx($shape, 'map_of_string_to_set_of_i32'),
+      Shapes::idx($shape, 'list_of_string'),
+      Shapes::idx($shape, 'list_of_map_of_string_to_A'),
+      Shapes::idx($shape, 'list_of_self'),
+      Shapes::idx($shape, 'list_of_list_of_self'),
+      Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A'),
+      Shapes::idx($shape, 'list_of_i32'),
+      Shapes::idx($shape, 'map_of_string_to_list_of_string'),
+      Shapes::idx($shape, 'set_of_i32'),
+      Shapes::idx($shape, 'set_of_string'),
+    );
   }
 
   public function getName(): string {

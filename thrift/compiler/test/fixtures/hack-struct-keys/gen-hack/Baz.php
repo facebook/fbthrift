@@ -299,6 +299,13 @@ class Baz_qux_args implements \IThriftStruct {
     'b' => 2,
     'c' => 3,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => Set<arraykey>,
+    ?'b' => Vector<Bar>,
+    ?'c' => Map<arraykey, string>,
+  );
+
   const int STRUCTURAL_ID = 1160460043765273624;
   public Set<arraykey> $a;
   public Vector<Bar> $b;
@@ -323,6 +330,14 @@ class Baz_qux_args implements \IThriftStruct {
     }
   }
 
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
+      Shapes::idx($shape, 'c'),
+    );
+  }
+
   public function getName(): string {
     return 'Baz_qux_args';
   }
@@ -345,11 +360,22 @@ class Baz_qux_result implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,
   ];
+
+  const type TConstructorShape = shape(
+    ?'success' => string,
+  );
+
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
   <<__Rx>>
   public function __construct(?string $success = null  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
   }
 
   public function getName(): string {

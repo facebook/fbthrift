@@ -27,6 +27,12 @@ class Foo implements \IThriftStruct {
     'a' => 1,
     'b' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => int,
+    ?'b' => string,
+  );
+
   const int STRUCTURAL_ID = 5526046231048010857;
   /**
    * Original thrift field:-
@@ -43,6 +49,15 @@ class Foo implements \IThriftStruct {
   public function __construct(<<__Soft>> KeyedContainer<string, mixed> $vals = dict[]) {
     $this->a = (int)idx($vals, 'a', 0);
     $this->b = (string)idx($vals, 'b', '');
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Map {
+        'a' => Shapes::idx($shape, 'a'),
+        'b' => Shapes::idx($shape, 'b'),
+      },
+    );
   }
 
   public function getName(): string {

@@ -22,6 +22,11 @@ class Foo implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'fiels' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'fiels' => int,
+  );
+
   const int STRUCTURAL_ID = 3168813896074353984;
   /**
    * Original thrift field:-
@@ -36,6 +41,12 @@ class Foo implements \IThriftStruct {
     } else {
       $this->fiels = $fiels;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'fiels'),
+    );
   }
 
   public function getName(): string {
@@ -85,6 +96,12 @@ class Bar implements \IThriftStruct {
     'a' => 1,
     'b' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => Set<arraykey>,
+    ?'b' => Map<arraykey, int>,
+  );
+
   const int STRUCTURAL_ID = 5283012534631553068;
   /**
    * Original thrift field:-
@@ -109,6 +126,13 @@ class Bar implements \IThriftStruct {
     } else {
       $this->b = $b;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
+    );
   }
 
   public function getName(): string {

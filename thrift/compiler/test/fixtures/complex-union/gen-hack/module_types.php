@@ -82,6 +82,16 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     'typedefValue' => 9,
     'stringRef' => 14,
   ];
+
+  const type TConstructorShape = shape(
+    ?'intValue' => ?int,
+    ?'stringValue' => ?string,
+    ?'intListValue' => ?Vector<int>,
+    ?'stringListValue' => ?Vector<string>,
+    ?'typedefValue' => ?Map<int, string>,
+    ?'stringRef' => ?string,
+  );
+
   const int STRUCTURAL_ID = 1260275021738383280;
   /**
    * Original thrift field:-
@@ -142,6 +152,17 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       $this->stringRef = $stringRef;
       $this->_type = ComplexUnionEnum::stringRef;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'intValue'),
+      Shapes::idx($shape, 'stringValue'),
+      Shapes::idx($shape, 'intListValue'),
+      Shapes::idx($shape, 'stringListValue'),
+      Shapes::idx($shape, 'typedefValue'),
+      Shapes::idx($shape, 'stringRef'),
+    );
   }
 
   public function getName(): string {
@@ -342,6 +363,12 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
     'intListValue' => 2,
     'stringListValue' => 3,
   ];
+
+  const type TConstructorShape = shape(
+    ?'intListValue' => ?Vector<int>,
+    ?'stringListValue' => ?Vector<string>,
+  );
+
   const int STRUCTURAL_ID = 3965946011249022525;
   /**
    * Original thrift field:-
@@ -366,6 +393,13 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
       $this->stringListValue = $stringListValue;
       $this->_type = ListUnionEnum::stringListValue;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'intListValue'),
+      Shapes::idx($shape, 'stringListValue'),
+    );
   }
 
   public function getName(): string {
@@ -473,6 +507,12 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
     'binaryData' => 1,
     'stringData' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'binaryData' => ?string,
+    ?'stringData' => ?string,
+  );
+
   const int STRUCTURAL_ID = 4138034353479042532;
   /**
    * Original thrift field:-
@@ -497,6 +537,13 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
       $this->stringData = $stringData;
       $this->_type = DataUnionEnum::stringData;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'binaryData'),
+      Shapes::idx($shape, 'stringData'),
+    );
   }
 
   public function getName(): string {
@@ -596,6 +643,13 @@ class Val implements \IThriftStruct {
     'intVal' => 2,
     'typedefValue' => 9,
   ];
+
+  const type TConstructorShape = shape(
+    ?'strVal' => string,
+    ?'intVal' => int,
+    ?'typedefValue' => Map<int, string>,
+  );
+
   const int STRUCTURAL_ID = 7250696402099336501;
   /**
    * Original thrift field:-
@@ -630,6 +684,14 @@ class Val implements \IThriftStruct {
     } else {
       $this->typedefValue = $typedefValue;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'strVal'),
+      Shapes::idx($shape, 'intVal'),
+      Shapes::idx($shape, 'typedefValue'),
+    );
   }
 
   public function getName(): string {
@@ -703,6 +765,12 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
     'v1' => 1,
     'v2' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'v1' => ?Val,
+    ?'v2' => ?Val,
+  );
+
   const int STRUCTURAL_ID = 7355268417298249876;
   /**
    * Original thrift field:-
@@ -727,6 +795,13 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
       $this->v2 = $v2;
       $this->_type = ValUnionEnum::v2;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'v1'),
+      Shapes::idx($shape, 'v2'),
+    );
   }
 
   public function getName(): string {
@@ -826,6 +901,12 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
     'thingOne' => 1,
     'thingTwo' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'thingOne' => ?string,
+    ?'thingTwo' => ?string,
+  );
+
   const int STRUCTURAL_ID = 8657642278595798833;
   /**
    * Original thrift field:-
@@ -850,6 +931,13 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
       $this->thingTwo = $thingTwo;
       $this->_type = VirtualComplexUnionEnum::thingTwo;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'thingOne'),
+      Shapes::idx($shape, 'thingTwo'),
+    );
   }
 
   public function getName(): string {
@@ -931,6 +1019,11 @@ class NonCopyableStruct implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'num' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'num' => int,
+  );
+
   const int STRUCTURAL_ID = 7064950569513307469;
   /**
    * Original thrift field:-
@@ -945,6 +1038,12 @@ class NonCopyableStruct implements \IThriftStruct {
     } else {
       $this->num = $num;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'num'),
+    );
   }
 
   public function getName(): string {
@@ -993,6 +1092,11 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
   const dict<string, int> FIELDMAP = dict[
     's' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'s' => ?NonCopyableStruct,
+  );
+
   const int STRUCTURAL_ID = 5595426780316201025;
   /**
    * Original thrift field:-
@@ -1008,6 +1112,12 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
       $this->s = $s;
       $this->_type = NonCopyableUnionEnum::s;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 's'),
+    );
   }
 
   public function getName(): string {

@@ -47,6 +47,14 @@ class Color implements \IThriftStruct {
     'blue' => 3,
     'alpha' => 4,
   ];
+
+  const type TConstructorShape = shape(
+    ?'red' => float,
+    ?'green' => float,
+    ?'blue' => float,
+    ?'alpha' => float,
+  );
+
   const int STRUCTURAL_ID = 5495510740722957663;
   /**
    * Original thrift field:-
@@ -91,6 +99,15 @@ class Color implements \IThriftStruct {
     } else {
       $this->alpha = $alpha;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'red'),
+      Shapes::idx($shape, 'green'),
+      Shapes::idx($shape, 'blue'),
+      Shapes::idx($shape, 'alpha'),
+    );
   }
 
   public function getName(): string {
@@ -140,6 +157,15 @@ class Vehicle implements \IThriftStruct {
     'name' => 4,
     'hasAC' => 5,
   ];
+
+  const type TConstructorShape = shape(
+    ?'color' => ?Color,
+    ?'licensePlate' => ?string,
+    ?'description' => ?string,
+    ?'name' => ?string,
+    ?'hasAC' => bool,
+  );
+
   const int STRUCTURAL_ID = 2222890000100114781;
   /**
    * Original thrift field:-
@@ -178,6 +204,16 @@ class Vehicle implements \IThriftStruct {
     } else {
       $this->hasAC = $hasAC;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'color'),
+      Shapes::idx($shape, 'licensePlate'),
+      Shapes::idx($shape, 'description'),
+      Shapes::idx($shape, 'name'),
+      Shapes::idx($shape, 'hasAC'),
+    );
   }
 
   public function getName(): string {
@@ -274,6 +310,20 @@ class Person implements \IThriftStruct {
     'afraidOfAnimal' => 9,
     'vehicles' => 10,
   ];
+
+  const type TConstructorShape = shape(
+    ?'id' => int,
+    ?'name' => string,
+    ?'age' => ?int,
+    ?'address' => ?string,
+    ?'favoriteColor' => ?Color,
+    ?'friends' => ?Set<int>,
+    ?'bestFriend' => ?int,
+    ?'petNames' => ?Map<Animal, string>,
+    ?'afraidOfAnimal' => ?Animal,
+    ?'vehicles' => ?Vector<Vehicle>,
+  );
+
   const int STRUCTURAL_ID = 5615342512964403351;
   /**
    * Original thrift field:-
@@ -346,6 +396,21 @@ class Person implements \IThriftStruct {
     $this->petNames = $petNames;
     $this->afraidOfAnimal = $afraidOfAnimal;
     $this->vehicles = $vehicles;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'id'),
+      Shapes::idx($shape, 'name'),
+      Shapes::idx($shape, 'age'),
+      Shapes::idx($shape, 'address'),
+      Shapes::idx($shape, 'favoriteColor'),
+      Shapes::idx($shape, 'friends'),
+      Shapes::idx($shape, 'bestFriend'),
+      Shapes::idx($shape, 'petNames'),
+      Shapes::idx($shape, 'afraidOfAnimal'),
+      Shapes::idx($shape, 'vehicles'),
+    );
   }
 
   public function getName(): string {

@@ -1783,6 +1783,10 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const type TShape = shape(
     ...
   );
@@ -1790,6 +1794,11 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -1828,10 +1837,19 @@ class MyService_ping_result implements \IThriftStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -1860,6 +1878,10 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const type TShape = shape(
     ...
   );
@@ -1867,6 +1889,11 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -1910,11 +1937,22 @@ class MyService_getRandomData_result implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,
   ];
+
+  const type TConstructorShape = shape(
+    ?'success' => string,
+  );
+
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
   <<__Rx>>
   public function __construct(?string $success = null  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
   }
 
   public function getName(): string {
@@ -1951,6 +1989,11 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
   const dict<string, int> FIELDMAP = dict[
     'id' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'id' => int,
+  );
+
   const type TShape = shape(
     'id' => int,
     ...
@@ -1965,6 +2008,12 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
     } else {
       $this->id = $id;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'id'),
+    );
   }
 
   public function getName(): string {
@@ -2013,11 +2062,22 @@ class MyService_hasDataById_result implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,
   ];
+
+  const type TConstructorShape = shape(
+    ?'success' => bool,
+  );
+
   const int STRUCTURAL_ID = 8594383818423018844;
   public ?bool $success;
 
   <<__Rx>>
   public function __construct(?bool $success = null  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
   }
 
   public function getName(): string {
@@ -2054,6 +2114,11 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
   const dict<string, int> FIELDMAP = dict[
     'id' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'id' => int,
+  );
+
   const type TShape = shape(
     'id' => int,
     ...
@@ -2068,6 +2133,12 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
     } else {
       $this->id = $id;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'id'),
+    );
   }
 
   public function getName(): string {
@@ -2116,11 +2187,22 @@ class MyService_getDataById_result implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,
   ];
+
+  const type TConstructorShape = shape(
+    ?'success' => string,
+  );
+
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
   <<__Rx>>
   public function __construct(?string $success = null  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
   }
 
   public function getName(): string {
@@ -2162,6 +2244,12 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
     'id' => 1,
     'data' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'id' => int,
+    ?'data' => string,
+  );
+
   const type TShape = shape(
     'id' => int,
     'data' => string,
@@ -2183,6 +2271,13 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
     } else {
       $this->data = $data;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'id'),
+      Shapes::idx($shape, 'data'),
+    );
   }
 
   public function getName(): string {
@@ -2231,10 +2326,19 @@ class MyService_putDataById_result implements \IThriftStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -2273,6 +2377,12 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
     'id' => 1,
     'data' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'id' => int,
+    ?'data' => string,
+  );
+
   const type TShape = shape(
     'id' => int,
     'data' => string,
@@ -2294,6 +2404,13 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
     } else {
       $this->data = $data;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'id'),
+      Shapes::idx($shape, 'data'),
+    );
   }
 
   public function getName(): string {
@@ -2342,6 +2459,10 @@ class MyService_doNothing_args implements \IThriftStruct, \IThriftShapishStruct 
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const type TShape = shape(
     ...
   );
@@ -2349,6 +2470,11 @@ class MyService_doNothing_args implements \IThriftStruct, \IThriftShapishStruct 
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -2387,10 +2513,19 @@ class MyService_doNothing_result implements \IThriftStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {

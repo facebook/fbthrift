@@ -61,6 +61,14 @@ class Foo implements \IThriftStruct {
     'c' => 3,
     'd' => 4,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => ConstVector<string>,
+    ?'b' => ?ConstMap<string, ConstVector<ConstSet<int>>>,
+    ?'c' => int,
+    ?'d' => bool,
+  );
+
   const int STRUCTURAL_ID = 3946809642153193229;
   /**
    * Original thrift field:-
@@ -103,6 +111,15 @@ class Foo implements \IThriftStruct {
     }
   }
 
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
+      Shapes::idx($shape, 'c'),
+      Shapes::idx($shape, 'd'),
+    );
+  }
+
   public function getName(): string {
     return 'Foo';
   }
@@ -129,6 +146,11 @@ class Baz extends \TException implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'message' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'message' => string,
+  );
+
   const int STRUCTURAL_ID = 2427562471238739676;
   /**
    * Original thrift field:-
@@ -144,6 +166,12 @@ class Baz extends \TException implements \IThriftStruct {
     } else {
       $this->message = $message;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'message'),
+    );
   }
 
   public function getName(): string {

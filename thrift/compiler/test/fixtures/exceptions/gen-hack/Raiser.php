@@ -793,10 +793,19 @@ class Raiser_doBland_args implements \IThriftStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -816,10 +825,19 @@ class Raiser_doBland_result implements \IThriftStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -839,10 +857,19 @@ class Raiser_doRaise_args implements \IThriftStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -880,6 +907,13 @@ class Raiser_doRaise_result implements \IThriftStruct {
     'f' => 2,
     's' => 3,
   ];
+
+  const type TConstructorShape = shape(
+    ?'b' => ?Banal,
+    ?'f' => ?Fiery,
+    ?'s' => ?Serious,
+  );
+
   const int STRUCTURAL_ID = 1991614683033939916;
   public ?Banal $b;
   public ?Fiery $f;
@@ -887,6 +921,14 @@ class Raiser_doRaise_result implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?Banal $b = null, ?Fiery $f = null, ?Serious $s = null  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'b'),
+      Shapes::idx($shape, 'f'),
+      Shapes::idx($shape, 's'),
+    );
   }
 
   public function getName(): string {
@@ -906,10 +948,19 @@ class Raiser_get200_args implements \IThriftStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -934,11 +985,22 @@ class Raiser_get200_result implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,
   ];
+
+  const type TConstructorShape = shape(
+    ?'success' => string,
+  );
+
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
   <<__Rx>>
   public function __construct(?string $success = null  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
   }
 
   public function getName(): string {
@@ -958,10 +1020,19 @@ class Raiser_get500_args implements \IThriftStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -1004,6 +1075,14 @@ class Raiser_get500_result implements \IThriftStruct {
     'b' => 2,
     's' => 3,
   ];
+
+  const type TConstructorShape = shape(
+    ?'success' => string,
+    ?'f' => ?Fiery,
+    ?'b' => ?Banal,
+    ?'s' => ?Serious,
+  );
+
   const int STRUCTURAL_ID = 6147773747560615508;
   public ?string $success;
   public ?Fiery $f;
@@ -1012,6 +1091,15 @@ class Raiser_get500_result implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(?string $success = null, ?Fiery $f = null, ?Banal $b = null, ?Serious $s = null  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+      Shapes::idx($shape, 'f'),
+      Shapes::idx($shape, 'b'),
+      Shapes::idx($shape, 's'),
+    );
   }
 
   public function getName(): string {

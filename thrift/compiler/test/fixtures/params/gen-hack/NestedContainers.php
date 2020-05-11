@@ -1378,6 +1378,11 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
   const dict<string, int> FIELDMAP = dict[
     'foo' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'foo' => Map<int, Vector<int>>,
+  );
+
   const type TShape = shape(
     'foo' => dict<int, vec<int>>,
     ...
@@ -1392,6 +1397,12 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
     } else {
       $this->foo = $foo;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'foo'),
+    );
   }
 
   public function getName(): string {
@@ -1428,10 +1439,19 @@ class NestedContainers_mapList_result implements \IThriftStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -1470,6 +1490,11 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
   const dict<string, int> FIELDMAP = dict[
     'foo' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'foo' => Map<int, Set<int>>,
+  );
+
   const type TShape = shape(
     'foo' => dict<int, dict<int, bool>>,
     ...
@@ -1484,6 +1509,12 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
     } else {
       $this->foo = $foo;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'foo'),
+    );
   }
 
   public function getName(): string {
@@ -1520,10 +1551,19 @@ class NestedContainers_mapSet_result implements \IThriftStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -1562,6 +1602,11 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
   const dict<string, int> FIELDMAP = dict[
     'foo' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'foo' => Vector<Map<int, int>>,
+  );
+
   const type TShape = shape(
     'foo' => vec<dict<int, int>>,
     ...
@@ -1576,6 +1621,12 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
     } else {
       $this->foo = $foo;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'foo'),
+    );
   }
 
   public function getName(): string {
@@ -1612,10 +1663,19 @@ class NestedContainers_listMap_result implements \IThriftStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -1650,6 +1710,11 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
   const dict<string, int> FIELDMAP = dict[
     'foo' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'foo' => Vector<Set<int>>,
+  );
+
   const type TShape = shape(
     'foo' => vec<dict<int, bool>>,
     ...
@@ -1664,6 +1729,12 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
     } else {
       $this->foo = $foo;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'foo'),
+    );
   }
 
   public function getName(): string {
@@ -1700,10 +1771,19 @@ class NestedContainers_listSet_result implements \IThriftStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -1761,6 +1841,11 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
   const dict<string, int> FIELDMAP = dict[
     'foo' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'foo' => Vector<Vector<Map<int, Map<int, Set<int>>>>>,
+  );
+
   const type TShape = shape(
     'foo' => vec<vec<dict<int, dict<int, dict<int, bool>>>>>,
     ...
@@ -1775,6 +1860,12 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
     } else {
       $this->foo = $foo;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'foo'),
+    );
   }
 
   public function getName(): string {
@@ -1826,10 +1917,19 @@ class NestedContainers_turtles_result implements \IThriftStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {

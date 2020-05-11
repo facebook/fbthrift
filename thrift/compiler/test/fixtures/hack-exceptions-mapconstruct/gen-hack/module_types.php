@@ -37,6 +37,12 @@ class MyException1 extends \TException implements \IThriftStruct {
     'message' => 1,
     'code' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'message' => string,
+    ?'code' => ?MyEnum,
+  );
+
   const int STRUCTURAL_ID = 7711048519845400283;
   /**
    * Original thrift field:-
@@ -64,6 +70,15 @@ class MyException1 extends \TException implements \IThriftStruct {
     $this->message = (string)idx($vals, 'message', '');
     /* HH_FIXME[4110] exposed by decl fixme scope refinement */
     $this->code = idx($vals, 'code', MyEnum::MyValue1);
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Map {
+        'message' => Shapes::idx($shape, 'message'),
+        'code' => Shapes::idx($shape, 'code'),
+      },
+    );
   }
 
   public function getName(): string {
@@ -98,6 +113,12 @@ class MyException2 extends \TException implements \IThriftStruct {
     'message' => 1,
     'code' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'message' => string,
+    ?'code' => ?MyEnum,
+  );
+
   const int STRUCTURAL_ID = 3067783023341493113;
   /**
    * Original thrift field:-
@@ -125,6 +146,15 @@ class MyException2 extends \TException implements \IThriftStruct {
     $this->message = (string)idx($vals, 'message', '');
     /* HH_FIXME[4110] exposed by decl fixme scope refinement */
     $this->code = idx($vals, 'code', MyEnum::MyValue1);
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Map {
+        'message' => Shapes::idx($shape, 'message'),
+        'code' => Shapes::idx($shape, 'code'),
+      },
+    );
   }
 
   public function getName(): string {
@@ -159,6 +189,12 @@ class MyException3 extends \TException implements \IThriftStruct {
     'message' => 1,
     'code' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'message' => string,
+    ?'code' => ?MyEnum,
+  );
+
   const int STRUCTURAL_ID = 3517193566312570591;
   /**
    * Original thrift field:-
@@ -186,6 +222,15 @@ class MyException3 extends \TException implements \IThriftStruct {
     $this->message = (string)idx($vals, 'message', '');
     /* HH_FIXME[4110] exposed by decl fixme scope refinement */
     $this->code = idx($vals, 'code', MyEnum::MyValue1);
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Map {
+        'message' => Shapes::idx($shape, 'message'),
+        'code' => Shapes::idx($shape, 'code'),
+      },
+    );
   }
 
   public function getName(): string {
@@ -220,6 +265,12 @@ class MyException4 extends \TException implements \IThriftStruct {
     'message' => 1,
     'code' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'message' => string,
+    ?'code' => ?MyEnum,
+  );
+
   const int STRUCTURAL_ID = 3517193566312570591;
   /**
    * Original thrift field:-
@@ -247,6 +298,15 @@ class MyException4 extends \TException implements \IThriftStruct {
     $this->message = (string)idx($vals, 'message', '');
     /* HH_FIXME[4110] exposed by decl fixme scope refinement */
     $this->code = idx($vals, 'code', MyEnum::MyValue2);
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Map {
+        'message' => Shapes::idx($shape, 'message'),
+        'code' => Shapes::idx($shape, 'code'),
+      },
+    );
   }
 
   public function getName(): string {
@@ -280,6 +340,12 @@ class MyException5 extends \TException implements \IThriftStruct {
     'message' => 1,
     'code' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'message' => string,
+    ?'code' => ?int,
+  );
+
   const int STRUCTURAL_ID = 7335721753390449361;
   /**
    * Original thrift field:-
@@ -297,6 +363,15 @@ class MyException5 extends \TException implements \IThriftStruct {
     parent::__construct();
     $this->message = (string)idx($vals, 'message', '');
     $this->code = (int)idx($vals, 'code', 0);
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Map {
+        'message' => Shapes::idx($shape, 'message'),
+        'code' => Shapes::idx($shape, 'code'),
+      },
+    );
   }
 
   public function getName(): string {

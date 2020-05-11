@@ -292,6 +292,14 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
     'd' => 3,
     'e' => 4,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => keyset<int>,
+    ?'b' => vec<dict<int, keyset<string>>>,
+    ?'d' => ?Foo,
+    ?'e' => int,
+  );
+
   const type TShape = shape(
     'a' => keyset<int>,
     'b' => vec<dict<int, keyset<string>>>,
@@ -322,6 +330,15 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
     } else {
       $this->e = $e;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
+      Shapes::idx($shape, 'd'),
+      Shapes::idx($shape, 'e'),
+    );
   }
 
   public function getName(): string {
@@ -366,11 +383,22 @@ class Bar_baz_result implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,
   ];
+
+  const type TConstructorShape = shape(
+    ?'success' => string,
+  );
+
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
   <<__Rx>>
   public function __construct(?string $success = null  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
   }
 
   public function getName(): string {

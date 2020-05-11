@@ -43,6 +43,12 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     'intValue' => 1,
     'stringValue' => 5,
   ];
+
+  const type TConstructorShape = shape(
+    ?'intValue' => ?int,
+    ?'stringValue' => ?string,
+  );
+
   const type TShape = shape(
     ?'intValue' => ?int,
     ?'stringValue' => ?string,
@@ -72,6 +78,13 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
       $this->stringValue = $stringValue;
       $this->_type = \test\fixtures\UnionEnum::stringValue;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'intValue'),
+      Shapes::idx($shape, 'stringValue'),
+    );
   }
 
   public function getName(): string {
@@ -220,6 +233,11 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   const dict<string, int> FIELDMAP = dict[
     'a' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => string,
+  );
+
   const type TShape = shape(
     'a' => string,
     ...
@@ -238,6 +256,12 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     } else {
       $this->a = $a;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'a'),
+    );
   }
 
   public function getName(): string {
@@ -805,6 +829,48 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'list_of_string_with_default_value' => 87,
     'map_of_string_to_list_of_i32_with_default_value' => 88,
   ];
+
+  const type TConstructorShape = shape(
+    ?'just_an_A' => ?\test\fixtures\A,
+    ?'set_of_i32' => Set<int>,
+    ?'list_of_i32' => Vector<int>,
+    ?'list_of_string' => Vector<string>,
+    ?'map_of_string_to_i32' => Map<string, int>,
+    ?'map_of_string_to_A' => Map<string, \test\fixtures\A>,
+    ?'map_of_string_to_list_of_i32' => Map<string, Vector<int>>,
+    ?'map_of_string_to_list_of_A' => Map<string, Vector<\test\fixtures\A>>,
+    ?'map_of_string_to_set_of_i32' => Map<string, Set<int>>,
+    ?'map_of_string_to_map_of_string_to_i32' => Map<string, Map<string, int>>,
+    ?'map_of_string_to_map_of_string_to_A' => Map<string, Map<string, \test\fixtures\A>>,
+    ?'list_of_set_of_i32' => Vector<Set<int>>,
+    ?'list_of_map_of_string_to_list_of_A' => Vector<Map<string, Vector<\test\fixtures\A>>>,
+    ?'list_of_map_of_string_to_A' => Vector<Map<string, \test\fixtures\A>>,
+    ?'list_of_self' => Vector<\test\fixtures\B>,
+    ?'map_of_string_to_self' => Map<string, \test\fixtures\B>,
+    ?'just_an_enum' => ?\test\fixtures\Enum,
+    ?'just_a_union' => ?\test\fixtures\Union,
+    ?'optional_just_an_A' => ?\test\fixtures\A,
+    ?'optional_set_of_i32' => ?Set<int>,
+    ?'optional_list_of_i32' => ?Vector<int>,
+    ?'optional_list_of_string' => ?Vector<string>,
+    ?'optional_map_of_string_to_i32' => ?Map<string, int>,
+    ?'optional_map_of_string_to_A' => ?Map<string, \test\fixtures\A>,
+    ?'optional_map_of_string_to_list_of_i32' => ?Map<string, Vector<int>>,
+    ?'optional_map_of_string_to_list_of_A' => ?Map<string, Vector<\test\fixtures\A>>,
+    ?'optional_map_of_string_to_set_of_i32' => ?Map<string, Set<int>>,
+    ?'optional_enum' => ?\test\fixtures\Enum,
+    ?'required_enum_with_default' => \test\fixtures\Enum,
+    ?'string_with_default_value' => string,
+    ?'i32_with_default_value' => int,
+    ?'double_with_default_value' => float,
+    ?'enum_with_default_value' => ?\test\fixtures\Enum,
+    ?'A_with_default_value' => ?\test\fixtures\A,
+    ?'set_of_i32_with_default_value' => Set<int>,
+    ?'map_of_i32_to_string_with_default_value' => Map<int, string>,
+    ?'list_of_string_with_default_value' => Vector<string>,
+    ?'map_of_string_to_list_of_i32_with_default_value' => Map<string, Vector<int>>,
+  );
+
   const type TShape = shape(
     ?'just_an_A' => ?\test\fixtures\A::TShape,
     'set_of_i32' => dict<int, bool>,
@@ -1195,6 +1261,49 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     } else {
       $this->map_of_string_to_list_of_i32_with_default_value = $map_of_string_to_list_of_i32_with_default_value;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'just_an_A'),
+      Shapes::idx($shape, 'set_of_i32'),
+      Shapes::idx($shape, 'list_of_i32'),
+      Shapes::idx($shape, 'list_of_string'),
+      Shapes::idx($shape, 'map_of_string_to_i32'),
+      Shapes::idx($shape, 'map_of_string_to_A'),
+      Shapes::idx($shape, 'map_of_string_to_list_of_i32'),
+      Shapes::idx($shape, 'map_of_string_to_list_of_A'),
+      Shapes::idx($shape, 'map_of_string_to_set_of_i32'),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32'),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_A'),
+      Shapes::idx($shape, 'list_of_set_of_i32'),
+      Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A'),
+      Shapes::idx($shape, 'list_of_map_of_string_to_A'),
+      Shapes::idx($shape, 'list_of_self'),
+      Shapes::idx($shape, 'map_of_string_to_self'),
+      Shapes::idx($shape, 'just_an_enum'),
+      Shapes::idx($shape, 'just_a_union'),
+      Shapes::idx($shape, 'optional_just_an_A'),
+      Shapes::idx($shape, 'optional_set_of_i32'),
+      Shapes::idx($shape, 'optional_list_of_i32'),
+      Shapes::idx($shape, 'optional_list_of_string'),
+      Shapes::idx($shape, 'optional_map_of_string_to_i32'),
+      Shapes::idx($shape, 'optional_map_of_string_to_A'),
+      Shapes::idx($shape, 'optional_map_of_string_to_list_of_i32'),
+      Shapes::idx($shape, 'optional_map_of_string_to_list_of_A'),
+      Shapes::idx($shape, 'optional_map_of_string_to_set_of_i32'),
+      Shapes::idx($shape, 'optional_enum'),
+      Shapes::idx($shape, 'required_enum_with_default'),
+      Shapes::idx($shape, 'string_with_default_value'),
+      Shapes::idx($shape, 'i32_with_default_value'),
+      Shapes::idx($shape, 'double_with_default_value'),
+      Shapes::idx($shape, 'enum_with_default_value'),
+      Shapes::idx($shape, 'A_with_default_value'),
+      Shapes::idx($shape, 'set_of_i32_with_default_value'),
+      Shapes::idx($shape, 'map_of_i32_to_string_with_default_value'),
+      Shapes::idx($shape, 'list_of_string_with_default_value'),
+      Shapes::idx($shape, 'map_of_string_to_list_of_i32_with_default_value'),
+    );
   }
 
   public function getName(): string {

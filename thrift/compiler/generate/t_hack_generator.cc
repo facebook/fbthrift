@@ -55,7 +55,6 @@ class t_hack_generator : public t_oop_generator {
     arraysets_ = option_is_specified(parsed_options, "arraysets");
     no_nullables_ = option_is_specified(parsed_options, "nonullables");
     map_construct_ = option_is_specified(parsed_options, "mapconstruct");
-    shape_construct_ = option_is_specified(parsed_options, "shape_construct");
     struct_trait_ = option_is_specified(parsed_options, "structtrait");
     shapes_ = option_is_specified(parsed_options, "shapes");
     shape_arraykeys_ = option_is_specified(parsed_options, "shape_arraykeys");
@@ -91,10 +90,6 @@ class t_hack_generator : public t_oop_generator {
     } else if (no_use_hack_collections_ && arrays_) {
       throw std::runtime_error(
           "Don't use no_use_hack_collections with arrays. Just use arrays");
-    } else if (map_construct_ && shape_construct_) {
-      throw std::runtime_error(
-          "Don't use mapconstruct and shape_construct together."
-          " Just use shape_construct");
     }
 
     mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
@@ -165,6 +160,7 @@ class t_hack_generator : public t_oop_generator {
       std::ostream& out,
       t_name_generator& namer,
       t_type* t);
+  void generate_php_struct_from_shape(std::ofstream& out, t_struct* tstruct);
   bool type_has_nested_struct(t_type* t);
   bool field_is_nullable(t_struct* tstruct, const t_field* field, string dval);
   void generate_php_struct_shape_json_conversion(
@@ -586,12 +582,6 @@ class t_hack_generator : public t_oop_generator {
    * fields
    */
   bool map_construct_;
-
-  /**
-   * True if struct constructors should accept shapes rather than their
-   * fields
-   */
-  bool shape_construct_;
 
   /**
    * True if we should add a "use StructNameTrait" to the generated class
@@ -2566,10 +2556,9 @@ void t_hack_generator::_generate_php_struct_definition(
 
   generate_php_struct_struct_trait(out, tstruct);
   generate_php_struct_spec(out, tstruct);
-
-  if (shape_construct_) {
-    generate_php_struct_shape_spec(out, tstruct, true);
-  }
+  out << "\n";
+  generate_php_struct_shape_spec(out, tstruct, true);
+  out << "\n";
   if (gen_shapes) {
     generate_php_struct_shape_spec(out, tstruct);
   }
@@ -2671,8 +2660,6 @@ void t_hack_generator::_generate_php_struct_definition(
           << "KeyedContainer<string, mixed> $vals = " << array_keyword_
           << "[]) {\n";
     }
-  } else if (shape_construct_) {
-    out << "self::TConstructorShape $shape = shape()) {\n";
   } else {
     bool first = true;
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
@@ -2768,21 +2755,6 @@ void t_hack_generator::_generate_php_struct_definition(
           out << indent() << "}\n";
         }
       }
-    } else if (shape_construct_) {
-      string field_name = (*m_iter)->get_name();
-      bool nullable =
-          (nullable_everything_ || field_is_nullable(tstruct, *m_iter, dval)) &&
-          !(is_exception && is_base_exception_property(*m_iter));
-      out << indent() << "$this->" << field_name << " = "
-          << "Shapes::idx($shape, '" << field_name << "')"
-          << (nullable ? "" : " ?? " + dval) << ";\n";
-      if (tstruct->is_union()) {
-        out << indent() << "if ($this->" << field_name << " !== null) {\n";
-        out << indent() << indent()
-            << "$this->_type = " << union_field_to_enum(tstruct, *m_iter)
-            << ";\n";
-        out << indent() << "}\n";
-      }
     } else {
       // result structs only contain fields: success and e.
       // success is whatever type the method returns, but must be nullable
@@ -2830,6 +2802,9 @@ void t_hack_generator::_generate_php_struct_definition(
   }
 
   scope_down(out);
+  out << "\n";
+
+  generate_php_struct_from_shape(out, tstruct);
   out << "\n";
 
   out << indent() << "public function getName(): string {\n"
@@ -2882,6 +2857,35 @@ void t_hack_generator::_generate_php_struct_definition(
   generate_json_reader(out, tstruct);
   indent_down();
   out << indent() << "}\n\n";
+}
+
+void t_hack_generator::generate_php_struct_from_shape(
+    ofstream& out,
+    t_struct* tstruct) {
+  out << indent() << "public static function fromShape"
+      << "(self::TConstructorShape $shape): this {\n";
+  indent_up();
+  out << indent() << "return new static(\n";
+  indent_up();
+  if (map_construct_) {
+    out << indent() << "Map {\n";
+    indent_up();
+  }
+  const vector<t_field*>& members = tstruct->get_members();
+  vector<t_field*>::const_iterator m_iter;
+  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    string name = (*m_iter)->get_name();
+    out << indent() << (map_construct_ ? "'" + name + "' => " : "")
+        << "Shapes::idx($shape, '" << name << "'),\n";
+  }
+  if (map_construct_) {
+    indent_down();
+    out << indent() << "},\n";
+  }
+  indent_down();
+  out << indent() << ");\n";
+  indent_down();
+  out << indent() << "}\n";
 }
 
 /**
@@ -4070,14 +4074,13 @@ void t_hack_generator::_generate_service_client(
 
     out << indent() << "$currentseqid = $this->getNextSequenceID();\n"
         << indent() << "$args = new " << argsname << "("
-        << (map_construct_ ? "Map {" : shape_construct_ ? "shape(" : "")
-        << "\n";
+        << (map_construct_ ? "Map {" : "") << "\n";
     indent_up();
     // Loop through the fields and assign to the args struct
     for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
       indent(out);
       string name = "$" + (*fld_iter)->get_name();
-      if (map_construct_ || shape_construct_) {
+      if (map_construct_) {
         out << "'" << (*fld_iter)->get_name() << "' => ";
       }
       if (nullable_everything_) {
@@ -4089,8 +4092,7 @@ void t_hack_generator::_generate_service_client(
       out << ",\n";
     }
     indent_down();
-    out << indent() << (map_construct_ ? "}" : shape_construct_ ? ")" : "")
-        << ");\n";
+    out << indent() << (map_construct_ ? "}" : "") << ");\n";
     out << indent() << "try {\n";
     indent_up();
     out << indent() << "$this->eventHandler_->preSend('"
@@ -5265,7 +5267,6 @@ THRIFT_REGISTER_GENERATOR(
     "    arraysets        Use legacy arrays for sets rather than objects.\n"
     "    nonullables      Instantiate struct fields within structs, rather than nullable\n"
     "    mapconstruct     Struct constructors accept arrays/Maps rather than their fields\n"
-    "    shape_construct   Struct constructors accept Shapes rather than their fields\n"
     "    structtrait         Add 'use [StructName]Trait;' to generated classes\n"
     "    shapes           Generate Shape definitions for structs\n"
     "    shape_arraykeys  When generating Shape definition for structs:\n"

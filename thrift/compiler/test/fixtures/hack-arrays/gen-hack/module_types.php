@@ -51,6 +51,12 @@ class Foo implements \IThriftStruct {
     'a' => 1,
     'b' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => vec<string>,
+    ?'b' => dict<string, vec<keyset<int>>>,
+  );
+
   const int STRUCTURAL_ID = 5283012534631553068;
   /**
    * Original thrift field:-
@@ -75,6 +81,13 @@ class Foo implements \IThriftStruct {
     } else {
       $this->b = $b;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
+    );
   }
 
   public function getName(): string {

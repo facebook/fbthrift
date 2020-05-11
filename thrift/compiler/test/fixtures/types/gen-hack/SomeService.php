@@ -415,6 +415,11 @@ class SomeService_bounce_map_args implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'm' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'m' => Map<int, string>,
+  );
+
   const int STRUCTURAL_ID = 1590329293490505564;
   public Map<int, string> $m;
 
@@ -425,6 +430,12 @@ class SomeService_bounce_map_args implements \IThriftStruct {
     } else {
       $this->m = $m;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'm'),
+    );
   }
 
   public function getName(): string {
@@ -477,11 +488,22 @@ class SomeService_bounce_map_result implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,
   ];
+
+  const type TConstructorShape = shape(
+    ?'success' => Map<int, string>,
+  );
+
   const int STRUCTURAL_ID = 390979496709511735;
   public ?Map<int, string> $success;
 
   <<__Rx>>
   public function __construct(?Map<int, string> $success = null  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
   }
 
   public function getName(): string {
@@ -530,6 +552,11 @@ class SomeService_binary_keyed_map_args implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'r' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'r' => Vector<int>,
+  );
+
   const int STRUCTURAL_ID = 4817436577562933873;
   public Vector<int> $r;
 
@@ -540,6 +567,12 @@ class SomeService_binary_keyed_map_args implements \IThriftStruct {
     } else {
       $this->r = $r;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'r'),
+    );
   }
 
   public function getName(): string {
@@ -592,11 +625,22 @@ class SomeService_binary_keyed_map_result implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,
   ];
+
+  const type TConstructorShape = shape(
+    ?'success' => Map<string, int>,
+  );
+
   const int STRUCTURAL_ID = 5594803499509360192;
   public ?Map<string, int> $success;
 
   <<__Rx>>
   public function __construct(?Map<string, int> $success = null  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
   }
 
   public function getName(): string {

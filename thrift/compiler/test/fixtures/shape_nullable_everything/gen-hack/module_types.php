@@ -36,6 +36,12 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     'a' => 1,
     'map_of_string_to_string' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => ?string,
+    ?'map_of_string_to_string' => ?Map<string, string>,
+  );
+
   const type TShape = shape(
     ?'a' => ?string,
     ?'map_of_string_to_string' => ?dict<string, string>,
@@ -57,6 +63,13 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   public function __construct(?string $a = null, ?Map<string, string> $map_of_string_to_string = null  ) {
     $this->a = $a;
     $this->map_of_string_to_string = $map_of_string_to_string;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'map_of_string_to_string'),
+    );
   }
 
   public function getName(): string {
@@ -306,6 +319,22 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'list_of_list_of_self' => 11,
     'list_of_map_of_string_to_list_of_A' => 12,
   ];
+
+  const type TConstructorShape = shape(
+    ?'map_of_string_to_string' => ?Map<string, string>,
+    ?'map_of_string_to_i32' => ?Map<string, int>,
+    ?'map_of_string_to_A' => ?Map<string, A>,
+    ?'map_of_string_to_self' => ?Map<string, B>,
+    ?'map_of_string_to_list_of_A' => ?Map<string, Vector<A>>,
+    ?'map_of_string_to_map_of_string_to_i32' => ?Map<string, Map<string, int>>,
+    ?'map_of_string_to_map_of_string_to_A' => ?Map<string, Map<string, A>>,
+    ?'list_of_string' => ?Vector<string>,
+    ?'list_of_map_of_string_to_A' => ?Vector<Map<string, A>>,
+    ?'list_of_self' => ?Vector<B>,
+    ?'list_of_list_of_self' => ?Vector<Vector<B>>,
+    ?'list_of_map_of_string_to_list_of_A' => ?Vector<Map<string, Vector<A>>>,
+  );
+
   const type TShape = shape(
     ?'map_of_string_to_string' => ?dict<string, string>,
     ?'map_of_string_to_i32' => ?dict<string, int>,
@@ -397,6 +426,23 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $this->list_of_self = $list_of_self;
     $this->list_of_list_of_self = $list_of_list_of_self;
     $this->list_of_map_of_string_to_list_of_A = $list_of_map_of_string_to_list_of_A;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'map_of_string_to_string'),
+      Shapes::idx($shape, 'map_of_string_to_i32'),
+      Shapes::idx($shape, 'map_of_string_to_A'),
+      Shapes::idx($shape, 'map_of_string_to_self'),
+      Shapes::idx($shape, 'map_of_string_to_list_of_A'),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32'),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_A'),
+      Shapes::idx($shape, 'list_of_string'),
+      Shapes::idx($shape, 'list_of_map_of_string_to_A'),
+      Shapes::idx($shape, 'list_of_self'),
+      Shapes::idx($shape, 'list_of_list_of_self'),
+      Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A'),
+    );
   }
 
   public function getName(): string {
@@ -763,6 +809,22 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     'list_of_list_of_self' => 11,
     'list_of_map_of_string_to_list_of_A' => 12,
   ];
+
+  const type TConstructorShape = shape(
+    ?'map_of_string_to_string' => ?Map<string, string>,
+    ?'map_of_string_to_i32' => ?Map<string, int>,
+    ?'map_of_string_to_A' => ?Map<string, A>,
+    ?'map_of_string_to_self' => ?Map<string, B>,
+    ?'map_of_string_to_list_of_A' => ?Map<string, Vector<A>>,
+    ?'map_of_string_to_map_of_string_to_i32' => ?Map<string, Map<string, int>>,
+    ?'map_of_string_to_map_of_string_to_A' => ?Map<string, Map<string, A>>,
+    ?'list_of_string' => ?Vector<string>,
+    ?'list_of_map_of_string_to_A' => ?Vector<Map<string, A>>,
+    ?'list_of_self' => ?Vector<B>,
+    ?'list_of_list_of_self' => ?Vector<Vector<B>>,
+    ?'list_of_map_of_string_to_list_of_A' => ?Vector<Map<string, Vector<A>>>,
+  );
+
   const type TShape = shape(
     ?'map_of_string_to_string' => ?dict<string, string>,
     ?'map_of_string_to_i32' => ?dict<string, int>,
@@ -854,6 +916,23 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     $this->list_of_self = $list_of_self;
     $this->list_of_list_of_self = $list_of_list_of_self;
     $this->list_of_map_of_string_to_list_of_A = $list_of_map_of_string_to_list_of_A;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'map_of_string_to_string'),
+      Shapes::idx($shape, 'map_of_string_to_i32'),
+      Shapes::idx($shape, 'map_of_string_to_A'),
+      Shapes::idx($shape, 'map_of_string_to_self'),
+      Shapes::idx($shape, 'map_of_string_to_list_of_A'),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32'),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_A'),
+      Shapes::idx($shape, 'list_of_string'),
+      Shapes::idx($shape, 'list_of_map_of_string_to_A'),
+      Shapes::idx($shape, 'list_of_self'),
+      Shapes::idx($shape, 'list_of_list_of_self'),
+      Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A'),
+    );
   }
 
   public function getName(): string {

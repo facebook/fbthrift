@@ -131,6 +131,17 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     'map_of_strings_to_map_of_string_ints' => 6,
     'optional_map_of_map_of_sets' => 7,
   ];
+
+  const type TConstructorShape = shape(
+    ?'just_int' => int,
+    ?'list_of_strings' => Vector<string>,
+    ?'set_of_ints' => darray<int, bool>,
+    ?'map_of_list_of_strings' => Map<string, Vector<string>>,
+    ?'map_of_set_of_strings' => Map<string, darray<string, bool>>,
+    ?'map_of_strings_to_map_of_string_ints' => Map<string, Map<string, int>>,
+    ?'optional_map_of_map_of_sets' => ?Map<int, Map<int, darray<string, bool>>>,
+  );
+
   const type TShape = shape(
     'just_int' => int,
     'list_of_strings' => varray<string>,
@@ -195,6 +206,20 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
       /* HH_FIXME[4110] previously hidden by unsafe */
       $this->optional_map_of_map_of_sets = idx($vals, 'optional_map_of_map_of_sets', Map {});
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Map {
+        'just_int' => Shapes::idx($shape, 'just_int'),
+        'list_of_strings' => Shapes::idx($shape, 'list_of_strings'),
+        'set_of_ints' => Shapes::idx($shape, 'set_of_ints'),
+        'map_of_list_of_strings' => Shapes::idx($shape, 'map_of_list_of_strings'),
+        'map_of_set_of_strings' => Shapes::idx($shape, 'map_of_set_of_strings'),
+        'map_of_strings_to_map_of_string_ints' => Shapes::idx($shape, 'map_of_strings_to_map_of_string_ints'),
+        'optional_map_of_map_of_sets' => Shapes::idx($shape, 'optional_map_of_map_of_sets'),
+      },
+    );
   }
 
   public function getName(): string {

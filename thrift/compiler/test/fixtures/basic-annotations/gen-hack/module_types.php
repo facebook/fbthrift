@@ -32,6 +32,11 @@ class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct 
   const dict<string, int> FIELDMAP = dict[
     'name' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'name' => string,
+  );
+
   const type TShape = shape(
     'name' => string,
     ...
@@ -50,6 +55,12 @@ class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct 
     } else {
       $this->name = $name;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'name'),
+    );
   }
 
   public function getName(): string {
@@ -118,6 +129,14 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
     'extra' => 3,
     'nest' => 4,
   ];
+
+  const type TConstructorShape = shape(
+    ?'count' => int,
+    ?'name' => string,
+    ?'extra' => ?string,
+    ?'nest' => ?MyStructNestedAnnotation,
+  );
+
   const type TShape = shape(
     'count' => int,
     'name' => string,
@@ -161,6 +180,15 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
     }
     $this->extra = $extra;
     $this->nest = $nest;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'count'),
+      Shapes::idx($shape, 'name'),
+      Shapes::idx($shape, 'extra'),
+      Shapes::idx($shape, 'nest'),
+    );
   }
 
   public function getName(): string {
@@ -250,6 +278,14 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     'annotation_with_quote' => 3,
     'class_' => 4,
   ];
+
+  const type TConstructorShape = shape(
+    ?'major' => int,
+    ?'package' => string,
+    ?'annotation_with_quote' => string,
+    ?'class_' => string,
+  );
+
   const type TShape = shape(
     'major' => int,
     'package' => string,
@@ -301,6 +337,15 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     } else {
       $this->class_ = $class_;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'major'),
+      Shapes::idx($shape, 'package'),
+      Shapes::idx($shape, 'annotation_with_quote'),
+      Shapes::idx($shape, 'class_'),
+    );
   }
 
   public function getName(): string {
@@ -382,6 +427,12 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
     'id' => 1,
     'password' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'id' => int,
+    ?'password' => string,
+  );
+
   const type TShape = shape(
     'id' => int,
     'password' => string,
@@ -411,6 +462,13 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
     } else {
       $this->password = $password;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'id'),
+      Shapes::idx($shape, 'password'),
+    );
   }
 
   public function getName(): string {

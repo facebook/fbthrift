@@ -17,11 +17,20 @@ class Banal extends \TException implements \IThriftStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
   public function __construct(  ) {
     parent::__construct();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -50,6 +59,11 @@ class Fiery extends \TException implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'message' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'message' => string,
+  );
+
   const int STRUCTURAL_ID = 1438368398389181198;
   /**
    * Original thrift field:-
@@ -65,6 +79,12 @@ class Fiery extends \TException implements \IThriftStruct {
     } else {
       $this->message = $message;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'message'),
+    );
   }
 
   public function getName(): string {
@@ -94,6 +114,11 @@ class Serious extends \TException implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'sonnet' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'sonnet' => ?string,
+  );
+
   const int STRUCTURAL_ID = 7572301088987666687;
   /**
    * Original thrift field:-
@@ -105,6 +130,12 @@ class Serious extends \TException implements \IThriftStruct {
   public function __construct(?string $sonnet = null  ) {
     parent::__construct();
     $this->sonnet = $sonnet;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'sonnet'),
+    );
   }
 
   public function getName(): string {

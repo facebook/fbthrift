@@ -62,6 +62,13 @@ class Internship implements \IThriftStruct {
     'title' => 2,
     'employer' => 3,
   ];
+
+  const type TConstructorShape = shape(
+    ?'weeks' => int,
+    ?'title' => string,
+    ?'employer' => ?Company,
+  );
+
   const int STRUCTURAL_ID = 749038867953722654;
   /**
    * Original thrift field:-
@@ -92,6 +99,14 @@ class Internship implements \IThriftStruct {
       $this->title = $title;
     }
     $this->employer = $employer;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'weeks'),
+      Shapes::idx($shape, 'title'),
+      Shapes::idx($shape, 'employer'),
+    );
   }
 
   public function getName(): string {
@@ -125,6 +140,12 @@ class Range implements \IThriftStruct {
     'min' => 1,
     'max' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'min' => int,
+    ?'max' => int,
+  );
+
   const int STRUCTURAL_ID = 6850388386457434767;
   /**
    * Original thrift field:-
@@ -149,6 +170,13 @@ class Range implements \IThriftStruct {
     } else {
       $this->max = $max;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'min'),
+      Shapes::idx($shape, 'max'),
+    );
   }
 
   public function getName(): string {
@@ -182,6 +210,12 @@ class struct1 implements \IThriftStruct {
     'a' => 1,
     'b' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => int,
+    ?'b' => string,
+  );
+
   const int STRUCTURAL_ID = 7783381726179123112;
   /**
    * Original thrift field:-
@@ -206,6 +240,13 @@ class struct1 implements \IThriftStruct {
     } else {
       $this->b = $b;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
+    );
   }
 
   public function getName(): string {
@@ -255,6 +296,14 @@ class struct2 implements \IThriftStruct {
     'c' => 3,
     'd' => 4,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => int,
+    ?'b' => string,
+    ?'c' => ?struct1,
+    ?'d' => Vector<int>,
+  );
+
   const int STRUCTURAL_ID = 6352184485829261382;
   /**
    * Original thrift field:-
@@ -297,6 +346,15 @@ class struct2 implements \IThriftStruct {
     }
   }
 
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
+      Shapes::idx($shape, 'c'),
+      Shapes::idx($shape, 'd'),
+    );
+  }
+
   public function getName(): string {
     return 'struct2';
   }
@@ -334,6 +392,13 @@ class struct3 implements \IThriftStruct {
     'b' => 2,
     'c' => 3,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => string,
+    ?'b' => int,
+    ?'c' => ?struct2,
+  );
+
   const int STRUCTURAL_ID = 8770775784736740409;
   /**
    * Original thrift field:-
@@ -364,6 +429,14 @@ class struct3 implements \IThriftStruct {
       $this->b = $b;
     }
     $this->c = $c;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
+      Shapes::idx($shape, 'c'),
+    );
   }
 
   public function getName(): string {
@@ -405,6 +478,12 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
     'i' => 1,
     'd' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'i' => ?int,
+    ?'d' => ?float,
+  );
+
   const int STRUCTURAL_ID = 3529312341790331108;
   /**
    * Original thrift field:-
@@ -429,6 +508,13 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
       $this->d = $d;
       $this->_type = union1Enum::d;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'i'),
+      Shapes::idx($shape, 'd'),
+    );
   }
 
   public function getName(): string {
@@ -520,6 +606,14 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     's' => 3,
     'u' => 4,
   ];
+
+  const type TConstructorShape = shape(
+    ?'i' => ?int,
+    ?'d' => ?float,
+    ?'s' => ?struct1,
+    ?'u' => ?union1,
+  );
+
   const int STRUCTURAL_ID = 1639711719709684790;
   /**
    * Original thrift field:-
@@ -562,6 +656,15 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
       $this->u = $u;
       $this->_type = union2Enum::u;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'i'),
+      Shapes::idx($shape, 'd'),
+      Shapes::idx($shape, 's'),
+      Shapes::idx($shape, 'u'),
+    );
   }
 
   public function getName(): string {

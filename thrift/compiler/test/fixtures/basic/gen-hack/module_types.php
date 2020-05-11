@@ -48,6 +48,14 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     'MyDataField' => 3,
     'myEnum' => 4,
   ];
+
+  const type TConstructorShape = shape(
+    ?'MyIntField' => int,
+    ?'MyStringField' => string,
+    ?'MyDataField' => ?MyDataItem,
+    ?'myEnum' => ?MyEnum,
+  );
+
   const type TShape = shape(
     'MyIntField' => int,
     'MyStringField' => string,
@@ -91,6 +99,15 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     }
     $this->MyDataField = $MyDataField;
     $this->myEnum = $myEnum;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'MyIntField'),
+      Shapes::idx($shape, 'MyStringField'),
+      Shapes::idx($shape, 'MyDataField'),
+      Shapes::idx($shape, 'myEnum'),
+    );
   }
 
   public function getName(): string {
@@ -159,6 +176,10 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const type TShape = shape(
     ...
   );
@@ -166,6 +187,11 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -236,6 +262,13 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     'myStruct' => 2,
     'myDataItem' => 3,
   ];
+
+  const type TConstructorShape = shape(
+    ?'myEnum' => ?MyEnum,
+    ?'myStruct' => ?MyStruct,
+    ?'myDataItem' => ?MyDataItem,
+  );
+
   const type TShape = shape(
     ?'myEnum' => ?MyEnum,
     ?'myStruct' => ?MyStruct::TShape,
@@ -275,6 +308,14 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
       $this->myDataItem = $myDataItem;
       $this->_type = MyUnionEnum::myDataItem;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'myEnum'),
+      Shapes::idx($shape, 'myStruct'),
+      Shapes::idx($shape, 'myDataItem'),
+    );
   }
 
   public function getName(): string {

@@ -37,6 +37,12 @@ class MyException1 extends \TException implements \IThriftStruct {
     'message' => 1,
     'code' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'message' => string,
+    ?'code' => ?MyEnum,
+  );
+
   const int STRUCTURAL_ID = 7711048519845400283;
   /**
    * Original thrift field:-
@@ -76,6 +82,13 @@ class MyException1 extends \TException implements \IThriftStruct {
     }
   }
 
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'message'),
+      Shapes::idx($shape, 'code'),
+    );
+  }
+
   public function getName(): string {
     return 'MyException1';
   }
@@ -108,6 +121,12 @@ class MyException2 extends \TException implements \IThriftStruct {
     'message' => 1,
     'code' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'message' => string,
+    ?'code' => ?MyEnum,
+  );
+
   const int STRUCTURAL_ID = 3067783023341493113;
   /**
    * Original thrift field:-
@@ -147,6 +166,13 @@ class MyException2 extends \TException implements \IThriftStruct {
     }
   }
 
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'message'),
+      Shapes::idx($shape, 'code'),
+    );
+  }
+
   public function getName(): string {
     return 'MyException2';
   }
@@ -179,6 +205,12 @@ class MyException3 extends \TException implements \IThriftStruct {
     'message' => 1,
     'code' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'message' => string,
+    ?'code' => ?MyEnum,
+  );
+
   const int STRUCTURAL_ID = 3517193566312570591;
   /**
    * Original thrift field:-
@@ -218,6 +250,13 @@ class MyException3 extends \TException implements \IThriftStruct {
     }
   }
 
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'message'),
+      Shapes::idx($shape, 'code'),
+    );
+  }
+
   public function getName(): string {
     return 'MyException3';
   }
@@ -250,6 +289,12 @@ class MyException4 extends \TException implements \IThriftStruct {
     'message' => 1,
     'code' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'message' => string,
+    ?'code' => ?MyEnum,
+  );
+
   const int STRUCTURAL_ID = 3517193566312570591;
   /**
    * Original thrift field:-
@@ -289,6 +334,13 @@ class MyException4 extends \TException implements \IThriftStruct {
     }
   }
 
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'message'),
+      Shapes::idx($shape, 'code'),
+    );
+  }
+
   public function getName(): string {
     return 'MyException4';
   }
@@ -320,6 +372,12 @@ class MyException5 extends \TException implements \IThriftStruct {
     'message' => 1,
     'code' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'message' => string,
+    ?'code' => ?int,
+  );
+
   const int STRUCTURAL_ID = 7335721753390449361;
   /**
    * Original thrift field:-
@@ -345,6 +403,13 @@ class MyException5 extends \TException implements \IThriftStruct {
     } else {
       $this->code = $code;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'message'),
+      Shapes::idx($shape, 'code'),
+    );
   }
 
   public function getName(): string {

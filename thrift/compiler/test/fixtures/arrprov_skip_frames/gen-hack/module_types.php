@@ -61,6 +61,14 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     'c' => 3,
     'd' => 4,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => vec<string>,
+    ?'b' => ?dict<string, vec<keyset<int>>>,
+    ?'c' => int,
+    ?'d' => ?bool,
+  );
+
   const type TShape = shape(
     'a' => vec<string>,
     ?'b' => ?dict<string, vec<keyset<int>>>,
@@ -103,6 +111,15 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
       $this->c = $c;
     }
     $this->d = $d;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
+      Shapes::idx($shape, 'c'),
+      Shapes::idx($shape, 'd'),
+    );
   }
 
   public function getName(): string {
@@ -174,6 +191,14 @@ class Baz extends \TException implements \IThriftStruct {
     'some_container' => 3,
     'code' => 4,
   ];
+
+  const type TConstructorShape = shape(
+    ?'message' => string,
+    ?'some_field' => ?Foo,
+    ?'some_container' => keyset<string>,
+    ?'code' => int,
+  );
+
   const int STRUCTURAL_ID = 1663976252517274137;
   /**
    * Original thrift field:-
@@ -217,6 +242,15 @@ class Baz extends \TException implements \IThriftStruct {
     }
   }
 
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'message'),
+      Shapes::idx($shape, 'some_field'),
+      Shapes::idx($shape, 'some_container'),
+      Shapes::idx($shape, 'code'),
+    );
+  }
+
   public function getName(): string {
     return 'Baz';
   }
@@ -243,6 +277,11 @@ class OptBaz extends \TException implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'message' => 1,
   ];
+
+  const type TConstructorShape = shape(
+    ?'message' => ?string,
+  );
+
   const int STRUCTURAL_ID = 546500496397478593;
   /**
    * Original thrift field:-
@@ -258,6 +297,12 @@ class OptBaz extends \TException implements \IThriftStruct {
     } else {
       $this->message = $message;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'message'),
+    );
   }
 
   public function getName(): string {

@@ -46,6 +46,13 @@ class MyThriftStruct implements \IThriftStruct {
     'bar' => 2,
     'baz' => 3,
   ];
+
+  const type TConstructorShape = shape(
+    ?'foo' => string,
+    ?'bar' => string,
+    ?'baz' => string,
+  );
+
   const int STRUCTURAL_ID = 6671455975178405100;
   /**
    * Original thrift field:-
@@ -81,6 +88,14 @@ class MyThriftStruct implements \IThriftStruct {
     } else {
       $this->baz = $baz;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'foo'),
+      Shapes::idx($shape, 'bar'),
+      Shapes::idx($shape, 'baz'),
+    );
   }
 
   public function getName(): string {
@@ -122,6 +137,13 @@ class MySecondThriftStruct implements \IThriftStruct {
     'bar' => 2,
     'baz' => 3,
   ];
+
+  const type TConstructorShape = shape(
+    ?'foo' => ?\test\fixtures\jsenum\MyThriftEnum,
+    ?'bar' => ?\test\fixtures\jsenum\MyThriftStruct,
+    ?'baz' => int,
+  );
+
   const int STRUCTURAL_ID = 2800971917864580212;
   /**
    * Original thrift field:-
@@ -148,6 +170,14 @@ class MySecondThriftStruct implements \IThriftStruct {
     } else {
       $this->baz = $baz;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'foo'),
+      Shapes::idx($shape, 'bar'),
+      Shapes::idx($shape, 'baz'),
+    );
   }
 
   public function getName(): string {
@@ -190,6 +220,12 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
     'foo' => 1,
     'bar' => 3,
   ];
+
+  const type TConstructorShape = shape(
+    ?'foo' => ?string,
+    ?'bar' => ?int,
+  );
+
   const int STRUCTURAL_ID = 4708174399727259919;
   /**
    * Original thrift field:-
@@ -214,6 +250,13 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
       $this->bar = $bar;
       $this->_type = \test\fixtures\jsenum\UnionTestingEnum::bar;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'foo'),
+      Shapes::idx($shape, 'bar'),
+    );
   }
 
   public function getName(): string {

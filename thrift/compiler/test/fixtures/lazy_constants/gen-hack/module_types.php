@@ -55,6 +55,13 @@ class Internship implements \IThriftStruct {
     'title' => 2,
     'employer' => 3,
   ];
+
+  const type TConstructorShape = shape(
+    ?'weeks' => int,
+    ?'title' => string,
+    ?'employer' => ?Company,
+  );
+
   const int STRUCTURAL_ID = 749038867953722654;
   /**
    * Original thrift field:-
@@ -85,6 +92,14 @@ class Internship implements \IThriftStruct {
       $this->title = $title;
     }
     $this->employer = $employer;
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'weeks'),
+      Shapes::idx($shape, 'title'),
+      Shapes::idx($shape, 'employer'),
+    );
   }
 
   public function getName(): string {
@@ -118,6 +133,12 @@ class Range implements \IThriftStruct {
     'min' => 1,
     'max' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'min' => int,
+    ?'max' => int,
+  );
+
   const int STRUCTURAL_ID = 6850388386457434767;
   /**
    * Original thrift field:-
@@ -142,6 +163,13 @@ class Range implements \IThriftStruct {
     } else {
       $this->max = $max;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'min'),
+      Shapes::idx($shape, 'max'),
+    );
   }
 
   public function getName(): string {

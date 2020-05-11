@@ -53,6 +53,12 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
     'e' => 1,
     's' => 2,
   ];
+
+  const type TConstructorShape = shape(
+    ?'e' => Map<FooEnum, FooEnum>,
+    ?'s' => Set<FooEnum>,
+  );
+
   const type TShape = shape(
     'e' => darray<FooEnum, FooEnum>,
     's' => darray<FooEnum, bool>,
@@ -82,6 +88,13 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
     } else {
       $this->s = $s;
     }
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'e'),
+      Shapes::idx($shape, 's'),
+    );
   }
 
   public function getName(): string {

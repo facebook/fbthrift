@@ -324,6 +324,10 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const type TShape = shape(
     ...
   );
@@ -331,6 +335,11 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {
@@ -369,10 +378,19 @@ class MyServicePrioChild_pang_result implements \IThriftStruct {
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
+
+  const type TConstructorShape = shape(
+  );
+
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
   public function __construct(  ) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
   }
 
   public function getName(): string {

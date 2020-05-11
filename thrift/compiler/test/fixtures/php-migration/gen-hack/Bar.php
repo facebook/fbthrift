@@ -407,6 +407,15 @@ class Bar_baz_args implements \IThriftStruct {
     'd' => 4,
     'e' => 5,
   ];
+
+  const type TConstructorShape = shape(
+    ?'a' => ?darray<int, bool>,
+    ?'b' => ?varray<darray<int, darray<string, bool>>>,
+    ?'c' => ?int,
+    ?'d' => ?Foo,
+    ?'e' => ?int,
+  );
+
   const int STRUCTURAL_ID = 7865027497865509792;
   public ?darray<int, bool> $a;
   public ?varray<darray<int, darray<string, bool>>> $b;
@@ -426,6 +435,18 @@ class Bar_baz_args implements \IThriftStruct {
     $this->d = idx($vals, 'd', null);
     /* HH_FIXME[4110] previously hidden by unsafe */
     $this->e = idx($vals, 'e', 4);
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Map {
+        'a' => Shapes::idx($shape, 'a'),
+        'b' => Shapes::idx($shape, 'b'),
+        'c' => Shapes::idx($shape, 'c'),
+        'd' => Shapes::idx($shape, 'd'),
+        'e' => Shapes::idx($shape, 'e'),
+      },
+    );
   }
 
   public function getName(): string {
@@ -450,11 +471,24 @@ class Bar_baz_result implements \IThriftStruct {
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,
   ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?string,
+  );
+
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = darray[]) {
+  }
+
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Map {
+        'success' => Shapes::idx($shape, 'success'),
+      },
+    );
   }
 
   public function getName(): string {
