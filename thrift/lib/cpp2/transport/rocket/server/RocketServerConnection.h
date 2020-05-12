@@ -67,7 +67,7 @@ class RocketServerConnection final
 
   void send(
       std::unique_ptr<folly::IOBuf> data,
-      apache::thrift::MessageChannel::SendCallback* cb = nullptr);
+      apache::thrift::MessageChannel::SendCallbackPtr cb = nullptr);
 
   RocketStreamClientCallback& createStreamClientCallback(
       StreamId streamId,
@@ -116,11 +116,11 @@ class RocketServerConnection final
       StreamId streamId,
       Payload&& payload,
       Flags flags,
-      apache::thrift::MessageChannel::SendCallback* cb = nullptr);
+      apache::thrift::MessageChannel::SendCallbackPtr cb = nullptr);
   void sendError(
       StreamId streamId,
       RocketException&& rex,
-      apache::thrift::MessageChannel::SendCallback* cb = nullptr);
+      apache::thrift::MessageChannel::SendCallbackPtr cb = nullptr);
   void sendRequestN(StreamId streamId, int32_t n);
   void sendCancel(StreamId streamId);
   void sendExt(
@@ -172,7 +172,7 @@ class RocketServerConnection final
     // the counts of completed requests in each inflight write
     size_t requestCompleteCount{0};
     // the counts of valid sendCallbacks in each inflight write
-    std::vector<apache::thrift::MessageChannel::SendCallback*> sendCallbacks;
+    std::vector<apache::thrift::MessageChannel::SendCallbackPtr> sendCallbacks;
   };
   // The size of the queue is equal to the total number of inflight writes to
   // the underlying transport, i.e., writes for which the
@@ -217,10 +217,10 @@ class RocketServerConnection final
 
     void enqueueWrite(
         std::unique_ptr<folly::IOBuf> data,
-        apache::thrift::MessageChannel::SendCallback* cb) {
+        apache::thrift::MessageChannel::SendCallbackPtr cb) {
       if (cb) {
         cb->sendQueued();
-        bufferedWritesContext_.sendCallbacks.push_back(cb);
+        bufferedWritesContext_.sendCallbacks.push_back(std::move(cb));
       }
       if (!bufferedWrites_) {
         bufferedWrites_ = std::move(data);

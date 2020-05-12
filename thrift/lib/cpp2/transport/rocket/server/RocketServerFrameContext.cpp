@@ -65,17 +65,17 @@ folly::EventBase& RocketServerFrameContext::getEventBase() const {
 void RocketServerFrameContext::sendPayload(
     Payload&& payload,
     Flags flags,
-    apache::thrift::MessageChannel::SendCallback* cb) {
+    apache::thrift::MessageChannel::SendCallbackPtr cb) {
   DCHECK(connection_);
   DCHECK(flags.next() || flags.complete());
-  connection_->sendPayload(streamId_, std::move(payload), flags, cb);
+  connection_->sendPayload(streamId_, std::move(payload), flags, std::move(cb));
 }
 
 void RocketServerFrameContext::sendError(
     RocketException&& rex,
-    apache::thrift::MessageChannel::SendCallback* cb) {
+    apache::thrift::MessageChannel::SendCallbackPtr cb) {
   DCHECK(connection_);
-  connection_->sendError(streamId_, std::move(rex), cb);
+  connection_->sendError(streamId_, std::move(rex), std::move(cb));
 }
 
 void RocketServerFrameContext::onFullFrame(

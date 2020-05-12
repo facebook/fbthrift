@@ -90,14 +90,14 @@ RocketSinkClientCallback& RocketServerConnection::createSinkClientCallback(
 
 void RocketServerConnection::send(
     std::unique_ptr<folly::IOBuf> data,
-    apache::thrift::MessageChannel::SendCallback* cb) {
+    apache::thrift::MessageChannel::SendCallbackPtr cb) {
   evb_.dcheckIsInEventBaseThread();
 
   if (state_ != ConnectionState::ALIVE && state_ != ConnectionState::DRAINING) {
     return;
   }
 
-  writeBatcher_.enqueueWrite(std::move(data), cb);
+  writeBatcher_.enqueueWrite(std::move(data), std::move(cb));
 }
 
 RocketServerConnection::~RocketServerConnection() {
@@ -566,8 +566,8 @@ void RocketServerConnection::writeSuccess() noexcept {
     frameHandler_->requestComplete();
   }
 
-  for (auto* cb : context.sendCallbacks) {
-    cb->messageSent();
+  for (auto& cb : context.sendCallbacks) {
+    cb.release()->messageSent();
   }
 
   inflightWritesQueue_.pop();
@@ -586,8 +586,8 @@ void RocketServerConnection::writeErr(
     frameHandler_->requestComplete();
   }
 
-  for (auto* cb : context.sendCallbacks) {
-    cb->messageSendError(ex);
+  for (auto& cb : context.sendCallbacks) {
+    cb.release()->messageSendError(ex);
   }
 
   inflightWritesQueue_.pop();
@@ -646,15 +646,17 @@ void RocketServerConnection::sendPayload(
     StreamId streamId,
     Payload&& payload,
     Flags flags,
-    apache::thrift::MessageChannel::SendCallback* cb) {
-  send(PayloadFrame(streamId, std::move(payload), flags).serialize(), cb);
+    apache::thrift::MessageChannel::SendCallbackPtr cb) {
+  send(
+      PayloadFrame(streamId, std::move(payload), flags).serialize(),
+      std::move(cb));
 }
 
 void RocketServerConnection::sendError(
     StreamId streamId,
     RocketException&& rex,
-    apache::thrift::MessageChannel::SendCallback* cb) {
-  send(ErrorFrame(streamId, std::move(rex)).serialize(), cb);
+    apache::thrift::MessageChannel::SendCallbackPtr cb) {
+  send(ErrorFrame(streamId, std::move(rex)).serialize(), std::move(cb));
 }
 
 void RocketServerConnection::sendRequestN(StreamId streamId, int32_t n) {

@@ -50,10 +50,10 @@ class RocketServerFrameContext {
   void sendPayload(
       Payload&& payload,
       Flags flags,
-      apache::thrift::MessageChannel::SendCallback* cb);
+      apache::thrift::MessageChannel::SendCallbackPtr cb);
   void sendError(
       RocketException&& rex,
-      apache::thrift::MessageChannel::SendCallback* cb);
+      apache::thrift::MessageChannel::SendCallbackPtr cb);
 
   folly::EventBase& getEventBase() const;
 

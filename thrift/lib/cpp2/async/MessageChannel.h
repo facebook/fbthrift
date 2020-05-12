@@ -25,6 +25,7 @@
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
 
 namespace folly {
 class IOBuf;
@@ -50,6 +51,20 @@ class MessageChannel : virtual public folly::DelayedDestruction {
     virtual void messageSent() = 0;
     virtual void messageSendError(folly::exception_wrapper&&) = 0;
   };
+
+  struct SendCallbackDeleter {
+    void operator()(apache::thrift::MessageChannel::SendCallback* callback) {
+      callback->messageSendError(
+          folly::make_exception_wrapper<transport::TTransportException>(
+              transport::TTransportException::TTransportExceptionType::
+                  INTERNAL_ERROR,
+              "internal error"));
+    }
+  };
+
+  using SendCallbackPtr = std::unique_ptr<
+      apache::thrift::MessageChannel::SendCallback,
+      SendCallbackDeleter>;
 
   class RecvCallback {
    public:

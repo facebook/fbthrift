@@ -142,6 +142,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       std::unique_ptr<folly::IOBuf>&& buf,
       apache::thrift::MessageChannel::SendCallback* cb,
       folly::Optional<uint32_t> crc32c) override final {
+    auto cbWrapper = MessageChannel::SendCallbackPtr(cb);
     if (active_.exchange(false)) {
       cancelTimeout();
       if (!isOneway()) {
@@ -149,7 +150,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
         if (crc32c) {
           metadata.crc32c_ref() = *crc32c;
         }
-        sendReplyInternal(std::move(metadata), std::move(buf), cb);
+        sendReplyInternal(
+            std::move(metadata), std::move(buf), std::move(cbWrapper));
         if (auto* observer = serverConfigs_.getObserver()) {
           observer->sentReply();
         }
@@ -232,7 +234,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   virtual void sendThriftResponse(
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> response,
-      apache::thrift::MessageChannel::SendCallback*) noexcept = 0;
+      MessageChannel::SendCallbackPtr) noexcept = 0;
 
   virtual void sendSerializedError(
       ResponseRpcMetadata&& metadata,
@@ -289,9 +291,9 @@ class ThriftRequestCore : public ResponseChannelRequest {
   void sendReplyInternal(
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> buf,
-      apache::thrift::MessageChannel::SendCallback* cb) {
+      MessageChannel::SendCallbackPtr cb) {
     if (checkResponseSize(*buf)) {
-      sendThriftResponse(std::move(metadata), std::move(buf), cb);
+      sendThriftResponse(std::move(metadata), std::move(buf), std::move(cb));
     } else {
       sendResponseTooBigEx();
     }
@@ -503,7 +505,7 @@ class ThriftRequest final : public ThriftRequestCore {
   void sendThriftResponse(
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> response,
-      apache::thrift::MessageChannel::SendCallback*) noexcept override {
+      MessageChannel::SendCallbackPtr) noexcept override {
     channel_->sendThriftResponse(std::move(metadata), std::move(response));
   }
 

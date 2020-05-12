@@ -167,12 +167,12 @@ ThriftServerRequestResponse::ThriftServerRequestResponse(
 void ThriftServerRequestResponse::sendThriftResponse(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> data,
-    apache::thrift::MessageChannel::SendCallback* cb) noexcept {
+    apache::thrift::MessageChannel::SendCallbackPtr cb) noexcept {
   if (!data) {
     context_.sendError(
         RocketException(
             ErrorCode::INVALID, "serialization failed for response"),
-        cb);
+        std::move(cb));
     return;
   }
 
@@ -185,7 +185,7 @@ void ThriftServerRequestResponse::sendThriftResponse(
   context_.sendPayload(
       pack(metadata, std::move(data)),
       Flags::none().next(true).complete(true),
-      cb);
+      std::move(cb));
 }
 
 void ThriftServerRequestResponse::sendSerializedError(
@@ -228,7 +228,7 @@ ThriftServerRequestFnf::~ThriftServerRequestFnf() {
 void ThriftServerRequestFnf::sendThriftResponse(
     ResponseRpcMetadata&&,
     std::unique_ptr<folly::IOBuf>,
-    apache::thrift::MessageChannel::SendCallback*) noexcept {
+    apache::thrift::MessageChannel::SendCallbackPtr) noexcept {
   LOG(FATAL) << "One-way requests cannot send responses";
 }
 
@@ -268,7 +268,7 @@ ThriftServerRequestStream::ThriftServerRequestStream(
 void ThriftServerRequestStream::sendThriftResponse(
     ResponseRpcMetadata&&,
     std::unique_ptr<folly::IOBuf>,
-    apache::thrift::MessageChannel::SendCallback*) noexcept {
+    apache::thrift::MessageChannel::SendCallbackPtr) noexcept {
   LOG(FATAL) << "Stream requests must respond via sendStreamThriftResponse";
 }
 
@@ -358,7 +358,7 @@ ThriftServerRequestSink::ThriftServerRequestSink(
 void ThriftServerRequestSink::sendThriftResponse(
     ResponseRpcMetadata&&,
     std::unique_ptr<folly::IOBuf>,
-    apache::thrift::MessageChannel::SendCallback*) noexcept {
+    apache::thrift::MessageChannel::SendCallbackPtr) noexcept {
   LOG(FATAL) << "Sink requests must respond via sendSinkThriftResponse";
 }
 
