@@ -17,7 +17,7 @@ import unittest
 
 import convertible.ttypes as ttypes
 import convertible.types as types
-from thrift.py.util.converter import to_py_struct
+from thrift.util.converter import to_py_struct
 
 
 class ConverterTest(unittest.TestCase):
