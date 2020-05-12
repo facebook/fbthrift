@@ -36,7 +36,7 @@ public final class MyUnionFloatFieldThrowExp {
     public static final int _MYENUM = 1;
     private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)1);
     public static final int _SETFLOAT = 2;
-    private static final TField SET_FLOAT_FIELD_DESC = null;
+    private static final TField SET_FLOAT_FIELD_DESC = new TField("setFloat", TType.LIST, (short)2);
     public static final int _MYDATAITEM = 3;
     private static final TField MY_DATA_ITEM_FIELD_DESC = new TField("myDataItem", TType.STRUCT, (short)3);
     public static final int _COMPLEXNESTEDSTRUCT = 4;
@@ -233,7 +233,19 @@ public final class MyUnionFloatFieldThrowExp {
         break;
       }
       case _SETFLOAT: {
-        throw new IllegalStateException("Struct contains an unsupported type in org.apache.thrift.protocol: Field:setFloat Type:List<List<Float>>");
+        oprot.writeFieldBegin(SET_FLOAT_FIELD_DESC);
+        List<List<Float>> _iter0 = (List<List<Float>>)this.value;
+        oprot.writeListBegin(new TList(TType.LIST, _iter0.size()));
+        for (List<Float> _iter1 : _iter0) {
+          oprot.writeListBegin(new TList(TType.FLOAT, _iter1.size()));
+        for (float _iter2 : _iter1) {
+          oprot.writeFloat(_iter2);
+        }
+        oprot.writeListEnd();
+        }
+        oprot.writeListEnd();
+        oprot.writeFieldEnd();
+        break;
       }
       case _MYDATAITEM: {
         oprot.writeFieldBegin(MY_DATA_ITEM_FIELD_DESC);
@@ -271,7 +283,25 @@ public final class MyUnionFloatFieldThrowExp {
             }
             break;
           case _SETFLOAT:
-              throw new IllegalStateException("Struct contains an unsupported type in org.apache.thrift.protocol: Field:setFloat Type:List<List<Float>>");
+            if (__field.type == SET_FLOAT_FIELD_DESC.type) {
+              TList _list1 = oprot.readListBegin();
+            List<List<Float>> _iter1 = new ArrayList<List<Float>>(Math.max(0, 2*_list1.size));
+            List<List<Float>> setFloat = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                TList _list2 = oprot.readListBegin();
+            List<Float> _iter2 = new ArrayList<Float>(Math.max(0, 2*_list2.size));
+            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
+                _iter2.add(oprot.readFloat());
+            }
+            _iter1.add(_iter2);
+            oprot.readListEnd();
+            }
+            oprot.readListEnd();
+              res.value = setFloat;
+            }
+            break;
           case _MYDATAITEM:
             if (__field.type == MY_DATA_ITEM_FIELD_DESC.type) {
               test.fixtures.complex_struct.MyDataItem myDataItem = test.fixtures.complex_struct.MyDataItem.read0(oprot);

@@ -392,7 +392,8 @@ class mstch_swift_field : public mstch_field {
     const t_type* field_type = field_->get_type()->get_true_type();
     return !(
         field_type->is_bool() || field_type->is_byte() ||
-        field_type->is_i16() || field_type->is_i32() || field_type->is_i64() ||
+        field_type->is_float() || field_type->is_i16() ||
+        field_type->is_i32() || field_type->is_i64() ||
         field_type->is_double() || field_type->is_enum());
   }
 
@@ -461,9 +462,9 @@ class mstch_swift_field : public mstch_field {
     return (
         curr_type->is_bool() || curr_type->is_byte() || curr_type->is_i16() ||
         curr_type->is_i32() || curr_type->is_i64() || curr_type->is_double() ||
-        curr_type->is_enum() || curr_type->is_binary() ||
-        curr_type->is_string() || curr_type->is_struct() ||
-        curr_type->is_xception());
+        curr_type->is_float() || curr_type->is_enum() ||
+        curr_type->is_binary() || curr_type->is_string() ||
+        curr_type->is_struct() || curr_type->is_xception());
   }
   mstch::node is_negative_id() {
     return field_->get_key() < 0;

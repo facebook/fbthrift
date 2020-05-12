@@ -82,7 +82,7 @@ public final class MyStructMapFloatThrowExp {
     private static final TField MY_LONG_FIELD_FIELD_DESC = new TField("myLongField", TType.I64, (short)1);
     private final Map<Integer, List<List<Float>>> mapListOfFloats;
     public static final int _MAPLISTOFFLOATS = 2;
-    private static final TField MAP_LIST_OF_FLOATS_FIELD_DESC = null;
+    private static final TField MAP_LIST_OF_FLOATS_FIELD_DESC = new TField("mapListOfFloats", TType.MAP, (short)2);
 
     
     @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
@@ -144,7 +144,40 @@ public final class MyStructMapFloatThrowExp {
           }
           break;
         case _MAPLISTOFFLOATS:
-          throw new IllegalStateException("Struct contains an unsupported type in org.apache.thrift.protocol: Field:mapListOfFloats Type:Map<Integer, List<List<Float>>>");
+          if (__field.type == TType.MAP) {
+            Map<Integer, List<List<Float>>> mapListOfFloats;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<Integer, List<List<Float>>> _iter1 = new HashMap<Integer, List<List<Float>>>(Math.max(0, 2*_map1.size));
+            mapListOfFloats = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                int _key1 = oprot.readI32();
+                List<List<Float>> _val1;
+                TList _list2 = oprot.readListBegin();
+            List<List<Float>> _iter2 = new ArrayList<List<Float>>(Math.max(0, 2*_list2.size));
+            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
+                TList _list3 = oprot.readListBegin();
+            List<Float> _iter3 = new ArrayList<Float>(Math.max(0, 2*_list3.size));
+            if (_list3.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i3 = 0; _i3 < _list3.size; ++_i3) {
+                _iter3.add(oprot.readFloat());
+            }
+            _iter2.add(_iter3);
+            oprot.readListEnd();
+            }
+            _val1 = _iter2;
+            oprot.readListEnd();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapListOfFloats(mapListOfFloats);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -160,8 +193,25 @@ public final class MyStructMapFloatThrowExp {
       oprot.writeFieldBegin(MY_LONG_FIELD_FIELD_DESC);
       oprot.writeI64(this.myLongField);
       oprot.writeFieldEnd();
-      if (MAP_LIST_OF_FLOATS_FIELD_DESC == null){
-        throw new IllegalStateException("Struct contains an unsupported type in org.apache.thrift.protocol: Field:mapListOfFloats Type:Map<Integer, List<List<Float>>>");
+      if (this.mapListOfFloats != null) {
+        oprot.writeFieldBegin(MAP_LIST_OF_FLOATS_FIELD_DESC);
+        Map<Integer, List<List<Float>>> _iter0 = this.mapListOfFloats;
+        oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
+        for (Map.Entry<Integer, List<List<Float>>> _iter1 : _iter0.entrySet()) {
+          oprot.writeI32(_iter1.getKey());
+          
+          oprot.writeListBegin(new TList(TType.LIST, _iter1.getValue().size()));
+        for (List<Float> _iter2 : _iter1.getValue()) {
+          oprot.writeListBegin(new TList(TType.FLOAT, _iter2.size()));
+        for (float _iter3 : _iter2) {
+          oprot.writeFloat(_iter3);
+        }
+        oprot.writeListEnd();
+        }
+        oprot.writeListEnd();
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

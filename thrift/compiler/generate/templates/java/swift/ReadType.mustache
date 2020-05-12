@@ -71,6 +71,11 @@
 }}{{^field:isNested?}}{{> FieldType}} {{field:javaName}} = oprot.readI64();{{/field:isNested?}}{{!
 }}{{/type:i64?}}{{!
 
+}}{{#type:float?}}{{!
+}}{{#field:isNested?}}oprot.readFloat(){{/field:isNested?}}{{!
+}}{{^field:isNested?}}{{> FieldType}} {{field:javaName}} = oprot.readFloat();{{/field:isNested?}}{{!
+}}{{/type:float?}}{{!
+
 }}{{#type:double?}}{{!
 }}{{#field:isNested?}}oprot.readDouble(){{/field:isNested?}}{{!
 }}{{^field:isNested?}}{{> FieldType}} {{field:javaName}} = oprot.readDouble();{{/field:isNested?}}{{!

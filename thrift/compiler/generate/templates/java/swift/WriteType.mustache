@@ -123,6 +123,12 @@
 }}{{^field:isNested?}}oprot.writeI64({{^struct:isUnion?}}this.{{/struct:isUnion?}}{{field:javaName}});{{/field:isNested?}}{{!
 }}{{/type:i64?}}{{!
 
+}}{{#type:float?}}{{!
+}}{{#field:isNested?}}oprot.writeFloat(_iter{{field:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
+{{/field:isNested?}}{{!
+}}{{^field:isNested?}}oprot.writeFloat({{^struct:isUnion?}}this.{{/struct:isUnion?}}{{field:javaName}});{{/field:isNested?}}{{!
+}}{{/type:float?}}{{!
+
 }}{{#type:double?}}{{!
 }}{{#field:isNested?}}oprot.writeDouble(_iter{{field:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
 {{/field:isNested?}}{{!

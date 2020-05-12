@@ -116,7 +116,7 @@ public final class MyStructFloatFieldThrowExp {
     private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("myStringField", TType.STRING, (short)3);
     private final float myFloatField;
     public static final int _MYFLOATFIELD = 4;
-    private static final TField MY_FLOAT_FIELD_FIELD_DESC = null;
+    private static final TField MY_FLOAT_FIELD_FIELD_DESC = new TField("myFloatField", TType.FLOAT, (short)4);
 
     
     @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
@@ -206,7 +206,13 @@ public final class MyStructFloatFieldThrowExp {
           }
           break;
         case _MYFLOATFIELD:
-          throw new IllegalStateException("Struct contains an unsupported type in org.apache.thrift.protocol: Field:myFloatField Type:float");
+          if (__field.type == TType.FLOAT) {
+            float myFloatField = oprot.readFloat();
+            builder.setMyFloatField(myFloatField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -230,9 +236,9 @@ public final class MyStructFloatFieldThrowExp {
         oprot.writeString(this.myStringField);
         oprot.writeFieldEnd();
       }
-      if (MY_FLOAT_FIELD_FIELD_DESC == null){
-        throw new IllegalStateException("Struct contains an unsupported type in org.apache.thrift.protocol: Field:myFloatField Type:float");
-      }
+      oprot.writeFieldBegin(MY_FLOAT_FIELD_FIELD_DESC);
+      oprot.writeFloat(this.myFloatField);
+      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
