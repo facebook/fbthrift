@@ -377,7 +377,7 @@ class FuzzerConfiguration(object):
         parent_path, service_filename = os.path.split(service_path)
         service_name = service_filename[:-3]  # Truncate extension
 
-        logging.info("Service name: %s" (service_name))
+        logging.info("Service name: %s" % (service_name))
 
         parent_path = os.path.dirname(service_path)
         ttypes_path = os.path.join(parent_path, 'ttypes.py')
