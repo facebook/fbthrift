@@ -66,18 +66,24 @@ class Cpp2Worker : public wangle::Acceptor,
   static std::shared_ptr<Cpp2Worker> create(
       ThriftServer* server,
       const std::shared_ptr<HeaderServerChannel>& serverChannel = nullptr,
-      folly::EventBase* eventBase = nullptr) {
+      folly::EventBase* eventBase = nullptr,
+      std::shared_ptr<fizz::server::CertManager> certManager = nullptr,
+      std::shared_ptr<wangle::SSLContextManager> ctxManager = nullptr,
+      std::shared_ptr<const fizz::server::FizzServerContext> fizzContext =
+          nullptr) {
     std::shared_ptr<Cpp2Worker> worker(new Cpp2Worker(server, {}));
-    worker->construct(server, serverChannel, eventBase);
+    worker->setFizzCertManager(certManager);
+    worker->setSSLContextManager(ctxManager);
+    worker->construct(server, serverChannel, eventBase, fizzContext);
     return worker;
   }
 
   void init(
       folly::AsyncServerSocket* serverSocket,
       folly::EventBase* eventBase,
-      wangle::SSLStats* stats = nullptr,
-      std::shared_ptr<const fizz::server::FizzServerContext> fizzContext =
-          nullptr) override {
+      wangle::SSLStats* stats,
+      std::shared_ptr<const fizz::server::FizzServerContext> fizzContext)
+      override {
     if (auto thriftConfigBase =
             folly::get_ptr(accConfig_.customConfigMap, "thrift_tls_config")) {
       assert(static_cast<ThriftTlsConfig*>((*thriftConfigBase).get()));
@@ -155,7 +161,8 @@ class Cpp2Worker : public wangle::Acceptor,
   void construct(
       ThriftServer*,
       const std::shared_ptr<HeaderServerChannel>& serverChannel,
-      folly::EventBase* eventBase) {
+      folly::EventBase* eventBase,
+      std::shared_ptr<const fizz::server::FizzServerContext> fizzContext) {
     auto observer = std::dynamic_pointer_cast<folly::EventBaseObserver>(
         server_->getObserverShared());
     if (serverChannel) {
@@ -163,8 +170,9 @@ class Cpp2Worker : public wangle::Acceptor,
     } else if (!eventBase) {
       eventBase = folly::EventBaseManager::get()->getEventBase();
     }
-    init(nullptr, eventBase);
+    init(nullptr, eventBase, nullptr, fizzContext);
     initRequestsRegistry();
+
     if (serverChannel) {
       // duplex
       useExistingChannel(serverChannel);
