@@ -2097,7 +2097,7 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
       'get_string_field called on an instance of NoExceptMoveUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->string_field, 'Got unexpected null');
+    return $this->string_field as nonnull;
   }
 
   public function set_i32_field(int $i32_field): this {
@@ -2112,7 +2112,7 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
       'get_i32_field called on an instance of NoExceptMoveUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->i32_field, 'Got unexpected null');
+    return $this->i32_field as nonnull;
   }
 
   public static function getAnnotations(): darray<string, mixed> {

@@ -107,7 +107,7 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
       'get_intValue called on an instance of Union whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->intValue, 'Got unexpected null');
+    return $this->intValue as nonnull;
   }
 
   public function set_stringValue(string $stringValue): this {
@@ -122,7 +122,7 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
       'get_stringValue called on an instance of Union whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->stringValue, 'Got unexpected null');
+    return $this->stringValue as nonnull;
   }
 
   public static function getAnnotations(): darray<string, mixed> {

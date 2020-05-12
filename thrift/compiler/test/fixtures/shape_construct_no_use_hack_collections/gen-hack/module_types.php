@@ -198,7 +198,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
       'get_int_value called on an instance of TestUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->int_value, 'Got unexpected null');
+    return $this->int_value as nonnull;
   }
 
   public function set_str_value(string $str_value): this {
@@ -213,7 +213,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
       'get_str_value called on an instance of TestUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->str_value, 'Got unexpected null');
+    return $this->str_value as nonnull;
   }
 
   public function set_double_value(float $double_value): this {
@@ -228,7 +228,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
       'get_double_value called on an instance of TestUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->double_value, 'Got unexpected null');
+    return $this->double_value as nonnull;
   }
 
   public function set_list_of_strings(varray<string> $list_of_strings): this {
@@ -243,7 +243,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
       'get_list_of_strings called on an instance of TestUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->list_of_strings, 'Got unexpected null');
+    return $this->list_of_strings as nonnull;
   }
 
   public function set_map_of_string_to_ints(darray<string, int> $map_of_string_to_ints): this {
@@ -258,7 +258,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
       'get_map_of_string_to_ints called on an instance of TestUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->map_of_string_to_ints, 'Got unexpected null');
+    return $this->map_of_string_to_ints as nonnull;
   }
 
   public function set_struct_foo(Foo $struct_foo): this {
@@ -273,7 +273,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
       'get_struct_foo called on an instance of TestUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->struct_foo, 'Got unexpected null');
+    return $this->struct_foo as nonnull;
   }
 
   public static function getAnnotations(): darray<string, mixed> {

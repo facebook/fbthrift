@@ -263,7 +263,7 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
       'get_foo called on an instance of UnionTesting whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->foo, 'Got unexpected null');
+    return $this->foo as nonnull;
   }
 
   public function set_bar(int $bar): this {
@@ -278,7 +278,7 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
       'get_bar called on an instance of UnionTesting whose current type is %s',
       (string)$this->_type,
     );
-    return \nullthrows($this->bar, 'Got unexpected null');
+    return $this->bar as nonnull;
   }
 
   public static function getAnnotations(): darray<string, mixed> {

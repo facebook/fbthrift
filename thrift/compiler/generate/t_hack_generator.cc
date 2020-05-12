@@ -2452,8 +2452,7 @@ void t_hack_generator::generate_php_union_methods(
     indent(out) << "(string)$this->_type,\n";
     indent_down();
     indent(out) << ");\n";
-    indent(out) << "return \\nullthrows($this->" << fieldName
-                << ", 'Got unexpected null');\n";
+    indent(out) << "return $this->" << fieldName << " as nonnull;\n";
     indent_down();
     indent(out) << "}\n\n";
   }
