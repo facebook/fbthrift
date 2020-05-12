@@ -82,6 +82,8 @@ enum class parsing_mode {
 struct parsing_params {
   // Default values are taken from the original global variables.
 
+  parsing_params() noexcept {} // Disable aggregate initialization
+
   bool debug = false;
   bool verbose = false;
   int warn = 1;
