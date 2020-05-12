@@ -888,14 +888,17 @@ class HandlerCallback : public HandlerCallbackBase {
     doResult(std::forward<InputType>(r));
   }
   void result(std::unique_ptr<ResultType> r) {
-    doResult(std::move(*r));
+    r ? doResult(std::move(*r))
+      : exception(TApplicationException(
+            TApplicationException::MISSING_RESULT,
+            "nullptr yielded from handler"));
   }
   void resultInThread(InputType r) {
     result(std::forward<InputType>(r));
     delete this;
   }
   void resultInThread(std::unique_ptr<ResultType> r) {
-    result(std::move(*r));
+    result(std::move(r));
     delete this;
   }
 
