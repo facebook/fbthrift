@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
+#include <chrono>
+#include <condition_variable>
+
 #include <folly/fibers/Fiber.h>
 #include <folly/fibers/FiberManagerMap.h>
 #include <folly/portability/GTest.h>
+#include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
-#include <chrono>
-#include <condition_variable>
 
 using namespace std;
 using namespace std::chrono;
@@ -161,7 +163,9 @@ TEST_F(ThriftClientTest, SyncCallRequestResponse) {
   ScopedServerInterfaceThread runner(handler);
 
   EventBase eb;
-  auto client = runner.newClient<TestServiceAsyncClient>(&eb);
+  auto client = runner.newClient<TestServiceAsyncClient>(&eb, [](auto socket) {
+    return RocketClientChannel::newChannel(std::move(socket));
+  });
 
   auto doSyncRPC = [&]() {
     RpcOptions options;
@@ -169,6 +173,12 @@ TEST_F(ThriftClientTest, SyncCallRequestResponse) {
     EXPECT_TRUE(response.hasValue());
     EXPECT_TRUE(response->response.hasValue());
     EXPECT_EQ(*response->response, "123");
+
+    auto& stats = response->responseContext.rpcSizeStats;
+    EXPECT_LE(1, stats.requestSerializedSizeBytes);
+    EXPECT_LE(stats.requestWireSizeBytes, stats.requestSerializedSizeBytes);
+    EXPECT_LE(sizeof("123"), stats.responseSerializedSizeBytes);
+    EXPECT_LE(stats.responseWireSizeBytes, stats.responseSerializedSizeBytes);
   };
 
   // First test from evbase thread

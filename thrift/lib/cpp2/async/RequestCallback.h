@@ -31,6 +31,16 @@
 
 namespace apache {
 namespace thrift {
+
+struct RpcSizeStats {
+  RpcSizeStats() = default;
+
+  uint32_t requestSerializedSizeBytes{0};
+  uint32_t requestWireSizeBytes{0};
+  uint32_t responseSerializedSizeBytes{0};
+  uint32_t responseWireSizeBytes{0};
+};
+
 class ClientReceiveState {
  public:
   ClientReceiveState() : protocolId_(-1) {}
@@ -44,6 +54,17 @@ class ClientReceiveState {
         ctx_(std::move(_ctx)),
         buf_(std::move(_buf)),
         header_(std::move(_header)) {}
+  ClientReceiveState(
+      uint16_t _protocolId,
+      std::unique_ptr<folly::IOBuf> _buf,
+      std::unique_ptr<apache::thrift::transport::THeader> _header,
+      std::shared_ptr<apache::thrift::ContextStack> _ctx,
+      const RpcSizeStats& _rpcWireSizeStats)
+      : protocolId_(_protocolId),
+        ctx_(std::move(_ctx)),
+        buf_(std::move(_buf)),
+        header_(std::move(_header)),
+        rpcSizeStats_(_rpcWireSizeStats) {}
   ClientReceiveState(
       uint16_t _protocolId,
       std::unique_ptr<folly::IOBuf> buf,
@@ -136,6 +157,10 @@ class ClientReceiveState {
     ctx_ = std::move(_ctx);
   }
 
+  const RpcSizeStats& getRpcSizeStats() const {
+    return rpcSizeStats_;
+  }
+
  private:
   uint16_t protocolId_;
   std::shared_ptr<apache::thrift::ContextStack> ctx_;
@@ -145,6 +170,7 @@ class ClientReceiveState {
   detail::ClientStreamBridge::ClientPtr streamBridge_;
   detail::ClientSinkBridge::Ptr sink_;
   int32_t chunkBufferSize_;
+  RpcSizeStats rpcSizeStats_;
 };
 
 class RequestClientCallback {
@@ -551,6 +577,7 @@ class RpcOptions {
 
 struct RpcResponseContext {
   std::map<std::string, std::string> headers;
+  RpcSizeStats rpcSizeStats;
 };
 
 template <class T>

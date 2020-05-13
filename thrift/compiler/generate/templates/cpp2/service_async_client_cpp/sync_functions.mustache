@@ -103,6 +103,7 @@ folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>>
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
     tryResponse.emplace();
+    tryResponse->responseContext.rpcSizeStats = returnState.getRpcSizeStats();
     if (returnState.header() && !returnState.header()->getHeaders().empty()) {
   	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
     }
