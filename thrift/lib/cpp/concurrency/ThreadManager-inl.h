@@ -104,34 +104,28 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
         return;
       }
 
-      // Getting the current time is moderately expensive,
-      // so only get the time if we actually need it.
-      std::chrono::steady_clock::time_point startTime;
-      if (task->canExpire() || task->statsEnabled()) {
-        startTime = std::chrono::steady_clock::now();
+      auto startTime = std::chrono::steady_clock::now();
 
-        // Codel auto-expire time algorithm
-        auto delay = std::chrono::duration_cast<std::chrono::milliseconds>(
-            startTime - task->getQueueBeginTime());
-
-        if (task->canExpire() && manager_->codel_.overloaded(delay)) {
-          if (manager_->codelCallback_) {
-            manager_->codelCallback_(task->getRunnable());
-          }
-          if (manager_->codelEnabled_) {
-            FB_LOG_EVERY_MS(WARNING, 10000) << "Queueing delay timeout";
-
-            manager_->onTaskExpired(*task);
-            continue;
-          }
+      // Codel auto-expire time algorithm
+      auto delay = std::chrono::duration_cast<std::chrono::milliseconds>(
+          startTime - task->getQueueBeginTime());
+      if (task->canExpire() && manager_->codel_.overloaded(delay)) {
+        if (manager_->codelCallback_) {
+          manager_->codelCallback_(task->getRunnable());
         }
+        if (manager_->codelEnabled_) {
+          FB_LOG_EVERY_MS(WARNING, 10000) << "Queueing delay timeout";
 
+          manager_->onTaskExpired(*task);
+          continue;
+        }
+      }
+
+      if (manager_->observer_) {
+        // Hold lock to ensure that observer_ does not get deleted
+        folly::SharedMutex::ReadHolder g(manager_->observerLock_);
         if (manager_->observer_) {
-          // Hold lock to ensure that observer_ does not get deleted
-          folly::SharedMutex::ReadHolder g(manager_->observerLock_);
-          if (manager_->observer_) {
-            manager_->observer_->preRun(task->getContext().get());
-          }
+          manager_->observer_->preRun(task->getContext().get());
         }
       }
 
@@ -149,10 +143,8 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
         LOG(ERROR) << "worker task threw unhandled non-exception object";
       }
 
-      if (task->statsEnabled()) {
-        auto endTime = std::chrono::steady_clock::now();
-        manager_->reportTaskStats(*task, startTime, endTime);
-      }
+      auto endTime = std::chrono::steady_clock::now();
+      manager_->reportTaskStats(*task, startTime, endTime);
     }
   }
 

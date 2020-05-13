@@ -86,10 +86,6 @@ class ThreadManager::Task {
     return expireTime_ != std::chrono::steady_clock::time_point();
   }
 
-  bool statsEnabled() const {
-    return queueBeginTime_ != std::chrono::steady_clock::time_point();
-  }
-
   const std::shared_ptr<folly::RequestContext>& getContext() const {
     return context_;
   }
