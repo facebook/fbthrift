@@ -32,6 +32,7 @@ void Payload::append(Payload&& other) {
       metadataSize_ == buffer_->computeChainDataLength());
 
   metadataSize_ += other.metadataSize_;
+  metadataAndDataSize_ += other.metadataAndDataSize_;
   buffer_->prependChain(std::move(other.buffer_));
 }
 

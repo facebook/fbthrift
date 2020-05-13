@@ -96,6 +96,7 @@ class Payload {
 
   std::unique_ptr<folly::IOBuf> data() && {
     DCHECK(buffer_ != nullptr);
+    DCHECK_LE(metadataSize_, metadataAndDataSize_);
     DCHECK_LE(metadataSize_, buffer_->computeChainDataLength());
 
     auto toTrim = metadataSize_;
@@ -121,9 +122,8 @@ class Payload {
   }
 
   size_t dataSize() const noexcept {
-    auto length = buffer_->computeChainDataLength();
-    DCHECK(length >= metadataSize_);
-    return length - metadataSize_;
+    DCHECK(metadataAndDataSize_ >= metadataSize_);
+    return metadataAndDataSize_ - metadataSize_;
   }
 
   const folly::IOBuf* buffer() const& {
@@ -135,48 +135,58 @@ class Payload {
   }
 
   size_t metadataAndDataSize() const {
-    return buffer_->computeChainDataLength();
+    return metadataAndDataSize_;
   }
 
   size_t serializedSize() const {
     constexpr size_t kBytesForMetadataSize = 3;
-    return buffer_->computeChainDataLength() +
+    return metadataAndDataSize_ +
         (hasNonemptyMetadata() ? kBytesForMetadataSize : 0ull);
   }
 
   void append(Payload&& other);
 
  private:
-  size_t metadataSize_{0};
   std::unique_ptr<folly::IOBuf> buffer_;
+  size_t metadataSize_{0};
+  size_t metadataAndDataSize_{0};
 
   explicit Payload(std::unique_ptr<folly::IOBuf> data)
-      : buffer_(data ? std::move(data) : std::make_unique<folly::IOBuf>()) {}
+      : buffer_(data ? std::move(data) : std::make_unique<folly::IOBuf>()),
+        metadataAndDataSize_(buffer_->computeChainDataLength()) {}
+
   Payload(
       std::unique_ptr<folly::IOBuf> metadata,
       std::unique_ptr<folly::IOBuf> data) {
     if (metadata) {
       metadataSize_ = metadata->computeChainDataLength();
+      metadataAndDataSize_ = metadataSize_;
       if (data) {
+        metadataAndDataSize_ += data->computeChainDataLength();
         metadata->prependChain(std::move(data));
       }
       buffer_ = std::move(metadata);
     } else if (data) {
       buffer_ = std::move(data);
+      metadataAndDataSize_ = buffer_->computeChainDataLength();
     } else {
       buffer_ = std::make_unique<folly::IOBuf>();
     }
   }
+
   Payload(std::unique_ptr<folly::IOBuf> buffer, size_t metadataSize)
-      : metadataSize_(metadataSize),
-        buffer_(buffer ? std::move(buffer) : std::make_unique<folly::IOBuf>()) {
-  }
+      : buffer_(buffer ? std::move(buffer) : std::make_unique<folly::IOBuf>()),
+        metadataSize_(metadataSize),
+        metadataAndDataSize_(buffer_->computeChainDataLength()) {}
 
   explicit Payload(folly::ByteRange data)
-      : buffer_(folly::IOBuf::copyBuffer(data)) {}
+      : buffer_(folly::IOBuf::copyBuffer(data)),
+        metadataAndDataSize_(buffer_->computeChainDataLength()) {}
+
   Payload(folly::ByteRange metadata, folly::ByteRange data)
-      : metadataSize_(metadata.size()),
-        buffer_(folly::IOBuf::copyBuffer(metadata)) {
+      : buffer_(folly::IOBuf::copyBuffer(metadata)),
+        metadataSize_(metadata.size()),
+        metadataAndDataSize_(metadata.size() + data.size()) {
     buffer_->prependChain(folly::IOBuf::copyBuffer(data));
   }
 };
