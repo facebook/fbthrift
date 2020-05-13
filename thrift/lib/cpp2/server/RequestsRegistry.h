@@ -131,7 +131,7 @@ class RequestsRegistry {
       return *req_;
     }
 
-    const Cpp2RequestContext& getRequestContext() const {
+    const Cpp2RequestContext& getCpp2RequestContext() const {
       return *reqContext_;
     }
 
@@ -145,6 +145,10 @@ class RequestsRegistry {
 
     intptr_t getRootRequestContextId() const {
       return rootRequestContextId_;
+    }
+
+    std::shared_ptr<folly::RequestContext> getRequestContext() const {
+      return rctx_;
     }
 
     const std::string& getMethodName() const;

@@ -41,6 +41,7 @@
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
+#include <thrift/lib/cpp2/server/RequestDebugLog.h>
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
 #include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
@@ -846,8 +847,9 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
           payload_(std::move(*stub.clonePayload())),
           peerAddress_(*stub.getPeerAddress()),
           rootRequestContextId_(stub.getRootRequestContextId()),
-          reqId_(RequestsRegistry::getRequestId(rootRequestContextId_)
-                     .toString()) {}
+          reqId_(
+              RequestsRegistry::getRequestId(rootRequestContextId_).toString()),
+          reqDebugLog_(collectRequestDebugLog(stub)) {}
 
     const std::string& getMethodName() const {
       return methodName_;
@@ -884,6 +886,10 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
       return peerAddress_;
     }
 
+    const std::vector<std::string>& getDebugLog() const {
+      return reqDebugLog_;
+    }
+
    private:
     const std::string methodName_;
     const std::chrono::steady_clock::time_point creationTimestamp_;
@@ -893,6 +899,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     folly::SocketAddress peerAddress_;
     intptr_t rootRequestContextId_;
     const std::string reqId_;
+    const std::vector<std::string> reqDebugLog_;
   };
   folly::SemiFuture<std::vector<RequestSnapshot>> snapshotActiveRequests();
 };
