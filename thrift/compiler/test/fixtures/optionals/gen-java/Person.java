@@ -105,9 +105,8 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
   }
 
   public Person(
-    long id,
-    String name)
-  {
+      long id,
+      String name) {
     this();
     this.id = id;
     setIdIsSet(true);
@@ -115,17 +114,16 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
   }
 
   public Person(
-    long id,
-    String name,
-    short age,
-    String address,
-    Color favoriteColor,
-    Set<Long> friends,
-    long bestFriend,
-    Map<Animal,String> petNames,
-    Animal afraidOfAnimal,
-    List<Vehicle> vehicles)
-  {
+      long id,
+      String name,
+      short age,
+      String address,
+      Color favoriteColor,
+      Set<Long> friends,
+      long bestFriend,
+      Map<Animal,String> petNames,
+      Animal afraidOfAnimal,
+      List<Vehicle> vehicles) {
     this();
     this.id = id;
     setIdIsSet(true);

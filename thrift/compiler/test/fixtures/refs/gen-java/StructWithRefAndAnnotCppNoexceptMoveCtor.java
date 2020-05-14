@@ -48,8 +48,7 @@ public class StructWithRefAndAnnotCppNoexceptMoveCtor implements TBase, java.io.
   }
 
   public StructWithRefAndAnnotCppNoexceptMoveCtor(
-    Empty def_field)
-  {
+      Empty def_field) {
     this();
     this.def_field = def_field;
   }

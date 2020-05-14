@@ -59,9 +59,8 @@ public class SimpleStruct implements TBase, java.io.Serializable, Cloneable, Com
   }
 
   public SimpleStruct(
-    long age,
-    String name)
-  {
+      long age,
+      String name) {
     this();
     this.age = age;
     setAgeIsSet(true);

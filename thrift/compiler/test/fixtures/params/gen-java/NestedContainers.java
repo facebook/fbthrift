@@ -653,8 +653,7 @@ public class NestedContainers {
     }
 
     public mapList_args(
-      Map<Integer,List<Integer>> foo)
-    {
+        Map<Integer,List<Integer>> foo) {
       this();
       this.foo = foo;
     }
@@ -1046,8 +1045,7 @@ public class NestedContainers {
     }
 
     public mapSet_args(
-      Map<Integer,Set<Integer>> foo)
-    {
+        Map<Integer,Set<Integer>> foo) {
       this();
       this.foo = foo;
     }
@@ -1439,8 +1437,7 @@ public class NestedContainers {
     }
 
     public listMap_args(
-      List<Map<Integer,Integer>> foo)
-    {
+        List<Map<Integer,Integer>> foo) {
       this();
       this.foo = foo;
     }
@@ -1831,8 +1828,7 @@ public class NestedContainers {
     }
 
     public listSet_args(
-      List<Set<Integer>> foo)
-    {
+        List<Set<Integer>> foo) {
       this();
       this.foo = foo;
     }
@@ -2225,8 +2221,7 @@ public class NestedContainers {
     }
 
     public turtles_args(
-      List<List<Map<Integer,Map<Integer,Set<Integer>>>>> foo)
-    {
+        List<List<Map<Integer,Map<Integer,Set<Integer>>>>> foo) {
       this();
       this.foo = foo;
     }

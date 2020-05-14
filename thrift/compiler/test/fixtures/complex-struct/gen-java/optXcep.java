@@ -55,9 +55,8 @@ public class optXcep extends Exception implements TBase, java.io.Serializable, C
   }
 
   public optXcep(
-    String message,
-    int errorCode)
-  {
+      String message,
+      int errorCode) {
     this();
     this.message = message;
     this.errorCode = errorCode;

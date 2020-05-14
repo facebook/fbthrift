@@ -203,25 +203,24 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
   }
 
   public ComplexNestedStruct(
-    Set<Set<Integer>> setOfSetOfInt,
-    List<List<List<List<MyEnum>>>> listofListOfListOfListOfEnum,
-    List<List<MyStruct>> listOfListOfMyStruct,
-    Set<List<List<Long>>> setOfListOfListOfLong,
-    Set<Set<Set<Long>>> setOfSetOfsetOfLong,
-    Map<Integer,List<List<MyStruct>>> mapStructListOfListOfLong,
-    Map<MyStruct,Integer> mKeyStructValInt,
-    List<Map<Integer,Integer>> listOfMapKeyIntValInt,
-    List<Map<String,List<MyStruct>>> listOfMapKeyStrValList,
-    Map<Set<Integer>,Long> mapKeySetValLong,
-    Map<List<String>,Integer> mapKeyListValLong,
-    Map<Map<Integer,String>,Map<Integer,String>> mapKeyMapValMap,
-    Map<Set<List<Integer>>,Map<List<Set<String>>,String>> mapKeySetValMap,
-    Map<Map<Map<Integer,String>,String>,Map<Integer,String>> NestedMaps,
-    Map<Integer,List<MyStruct>> mapKeyIntValList,
-    Map<Integer,Set<Boolean>> mapKeyIntValSet,
-    Map<Set<Boolean>,MyEnum> mapKeySetValInt,
-    Map<List<Integer>,Set<Map<Double,String>>> mapKeyListValSet)
-  {
+      Set<Set<Integer>> setOfSetOfInt,
+      List<List<List<List<MyEnum>>>> listofListOfListOfListOfEnum,
+      List<List<MyStruct>> listOfListOfMyStruct,
+      Set<List<List<Long>>> setOfListOfListOfLong,
+      Set<Set<Set<Long>>> setOfSetOfsetOfLong,
+      Map<Integer,List<List<MyStruct>>> mapStructListOfListOfLong,
+      Map<MyStruct,Integer> mKeyStructValInt,
+      List<Map<Integer,Integer>> listOfMapKeyIntValInt,
+      List<Map<String,List<MyStruct>>> listOfMapKeyStrValList,
+      Map<Set<Integer>,Long> mapKeySetValLong,
+      Map<List<String>,Integer> mapKeyListValLong,
+      Map<Map<Integer,String>,Map<Integer,String>> mapKeyMapValMap,
+      Map<Set<List<Integer>>,Map<List<Set<String>>,String>> mapKeySetValMap,
+      Map<Map<Map<Integer,String>,String>,Map<Integer,String>> NestedMaps,
+      Map<Integer,List<MyStruct>> mapKeyIntValList,
+      Map<Integer,Set<Boolean>> mapKeyIntValSet,
+      Map<Set<Boolean>,MyEnum> mapKeySetValInt,
+      Map<List<Integer>,Set<Map<Double,String>>> mapKeyListValSet) {
     this();
     this.setOfSetOfInt = setOfSetOfInt;
     this.listofListOfListOfListOfEnum = listofListOfListOfListOfEnum;

@@ -101,16 +101,15 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
   }
 
   public MyStructTypeDef(
-    long myLongField,
-    long myLongTypeDef,
-    String myStringField,
-    String myStringTypedef,
-    Map<Short,String> myMapField,
-    Map<Short,String> myMapTypedef,
-    List<Double> myListField,
-    List<Double> myListTypedef,
-    Map<Short,List<List<Double>>> myMapListOfTypeDef)
-  {
+      long myLongField,
+      long myLongTypeDef,
+      String myStringField,
+      String myStringTypedef,
+      Map<Short,String> myMapField,
+      Map<Short,String> myMapTypedef,
+      List<Double> myListField,
+      List<Double> myListTypedef,
+      Map<Short,List<List<Double>>> myMapListOfTypeDef) {
     this();
     this.myLongField = myLongField;
     setMyLongFieldIsSet(true);

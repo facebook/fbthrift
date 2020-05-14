@@ -67,10 +67,9 @@ public class MyStructAnnotation implements TBase, java.io.Serializable, Cloneabl
   }
 
   public MyStructAnnotation(
-    long count,
-    String name,
-    MyStructNestedAnnotation nest)
-  {
+      long count,
+      String name,
+      MyStructNestedAnnotation nest) {
     this();
     this.count = count;
     setCountIsSet(true);
@@ -79,11 +78,10 @@ public class MyStructAnnotation implements TBase, java.io.Serializable, Cloneabl
   }
 
   public MyStructAnnotation(
-    long count,
-    String name,
-    String extra,
-    MyStructNestedAnnotation nest)
-  {
+      long count,
+      String name,
+      String extra,
+      MyStructNestedAnnotation nest) {
     this();
     this.count = count;
     setCountIsSet(true);

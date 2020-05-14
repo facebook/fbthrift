@@ -68,11 +68,10 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
   }
 
   public Color(
-    double red,
-    double green,
-    double blue,
-    double alpha)
-  {
+      double red,
+      double green,
+      double blue,
+      double alpha) {
     this();
     this.red = red;
     setRedIsSet(true);

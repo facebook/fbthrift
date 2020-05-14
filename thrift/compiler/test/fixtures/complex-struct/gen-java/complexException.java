@@ -80,12 +80,11 @@ public class complexException extends Exception implements TBase, java.io.Serial
   }
 
   public complexException(
-    String message,
-    List<String> listStrings,
-    MyEnum errorEnum,
-    MyStruct structError,
-    Map<Long,String> lsMap)
-  {
+      String message,
+      List<String> listStrings,
+      MyEnum errorEnum,
+      MyStruct structError,
+      Map<Long,String> lsMap) {
     this();
     this.message = message;
     this.listStrings = listStrings;
@@ -95,13 +94,12 @@ public class complexException extends Exception implements TBase, java.io.Serial
   }
 
   public complexException(
-    String message,
-    List<String> listStrings,
-    MyEnum errorEnum,
-    MyUnion unionError,
-    MyStruct structError,
-    Map<Long,String> lsMap)
-  {
+      String message,
+      List<String> listStrings,
+      MyEnum errorEnum,
+      MyUnion unionError,
+      MyStruct structError,
+      Map<Long,String> lsMap) {
     this();
     this.message = message;
     this.listStrings = listStrings;

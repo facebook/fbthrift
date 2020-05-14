@@ -59,9 +59,8 @@ public class MyStructMapFloatThrowExp implements TBase, java.io.Serializable, Cl
   }
 
   public MyStructMapFloatThrowExp(
-    long myLongField,
-    Map<Integer,List<List<Float>>> mapListOfFloats)
-  {
+      long myLongField,
+      Map<Integer,List<List<Float>>> mapListOfFloats) {
     this();
     this.myLongField = myLongField;
     setMyLongFieldIsSet(true);

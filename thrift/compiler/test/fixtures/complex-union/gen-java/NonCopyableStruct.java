@@ -50,8 +50,7 @@ public class NonCopyableStruct implements TBase, java.io.Serializable, Cloneable
   }
 
   public NonCopyableStruct(
-    long num)
-  {
+      long num) {
     this();
     this.num = num;
     setNumIsSet(true);

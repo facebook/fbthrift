@@ -62,17 +62,15 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
   }
 
   public MyField(
-    long req_value)
-  {
+      long req_value) {
     this();
     this.req_value = req_value;
     setReq_valueIsSet(true);
   }
 
   public MyField(
-    long value,
-    long req_value)
-  {
+      long value,
+      long req_value) {
     this();
     this.value = value;
     setValueIsSet(true);
@@ -81,10 +79,9 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
   }
 
   public MyField(
-    long opt_value,
-    long value,
-    long req_value)
-  {
+      long opt_value,
+      long value,
+      long req_value) {
     this();
     this.opt_value = opt_value;
     setOpt_valueIsSet(true);

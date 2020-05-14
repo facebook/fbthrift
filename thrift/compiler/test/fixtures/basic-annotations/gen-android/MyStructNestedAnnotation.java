@@ -30,8 +30,7 @@ public class MyStructNestedAnnotation implements TBase, java.io.Serializable, Cl
   public static final int NAME = 1;
 
   public MyStructNestedAnnotation(
-    String name)
-  {
+      String name) {
     this.name = name;
   }
 

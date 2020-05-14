@@ -67,11 +67,10 @@ public class MyStructFloatFieldThrowExp implements TBase, java.io.Serializable, 
   }
 
   public MyStructFloatFieldThrowExp(
-    long myLongField,
-    byte MyByteField,
-    String myStringField,
-    float myFloatField)
-  {
+      long myLongField,
+      byte MyByteField,
+      String myStringField,
+      float myFloatField) {
     this();
     this.myLongField = myLongField;
     setMyLongFieldIsSet(true);

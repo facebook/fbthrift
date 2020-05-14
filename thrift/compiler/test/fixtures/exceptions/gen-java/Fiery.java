@@ -48,8 +48,7 @@ public class Fiery extends Exception implements TBase, java.io.Serializable, Clo
   }
 
   public Fiery(
-    String message)
-  {
+      String message) {
     this();
     this.message = message;
   }

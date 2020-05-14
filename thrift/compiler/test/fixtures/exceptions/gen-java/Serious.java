@@ -48,8 +48,7 @@ public class Serious extends Exception implements TBase, java.io.Serializable, C
   }
 
   public Serious(
-    String sonnet)
-  {
+      String sonnet) {
     this();
     this.sonnet = sonnet;
   }

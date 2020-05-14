@@ -80,13 +80,12 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
   }
 
   public StructWithContainers(
-    List<Integer> list_ref,
-    Set<Integer> set_ref,
-    Map<Integer,Integer> map_ref,
-    List<Integer> list_ref_unique,
-    Set<Integer> set_ref_shared,
-    List<Integer> list_ref_shared_const)
-  {
+      List<Integer> list_ref,
+      Set<Integer> set_ref,
+      Map<Integer,Integer> map_ref,
+      List<Integer> list_ref_unique,
+      Set<Integer> set_ref_shared,
+      List<Integer> list_ref_shared_const) {
     this();
     this.list_ref = list_ref;
     this.set_ref = set_ref;

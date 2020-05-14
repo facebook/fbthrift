@@ -36,10 +36,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   public static final int MYINCLUDEDINT = 3;
 
   public MyStruct(
-    one.two.three.Included MyIncludedField,
-    one.two.three.Included MyOtherIncludedField,
-    Long MyIncludedInt)
-  {
+      one.two.three.Included MyIncludedField,
+      one.two.three.Included MyOtherIncludedField,
+      Long MyIncludedInt) {
     this.MyIncludedField = MyIncludedField;
     this.MyOtherIncludedField = MyOtherIncludedField;
     this.MyIncludedInt = MyIncludedInt;

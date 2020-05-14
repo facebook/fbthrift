@@ -28,9 +28,7 @@ public class MyDataItem implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("MyDataItem");
 
 
-  public MyDataItem(
-)
-  {
+  public MyDataItem() {
   }
 
   /**

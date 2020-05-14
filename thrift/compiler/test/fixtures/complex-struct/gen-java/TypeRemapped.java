@@ -71,11 +71,10 @@ public class TypeRemapped implements TBase, java.io.Serializable, Cloneable, Com
   }
 
   public TypeRemapped(
-    Map<Long,String> lsMap,
-    Map<Integer,Map<Integer,Long>> ioMap,
-    int BigInteger,
-    byte[] binaryTestBuffer)
-  {
+      Map<Long,String> lsMap,
+      Map<Integer,Map<Integer,Long>> ioMap,
+      int BigInteger,
+      byte[] binaryTestBuffer) {
     this();
     this.lsMap = lsMap;
     this.ioMap = ioMap;

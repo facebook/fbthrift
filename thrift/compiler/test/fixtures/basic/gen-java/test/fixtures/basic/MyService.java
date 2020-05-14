@@ -1131,8 +1131,7 @@ public class MyService {
     }
 
     public getRandomData_result(
-      String success)
-    {
+        String success) {
       this();
       this.success = success;
     }
@@ -1350,8 +1349,7 @@ public class MyService {
     }
 
     public hasDataById_args(
-      long id)
-    {
+        long id) {
       this();
       this.id = id;
       setIdIsSet(true);
@@ -1565,8 +1563,7 @@ public class MyService {
     }
 
     public hasDataById_result(
-      boolean success)
-    {
+        boolean success) {
       this();
       this.success = success;
       setSuccessIsSet(true);
@@ -1781,8 +1778,7 @@ public class MyService {
     }
 
     public getDataById_args(
-      long id)
-    {
+        long id) {
       this();
       this.id = id;
       setIdIsSet(true);
@@ -1994,8 +1990,7 @@ public class MyService {
     }
 
     public getDataById_result(
-      String success)
-    {
+        String success) {
       this();
       this.success = success;
     }
@@ -2218,9 +2213,8 @@ public class MyService {
     }
 
     public putDataById_args(
-      long id,
-      String data)
-    {
+        long id,
+        String data) {
       this();
       this.id = id;
       setIdIsSet(true);
@@ -2643,9 +2637,8 @@ public class MyService {
     }
 
     public lobDataById_args(
-      long id,
-      String data)
-    {
+        long id,
+        String data) {
       this();
       this.id = id;
       setIdIsSet(true);

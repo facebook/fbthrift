@@ -55,9 +55,8 @@ public class reqXcep extends Exception implements TBase, java.io.Serializable, C
   }
 
   public reqXcep(
-    String message,
-    int errorCode)
-  {
+      String message,
+      int errorCode) {
     this();
     this.message = message;
     this.errorCode = errorCode;

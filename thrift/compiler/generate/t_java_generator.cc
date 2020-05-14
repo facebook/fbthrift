@@ -1063,19 +1063,23 @@ void t_java_generator::generate_java_constructor(
     t_struct* tstruct,
     const vector<t_field*>& fields) {
   vector<t_field*>::const_iterator m_iter;
-  indent(out) << "public " << tstruct->get_name() << "(" << endl;
-  indent_up();
-  for (m_iter = fields.begin(); m_iter != fields.end();) {
-    indent(out) << type_name((*m_iter)->get_type()) << " "
-                << (*m_iter)->get_name();
-    ++m_iter;
-    if (m_iter != fields.end()) {
-      out << "," << endl;
+  indent(out) << "public " << tstruct->get_name() << "(";
+  if (!fields.empty()) {
+    out << endl;
+    indent_up();
+    indent_up();
+    for (m_iter = fields.begin(); m_iter != fields.end();) {
+      indent(out) << type_name((*m_iter)->get_type()) << " "
+                  << (*m_iter)->get_name();
+      ++m_iter;
+      if (m_iter != fields.end()) {
+        out << "," << endl;
+      }
     }
+    indent_down();
+    indent_down();
   }
-  out << ")" << endl;
-  indent_down();
-  indent(out) << "{" << endl;
+  out << ") {" << endl;
   indent_up();
   if (generate_immutable_structs_) {
     if (fields.size() != tstruct->get_members().size()) {

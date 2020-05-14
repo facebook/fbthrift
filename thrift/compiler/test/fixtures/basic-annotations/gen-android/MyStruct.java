@@ -39,11 +39,10 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   public static final int CLASS_ = 4;
 
   public MyStruct(
-    Long major,
-    String package,
-    String annotation_with_quote,
-    String class_)
-  {
+      Long major,
+      String package,
+      String annotation_with_quote,
+      String class_) {
     this.major = major;
     this.package = package;
     this.annotation_with_quote = annotation_with_quote;

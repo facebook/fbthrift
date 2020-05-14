@@ -58,26 +58,23 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   }
 
   public MyStruct(
-    MyField req_ref)
-  {
+      MyField req_ref) {
     this();
     this.req_ref = req_ref;
   }
 
   public MyStruct(
-    MyField ref,
-    MyField req_ref)
-  {
+      MyField ref,
+      MyField req_ref) {
     this();
     this.ref = ref;
     this.req_ref = req_ref;
   }
 
   public MyStruct(
-    MyField opt_ref,
-    MyField ref,
-    MyField req_ref)
-  {
+      MyField opt_ref,
+      MyField ref,
+      MyField req_ref) {
     this();
     this.opt_ref = opt_ref;
     this.ref = ref;

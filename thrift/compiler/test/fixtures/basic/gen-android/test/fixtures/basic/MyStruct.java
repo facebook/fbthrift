@@ -45,11 +45,10 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   public static final int MYENUM = 4;
 
   public MyStruct(
-    Long MyIntField,
-    String MyStringField,
-    MyDataItem MyDataField,
-    MyEnum myEnum)
-  {
+      Long MyIntField,
+      String MyStringField,
+      MyDataItem MyDataField,
+      MyEnum myEnum) {
     this.MyIntField = MyIntField;
     this.MyStringField = MyStringField;
     this.MyDataField = MyDataField;

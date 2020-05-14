@@ -35,9 +35,8 @@ public class Included implements TBase, java.io.Serializable, Cloneable {
   public static final int MYTRANSITIVEFIELD = 2;
 
   public Included(
-    Long MyIntField,
-    Foo MyTransitiveField)
-  {
+      Long MyIntField,
+      Foo MyTransitiveField) {
     this.MyIntField = MyIntField;
     this.MyTransitiveField = MyTransitiveField;
   }

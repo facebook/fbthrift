@@ -60,10 +60,9 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable, 
   }
 
   public StructWithUnion(
-    MyUnion u,
-    double aDouble,
-    MyField f)
-  {
+      MyUnion u,
+      double aDouble,
+      MyField f) {
     this();
     this.u = u;
     this.aDouble = aDouble;

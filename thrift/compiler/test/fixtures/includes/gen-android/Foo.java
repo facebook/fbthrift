@@ -30,8 +30,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
   public static final int A = 1;
 
   public Foo(
-    Long a)
-  {
+      Long a) {
     this.a = a;
   }
 

@@ -72,19 +72,17 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
   }
 
   public Vehicle(
-    Color color)
-  {
+      Color color) {
     this();
     this.color = color;
   }
 
   public Vehicle(
-    Color color,
-    String licensePlate,
-    String description,
-    String name,
-    boolean hasAC)
-  {
+      Color color,
+      String licensePlate,
+      String description,
+      String name,
+      boolean hasAC) {
     this();
     this.color = color;
     this.licensePlate = licensePlate;

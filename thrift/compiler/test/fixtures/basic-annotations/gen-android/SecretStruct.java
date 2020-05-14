@@ -33,9 +33,8 @@ public class SecretStruct implements TBase, java.io.Serializable, Cloneable {
   public static final int PASSWORD = 2;
 
   public SecretStruct(
-    Long id,
-    String password)
-  {
+      Long id,
+      String password) {
     this.id = id;
     this.password = password;
   }

@@ -49,8 +49,7 @@ public class RecursiveStruct implements TBase, java.io.Serializable, Cloneable {
   }
 
   public RecursiveStruct(
-    List<RecursiveStruct> mes)
-  {
+      List<RecursiveStruct> mes) {
     this();
     this.mes = mes;
   }

@@ -62,10 +62,9 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
   }
 
   public Val(
-    String strVal,
-    int intVal,
-    Map<Short,String> typedefValue)
-  {
+      String strVal,
+      int intVal,
+      Map<Short,String> typedefValue) {
     this();
     this.strVal = strVal;
     this.intVal = intVal;

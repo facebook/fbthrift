@@ -65,9 +65,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   }
 
   public MyStruct(
-    MyEnum myEnum,
-    MyBigEnum myBigEnum)
-  {
+      MyEnum myEnum,
+      MyBigEnum myBigEnum) {
     this();
     this.myEnum = myEnum;
     this.myBigEnum = myBigEnum;

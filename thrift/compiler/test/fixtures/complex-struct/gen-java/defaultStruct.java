@@ -300,29 +300,28 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
   }
 
   public defaultStruct(
-    long myLongDFset,
-    long myLongDF,
-    int portDFset,
-    int portNum,
-    byte[] myBinaryDFset,
-    byte[] myBinary,
-    byte myByteDFSet,
-    byte myByte,
-    double myDoubleDFset,
-    double myDoubleDFZero,
-    double myDouble,
-    Map<Integer,String> field3,
-    List<MyEnum> myList,
-    Set<String> mySet,
-    SimpleStruct simpleStruct,
-    List<SimpleStruct> listStructDFset,
-    MyUnion myUnion,
-    List<MyUnion> listUnionDFset,
-    Map<Integer,List<SimpleStruct>> mapNestlistStructDfSet,
-    Map<Long,String> mapJavaTypeDFset,
-    Map<Long,Integer> emptyMap,
-    Map<String,Map<Integer,MyEnum>> enumMapDFset)
-  {
+      long myLongDFset,
+      long myLongDF,
+      int portDFset,
+      int portNum,
+      byte[] myBinaryDFset,
+      byte[] myBinary,
+      byte myByteDFSet,
+      byte myByte,
+      double myDoubleDFset,
+      double myDoubleDFZero,
+      double myDouble,
+      Map<Integer,String> field3,
+      List<MyEnum> myList,
+      Set<String> mySet,
+      SimpleStruct simpleStruct,
+      List<SimpleStruct> listStructDFset,
+      MyUnion myUnion,
+      List<MyUnion> listUnionDFset,
+      Map<Integer,List<SimpleStruct>> mapNestlistStructDfSet,
+      Map<Long,String> mapJavaTypeDFset,
+      Map<Long,Integer> emptyMap,
+      Map<String,Map<Integer,MyEnum>> enumMapDFset) {
     this();
     this.myLongDFset = myLongDFset;
     setMyLongDFsetIsSet(true);

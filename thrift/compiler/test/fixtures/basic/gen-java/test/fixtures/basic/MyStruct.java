@@ -71,11 +71,10 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   }
 
   public MyStruct(
-    long MyIntField,
-    String MyStringField,
-    MyDataItem MyDataField,
-    MyEnum myEnum)
-  {
+      long MyIntField,
+      String MyStringField,
+      MyDataItem MyDataField,
+      MyEnum myEnum) {
     this();
     this.MyIntField = MyIntField;
     setMyIntFieldIsSet(true);

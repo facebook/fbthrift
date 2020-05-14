@@ -39,11 +39,10 @@ public class MyStructAnnotation implements TBase, java.io.Serializable, Cloneabl
   public static final int NEST = 4;
 
   public MyStructAnnotation(
-    Long count,
-    String name,
-    String extra,
-    MyStructNestedAnnotation nest)
-  {
+      Long count,
+      String name,
+      String extra,
+      MyStructNestedAnnotation nest) {
     this.count = count;
     this.name = name;
     this.extra = extra;

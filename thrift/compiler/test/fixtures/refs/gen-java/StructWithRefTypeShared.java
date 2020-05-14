@@ -58,26 +58,23 @@ public class StructWithRefTypeShared implements TBase, java.io.Serializable, Clo
   }
 
   public StructWithRefTypeShared(
-    Empty req_field)
-  {
+      Empty req_field) {
     this();
     this.req_field = req_field;
   }
 
   public StructWithRefTypeShared(
-    Empty def_field,
-    Empty req_field)
-  {
+      Empty def_field,
+      Empty req_field) {
     this();
     this.def_field = def_field;
     this.req_field = req_field;
   }
 
   public StructWithRefTypeShared(
-    Empty def_field,
-    Empty opt_field,
-    Empty req_field)
-  {
+      Empty def_field,
+      Empty opt_field,
+      Empty req_field) {
     this();
     this.def_field = def_field;
     this.opt_field = opt_field;

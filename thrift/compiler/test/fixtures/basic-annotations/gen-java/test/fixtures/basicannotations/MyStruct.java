@@ -67,11 +67,10 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   }
 
   public MyStruct(
-    long major,
-    String package,
-    String annotation_with_quote,
-    String class_)
-  {
+      long major,
+      String package,
+      String annotation_with_quote,
+      String class_) {
     this();
     this.major = major;
     setMajorIsSet(true);

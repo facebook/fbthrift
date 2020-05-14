@@ -1010,10 +1010,9 @@ public class Raiser {
     }
 
     public doRaise_result(
-      Banal b,
-      Fiery f,
-      Serious s)
-    {
+        Banal b,
+        Fiery f,
+        Serious s) {
       this();
       this.b = b;
       this.f = f;
@@ -1468,8 +1467,7 @@ public class Raiser {
     }
 
     public get200_result(
-      String success)
-    {
+        String success) {
       this();
       this.success = success;
     }
@@ -1833,11 +1831,10 @@ public class Raiser {
     }
 
     public get500_result(
-      String success,
-      Fiery f,
-      Banal b,
-      Serious s)
-    {
+        String success,
+        Fiery f,
+        Banal b,
+        Serious s) {
       this();
       this.success = success;
       this.f = f;
