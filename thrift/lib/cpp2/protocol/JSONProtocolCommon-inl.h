@@ -750,7 +750,7 @@ void JSONProtocolReaderCommon::readJSONString(StrType& val) {
         }
         if (allowDecodeUTF8_) {
           json += "\\";
-          json += kEscapeChars()[pos];
+          json += ch;
           continue;
         } else {
           ch = kEscapeCharVals[pos];
