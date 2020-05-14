@@ -460,87 +460,63 @@ bool operator>=(optional_field_ref<T1> a, optional_field_ref<T2> b) {
   return !(a < b);
 }
 
-template <typename T>
-bool operator==(
-    optional_field_ref<T> a,
-    const typename optional_field_ref<T>::value_type& b) {
+template <typename T, typename U>
+bool operator==(optional_field_ref<T> a, const U& b) {
   return a ? *a == b : false;
 }
 
-template <typename T>
-bool operator!=(
-    optional_field_ref<T> a,
-    const typename optional_field_ref<T>::value_type& b) {
+template <typename T, typename U>
+bool operator!=(optional_field_ref<T> a, const U& b) {
   return !(a == b);
 }
 
-template <typename T>
-bool operator==(
-    const typename optional_field_ref<T>::value_type& a,
-    optional_field_ref<T> b) {
+template <typename T, typename U>
+bool operator==(const U& a, optional_field_ref<T> b) {
   return b == a;
 }
 
-template <typename T>
-bool operator!=(
-    const typename optional_field_ref<T>::value_type& a,
-    optional_field_ref<T> b) {
+template <typename T, typename U>
+bool operator!=(const U& a, optional_field_ref<T> b) {
   return b != a;
 }
 
-template <typename T>
-bool operator<(
-    optional_field_ref<T> a,
-    const typename optional_field_ref<T>::value_type& b) {
+template <typename T, typename U>
+bool operator<(optional_field_ref<T> a, const U& b) {
   return a ? *a < b : true;
 }
 
-template <typename T>
-bool operator>(
-    optional_field_ref<T> a,
-    const typename optional_field_ref<T>::value_type& b) {
+template <typename T, typename U>
+bool operator>(optional_field_ref<T> a, const U& b) {
   return a ? *a > b : false;
 }
 
-template <typename T>
-bool operator<=(
-    optional_field_ref<T> a,
-    const typename optional_field_ref<T>::value_type& b) {
+template <typename T, typename U>
+bool operator<=(optional_field_ref<T> a, const U& b) {
   return !(a > b);
 }
 
-template <typename T>
-bool operator>=(
-    optional_field_ref<T> a,
-    const typename optional_field_ref<T>::value_type& b) {
+template <typename T, typename U>
+bool operator>=(optional_field_ref<T> a, const U& b) {
   return !(a < b);
 }
 
-template <typename T>
-bool operator<(
-    const typename optional_field_ref<T>::value_type& a,
-    optional_field_ref<T> b) {
+template <typename T, typename U>
+bool operator<(const U& a, optional_field_ref<T> b) {
   return b > a;
 }
 
-template <typename T>
-bool operator<=(
-    const typename optional_field_ref<T>::value_type& a,
-    optional_field_ref<T> b) {
+template <typename T, typename U>
+bool operator<=(const U& a, optional_field_ref<T> b) {
   return b >= a;
 }
 
-template <typename T>
-bool operator>(
-    const typename optional_field_ref<T>::value_type& a,
-    optional_field_ref<T> b) {
+template <typename T, typename U>
+bool operator>(const U& a, optional_field_ref<T> b) {
   return b < a;
 }
 
-template <typename T>
-bool operator>=(
-    const typename optional_field_ref<T>::value_type& a,
-    optional_field_ref<T> b) {
+template <typename T, typename U>
+bool operator>=(const U& a, optional_field_ref<T> b) {
   return b <= a;
 }
 

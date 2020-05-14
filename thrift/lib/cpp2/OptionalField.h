@@ -258,6 +258,16 @@ bool compare(const U& a, const V& b, Comp comp) {
     return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; }); \
   }                                                                          \
   template <class U, class V>                                                \
+  bool operator OP(                                                          \
+      optional_field_ref<U> a, const DeprecatedOptionalField<V>& b) {        \
+    return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; }); \
+  }                                                                          \
+  template <class U, class V>                                                \
+  bool operator OP(                                                          \
+      const DeprecatedOptionalField<U>& a, optional_field_ref<V> b) {        \
+    return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; }); \
+  }                                                                          \
+  template <class U, class V>                                                \
   bool operator OP(const U& a, const DeprecatedOptionalField<V>& b) {        \
     return detail::compare(a, b, [](auto&& x, auto&& y) { return x OP y; }); \
   }                                                                          \

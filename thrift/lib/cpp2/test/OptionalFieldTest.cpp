@@ -377,6 +377,46 @@ void heterogeneousComparisonsTest(T opt1, U opt2) {
   EXPECT_TRUE(int64_t(4) != opt1(8));
   EXPECT_TRUE(int64_t(4) != opt1());
 
+  EXPECT_TRUE(opt1() < int64_t(4));
+  EXPECT_TRUE(opt1(4) < int64_t(8));
+  EXPECT_FALSE(opt1(4) < int64_t(4));
+  EXPECT_FALSE(opt1(8) < int64_t(4));
+
+  EXPECT_FALSE(opt1() > int64_t(4));
+  EXPECT_FALSE(opt1(4) > int64_t(8));
+  EXPECT_FALSE(opt1(4) > int64_t(4));
+  EXPECT_TRUE(opt1(8) > int64_t(4));
+
+  EXPECT_TRUE(opt1() <= int64_t(4));
+  EXPECT_TRUE(opt1(4) <= int64_t(8));
+  EXPECT_TRUE(opt1(4) <= int64_t(4));
+  EXPECT_FALSE(opt1(8) <= int64_t(4));
+
+  EXPECT_FALSE(opt1() >= int64_t(4));
+  EXPECT_FALSE(opt1(4) >= int64_t(8));
+  EXPECT_TRUE(opt1(4) >= int64_t(4));
+  EXPECT_TRUE(opt1(8) >= int64_t(4));
+
+  EXPECT_TRUE(int64_t(4) < opt1(8));
+  EXPECT_FALSE(int64_t(4) < opt1(4));
+  EXPECT_FALSE(int64_t(8) < opt1(4));
+  EXPECT_FALSE(int64_t(4) < opt1());
+
+  EXPECT_FALSE(int64_t(4) > opt1(8));
+  EXPECT_FALSE(int64_t(4) > opt1(4));
+  EXPECT_TRUE(int64_t(8) > opt1(4));
+  EXPECT_TRUE(int64_t(4) > opt1());
+
+  EXPECT_TRUE(int64_t(4) <= opt1(8));
+  EXPECT_TRUE(int64_t(4) <= opt1(4));
+  EXPECT_FALSE(int64_t(8) <= opt1(4));
+  EXPECT_FALSE(int64_t(4) <= opt1());
+
+  EXPECT_FALSE(int64_t(4) >= opt1(8));
+  EXPECT_TRUE(int64_t(4) >= opt1(4));
+  EXPECT_TRUE(int64_t(8) >= opt1(4));
+  EXPECT_TRUE(int64_t(4) >= opt1());
+
   EXPECT_TRUE(opt1() == opt2());
   EXPECT_TRUE(opt1(4) == opt2(4));
   EXPECT_FALSE(opt1(8) == opt2(4));
