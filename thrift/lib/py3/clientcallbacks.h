@@ -41,16 +41,15 @@ class FutureCallback : public apache::thrift::FutureCallbackBase<Result> {
         options_(options) {}
 
   void replyReceived(apache::thrift::ClientReceiveState&& state) override {
-    SCOPE_EXIT {
-      if (state.header() && !state.header()->getHeaders().empty()) {
-        options_.setReadHeaders(state.header()->releaseHeaders());
-      }
-    };
     CHECK(!state.isException());
     CHECK(state.buf());
 
     Result result;
     auto ew = processor_(result, state);
+
+    if (state.header() && !state.header()->getHeaders().empty()) {
+      options_.setReadHeaders(state.header()->releaseHeaders());
+    }
 
     if (ew) {
       this->promise_.setException(ew);
@@ -86,15 +85,14 @@ class FutureCallback<folly::Unit>
         options_(options) {}
 
   void replyReceived(apache::thrift::ClientReceiveState&& state) override {
-    SCOPE_EXIT {
-      if (state.header() && !state.header()->getHeaders().empty()) {
-        options_.setReadHeaders(state.header()->releaseHeaders());
-      }
-    };
     CHECK(!state.isException());
     CHECK(state.buf());
 
     auto ew = processor_(state);
+
+    if (state.header() && !state.header()->getHeaders().empty()) {
+      options_.setReadHeaders(state.header()->releaseHeaders());
+    }
 
     if (ew) {
       promise_.setException(ew);
