@@ -138,26 +138,29 @@ class ThriftRequestCore : public ResponseChannelRequest {
     return reqContext_.getMethodName();
   }
 
+  // RequestTimestampSample is a wrapper for sampled requests
+  class RequestTimestampSample : public MessageChannel::SendCallback {
+   public:
+    RequestTimestampSample(
+        const server::TServerObserver::CallTimestamps& timestamps,
+        server::TServerObserver* observer,
+        MessageChannel::SendCallback* chainedCallback = nullptr);
+
+    void sendQueued() override;
+    void messageSent() override;
+    void messageSendError(folly::exception_wrapper&& e) override;
+    ~RequestTimestampSample() override;
+
+   private:
+    server::TServerObserver::CallTimestamps timestamps_;
+    server::TServerObserver* observer_;
+    MessageChannel::SendCallback* chainedCallback_;
+  };
+
   void sendReply(
       std::unique_ptr<folly::IOBuf>&& buf,
       apache::thrift::MessageChannel::SendCallback* cb,
-      folly::Optional<uint32_t> crc32c) override final {
-    auto cbWrapper = MessageChannel::SendCallbackPtr(cb);
-    if (active_.exchange(false)) {
-      cancelTimeout();
-      if (!isOneway()) {
-        auto metadata = makeResponseRpcMetadata();
-        if (crc32c) {
-          metadata.crc32c_ref() = *crc32c;
-        }
-        sendReplyInternal(
-            std::move(metadata), std::move(buf), std::move(cbWrapper));
-        if (auto* observer = serverConfigs_.getObserver()) {
-          observer->sentReply();
-        }
-      }
-    }
-  }
+      folly::Optional<uint32_t> crc32c) override final;
 
   bool sendStreamReply(
       std::unique_ptr<folly::IOBuf> response,
@@ -201,7 +204,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
 #if FOLLY_HAS_COROUTINES
   void sendSinkReply(
       std::unique_ptr<folly::IOBuf>&& buf,
-      apache::thrift::detail::SinkConsumerImpl&& consumerImpl,
+      detail::SinkConsumerImpl&& consumerImpl,
       folly::Optional<uint32_t> crc32c) override final {
     if (active_.exchange(false)) {
       cancelTimeout();
@@ -259,7 +262,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   virtual void sendSinkThriftResponse(
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
-      apache::thrift::detail::SinkConsumerImpl&&) noexcept {
+      detail::SinkConsumerImpl&&) noexcept {
     LOG(FATAL) << "sendSinkThriftResponse not implemented";
   }
 #endif
@@ -288,16 +291,14 @@ class ThriftRequestCore : public ResponseChannelRequest {
   }
 
  private:
+  MessageChannel::SendCallbackPtr prepareSendCallback(
+      MessageChannel::SendCallbackPtr&& sendCallback,
+      server::TServerObserver* observer);
+
   void sendReplyInternal(
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> buf,
-      MessageChannel::SendCallbackPtr cb) {
-    if (checkResponseSize(*buf)) {
-      sendThriftResponse(std::move(metadata), std::move(buf), std::move(cb));
-    } else {
-      sendResponseTooBigEx();
-    }
-  }
+      MessageChannel::SendCallbackPtr cb);
 
   bool sendReplyInternal(
       ResponseRpcMetadata&& metadata,
@@ -327,7 +328,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   void sendReplyInternal(
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> buf,
-      apache::thrift::detail::SinkConsumerImpl sink) {
+      detail::SinkConsumerImpl sink) {
     if (checkResponseSize(*buf)) {
       sendSinkThriftResponse(
           std::move(metadata), std::move(buf), std::move(sink));
@@ -475,6 +476,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   std::chrono::milliseconds clientTimeout_{0};
 };
 
+// HTTP2 uses this
 class ThriftRequest final : public ThriftRequestCore {
  public:
   ThriftRequest(

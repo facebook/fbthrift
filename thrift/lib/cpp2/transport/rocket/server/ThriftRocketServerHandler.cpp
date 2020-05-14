@@ -284,6 +284,12 @@ template <class F>
 void ThriftRocketServerHandler::handleRequestCommon(
     Payload&& payload,
     F&& makeRequest) {
+  // setup request sampling for counters and stats
+  MessageChannel::RecvCallback::sample sample{shouldSample()};
+  if (UNLIKELY(sample.getStatus().isEnabled())) {
+    sample.readBegin = sample.readEnd = concurrency::Util::currentTimeUsec();
+  }
+
   auto baseReqCtx = cpp2Processor_->getBaseContextForRequest();
   auto rootid = requestsRegistry_->genRootId();
   auto reqCtx = baseReqCtx
@@ -358,19 +364,27 @@ void ThriftRocketServerHandler::handleRequestCommon(
 
   auto request = makeRequest(
       std::move(metadata), std::move(debugPayload), std::move(reqCtx));
-  const auto protocolId = request->getProtoId();
-  auto* const cpp2ReqCtx = request->getRequestContext();
+  request->timestamps_.setStatus(sample.getStatus());
+  if (UNLIKELY(sample.getStatus().isEnabled())) {
+    request->timestamps_.readBegin = sample.readBegin;
+    request->timestamps_.readEnd = sample.readEnd;
+  }
+
   if (serverConfigs_) {
     if (auto* observer = serverConfigs_->getObserver()) {
-      auto samplingStatus = shouldSample();
-      if (UNLIKELY(
-              samplingStatus.isEnabled() &&
-              samplingStatus.isEnabledByServer())) {
-        observer->queuedRequests(threadManager_->pendingTaskCount());
-        observer->activeRequests(serverConfigs_->getActiveRequests());
+      if (UNLIKELY(sample.getStatus().isEnabled())) {
+        // Expensive operations; happens only when sampling is enabled
+        request->timestamps_.processBegin =
+            concurrency::Util::currentTimeUsec();
+        if (sample.getStatus().isEnabledByServer()) {
+          observer->queuedRequests(threadManager_->pendingTaskCount());
+          observer->activeRequests(serverConfigs_->getActiveRequests());
+        }
       }
     }
   }
+  const auto protocolId = request->getProtoId();
+  auto* const cpp2ReqCtx = request->getRequestContext();
   try {
     cpp2Processor_->processSerializedRequest(
         std::move(request),

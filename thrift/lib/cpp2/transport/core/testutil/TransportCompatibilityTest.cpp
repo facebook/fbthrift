@@ -302,6 +302,9 @@ void TransportCompatibilityTest::TestObserverSendReceiveRequests() {
     // Now check the stats
     EXPECT_EQ(5, server_->observer_->sentReply_);
     EXPECT_EQ(5, server_->observer_->receivedRequest_);
+    if (FLAGS_transport != "http2") {
+      EXPECT_EQ(5, server_->observer_->callCompleted_);
+    }
   });
 }
 
@@ -356,6 +359,9 @@ void TransportCompatibilityTest::TestRequestResponse_Simple() {
 
     EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
     EXPECT_EQ(8, client->future_add(5).get());
+    if (FLAGS_transport != "http2") {
+      EXPECT_EQ(5, server_->observer_->callCompleted_);
+    }
   });
 }
 
@@ -793,6 +799,12 @@ void TransportCompatibilityTest::TestOneway_Simple() {
     /* sleep override */
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
     EXPECT_EQ(5, client->future_add(0).get());
+    // test stats
+    EXPECT_EQ(2, server_->observer_->receivedRequest_);
+    EXPECT_EQ(1, server_->observer_->sentReply_);
+    if (FLAGS_transport != "http2") {
+      EXPECT_EQ(1, server_->observer_->callCompleted_);
+    }
   });
 }
 

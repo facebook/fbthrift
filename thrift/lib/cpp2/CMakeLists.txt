@@ -118,6 +118,7 @@ add_library(
   server/peeking/TLSHelper.cpp
   transport/core/RpcMetadataUtil.cpp
   transport/core/ThriftProcessor.cpp
+  transport/core/ThriftRequest.cpp
   transport/core/ThriftClient.cpp
   transport/core/ThriftClientCallback.cpp
   transport/rocket/PayloadUtils.cpp
