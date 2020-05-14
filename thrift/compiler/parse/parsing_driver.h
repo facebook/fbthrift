@@ -196,9 +196,9 @@ class parsing_driver {
   ~parsing_driver();
 
   /**
-   * Parses a program. The resulted AST is stored in the t_program object passed
-   * in via params.program. A vector containing diagnostic message (warnings,
-   * debug messages, etc.) is returned.
+   * Parses a program and returns the resulted AST.
+   * Diagnostic messages (warnings, debug messages, etc.) are stored in the
+   * vector passed in via params.messages.
    */
   std::unique_ptr<t_program_bundle> parse(
       std::vector<diagnostic_message>& messages);

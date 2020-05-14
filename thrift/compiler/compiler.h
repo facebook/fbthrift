@@ -22,13 +22,24 @@
 namespace apache {
 namespace thrift {
 namespace compiler {
+
+struct diagnostic_message;
+
+enum class compile_retcode {
+  SUCCESS = 0,
+  FAILURE = 1,
+};
+
+struct compile_result {
+  compile_retcode retcode;
+  std::vector<diagnostic_message> diagnostics;
+};
+
 /**
  * Parse it up, then spit it back out, in pretty much every language. Alright
  * not that many languages, but the cool ones that we care about.
- *
- * Return non-zero code on failures.
  */
-int compile(std::vector<std::string> arguments);
+compile_result compile(std::vector<std::string> arguments);
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

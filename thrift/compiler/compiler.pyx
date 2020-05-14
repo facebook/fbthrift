@@ -14,5 +14,42 @@
 
 # cython: c_string_type=unicode, c_string_encoding=ascii
 
+from collections import namedtuple
+from cython.operator cimport dereference as deref, preincrement as inc
+from enum import Enum
+from libc.stdint cimport uint32_t
+
+class CompileRetcode(Enum):
+    SUCCESS = 0
+    FAILURE = 1
+
+class DiagnosticLevel(Enum):
+    FAILURE = 0
+    YY_ERROR = 1
+    WARNING = 2
+    VERBOSE = 3
+    DBG = 4
+
+DiagnosticMessage = namedtuple(
+    'DiagnosticMessage',
+    ['level', 'filename', 'lineno', 'last_token', 'message']
+)
+
 def thrift_compile(vector[string] argv):
-    return compile(argv)
+    result = compile(argv)
+
+    py_messages = []
+    it = result.diagnostics.const_begin()
+    end = result.diagnostics.const_end()
+    while it != end:
+        py_messages.append(
+            DiagnosticMessage(
+                DiagnosticLevel(<uint32_t>(deref(it).level)),
+                deref(it).filename,
+                deref(it).lineno,
+                deref(it).last_token,
+                deref(it).message,
+            )
+        )
+        inc(it)
+    return CompileRetcode(<uint32_t>result.retcode), py_messages

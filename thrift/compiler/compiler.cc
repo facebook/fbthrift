@@ -220,7 +220,10 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-int compile(std::vector<std::string> arguments) {
+compile_result compile(std::vector<std::string> arguments) {
+  compile_result result;
+  result.retcode = compile_retcode::FAILURE;
+
   std::string out_path;
   bool out_path_is_absolute = false;
 
@@ -228,7 +231,7 @@ int compile(std::vector<std::string> arguments) {
   // an output language flag
   if (arguments.size() < 2) {
     usage();
-    return 1;
+    return result;
   }
 
   vector<std::string> generator_strings;
@@ -279,7 +282,7 @@ int compile(std::vector<std::string> arguments) {
             arguments[i].c_str(),
             arguments[i + 1].c_str());
         usage();
-        return 1;
+        return result;
       }
       genfile_file.open(arguments[++i]);
     } else if (arguments[i] == "-gen") {
@@ -290,7 +293,7 @@ int compile(std::vector<std::string> arguments) {
             arguments[i].c_str(),
             arguments[i + 1].c_str());
         usage();
-        return 1;
+        return result;
       }
       generator_strings.push_back(arguments[++i]);
     } else if (arguments[i] == "-cpp_use_include_prefix") {
@@ -303,7 +306,7 @@ int compile(std::vector<std::string> arguments) {
             arguments[i].c_str(),
             arguments[i + 1].c_str());
         usage();
-        return 1;
+        return result;
       }
       // An argument of "-I\ asdf" is invalid and has unknown results
       incl_searchpath.push_back(arguments[++i]);
@@ -317,7 +320,7 @@ int compile(std::vector<std::string> arguments) {
             arguments[i].c_str(),
             arguments[i + 1].c_str());
         usage();
-        return 1;
+        return result;
       }
       out_path = arguments[++i];
 
@@ -340,7 +343,7 @@ int compile(std::vector<std::string> arguments) {
               stderr,
               "Output path %s is unusable or not a directory\n",
               out_path.c_str());
-          return -1;
+          return result;
         }
       }
       if (!boost::filesystem::is_directory(out_path)) {
@@ -348,13 +351,13 @@ int compile(std::vector<std::string> arguments) {
             stderr,
             "Output path %s is unusable or not a directory\n",
             out_path.c_str());
-        return -1;
+        return result;
       }
       continue;
     } else {
       fprintf(stderr, "!!! Unrecognized option: %s\n", arguments[i].c_str());
       usage();
-      return 1;
+      return result;
     }
   }
 
@@ -362,14 +365,14 @@ int compile(std::vector<std::string> arguments) {
   if (generator_strings.empty()) {
     fprintf(stderr, "!!! No output language(s) specified\n\n");
     usage();
-    return 1;
+    return result;
   }
 
   // Real-pathify it
   if (arguments.size() < i) {
     fprintf(stderr, "!!! Missing file name\n");
     usage();
-    return 1;
+    return result;
   }
 
   std::string input_file = compute_absolute_path(arguments[i]);
@@ -391,9 +394,10 @@ int compile(std::vector<std::string> arguments) {
   params.enable_experimental_mixins = enable_experimental_mixins;
   params.incl_searchpath = std::move(incl_searchpath);
 
-  auto program = parse_and_dump_diagnostics(input_file, std::move(params));
+  parsing_driver driver{input_file, std::move(params)};
+  auto program = driver.parse(result.diagnostics);
   if (!program) {
-    return 1;
+    return result;
   }
   auto program_bundle{std::move(program)};
 
@@ -407,7 +411,7 @@ int compile(std::vector<std::string> arguments) {
     for (const auto& error : errors) {
       std::cerr << error << std::endl;
     }
-    return 1;
+    return result;
   }
 
   // Generate it!
@@ -430,15 +434,14 @@ int compile(std::vector<std::string> arguments) {
         already_generated);
   } catch (const std::exception& e) {
     std::cerr << e.what() << std::endl;
-    return 1;
+    return result;
   }
 
   // Finished
   if (success) {
-    return 0;
-  } else {
-    return 1;
+    result.retcode = compile_retcode::SUCCESS;
   }
+  return result;
 }
 
 } // namespace compiler

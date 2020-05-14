@@ -110,6 +110,12 @@ std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
     std::string path,
     parsing_params params);
 
+/**
+ * Dump the diagnostic messages to stderr.
+ */
+void dump_diagnostics(
+    const std::vector<diagnostic_message>& diagnostic_messages);
+
 void mark_file_executable(std::string const& path);
 
 } // namespace compiler

@@ -180,7 +180,13 @@ std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
 
   std::vector<diagnostic_message> diagnostic_messages;
   auto program = driver.parse(diagnostic_messages);
+  dump_diagnostics(diagnostic_messages);
 
+  return program;
+}
+
+void dump_diagnostics(
+    const std::vector<diagnostic_message>& diagnostic_messages) {
   for (auto const& message : diagnostic_messages) {
     switch (message.level) {
       case diagnostic_level::YY_ERROR:
@@ -217,8 +223,6 @@ std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
         break;
     }
   }
-
-  return program;
 }
 
 void mark_file_executable(std::string const& path) {

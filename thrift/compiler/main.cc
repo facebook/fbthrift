@@ -24,12 +24,16 @@
  *
  */
 
+#include <thrift/compiler/common.h>
 #include <thrift/compiler/compiler.h>
+#include <thrift/compiler/parse/parsing_driver.h>
 #include <string>
 #include <vector>
 
 using namespace apache::thrift::compiler;
 
 int main(int argc, char** argv) {
-  return compile(std::vector<std::string>(argv, argv + argc));
+  auto result = compile(std::vector<std::string>(argv, argv + argc));
+  dump_diagnostics(result.diagnostics);
+  return (int)result.retcode;
 }
