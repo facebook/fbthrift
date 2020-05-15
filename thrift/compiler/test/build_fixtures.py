@@ -38,14 +38,18 @@ will only build selected fixtures under `thrift/compiler/test/fixtures`.
 
     thrift/compiler/test/build_fixtures.py \
             --build-dir [$BUILDDIR]        \
+            --fixture-root [$FIXTUREROOT]  \
             --fixture-names [$FIXTURENAMES]
 
 where $BUILDDIR/thrift/compiler/thrift is the thrift compiler (If using
-Buck to build the thrift compiler, the $BUILDDIR default will work) and
-$FIXTURENAMES is a list of fixture names to build specifically (default
-is build all fixtures).
+Buck to build the thrift compiler, the $BUILDDIR default will work),
+$FIXTUREROOT/thrift/compiler/test/fixtures is the fixture dir (defaults
+to the current working directory) and $FIXTURENAMES is a list of
+fixture names to build specifically (default is to build all fixtures).
 """
 BUCK_OUT = "buck-out/gen"
+FIXTURE_ROOT = "."
+
 
 def parsed_args():
     parser = argparse.ArgumentParser()
@@ -54,15 +58,25 @@ def parsed_args():
         dest="build_dir",
         help=(
             "$BUILDDIR/thrift/compiler/thrift is where thrift compiler is"
-            " located, default to buck's build dir"
+            " located, defaults to buck's build dir"
         ),
         type=str,
         default=BUCK_OUT,
     )
     parser.add_argument(
+        "--fixture-root",
+        dest="fixture_root",
+        help=(
+            "$FIXTUREROOT/thrift/compiler/test/fixtures is where the"
+            " fixtures are located, defaults to the current working dir"
+        ),
+        type=str,
+        default=FIXTURE_ROOT,
+    )
+    parser.add_argument(
         "--fixture-names",
         dest="fixture_names",
-        help="Name of the fixture to build, default to build all fixtures",
+        help="Name of the fixture to build, default is to build all fixtures",
         type=str,
         nargs="*",
         default=None,
@@ -83,26 +97,13 @@ def ascend_find_exe(path, target):
         path = parent
 
 
-def ascend_find_dir(path, target):
-    if not os.path.isdir(path):
-        path = os.path.dirname(path)
-    while True:
-        test = os.path.join(path, target)
-        if os.path.isdir(test):
-            return test
-        parent = os.path.dirname(path)
-        if os.path.samefile(parent, path):
-            return None
-        path = parent
-
-
 def read_lines(path):
     with open(path, "r") as f:
         return f.readlines()
 
-
 args = parsed_args()
 build_dir = args.build_dir
+fixture_root = args.fixture_root
 exe = os.path.join(os.getcwd(), sys.argv[0])
 thrift_rel = os.path.join(build_dir, "thrift/compiler/thrift")
 thrift = ascend_find_exe(exe, thrift_rel)
@@ -112,7 +113,7 @@ if thrift is None:
     sys.stderr.write("(run `buck build thrift/compiler:thrift` to build it yourself)\n")
     sys.exit(1)
 
-fixture_dir = ascend_find_dir(exe, "thrift/compiler/test/fixtures")
+fixture_dir = os.path.join(fixture_root, "thrift/compiler/test/fixtures")
 fixture_names = (
     args.fixture_names
     if args.fixture_names is not None
@@ -136,7 +137,6 @@ async def run_subprocess(cmd, *, cwd):
         global has_errors
         has_errors = True
         sys.stderr.write(err.decode(sys.stderr.encoding))
-
 
 processes = []
 
