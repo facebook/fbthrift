@@ -15,6 +15,8 @@
  */
 
 #include <memory>
+#include <string>
+#include <utility>
 
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
@@ -24,6 +26,7 @@
 #include <folly/portability/GTest.h>
 
 #include <folly/Conv.h>
+#include <folly/ExceptionWrapper.h>
 #include <folly/Memory.h>
 #include <folly/Optional.h>
 #include <folly/Range.h>
@@ -344,104 +347,105 @@ namespace {
 template <class MakeClientFunc>
 void doLoadHeaderTest(MakeClientFunc&& makeClient) {
   static constexpr int kEmptyMetricLoad = 12345;
-  class Callback : public RequestCallback {
-   public:
-    explicit Callback(folly::Optional<std::string> loadMetric)
-        : loadMetric_(std::move(loadMetric)) {}
 
-   private:
-    void requestSent() override {}
+  auto checkLoadHeader = [](const auto& headers,
+                            folly::Optional<std::string> loadMetric) {
+    auto* load = folly::get_ptr(headers, THeader::QUERY_LOAD_HEADER);
+    ASSERT_EQ(loadMetric.hasValue(), load != nullptr);
 
-    void replyReceived(ClientReceiveState&& state) override {
-      const auto& headers = state.header()->getHeaders();
-      auto loadIter = headers.find(THeader::QUERY_LOAD_HEADER);
-      ASSERT_EQ(loadMetric_.hasValue(), loadIter != headers.end());
-      if (!loadMetric_) {
-        return;
-      }
-      folly::StringPiece loadMetric(*loadMetric_);
-      if (loadMetric.removePrefix("custom_load_metric_")) {
-        EXPECT_EQ(loadMetric, loadIter->second);
-      } else if (loadMetric.empty()) {
-        EXPECT_EQ(folly::to<std::string>(kEmptyMetricLoad), loadIter->second);
-      } else {
-        FAIL() << "Unexpected load metric";
-      }
+    if (!loadMetric) {
+      return;
     }
 
-    void requestError(ClientReceiveState&&) override {
-      ADD_FAILURE() << "The response should not be an error";
+    folly::StringPiece loadSp(*loadMetric);
+    if (loadSp.removePrefix("custom_load_metric_")) {
+      EXPECT_EQ(loadSp, *load);
+    } else if (loadSp.empty()) {
+      EXPECT_EQ(folly::to<std::string>(kEmptyMetricLoad), *load);
+    } else {
+      FAIL() << "Unexpected load metric";
     }
-
-    folly::Optional<std::string> loadMetric_;
   };
 
-  ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
-  folly::EventBase base;
-  auto client = makeClient(runner, &base);
-
-  {
-    LOG(ERROR) << "========= no load header ==========";
-    client->voidResponse(std::make_unique<Callback>(folly::none));
-  }
-
-  {
-    LOG(ERROR) << "========= empty load header ==========";
-    RpcOptions emptyLoadOptions;
-    const std::string kLoadMetric;
-    emptyLoadOptions.setWriteHeader(THeader::QUERY_LOAD_HEADER, kLoadMetric);
-    client->voidResponse(
-        emptyLoadOptions, std::make_unique<Callback>(kLoadMetric));
-  }
-
-  {
-    LOG(ERROR) << "========= custom load header ==========";
-    RpcOptions customLoadOptions;
-    const std::string kLoadMetric{"custom_load_metric_789"};
-    customLoadOptions.setWriteHeader(THeader::QUERY_LOAD_HEADER, kLoadMetric);
-    client->voidResponse(
-        customLoadOptions, std::make_unique<Callback>(kLoadMetric));
-  }
-
-  {
-    LOG(ERROR) << "========= server overloaded ==========";
-    RpcOptions customLoadOptions;
-    // force overloaded
-    runner.getThriftServer().setIsOverloaded(
-        [](const auto*, const string* method) {
-          EXPECT_EQ("voidResponse", *method);
-          return true;
+  uint32_t nCalls = 0;
+  ScopedServerInterfaceThread runner(
+      std::make_shared<TestInterface>(), "::1", 0, [&nCalls](auto& server) {
+        server.setGetLoad([](const std::string& metric) {
+          folly::StringPiece metricPiece(metric);
+          if (metricPiece.removePrefix("custom_load_metric_")) {
+            return folly::to<int32_t>(metricPiece.toString());
+          } else if (metricPiece.empty()) {
+            return kEmptyMetricLoad;
+          }
+          ADD_FAILURE() << "Unexpected load metric on request";
+          return -42;
         });
-    runner.getThriftServer().setGetLoad([](const std::string& metric) {
-      folly::StringPiece metricPiece(metric);
-      if (metricPiece.removePrefix("custom_load_metric_")) {
-        return folly::to<int32_t>(metricPiece.toString());
-      } else if (metricPiece.empty()) {
-        return kEmptyMetricLoad;
-      }
-      ADD_FAILURE() << "Unexpected load metric on request";
-      return -42;
-    });
-    const std::string kLoadMetric;
-    customLoadOptions.setWriteHeader(THeader::QUERY_LOAD_HEADER, kLoadMetric);
-    client->voidResponse(
-        customLoadOptions, std::make_unique<Callback>(kLoadMetric));
+
+        server.setIsOverloaded(
+            [&nCalls](const auto*, const std::string* method) {
+              EXPECT_EQ("voidResponse", *method);
+              return ++nCalls == 4;
+            });
+      });
+
+  auto client = makeClient(runner);
+
+  {
+    // No load header
+    RpcOptions options;
+    client->sync_voidResponse(options);
+    checkLoadHeader(options.getReadHeaders(), folly::none);
   }
 
-  base.loop();
+  {
+    // Empty load header
+    RpcOptions options;
+    const std::string kLoadMetric;
+    options.setWriteHeader(THeader::QUERY_LOAD_HEADER, kLoadMetric);
+    client->sync_voidResponse(options);
+    checkLoadHeader(options.getReadHeaders(), kLoadMetric);
+  }
+
+  {
+    // Custom load header
+    RpcOptions options;
+    const std::string kLoadMetric{"custom_load_metric_789"};
+    options.setWriteHeader(THeader::QUERY_LOAD_HEADER, kLoadMetric);
+    client->sync_voidResponse(options);
+    checkLoadHeader(options.getReadHeaders(), kLoadMetric);
+  }
+
+  {
+    // Force server overload. Load should still be returned on server overload.
+    RpcOptions options;
+    const std::string kLoadMetric;
+    options.setWriteHeader(THeader::QUERY_LOAD_HEADER, kLoadMetric);
+    auto ew = folly::try_and_catch<std::exception>(
+        [&] { client->sync_voidResponse(options); });
+    // Check that request was actually rejected due to server overload
+    const bool matched =
+        ew.with_exception([](const TApplicationException& tae) {
+          ASSERT_EQ(
+              TApplicationException::TApplicationExceptionType::LOADSHEDDING,
+              tae.getType());
+        });
+    ASSERT_TRUE(matched);
+    checkLoadHeader(options.getReadHeaders(), kLoadMetric);
+  }
 }
 } // namespace
 
 TEST(ThriftServer, LoadHeaderTest_HeaderClientChannel) {
-  doLoadHeaderTest([](auto& runner, auto* evb) {
-    return runner.template newClient<TestServiceAsyncClient>(evb);
+  doLoadHeaderTest([](auto& runner) {
+    return runner.template newClient<TestServiceAsyncClient>(
+        (folly::Executor*)nullptr);
   });
 }
 
 TEST(ThriftServer, LoadHeaderTest_RocketClientChannel) {
-  doLoadHeaderTest([](auto& runner, auto* evb) {
+  doLoadHeaderTest([](auto& runner) {
     return runner.template newClient<TestServiceAsyncClient>(
-        evb, [](auto socket) mutable {
+        nullptr /* executor */, [](auto socket) mutable {
           return RocketClientChannel::newChannel(std::move(socket));
         });
   });
