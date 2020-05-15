@@ -30,6 +30,7 @@
 #include <folly/String.h>
 #include <folly/executors/Codel.h>
 #include <folly/io/async/Request.h>
+#include <folly/tracing/StaticTracepoint.h>
 
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
@@ -523,12 +524,29 @@ void ThreadManager::ImplT<SemType>::reportTaskStats(
     const std::chrono::steady_clock::time_point& workBegin,
     const std::chrono::steady_clock::time_point& workEnd) {
   auto queueBegin = task.getQueueBeginTime();
-  auto waitTimeUs = std::chrono::duration_cast<std::chrono::microseconds>(
-      workBegin - queueBegin);
-  auto runTimeUs = std::chrono::duration_cast<std::chrono::microseconds>(
-      workEnd - workBegin);
+  auto waitTime = workBegin - queueBegin;
+  auto runTime = workEnd - workBegin;
+
+  // Times in this USDT use granularity of std::chrono::steady_clock::duration,
+  // which is platform dependent. On Facebook servers, the granularity is
+  // nanoseconds. We explicitly do not perform any unit conversions to avoid
+  // unneccessary costs and leave it to consumers of this data to know what
+  // effective clock resolution is.
+  FOLLY_SDT(
+      thrift,
+      thread_manager_task_stats,
+      namePrefix_.c_str(),
+      task.getContext() ? task.getContext()->getRootId() : 0,
+      queueBegin.time_since_epoch().count(),
+      waitTime.count(),
+      runTime.count());
+
   if (enableTaskStats_) {
     folly::MSLGuard g(statsLock_);
+    auto waitTimeUs =
+        std::chrono::duration_cast<std::chrono::microseconds>(waitTime);
+    auto runTimeUs =
+        std::chrono::duration_cast<std::chrono::microseconds>(runTime);
     waitingTimeUs_ += waitTimeUs;
     executingTimeUs_ += runTimeUs;
     ++numTasks_;
