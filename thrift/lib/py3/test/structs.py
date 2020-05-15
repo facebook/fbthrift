@@ -44,19 +44,17 @@ class StructTests(unittest.TestCase):
 
     def test_optional_struct_creation(self) -> None:
         with self.assertRaises(TypeError):
-            # pyre-fixme[19]: Expected 0 positional arguments.
-            easy(1, [1, 1], "test", Integers(tiny=1))
+            easy(1, [1, 1], "test", Integers(tiny=1))  # type: ignore
         easy(val=1, an_int=Integers(small=500))
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `Optional[str]` for 1st param but got `bytes`.
-            easy(name=b"binary")
+            easy(name=b"binary")  # type: ignore
         # Only Required Fields don't accept None
         easy(val=5, an_int=None)
 
     def test_required_fields(self) -> None:
         with self.assertRaises(TypeError):
             # None is not acceptable as a string
-            hard(
+            hard(  # type: ignore
                 val=1,
                 val_list=[1, 2],
                 name=None,  # pyre-ignore[6]: intentionally for test
@@ -64,8 +62,7 @@ class StructTests(unittest.TestCase):
             )
 
         with self.assertRaises(TypeError):
-            # pyre-fixme[20]: Argument `an_int` expected.
-            hard(val=1, val_list=[1, 2])
+            hard(val=1, val_list=[1, 2])  # type: ignore
 
     def test_call_replace(self) -> None:
         x = easy(val=1, an_int=Integers(small=300), name="foo")
@@ -101,9 +98,7 @@ class StructTests(unittest.TestCase):
         y = x(other=None)
         self.assertEqual(y.other, "some default")
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `Union[str, thrift.py3.types.NOTSETTYPE]` for
-            #  1st param but got `None`.
-            x(name=None)
+            x(name=None)  # type: ignore
 
     def test_required_with_defaults(self) -> None:
         re = easy(val=10)
@@ -128,39 +123,27 @@ class StructTests(unittest.TestCase):
         self.assertIsNone(y.opt_easy_ref)
         self.assertEqual(y, x)
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `Union[easy, thrift.py3.types.NOTSETTYPE]` for
-            #  1st param but got `None`.
-            z(req_easy_ref=None)
+            z(req_easy_ref=None)  # type: ignore
 
     def test_runtime_checks(self) -> None:
         x = Runtime()
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `Union[None, bool,
-            #  thrift.py3.types.NOTSETTYPE]` for 1st param but got `int`.
-            x(bool_val=5)
+            x(bool_val=5)  # type: ignore
 
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `Optional[bool]` for 1st param but got `int`.
-            Runtime(bool_val=5)
+            Runtime(bool_val=5)  # type: ignore
 
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `Union[None, Color,
-            #  thrift.py3.types.NOTSETTYPE]` for 1st param but got `int`.
-            x(enum_val=2)
+            x(enum_val=2)  # type: ignore
 
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `Optional[Color]` for 1st param but got `int`.
-            Runtime(enum_val=2)
+            Runtime(enum_val=2)  # type: ignore
 
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `Union[None, typing.Sequence[int],
-            #  thrift.py3.types.NOTSETTYPE]` for 1st param but got `List[str]`.
-            x(int_list_val=["foo", "bar", "baz"])
+            x(int_list_val=["foo", "bar", "baz"])  # type: ignore
 
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `Optional[typing.Sequence[int]]` for 1st param
-            #  but got `List[str]`.
-            Runtime(int_list_val=["foo", "bar", "baz"])
+            Runtime(int_list_val=["foo", "bar", "baz"])  # type: ignore
 
     def test_reserved(self) -> None:
         x = Reserved(from_="hello", nonlocal_=3, ok="bye", is_cpdef=True)
@@ -210,12 +193,11 @@ class NumericalConversionsTests(unittest.TestCase):
 
     def test_float_to_int_required_field(self) -> None:
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `int` for 1st param but got `float`.
-            numerical(req_int_val=math.pi, req_float_val=math.pi)
+            numerical(req_int_val=math.pi, req_float_val=math.pi)  # type: ignore
 
     def test_float_to_int_unqualified_field(self) -> None:
         with self.assertRaises(TypeError):
-            numerical(
+            numerical(  # type: ignore
                 req_int_val=5,
                 req_float_val=math.pi,
                 int_val=math.pi,  # pyre-ignore[6]: intentionally for test
@@ -226,7 +208,5 @@ class NumericalConversionsTests(unittest.TestCase):
             numerical(
                 req_int_val=5,
                 req_float_val=math.pi,
-                # pyre-fixme[6]: Expected `Optional[typing.Sequence[int]]` for 3rd
-                #  param but got `List[float]`.
-                int_list=[math.pi, math.e],
+                int_list=[math.pi, math.e],  # type: ignore
             )

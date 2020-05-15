@@ -32,41 +32,27 @@ class MapTests(unittest.TestCase):
 
     def test_None(self) -> None:
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `Mapping[str, int]` for 1st param but got
-            #  `Mapping[None, int]`.
-            StrIntMap({None: 5})
+            StrIntMap({None: 5})  # type: ignore
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `Mapping[str, int]` for 1st param but got
-            #  `Mapping[str, None]`.
-            StrIntMap({"foo": None})
+            StrIntMap({"foo": None})  # type: ignore
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `Mapping[str, typing.Mapping[str,
-            #  typing.Sequence[int]]]` for 1st param but got `Mapping[str,
-            #  typing.Mapping[str, typing.Sequence[None]]]`.
-            StrStrIntListMapMap({"bar": {"foo": [None, None]}})
+            StrStrIntListMapMap({"bar": {"foo": [None, None]}})  # type: ignore
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `Mapping[str, typing.Mapping[str,
-            #  typing.Sequence[int]]]` for 1st param but got `Mapping[str,
-            #  typing.Mapping[str, None]]`.
-            StrStrIntListMapMap({"bar": {"foo": None}})
+            StrStrIntListMapMap({"bar": {"foo": None}})  # type: ignore
 
     def test_getitem(self) -> None:
         x = StrStrMap({"test": "value"})
         self.assertEqual(x["test"], "value")
         with self.assertRaises(KeyError):
-            # pyre-fixme[6]: Expected `str` for 1st param but got `int`.
-            x[5]
+            x[5]  # type: ignore
         with self.assertRaises(KeyError):
-            # pyre-fixme[6]: Expected `str` for 1st param but got `Map__string_string`.
-            x[x]
+            x[x]  # type: ignore
 
     def test_get(self) -> None:
         x = StrStrMap({"test": "value"})
         self.assertEqual(x.get("test"), "value")
-        # pyre-fixme[6]: Expected `str` for 1st param but got `int`.
-        self.assertIs(x.get(5), None)
-        # pyre-fixme[6]: Expected `str` for 1st param but got `Map__string_string`.
-        self.assertIs(x.get(x), None)
+        self.assertIs(x.get(5), None)  # type: ignore
+        self.assertIs(x.get(x), None)  # type: ignore
 
     def test_contains(self) -> None:
         x = StrStrMap({"test": "value"})
@@ -92,18 +78,14 @@ class MapTests(unittest.TestCase):
         s = StrI32ListMap({"bar": [0, 1]})
         x = StrStrIntListMapMap({"foo": s})
         px: Dict[str, Dict[str, List[int]]] = {}
-        # pyre-fixme[6]: Expected `Dict[str, List[int]]` for 2nd param but got
-        #  `Mapping[str, typing.Sequence[int]]`.
-        px["foo"] = x["foo"]
+        px["foo"] = x["foo"]  # type: ignore
         px["baz"] = {"wat": [4]}
         px["foo"] = dict(px["foo"])
         px["foo"]["bar"] = px["foo"]["bar"] + [5, 7, 8]
         self.assertEquals(s["bar"], [0, 1])
         # Now turn this crazy mixed structure back to Cython
         cx = StrStrIntListMapMap(px)
-        # pyre-fixme[6]: Expected `Dict[str, List[int]]` for 2nd param but got
-        #  `Dict[str, str]`.
-        px["bar"] = {"lol": "TypeError"}
+        px["bar"] = {"lol": "TypeError"}  # type: ignore
         with self.assertRaises(TypeError):
             StrStrIntListMapMap(px)
         self.assertNotIn("bar", cx)

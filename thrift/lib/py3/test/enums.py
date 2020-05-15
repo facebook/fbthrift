@@ -34,8 +34,7 @@ class EnumTests(unittest.TestCase):
     def test_normal_enum(self) -> None:
         with self.assertRaises(TypeError):
             # Enums are not ints
-            # pyre-fixme[6]: Expected `Optional[Kind]` for 2nd param but got `int`.
-            File(name="/etc/motd", type=8)
+            File(name="/etc/motd", type=8)  # type: ignore
         x = File(name="/etc", type=Kind.DIR)
         self.assertIsInstance(x.type, Kind)
         self.assertEqual(x.type, Kind.DIR)
@@ -156,8 +155,7 @@ class EnumTests(unittest.TestCase):
 
     def test_adding_member(self) -> None:
         with self.assertRaises(TypeError):
-            # pyre-fixme[16]: `Type` has no attribute `black`.
-            Color.black = 3
+            Color.black = 3  # type: ignore
 
     def test_delete(self) -> None:
         with self.assertRaises(TypeError):
@@ -171,8 +169,7 @@ class EnumTests(unittest.TestCase):
 
     def test_changing_member(self) -> None:
         with self.assertRaises(TypeError):
-            # pyre-fixme[8]: Attribute has type `Color`; used as `str`.
-            Color.red = "lol"
+            Color.red = "lol"  # type: ignore
 
     def test_contains(self) -> None:
         self.assertIn(Color.blue, Color)
@@ -218,8 +215,7 @@ class FlagTests(unittest.TestCase):
     def test_flag_enum(self) -> None:
         with self.assertRaises(TypeError):
             # flags are not ints
-            # pyre-fixme[6]: Expected `Optional[Perm]` for 2nd param but got `int`.
-            File(name="/etc/motd", permissions=4)
+            File(name="/etc/motd", permissions=4)  # type: ignore
         x = File(name="/bin/sh", permissions=Perm.read | Perm.execute)
         self.assertIsInstance(x.permissions, Perm)
         self.assertEqual(x.permissions, Perm.read | Perm.execute)

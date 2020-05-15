@@ -31,9 +31,7 @@ class ListTests(unittest.TestCase):
 
     def test_list_of_None(self) -> None:
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `Sequence[int]` for 1st param but got
-            #  `Sequence[None]`.
-            I32List([None, None, None])
+            I32List([None, None, None])  # type: ignore
 
     def test_list_creation_with_list_items(self) -> None:
         a = ["one", "two", "three"]
@@ -42,9 +40,7 @@ class ListTests(unittest.TestCase):
         d = ["I", "II", "III"]
         StrList2D([a, b, c, d])
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `Sequence[typing.Sequence[str]]` for 1st param
-            #  but got `Sequence[typing.Union[typing.List[None], typing.List[str]]]`.
-            StrList2D([a, [None]])
+            StrList2D([a, [None]])  # type: ignore
 
     def test_list_add(self) -> None:
         other_list = [99, 88, 77, 66, 55]
@@ -58,15 +54,13 @@ class ListTests(unittest.TestCase):
         new_list = other_list + int_list
         self.assertIsInstance(new_list, list)
         self.assertEquals(new_list, list(itertools.chain(other_list, int_list)))
-        new_list = tuple(other_list) + int_list
+        new_list = tuple(other_list) + int_list  # type: ignore
         self.assertIsInstance(new_list, tuple)
 
     def test_list_creation(self) -> None:
         I32List(range(10))
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `Sequence[int]` for 1st param but got
-            #  `Sequence[typing.Union[int, str]]`.
-            I32List([1, "b", "c", "four"])
+            I32List([1, "b", "c", "four"])  # type: ignore
 
     def test_hashability(self) -> None:
         hash(easy().val_list)

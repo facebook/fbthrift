@@ -97,13 +97,9 @@ class SetTests(unittest.TestCase):
 
     def test_None(self) -> None:
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `AbstractSet[Sequence[int]]` for 1st param but
-            #  got `AbstractSet[None]`.
-            SetI32Lists({None})
+            SetI32Lists({None})  # type: ignore
         with self.assertRaises(TypeError):
-            # pyre-fixme[6]: Expected `AbstractSet[AbstractSet[Sequence[int]]]` for
-            #  1st param but got `AbstractSet[AbstractSet[None]]`.
-            SetSetI32Lists({{None}})
+            SetSetI32Lists({{None}})  # type: ignore
 
     def test_empty(self) -> None:
         SetI32Lists(set())
@@ -121,9 +117,7 @@ class SetTests(unittest.TestCase):
         pz.add(SetI32Lists(nx))
         cz = SetSetI32Lists(pz)
         self.assertIn(nx, cz)
-        # pyre-fixme[6]: Expected `AbstractSet[Sequence[int]]` for 1st param but got
-        #  `int`.
-        pz.add(5)
+        pz.add(5)  # type: ignore
         with self.assertRaises(TypeError):
             SetSetI32Lists(pz)
 
