@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package com.facebook.thrift;
+package com.facebook.thrift.swift.adapters;
 
-import static com.facebook.thrift.ThriftMessageAdapters.adaptThriftMessage;
-import static com.facebook.thrift.TransportAdapter.adaptTransport;
+import static com.facebook.thrift.swift.adapters.ThriftMessageAdapters.adaptThriftMessage;
+import static com.facebook.thrift.swift.adapters.TransportAdapter.adaptTransport;
 
+import com.facebook.thrift.TException;
 import com.facebook.thrift.meta_data.FieldMetaData;
 import com.facebook.thrift.protocol.TField;
 import com.facebook.thrift.protocol.TList;
@@ -30,10 +31,10 @@ import com.facebook.thrift.protocol.TStruct;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-final class ApacheToFacebookProtocolAdapter extends TProtocol {
+public final class ApacheToFacebookProtocolAdapter extends TProtocol {
   protected final org.apache.thrift.protocol.TProtocol apacheProtocol;
 
-  ApacheToFacebookProtocolAdapter(org.apache.thrift.protocol.TProtocol apacheProtocol) {
+  public ApacheToFacebookProtocolAdapter(org.apache.thrift.protocol.TProtocol apacheProtocol) {
     super(adaptTransport(apacheProtocol.getTransport()));
     this.apacheProtocol = apacheProtocol;
   }

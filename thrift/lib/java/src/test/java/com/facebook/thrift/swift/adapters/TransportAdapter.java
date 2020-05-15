@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.facebook.thrift;
+package com.facebook.thrift.swift.adapters;
 
 public class TransportAdapter {
   public static com.facebook.thrift.transport.TTransport adaptTransport(

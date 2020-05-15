@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.facebook.thrift;
+package com.facebook.thrift.swift.adapters;
 
 import com.facebook.thrift.transport.TTransport;
 import com.facebook.thrift.transport.TTransportException;
 
-final class ApacheToFacebookTransportAdapter extends TTransport {
+public final class ApacheToFacebookTransportAdapter extends TTransport {
   protected final org.apache.thrift.transport.TTransport apacheTransport;
 
   ApacheToFacebookTransportAdapter(org.apache.thrift.transport.TTransport apacheTransport) {

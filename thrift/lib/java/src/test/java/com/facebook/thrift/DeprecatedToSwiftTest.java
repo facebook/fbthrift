@@ -29,6 +29,7 @@ import com.facebook.thrift.javaswift.test.SimpleCollectionStruct;
 import com.facebook.thrift.javaswift.test.SimpleStructTypes;
 import com.facebook.thrift.javaswift.test.SmallEnum;
 import com.facebook.thrift.javaswift.test.TypeRemapped;
+import com.facebook.thrift.swift.adapters.ApacheToFacebookProtocolAdapter;
 import it.unimi.dsi.fastutil.ints.Int2LongArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
