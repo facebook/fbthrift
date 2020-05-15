@@ -45,9 +45,8 @@ TEST_F(ValidatorTest, run_validator) {
 
   t_program program("/path/to/file.thrift");
   auto errors = run_validator<fake_validator>(&program);
-  EXPECT_THAT(
-      errors,
-      testing::ElementsAre("[FAILURE:/path/to/file.thrift:50] sadface"));
+  EXPECT_EQ(1, errors.size());
+  EXPECT_EQ("[FAILURE:/path/to/file.thrift:50] sadface", errors.front().str());
 }
 
 TEST_F(ValidatorTest, ServiceNamesUniqueNoError) {
@@ -86,7 +85,7 @@ TEST_F(ValidatorTest, ReapeatedNamesInService) {
   auto errors =
       run_validator<service_method_name_uniqueness_validator>(&program);
   EXPECT_EQ(1, errors.size());
-  EXPECT_EQ(expected, errors.front());
+  EXPECT_EQ(expected, errors.front().str());
 }
 
 TEST_F(ValidatorTest, RepeatedNameInExtendedService) {
@@ -124,7 +123,7 @@ TEST_F(ValidatorTest, RepeatedNameInExtendedService) {
       "Function qux.foo redefines service bar.foo";
   errors = run_validator<service_method_name_uniqueness_validator>(&program);
   EXPECT_EQ(1, errors.size());
-  EXPECT_EQ(expected, errors.front());
+  EXPECT_EQ(expected, errors.front().str());
 }
 
 TEST_F(ValidatorTest, RepeatedNamesInEnumValues) {
@@ -152,7 +151,7 @@ TEST_F(ValidatorTest, RepeatedNamesInEnumValues) {
       "Redefinition of value bar in enum foo";
   errors = run_validator<enum_value_names_uniqueness_validator>(&program);
   EXPECT_EQ(1, errors.size());
-  EXPECT_EQ(expected, errors.front());
+  EXPECT_EQ(expected, errors.front().str());
 }
 
 TEST_F(ValidatorTest, DuplicatedEnumValues) {
@@ -174,7 +173,7 @@ TEST_F(ValidatorTest, DuplicatedEnumValues) {
       "Duplicate value foo=1 with value bar in enum foo.";
   auto errors = run_validator<enum_values_uniqueness_validator>(&program);
   EXPECT_EQ(1, errors.size());
-  EXPECT_EQ(expected, errors.front());
+  EXPECT_EQ(expected, errors.front().str());
 }
 
 TEST_F(ValidatorTest, UnsetEnumValues) {
@@ -193,13 +192,15 @@ TEST_F(ValidatorTest, UnsetEnumValues) {
 
   // An error will be found
   auto errors = run_validator<enum_values_set_validator>(&program);
-  EXPECT_THAT(
-      errors,
-      testing::ElementsAre(
-          "[FAILURE:/path/to/file.thrift:2] Unset enum value Bar in enum Foo. "
-          "Add an explicit value to suppress this error",
-          "[FAILURE:/path/to/file.thrift:3] Unset enum value Baz in enum Foo. "
-          "Add an explicit value to suppress this error"));
+  EXPECT_EQ(2, errors.size());
+  EXPECT_EQ(
+      "[FAILURE:/path/to/file.thrift:2] Unset enum value Bar in enum Foo. "
+      "Add an explicit value to suppress this error",
+      errors.at(0).str());
+  EXPECT_EQ(
+      "[FAILURE:/path/to/file.thrift:3] Unset enum value Baz in enum Foo. "
+      "Add an explicit value to suppress this error",
+      errors.at(1).str());
 }
 
 TEST_F(ValidatorTest, RequiredInUnion) {
@@ -217,9 +218,9 @@ TEST_F(ValidatorTest, RequiredInUnion) {
   program.add_struct(std::move(struct_union));
 
   auto errors = run_validator<union_no_required_fields_validator>(&program);
-  EXPECT_THAT(
-      errors,
-      testing::ElementsAre(
-          "[FAILURE:/path/to/file.thrift:5] Unions cannot contain fields with "
-          "required qualifier. Remove required qualifier from field 'foo'"));
+  EXPECT_EQ(1, errors.size());
+  EXPECT_EQ(
+      "[FAILURE:/path/to/file.thrift:5] Unions cannot contain fields with "
+      "required qualifier. Remove required qualifier from field 'foo'",
+      errors.front().str());
 }

@@ -16,7 +16,6 @@
 
 #include <thrift/compiler/validator/validator.h>
 
-#include <sstream>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -26,7 +25,8 @@ namespace compiler {
 
 class validator_list {
  public:
-  explicit validator_list(validator::errors_t& errors) : errors_(errors) {}
+  explicit validator_list(validator::diagnostics_t& diagnostics)
+      : diagnostics_(diagnostics) {}
 
   std::vector<visitor*> get_pointers() const {
     auto pointers = std::vector<visitor*>{};
@@ -38,34 +38,31 @@ class validator_list {
 
   template <typename T, typename... Args>
   void add(Args&&... args) {
-    auto ptr = make_validator<T>(errors_, std::forward<Args>(args)...);
+    auto ptr = make_validator<T>(diagnostics_, std::forward<Args>(args)...);
     validators_.push_back(std::move(ptr));
   }
 
  private:
-  validator::errors_t& errors_;
+  validator::diagnostics_t& diagnostics_;
   std::vector<std::unique_ptr<validator>> validators_;
 };
 
 static void fill_validators(validator_list& vs);
 
-validator::errors_t validator::validate(t_program* const program) {
-  auto errors = validator::errors_t{};
+validator::diagnostics_t validator::validate(t_program* const program) {
+  auto diagnostics = validator::diagnostics_t{};
 
-  auto validators = validator_list(errors);
+  auto validators = validator_list(diagnostics);
   fill_validators(validators);
 
   interleaved_visitor(validators.get_pointers()).traverse(program);
 
-  return errors;
+  return diagnostics;
 }
 
 void validator::add_error(int const lineno, std::string const& message) {
-  auto const file = program_->get_path();
-  auto const line = std::to_string(lineno);
-  std::ostringstream err;
-  err << "[FAILURE:" << file << ":" << line << "] " << message;
-  errors_->push_back(err.str());
+  diagnostics_->emplace_back(
+      diagnostic::type::failure, program_->get_path(), lineno, message);
 }
 
 bool validator::visit(t_program* const program) {
@@ -73,8 +70,8 @@ bool validator::visit(t_program* const program) {
   return true;
 }
 
-void validator::set_ref_errors(errors_t& errors) {
-  errors_ = &errors;
+void validator::set_ref_diagnostics(diagnostics_t& diagnostics) {
+  diagnostics_ = &diagnostics;
 }
 
 /**

@@ -20,6 +20,7 @@
 #include <vector>
 
 #include <thrift/compiler/ast/visitor.h>
+#include <thrift/compiler/validator/diagnostic.h>
 
 namespace apache {
 namespace thrift {
@@ -27,8 +28,8 @@ namespace compiler {
 
 class validator : virtual public visitor {
  public:
-  using errors_t = std::vector<std::string>;
-  static errors_t validate(t_program* program);
+  using diagnostics_t = std::vector<diagnostic>;
+  static diagnostics_t validate(t_program* program);
 
   using visitor::visit;
 
@@ -39,26 +40,31 @@ class validator : virtual public visitor {
 
  private:
   template <typename T, typename... Args>
-  friend std::unique_ptr<T> make_validator(errors_t&, Args&&...);
+  friend std::unique_ptr<T> make_validator(diagnostics_t&, Args&&...);
 
-  void set_ref_errors(errors_t& errors);
+  void set_ref_diagnostics(diagnostics_t& diagnostics);
 
-  errors_t* errors_{};
+  diagnostics_t* diagnostics_{};
   t_program const* program_{};
 };
 
 template <typename T, typename... Args>
-std::unique_ptr<T> make_validator(validator::errors_t& errors, Args&&... args) {
+std::unique_ptr<T> make_validator(
+    validator::diagnostics_t& diagnostics,
+    Args&&... args) {
   auto ptr = std::unique_ptr<T>(new T(std::forward<Args>(args)...));
-  ptr->set_ref_errors(errors);
+  ptr->set_ref_diagnostics(diagnostics);
   return ptr;
 }
 
 template <typename T, typename... Args>
-validator::errors_t run_validator(t_program* const program, Args&&... args) {
-  validator::errors_t errors;
-  make_validator<T>(errors, std::forward<Args>(args)...)->traverse(program);
-  return errors;
+validator::diagnostics_t run_validator(
+    t_program* const program,
+    Args&&... args) {
+  validator::diagnostics_t diagnostics;
+  make_validator<T>(diagnostics, std::forward<Args>(args)...)
+      ->traverse(program);
+  return diagnostics;
 }
 
 class service_method_name_uniqueness_validator : virtual public validator {

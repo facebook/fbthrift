@@ -405,12 +405,14 @@ compile_result compile(std::vector<std::string> arguments) {
   apache::thrift::compiler::mutator::mutate(program_bundle->get_root_program());
 
   // Validate it!
-  auto errors = apache::thrift::compiler::validator::validate(
+  auto diagnostics = apache::thrift::compiler::validator::validate(
       program_bundle->get_root_program());
-  if (!errors.empty()) {
-    for (const auto& error : errors) {
-      std::cerr << error << std::endl;
-    }
+  bool has_failure = false;
+  for (const auto& d : diagnostics) {
+    has_failure = has_failure || (d.getType() == diagnostic::type::failure);
+    std::cerr << d << std::endl;
+  }
+  if (has_failure) {
     return result;
   }
 

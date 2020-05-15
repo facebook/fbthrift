@@ -141,6 +141,7 @@ add_executable(
   main.cc
   compiler.cc
   mutator/mutator.cc
+  validator/diagnostic.cc
   validator/validator.cc
   ast/visitor.cc
 )
