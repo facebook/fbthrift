@@ -392,6 +392,14 @@ TEST_F(JSONProtocolTest, readString_utf8) {
             }));
 }
 
+TEST_F(JSONProtocolTest, readString_utf8_surrogate_pair) {
+  auto input = R"("\uD989\uDE3A")";
+  auto expected = string(u8"\U0007263A");
+  EXPECT_EQ(expected, reading_cpp2<string>(input, [](R& p) {
+              return returning([&](string& _) { p.readString(_); });
+            }));
+}
+
 TEST_F(JSONProtocolTest, readBinary) {
   auto input = R"("Zm9vYmFy")";
   auto expected = "foobar";
