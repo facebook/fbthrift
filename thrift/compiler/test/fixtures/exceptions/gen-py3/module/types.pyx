@@ -151,8 +151,6 @@ cdef class Fiery(thrift.py3.exceptions.Error):
         Fiery self,
         str message=None
     ):
-        if message is None:
-            raise TypeError("__init__() needs required argument 'message'")
         self._cpp_obj = move(Fiery._make_instance(
           NULL,
           NULL,

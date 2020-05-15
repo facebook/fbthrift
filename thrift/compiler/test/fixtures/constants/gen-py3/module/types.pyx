@@ -575,7 +575,7 @@ cdef class Internship(thrift.py3.types.Struct):
 
     def __init__(
         Internship self, *,
-        weeks,
+        weeks=None,
         str title=None,
         Company employer=None
     ):
@@ -627,8 +627,6 @@ cdef class Internship(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        if not __isNOTSET[0] and weeks is None:
-            raise TypeError('field weeks is required and has no default, it can not be unset')
         if weeks is not None:
             if not isinstance(weeks, int):
                 raise TypeError(f'weeks is not a { int !r}.')
@@ -669,6 +667,7 @@ cdef class Internship(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and weeks is None:
+                deref(c_inst).weeks = default_inst[cInternship]().weeks
                 pass
 
             if not __isNOTSET[1] and title is None:
@@ -852,8 +851,8 @@ cdef class Range(thrift.py3.types.Struct):
 
     def __init__(
         Range self, *,
-        min,
-        max
+        min=None,
+        max=None
     ):
         if min is not None:
             if not isinstance(min, int):
@@ -899,15 +898,11 @@ cdef class Range(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        if not __isNOTSET[0] and min is None:
-            raise TypeError('field min is required and has no default, it can not be unset')
         if min is not None:
             if not isinstance(min, int):
                 raise TypeError(f'min is not a { int !r}.')
             min = <cint32_t> min
 
-        if not __isNOTSET[1] and max is None:
-            raise TypeError('field max is required and has no default, it can not be unset')
         if max is not None:
             if not isinstance(max, int):
                 raise TypeError(f'max is not a { int !r}.')
@@ -938,9 +933,11 @@ cdef class Range(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and min is None:
+                deref(c_inst).min = default_inst[cRange]().min
                 pass
 
             if not __isNOTSET[1] and max is None:
+                deref(c_inst).max = default_inst[cRange]().max
                 pass
 
         if min is not None:

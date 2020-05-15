@@ -54,10 +54,10 @@ cdef class Foo(thrift.py3.types.Struct):
 
     def __init__(
         Foo self, *,
-        myInteger,
+        myInteger=None,
         str myString=None,
         myBools=None,
-        myNumbers not None
+        myNumbers=None
     ):
         if myInteger is not None:
             if not isinstance(myInteger, int):
@@ -116,8 +116,6 @@ cdef class Foo(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        if not __isNOTSET[0] and myInteger is None:
-            raise TypeError('field myInteger is required and has no default, it can not be unset')
         if myInteger is not None:
             if not isinstance(myInteger, int):
                 raise TypeError(f'myInteger is not a { int !r}.')
@@ -127,8 +125,6 @@ cdef class Foo(thrift.py3.types.Struct):
             if not isinstance(myString, str):
                 raise TypeError(f'myString is not a { str !r}.')
 
-        if not __isNOTSET[3] and myNumbers is None:
-            raise TypeError('field myNumbers is required and has no default, it can not be unset')
         inst = <Foo>Foo.__new__(Foo)
         inst._cpp_obj = move(Foo._make_instance(
           self._cpp_obj.get(),
@@ -158,6 +154,7 @@ cdef class Foo(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and myInteger is None:
+                deref(c_inst).myInteger = default_inst[cFoo]().myInteger
                 pass
 
             if not __isNOTSET[1] and myString is None:
@@ -170,6 +167,7 @@ cdef class Foo(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[3] and myNumbers is None:
+                deref(c_inst).myNumbers = default_inst[cFoo]().myNumbers
                 pass
 
         if myInteger is not None:

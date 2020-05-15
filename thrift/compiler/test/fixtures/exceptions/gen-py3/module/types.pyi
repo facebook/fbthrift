@@ -39,7 +39,7 @@ class Fiery(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typ
 
     def __init__(
         self, *,
-        message: str
+        message: _typing.Optional[str]=None
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...

@@ -68,14 +68,14 @@ class MyField(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typin
         self, *,
         opt_value: _typing.Optional[int]=None,
         value: _typing.Optional[int]=None,
-        req_value: int
+        req_value: _typing.Optional[int]=None
     ) -> None: ...
 
     def __call__(
         self, *,
         opt_value: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
         value: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        req_value: _typing.Union[int, NOTSETTYPE]=NOTSET
+        req_value: _typing.Union[int, NOTSETTYPE, None]=NOTSET
     ) -> MyField: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyField'], bytes]]: ...
@@ -94,20 +94,20 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
 
     ref: Final[_typing.Optional['MyField']] = ...
 
-    req_ref: Final['MyField'] = ...
+    req_ref: Final[_typing.Optional['MyField']] = ...
 
     def __init__(
         self, *,
         opt_ref: _typing.Optional['MyField']=None,
         ref: _typing.Optional['MyField']=None,
-        req_ref: 'MyField'
+        req_ref: _typing.Optional['MyField']=None
     ) -> None: ...
 
     def __call__(
         self, *,
         opt_ref: _typing.Union['MyField', NOTSETTYPE, None]=NOTSET,
         ref: _typing.Union['MyField', NOTSETTYPE, None]=NOTSET,
-        req_ref: _typing.Union['MyField', NOTSETTYPE]=NOTSET
+        req_ref: _typing.Union['MyField', NOTSETTYPE, None]=NOTSET
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...
@@ -226,20 +226,20 @@ class StructWithSharedConst(thrift.py3.types.Struct, _typing.Hashable, _typing.I
 
     shared_const: Final[_typing.Optional['MyField']] = ...
 
-    req_shared_const: Final['MyField'] = ...
+    req_shared_const: Final[_typing.Optional['MyField']] = ...
 
     def __init__(
         self, *,
         opt_shared_const: _typing.Optional['MyField']=None,
         shared_const: _typing.Optional['MyField']=None,
-        req_shared_const: 'MyField'
+        req_shared_const: _typing.Optional['MyField']=None
     ) -> None: ...
 
     def __call__(
         self, *,
         opt_shared_const: _typing.Union['MyField', NOTSETTYPE, None]=NOTSET,
         shared_const: _typing.Union['MyField', NOTSETTYPE, None]=NOTSET,
-        req_shared_const: _typing.Union['MyField', NOTSETTYPE]=NOTSET
+        req_shared_const: _typing.Union['MyField', NOTSETTYPE, None]=NOTSET
     ) -> StructWithSharedConst: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['StructWithSharedConst'], bytes]]: ...
@@ -278,20 +278,20 @@ class StructWithRef(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[
 
     opt_field: Final[_typing.Optional['Empty']] = ...
 
-    req_field: Final['Empty'] = ...
+    req_field: Final[_typing.Optional['Empty']] = ...
 
     def __init__(
         self, *,
         def_field: _typing.Optional['Empty']=None,
         opt_field: _typing.Optional['Empty']=None,
-        req_field: 'Empty'
+        req_field: _typing.Optional['Empty']=None
     ) -> None: ...
 
     def __call__(
         self, *,
         def_field: _typing.Union['Empty', NOTSETTYPE, None]=NOTSET,
         opt_field: _typing.Union['Empty', NOTSETTYPE, None]=NOTSET,
-        req_field: _typing.Union['Empty', NOTSETTYPE]=NOTSET
+        req_field: _typing.Union['Empty', NOTSETTYPE, None]=NOTSET
     ) -> StructWithRef: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['StructWithRef'], bytes]]: ...
@@ -310,20 +310,20 @@ class StructWithRefTypeUnique(thrift.py3.types.Struct, _typing.Hashable, _typing
 
     opt_field: Final[_typing.Optional['Empty']] = ...
 
-    req_field: Final['Empty'] = ...
+    req_field: Final[_typing.Optional['Empty']] = ...
 
     def __init__(
         self, *,
         def_field: _typing.Optional['Empty']=None,
         opt_field: _typing.Optional['Empty']=None,
-        req_field: 'Empty'
+        req_field: _typing.Optional['Empty']=None
     ) -> None: ...
 
     def __call__(
         self, *,
         def_field: _typing.Union['Empty', NOTSETTYPE, None]=NOTSET,
         opt_field: _typing.Union['Empty', NOTSETTYPE, None]=NOTSET,
-        req_field: _typing.Union['Empty', NOTSETTYPE]=NOTSET
+        req_field: _typing.Union['Empty', NOTSETTYPE, None]=NOTSET
     ) -> StructWithRefTypeUnique: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['StructWithRefTypeUnique'], bytes]]: ...
@@ -342,20 +342,20 @@ class StructWithRefTypeShared(thrift.py3.types.Struct, _typing.Hashable, _typing
 
     opt_field: Final[_typing.Optional['Empty']] = ...
 
-    req_field: Final['Empty'] = ...
+    req_field: Final[_typing.Optional['Empty']] = ...
 
     def __init__(
         self, *,
         def_field: _typing.Optional['Empty']=None,
         opt_field: _typing.Optional['Empty']=None,
-        req_field: 'Empty'
+        req_field: _typing.Optional['Empty']=None
     ) -> None: ...
 
     def __call__(
         self, *,
         def_field: _typing.Union['Empty', NOTSETTYPE, None]=NOTSET,
         opt_field: _typing.Union['Empty', NOTSETTYPE, None]=NOTSET,
-        req_field: _typing.Union['Empty', NOTSETTYPE]=NOTSET
+        req_field: _typing.Union['Empty', NOTSETTYPE, None]=NOTSET
     ) -> StructWithRefTypeShared: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['StructWithRefTypeShared'], bytes]]: ...
@@ -374,20 +374,20 @@ class StructWithRefTypeSharedConst(thrift.py3.types.Struct, _typing.Hashable, _t
 
     opt_field: Final[_typing.Optional['Empty']] = ...
 
-    req_field: Final['Empty'] = ...
+    req_field: Final[_typing.Optional['Empty']] = ...
 
     def __init__(
         self, *,
         def_field: _typing.Optional['Empty']=None,
         opt_field: _typing.Optional['Empty']=None,
-        req_field: 'Empty'
+        req_field: _typing.Optional['Empty']=None
     ) -> None: ...
 
     def __call__(
         self, *,
         def_field: _typing.Union['Empty', NOTSETTYPE, None]=NOTSET,
         opt_field: _typing.Union['Empty', NOTSETTYPE, None]=NOTSET,
-        req_field: _typing.Union['Empty', NOTSETTYPE]=NOTSET
+        req_field: _typing.Union['Empty', NOTSETTYPE, None]=NOTSET
     ) -> StructWithRefTypeSharedConst: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['StructWithRefTypeSharedConst'], bytes]]: ...

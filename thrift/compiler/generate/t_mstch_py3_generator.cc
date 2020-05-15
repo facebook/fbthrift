@@ -777,7 +777,6 @@ class mstch_py3_field : public mstch_field {
             {"field:iobuf_ref?", &mstch_py3_field::isIOBufRef},
             {"field:has_ref_accessor?", &mstch_py3_field::hasRefAccessor},
             {"field:hasDefaultValue?", &mstch_py3_field::hasDefaultValue},
-            {"field:requireValue?", &mstch_py3_field::isRequireValue},
             {"field:follyOptional?", &mstch_py3_field::isFollyOptional},
             {"field:PEP484Optional?", &mstch_py3_field::isPEP484Optional},
             {"field:isset?", &mstch_py3_field::isSet},
@@ -815,16 +814,12 @@ class mstch_py3_field : public mstch_field {
     return has_default_value();
   }
 
-  mstch::node isRequireValue() {
-    return is_required() && !has_default_value();
-  }
-
   mstch::node isFollyOptional() {
     return is_folly_optional();
   }
 
   mstch::node isPEP484Optional() {
-    return (!has_default_value() && !is_required()) || is_folly_optional();
+    return !has_default_value() || is_folly_optional();
   }
 
   mstch::node isSet() {
@@ -854,9 +849,7 @@ class mstch_py3_field : public mstch_field {
   }
 
   bool has_default_value() {
-    bool unqualified = !is_required() && !is_optional();
-    bool hasValue = field_->get_value() != nullptr;
-    return !is_folly_optional() && !is_ref() && (hasValue || unqualified);
+    return !is_folly_optional() && !is_ref() && (field_->get_value() != nullptr || !is_optional());
   }
 
   bool is_required() const {
@@ -965,7 +958,7 @@ class mstch_py3_struct : public mstch_struct {
     return std::any_of(
         members.begin(), members.end(), [this](const auto* field) {
           mstch_py3_field f{field, generators_, cache_, pos_, 0};
-          return f.is_required() || f.has_default_value();
+          return f.has_default_value();
         });
   }
 

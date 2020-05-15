@@ -133,7 +133,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
         MyStringField2: _typing.Optional[str]=None,
         MyBinaryField: _typing.Optional[bytes]=None,
         MyBinaryField2: _typing.Optional[bytes]=None,
-        MyBinaryField3: bytes,
+        MyBinaryField3: _typing.Optional[bytes]=None,
         MyBinaryListField4: _typing.Optional[_typing.Sequence[bytes]]=None,
         MyMapEnumAndInt: _typing.Optional[_typing.Mapping[MyEnumA, str]]=None
     ) -> None: ...
@@ -146,7 +146,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
         MyStringField2: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
         MyBinaryField: _typing.Union[bytes, NOTSETTYPE, None]=NOTSET,
         MyBinaryField2: _typing.Union[bytes, NOTSETTYPE, None]=NOTSET,
-        MyBinaryField3: _typing.Union[bytes, NOTSETTYPE]=NOTSET,
+        MyBinaryField3: _typing.Union[bytes, NOTSETTYPE, None]=NOTSET,
         MyBinaryListField4: _typing.Union[_typing.Sequence[bytes], NOTSETTYPE, None]=NOTSET,
         MyMapEnumAndInt: _typing.Union[_typing.Mapping[MyEnumA, str], NOTSETTYPE, None]=NOTSET
     ) -> MyStruct: ...
@@ -362,13 +362,13 @@ class AnException(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterabl
     def __init__(
         self, *,
         code: _typing.Optional[int]=None,
-        req_code: int,
+        req_code: _typing.Optional[int]=None,
         message2: _typing.Optional[str]=None,
-        req_message: str,
+        req_message: _typing.Optional[str]=None,
         exception_list: _typing.Optional[_typing.Sequence[int]]=None,
         exception_set: _typing.Optional[_typing.AbstractSet[int]]=None,
         exception_map: _typing.Optional[_typing.Mapping[str, int]]=None,
-        req_exception_map: _typing.Mapping[str, int],
+        req_exception_map: _typing.Optional[_typing.Mapping[str, int]]=None,
         enum_field: _typing.Optional[MyEnumA]=None,
         enum_container: _typing.Optional[_typing.Sequence[MyEnumA]]=None,
         a_struct: _typing.Optional['MyStruct']=None,
@@ -398,7 +398,7 @@ class AnotherException(thrift.py3.exceptions.Error, _typing.Hashable, _typing.It
     def __init__(
         self, *,
         code: _typing.Optional[int]=None,
-        req_code: int,
+        req_code: _typing.Optional[int]=None,
         message: _typing.Optional[str]=None
     ) -> None: ...
 
@@ -508,10 +508,10 @@ class containerStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
     def __init__(
         self, *,
         fieldA: _typing.Optional[bool]=None,
-        req_fieldA: bool,
+        req_fieldA: _typing.Optional[bool]=None,
         opt_fieldA: _typing.Optional[bool]=None,
         fieldB: _typing.Optional[_typing.Mapping[str, bool]]=None,
-        req_fieldB: _typing.Mapping[str, bool],
+        req_fieldB: _typing.Optional[_typing.Mapping[str, bool]]=None,
         opt_fieldB: _typing.Optional[_typing.Mapping[str, bool]]=None,
         fieldC: _typing.Optional[_typing.AbstractSet[int]]=None,
         req_fieldC: _typing.Optional[_typing.AbstractSet[int]]=None,
@@ -539,11 +539,11 @@ class containerStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
         fieldT: _typing.Optional[_typing.Sequence[MyEnumA]]=None,
         fieldU: _typing.Optional[_typing.Sequence[MyEnumA]]=None,
         fieldV: _typing.Optional['MyStruct']=None,
-        req_fieldV: 'MyStruct',
+        req_fieldV: _typing.Optional['MyStruct']=None,
         opt_fieldV: _typing.Optional['MyStruct']=None,
         fieldW: _typing.Optional[_typing.AbstractSet['MyStruct']]=None,
         fieldX: _typing.Optional['ComplexUnion']=None,
-        req_fieldX: 'ComplexUnion',
+        req_fieldX: _typing.Optional['ComplexUnion']=None,
         opt_fieldX: _typing.Optional['ComplexUnion']=None,
         fieldY: _typing.Optional[_typing.Sequence['ComplexUnion']]=None,
         fieldZ: _typing.Optional[_typing.AbstractSet['SimpleUnion']]=None,
@@ -558,10 +558,10 @@ class containerStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
     def __call__(
         self, *,
         fieldA: _typing.Union[bool, NOTSETTYPE, None]=NOTSET,
-        req_fieldA: _typing.Union[bool, NOTSETTYPE]=NOTSET,
+        req_fieldA: _typing.Union[bool, NOTSETTYPE, None]=NOTSET,
         opt_fieldA: _typing.Union[bool, NOTSETTYPE, None]=NOTSET,
         fieldB: _typing.Union[_typing.Mapping[str, bool], NOTSETTYPE, None]=NOTSET,
-        req_fieldB: _typing.Union[_typing.Mapping[str, bool], NOTSETTYPE]=NOTSET,
+        req_fieldB: _typing.Union[_typing.Mapping[str, bool], NOTSETTYPE, None]=NOTSET,
         opt_fieldB: _typing.Union[_typing.Mapping[str, bool], NOTSETTYPE, None]=NOTSET,
         fieldC: _typing.Union[_typing.AbstractSet[int], NOTSETTYPE, None]=NOTSET,
         req_fieldC: _typing.Union[_typing.AbstractSet[int], NOTSETTYPE, None]=NOTSET,
@@ -589,11 +589,11 @@ class containerStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
         fieldT: _typing.Union[_typing.Sequence[MyEnumA], NOTSETTYPE, None]=NOTSET,
         fieldU: _typing.Union[_typing.Sequence[MyEnumA], NOTSETTYPE, None]=NOTSET,
         fieldV: _typing.Union['MyStruct', NOTSETTYPE, None]=NOTSET,
-        req_fieldV: _typing.Union['MyStruct', NOTSETTYPE]=NOTSET,
+        req_fieldV: _typing.Union['MyStruct', NOTSETTYPE, None]=NOTSET,
         opt_fieldV: _typing.Union['MyStruct', NOTSETTYPE, None]=NOTSET,
         fieldW: _typing.Union[_typing.AbstractSet['MyStruct'], NOTSETTYPE, None]=NOTSET,
         fieldX: _typing.Union['ComplexUnion', NOTSETTYPE, None]=NOTSET,
-        req_fieldX: _typing.Union['ComplexUnion', NOTSETTYPE]=NOTSET,
+        req_fieldX: _typing.Union['ComplexUnion', NOTSETTYPE, None]=NOTSET,
         opt_fieldX: _typing.Union['ComplexUnion', NOTSETTYPE, None]=NOTSET,
         fieldY: _typing.Union[_typing.Sequence['ComplexUnion'], NOTSETTYPE, None]=NOTSET,
         fieldZ: _typing.Union[_typing.AbstractSet['SimpleUnion'], NOTSETTYPE, None]=NOTSET,
@@ -630,7 +630,7 @@ class MyIncludedStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterab
         MyIncludedInt: _typing.Optional[int]=None,
         MyIncludedStruct: _typing.Optional[_includes_types.AStruct]=None,
         ARefField: _typing.Optional[_includes_types.AStruct]=None,
-        ARequiredField: _includes_types.AStruct
+        ARequiredField: _typing.Optional[_includes_types.AStruct]=None
     ) -> None: ...
 
     def __call__(
@@ -638,7 +638,7 @@ class MyIncludedStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterab
         MyIncludedInt: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
         MyIncludedStruct: _typing.Union[_includes_types.AStruct, NOTSETTYPE, None]=NOTSET,
         ARefField: _typing.Union[_includes_types.AStruct, NOTSETTYPE, None]=NOTSET,
-        ARequiredField: _typing.Union[_includes_types.AStruct, NOTSETTYPE]=NOTSET
+        ARequiredField: _typing.Union[_includes_types.AStruct, NOTSETTYPE, None]=NOTSET
     ) -> MyIncludedStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyIncludedStruct'], bytes]]: ...
@@ -661,11 +661,11 @@ class AnnotatedStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
 
     container_with_ref: Final[_typing.Optional[_typing.Mapping[int, _typing.Sequence[str]]]] = ...
 
-    req_cpp_unique_ref: Final['containerStruct'] = ...
+    req_cpp_unique_ref: Final[_typing.Optional['containerStruct']] = ...
 
-    req_cpp2_unique_ref: Final['containerStruct'] = ...
+    req_cpp2_unique_ref: Final[_typing.Optional['containerStruct']] = ...
 
-    req_container_with_ref: Final[_typing.Sequence[str]] = ...
+    req_container_with_ref: Final[_typing.Optional[_typing.Sequence[str]]] = ...
 
     opt_cpp_unique_ref: Final[_typing.Optional['containerStruct']] = ...
 
@@ -679,11 +679,11 @@ class AnnotatedStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
 
     ref_type_const: Final[_typing.Optional[_typing.Mapping[int, _typing.Sequence[str]]]] = ...
 
-    req_ref_type_shared: Final['containerStruct'] = ...
+    req_ref_type_shared: Final[_typing.Optional['containerStruct']] = ...
 
-    req_ref_type_const: Final['containerStruct'] = ...
+    req_ref_type_const: Final[_typing.Optional['containerStruct']] = ...
 
-    req_ref_type_unique: Final[_typing.Sequence[str]] = ...
+    req_ref_type_unique: Final[_typing.Optional[_typing.Sequence[str]]] = ...
 
     opt_ref_type_const: Final[_typing.Optional['containerStruct']] = ...
 
@@ -739,18 +739,18 @@ class AnnotatedStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
         cpp_unique_ref: _typing.Optional['containerStruct']=None,
         cpp2_unique_ref: _typing.Optional['containerStruct']=None,
         container_with_ref: _typing.Optional[_typing.Mapping[int, _typing.Sequence[str]]]=None,
-        req_cpp_unique_ref: 'containerStruct',
-        req_cpp2_unique_ref: 'containerStruct',
-        req_container_with_ref: _typing.Sequence[str],
+        req_cpp_unique_ref: _typing.Optional['containerStruct']=None,
+        req_cpp2_unique_ref: _typing.Optional['containerStruct']=None,
+        req_container_with_ref: _typing.Optional[_typing.Sequence[str]]=None,
         opt_cpp_unique_ref: _typing.Optional['containerStruct']=None,
         opt_cpp2_unique_ref: _typing.Optional['containerStruct']=None,
         opt_container_with_ref: _typing.Optional[_typing.AbstractSet[int]]=None,
         ref_type_unique: _typing.Optional['containerStruct']=None,
         ref_type_shared: _typing.Optional['containerStruct']=None,
         ref_type_const: _typing.Optional[_typing.Mapping[int, _typing.Sequence[str]]]=None,
-        req_ref_type_shared: 'containerStruct',
-        req_ref_type_const: 'containerStruct',
-        req_ref_type_unique: _typing.Sequence[str],
+        req_ref_type_shared: _typing.Optional['containerStruct']=None,
+        req_ref_type_const: _typing.Optional['containerStruct']=None,
+        req_ref_type_unique: _typing.Optional[_typing.Sequence[str]]=None,
         opt_ref_type_const: _typing.Optional['containerStruct']=None,
         opt_ref_type_unique: _typing.Optional['containerStruct']=None,
         opt_ref_type_shared: _typing.Optional[_typing.AbstractSet[int]]=None,
@@ -783,18 +783,18 @@ class AnnotatedStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
         cpp_unique_ref: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
         cpp2_unique_ref: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
         container_with_ref: _typing.Union[_typing.Mapping[int, _typing.Sequence[str]], NOTSETTYPE, None]=NOTSET,
-        req_cpp_unique_ref: _typing.Union['containerStruct', NOTSETTYPE]=NOTSET,
-        req_cpp2_unique_ref: _typing.Union['containerStruct', NOTSETTYPE]=NOTSET,
-        req_container_with_ref: _typing.Union[_typing.Sequence[str], NOTSETTYPE]=NOTSET,
+        req_cpp_unique_ref: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
+        req_cpp2_unique_ref: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
+        req_container_with_ref: _typing.Union[_typing.Sequence[str], NOTSETTYPE, None]=NOTSET,
         opt_cpp_unique_ref: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
         opt_cpp2_unique_ref: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
         opt_container_with_ref: _typing.Union[_typing.AbstractSet[int], NOTSETTYPE, None]=NOTSET,
         ref_type_unique: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
         ref_type_shared: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
         ref_type_const: _typing.Union[_typing.Mapping[int, _typing.Sequence[str]], NOTSETTYPE, None]=NOTSET,
-        req_ref_type_shared: _typing.Union['containerStruct', NOTSETTYPE]=NOTSET,
-        req_ref_type_const: _typing.Union['containerStruct', NOTSETTYPE]=NOTSET,
-        req_ref_type_unique: _typing.Union[_typing.Sequence[str], NOTSETTYPE]=NOTSET,
+        req_ref_type_shared: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
+        req_ref_type_const: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
+        req_ref_type_unique: _typing.Union[_typing.Sequence[str], NOTSETTYPE, None]=NOTSET,
         opt_ref_type_const: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
         opt_ref_type_unique: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
         opt_ref_type_shared: _typing.Union[_typing.AbstractSet[int], NOTSETTYPE, None]=NOTSET,
@@ -922,12 +922,12 @@ class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct, _typing.Hashable
 
     def __init__(
         self, *,
-        intField: int
+        intField: _typing.Optional[int]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        intField: _typing.Union[int, NOTSETTYPE]=NOTSET
+        intField: _typing.Union[int, NOTSETTYPE, None]=NOTSET
     ) -> AllRequiredNoExceptMoveCtrStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['AllRequiredNoExceptMoveCtrStruct'], bytes]]: ...

@@ -30,18 +30,18 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tu
 
     def __init__(
         self, *,
-        myInteger: int,
+        myInteger: _typing.Optional[int]=None,
         myString: _typing.Optional[str]=None,
         myBools: _typing.Optional[_typing.Sequence[bool]]=None,
-        myNumbers: _typing.Sequence[int]
+        myNumbers: _typing.Optional[_typing.Sequence[int]]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        myInteger: _typing.Union[int, NOTSETTYPE]=NOTSET,
+        myInteger: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
         myString: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
         myBools: _typing.Union[_typing.Sequence[bool], NOTSETTYPE, None]=NOTSET,
-        myNumbers: _typing.Union[_typing.Sequence[int], NOTSETTYPE]=NOTSET
+        myNumbers: _typing.Union[_typing.Sequence[int], NOTSETTYPE, None]=NOTSET
     ) -> Foo: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Foo'], bytes]]: ...

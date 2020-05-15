@@ -2773,11 +2773,11 @@ cdef class MinPadding(thrift.py3.types.Struct):
 
     def __init__(
         MinPadding self, *,
-        small,
-        big,
-        medium,
-        biggish,
-        tiny
+        small=None,
+        big=None,
+        medium=None,
+        biggish=None,
+        tiny=None
     ):
         if small is not None:
             if not isinstance(small, int):
@@ -2865,36 +2865,26 @@ cdef class MinPadding(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        if not __isNOTSET[0] and small is None:
-            raise TypeError('field small is required and has no default, it can not be unset')
         if small is not None:
             if not isinstance(small, int):
                 raise TypeError(f'small is not a { int !r}.')
             small = <cint8_t> small
 
-        if not __isNOTSET[1] and big is None:
-            raise TypeError('field big is required and has no default, it can not be unset')
         if big is not None:
             if not isinstance(big, int):
                 raise TypeError(f'big is not a { int !r}.')
             big = <cint64_t> big
 
-        if not __isNOTSET[2] and medium is None:
-            raise TypeError('field medium is required and has no default, it can not be unset')
         if medium is not None:
             if not isinstance(medium, int):
                 raise TypeError(f'medium is not a { int !r}.')
             medium = <cint16_t> medium
 
-        if not __isNOTSET[3] and biggish is None:
-            raise TypeError('field biggish is required and has no default, it can not be unset')
         if biggish is not None:
             if not isinstance(biggish, int):
                 raise TypeError(f'biggish is not a { int !r}.')
             biggish = <cint32_t> biggish
 
-        if not __isNOTSET[4] and tiny is None:
-            raise TypeError('field tiny is required and has no default, it can not be unset')
         if tiny is not None:
             if not isinstance(tiny, int):
                 raise TypeError(f'tiny is not a { int !r}.')
@@ -2931,18 +2921,23 @@ cdef class MinPadding(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and small is None:
+                deref(c_inst).small = default_inst[cMinPadding]().small
                 pass
 
             if not __isNOTSET[1] and big is None:
+                deref(c_inst).big = default_inst[cMinPadding]().big
                 pass
 
             if not __isNOTSET[2] and medium is None:
+                deref(c_inst).medium = default_inst[cMinPadding]().medium
                 pass
 
             if not __isNOTSET[3] and biggish is None:
+                deref(c_inst).biggish = default_inst[cMinPadding]().biggish
                 pass
 
             if not __isNOTSET[4] and tiny is None:
+                deref(c_inst).tiny = default_inst[cMinPadding]().tiny
                 pass
 
         if small is not None:
@@ -4997,7 +4992,7 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
         str MyStringField2=None,
         bytes MyBinaryField=None,
         bytes MyBinaryField2=None,
-        bytes MyBinaryField3 not None,
+        bytes MyBinaryField3=None,
         MyBinaryListField4=None,
         MyMapEnumAndInt=None
     ):
@@ -5128,8 +5123,6 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
             if not isinstance(MyBinaryField2, bytes):
                 raise TypeError(f'MyBinaryField2 is not a { bytes !r}.')
 
-        if not __isNOTSET[6] and MyBinaryField3 is None:
-            raise TypeError('field MyBinaryField3 is required and has no default, it can not be unset')
         if MyBinaryField3 is not None:
             if not isinstance(MyBinaryField3, bytes):
                 raise TypeError(f'MyBinaryField3 is not a { bytes !r}.')
@@ -5202,6 +5195,7 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[6] and MyBinaryField3 is None:
+                deref(c_inst).MyBinaryField3 = default_inst[cNoexceptMoveComplexStruct]().MyBinaryField3
                 pass
 
             if not __isNOTSET[7] and MyBinaryListField4 is None:

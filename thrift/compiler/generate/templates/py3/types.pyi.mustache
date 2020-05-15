@@ -64,13 +64,13 @@ class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable{{^struct:u
     {{/struct:fields}}
     def __init__(
         self, {{#struct:fields?}}*{{/struct:fields?}}{{#struct:fields}},
-        {{field:py_name}}: {{^field:requireValue?}}_typing.Optional[{{/field:requireValue?}}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{^field:requireValue?}}]=None{{/field:requireValue?}}{{/struct:fields}}
+        {{field:py_name}}: _typing.Optional[{{#field:type}}{{> types/PEP484Type}}{{/field:type}}]=None{{/struct:fields}}
     ) -> None: ...
 
     {{#struct:plain?}}
     def __call__(
         self, {{#struct:fields?}}*{{/struct:fields?}}{{#struct:fields}},
-        {{field:py_name}}: _typing.Union[{{#field:type}}{{> types/PEP484Type}}{{/field:type}}, NOTSETTYPE{{^field:requireValue?}}, None{{/field:requireValue?}}]=NOTSET{{/struct:fields}}
+        {{field:py_name}}: _typing.Union[{{#field:type}}{{> types/PEP484Type}}{{/field:type}}, NOTSETTYPE, None]=NOTSET{{/struct:fields}}
     ) -> {{struct:name}}: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['{{struct:name}}'], bytes]]: ...

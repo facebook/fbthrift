@@ -99,21 +99,12 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     def __init__(
         {{struct:name}} self, *{{#struct:fields}},
         {{#field:type}}{{!
-            }}{{^field:requireValue?}}{{!  # If we can set a None then type it
+            }}{{!  # If we can set a None then type it
                 }}{{#type:cythonTypeNoneable?}}{{!
                     }}{{> types/CythonPythonType}} {{!
                 }}{{/type:cythonTypeNoneable?}}{{!
-            }}{{/field:requireValue?}}{{!
-            }}{{#field:requireValue?}}{{! We have no concept of default
-                }}{{^type:integer?}}{{!
-                    }}{{#type:hasCythonType?}}{{!
-                        }}{{> types/CythonPythonType}} {{!
-                    }}{{/type:hasCythonType?}}{{!
-                }}{{/type:integer?}}{{!
-            }}{{/field:requireValue?}}{{!
             }}{{field:py_name}}{{!
-                }}{{^field:requireValue?}}=None{{/field:requireValue?}}{{!
-                }}{{#field:requireValue?}}{{#type:Integers?}} not None{{/type:Integers?}}{{^type:number?}} not None{{/type:number?}}{{/field:requireValue?}}{{!
+                }}=None{{!
         }}{{/field:type}}{{/struct:fields}}
     ):
     {{/struct:exception?}}
@@ -128,10 +119,6 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         }}{{/field:type}}{{/struct:fields}}
     ):
         {{#struct:fields}}
-        {{#field:requireValue?}}
-        if {{field:py_name}} is None:
-            raise TypeError("__init__() needs required argument '{{field:py_name}}'")
-        {{/field:requireValue?}}
         {{/struct:fields}}
     {{/struct:exception?}}
         {{#struct:fields}}
@@ -191,10 +178,6 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         {{#first?}}
 
         {{/first?}}
-        {{#field:requireValue?}}
-        if not __isNOTSET[{{field:index}}] and {{field:py_name}} is None:
-            raise TypeError('field {{field:py_name}} is required and has no default, it can not be unset')
-        {{/field:requireValue?}}
         {{#field:type}}
         {{^type:container?}}
         if {{field:py_name}} is not None:

@@ -317,20 +317,20 @@ class MinPadding(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_ty
 
     def __init__(
         self, *,
-        small: int,
-        big: int,
-        medium: int,
-        biggish: int,
-        tiny: int
+        small: _typing.Optional[int]=None,
+        big: _typing.Optional[int]=None,
+        medium: _typing.Optional[int]=None,
+        biggish: _typing.Optional[int]=None,
+        tiny: _typing.Optional[int]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        small: _typing.Union[int, NOTSETTYPE]=NOTSET,
-        big: _typing.Union[int, NOTSETTYPE]=NOTSET,
-        medium: _typing.Union[int, NOTSETTYPE]=NOTSET,
-        biggish: _typing.Union[int, NOTSETTYPE]=NOTSET,
-        tiny: _typing.Union[int, NOTSETTYPE]=NOTSET
+        small: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
+        big: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
+        medium: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
+        biggish: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
+        tiny: _typing.Union[int, NOTSETTYPE, None]=NOTSET
     ) -> MinPadding: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MinPadding'], bytes]]: ...
@@ -595,7 +595,7 @@ class NoexceptMoveComplexStruct(thrift.py3.types.Struct, _typing.Hashable, _typi
         MyStringField2: _typing.Optional[str]=None,
         MyBinaryField: _typing.Optional[bytes]=None,
         MyBinaryField2: _typing.Optional[bytes]=None,
-        MyBinaryField3: bytes,
+        MyBinaryField3: _typing.Optional[bytes]=None,
         MyBinaryListField4: _typing.Optional[_typing.Sequence[bytes]]=None,
         MyMapEnumAndInt: _typing.Optional[_typing.Mapping[MyEnumA, str]]=None
     ) -> None: ...
@@ -608,7 +608,7 @@ class NoexceptMoveComplexStruct(thrift.py3.types.Struct, _typing.Hashable, _typi
         MyStringField2: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
         MyBinaryField: _typing.Union[bytes, NOTSETTYPE, None]=NOTSET,
         MyBinaryField2: _typing.Union[bytes, NOTSETTYPE, None]=NOTSET,
-        MyBinaryField3: _typing.Union[bytes, NOTSETTYPE]=NOTSET,
+        MyBinaryField3: _typing.Union[bytes, NOTSETTYPE, None]=NOTSET,
         MyBinaryListField4: _typing.Union[_typing.Sequence[bytes], NOTSETTYPE, None]=NOTSET,
         MyMapEnumAndInt: _typing.Union[_typing.Mapping[MyEnumA, str], NOTSETTYPE, None]=NOTSET
     ) -> NoexceptMoveComplexStruct: ...

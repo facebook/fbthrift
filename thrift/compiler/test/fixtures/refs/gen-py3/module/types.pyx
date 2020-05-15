@@ -467,7 +467,7 @@ cdef class MyField(thrift.py3.types.Struct):
         MyField self, *,
         opt_value=None,
         value=None,
-        req_value
+        req_value=None
     ):
         if opt_value is not None:
             if not isinstance(opt_value, int):
@@ -537,8 +537,6 @@ cdef class MyField(thrift.py3.types.Struct):
                 raise TypeError(f'value is not a { int !r}.')
             value = <cint64_t> value
 
-        if not __isNOTSET[2] and req_value is None:
-            raise TypeError('field req_value is required and has no default, it can not be unset')
         if req_value is not None:
             if not isinstance(req_value, int):
                 raise TypeError(f'req_value is not a { int !r}.')
@@ -580,6 +578,7 @@ cdef class MyField(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[2] and req_value is None:
+                deref(c_inst).req_value = default_inst[cMyField]().req_value
                 pass
 
         if opt_value is not None:
@@ -756,7 +755,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         MyStruct self, *,
         MyField opt_ref=None,
         MyField ref=None,
-        MyField req_ref not None
+        MyField req_ref=None
     ):
         self._cpp_obj = move(MyStruct._make_instance(
           NULL,
@@ -809,8 +808,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
             if not isinstance(ref, MyField):
                 raise TypeError(f'ref is not a { MyField !r}.')
 
-        if not __isNOTSET[2] and req_ref is None:
-            raise TypeError('field req_ref is required and has no default, it can not be unset')
         if req_ref is not None:
             if not isinstance(req_ref, MyField):
                 raise TypeError(f'req_ref is not a { MyField !r}.')
@@ -869,7 +866,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'req_ref', self.req_ref
 
     def __bool__(self):
-        return True
+        return <bint>(deref(self._cpp_obj).opt_ref) or <bint>(deref(self._cpp_obj).ref) or <bint>(deref(self._cpp_obj).req_ref)
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
@@ -1883,7 +1880,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
         StructWithSharedConst self, *,
         MyField opt_shared_const=None,
         MyField shared_const=None,
-        MyField req_shared_const not None
+        MyField req_shared_const=None
     ):
         self._cpp_obj = move(StructWithSharedConst._make_instance(
           NULL,
@@ -1936,8 +1933,6 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
             if not isinstance(shared_const, MyField):
                 raise TypeError(f'shared_const is not a { MyField !r}.')
 
-        if not __isNOTSET[2] and req_shared_const is None:
-            raise TypeError('field req_shared_const is required and has no default, it can not be unset')
         if req_shared_const is not None:
             if not isinstance(req_shared_const, MyField):
                 raise TypeError(f'req_shared_const is not a { MyField !r}.')
@@ -1996,7 +1991,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
         yield 'req_shared_const', self.req_shared_const
 
     def __bool__(self):
-        return True
+        return <bint>(deref(self._cpp_obj).opt_shared_const) or <bint>(deref(self._cpp_obj).shared_const) or <bint>(deref(self._cpp_obj).req_shared_const)
 
     @staticmethod
     cdef create(shared_ptr[cStructWithSharedConst] cpp_obj):
@@ -2303,7 +2298,7 @@ cdef class StructWithRef(thrift.py3.types.Struct):
         StructWithRef self, *,
         Empty def_field=None,
         Empty opt_field=None,
-        Empty req_field not None
+        Empty req_field=None
     ):
         self._cpp_obj = move(StructWithRef._make_instance(
           NULL,
@@ -2356,8 +2351,6 @@ cdef class StructWithRef(thrift.py3.types.Struct):
             if not isinstance(opt_field, Empty):
                 raise TypeError(f'opt_field is not a { Empty !r}.')
 
-        if not __isNOTSET[2] and req_field is None:
-            raise TypeError('field req_field is required and has no default, it can not be unset')
         if req_field is not None:
             if not isinstance(req_field, Empty):
                 raise TypeError(f'req_field is not a { Empty !r}.')
@@ -2416,7 +2409,7 @@ cdef class StructWithRef(thrift.py3.types.Struct):
         yield 'req_field', self.req_field
 
     def __bool__(self):
-        return True
+        return <bint>(deref(self._cpp_obj).def_field) or <bint>(deref(self._cpp_obj).opt_field) or <bint>(deref(self._cpp_obj).req_field)
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRef] cpp_obj):
@@ -2582,7 +2575,7 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
         StructWithRefTypeUnique self, *,
         Empty def_field=None,
         Empty opt_field=None,
-        Empty req_field not None
+        Empty req_field=None
     ):
         self._cpp_obj = move(StructWithRefTypeUnique._make_instance(
           NULL,
@@ -2635,8 +2628,6 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
             if not isinstance(opt_field, Empty):
                 raise TypeError(f'opt_field is not a { Empty !r}.')
 
-        if not __isNOTSET[2] and req_field is None:
-            raise TypeError('field req_field is required and has no default, it can not be unset')
         if req_field is not None:
             if not isinstance(req_field, Empty):
                 raise TypeError(f'req_field is not a { Empty !r}.')
@@ -2695,7 +2686,7 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
         yield 'req_field', self.req_field
 
     def __bool__(self):
-        return True
+        return <bint>(deref(self._cpp_obj).def_field) or <bint>(deref(self._cpp_obj).opt_field) or <bint>(deref(self._cpp_obj).req_field)
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeUnique] cpp_obj):
@@ -2861,7 +2852,7 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
         StructWithRefTypeShared self, *,
         Empty def_field=None,
         Empty opt_field=None,
-        Empty req_field not None
+        Empty req_field=None
     ):
         self._cpp_obj = move(StructWithRefTypeShared._make_instance(
           NULL,
@@ -2914,8 +2905,6 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
             if not isinstance(opt_field, Empty):
                 raise TypeError(f'opt_field is not a { Empty !r}.')
 
-        if not __isNOTSET[2] and req_field is None:
-            raise TypeError('field req_field is required and has no default, it can not be unset')
         if req_field is not None:
             if not isinstance(req_field, Empty):
                 raise TypeError(f'req_field is not a { Empty !r}.')
@@ -2974,7 +2963,7 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
         yield 'req_field', self.req_field
 
     def __bool__(self):
-        return True
+        return <bint>(deref(self._cpp_obj).def_field) or <bint>(deref(self._cpp_obj).opt_field) or <bint>(deref(self._cpp_obj).req_field)
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeShared] cpp_obj):
@@ -3140,7 +3129,7 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
         StructWithRefTypeSharedConst self, *,
         Empty def_field=None,
         Empty opt_field=None,
-        Empty req_field not None
+        Empty req_field=None
     ):
         self._cpp_obj = move(StructWithRefTypeSharedConst._make_instance(
           NULL,
@@ -3193,8 +3182,6 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
             if not isinstance(opt_field, Empty):
                 raise TypeError(f'opt_field is not a { Empty !r}.')
 
-        if not __isNOTSET[2] and req_field is None:
-            raise TypeError('field req_field is required and has no default, it can not be unset')
         if req_field is not None:
             if not isinstance(req_field, Empty):
                 raise TypeError(f'req_field is not a { Empty !r}.')
@@ -3253,7 +3240,7 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
         yield 'req_field', self.req_field
 
     def __bool__(self):
-        return True
+        return <bint>(deref(self._cpp_obj).def_field) or <bint>(deref(self._cpp_obj).opt_field) or <bint>(deref(self._cpp_obj).req_field)
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeSharedConst] cpp_obj):

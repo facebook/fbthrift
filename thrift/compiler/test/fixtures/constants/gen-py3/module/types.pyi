@@ -46,14 +46,14 @@ class Internship(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_ty
 
     def __init__(
         self, *,
-        weeks: int,
+        weeks: _typing.Optional[int]=None,
         title: _typing.Optional[str]=None,
         employer: _typing.Optional[Company]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        weeks: _typing.Union[int, NOTSETTYPE]=NOTSET,
+        weeks: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
         title: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
         employer: _typing.Union[Company, NOTSETTYPE, None]=NOTSET
     ) -> Internship: ...
@@ -76,14 +76,14 @@ class Range(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.
 
     def __init__(
         self, *,
-        min: int,
-        max: int
+        min: _typing.Optional[int]=None,
+        max: _typing.Optional[int]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        min: _typing.Union[int, NOTSETTYPE]=NOTSET,
-        max: _typing.Union[int, NOTSETTYPE]=NOTSET
+        min: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
+        max: _typing.Union[int, NOTSETTYPE, None]=NOTSET
     ) -> Range: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Range'], bytes]]: ...

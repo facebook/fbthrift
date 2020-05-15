@@ -1476,7 +1476,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         str MyStringField2=None,
         bytes MyBinaryField=None,
         bytes MyBinaryField2=None,
-        bytes MyBinaryField3 not None,
+        bytes MyBinaryField3=None,
         MyBinaryListField4=None,
         MyMapEnumAndInt=None
     ):
@@ -1607,8 +1607,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
             if not isinstance(MyBinaryField2, bytes):
                 raise TypeError(f'MyBinaryField2 is not a { bytes !r}.')
 
-        if not __isNOTSET[6] and MyBinaryField3 is None:
-            raise TypeError('field MyBinaryField3 is required and has no default, it can not be unset')
         if MyBinaryField3 is not None:
             if not isinstance(MyBinaryField3, bytes):
                 raise TypeError(f'MyBinaryField3 is not a { bytes !r}.')
@@ -1681,6 +1679,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[6] and MyBinaryField3 is None:
+                deref(c_inst).MyBinaryField3 = default_inst[cMyStruct]().MyBinaryField3
                 pass
 
             if not __isNOTSET[7] and MyBinaryListField4 is None:
@@ -3146,12 +3145,6 @@ cdef class AnException(thrift.py3.exceptions.Error):
         union_typedef=None,
         a_union_typedef_list=None
     ):
-        if req_code is None:
-            raise TypeError("__init__() needs required argument 'req_code'")
-        if req_message is None:
-            raise TypeError("__init__() needs required argument 'req_message'")
-        if req_exception_map is None:
-            raise TypeError("__init__() needs required argument 'req_exception_map'")
         if code is not None:
             if not isinstance(code, int):
                 raise TypeError(f'code is not a { int !r}.')
@@ -3582,8 +3575,6 @@ cdef class AnotherException(thrift.py3.exceptions.Error):
         req_code=None,
         str message=None
     ):
-        if req_code is None:
-            raise TypeError("__init__() needs required argument 'req_code'")
         if code is not None:
             if not isinstance(code, int):
                 raise TypeError(f'code is not a { int !r}.')
@@ -3747,10 +3738,10 @@ cdef class containerStruct(thrift.py3.types.Struct):
     def __init__(
         containerStruct self, *,
         pbool fieldA=None,
-        pbool req_fieldA not None,
+        pbool req_fieldA=None,
         pbool opt_fieldA=None,
         fieldB=None,
-        req_fieldB not None,
+        req_fieldB=None,
         opt_fieldB=None,
         fieldC=None,
         req_fieldC=None,
@@ -3778,11 +3769,11 @@ cdef class containerStruct(thrift.py3.types.Struct):
         fieldT=None,
         fieldU=None,
         MyStruct fieldV=None,
-        MyStruct req_fieldV not None,
+        MyStruct req_fieldV=None,
         MyStruct opt_fieldV=None,
         fieldW=None,
         ComplexUnion fieldX=None,
-        ComplexUnion req_fieldX not None,
+        ComplexUnion req_fieldX=None,
         ComplexUnion opt_fieldX=None,
         fieldY=None,
         fieldZ=None,
@@ -4232,8 +4223,6 @@ cdef class containerStruct(thrift.py3.types.Struct):
             if not isinstance(fieldA, bool):
                 raise TypeError(f'fieldA is not a { bool !r}.')
 
-        if not __isNOTSET[1] and req_fieldA is None:
-            raise TypeError('field req_fieldA is required and has no default, it can not be unset')
         if req_fieldA is not None:
             if not isinstance(req_fieldA, bool):
                 raise TypeError(f'req_fieldA is not a { bool !r}.')
@@ -4242,8 +4231,6 @@ cdef class containerStruct(thrift.py3.types.Struct):
             if not isinstance(opt_fieldA, bool):
                 raise TypeError(f'opt_fieldA is not a { bool !r}.')
 
-        if not __isNOTSET[4] and req_fieldB is None:
-            raise TypeError('field req_fieldB is required and has no default, it can not be unset')
         if fieldD is not None:
             if not isinstance(fieldD, str):
                 raise TypeError(f'fieldD is not a { str !r}.')
@@ -4293,8 +4280,6 @@ cdef class containerStruct(thrift.py3.types.Struct):
             if not isinstance(fieldV, MyStruct):
                 raise TypeError(f'fieldV is not a { MyStruct !r}.')
 
-        if not __isNOTSET[32] and req_fieldV is None:
-            raise TypeError('field req_fieldV is required and has no default, it can not be unset')
         if req_fieldV is not None:
             if not isinstance(req_fieldV, MyStruct):
                 raise TypeError(f'req_fieldV is not a { MyStruct !r}.')
@@ -4307,8 +4292,6 @@ cdef class containerStruct(thrift.py3.types.Struct):
             if not isinstance(fieldX, ComplexUnion):
                 raise TypeError(f'fieldX is not a { ComplexUnion !r}.')
 
-        if not __isNOTSET[36] and req_fieldX is None:
-            raise TypeError('field req_fieldX is required and has no default, it can not be unset')
         if req_fieldX is not None:
             if not isinstance(req_fieldX, ComplexUnion):
                 raise TypeError(f'req_fieldX is not a { ComplexUnion !r}.')
@@ -4447,6 +4430,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[1] and req_fieldA is None:
+                deref(c_inst).req_fieldA = default_inst[ccontainerStruct]().req_fieldA
                 pass
 
             if not __isNOTSET[2] and opt_fieldA is None:
@@ -4459,6 +4443,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[4] and req_fieldB is None:
+                deref(c_inst).req_fieldB = default_inst[ccontainerStruct]().req_fieldB
                 pass
 
             if not __isNOTSET[5] and opt_fieldB is None:
@@ -4593,6 +4578,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[32] and req_fieldV is None:
+                deref(c_inst).req_fieldV = default_inst[ccontainerStruct]().req_fieldV
                 pass
 
             if not __isNOTSET[33] and opt_fieldV is None:
@@ -4610,6 +4596,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[36] and req_fieldX is None:
+                deref(c_inst).req_fieldX = default_inst[ccontainerStruct]().req_fieldX
                 pass
 
             if not __isNOTSET[37] and opt_fieldX is None:
@@ -5706,7 +5693,7 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
         MyIncludedInt=None,
         _includes_types.AStruct MyIncludedStruct=None,
         _includes_types.AStruct ARefField=None,
-        _includes_types.AStruct ARequiredField not None
+        _includes_types.AStruct ARequiredField=None
     ):
         if MyIncludedInt is not None:
             if not isinstance(MyIncludedInt, int):
@@ -5778,8 +5765,6 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
             if not isinstance(ARefField, _includes_types.AStruct):
                 raise TypeError(f'ARefField is not a { _includes_types.AStruct !r}.')
 
-        if not __isNOTSET[3] and ARequiredField is None:
-            raise TypeError('field ARequiredField is required and has no default, it can not be unset')
         if ARequiredField is not None:
             if not isinstance(ARequiredField, _includes_types.AStruct):
                 raise TypeError(f'ARequiredField is not a { _includes_types.AStruct !r}.')
@@ -5827,6 +5812,7 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[3] and ARequiredField is None:
+                deref(c_inst).ARequiredField = default_inst[cMyIncludedStruct]().ARequiredField
                 pass
 
         if MyIncludedInt is not None:
@@ -6029,18 +6015,18 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         containerStruct cpp_unique_ref=None,
         containerStruct cpp2_unique_ref=None,
         container_with_ref=None,
-        containerStruct req_cpp_unique_ref not None,
-        containerStruct req_cpp2_unique_ref not None,
-        req_container_with_ref not None,
+        containerStruct req_cpp_unique_ref=None,
+        containerStruct req_cpp2_unique_ref=None,
+        req_container_with_ref=None,
         containerStruct opt_cpp_unique_ref=None,
         containerStruct opt_cpp2_unique_ref=None,
         opt_container_with_ref=None,
         containerStruct ref_type_unique=None,
         containerStruct ref_type_shared=None,
         ref_type_const=None,
-        containerStruct req_ref_type_shared not None,
-        containerStruct req_ref_type_const not None,
-        req_ref_type_unique not None,
+        containerStruct req_ref_type_shared=None,
+        containerStruct req_ref_type_const=None,
+        req_ref_type_unique=None,
         containerStruct opt_ref_type_const=None,
         containerStruct opt_ref_type_unique=None,
         opt_ref_type_shared=None,
@@ -6464,20 +6450,14 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             if not isinstance(cpp2_unique_ref, containerStruct):
                 raise TypeError(f'cpp2_unique_ref is not a { containerStruct !r}.')
 
-        if not __isNOTSET[4] and req_cpp_unique_ref is None:
-            raise TypeError('field req_cpp_unique_ref is required and has no default, it can not be unset')
         if req_cpp_unique_ref is not None:
             if not isinstance(req_cpp_unique_ref, containerStruct):
                 raise TypeError(f'req_cpp_unique_ref is not a { containerStruct !r}.')
 
-        if not __isNOTSET[5] and req_cpp2_unique_ref is None:
-            raise TypeError('field req_cpp2_unique_ref is required and has no default, it can not be unset')
         if req_cpp2_unique_ref is not None:
             if not isinstance(req_cpp2_unique_ref, containerStruct):
                 raise TypeError(f'req_cpp2_unique_ref is not a { containerStruct !r}.')
 
-        if not __isNOTSET[6] and req_container_with_ref is None:
-            raise TypeError('field req_container_with_ref is required and has no default, it can not be unset')
         if opt_cpp_unique_ref is not None:
             if not isinstance(opt_cpp_unique_ref, containerStruct):
                 raise TypeError(f'opt_cpp_unique_ref is not a { containerStruct !r}.')
@@ -6494,20 +6474,14 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             if not isinstance(ref_type_shared, containerStruct):
                 raise TypeError(f'ref_type_shared is not a { containerStruct !r}.')
 
-        if not __isNOTSET[13] and req_ref_type_shared is None:
-            raise TypeError('field req_ref_type_shared is required and has no default, it can not be unset')
         if req_ref_type_shared is not None:
             if not isinstance(req_ref_type_shared, containerStruct):
                 raise TypeError(f'req_ref_type_shared is not a { containerStruct !r}.')
 
-        if not __isNOTSET[14] and req_ref_type_const is None:
-            raise TypeError('field req_ref_type_const is required and has no default, it can not be unset')
         if req_ref_type_const is not None:
             if not isinstance(req_ref_type_const, containerStruct):
                 raise TypeError(f'req_ref_type_const is not a { containerStruct !r}.')
 
-        if not __isNOTSET[15] and req_ref_type_unique is None:
-            raise TypeError('field req_ref_type_unique is required and has no default, it can not be unset')
         if opt_ref_type_const is not None:
             if not isinstance(opt_ref_type_const, containerStruct):
                 raise TypeError(f'opt_ref_type_const is not a { containerStruct !r}.')
@@ -8489,7 +8463,7 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
 
     def __init__(
         AllRequiredNoExceptMoveCtrStruct self, *,
-        intField
+        intField=None
     ):
         if intField is not None:
             if not isinstance(intField, int):
@@ -8521,8 +8495,6 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        if not __isNOTSET[0] and intField is None:
-            raise TypeError('field intField is required and has no default, it can not be unset')
         if intField is not None:
             if not isinstance(intField, int):
                 raise TypeError(f'intField is not a { int !r}.')
@@ -8551,6 +8523,7 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and intField is None:
+                deref(c_inst).intField = default_inst[cAllRequiredNoExceptMoveCtrStruct]().intField
                 pass
 
         if intField is not None:
