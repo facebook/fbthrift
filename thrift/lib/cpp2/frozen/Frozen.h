@@ -430,6 +430,10 @@ class FieldView {
     return true;
   }
 
+  bool has_value() const noexcept {
+    return true;
+  }
+
   T value() const noexcept {
     return value_;
   }
