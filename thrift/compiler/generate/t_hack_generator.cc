@@ -58,15 +58,11 @@ class t_hack_generator : public t_oop_generator {
     struct_trait_ = option_is_specified(parsed_options, "structtrait");
     shapes_ = option_is_specified(parsed_options, "shapes");
     shape_arraykeys_ = option_is_specified(parsed_options, "shape_arraykeys");
-    shape_unsafe_json_ =
-        option_is_specified(parsed_options, "shape_unsafe_json");
     shapes_allow_unknown_fields_ =
         option_is_specified(parsed_options, "shapes_allow_unknown_fields");
     lazy_constants_ = option_is_specified(parsed_options, "lazy_constants");
     array_migration_ = option_is_specified(parsed_options, "array_migration");
     arrays_ = option_is_specified(parsed_options, "arrays");
-    generate_legacy_read_write_ =
-        option_is_specified(parsed_options, "generate_legacy_read_write");
     no_use_hack_collections_ =
         option_is_specified(parsed_options, "no_use_hack_collections");
     nullable_everything_ =
@@ -138,8 +134,6 @@ class t_hack_generator : public t_oop_generator {
       bool is_xception = false,
       bool is_result = false,
       bool is_args = false);
-  void generate_php_struct_reader(std::ofstream& out, t_struct* tstruct);
-  void generate_php_struct_writer(std::ofstream& out, t_struct* tstruct);
   void generate_php_function_helpers(t_function* tfunction);
 
   void generate_php_union_enum(std::ofstream& out, t_struct* tstruct);
@@ -611,11 +605,6 @@ class t_hack_generator : public t_oop_generator {
   bool shapes_allow_unknown_fields_;
 
   /**
-   * True if we should not validate json when converting to Shapes
-   */
-  bool shape_unsafe_json_;
-
-  /**
    * True if we should generate lazy initialization code for constants
    */
   bool lazy_constants_;
@@ -629,11 +618,6 @@ class t_hack_generator : public t_oop_generator {
    * True to use Hack arrays instead of collections
    */
   bool arrays_;
-
-  /**
-   * True to use generate the legacy read and write methods
-   */
-  bool generate_legacy_read_write_;
 
   /**
    * True to never use hack collection objects. Only used for migrations
@@ -1883,57 +1867,55 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
     t_name_generator& namer) {
   t = t->get_true_type();
   if (t->is_base_type()) {
-    if (!shape_unsafe_json_) {
-      switch (((t_base_type*)t)->get_base()) {
-        case t_base_type::TYPE_STRING:
-        case t_base_type::TYPE_BINARY:
-          indent(out) << "if (!is_string(" << shape_data << ")";
-          if (nullable) {
-            out << " && !is_null(" << shape_data << ")";
-          }
-          out << ") {\n";
-          indent(out) << "  return null;\n";
-          indent(out) << "}\n";
-          return;
-        case t_base_type::TYPE_BOOL:
-          indent(out) << "if (!is_bool(" << shape_data << ")";
-          if (nullable) {
-            out << " && !is_null(" << shape_data << ")";
-          }
-          out << ") {\n";
-          indent(out) << "  return null;\n";
-          indent(out) << "}\n";
-          return;
-        case t_base_type::TYPE_BYTE:
-        case t_base_type::TYPE_I16:
-        case t_base_type::TYPE_I32:
-        case t_base_type::TYPE_I64:
-          indent(out) << "if (!is_int(" << shape_data << ")";
-          if (nullable) {
-            out << " && !is_null(" << shape_data << ")";
-          }
-          out << ") {\n";
-          indent(out) << "  return null;\n";
-          indent(out) << "}\n";
-          return;
-        case t_base_type::TYPE_DOUBLE:
-        case t_base_type::TYPE_FLOAT:
-          indent(out) << "if (!(is_float(" << shape_data << ") || is_int("
-                      << shape_data << "))";
-          if (nullable) {
-            out << " && !is_null(" << shape_data << ")";
-          }
-          out << ") {\n";
-          indent(out) << "  return null;\n";
-          indent(out) << "}\n";
-          indent(out) << "if (is_int(" << shape_data << ")) {\n";
-          indent(out) << "  " << shape_data << " = (float)" << shape_data
-                      << ";\n";
-          indent(out) << "}\n";
-          return;
-        default:
-          indent(out) << "return null;\n";
-      }
+    switch (((t_base_type*)t)->get_base()) {
+      case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
+        indent(out) << "if (!is_string(" << shape_data << ")";
+        if (nullable) {
+          out << " && !is_null(" << shape_data << ")";
+        }
+        out << ") {\n";
+        indent(out) << "  return null;\n";
+        indent(out) << "}\n";
+        return;
+      case t_base_type::TYPE_BOOL:
+        indent(out) << "if (!is_bool(" << shape_data << ")";
+        if (nullable) {
+          out << " && !is_null(" << shape_data << ")";
+        }
+        out << ") {\n";
+        indent(out) << "  return null;\n";
+        indent(out) << "}\n";
+        return;
+      case t_base_type::TYPE_BYTE:
+      case t_base_type::TYPE_I16:
+      case t_base_type::TYPE_I32:
+      case t_base_type::TYPE_I64:
+        indent(out) << "if (!is_int(" << shape_data << ")";
+        if (nullable) {
+          out << " && !is_null(" << shape_data << ")";
+        }
+        out << ") {\n";
+        indent(out) << "  return null;\n";
+        indent(out) << "}\n";
+        return;
+      case t_base_type::TYPE_DOUBLE:
+      case t_base_type::TYPE_FLOAT:
+        indent(out) << "if (!(is_float(" << shape_data << ") || is_int("
+                    << shape_data << "))";
+        if (nullable) {
+          out << " && !is_null(" << shape_data << ")";
+        }
+        out << ") {\n";
+        indent(out) << "  return null;\n";
+        indent(out) << "}\n";
+        indent(out) << "if (is_int(" << shape_data << ")) {\n";
+        indent(out) << "  " << shape_data << " = (float)" << shape_data
+                    << ";\n";
+        indent(out) << "}\n";
+        return;
+      default:
+        indent(out) << "return null;\n";
     }
   } else if (t->is_set()) {
     string k = "$" + namer("key");
@@ -1942,26 +1924,22 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
       indent(out) << "if (!is_null(" << shape_data << ")) {\n";
       indent_up();
     }
-    if (!shape_unsafe_json_) {
-      indent(out) << "if (!is_array(" << shape_data << ")) {\n";
-      indent(out) << "  return null;\n";
-      indent(out) << "}\n";
-    }
+    indent(out) << "if (!is_array(" << shape_data << ")) {\n";
+    indent(out) << "  return null;\n";
+    indent(out) << "}\n";
     t_type* val_type = ((t_set*)t)->get_elem_type()->get_true_type();
     string the_set = "$" + namer("the_set");
     indent(out) << the_set << " = " << array_keyword_ << "[];\n";
     indent(out) << "foreach (/* HH_IGNORE_ERROR[4110] */ " << shape_data
                 << " as " << k << " => " << v << ") {\n";
-    if (!shape_unsafe_json_) {
-      if (val_type->is_string_or_binary()) {
-        indent(out) << "  if (!is_string(" << v << ")) {\n";
-        indent(out) << "    return null;\n";
-        indent(out) << "  }\n";
-      } else {
-        indent(out) << "  if (!is_int(" << v << ")) {\n";
-        indent(out) << "    return null;\n";
-        indent(out) << "  }\n";
-      }
+    if (val_type->is_string_or_binary()) {
+      indent(out) << "  if (!is_string(" << v << ")) {\n";
+      indent(out) << "    return null;\n";
+      indent(out) << "  }\n";
+    } else {
+      indent(out) << "  if (!is_int(" << v << ")) {\n";
+      indent(out) << "    return null;\n";
+      indent(out) << "  }\n";
     }
     indent(out) << "  " << the_set << "[" << v << "] = true;\n";
     indent(out) << "}\n";
@@ -1978,19 +1956,15 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
       indent(out) << "if (!is_null(" << shape_data << ")) {\n";
       indent_up();
     }
-    if (!shape_unsafe_json_) {
-      indent(out) << "if (!is_array(" << shape_data << ")) {\n";
-      indent(out) << "  return null;\n";
-      indent(out) << "}\n";
-    }
+    indent(out) << "if (!is_array(" << shape_data << ")) {\n";
+    indent(out) << "  return null;\n";
+    indent(out) << "}\n";
     indent(out) << "foreach (/* HH_IGNORE_ERROR[4110] */" << shape_data
                 << " as " << k << " => " << v << ") {\n";
     indent_up();
-    if (!shape_unsafe_json_) {
-      indent(out) << "if (!is_int(" << k << ")) {\n";
-      indent(out) << "  return null;\n";
-      indent(out) << "}\n";
-    }
+    indent(out) << "if (!is_int(" << k << ")) {\n";
+    indent(out) << "  return null;\n";
+    indent(out) << "}\n";
     generate_php_struct_shape_json_conversion(out, false, v, val_type, namer);
     indent(out) << "/* HH_IGNORE_ERROR[4005] */\n";
     indent(out) << "/* HH_IGNORE_ERROR[4063] */\n";
@@ -2010,31 +1984,27 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
       indent(out) << "if (!is_null(" << shape_data << ")) {\n";
       indent_up();
     }
-    if (!shape_unsafe_json_) {
-      indent(out) << "if (!is_array(" << shape_data << ")) {\n";
-      indent(out) << "  return null;\n";
-      indent(out) << "}\n";
-    }
+    indent(out) << "if (!is_array(" << shape_data << ")) {\n";
+    indent(out) << "  return null;\n";
+    indent(out) << "}\n";
     indent(out) << "foreach (/* HH_IGNORE_ERROR[4110] */" << shape_data
                 << " as " << k << " => " << v << ") {\n";
     indent_up();
 
-    if (!shape_unsafe_json_) {
-      if (shape_arraykeys_) {
-        indent(out) << "if (!is_string(" << k << ") && \n";
-        indent(out) << "    !is_int(" << k << ")) {\n";
+    if (shape_arraykeys_) {
+      indent(out) << "if (!is_string(" << k << ") && \n";
+      indent(out) << "    !is_int(" << k << ")) {\n";
+      indent(out) << "  return null;\n";
+      indent(out) << "}\n";
+    } else {
+      if (key_type->is_string_or_binary()) {
+        indent(out) << "if (!is_string(" << k << ")) {\n";
         indent(out) << "  return null;\n";
         indent(out) << "}\n";
       } else {
-        if (key_type->is_string_or_binary()) {
-          indent(out) << "if (!is_string(" << k << ")) {\n";
-          indent(out) << "  return null;\n";
-          indent(out) << "}\n";
-        } else {
-          indent(out) << "if (!is_int(" << k << ")) {\n";
-          indent(out) << "  return null;\n";
-          indent(out) << "}\n";
-        }
+        indent(out) << "if (!is_int(" << k << ")) {\n";
+        indent(out) << "  return null;\n";
+        indent(out) << "}\n";
       }
     }
     generate_php_struct_shape_json_conversion(out, false, v, val_type, namer);
@@ -2050,32 +2020,28 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
   } else if (t->is_struct()) {
     string struct_type = hack_name(t);
 
-    if (nullable && !shape_unsafe_json_) {
+    if (nullable) {
       indent(out) << "if (!is_null(" << shape_data << ")) {\n";
       indent_up();
     }
     indent(out) << shape_data << " = " << struct_type
                 << "::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ "
                 << shape_data << ");\n";
-    if (!shape_unsafe_json_) {
-      indent(out) << "if (is_null(" << shape_data << ")) {\n";
-      indent(out) << "  return null;\n";
-      indent(out) << "}\n";
-    }
-    if (nullable && !shape_unsafe_json_) {
+    indent(out) << "if (is_null(" << shape_data << ")) {\n";
+    indent(out) << "  return null;\n";
+    indent(out) << "}\n";
+    if (nullable) {
       indent_down();
       indent(out) << "}\n";
     }
   } else if (t->is_enum()) {
-    if (!shape_unsafe_json_) {
-      indent(out) << "if (!is_int(" << shape_data << ")";
-      if (nullable) {
-        out << " && !is_null(" << shape_data << ")";
-      }
-      out << ") {\n";
-      indent(out) << "  return null;\n";
-      indent(out) << "}\n";
+    indent(out) << "if (!is_int(" << shape_data << ")";
+    if (nullable) {
+      out << " && !is_null(" << shape_data << ")";
     }
+    out << ") {\n";
+    indent(out) << "  return null;\n";
+    indent(out) << "}\n";
   } else {
     indent(out) << "return null; // unknown type\n";
   }
@@ -2547,12 +2513,10 @@ void t_hack_generator::_generate_php_struct_definition(
   out << " {\n";
   indent_up();
 
-  if (!generate_legacy_read_write_) {
-    if (tstruct->is_union()) {
-      indent(out) << "use \\ThriftUnionSerializationTrait;\n\n";
-    } else {
-      indent(out) << "use \\ThriftSerializationTrait;\n\n";
-    }
+  if (tstruct->is_union()) {
+    indent(out) << "use \\ThriftUnionSerializationTrait;\n\n";
+  } else {
+    indent(out) << "use \\ThriftSerializationTrait;\n\n";
   }
 
   if (generateAsTrait && is_exception) {
@@ -2840,10 +2804,6 @@ void t_hack_generator::_generate_php_struct_definition(
   if (gen_shapes) {
     generate_php_struct_shape_methods(out, tstruct);
   }
-  if (generate_legacy_read_write_) {
-    generate_php_struct_reader(out, tstruct);
-    generate_php_struct_writer(out, tstruct);
-  }
   generate_json_reader(out, tstruct);
   indent_down();
   out << indent() << "}\n\n";
@@ -2876,279 +2836,6 @@ void t_hack_generator::generate_php_struct_from_shape(
   out << indent() << ");\n";
   indent_down();
   out << indent() << "}\n";
-}
-
-/**
- * Generates the read() method for a struct
- */
-void t_hack_generator::generate_php_struct_reader(
-    ofstream& out,
-    t_struct* tstruct) {
-  const vector<t_field*>& fields = tstruct->get_members();
-  vector<t_field*>::const_iterator f_iter;
-
-  indent(out) << "public function read(\\TProtocol $input): int {\n";
-  indent_up();
-  t_name_generator namer;
-
-  out << indent() << "$xfer = 0;\n"
-      << indent() << "$fname = '';\n"
-      << indent() << "$ftype = 0;\n"
-      << indent() << "$fid = 0;\n";
-
-  if (tstruct->is_union()) {
-    // init _type field
-    out << indent()
-        << "$this->_type = " << union_field_to_enum(tstruct, nullptr) << ";\n";
-  }
-
-  // create flags for required fields, we check then after reading
-  for (const auto& f : fields) {
-    if (f->get_req() == t_field::T_REQUIRED) {
-      indent(out) << "$" << f->get_name() << "__isset = false;\n";
-    }
-  }
-  // Declare stack tmp variables
-  indent(out) << "$xfer += $input->readStructBegin(inout $fname);\n";
-
-  // Loop over reading in fields
-  indent(out) << "while (true)\n";
-
-  scope_up(out);
-
-  // Read beginning field marker
-  out << indent()
-      << "$xfer += $input->readFieldBegin(inout $fname, inout $ftype, inout $fid);\n";
-  // Check for field STOP marker and break
-  indent(out) << "if ($ftype == \\TType::STOP) {\n";
-  indent_up();
-  indent(out) << "break;\n";
-  indent_down();
-  indent(out) << "}\n";
-  out << indent() << "if (!$fid && $fname !== null) {\n"
-      << indent() << "  $fid = (int) self::$_TFIELDMAP->get($fname);\n"
-      << indent() << "  if ($fid !== 0) {\n"
-      << indent() << "    $ftype = self::$_TSPEC[$fid]['type'];\n"
-      << indent() << "  }\n"
-      << indent() << "}\n";
-
-  // Switch statement on the field we are reading
-  indent(out) << "switch ($fid)\n";
-
-  scope_up(out);
-
-  // Generate deserialization code for known cases
-  for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    indent(out) << "case " << (*f_iter)->get_key() << ":\n";
-    indent_up();
-    indent(out) << "if ($ftype == " << type_to_enum((*f_iter)->get_type())
-                << ") {\n";
-    indent_up();
-    generate_deserialize_field(
-        out, namer, *f_iter, "this->" + (*f_iter)->get_name(), true);
-    if (tstruct->is_union()) {
-      // Update _type for union
-      indent(out) << "$this->_type = " << union_field_to_enum(tstruct, *f_iter)
-                  << ";\n";
-    }
-    if ((*f_iter)->get_req() == t_field::T_REQUIRED) {
-      indent(out) << "$" << (*f_iter)->get_name() << "__isset = true;\n";
-    }
-    indent_down();
-    out << indent() << "} else {\n";
-    indent(out) << "  $xfer += $input->skip($ftype);\n";
-    out << indent() << "}\n" << indent() << "break;\n";
-    indent_down();
-  }
-
-  // In the default case we skip the field
-  indent(out) << "default:\n";
-  indent(out) << "  $xfer += $input->skip($ftype);\n";
-  indent(out) << "  break;\n";
-
-  scope_down(out);
-
-  indent(out) << "$xfer += $input->readFieldEnd();\n";
-
-  scope_down(out);
-
-  indent(out) << "$xfer += $input->readStructEnd();\n";
-
-  if (tstruct->is_xception()) {
-    const char* annotations[] = {"message", "code"};
-    for (auto& annotation : annotations) {
-      auto it = tstruct->annotations_.find(annotation);
-      if (it != tstruct->annotations_.end()) {
-        // if annotation is also used as field, ignore annotation
-        if (tstruct->has_field_named(annotation)) {
-          if (strcmp(annotation, it->second.c_str()) != 0) {
-            fprintf(
-                stderr,
-                "Ignoring annotation '%s' in Hack generator because "
-                "it is already being used as a field in exception "
-                "'%s'\n",
-                annotation,
-                tstruct->get_name().c_str());
-          }
-          continue;
-        }
-
-        std::string msg = it->second;
-        size_t idx = 0;
-
-        // replace . with -> so annotation works in both C++ and php.
-        while ((idx = msg.find_first_of('.', idx)) != string::npos) {
-          msg.replace(idx, 1, "->");
-        }
-
-        indent(out) << "$this->" << annotation << " = $this->" << msg << ";\n";
-      }
-    }
-  }
-
-  // The code that checks for the require field
-  for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    if ((*f_iter)->get_req() == t_field::T_REQUIRED) {
-      indent(out) << "if (!$" << (*f_iter)->get_name() << "__isset) {\n";
-      indent_up();
-      indent(out) << "throw new \\TProtocolException(\"Required field '"
-                  << (*f_iter)->get_name()
-                  << "' was not found in serialized data! Struct: "
-                  << tstruct->get_name() << "\", "
-                  << "\\TProtocolException::MISSING_REQUIRED_FIELD);\n";
-      indent_down();
-      indent(out) << "}\n";
-    }
-  }
-
-  indent(out) << "return $xfer;\n";
-
-  indent_down();
-  out << indent() << "}\n\n";
-}
-
-/**
- * Generates the write() method for a struct
- */
-void t_hack_generator::generate_php_struct_writer(
-    ofstream& out,
-    t_struct* tstruct) {
-  const string& name = tstruct->get_name();
-  const vector<t_field*>& fields = tstruct->get_sorted_members();
-  vector<t_field*>::const_iterator f_iter;
-
-  indent(out) << "public function write(\\TProtocol $output): int {\n";
-  indent_up();
-
-  t_name_generator namer;
-
-  indent(out) << "$xfer = 0;\n";
-
-  indent(out) << "$xfer += $output->writeStructBegin('" << name << "');\n";
-
-  for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    t_type* type = (*f_iter)->get_type()->get_true_type();
-
-    indent(out) << "if ($this->" << (*f_iter)->get_name() << " !== null";
-
-    if ((*f_iter)->get_req() == t_field::T_OPTIONAL &&
-        (*f_iter)->get_value() != nullptr &&
-        !(type->is_struct() || type->is_xception())) {
-      out << " && $this->" << (*f_iter)->get_name()
-          << " !== " << render_const_value(type, (*f_iter)->get_value());
-    }
-
-    out << ") {\n";
-
-    indent_up();
-    string val = namer("_val");
-
-    if (type->is_enum()) {
-      indent(out) << "$" << val << " = " << hack_name(type)
-                  << "::assert($this->" << (*f_iter)->get_name() << ");\n";
-    } else {
-      indent(out) << "$" << val << " = $this->" << (*f_iter)->get_name()
-                  << ";\n";
-    }
-
-    if (type->is_container() || type->is_struct()) {
-      out << indent() << "if (";
-      if (strict_types_) {
-        if (type->is_map()) {
-          if (arrays_) {
-            out << "!($" << val << " is dict<_, _>)";
-          } else {
-            out << "!($" << val << " is Map<_, _>)";
-          }
-        } else if (type->is_list()) {
-          if (arrays_) {
-            out << "!($" << val << " is vec<_>)";
-          } else {
-            out << "!($" << val << " is Vector<_>)";
-          }
-        } else if (type->is_set()) {
-          if (arrays_) {
-            out << "!($" << val << " is keyset<_>)";
-          } else if (arraysets_) {
-            out << "!($" << val << " is KeyedContainer<_, _>) && "
-                << "!(($" << val << " is Iterator<_> || "
-                << "$" << val << " is \\IteratorAggregate<_>) "
-                << "&& $" << val << " is \\Countable)";
-          } else {
-            out << "!($" << val << " is Set<_>)";
-          }
-        } else {
-          out << "!($" << val << " instanceof " << type_to_typehint(type)
-              << ")";
-        }
-      } else {
-        if (type->is_set() && !arraysets_) {
-          if (arrays_) {
-            out << "!($" << val << " is keyset<_>)";
-          } else {
-            out << "!($" << val << " is Set<_>)";
-          }
-        } else if (type->is_container()) {
-          out << "!($" << val << " is KeyedContainer<_, _>) && "
-              << "!(($" << val << " is Iterator<_> || "
-              << "$" << val << " is \\IteratorAggregate<_>) "
-              << "&& $" << val << " is \\Countable)";
-        } else {
-          out << "!($" << val << " instanceof " << type_to_typehint(type)
-              << ")";
-        }
-      }
-
-      out << ") {\n";
-      indent_up();
-      out << indent()
-          << "throw new \\TProtocolException('Bad type in structure.', \\TProtocolException::INVALID_DATA);\n";
-      scope_down(out);
-    }
-
-    // Write field header
-    indent(out) << "$xfer += $output->writeFieldBegin("
-                << "'" << (*f_iter)->get_name() << "', "
-                << type_to_enum((*f_iter)->get_type()) << ", "
-                << (*f_iter)->get_key() << ");\n";
-
-    // Write field contents
-    generate_serialize_field(out, namer, *f_iter, val);
-
-    // Write field closer
-    indent(out) << "$xfer += $output->writeFieldEnd();\n";
-
-    indent_down();
-    indent(out) << "}\n";
-  }
-
-  out << indent() << "$xfer += $output->writeFieldStop();\n"
-      << indent() << "$xfer += $output->writeStructEnd();\n";
-
-  out << indent() << "return $xfer;\n";
-
-  indent_down();
-  out << indent() << "}\n\n";
 }
 
 /**
@@ -5263,7 +4950,6 @@ THRIFT_REGISTER_GENERATOR(
     "    shape_arraykeys  When generating Shape definition for structs:\n"
     "                        replace array<string, TValue> with array<arraykey, TValue>\n"
     "    shapes_allow_unknown_fields Allow unknown fields and implicit subtyping for shapes \n"
-    "    shape_unsafe_json When converting json to Shapes, do not validate.\n"
     "    lazy_constants   Generate lazy initialization code for global constants.\n"
     "    arrays           Use Hack arrays for maps/lists/sets instead of objects.\n"
     "    const_collections Use ConstCollection objects rather than their mutable counterparts.\n"

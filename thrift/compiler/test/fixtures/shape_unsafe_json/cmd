@@ -1,1 +1,0 @@
-hack:shapes=1,shapes_allow_unknown_fields=1,shape_unsafe_json src/module.thrift
