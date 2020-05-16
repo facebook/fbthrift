@@ -97,32 +97,32 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
    * Original thrift field:-
    * 1: i64 intValue
    */
-  public ?int $intValue;
+  protected ?int $intValue;
   /**
    * Original thrift field:-
    * 5: string stringValue
    */
-  public ?string $stringValue;
+  protected ?string $stringValue;
   /**
    * Original thrift field:-
    * 2: list<i64> intListValue
    */
-  public ?Vector<int> $intListValue;
+  protected ?Vector<int> $intListValue;
   /**
    * Original thrift field:-
    * 3: list<string> stringListValue
    */
-  public ?Vector<string> $stringListValue;
+  protected ?Vector<string> $stringListValue;
   /**
    * Original thrift field:-
    * 9: map<i16, string> typedefValue
    */
-  public ?Map<int, string> $typedefValue;
+  protected ?Map<int, string> $typedefValue;
   /**
    * Original thrift field:-
    * 14: string stringRef
    */
-  public ?string $stringRef;
+  protected ?string $stringRef;
   protected ComplexUnionEnum $_type = ComplexUnionEnum::_EMPTY_;
 
   <<__Rx>>
@@ -374,12 +374,12 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
    * Original thrift field:-
    * 2: list<i64> intListValue
    */
-  public ?Vector<int> $intListValue;
+  protected ?Vector<int> $intListValue;
   /**
    * Original thrift field:-
    * 3: list<string> stringListValue
    */
-  public ?Vector<string> $stringListValue;
+  protected ?Vector<string> $stringListValue;
   protected ListUnionEnum $_type = ListUnionEnum::_EMPTY_;
 
   <<__Rx>>
@@ -518,12 +518,12 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
    * Original thrift field:-
    * 1: binary binaryData
    */
-  public ?string $binaryData;
+  protected ?string $binaryData;
   /**
    * Original thrift field:-
    * 2: string stringData
    */
-  public ?string $stringData;
+  protected ?string $stringData;
   protected DataUnionEnum $_type = DataUnionEnum::_EMPTY_;
 
   <<__Rx>>
@@ -764,12 +764,12 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
    * Original thrift field:-
    * 1: struct module.Val v1
    */
-  public ?Val $v1;
+  protected ?Val $v1;
   /**
    * Original thrift field:-
    * 2: struct module.Val v2
    */
-  public ?Val $v2;
+  protected ?Val $v2;
   protected ValUnionEnum $_type = ValUnionEnum::_EMPTY_;
 
   <<__Rx>>
@@ -900,12 +900,12 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
    * Original thrift field:-
    * 1: string thingOne
    */
-  public ?string $thingOne;
+  protected ?string $thingOne;
   /**
    * Original thrift field:-
    * 2: string thingTwo
    */
-  public ?string $thingTwo;
+  protected ?string $thingTwo;
   protected VirtualComplexUnionEnum $_type = VirtualComplexUnionEnum::_EMPTY_;
 
   <<__Rx>>
@@ -1086,7 +1086,7 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
    * Original thrift field:-
    * 1: struct module.NonCopyableStruct s
    */
-  public ?NonCopyableStruct $s;
+  protected ?NonCopyableStruct $s;
   protected NonCopyableUnionEnum $_type = NonCopyableUnionEnum::_EMPTY_;
 
   <<__Rx>>

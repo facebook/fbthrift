@@ -79,6 +79,7 @@ class t_hack_generator : public t_oop_generator {
     soft_attribute_ = option_is_specified(parsed_options, "soft_attribute");
     arrprov_skip_frames_ =
         option_is_specified(parsed_options, "arrprov_skip_frames");
+    protected_unions_ = option_is_specified(parsed_options, "protected_unions");
 
     // no_use_hack_collections_ is only used to migrate away from php gen
     if (no_use_hack_collections_ && strict_types_) {
@@ -554,6 +555,11 @@ class t_hack_generator : public t_oop_generator {
    * * Whether to use collection classes everywhere vs KeyedContainer
    */
   bool strict_types_;
+
+  /**
+   * Whether to generate protected members for thrift unions
+   */
+  bool protected_unions_;
 
   /**
    * Whether to generate array sets or Set objects
@@ -2613,7 +2619,8 @@ void t_hack_generator::_generate_php_struct_definition(
       }
     }
 
-    string visibility = "public";
+    string visibility =
+        (protected_unions_ && tstruct->is_union()) ? "protected" : "public";
 
     indent(out) << visibility << " " << typehint << " $"
                 << (*m_iter)->get_name() << ";\n";
@@ -5250,8 +5257,9 @@ THRIFT_REGISTER_GENERATOR(
     "    arraysets        Use legacy arrays for sets rather than objects.\n"
     "    nonullables      Instantiate struct fields within structs, rather than nullable\n"
     "    mapconstruct     Struct constructors accept arrays/Maps rather than their fields\n"
-    "    structtrait         Add 'use [StructName]Trait;' to generated classes\n"
+    "    structtrait      Add 'use [StructName]Trait;' to generated classes\n"
     "    shapes           Generate Shape definitions for structs\n"
+    "    protected_unions Generate protected members for thrift unions\n"
     "    shape_arraykeys  When generating Shape definition for structs:\n"
     "                        replace array<string, TValue> with array<arraykey, TValue>\n"
     "    shapes_allow_unknown_fields Allow unknown fields and implicit subtyping for shapes \n"
@@ -5259,7 +5267,6 @@ THRIFT_REGISTER_GENERATOR(
     "    lazy_constants   Generate lazy initialization code for global constants.\n"
     "    arrays           Use Hack arrays for maps/lists/sets instead of objects.\n"
     "    const_collections Use ConstCollection objects rather than their mutable counterparts.\n"
-    "    enum_extratype   Generate explicit types for Hack enums: 'type FooType = Foo'.\n"
     "    enum_transparenttype Use transparent typing for Hack enums: 'enum FooBar: int as int'.\n");
 
 } // namespace compiler
