@@ -32,24 +32,21 @@ class ExceptionTests(unittest.TestCase):
         self.assertIn(msg, str(x))
         self.assertIn(msg, x.args)
         self.assertEqual(msg, x.message)
-        self.assertEqual(UnusedError(*x.args), x)
+        self.assertEqual(UnusedError(*x.args), x)  # type: ignore
 
     def test_exception_message_annotation(self) -> None:
         x = UnusedError(message="something broke")
         self.assertEqual(x.message, str(x))
-        # pyre-fixme[19]: Expected 0 positional arguments.
-        y = HardError("WAT!", 22)
+        y = HardError("WAT!", 22)  # type: ignore
         self.assertEqual(y.errortext, str(y))
-        # pyre-fixme[19]: Expected 0 positional arguments.
-        z = UnfriendlyError("WAT!", 22)
+        z = UnfriendlyError("WAT!", 22)  # type: ignore
         self.assertNotEqual(z.errortext, str(z))
         self.assertNotEqual(str(y), str(z))
 
     def test_creation_optional_from_python(self) -> None:
         msg = "something broke"
         UnusedError()
-        # pyre-fixme[19]: Expected 0 positional arguments.
-        x = UnusedError(msg)
+        x = UnusedError(msg)  # type: ignore
         y = UnusedError(message=msg)
         self.assertEqual(x, y)
         self.assertEqual(x.args, y.args)
@@ -66,19 +63,15 @@ class ExceptionTests(unittest.TestCase):
         self.assertIn(code, x.args)
         self.assertEqual(code, x.code)
         self.assertEqual(msg, x.errortext)
-        # pyre-fixme[20]: Argument `code` expected.
-        self.assertEqual(x, HardError(*x.args))
+        self.assertEqual(x, HardError(*x.args))  # type: ignore
 
     def test_creation_required_from_python(self) -> None:
         msg = "ack!"
         code = 22
         with self.assertRaises(TypeError):
-            # pyre-fixme[19]: Expected 0 positional arguments.
-            HardError(msg)
-        # pyre-fixme[19]: Expected 0 positional arguments.
-        x = HardError(msg, code)
-        # pyre-fixme[19]: Expected 0 positional arguments.
-        y = HardError(msg, code=code)
+            HardError(msg)  # type: ignore
+        x = HardError(msg, code)  # type: ignore
+        y = HardError(msg, code=code)  # type: ignore
         self.assertEqual(x, y)
         self.assertEqual(x.args, y.args)
         self.assertEqual(x.errortext, y.errortext)
