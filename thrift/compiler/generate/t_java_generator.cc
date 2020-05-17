@@ -1614,8 +1614,17 @@ void t_java_generator::generate_java_struct_reader(
     for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
       string tmp_name = "tmp_" + (*f_iter)->get_name();
       t_type* field_type = (*f_iter)->get_type();
-      indent(out) << type_name(field_type) << " " << tmp_name << " = null;"
-                  << endl;
+      indent(out) << type_name(field_type) << " " << tmp_name;
+      if (type_can_be_null(field_type)) {
+        out << " = null";
+      } else if (
+          field_type->is_any_int() || field_type->is_double() ||
+          field_type->is_float()) {
+        out << " = 0";
+      } else if (field_type->is_bool()) {
+        out << " = false";
+      }
+      out << ";" << endl;
     }
   }
 
