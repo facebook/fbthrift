@@ -1382,7 +1382,7 @@ void t_java_generator::generate_java_struct_definition(
               << " other) {" << endl;
   indent_up();
 
-  if (has_bit_vector(tstruct)) {
+  if (!params.gen_immutable && has_bit_vector(tstruct)) {
     indent(out) << "__isset_bit_vector.clear();" << endl;
     indent(out) << "__isset_bit_vector.or(other.__isset_bit_vector);" << endl;
   }
@@ -2062,8 +2062,13 @@ void t_java_generator::generate_java_bean_boilerplate(
     if (type_can_be_null(type)) {
       indent(out) << "return this." << field_name << " != null;" << endl;
     } else {
-      indent(out) << "return __isset_bit_vector.get(" << isset_field_id(field)
-                  << ");" << endl;
+      if (!gen_immutable) {
+        indent(out) << "return __isset_bit_vector.get(" << isset_field_id(field)
+                    << ");" << endl;
+      } else {
+        // Values must be set in the contructor for immutable structs
+        indent(out) << "return true;" << endl;
+      }
     }
     indent_down();
     indent(out) << "}" << endl << endl;
