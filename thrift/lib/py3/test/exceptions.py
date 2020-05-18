@@ -68,8 +68,8 @@ class ExceptionTests(unittest.TestCase):
     def test_creation_required_from_python(self) -> None:
         msg = "ack!"
         code = 22
-        with self.assertRaises(TypeError):
-            HardError(msg)  # type: ignore
+        w = HardError(msg)  # type: ignore
+        self.assertEqual(w.code, 0)
         x = HardError(msg, code)  # type: ignore
         y = HardError(msg, code=code)  # type: ignore
         self.assertEqual(x, y)

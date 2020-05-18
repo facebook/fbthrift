@@ -51,18 +51,16 @@ class StructTests(unittest.TestCase):
         # Only Required Fields don't accept None
         easy(val=5, an_int=None)
 
-    def test_required_fields(self) -> None:
-        with self.assertRaises(TypeError):
-            # None is not acceptable as a string
-            hard(  # type: ignore
-                val=1,
-                val_list=[1, 2],
-                name=None,  # pyre-ignore[6]: intentionally for test
-                an_int=Integers(small=1),
-            )
+    def test_required_fields_not_enforced(self) -> None:
+        # None is not acceptable as a string
+        hard(  # type: ignore
+            val=1,
+            val_list=[1, 2],
+            name=None,  # pyre-ignore[6]: intentionally for test
+            an_int=Integers(small=1),
+        )
 
-        with self.assertRaises(TypeError):
-            hard(val=1, val_list=[1, 2])  # type: ignore
+        hard(val=1, val_list=[1, 2])  # type: ignore
 
     def test_call_replace(self) -> None:
         x = easy(val=1, an_int=Integers(small=300), name="foo")
@@ -86,44 +84,6 @@ class StructTests(unittest.TestCase):
         self.assertEqual(z.values, ["b", "c"])
         y = z(values=None)
         self.assertIsNone(y.values)
-
-    def test_call_replace_required(self) -> None:
-        x = hard(
-            val=5,
-            val_list=[1, 2],
-            name="something",
-            an_int=Integers(small=1),
-            other="non default",
-        )
-        y = x(other=None)
-        self.assertEqual(y.other, "some default")
-        with self.assertRaises(TypeError):
-            x(name=None)  # type: ignore
-
-    def test_required_with_defaults(self) -> None:
-        re = easy(val=10)
-        x = mixed(req_easy_ref=re)
-        self.assertEqual(x.opt_field, "optional")
-        self.assertEqual(x.req_field, "required")
-        self.assertEqual(x.unq_field, "unqualified")
-        self.assertTrue(x)
-        y = mixed(req_field="foo", opt_field="bar", unq_field="baz", req_easy_ref=re)
-        self.assertTrue(x)
-        z = y(req_field=None, opt_field=None, unq_field=None)
-        self.assertEqual(x, z)
-        self.assertTrue(x)
-        self.assertIsNone(x.opt_easy_ref)
-        self.assertIsNone(y.opt_easy_ref)
-        self.assertIsNone(z.opt_easy_ref)
-        e = easy(val=5)
-        z = x(opt_easy_ref=e, req_easy_ref=re)
-        self.assertEqual(z.opt_easy_ref, e)
-        self.assertNotEqual(x, y)
-        y = z(opt_easy_ref=None)
-        self.assertIsNone(y.opt_easy_ref)
-        self.assertEqual(y, x)
-        with self.assertRaises(TypeError):
-            z(req_easy_ref=None)  # type: ignore
 
     def test_runtime_checks(self) -> None:
         x = Runtime()
