@@ -6828,7 +6828,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         if ref_type_shared is not None:
             deref(c_inst).ref_type_shared = (<containerStruct?>ref_type_shared)._cpp_obj
         if ref_type_const is not None:
-            deref(c_inst).ref_type_const = const_pointer_cast((<Map__i32_List__string?>ref_type_const)._cpp_obj)
+            deref(c_inst).ref_type_const = const_pointer_cast(Map__i32_List__string(ref_type_const)._cpp_obj)
         if req_ref_type_shared is not None:
             deref(c_inst).req_ref_type_shared = (<containerStruct?>req_ref_type_shared)._cpp_obj
         if req_ref_type_const is not None:
@@ -6840,7 +6840,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         if opt_ref_type_unique is not None:
             deref(c_inst).opt_ref_type_unique = make_unique[ccontainerStruct](deref((<containerStruct?>opt_ref_type_unique)._cpp_obj))
         if opt_ref_type_shared is not None:
-            deref(c_inst).opt_ref_type_shared = (<Set__i32?>opt_ref_type_shared)._cpp_obj
+            deref(c_inst).opt_ref_type_shared = Set__i32(opt_ref_type_shared)._cpp_obj
         if base_type is not None:
             deref(c_inst).base_type = base_type
             deref(c_inst).__isset.base_type = True

@@ -1641,9 +1641,9 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
         if list_ref_unique is not None:
             deref(c_inst).list_ref_unique = make_unique[vector[cint32_t]](deref(List__i32(list_ref_unique)._cpp_obj))
         if set_ref_shared is not None:
-            deref(c_inst).set_ref_shared = (<Set__i32?>set_ref_shared)._cpp_obj
+            deref(c_inst).set_ref_shared = Set__i32(set_ref_shared)._cpp_obj
         if list_ref_shared_const is not None:
-            deref(c_inst).list_ref_shared_const = const_pointer_cast((<List__i32?>list_ref_shared_const)._cpp_obj)
+            deref(c_inst).list_ref_shared_const = const_pointer_cast(List__i32(list_ref_shared_const)._cpp_obj)
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)

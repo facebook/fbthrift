@@ -257,6 +257,9 @@ struct ComplexRef {
     6: optional set<ComplexRef> set_recursive_ref (cpp2.ref="true"),
     7: optional map<i16, i16> map_basetype_ref (cpp2.ref="true"),
     8: optional map<i16, ComplexRef> map_recursive_ref (cpp2.ref="true"),
+    9: optional list<ComplexRef> list_shared_ref (cpp2.ref_type="shared"),
+    10: optional set<ComplexRef> set_const_shared_ref (
+        cpp2.ref_type="shared_const"),
 }
 
 service TestingService {

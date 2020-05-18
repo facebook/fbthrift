@@ -28,6 +28,8 @@ class RefTest(unittest.TestCase):
         self.assertIsNone(x.set_recursive_ref)
         self.assertIsNone(x.map_basetype_ref)
         self.assertIsNone(x.map_recursive_ref)
+        self.assertIsNone(x.list_shared_ref)
+        self.assertIsNone(x.set_const_shared_ref)
 
     def test_single(self) -> None:
         x = ComplexRef(name="foo", ref=ComplexRef(name="bar"))
@@ -60,3 +62,13 @@ class RefTest(unittest.TestCase):
         )
         self.assertEqual(x.map_basetype_ref, {1: 1, 2: 2, 3: 3})
         self.assertEqual(x.map_recursive_ref, {1: bar, 2: baz})
+
+    def test_shared_ref(self) -> None:
+        bar, baz = ComplexRef(name="bar"), ComplexRef(name="baz")
+        x = ComplexRef(name="foo", list_shared_ref=[bar, baz])
+        self.assertEqual(x.list_shared_ref, [bar, baz])
+
+    def test_const_shared_ref(self) -> None:
+        bar, baz = ComplexRef(name="bar"), ComplexRef(name="baz")
+        x = ComplexRef(name="foo", set_const_shared_ref={bar, baz})
+        self.assertEqual(x.set_const_shared_ref, {bar, baz})
