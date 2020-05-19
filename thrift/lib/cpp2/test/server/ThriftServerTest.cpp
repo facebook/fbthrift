@@ -488,7 +488,7 @@ TEST(ThriftServer, LatencyHeader_LoggingDisabled) {
 namespace {
 enum class TransportType { Header, Rocket };
 enum class Compression { Enabled, Disabled };
-enum class ErrorType { Overload, Client, Server };
+enum class ErrorType { Overload, AppOverload, Client, Server };
 } // namespace
 
 class OverloadTest : public ::testing::TestWithParam<
@@ -531,10 +531,16 @@ class OverloadTest : public ::testing::TestWithParam<
       EXPECT_EQ(*folly::get_ptr(headers, "ex"), kAppServerErrorCode);
       EXPECT_EQ(*folly::get_ptr(headers, "uex"), "name");
       EXPECT_EQ(*folly::get_ptr(headers, "uexw"), "message");
-    } else {
+    } else if (errorType == ErrorType::AppOverload) {
+      EXPECT_EQ(*folly::get_ptr(headers, "ex"), kAppOverloadedErrorCode);
+      EXPECT_EQ(folly::get_ptr(headers, "uex"), nullptr);
+      EXPECT_EQ(folly::get_ptr(headers, "uexw"), nullptr);
+    } else if (errorType == ErrorType::Overload) {
       EXPECT_EQ(*folly::get_ptr(headers, "ex"), kOverloadedErrorCode);
       EXPECT_EQ(folly::get_ptr(headers, "uex"), nullptr);
       EXPECT_EQ(folly::get_ptr(headers, "uexw"), nullptr);
+    } else {
+      FAIL() << "Unknown error type: " << (int)errorType;
     }
   }
 
@@ -544,19 +550,42 @@ class OverloadTest : public ::testing::TestWithParam<
 };
 
 TEST_P(OverloadTest, Test) {
-  ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
+  class BlockInterface : public TestServiceSvIf {
+   public:
+    folly::Baton<> block;
+    void voidResponse() override {
+      block.wait();
+    }
+  };
+
+  ScopedServerInterfaceThread runner(std::make_shared<BlockInterface>());
   folly::EventBase base;
   auto client = makeClient(runner, &base);
 
   // force overloaded
+  folly::Function<void()> onExit = [] {};
+  auto guard = folly::makeGuard([&] { onExit(); });
+  if (errorType == ErrorType::Overload) {
+    // Thrift is overloaded on max requests
+    runner.getThriftServer().setMaxRequests(1);
+    auto handler = dynamic_cast<BlockInterface*>(
+        runner.getThriftServer().getProcessorFactory().get());
+    client->semifuture_voidResponse();
+    while (runner.getThriftServer().getActiveRequests() < 1) {
+      std::this_thread::yield();
+    }
+    onExit = [handler] { handler->block.post(); };
+  }
+
   runner.getThriftServer().setIsOverloaded(
       [&](const auto*, const string* method) {
         EXPECT_EQ("voidResponse", *method);
-        if (errorType == ErrorType::Overload) {
+        if (errorType == ErrorType::AppOverload) {
           return true;
         }
         return false;
       });
+
   runner.getThriftServer().setPreprocess([&](auto, auto) -> PreprocessResult {
     if (errorType == ErrorType::Client) {
       return {AppClientException("name", "message")};
@@ -576,12 +605,15 @@ TEST_P(OverloadTest, Test) {
     client->sync_voidResponse(rpcOptions);
     FAIL() << "Expected that the service call throws TApplicationException";
   } catch (const apache::thrift::TApplicationException& ex) {
-    auto expectType = errorType == ErrorType::Overload
+    auto expectType =
+        errorType == ErrorType::Overload || errorType == ErrorType::AppOverload
         ? TApplicationException::LOADSHEDDING
         : TApplicationException::UNKNOWN;
     EXPECT_EQ(expectType, ex.getType());
     auto expectMessage =
-        errorType == ErrorType::Overload ? "loadshedding request" : "message";
+        errorType == ErrorType::Overload || errorType == ErrorType::AppOverload
+        ? "loadshedding request"
+        : "message";
     EXPECT_EQ(expectMessage, ex.getMessage());
 
     validateErrorHeaders(rpcOptions);
@@ -604,6 +636,7 @@ INSTANTIATE_TEST_CASE_P(
         testing::Values(Compression::Enabled, Compression::Disabled),
         testing::Values(
             ErrorType::Overload,
+            ErrorType::AppOverload,
             ErrorType::Client,
             ErrorType::Server)));
 

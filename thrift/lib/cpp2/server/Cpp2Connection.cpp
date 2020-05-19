@@ -314,7 +314,7 @@ void Cpp2Connection::requestReceived(
     killRequest(
         std::move(hreq),
         TApplicationException::LOADSHEDDING,
-        kOverloadedErrorCode,
+        overloadResult.value(),
         "loadshedding request");
     return;
   }

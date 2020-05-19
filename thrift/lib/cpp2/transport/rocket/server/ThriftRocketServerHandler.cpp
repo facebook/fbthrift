@@ -437,14 +437,14 @@ void ThriftRocketServerHandler::handleDecompressionFailure(
 
 void ThriftRocketServerHandler::handleRequestOverloadedServer(
     ThriftRequestCoreUniquePtr request,
-    const std::string& /*errorCode*/) {
+    const std::string& errorCode) {
   if (auto* observer = serverConfigs_->getObserver()) {
     observer->serverOverloaded();
   }
   request->sendErrorWrapped(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::LOADSHEDDING, "loadshedding request"),
-      kOverloadedErrorCode);
+      errorCode);
 }
 
 void ThriftRocketServerHandler::handleAppError(
