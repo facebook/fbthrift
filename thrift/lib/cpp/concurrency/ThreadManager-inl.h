@@ -343,8 +343,8 @@ void ThreadManager::ImplT<SemType>::add(
     shared_ptr<Runnable> value,
     int64_t timeout,
     int64_t expiration,
-    bool cancellable) noexcept {
-  add(1, value, timeout, expiration, cancellable);
+    bool upstream) noexcept {
+  add(0, value, timeout, expiration, upstream);
 }
 
 template <typename SemType>
@@ -353,7 +353,7 @@ void ThreadManager::ImplT<SemType>::add(
     shared_ptr<Runnable> value,
     int64_t /*timeout*/,
     int64_t expiration,
-    bool /*cancellable*/) noexcept {
+    bool upstream) noexcept {
   CHECK(
       state_ != ThreadManager::UNINITIALIZED &&
       state_ != ThreadManager::STARTING)
@@ -366,6 +366,7 @@ void ThreadManager::ImplT<SemType>::add(
 
   auto task = std::make_unique<Task>(
       std::move(value), std::chrono::milliseconds{expiration});
+  priority = 2 * priority + (upstream ? 1 : 0);
   auto const qpriority = std::min(tasks_.priorities() - 1, priority);
   tasks_.at_priority(qpriority).enqueue(std::move(task));
 
@@ -650,11 +651,11 @@ class PriorityQueueThreadManager : public ThreadManager::ImplT<SemType> {
       std::shared_ptr<Runnable> task,
       int64_t timeout = 0,
       int64_t expiration = 0,
-      bool cancellable = false) noexcept override {
+      bool upstream = false) noexcept override {
     PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
     PRIORITY prio = p ? p->getPriority() : NORMAL;
     ThreadManager::ImplT<SemType>::add(
-        prio, std::move(task), timeout, expiration, cancellable);
+        prio, std::move(task), timeout, expiration, upstream);
   }
 
   /**
@@ -856,10 +857,10 @@ class PriorityThreadManager::PriorityImplT
       std::shared_ptr<Runnable> task,
       int64_t timeout = 0,
       int64_t expiration = 0,
-      bool cancellable = false) noexcept override {
+      bool upstream = false) noexcept override {
     PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
     PRIORITY prio = p ? p->getPriority() : NORMAL;
-    add(prio, std::move(task), timeout, expiration, cancellable);
+    add(prio, std::move(task), timeout, expiration, upstream);
   }
 
   void add(
@@ -867,8 +868,8 @@ class PriorityThreadManager::PriorityImplT
       std::shared_ptr<Runnable> task,
       int64_t timeout = 0,
       int64_t expiration = 0,
-      bool cancellable = false) noexcept override {
-    managers_[priority]->add(std::move(task), timeout, expiration, cancellable);
+      bool upstream = false) noexcept override {
+    managers_[priority]->add(std::move(task), timeout, expiration, upstream);
   }
 
   /**

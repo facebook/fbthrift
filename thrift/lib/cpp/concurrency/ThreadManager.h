@@ -155,12 +155,15 @@ class ThreadManager : public virtual folly::Executor {
    * @param expiration when nonzero, the number of milliseconds the task is
    * valid to be run; if exceeded, the task will be dropped off the queue and
    * not run.
+   * @param upstream hint whether the task is come from an upstream.
+   * Implementations may prioritize those tasks different than other tasks of
+   * the same priority.
    */
   virtual void add(
       std::shared_ptr<Runnable> task,
       int64_t timeout = 0,
       int64_t expiration = 0,
-      bool cancellable = false) noexcept = 0;
+      bool upstream = false) noexcept = 0;
 
   /**
    * Implements folly::Executor::add()

@@ -305,7 +305,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
             kind == apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE),
         0, // timeout
         0, // expiration
-        true); // cancellable
+        true); // upstream
   }
 };
 
@@ -632,7 +632,7 @@ class HandlerCallbackBase {
           task,
           0, // timeout
           0, // expiration
-          true); // cancellable
+          true); // upstream
     } catch (...) {
       if (oneway) {
         return;
