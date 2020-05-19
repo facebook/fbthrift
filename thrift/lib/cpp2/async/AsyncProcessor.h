@@ -598,6 +598,14 @@ class HandlerCallbackBase {
     thisPtr.release()->exceptionInThread(ex);
   }
 
+  void appOverloadedException(const std::string& message) {
+    getRequest()->sendErrorWrapped(
+        folly::make_exception_wrapper<TApplicationException>(
+            TApplicationException::LOADSHEDDING, message),
+        kAppOverloadedErrorCode);
+    delete this;
+  }
+
   folly::EventBase* getEventBase() {
     assert(eb_);
     return eb_;

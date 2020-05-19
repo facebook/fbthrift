@@ -488,7 +488,7 @@ TEST(ThriftServer, LatencyHeader_LoggingDisabled) {
 namespace {
 enum class TransportType { Header, Rocket };
 enum class Compression { Enabled, Disabled };
-enum class ErrorType { Overload, AppOverload, Client, Server };
+enum class ErrorType { Overload, AppOverload, MethodOverload, Client, Server };
 } // namespace
 
 class OverloadTest : public ::testing::TestWithParam<
@@ -521,6 +521,20 @@ class OverloadTest : public ::testing::TestWithParam<
           });
     }
   }
+
+  bool isCustomError() {
+    return errorType == ErrorType::Client || errorType == ErrorType::Server;
+  }
+
+  LatencyHeaderStatus getLatencyHeaderStatus() {
+    // we currently only report latency headers for Header,
+    // and only when method handler was executed started running.
+    return errorType == ErrorType::MethodOverload &&
+            transport == TransportType::Header
+        ? LatencyHeaderStatus::EXPECTED
+        : LatencyHeaderStatus::NOT_EXPECTED;
+  }
+
   void validateErrorHeaders(const RpcOptions& rpc) {
     auto& headers = rpc.getReadHeaders();
     if (errorType == ErrorType::Client) {
@@ -532,6 +546,10 @@ class OverloadTest : public ::testing::TestWithParam<
       EXPECT_EQ(*folly::get_ptr(headers, "uex"), "name");
       EXPECT_EQ(*folly::get_ptr(headers, "uexw"), "message");
     } else if (errorType == ErrorType::AppOverload) {
+      EXPECT_EQ(*folly::get_ptr(headers, "ex"), kAppOverloadedErrorCode);
+      EXPECT_EQ(folly::get_ptr(headers, "uex"), nullptr);
+      EXPECT_EQ(folly::get_ptr(headers, "uexw"), nullptr);
+    } else if (errorType == ErrorType::MethodOverload) {
       EXPECT_EQ(*folly::get_ptr(headers, "ex"), kAppOverloadedErrorCode);
       EXPECT_EQ(folly::get_ptr(headers, "uex"), nullptr);
       EXPECT_EQ(folly::get_ptr(headers, "uexw"), nullptr);
@@ -556,6 +574,12 @@ TEST_P(OverloadTest, Test) {
     void voidResponse() override {
       block.wait();
     }
+
+    void async_eb_eventBaseAsync(
+        std::unique_ptr<HandlerCallback<std::unique_ptr<::std::string>>>
+            callback) override {
+      callback.release()->appOverloadedException("loadshedding request");
+    }
   };
 
   ScopedServerInterfaceThread runner(std::make_shared<BlockInterface>());
@@ -579,8 +603,8 @@ TEST_P(OverloadTest, Test) {
 
   runner.getThriftServer().setIsOverloaded(
       [&](const auto*, const string* method) {
-        EXPECT_EQ("voidResponse", *method);
         if (errorType == ErrorType::AppOverload) {
+          EXPECT_EQ("voidResponse", *method);
           return true;
         }
         return false;
@@ -602,25 +626,25 @@ TEST_P(OverloadTest, Test) {
   RpcOptions rpcOptions;
   rpcOptions.setWriteHeader(kClientLoggingHeader.str(), "");
   try {
-    client->sync_voidResponse(rpcOptions);
+    if (errorType == ErrorType::MethodOverload) {
+      std::string dummy;
+      client->sync_eventBaseAsync(rpcOptions, dummy);
+    } else {
+      client->sync_voidResponse(rpcOptions);
+    }
     FAIL() << "Expected that the service call throws TApplicationException";
   } catch (const apache::thrift::TApplicationException& ex) {
-    auto expectType =
-        errorType == ErrorType::Overload || errorType == ErrorType::AppOverload
-        ? TApplicationException::LOADSHEDDING
-        : TApplicationException::UNKNOWN;
+    auto expectType = isCustomError() ? TApplicationException::UNKNOWN
+                                      : TApplicationException::LOADSHEDDING;
     EXPECT_EQ(expectType, ex.getType());
-    auto expectMessage =
-        errorType == ErrorType::Overload || errorType == ErrorType::AppOverload
-        ? "loadshedding request"
-        : "message";
+    auto expectMessage = isCustomError() ? "message" : "loadshedding request";
     EXPECT_EQ(expectMessage, ex.getMessage());
 
     validateErrorHeaders(rpcOptions);
 
     // Latency headers are NOT set, when server is overloaded
     validateLatencyHeaders(
-        rpcOptions.getReadHeaders(), LatencyHeaderStatus::NOT_EXPECTED);
+        rpcOptions.getReadHeaders(), getLatencyHeaderStatus());
   } catch (...) {
     FAIL()
         << "Expected that the service call throws TApplicationException, got "
@@ -636,6 +660,7 @@ INSTANTIATE_TEST_CASE_P(
         testing::Values(Compression::Enabled, Compression::Disabled),
         testing::Values(
             ErrorType::Overload,
+            ErrorType::MethodOverload,
             ErrorType::AppOverload,
             ErrorType::Client,
             ErrorType::Server)));
