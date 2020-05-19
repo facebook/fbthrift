@@ -171,6 +171,7 @@ where
         let (_elem_ty, len) = p.read_set_begin()?;
         let mut bset = BTreeSet::new();
         for _ in 0..len {
+            p.read_set_value_begin()?;
             let item = Deserialize::read(p)?;
             bset.insert(item);
         }
@@ -188,6 +189,7 @@ where
         let (_elem_ty, len) = p.read_set_begin()?;
         let mut hset = HashSet::with_capacity_and_hasher(len, Default::default());
         for _ in 0..len {
+            p.read_set_value_begin()?;
             let item = Deserialize::read(p)?;
             hset.insert(item);
         }
@@ -205,7 +207,9 @@ where
         let (_key_ty, _val_ty, len) = p.read_map_begin()?;
         let mut btree = BTreeMap::new();
         for _ in 0..len {
+            p.read_map_key_begin()?;
             let key = Deserialize::read(p)?;
+            p.read_map_value_begin()?;
             let val = Deserialize::read(p)?;
             btree.insert(key, val);
         }
@@ -224,7 +228,9 @@ where
         let (_key_ty, _val_ty, len) = p.read_map_begin()?;
         let mut hmap = HashMap::with_capacity_and_hasher(len, Default::default());
         for _ in 0..len {
+            p.read_map_key_begin()?;
             let key = Deserialize::read(p)?;
+            p.read_map_value_begin()?;
             let val = Deserialize::read(p)?;
             hmap.insert(key, val);
         }
@@ -242,6 +248,7 @@ where
         let (_elem_ty, len) = p.read_list_begin()?;
         let mut list = Vec::with_capacity(len as usize);
         for _ in 0..len {
+            p.read_list_value_begin()?;
             let item = Deserialize::read(p)?;
             list.push(item);
         }

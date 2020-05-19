@@ -197,6 +197,12 @@ impl<B: BufMutExt> ProtocolWriter for BinaryProtocolSerializer<B> {
     }
 
     #[inline]
+    fn write_map_key_begin(&mut self) {}
+
+    #[inline]
+    fn write_map_value_begin(&mut self) {}
+
+    #[inline]
     fn write_map_end(&mut self) {}
 
     fn write_list_begin(&mut self, elem_type: TType, size: usize) {
@@ -205,12 +211,18 @@ impl<B: BufMutExt> ProtocolWriter for BinaryProtocolSerializer<B> {
     }
 
     #[inline]
+    fn write_list_value_begin(&mut self) {}
+
+    #[inline]
     fn write_list_end(&mut self) {}
 
     fn write_set_begin(&mut self, elem_type: TType, size: usize) {
         self.write_byte(elem_type as i8);
         self.write_i32(i32::try_from(size as u64).expect("set size overflow"));
     }
+
+    #[inline]
+    fn write_set_value_begin(&mut self) {}
 
     fn write_set_end(&mut self) {}
 
@@ -332,6 +344,16 @@ impl<B: Buf> ProtocolReader for BinaryProtocolDeserializer<B> {
         Ok((k_type, v_type, size as usize))
     }
 
+    #[inline]
+    fn read_map_key_begin(&mut self) -> Result<()> {
+        Ok(())
+    }
+
+    #[inline]
+    fn read_map_value_begin(&mut self) -> Result<()> {
+        Ok(())
+    }
+
     fn read_map_end(&mut self) -> Result<()> {
         Ok(())
     }
@@ -343,6 +365,11 @@ impl<B: Buf> ProtocolReader for BinaryProtocolDeserializer<B> {
         Ok((elem_type, size as usize))
     }
 
+    #[inline]
+    fn read_list_value_begin(&mut self) -> Result<()> {
+        Ok(())
+    }
+
     fn read_list_end(&mut self) -> Result<()> {
         Ok(())
     }
@@ -352,6 +379,11 @@ impl<B: Buf> ProtocolReader for BinaryProtocolDeserializer<B> {
         let size = self.read_i32()?;
         ensure_err!(size >= 0, ProtocolError::InvalidDataLength);
         Ok((elem_type, size as usize))
+    }
+
+    #[inline]
+    fn read_set_value_begin(&mut self) -> Result<()> {
+        Ok(())
     }
 
     fn read_set_end(&mut self) -> Result<()> {

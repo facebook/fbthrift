@@ -197,6 +197,7 @@ where
     fn write(&self, p: &mut P) {
         p.write_set_begin(T::TTYPE, self.len());
         for item in self.iter() {
+            p.write_set_value_begin();
             item.write(p);
         }
         p.write_set_end();
@@ -213,6 +214,7 @@ where
     fn write(&self, p: &mut P) {
         p.write_set_begin(T::TTYPE, self.len());
         for item in self.iter() {
+            p.write_set_value_begin();
             item.write(p);
         }
         p.write_set_end();
@@ -230,7 +232,9 @@ where
     fn write(&self, p: &mut P) {
         p.write_map_begin(K::TTYPE, V::TTYPE, self.len());
         for (k, v) in self.iter() {
+            p.write_map_key_begin();
             k.write(p);
+            p.write_map_value_begin();
             v.write(p);
         }
         p.write_map_end();
@@ -249,7 +253,9 @@ where
     fn write(&self, p: &mut P) {
         p.write_map_begin(K::TTYPE, V::TTYPE, self.len());
         for (k, v) in self.iter() {
+            p.write_map_key_begin();
             k.write(p);
+            p.write_map_value_begin();
             v.write(p);
         }
         p.write_map_end();
@@ -266,6 +272,7 @@ where
     fn write(&self, p: &mut P) {
         p.write_list_begin(T::TTYPE, self.len());
         for item in self.iter() {
+            p.write_list_value_begin();
             item.write(p);
         }
         p.write_list_end();
@@ -282,6 +289,7 @@ where
     fn write(&self, p: &mut P) {
         p.write_list_begin(T::TTYPE, self.len());
         for item in self.iter() {
+            p.write_list_value_begin();
             item.write(p);
         }
         p.write_list_end();

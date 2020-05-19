@@ -396,6 +396,12 @@ impl<B: BufMutExt> ProtocolWriter for CompactProtocolSerializer<B> {
     }
 
     #[inline]
+    fn write_map_key_begin(&mut self) {}
+
+    #[inline]
+    fn write_map_value_begin(&mut self) {}
+
+    #[inline]
     fn write_map_end(&mut self) {}
 
     fn write_list_begin(&mut self, elem_type: TType, size: usize) {
@@ -405,12 +411,18 @@ impl<B: BufMutExt> ProtocolWriter for CompactProtocolSerializer<B> {
     }
 
     #[inline]
+    fn write_list_value_begin(&mut self) {}
+
+    #[inline]
     fn write_list_end(&mut self) {}
 
     fn write_set_begin(&mut self, elem_type: TType, size: usize) {
         self.write_field_id(CType::Set);
         self.write_sequence(elem_type, size);
     }
+
+    #[inline]
+    fn write_set_value_begin(&mut self) {}
 
     fn write_set_end(&mut self) {}
 
@@ -649,6 +661,16 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
         Ok((TType::from(kcty), TType::from(vcty), size as usize))
     }
 
+    #[inline]
+    fn read_map_key_begin(&mut self) -> Result<()> {
+        Ok(())
+    }
+
+    #[inline]
+    fn read_map_value_begin(&mut self) -> Result<()> {
+        Ok(())
+    }
+
     fn read_map_end(&mut self) -> Result<()> {
         Ok(())
     }
@@ -671,12 +693,22 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
         Ok((elem_type, size))
     }
 
+    #[inline]
+    fn read_list_value_begin(&mut self) -> Result<()> {
+        Ok(())
+    }
+
     fn read_list_end(&mut self) -> Result<()> {
         Ok(())
     }
 
     fn read_set_begin(&mut self) -> Result<(TType, usize)> {
         self.read_list_begin()
+    }
+
+    #[inline]
+    fn read_set_value_begin(&mut self) -> Result<()> {
+        Ok(())
     }
 
     fn read_set_end(&mut self) -> Result<()> {
