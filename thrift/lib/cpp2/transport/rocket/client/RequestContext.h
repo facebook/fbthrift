@@ -36,10 +36,10 @@
 
 namespace apache {
 namespace thrift {
+
+class RequestClientCallback;
+
 namespace rocket {
-
-class RocketClientWriteCallback;
-
 class RequestContextQueue;
 
 class RequestContext {
@@ -58,7 +58,7 @@ class RequestContext {
       Frame&& frame,
       RequestContextQueue& queue,
       SetupFrame* setupFrame = nullptr,
-      RocketClientWriteCallback* writeCallback = nullptr)
+      RequestClientCallback* writeCallback = nullptr)
       : queue_(queue),
         streamId_(frame.streamId()),
         frameType_(Frame::frameType()),
@@ -131,7 +131,7 @@ class RequestContext {
   std::chrono::milliseconds awaitResponseTimeout_{1000};
   folly::fibers::Baton::TimeoutHandler awaitResponseTimeoutHandler_;
   folly::Try<Payload> responsePayload_;
-  RocketClientWriteCallback* const writeCallback_;
+  RequestClientCallback* const writeCallback_;
 
   template <class Frame>
   void serialize(Frame&& frame, SetupFrame* setupFrame) {

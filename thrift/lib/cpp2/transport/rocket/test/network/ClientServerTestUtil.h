@@ -46,6 +46,7 @@ class Acceptor;
 
 namespace apache {
 namespace thrift {
+class RequestClientCallback;
 class StreamClientCallback;
 class ChannelClientCallback;
 class SinkClientCallback;
@@ -53,7 +54,6 @@ class SinkClientCallback;
 namespace rocket {
 
 class RocketClient;
-class RocketClientWriteCallback;
 
 namespace test {
 
@@ -65,11 +65,11 @@ class RocketTestClient {
   folly::Try<Payload> sendRequestResponseSync(
       Payload request,
       std::chrono::milliseconds timeout = std::chrono::milliseconds(250),
-      RocketClientWriteCallback* writeCallback = nullptr);
+      RequestClientCallback* writeCallback = nullptr);
 
   folly::Try<void> sendRequestFnfSync(
       Payload request,
-      RocketClientWriteCallback* writeCallback = nullptr);
+      RequestClientCallback* writeCallback = nullptr);
 
   folly::Try<ClientBufferedStream<Payload>> sendRequestStreamSync(
       Payload request);

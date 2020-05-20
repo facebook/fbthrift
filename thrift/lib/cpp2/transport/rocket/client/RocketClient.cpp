@@ -52,8 +52,6 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
-class RocketClientWriteCallback;
-
 transport::TTransportException toTransportException(
     folly::exception_wrapper ew) {
   transport::TTransportException result;
@@ -381,7 +379,7 @@ StreamChannelStatus RocketClient::handleExtFrame(
 folly::Try<Payload> RocketClient::sendRequestResponseSync(
     Payload&& request,
     std::chrono::milliseconds timeout,
-    RocketClientWriteCallback* writeCallback) {
+    RequestClientCallback* writeCallback) {
   auto g = makeRequestCountGuard();
   auto setupFrame = std::move(setupFrame_);
   RequestContext ctx(
@@ -398,7 +396,7 @@ folly::Try<Payload> RocketClient::sendRequestResponseSync(
 
 folly::Try<void> RocketClient::sendRequestFnfSync(
     Payload&& request,
-    RocketClientWriteCallback* writeCallback) {
+    RequestClientCallback* writeCallback) {
   auto g = makeRequestCountGuard();
   auto setupFrame = std::move(setupFrame_);
   RequestContext ctx(
@@ -509,7 +507,7 @@ void RocketClient::sendRequestStreamChannel(
               std::move(frame),
               queue,
               setupFrame_.get(),
-              nullptr /* RocketClientWriteCallback */),
+              nullptr /* writeCallback */),
           serverCallback_(serverCallback) {}
 
     ~Context() {

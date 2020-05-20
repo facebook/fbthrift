@@ -53,9 +53,10 @@ class FiberManager;
 
 namespace apache {
 namespace thrift {
-namespace rocket {
 
-class RocketClientWriteCallback;
+class RequestClientCallback;
+
+namespace rocket {
 
 class RocketClient : public folly::DelayedDestruction,
                      private folly::AsyncTransportWrapper::WriteCallback {
@@ -82,11 +83,11 @@ class RocketClient : public folly::DelayedDestruction,
   FOLLY_NODISCARD folly::Try<Payload> sendRequestResponseSync(
       Payload&& request,
       std::chrono::milliseconds timeout,
-      RocketClientWriteCallback* writeCallback);
+      RequestClientCallback* writeCallback);
 
   FOLLY_NODISCARD folly::Try<void> sendRequestFnfSync(
       Payload&& request,
-      RocketClientWriteCallback* writeCallback);
+      RequestClientCallback* writeCallback);
 
   void sendRequestStream(
       Payload&& request,

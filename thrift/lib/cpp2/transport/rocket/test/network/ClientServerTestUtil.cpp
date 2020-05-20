@@ -147,7 +147,7 @@ RocketTestClient::~RocketTestClient() {
 folly::Try<Payload> RocketTestClient::sendRequestResponseSync(
     Payload request,
     std::chrono::milliseconds timeout,
-    RocketClientWriteCallback* writeCallback) {
+    RequestClientCallback* writeCallback) {
   folly::Try<Payload> response;
   folly::fibers::Baton baton;
 
@@ -169,7 +169,7 @@ folly::Try<Payload> RocketTestClient::sendRequestResponseSync(
 
 folly::Try<void> RocketTestClient::sendRequestFnfSync(
     Payload request,
-    RocketClientWriteCallback* writeCallback) {
+    RequestClientCallback* writeCallback) {
   folly::Try<void> response;
   folly::fibers::Baton baton;
 

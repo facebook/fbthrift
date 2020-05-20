@@ -42,6 +42,7 @@
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/async/ClientSinkBridge.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
+#include <thrift/lib/cpp2/async/RequestCallback.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/async/Sink.h>
@@ -50,7 +51,6 @@
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
-#include <thrift/lib/cpp2/transport/rocket/client/RocketClientWriteCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/ErrorCode.h>
 #include <thrift/lib/cpp2/transport/rocket/test/network/ClientServerTestUtil.h>
 #include <thrift/lib/cpp2/transport/rocket/test/network/Util.h>
@@ -95,11 +95,19 @@ class RocketNetworkTest : public testing::Test {
   folly::ManualExecutor userExecutor_;
 };
 
-struct OnWriteSuccess : RocketClientWriteCallback {
+struct OnWriteSuccess : RequestClientCallback {
   bool writeSuccess{false};
 
-  void onWriteSuccess() noexcept final {
+  void onRequestSent() noexcept override {
     writeSuccess = true;
+  }
+
+  void onResponse(ClientReceiveState&&) noexcept override {
+    LOG(FATAL) << "Not used";
+  }
+
+  void onResponseError(folly::exception_wrapper) noexcept override {
+    LOG(FATAL) << "Not used";
   }
 };
 } // namespace
@@ -115,8 +123,7 @@ TEST_F(RocketNetworkTest, FlushList) {
 
     auto& fm = folly::fibers::getFiberManager(eventBase);
 
-    OnWriteSuccess writeCallback;
-
+    OnWriteSuccess onWriteSuccess;
     // Add a task that would initiate sending the request.
     auto sendFuture = fm.addTaskRemoteFuture([&] {
       rawClient.setFlushList(&flushList);
@@ -124,7 +131,7 @@ TEST_F(RocketNetworkTest, FlushList) {
       auto reply = rawClient.sendRequestResponseSync(
           Payload::makeFromMetadataAndData(kMetadata, kData),
           std::chrono::milliseconds(250),
-          &writeCallback);
+          &onWriteSuccess);
 
       EXPECT_TRUE(reply.hasValue());
       return std::move(reply.value());
@@ -133,7 +140,7 @@ TEST_F(RocketNetworkTest, FlushList) {
     // Add another task that would ensure several event base loops are
     // performed, then flushes the list.
     fm.addTaskRemoteFuture([&] {
-        EXPECT_FALSE(writeCallback.writeSuccess);
+        EXPECT_FALSE(onWriteSuccess.writeSuccess);
 
         auto cbs = std::move(flushList);
         while (!cbs.empty()) {
@@ -142,13 +149,13 @@ TEST_F(RocketNetworkTest, FlushList) {
           callback->runLoopCallback();
         }
 
-        EXPECT_TRUE(writeCallback.writeSuccess);
+        EXPECT_TRUE(onWriteSuccess.writeSuccess);
       })
         .wait();
 
     auto reply = std::move(sendFuture).get();
 
-    EXPECT_TRUE(writeCallback.writeSuccess);
+    EXPECT_TRUE(onWriteSuccess.writeSuccess);
     auto dam = splitMetadataAndData(reply);
     EXPECT_EQ(kData, getRange(*dam.second));
     EXPECT_TRUE(reply.hasNonemptyMetadata());
@@ -170,13 +177,13 @@ TEST_F(RocketNetworkTest, RequestResponseBasic) {
     constexpr folly::StringPiece kMetadata("metadata");
     constexpr folly::StringPiece kData("test_request");
 
-    OnWriteSuccess writeCallback;
+    OnWriteSuccess onWriteSuccess;
     auto reply = client.sendRequestResponseSync(
         Payload::makeFromMetadataAndData(kMetadata, kData),
         std::chrono::milliseconds(250) /* timeout */,
-        &writeCallback);
+        &onWriteSuccess);
 
-    EXPECT_TRUE(writeCallback.writeSuccess);
+    EXPECT_TRUE(onWriteSuccess.writeSuccess);
     EXPECT_TRUE(reply.hasValue());
     auto dam = splitMetadataAndData(*reply);
     EXPECT_EQ(kData, getRange(*dam.second));
@@ -299,13 +306,13 @@ TEST_F(RocketNetworkTest, RequestResponseDeadServer) {
 
   this->server_.reset();
 
-  OnWriteSuccess writeCallback;
+  OnWriteSuccess onWriteSuccess;
   auto reply = this->client_->sendRequestResponseSync(
       Payload::makeFromMetadataAndData(kMetadata, kData),
       std::chrono::milliseconds(250),
-      &writeCallback);
+      &onWriteSuccess);
 
-  EXPECT_FALSE(writeCallback.writeSuccess);
+  EXPECT_FALSE(onWriteSuccess.writeSuccess);
   EXPECT_TRUE(reply.hasException());
   expectTransportExceptionType(
       TTransportException::TTransportExceptionType::NOT_OPEN,

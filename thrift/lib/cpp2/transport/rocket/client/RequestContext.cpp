@@ -26,10 +26,10 @@
 #include <folly/lang/Assume.h>
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/async/RequestCallback.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContextQueue.h>
-#include <thrift/lib/cpp2/transport/rocket/client/RocketClientWriteCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/cpp2/transport/rsocket/gen-cpp2/Config_types.h>
 
@@ -132,7 +132,7 @@ void RequestContext::onErrorFrame(ErrorFrame&& errorFrame) {
 
 void RequestContext::onWriteSuccess() noexcept {
   if (writeCallback_) {
-    writeCallback_->onWriteSuccess();
+    writeCallback_->onRequestSent();
   }
 }
 

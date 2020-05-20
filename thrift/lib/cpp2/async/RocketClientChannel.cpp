@@ -46,7 +46,6 @@
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
-#include <thrift/lib/cpp2/transport/rocket/client/RocketClientWriteCallback.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 using namespace apache::thrift::transport;
@@ -55,19 +54,6 @@ namespace apache {
 namespace thrift {
 
 namespace {
-class OnWriteSuccess final : public rocket::RocketClientWriteCallback {
- public:
-  explicit OnWriteSuccess(RequestClientCallback& requestCallback)
-      : requestCallback_(requestCallback) {}
-
-  void onWriteSuccess() noexcept override {
-    requestCallback_.onRequestSent();
-  }
-
- private:
-  RequestClientCallback& requestCallback_;
-};
-
 FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
     ResponseRpcMetadata& metadata,
     std::unique_ptr<folly::IOBuf>& payload,
@@ -474,9 +460,8 @@ void RocketClientChannel::sendSingleRequestNoResponse(
            folly::DelayedDestruction::DestructorGuard(rclient_.get()),
        rclientPtr = rclient_.get(),
        requestPayload = rocket::pack(metadata, std::move(buf))]() mutable {
-        OnWriteSuccess writeCallback(cbRef);
         return rclientPtr->sendRequestFnfSync(
-            std::move(requestPayload), &writeCallback);
+            std::move(requestPayload), &cbRef /* writeCallback */);
       };
 
   auto finallyFunc = [cb = std::move(cb),
@@ -484,7 +469,7 @@ void RocketClientChannel::sendSingleRequestNoResponse(
     if (result.hasException()) {
       cb.release()->onResponseError(std::move(result.exception()));
     } else {
-      // onRequestSent is already called by the writeCallback.
+      // onRequestSent is already called within RocketClient.
       cb.release();
     }
   };
@@ -520,9 +505,8 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
            folly::DelayedDestruction::DestructorGuard(rclient_.get()),
        rclientPtr = rclient_.get(),
        requestPayload = std::move(requestPayload)]() mutable {
-        OnWriteSuccess writeCallback(cbRef);
         return rclientPtr->sendRequestResponseSync(
-            std::move(requestPayload), timeout, &writeCallback);
+            std::move(requestPayload), timeout, &cbRef /* writeCallback */);
       };
 
   auto finallyFunc = [cb = std::move(cb),
