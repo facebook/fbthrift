@@ -40,6 +40,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_query(ThriftMetadata& metadata,
   auto service_MyService_query_i_2_type = std::make_unique<Struct< ::cpp2::Included>>("includes.Included");
   service_MyService_query_i_2_type->writeAndGenType(service_MyService_query_i_2.type, metadata);
   func.arguments.push_back(std::move(service_MyService_query_i_2));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_has_arg_docs(ThriftMetadata& metadata, ThriftService& service) {
@@ -62,6 +63,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_has_arg_docs(ThriftMetadata& me
   auto service_MyService_has_arg_docs_i_2_type = std::make_unique<Struct< ::cpp2::Included>>("includes.Included");
   service_MyService_has_arg_docs_i_2_type->writeAndGenType(service_MyService_has_arg_docs_i_2.type, metadata);
   func.arguments.push_back(std::move(service_MyService_has_arg_docs_i_2));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 

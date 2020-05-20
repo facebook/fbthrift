@@ -528,6 +528,7 @@ void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_bo
   auto module_SomeService_bounce_map_m_1_type = std::make_unique<Typedef>("include.SomeMap", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)));
   module_SomeService_bounce_map_m_1_type->writeAndGenType(module_SomeService_bounce_map_m_1.type, metadata);
   func.arguments.push_back(std::move(module_SomeService_bounce_map_m_1));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_binary_keyed_map(ThriftMetadata& metadata, ThriftService& service) {
@@ -543,6 +544,7 @@ void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_bi
   auto module_SomeService_binary_keyed_map_r_1_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE));
   module_SomeService_binary_keyed_map_r_1_type->writeAndGenType(module_SomeService_binary_keyed_map_r_1.type, metadata);
   func.arguments.push_back(std::move(module_SomeService_binary_keyed_map_r_1));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 

@@ -57,6 +57,7 @@ void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_returnstream(Thrif
   auto module_PubSubStreamingService_returnstream_i32_to_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   module_PubSubStreamingService_returnstream_i32_to_2_type->writeAndGenType(module_PubSubStreamingService_returnstream_i32_to_2.type, metadata);
   func.arguments.push_back(std::move(module_PubSubStreamingService_returnstream_i32_to_2));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_streamthrows(ThriftMetadata& metadata, ThriftService& service) {
@@ -72,6 +73,7 @@ void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_streamthrows(Thrif
   auto module_PubSubStreamingService_streamthrows_foo_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   module_PubSubStreamingService_streamthrows_foo_1_type->writeAndGenType(module_PubSubStreamingService_streamthrows_foo_1.type, metadata);
   func.arguments.push_back(std::move(module_PubSubStreamingService_streamthrows_foo_1));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_boththrows(ThriftMetadata& metadata, ThriftService& service) {
@@ -95,6 +97,7 @@ void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_boththrows(ThriftM
   module_PubSubStreamingService_boththrows_e_1_type->writeAndGenType(module_PubSubStreamingService_boththrows_e_1.type, metadata);
   func.exceptions.push_back(std::move(module_PubSubStreamingService_boththrows_e_1));
   ExceptionMetadata< ::cpp2::FooEx>::gen(metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_responseandstreamthrows(ThriftMetadata& metadata, ThriftService& service) {
@@ -118,6 +121,7 @@ void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_responseandstreamt
   module_PubSubStreamingService_responseandstreamthrows_e_1_type->writeAndGenType(module_PubSubStreamingService_responseandstreamthrows_e_1.type, metadata);
   func.exceptions.push_back(std::move(module_PubSubStreamingService_responseandstreamthrows_e_1));
   ExceptionMetadata< ::cpp2::FooEx>::gen(metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 

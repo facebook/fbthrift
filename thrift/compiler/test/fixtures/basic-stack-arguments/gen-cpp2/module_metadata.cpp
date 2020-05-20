@@ -67,6 +67,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_hasDataById(ThriftMetadata& met
   auto module_MyService_hasDataById_id_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
   module_MyService_hasDataById_id_1_type->writeAndGenType(module_MyService_hasDataById_id_1.type, metadata);
   func.arguments.push_back(std::move(module_MyService_hasDataById_id_1));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_getDataById(ThriftMetadata& metadata, ThriftService& service) {
@@ -82,6 +83,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_getDataById(ThriftMetadata& met
   auto module_MyService_getDataById_id_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
   module_MyService_getDataById_id_1_type->writeAndGenType(module_MyService_getDataById_id_1.type, metadata);
   func.arguments.push_back(std::move(module_MyService_getDataById_id_1));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_putDataById(ThriftMetadata& metadata, ThriftService& service) {
@@ -104,6 +106,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_putDataById(ThriftMetadata& met
   auto module_MyService_putDataById_data_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   module_MyService_putDataById_data_2_type->writeAndGenType(module_MyService_putDataById_data_2.type, metadata);
   func.arguments.push_back(std::move(module_MyService_putDataById_data_2));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_lobDataById(ThriftMetadata& metadata, ThriftService& service) {
@@ -126,6 +129,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_lobDataById(ThriftMetadata& met
   auto module_MyService_lobDataById_data_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   module_MyService_lobDataById_data_2_type->writeAndGenType(module_MyService_lobDataById_data_2.type, metadata);
   func.arguments.push_back(std::move(module_MyService_lobDataById_data_2));
+  func.is_oneway_ref() = true;
   service.functions.push_back(std::move(func));
 }
 
@@ -160,6 +164,7 @@ void ServiceMetadata<::cpp2::MyServiceFastSvIf>::gen_hasDataById(ThriftMetadata&
   auto module_MyServiceFast_hasDataById_id_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
   module_MyServiceFast_hasDataById_id_1_type->writeAndGenType(module_MyServiceFast_hasDataById_id_1.type, metadata);
   func.arguments.push_back(std::move(module_MyServiceFast_hasDataById_id_1));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::MyServiceFastSvIf>::gen_getDataById(ThriftMetadata& metadata, ThriftService& service) {
@@ -175,6 +180,7 @@ void ServiceMetadata<::cpp2::MyServiceFastSvIf>::gen_getDataById(ThriftMetadata&
   auto module_MyServiceFast_getDataById_id_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
   module_MyServiceFast_getDataById_id_1_type->writeAndGenType(module_MyServiceFast_getDataById_id_1.type, metadata);
   func.arguments.push_back(std::move(module_MyServiceFast_getDataById_id_1));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::MyServiceFastSvIf>::gen_putDataById(ThriftMetadata& metadata, ThriftService& service) {
@@ -197,6 +203,7 @@ void ServiceMetadata<::cpp2::MyServiceFastSvIf>::gen_putDataById(ThriftMetadata&
   auto module_MyServiceFast_putDataById_data_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   module_MyServiceFast_putDataById_data_2_type->writeAndGenType(module_MyServiceFast_putDataById_data_2.type, metadata);
   func.arguments.push_back(std::move(module_MyServiceFast_putDataById_data_2));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::MyServiceFastSvIf>::gen_lobDataById(ThriftMetadata& metadata, ThriftService& service) {
@@ -219,6 +226,7 @@ void ServiceMetadata<::cpp2::MyServiceFastSvIf>::gen_lobDataById(ThriftMetadata&
   auto module_MyServiceFast_lobDataById_data_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   module_MyServiceFast_lobDataById_data_2_type->writeAndGenType(module_MyServiceFast_lobDataById_data_2.type, metadata);
   func.arguments.push_back(std::move(module_MyServiceFast_lobDataById_data_2));
+  func.is_oneway_ref() = true;
   service.functions.push_back(std::move(func));
 }
 

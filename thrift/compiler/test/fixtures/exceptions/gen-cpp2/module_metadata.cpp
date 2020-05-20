@@ -125,6 +125,7 @@ void ServiceMetadata<::cpp2::RaiserSvIf>::gen_doBland(ThriftMetadata& metadata, 
   func.name = "doBland";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::RaiserSvIf>::gen_doRaise(ThriftMetadata& metadata, ThriftService& service) {
@@ -157,6 +158,7 @@ void ServiceMetadata<::cpp2::RaiserSvIf>::gen_doRaise(ThriftMetadata& metadata, 
   module_Raiser_doRaise_s_3_type->writeAndGenType(module_Raiser_doRaise_s_3.type, metadata);
   func.exceptions.push_back(std::move(module_Raiser_doRaise_s_3));
   ExceptionMetadata< ::cpp2::Serious>::gen(metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::RaiserSvIf>::gen_get200(ThriftMetadata& metadata, ThriftService& service) {
@@ -165,6 +167,7 @@ void ServiceMetadata<::cpp2::RaiserSvIf>::gen_get200(ThriftMetadata& metadata, T
   func.name = "get200";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::RaiserSvIf>::gen_get500(ThriftMetadata& metadata, ThriftService& service) {
@@ -197,6 +200,7 @@ void ServiceMetadata<::cpp2::RaiserSvIf>::gen_get500(ThriftMetadata& metadata, T
   module_Raiser_get500_s_3_type->writeAndGenType(module_Raiser_get500_s_3.type, metadata);
   func.exceptions.push_back(std::move(module_Raiser_get500_s_3));
   ExceptionMetadata< ::cpp2::Serious>::gen(metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 

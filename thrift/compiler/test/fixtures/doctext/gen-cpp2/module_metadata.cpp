@@ -59,6 +59,7 @@ void ServiceMetadata<::cpp2::CSvIf>::gen_f(ThriftMetadata& metadata, ThriftServi
   func.name = "f";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 

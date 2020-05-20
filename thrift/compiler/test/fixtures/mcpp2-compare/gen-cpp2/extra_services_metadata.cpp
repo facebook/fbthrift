@@ -59,6 +59,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_simple_function(Thrift
   func.name = "simple_function";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_throws_function(ThriftMetadata& metadata, ThriftService& service) {
@@ -83,6 +84,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_throws_function(Thrift
   extra_services_ExtraService_throws_function_aex_2_type->writeAndGenType(extra_services_ExtraService_throws_function_aex_2.type, metadata);
   func.exceptions.push_back(std::move(extra_services_ExtraService_throws_function_aex_2));
   ExceptionMetadata< ::some::valid::ns::AnotherException>::gen(metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_throws_function2(ThriftMetadata& metadata, ThriftService& service) {
@@ -114,6 +116,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_throws_function2(Thrif
   extra_services_ExtraService_throws_function2_aex_2_type->writeAndGenType(extra_services_ExtraService_throws_function2_aex_2.type, metadata);
   func.exceptions.push_back(std::move(extra_services_ExtraService_throws_function2_aex_2));
   ExceptionMetadata< ::some::valid::ns::AnotherException>::gen(metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_throws_function3(ThriftMetadata& metadata, ThriftService& service) {
@@ -152,6 +155,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_throws_function3(Thrif
   extra_services_ExtraService_throws_function3_aex_5_type->writeAndGenType(extra_services_ExtraService_throws_function3_aex_5.type, metadata);
   func.exceptions.push_back(std::move(extra_services_ExtraService_throws_function3_aex_5));
   ExceptionMetadata< ::some::valid::ns::AnotherException>::gen(metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret(ThriftMetadata& metadata, ThriftService& service) {
@@ -160,6 +164,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret(Thrift
   func.name = "oneway_void_ret";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = true;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_i32_i32_i32_i32_i32_param(ThriftMetadata& metadata, ThriftService& service) {
@@ -203,6 +208,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_i32_i3
   auto extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param5_5_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param5_5_type->writeAndGenType(extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param5_5.type, metadata);
   func.arguments.push_back(std::move(extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param5_5));
+  func.is_oneway_ref() = true;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_map_setlist_param(ThriftMetadata& metadata, ThriftService& service) {
@@ -225,6 +231,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_map_se
   auto extra_services_ExtraService_oneway_void_ret_map_setlist_param_param2_3_type = std::make_unique<Set>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)));
   extra_services_ExtraService_oneway_void_ret_map_setlist_param_param2_3_type->writeAndGenType(extra_services_ExtraService_oneway_void_ret_map_setlist_param_param2_3.type, metadata);
   func.arguments.push_back(std::move(extra_services_ExtraService_oneway_void_ret_map_setlist_param_param2_3));
+  func.is_oneway_ref() = true;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_struct_param(ThriftMetadata& metadata, ThriftService& service) {
@@ -240,6 +247,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_struct
   auto extra_services_ExtraService_oneway_void_ret_struct_param_param1_1_type = std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct");
   extra_services_ExtraService_oneway_void_ret_struct_param_param1_1_type->writeAndGenType(extra_services_ExtraService_oneway_void_ret_struct_param_param1_1.type, metadata);
   func.arguments.push_back(std::move(extra_services_ExtraService_oneway_void_ret_struct_param_param1_1));
+  func.is_oneway_ref() = true;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_listunion_param(ThriftMetadata& metadata, ThriftService& service) {
@@ -255,6 +263,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_listun
   auto extra_services_ExtraService_oneway_void_ret_listunion_param_param1_1_type = std::make_unique<List>(std::make_unique<Union< ::some::valid::ns::ComplexUnion>>("module.ComplexUnion"));
   extra_services_ExtraService_oneway_void_ret_listunion_param_param1_1_type->writeAndGenType(extra_services_ExtraService_oneway_void_ret_listunion_param_param1_1.type, metadata);
   func.arguments.push_back(std::move(extra_services_ExtraService_oneway_void_ret_listunion_param_param1_1));
+  func.is_oneway_ref() = true;
   service.functions.push_back(std::move(func));
 }
 

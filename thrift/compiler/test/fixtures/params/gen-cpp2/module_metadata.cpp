@@ -33,6 +33,7 @@ void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_mapList(ThriftMetadata& 
   auto module_NestedContainers_mapList_foo_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)));
   module_NestedContainers_mapList_foo_1_type->writeAndGenType(module_NestedContainers_mapList_foo_1.type, metadata);
   func.arguments.push_back(std::move(module_NestedContainers_mapList_foo_1));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_mapSet(ThriftMetadata& metadata, ThriftService& service) {
@@ -48,6 +49,7 @@ void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_mapSet(ThriftMetadata& m
   auto module_NestedContainers_mapSet_foo_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)));
   module_NestedContainers_mapSet_foo_1_type->writeAndGenType(module_NestedContainers_mapSet_foo_1.type, metadata);
   func.arguments.push_back(std::move(module_NestedContainers_mapSet_foo_1));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_listMap(ThriftMetadata& metadata, ThriftService& service) {
@@ -63,6 +65,7 @@ void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_listMap(ThriftMetadata& 
   auto module_NestedContainers_listMap_foo_1_type = std::make_unique<List>(std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)));
   module_NestedContainers_listMap_foo_1_type->writeAndGenType(module_NestedContainers_listMap_foo_1.type, metadata);
   func.arguments.push_back(std::move(module_NestedContainers_listMap_foo_1));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_listSet(ThriftMetadata& metadata, ThriftService& service) {
@@ -78,6 +81,7 @@ void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_listSet(ThriftMetadata& 
   auto module_NestedContainers_listSet_foo_1_type = std::make_unique<List>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)));
   module_NestedContainers_listSet_foo_1_type->writeAndGenType(module_NestedContainers_listSet_foo_1.type, metadata);
   func.arguments.push_back(std::move(module_NestedContainers_listSet_foo_1));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_turtles(ThriftMetadata& metadata, ThriftService& service) {
@@ -93,6 +97,7 @@ void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_turtles(ThriftMetadata& 
   auto module_NestedContainers_turtles_foo_1_type = std::make_unique<List>(std::make_unique<List>(std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))))));
   module_NestedContainers_turtles_foo_1_type->writeAndGenType(module_NestedContainers_turtles_foo_1.type, metadata);
   func.arguments.push_back(std::move(module_NestedContainers_turtles_foo_1));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 

@@ -448,7 +448,7 @@ TEST_F(ServiceMetadataTest, ServiceTest) {
 
   const auto& s = response_.get_context().get_service_info();
   EXPECT_EQ(s.name, "service_test.MyTestService");
-  EXPECT_EQ(s.functions.size(), 2);
+  EXPECT_EQ(s.functions.size(), 3);
   EXPECT_EQ(*s.get_parent(), "service_test.ParentService");
 
   const auto& f0 = s.functions[0];
@@ -460,6 +460,7 @@ TEST_F(ServiceMetadataTest, ServiceTest) {
   EXPECT_EQ(elemType->get_t_struct().name, "typedef_test.Types");
   EXPECT_EQ(f0.arguments.size(), 0);
   EXPECT_EQ(f0.exceptions.size(), 0);
+  EXPECT_FALSE(*f0.is_oneway_ref());
 
   const auto& f1 = s.functions[1];
   EXPECT_EQ(f1.name, "getType");
@@ -478,6 +479,11 @@ TEST_F(ServiceMetadataTest, ServiceTest) {
   EXPECT_EQ(
       f1.exceptions[0].type.get_t_struct().name,
       "service_test.CutoffException");
+  EXPECT_FALSE(*f1.is_oneway_ref());
+
+  const auto& f2 = s.functions[2];
+  EXPECT_EQ(f2.name, "noReturn");
+  EXPECT_TRUE(*f2.is_oneway_ref());
 }
 
 TEST_F(ServiceMetadataTest, RepeatedTest) {

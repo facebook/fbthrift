@@ -614,6 +614,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method1(Thr
   func.name = "method1";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method2(ThriftMetadata& metadata, ThriftService& service) {
@@ -643,6 +644,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method2(Thr
   auto module_service1_method2_z_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
   module_service1_method2_z_3_type->writeAndGenType(module_service1_method2_z_3.type, metadata);
   func.arguments.push_back(std::move(module_service1_method2_z_3));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method3(ThriftMetadata& metadata, ThriftService& service) {
@@ -651,6 +653,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method3(Thr
   func.name = "method3";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method4(ThriftMetadata& metadata, ThriftService& service) {
@@ -680,6 +683,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method4(Thr
   auto module_service1_method4_k_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
   module_service1_method4_k_3_type->writeAndGenType(module_service1_method4_k_3.type, metadata);
   func.arguments.push_back(std::move(module_service1_method4_k_3));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method5(ThriftMetadata& metadata, ThriftService& service) {
@@ -688,6 +692,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method5(Thr
   func.name = "method5";
   auto func_ret_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct2>>("module.struct2");
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method6(ThriftMetadata& metadata, ThriftService& service) {
@@ -717,6 +722,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method6(Thr
   auto module_service1_method6_n_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
   module_service1_method6_n_3_type->writeAndGenType(module_service1_method6_n_3.type, metadata);
   func.arguments.push_back(std::move(module_service1_method6_n_3));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 
@@ -746,6 +752,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodA(Thr
   func.name = "methodA";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodB(ThriftMetadata& metadata, ThriftService& service) {
@@ -775,6 +782,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodB(Thr
   auto module_service2_methodB_z_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
   module_service2_methodB_z_3_type->writeAndGenType(module_service2_methodB_z_3.type, metadata);
   func.arguments.push_back(std::move(module_service2_methodB_z_3));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodC(ThriftMetadata& metadata, ThriftService& service) {
@@ -783,6 +791,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodC(Thr
   func.name = "methodC";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodD(ThriftMetadata& metadata, ThriftService& service) {
@@ -812,6 +821,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodD(Thr
   auto module_service2_methodD_k_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
   module_service2_methodD_k_3_type->writeAndGenType(module_service2_methodD_k_3.type, metadata);
   func.arguments.push_back(std::move(module_service2_methodD_k_3));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodE(ThriftMetadata& metadata, ThriftService& service) {
@@ -820,6 +830,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodE(Thr
   func.name = "methodE";
   auto func_ret_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct2>>("module.struct2");
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodF(ThriftMetadata& metadata, ThriftService& service) {
@@ -849,6 +860,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodF(Thr
   auto module_service2_methodF_n_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
   module_service2_methodF_n_3_type->writeAndGenType(module_service2_methodF_n_3.type, metadata);
   func.arguments.push_back(std::move(module_service2_methodF_n_3));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 
@@ -878,6 +890,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodA(Thr
   func.name = "methodA";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodB(ThriftMetadata& metadata, ThriftService& service) {
@@ -907,6 +920,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodB(Thr
   auto module_service3_methodB_z_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
   module_service3_methodB_z_3_type->writeAndGenType(module_service3_methodB_z_3.type, metadata);
   func.arguments.push_back(std::move(module_service3_methodB_z_3));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodC(ThriftMetadata& metadata, ThriftService& service) {
@@ -915,6 +929,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodC(Thr
   func.name = "methodC";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodD(ThriftMetadata& metadata, ThriftService& service) {
@@ -944,6 +959,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodD(Thr
   auto module_service3_methodD_k_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
   module_service3_methodD_k_3_type->writeAndGenType(module_service3_methodD_k_3.type, metadata);
   func.arguments.push_back(std::move(module_service3_methodD_k_3));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodE(ThriftMetadata& metadata, ThriftService& service) {
@@ -952,6 +968,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodE(Thr
   func.name = "methodE";
   auto func_ret_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct2>>("module.struct2");
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodF(ThriftMetadata& metadata, ThriftService& service) {
@@ -981,6 +998,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodF(Thr
   auto module_service3_methodF_n_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
   module_service3_methodF_n_3_type->writeAndGenType(module_service3_methodF_n_3.type, metadata);
   func.arguments.push_back(std::move(module_service3_methodF_n_3));
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 
@@ -1010,6 +1028,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "get";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_getter(ThriftMetadata& metadata, ThriftService& service) {
@@ -1018,6 +1037,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "getter";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_lists(ThriftMetadata& metadata, ThriftService& service) {
@@ -1026,6 +1046,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "lists";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_maps(ThriftMetadata& metadata, ThriftService& service) {
@@ -1034,6 +1055,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "maps";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_name(ThriftMetadata& metadata, ThriftService& service) {
@@ -1042,6 +1064,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "name";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_name_to_value(ThriftMetadata& metadata, ThriftService& service) {
@@ -1050,6 +1073,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "name_to_value";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_names(ThriftMetadata& metadata, ThriftService& service) {
@@ -1058,6 +1082,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "names";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_prefix_tree(ThriftMetadata& metadata, ThriftService& service) {
@@ -1066,6 +1091,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "prefix_tree";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_sets(ThriftMetadata& metadata, ThriftService& service) {
@@ -1074,6 +1100,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "sets";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_setter(ThriftMetadata& metadata, ThriftService& service) {
@@ -1082,6 +1109,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "setter";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_str(ThriftMetadata& metadata, ThriftService& service) {
@@ -1090,6 +1118,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "str";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_strings(ThriftMetadata& metadata, ThriftService& service) {
@@ -1098,6 +1127,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "strings";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_type(ThriftMetadata& metadata, ThriftService& service) {
@@ -1106,6 +1136,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "type";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_value(ThriftMetadata& metadata, ThriftService& service) {
@@ -1114,6 +1145,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "value";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_value_to_name(ThriftMetadata& metadata, ThriftService& service) {
@@ -1122,6 +1154,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "value_to_name";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_values(ThriftMetadata& metadata, ThriftService& service) {
@@ -1130,6 +1163,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "values";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_id(ThriftMetadata& metadata, ThriftService& service) {
@@ -1138,6 +1172,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "id";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_ids(ThriftMetadata& metadata, ThriftService& service) {
@@ -1146,6 +1181,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "ids";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_descriptor(ThriftMetadata& metadata, ThriftService& service) {
@@ -1154,6 +1190,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "descriptor";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_descriptors(ThriftMetadata& metadata, ThriftService& service) {
@@ -1162,6 +1199,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "descriptors";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_key(ThriftMetadata& metadata, ThriftService& service) {
@@ -1170,6 +1208,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "key";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_keys(ThriftMetadata& metadata, ThriftService& service) {
@@ -1178,6 +1217,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "keys";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_annotation(ThriftMetadata& metadata, ThriftService& service) {
@@ -1186,6 +1226,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "annotation";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_annotations(ThriftMetadata& metadata, ThriftService& service) {
@@ -1194,6 +1235,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "annotations";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_member(ThriftMetadata& metadata, ThriftService& service) {
@@ -1202,6 +1244,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "member";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_members(ThriftMetadata& metadata, ThriftService& service) {
@@ -1210,6 +1253,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "members";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_field(ThriftMetadata& metadata, ThriftService& service) {
@@ -1218,6 +1262,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "field";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_fields(ThriftMetadata& metadata, ThriftService& service) {
@@ -1226,6 +1271,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.name = "fields";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->writeAndGenType(func.returnType, metadata);
+  func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
 

@@ -125,6 +125,7 @@ struct ThriftFunction {
   2: ThriftType returnType;
   3: list<ThriftField> arguments;
   4: list<ThriftField> exceptions;
+  5: bool is_oneway;
 }
 
 struct ThriftService {

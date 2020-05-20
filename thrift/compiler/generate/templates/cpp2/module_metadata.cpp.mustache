@@ -123,6 +123,7 @@ func.exceptions.push_back(std::move(<% > metadata/func_field_name%>));
 <%/type:struct?%>
 <%/field:type%>
 <%/function:exceptions%>
+  func.is_oneway_ref() = <%function:oneway?%>;
   service.functions.push_back(std::move(func));
 }
 <%/service:functions%>

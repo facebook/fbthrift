@@ -33,4 +33,5 @@ service MyTestService extends ParentService {
   ) throws (
     1: CutoffException ex;
   );
+  oneway void noReturn();
 }
