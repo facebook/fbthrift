@@ -24,7 +24,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("MyMutableStruct")
+@ThriftStruct("MyMutableStruct") @com.foo.Enabled 
 public final class MyMutableStruct {
     @ThriftConstructor
     public MyMutableStruct() {
