@@ -488,7 +488,7 @@ TEST_F(StructTest, noexcept_move_annotation) {
   EXPECT_TRUE(std::is_nothrow_move_constructible<NoexceptMoveStruct>::value);
   EXPECT_TRUE(std::is_nothrow_move_assignable<NoexceptMoveStruct>::value);
   NoexceptMoveStruct a;
-  a.set_string_field("hello world");
+  a.string_field_ref() = "hello world";
   NoexceptMoveStruct b(std::move(a));
   EXPECT_EQ(b.get_string_field(), "hello world");
   NoexceptMoveStruct c;

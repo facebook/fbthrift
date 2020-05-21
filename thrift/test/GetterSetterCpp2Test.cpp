@@ -60,10 +60,10 @@ TEST(GetterSetter, BasicDefaultFields) {
   EXPECT_TRUE(obj.get_defaultList().empty());
   EXPECT_EQ(nullptr, obj.get_defaultBuf());
 
-  obj.set_defaultInt(42);
+  obj.defaultInt_ref() = 42;
   EXPECT_EQ(42, obj.get_defaultInt());
-  obj.set_defaultList(vec);
+  obj.defaultList_ref() = vec;
   EXPECT_EQ(vec, obj.get_defaultList());
-  obj.set_defaultBuf(std::move(buf));
+  obj.defaultBuf_ref() = std::move(buf);
   EXPECT_EQ(6, obj.get_defaultBuf()->length());
 }

@@ -727,7 +727,7 @@ TEST(fatal_pretty_print, optional_member) {
 
 TEST(fatal_pretty_print, escape_strings) {
   structA s;
-  s.set_b("foo\nbar");
+  s.b_ref() = "foo\nbar";
   const char* expectedStr = R"(
     <struct>{
       a: 0,

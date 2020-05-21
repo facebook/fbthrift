@@ -66,8 +66,8 @@ TEST(constants, examples) {
   EXPECT_EQ(struct1(), test_constants::pod_0());
 
   struct1 pod1;
-  pod1.set_a(10);
-  pod1.set_b("foo");
+  pod1.a_ref() = 10;
+  pod1.b_ref() = "foo";
 
   auto const& pod_1 = test_constants::pod_1();
   EXPECT_TRUE(pod_1.__isset.a);
@@ -75,12 +75,12 @@ TEST(constants, examples) {
   EXPECT_EQ(pod1, pod_1);
 
   struct2 pod2;
-  pod2.set_a(98);
-  pod2.set_b("gaz");
-  auto& pod2_c = pod2.set_c(struct1());
-  pod2_c.set_a(12);
-  pod2_c.set_b("bar");
-  pod2.set_d(std::vector<std::int32_t>{11, 22, 33});
+  pod2.a_ref() = 98;
+  pod2.b_ref() = "gaz";
+  auto& pod2_c = pod2.c_ref().emplace(struct1());
+  pod2_c.a_ref() = 12;
+  pod2_c.b_ref() = "bar";
+  pod2.d_ref() = std::vector<std::int32_t>{11, 22, 33};
 
   auto const& pod_2 = test_constants::pod_2();
   EXPECT_TRUE(pod_2.__isset.a);
