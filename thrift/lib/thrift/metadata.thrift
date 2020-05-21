@@ -122,7 +122,7 @@ struct ThriftException {
 
 struct ThriftFunction {
   1: string name;
-  2: ThriftType returnType;
+  2: ThriftType return_type;
   3: list<ThriftField> arguments;
   4: list<ThriftField> exceptions;
   5: bool is_oneway;

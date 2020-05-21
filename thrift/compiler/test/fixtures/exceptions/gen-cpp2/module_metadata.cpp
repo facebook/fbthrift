@@ -124,7 +124,7 @@ void ServiceMetadata<::cpp2::RaiserSvIf>::gen_doBland(ThriftMetadata& metadata, 
   (void)metadata;
   func.name = "doBland";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -133,7 +133,7 @@ void ServiceMetadata<::cpp2::RaiserSvIf>::gen_doRaise(ThriftMetadata& metadata, 
   (void)metadata;
   func.name = "doRaise";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_Raiser_doRaise_b_1;
   module_Raiser_doRaise_b_1.id = 1;
   module_Raiser_doRaise_b_1.name = "b";
@@ -166,7 +166,7 @@ void ServiceMetadata<::cpp2::RaiserSvIf>::gen_get200(ThriftMetadata& metadata, T
   (void)metadata;
   func.name = "get200";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -175,7 +175,7 @@ void ServiceMetadata<::cpp2::RaiserSvIf>::gen_get500(ThriftMetadata& metadata, T
   (void)metadata;
   func.name = "get500";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_Raiser_get500_f_1;
   module_Raiser_get500_f_1.id = 1;
   module_Raiser_get500_f_1.name = "f";

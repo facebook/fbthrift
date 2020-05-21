@@ -583,7 +583,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_noReturn(ThriftM
   (void)metadata;
   func.name = "noReturn";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -592,7 +592,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_boolReturn(Thrif
   (void)metadata;
   func.name = "boolReturn";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -601,7 +601,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_i16Return(Thrift
   (void)metadata;
   func.name = "i16Return";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -610,7 +610,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_i32Return(Thrift
   (void)metadata;
   func.name = "i32Return";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -619,7 +619,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_i64Return(Thrift
   (void)metadata;
   func.name = "i64Return";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -628,7 +628,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_floatReturn(Thri
   (void)metadata;
   func.name = "floatReturn";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_FLOAT_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -637,7 +637,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_doubleReturn(Thr
   (void)metadata;
   func.name = "doubleReturn";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -646,7 +646,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_stringReturn(Thr
   (void)metadata;
   func.name = "stringReturn";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -655,7 +655,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_binaryReturn(Thr
   (void)metadata;
   func.name = "binaryReturn";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -664,7 +664,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_mapReturn(Thrift
   (void)metadata;
   func.name = "mapReturn";
   auto func_ret_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -673,7 +673,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_simpleTypedefRet
   (void)metadata;
   func.name = "simpleTypedefReturn";
   auto func_ret_type = std::make_unique<Typedef>("module.simpleTypeDef", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -682,7 +682,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_complexTypedefRe
   (void)metadata;
   func.name = "complexTypedefReturn";
   auto func_ret_type = std::make_unique<Typedef>("module.complexStructTypeDef", std::make_unique<List>(std::make_unique<Map>(std::make_unique<Struct< ::some::valid::ns::Empty>>("module.Empty"), std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"))));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -691,7 +691,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_list_mostComplex
   (void)metadata;
   func.name = "list_mostComplexTypedefReturn";
   auto func_ret_type = std::make_unique<List>(std::make_unique<Typedef>("module.mostComplexTypeDef", std::make_unique<List>(std::make_unique<Typedef>("module.complexStructTypeDef", std::make_unique<List>(std::make_unique<Map>(std::make_unique<Struct< ::some::valid::ns::Empty>>("module.Empty"), std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct")))))));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -700,7 +700,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_enumReturn(Thrif
   (void)metadata;
   func.name = "enumReturn";
   auto func_ret_type = std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA");
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -709,7 +709,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_list_EnumReturn(
   (void)metadata;
   func.name = "list_EnumReturn";
   auto func_ret_type = std::make_unique<List>(std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA"));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -718,7 +718,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_structReturn(Thr
   (void)metadata;
   func.name = "structReturn";
   auto func_ret_type = std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct");
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -727,7 +727,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_set_StructReturn
   (void)metadata;
   func.name = "set_StructReturn";
   auto func_ret_type = std::make_unique<Set>(std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -736,7 +736,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_unionReturn(Thri
   (void)metadata;
   func.name = "unionReturn";
   auto func_ret_type = std::make_unique<Union< ::some::valid::ns::ComplexUnion>>("module.ComplexUnion");
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -745,7 +745,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_list_UnionReturn
   (void)metadata;
   func.name = "list_UnionReturn";
   auto func_ret_type = std::make_unique<List>(std::make_unique<Union< ::some::valid::ns::ComplexUnion>>("module.ComplexUnion"));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -754,7 +754,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_readDataEb(Thrif
   (void)metadata;
   func.name = "readDataEb";
   auto func_ret_type = std::make_unique<Typedef>("module.IOBuf", std::make_unique<Typedef>("module.IOBuf", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ReturnService_readDataEb_size_1;
   module_ReturnService_readDataEb_size_1.id = 1;
   module_ReturnService_readDataEb_size_1.name = "size";
@@ -770,7 +770,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_readData(ThriftM
   (void)metadata;
   func.name = "readData";
   auto func_ret_type = std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ReturnService_readData_size_1;
   module_ReturnService_readData_size_1.id = 1;
   module_ReturnService_readData_size_1.name = "size";
@@ -822,7 +822,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_i16_para
   (void)metadata;
   func.name = "void_ret_i16_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_void_ret_i16_param_param1_1;
   module_ParamService_void_ret_i16_param_param1_1.id = 1;
   module_ParamService_void_ret_i16_param_param1_1.name = "param1";
@@ -838,7 +838,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_byte_i16
   (void)metadata;
   func.name = "void_ret_byte_i16_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_void_ret_byte_i16_param_param1_1;
   module_ParamService_void_ret_byte_i16_param_param1_1.id = 1;
   module_ParamService_void_ret_byte_i16_param_param1_1.name = "param1";
@@ -861,7 +861,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_map_para
   (void)metadata;
   func.name = "void_ret_map_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_void_ret_map_param_param1_1;
   module_ParamService_void_ret_map_param_param1_1.id = 1;
   module_ParamService_void_ret_map_param_param1_1.name = "param1";
@@ -877,7 +877,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_map_setl
   (void)metadata;
   func.name = "void_ret_map_setlist_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_void_ret_map_setlist_param_param1_1;
   module_ParamService_void_ret_map_setlist_param_param1_1.id = 1;
   module_ParamService_void_ret_map_setlist_param_param1_1.name = "param1";
@@ -900,7 +900,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_map_type
   (void)metadata;
   func.name = "void_ret_map_typedef_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_void_ret_map_typedef_param_param1_1;
   module_ParamService_void_ret_map_typedef_param_param1_1.id = 1;
   module_ParamService_void_ret_map_typedef_param_param1_1.name = "param1";
@@ -916,7 +916,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_enum_par
   (void)metadata;
   func.name = "void_ret_enum_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_void_ret_enum_param_param1_1;
   module_ParamService_void_ret_enum_param_param1_1.id = 1;
   module_ParamService_void_ret_enum_param_param1_1.name = "param1";
@@ -932,7 +932,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_struct_p
   (void)metadata;
   func.name = "void_ret_struct_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_void_ret_struct_param_param1_1;
   module_ParamService_void_ret_struct_param_param1_1.id = 1;
   module_ParamService_void_ret_struct_param_param1_1.name = "param1";
@@ -948,7 +948,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_listunio
   (void)metadata;
   func.name = "void_ret_listunion_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_void_ret_listunion_param_param1_1;
   module_ParamService_void_ret_listunion_param_param1_1.id = 1;
   module_ParamService_void_ret_listunion_param_param1_1.name = "param1";
@@ -964,7 +964,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_bool_ret_i32_i64_
   (void)metadata;
   func.name = "bool_ret_i32_i64_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_bool_ret_i32_i64_param_param1_1;
   module_ParamService_bool_ret_i32_i64_param_param1_1.id = 1;
   module_ParamService_bool_ret_i32_i64_param_param1_1.name = "param1";
@@ -987,7 +987,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_bool_ret_map_para
   (void)metadata;
   func.name = "bool_ret_map_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_bool_ret_map_param_param1_1;
   module_ParamService_bool_ret_map_param_param1_1.id = 1;
   module_ParamService_bool_ret_map_param_param1_1.name = "param1";
@@ -1003,7 +1003,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_bool_ret_union_pa
   (void)metadata;
   func.name = "bool_ret_union_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_bool_ret_union_param_param1_1;
   module_ParamService_bool_ret_union_param_param1_1.id = 1;
   module_ParamService_bool_ret_union_param_param1_1.name = "param1";
@@ -1019,7 +1019,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_i64_ret_float_dou
   (void)metadata;
   func.name = "i64_ret_float_double_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_i64_ret_float_double_param_param1_1;
   module_ParamService_i64_ret_float_double_param_param1_1.id = 1;
   module_ParamService_i64_ret_float_double_param_param1_1.name = "param1";
@@ -1042,7 +1042,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_i64_ret_string_ty
   (void)metadata;
   func.name = "i64_ret_string_typedef_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_i64_ret_string_typedef_param_param1_1;
   module_ParamService_i64_ret_string_typedef_param_param1_1.id = 1;
   module_ParamService_i64_ret_string_typedef_param_param1_1.name = "param1";
@@ -1065,7 +1065,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_i64_ret_i32_i32_i
   (void)metadata;
   func.name = "i64_ret_i32_i32_i32_i32_i32_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param1_1;
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param1_1.id = 1;
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param1_1.name = "param1";
@@ -1109,7 +1109,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_double_ret_setstr
   (void)metadata;
   func.name = "double_ret_setstruct_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_double_ret_setstruct_param_param1_4;
   module_ParamService_double_ret_setstruct_param_param1_4.id = 4;
   module_ParamService_double_ret_setstruct_param_param1_4.name = "param1";
@@ -1125,7 +1125,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_string_ret_string
   (void)metadata;
   func.name = "string_ret_string_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_string_ret_string_param_param1_1;
   module_ParamService_string_ret_string_param_param1_1.id = 1;
   module_ParamService_string_ret_string_param_param1_1.name = "param1";
@@ -1141,7 +1141,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_binary_ret_binary
   (void)metadata;
   func.name = "binary_ret_binary_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_binary_ret_binary_param_param1_1;
   module_ParamService_binary_ret_binary_param_param1_1.id = 1;
   module_ParamService_binary_ret_binary_param_param1_1.name = "param1";
@@ -1157,7 +1157,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_map_ret_bool_para
   (void)metadata;
   func.name = "map_ret_bool_param";
   auto func_ret_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_map_ret_bool_param_param1_1;
   module_ParamService_map_ret_bool_param_param1_1.id = 1;
   module_ParamService_map_ret_bool_param_param1_1.name = "param1";
@@ -1173,7 +1173,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_list_ret_map_setl
   (void)metadata;
   func.name = "list_ret_map_setlist_param";
   auto func_ret_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_list_ret_map_setlist_param_param1_1;
   module_ParamService_list_ret_map_setlist_param_param1_1.id = 1;
   module_ParamService_list_ret_map_setlist_param_param1_1.name = "param1";
@@ -1196,7 +1196,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_mapsetlistmaplist
   (void)metadata;
   func.name = "mapsetlistmapliststring_ret_listlistlist_param";
   auto func_ret_type = std::make_unique<Map>(std::make_unique<Set>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))), std::make_unique<Map>(std::make_unique<List>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_mapsetlistmapliststring_ret_listlistlist_param_param1_1;
   module_ParamService_mapsetlistmapliststring_ret_listlistlist_param_param1_1.id = 1;
   module_ParamService_mapsetlistmapliststring_ret_listlistlist_param_param1_1.name = "param1";
@@ -1212,7 +1212,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_typedef_ret_i32_p
   (void)metadata;
   func.name = "typedef_ret_i32_param";
   auto func_ret_type = std::make_unique<Typedef>("module.simpleTypeDef", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_typedef_ret_i32_param_param1_1;
   module_ParamService_typedef_ret_i32_param_param1_1.id = 1;
   module_ParamService_typedef_ret_i32_param_param1_1.name = "param1";
@@ -1228,7 +1228,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listtypedef_ret_t
   (void)metadata;
   func.name = "listtypedef_ret_typedef_param";
   auto func_ret_type = std::make_unique<List>(std::make_unique<Typedef>("module.simpleTypeDef", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_listtypedef_ret_typedef_param_param1_1;
   module_ParamService_listtypedef_ret_typedef_param_param1_1.id = 1;
   module_ParamService_listtypedef_ret_typedef_param_param1_1.name = "param1";
@@ -1244,7 +1244,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_enum_ret_double_p
   (void)metadata;
   func.name = "enum_ret_double_param";
   auto func_ret_type = std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA");
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_enum_ret_double_param_param1_3;
   module_ParamService_enum_ret_double_param_param1_3.id = 3;
   module_ParamService_enum_ret_double_param_param1_3.name = "param1";
@@ -1260,7 +1260,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_enum_ret_double_e
   (void)metadata;
   func.name = "enum_ret_double_enum_param";
   auto func_ret_type = std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA");
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_enum_ret_double_enum_param_param1_3;
   module_ParamService_enum_ret_double_enum_param_param1_3.id = 3;
   module_ParamService_enum_ret_double_enum_param_param1_3.name = "param1";
@@ -1283,7 +1283,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listenum_ret_map_
   (void)metadata;
   func.name = "listenum_ret_map_param";
   auto func_ret_type = std::make_unique<List>(std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA"));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_listenum_ret_map_param_param1_1;
   module_ParamService_listenum_ret_map_param_param1_1.id = 1;
   module_ParamService_listenum_ret_map_param_param1_1.name = "param1";
@@ -1299,7 +1299,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_struct_ret_i16_pa
   (void)metadata;
   func.name = "struct_ret_i16_param";
   auto func_ret_type = std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct");
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_struct_ret_i16_param_param1_1;
   module_ParamService_struct_ret_i16_param_param1_1.id = 1;
   module_ParamService_struct_ret_i16_param_param1_1.name = "param1";
@@ -1315,7 +1315,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_setstruct_ret_set
   (void)metadata;
   func.name = "setstruct_ret_set_param";
   auto func_ret_type = std::make_unique<Set>(std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_setstruct_ret_set_param_param1_8;
   module_ParamService_setstruct_ret_set_param_param1_8.id = 8;
   module_ParamService_setstruct_ret_set_param_param1_8.name = "param1";
@@ -1331,7 +1331,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_union_ret_i32_i32
   (void)metadata;
   func.name = "union_ret_i32_i32_param";
   auto func_ret_type = std::make_unique<Union< ::some::valid::ns::ComplexUnion>>("module.ComplexUnion");
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_union_ret_i32_i32_param_param1_4;
   module_ParamService_union_ret_i32_i32_param_param1_4.id = 4;
   module_ParamService_union_ret_i32_i32_param_param1_4.name = "param1";
@@ -1354,7 +1354,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listunion_string_
   (void)metadata;
   func.name = "listunion_string_param";
   auto func_ret_type = std::make_unique<List>(std::make_unique<Union< ::some::valid::ns::ComplexUnion>>("module.ComplexUnion"));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_listunion_string_param_param1_1;
   module_ParamService_listunion_string_param_param1_1.id = 1;
   module_ParamService_listunion_string_param_param1_1.name = "param1";

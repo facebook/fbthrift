@@ -25,7 +25,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_ping(ThriftMetadata& metadata, 
   (void)metadata;
   func.name = "ping";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -34,7 +34,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_getRandomData(ThriftMetadata& m
   (void)metadata;
   func.name = "getRandomData";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -43,7 +43,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_hasDataById(ThriftMetadata& met
   (void)metadata;
   func.name = "hasDataById";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_MyService_hasDataById_id_1;
   module_MyService_hasDataById_id_1.id = 1;
   module_MyService_hasDataById_id_1.name = "id";
@@ -59,7 +59,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_getDataById(ThriftMetadata& met
   (void)metadata;
   func.name = "getDataById";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_MyService_getDataById_id_1;
   module_MyService_getDataById_id_1.id = 1;
   module_MyService_getDataById_id_1.name = "id";
@@ -75,7 +75,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_putDataById(ThriftMetadata& met
   (void)metadata;
   func.name = "putDataById";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_MyService_putDataById_id_1;
   module_MyService_putDataById_id_1.id = 1;
   module_MyService_putDataById_id_1.name = "id";

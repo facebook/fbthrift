@@ -108,7 +108,7 @@ void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvI
   func.name = "<%function:name%>";
 <%#function:returnType%>
   auto func_ret_type = <% > metadata/type_gen%>;
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
 <%/function:returnType%>
 <%#function:args%>
   <% > metadata/func_field_gen%>

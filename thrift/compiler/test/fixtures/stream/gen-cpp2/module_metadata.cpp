@@ -42,7 +42,7 @@ void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_returnstream(Thrif
   (void)metadata;
   func.name = "returnstream";
   auto func_ret_type = std::make_unique<Stream>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_PubSubStreamingService_returnstream_i32_from_1;
   module_PubSubStreamingService_returnstream_i32_from_1.id = 1;
   module_PubSubStreamingService_returnstream_i32_from_1.name = "i32_from";
@@ -65,7 +65,7 @@ void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_streamthrows(Thrif
   (void)metadata;
   func.name = "streamthrows";
   auto func_ret_type = std::make_unique<Stream>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_PubSubStreamingService_streamthrows_foo_1;
   module_PubSubStreamingService_streamthrows_foo_1.id = 1;
   module_PubSubStreamingService_streamthrows_foo_1.name = "foo";
@@ -81,7 +81,7 @@ void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_boththrows(ThriftM
   (void)metadata;
   func.name = "boththrows";
   auto func_ret_type = std::make_unique<Stream>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_PubSubStreamingService_boththrows_foo_1;
   module_PubSubStreamingService_boththrows_foo_1.id = 1;
   module_PubSubStreamingService_boththrows_foo_1.name = "foo";
@@ -105,7 +105,7 @@ void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_responseandstreamt
   (void)metadata;
   func.name = "responseandstreamthrows";
   auto func_ret_type = std::make_unique<Stream>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_PubSubStreamingService_responseandstreamthrows_foo_1;
   module_PubSubStreamingService_responseandstreamthrows_foo_1.id = 1;
   module_PubSubStreamingService_responseandstreamthrows_foo_1.name = "foo";

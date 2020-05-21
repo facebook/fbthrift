@@ -25,7 +25,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_query(ThriftMetadata& metadata,
   (void)metadata;
   func.name = "query";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField service_MyService_query_s_1;
   service_MyService_query_s_1.id = 1;
   service_MyService_query_s_1.name = "s";
@@ -48,7 +48,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_has_arg_docs(ThriftMetadata& me
   (void)metadata;
   func.name = "has_arg_docs";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField service_MyService_has_arg_docs_s_1;
   service_MyService_has_arg_docs_s_1.id = 1;
   service_MyService_has_arg_docs_s_1.name = "s";

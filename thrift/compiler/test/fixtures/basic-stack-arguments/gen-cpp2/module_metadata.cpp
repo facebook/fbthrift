@@ -59,7 +59,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_hasDataById(ThriftMetadata& met
   (void)metadata;
   func.name = "hasDataById";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_MyService_hasDataById_id_1;
   module_MyService_hasDataById_id_1.id = 1;
   module_MyService_hasDataById_id_1.name = "id";
@@ -75,7 +75,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_getDataById(ThriftMetadata& met
   (void)metadata;
   func.name = "getDataById";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_MyService_getDataById_id_1;
   module_MyService_getDataById_id_1.id = 1;
   module_MyService_getDataById_id_1.name = "id";
@@ -91,7 +91,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_putDataById(ThriftMetadata& met
   (void)metadata;
   func.name = "putDataById";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_MyService_putDataById_id_1;
   module_MyService_putDataById_id_1.id = 1;
   module_MyService_putDataById_id_1.name = "id";
@@ -114,7 +114,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_lobDataById(ThriftMetadata& met
   (void)metadata;
   func.name = "lobDataById";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_MyService_lobDataById_id_1;
   module_MyService_lobDataById_id_1.id = 1;
   module_MyService_lobDataById_id_1.name = "id";
@@ -156,7 +156,7 @@ void ServiceMetadata<::cpp2::MyServiceFastSvIf>::gen_hasDataById(ThriftMetadata&
   (void)metadata;
   func.name = "hasDataById";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_MyServiceFast_hasDataById_id_1;
   module_MyServiceFast_hasDataById_id_1.id = 1;
   module_MyServiceFast_hasDataById_id_1.name = "id";
@@ -172,7 +172,7 @@ void ServiceMetadata<::cpp2::MyServiceFastSvIf>::gen_getDataById(ThriftMetadata&
   (void)metadata;
   func.name = "getDataById";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_MyServiceFast_getDataById_id_1;
   module_MyServiceFast_getDataById_id_1.id = 1;
   module_MyServiceFast_getDataById_id_1.name = "id";
@@ -188,7 +188,7 @@ void ServiceMetadata<::cpp2::MyServiceFastSvIf>::gen_putDataById(ThriftMetadata&
   (void)metadata;
   func.name = "putDataById";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_MyServiceFast_putDataById_id_1;
   module_MyServiceFast_putDataById_id_1.id = 1;
   module_MyServiceFast_putDataById_id_1.name = "id";
@@ -211,7 +211,7 @@ void ServiceMetadata<::cpp2::MyServiceFastSvIf>::gen_lobDataById(ThriftMetadata&
   (void)metadata;
   func.name = "lobDataById";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_MyServiceFast_lobDataById_id_1;
   module_MyServiceFast_lobDataById_id_1.id = 1;
   module_MyServiceFast_lobDataById_id_1.name = "id";

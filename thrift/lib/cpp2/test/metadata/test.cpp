@@ -440,9 +440,10 @@ TEST_F(ServiceMetadataTest, ServiceTest) {
 
   const auto& f = p.functions[0];
   EXPECT_EQ(f.name, "parentFun");
-  EXPECT_EQ(f.returnType.getType(), ThriftType::Type::t_primitive);
+  EXPECT_EQ(f.return_type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
-      f.returnType.get_t_primitive(), ThriftPrimitiveType::THRIFT_I32_TYPE);
+      f.return_type_ref()->get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_I32_TYPE);
   EXPECT_EQ(f.arguments.size(), 0);
   EXPECT_EQ(f.exceptions.size(), 0);
 
@@ -453,8 +454,8 @@ TEST_F(ServiceMetadataTest, ServiceTest) {
 
   const auto& f0 = s.functions[0];
   EXPECT_EQ(f0.name, "getAllTypes");
-  EXPECT_EQ(f0.returnType.getType(), ThriftType::Type::t_list);
-  auto retType1 = f0.returnType.get_t_list();
+  EXPECT_EQ(f0.return_type_ref()->getType(), ThriftType::Type::t_list);
+  auto retType1 = f0.return_type_ref()->get_t_list();
   auto elemType = retType1.valueType.get();
   EXPECT_EQ(elemType->getType(), ThriftType::Type::t_struct);
   EXPECT_EQ(elemType->get_t_struct().name, "typedef_test.Types");
@@ -464,8 +465,8 @@ TEST_F(ServiceMetadataTest, ServiceTest) {
 
   const auto& f1 = s.functions[1];
   EXPECT_EQ(f1.name, "getType");
-  EXPECT_EQ(f1.returnType.getType(), ThriftType::Type::t_struct);
-  EXPECT_EQ(f1.returnType.get_t_struct().name, "typedef_test.Types");
+  EXPECT_EQ(f1.return_type_ref()->getType(), ThriftType::Type::t_struct);
+  EXPECT_EQ(f1.return_type_ref()->get_t_struct().name, "typedef_test.Types");
   EXPECT_EQ(f1.arguments[0].id, 1);
   EXPECT_EQ(f1.arguments[0].name, "stringMap");
   EXPECT_EQ(f1.arguments[0].is_optional, false);

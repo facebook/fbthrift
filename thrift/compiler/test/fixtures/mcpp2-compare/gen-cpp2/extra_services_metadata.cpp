@@ -58,7 +58,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_simple_function(Thrift
   (void)metadata;
   func.name = "simple_function";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -67,7 +67,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_throws_function(Thrift
   (void)metadata;
   func.name = "throws_function";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_throws_function_ex_1;
   extra_services_ExtraService_throws_function_ex_1.id = 1;
   extra_services_ExtraService_throws_function_ex_1.name = "ex";
@@ -92,7 +92,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_throws_function2(Thrif
   (void)metadata;
   func.name = "throws_function2";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_throws_function2_param1_1;
   extra_services_ExtraService_throws_function2_param1_1.id = 1;
   extra_services_ExtraService_throws_function2_param1_1.name = "param1";
@@ -124,7 +124,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_throws_function3(Thrif
   (void)metadata;
   func.name = "throws_function3";
   auto func_ret_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_throws_function3_param1_1;
   extra_services_ExtraService_throws_function3_param1_1.id = 1;
   extra_services_ExtraService_throws_function3_param1_1.name = "param1";
@@ -163,7 +163,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret(Thrift
   (void)metadata;
   func.name = "oneway_void_ret";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = true;
   service.functions.push_back(std::move(func));
 }
@@ -172,7 +172,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_i32_i3
   (void)metadata;
   func.name = "oneway_void_ret_i32_i32_i32_i32_i32_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param1_1;
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param1_1.id = 1;
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param1_1.name = "param1";
@@ -216,7 +216,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_map_se
   (void)metadata;
   func.name = "oneway_void_ret_map_setlist_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_oneway_void_ret_map_setlist_param_param1_1;
   extra_services_ExtraService_oneway_void_ret_map_setlist_param_param1_1.id = 1;
   extra_services_ExtraService_oneway_void_ret_map_setlist_param_param1_1.name = "param1";
@@ -239,7 +239,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_struct
   (void)metadata;
   func.name = "oneway_void_ret_struct_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_oneway_void_ret_struct_param_param1_1;
   extra_services_ExtraService_oneway_void_ret_struct_param_param1_1.id = 1;
   extra_services_ExtraService_oneway_void_ret_struct_param_param1_1.name = "param1";
@@ -255,7 +255,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_listun
   (void)metadata;
   func.name = "oneway_void_ret_listunion_param";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_oneway_void_ret_listunion_param_param1_1;
   extra_services_ExtraService_oneway_void_ret_listunion_param_param1_1.id = 1;
   extra_services_ExtraService_oneway_void_ret_listunion_param_param1_1.name = "param1";

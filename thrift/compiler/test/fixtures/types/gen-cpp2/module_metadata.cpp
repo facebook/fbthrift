@@ -520,7 +520,7 @@ void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_bo
   (void)metadata;
   func.name = "bounce_map";
   auto func_ret_type = std::make_unique<Typedef>("include.SomeMap", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_SomeService_bounce_map_m_1;
   module_SomeService_bounce_map_m_1.id = 1;
   module_SomeService_bounce_map_m_1.name = "m";
@@ -536,7 +536,7 @@ void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_bi
   (void)metadata;
   func.name = "binary_keyed_map";
   auto func_ret_type = std::make_unique<Map>(std::make_unique<Typedef>("module.TBinary", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_SomeService_binary_keyed_map_r_1;
   module_SomeService_binary_keyed_map_r_1.id = 1;
   module_SomeService_binary_keyed_map_r_1.name = "r";

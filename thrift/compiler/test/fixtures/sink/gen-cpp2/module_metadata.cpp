@@ -232,7 +232,7 @@ void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_method(ThriftMetadata& metada
   (void)metadata;
   func.name = "method";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -241,7 +241,7 @@ void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodAndReponse(ThriftMetada
   (void)metadata;
   func.name = "methodAndReponse";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"), std::make_unique<Struct< ::cpp2::InitialResponse>>("module.InitialResponse"));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -250,7 +250,7 @@ void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodThrow(ThriftMetadata& m
   (void)metadata;
   func.name = "methodThrow";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_SinkService_methodThrow_ex_1;
   module_SinkService_methodThrow_ex_1.id = 1;
   module_SinkService_methodThrow_ex_1.name = "ex";
@@ -267,7 +267,7 @@ void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodSinkThrow(ThriftMetadat
   (void)metadata;
   func.name = "methodSinkThrow";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -276,7 +276,7 @@ void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodFinalThrow(ThriftMetada
   (void)metadata;
   func.name = "methodFinalThrow";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
@@ -285,7 +285,7 @@ void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodBothThrow(ThriftMetadat
   (void)metadata;
   func.name = "methodBothThrow";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"));
-  func_ret_type->writeAndGenType(func.returnType, metadata);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions.push_back(std::move(func));
 }
