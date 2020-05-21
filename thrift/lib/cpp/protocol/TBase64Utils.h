@@ -20,6 +20,8 @@
 #include <stdint.h>
 #include <string>
 
+#include <folly/io/IOBuf.h>
+
 namespace apache {
 namespace thrift {
 namespace protocol {
@@ -35,6 +37,10 @@ void base64_encode(const uint8_t* in, uint32_t len, uint8_t* buf);
 // len is number of bytes to consume from input (must be 2, 3, or 4)
 // no '=' padding should be included in the input
 void base64_decode(uint8_t* buf, uint32_t len);
+
+std::string base64Encode(folly::ByteRange binary);
+
+std::unique_ptr<folly::IOBuf> base64Decode(folly::StringPiece base64);
 
 } // namespace protocol
 } // namespace thrift

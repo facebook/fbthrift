@@ -64,17 +64,48 @@ static const uint8_t kBase64DecodeTable[256] = {
     0xff, 0xff, 0xff, 0xff,
 };
 
-void base64_decode(uint8_t* buf, uint32_t len) {
-  buf[0] =
-      (kBase64DecodeTable[buf[0]] << 2) | (kBase64DecodeTable[buf[1]] >> 4);
+namespace {
+void base64_decode(const uint8_t* in, uint32_t len, uint8_t* buf) {
+  buf[0] = (kBase64DecodeTable[in[0]] << 2) | (kBase64DecodeTable[in[1]] >> 4);
   if (len > 2) {
-    buf[1] = ((kBase64DecodeTable[buf[1]] << 4) & 0xf0) |
-        (kBase64DecodeTable[buf[2]] >> 2);
+    buf[1] = ((kBase64DecodeTable[in[1]] << 4) & 0xf0) |
+        (kBase64DecodeTable[in[2]] >> 2);
     if (len > 3) {
-      buf[2] = ((kBase64DecodeTable[buf[2]] << 6) & 0xc0) |
-          (kBase64DecodeTable[buf[3]]);
+      buf[2] = ((kBase64DecodeTable[in[2]] << 6) & 0xc0) |
+          (kBase64DecodeTable[in[3]]);
     }
   }
+}
+} // namespace
+
+void base64_decode(uint8_t* buf, uint32_t len) {
+  return base64_decode(buf, len, buf);
+}
+
+std::string base64Encode(folly::ByteRange binary) {
+  std::string base64((binary.size() + 2) / 3 * 4, '=');
+  for (size_t idx = 0; idx < binary.size(); idx += 3) {
+    auto in = binary.begin() + idx;
+    auto out = base64.begin() + idx / 3 * 4;
+    auto inLen = std::min(static_cast<int>(binary.end() - in), 3);
+    base64_encode(in, inLen, reinterpret_cast<uint8_t*>(&*out));
+  }
+  return base64;
+}
+
+std::unique_ptr<folly::IOBuf> base64Decode(folly::StringPiece base64) {
+  while (!base64.empty() && base64.back() == '=') {
+    base64.pop_back();
+  }
+  auto binary = folly::IOBuf::create(base64.size() * 3 / 4);
+  for (size_t idx = 0; idx < base64.size(); idx += 4) {
+    auto in = base64.begin() + idx;
+    auto out = binary->writableTail();
+    auto inLen = std::min(static_cast<int>(base64.end() - in), 4);
+    base64_decode(reinterpret_cast<const uint8_t*>(&*in), inLen, out);
+    binary->append(inLen * 3 / 4);
+  }
+  return binary;
 }
 
 } // namespace protocol

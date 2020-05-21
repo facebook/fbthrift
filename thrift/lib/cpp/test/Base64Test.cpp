@@ -20,6 +20,8 @@
 
 using apache::thrift::protocol::base64_decode;
 using apache::thrift::protocol::base64_encode;
+using apache::thrift::protocol::base64Decode;
+using apache::thrift::protocol::base64Encode;
 
 static void setupTestData(int i, uint8_t* data, int& len) {
   len = 0;
@@ -60,4 +62,20 @@ TEST(Base64Test, test_Base64_Encode_Decode) {
     base64_decode(testOutput, len + 1);
     ASSERT_EQ(0, memcmp(testInput, testOutput, len));
   }
+}
+
+TEST(Base64Test, base64EncodeBasic) {
+  EXPECT_EQ(std::string("YWJjZA=="), base64Encode(folly::StringPiece("abcd")));
+  EXPECT_EQ(std::string("YWJjZGU="), base64Encode(folly::StringPiece("abcde")));
+  EXPECT_EQ(
+      std::string("YWJjZGVm"), base64Encode(folly::StringPiece("abcdef")));
+}
+
+TEST(Base64Test, base64DecodeBasic) {
+  EXPECT_EQ(
+      folly::fbstring("abcd"), base64Decode("YWJjZA==")->moveToFbString());
+  EXPECT_EQ(
+      folly::fbstring("abcde"), base64Decode("YWJjZGU=")->moveToFbString());
+  EXPECT_EQ(
+      folly::fbstring("abcdef"), base64Decode("YWJjZGVm")->moveToFbString());
 }
