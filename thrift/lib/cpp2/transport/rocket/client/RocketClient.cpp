@@ -52,6 +52,12 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
+namespace {
+folly::exception_wrapper err(folly::Try<void> t) {
+  return t.hasException() ? std::move(t.exception())
+                          : folly::exception_wrapper();
+}
+
 transport::TTransportException toTransportException(
     folly::exception_wrapper ew) {
   transport::TTransportException result;
@@ -62,6 +68,7 @@ transport::TTransportException toTransportException(
 
   return transport::TTransportException(folly::exceptionStr(ew).toStdString());
 }
+} // namespace
 
 RocketClient::RocketClient(
     folly::EventBase& evb,
@@ -387,9 +394,8 @@ folly::Try<Payload> RocketClient::sendRequestResponseSync(
       queue_,
       setupFrame.get(),
       writeCallback);
-  auto swr = scheduleWrite(ctx);
-  if (swr.hasException()) {
-    return folly::Try<Payload>(std::move(swr.exception()));
+  if (auto ew = err(scheduleWrite(ctx))) {
+    return folly::Try<Payload>(std::move(ew));
   }
   return ctx.waitForResponse(timeout);
 }
@@ -404,9 +410,8 @@ folly::Try<void> RocketClient::sendRequestFnfSync(
       queue_,
       setupFrame.get(),
       writeCallback);
-  auto swr = scheduleWrite(ctx);
-  if (swr.hasException()) {
-    return folly::Try<void>(std::move(swr.exception()));
+  if (auto ew = err(scheduleWrite(ctx))) {
+    return folly::Try<void>(std::move(ew));
   }
   return ctx.waitForWriteToComplete();
 }
@@ -519,10 +524,8 @@ void RocketClient::sendRequestStreamChannel(
     static void run(
         std::unique_ptr<Context> self,
         std::chrono::milliseconds firstResponseTimeout) {
-      auto writeScheduled = self->client_.scheduleWrite(self->ctx_);
-      if (writeScheduled.hasException()) {
-        return self->serverCallback_.onInitialError(
-            std::move(writeScheduled.exception()));
+      if (auto ew = err(self->client_.scheduleWrite(self->ctx_))) {
+        return self->serverCallback_.onInitialError(std::move(ew));
       }
 
       self->client_.scheduleFirstResponseTimeout(
@@ -579,9 +582,8 @@ folly::Try<void> RocketClient::sendPayloadSync(
     Payload&& payload,
     Flags flags) {
   RequestContext ctx(PayloadFrame(streamId, std::move(payload), flags), queue_);
-  auto swr = scheduleWrite(ctx);
-  if (swr.hasException()) {
-    return folly::Try<void>(std::move(swr.exception()));
+  if (auto ew = err(scheduleWrite(ctx))) {
+    return folly::Try<void>(std::move(ew));
   }
   return ctx.waitForWriteToComplete();
 }
@@ -590,9 +592,8 @@ folly::Try<void> RocketClient::sendErrorSync(
     StreamId streamId,
     RocketException&& rex) {
   RequestContext ctx(ErrorFrame(streamId, std::move(rex)), queue_);
-  auto swr = scheduleWrite(ctx);
-  if (swr.hasException()) {
-    return folly::Try<void>(std::move(swr.exception()));
+  if (auto ew = err(scheduleWrite(ctx))) {
+    return folly::Try<void>(std::move(ew));
   }
   return ctx.waitForWriteToComplete();
 }
@@ -607,11 +608,8 @@ bool RocketClient::sendFrame(Frame&& frame, OnError&& onError) {
           onError_(std::forward<OnError>(onError)) {}
 
     FOLLY_NODISCARD static bool run(std::unique_ptr<Context> self) {
-      auto writeScheduled = self->client_.scheduleWrite(self->ctx_);
-      if (writeScheduled.hasException()) {
-        self->onError_(
-            toTransportException(std::move(writeScheduled.exception())));
-
+      if (auto ew = err(self->client_.scheduleWrite(self->ctx_))) {
+        self->onError_(toTransportException(std::move(ew)));
         return false;
       }
 
