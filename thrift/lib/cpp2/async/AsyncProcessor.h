@@ -476,9 +476,9 @@ class ServerInterface : public AsyncProcessorFactory {
  * HandlerCallback class for async callbacks.
  *
  * These are constructed by the generated code, and your handler calls
- * either result(value), done(), or exception(ex) to finish the async
- * call.  Only one of these must be called, otherwise your client
- * will likely get confused with multiple response messages.
+ * either result(value), done(), exception(ex), or appOverloadedException() to
+ * finish the async call.  Only one of these must be called, otherwise your
+ * client will likely get confused with multiple response messages.
  *
  *
  * If you passed the HandlerCallback to another thread, you may call
@@ -599,11 +599,7 @@ class HandlerCallbackBase {
   }
 
   void appOverloadedException(const std::string& message) {
-    getRequest()->sendErrorWrapped(
-        folly::make_exception_wrapper<TApplicationException>(
-            TApplicationException::LOADSHEDDING, message),
-        kAppOverloadedErrorCode);
-    delete this;
+    doAppOverloadedException(message);
   }
 
   folly::EventBase* getEventBase() {
@@ -704,6 +700,13 @@ class HandlerCallbackBase {
     } else {
       callExceptionInEventBaseThread(ewp_, ew);
     }
+  }
+
+  virtual void doAppOverloadedException(const std::string& message) {
+    getRequest()->sendErrorWrapped(
+        folly::make_exception_wrapper<TApplicationException>(
+            TApplicationException::LOADSHEDDING, message),
+        kAppOverloadedErrorCode);
   }
 
   template <typename F, typename T>

@@ -578,7 +578,7 @@ TEST_P(OverloadTest, Test) {
     void async_eb_eventBaseAsync(
         std::unique_ptr<HandlerCallback<std::unique_ptr<::std::string>>>
             callback) override {
-      callback.release()->appOverloadedException("loadshedding request");
+      callback->appOverloadedException("loadshedding request");
     }
   };
 
