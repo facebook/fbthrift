@@ -766,7 +766,8 @@ void RocketClient::sendExtAlignedPage(
 
 folly::Try<void> RocketClient::scheduleWrite(RequestContext& ctx) {
   if (!evb_) {
-    folly::throw_exception(transport::TTransportException(
+    return folly::Try<
+        void>(folly::make_exception_wrapper<transport::TTransportException>(
         transport::TTransportException::TTransportExceptionType::INVALID_STATE,
         "Cannot send requests on a detached client"));
   }
