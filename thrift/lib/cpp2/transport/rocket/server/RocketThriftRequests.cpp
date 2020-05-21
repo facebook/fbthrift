@@ -25,10 +25,12 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 
+#include <thrift/lib/cpp/protocol/TBase64Utils.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #if FOLLY_HAS_COROUTINES
 #include <thrift/lib/cpp2/async/ServerSinkBridge.h>
 #endif
+#include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
@@ -47,7 +49,8 @@ namespace {
 template <typename ProtocolReader>
 FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
     ResponseRpcMetadata& metadata,
-    std::unique_ptr<folly::IOBuf>& payload) noexcept {
+    std::unique_ptr<folly::IOBuf>& payload,
+    int32_t version) noexcept {
   try {
     std::string methodNameIgnore;
     MessageType mtype;
@@ -56,48 +59,102 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
     reader.setInput(payload.get());
     reader.readMessageBegin(methodNameIgnore, mtype, seqIdIgnore);
 
-    if (mtype != T_REPLY) {
-      return {};
-    }
+    switch (mtype) {
+      case T_REPLY: {
+        auto prefixSize = reader.getCursorPosition();
 
-    auto prefixSize = reader.getCursorPosition();
+        protocol::TType ftype;
+        int16_t fid;
+        reader.readStructBegin(methodNameIgnore);
+        reader.readFieldBegin(methodNameIgnore, ftype, fid);
 
-    protocol::TType ftype;
-    int16_t fid;
-    reader.readStructBegin(methodNameIgnore);
-    reader.readFieldBegin(methodNameIgnore, ftype, fid);
-
-    while (payload->length() < prefixSize) {
-      prefixSize -= payload->length();
-      payload = payload->pop();
-    }
-    payload->trimStart(prefixSize);
-
-    PayloadMetadata payloadMetadata;
-    if (fid == 0) {
-      payloadMetadata.set_responseMetadata(PayloadResponseMetadata());
-    } else {
-      PayloadExceptionMetadataBase exceptionMetadataBase;
-
-      if (auto otherMetadataRef = metadata.otherMetadata_ref()) {
-        if (auto uexPtr = folly::get_ptr(*otherMetadataRef, "uex")) {
-          exceptionMetadataBase.name_utf8_ref() = *uexPtr;
-          otherMetadataRef->erase("uex");
+        while (payload->length() < prefixSize) {
+          prefixSize -= payload->length();
+          payload = payload->pop();
         }
-        if (auto uexwPtr = folly::get_ptr(*otherMetadataRef, "uexw")) {
-          exceptionMetadataBase.what_utf8_ref() = *uexwPtr;
-          otherMetadataRef->erase("uexw");
+        payload->trimStart(prefixSize);
+
+        PayloadMetadata payloadMetadata;
+        if (fid == 0) {
+          payloadMetadata.set_responseMetadata(PayloadResponseMetadata());
+        } else {
+          PayloadExceptionMetadataBase exceptionMetadataBase;
+
+          if (auto otherMetadataRef = metadata.otherMetadata_ref()) {
+            if (auto uexPtr = folly::get_ptr(*otherMetadataRef, "uex")) {
+              exceptionMetadataBase.name_utf8_ref() = *uexPtr;
+              otherMetadataRef->erase("uex");
+            }
+            if (auto uexwPtr = folly::get_ptr(*otherMetadataRef, "uexw")) {
+              exceptionMetadataBase.what_utf8_ref() = *uexwPtr;
+              otherMetadataRef->erase("uexw");
+            }
+          }
+
+          PayloadExceptionMetadata exceptionMetadata;
+          exceptionMetadata.set_declaredException(
+              PayloadDeclaredExceptionMetadata());
+
+          exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
+          payloadMetadata.set_exceptionMetadata(
+              std::move(exceptionMetadataBase));
         }
+        metadata.payloadMetadata_ref() = std::move(payloadMetadata);
+        break;
       }
+      case T_EXCEPTION: {
+        if (version < 2) {
+          return {};
+        }
 
-      PayloadExceptionMetadata exceptionMetadata;
-      exceptionMetadata.set_declaredException(
-          PayloadDeclaredExceptionMetadata());
+        TApplicationException ex;
+        ::apache::thrift::detail::deserializeExceptionBody(&reader, &ex);
 
-      exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
-      payloadMetadata.set_exceptionMetadata(std::move(exceptionMetadataBase));
+        PayloadExceptionMetadataBase exceptionMetadataBase;
+        exceptionMetadataBase.what_utf8_ref() = ex.getMessage();
+
+        auto otherMetadataRef = metadata.otherMetadata_ref();
+        if (!otherMetadataRef) {
+          return {};
+        }
+
+        if (auto proxyErrorPtr = folly::get_ptr(
+                *otherMetadataRef, "servicerouter:sr_internal_error")) {
+          exceptionMetadataBase.name_utf8_ref() = "ProxyException";
+          PayloadExceptionMetadata exceptionMetadata;
+          exceptionMetadata.set_proxyException(PayloadProxyExceptionMetadata());
+          exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
+
+          payload = protocol::base64Decode(*proxyErrorPtr);
+
+          otherMetadataRef->erase("servicerouter:sr_internal_error");
+          otherMetadataRef->erase("ex");
+        } else if (
+            auto proxiedErrorPtr =
+                folly::get_ptr(*otherMetadataRef, "servicerouter:sr_error")) {
+          exceptionMetadataBase.name_utf8_ref() = "ProxiedException";
+          PayloadExceptionMetadata exceptionMetadata;
+          exceptionMetadata.set_proxiedException(
+              PayloadProxiedExceptionMetadata());
+          exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
+
+          payload = protocol::base64Decode(*proxiedErrorPtr);
+
+          otherMetadataRef->erase("servicerouter:sr_error");
+          otherMetadataRef->erase("ex");
+        } else {
+          return {};
+        }
+
+        PayloadMetadata payloadMetadata;
+        payloadMetadata.set_exceptionMetadata(std::move(exceptionMetadataBase));
+        metadata.payloadMetadata_ref() = std::move(payloadMetadata);
+
+        break;
+      }
+      default:
+        return {};
     }
-    metadata.payloadMetadata_ref() = std::move(payloadMetadata);
   } catch (...) {
     return TApplicationException(fmt::format(
         "Invalid response payload envelope: {}",
@@ -129,10 +186,10 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
   switch (protType) {
     case protocol::T_BINARY_PROTOCOL:
       return processFirstResponseHelper<BinaryProtocolReader>(
-          metadata, payload);
+          metadata, payload, version);
     case protocol::T_COMPACT_PROTOCOL:
       return processFirstResponseHelper<CompactProtocolReader>(
-          metadata, payload);
+          metadata, payload, version);
     default:
       return TApplicationException("Invalid response payload protocol id");
   }

@@ -129,11 +129,18 @@ struct PayloadResponseMetadata {
 }
 
 struct PayloadDeclaredExceptionMetadata {
-  1: optional i32 exceptionId;
+}
+
+struct PayloadProxyExceptionMetadata {
+}
+
+struct PayloadProxiedExceptionMetadata {
 }
 
 union PayloadExceptionMetadata {
   1: PayloadDeclaredExceptionMetadata declaredException;
+  2: PayloadProxyExceptionMetadata proxyException;
+  3: PayloadProxiedExceptionMetadata proxiedException;
 }
 
 struct PayloadExceptionMetadataBase {

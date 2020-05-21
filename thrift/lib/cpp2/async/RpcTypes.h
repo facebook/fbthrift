@@ -18,6 +18,8 @@
 
 #include <folly/io/IOBuf.h>
 
+#include <thrift/lib/cpp/TApplicationException.h>
+
 namespace apache {
 namespace thrift {
 
@@ -67,6 +69,17 @@ struct LegacySerializedResponse {
       int32_t seqid,
       folly::StringPiece methodName,
       SerializedResponse&& serializedResponse);
+
+  LegacySerializedResponse(
+      uint16_t protocolId,
+      folly::StringPiece methodName,
+      const TApplicationException& ex);
+
+  LegacySerializedResponse(
+      uint16_t protocolId,
+      int32_t seqid,
+      folly::StringPiece methodName,
+      const TApplicationException& ex);
 
   std::unique_ptr<folly::IOBuf> buffer;
 };

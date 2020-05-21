@@ -108,7 +108,7 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   uint32_t sampleRate_{0};
   static thread_local uint32_t sample_;
 
-  int32_t version_{1};
+  int32_t version_{2};
 
   template <class F>
   void handleRequestCommon(Payload&& payload, F&& makeRequest);

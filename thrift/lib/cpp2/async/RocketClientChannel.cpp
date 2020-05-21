@@ -34,6 +34,7 @@
 #include <folly/io/async/Request.h>
 
 #include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp/protocol/TBase64Utils.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
@@ -74,20 +75,42 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
         if (!otherMetadataRef) {
           otherMetadataRef.emplace();
         }
-        if (auto exceptionNameRef = exceptionMetadataBase.name_utf8_ref()) {
-          (*otherMetadataRef)["uex"] = *exceptionNameRef;
-        }
-        if (auto exceptionWhatRef = exceptionMetadataBase.what_utf8_ref()) {
-          (*otherMetadataRef)["uexw"] = *exceptionWhatRef;
-        }
+        auto exceptionNameRef = exceptionMetadataBase.name_utf8_ref();
+        auto exceptionWhatRef = exceptionMetadataBase.what_utf8_ref();
         if (auto exceptionMetadataRef = exceptionMetadataBase.metadata_ref()) {
           switch (exceptionMetadataRef->getType()) {
             case PayloadExceptionMetadata::declaredException:
+              if (exceptionNameRef) {
+                (*otherMetadataRef)["uex"] = *exceptionNameRef;
+              }
+              if (exceptionWhatRef) {
+                (*otherMetadataRef)["uexw"] = *exceptionWhatRef;
+              }
               payload = LegacySerializedResponse(
                             protocolId,
                             methodName,
                             SerializedResponse(std::move(payload)))
                             .buffer;
+              break;
+            case PayloadExceptionMetadata::proxyException:
+              (*otherMetadataRef)["servicerouter:sr_internal_error"] =
+                  protocol::base64Encode(payload->coalesce());
+              payload =
+                  LegacySerializedResponse(
+                      protocolId,
+                      methodName,
+                      TApplicationException(exceptionWhatRef.value_or("")))
+                      .buffer;
+              break;
+            case PayloadExceptionMetadata::proxiedException:
+              (*otherMetadataRef)["servicerouter:sr_error"] =
+                  protocol::base64Encode(payload->coalesce());
+              payload =
+                  LegacySerializedResponse(
+                      protocolId,
+                      methodName,
+                      TApplicationException(exceptionWhatRef.value_or("")))
+                      .buffer;
               break;
             default:
               return TApplicationException(
@@ -220,7 +243,7 @@ class FirstRequestProcessorSink : public SinkClientCallback {
 
 rocket::SetupFrame RocketClientChannel::makeSetupFrame(
     RequestSetupMetadata meta) {
-  meta.maxVersion_ref() = 1;
+  meta.maxVersion_ref() = 2;
   CompactProtocolWriter compactProtocolWriter;
   folly::IOBufQueue paramQueue;
   compactProtocolWriter.setOutput(&paramQueue);

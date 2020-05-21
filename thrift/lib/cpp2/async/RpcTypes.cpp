@@ -20,6 +20,7 @@
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 
 namespace apache {
 namespace thrift {
@@ -132,5 +133,18 @@ LegacySerializedResponse::LegacySerializedResponse(
           0,
           methodName,
           std::move(serializedResponse)) {}
+
+LegacySerializedResponse::LegacySerializedResponse(
+    uint16_t protocolId,
+    int32_t seqid,
+    folly::StringPiece methodName,
+    const TApplicationException& ex)
+    : buffer(serializeError(protocolId, ex, methodName.str(), seqid)) {}
+
+LegacySerializedResponse::LegacySerializedResponse(
+    uint16_t protocolId,
+    folly::StringPiece methodName,
+    const TApplicationException& ex)
+    : LegacySerializedResponse(protocolId, 0, methodName, ex) {}
 } // namespace thrift
 } // namespace apache
