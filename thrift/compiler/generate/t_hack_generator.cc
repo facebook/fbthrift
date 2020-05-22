@@ -49,7 +49,6 @@ class t_hack_generator : public t_oop_generator {
     std::map<std::string, std::string>::const_iterator iter;
 
     json_ = option_is_specified(parsed_options, "json");
-    rest_ = option_is_specified(parsed_options, "rest");
     phps_ = option_is_specified(parsed_options, "server");
     strict_types_ = option_is_specified(parsed_options, "stricttypes");
     arraysets_ = option_is_specified(parsed_options, "arraysets");
@@ -185,7 +184,6 @@ class t_hack_generator : public t_oop_generator {
       bool mangle,
       bool async,
       bool client);
-  void generate_service_rest(t_service* tservice, bool mangle);
   void generate_service_client(t_service* tservice, bool mangle);
   void _generate_service_client(
       std::ofstream& out,
@@ -534,11 +532,6 @@ class t_hack_generator : public t_oop_generator {
    * True iff we should generate a function parse json to thrift object.
    */
   bool json_;
-
-  /**
-   * Generate a REST handler class
-   */
-  bool rest_;
 
   /**
    * Generate stubs for a PHP server
@@ -2879,9 +2872,6 @@ void t_hack_generator::generate_service(t_service* tservice, bool mangle) {
   generate_service_interface(tservice, mangle, true, false);
   generate_service_interface(tservice, mangle, false, false);
   generate_service_interface(tservice, mangle, false, true);
-  if (rest_) {
-    generate_service_rest(tservice, mangle);
-  }
   generate_service_client(tservice, mangle);
   if (phps_) {
     generate_service_processor(tservice, mangle, true);
@@ -3617,89 +3607,6 @@ void t_hack_generator::generate_service_interface(
                          << function_signature(*f_iter, "", return_typehint)
                          << ";\n";
     }
-  }
-  indent_down();
-  f_service_ << "}\n\n";
-}
-
-/**
- * Generates a REST interface
- */
-void t_hack_generator::generate_service_rest(t_service* tservice, bool mangle) {
-  string extends = "";
-  string extends_if = "";
-  if (tservice->get_extends() != nullptr) {
-    string ext_prefix = php_servicename_mangle(mangle, tservice->get_extends());
-    extends = " extends " + ext_prefix;
-    extends_if = " extends " + ext_prefix + "Rest";
-  }
-  string long_name = php_servicename_mangle(mangle, tservice);
-  f_service_ << "class " << long_name << "Rest" << extends_if << " {\n";
-  indent_up();
-
-  if (extends.empty()) {
-    f_service_ << indent() << "protected " << long_name << "If $impl_;\n\n";
-  }
-
-  f_service_ << indent() << "public function __construct(" << long_name
-             << "If $impl) {\n";
-  if (!extends.empty()) {
-    f_service_ << indent() << "parent::__construct($impl);\n";
-  }
-  f_service_ << indent() << "  $this->impl_ = $impl;\n" << indent() << "}\n\n";
-
-  vector<t_function*> functions = tservice->get_functions();
-  vector<t_function*>::iterator f_iter;
-  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    indent(f_service_) << "public function " << (*f_iter)->get_name()
-                       << "(KeyedContainer<string, mixed> $request): "
-                       << type_to_typehint((*f_iter)->get_returntype())
-                       << " {\n";
-    indent_up();
-    const vector<t_field*>& args = (*f_iter)->get_arglist()->get_members();
-    vector<t_field*>::const_iterator a_iter;
-    for (a_iter = args.begin(); a_iter != args.end(); ++a_iter) {
-      t_type* atype = (*a_iter)->get_type()->get_true_type();
-      string cast = type_to_cast(atype);
-      string req = "$request['" + (*a_iter)->get_name() + "']";
-      if (atype->is_bool()) {
-        f_service_ << indent() << "$" << (*a_iter)->get_name() << " = " << cast
-                   << "(!empty(" << req << ") && (" << req
-                   << " !== 'false'));\n";
-      } else {
-        f_service_ << indent() << "$" << (*a_iter)->get_name() << " = " << cast
-                   << " idx($request, '" << (*a_iter)->get_name() << "');\n";
-      }
-      if (atype->is_container()) {
-        f_service_
-            << indent()
-            << "/* HH_FIXME[4107] */ /* HH_FIXME[2049] Previously hidden by unsafe */\n";
-        f_service_ << indent() << "$" << (*a_iter)->get_name()
-                   << " = json_decode($" << (*a_iter)->get_name()
-                   << ", true);\n";
-      } else if (atype->is_struct() || atype->is_xception()) {
-        f_service_
-            << indent() << "if ($" << (*a_iter)->get_name() << " !== null) {\n"
-            << indent()
-            << "  /* HH_FIXME[4107] */ /* HH_FIXME[2049] Previously hidden by unsafe */\n"
-            << indent() << "  $" << (*a_iter)->get_name() << " = new "
-            << hack_name(atype) << "(json_decode($" << (*a_iter)->get_name()
-            << ", true));\n"
-            << indent() << "}\n";
-      }
-    }
-
-    f_service_ << indent()
-               << "/* HH_FIXME[4053] Previously hidden by unsafe */\n";
-    f_service_ << indent();
-    if (!(*f_iter)->get_returntype()->is_void()) {
-      f_service_ << "return ";
-    }
-    f_service_ << "$this->impl_->" << (*f_iter)->get_name() << "("
-               << argument_list((*f_iter)->get_arglist(), "", false) << ");\n";
-
-    indent_down();
-    indent(f_service_) << "}\n\n";
   }
   indent_down();
   f_service_ << "}\n\n";
