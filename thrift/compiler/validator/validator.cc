@@ -23,31 +23,15 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-class validator_list {
- public:
-  explicit validator_list(validator::diagnostics_t& diagnostics)
-      : diagnostics_(diagnostics) {}
-
-  std::vector<visitor*> get_pointers() const {
-    auto pointers = std::vector<visitor*>{};
-    for (auto const& v : validators_) {
-      pointers.push_back(v.get());
-    }
-    return pointers;
-  }
-
-  template <typename T, typename... Args>
-  void add(Args&&... args) {
-    auto ptr = make_validator<T>(diagnostics_, std::forward<Args>(args)...);
-    validators_.push_back(std::move(ptr));
-  }
-
- private:
-  validator::diagnostics_t& diagnostics_;
-  std::vector<std::unique_ptr<validator>> validators_;
-};
-
 static void fill_validators(validator_list& vs);
+
+void validator_list::traverse(t_program* const program) {
+  auto pointers = std::vector<visitor*>{};
+  for (auto const& v : validators_) {
+    pointers.push_back(v.get());
+  }
+  interleaved_visitor(pointers).traverse(program);
+}
 
 validator::diagnostics_t validator::validate(t_program* const program) {
   auto diagnostics = validator::diagnostics_t{};
@@ -55,7 +39,7 @@ validator::diagnostics_t validator::validate(t_program* const program) {
   auto validators = validator_list(diagnostics);
   fill_validators(validators);
 
-  interleaved_visitor(validators.get_pointers()).traverse(program);
+  validators.traverse(program);
 
   return diagnostics;
 }
@@ -305,7 +289,8 @@ bool mixin_fields_validator::visit(t_struct* s) {
       } else if (member->get_type()->is_union()) {
         add_error(
             member->get_lineno(),
-            "Mixin field `" + member->get_name() + "` is not a struct but union");
+            "Mixin field `" + member->get_name() +
+                "` is not a struct but union");
         foundError = true;
       }
     }
@@ -325,8 +310,8 @@ bool mixin_fields_validator::visit(t_struct* s) {
     if (!res.second) {
       add_error(
           i.mixin->get_lineno(),
-          "Field `" + res.first->second + "." + i.member->get_name() + "` and `" +
-              i.mixin->get_name() + "." + i.member->get_name() +
+          "Field `" + res.first->second + "." + i.member->get_name() +
+              "` and `" + i.mixin->get_name() + "." + i.member->get_name() +
               "` can not have same name in struct `" + s->get_name() + '`');
     }
   }

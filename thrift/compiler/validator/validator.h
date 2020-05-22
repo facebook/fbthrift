@@ -67,6 +67,24 @@ validator::diagnostics_t run_validator(
   return diagnostics;
 }
 
+class validator_list {
+ public:
+  explicit validator_list(validator::diagnostics_t& diagnostics)
+      : diagnostics_(diagnostics) {}
+
+  template <typename T, typename... Args>
+  void add(Args&&... args) {
+    auto ptr = make_validator<T>(diagnostics_, std::forward<Args>(args)...);
+    validators_.push_back(std::move(ptr));
+  }
+
+  void traverse(t_program* const program);
+
+ private:
+  validator::diagnostics_t& diagnostics_;
+  std::vector<std::unique_ptr<validator>> validators_;
+};
+
 class service_method_name_uniqueness_validator : virtual public validator {
  public:
   using validator::visit;

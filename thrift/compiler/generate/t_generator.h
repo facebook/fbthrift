@@ -23,9 +23,9 @@
 #include <string>
 #include <unordered_set>
 
-#include <thrift/compiler/common.h>
-
 #include <thrift/compiler/ast/t_program.h>
+#include <thrift/compiler/common.h>
+#include <thrift/compiler/validator/validator.h>
 
 namespace apache {
 namespace thrift {
@@ -69,6 +69,8 @@ class t_generator {
   }
 
   virtual ~t_generator(void) {}
+
+  virtual void fill_validator_list(validator_list&) const {}
 
   // Generate the program. Overridden by subclasses to implement program
   // generation.

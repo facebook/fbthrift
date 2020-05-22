@@ -146,13 +146,30 @@ static bool generate(
       dump_docstrings(program);
     }
 
+    bool any_has_failure = false;
+
     for (auto gen_string : generator_strings) {
       auto pos = gen_string.find(':');
       std::string lang = gen_string.substr(0, pos);
 
-      t_generator* generator =
-          t_generator_registry::get_generator(program, context, gen_string);
+      auto generator = std::unique_ptr<t_generator>{
+          t_generator_registry::get_generator(program, context, gen_string)};
       if (generator) {
+        validator::diagnostics_t diagnostics;
+        validator_list validators(diagnostics);
+        generator->fill_validator_list(validators);
+        validators.traverse(program);
+        bool has_failure = false;
+        for (const auto& d : diagnostics) {
+          has_failure =
+              has_failure || (d.getType() == diagnostic::type::failure);
+          std::cerr << d << std::endl;
+        }
+        if (has_failure) {
+          any_has_failure = true;
+          continue;
+        }
+
         pverbose("Generating \"%s\"\n", gen_string.c_str());
         generator->generate_program();
         if (record_genfiles) {
@@ -160,9 +177,10 @@ static bool generate(
             genfile_file << s << "\n";
           }
         }
-        delete generator;
       }
     }
+
+    return !any_has_failure;
 
   } catch (const string& s) {
     printf("Error: %s\n", s.c_str());
@@ -171,8 +189,6 @@ static bool generate(
     printf("Error: %s\n", exc);
     return false;
   }
-
-  return true;
 }
 
 static string get_include_path(
