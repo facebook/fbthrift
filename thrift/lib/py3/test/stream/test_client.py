@@ -34,9 +34,6 @@ class StreamClientTest(unittest.TestCase):
                 assert ip and port
                 async with get_client(
                     StreamTestService,
-                    # pyre-fixme[6]: Expected `Union[ipaddress.IPv4Address,
-                    #  ipaddress.IPv6Address, str]` for 2nd param but got `Union[None,
-                    #  ipaddress.IPv4Address, ipaddress.IPv6Address]`.
                     host=ip,
                     port=port,
                     client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
@@ -56,9 +53,6 @@ class StreamClientTest(unittest.TestCase):
                 assert ip and port
                 async with get_client(
                     StreamTestService,
-                    # pyre-fixme[6]: Expected `Union[ipaddress.IPv4Address,
-                    #  ipaddress.IPv6Address, str]` for 2nd param but got `Union[None,
-                    #  ipaddress.IPv4Address, ipaddress.IPv6Address]`.
                     host=ip,
                     port=port,
                     client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
@@ -81,9 +75,6 @@ class StreamClientTest(unittest.TestCase):
                 assert ip and port
                 async with get_client(
                     StreamTestService,
-                    # pyre-fixme[6]: Expected `Union[ipaddress.IPv4Address,
-                    #  ipaddress.IPv6Address, str]` for 2nd param but got `Union[None,
-                    #  ipaddress.IPv4Address, ipaddress.IPv6Address]`.
                     host=ip,
                     port=port,
                     client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
@@ -112,9 +103,6 @@ class StreamClientTest(unittest.TestCase):
                 assert ip and port
                 async with get_client(
                     StreamTestService,
-                    # pyre-fixme[6]: Expected `Union[ipaddress.IPv4Address,
-                    #  ipaddress.IPv6Address, str]` for 2nd param but got `Union[None,
-                    #  ipaddress.IPv4Address, ipaddress.IPv6Address]`.
                     host=ip,
                     port=port,
                     client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,

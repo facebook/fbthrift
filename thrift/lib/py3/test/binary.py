@@ -115,9 +115,6 @@ class ClientBinaryServerTests(unittest.TestCase):
             async with TestServer(handler=BinaryHandler(self), ip="::1") as sa:
                 ip, port = sa.ip, sa.port
                 assert ip and port
-                # pyre-fixme[6]: Expected `Union[ipaddress.IPv4Address,
-                #  ipaddress.IPv6Address, str]` for 2nd param but got `Union[None,
-                #  ipaddress.IPv4Address, ipaddress.IPv6Address]`.
                 async with get_client(BinaryService, host=ip, port=port) as client:
                     val: Any
                     val = await client.sendRecvBinaries(

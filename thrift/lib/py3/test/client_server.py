@@ -120,9 +120,6 @@ class ClientServerTests(unittest.TestCase):
             async with TestServer(ip="::1") as sa:
                 ip, port = sa.ip, sa.port
                 assert ip and port
-                # pyre-fixme[6]: Expected `Union[ipaddress.IPv4Address,
-                #  ipaddress.IPv6Address, str]` for 2nd param but got `Union[None,
-                #  ipaddress.IPv4Address, ipaddress.IPv6Address]`.
                 async with get_client(TestingService, host=ip, port=port) as client:
                     options = RpcOptions()
                     self.assertEqual(
@@ -146,9 +143,6 @@ class ClientServerTests(unittest.TestCase):
             async with TestServer(ip="::1") as sa:
                 ip, port = sa.ip, sa.port
                 assert ip and port
-                # pyre-fixme[6]: Expected `Union[ipaddress.IPv4Address,
-                #  ipaddress.IPv6Address, str]` for 2nd param but got `Union[None,
-                #  ipaddress.IPv4Address, ipaddress.IPv6Address]`.
                 async with get_client(TestingService, host=ip, port=port) as client:
                     options = RpcOptions()
                     options.set_header("from client", "with love")
@@ -182,9 +176,6 @@ class ClientServerTests(unittest.TestCase):
                 assert ip and port
                 async with get_client(
                     TestingService,
-                    # pyre-fixme[6]: Expected `Union[ipaddress.IPv4Address,
-                    #  ipaddress.IPv6Address, str]` for 2nd param but got `Union[None,
-                    #  ipaddress.IPv4Address, ipaddress.IPv6Address]`.
                     host=ip,
                     port=port,
                     client_type=ClientType.THRIFT_UNFRAMED_DEPRECATED,
@@ -204,9 +195,6 @@ class ClientServerTests(unittest.TestCase):
                 assert ip and port
                 async with get_client(
                     TestingService,
-                    # pyre-fixme[6]: Expected `Union[ipaddress.IPv4Address,
-                    #  ipaddress.IPv6Address, str]` for 2nd param but got `Union[None,
-                    #  ipaddress.IPv4Address, ipaddress.IPv6Address]`.
                     host=ip,
                     port=port,
                     client_type=ClientType.THRIFT_FRAMED_DEPRECATED,
@@ -225,9 +213,6 @@ class ClientServerTests(unittest.TestCase):
                 assert ip and port
                 async with get_client(
                     TestingService,
-                    # pyre-fixme[6]: Expected `Union[ipaddress.IPv4Address,
-                    #  ipaddress.IPv6Address, str]` for 2nd param but got `Union[None,
-                    #  ipaddress.IPv4Address, ipaddress.IPv6Address]`.
                     host=ip,
                     port=port,
                     client_type=ClientType.THRIFT_FRAMED_COMPACT,
@@ -246,9 +231,6 @@ class ClientServerTests(unittest.TestCase):
                 assert ip and port
                 async with get_client(
                     TestingService,
-                    # pyre-fixme[6]: Expected `Union[ipaddress.IPv4Address,
-                    #  ipaddress.IPv6Address, str]` for 2nd param but got `Union[None,
-                    #  ipaddress.IPv4Address, ipaddress.IPv6Address]`.
                     host=ip,
                     port=port,
                     path="/some/endpoint",
@@ -269,9 +251,6 @@ class ClientServerTests(unittest.TestCase):
             async with TestServer(ip="::1") as sa:
                 ip, port = sa.ip, sa.port
                 assert ip and port
-                # pyre-fixme[6]: Expected `Union[ipaddress.IPv4Address,
-                #  ipaddress.IPv6Address, str]` for 2nd param but got `Union[None,
-                #  ipaddress.IPv4Address, ipaddress.IPv6Address]`.
                 async with get_client(TestingService, host=ip, port=port) as client:
                     self.assertTrue(await client.invert(False))
                     self.assertFalse(await client.invert(True))
@@ -298,9 +277,6 @@ class ClientServerTests(unittest.TestCase):
             async with TestServer() as sa:
                 ip, port = sa.ip, sa.port
                 assert ip and port
-                # pyre-fixme[6]: Expected `Union[ipaddress.IPv4Address,
-                #  ipaddress.IPv6Address, str]` for 2nd param but got `Union[None,
-                #  ipaddress.IPv4Address, ipaddress.IPv6Address]`.
                 client = get_client(TestingService, host=ip, port=port)
                 await client.__aenter__()
                 self.assertTrue(await client.invert(False))
@@ -320,9 +296,6 @@ class ClientServerTests(unittest.TestCase):
             async with TestServer() as sa:
                 ip, port = sa.ip, sa.port
                 assert ip and port
-                # pyre-fixme[6]: Expected `Union[ipaddress.IPv4Address,
-                #  ipaddress.IPv6Address, str]` for 2nd param but got `Union[None,
-                #  ipaddress.IPv4Address, ipaddress.IPv6Address]`.
                 client = get_client(TestingService, host=ip, port=port)
                 await client.__aenter__()
                 self.assertTrue(await client.invert(False))
@@ -343,9 +316,6 @@ class ClientServerTests(unittest.TestCase):
             async with TestServer() as sa:
                 ip, port = sa.ip, sa.port
                 assert ip and port
-                # pyre-fixme[6]: Expected `Union[ipaddress.IPv4Address,
-                #  ipaddress.IPv6Address, str]` for 2nd param but got `Union[None,
-                #  ipaddress.IPv4Address, ipaddress.IPv6Address]`.
                 get_client(TestingService, host=ip, port=port)
 
         # If we do not abort here then good
@@ -363,12 +333,7 @@ class ClientServerTests(unittest.TestCase):
                 ip, port = sa.ip, sa.port
                 assert ip and port
                 async with get_client(
-                    DerivedTestingService,
-                    # pyre-fixme[6]: Expected `Union[ipaddress.IPv4Address,
-                    #  ipaddress.IPv6Address, str]` for 2nd param but got `Union[None,
-                    #  ipaddress.IPv4Address, ipaddress.IPv6Address]`.
-                    host=ip,
-                    port=port,
+                    DerivedTestingService, host=ip, port=port
                 ) as client:
                     self.assertEqual(await client.getName(), "DerivedTesting")
                     self.assertEqual(
@@ -417,9 +382,6 @@ class ClientStackServerTests(unittest.TestCase):
             async with TestServer(handler=StackHandler(), ip="::1") as sa:
                 ip, port = sa.ip, sa.port
                 assert ip and port
-                # pyre-fixme[6]: Expected `Union[ipaddress.IPv4Address,
-                #  ipaddress.IPv6Address, str]` for 2nd param but got `Union[None,
-                #  ipaddress.IPv4Address, ipaddress.IPv6Address]`.
                 async with get_client(StackService, host=ip, port=port) as client:
                     self.assertEqual(
                         (3, 4, 5, 6), await client.add_to(lst=(1, 2, 3, 4), value=2)
