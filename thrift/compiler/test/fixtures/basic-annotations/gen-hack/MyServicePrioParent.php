@@ -277,7 +277,7 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
       list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RpcOptionsTemp::get(), $msg);
@@ -300,7 +300,7 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
       list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RpcOptionsTemp::get(), $msg);
@@ -328,7 +328,7 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
       list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RpcOptionsTemp::get(), $msg);
@@ -351,7 +351,7 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
       list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RpcOptionsTemp::get(), $msg);
@@ -378,7 +378,7 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
   }
 }
 
-abstract class MyServicePrioParentAsyncProcessorBase extends ThriftAsyncProcessor {
+abstract class MyServicePrioParentAsyncProcessorBase extends \ThriftAsyncProcessor {
   abstract const type TThriftIf as MyServicePrioParentAsyncIf;
   protected async function process_ping(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
     $handler_ctx = $this->eventHandler_->getHandlerContext('ping');
@@ -473,7 +473,7 @@ class MyServicePrioParentAsyncProcessor extends MyServicePrioParentAsyncProcesso
   const type TThriftIf = MyServicePrioParentAsyncIf;
 }
 
-abstract class MyServicePrioParentSyncProcessorBase extends ThriftSyncProcessor {
+abstract class MyServicePrioParentSyncProcessorBase extends \ThriftSyncProcessor {
   abstract const type TThriftIf as MyServicePrioParentIf;
   protected function process_ping(int $seqid, \TProtocol $input, \TProtocol $output): void {
     $handler_ctx = $this->eventHandler_->getHandlerContext('ping');

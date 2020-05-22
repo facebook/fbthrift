@@ -1043,7 +1043,7 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
   if (is_bitmask_enum(tenum)) {
     typehint = "int";
     f_types_ << "final class " << hack_name(tenum, true)
-             << " extends Flags {\n";
+             << " extends \\Flags {\n";
   } else {
     hack_enum = true;
     typehint = hack_name(tenum, true);
@@ -2520,7 +2520,7 @@ void t_hack_generator::_generate_php_struct_definition(
   }
 
   if (generateAsTrait && is_exception) {
-    indent(out) << "require extends TException;\n";
+    indent(out) << "require extends \\TException;\n";
   }
 
   generate_php_struct_struct_trait(out, tstruct);
@@ -2933,7 +2933,7 @@ void t_hack_generator::generate_service_processor(
 
   string suffix = async ? "Async" : "Sync";
   string extends = "";
-  string extends_processor = string("Thrift") + suffix + "Processor";
+  string extends_processor = string("\\Thrift") + suffix + "Processor";
   if (tservice->get_extends() != nullptr) {
     extends = php_servicename_mangle(mangle, tservice->get_extends());
     extends_processor = extends + suffix + "ProcessorBase";
@@ -4169,7 +4169,7 @@ void t_hack_generator::_generate_service_client_children(
           << indent() << "$out_transport = $this->output_->getTransport();\n"
           << indent() << "$in_transport = $this->input_->getTransport();\n"
           << indent()
-          << "if ($channel !== null && $out_transport is TMemoryBuffer && $in_transport is TMemoryBuffer) {\n";
+          << "if ($channel !== null && $out_transport is \\TMemoryBuffer && $in_transport is \\TMemoryBuffer) {\n";
       indent_up();
       out << indent() << "$msg = $out_transport->getBuffer();\n"
           << indent() << "$out_transport->resetBuffer();\n"
@@ -4191,7 +4191,7 @@ void t_hack_generator::_generate_service_client_children(
       out << indent() << "$channel = $this->channel_;\n"
           << indent() << "$out_transport = $this->output_->getTransport();\n"
           << indent()
-          << "if ($channel !== null && $out_transport is TMemoryBuffer) {\n";
+          << "if ($channel !== null && $out_transport is \\TMemoryBuffer) {\n";
       indent_up();
       out << indent() << "$msg = $out_transport->getBuffer();\n"
           << indent() << "$out_transport->resetBuffer();\n"
