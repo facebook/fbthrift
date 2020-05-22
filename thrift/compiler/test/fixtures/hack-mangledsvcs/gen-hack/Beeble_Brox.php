@@ -6,45 +6,43 @@
  *  @generated
  */
 
-namespace Beeble;
-
 /**
  * Original thrift service:-
  * Brox
  */
-interface BeebleBroxAsyncIf extends \IThriftAsyncIf {
+interface Beeble_BroxAsyncIf extends \IThriftAsyncIf {
 }
 
 /**
  * Original thrift service:-
  * Brox
  */
-interface BeebleBroxIf extends \IThriftSyncIf {
+interface Beeble_BroxIf extends \IThriftSyncIf {
 }
 
 /**
  * Original thrift service:-
  * Brox
  */
-interface BeebleBroxClientIf extends \IThriftSyncIf {
+interface Beeble_BroxClientIf extends \IThriftSyncIf {
 }
 
 /**
  * Original thrift service:-
  * Brox
  */
-trait BeebleBroxClientBase {
+trait Beeble_BroxClientBase {
   require extends \ThriftClientBase;
 
 }
 
-class BeebleBroxAsyncClient extends \ThriftClientBase implements BeebleBroxAsyncIf {
-  use BeebleBroxClientBase;
+class Beeble_BroxAsyncClient extends \ThriftClientBase implements Beeble_BroxAsyncIf {
+  use Beeble_BroxClientBase;
 
 }
 
-class BeebleBroxClient extends \ThriftClientBase implements BeebleBroxClientIf {
-  use BeebleBroxClientBase;
+class Beeble_BroxClient extends \ThriftClientBase implements Beeble_BroxClientIf {
+  use Beeble_BroxClientBase;
 
   /* send and recv functions */
 }

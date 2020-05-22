@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-namespace hack Beeble
+namespace php Beeble
 
 service Brox {}

@@ -6,5 +6,3 @@
  *  @generated
  */
 
-namespace Beeble;
-

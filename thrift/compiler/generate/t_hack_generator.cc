@@ -75,6 +75,7 @@ class t_hack_generator : public t_oop_generator {
     arrprov_skip_frames_ =
         option_is_specified(parsed_options, "arrprov_skip_frames");
     protected_unions_ = option_is_specified(parsed_options, "protected_unions");
+    mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
 
     // no_use_hack_collections_ is only used to migrate away from php gen
     if (no_use_hack_collections_ && strict_types_) {
@@ -86,12 +87,11 @@ class t_hack_generator : public t_oop_generator {
     } else if (no_use_hack_collections_ && arrays_) {
       throw std::runtime_error(
           "Don't use no_use_hack_collections with arrays. Just use arrays");
+    } else if (mangled_services_ && !hack_namespace(program).empty()) {
+      throw std::runtime_error("Don't use mangledsvcs with hack namespaces");
     }
 
-    mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
-
     out_dir_base_ = "gen-hack";
-
     array_keyword_ = array_migration_ ? "darray" : "dict";
   }
 
@@ -437,12 +437,11 @@ class t_hack_generator : public t_oop_generator {
 
   string hack_name(string name, const t_program* prog, bool decl = false) {
     string ns;
-    ns = prog->get_namespace("hack");
+    ns = hack_namespace(prog);
     if (!ns.empty()) {
       if (decl) {
         return name;
       }
-      std::replace(ns.begin(), ns.end(), '.', '\\');
       return '\\' + ns + '\\' + name;
     }
     ns = prog->get_namespace("php");
@@ -498,7 +497,11 @@ class t_hack_generator : public t_oop_generator {
   /**
    * Generate the namespace mangled string, if necessary
    */
-  std::string php_servicename_mangle(bool mangle, t_service* svc) {
+  std::string
+  php_servicename_mangle(bool mangle, t_service* svc, bool extends = false) {
+    if (extends && !hack_namespace(svc->get_program()).empty()) {
+      return hack_name(svc);
+    }
     return (mangle ? php_namespace(svc) : "") + svc->get_name();
   }
 
@@ -2925,7 +2928,7 @@ void t_hack_generator::generate_service_processor(
   string extends = "";
   string extends_processor = string("\\Thrift") + suffix + "Processor";
   if (tservice->get_extends() != nullptr) {
-    extends = php_servicename_mangle(mangle, tservice->get_extends());
+    extends = php_servicename_mangle(mangle, tservice->get_extends(), true);
     extends_processor = extends + suffix + "ProcessorBase";
   }
 
@@ -3573,7 +3576,8 @@ void t_hack_generator::generate_service_interface(
   }
   string extends_if = string("\\IThrift") + (async ? "Async" : "Sync") + "If";
   if (tservice->get_extends() != nullptr) {
-    string ext_prefix = php_servicename_mangle(mangle, tservice->get_extends());
+    string ext_prefix =
+        php_servicename_mangle(mangle, tservice->get_extends(), true);
     extends_if = ext_prefix + suffix + "If";
   }
   string long_name = php_servicename_mangle(mangle, tservice);
@@ -4022,8 +4026,8 @@ void t_hack_generator::_generate_service_client_children(
   bool root = tservice->get_extends() == nullptr;
   bool first = true;
   if (!root) {
-    extends = php_servicename_mangle(mangle, tservice->get_extends()) + suffix +
-        "Client";
+    extends = php_servicename_mangle(mangle, tservice->get_extends(), true) +
+        suffix + "Client";
   }
 
   out << "class " << long_name << suffix << "Client extends " << extends
