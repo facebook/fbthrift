@@ -703,7 +703,7 @@ class HandlerCallbackBase {
   }
 
   virtual void doAppOverloadedException(const std::string& message) {
-    getRequest()->sendErrorWrapped(
+    std::exchange(req_, {})->sendErrorWrapped(
         folly::make_exception_wrapper<TApplicationException>(
             TApplicationException::LOADSHEDDING, message),
         kAppOverloadedErrorCode);
