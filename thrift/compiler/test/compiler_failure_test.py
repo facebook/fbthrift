@@ -218,7 +218,24 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:foo.thrift:4] Type \"Random.Type\" not defined.\n"
         )
 
-    def test_mixin_without_thrift_arg(self):
+    def test_field_names_uniqueness(self):
+        write_file("foo.thrift", textwrap.dedent("""\
+            struct Foo {
+              1: i32 a;
+              2: i32 b;
+              3: i64 a;
+            }
+        """))
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            '[FAILURE:foo.thrift:4] Field `a` is not unique in struct `Foo`\n',
+        )
+
+    def test_mixin_without_thrift_compiler_arg(self):
         write_file("foo.thrift", textwrap.dedent("""\
             struct A { 1: i32 i }
             struct B { 1: mixin A a }
@@ -233,7 +250,7 @@ class CompilerFailureTest(unittest.TestCase):
             "Mixin support is not enabled\n"
         )
 
-    def test_mixin_duplicated_members(self):
+    def test_mixin_field_names_uniqueness(self):
         write_file("foo.thrift", textwrap.dedent("""\
             struct A { 1: i32 i }
             struct B { 2: i64 i }

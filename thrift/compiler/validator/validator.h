@@ -180,10 +180,24 @@ class union_no_required_fields_validator : virtual public validator {
   bool visit(t_struct* s) override;
 };
 
-class mixin_fields_validator : virtual public validator {
+class mixin_type_correctness_validator : virtual public validator {
  public:
   using validator::visit;
 
+  /**
+   * Enforces that all mixin fields are struct.
+   */
+  bool visit(t_struct* s) override;
+};
+
+class field_names_uniqueness_validator : virtual public validator {
+ public:
+  using validator::visit;
+
+  /**
+   * Enforces that there are no duplicate field names either within this
+   * struct or between this struct and any of its mixins.
+   */
   bool visit(t_struct* s) override;
 };
 
