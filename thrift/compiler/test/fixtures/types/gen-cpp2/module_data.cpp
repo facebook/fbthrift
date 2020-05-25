@@ -9,36 +9,29 @@
 
 #include <thrift/lib/cpp2/gen/module_data_cpp.h>
 
-namespace apache { namespace thrift { namespace fixtures { namespace types {
-
-constexpr const std::size_t _has_bitwise_opsEnumDataStorage::size;
-constexpr const std::array<has_bitwise_ops, 5> _has_bitwise_opsEnumDataStorage::values;
-constexpr const std::array<folly::StringPiece, 5> _has_bitwise_opsEnumDataStorage::names;
-
-}}}} // apache::thrift::fixtures::types
-
-namespace apache { namespace thrift { namespace fixtures { namespace types {
-
-constexpr const std::size_t _is_unscopedEnumDataStorage::size;
-constexpr const std::array<is_unscoped, 2> _is_unscopedEnumDataStorage::values;
-constexpr const std::array<folly::StringPiece, 2> _is_unscopedEnumDataStorage::names;
-
-}}}} // apache::thrift::fixtures::types
-
-namespace apache { namespace thrift { namespace fixtures { namespace types {
-
-constexpr const std::size_t _MyForwardRefEnumEnumDataStorage::size;
-constexpr const std::array<MyForwardRefEnum, 2> _MyForwardRefEnumEnumDataStorage::values;
-constexpr const std::array<folly::StringPiece, 2> _MyForwardRefEnumEnumDataStorage::names;
-
-}}}} // apache::thrift::fixtures::types
-
-namespace apache { namespace thrift { namespace fixtures { namespace types {
-
-constexpr const std::size_t _MyEnumAEnumDataStorage::size;
-constexpr const std::array<MyEnumA, 3> _MyEnumAEnumDataStorage::values;
-constexpr const std::array<folly::StringPiece, 3> _MyEnumAEnumDataStorage::names;
-
-}}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
 
 
+constexpr const std::size_t TEnumDataStorage<::apache::thrift::fixtures::types::has_bitwise_ops>::size;
+constexpr const std::array<::apache::thrift::fixtures::types::has_bitwise_ops, 5> TEnumDataStorage<::apache::thrift::fixtures::types::has_bitwise_ops>::values;
+constexpr const std::array<folly::StringPiece, 5> TEnumDataStorage<::apache::thrift::fixtures::types::has_bitwise_ops>::names;
+
+
+constexpr const std::size_t TEnumDataStorage<::apache::thrift::fixtures::types::is_unscoped>::size;
+constexpr const std::array<::apache::thrift::fixtures::types::is_unscoped, 2> TEnumDataStorage<::apache::thrift::fixtures::types::is_unscoped>::values;
+constexpr const std::array<folly::StringPiece, 2> TEnumDataStorage<::apache::thrift::fixtures::types::is_unscoped>::names;
+
+
+constexpr const std::size_t TEnumDataStorage<::apache::thrift::fixtures::types::MyForwardRefEnum>::size;
+constexpr const std::array<::apache::thrift::fixtures::types::MyForwardRefEnum, 2> TEnumDataStorage<::apache::thrift::fixtures::types::MyForwardRefEnum>::values;
+constexpr const std::array<folly::StringPiece, 2> TEnumDataStorage<::apache::thrift::fixtures::types::MyForwardRefEnum>::names;
+
+
+constexpr const std::size_t TEnumDataStorage<::apache::thrift::fixtures::types::MyEnumA>::size;
+constexpr const std::array<::apache::thrift::fixtures::types::MyEnumA, 3> TEnumDataStorage<::apache::thrift::fixtures::types::MyEnumA>::values;
+constexpr const std::array<folly::StringPiece, 3> TEnumDataStorage<::apache::thrift::fixtures::types::MyEnumA>::names;
+
+
+} // namespace thrift
+} // namespace apache

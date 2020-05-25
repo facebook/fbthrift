@@ -9,44 +9,34 @@
 
 #include <thrift/lib/cpp2/gen/module_data_cpp.h>
 
-namespace facebook { namespace ns { namespace qwerty {
-
-constexpr const std::size_t _AnEnumAEnumDataStorage::size;
-constexpr const std::array<AnEnumA, 1> _AnEnumAEnumDataStorage::values;
-constexpr const std::array<folly::StringPiece, 1> _AnEnumAEnumDataStorage::names;
-
-}}} // facebook::ns::qwerty
-
-namespace facebook { namespace ns { namespace qwerty {
-
-constexpr const std::size_t _AnEnumBEnumDataStorage::size;
-constexpr const std::array<AnEnumB, 2> _AnEnumBEnumDataStorage::values;
-constexpr const std::array<folly::StringPiece, 2> _AnEnumBEnumDataStorage::names;
-
-}}} // facebook::ns::qwerty
-
-namespace facebook { namespace ns { namespace qwerty {
-
-constexpr const std::size_t _AnEnumCEnumDataStorage::size;
-constexpr const std::array<AnEnumC, 1> _AnEnumCEnumDataStorage::values;
-constexpr const std::array<folly::StringPiece, 1> _AnEnumCEnumDataStorage::names;
-
-}}} // facebook::ns::qwerty
-
-namespace facebook { namespace ns { namespace qwerty {
-
-constexpr const std::size_t _AnEnumDEnumDataStorage::size;
-constexpr const std::array<AnEnumD, 1> _AnEnumDEnumDataStorage::values;
-constexpr const std::array<folly::StringPiece, 1> _AnEnumDEnumDataStorage::names;
-
-}}} // facebook::ns::qwerty
-
-namespace facebook { namespace ns { namespace qwerty {
-
-constexpr const std::size_t _AnEnumEEnumDataStorage::size;
-constexpr const std::array<AnEnumE, 1> _AnEnumEEnumDataStorage::values;
-constexpr const std::array<folly::StringPiece, 1> _AnEnumEEnumDataStorage::names;
-
-}}} // facebook::ns::qwerty
+namespace apache {
+namespace thrift {
 
 
+constexpr const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumA>::size;
+constexpr const std::array<::facebook::ns::qwerty::AnEnumA, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumA>::values;
+constexpr const std::array<folly::StringPiece, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumA>::names;
+
+
+constexpr const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumB>::size;
+constexpr const std::array<::facebook::ns::qwerty::AnEnumB, 2> TEnumDataStorage<::facebook::ns::qwerty::AnEnumB>::values;
+constexpr const std::array<folly::StringPiece, 2> TEnumDataStorage<::facebook::ns::qwerty::AnEnumB>::names;
+
+
+constexpr const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumC>::size;
+constexpr const std::array<::facebook::ns::qwerty::AnEnumC, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumC>::values;
+constexpr const std::array<folly::StringPiece, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumC>::names;
+
+
+constexpr const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumD>::size;
+constexpr const std::array<::facebook::ns::qwerty::AnEnumD, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumD>::values;
+constexpr const std::array<folly::StringPiece, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumD>::names;
+
+
+constexpr const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumE>::size;
+constexpr const std::array<::facebook::ns::qwerty::AnEnumE, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumE>::values;
+constexpr const std::array<folly::StringPiece, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumE>::names;
+
+
+} // namespace thrift
+} // namespace apache

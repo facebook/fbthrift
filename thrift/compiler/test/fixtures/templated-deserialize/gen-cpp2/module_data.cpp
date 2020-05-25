@@ -9,12 +9,14 @@
 
 #include <thrift/lib/cpp2/gen/module_data_cpp.h>
 
-namespace cpp2 {
-
-constexpr const std::size_t _MyEnumAEnumDataStorage::size;
-constexpr const std::array<MyEnumA, 3> _MyEnumAEnumDataStorage::values;
-constexpr const std::array<folly::StringPiece, 3> _MyEnumAEnumDataStorage::names;
-
-} // cpp2
+namespace apache {
+namespace thrift {
 
 
+constexpr const std::size_t TEnumDataStorage<::cpp2::MyEnumA>::size;
+constexpr const std::array<::cpp2::MyEnumA, 3> TEnumDataStorage<::cpp2::MyEnumA>::values;
+constexpr const std::array<folly::StringPiece, 3> TEnumDataStorage<::cpp2::MyEnumA>::names;
+
+
+} // namespace thrift
+} // namespace apache

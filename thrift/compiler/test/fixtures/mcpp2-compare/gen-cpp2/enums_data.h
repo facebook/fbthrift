@@ -10,83 +10,59 @@
 
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/enums_types.h"
 
-namespace facebook { namespace ns { namespace qwerty {
+namespace apache { namespace thrift {
 
-struct _AnEnumAEnumDataStorage {
-  using type = AnEnumA;
+template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumA> {
+  using type = ::facebook::ns::qwerty::AnEnumA;
   static constexpr const std::size_t size = 1;
-  static constexpr const std::array<AnEnumA, 1> values = {{
-    AnEnumA::FIELDA,
+  static constexpr const std::array<type, 1> values = {{
+    type::FIELDA,
   }};
   static constexpr const std::array<folly::StringPiece, 1> names = {{
     "FIELDA",
   }};
 };
-
-struct _AnEnumBEnumDataStorage {
-  using type = AnEnumB;
+template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumB> {
+  using type = ::facebook::ns::qwerty::AnEnumB;
   static constexpr const std::size_t size = 2;
-  static constexpr const std::array<AnEnumB, 2> values = {{
-    AnEnumB::FIELDA,
-    AnEnumB::FIELDB,
+  static constexpr const std::array<type, 2> values = {{
+    type::FIELDA,
+    type::FIELDB,
   }};
   static constexpr const std::array<folly::StringPiece, 2> names = {{
     "FIELDA",
     "FIELDB",
   }};
 };
-
-struct _AnEnumCEnumDataStorage {
-  using type = AnEnumC;
+template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumC> {
+  using type = ::facebook::ns::qwerty::AnEnumC;
   static constexpr const std::size_t size = 1;
-  static constexpr const std::array<AnEnumC, 1> values = {{
-    AnEnumC::FIELDC,
+  static constexpr const std::array<type, 1> values = {{
+    type::FIELDC,
   }};
   static constexpr const std::array<folly::StringPiece, 1> names = {{
     "FIELDC",
   }};
 };
-
-struct _AnEnumDEnumDataStorage {
-  using type = AnEnumD;
+template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumD> {
+  using type = ::facebook::ns::qwerty::AnEnumD;
   static constexpr const std::size_t size = 1;
-  static constexpr const std::array<AnEnumD, 1> values = {{
-    AnEnumD::FIELDD,
+  static constexpr const std::array<type, 1> values = {{
+    type::FIELDD,
   }};
   static constexpr const std::array<folly::StringPiece, 1> names = {{
     "FIELDD",
   }};
 };
-
-struct _AnEnumEEnumDataStorage {
-  using type = AnEnumE;
+template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumE> {
+  using type = ::facebook::ns::qwerty::AnEnumE;
   static constexpr const std::size_t size = 1;
-  static constexpr const std::array<AnEnumE, 1> values = {{
-    AnEnumE::FIELDA,
+  static constexpr const std::array<type, 1> values = {{
+    type::FIELDA,
   }};
   static constexpr const std::array<folly::StringPiece, 1> names = {{
     "FIELDA",
   }};
-};
-
-}}} // facebook::ns::qwerty
-
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumA> {
-  using storage_type = ::facebook::ns::qwerty::_AnEnumAEnumDataStorage;
-};
-template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumB> {
-  using storage_type = ::facebook::ns::qwerty::_AnEnumBEnumDataStorage;
-};
-template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumC> {
-  using storage_type = ::facebook::ns::qwerty::_AnEnumCEnumDataStorage;
-};
-template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumD> {
-  using storage_type = ::facebook::ns::qwerty::_AnEnumDEnumDataStorage;
-};
-template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumE> {
-  using storage_type = ::facebook::ns::qwerty::_AnEnumEEnumDataStorage;
 };
 
 }} // apache::thrift

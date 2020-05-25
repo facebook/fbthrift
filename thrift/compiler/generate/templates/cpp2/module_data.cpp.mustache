@@ -20,17 +20,16 @@
 
 #include <thrift/lib/cpp2/gen/module_data_cpp.h>
 
+namespace apache {
+namespace thrift {
+
 <%#program:enums%>
-<% > common/namespace_cpp2_begin%>
 
-
-constexpr const std::size_t _<%enum:name%>EnumDataStorage::size;
-constexpr const std::array<<%enum:name%>, <%enum:size%>> _<%enum:name%>EnumDataStorage::values;
-constexpr const std::array<folly::StringPiece, <%enum:size%>> _<%enum:name%>EnumDataStorage::names;
-
-<% > common/namespace_cpp2_end%>
-
+constexpr const std::size_t TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>::size;
+constexpr const std::array<<% > common/namespace_cpp2%><%enum:name%>, <%enum:size%>> TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>::values;
+constexpr const std::array<folly::StringPiece, <%enum:size%>> TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>::names;
 
 <%/program:enums%>
 
-
+} // namespace thrift
+} // namespace apache

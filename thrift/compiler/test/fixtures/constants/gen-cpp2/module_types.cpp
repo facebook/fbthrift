@@ -48,8 +48,8 @@ FOLLY_POP_WARNING
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::cpp2::City>::size;
-folly::Range<::cpp2::City const*> const TEnumTraits<::cpp2::City>::values = folly::range(::cpp2::_CityEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::City>::names = folly::range(::cpp2::_CityEnumDataStorage::names);
+folly::Range<::cpp2::City const*> const TEnumTraits<::cpp2::City>::values = folly::range(TEnumDataStorage<::cpp2::City>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::City>::names = folly::range(TEnumDataStorage<::cpp2::City>::names);
 
 char const* TEnumTraits<::cpp2::City>::findName(type value) {
   using factory = ::cpp2::_City_EnumMapFactory;
@@ -81,8 +81,8 @@ FOLLY_POP_WARNING
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::cpp2::Company>::size;
-folly::Range<::cpp2::Company const*> const TEnumTraits<::cpp2::Company>::values = folly::range(::cpp2::_CompanyEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::Company>::names = folly::range(::cpp2::_CompanyEnumDataStorage::names);
+folly::Range<::cpp2::Company const*> const TEnumTraits<::cpp2::Company>::values = folly::range(TEnumDataStorage<::cpp2::Company>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::Company>::names = folly::range(TEnumDataStorage<::cpp2::Company>::names);
 
 char const* TEnumTraits<::cpp2::Company>::findName(type value) {
   using factory = ::cpp2::_Company_EnumMapFactory;

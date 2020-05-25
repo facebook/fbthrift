@@ -24,14 +24,14 @@ folly::Range<<% > common/namespace_cpp2%><%enum:name%> const*> const TEnumTraits
     %>{};<%!
   %><%/enum:empty?%><%!
   %><%^enum:empty?%><%!
-    %>folly::range(<% > common/namespace_cpp2%>_<%enum:name%>EnumDataStorage::values);<%!
+    %>folly::range(TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>::values);<%!
   %><%/enum:empty?%>
 folly::Range<folly::StringPiece const*> const TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::names = <%!
   %><%#enum:empty?%><%!
     %>{};<%!
   %><%/enum:empty?%><%!
   %><%^enum:empty?%><%!
-    %>folly::range(<% > common/namespace_cpp2%>_<%enum:name%>EnumDataStorage::names);<%!
+    %>folly::range(TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>::names);<%!
   %><%/enum:empty?%>
 
 char const* TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::findName(type value) {

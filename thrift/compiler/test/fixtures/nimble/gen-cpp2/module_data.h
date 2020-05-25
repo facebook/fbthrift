@@ -10,10 +10,6 @@
 
 #include "thrift/compiler/test/fixtures/nimble/gen-cpp2/module_types.h"
 
-namespace cpp2 {
-
-} // cpp2
-
 namespace apache { namespace thrift {
 
 

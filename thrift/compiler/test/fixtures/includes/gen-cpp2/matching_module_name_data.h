@@ -10,10 +10,6 @@
 
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/matching_module_name_types.h"
 
-namespace matching_module_name {
-
-} // matching_module_name
-
 namespace apache { namespace thrift {
 
 

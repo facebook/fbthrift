@@ -15,8 +15,8 @@
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::cpp2::Animal>::size;
-folly::Range<::cpp2::Animal const*> const TEnumTraits<::cpp2::Animal>::values = folly::range(::cpp2::_AnimalEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::Animal>::names = folly::range(::cpp2::_AnimalEnumDataStorage::names);
+folly::Range<::cpp2::Animal const*> const TEnumTraits<::cpp2::Animal>::values = folly::range(TEnumDataStorage<::cpp2::Animal>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::Animal>::names = folly::range(TEnumDataStorage<::cpp2::Animal>::names);
 
 char const* TEnumTraits<::cpp2::Animal>::findName(type value) {
   using factory = ::cpp2::_Animal_EnumMapFactory;

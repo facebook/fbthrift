@@ -10,27 +10,19 @@
 
 #include "thrift/compiler/test/fixtures/refs/gen-cpp2/module_types.h"
 
-namespace cpp2 {
+namespace apache { namespace thrift {
 
-struct _TypedEnumEnumDataStorage {
-  using type = TypedEnum;
+template <> struct TEnumDataStorage<::cpp2::TypedEnum> {
+  using type = ::cpp2::TypedEnum;
   static constexpr const std::size_t size = 2;
-  static constexpr const std::array<TypedEnum, 2> values = {{
-    TypedEnum::VAL1,
-    TypedEnum::VAL2,
+  static constexpr const std::array<type, 2> values = {{
+    type::VAL1,
+    type::VAL2,
   }};
   static constexpr const std::array<folly::StringPiece, 2> names = {{
     "VAL1",
     "VAL2",
   }};
-};
-
-} // cpp2
-
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::cpp2::TypedEnum> {
-  using storage_type = ::cpp2::_TypedEnumEnumDataStorage;
 };
 
 }} // apache::thrift

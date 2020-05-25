@@ -15,8 +15,8 @@
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::facebook::ns::qwerty::AnEnumA>::size;
-folly::Range<::facebook::ns::qwerty::AnEnumA const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumA>::values = folly::range(::facebook::ns::qwerty::_AnEnumAEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumA>::names = folly::range(::facebook::ns::qwerty::_AnEnumAEnumDataStorage::names);
+folly::Range<::facebook::ns::qwerty::AnEnumA const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumA>::values = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumA>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumA>::names = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumA>::names);
 
 char const* TEnumTraits<::facebook::ns::qwerty::AnEnumA>::findName(type value) {
   using factory = ::facebook::ns::qwerty::_AnEnumA_EnumMapFactory;
@@ -48,8 +48,8 @@ FOLLY_POP_WARNING
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::facebook::ns::qwerty::AnEnumB>::size;
-folly::Range<::facebook::ns::qwerty::AnEnumB const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumB>::values = folly::range(::facebook::ns::qwerty::_AnEnumBEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumB>::names = folly::range(::facebook::ns::qwerty::_AnEnumBEnumDataStorage::names);
+folly::Range<::facebook::ns::qwerty::AnEnumB const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumB>::values = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumB>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumB>::names = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumB>::names);
 
 char const* TEnumTraits<::facebook::ns::qwerty::AnEnumB>::findName(type value) {
   using factory = ::facebook::ns::qwerty::_AnEnumB_EnumMapFactory;
@@ -81,8 +81,8 @@ FOLLY_POP_WARNING
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::facebook::ns::qwerty::AnEnumC>::size;
-folly::Range<::facebook::ns::qwerty::AnEnumC const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumC>::values = folly::range(::facebook::ns::qwerty::_AnEnumCEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumC>::names = folly::range(::facebook::ns::qwerty::_AnEnumCEnumDataStorage::names);
+folly::Range<::facebook::ns::qwerty::AnEnumC const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumC>::values = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumC>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumC>::names = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumC>::names);
 
 char const* TEnumTraits<::facebook::ns::qwerty::AnEnumC>::findName(type value) {
   using factory = ::facebook::ns::qwerty::_AnEnumC_EnumMapFactory;
@@ -114,8 +114,8 @@ FOLLY_POP_WARNING
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::facebook::ns::qwerty::AnEnumD>::size;
-folly::Range<::facebook::ns::qwerty::AnEnumD const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumD>::values = folly::range(::facebook::ns::qwerty::_AnEnumDEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumD>::names = folly::range(::facebook::ns::qwerty::_AnEnumDEnumDataStorage::names);
+folly::Range<::facebook::ns::qwerty::AnEnumD const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumD>::values = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumD>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumD>::names = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumD>::names);
 
 char const* TEnumTraits<::facebook::ns::qwerty::AnEnumD>::findName(type value) {
   using factory = ::facebook::ns::qwerty::_AnEnumD_EnumMapFactory;
@@ -147,8 +147,8 @@ FOLLY_POP_WARNING
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::facebook::ns::qwerty::AnEnumE>::size;
-folly::Range<::facebook::ns::qwerty::AnEnumE const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumE>::values = folly::range(::facebook::ns::qwerty::_AnEnumEEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumE>::names = folly::range(::facebook::ns::qwerty::_AnEnumEEnumDataStorage::names);
+folly::Range<::facebook::ns::qwerty::AnEnumE const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumE>::values = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumE>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumE>::names = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumE>::names);
 
 char const* TEnumTraits<::facebook::ns::qwerty::AnEnumE>::findName(type value) {
   using factory = ::facebook::ns::qwerty::_AnEnumE_EnumMapFactory;

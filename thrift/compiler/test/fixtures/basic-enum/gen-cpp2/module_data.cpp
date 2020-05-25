@@ -9,28 +9,24 @@
 
 #include <thrift/lib/cpp2/gen/module_data_cpp.h>
 
-namespace test { namespace fixtures { namespace enumstrict {
-
-constexpr const std::size_t _EmptyEnumEnumDataStorage::size;
-constexpr const std::array<EmptyEnum, 0> _EmptyEnumEnumDataStorage::values;
-constexpr const std::array<folly::StringPiece, 0> _EmptyEnumEnumDataStorage::names;
-
-}}} // test::fixtures::enumstrict
-
-namespace test { namespace fixtures { namespace enumstrict {
-
-constexpr const std::size_t _MyEnumEnumDataStorage::size;
-constexpr const std::array<MyEnum, 2> _MyEnumEnumDataStorage::values;
-constexpr const std::array<folly::StringPiece, 2> _MyEnumEnumDataStorage::names;
-
-}}} // test::fixtures::enumstrict
-
-namespace test { namespace fixtures { namespace enumstrict {
-
-constexpr const std::size_t _MyBigEnumEnumDataStorage::size;
-constexpr const std::array<MyBigEnum, 20> _MyBigEnumEnumDataStorage::values;
-constexpr const std::array<folly::StringPiece, 20> _MyBigEnumEnumDataStorage::names;
-
-}}} // test::fixtures::enumstrict
+namespace apache {
+namespace thrift {
 
 
+constexpr const std::size_t TEnumDataStorage<::test::fixtures::enumstrict::EmptyEnum>::size;
+constexpr const std::array<::test::fixtures::enumstrict::EmptyEnum, 0> TEnumDataStorage<::test::fixtures::enumstrict::EmptyEnum>::values;
+constexpr const std::array<folly::StringPiece, 0> TEnumDataStorage<::test::fixtures::enumstrict::EmptyEnum>::names;
+
+
+constexpr const std::size_t TEnumDataStorage<::test::fixtures::enumstrict::MyEnum>::size;
+constexpr const std::array<::test::fixtures::enumstrict::MyEnum, 2> TEnumDataStorage<::test::fixtures::enumstrict::MyEnum>::values;
+constexpr const std::array<folly::StringPiece, 2> TEnumDataStorage<::test::fixtures::enumstrict::MyEnum>::names;
+
+
+constexpr const std::size_t TEnumDataStorage<::test::fixtures::enumstrict::MyBigEnum>::size;
+constexpr const std::array<::test::fixtures::enumstrict::MyBigEnum, 20> TEnumDataStorage<::test::fixtures::enumstrict::MyBigEnum>::values;
+constexpr const std::array<folly::StringPiece, 20> TEnumDataStorage<::test::fixtures::enumstrict::MyBigEnum>::names;
+
+
+} // namespace thrift
+} // namespace apache

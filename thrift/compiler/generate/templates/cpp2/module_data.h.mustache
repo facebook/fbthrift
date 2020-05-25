@@ -21,16 +21,15 @@
 
 #include "<%program:include_prefix%><%program:name%>_types.h"
 
-<% > common/namespace_cpp2_begin%>
+namespace apache { namespace thrift {
 
 <%#program:enums%>
-
-struct _<%enum:name%>EnumDataStorage {
-  using type = <%enum:name%>;
+template <> struct TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>> {
+  using type = <% > common/namespace_cpp2%><%enum:name%>;
   static constexpr const std::size_t size = <%enum:size%>;
-  static constexpr const std::array<<%enum:name%>, <%enum:size%>> values = {{
+  static constexpr const std::array<type, <%enum:size%>> values = {{
 <%#enum:values%><%!
-%>    <%enum:name%>::<%enumValue:cpp_name%>,
+%>    type::<%enumValue:cpp_name%>,
 <%/enum:values%>
   }};
   static constexpr const std::array<folly::StringPiece, <%enum:size%>> names = {{
@@ -38,17 +37,6 @@ struct _<%enum:name%>EnumDataStorage {
 %>    "<%enumValue:name%>",
 <%/enum:values%>
   }};
-};
-<%/program:enums%>
-
-<% > common/namespace_cpp2_end%>
-
-
-namespace apache { namespace thrift {
-
-<%#program:enums%>
-template <> struct TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>> {
-  using storage_type = <% > common/namespace_cpp2%>_<%enum:name%>EnumDataStorage;
 };
 <%/program:enums%>
 

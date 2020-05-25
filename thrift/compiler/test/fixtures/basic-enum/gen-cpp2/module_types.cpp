@@ -48,8 +48,8 @@ FOLLY_POP_WARNING
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::test::fixtures::enumstrict::MyEnum>::size;
-folly::Range<::test::fixtures::enumstrict::MyEnum const*> const TEnumTraits<::test::fixtures::enumstrict::MyEnum>::values = folly::range(::test::fixtures::enumstrict::_MyEnumEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::enumstrict::MyEnum>::names = folly::range(::test::fixtures::enumstrict::_MyEnumEnumDataStorage::names);
+folly::Range<::test::fixtures::enumstrict::MyEnum const*> const TEnumTraits<::test::fixtures::enumstrict::MyEnum>::values = folly::range(TEnumDataStorage<::test::fixtures::enumstrict::MyEnum>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::enumstrict::MyEnum>::names = folly::range(TEnumDataStorage<::test::fixtures::enumstrict::MyEnum>::names);
 
 char const* TEnumTraits<::test::fixtures::enumstrict::MyEnum>::findName(type value) {
   using factory = ::test::fixtures::enumstrict::_MyEnum_EnumMapFactory;
@@ -81,8 +81,8 @@ FOLLY_POP_WARNING
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::test::fixtures::enumstrict::MyBigEnum>::size;
-folly::Range<::test::fixtures::enumstrict::MyBigEnum const*> const TEnumTraits<::test::fixtures::enumstrict::MyBigEnum>::values = folly::range(::test::fixtures::enumstrict::_MyBigEnumEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::enumstrict::MyBigEnum>::names = folly::range(::test::fixtures::enumstrict::_MyBigEnumEnumDataStorage::names);
+folly::Range<::test::fixtures::enumstrict::MyBigEnum const*> const TEnumTraits<::test::fixtures::enumstrict::MyBigEnum>::values = folly::range(TEnumDataStorage<::test::fixtures::enumstrict::MyBigEnum>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::enumstrict::MyBigEnum>::names = folly::range(TEnumDataStorage<::test::fixtures::enumstrict::MyBigEnum>::names);
 
 char const* TEnumTraits<::test::fixtures::enumstrict::MyBigEnum>::findName(type value) {
   using factory = ::test::fixtures::enumstrict::_MyBigEnum_EnumMapFactory;

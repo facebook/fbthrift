@@ -10,25 +10,24 @@
 
 #include "thrift/compiler/test/fixtures/constants/gen-cpp2/module_types.h"
 
-namespace cpp2 {
+namespace apache { namespace thrift {
 
-struct _EmptyEnumEnumDataStorage {
-  using type = EmptyEnum;
+template <> struct TEnumDataStorage<::cpp2::EmptyEnum> {
+  using type = ::cpp2::EmptyEnum;
   static constexpr const std::size_t size = 0;
-  static constexpr const std::array<EmptyEnum, 0> values = {{
+  static constexpr const std::array<type, 0> values = {{
   }};
   static constexpr const std::array<folly::StringPiece, 0> names = {{
   }};
 };
-
-struct _CityEnumDataStorage {
-  using type = City;
+template <> struct TEnumDataStorage<::cpp2::City> {
+  using type = ::cpp2::City;
   static constexpr const std::size_t size = 4;
-  static constexpr const std::array<City, 4> values = {{
-    City::NYC,
-    City::MPK,
-    City::SEA,
-    City::LON,
+  static constexpr const std::array<type, 4> values = {{
+    type::NYC,
+    type::MPK,
+    type::SEA,
+    type::LON,
   }};
   static constexpr const std::array<folly::StringPiece, 4> names = {{
     "NYC",
@@ -37,15 +36,14 @@ struct _CityEnumDataStorage {
     "LON",
   }};
 };
-
-struct _CompanyEnumDataStorage {
-  using type = Company;
+template <> struct TEnumDataStorage<::cpp2::Company> {
+  using type = ::cpp2::Company;
   static constexpr const std::size_t size = 4;
-  static constexpr const std::array<Company, 4> values = {{
-    Company::FACEBOOK,
-    Company::WHATSAPP,
-    Company::OCULUS,
-    Company::INSTAGRAM,
+  static constexpr const std::array<type, 4> values = {{
+    type::FACEBOOK,
+    type::WHATSAPP,
+    type::OCULUS,
+    type::INSTAGRAM,
   }};
   static constexpr const std::array<folly::StringPiece, 4> names = {{
     "FACEBOOK",
@@ -53,20 +51,6 @@ struct _CompanyEnumDataStorage {
     "OCULUS",
     "INSTAGRAM",
   }};
-};
-
-} // cpp2
-
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::cpp2::EmptyEnum> {
-  using storage_type = ::cpp2::_EmptyEnumEnumDataStorage;
-};
-template <> struct TEnumDataStorage<::cpp2::City> {
-  using storage_type = ::cpp2::_CityEnumDataStorage;
-};
-template <> struct TEnumDataStorage<::cpp2::Company> {
-  using storage_type = ::cpp2::_CompanyEnumDataStorage;
 };
 
 }} // apache::thrift

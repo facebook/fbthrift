@@ -10,54 +10,52 @@
 
 #include "thrift/compiler/test/fixtures/basic-enum/gen-cpp2/module_types.h"
 
-namespace test { namespace fixtures { namespace enumstrict {
+namespace apache { namespace thrift {
 
-struct _EmptyEnumEnumDataStorage {
-  using type = EmptyEnum;
+template <> struct TEnumDataStorage<::test::fixtures::enumstrict::EmptyEnum> {
+  using type = ::test::fixtures::enumstrict::EmptyEnum;
   static constexpr const std::size_t size = 0;
-  static constexpr const std::array<EmptyEnum, 0> values = {{
+  static constexpr const std::array<type, 0> values = {{
   }};
   static constexpr const std::array<folly::StringPiece, 0> names = {{
   }};
 };
-
-struct _MyEnumEnumDataStorage {
-  using type = MyEnum;
+template <> struct TEnumDataStorage<::test::fixtures::enumstrict::MyEnum> {
+  using type = ::test::fixtures::enumstrict::MyEnum;
   static constexpr const std::size_t size = 2;
-  static constexpr const std::array<MyEnum, 2> values = {{
-    MyEnum::ONE,
-    MyEnum::TWO,
+  static constexpr const std::array<type, 2> values = {{
+    type::ONE,
+    type::TWO,
   }};
   static constexpr const std::array<folly::StringPiece, 2> names = {{
     "ONE",
     "TWO",
   }};
 };
-
-struct _MyBigEnumEnumDataStorage {
-  using type = MyBigEnum;
+template <> struct TEnumDataStorage<::test::fixtures::enumstrict::MyBigEnum> {
+  using type = ::test::fixtures::enumstrict::MyBigEnum;
   static constexpr const std::size_t size = 20;
-  static constexpr const std::array<MyBigEnum, 20> values = {{
-    MyBigEnum::UNKNOWN,
-    MyBigEnum::ONE,
-    MyBigEnum::TWO,
-    MyBigEnum::THREE,
-    MyBigEnum::FOUR,
-    MyBigEnum::FIVE,
-    MyBigEnum::SIX,
-    MyBigEnum::SEVEN,
-    MyBigEnum::EIGHT,
-    MyBigEnum::NINE,
-    MyBigEnum::TEN,
-    MyBigEnum::ELEVEN,
-    MyBigEnum::TWELVE,
-    MyBigEnum::THIRTEEN,
-    MyBigEnum::FOURTEEN,
-    MyBigEnum::FIFTEEN,
-    MyBigEnum::SIXTEEN,
-    MyBigEnum::SEVENTEEN,
-    MyBigEnum::EIGHTEEN,
-    MyBigEnum::NINETEEN,
+  static constexpr const std::array<type, 20> values = {{
+    type::UNKNOWN,
+    type::ONE,
+    type::TWO,
+    type::THREE,
+    type::FOUR,
+    type::FIVE,
+    type::SIX,
+    type::SEVEN,
+    type::EIGHT,
+    type::NINE,
+    type::TEN,
+    type::ELEVEN,
+    type::TWELVE,
+    type::THIRTEEN,
+    type::FOURTEEN,
+    type::FIFTEEN,
+    type::SIXTEEN,
+    type::SEVENTEEN,
+    type::EIGHTEEN,
+    type::NINETEEN,
   }};
   static constexpr const std::array<folly::StringPiece, 20> names = {{
     "UNKNOWN",
@@ -81,20 +79,6 @@ struct _MyBigEnumEnumDataStorage {
     "EIGHTEEN",
     "NINETEEN",
   }};
-};
-
-}}} // test::fixtures::enumstrict
-
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::test::fixtures::enumstrict::EmptyEnum> {
-  using storage_type = ::test::fixtures::enumstrict::_EmptyEnumEnumDataStorage;
-};
-template <> struct TEnumDataStorage<::test::fixtures::enumstrict::MyEnum> {
-  using storage_type = ::test::fixtures::enumstrict::_MyEnumEnumDataStorage;
-};
-template <> struct TEnumDataStorage<::test::fixtures::enumstrict::MyBigEnum> {
-  using storage_type = ::test::fixtures::enumstrict::_MyBigEnumEnumDataStorage;
 };
 
 }} // apache::thrift

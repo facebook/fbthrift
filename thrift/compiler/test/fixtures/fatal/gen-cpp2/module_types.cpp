@@ -15,8 +15,8 @@
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::test_cpp2::cpp_reflection::enum1>::size;
-folly::Range<::test_cpp2::cpp_reflection::enum1 const*> const TEnumTraits<::test_cpp2::cpp_reflection::enum1>::values = folly::range(::test_cpp2::cpp_reflection::_enum1EnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::test_cpp2::cpp_reflection::enum1>::names = folly::range(::test_cpp2::cpp_reflection::_enum1EnumDataStorage::names);
+folly::Range<::test_cpp2::cpp_reflection::enum1 const*> const TEnumTraits<::test_cpp2::cpp_reflection::enum1>::values = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::enum1>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test_cpp2::cpp_reflection::enum1>::names = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::enum1>::names);
 
 char const* TEnumTraits<::test_cpp2::cpp_reflection::enum1>::findName(type value) {
   using factory = ::test_cpp2::cpp_reflection::_enum1_EnumMapFactory;
@@ -48,8 +48,8 @@ FOLLY_POP_WARNING
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::test_cpp2::cpp_reflection::enum2>::size;
-folly::Range<::test_cpp2::cpp_reflection::enum2 const*> const TEnumTraits<::test_cpp2::cpp_reflection::enum2>::values = folly::range(::test_cpp2::cpp_reflection::_enum2EnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::test_cpp2::cpp_reflection::enum2>::names = folly::range(::test_cpp2::cpp_reflection::_enum2EnumDataStorage::names);
+folly::Range<::test_cpp2::cpp_reflection::enum2 const*> const TEnumTraits<::test_cpp2::cpp_reflection::enum2>::values = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::enum2>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test_cpp2::cpp_reflection::enum2>::names = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::enum2>::names);
 
 char const* TEnumTraits<::test_cpp2::cpp_reflection::enum2>::findName(type value) {
   using factory = ::test_cpp2::cpp_reflection::_enum2_EnumMapFactory;
@@ -81,8 +81,8 @@ FOLLY_POP_WARNING
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::test_cpp2::cpp_reflection::enum3>::size;
-folly::Range<::test_cpp2::cpp_reflection::enum3 const*> const TEnumTraits<::test_cpp2::cpp_reflection::enum3>::values = folly::range(::test_cpp2::cpp_reflection::_enum3EnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::test_cpp2::cpp_reflection::enum3>::names = folly::range(::test_cpp2::cpp_reflection::_enum3EnumDataStorage::names);
+folly::Range<::test_cpp2::cpp_reflection::enum3 const*> const TEnumTraits<::test_cpp2::cpp_reflection::enum3>::values = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::enum3>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test_cpp2::cpp_reflection::enum3>::names = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::enum3>::names);
 
 char const* TEnumTraits<::test_cpp2::cpp_reflection::enum3>::findName(type value) {
   using factory = ::test_cpp2::cpp_reflection::_enum3_EnumMapFactory;
@@ -114,8 +114,8 @@ FOLLY_POP_WARNING
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::test_cpp2::cpp_reflection::enum_with_special_names>::size;
-folly::Range<::test_cpp2::cpp_reflection::enum_with_special_names const*> const TEnumTraits<::test_cpp2::cpp_reflection::enum_with_special_names>::values = folly::range(::test_cpp2::cpp_reflection::_enum_with_special_namesEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::test_cpp2::cpp_reflection::enum_with_special_names>::names = folly::range(::test_cpp2::cpp_reflection::_enum_with_special_namesEnumDataStorage::names);
+folly::Range<::test_cpp2::cpp_reflection::enum_with_special_names const*> const TEnumTraits<::test_cpp2::cpp_reflection::enum_with_special_names>::values = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::enum_with_special_names>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test_cpp2::cpp_reflection::enum_with_special_names>::names = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::enum_with_special_names>::names);
 
 char const* TEnumTraits<::test_cpp2::cpp_reflection::enum_with_special_names>::findName(type value) {
   using factory = ::test_cpp2::cpp_reflection::_enum_with_special_names_EnumMapFactory;

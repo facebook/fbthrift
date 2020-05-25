@@ -10,27 +10,19 @@
 
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/includes_types.h"
 
-namespace a { namespace different { namespace ns {
+namespace apache { namespace thrift {
 
-struct _AnEnumEnumDataStorage {
-  using type = AnEnum;
+template <> struct TEnumDataStorage<::a::different::ns::AnEnum> {
+  using type = ::a::different::ns::AnEnum;
   static constexpr const std::size_t size = 2;
-  static constexpr const std::array<AnEnum, 2> values = {{
-    AnEnum::FIELDA,
-    AnEnum::FIELDB,
+  static constexpr const std::array<type, 2> values = {{
+    type::FIELDA,
+    type::FIELDB,
   }};
   static constexpr const std::array<folly::StringPiece, 2> names = {{
     "FIELDA",
     "FIELDB",
   }};
-};
-
-}}} // a::different::ns
-
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage<::a::different::ns::AnEnum> {
-  using storage_type = ::a::different::ns::_AnEnumEnumDataStorage;
 };
 
 }} // apache::thrift

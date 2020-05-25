@@ -15,8 +15,8 @@
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>::size;
-folly::Range<::apache::thrift::fixtures::types::has_bitwise_ops const*> const TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>::values = folly::range(::apache::thrift::fixtures::types::_has_bitwise_opsEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>::names = folly::range(::apache::thrift::fixtures::types::_has_bitwise_opsEnumDataStorage::names);
+folly::Range<::apache::thrift::fixtures::types::has_bitwise_ops const*> const TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>::values = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::has_bitwise_ops>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>::names = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::has_bitwise_ops>::names);
 
 char const* TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>::findName(type value) {
   using factory = ::apache::thrift::fixtures::types::_has_bitwise_ops_EnumMapFactory;
@@ -48,8 +48,8 @@ FOLLY_POP_WARNING
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>::size;
-folly::Range<::apache::thrift::fixtures::types::is_unscoped const*> const TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>::values = folly::range(::apache::thrift::fixtures::types::_is_unscopedEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>::names = folly::range(::apache::thrift::fixtures::types::_is_unscopedEnumDataStorage::names);
+folly::Range<::apache::thrift::fixtures::types::is_unscoped const*> const TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>::values = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::is_unscoped>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>::names = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::is_unscoped>::names);
 
 char const* TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>::findName(type value) {
   using factory = ::apache::thrift::fixtures::types::_is_unscoped_EnumMapFactory;
@@ -81,8 +81,8 @@ FOLLY_POP_WARNING
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>::size;
-folly::Range<::apache::thrift::fixtures::types::MyForwardRefEnum const*> const TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>::values = folly::range(::apache::thrift::fixtures::types::_MyForwardRefEnumEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>::names = folly::range(::apache::thrift::fixtures::types::_MyForwardRefEnumEnumDataStorage::names);
+folly::Range<::apache::thrift::fixtures::types::MyForwardRefEnum const*> const TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>::values = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::MyForwardRefEnum>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>::names = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::MyForwardRefEnum>::names);
 
 char const* TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>::findName(type value) {
   using factory = ::apache::thrift::fixtures::types::_MyForwardRefEnum_EnumMapFactory;
@@ -114,8 +114,8 @@ FOLLY_POP_WARNING
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::apache::thrift::fixtures::types::MyEnumA>::size;
-folly::Range<::apache::thrift::fixtures::types::MyEnumA const*> const TEnumTraits<::apache::thrift::fixtures::types::MyEnumA>::values = folly::range(::apache::thrift::fixtures::types::_MyEnumAEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::MyEnumA>::names = folly::range(::apache::thrift::fixtures::types::_MyEnumAEnumDataStorage::names);
+folly::Range<::apache::thrift::fixtures::types::MyEnumA const*> const TEnumTraits<::apache::thrift::fixtures::types::MyEnumA>::values = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::MyEnumA>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::MyEnumA>::names = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::MyEnumA>::names);
 
 char const* TEnumTraits<::apache::thrift::fixtures::types::MyEnumA>::findName(type value) {
   using factory = ::apache::thrift::fixtures::types::_MyEnumA_EnumMapFactory;
