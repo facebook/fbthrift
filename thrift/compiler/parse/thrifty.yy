@@ -864,8 +864,7 @@ Extends:
           $$ = driver.scope_cache->get_service(driver.program->get_name() + "." + $2);
         }
         if ($$ == NULL) {
-          driver.yyerror("Service \"%s\" has not been defined.", $2.c_str());
-          driver.end_parsing();
+          driver.failure("Service \"%s\" has not been defined.", $2.c_str());
         }
       }
     }
@@ -932,9 +931,8 @@ ParamList:
       driver.debug("ParamList -> ParamList , Param");
       $$ = $1;
       if (!($$->append(std::unique_ptr<t_field>($2)))) {
-        driver.yyerror("Parameter identifier %d for \"%s\" has already been used",
+        driver.failure("Parameter identifier %d for \"%s\" has already been used",
                        $2->get_key(), $2->get_name().c_str());
-        driver.end_parsing();
       }
     }
 | EmptyParamList
@@ -989,9 +987,8 @@ FieldList:
       driver.debug("FieldList -> FieldList , Field");
       $$ = $1;
       if (!($$->append(std::unique_ptr<t_field>($2)))) {
-        driver.yyerror("Field identifier %d for \"%s\" has already been used",
+        driver.failure("Field identifier %d for \"%s\" has already been used",
                        $2->get_key(), $2->get_name().c_str());
-        driver.end_parsing();
       }
     }
 |
@@ -1007,8 +1004,7 @@ Field:
       if ($2.auto_assigned) {
         driver.warning(1, "No field key specified for %s, resulting protocol may have conflicts or not be backwards compatible!", $5.c_str());
         if (driver.params.strict >= 192) {
-          driver.yyerror("Implicit field keys are deprecated and not allowed with -strict");
-          driver.end_parsing();
+          driver.failure("Implicit field keys are deprecated and not allowed with -strict");
         }
       }
 
@@ -1110,8 +1106,7 @@ FieldQualifiers:
 | tok_mixin
     {
       if (!driver.params.enable_experimental_mixins) {
-        driver.yyerror("Mixin support is not enabled");
-        driver.end_parsing();
+        driver.failure("Mixin support is not enabled");
       }
       $$.is_mixin = true;
       $$.req = t_field::T_OPT_IN_REQ_OUT;

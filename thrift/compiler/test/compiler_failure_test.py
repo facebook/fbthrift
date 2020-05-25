@@ -246,8 +246,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[ERROR:foo.thrift:2] (last token was 'mixin')\n"
-            "Mixin support is not enabled\n"
+            '[FAILURE:foo.thrift:2] Mixin support is not enabled\n',
         )
 
     def test_mixin_field_names_uniqueness(self):
