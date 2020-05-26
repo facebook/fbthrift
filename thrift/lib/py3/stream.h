@@ -16,6 +16,10 @@
 
 #pragma once
 
+#include <folly/Portability.h>
+
+#if FOLLY_HAS_COROUTINES
+
 #include <folly/python/async_generator.h>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
 
@@ -44,3 +48,5 @@ class ClientBufferedStreamWrapper {
 
 } // namespace py3
 } // namespace thrift
+
+#endif
