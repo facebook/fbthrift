@@ -72,11 +72,18 @@ folly::Try<void> RequestContext::waitForWriteToCompleteResult() {
 
 folly::Try<Payload> RequestContext::waitForResponse(
     std::chrono::milliseconds timeout) {
-  // Once the eventual write to the socket succeeds or errors out (via
-  // writeSuccess() or writeErr()), a timeout for baton_ will be scheduled via
-  // awaitResponseTimeoutHandler_.
-  awaitResponseTimeout_ = timeout;
-  baton_.wait(awaitResponseTimeoutHandler_);
+  CHECK(folly::fibers::onFiber());
+
+  // The request timeout is scheduled only after the write to the socket
+  // succeeds.
+  folly::fibers::Baton::TimeoutHandler timeoutHandler;
+  setTimeoutInfo(
+      folly::fibers::FiberManager::getFiberManagerUnsafe()
+          ->loopController()
+          .timer(),
+      timeoutHandler,
+      timeout);
+  baton_.wait(timeoutHandler);
 
   switch (state_) {
     case State::WRITE_SENT:

@@ -83,11 +83,21 @@ class RequestContext {
   void waitForWriteToCompleteSchedule(folly::fibers::Baton::Waiter* waiter);
   FOLLY_NODISCARD folly::Try<void> waitForWriteToCompleteResult();
 
+  void setTimeoutInfo(
+      folly::HHWheelTimer& timer,
+      folly::HHWheelTimer::Callback& callback,
+      std::chrono::milliseconds timeout) {
+    timer_ = &timer;
+    timeoutCallback_ = &callback;
+    requestTimeout_ = timeout;
+  }
+
   void scheduleTimeoutForResponse() {
     DCHECK(isRequestResponse());
     // In some edge cases, response may arrive before write to socket finishes.
-    if (state_ != State::COMPLETE) {
-      awaitResponseTimeoutHandler_.scheduleTimeout(awaitResponseTimeout_);
+    if (state_ != State::COMPLETE &&
+        requestTimeout_ != std::chrono::milliseconds::zero()) {
+      timer_->scheduleTimeout(timeoutCallback_, requestTimeout_);
     }
   }
 
@@ -128,8 +138,9 @@ class RequestContext {
 
   boost::intrusive::unordered_set_member_hook<> setHook_;
   folly::fibers::Baton baton_;
-  std::chrono::milliseconds awaitResponseTimeout_{1000};
-  folly::fibers::Baton::TimeoutHandler awaitResponseTimeoutHandler_;
+  std::chrono::milliseconds requestTimeout_{1000};
+  folly::HHWheelTimer* timer_{nullptr};
+  folly::HHWheelTimer::Callback* timeoutCallback_{nullptr};
   folly::Try<Payload> responsePayload_;
   RequestClientCallback* const writeCallback_;
 
