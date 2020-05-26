@@ -56,7 +56,7 @@ class StructTests(unittest.TestCase):
         hard(  # type: ignore
             val=1,
             val_list=[1, 2],
-            name=None,  # pyre-ignore[6]: intentionally for test
+            name=None,
             an_int=Integers(small=1),
         )
 

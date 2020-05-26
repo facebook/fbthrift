@@ -36,6 +36,7 @@ async def bad_client_connect() -> None:
 
 class ThriftClientTestProxy:  # noqa: B903
     def __init__(self, inner) -> None:  # type: ignore
+        # pyre-fixme[4]: Attribute must be annotated.
         self.inner = inner
 
 
@@ -180,6 +181,7 @@ class ClientTests(unittest.TestCase):
         loop = asyncio.get_event_loop()
         test_helper = ClientEventHandlerTestHelper()
 
+        # pyre-fixme[53]: Captured variable `test_helper` is not annotated.
         async def test() -> None:
             self.assertFalse(test_helper.is_handler_called())
             async with test_helper.get_client(TestingService, port=1) as cli:

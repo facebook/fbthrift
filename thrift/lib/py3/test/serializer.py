@@ -109,6 +109,7 @@ class SerializerTests(unittest.TestCase):
             self.assertEqual((proto, encoded), (proto, fixtures.get(proto)))
 
     def pickle_round_robin(
+        # pyre-fixme[2]: Parameter annotation cannot contain `Any`.
         self, control: Union[Struct, Mapping[Any, Any], Sequence[Any], AbstractSet[Any]]
     ) -> None:
         encoded = pickle.dumps(control, protocol=pickle.HIGHEST_PROTOCOL)

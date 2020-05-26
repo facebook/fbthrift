@@ -102,6 +102,7 @@ class TestServer:
         self.serve_task = asyncio.get_event_loop().create_task(self.server.serve())
         return await self.server.get_address()
 
+    # pyre-fixme[2]: Parameter must be annotated.
     async def __aexit__(self, *exc_info) -> None:
         self.server.stop()
         await self.serve_task
@@ -155,6 +156,7 @@ class ClientServerTests(unittest.TestCase):
         loop = asyncio.get_event_loop()
         hostname = socket.gethostname()
 
+        # pyre-fixme[53]: Captured variable `hostname` is not annotated.
         async def inner_test() -> None:
             async with TestServer() as sa:
                 port = sa.port

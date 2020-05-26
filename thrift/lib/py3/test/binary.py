@@ -47,7 +47,10 @@ class BinaryTests(unittest.TestCase):
 
 
 class BinaryHandler(BinaryServiceInterface):
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def __init__(self, unit_test):
+        # pyre-fixme[4]: Attribute must be annotated.
         self.unit_test = unit_test
 
     async def sendRecvBinaries(self, val: Binaries) -> Binaries:
@@ -102,6 +105,7 @@ class TestServer:
         self.serve_task = asyncio.get_event_loop().create_task(self.server.serve())
         return await self.server.get_address()
 
+    # pyre-fixme[2]: Parameter must be annotated.
     async def __aexit__(self, *exc_info) -> None:
         self.server.stop()
         await self.serve_task
@@ -116,6 +120,7 @@ class ClientBinaryServerTests(unittest.TestCase):
                 ip, port = sa.ip, sa.port
                 assert ip and port
                 async with get_client(BinaryService, host=ip, port=port) as client:
+                    # pyre-fixme[33]: Given annotation cannot be `Any`.
                     val: Any
                     val = await client.sendRecvBinaries(
                         Binaries(
