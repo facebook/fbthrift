@@ -147,7 +147,7 @@ RocketTestClient::~RocketTestClient() {
 folly::Try<Payload> RocketTestClient::sendRequestResponseSync(
     Payload request,
     std::chrono::milliseconds timeout,
-    RequestClientCallback* writeCallback) {
+    RocketClient::WriteSuccessCallback* writeSuccessCallback) {
   folly::Try<Payload> response;
   folly::fibers::Baton baton;
 
@@ -155,7 +155,7 @@ folly::Try<Payload> RocketTestClient::sendRequestResponseSync(
     fm_.addTaskFinally(
         [&] {
           return client_->sendRequestResponseSync(
-              std::move(request), timeout, writeCallback);
+              std::move(request), timeout, writeSuccessCallback);
         },
         [&](folly::Try<folly::Try<Payload>>&& r) {
           response = collapseTry(std::move(r));
@@ -167,17 +167,13 @@ folly::Try<Payload> RocketTestClient::sendRequestResponseSync(
   return response;
 }
 
-folly::Try<void> RocketTestClient::sendRequestFnfSync(
-    Payload request,
-    RequestClientCallback* writeCallback) {
+folly::Try<void> RocketTestClient::sendRequestFnfSync(Payload request) {
   folly::Try<void> response;
   folly::fibers::Baton baton;
 
   evb_.runInEventBaseThread([&] {
     fm_.addTaskFinally(
-        [&] {
-          return client_->sendRequestFnfSync(std::move(request), writeCallback);
-        },
+        [&] { return client_->sendRequestFnfSync(std::move(request)); },
         [&](folly::Try<folly::Try<void>>&& r) {
           response = collapseTry(std::move(r));
           baton.post();
