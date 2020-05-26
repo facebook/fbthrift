@@ -1266,8 +1266,6 @@ class mstch_cpp2_program : public mstch_program {
             {"program:cpp_includes", &mstch_cpp2_program::cpp_includes},
             {"program:namespace_cpp2", &mstch_cpp2_program::namespace_cpp2},
             {"program:include_prefix", &mstch_cpp2_program::include_prefix},
-            {"program:enums?", &mstch_cpp2_program::has_enums},
-            {"program:typedefs?", &mstch_cpp2_program::has_typedefs},
             {"program:cpp_declare_hash?",
              &mstch_cpp2_program::cpp_declare_hash},
             {"program:thrift_includes", &mstch_cpp2_program::thrift_includes},
@@ -1390,12 +1388,6 @@ class mstch_cpp2_program : public mstch_program {
   mstch::node include_prefix() {
     return t_mstch_cpp2_generator::include_prefix(
         program_, cache_->parsed_options_["include_prefix"]);
-  }
-  mstch::node has_enums() {
-    return !program_->get_enums().empty();
-  }
-  mstch::node has_typedefs() {
-    return !program_->get_typedefs().empty();
   }
   mstch::node cpp_declare_hash() {
     bool cpp_declare_in_structs = std::any_of(
