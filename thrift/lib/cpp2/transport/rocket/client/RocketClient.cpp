@@ -387,6 +387,7 @@ folly::Try<Payload> RocketClient::sendRequestResponseSync(
     Payload&& request,
     std::chrono::milliseconds timeout,
     RequestClientCallback* writeCallback) {
+  DestructorGuard dg(this);
   auto g = makeRequestCountGuard();
   auto setupFrame = std::move(setupFrame_);
   RequestContext ctx(
@@ -398,6 +399,71 @@ folly::Try<Payload> RocketClient::sendRequestResponseSync(
     return folly::Try<Payload>(std::move(ew));
   }
   return ctx.waitForResponse(timeout);
+}
+
+void RocketClient::sendRequestResponseAsync(
+    Payload&& request,
+    std::chrono::milliseconds timeout,
+    RequestClientCallback* writeCallback,
+    folly::Function<void(folly::Try<Payload>&&)> responsePayloadCallback) {
+  auto setupFrame = std::move(setupFrame_);
+  auto rctx = std::make_unique<RequestContext>(
+      RequestResponseFrame(makeStreamId(), std::move(request)),
+      queue_,
+      setupFrame.get(),
+      writeCallback);
+  auto callbackWithGuard =
+      [dg = DestructorGuard(this),
+       g = makeRequestCountGuard(),
+       callback = std::move(responsePayloadCallback)](auto&& response) mutable {
+        callback(std::move(response));
+      };
+
+  using CallbackWithGuard = decltype(callbackWithGuard);
+  class Context : public folly::fibers::Baton::Waiter,
+                  public folly::HHWheelTimer::Callback {
+   public:
+    Context(std::unique_ptr<RequestContext> rctx, CallbackWithGuard&& callback)
+        : callback_(std::move(callback)), rctx_(std::move(rctx)) {}
+
+    void send(RocketClient& client, std::chrono::milliseconds timeout) && {
+      auto writeScheduled = client.scheduleWrite(*rctx_);
+      if (writeScheduled.hasException()) {
+        SCOPE_EXIT {
+          delete this;
+        };
+        return callback_(
+            folly::Try<rocket::Payload>(std::move(writeScheduled.exception())));
+      }
+      rctx_->setTimeoutInfo(client.evb_->timer(), *this, timeout);
+      rctx_->waitForWriteToCompleteSchedule(this);
+    }
+
+   private:
+    // DestructorGuard held by callback_ is needed to avoid freeing RocketClient
+    // within the invocation of callback_.
+    CallbackWithGuard callback_;
+    std::unique_ptr<RequestContext> rctx_;
+
+    void post() override {
+      // On the timeout path, post() will be called once more in
+      // abortSentRequest() within getResponse(). Avoid recursive misbehavior.
+      if (auto rctx = std::move(rctx_)) {
+        SCOPE_EXIT {
+          delete this;
+        };
+        cancelTimeout();
+        callback_(std::move(*rctx).getResponse());
+      }
+    }
+
+    void timeoutExpired() noexcept override {
+      post();
+    }
+  };
+
+  auto* context = new Context(std::move(rctx), std::move(callbackWithGuard));
+  std::move(*context).send(*this, timeout);
 }
 
 folly::Try<void> RocketClient::sendRequestFnfSync(
