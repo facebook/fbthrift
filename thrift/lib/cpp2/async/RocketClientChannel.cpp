@@ -241,100 +241,6 @@ class FirstRequestProcessorSink : public SinkClientCallback {
 };
 } // namespace
 
-class RocketClientChannel::SingleRequestSingleResponseCallback final
-    : public rocket::RocketClient::RequestResponseCallback {
-  using InflightGuardT =
-      decltype(std::declval<RocketClientChannel>().inflightGuard());
-
- public:
-  SingleRequestSingleResponseCallback(
-      RequestClientCallback::Ptr cb,
-      InflightGuardT g,
-      uint16_t protocolId,
-      std::string methodName,
-      size_t requestSerializedSize,
-      size_t requestWireSize)
-      : cb_(std::move(cb)),
-        g_(std::move(g)),
-        protocolId_(protocolId),
-        methodName_(std::move(methodName)),
-        requestSerializedSize_(requestSerializedSize),
-        requestWireSize_(requestWireSize) {}
-
-  void onWriteSuccess() noexcept override {
-    cb_->onRequestSent();
-  }
-
-  void onResponsePayload(
-      folly::Try<rocket::Payload>&& payload) noexcept override {
-    if (UNLIKELY(payload.hasException())) {
-      return cb_.release()->onResponseError(std::move(payload.exception()));
-    }
-
-    RpcSizeStats stats;
-    stats.requestSerializedSizeBytes = requestSerializedSize_;
-    stats.requestWireSizeBytes = requestWireSize_;
-    stats.responseWireSizeBytes =
-        payload->metadataAndDataSize() - payload->metadataSize();
-
-    auto response = rocket::unpack<FirstResponsePayload>(std::move(*payload));
-    if (response.hasException()) {
-      return cb_.release()->onResponseError(std::move(response.exception()));
-    }
-    if (auto error = processFirstResponse(
-            response->metadata, response->payload, protocolId_, methodName_)) {
-      return cb_.release()->onResponseError(std::move(error));
-    }
-
-    stats.responseSerializedSizeBytes =
-        response->payload->computeChainDataLength();
-
-    auto tHeader = std::make_unique<transport::THeader>();
-    tHeader->setClientType(THRIFT_ROCKET_CLIENT_TYPE);
-
-    detail::fillTHeaderFromResponseRpcMetadata(response->metadata, *tHeader);
-    cb_.release()->onResponse(ClientReceiveState(
-        static_cast<uint16_t>(-1),
-        std::move(response->payload),
-        std::move(tHeader),
-        nullptr, /* ctx */
-        stats));
-  }
-
- private:
-  RequestClientCallback::Ptr cb_;
-  InflightGuardT g_;
-  const uint16_t protocolId_;
-  std::string methodName_;
-  const size_t requestSerializedSize_;
-  const size_t requestWireSize_;
-};
-
-class RocketClientChannel::SingleRequestNoResponseCallback final
-    : public rocket::RocketClient::RequestFnfCallback {
-  using InflightGuardT =
-      decltype(std::declval<RocketClientChannel>().inflightGuard());
-
- public:
-  SingleRequestNoResponseCallback(
-      RequestClientCallback::Ptr cb,
-      InflightGuardT g)
-      : cb_(std::move(cb)), g_(std::move(g)) {}
-
-  void onWrite(folly::Try<void> writeResult) noexcept override {
-    auto* cbPtr = cb_.release();
-    if (writeResult.hasException()) {
-      cbPtr->onResponseError(std::move(writeResult).exception());
-    } else {
-      cbPtr->onRequestSent();
-    }
-  }
-
- private:
-  RequestClientCallback::Ptr cb_;
-  InflightGuardT g_;
-};
-
 rocket::SetupFrame RocketClientChannel::makeSetupFrame(
     RequestSetupMetadata meta) {
   meta.maxVersion_ref() = 2;
@@ -569,16 +475,38 @@ void RocketClientChannel::sendSingleRequestNoResponse(
     const RequestRpcMetadata& metadata,
     std::unique_ptr<folly::IOBuf> buf,
     RequestClientCallback::Ptr cb) {
-  auto requestPayload = rocket::pack(metadata, std::move(buf));
-  const bool isSync = cb->isSync();
-  SingleRequestNoResponseCallback callback(std::move(cb), inflightGuard());
+  auto& cbRef = *cb;
 
-  if (isSync && folly::fibers::onFiber()) {
-    callback.onWrite(rclient_->sendRequestFnfSync(std::move(requestPayload)));
+  auto sendRequestFunc =
+      [&cbRef,
+       rclientGuard =
+           folly::DelayedDestruction::DestructorGuard(rclient_.get()),
+       rclientPtr = rclient_.get(),
+       requestPayload = rocket::pack(metadata, std::move(buf))]() mutable {
+        return rclientPtr->sendRequestFnfSync(
+            std::move(requestPayload), &cbRef /* writeCallback */);
+      };
+
+  auto finallyFunc = [cb = std::move(cb),
+                      g = inflightGuard()](folly::Try<void>&& result) mutable {
+    if (result.hasException()) {
+      cb.release()->onResponseError(std::move(result.exception()));
+    } else {
+      // onRequestSent is already called within RocketClient.
+      cb.release();
+    }
+  };
+
+  if (cbRef.isSync() && folly::fibers::onFiber()) {
+    finallyFunc(folly::makeTryWith(std::move(sendRequestFunc)));
   } else {
-    rclient_->sendRequestFnf(
-        std::move(requestPayload),
-        folly::copy_to_unique_ptr(std::move(callback)));
+    auto& fm = getFiberManager();
+    fm.addTaskFinallyEager(
+        std::move(sendRequestFunc),
+        [finallyFunc = std::move(finallyFunc)](
+            folly::Try<folly::Try<void>>&& arg) mutable {
+          finallyFunc(collapseTry(std::move(arg)));
+        });
   }
 }
 
@@ -587,26 +515,78 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
     std::chrono::milliseconds timeout,
     std::unique_ptr<folly::IOBuf> buf,
     RequestClientCallback::Ptr cb) {
+  auto& cbRef = *cb;
+
   const auto requestSerializedSize = buf->computeChainDataLength();
   auto requestPayload = rocket::pack(metadata, std::move(buf));
   const auto requestWireSize = requestPayload.dataSize();
-  const bool isSync = cb->isSync();
-  SingleRequestSingleResponseCallback callback(
-      std::move(cb),
-      inflightGuard(),
-      static_cast<uint16_t>(metadata.protocol_ref().value_unchecked()),
-      metadata.name_ref().value_or({}),
-      requestSerializedSize,
-      requestWireSize);
 
-  if (isSync && folly::fibers::onFiber()) {
-    callback.onResponsePayload(rclient_->sendRequestResponseSync(
-        std::move(requestPayload), timeout, &callback));
+  auto sendRequestFunc =
+      [&cbRef,
+       timeout,
+       rclientGuard =
+           folly::DelayedDestruction::DestructorGuard(rclient_.get()),
+       rclientPtr = rclient_.get(),
+       requestPayload = std::move(requestPayload)]() mutable {
+        return rclientPtr->sendRequestResponseSync(
+            std::move(requestPayload), timeout, &cbRef /* writeCallback */);
+      };
+
+  auto finallyFunc = [cb = std::move(cb),
+                      g = inflightGuard(),
+                      protocolId = static_cast<uint16_t>(
+                          metadata.protocol_ref().value_unchecked()),
+                      methodName = metadata.name_ref().value_or(""),
+                      requestSerializedSize,
+                      requestWireSize](
+                         folly::Try<rocket::Payload>&& payload) mutable {
+    if (UNLIKELY(payload.hasException())) {
+      cb.release()->onResponseError(std::move(payload.exception()));
+      return;
+    }
+
+    RpcSizeStats stats;
+    stats.requestSerializedSizeBytes = requestSerializedSize;
+    stats.requestWireSizeBytes = requestWireSize;
+    stats.responseWireSizeBytes =
+        payload->metadataAndDataSize() - payload->metadataSize();
+
+    auto response = rocket::unpack<FirstResponsePayload>(std::move(*payload));
+    if (response.hasException()) {
+      cb.release()->onResponseError(std::move(response.exception()));
+      return;
+    }
+    if (auto error = processFirstResponse(
+            response->metadata, response->payload, protocolId, methodName)) {
+      cb.release()->onResponseError(std::move(error));
+      return;
+    }
+
+    stats.responseSerializedSizeBytes =
+        response->payload->computeChainDataLength();
+
+    auto tHeader = std::make_unique<transport::THeader>();
+    tHeader->setClientType(THRIFT_ROCKET_CLIENT_TYPE);
+
+    detail::fillTHeaderFromResponseRpcMetadata(response->metadata, *tHeader);
+    cb.release()->onResponse(ClientReceiveState(
+        static_cast<uint16_t>(-1),
+        std::move(response->payload),
+        std::move(tHeader),
+        nullptr, /* ctx */
+        stats));
+  };
+
+  if (cbRef.isSync() && folly::fibers::onFiber()) {
+    finallyFunc(folly::makeTryWith(std::move(sendRequestFunc)));
   } else {
-    rclient_->sendRequestResponse(
-        std::move(requestPayload),
-        timeout,
-        folly::copy_to_unique_ptr(std::move(callback)));
+    auto& fm = getFiberManager();
+    fm.addTaskFinallyEager(
+        std::move(sendRequestFunc),
+        [finallyFunc = std::move(finallyFunc)](
+            folly::Try<folly::Try<rocket::Payload>>&& arg) mutable {
+          finallyFunc(collapseTry(std::move(arg)));
+        });
   }
 }
 

@@ -26,6 +26,7 @@
 #include <folly/lang/Assume.h>
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/async/RequestCallback.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContextQueue.h>
@@ -83,10 +84,7 @@ folly::Try<Payload> RequestContext::waitForResponse(
       timeoutHandler,
       timeout);
   baton_.wait(timeoutHandler);
-  return std::move(*this).getResponse();
-}
 
-folly::Try<Payload> RequestContext::getResponse() && {
   switch (state_) {
     case State::WRITE_SENT:
       // writeSuccess() or writeErr() processed this request but a response was
@@ -140,8 +138,8 @@ void RequestContext::onErrorFrame(ErrorFrame&& errorFrame) {
 }
 
 void RequestContext::onWriteSuccess() noexcept {
-  if (writeSuccessCallback_) {
-    writeSuccessCallback_->onWriteSuccess();
+  if (writeCallback_) {
+    writeCallback_->onRequestSent();
   }
 }
 

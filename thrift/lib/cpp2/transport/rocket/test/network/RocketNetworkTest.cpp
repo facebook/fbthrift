@@ -95,11 +95,19 @@ class RocketNetworkTest : public testing::Test {
   folly::ManualExecutor userExecutor_;
 };
 
-struct OnWriteSuccess : RocketClient::WriteSuccessCallback {
+struct OnWriteSuccess : RequestClientCallback {
   bool writeSuccess{false};
 
-  void onWriteSuccess() noexcept override {
+  void onRequestSent() noexcept override {
     writeSuccess = true;
+  }
+
+  void onResponse(ClientReceiveState&&) noexcept override {
+    LOG(FATAL) << "Not used";
+  }
+
+  void onResponseError(folly::exception_wrapper) noexcept override {
+    LOG(FATAL) << "Not used";
   }
 };
 } // namespace
