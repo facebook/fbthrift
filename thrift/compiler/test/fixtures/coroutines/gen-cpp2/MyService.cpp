@@ -32,9 +32,7 @@ folly::Future<folly::Unit> MyServiceSvIf::future_ping() {
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<void> MyServiceSvIf::co_ping() {
   auto future = future_ping();
-  return [](folly::Future<folly::Unit> aFuture) mutable -> folly::coro::Task<void> {
-     co_await std::move(aFuture);
-  }(std::move(future));
+  return apache::thrift::detail::si::future_to_task(std::move(future));
 }
 
 folly::coro::Task<void> MyServiceSvIf::co_ping(apache::thrift::RequestParams /* params */) {
@@ -54,12 +52,10 @@ void MyServiceSvIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallbac
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
   try {
-    co_ping(params)
-      .scheduleOn(params.getThreadManager())
-      .startInlineUnsafe([callback = std::move(callback)](
-        folly::Try<folly::Unit>&& tryResult) mutable {
-          apache::thrift::HandlerCallback<void>::completeInThread(std::move(callback), std::move(tryResult));
-        });
+    apache::thrift::detail::si::async_tm_coro_start(
+      co_ping(params),
+      params.getThreadManager(),
+      std::move(callback));
   } catch (...) {
     callback->exception(std::current_exception());
   }
@@ -106,9 +102,7 @@ folly::Future<bool> MyServiceSvIf::future_hasDataById(int64_t id) {
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<bool> MyServiceSvIf::co_hasDataById(int64_t id) {
   auto future = future_hasDataById(id);
-  return [](folly::Future<bool> aFuture) mutable -> folly::coro::Task<bool> {
-    co_return co_await std::move(aFuture);
-  }(std::move(future));
+  return apache::thrift::detail::si::future_to_task(std::move(future));
 }
 
 folly::coro::Task<bool> MyServiceSvIf::co_hasDataById(apache::thrift::RequestParams /* params */, int64_t id) {
@@ -128,12 +122,10 @@ void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::Handler
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
   try {
-    co_hasDataById(params, id)
-      .scheduleOn(params.getThreadManager())
-      .startInlineUnsafe([callback = std::move(callback)](
-        folly::Try<bool>&& tryResult) mutable {
-          apache::thrift::HandlerCallback<bool>::completeInThread(std::move(callback), std::move(tryResult));
-        });
+    apache::thrift::detail::si::async_tm_coro_start(
+      co_hasDataById(params, id),
+      params.getThreadManager(),
+      std::move(callback));
   } catch (...) {
     callback->exception(std::current_exception());
   }
@@ -159,9 +151,7 @@ folly::Future<std::unique_ptr<::std::string>> MyServiceSvIf::future_getDataById(
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<std::unique_ptr<::std::string>> MyServiceSvIf::co_getDataById(int64_t id) {
   auto future = future_getDataById(id);
-  return [](folly::Future<std::unique_ptr<::std::string>> aFuture) mutable -> folly::coro::Task<std::unique_ptr<::std::string>> {
-    co_return co_await std::move(aFuture);
-  }(std::move(future));
+  return apache::thrift::detail::si::future_to_task(std::move(future));
 }
 
 folly::coro::Task<std::unique_ptr<::std::string>> MyServiceSvIf::co_getDataById(apache::thrift::RequestParams /* params */, int64_t id) {
@@ -174,12 +164,10 @@ void MyServiceSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::Handler
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
   try {
-    co_getDataById(params, id)
-      .scheduleOn(params.getThreadManager())
-      .start([callback = std::move(callback)](
-        folly::Try<std::unique_ptr<::std::string>>&& tryResult) mutable {
-          apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>::completeInThread(std::move(callback), std::move(tryResult));
-        });
+    apache::thrift::detail::si::async_eb_coro_start(
+      co_getDataById(params, id),
+      params.getThreadManager(),
+      std::move(callback));
   } catch (...) {
     callback->exception(std::current_exception());
   }

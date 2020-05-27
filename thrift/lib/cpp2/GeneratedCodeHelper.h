@@ -1237,6 +1237,68 @@ void async_tm(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
           });
 }
 
+#if FOLLY_HAS_COROUTINES
+template <typename T>
+void async_tm_coro_start(
+    folly::coro::Task<T>&& task,
+    folly::Executor::KeepAlive<> executor,
+    CallbackBasePtr&& callback) {
+  std::move(task)
+      .scheduleOn(std::move(executor))
+      .startInlineUnsafe([callback = std::move(callback)](
+                             folly::Try<folly::lift_unit_t<T>>&&) mutable {});
+}
+
+template <typename T>
+void async_eb_coro_start(
+    folly::coro::Task<T>&& task,
+    folly::Executor::KeepAlive<> executor,
+    CallbackBasePtr&& callback) {
+  std::move(task)
+      .scheduleOn(std::move(executor))
+      .start([callback = std::move(callback)](
+                 folly::Try<folly::lift_unit_t<T>>&&) mutable {});
+}
+
+template <typename T>
+void async_tm_coro_start(
+    folly::coro::Task<T>&& task,
+    folly::Executor::KeepAlive<> executor,
+    std::unique_ptr<apache::thrift::HandlerCallback<T>>&& callback) {
+  std::move(task)
+      .scheduleOn(std::move(executor))
+      .startInlineUnsafe(
+          [callback = std::move(callback)](
+              folly::Try<folly::lift_unit_t<T>>&& tryResult) mutable {
+            apache::thrift::HandlerCallback<T>::completeInThread(
+                std::move(callback), std::move(tryResult));
+          });
+}
+
+template <typename T>
+void async_eb_coro_start(
+    folly::coro::Task<T>&& task,
+    folly::Executor::KeepAlive<> executor,
+    std::unique_ptr<apache::thrift::HandlerCallback<T>>&& callback) {
+  std::move(task)
+      .scheduleOn(std::move(executor))
+      .start([callback = std::move(callback)](
+                 folly::Try<folly::lift_unit_t<T>>&& tryResult) mutable {
+        apache::thrift::HandlerCallback<T>::completeInThread(
+            std::move(callback), std::move(tryResult));
+      });
+}
+
+inline folly::coro::Task<void> future_to_task(folly::Future<folly::Unit> f) {
+  co_await std::move(f);
+}
+
+template <typename T>
+folly::coro::Task<T> future_to_task(folly::Future<T> f) {
+  co_return co_await std::move(f);
+}
+#endif
+
 template <class F>
 void async_eb_oneway(ServerInterface* si, CallbackBasePtr callback, F&& f) {
   auto callbackp = callback.get();

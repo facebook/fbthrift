@@ -39,9 +39,7 @@ folly::Future<<% > service_common/async_return_type %>> <%service:name%>SvIf::fu
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<<% > service_common/callback_type %>> <%service:name%>SvIf::co_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
   auto future = future_<%function:cpp_name%>(<% > service_common/param_list_move%>);
-  return [](folly::Future<<% > service_common/async_return_type %>> aFuture) mutable -> folly::coro::Task<<% > service_common/callback_type %>> {
-    <%^type:void?%>co_return<%/type:void?%> co_await std::move(aFuture);
-  }(std::move(future));
+  return apache::thrift::detail::si::future_to_task(std::move(future));
 }
 
 folly::coro::Task<<% > service_common/callback_type %>> <%service:name%>SvIf::co_<%function:cpp_name%>(apache::thrift::RequestParams /* params */<%function:comma%><% > service_common/function_param_list%>) {
@@ -73,9 +71,10 @@ void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:e
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
   try {
-    co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>)
-      .scheduleOn(params.getThreadManager())
-      .start<%^function:eb%>InlineUnsafe<%/function:eb%>([callback = std::move(callback)](auto&&) {});
+    apache::thrift::detail::si::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_coro_start(
+      co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>),
+      params.getThreadManager(),
+      std::move(callback));
   } catch (...) {
     callback->exception(std::current_exception());
   }
@@ -110,12 +109,10 @@ void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:e
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
   try {
-    co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>)
-      .scheduleOn(params.getThreadManager())
-      .start<%^function:eb%>InlineUnsafe<%/function:eb%>([callback = std::move(callback)](
-        folly::Try<<%#type:void?%>folly::Unit<%/type:void?%><%^type:void?%><% > types/unique_ptr_type%><%/type:void?%>>&& tryResult) mutable {
-          apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>::completeInThread(std::move(callback), std::move(tryResult));
-        });
+    apache::thrift::detail::si::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_coro_start(
+      co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>),
+      params.getThreadManager(),
+      std::move(callback));
   } catch (...) {
     callback->exception(std::current_exception());
   }
