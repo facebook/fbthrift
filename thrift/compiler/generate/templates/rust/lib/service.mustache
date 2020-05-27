@@ -23,7 +23,7 @@
             ProtocolWriter, Serialize, TType,
         };{{!
         }}{{/service:functions?}}{{!
-        }}{{#service:functions}}{{^function:any_streams?}}
+        }}{{#service:rustFunctions}}{{^function:any_streams?}}
 
         #[derive(Clone, Debug)]
         pub enum {{function:upcamel}}Exn {
@@ -152,6 +152,6 @@
                 }}{{/function:void?}}
             }
         }{{!
-        }}{{/function:any_streams?}}{{/service:functions}}
+        }}{{/function:any_streams?}}{{/service:rustFunctions}}
     }
     {{!newline}}

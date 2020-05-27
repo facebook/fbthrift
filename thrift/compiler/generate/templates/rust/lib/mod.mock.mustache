@@ -24,9 +24,9 @@
         {{#service:extends}}
         pub parent: {{service:package}}::mock::{{service:name}}<'mock>,
         {{/service:extends}}
-        {{#service:functions}}{{^function:any_streams?}}
+        {{#service:rustFunctions}}{{^function:any_streams?}}
         pub {{function:name}}: {{service:snake}}::{{function:name}}<'mock>,
-        {{/function:any_streams?}}{{/service:functions}}
+        {{/function:any_streams?}}{{/service:rustFunctions}}
         _marker: PhantomData<&'mock ()>,
     }
 
@@ -36,10 +36,10 @@
                 {{#service:extends}}
                 parent: {{service:package}}::client::{{service:name}}::mock(),
                 {{/service:extends}}
-                {{#service:functions}}{{^function:any_streams?}}
+                {{#service:rustFunctions}}{{^function:any_streams?}}
                 {{function:name}}: {{!
                     }}{{service:snake}}::{{function:name}}::unimplemented(),
-                {{/function:any_streams?}}{{/service:functions}}
+                {{/function:any_streams?}}{{/service:rustFunctions}}
                 _marker: PhantomData,
             }
         }
@@ -47,7 +47,7 @@
 
     #[async_trait]
     impl<'mock> super::client::{{service:name}} for {{service:name}}<'mock> {{>lib/block}}{{!
-        }}{{#service:functions}}{{^function:any_streams?}}
+        }}{{#service:rustFunctions}}{{^function:any_streams?}}
         fn {{function:name}}(
             &self,{{!
             }}{{#function:args}}
@@ -77,7 +77,7 @@
                 }}{{/function:args}}{{!
             }})))
         }{{!
-        }}{{/function:any_streams?}}{{/service:functions}}
+        }}{{/function:any_streams?}}{{/service:rustFunctions}}
     }
 
     {{#service:extendedServices}}
@@ -101,7 +101,7 @@
         use std::sync::Mutex;{{!
         }}{{/service:functions?}}{{!
 
-        }}{{#service:functions}}{{^function:any_streams?}}
+        }}{{#service:rustFunctions}}{{^function:any_streams?}}
 
         pub struct {{function:name}}<'mock> {
             pub(super) closure: Mutex<Box<
@@ -181,7 +181,7 @@
                 }}| Err(exception.clone().into()));
             }
         }{{!
-        }}{{/function:any_streams?}}{{/service:functions}}
+        }}{{/function:any_streams?}}{{/service:rustFunctions}}
     }{{!
 }}{{/program:services}}
 {{!newline}}

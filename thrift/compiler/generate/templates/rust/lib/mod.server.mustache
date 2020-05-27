@@ -26,7 +26,7 @@
     }}{{#service:requestContext?}}
         type RequestContext: Sync;{{!
     }}{{/service:requestContext?}}
-    {{#service:functions}}{{^function:any_streams?}}
+    {{#service:rustFunctions}}{{^function:any_streams?}}
         async fn {{function:name}}(
             &self,{{!
             }}{{#service:requestContext?}}
@@ -46,7 +46,7 @@
                 ),
             ))
         }
-    {{/function:any_streams?}}{{/service:functions}}
+    {{/function:any_streams?}}{{/service:rustFunctions}}
     }
 
     #[derive(Clone, Debug)]
@@ -97,7 +97,7 @@
         pub fn into_inner(self) -> H {
             self.service
         }{{!
-        }}{{#service:functions}}{{^function:any_streams?}}
+        }}{{#service:rustFunctions}}{{^function:any_streams?}}
 
         async fn handle_{{function:name}}<'a>(
             &'a self,
@@ -161,7 +161,7 @@
             ));
             Ok(res)
         }{{!
-        }}{{/function:any_streams?}}{{/service:functions}}
+        }}{{/function:any_streams?}}{{/service:rustFunctions}}
     }
 
     #[async_trait]
@@ -187,9 +187,9 @@
         #[inline]
         fn method_idx(&self, name: &[u8]) -> Result<usize, ApplicationException> {
             match name {{>lib/block}}{{!
-                }}{{#service:functions}}{{^function:any_streams?}}
+                }}{{#service:rustFunctions}}{{^function:any_streams?}}
                 b"{{function:name}}" => Ok({{function:index}}usize),{{!
-                }}{{/function:any_streams?}}{{/service:functions}}
+                }}{{/function:any_streams?}}{{/service:rustFunctions}}
                 _ => Err(ApplicationException::unknown_method()),
             }
         }
@@ -205,9 +205,9 @@
             }}seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {{>lib/block}}{{!
-                }}{{#service:functions}}{{^function:any_streams?}}
+                }}{{#service:rustFunctions}}{{^function:any_streams?}}
                 {{function:index}}usize => self.handle_{{function:name}}(p, r, seqid).await,{{!
-                }}{{/function:any_streams?}}{{/service:functions}}
+                }}{{/function:any_streams?}}{{/service:rustFunctions}}
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "{{service:name}}Processor",

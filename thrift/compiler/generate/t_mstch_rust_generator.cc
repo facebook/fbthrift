@@ -16,6 +16,7 @@
 
 #include <cctype>
 #include <string>
+#include <unordered_set>
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
@@ -360,9 +361,13 @@ class mstch_rust_service : public mstch_service {
       ELEMENT_POSITION const pos,
       const rust_codegen_options& options)
       : mstch_service(service, generators, cache, pos), options_(options) {
+    for (auto function : service->get_functions()) {
+      function_upcamel_names_.insert(camelcase(function->get_name()));
+    }
     register_methods(
         this,
         {
+            {"service:rustFunctions", &mstch_rust_service::rust_functions},
             {"service:package", &mstch_rust_service::rust_package},
             {"service:snake", &mstch_rust_service::rust_snake},
             {"service:requestContext?",
@@ -371,6 +376,7 @@ class mstch_rust_service : public mstch_service {
              &mstch_rust_service::rust_extended_services},
         });
   }
+  mstch::node rust_functions();
   mstch::node rust_package() {
     return get_import_name(service_->get_program(), options_);
   }
@@ -412,6 +418,7 @@ class mstch_rust_service : public mstch_service {
   }
 
  private:
+  std::unordered_multiset<std::string> function_upcamel_names_;
   const rust_codegen_options& options_;
 };
 
@@ -422,8 +429,11 @@ class mstch_rust_function : public mstch_function {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
-      int32_t index)
-      : mstch_function(function, generators, cache, pos), index_(index) {
+      int32_t index,
+      const std::unordered_multiset<std::string>& function_upcamel_names)
+      : mstch_function(function, generators, cache, pos),
+        index_(index),
+        function_upcamel_names_(function_upcamel_names) {
     register_methods(
         this,
         {
@@ -435,7 +445,15 @@ class mstch_rust_function : public mstch_function {
         });
   }
   mstch::node rust_upcamel() {
-    return camelcase(function_->get_name());
+    auto upcamel_name = camelcase(function_->get_name());
+    if (function_upcamel_names_.count(upcamel_name) > 1) {
+      // If a service contains a pair of methods that collide converted to
+      // CamelCase, like a service containing both create_shard and createShard,
+      // then we name the exception types without any case conversion; instead
+      // of a CreateShardExn they'll get create_shardExn and createShardExn.
+      return function_->get_name();
+    }
+    return upcamel_name;
   }
   mstch::node rust_index() {
     return index_;
@@ -472,6 +490,7 @@ class mstch_rust_function : public mstch_function {
 
  private:
   int32_t index_;
+  const std::unordered_multiset<std::string>& function_upcamel_names_;
 };
 
 class mstch_rust_enum_value : public mstch_enum_value {
@@ -1210,20 +1229,30 @@ class service_rust_generator : public service_generator {
   const rust_codegen_options& options_;
 };
 
-class function_rust_generator : public function_generator {
+class function_rust_generator {
  public:
-  function_rust_generator() = default;
-  ~function_rust_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       const t_function* function,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
-      int32_t index) const override {
+      int32_t index,
+      const std::unordered_multiset<std::string>& function_upcamel_names)
+      const {
     return std::make_shared<mstch_rust_function>(
-        function, generators, cache, pos, index);
+        function, generators, cache, pos, index, function_upcamel_names);
   }
 };
+
+mstch::node mstch_rust_service::rust_functions() {
+  function_rust_generator function_generator;
+  return generate_elements(
+      service_->get_functions(),
+      &function_generator,
+      generators_,
+      cache_,
+      function_upcamel_names_);
+}
 
 class field_rust_generator : public field_generator {
  public:
@@ -1377,8 +1406,6 @@ void t_mstch_rust_generator::set_mstch_generators() {
       std::make_unique<struct_rust_generator>(options_));
   generators_->set_service_generator(
       std::make_unique<service_rust_generator>(options_));
-  generators_->set_function_generator(
-      std::make_unique<function_rust_generator>());
   generators_->set_field_generator(
       std::make_unique<field_rust_generator>(options_));
   generators_->set_enum_value_generator(
