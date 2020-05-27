@@ -218,12 +218,10 @@ void HTTPClientChannel::sendRequest_(
     return;
   }
 
-  auto txn = httpSession_->newTransaction(httpCallback);
+  auto res = httpSession_->newTransactionWithError(httpCallback);
 
-  if (!txn) {
-    TTransportException ex(
-        TTransportException::NOT_OPEN,
-        "Too many active requests on connection");
+  if (res.hasError()) {
+    TTransportException ex(TTransportException::NOT_OPEN, res.error());
     // Might be able to create another transaction soon
     ex.setOptions(TTransportException::CHANNEL_IS_VALID);
     httpCallback->messageSendError(
@@ -231,6 +229,7 @@ void HTTPClientChannel::sendRequest_(
     delete httpCallback;
     return;
   }
+  auto& txn = res.value();
 
   if (timeout.count()) {
     txn->setIdleTimeout(timeout);
