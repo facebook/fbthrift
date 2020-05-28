@@ -120,19 +120,17 @@ HTTPTransaction* H2ClientConnection::newTransaction(H2Channel* channel) {
   }
   // These objects destroy themselves when done.
   auto handler = new ThriftTransactionHandler();
-  auto txn = httpSession_->newTransaction(handler);
-  if (!txn) {
+  auto txn = httpSession_->newTransactionWithError(handler);
+  if (txn.hasError()) {
     delete handler;
-    TTransportException ex(
-        TTransportException::NETWORK_ERROR,
-        "Too many active requests on connection");
+    TTransportException ex(TTransportException::NETWORK_ERROR, txn.error());
     // Might be able to create another transaction soon
     ex.setOptions(TTransportException::CHANNEL_IS_VALID);
     throw ex;
   }
   handler->setChannel(
       std::dynamic_pointer_cast<H2Channel>(channel->shared_from_this()));
-  return txn;
+  return txn.value();
 }
 
 folly::AsyncTransportWrapper* H2ClientConnection::getTransport() {
