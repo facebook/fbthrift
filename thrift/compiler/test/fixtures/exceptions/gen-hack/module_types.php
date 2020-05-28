@@ -138,7 +138,7 @@ class Serious extends \TException implements \IThriftStruct {
     return 'Serious';
   }
 
-  <<__Override>>
+  <<__Override, __Rx, __MaybeMutable>>
   public function getMessage(): string {
     return $this->sonnet ?? '';
   }
