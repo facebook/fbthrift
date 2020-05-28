@@ -66,10 +66,6 @@ class RequestContextQueue {
 
   void markAsResponded(RequestContext& req) noexcept;
 
-  bool hasInflightWrites() const noexcept {
-    return !writeSendingQueue_.empty();
-  }
-
   void failAllScheduledWrites(transport::TTransportException ex);
   void failAllSentWrites(transport::TTransportException ex);
 
