@@ -196,7 +196,14 @@ TEST(String, strip_left_margin_no_post_whitespace) {
   EXPECT_EQ(expected, strip_left_margin(input));
 }
 
-TEST_F(UtilTest, json_quote_ascii) {
+TEST_F(UtilTest, json_quote_ascii_string) {
+  auto const input = "the\bquick\"brown\nfox\001jumps\201over";
+  auto const expected = "\"the\\bquick\\\"brown\\nfox\\u0001jumps\\u0081over\"";
+  auto actual = json_quote_ascii(input);
+  EXPECT_EQ(expected, actual);
+}
+
+TEST_F(UtilTest, json_quote_ascii_stream) {
   auto const input = "the\bquick\"brown\nfox\001jumps\201over";
   auto const expected = "\"the\\bquick\\\"brown\\nfox\\u0001jumps\\u0081over\"";
   std::ostringstream actual;

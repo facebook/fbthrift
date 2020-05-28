@@ -63,6 +63,7 @@ std::string strip_left_margin(std::string const& s);
 //  json_quote_ascii
 //
 //  Emits a json quoted-string given an input ascii string.
+std::string json_quote_ascii(std::string const& s);
 std::ostream& json_quote_ascii(std::ostream& o, std::string const& s);
 
 namespace detail {

@@ -17,6 +17,7 @@
 #include <thrift/compiler/util.h>
 
 #include <ostream>
+#include <sstream>
 #include <vector>
 
 #include <boost/algorithm/string/join.hpp>
@@ -66,6 +67,12 @@ std::string strip_left_margin(std::string const& s) {
 
   // step: join
   return boost::algorithm::join(lines, "\n");
+}
+
+std::string json_quote_ascii(std::string const& s) {
+  std::ostringstream o;
+  json_quote_ascii(o, s);
+  return o.str();
 }
 
 std::ostream& json_quote_ascii(std::ostream& o, std::string const& s) {
