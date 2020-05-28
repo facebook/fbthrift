@@ -8,7 +8,7 @@
       "{{enumValue:name}}" : {
         "name" : "{{enumValue:name}}",
         {{#enumValue:docstring?}}
-        "docstring" : "{{enumValue:docstring}}",
+        "docstring" : {{enumValue:docstring}},
         {{/enumValue:docstring?}}
         "lineno" : {{enumValue:lineno}},
         "value" : {{enumValue:value}}
@@ -17,7 +17,7 @@
     },
     {{/enum:empty?}}
     {{#enum:docstring?}}
-    "docstring" : "{{enum:docstring}}",
+    "docstring" : {{enum:docstring}},
     {{/enum:docstring?}}
     "lineno" : {{enum:lineno}}
   }{{^last?}},{{/last?}}

@@ -4,7 +4,7 @@
     "name" : "{{service:name}}",
     "lineno" : {{service:lineno}},
     {{#service:docstring?}}
-    "docstring" : "{{service:docstring}}",
+    "docstring" : {{service:docstring}},
     {{/service:docstring?}}
     "functions" : {
       {{#service:functions?}}
@@ -12,7 +12,7 @@
       "{{function:name}}" : {
         "name" : "{{function:name}}",
         {{#function:docstring?}}
-        "docstring" : "{{function:docstring}}",
+        "docstring" : {{function:docstring}},
         {{/function:docstring?}}
         {{#function:args?}}
         "args" : {
@@ -24,7 +24,7 @@
             "default_value" : {{> const_value}},
             {{/field:value}}
             {{#field:docstring?}}
-            "docstring" : "{{field:docstring}}",
+            "docstring" : {{field:docstring}},
             {{/field:docstring?}}
             "key" : {{field:key}},
             "lineno" : {{field:lineno}},

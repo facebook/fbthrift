@@ -8,7 +8,7 @@
     "{{key}}": "{{value}}"{{^last?}},{{/last?}}
     {{/program:namespaces}}
   },{{/program:namespaces?}}{{#program:docstring?}}
-  "global_docstring": "{{program:docstring}}",{{/program:docstring?}}{{%!
+  "global_docstring": {{program:docstring}},{{/program:docstring?}}{{%!
   %}}{{#program:constants?}}
   "constants": {
       {{#program:constants}}
@@ -18,7 +18,7 @@
         "type": "{{value:typeName}}",
         "value": {{{value:stringValueAny}}},{{%!
         %}}{{#value:docstring?}}
-        "docstring": "{{value:docstring}}",{{/value:docstring?}}
+        "docstring": {{value:docstring}},{{/value:docstring?}}
         "lineno": {{value:lineno}}
       }{{/constant:value}}{{/constant:type}}{{^last?}},{{/last?}}
       {{/program:constants}}

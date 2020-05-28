@@ -97,7 +97,7 @@ class json_experimental_program : public mstch_program {
     return !program_->get_doc().empty();
   }
   mstch::node get_docstring() {
-    return program_->get_doc();
+    return json_quote_ascii(program_->get_doc());
   }
 
   mstch::node include_prefix() {
@@ -154,7 +154,7 @@ class json_experimental_enum : public mstch_enum {
     return enm_->has_doc();
   }
   mstch::node get_docstring() {
-    return enm_->get_doc();
+    return json_quote_ascii(enm_->get_doc());
   }
 };
 
@@ -198,7 +198,7 @@ class json_experimental_enum_value : public mstch_enum_value {
     return enm_value_->has_doc();
   }
   mstch::node get_docstring() {
-    return enm_value_->get_doc();
+    return json_quote_ascii(enm_value_->get_doc());
   }
 };
 
@@ -300,7 +300,7 @@ class json_experimental_const_value : public mstch_const_value {
     return current_const_->has_doc();
   }
   mstch::node get_docstring() {
-    return current_const_->get_doc();
+    return json_quote_ascii(current_const_->get_doc());
   }
 
   mstch::node get_typename() {
@@ -358,7 +358,7 @@ class json_experimental_struct : public mstch_struct {
     return strct_->has_doc();
   }
   mstch::node get_docstring() {
-    return strct_->get_doc();
+    return json_quote_ascii(strct_->get_doc());
   }
 };
 
@@ -400,7 +400,7 @@ class json_experimental_service : public mstch_service {
     return service_->has_doc();
   }
   mstch::node get_docstring() {
-    return service_->get_doc();
+    return json_quote_ascii(service_->get_doc());
   }
 };
 
@@ -443,7 +443,7 @@ class json_experimental_function : public mstch_function {
     return function_->has_doc();
   }
   mstch::node get_docstring() {
-    return function_->get_doc();
+    return json_quote_ascii(function_->get_doc());
   }
   mstch::node has_args() {
     return !function_->get_arglist()->get_members().empty();
@@ -489,7 +489,7 @@ class json_experimental_field : public mstch_field {
     return field_->has_doc();
   }
   mstch::node get_docstring() {
-    return field_->get_doc();
+    return json_quote_ascii(field_->get_doc());
   }
 };
 
@@ -509,16 +509,7 @@ class field_json_experimental_generator : public field_generator {
 };
 
 void t_json_experimental_generator::generate_program() {
-  // disable mstch escaping
-  // TODO(T20509094): proper JSON escaping routine
-  mstch::config::escape = [](const std::string& str) -> std::string {
-    std::string str_copy = str;
-    boost::replace_all(str_copy, "\\", "\\\\");
-    boost::replace_all(str_copy, "\n", "\\n");
-    boost::replace_all(str_copy, "\"", "\\\"");
-
-    return str_copy;
-  };
+  mstch::config::escape = [](const std::string& str) { return str; };
 
   auto const* program = get_program();
   set_mstch_generators();
