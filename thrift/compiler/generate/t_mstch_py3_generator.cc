@@ -849,7 +849,8 @@ class mstch_py3_field : public mstch_field {
   }
 
   bool has_default_value() {
-    return !is_folly_optional() && !is_ref() && (field_->get_value() != nullptr || !is_optional());
+    return !is_folly_optional() && !is_ref() &&
+        (field_->get_value() != nullptr || !is_optional());
   }
 
   bool is_required() const {
