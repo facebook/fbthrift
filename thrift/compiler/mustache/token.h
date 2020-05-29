@@ -44,7 +44,6 @@ class token {
     section_open,
     section_close,
     inverted_section_open,
-    unescaped_variable,
     comment,
     partial,
     delimiter_change

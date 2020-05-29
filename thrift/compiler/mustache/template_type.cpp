@@ -67,11 +67,6 @@ void template_type::tokenize(const std::string& tmp) {
         tmp.find(m_close, open_pos == npos ? open_pos : open_pos + 1);
 
     if (close_pos != npos && open_pos != npos) {
-      if (*(beg + open_pos + m_open.size()) == '{' &&
-          *(beg + close_pos + m_close.size()) == '}') {
-        ++close_pos;
-      }
-
       process_text(beg + cur_pos, beg + open_pos);
       cur_pos = close_pos + m_close.size();
       m_tokens.push_back({{beg + open_pos, beg + close_pos + m_close.size()},
@@ -107,8 +102,7 @@ void template_type::strip_whitespace() {
 
   for (auto it = m_tokens.begin(); it != m_tokens.end(); ++it) {
     auto type = (*it).token_type();
-    if (type != token::type::text && type != token::type::variable &&
-        type != token::type::unescaped_variable) {
+    if (type != token::type::text && type != token::type::variable) {
       has_tag = true;
     } else if (!(*it).ws_only()) {
       non_space = true;

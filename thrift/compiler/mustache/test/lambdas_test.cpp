@@ -46,7 +46,7 @@ TEST(LambdasTEST, InterpolationAlternateDelimiters) {
   EXPECT_EQ(
       "Hello, (|planet| => world)!",
       mstch::render(
-          "{{= | | =}}\nHello, (|&lambda|)!",
+          "{{= | | =}}\nHello, (|lambda|)!",
           mstch::map{{"planet", std::string("world")},
                      {"lambda", mstch::lambda{[]() -> mstch::node {
                         return std::string{"|planet| => {{planet}}"};
@@ -58,19 +58,9 @@ TEST(LambdasTEST, InterpolationMultipleCalls) {
   EXPECT_EQ(
       "1 == 2 == 3",
       mstch::render(
-          "{{lambda}} == {{{lambda}}} == {{lambda}}",
+          "{{lambda}} == {{lambda}} == {{lambda}}",
           mstch::map{{"lambda", mstch::lambda{[&var]() -> mstch::node {
                         return ++var;
-                      }}}}));
-}
-// Lambda results should be appropriately escaped.
-TEST(LambdasTEST, Escaping) {
-  EXPECT_EQ(
-      "<&gt;>",
-      mstch::render(
-          "<{{lambda}}{{{lambda}}}",
-          mstch::map{{"lambda", mstch::lambda{[]() -> mstch::node {
-                        return std::string(">");
                       }}}}));
 }
 // Lambdas used for sections should receive the raw section string.

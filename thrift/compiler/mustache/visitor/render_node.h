@@ -41,9 +41,7 @@ namespace mstch {
 
 class render_node : public boost::static_visitor<std::string> {
  public:
-  enum class flag { none, escape_html };
-  render_node(render_context& ctx, flag p_flag = flag::none)
-      : m_ctx(ctx), m_flag(p_flag) {}
+  render_node(render_context& ctx) : m_ctx(ctx) {}
 
   template <class T>
   std::string operator()(const T&) const {
@@ -67,17 +65,15 @@ class render_node : public boost::static_visitor<std::string> {
   std::string operator()(const lambda& value) const {
     template_type interpreted{
         value([this](const node& n) { return visit(render_node(m_ctx), n); })};
-    auto rendered = render_context::push(m_ctx).render(interpreted);
-    return (m_flag == flag::escape_html) ? html_escape(rendered) : rendered;
+    return render_context::push(m_ctx).render(interpreted);
   }
 
   std::string operator()(const std::string& value) const {
-    return (m_flag == flag::escape_html) ? html_escape(value) : value;
+    return value;
   }
 
  private:
   render_context& m_ctx;
-  flag m_flag;
 };
 
 } // namespace mstch

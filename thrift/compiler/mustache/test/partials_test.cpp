@@ -92,7 +92,7 @@ TEST(PartialsTEST, StandaloneIndentation) {
       mstch::render(
           "\\\n {{>partial}}\n/\n",
           mstch::map{{"content", std::string("<\n->")}},
-          {{"partial", "|\n{{{content}}}\n|\n"}}));
+          {{"partial", "|\n{{content}}\n|\n"}}));
 }
 // Superfluous in-tag whitespace should be ignored.
 TEST(PartialsTEST, PaddingWhitespace) {
