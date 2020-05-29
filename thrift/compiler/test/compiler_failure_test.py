@@ -329,3 +329,22 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             '[FAILURE:foo.thrift:3] Mixin field `a` is not a struct but union\n',
         )
+
+    def test_mixin_with_cpp_ref(self):
+        write_file("foo.thrift", textwrap.dedent("""\
+            struct A { 1: i32 i }
+            struct B {
+              1: mixin A a (cpp.ref = "true");
+            }
+        """))
+
+        ret, out, err = self.run_thrift("--enable-experimental-mixins", "foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err, textwrap.dedent('''\
+            [FAILURE:foo.thrift:3] Mixin field `a` can not have annotation (cpp.ref = true)
+            [WARNING:foo.thrift:3] cpp.ref field must be optional if it is recursive
+            [WARNING:foo.thrift:3] cpp.ref field must be optional if it is recursive
+        ''')
+        )

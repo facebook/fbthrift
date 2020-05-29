@@ -25,6 +25,7 @@
 #include <thrift/compiler/generate/t_mstch_objects.h>
 #include <thrift/compiler/lib/cpp2/util.h>
 #include <thrift/compiler/util.h>
+#include <thrift/compiler/validator/validator.h>
 
 using namespace std;
 
@@ -224,6 +225,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
       const std::string& /*option_string*/);
 
   void generate_program() override;
+  void fill_validator_list(validator_list&) const override;
   static std::string get_cpp2_namespace(t_program const* program);
   static mstch::array get_namespace_array(t_program const* program);
   static mstch::node cpp_includes(t_program const* program);
@@ -2106,6 +2108,41 @@ mstch::node t_mstch_cpp2_generator::include_prefix(
     return include_prefix + "/gen-cpp2/";
   }
   return prefix + "gen-cpp2/";
+}
+
+namespace {
+class annotation_validator : public validator {
+ public:
+  using validator::visit;
+
+  /**
+   * Make sure there is no incompatible annotation.
+   */
+  bool visit(t_struct* s) override;
+};
+
+bool annotation_validator::visit(t_struct* s) {
+  for (auto* member : s->get_members()) {
+    if (!member->is_mixin()) {
+      continue;
+    }
+    for (const auto& i : member->annotations_) {
+      if ((i.first == "cpp.ref" || i.first == "cpp2.ref") &&
+          i.second == "true") {
+        add_error(
+            member->get_lineno(),
+            "Mixin field `" + member->get_name() +
+                "` can not have annotation (" + i.first + " = " + i.second +
+                ")");
+      }
+    }
+  }
+  return true;
+}
+} // namespace
+
+void t_mstch_cpp2_generator::fill_validator_list(validator_list& l) const {
+  l.add<annotation_validator>();
 }
 
 THRIFT_REGISTER_GENERATOR(mstch_cpp2, "cpp2", "");
