@@ -33,8 +33,6 @@ namespace apache {
 namespace thrift {
 namespace mstch {
 
-std::function<std::string(const std::string&)> config::escape;
-
 std::string render(
     const std::string& tmplt,
     const node& root,
