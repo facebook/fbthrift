@@ -17,8 +17,10 @@
 namespace cpp2 apache.thrift.test
 
 typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
+typedef binary (cpp2.type = "folly::IOBuf") IOBuf
 
 struct Binaries {
   1 : binary normal,
-  2 : IOBufPtr iobuf,
+  2 : IOBufPtr iobufptr,
+  3 : IOBuf iobuf,
 }

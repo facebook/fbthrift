@@ -35,11 +35,11 @@ ByteRange test2Range(test2, sizeof(test2));
 TEST(FrozenIOBuf, Thrift2) {
   Binaries b2;
   b2.normal = testString.str();
-  b2.iobuf = IOBuf::copyBuffer(testRange.data(), testRange.size());
+  b2.iobufptr = IOBuf::copyBuffer(testRange.data(), testRange.size());
 
   auto fb2 = freeze(b2);
   EXPECT_EQ(testString, fb2.normal());
-  EXPECT_EQ(testRange, fb2.iobuf());
+  EXPECT_EQ(testRange, fb2.iobufptr());
 }
 
 TEST(FrozenIOBuf, IOBufChain) {
@@ -47,12 +47,23 @@ TEST(FrozenIOBuf, IOBufChain) {
   auto buf1 = IOBuf::copyBuffer(testRange.data(), testRange.size());
   auto buf2 = IOBuf::copyBuffer(test2Range.data(), test2Range.size());
   buf1->appendChain(std::move(buf2));
-  b2.iobuf = std::move(buf1);
+  b2.iobufptr = std::move(buf1);
 
   auto fb2 = freeze(b2);
   EXPECT_EQ(0, fb2.normal().size());
-  EXPECT_EQ(9, fb2.iobuf().size());
-  auto combined = fb2.iobuf();
+  EXPECT_EQ(9, fb2.iobufptr().size());
+  auto combined = fb2.iobufptr();
   EXPECT_TRUE(combined.startsWith(testRange));
   EXPECT_TRUE(combined.endsWith(test2Range));
+}
+
+TEST(FrozenIOBuf, IOBufValue) {
+  std::string input = "hello";
+  Binaries bin;
+  bin.iobuf = IOBuf(IOBuf::COPY_BUFFER, input);
+
+  auto fbin = freeze(bin);
+  EXPECT_EQ(input.size(), fbin.iobuf().size());
+  auto fstr = fbin.iobuf();
+  EXPECT_EQ(fstr.str(), input);
 }

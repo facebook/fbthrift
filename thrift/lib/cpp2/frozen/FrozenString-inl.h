@@ -52,6 +52,15 @@ struct BufferHelpers<std::unique_ptr<folly::IOBuf>> {
   static void thawTo(folly::ByteRange src, std::unique_ptr<folly::IOBuf>& dst);
 };
 
+template <>
+struct BufferHelpers<folly::IOBuf> {
+  typedef uint8_t Item;
+  static size_t size(const folly::IOBuf& src);
+
+  static void copyTo(const folly::IOBuf& src, folly::MutableByteRange dst);
+  static void thawTo(folly::ByteRange src, folly::IOBuf& dst);
+};
+
 /**
  * for contiguous, blittable ranges
  */
@@ -152,3 +161,4 @@ struct Layout<T, typename std::enable_if<IsString<T>::value>::type>
 THRIFT_DECLARE_TRAIT(IsString, std::string)
 THRIFT_DECLARE_TRAIT(IsString, folly::fbstring)
 THRIFT_DECLARE_TRAIT(IsString, std::unique_ptr<folly::IOBuf>)
+THRIFT_DECLARE_TRAIT(IsString, folly::IOBuf)
