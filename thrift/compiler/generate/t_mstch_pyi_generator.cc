@@ -377,7 +377,6 @@ mstch::array t_mstch_pyi_generator::get_py_namespace(
 }
 
 void t_mstch_pyi_generator::generate_program() {
-  mstch::config::escape = [](const std::string& s) { return s; };
   generate_init_files(*get_program());
   generate_constants(*get_program());
   generate_ttypes(*get_program());

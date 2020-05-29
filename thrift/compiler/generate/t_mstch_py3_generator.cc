@@ -1247,7 +1247,6 @@ class t_mstch_py3_generator : public t_mstch_generator {
   }
 
   void generate_program() override {
-    mstch::config::escape = [](const std::string& s) { return s; };
     set_mstch_generators();
     generate_init_files();
     generate_module(ModuleType::TYPES);

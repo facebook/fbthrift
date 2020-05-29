@@ -509,8 +509,6 @@ class field_json_experimental_generator : public field_generator {
 };
 
 void t_json_experimental_generator::generate_program() {
-  mstch::config::escape = [](const std::string& str) { return str; };
-
   auto const* program = get_program();
   set_mstch_generators();
   std::string fname = program->get_name();

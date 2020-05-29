@@ -1384,9 +1384,6 @@ class annotation_rust_generator : public annotation_generator {
 };
 
 void t_mstch_rust_generator::generate_program() {
-  // disable mstch escaping
-  mstch::config::escape = [](const std::string& s) { return s; };
-
   set_mstch_generators();
 
   const auto* program = get_program();

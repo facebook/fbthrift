@@ -903,9 +903,6 @@ class const_value_swift_generator : public const_value_generator {
 };
 
 void t_mstch_swift_generator::generate_program() {
-  // disable mstch escaping
-  mstch::config::escape = [](const std::string s) { return s; };
-
   set_mstch_generators();
 
   auto name = get_program()->get_name();

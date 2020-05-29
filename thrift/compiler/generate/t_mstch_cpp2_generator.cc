@@ -1896,9 +1896,6 @@ t_mstch_cpp2_generator::t_mstch_cpp2_generator(
 }
 
 void t_mstch_cpp2_generator::generate_program() {
-  // disable mstch escaping
-  mstch::config::escape = [](const std::string& s) { return s; };
-
   auto const* program = get_program();
   set_mstch_generators();
 
