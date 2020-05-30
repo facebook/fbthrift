@@ -71,7 +71,7 @@ void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:e
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
   try {
-    apache::thrift::detail::si::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_coro_start(
+    apache::thrift::detail::si::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_oneway_coro_start(
       co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>),
       params.getThreadManager(),
       std::move(callback));

@@ -1239,7 +1239,7 @@ void async_tm(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
 
 #if FOLLY_HAS_COROUTINES
 template <typename T>
-void async_tm_coro_start(
+void async_tm_oneway_coro_start(
     folly::coro::Task<T>&& task,
     folly::Executor::KeepAlive<> executor,
     CallbackBasePtr&& callback) {
@@ -1250,7 +1250,7 @@ void async_tm_coro_start(
 }
 
 template <typename T>
-void async_eb_coro_start(
+void async_eb_oneway_coro_start(
     folly::coro::Task<T>&& task,
     folly::Executor::KeepAlive<> executor,
     CallbackBasePtr&& callback) {
