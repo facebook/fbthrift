@@ -19,6 +19,7 @@
 #include <folly/Portability.h>
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
+#include <thrift/lib/cpp2/FieldRefHash.h>
 
 #include <algorithm>
 #include <initializer_list>
@@ -733,5 +734,81 @@ TEST(optional_field_ref_test, move_to_folly_optional) {
   EXPECT_EQ(*uptr, nullptr);
 }
 
+} // namespace thrift
+} // namespace apache
+
+struct Tag {};
+
+namespace std {
+// @lint-ignore HOWTOEVEN MisplacedTemplateSpecialization
+template <>
+struct hash<Tag> {
+  explicit hash(size_t i) : i(i) {}
+  size_t operator()(Tag) const {
+    return i;
+  }
+  size_t i;
+};
+} // namespace std
+
+namespace folly {
+// @lint-ignore HOWTOEVEN MisplacedTemplateSpecialization
+template <>
+struct hasher<Tag> {
+  explicit hasher(size_t i) : i(i) {}
+  size_t operator()(Tag) const {
+    return i;
+  }
+  size_t i;
+};
+} // namespace folly
+
+namespace apache {
+namespace thrift {
+template <template <class...> class Hasher, template <class> class Optional>
+void StatelessHashTest() {
+  Hasher<Optional<int&>> hash;
+  int x = 0;
+  bool y = false;
+  Optional<int&> f(x, y);
+  if (std::is_same<Optional<int&>, apache::thrift::field_ref<int&>>::value) {
+    EXPECT_EQ(hash(f), Hasher<int>()(0));
+  } else {
+    EXPECT_EQ(
+        hash(f), apache::thrift::detail::kHashValueForNonExistsOptionalField);
+  }
+  y = true;
+  for (x = 0; x < 1000; x++) {
+    EXPECT_EQ(hash(f), Hasher<int>()(x));
+  }
+}
+
+template <template <class...> class Hasher, template <class> class Optional>
+void StatefulHashTest() {
+  Hasher<Optional<Tag&>> hash(42);
+  Tag x;
+  bool y = false;
+  Optional<Tag&> f(x, y);
+  if (std::is_same<Optional<int&>, apache::thrift::field_ref<int&>>::value) {
+    EXPECT_EQ(hash(f), 42);
+  } else {
+    EXPECT_EQ(
+        hash(f), apache::thrift::detail::kHashValueForNonExistsOptionalField);
+  }
+  y = true;
+  EXPECT_EQ(hash(f), 42);
+}
+
+// @lint-ignore HOWTOEVEN BadImplicitCast
+TEST(optional_field_ref_test, Hash) {
+  StatelessHashTest<std::hash, field_ref>();
+  StatelessHashTest<std::hash, optional_field_ref>();
+  StatelessHashTest<folly::hasher, field_ref>();
+  StatelessHashTest<folly::hasher, optional_field_ref>();
+  StatefulHashTest<std::hash, field_ref>();
+  StatefulHashTest<std::hash, optional_field_ref>();
+  StatefulHashTest<folly::hasher, field_ref>();
+  StatefulHashTest<folly::hasher, optional_field_ref>();
+}
 } // namespace thrift
 } // namespace apache
