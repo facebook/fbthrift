@@ -17,6 +17,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import logging
 import six
 import sys
 import threading
@@ -106,7 +107,8 @@ class TProcessorEventHandler:
 
         Note that this method is NOT called if the handler threw an
         exception that is declared in the thrift service specification"""
-        pass
+
+        logging.exception("Unexpected error in service handler " + fn_name + ":")
 
 
 class TServerInterface:
