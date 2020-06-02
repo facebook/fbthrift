@@ -316,7 +316,8 @@ func (p *MyServicePrioParentPingArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyServicePrioParentPingArgs(%+v)", *p)
+
+  return fmt.Sprintf("MyServicePrioParentPingArgs({})")
 }
 
 type MyServicePrioParentPingResult struct {
@@ -366,7 +367,8 @@ func (p *MyServicePrioParentPingResult) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyServicePrioParentPingResult(%+v)", *p)
+
+  return fmt.Sprintf("MyServicePrioParentPingResult({})")
 }
 
 type MyServicePrioParentPongArgs struct {
@@ -416,7 +418,8 @@ func (p *MyServicePrioParentPongArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyServicePrioParentPongArgs(%+v)", *p)
+
+  return fmt.Sprintf("MyServicePrioParentPongArgs({})")
 }
 
 type MyServicePrioParentPongResult struct {
@@ -466,7 +469,8 @@ func (p *MyServicePrioParentPongResult) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyServicePrioParentPongResult(%+v)", *p)
+
+  return fmt.Sprintf("MyServicePrioParentPongResult({})")
 }
 
 

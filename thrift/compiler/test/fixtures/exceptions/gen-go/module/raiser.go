@@ -560,7 +560,8 @@ func (p *RaiserDoBlandArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("RaiserDoBlandArgs(%+v)", *p)
+
+  return fmt.Sprintf("RaiserDoBlandArgs({})")
 }
 
 type RaiserDoBlandResult struct {
@@ -610,7 +611,8 @@ func (p *RaiserDoBlandResult) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("RaiserDoBlandResult(%+v)", *p)
+
+  return fmt.Sprintf("RaiserDoBlandResult({})")
 }
 
 type RaiserDoRaiseArgs struct {
@@ -660,7 +662,8 @@ func (p *RaiserDoRaiseArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("RaiserDoRaiseArgs(%+v)", *p)
+
+  return fmt.Sprintf("RaiserDoRaiseArgs({})")
 }
 
 // Attributes:
@@ -831,7 +834,26 @@ func (p *RaiserDoRaiseResult) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("RaiserDoRaiseResult(%+v)", *p)
+
+  var bVal string
+  if p.B == nil {
+    bVal = "<nil>"
+  } else {
+    bVal = fmt.Sprintf("%v", p.B)
+  }
+  var fVal string
+  if p.F == nil {
+    fVal = "<nil>"
+  } else {
+    fVal = fmt.Sprintf("%v", p.F)
+  }
+  var sVal string
+  if p.S == nil {
+    sVal = "<nil>"
+  } else {
+    sVal = fmt.Sprintf("%v", p.S)
+  }
+  return fmt.Sprintf("RaiserDoRaiseResult({B:%s F:%s S:%s})", bVal, fVal, sVal)
 }
 
 type RaiserGet200Args struct {
@@ -881,7 +903,8 @@ func (p *RaiserGet200Args) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("RaiserGet200Args(%+v)", *p)
+
+  return fmt.Sprintf("RaiserGet200Args({})")
 }
 
 // Attributes:
@@ -974,7 +997,14 @@ func (p *RaiserGet200Result) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("RaiserGet200Result(%+v)", *p)
+
+  var successVal string
+  if p.Success == nil {
+    successVal = "<nil>"
+  } else {
+    successVal = fmt.Sprintf("%v", *p.Success)
+  }
+  return fmt.Sprintf("RaiserGet200Result({Success:%s})", successVal)
 }
 
 type RaiserGet500Args struct {
@@ -1024,7 +1054,8 @@ func (p *RaiserGet500Args) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("RaiserGet500Args(%+v)", *p)
+
+  return fmt.Sprintf("RaiserGet500Args({})")
 }
 
 // Attributes:
@@ -1234,7 +1265,32 @@ func (p *RaiserGet500Result) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("RaiserGet500Result(%+v)", *p)
+
+  var successVal string
+  if p.Success == nil {
+    successVal = "<nil>"
+  } else {
+    successVal = fmt.Sprintf("%v", *p.Success)
+  }
+  var fVal string
+  if p.F == nil {
+    fVal = "<nil>"
+  } else {
+    fVal = fmt.Sprintf("%v", p.F)
+  }
+  var bVal string
+  if p.B == nil {
+    bVal = "<nil>"
+  } else {
+    bVal = fmt.Sprintf("%v", p.B)
+  }
+  var sVal string
+  if p.S == nil {
+    sVal = "<nil>"
+  } else {
+    sVal = fmt.Sprintf("%v", p.S)
+  }
+  return fmt.Sprintf("RaiserGet500Result({Success:%s F:%s B:%s S:%s})", successVal, fVal, bVal, sVal)
 }
 
 

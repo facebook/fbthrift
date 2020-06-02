@@ -136,7 +136,9 @@ func (p *MyStructNestedAnnotation) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyStructNestedAnnotation(%+v)", *p)
+
+  nameVal := fmt.Sprintf("%v", p.Name)
+  return fmt.Sprintf("MyStructNestedAnnotation({Name:%s})", nameVal)
 }
 
 // Attributes:
@@ -327,7 +329,22 @@ func (p *MyStructAnnotation) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyStructAnnotation(%+v)", *p)
+
+  countVal := fmt.Sprintf("%v", p.Count)
+  nameVal := fmt.Sprintf("%v", p.Name)
+  var extraVal string
+  if p.Extra == nil {
+    extraVal = "<nil>"
+  } else {
+    extraVal = fmt.Sprintf("%v", *p.Extra)
+  }
+  var nestVal string
+  if p.Nest == nil {
+    nestVal = "<nil>"
+  } else {
+    nestVal = fmt.Sprintf("%v", p.Nest)
+  }
+  return fmt.Sprintf("MyStructAnnotation({Count:%s Name:%s Extra:%s Nest:%s})", countVal, nameVal, extraVal, nestVal)
 }
 
 // Attributes:
@@ -500,7 +517,12 @@ func (p *MyStruct) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyStruct(%+v)", *p)
+
+  majorVal := fmt.Sprintf("%v", p.Major)
+  packageVal := fmt.Sprintf("%v", p.Package)
+  annotationWithQuoteVal := fmt.Sprintf("%v", p.AnnotationWithQuote)
+  class_Val := fmt.Sprintf("%v", p.Class_)
+  return fmt.Sprintf("MyStruct({Major:%s Package:%s AnnotationWithQuote:%s Class_:%s})", majorVal, packageVal, annotationWithQuoteVal, class_Val)
 }
 
 // Attributes:
@@ -613,6 +635,9 @@ func (p *SecretStruct) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("SecretStruct(%+v)", *p)
+
+  idVal := fmt.Sprintf("%v", p.Id)
+  passwordVal := fmt.Sprintf("%v", p.Password)
+  return fmt.Sprintf("SecretStruct({Id:%s Password:%s})", idVal, passwordVal)
 }
 

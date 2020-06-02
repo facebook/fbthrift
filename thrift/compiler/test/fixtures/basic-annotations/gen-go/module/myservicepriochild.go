@@ -223,7 +223,8 @@ func (p *MyServicePrioChildPangArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyServicePrioChildPangArgs(%+v)", *p)
+
+  return fmt.Sprintf("MyServicePrioChildPangArgs({})")
 }
 
 type MyServicePrioChildPangResult struct {
@@ -273,7 +274,8 @@ func (p *MyServicePrioChildPangResult) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MyServicePrioChildPangResult(%+v)", *p)
+
+  return fmt.Sprintf("MyServicePrioChildPangResult({})")
 }
 
 

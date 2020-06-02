@@ -292,7 +292,18 @@ func (p *Automobile) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("Automobile(%+v)", *p)
+
+  plateVal := fmt.Sprintf("%v", p.Plate)
+  var previousPlateVal string
+  if p.PreviousPlate == nil {
+    previousPlateVal = "<nil>"
+  } else {
+    previousPlateVal = fmt.Sprintf("%v", *p.PreviousPlate)
+  }
+  firstPlateVal := fmt.Sprintf("%v", p.FirstPlate)
+  yearVal := fmt.Sprintf("%v", p.Year)
+  driversVal := fmt.Sprintf("%v", p.Drivers)
+  return fmt.Sprintf("Automobile({Plate:%s PreviousPlate:%s FirstPlate:%s Year:%s Drivers:%s})", plateVal, previousPlateVal, firstPlateVal, yearVal, driversVal)
 }
 
 // Attributes:
@@ -405,7 +416,10 @@ func (p *MapKey) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MapKey(%+v)", *p)
+
+  numVal := fmt.Sprintf("%v", p.Num)
+  strvalVal := fmt.Sprintf("%v", p.Strval)
+  return fmt.Sprintf("MapKey({Num:%s Strval:%s})", numVal, strvalVal)
 }
 
 // Attributes:
@@ -516,7 +530,9 @@ func (p *MapContainer) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("MapContainer(%+v)", *p)
+
+  mapvalVal := fmt.Sprintf("%v", p.Mapval)
+  return fmt.Sprintf("MapContainer({Mapval:%s})", mapvalVal)
 }
 
 // Attributes:
@@ -645,7 +661,20 @@ func (p *Pair) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("Pair(%+v)", *p)
+
+  var automobileVal string
+  if p.Automobile == nil {
+    automobileVal = "<nil>"
+  } else {
+    automobileVal = fmt.Sprintf("%v", p.Automobile)
+  }
+  var carVal string
+  if p.Car == nil {
+    carVal = "<nil>"
+  } else {
+    carVal = fmt.Sprintf("%v", p.Car)
+  }
+  return fmt.Sprintf("Pair({Automobile:%s Car:%s})", automobileVal, carVal)
 }
 
 // Attributes:
@@ -798,6 +827,9 @@ func (p *Collection) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("Collection(%+v)", *p)
+
+  automobilesVal := fmt.Sprintf("%v", p.Automobiles)
+  carsVal := fmt.Sprintf("%v", p.Cars)
+  return fmt.Sprintf("Collection({Automobiles:%s Cars:%s})", automobilesVal, carsVal)
 }
 

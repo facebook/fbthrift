@@ -395,7 +395,29 @@ func (p *ComplexUnion) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("ComplexUnion(%+v)", *p)
+
+  var intValueVal string
+  if p.IntValue == nil {
+    intValueVal = "<nil>"
+  } else {
+    intValueVal = fmt.Sprintf("%v", *p.IntValue)
+  }
+  intListValueVal := fmt.Sprintf("%v", p.IntListValue)
+  stringListValueVal := fmt.Sprintf("%v", p.StringListValue)
+  var stringValueVal string
+  if p.StringValue == nil {
+    stringValueVal = "<nil>"
+  } else {
+    stringValueVal = fmt.Sprintf("%v", *p.StringValue)
+  }
+  typedefValueVal := fmt.Sprintf("%v", p.TypedefValue)
+  var stringRefVal string
+  if p.StringRef == nil {
+    stringRefVal = "<nil>"
+  } else {
+    stringRefVal = fmt.Sprintf("%v", *p.StringRef)
+  }
+  return fmt.Sprintf("ComplexUnion({IntValue:%s IntListValue:%s StringListValue:%s StringValue:%s TypedefValue:%s StringRef:%s})", intValueVal, intListValueVal, stringListValueVal, stringValueVal, typedefValueVal, stringRefVal)
 }
 
 // Attributes:
@@ -565,7 +587,10 @@ func (p *ListUnion) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("ListUnion(%+v)", *p)
+
+  intListValueVal := fmt.Sprintf("%v", p.IntListValue)
+  stringListValueVal := fmt.Sprintf("%v", p.StringListValue)
+  return fmt.Sprintf("ListUnion({IntListValue:%s StringListValue:%s})", intListValueVal, stringListValueVal)
 }
 
 // Attributes:
@@ -706,7 +731,15 @@ func (p *DataUnion) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("DataUnion(%+v)", *p)
+
+  binaryDataVal := fmt.Sprintf("%v", p.BinaryData)
+  var stringDataVal string
+  if p.StringData == nil {
+    stringDataVal = "<nil>"
+  } else {
+    stringDataVal = fmt.Sprintf("%v", *p.StringData)
+  }
+  return fmt.Sprintf("DataUnion({BinaryData:%s StringData:%s})", binaryDataVal, stringDataVal)
 }
 
 // Attributes:
@@ -879,7 +912,11 @@ func (p *Val) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("Val(%+v)", *p)
+
+  strValVal := fmt.Sprintf("%v", p.StrVal)
+  intValVal := fmt.Sprintf("%v", p.IntVal)
+  typedefValueVal := fmt.Sprintf("%v", p.TypedefValue)
+  return fmt.Sprintf("Val({StrVal:%s IntVal:%s TypedefValue:%s})", strValVal, intValVal, typedefValueVal)
 }
 
 // Attributes:
@@ -1025,7 +1062,20 @@ func (p *ValUnion) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("ValUnion(%+v)", *p)
+
+  var v1Val string
+  if p.V1 == nil {
+    v1Val = "<nil>"
+  } else {
+    v1Val = fmt.Sprintf("%v", p.V1)
+  }
+  var v2Val string
+  if p.V2 == nil {
+    v2Val = "<nil>"
+  } else {
+    v2Val = fmt.Sprintf("%v", p.V2)
+  }
+  return fmt.Sprintf("ValUnion({V1:%s V2:%s})", v1Val, v2Val)
 }
 
 // Attributes:
@@ -1171,7 +1221,20 @@ func (p *VirtualComplexUnion) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("VirtualComplexUnion(%+v)", *p)
+
+  var thingOneVal string
+  if p.ThingOne == nil {
+    thingOneVal = "<nil>"
+  } else {
+    thingOneVal = fmt.Sprintf("%v", *p.ThingOne)
+  }
+  var thingTwoVal string
+  if p.ThingTwo == nil {
+    thingTwoVal = "<nil>"
+  } else {
+    thingTwoVal = fmt.Sprintf("%v", *p.ThingTwo)
+  }
+  return fmt.Sprintf("VirtualComplexUnion({ThingOne:%s ThingTwo:%s})", thingOneVal, thingTwoVal)
 }
 
 // Attributes:
@@ -1254,7 +1317,9 @@ func (p *NonCopyableStruct) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("NonCopyableStruct(%+v)", *p)
+
+  numVal := fmt.Sprintf("%v", p.Num)
+  return fmt.Sprintf("NonCopyableStruct({Num:%s})", numVal)
 }
 
 // Attributes:
@@ -1358,6 +1423,13 @@ func (p *NonCopyableUnion) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("NonCopyableUnion(%+v)", *p)
+
+  var sVal string
+  if p.S == nil {
+    sVal = "<nil>"
+  } else {
+    sVal = fmt.Sprintf("%v", p.S)
+  }
+  return fmt.Sprintf("NonCopyableUnion({S:%s})", sVal)
 }
 

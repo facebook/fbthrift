@@ -101,7 +101,9 @@ func (p *GetEntityRequest) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("GetEntityRequest(%+v)", *p)
+
+  idVal := fmt.Sprintf("%v", p.Id)
+  return fmt.Sprintf("GetEntityRequest({Id:%s})", idVal)
 }
 
 // Attributes:
@@ -184,6 +186,8 @@ func (p *GetEntityResponse) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("GetEntityResponse(%+v)", *p)
+
+  entityVal := fmt.Sprintf("%v", p.Entity)
+  return fmt.Sprintf("GetEntityResponse({Entity:%s})", entityVal)
 }
 

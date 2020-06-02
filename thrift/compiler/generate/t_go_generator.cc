@@ -28,6 +28,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include <boost/algorithm/string/join.hpp>
 #include <boost/filesystem.hpp>
 
 #include <stdlib.h>
@@ -1440,9 +1441,43 @@ void t_go_generator::generate_go_struct_definition(
       << endl;
   out << indent() << "  if p == nil {" << endl;
   out << indent() << "    return \"<nil>\"" << endl;
-  out << indent() << "  }" << endl;
+  out << indent() << "  }" << endl << endl;
+
+  std::vector<std::string> format;
+  string values;
+  for (m_iter = sorted_members.begin(); m_iter != sorted_members.end();
+       ++m_iter) {
+    if (is_pointer_field(*m_iter)) {
+      out << indent() << "  var " << privatize((*m_iter)->get_name())
+          << "Val string" << endl;
+      out << indent() << "  if p." << publicize((*m_iter)->get_name())
+          << " == nil {" << endl;
+      out << indent() << "    " << privatize((*m_iter)->get_name())
+          << "Val = \"<nil>\"" << endl;
+      out << indent() << "  } else {" << endl;
+
+      if (type_need_reference((*m_iter)->get_type())) {
+        out << indent() << "    " << privatize((*m_iter)->get_name())
+            << "Val = fmt.Sprintf(\"%v\", *p."
+            << publicize((*m_iter)->get_name()) << ")" << endl;
+      } else {
+        out << indent() << "    " << privatize((*m_iter)->get_name())
+            << "Val = fmt.Sprintf(\"%v\", p."
+            << publicize((*m_iter)->get_name()) << ")" << endl;
+      }
+
+      out << indent() << "  }" << endl;
+    } else {
+      out << indent() << "  " << privatize((*m_iter)->get_name())
+          << "Val := fmt.Sprintf(\"%v\", p." << publicize((*m_iter)->get_name())
+          << ")" << endl;
+    }
+    format.push_back(publicize((*m_iter)->get_name()) + ":%s");
+    values = values + ", " + privatize((*m_iter)->get_name()) + "Val";
+  }
   out << indent() << "  return fmt.Sprintf(\"" << escape_string(tstruct_name)
-      << "(%+v)\", *p)" << endl;
+      << "({" << boost::algorithm::join(format, " ") << "})\"" << values << ")"
+      << endl;
   out << indent() << "}" << endl << endl;
 
   if (is_exception) {

@@ -230,7 +230,12 @@ func (p *Color) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("Color(%+v)", *p)
+
+  redVal := fmt.Sprintf("%v", p.Red)
+  greenVal := fmt.Sprintf("%v", p.Green)
+  blueVal := fmt.Sprintf("%v", p.Blue)
+  alphaVal := fmt.Sprintf("%v", p.Alpha)
+  return fmt.Sprintf("Color({Red:%s Green:%s Blue:%s Alpha:%s})", redVal, greenVal, blueVal, alphaVal)
 }
 
 // Attributes:
@@ -476,7 +481,33 @@ func (p *Vehicle) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("Vehicle(%+v)", *p)
+
+  var colorVal string
+  if p.Color == nil {
+    colorVal = "<nil>"
+  } else {
+    colorVal = fmt.Sprintf("%v", p.Color)
+  }
+  var licensePlateVal string
+  if p.LicensePlate == nil {
+    licensePlateVal = "<nil>"
+  } else {
+    licensePlateVal = fmt.Sprintf("%v", *p.LicensePlate)
+  }
+  var descriptionVal string
+  if p.Description == nil {
+    descriptionVal = "<nil>"
+  } else {
+    descriptionVal = fmt.Sprintf("%v", *p.Description)
+  }
+  var nameVal string
+  if p.Name == nil {
+    nameVal = "<nil>"
+  } else {
+    nameVal = fmt.Sprintf("%v", *p.Name)
+  }
+  hasACVal := fmt.Sprintf("%v", p.HasAC)
+  return fmt.Sprintf("Vehicle({Color:%s LicensePlate:%s Description:%s Name:%s HasAC:%s})", colorVal, licensePlateVal, descriptionVal, nameVal, hasACVal)
 }
 
 // Attributes:
@@ -977,6 +1008,42 @@ func (p *Person) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("Person(%+v)", *p)
+
+  idVal := fmt.Sprintf("%v", p.Id)
+  nameVal := fmt.Sprintf("%v", p.Name)
+  var ageVal string
+  if p.Age == nil {
+    ageVal = "<nil>"
+  } else {
+    ageVal = fmt.Sprintf("%v", *p.Age)
+  }
+  var addressVal string
+  if p.Address == nil {
+    addressVal = "<nil>"
+  } else {
+    addressVal = fmt.Sprintf("%v", *p.Address)
+  }
+  var favoriteColorVal string
+  if p.FavoriteColor == nil {
+    favoriteColorVal = "<nil>"
+  } else {
+    favoriteColorVal = fmt.Sprintf("%v", p.FavoriteColor)
+  }
+  friendsVal := fmt.Sprintf("%v", p.Friends)
+  var bestFriendVal string
+  if p.BestFriend == nil {
+    bestFriendVal = "<nil>"
+  } else {
+    bestFriendVal = fmt.Sprintf("%v", *p.BestFriend)
+  }
+  petNamesVal := fmt.Sprintf("%v", p.PetNames)
+  var afraidOfAnimalVal string
+  if p.AfraidOfAnimal == nil {
+    afraidOfAnimalVal = "<nil>"
+  } else {
+    afraidOfAnimalVal = fmt.Sprintf("%v", *p.AfraidOfAnimal)
+  }
+  vehiclesVal := fmt.Sprintf("%v", p.Vehicles)
+  return fmt.Sprintf("Person({Id:%s Name:%s Age:%s Address:%s FavoriteColor:%s Friends:%s BestFriend:%s PetNames:%s AfraidOfAnimal:%s Vehicles:%s})", idVal, nameVal, ageVal, addressVal, favoriteColorVal, friendsVal, bestFriendVal, petNamesVal, afraidOfAnimalVal, vehiclesVal)
 }
 
