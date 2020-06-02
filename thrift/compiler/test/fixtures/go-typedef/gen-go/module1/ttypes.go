@@ -2,7 +2,7 @@
 // DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 // @generated
 
-package module
+package module1
 
 import (
 	"bytes"
@@ -10,6 +10,8 @@ import (
 	"sync"
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
+	module00 "module0"
+
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -19,6 +21,7 @@ var _ = sync.Mutex{}
 var _ = bytes.Equal
 var _ = context.Background
 
+var _ = module00.GoUnusedProtection__
 var GoUnusedProtection__ int;
 
 type Plate = string
@@ -37,11 +40,11 @@ type Drivers = []string
 
 func DriversPtr(v Drivers) *Drivers { return &v }
 
-type Accessories = []string
+type Accessory = module00.Accessory
 
-func AccessoriesPtr(v Accessories) *Accessories { return &v }
+func AccessoryPtr(v Accessory) *Accessory { return &v }
 
-type PartName = map[int32]string
+type PartName = module00.PartName
 
 func PartNamePtr(v PartName) *PartName { return &v }
 
@@ -55,12 +58,16 @@ func CarPtr(v Car) *Car { return &v }
 //  - FirstPlate
 //  - Year
 //  - Drivers
+//  - Accessories
+//  - PartNames
 type Automobile struct {
   Plate Plate `thrift:"plate,1" db:"plate" json:"plate"`
   PreviousPlate *Plate `thrift:"previous_plate,2" db:"previous_plate" json:"previous_plate,omitempty"`
   FirstPlate Plate `thrift:"first_plate,3" db:"first_plate" json:"first_plate,omitempty"`
   Year Year `thrift:"year,4" db:"year" json:"year"`
   Drivers Drivers `thrift:"drivers,5" db:"drivers" json:"drivers"`
+  Accessories []*Accessory `thrift:"Accessories,6" db:"Accessories" json:"Accessories"`
+  PartNames map[int32]*PartName `thrift:"PartNames,7" db:"PartNames" json:"PartNames"`
 }
 
 func NewAutomobile() *Automobile {
@@ -92,6 +99,14 @@ func (p *Automobile) GetYear() Year {
 
 func (p *Automobile) GetDrivers() Drivers {
   return p.Drivers
+}
+
+func (p *Automobile) GetAccessories() []*Accessory {
+  return p.Accessories
+}
+
+func (p *Automobile) GetPartNames() map[int32]*PartName {
+  return p.PartNames
 }
 func (p *Automobile) IsSetPreviousPlate() bool {
   return p.PreviousPlate != nil
@@ -132,6 +147,14 @@ func (p *Automobile) Read(iprot thrift.Protocol) error {
       }
     case 5:
       if err := p.ReadField5(iprot); err != nil {
+        return err
+      }
+    case 6:
+      if err := p.ReadField6(iprot); err != nil {
+        return err
+      }
+    case 7:
+      if err := p.ReadField7(iprot); err != nil {
         return err
       }
     default:
@@ -197,16 +220,62 @@ func (p *Automobile)  ReadField5(iprot thrift.Protocol) error {
   tSlice := make(Drivers, 0, size)
   p.Drivers =  tSlice
   for i := 0; i < size; i ++ {
-var _elem0 string
+var _elem1 string
     if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _elem0 = v
+    _elem1 = v
 }
-    p.Drivers = append(p.Drivers, _elem0)
+    p.Drivers = append(p.Drivers, _elem1)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
+  }
+  return nil
+}
+
+func (p *Automobile)  ReadField6(iprot thrift.Protocol) error {
+  _, size, err := iprot.ReadListBegin()
+  if err != nil {
+    return thrift.PrependError("error reading list begin: ", err)
+  }
+  tSlice := make([]*Accessory, 0, size)
+  p.Accessories =  tSlice
+  for i := 0; i < size; i ++ {
+    _elem2 := module00.NewAccessory()
+    if err := _elem2.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem2), err)
+    }
+    p.Accessories = append(p.Accessories, _elem2)
+  }
+  if err := iprot.ReadListEnd(); err != nil {
+    return thrift.PrependError("error reading list end: ", err)
+  }
+  return nil
+}
+
+func (p *Automobile)  ReadField7(iprot thrift.Protocol) error {
+  _, _, size, err := iprot.ReadMapBegin()
+  if err != nil {
+    return thrift.PrependError("error reading map begin: ", err)
+  }
+  tMap := make(map[int32]*PartName, size)
+  p.PartNames =  tMap
+  for i := 0; i < size; i ++ {
+var _key3 int32
+    if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 0: ", err)
+} else {
+    _key3 = v
+}
+    _val4 := module00.NewPartName()
+    if err := _val4.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _val4), err)
+    }
+    p.PartNames[_key3] = _val4
+  }
+  if err := iprot.ReadMapEnd(); err != nil {
+    return thrift.PrependError("error reading map end: ", err)
   }
   return nil
 }
@@ -219,6 +288,8 @@ func (p *Automobile) Write(oprot thrift.Protocol) error {
   if err := p.writeField3(oprot); err != nil { return err }
   if err := p.writeField4(oprot); err != nil { return err }
   if err := p.writeField5(oprot); err != nil { return err }
+  if err := p.writeField6(oprot); err != nil { return err }
+  if err := p.writeField7(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -288,6 +359,46 @@ func (p *Automobile) writeField5(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *Automobile) writeField6(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("Accessories", thrift.LIST, 6); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:Accessories: ", p), err) }
+  if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Accessories)); err != nil {
+    return thrift.PrependError("error writing list begin: ", err)
+  }
+  for _, v := range p.Accessories {
+    if err := v.Write(oprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", v), err)
+    }
+  }
+  if err := oprot.WriteListEnd(); err != nil {
+    return thrift.PrependError("error writing list end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:Accessories: ", p), err) }
+  return err
+}
+
+func (p *Automobile) writeField7(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("PartNames", thrift.MAP, 7); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 7:PartNames: ", p), err) }
+  if err := oprot.WriteMapBegin(thrift.I32, thrift.STRUCT, len(p.PartNames)); err != nil {
+    return thrift.PrependError("error writing map begin: ", err)
+  }
+  for k, v := range p.PartNames {
+    if err := oprot.WriteI32(int32(k)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+    if err := v.Write(oprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", v), err)
+    }
+  }
+  if err := oprot.WriteMapEnd(); err != nil {
+    return thrift.PrependError("error writing map end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 7:PartNames: ", p), err) }
+  return err
+}
+
 func (p *Automobile) String() string {
   if p == nil {
     return "<nil>"
@@ -303,7 +414,9 @@ func (p *Automobile) String() string {
   firstPlateVal := fmt.Sprintf("%v", p.FirstPlate)
   yearVal := fmt.Sprintf("%v", p.Year)
   driversVal := fmt.Sprintf("%v", p.Drivers)
-  return fmt.Sprintf("Automobile({Plate:%s PreviousPlate:%s FirstPlate:%s Year:%s Drivers:%s})", plateVal, previousPlateVal, firstPlateVal, yearVal, driversVal)
+  accessoriesVal := fmt.Sprintf("%v", p.Accessories)
+  partNamesVal := fmt.Sprintf("%v", p.PartNames)
+  return fmt.Sprintf("Automobile({Plate:%s PreviousPlate:%s FirstPlate:%s Year:%s Drivers:%s Accessories:%s PartNames:%s})", plateVal, previousPlateVal, firstPlateVal, yearVal, driversVal, accessoriesVal, partNamesVal)
 }
 
 // Attributes:
@@ -476,17 +589,17 @@ func (p *MapContainer)  ReadField1(iprot thrift.Protocol) error {
   tMap := make(map[MapKey]string, size)
   p.Mapval =  tMap
   for i := 0; i < size; i ++ {
-    _key1 := NewMapKey()
-    if err := _key1.Read(iprot); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _key1), err)
+    _key5 := NewMapKey()
+    if err := _key5.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _key5), err)
     }
-var _val2 string
+var _val6 string
     if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _val2 = v
+    _val6 = v
 }
-    p.Mapval[*_key1] = _val2
+    p.Mapval[*_key5] = _val6
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)
@@ -741,11 +854,11 @@ func (p *Collection)  ReadField1(iprot thrift.Protocol) error {
   tSlice := make([]*Automobile, 0, size)
   p.Automobiles =  tSlice
   for i := 0; i < size; i ++ {
-    _elem3 := NewAutomobile()
-    if err := _elem3.Read(iprot); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem3), err)
+    _elem7 := NewAutomobile()
+    if err := _elem7.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem7), err)
     }
-    p.Automobiles = append(p.Automobiles, _elem3)
+    p.Automobiles = append(p.Automobiles, _elem7)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -761,11 +874,11 @@ func (p *Collection)  ReadField2(iprot thrift.Protocol) error {
   tSlice := make([]*Car, 0, size)
   p.Cars =  tSlice
   for i := 0; i < size; i ++ {
-    _elem4 := NewAutomobile()
-    if err := _elem4.Read(iprot); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem4), err)
+    _elem8 := NewAutomobile()
+    if err := _elem8.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem8), err)
     }
-    p.Cars = append(p.Cars, _elem4)
+    p.Cars = append(p.Cars, _elem8)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)

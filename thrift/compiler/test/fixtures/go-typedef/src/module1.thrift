@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
+include "module0.thrift"
+
 typedef string Plate
 typedef string State
 typedef i32 Year
 typedef list<string> Drivers
-typedef set<string> Accessories
-typedef map<i32, string> PartName
+typedef module0.Accessory Accessory
+typedef module0.PartName PartName
 
 struct Automobile {
   1: Plate plate;
@@ -27,6 +29,8 @@ struct Automobile {
   3: optional Plate first_plate = "0000";
   4: Year year;
   5: Drivers drivers;
+  6: list<Accessory> Accessories
+  7: map<i32, PartName> PartNames
 }
 
 // Test structs as map keys

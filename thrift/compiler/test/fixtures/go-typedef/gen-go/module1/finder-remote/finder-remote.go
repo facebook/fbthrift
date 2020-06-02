@@ -14,7 +14,7 @@ import (
         "strconv"
         "strings"
         thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
-        "../../module"
+        "../../module1"
 )
 
 func Usage() {
@@ -111,7 +111,7 @@ func main() {
     Usage()
     os.Exit(1)
   }
-  client := module.NewFinderClientFactory(trans, protocolFactory)
+  client := module1.NewFinderClientFactory(trans, protocolFactory)
   if err := trans.Open(); err != nil {
     fmt.Fprintln(os.Stderr, "Error opening socket to ", host, ":", port, " ", err)
     os.Exit(1)
@@ -124,7 +124,7 @@ func main() {
       flag.Usage()
     }
     argvalue0 := flag.Arg(1)
-    value0 := module.Plate(argvalue0)
+    value0 := module1.Plate(argvalue0)
     fmt.Print(client.ByPlate(value0))
     fmt.Print("\n")
     break
@@ -134,7 +134,7 @@ func main() {
       flag.Usage()
     }
     argvalue0 := flag.Arg(1)
-    value0 := module.Plate(argvalue0)
+    value0 := module1.Plate(argvalue0)
     fmt.Print(client.AliasByPlate(value0))
     fmt.Print("\n")
     break
@@ -144,7 +144,7 @@ func main() {
       flag.Usage()
     }
     argvalue0 := flag.Arg(1)
-    value0 := module.Plate(argvalue0)
+    value0 := module1.Plate(argvalue0)
     fmt.Print(client.PreviousPlate(value0))
     fmt.Print("\n")
     break

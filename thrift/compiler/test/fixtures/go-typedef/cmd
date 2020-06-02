@@ -1,1 +1,2 @@
-go src/module.thrift
+go src/module0.thrift
+go src/module1.thrift

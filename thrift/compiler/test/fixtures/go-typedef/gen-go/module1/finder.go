@@ -2,7 +2,7 @@
 // DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 // @generated
 
-package module
+package module1
 
 import (
 	"bytes"
@@ -10,6 +10,8 @@ import (
 	"sync"
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
+	module00 "module0"
+
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -19,6 +21,7 @@ var _ = sync.Mutex{}
 var _ = bytes.Equal
 var _ = context.Background
 
+var _ = module00.GoUnusedProtection__
 type Finder interface {
   // Parameters:
   //  - Plate
@@ -250,11 +253,11 @@ func (p *FinderProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
 }
 
 func NewFinderProcessor(handler Finder) *FinderProcessor {
-  self5 := &FinderProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
-  self5.processorMap["byPlate"] = &finderProcessorByPlate{handler:handler}
-  self5.processorMap["aliasByPlate"] = &finderProcessorAliasByPlate{handler:handler}
-  self5.processorMap["previousPlate"] = &finderProcessorPreviousPlate{handler:handler}
-  return self5
+  self9 := &FinderProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self9.processorMap["byPlate"] = &finderProcessorByPlate{handler:handler}
+  self9.processorMap["aliasByPlate"] = &finderProcessorAliasByPlate{handler:handler}
+  self9.processorMap["previousPlate"] = &finderProcessorPreviousPlate{handler:handler}
+  return self9
 }
 
 type finderProcessorByPlate struct {
