@@ -175,27 +175,27 @@ public class MyUnionFloatFieldThrowExp extends TUnion<MyUnionFloatFieldThrowExp>
         if (__field.type == SET_FLOAT_FIELD_DESC.type) {
           List<List<Float>> setFloat;
           {
-            TList _list188 = iprot.readListBegin();
-            setFloat = new ArrayList<List<Float>>(Math.max(0, _list188.size));
-            for (int _i189 = 0; 
-                 (_list188.size < 0) ? iprot.peekList() : (_i189 < _list188.size); 
-                 ++_i189)
+            TList _list201 = iprot.readListBegin();
+            setFloat = new ArrayList<List<Float>>(Math.max(0, _list201.size));
+            for (int _i202 = 0; 
+                 (_list201.size < 0) ? iprot.peekList() : (_i202 < _list201.size); 
+                 ++_i202)
             {
-              List<Float> _elem190;
+              List<Float> _elem203;
               {
-                TList _list191 = iprot.readListBegin();
-                _elem190 = new ArrayList<Float>(Math.max(0, _list191.size));
-                for (int _i192 = 0; 
-                     (_list191.size < 0) ? iprot.peekList() : (_i192 < _list191.size); 
-                     ++_i192)
+                TList _list204 = iprot.readListBegin();
+                _elem203 = new ArrayList<Float>(Math.max(0, _list204.size));
+                for (int _i205 = 0; 
+                     (_list204.size < 0) ? iprot.peekList() : (_i205 < _list204.size); 
+                     ++_i205)
                 {
-                  float _elem193;
-                  _elem193 = iprot.readFloat();
-                  _elem190.add(_elem193);
+                  float _elem206;
+                  _elem206 = iprot.readFloat();
+                  _elem203.add(_elem206);
                 }
                 iprot.readListEnd();
               }
-              setFloat.add(_elem190);
+              setFloat.add(_elem203);
             }
             iprot.readListEnd();
           }
@@ -234,11 +234,11 @@ public class MyUnionFloatFieldThrowExp extends TUnion<MyUnionFloatFieldThrowExp>
         List<List<Float>> setFloat = (List<List<Float>>)getFieldValue();
         {
           oprot.writeListBegin(new TList(TType.LIST, setFloat.size()));
-          for (List<Float> _iter194 : setFloat)          {
+          for (List<Float> _iter207 : setFloat)          {
             {
-              oprot.writeListBegin(new TList(TType.FLOAT, _iter194.size()));
-              for (float _iter195 : _iter194)              {
-                oprot.writeFloat(_iter195);
+              oprot.writeListBegin(new TList(TType.FLOAT, _iter207.size()));
+              for (float _iter208 : _iter207)              {
+                oprot.writeFloat(_iter208);
               }
               oprot.writeListEnd();
             }

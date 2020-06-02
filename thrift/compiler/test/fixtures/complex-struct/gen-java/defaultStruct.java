@@ -208,70 +208,70 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
     this.simpleStruct.setName("John");
 
     this.listStructDFset = new ArrayList<SimpleStruct>();
-    SimpleStruct tmp91 = new SimpleStruct();
-    tmp91.setAge(40L);
-    tmp91.setName("IronMan");
+    SimpleStruct tmp104 = new SimpleStruct();
+    tmp104.setAge(40L);
+    tmp104.setName("IronMan");
 
-    this.listStructDFset.add(tmp91);
-    SimpleStruct tmp92 = new SimpleStruct();
-    tmp92.setAge(999L);
-    tmp92.setName("Thanos");
+    this.listStructDFset.add(tmp104);
+    SimpleStruct tmp105 = new SimpleStruct();
+    tmp105.setAge(999L);
+    tmp105.setName("Thanos");
 
-    this.listStructDFset.add(tmp92);
+    this.listStructDFset.add(tmp105);
 
     this.myUnion = new MyUnion();
     this.myUnion.setMyEnum(MyEnum.MyValue2);
 
     this.listUnionDFset = new ArrayList<MyUnion>();
-    MyUnion tmp93 = new MyUnion();
-    tmp93.setMyEnum(MyEnum.MyValue2);
+    MyUnion tmp106 = new MyUnion();
+    tmp106.setMyEnum(MyEnum.MyValue2);
 
-    this.listUnionDFset.add(tmp93);
-    MyUnion tmp94 = new MyUnion();
-    tmp94.setIntValue(123);
+    this.listUnionDFset.add(tmp106);
+    MyUnion tmp107 = new MyUnion();
+    tmp107.setIntValue(123);
 
-    this.listUnionDFset.add(tmp94);
+    this.listUnionDFset.add(tmp107);
 
     this.mapNestlistStructDfSet = new HashMap<Integer,List<SimpleStruct>>();
-    List<SimpleStruct> tmp95 = new ArrayList<SimpleStruct>();
-    SimpleStruct tmp96 = new SimpleStruct();
-    tmp96.setAge(40L);
-    tmp96.setName("IronMan");
+    List<SimpleStruct> tmp108 = new ArrayList<SimpleStruct>();
+    SimpleStruct tmp109 = new SimpleStruct();
+    tmp109.setAge(40L);
+    tmp109.setName("IronMan");
 
-    tmp95.add(tmp96);
-    SimpleStruct tmp97 = new SimpleStruct();
-    tmp97.setAge(999L);
-    tmp97.setName("Thanos");
+    tmp108.add(tmp109);
+    SimpleStruct tmp110 = new SimpleStruct();
+    tmp110.setAge(999L);
+    tmp110.setName("Thanos");
 
-    tmp95.add(tmp97);
+    tmp108.add(tmp110);
 
-    this.mapNestlistStructDfSet.put(1, tmp95);
-    List<SimpleStruct> tmp98 = new ArrayList<SimpleStruct>();
-    SimpleStruct tmp99 = new SimpleStruct();
-    tmp99.setAge(28L);
-    tmp99.setName("BatMan");
+    this.mapNestlistStructDfSet.put(1, tmp108);
+    List<SimpleStruct> tmp111 = new ArrayList<SimpleStruct>();
+    SimpleStruct tmp112 = new SimpleStruct();
+    tmp112.setAge(28L);
+    tmp112.setName("BatMan");
 
-    tmp98.add(tmp99);
-    SimpleStruct tmp100 = new SimpleStruct();
-    tmp100.setAge(12L);
-    tmp100.setName("Robin");
+    tmp111.add(tmp112);
+    SimpleStruct tmp113 = new SimpleStruct();
+    tmp113.setAge(12L);
+    tmp113.setName("Robin");
 
-    tmp98.add(tmp100);
+    tmp111.add(tmp113);
 
-    this.mapNestlistStructDfSet.put(2, tmp98);
-    List<SimpleStruct> tmp101 = new ArrayList<SimpleStruct>();
-    SimpleStruct tmp102 = new SimpleStruct();
-    tmp102.setAge(12L);
-    tmp102.setName("RatMan");
+    this.mapNestlistStructDfSet.put(2, tmp111);
+    List<SimpleStruct> tmp114 = new ArrayList<SimpleStruct>();
+    SimpleStruct tmp115 = new SimpleStruct();
+    tmp115.setAge(12L);
+    tmp115.setName("RatMan");
 
-    tmp101.add(tmp102);
-    SimpleStruct tmp103 = new SimpleStruct();
-    tmp103.setAge(6L);
-    tmp103.setName("Catman");
+    tmp114.add(tmp115);
+    SimpleStruct tmp116 = new SimpleStruct();
+    tmp116.setAge(6L);
+    tmp116.setName("Catman");
 
-    tmp101.add(tmp103);
+    tmp114.add(tmp116);
 
-    this.mapNestlistStructDfSet.put(5, tmp101);
+    this.mapNestlistStructDfSet.put(5, tmp114);
 
     this.mapJavaTypeDFset = new HashMap<Long,String>();
     this.mapJavaTypeDFset.put(15L, "a_value");
@@ -280,22 +280,22 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
     this.emptyMap = new HashMap<Long,Integer>();
 
     this.enumMapDFset = new HashMap<String,Map<Integer,MyEnum>>();
-    Map<Integer,MyEnum> tmp104 = new HashMap<Integer,MyEnum>();
-    tmp104.put(16, MyEnum.MyValue1);
-    tmp104.put(144, MyEnum.MyValue1);
+    Map<Integer,MyEnum> tmp117 = new HashMap<Integer,MyEnum>();
+    tmp117.put(16, MyEnum.MyValue1);
+    tmp117.put(144, MyEnum.MyValue1);
 
-    this.enumMapDFset.put("SANDY BRIDGE", tmp104);
-    Map<Integer,MyEnum> tmp105 = new HashMap<Integer,MyEnum>();
-    tmp105.put(32, MyEnum.MyValue2);
-    tmp105.put(144, MyEnum.MyValue2);
+    this.enumMapDFset.put("SANDY BRIDGE", tmp117);
+    Map<Integer,MyEnum> tmp118 = new HashMap<Integer,MyEnum>();
+    tmp118.put(32, MyEnum.MyValue2);
+    tmp118.put(144, MyEnum.MyValue2);
 
-    this.enumMapDFset.put("IVY BRIDGE", tmp105);
-    Map<Integer,MyEnum> tmp106 = new HashMap<Integer,MyEnum>();
-    tmp106.put(32, MyEnum.MyValue3);
-    tmp106.put(128, MyEnum.MyValue3);
-    tmp106.put(256, MyEnum.MyValue3);
+    this.enumMapDFset.put("IVY BRIDGE", tmp118);
+    Map<Integer,MyEnum> tmp119 = new HashMap<Integer,MyEnum>();
+    tmp119.put(32, MyEnum.MyValue3);
+    tmp119.put(128, MyEnum.MyValue3);
+    tmp119.put(256, MyEnum.MyValue3);
 
-    this.enumMapDFset.put("HASWELL", tmp106);
+    this.enumMapDFset.put("HASWELL", tmp119);
 
   }
 
@@ -1552,17 +1552,17 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
         case FIELD3:
           if (__field.type == TType.MAP) {
             {
-              TMap _map107 = iprot.readMapBegin();
-              this.field3 = new HashMap<Integer,String>(Math.max(0, 2*_map107.size));
-              for (int _i108 = 0; 
-                   (_map107.size < 0) ? iprot.peekMap() : (_i108 < _map107.size); 
-                   ++_i108)
+              TMap _map120 = iprot.readMapBegin();
+              this.field3 = new HashMap<Integer,String>(Math.max(0, 2*_map120.size));
+              for (int _i121 = 0; 
+                   (_map120.size < 0) ? iprot.peekMap() : (_i121 < _map120.size); 
+                   ++_i121)
               {
-                int _key109;
-                String _val110;
-                _key109 = iprot.readI32();
-                _val110 = iprot.readString();
-                this.field3.put(_key109, _val110);
+                int _key122;
+                String _val123;
+                _key122 = iprot.readI32();
+                _val123 = iprot.readString();
+                this.field3.put(_key122, _val123);
               }
               iprot.readMapEnd();
             }
@@ -1573,15 +1573,15 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
         case MYLIST:
           if (__field.type == TType.LIST) {
             {
-              TList _list111 = iprot.readListBegin();
-              this.myList = new ArrayList<MyEnum>(Math.max(0, _list111.size));
-              for (int _i112 = 0; 
-                   (_list111.size < 0) ? iprot.peekList() : (_i112 < _list111.size); 
-                   ++_i112)
+              TList _list124 = iprot.readListBegin();
+              this.myList = new ArrayList<MyEnum>(Math.max(0, _list124.size));
+              for (int _i125 = 0; 
+                   (_list124.size < 0) ? iprot.peekList() : (_i125 < _list124.size); 
+                   ++_i125)
               {
-                MyEnum _elem113;
-                _elem113 = MyEnum.findByValue(iprot.readI32());
-                this.myList.add(_elem113);
+                MyEnum _elem126;
+                _elem126 = MyEnum.findByValue(iprot.readI32());
+                this.myList.add(_elem126);
               }
               iprot.readListEnd();
             }
@@ -1592,15 +1592,15 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
         case MYSET:
           if (__field.type == TType.SET) {
             {
-              TSet _set114 = iprot.readSetBegin();
-              this.mySet = new HashSet<String>(Math.max(0, 2*_set114.size));
-              for (int _i115 = 0; 
-                   (_set114.size < 0) ? iprot.peekSet() : (_i115 < _set114.size); 
-                   ++_i115)
+              TSet _set127 = iprot.readSetBegin();
+              this.mySet = new HashSet<String>(Math.max(0, 2*_set127.size));
+              for (int _i128 = 0; 
+                   (_set127.size < 0) ? iprot.peekSet() : (_i128 < _set127.size); 
+                   ++_i128)
               {
-                String _elem116;
-                _elem116 = iprot.readString();
-                this.mySet.add(_elem116);
+                String _elem129;
+                _elem129 = iprot.readString();
+                this.mySet.add(_elem129);
               }
               iprot.readSetEnd();
             }
@@ -1619,16 +1619,16 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
         case LISTSTRUCTDFSET:
           if (__field.type == TType.LIST) {
             {
-              TList _list117 = iprot.readListBegin();
-              this.listStructDFset = new ArrayList<SimpleStruct>(Math.max(0, _list117.size));
-              for (int _i118 = 0; 
-                   (_list117.size < 0) ? iprot.peekList() : (_i118 < _list117.size); 
-                   ++_i118)
+              TList _list130 = iprot.readListBegin();
+              this.listStructDFset = new ArrayList<SimpleStruct>(Math.max(0, _list130.size));
+              for (int _i131 = 0; 
+                   (_list130.size < 0) ? iprot.peekList() : (_i131 < _list130.size); 
+                   ++_i131)
               {
-                SimpleStruct _elem119;
-                _elem119 = new SimpleStruct();
-                _elem119.read(iprot);
-                this.listStructDFset.add(_elem119);
+                SimpleStruct _elem132;
+                _elem132 = new SimpleStruct();
+                _elem132.read(iprot);
+                this.listStructDFset.add(_elem132);
               }
               iprot.readListEnd();
             }
@@ -1647,16 +1647,16 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
         case LISTUNIONDFSET:
           if (__field.type == TType.LIST) {
             {
-              TList _list120 = iprot.readListBegin();
-              this.listUnionDFset = new ArrayList<MyUnion>(Math.max(0, _list120.size));
-              for (int _i121 = 0; 
-                   (_list120.size < 0) ? iprot.peekList() : (_i121 < _list120.size); 
-                   ++_i121)
+              TList _list133 = iprot.readListBegin();
+              this.listUnionDFset = new ArrayList<MyUnion>(Math.max(0, _list133.size));
+              for (int _i134 = 0; 
+                   (_list133.size < 0) ? iprot.peekList() : (_i134 < _list133.size); 
+                   ++_i134)
               {
-                MyUnion _elem122;
-                _elem122 = new MyUnion();
-                _elem122.read(iprot);
-                this.listUnionDFset.add(_elem122);
+                MyUnion _elem135;
+                _elem135 = new MyUnion();
+                _elem135.read(iprot);
+                this.listUnionDFset.add(_elem135);
               }
               iprot.readListEnd();
             }
@@ -1667,30 +1667,30 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
         case MAPNESTLISTSTRUCTDFSET:
           if (__field.type == TType.MAP) {
             {
-              TMap _map123 = iprot.readMapBegin();
-              this.mapNestlistStructDfSet = new HashMap<Integer,List<SimpleStruct>>(Math.max(0, 2*_map123.size));
-              for (int _i124 = 0; 
-                   (_map123.size < 0) ? iprot.peekMap() : (_i124 < _map123.size); 
-                   ++_i124)
+              TMap _map136 = iprot.readMapBegin();
+              this.mapNestlistStructDfSet = new HashMap<Integer,List<SimpleStruct>>(Math.max(0, 2*_map136.size));
+              for (int _i137 = 0; 
+                   (_map136.size < 0) ? iprot.peekMap() : (_i137 < _map136.size); 
+                   ++_i137)
               {
-                int _key125;
-                List<SimpleStruct> _val126;
-                _key125 = iprot.readI32();
+                int _key138;
+                List<SimpleStruct> _val139;
+                _key138 = iprot.readI32();
                 {
-                  TList _list127 = iprot.readListBegin();
-                  _val126 = new ArrayList<SimpleStruct>(Math.max(0, _list127.size));
-                  for (int _i128 = 0; 
-                       (_list127.size < 0) ? iprot.peekList() : (_i128 < _list127.size); 
-                       ++_i128)
+                  TList _list140 = iprot.readListBegin();
+                  _val139 = new ArrayList<SimpleStruct>(Math.max(0, _list140.size));
+                  for (int _i141 = 0; 
+                       (_list140.size < 0) ? iprot.peekList() : (_i141 < _list140.size); 
+                       ++_i141)
                   {
-                    SimpleStruct _elem129;
-                    _elem129 = new SimpleStruct();
-                    _elem129.read(iprot);
-                    _val126.add(_elem129);
+                    SimpleStruct _elem142;
+                    _elem142 = new SimpleStruct();
+                    _elem142.read(iprot);
+                    _val139.add(_elem142);
                   }
                   iprot.readListEnd();
                 }
-                this.mapNestlistStructDfSet.put(_key125, _val126);
+                this.mapNestlistStructDfSet.put(_key138, _val139);
               }
               iprot.readMapEnd();
             }
@@ -1701,17 +1701,17 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
         case MAPJAVATYPEDFSET:
           if (__field.type == TType.MAP) {
             {
-              TMap _map130 = iprot.readMapBegin();
-              this.mapJavaTypeDFset = new HashMap<Long,String>(Math.max(0, 2*_map130.size));
-              for (int _i131 = 0; 
-                   (_map130.size < 0) ? iprot.peekMap() : (_i131 < _map130.size); 
-                   ++_i131)
+              TMap _map143 = iprot.readMapBegin();
+              this.mapJavaTypeDFset = new HashMap<Long,String>(Math.max(0, 2*_map143.size));
+              for (int _i144 = 0; 
+                   (_map143.size < 0) ? iprot.peekMap() : (_i144 < _map143.size); 
+                   ++_i144)
               {
-                long _key132;
-                String _val133;
-                _key132 = iprot.readI64();
-                _val133 = iprot.readString();
-                this.mapJavaTypeDFset.put(_key132, _val133);
+                long _key145;
+                String _val146;
+                _key145 = iprot.readI64();
+                _val146 = iprot.readString();
+                this.mapJavaTypeDFset.put(_key145, _val146);
               }
               iprot.readMapEnd();
             }
@@ -1722,17 +1722,17 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
         case EMPTYMAP:
           if (__field.type == TType.MAP) {
             {
-              TMap _map134 = iprot.readMapBegin();
-              this.emptyMap = new HashMap<Long,Integer>(Math.max(0, 2*_map134.size));
-              for (int _i135 = 0; 
-                   (_map134.size < 0) ? iprot.peekMap() : (_i135 < _map134.size); 
-                   ++_i135)
+              TMap _map147 = iprot.readMapBegin();
+              this.emptyMap = new HashMap<Long,Integer>(Math.max(0, 2*_map147.size));
+              for (int _i148 = 0; 
+                   (_map147.size < 0) ? iprot.peekMap() : (_i148 < _map147.size); 
+                   ++_i148)
               {
-                long _key136;
-                int _val137;
-                _key136 = iprot.readI64();
-                _val137 = iprot.readI32();
-                this.emptyMap.put(_key136, _val137);
+                long _key149;
+                int _val150;
+                _key149 = iprot.readI64();
+                _val150 = iprot.readI32();
+                this.emptyMap.put(_key149, _val150);
               }
               iprot.readMapEnd();
             }
@@ -1743,31 +1743,31 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
         case ENUMMAPDFSET:
           if (__field.type == TType.MAP) {
             {
-              TMap _map138 = iprot.readMapBegin();
-              this.enumMapDFset = new HashMap<String,Map<Integer,MyEnum>>(Math.max(0, 2*_map138.size));
-              for (int _i139 = 0; 
-                   (_map138.size < 0) ? iprot.peekMap() : (_i139 < _map138.size); 
-                   ++_i139)
+              TMap _map151 = iprot.readMapBegin();
+              this.enumMapDFset = new HashMap<String,Map<Integer,MyEnum>>(Math.max(0, 2*_map151.size));
+              for (int _i152 = 0; 
+                   (_map151.size < 0) ? iprot.peekMap() : (_i152 < _map151.size); 
+                   ++_i152)
               {
-                String _key140;
-                Map<Integer,MyEnum> _val141;
-                _key140 = iprot.readString();
+                String _key153;
+                Map<Integer,MyEnum> _val154;
+                _key153 = iprot.readString();
                 {
-                  TMap _map142 = iprot.readMapBegin();
-                  _val141 = new HashMap<Integer,MyEnum>(Math.max(0, 2*_map142.size));
-                  for (int _i143 = 0; 
-                       (_map142.size < 0) ? iprot.peekMap() : (_i143 < _map142.size); 
-                       ++_i143)
+                  TMap _map155 = iprot.readMapBegin();
+                  _val154 = new HashMap<Integer,MyEnum>(Math.max(0, 2*_map155.size));
+                  for (int _i156 = 0; 
+                       (_map155.size < 0) ? iprot.peekMap() : (_i156 < _map155.size); 
+                       ++_i156)
                   {
-                    int _key144;
-                    MyEnum _val145;
-                    _key144 = iprot.readI32();
-                    _val145 = MyEnum.findByValue(iprot.readI32());
-                    _val141.put(_key144, _val145);
+                    int _key157;
+                    MyEnum _val158;
+                    _key157 = iprot.readI32();
+                    _val158 = MyEnum.findByValue(iprot.readI32());
+                    _val154.put(_key157, _val158);
                   }
                   iprot.readMapEnd();
                 }
-                this.enumMapDFset.put(_key140, _val141);
+                this.enumMapDFset.put(_key153, _val154);
               }
               iprot.readMapEnd();
             }
@@ -1833,9 +1833,9 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(FIELD3_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, this.field3.size()));
-        for (Map.Entry<Integer, String> _iter146 : this.field3.entrySet())        {
-          oprot.writeI32(_iter146.getKey());
-          oprot.writeString(_iter146.getValue());
+        for (Map.Entry<Integer, String> _iter159 : this.field3.entrySet())        {
+          oprot.writeI32(_iter159.getKey());
+          oprot.writeString(_iter159.getValue());
         }
         oprot.writeMapEnd();
       }
@@ -1845,8 +1845,8 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(MY_LIST_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.I32, this.myList.size()));
-        for (MyEnum _iter147 : this.myList)        {
-          oprot.writeI32(_iter147 == null ? 0 : _iter147.getValue());
+        for (MyEnum _iter160 : this.myList)        {
+          oprot.writeI32(_iter160 == null ? 0 : _iter160.getValue());
         }
         oprot.writeListEnd();
       }
@@ -1856,8 +1856,8 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(MY_SET_FIELD_DESC);
       {
         oprot.writeSetBegin(new TSet(TType.STRING, this.mySet.size()));
-        for (String _iter148 : this.mySet)        {
-          oprot.writeString(_iter148);
+        for (String _iter161 : this.mySet)        {
+          oprot.writeString(_iter161);
         }
         oprot.writeSetEnd();
       }
@@ -1872,8 +1872,8 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(LIST_STRUCT_DFSET_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.STRUCT, this.listStructDFset.size()));
-        for (SimpleStruct _iter149 : this.listStructDFset)        {
-          _iter149.write(oprot);
+        for (SimpleStruct _iter162 : this.listStructDFset)        {
+          _iter162.write(oprot);
         }
         oprot.writeListEnd();
       }
@@ -1888,8 +1888,8 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(LIST_UNION_DFSET_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.STRUCT, this.listUnionDFset.size()));
-        for (MyUnion _iter150 : this.listUnionDFset)        {
-          _iter150.write(oprot);
+        for (MyUnion _iter163 : this.listUnionDFset)        {
+          _iter163.write(oprot);
         }
         oprot.writeListEnd();
       }
@@ -1899,12 +1899,12 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(MAP_NESTLIST_STRUCT_DF_SET_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, this.mapNestlistStructDfSet.size()));
-        for (Map.Entry<Integer, List<SimpleStruct>> _iter151 : this.mapNestlistStructDfSet.entrySet())        {
-          oprot.writeI32(_iter151.getKey());
+        for (Map.Entry<Integer, List<SimpleStruct>> _iter164 : this.mapNestlistStructDfSet.entrySet())        {
+          oprot.writeI32(_iter164.getKey());
           {
-            oprot.writeListBegin(new TList(TType.STRUCT, _iter151.getValue().size()));
-            for (SimpleStruct _iter152 : _iter151.getValue())            {
-              _iter152.write(oprot);
+            oprot.writeListBegin(new TList(TType.STRUCT, _iter164.getValue().size()));
+            for (SimpleStruct _iter165 : _iter164.getValue())            {
+              _iter165.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -1917,9 +1917,9 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(MAP_JAVA_TYPE_DFSET_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, this.mapJavaTypeDFset.size()));
-        for (Map.Entry<Long, String> _iter153 : this.mapJavaTypeDFset.entrySet())        {
-          oprot.writeI64(_iter153.getKey());
-          oprot.writeString(_iter153.getValue());
+        for (Map.Entry<Long, String> _iter166 : this.mapJavaTypeDFset.entrySet())        {
+          oprot.writeI64(_iter166.getKey());
+          oprot.writeString(_iter166.getValue());
         }
         oprot.writeMapEnd();
       }
@@ -1929,9 +1929,9 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(EMPTY_MAP_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I64, TType.I32, this.emptyMap.size()));
-        for (Map.Entry<Long, Integer> _iter154 : this.emptyMap.entrySet())        {
-          oprot.writeI64(_iter154.getKey());
-          oprot.writeI32(_iter154.getValue());
+        for (Map.Entry<Long, Integer> _iter167 : this.emptyMap.entrySet())        {
+          oprot.writeI64(_iter167.getKey());
+          oprot.writeI32(_iter167.getValue());
         }
         oprot.writeMapEnd();
       }
@@ -1941,13 +1941,13 @@ public class defaultStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(ENUM_MAP_DFSET_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.STRING, TType.MAP, this.enumMapDFset.size()));
-        for (Map.Entry<String, Map<Integer,MyEnum>> _iter155 : this.enumMapDFset.entrySet())        {
-          oprot.writeString(_iter155.getKey());
+        for (Map.Entry<String, Map<Integer,MyEnum>> _iter168 : this.enumMapDFset.entrySet())        {
+          oprot.writeString(_iter168.getKey());
           {
-            oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter155.getValue().size()));
-            for (Map.Entry<Integer, MyEnum> _iter156 : _iter155.getValue().entrySet())            {
-              oprot.writeI32(_iter156.getKey());
-              oprot.writeI32(_iter156.getValue() == null ? 0 : _iter156.getValue().getValue());
+            oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter168.getValue().size()));
+            for (Map.Entry<Integer, MyEnum> _iter169 : _iter168.getValue().entrySet())            {
+              oprot.writeI32(_iter169.getKey());
+              oprot.writeI32(_iter169.getValue() == null ? 0 : _iter169.getValue().getValue());
             }
             oprot.writeMapEnd();
           }

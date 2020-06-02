@@ -71,6 +71,7 @@ struct MyStruct {
   25: set<i64> sLong,
   26: set<string> sString,
   27: set<byte> sByte,
+  28: map<list<i32>, list<i32>> mListList,
 }
 
 struct SimpleStruct {

@@ -51,6 +51,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   private static final TField S_LONG_FIELD_DESC = new TField("sLong", TType.SET, (short)25);
   private static final TField S_STRING_FIELD_DESC = new TField("sString", TType.SET, (short)26);
   private static final TField S_BYTE_FIELD_DESC = new TField("sByte", TType.SET, (short)27);
+  private static final TField M_LIST_LIST_FIELD_DESC = new TField("mListList", TType.MAP, (short)28);
 
   public long MyIntField;
   public String MyStringField;
@@ -83,6 +84,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   public Set<Long> sLong;
   public Set<String> sString;
   public Set<Byte> sByte;
+  public Map<List<Integer>,List<Integer>> mListList;
   public static final int MYINTFIELD = 1;
   public static final int MYSTRINGFIELD = 2;
   public static final int MYDATAFIELD = 3;
@@ -110,6 +112,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   public static final int SLONG = 25;
   public static final int SSTRING = 26;
   public static final int SBYTE = 27;
+  public static final int MLISTLIST = 28;
 
   // isset id assignments
   private static final int __MYINTFIELD_ISSET_ID = 0;
@@ -202,6 +205,12 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     tmpMetaDataMap.put(SBYTE, new FieldMetaData("sByte", TFieldRequirementType.DEFAULT, 
         new SetMetaData(TType.SET, 
             new FieldValueMetaData(TType.BYTE))));
+    tmpMetaDataMap.put(MLISTLIST, new FieldMetaData("mListList", TFieldRequirementType.DEFAULT, 
+        new MapMetaData(TType.MAP, 
+            new ListMetaData(TType.LIST, 
+                new FieldValueMetaData(TType.I32)), 
+            new ListMetaData(TType.LIST, 
+                new FieldValueMetaData(TType.I32)))));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -239,7 +248,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       Set<MyStruct> sMyStruct,
       Set<Long> sLong,
       Set<String> sString,
-      Set<Byte> sByte) {
+      Set<Byte> sByte,
+      Map<List<Integer>,List<Integer>> mListList) {
     this();
     this.MyIntField = MyIntField;
     setMyIntFieldIsSet(true);
@@ -274,6 +284,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     this.sLong = sLong;
     this.sString = sString;
     this.sByte = sByte;
+    this.mListList = mListList;
   }
 
   public static class Builder {
@@ -304,6 +315,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     private Set<Long> sLong;
     private Set<String> sString;
     private Set<Byte> sByte;
+    private Map<List<Integer>,List<Integer>> mListList;
 
     BitSet __optional_isset = new BitSet(6);
 
@@ -451,6 +463,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       return this;
     }
 
+    public Builder setMListList(final Map<List<Integer>,List<Integer>> mListList) {
+      this.mListList = mListList;
+      return this;
+    }
+
     public MyStruct build() {
       MyStruct result = new MyStruct();
       if (__optional_isset.get(__MYINTFIELD_ISSET_ID)) {
@@ -492,6 +509,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       result.setSLong(this.sLong);
       result.setSString(this.sString);
       result.setSByte(this.sByte);
+      result.setMListList(this.mListList);
       return result;
     }
   }
@@ -574,6 +592,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     }
     if (other.isSetSByte()) {
       this.sByte = TBaseHelper.deepCopy(other.sByte);
+    }
+    if (other.isSetMListList()) {
+      this.mListList = TBaseHelper.deepCopy(other.mListList);
     }
   }
 
@@ -1231,6 +1252,30 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     }
   }
 
+  public Map<List<Integer>,List<Integer>> getMListList() {
+    return this.mListList;
+  }
+
+  public MyStruct setMListList(Map<List<Integer>,List<Integer>> mListList) {
+    this.mListList = mListList;
+    return this;
+  }
+
+  public void unsetMListList() {
+    this.mListList = null;
+  }
+
+  // Returns true if field mListList is set (has been assigned a value) and false otherwise
+  public boolean isSetMListList() {
+    return this.mListList != null;
+  }
+
+  public void setMListListIsSet(boolean __value) {
+    if (!__value) {
+      this.mListList = null;
+    }
+  }
+
   @SuppressWarnings("unchecked")
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
@@ -1450,6 +1495,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       }
       break;
 
+    case MLISTLIST:
+      if (__value == null) {
+        unsetMListList();
+      } else {
+        setMListList((Map<List<Integer>,List<Integer>>)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -1538,6 +1591,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     case SBYTE:
       return getSByte();
 
+    case MLISTLIST:
+      return getMListList();
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -1607,12 +1663,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
 
     if (!TBaseHelper.equalsNobinary(this.isSetSByte(), that.isSetSByte(), this.sByte, that.sByte)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetMListList(), that.isSetMListList(), this.mListList, that.mListList)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {MyIntField, MyStringField, MyDataField, myEnum, MyBoolField, MyByteField, MyShortField, MyLongField, MyDoubleField, lDouble, lShort, lInteger, lLong, lString, lBool, lByte, mShortString, mIntegerString, mStringMyStruct, mStringBool, mIntegerInteger, mIntegerBool, sShort, sMyStruct, sLong, sString, sByte});
+    return Arrays.deepHashCode(new Object[] {MyIntField, MyStringField, MyDataField, myEnum, MyBoolField, MyByteField, MyShortField, MyLongField, MyDoubleField, lDouble, lShort, lInteger, lLong, lString, lBool, lByte, mShortString, mIntegerString, mStringMyStruct, mStringBool, mIntegerInteger, mIntegerBool, sShort, sMyStruct, sLong, sString, sByte, mListList});
   }
 
   public void read(TProtocol iprot) throws TException {
@@ -2052,6 +2110,51 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case MLISTLIST:
+          if (__field.type == TType.MAP) {
+            {
+              TMap _map73 = iprot.readMapBegin();
+              this.mListList = new HashMap<List<Integer>,List<Integer>>(Math.max(0, 2*_map73.size));
+              for (int _i74 = 0; 
+                   (_map73.size < 0) ? iprot.peekMap() : (_i74 < _map73.size); 
+                   ++_i74)
+              {
+                List<Integer> _key75;
+                List<Integer> _val76;
+                {
+                  TList _list77 = iprot.readListBegin();
+                  _key75 = new ArrayList<Integer>(Math.max(0, _list77.size));
+                  for (int _i78 = 0; 
+                       (_list77.size < 0) ? iprot.peekList() : (_i78 < _list77.size); 
+                       ++_i78)
+                  {
+                    int _elem79;
+                    _elem79 = iprot.readI32();
+                    _key75.add(_elem79);
+                  }
+                  iprot.readListEnd();
+                }
+                {
+                  TList _list80 = iprot.readListBegin();
+                  _val76 = new ArrayList<Integer>(Math.max(0, _list80.size));
+                  for (int _i81 = 0; 
+                       (_list80.size < 0) ? iprot.peekList() : (_i81 < _list80.size); 
+                       ++_i81)
+                  {
+                    int _elem82;
+                    _elem82 = iprot.readI32();
+                    _val76.add(_elem82);
+                  }
+                  iprot.readListEnd();
+                }
+                this.mListList.put(_key75, _val76);
+              }
+              iprot.readMapEnd();
+            }
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -2106,8 +2209,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(L_DOUBLE_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.DOUBLE, this.lDouble.size()));
-        for (double _iter73 : this.lDouble)        {
-          oprot.writeDouble(_iter73);
+        for (double _iter83 : this.lDouble)        {
+          oprot.writeDouble(_iter83);
         }
         oprot.writeListEnd();
       }
@@ -2117,8 +2220,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(L_SHORT_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.I16, this.lShort.size()));
-        for (short _iter74 : this.lShort)        {
-          oprot.writeI16(_iter74);
+        for (short _iter84 : this.lShort)        {
+          oprot.writeI16(_iter84);
         }
         oprot.writeListEnd();
       }
@@ -2128,8 +2231,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(L_INTEGER_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.I32, this.lInteger.size()));
-        for (int _iter75 : this.lInteger)        {
-          oprot.writeI32(_iter75);
+        for (int _iter85 : this.lInteger)        {
+          oprot.writeI32(_iter85);
         }
         oprot.writeListEnd();
       }
@@ -2139,8 +2242,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(L_LONG_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.I64, this.lLong.size()));
-        for (long _iter76 : this.lLong)        {
-          oprot.writeI64(_iter76);
+        for (long _iter86 : this.lLong)        {
+          oprot.writeI64(_iter86);
         }
         oprot.writeListEnd();
       }
@@ -2150,8 +2253,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(L_STRING_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.STRING, this.lString.size()));
-        for (String _iter77 : this.lString)        {
-          oprot.writeString(_iter77);
+        for (String _iter87 : this.lString)        {
+          oprot.writeString(_iter87);
         }
         oprot.writeListEnd();
       }
@@ -2161,8 +2264,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(L_BOOL_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.BOOL, this.lBool.size()));
-        for (boolean _iter78 : this.lBool)        {
-          oprot.writeBool(_iter78);
+        for (boolean _iter88 : this.lBool)        {
+          oprot.writeBool(_iter88);
         }
         oprot.writeListEnd();
       }
@@ -2172,8 +2275,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(L_BYTE_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.BYTE, this.lByte.size()));
-        for (byte _iter79 : this.lByte)        {
-          oprot.writeByte(_iter79);
+        for (byte _iter89 : this.lByte)        {
+          oprot.writeByte(_iter89);
         }
         oprot.writeListEnd();
       }
@@ -2183,9 +2286,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(M_SHORT_STRING_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, this.mShortString.size()));
-        for (Map.Entry<Short, String> _iter80 : this.mShortString.entrySet())        {
-          oprot.writeI16(_iter80.getKey());
-          oprot.writeString(_iter80.getValue());
+        for (Map.Entry<Short, String> _iter90 : this.mShortString.entrySet())        {
+          oprot.writeI16(_iter90.getKey());
+          oprot.writeString(_iter90.getValue());
         }
         oprot.writeMapEnd();
       }
@@ -2195,9 +2298,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(M_INTEGER_STRING_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, this.mIntegerString.size()));
-        for (Map.Entry<Integer, String> _iter81 : this.mIntegerString.entrySet())        {
-          oprot.writeI32(_iter81.getKey());
-          oprot.writeString(_iter81.getValue());
+        for (Map.Entry<Integer, String> _iter91 : this.mIntegerString.entrySet())        {
+          oprot.writeI32(_iter91.getKey());
+          oprot.writeString(_iter91.getValue());
         }
         oprot.writeMapEnd();
       }
@@ -2207,9 +2310,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(M_STRING_MY_STRUCT_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, this.mStringMyStruct.size()));
-        for (Map.Entry<String, MyStruct> _iter82 : this.mStringMyStruct.entrySet())        {
-          oprot.writeString(_iter82.getKey());
-          _iter82.getValue().write(oprot);
+        for (Map.Entry<String, MyStruct> _iter92 : this.mStringMyStruct.entrySet())        {
+          oprot.writeString(_iter92.getKey());
+          _iter92.getValue().write(oprot);
         }
         oprot.writeMapEnd();
       }
@@ -2219,9 +2322,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(M_STRING_BOOL_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.STRING, TType.BOOL, this.mStringBool.size()));
-        for (Map.Entry<String, Boolean> _iter83 : this.mStringBool.entrySet())        {
-          oprot.writeString(_iter83.getKey());
-          oprot.writeBool(_iter83.getValue());
+        for (Map.Entry<String, Boolean> _iter93 : this.mStringBool.entrySet())        {
+          oprot.writeString(_iter93.getKey());
+          oprot.writeBool(_iter93.getValue());
         }
         oprot.writeMapEnd();
       }
@@ -2231,9 +2334,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(M_INTEGER_INTEGER_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I32, TType.I32, this.mIntegerInteger.size()));
-        for (Map.Entry<Integer, Integer> _iter84 : this.mIntegerInteger.entrySet())        {
-          oprot.writeI32(_iter84.getKey());
-          oprot.writeI32(_iter84.getValue());
+        for (Map.Entry<Integer, Integer> _iter94 : this.mIntegerInteger.entrySet())        {
+          oprot.writeI32(_iter94.getKey());
+          oprot.writeI32(_iter94.getValue());
         }
         oprot.writeMapEnd();
       }
@@ -2243,9 +2346,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(M_INTEGER_BOOL_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I32, TType.BOOL, this.mIntegerBool.size()));
-        for (Map.Entry<Integer, Boolean> _iter85 : this.mIntegerBool.entrySet())        {
-          oprot.writeI32(_iter85.getKey());
-          oprot.writeBool(_iter85.getValue());
+        for (Map.Entry<Integer, Boolean> _iter95 : this.mIntegerBool.entrySet())        {
+          oprot.writeI32(_iter95.getKey());
+          oprot.writeBool(_iter95.getValue());
         }
         oprot.writeMapEnd();
       }
@@ -2255,8 +2358,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(S_SHORT_FIELD_DESC);
       {
         oprot.writeSetBegin(new TSet(TType.I16, this.sShort.size()));
-        for (short _iter86 : this.sShort)        {
-          oprot.writeI16(_iter86);
+        for (short _iter96 : this.sShort)        {
+          oprot.writeI16(_iter96);
         }
         oprot.writeSetEnd();
       }
@@ -2266,8 +2369,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(S_MY_STRUCT_FIELD_DESC);
       {
         oprot.writeSetBegin(new TSet(TType.STRUCT, this.sMyStruct.size()));
-        for (MyStruct _iter87 : this.sMyStruct)        {
-          _iter87.write(oprot);
+        for (MyStruct _iter97 : this.sMyStruct)        {
+          _iter97.write(oprot);
         }
         oprot.writeSetEnd();
       }
@@ -2277,8 +2380,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(S_LONG_FIELD_DESC);
       {
         oprot.writeSetBegin(new TSet(TType.I64, this.sLong.size()));
-        for (long _iter88 : this.sLong)        {
-          oprot.writeI64(_iter88);
+        for (long _iter98 : this.sLong)        {
+          oprot.writeI64(_iter98);
         }
         oprot.writeSetEnd();
       }
@@ -2288,8 +2391,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(S_STRING_FIELD_DESC);
       {
         oprot.writeSetBegin(new TSet(TType.STRING, this.sString.size()));
-        for (String _iter89 : this.sString)        {
-          oprot.writeString(_iter89);
+        for (String _iter99 : this.sString)        {
+          oprot.writeString(_iter99);
         }
         oprot.writeSetEnd();
       }
@@ -2299,10 +2402,34 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       oprot.writeFieldBegin(S_BYTE_FIELD_DESC);
       {
         oprot.writeSetBegin(new TSet(TType.BYTE, this.sByte.size()));
-        for (byte _iter90 : this.sByte)        {
-          oprot.writeByte(_iter90);
+        for (byte _iter100 : this.sByte)        {
+          oprot.writeByte(_iter100);
         }
         oprot.writeSetEnd();
+      }
+      oprot.writeFieldEnd();
+    }
+    if (this.mListList != null) {
+      oprot.writeFieldBegin(M_LIST_LIST_FIELD_DESC);
+      {
+        oprot.writeMapBegin(new TMap(TType.LIST, TType.LIST, this.mListList.size()));
+        for (Map.Entry<List<Integer>, List<Integer>> _iter101 : this.mListList.entrySet())        {
+          {
+            oprot.writeListBegin(new TList(TType.I32, _iter101.getKey().size()));
+            for (int _iter102 : _iter101.getKey())            {
+              oprot.writeI32(_iter102);
+            }
+            oprot.writeListEnd();
+          }
+          {
+            oprot.writeListBegin(new TList(TType.I32, _iter101.getValue().size()));
+            for (int _iter103 : _iter101.getValue())            {
+              oprot.writeI32(_iter103);
+            }
+            oprot.writeListEnd();
+          }
+        }
+        oprot.writeMapEnd();
       }
       oprot.writeFieldEnd();
     }
@@ -2604,6 +2731,17 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       sb.append("null");
     } else {
       sb.append(TBaseHelper.toString(this.getSByte(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("mListList");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getMListList() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getMListList(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

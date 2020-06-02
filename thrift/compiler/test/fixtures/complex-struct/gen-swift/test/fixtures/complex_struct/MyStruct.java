@@ -54,7 +54,8 @@ public final class MyStruct {
         @ThriftField(value=24, name="sMyStruct", requiredness=Requiredness.NONE) final Set<test.fixtures.complex_struct.MyStruct> sMyStruct,
         @ThriftField(value=25, name="sLong", requiredness=Requiredness.NONE) final Set<Long> sLong,
         @ThriftField(value=26, name="sString", requiredness=Requiredness.NONE) final Set<String> sString,
-        @ThriftField(value=27, name="sByte", requiredness=Requiredness.NONE) final Set<Byte> sByte
+        @ThriftField(value=27, name="sByte", requiredness=Requiredness.NONE) final Set<Byte> sByte,
+        @ThriftField(value=28, name="mListList", requiredness=Requiredness.NONE) final Map<List<Integer>, List<Integer>> mListList
     ) {
         this.myIntField = myIntField;
         this.myStringField = myStringField;
@@ -83,6 +84,7 @@ public final class MyStruct {
         this.sLong = sLong;
         this.sString = sString;
         this.sByte = sByte;
+        this.mListList = mListList;
     }
     
     @ThriftConstructor
@@ -114,6 +116,7 @@ public final class MyStruct {
       this.sLong = null;
       this.sString = null;
       this.sByte = null;
+      this.mListList = null;
     }
     
     public static class Builder {
@@ -144,6 +147,7 @@ public final class MyStruct {
         private Set<Long> sLong = null;
         private Set<String> sString = null;
         private Set<Byte> sByte = null;
+        private Map<List<Integer>, List<Integer>> mListList = null;
     
         @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
         public Builder setMyIntField(long myIntField) {
@@ -361,6 +365,14 @@ public final class MyStruct {
         
         public Set<Byte> getSByte() { return sByte; }
     
+            @ThriftField(value=28, name="mListList", requiredness=Requiredness.NONE)
+        public Builder setMListList(Map<List<Integer>, List<Integer>> mListList) {
+            this.mListList = mListList;
+            return this;
+        }
+        
+        public Map<List<Integer>, List<Integer>> getMListList() { return mListList; }
+    
         public Builder() { }
         public Builder(MyStruct other) {
             this.myIntField = other.myIntField;
@@ -390,6 +402,7 @@ public final class MyStruct {
             this.sLong = other.sLong;
             this.sString = other.sString;
             this.sByte = other.sByte;
+            this.mListList = other.mListList;
         }
     
         @ThriftConstructor
@@ -421,7 +434,8 @@ public final class MyStruct {
                 this.sMyStruct,
                 this.sLong,
                 this.sString,
-                this.sByte
+                this.sByte,
+                this.mListList
             );
         }
     }
@@ -508,6 +522,9 @@ public final class MyStruct {
     private final Set<Byte> sByte;
     public static final int _SBYTE = 27;
     private static final TField S_BYTE_FIELD_DESC = new TField("sByte", TType.SET, (short)27);
+    private final Map<List<Integer>, List<Integer>> mListList;
+    public static final int _MLISTLIST = 28;
+    private static final TField M_LIST_LIST_FIELD_DESC = new TField("mListList", TType.MAP, (short)28);
 
     
     @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
@@ -590,6 +607,9 @@ public final class MyStruct {
         
     @ThriftField(value=27, name="sByte", requiredness=Requiredness.NONE)
     public Set<Byte> getSByte() { return sByte; }
+        
+    @ThriftField(value=28, name="mListList", requiredness=Requiredness.NONE)
+    public Map<List<Integer>, List<Integer>> getMListList() { return mListList; }
     
     @Override
     public String toString() {
@@ -621,6 +641,7 @@ public final class MyStruct {
         helper.add("sLong", sLong);
         helper.add("sString", sString);
         helper.add("sByte", sByte);
+        helper.add("mListList", mListList);
         return helper.toString();
     }
     
@@ -663,6 +684,7 @@ public final class MyStruct {
             Objects.equals(sLong, other.sLong) &&
             Objects.equals(sString, other.sString) &&
             Objects.equals(sByte, other.sByte) &&
+            Objects.equals(mListList, other.mListList) &&
             true;
     }
     
@@ -695,7 +717,8 @@ public final class MyStruct {
             sMyStruct,
             sLong,
             sString,
-            sByte
+            sByte,
+            mListList
         });
     }
     
@@ -1082,6 +1105,42 @@ public final class MyStruct {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _MLISTLIST:
+          if (__field.type == TType.MAP) {
+            Map<List<Integer>, List<Integer>> mListList;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<List<Integer>, List<Integer>> _iter1 = new HashMap<List<Integer>, List<Integer>>(Math.max(0, 2*_map1.size));
+            mListList = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                List<Integer> _key1;
+                TList _list2 = oprot.readListBegin();
+            List<Integer> _iter2 = new ArrayList<Integer>(Math.max(0, 2*_list2.size));
+            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
+                _iter2.add(oprot.readI32());
+            }
+            _key1 = _iter2;
+            oprot.readListEnd();
+                                List<Integer> _val1;
+                TList _list2 = oprot.readListBegin();
+            List<Integer> _iter2 = new ArrayList<Integer>(Math.max(0, 2*_list2.size));
+            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
+                _iter2.add(oprot.readI32());
+            }
+            _val1 = _iter2;
+            oprot.readListEnd();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMListList(mListList);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -1309,6 +1368,26 @@ public final class MyStruct {
           oprot.writeByte(_iter1);
         }
         oprot.writeSetEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.mListList != null) {
+        oprot.writeFieldBegin(M_LIST_LIST_FIELD_DESC);
+        Map<List<Integer>, List<Integer>> _iter0 = this.mListList;
+        oprot.writeMapBegin(new TMap(TType.LIST, TType.LIST, _iter0.size()));
+        for (Map.Entry<List<Integer>, List<Integer>> _iter1 : _iter0.entrySet()) {
+          oprot.writeListBegin(new TList(TType.I32, _iter1.getKey().size()));
+        for (int _iter2 : _iter1.getKey()) {
+          oprot.writeI32(_iter2);
+        }
+        oprot.writeListEnd();
+
+          oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
+        for (int _iter2 : _iter1.getValue()) {
+          oprot.writeI32(_iter2);
+        }
+        oprot.writeListEnd();
+        }
+        oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
