@@ -25,8 +25,6 @@ DECLARE_string(transport);
 namespace apache {
 namespace thrift {
 
-using proxygen::RequestHandlerChain;
-
 std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
     ThriftServer* server) {
   auto h2_options = std::make_unique<proxygen::HTTPServerOptions>();
