@@ -86,7 +86,15 @@ StreamChannelStatus RocketStreamServerCallback::onStreamComplete() {
 }
 StreamChannelStatus RocketStreamServerCallback::onStreamError(
     folly::exception_wrapper ew) {
-  clientCallback_->onStreamError(std::move(ew));
+  ew.handle(
+      [&](RocketException& ex) {
+        clientCallback_->onStreamError(
+            thrift::detail::EncodedError(ex.moveErrorData()));
+      },
+      [&](...) {
+        clientCallback_->onStreamError(std::move(ew));
+        return false;
+      });
   return StreamChannelStatus::Complete;
 }
 void RocketStreamServerCallback::onStreamHeaders(HeadersPayload&& payload) {
@@ -172,17 +180,19 @@ void RocketChannelServerCallback::onSinkNext(StreamPayload&& payload) {
 }
 void RocketChannelServerCallback::onSinkError(folly::exception_wrapper ew) {
   DCHECK(state_ == State::BothOpen || state_ == State::SinkOpen);
-  if (!ew.with_exception<rocket::RocketException>([this](auto&& rex) {
+  ew.handle(
+      [&](rocket::RocketException& rex) {
         client_.sendError(
             streamId_,
             rocket::RocketException(
                 rocket::ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
-      })) {
-    client_.sendError(
-        streamId_,
-        rocket::RocketException(
-            rocket::ErrorCode::APPLICATION_ERROR, ew.what()));
-  }
+      },
+      [&](...) {
+        client_.sendError(
+            streamId_,
+            rocket::RocketException(
+                rocket::ErrorCode::APPLICATION_ERROR, ew.what()));
+      });
 }
 void RocketChannelServerCallback::onSinkComplete() {
   DCHECK(state_ == State::BothOpen || state_ == State::SinkOpen);
@@ -315,17 +325,19 @@ bool RocketSinkServerCallback::onSinkNext(StreamPayload&& payload) {
 }
 void RocketSinkServerCallback::onSinkError(folly::exception_wrapper ew) {
   DCHECK(state_ == State::BothOpen);
-  if (!ew.with_exception<rocket::RocketException>([this](auto&& rex) {
+  ew.handle(
+      [&](rocket::RocketException& rex) {
         client_.sendError(
             streamId_,
             rocket::RocketException(
                 rocket::ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
-      })) {
-    client_.sendError(
-        streamId_,
-        rocket::RocketException(
-            rocket::ErrorCode::APPLICATION_ERROR, ew.what()));
-  }
+      },
+      [&](...) {
+        client_.sendError(
+            streamId_,
+            rocket::RocketException(
+                rocket::ErrorCode::APPLICATION_ERROR, ew.what()));
+      });
 }
 bool RocketSinkServerCallback::onSinkComplete() {
   DCHECK(state_ == State::BothOpen);
@@ -376,7 +388,12 @@ StreamChannelStatus RocketSinkServerCallback::onStreamComplete() {
 }
 StreamChannelStatus RocketSinkServerCallback::onStreamError(
     folly::exception_wrapper ew) {
-  clientCallback_->onFinalResponseError(std::move(ew));
+  ew.handle(
+      [&](RocketException& ex) {
+        clientCallback_->onFinalResponseError(
+            thrift::detail::EncodedError(ex.moveErrorData()));
+      },
+      [&](...) { clientCallback_->onFinalResponseError(std::move(ew)); });
   return StreamChannelStatus::Complete;
 }
 void RocketSinkServerCallback::onStreamHeaders(HeadersPayload&&) {}

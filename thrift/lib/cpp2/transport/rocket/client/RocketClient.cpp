@@ -305,8 +305,8 @@ StreamChannelStatus RocketClient::handleErrorFrame(
     std::unique_ptr<folly::IOBuf> frame) {
   ErrorFrame errorFrame{std::move(frame)};
   const auto streamId = errorFrame.streamId();
-  auto ew = folly::make_exception_wrapper<thrift::detail::EncodedError>(
-      std::move(errorFrame.payload()).data());
+  auto ew = folly::make_exception_wrapper<RocketException>(
+      errorFrame.errorCode(), std::move(errorFrame.payload()).data());
   if (firstResponseTimeouts_.count(streamId)) {
     firstResponseTimeouts_.erase(streamId);
     serverCallback.onInitialError(std::move(ew));

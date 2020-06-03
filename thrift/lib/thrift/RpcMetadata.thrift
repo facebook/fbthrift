@@ -137,10 +137,18 @@ struct PayloadProxyExceptionMetadata {
 struct PayloadProxiedExceptionMetadata {
 }
 
+struct PayloadAppClientExceptionMetadata {
+}
+
+struct PayloadAppServerExceptionMetadata {
+}
+
 union PayloadExceptionMetadata {
   1: PayloadDeclaredExceptionMetadata declaredException;
   2: PayloadProxyExceptionMetadata proxyException;
   3: PayloadProxiedExceptionMetadata proxiedException;
+  4: PayloadAppClientExceptionMetadata appClientException;
+  5: PayloadAppServerExceptionMetadata appServerException;
 }
 
 struct PayloadExceptionMetadataBase {
@@ -181,6 +189,49 @@ struct ResponseRpcMetadata {
   6: optional CompressionAlgorithm compression;
   // Additional metadata for the response payload
   7: optional PayloadMetadata payloadMetadata;
+}
+
+enum ResponseRpcErrorCategory {
+  // Server failed processing the request.
+  // Server may have started processing the request.
+  INTERNAL_ERROR = 0,
+  // Server didn't process the request because the request was invalid.
+  INVALID_REQUEST = 1,
+  // Server didn't process the request because it didn't have the resources.
+  // Request can be safely retried to a different server, or the same server
+  // later.
+  LOADSHEDDING = 2,
+  // Server didn't process request because it was shutting down.
+  // Request can be safely retried to a different server. Request should not
+  // be retried to the same server.
+  SHUTDOWN = 3,
+}
+
+enum ResponseRpcErrorCode {
+  UNKNOWN = 0,
+  OVERLOAD = 1,
+  TASK_EXPIRED = 2,
+  QUEUE_OVERLOADED = 3,
+  SHUTDOWN = 4,
+  INJECTED_FAILURE = 5,
+  REQUEST_PARSING_FAILURE = 6,
+  QUEUE_TIMEOUT = 7,
+  RESPONSE_TOO_BIG = 8,
+  WRONG_RPC_KIND = 9,
+  UNKNOWN_METHOD = 10,
+  CHECKSUM_MISMATCH = 11,
+  INTERRUPTION = 12,
+  APP_OVERLOAD = 13,
+}
+
+struct ResponseRpcError {
+  1: optional string name_utf8;
+  2: optional string what_utf8;
+  3: optional ResponseRpcErrorCategory category;
+  4: optional ResponseRpcErrorCode code;
+  // Server load. Returned to client if QUERY_SERVER_LOAD was set in request's
+  // flags.
+  5: optional i64 load;
 }
 
 struct StreamPayloadMetadata {

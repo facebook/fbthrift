@@ -69,20 +69,16 @@ bool RocketSinkClientCallback::onFirstResponse(
 
 void RocketSinkClientCallback::onFirstResponseError(
     folly::exception_wrapper ew) {
-  bool isEncodedError =
+  bool isEncodedError = ew.with_exception<RocketException>([&](auto& ex) {
+    connection_.sendError(streamId_, std::move(ex));
+  }) ||
       ew.with_exception<thrift::detail::EncodedFirstResponseError>(
-          [&](auto&& encodedError) {
-            if (encodedError.encoded.payload) {
-              connection_.sendPayload(
-                  streamId_,
-                  pack(std::move(encodedError.encoded)),
-                  Flags::none().next(true).complete(true));
-            } else {
-              connection_.sendError(
-                  streamId_,
-                  RocketException(
-                      ErrorCode::INVALID, "serialization failed for response"));
-            }
+          [&](auto& encodedError) {
+            DCHECK(encodedError.encoded.payload);
+            connection_.sendPayload(
+                streamId_,
+                pack(std::move(encodedError.encoded)),
+                Flags::none().next(true).complete(true));
           });
   DCHECK(isEncodedError);
 
@@ -117,14 +113,17 @@ void RocketSinkClientCallback::onFinalResponseError(
   if (state_ == State::StreamOpen) {
     connection_.decInflightFinalResponse();
   }
-  if (!ew.with_exception<RocketException>([this](auto&& rex) {
+  ew.handle(
+      [this](RocketException& rex) {
         connection_.sendError(
             streamId_,
             RocketException(ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
-      })) {
-    connection_.sendError(
-        streamId_, RocketException(ErrorCode::APPLICATION_ERROR, ew.what()));
-  }
+      },
+      [&](...) {
+        connection_.sendError(
+            streamId_,
+            RocketException(ErrorCode::APPLICATION_ERROR, ew.what()));
+      });
   connection_.freeStream(streamId_, true);
 }
 

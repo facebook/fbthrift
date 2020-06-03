@@ -539,7 +539,6 @@ class OverloadTest : public ::testing::TestWithParam<
       EXPECT_EQ(*folly::get_ptr(headers, "uex"), "name");
       EXPECT_EQ(*folly::get_ptr(headers, "uexw"), "message");
     } else if (errorType == ErrorType::Server) {
-      EXPECT_EQ(*folly::get_ptr(headers, "ex"), kAppServerErrorCode);
       EXPECT_EQ(*folly::get_ptr(headers, "uex"), "name");
       EXPECT_EQ(*folly::get_ptr(headers, "uexw"), "message");
     } else if (errorType == ErrorType::AppOverload) {
@@ -645,7 +644,7 @@ TEST_P(OverloadTest, Test) {
   } catch (...) {
     FAIL()
         << "Expected that the service call throws TApplicationException, got "
-        << std::current_exception;
+        << folly::exceptionStr(std::current_exception());
   }
 }
 

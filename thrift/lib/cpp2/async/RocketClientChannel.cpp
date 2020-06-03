@@ -55,6 +55,105 @@ namespace apache {
 namespace thrift {
 
 namespace {
+folly::Try<FirstResponsePayload> decodeResponseError(
+    rocket::RocketException&& ex,
+    uint16_t protocolId,
+    folly::StringPiece methodName) noexcept {
+  switch (ex.getErrorCode()) {
+    case rocket::ErrorCode::CANCELED:
+    case rocket::ErrorCode::INVALID:
+    case rocket::ErrorCode::REJECTED:
+      break;
+    default:
+      return folly::Try<FirstResponsePayload>(
+          folly::make_exception_wrapper<TApplicationException>(fmt::format(
+              "Unexpected error frame type: {}", ex.getErrorCode())));
+  }
+
+  ResponseRpcError responseError;
+  try {
+    rocket::unpackCompact(responseError, ex.moveErrorData().get());
+  } catch (...) {
+    return folly::Try<FirstResponsePayload>(
+        folly::make_exception_wrapper<TApplicationException>(fmt::format(
+            "Error parsing error frame: {}",
+            folly::exceptionStr(std::current_exception()).toStdString())));
+  }
+
+  folly::Optional<std::string> exCode;
+  TApplicationException::TApplicationExceptionType exType{
+      TApplicationException::UNKNOWN};
+  switch (responseError.code_ref().value_or(ResponseRpcErrorCode::UNKNOWN)) {
+    case ResponseRpcErrorCode::OVERLOAD:
+      exCode = kOverloadedErrorCode;
+      exType = TApplicationException::LOADSHEDDING;
+      break;
+    case ResponseRpcErrorCode::TASK_EXPIRED:
+      exCode = kTaskExpiredErrorCode;
+      exType = TApplicationException::TIMEOUT;
+      break;
+    case ResponseRpcErrorCode::QUEUE_OVERLOADED:
+    case ResponseRpcErrorCode::SHUTDOWN:
+      exCode = kQueueOverloadedErrorCode;
+      exType = TApplicationException::LOADSHEDDING;
+      break;
+    case ResponseRpcErrorCode::INJECTED_FAILURE:
+      exCode = kInjectedFailureErrorCode;
+      exType = TApplicationException::INJECTED_FAILURE;
+      break;
+    case ResponseRpcErrorCode::REQUEST_PARSING_FAILURE:
+      exCode = kUnknownErrorCode;
+      exType = TApplicationException::UNSUPPORTED_CLIENT_TYPE;
+      break;
+    case ResponseRpcErrorCode::QUEUE_TIMEOUT:
+      exCode = kServerQueueTimeoutErrorCode;
+      exType = TApplicationException::TIMEOUT;
+      break;
+    case ResponseRpcErrorCode::RESPONSE_TOO_BIG:
+      exCode = kResponseTooBigErrorCode;
+      exType = TApplicationException::INTERNAL_ERROR;
+      break;
+    case ResponseRpcErrorCode::WRONG_RPC_KIND:
+      exCode = kRequestTypeDoesntMatchServiceFunctionType;
+      exType = TApplicationException::UNKNOWN_METHOD;
+      break;
+    case ResponseRpcErrorCode::UNKNOWN_METHOD:
+      exType = TApplicationException::UNKNOWN_METHOD;
+      break;
+    case ResponseRpcErrorCode::CHECKSUM_MISMATCH:
+      exCode = kUnknownErrorCode;
+      exType = TApplicationException::CHECKSUM_MISMATCH;
+      break;
+    case ResponseRpcErrorCode::INTERRUPTION:
+      exType = TApplicationException::INTERRUPTION;
+      break;
+    case ResponseRpcErrorCode::APP_OVERLOAD:
+      exCode = kAppOverloadedErrorCode;
+      exType = TApplicationException::LOADSHEDDING;
+      break;
+    default:
+      exCode = kUnknownErrorCode;
+      break;
+  }
+
+  ResponseRpcMetadata metadata;
+  if (exCode) {
+    metadata.otherMetadata_ref().emplace();
+    (*metadata.otherMetadata_ref())["ex"] = *exCode;
+  }
+  if (auto loadRef = responseError.load_ref()) {
+    metadata.load_ref() = *loadRef;
+  }
+  return folly::Try<FirstResponsePayload>(FirstResponsePayload(
+      LegacySerializedResponse(
+          protocolId,
+          methodName,
+          TApplicationException(
+              exType, responseError.what_utf8_ref().value_or("")))
+          .buffer,
+      std::move(metadata)));
+}
+
 FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
     ResponseRpcMetadata& metadata,
     std::unique_ptr<folly::IOBuf>& payload,
@@ -112,9 +211,22 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
                       TApplicationException(exceptionWhatRef.value_or("")))
                       .buffer;
               break;
+            case PayloadExceptionMetadata::appClientException:
+              (*otherMetadataRef)["ex"] = kAppClientErrorCode;
+              FOLLY_FALLTHROUGH;
             default:
-              return TApplicationException(
-                  "Invalid payload exception metadata type");
+              if (exceptionNameRef) {
+                (*otherMetadataRef)["uex"] = *exceptionNameRef;
+              }
+              if (exceptionWhatRef) {
+                (*otherMetadataRef)["uexw"] = *exceptionWhatRef;
+              }
+              payload =
+                  LegacySerializedResponse(
+                      protocolId,
+                      methodName,
+                      TApplicationException(exceptionWhatRef.value_or("")))
+                      .buffer;
           }
         } else {
           return TApplicationException("Missing payload exception metadata");
@@ -128,15 +240,18 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
   return {};
 }
 
-class FirstRequestProcessorStream : public StreamClientCallback {
+class FirstRequestProcessorStream : public StreamClientCallback,
+                                    private StreamServerCallback {
  public:
   FirstRequestProcessorStream(
       uint16_t protocolId,
       folly::StringPiece methodName,
-      StreamClientCallback* clientCallback)
+      StreamClientCallback* clientCallback,
+      folly::EventBase* evb)
       : protocolId_(protocolId),
         methodName_(methodName),
-        clientCallback_(clientCallback) {}
+        clientCallback_(clientCallback),
+        evb_(evb) {}
 
   FOLLY_NODISCARD bool onFirstResponse(
       FirstResponsePayload&& firstResponse,
@@ -145,6 +260,7 @@ class FirstRequestProcessorStream : public StreamClientCallback {
     SCOPE_EXIT {
       delete this;
     };
+    DCHECK_EQ(evb, evb_);
     if (auto error = processFirstResponse(
             firstResponse.metadata,
             firstResponse.payload,
@@ -162,7 +278,23 @@ class FirstRequestProcessorStream : public StreamClientCallback {
     SCOPE_EXIT {
       delete this;
     };
-    clientCallback_->onFirstResponseError(std::move(ew));
+    ew.handle(
+        [&](rocket::RocketException& ex) {
+          auto response =
+              decodeResponseError(std::move(ex), protocolId_, methodName_);
+          if (response.hasException()) {
+            clientCallback_->onFirstResponseError(
+                std::move(response).exception());
+            return;
+          }
+
+          if (clientCallback_->onFirstResponse(
+                  std::move(*response), evb_, this)) {
+            DCHECK(clientCallback_);
+            clientCallback_->onStreamComplete();
+          }
+        },
+        [&](...) { clientCallback_->onFirstResponseError(std::move(ew)); });
   }
 
   bool onStreamNext(StreamPayload&&) override {
@@ -178,21 +310,35 @@ class FirstRequestProcessorStream : public StreamClientCallback {
     std::terminate();
   }
 
+  void onStreamCancel() override {
+    clientCallback_ = nullptr;
+  }
+  bool onStreamRequestN(uint64_t) override {
+    return true;
+  }
+  void resetClientCallback(StreamClientCallback& clientCallback) override {
+    clientCallback_ = &clientCallback;
+  }
+
  private:
   const uint16_t protocolId_;
   const std::string methodName_;
-  StreamClientCallback* const clientCallback_;
+  StreamClientCallback* clientCallback_;
+  folly::EventBase* evb_;
 };
 
-class FirstRequestProcessorSink : public SinkClientCallback {
+class FirstRequestProcessorSink : public SinkClientCallback,
+                                  private SinkServerCallback {
  public:
   FirstRequestProcessorSink(
       uint16_t protocolId,
       folly::StringPiece methodName,
-      SinkClientCallback* clientCallback)
+      SinkClientCallback* clientCallback,
+      folly::EventBase* evb)
       : protocolId_(protocolId),
         methodName_(methodName),
-        clientCallback_(clientCallback) {}
+        clientCallback_(clientCallback),
+        evb_(evb) {}
 
   FOLLY_NODISCARD bool onFirstResponse(
       FirstResponsePayload&& firstResponse,
@@ -218,7 +364,31 @@ class FirstRequestProcessorSink : public SinkClientCallback {
     SCOPE_EXIT {
       delete this;
     };
-    clientCallback_->onFirstResponseError(std::move(ew));
+    ew.handle(
+        [&](rocket::RocketException& ex) {
+          auto response =
+              decodeResponseError(std::move(ex), protocolId_, methodName_);
+          if (response.hasException()) {
+            clientCallback_->onFirstResponseError(
+                std::move(response).exception());
+            return;
+          }
+
+          if (clientCallback_->onFirstResponse(
+                  std::move(*response), evb_, this)) {
+            DCHECK(clientCallback_);
+            // This exception will be ignored, but we have to send it to follow
+            // the contract.
+            clientCallback_->onFinalResponseError(
+                folly::make_exception_wrapper<TApplicationException>(
+                    TApplicationException::INTERRUPTION,
+                    "Initial response error"));
+          }
+        },
+        [&](...) {
+          clientCallback_->onFirstResponseError(std::move(ew));
+          return false;
+        });
   }
 
   void onFinalResponse(StreamPayload&&) override {
@@ -234,16 +404,33 @@ class FirstRequestProcessorSink : public SinkClientCallback {
     std::terminate();
   }
 
+  bool onSinkNext(StreamPayload&&) override {
+    return true;
+  }
+  void onSinkError(folly::exception_wrapper) override {
+    clientCallback_ = nullptr;
+  }
+  bool onSinkComplete() override {
+    return true;
+  }
+  void onStreamCancel() override {
+    clientCallback_ = nullptr;
+  }
+  void resetClientCallback(SinkClientCallback& clientCallback) override {
+    clientCallback_ = &clientCallback;
+  }
+
  private:
   const uint16_t protocolId_;
   const std::string methodName_;
-  SinkClientCallback* const clientCallback_;
+  SinkClientCallback* clientCallback_;
+  folly::EventBase* evb_;
 };
 } // namespace
 
 rocket::SetupFrame RocketClientChannel::makeSetupFrame(
     RequestSetupMetadata meta) {
-  meta.maxVersion_ref() = 2;
+  meta.maxVersion_ref() = 3;
   CompactProtocolWriter compactProtocolWriter;
   folly::IOBufQueue paramQueue;
   compactProtocolWriter.setOutput(&paramQueue);
@@ -381,7 +568,8 @@ void RocketClientChannel::sendRequestStream(
       firstResponseTimeout,
       rpcOptions.getChunkTimeout(),
       rpcOptions.getChunkBufferSize(),
-      new FirstRequestProcessorStream(protocolId_, methodName, clientCallback));
+      new FirstRequestProcessorStream(
+          protocolId_, methodName, clientCallback, evb_));
 }
 
 void RocketClientChannel::sendRequestSink(
@@ -417,7 +605,8 @@ void RocketClientChannel::sendRequestSink(
   return rclient_->sendRequestSink(
       rocket::pack(metadata, std::move(buf)),
       firstResponseTimeout,
-      new FirstRequestProcessorSink(protocolId_, methodName, clientCallback),
+      new FirstRequestProcessorSink(
+          protocolId_, methodName, clientCallback, evb_),
       rpcOptions.getEnablePageAlignment());
 }
 
@@ -540,26 +729,37 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
                       requestSerializedSize,
                       requestWireSize](
                          folly::Try<rocket::Payload>&& payload) mutable {
-    if (UNLIKELY(payload.hasException())) {
-      cb.release()->onResponseError(std::move(payload.exception()));
-      return;
-    }
-
+    folly::Try<FirstResponsePayload> response;
     RpcSizeStats stats;
     stats.requestSerializedSizeBytes = requestSerializedSize;
     stats.requestWireSizeBytes = requestWireSize;
-    stats.responseWireSizeBytes =
-        payload->metadataAndDataSize() - payload->metadataSize();
+    if (payload.hasException()) {
+      if (!payload.exception().with_exception<rocket::RocketException>(
+              [&](auto& ex) {
+                response =
+                    decodeResponseError(std::move(ex), protocolId, methodName);
+              })) {
+        cb.release()->onResponseError(std::move(payload.exception()));
+        return;
+      }
+      if (response.hasException()) {
+        cb.release()->onResponseError(std::move(response.exception()));
+        return;
+      }
+    } else {
+      stats.responseWireSizeBytes =
+          payload->metadataAndDataSize() - payload->metadataSize();
 
-    auto response = rocket::unpack<FirstResponsePayload>(std::move(*payload));
-    if (response.hasException()) {
-      cb.release()->onResponseError(std::move(response.exception()));
-      return;
-    }
-    if (auto error = processFirstResponse(
-            response->metadata, response->payload, protocolId, methodName)) {
-      cb.release()->onResponseError(std::move(error));
-      return;
+      response = rocket::unpack<FirstResponsePayload>(std::move(*payload));
+      if (response.hasException()) {
+        cb.release()->onResponseError(std::move(response.exception()));
+        return;
+      }
+      if (auto error = processFirstResponse(
+              response->metadata, response->payload, protocolId, methodName)) {
+        cb.release()->onResponseError(std::move(error));
+        return;
+      }
     }
 
     stats.responseSerializedSizeBytes =
