@@ -20,86 +20,90 @@
     }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedefType}}{{> ReadTypeContainer}}{{/type:typedefType}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
+
 }}{{#type:set?}}{{!
-            }}TSet _set{{field:nestedDepth}} = oprot.readSetBegin();
-            {{^type:javaType}}{{> BoxedType}} _iter{{field:nestedDepth}} = new Hash{{> BoxedType}}(Math.max(0, 2*_set{{field:nestedDepth}}.size));{{/type:javaType}}{{!
-            }}{{#type:javaType}}{{type:javaType}} _iter{{field:nestedDepth}} = new {{type:javaType}}();{{/type:javaType}}{{!
-            }}{{#field:isFirstDepth?}}
-            {{#field:type}}{{> BoxedType}}{{/field:type}} {{field:javaName}} = _iter{{field:nestedDepth}};{{/field:isFirstDepth?}}
-            if (_set{{field:nestedDepth}}.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
-            for (int _i{{field:nestedDepth}} = 0; _i{{field:nestedDepth}} < _set{{field:nestedDepth}}.size; ++_i{{field:nestedDepth}}) {
-                {{field:setIsNested}}{{!
-                }}{{#type:setElemType}}{{!
-                }}{{#type:isContainer?}}{{field:nestedDepth++}}{{> ReadTypeContainer}}{{field:nestedDepth--}}{{/type:isContainer?}}{{!
-                }}{{^type:isContainer?}}_iter{{field:nestedDepth}}.add({{> ReadType}});{{/type:isContainer?}}{{!
-                }}{{/type:setElemType}}
+            }}{{> BoxedType}} {{field:javaName}};
+            {
+            TSet _set = oprot.readSetBegin();
+            if (_set.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
             }
-            {{^field:isFirstDepth?}}
-            {{#type:isMapKey?}}_key{{field:prevNestedDepth}} = _iter{{field:nestedDepth}};{{/type:isMapKey?}}{{!
-            }}{{#type:isMapValue?}}_val{{field:prevNestedDepth}} = _iter{{field:nestedDepth}};{{/type:isMapValue?}}{{!
-            }}{{^type:isMapKey?}}{{^type:isMapValue?}}_iter{{field:prevNestedDepth}}.add(_iter{{field:nestedDepth}});{{/type:isMapValue?}}{{/type:isMapKey?}}
-            {{/field:isFirstDepth?}}
-            oprot.readSetEnd();{{!
+            {{^type:javaType}}{{field:javaName}} = new Hash{{> BoxedType}}(_set.size);{{/type:javaType}}{{!
+            }}{{#type:javaType}}{{field:javaName}} = new {{type:javaType}}();{{/type:javaType}}{{!
+            }}
+            for (int _i = 0; _i < _set.size; _i++) {
+                {{field:setIsNested}}
+                {{#type:setElemType}}
+                {{#type:isContainer?}}
+                {{> ReadTypeContainerNestedValue }}
+                {{/type:isContainer?}}
+                {{^type:isContainer?}}
+                {{> Type}} _value1 = {{> ReadType}};
+                {{/type:isContainer?}}{{!
+                }}{{field:javaName}}.add(_value1);
+                {{/type:setElemType}}
+            }
+            oprot.readSetEnd();
+            }{{!
 }}{{/type:set?}}{{!
 
 }}{{#type:list?}}{{!
-           }}TList _list{{field:nestedDepth}} = oprot.readListBegin();
-            {{^type:javaType}}{{> BoxedType}} _iter{{field:nestedDepth}} = new Array{{> BoxedType}}(Math.max(0, 2*_list{{field:nestedDepth}}.size));{{/type:javaType}}{{!
-            }}{{#type:javaType}}{{type:javaType}} _iter{{field:nestedDepth}} = new {{type:javaType}}();{{/type:javaType}}{{!
-            }}{{#field:isFirstDepth?}}
-            {{#field:type}}{{> BoxedType}}{{/field:type}} {{field:javaName}} = _iter{{field:nestedDepth}};{{/field:isFirstDepth?}}
-            if (_list{{field:nestedDepth}}.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
-            for (int _i{{field:nestedDepth}} = 0; _i{{field:nestedDepth}} < _list{{field:nestedDepth}}.size; ++_i{{field:nestedDepth}}) {
-                {{field:setIsNested}}{{!
-                }}{{#type:listElemType}}{{!
-                }}{{#type:isContainer?}}{{field:nestedDepth++}}{{> ReadTypeContainer}}{{field:nestedDepth--}}{{/type:isContainer?}}{{!
-                }}{{^type:isContainer?}}_iter{{field:nestedDepth}}.add({{> ReadType}});{{/type:isContainer?}}{{!
-                }}{{/type:listElemType}}
+            }}{{> BoxedType}} {{field:javaName}};
+            {
+            TList _list = oprot.readListBegin();
+            if (_list.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
             }
-            {{^field:isFirstDepth?}}
-            {{#type:isMapKey?}}_key{{field:prevNestedDepth}} = _iter{{field:nestedDepth}};{{/type:isMapKey?}}{{!
-            }}{{#type:isMapValue?}}_val{{field:prevNestedDepth}} = _iter{{field:nestedDepth}};{{/type:isMapValue?}}{{!
-            }}{{^type:isMapKey?}}{{^type:isMapValue?}}_iter{{field:prevNestedDepth}}.add(_iter{{field:nestedDepth}});{{/type:isMapValue?}}{{/type:isMapKey?}}
-            {{/field:isFirstDepth?}}
-            oprot.readListEnd();{{!
+            {{^type:javaType}}{{field:javaName}} = new Array{{> BoxedType}}(_list.size);{{/type:javaType}}{{!
+            }}{{#type:javaType}}{{field:javaName}} = new {{type:javaType}}();{{/type:javaType}}{{!
+            }}
+            for (int _i = 0; _i < _list.size; _i++) {
+                {{field:setIsNested}}
+                {{#type:listElemType}}
+                {{#type:isContainer?}}
+                {{> ReadTypeContainerNestedValue }}
+                {{/type:isContainer?}}
+                {{^type:isContainer?}}
+                {{> Type}} _value1 = {{> ReadType}};
+                {{/type:isContainer?}}{{!
+                }}{{field:javaName}}.add(_value1);
+                {{/type:listElemType}}
+            }
+            oprot.readListEnd();
+            }{{!
 }}{{/type:list?}}{{!
 
 }}{{#type:map?}}{{!
-            }}{{#field:isFirstDepth?}}{{!
-            }}{{#field:type}}{{> BoxedType}}{{/field:type}} {{field:javaName}};
-            {{/field:isFirstDepth?}}
+            }}{{> BoxedType}} {{field:javaName}};
             {
-            TMap _map{{field:nestedDepth}} = oprot.readMapBegin();
-            {{^type:javaType}}{{> BoxedType}} _iter{{field:nestedDepth}} = new Hash{{> BoxedType}}(Math.max(0, 2*_map{{field:nestedDepth}}.size));{{/type:javaType}}{{!
-            }}{{#type:javaType}}{{type:javaType}} _iter{{field:nestedDepth}} = new {{type:javaType}}();{{/type:javaType}}{{!
-            }}{{#field:isFirstDepth?}}
-            {{field:javaName}} = _iter{{field:nestedDepth}};{{/field:isFirstDepth?}}
-            if (_map{{field:nestedDepth}}.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
-            for (int _i{{field:nestedDepth}} = 0; _i{{field:nestedDepth}} < _map{{field:nestedDepth}}.size; ++_i{{field:nestedDepth}}) {
-                {{field:setIsNested}}{{!
-                }}{{#type:keyType}}{{!
-
-                }}{{#type:isContainer?}}{{> Type}} _key{{field:nestedDepth}};{{type:setIsMapKey}}
-                {{field:nestedDepth++}}{{> ReadTypeContainer}}{{field:nestedDepth--}}
-                {{/type:isContainer?}}{{!
-                }}{{^type:isContainer?}}{{> Type}} _key{{field:nestedDepth}} = {{> ReadType}};
-                {{/type:isContainer?}}{{/type:keyType}}{{!
-
-                }}{{#type:valueType}}{{!
-                }}{{#type:isContainer?}}
-                {{> Type}} _val{{field:nestedDepth}};{{type:setIsMapValue}}
-                {{field:nestedDepth++}}{{> ReadTypeContainer}}{{field:nestedDepth--}}
-                {{/type:isContainer?}}{{!
-                }}{{^type:isContainer?}}
-                {{> Type}} _val{{field:nestedDepth}} = {{> ReadType}};
-                {{/type:isContainer?}}{{/type:valueType}}
-                _iter{{field:nestedDepth}}.put(_key{{field:nestedDepth}}, _val{{field:nestedDepth}});
+            TMap _map = oprot.readMapBegin();
+            if (_map.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
             }
-            {{^field:isFirstDepth?}}
-            {{#type:isMapKey?}}_key{{field:prevNestedDepth}} = _iter{{field:nestedDepth}};{{/type:isMapKey?}}{{!
-            }}{{#type:isMapValue?}}_val{{field:prevNestedDepth}} = _iter{{field:nestedDepth}};{{/type:isMapValue?}}{{!
-            }}{{^type:isMapKey?}}{{^type:isMapValue?}}_iter{{field:prevNestedDepth}}.add(_iter{{field:nestedDepth}});{{/type:isMapValue?}}{{/type:isMapKey?}}
-            {{/field:isFirstDepth?}}
+            {{^type:javaType}}{{field:javaName}} = new Hash{{> BoxedType}}(_map.size);{{/type:javaType}}{{!
+            }}{{#type:javaType}}{{field:javaName}} = new {{type:javaType}}();{{/type:javaType}}{{!
+            }}
+            for (int _i = 0; _i < _map.size; _i++) {
+                {{field:setIsNested}}
+                {{#type:keyType}}
+                {{#type:isContainer?}}
+                {{> ReadTypeContainerNestedKey }}
+                {{/type:isContainer?}}
+                {{^type:isContainer?}}
+                {{> Type}} _key1 = {{> ReadType}};
+                {{/type:isContainer?}}
+                {{/type:keyType}}
+
+                {{#type:valueType}}
+                {{#type:isContainer?}}
+                {{> ReadTypeContainerNestedValue }}
+                {{/type:isContainer?}}
+                {{^type:isContainer?}}
+                {{> Type}} _value1 = {{> ReadType}};
+                {{/type:isContainer?}}
+                {{/type:valueType}}{{!
+                }}{{field:javaName}}.put(_key1, _value1);
+            }
             }
             oprot.readMapEnd();{{!
 }}{{/type:map?}}{{!

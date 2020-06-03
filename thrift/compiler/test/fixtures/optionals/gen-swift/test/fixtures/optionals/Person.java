@@ -361,14 +361,20 @@ public final class Person {
           break;
         case _FRIENDS:
           if (__field.type == TType.SET) {
-            TSet _set1 = oprot.readSetBegin();
-            Set<Long> _iter1 = new HashSet<Long>(Math.max(0, 2*_set1.size));
-            Set<Long> friends = _iter1;
-            if (_set1.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _set1.size; ++_i1) {
-                _iter1.add(oprot.readI64());
+            Set<Long> friends;
+            {
+            TSet _set = oprot.readSetBegin();
+            if (_set.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            friends = new HashSet<Long>(_set.size);
+            for (int _i = 0; _i < _set.size; _i++) {
+                
+                long _value1 = oprot.readI64();
+                friends.add(_value1);
             }
             oprot.readSetEnd();
+            }
             builder.setFriends(friends);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -386,14 +392,17 @@ public final class Person {
           if (__field.type == TType.MAP) {
             Map<test.fixtures.optionals.Animal, String> petNames;
             {
-            TMap _map1 = oprot.readMapBegin();
-            Map<test.fixtures.optionals.Animal, String> _iter1 = new HashMap<test.fixtures.optionals.Animal, String>(Math.max(0, 2*_map1.size));
-            petNames = _iter1;
-            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+            TMap _map = oprot.readMapBegin();
+            if (_map.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            petNames = new HashMap<test.fixtures.optionals.Animal, String>(_map.size);
+            for (int _i = 0; _i < _map.size; _i++) {
+                
                 test.fixtures.optionals.Animal _key1 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
-                String _val1 = oprot.readString();
-                _iter1.put(_key1, _val1);
+
+                String _value1 = oprot.readString();
+                petNames.put(_key1, _value1);
             }
             }
             oprot.readMapEnd();
@@ -412,14 +421,20 @@ public final class Person {
           break;
         case _VEHICLES:
           if (__field.type == TType.LIST) {
-            TList _list1 = oprot.readListBegin();
-            List<test.fixtures.optionals.Vehicle> _iter1 = new ArrayList<test.fixtures.optionals.Vehicle>(Math.max(0, 2*_list1.size));
-            List<test.fixtures.optionals.Vehicle> vehicles = _iter1;
-            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
-                _iter1.add(test.fixtures.optionals.Vehicle.read0(oprot));
+            List<test.fixtures.optionals.Vehicle> vehicles;
+            {
+            TList _list = oprot.readListBegin();
+            if (_list.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            vehicles = new ArrayList<test.fixtures.optionals.Vehicle>(_list.size);
+            for (int _i = 0; _i < _list.size; _i++) {
+                
+                test.fixtures.optionals.Vehicle _value1 = test.fixtures.optionals.Vehicle.read0(oprot);
+                vehicles.add(_value1);
             }
             oprot.readListEnd();
+            }
             builder.setVehicles(vehicles);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

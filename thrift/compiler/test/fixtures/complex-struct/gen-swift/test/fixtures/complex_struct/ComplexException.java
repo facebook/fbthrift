@@ -191,14 +191,20 @@ public final class ComplexException extends java.lang.Exception {
           break;
         case _LISTSTRINGS:
           if (__field.type == TType.LIST) {
-            TList _list1 = oprot.readListBegin();
-            List<String> _iter1 = new ArrayList<String>(Math.max(0, 2*_list1.size));
-            List<String> listStrings = _iter1;
-            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
-                _iter1.add(oprot.readString());
+            List<String> listStrings;
+            {
+            TList _list = oprot.readListBegin();
+            if (_list.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            listStrings = new ArrayList<String>(_list.size);
+            for (int _i = 0; _i < _list.size; _i++) {
+                
+                String _value1 = oprot.readString();
+                listStrings.add(_value1);
             }
             oprot.readListEnd();
+            }
             builder.setListStrings(listStrings);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -232,14 +238,17 @@ public final class ComplexException extends java.lang.Exception {
           if (__field.type == TType.MAP) {
             it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap;
             {
-            TMap _map1 = oprot.readMapBegin();
-            it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _iter1 = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
-            lsMap = _iter1;
-            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+            TMap _map = oprot.readMapBegin();
+            if (_map.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            lsMap = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
+            for (int _i = 0; _i < _map.size; _i++) {
+                
                 long _key1 = oprot.readI64();
-                String _val1 = oprot.readString();
-                _iter1.put(_key1, _val1);
+
+                String _value1 = oprot.readString();
+                lsMap.put(_key1, _value1);
             }
             }
             oprot.readMapEnd();

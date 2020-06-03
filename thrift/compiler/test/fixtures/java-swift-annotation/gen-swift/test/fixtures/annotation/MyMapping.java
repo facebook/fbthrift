@@ -139,14 +139,17 @@ public final class MyMapping {
           if (__field.type == TType.MAP) {
             com.foo.FastLongStringMap lsMap;
             {
-            TMap _map1 = oprot.readMapBegin();
-            com.foo.FastLongStringMap _iter1 = new com.foo.FastLongStringMap();
-            lsMap = _iter1;
-            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+            TMap _map = oprot.readMapBegin();
+            if (_map.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            lsMap = new com.foo.FastLongStringMap();
+            for (int _i = 0; _i < _map.size; _i++) {
+                
                 long _key1 = oprot.readI64();
-                String _val1 = oprot.readString();
-                _iter1.put(_key1, _val1);
+
+                String _value1 = oprot.readString();
+                lsMap.put(_key1, _value1);
             }
             }
             oprot.readMapEnd();
@@ -159,26 +162,38 @@ public final class MyMapping {
           if (__field.type == TType.MAP) {
             com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap;
             {
-            TMap _map1 = oprot.readMapBegin();
-            com.foo.FastIntObjectMap<com.foo.FastIntLongMap> _iter1 = new com.foo.FastIntObjectMap<com.foo.FastIntLongMap>();
-            ioMap = _iter1;
-            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
-                int _key1 = oprot.readI32();
-                com.foo.FastIntLongMap _val1;
-                            {
-            TMap _map2 = oprot.readMapBegin();
-            com.foo.FastIntLongMap _iter2 = new com.foo.FastIntLongMap();
-            if (_map2.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
-            for (int _i2 = 0; _i2 < _map2.size; ++_i2) {
-                int _key2 = oprot.readI32();
-                long _val2 = oprot.readI64();
-                _iter2.put(_key2, _val2);
+            TMap _map = oprot.readMapBegin();
+            if (_map.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
             }
-            _val1 = _iter2;
+            ioMap = new com.foo.FastIntObjectMap<com.foo.FastIntLongMap>();
+            for (int _i = 0; _i < _map.size; _i++) {
+                
+                int _key1 = oprot.readI32();
+
+                com.foo.FastIntLongMap _value1;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            if (_map1.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            _value1 = new com.foo.FastIntLongMap();
+            for (int _i1 = 0; _i1 < _map1.size; _i1++) {
+                
+                
+                int _key2 = oprot.readI32();
+                
+
+                
+                long _value2 = oprot.readI64();
+                
+                
+                _value1.put(_key2, _value2);
+                
+            }
             }
             oprot.readMapEnd();
-                _iter1.put(_key1, _val1);
+                ioMap.put(_key1, _value1);
             }
             }
             oprot.readMapEnd();

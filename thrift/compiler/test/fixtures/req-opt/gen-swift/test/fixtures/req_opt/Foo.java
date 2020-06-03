@@ -199,14 +199,20 @@ public final class Foo {
           break;
         case _MYBOOLS:
           if (__field.type == TType.LIST) {
-            TList _list1 = oprot.readListBegin();
-            List<Boolean> _iter1 = new ArrayList<Boolean>(Math.max(0, 2*_list1.size));
-            List<Boolean> myBools = _iter1;
-            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
-                _iter1.add(oprot.readBool());
+            List<Boolean> myBools;
+            {
+            TList _list = oprot.readListBegin();
+            if (_list.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            myBools = new ArrayList<Boolean>(_list.size);
+            for (int _i = 0; _i < _list.size; _i++) {
+                
+                boolean _value1 = oprot.readBool();
+                myBools.add(_value1);
             }
             oprot.readListEnd();
+            }
             builder.setMyBools(myBools);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -214,14 +220,20 @@ public final class Foo {
           break;
         case _MYNUMBERS:
           if (__field.type == TType.LIST) {
-            TList _list1 = oprot.readListBegin();
-            List<Integer> _iter1 = new ArrayList<Integer>(Math.max(0, 2*_list1.size));
-            List<Integer> myNumbers = _iter1;
-            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
-                _iter1.add(oprot.readI32());
+            List<Integer> myNumbers;
+            {
+            TList _list = oprot.readListBegin();
+            if (_list.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            myNumbers = new ArrayList<Integer>(_list.size);
+            for (int _i = 0; _i < _list.size; _i++) {
+                
+                int _value1 = oprot.readI32();
+                myNumbers.add(_value1);
             }
             oprot.readListEnd();
+            }
             builder.setMyNumbers(myNumbers);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

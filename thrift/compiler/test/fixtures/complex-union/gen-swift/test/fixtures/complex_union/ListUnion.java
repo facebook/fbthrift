@@ -194,27 +194,39 @@ public final class ListUnion {
           switch (__field.id) {
           case _INTLISTVALUE:
             if (__field.type == INT_LIST_VALUE_FIELD_DESC.type) {
-              TList _list1 = oprot.readListBegin();
-            List<Long> _iter1 = new ArrayList<Long>(Math.max(0, 2*_list1.size));
-            List<Long> intListValue = _iter1;
-            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
-                _iter1.add(oprot.readI64());
+              List<Long> intListValue;
+            {
+            TList _list = oprot.readListBegin();
+            if (_list.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            intListValue = new ArrayList<Long>(_list.size);
+            for (int _i = 0; _i < _list.size; _i++) {
+                
+                long _value1 = oprot.readI64();
+                intListValue.add(_value1);
             }
             oprot.readListEnd();
+            }
               res.value = intListValue;
             }
             break;
           case _STRINGLISTVALUE:
             if (__field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
-              TList _list1 = oprot.readListBegin();
-            List<String> _iter1 = new ArrayList<String>(Math.max(0, 2*_list1.size));
-            List<String> stringListValue = _iter1;
-            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
-                _iter1.add(oprot.readString());
+              List<String> stringListValue;
+            {
+            TList _list = oprot.readListBegin();
+            if (_list.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            stringListValue = new ArrayList<String>(_list.size);
+            for (int _i = 0; _i < _list.size; _i++) {
+                
+                String _value1 = oprot.readString();
+                stringListValue.add(_value1);
             }
             oprot.readListEnd();
+            }
               res.value = stringListValue;
             }
             break;

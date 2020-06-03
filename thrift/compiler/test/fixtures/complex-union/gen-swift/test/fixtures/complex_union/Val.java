@@ -178,14 +178,17 @@ public final class Val {
           if (__field.type == TType.MAP) {
             Map<Short, String> typedefValue;
             {
-            TMap _map1 = oprot.readMapBegin();
-            Map<Short, String> _iter1 = new HashMap<Short, String>(Math.max(0, 2*_map1.size));
-            typedefValue = _iter1;
-            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+            TMap _map = oprot.readMapBegin();
+            if (_map.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            typedefValue = new HashMap<Short, String>(_map.size);
+            for (int _i = 0; _i < _map.size; _i++) {
+                
                 short _key1 = oprot.readI16();
-                String _val1 = oprot.readString();
-                _iter1.put(_key1, _val1);
+
+                String _value1 = oprot.readString();
+                typedefValue.put(_key1, _value1);
             }
             }
             oprot.readMapEnd();

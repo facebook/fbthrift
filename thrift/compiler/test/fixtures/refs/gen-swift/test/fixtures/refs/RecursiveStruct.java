@@ -114,14 +114,20 @@ public final class RecursiveStruct {
         switch (__field.id) {
         case _MES:
           if (__field.type == TType.LIST) {
-            TList _list1 = oprot.readListBegin();
-            List<test.fixtures.refs.RecursiveStruct> _iter1 = new ArrayList<test.fixtures.refs.RecursiveStruct>(Math.max(0, 2*_list1.size));
-            List<test.fixtures.refs.RecursiveStruct> mes = _iter1;
-            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
-                _iter1.add(test.fixtures.refs.RecursiveStruct.read0(oprot));
+            List<test.fixtures.refs.RecursiveStruct> mes;
+            {
+            TList _list = oprot.readListBegin();
+            if (_list.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            mes = new ArrayList<test.fixtures.refs.RecursiveStruct>(_list.size);
+            for (int _i = 0; _i < _list.size; _i++) {
+                
+                test.fixtures.refs.RecursiveStruct _value1 = test.fixtures.refs.RecursiveStruct.read0(oprot);
+                mes.add(_value1);
             }
             oprot.readListEnd();
+            }
             builder.setMes(mes);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

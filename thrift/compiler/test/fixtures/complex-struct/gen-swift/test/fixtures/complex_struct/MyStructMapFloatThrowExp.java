@@ -147,29 +147,50 @@ public final class MyStructMapFloatThrowExp {
           if (__field.type == TType.MAP) {
             Map<Integer, List<List<Float>>> mapListOfFloats;
             {
-            TMap _map1 = oprot.readMapBegin();
-            Map<Integer, List<List<Float>>> _iter1 = new HashMap<Integer, List<List<Float>>>(Math.max(0, 2*_map1.size));
-            mapListOfFloats = _iter1;
-            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+            TMap _map = oprot.readMapBegin();
+            if (_map.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            mapListOfFloats = new HashMap<Integer, List<List<Float>>>(_map.size);
+            for (int _i = 0; _i < _map.size; _i++) {
+                
                 int _key1 = oprot.readI32();
-                List<List<Float>> _val1;
-                TList _list2 = oprot.readListBegin();
-            List<List<Float>> _iter2 = new ArrayList<List<Float>>(Math.max(0, 2*_list2.size));
-            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
-            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
-                TList _list3 = oprot.readListBegin();
-            List<Float> _iter3 = new ArrayList<Float>(Math.max(0, 2*_list3.size));
-            if (_list3.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
-            for (int _i3 = 0; _i3 < _list3.size; ++_i3) {
-                _iter3.add(oprot.readFloat());
+
+                List<List<Float>> _value1;
+                            {
+                            TList _list1 = oprot.readListBegin();
+                            if (_list1.size < 0) {
+                                throw new TException("Using an unsupported Map, size is less than zero.");
+                            }
+                            _value1 = new ArrayList<List<Float>>(_list1.size);
+                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                                
+                                List<Float> _value2;
+            {
+            TList _list2 = oprot.readListBegin();
+            if (_list2.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
             }
-            _iter2.add(_iter3);
+            _value2 = new ArrayList<Float>(_list2.size);
+            for (int _i2 = 0; _i2 < _list2.size; _i2++) {
+                
+                
+                float _value3 = oprot.readFloat();
+                
+                
+                _value2.add(_value3);
+                
+            }
             oprot.readListEnd();
             }
-            _val1 = _iter2;
-            oprot.readListEnd();
-                _iter1.put(_key1, _val1);
+
+                                
+                                _value1.add(_value2);
+                                
+                            }
+                            oprot.readListEnd();
+                            }
+                                mapListOfFloats.put(_key1, _value1);
             }
             }
             oprot.readMapEnd();

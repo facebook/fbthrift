@@ -207,14 +207,20 @@ public final class Struct2 {
           break;
         case _D:
           if (__field.type == TType.LIST) {
-            TList _list1 = oprot.readListBegin();
-            List<Integer> _iter1 = new ArrayList<Integer>(Math.max(0, 2*_list1.size));
-            List<Integer> d = _iter1;
-            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
-                _iter1.add(oprot.readI32());
+            List<Integer> d;
+            {
+            TList _list = oprot.readListBegin();
+            if (_list.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            d = new ArrayList<Integer>(_list.size);
+            for (int _i = 0; _i < _list.size; _i++) {
+                
+                int _value1 = oprot.readI32();
+                d.add(_value1);
             }
             oprot.readListEnd();
+            }
             builder.setD(d);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

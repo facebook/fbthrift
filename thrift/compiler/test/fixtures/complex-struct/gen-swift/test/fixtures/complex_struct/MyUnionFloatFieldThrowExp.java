@@ -284,21 +284,37 @@ public final class MyUnionFloatFieldThrowExp {
             break;
           case _SETFLOAT:
             if (__field.type == SET_FLOAT_FIELD_DESC.type) {
-              TList _list1 = oprot.readListBegin();
-            List<List<Float>> _iter1 = new ArrayList<List<Float>>(Math.max(0, 2*_list1.size));
-            List<List<Float>> setFloat = _iter1;
-            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
-                TList _list2 = oprot.readListBegin();
-            List<Float> _iter2 = new ArrayList<Float>(Math.max(0, 2*_list2.size));
-            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
-            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
-                _iter2.add(oprot.readFloat());
+              List<List<Float>> setFloat;
+            {
+            TList _list = oprot.readListBegin();
+            if (_list.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
             }
-            _iter1.add(_iter2);
+            setFloat = new ArrayList<List<Float>>(_list.size);
+            for (int _i = 0; _i < _list.size; _i++) {
+                
+                List<Float> _value1;
+                            {
+                            TList _list1 = oprot.readListBegin();
+                            if (_list1.size < 0) {
+                                throw new TException("Using an unsupported Map, size is less than zero.");
+                            }
+                            _value1 = new ArrayList<Float>(_list1.size);
+                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                                
+                                
+                                float _value2 = oprot.readFloat();
+                                
+                                
+                                _value1.add(_value2);
+                                
+                            }
+                            oprot.readListEnd();
+                            }
+                setFloat.add(_value1);
+            }
             oprot.readListEnd();
             }
-            oprot.readListEnd();
               res.value = setFloat;
             }
             break;

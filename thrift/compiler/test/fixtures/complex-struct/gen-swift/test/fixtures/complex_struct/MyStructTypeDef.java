@@ -332,14 +332,17 @@ public final class MyStructTypeDef {
           if (__field.type == TType.MAP) {
             Map<Short, String> myMapField;
             {
-            TMap _map1 = oprot.readMapBegin();
-            Map<Short, String> _iter1 = new HashMap<Short, String>(Math.max(0, 2*_map1.size));
-            myMapField = _iter1;
-            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+            TMap _map = oprot.readMapBegin();
+            if (_map.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            myMapField = new HashMap<Short, String>(_map.size);
+            for (int _i = 0; _i < _map.size; _i++) {
+                
                 short _key1 = oprot.readI16();
-                String _val1 = oprot.readString();
-                _iter1.put(_key1, _val1);
+
+                String _value1 = oprot.readString();
+                myMapField.put(_key1, _value1);
             }
             }
             oprot.readMapEnd();
@@ -352,14 +355,17 @@ public final class MyStructTypeDef {
           if (__field.type == TType.MAP) {
             Map<Short, String> myMapTypedef;
             {
-            TMap _map1 = oprot.readMapBegin();
-            Map<Short, String> _iter1 = new HashMap<Short, String>(Math.max(0, 2*_map1.size));
-            myMapTypedef = _iter1;
-            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+            TMap _map = oprot.readMapBegin();
+            if (_map.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            myMapTypedef = new HashMap<Short, String>(_map.size);
+            for (int _i = 0; _i < _map.size; _i++) {
+                
                 short _key1 = oprot.readI16();
-                String _val1 = oprot.readString();
-                _iter1.put(_key1, _val1);
+
+                String _value1 = oprot.readString();
+                myMapTypedef.put(_key1, _value1);
             }
             }
             oprot.readMapEnd();
@@ -370,14 +376,20 @@ public final class MyStructTypeDef {
           break;
         case _MYLISTFIELD:
           if (__field.type == TType.LIST) {
-            TList _list1 = oprot.readListBegin();
-            List<Double> _iter1 = new ArrayList<Double>(Math.max(0, 2*_list1.size));
-            List<Double> myListField = _iter1;
-            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
-                _iter1.add(oprot.readDouble());
+            List<Double> myListField;
+            {
+            TList _list = oprot.readListBegin();
+            if (_list.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            myListField = new ArrayList<Double>(_list.size);
+            for (int _i = 0; _i < _list.size; _i++) {
+                
+                double _value1 = oprot.readDouble();
+                myListField.add(_value1);
             }
             oprot.readListEnd();
+            }
             builder.setMyListField(myListField);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -385,14 +397,20 @@ public final class MyStructTypeDef {
           break;
         case _MYLISTTYPEDEF:
           if (__field.type == TType.LIST) {
-            TList _list1 = oprot.readListBegin();
-            List<Double> _iter1 = new ArrayList<Double>(Math.max(0, 2*_list1.size));
-            List<Double> myListTypedef = _iter1;
-            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
-                _iter1.add(oprot.readDouble());
+            List<Double> myListTypedef;
+            {
+            TList _list = oprot.readListBegin();
+            if (_list.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            myListTypedef = new ArrayList<Double>(_list.size);
+            for (int _i = 0; _i < _list.size; _i++) {
+                
+                double _value1 = oprot.readDouble();
+                myListTypedef.add(_value1);
             }
             oprot.readListEnd();
+            }
             builder.setMyListTypedef(myListTypedef);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -402,29 +420,50 @@ public final class MyStructTypeDef {
           if (__field.type == TType.MAP) {
             Map<Short, List<List<Double>>> myMapListOfTypeDef;
             {
-            TMap _map1 = oprot.readMapBegin();
-            Map<Short, List<List<Double>>> _iter1 = new HashMap<Short, List<List<Double>>>(Math.max(0, 2*_map1.size));
-            myMapListOfTypeDef = _iter1;
-            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+            TMap _map = oprot.readMapBegin();
+            if (_map.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            myMapListOfTypeDef = new HashMap<Short, List<List<Double>>>(_map.size);
+            for (int _i = 0; _i < _map.size; _i++) {
+                
                 short _key1 = oprot.readI16();
-                List<List<Double>> _val1;
-                TList _list2 = oprot.readListBegin();
-            List<List<Double>> _iter2 = new ArrayList<List<Double>>(Math.max(0, 2*_list2.size));
-            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
-            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
-                TList _list3 = oprot.readListBegin();
-            List<Double> _iter3 = new ArrayList<Double>(Math.max(0, 2*_list3.size));
-            if (_list3.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
-            for (int _i3 = 0; _i3 < _list3.size; ++_i3) {
-                _iter3.add(oprot.readDouble());
+
+                List<List<Double>> _value1;
+                            {
+                            TList _list1 = oprot.readListBegin();
+                            if (_list1.size < 0) {
+                                throw new TException("Using an unsupported Map, size is less than zero.");
+                            }
+                            _value1 = new ArrayList<List<Double>>(_list1.size);
+                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                                
+                                List<Double> _value2;
+            {
+            TList _list2 = oprot.readListBegin();
+            if (_list2.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
             }
-            _iter2.add(_iter3);
+            _value2 = new ArrayList<Double>(_list2.size);
+            for (int _i2 = 0; _i2 < _list2.size; _i2++) {
+                
+                
+                double _value3 = oprot.readDouble();
+                
+                
+                _value2.add(_value3);
+                
+            }
             oprot.readListEnd();
             }
-            _val1 = _iter2;
-            oprot.readListEnd();
-                _iter1.put(_key1, _val1);
+
+                                
+                                _value1.add(_value2);
+                                
+                            }
+                            oprot.readListEnd();
+                            }
+                                myMapListOfTypeDef.put(_key1, _value1);
             }
             }
             oprot.readMapEnd();

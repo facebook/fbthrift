@@ -232,14 +232,17 @@ public final class MyStruct {
           if (__field.type == TType.MAP) {
             com.foo.FastIntLongMap detailMap;
             {
-            TMap _map1 = oprot.readMapBegin();
-            com.foo.FastIntLongMap _iter1 = new com.foo.FastIntLongMap();
-            detailMap = _iter1;
-            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
-            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+            TMap _map = oprot.readMapBegin();
+            if (_map.size < 0) {
+                throw new TException("Using an unsupported Map, size is less than zero.");
+            }
+            detailMap = new com.foo.FastIntLongMap();
+            for (int _i = 0; _i < _map.size; _i++) {
+                
                 int _key1 = oprot.readI32();
-                long _val1 = oprot.readI64();
-                _iter1.put(_key1, _val1);
+
+                long _value1 = oprot.readI64();
+                detailMap.put(_key1, _value1);
             }
             }
             oprot.readMapEnd();
