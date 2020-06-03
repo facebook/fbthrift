@@ -111,8 +111,7 @@ class HeaderClientChannel : public ClientChannel,
   // Interface from MessageChannel::RecvCallback
   void messageReceived(
       std::unique_ptr<folly::IOBuf>&&,
-      std::unique_ptr<apache::thrift::transport::THeader>&&,
-      std::unique_ptr<MessageChannel::RecvCallback::sample>) override;
+      std::unique_ptr<apache::thrift::transport::THeader>&&) override;
   void messageChannelEOF() override;
   void messageReceiveErrorWrapped(folly::exception_wrapper&&) override;
 

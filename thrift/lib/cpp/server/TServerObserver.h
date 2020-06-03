@@ -56,7 +56,6 @@ class TServerObserver {
 
   class CallTimestamps {
    public:
-    uint64_t readBegin;
     uint64_t readEnd;
     uint64_t processBegin;
     uint64_t processEnd;
@@ -68,7 +67,7 @@ class TServerObserver {
     }
 
     void init() {
-      readBegin = readEnd = 0;
+      readEnd = 0;
       processBegin = processEnd = 0;
       writeBegin = writeEnd = 0;
     }

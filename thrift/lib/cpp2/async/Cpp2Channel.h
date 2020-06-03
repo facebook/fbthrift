@@ -140,8 +140,6 @@ class Cpp2Channel
   RecvCallback* recvCallback_;
   bool eofInvoked_;
 
-  std::unique_ptr<RecvCallback::sample> sample_;
-
   std::shared_ptr<wangle::OutputBufferingHandler> outputBufferingHandler_;
   std::shared_ptr<FramingHandler> framingHandler_;
 

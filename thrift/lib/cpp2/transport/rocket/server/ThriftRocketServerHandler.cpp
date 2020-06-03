@@ -285,9 +285,10 @@ void ThriftRocketServerHandler::handleRequestCommon(
     Payload&& payload,
     F&& makeRequest) {
   // setup request sampling for counters and stats
-  MessageChannel::RecvCallback::sample sample{shouldSample()};
-  if (UNLIKELY(sample.getStatus().isEnabled())) {
-    sample.readBegin = sample.readEnd = concurrency::Util::currentTimeUsec();
+  auto samplingStatus = shouldSample();
+  uint64_t readEnd = 0;
+  if (UNLIKELY(samplingStatus.isEnabled())) {
+    readEnd = concurrency::Util::currentTimeUsec();
   }
 
   auto baseReqCtx = cpp2Processor_->getBaseContextForRequest();
@@ -364,19 +365,16 @@ void ThriftRocketServerHandler::handleRequestCommon(
 
   auto request = makeRequest(
       std::move(metadata), std::move(debugPayload), std::move(reqCtx));
-  request->timestamps_.setStatus(sample.getStatus());
-  if (UNLIKELY(sample.getStatus().isEnabled())) {
-    request->timestamps_.readBegin = sample.readBegin;
-    request->timestamps_.readEnd = sample.readEnd;
-  }
+  request->timestamps_.setStatus(samplingStatus);
+  request->timestamps_.readEnd = readEnd;
 
   if (serverConfigs_) {
     if (auto* observer = serverConfigs_->getObserver()) {
-      if (UNLIKELY(sample.getStatus().isEnabled())) {
+      if (UNLIKELY(samplingStatus.isEnabled())) {
         // Expensive operations; happens only when sampling is enabled
         request->timestamps_.processBegin =
             concurrency::Util::currentTimeUsec();
-        if (sample.getStatus().isEnabledByServer()) {
+        if (samplingStatus.isEnabledByServer()) {
           observer->queuedRequests(threadManager_->pendingTaskCount());
           observer->activeRequests(serverConfigs_->getActiveRequests());
         }

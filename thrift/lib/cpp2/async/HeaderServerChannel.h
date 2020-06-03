@@ -85,12 +85,9 @@ class HeaderServerChannel : public ServerChannel,
   }
 
   // Interface from MessageChannel::RecvCallback
-  server::TServerObserver::SamplingStatus shouldSample(
-      const apache::thrift::transport::THeader* header) const override;
   void messageReceived(
       std::unique_ptr<folly::IOBuf>&&,
-      std::unique_ptr<apache::thrift::transport::THeader>&&,
-      std::unique_ptr<sample>) override;
+      std::unique_ptr<apache::thrift::transport::THeader>&&) override;
   void messageChannelEOF() override;
   void messageReceiveErrorWrapped(folly::exception_wrapper&&) override;
 
@@ -109,7 +106,7 @@ class HeaderServerChannel : public ServerChannel,
         HeaderServerChannel* channel,
         std::unique_ptr<folly::IOBuf>&& buf,
         std::unique_ptr<apache::thrift::transport::THeader>&& header,
-        std::unique_ptr<sample> sample);
+        const server::TServerObserver::SamplingStatus& samplingStatus);
 
     bool isActive() const override {
       return active_;
@@ -223,6 +220,9 @@ class HeaderServerChannel : public ServerChannel,
   static std::string getTHeaderPayloadString(folly::IOBuf* buf);
   static std::string getTransportDebugString(
       folly::AsyncTransportWrapper* transport);
+
+  server::TServerObserver::SamplingStatus shouldSample(
+      const apache::thrift::transport::THeader* header) const;
 
   HeaderServerChannel::Callback* callback_;
 

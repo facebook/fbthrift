@@ -193,13 +193,12 @@ HeaderServerChannel::HeaderRequest::HeaderRequest(
     HeaderServerChannel* channel,
     unique_ptr<IOBuf>&& buf,
     unique_ptr<THeader>&& header,
-    unique_ptr<sample> sample)
+    const SamplingStatus& samplingStatus)
     : channel_(channel), header_(std::move(header)), active_(true) {
   this->buf_ = std::move(buf);
-  if (sample) {
-    timestamps_.setStatus(sample->getStatus());
-    timestamps_.readBegin = sample->readBegin;
-    timestamps_.readEnd = sample->readEnd;
+  if (samplingStatus.isEnabled()) {
+    timestamps_.setStatus(samplingStatus);
+    timestamps_.readEnd = concurrency::Util::currentTimeUsec();
   }
 }
 
@@ -383,7 +382,6 @@ void HeaderServerChannel::sendCatchupRequests(
   }
 }
 
-// Interface from MessageChannel::RecvCallback
 TServerObserver::SamplingStatus HeaderServerChannel::shouldSample(
     const apache::thrift::transport::THeader* header) const {
   bool isServerSamplingEnabled =
@@ -394,10 +392,10 @@ TServerObserver::SamplingStatus HeaderServerChannel::shouldSample(
   return SamplingStatus(isServerSamplingEnabled, isClientSamplingEnabled);
 }
 
+// Interface from MessageChannel::RecvCallback
 void HeaderServerChannel::messageReceived(
     unique_ptr<IOBuf>&& buf,
-    unique_ptr<THeader>&& header,
-    unique_ptr<sample> sample) {
+    unique_ptr<THeader>&& header) {
   DestructorGuard dg(this);
 
   uint32_t recvSeqId = header->getSequenceNumber();
@@ -421,8 +419,9 @@ void HeaderServerChannel::messageReceived(
   }
 
   if (callback_) {
+    auto sampleStatus = shouldSample(header.get());
     unique_ptr<HeaderRequest> request(new HeaderRequest(
-        this, std::move(buf), std::move(header), std::move(sample)));
+        this, std::move(buf), std::move(header), sampleStatus));
 
     if (!outOfOrder) {
       if (inOrderRequests_.size() > MAX_REQUEST_SIZE) {

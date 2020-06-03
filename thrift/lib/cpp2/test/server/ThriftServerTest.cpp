@@ -460,15 +460,12 @@ static void validateLatencyHeaders(
     std::map<std::string, std::string> headers,
     LatencyHeaderStatus status) {
   bool isHeaderExpected = (status == LatencyHeaderStatus::EXPECTED);
-  auto readLatency = folly::get_optional(headers, kReadLatencyHeader.str());
-  ASSERT_EQ(isHeaderExpected, readLatency.has_value());
   auto queueLatency = folly::get_optional(headers, kQueueLatencyHeader.str());
   ASSERT_EQ(isHeaderExpected, queueLatency.has_value());
   auto processLatency =
       folly::get_optional(headers, kProcessLatencyHeader.str());
   ASSERT_EQ(isHeaderExpected, processLatency.has_value());
   if (isHeaderExpected) {
-    EXPECT_GE(folly::to<int64_t>(readLatency.value()), 0);
     EXPECT_GE(folly::to<int64_t>(queueLatency.value()), 0);
     EXPECT_GE(folly::to<int64_t>(processLatency.value()), 0);
   }

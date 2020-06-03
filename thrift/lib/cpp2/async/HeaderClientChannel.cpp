@@ -231,8 +231,7 @@ HeaderClientChannel::ClientFramingHandler::removeFrame(IOBufQueue* q) {
 // Interface from MessageChannel::RecvCallback
 void HeaderClientChannel::messageReceived(
     unique_ptr<IOBuf>&& buf,
-    unique_ptr<THeader>&& header,
-    unique_ptr<MessageChannel::RecvCallback::sample>) {
+    unique_ptr<THeader>&& header) {
   DestructorGuard dg(this);
 
   if (!buf) {

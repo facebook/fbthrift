@@ -793,7 +793,6 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
       .def("clearPending", &ThreadManager::clearPending);
 
   class_<TServerObserver::CallTimestamps>("CallTimestamps")
-      .def_readwrite("readBegin", &TServerObserver::CallTimestamps::readBegin)
       .def_readwrite("readEnd", &TServerObserver::CallTimestamps::readEnd)
       .def_readwrite(
           "processBegin", &TServerObserver::CallTimestamps::processBegin)

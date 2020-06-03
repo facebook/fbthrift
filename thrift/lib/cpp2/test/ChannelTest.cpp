@@ -251,10 +251,8 @@ class MessageCallback : public MessageChannel::SendCallback,
     sendError_++;
   }
 
-  void messageReceived(
-      unique_ptr<IOBuf>&& buf,
-      unique_ptr<THeader>&&,
-      unique_ptr<sample>) override {
+  void messageReceived(unique_ptr<IOBuf>&& buf, unique_ptr<THeader>&&)
+      override {
     recv_++;
     recvBytes_ += buf->computeChainDataLength();
   }
@@ -365,12 +363,9 @@ class MessageTest : public SocketPairTest<Cpp2Channel, Cpp2Channel>,
     EXPECT_EQ(recvBytes_, len_);
   }
 
-  void messageReceived(
-      unique_ptr<IOBuf>&& buf,
-      unique_ptr<THeader>&& header,
-      unique_ptr<sample> sample) override {
-    MessageCallback::messageReceived(
-        std::move(buf), std::move(header), std::move(sample));
+  void messageReceived(unique_ptr<IOBuf>&& buf, unique_ptr<THeader>&& header)
+      override {
+    MessageCallback::messageReceived(std::move(buf), std::move(header));
     channel1_->setReceiveCallback(nullptr);
   }
 
@@ -698,10 +693,7 @@ class BadSeqIdTest
     unique_ptr<THeader> header(new THeader);
     header->setSequenceNumber(-1);
     HeaderServerChannel::HeaderRequest r(
-        channel1_.get(),
-        req->extractBuf(),
-        std::move(header),
-        std::unique_ptr<MessageChannel::RecvCallback::sample>(nullptr));
+        channel1_.get(), req->extractBuf(), std::move(header), {});
     r.sendReply(r.extractBuf());
   }
 
@@ -1193,8 +1185,7 @@ class DestroyRecvCallback : public MessageChannel::RecvCallback {
   }
   void messageReceived(
       std::unique_ptr<folly::IOBuf>&&,
-      std::unique_ptr<apache::thrift::transport::THeader>&&,
-      std::unique_ptr<MessageChannel::RecvCallback::sample>) override {}
+      std::unique_ptr<apache::thrift::transport::THeader>&&) override {}
   void messageChannelEOF() override {
     EXPECT_EQ(invocations_, 0);
     invocations_++;

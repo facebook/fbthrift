@@ -109,28 +109,13 @@ void Cpp2Channel::read(
         bufAndHeader) {
   DestructorGuard dg(this);
 
-  if (recvCallback_) {
-    auto samplingStatus =
-        recvCallback_->shouldSample(bufAndHeader.second.get());
-    if (samplingStatus.isEnabled()) {
-      sample_.reset(new RecvCallback::sample(samplingStatus));
-      sample_->readBegin = Util::currentTimeUsec();
-    }
-  }
-
   if (!recvCallback_) {
     VLOG(5) << "Received a message, but no recvCallback_ installed!";
     return;
   }
 
-  if (sample_) {
-    sample_->readEnd = Util::currentTimeUsec();
-  }
-
   recvCallback_->messageReceived(
-      std::move(bufAndHeader.first),
-      std::move(bufAndHeader.second),
-      std::move(sample_));
+      std::move(bufAndHeader.first), std::move(bufAndHeader.second));
 }
 
 void Cpp2Channel::readEOF(Context*) {

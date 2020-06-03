@@ -38,7 +38,6 @@
 namespace apache {
 namespace thrift {
 
-constexpr folly::StringPiece kReadLatencyHeader("read_latency_us");
 constexpr folly::StringPiece kQueueLatencyHeader("queue_latency_us");
 constexpr folly::StringPiece kProcessLatencyHeader("process_latency_us");
 

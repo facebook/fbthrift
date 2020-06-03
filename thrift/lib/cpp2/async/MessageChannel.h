@@ -68,29 +68,10 @@ class MessageChannel : virtual public folly::DelayedDestruction {
 
   class RecvCallback {
    public:
-    struct sample {
-     public:
-      uint64_t readBegin;
-      uint64_t readEnd;
-
-      sample(SamplingStatus status) : status_(status) {}
-      SamplingStatus getStatus() const {
-        return status_;
-      }
-
-     private:
-      SamplingStatus status_;
-    };
-
     virtual ~RecvCallback() {}
-    virtual SamplingStatus shouldSample(
-        const apache::thrift::transport::THeader* /*header*/) const {
-      return SamplingStatus();
-    }
     virtual void messageReceived(
         std::unique_ptr<folly::IOBuf>&&,
-        std::unique_ptr<apache::thrift::transport::THeader>&&,
-        std::unique_ptr<sample>) = 0;
+        std::unique_ptr<apache::thrift::transport::THeader>&&) = 0;
     virtual void messageChannelEOF() = 0;
     virtual void messageReceiveErrorWrapped(folly::exception_wrapper&&) = 0;
   };

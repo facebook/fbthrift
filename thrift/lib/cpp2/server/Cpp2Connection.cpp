@@ -582,10 +582,6 @@ void Cpp2Connection::Cpp2Request::setLatencyHeaders(
     const apache::thrift::server::TServerObserver::CallTimestamps& timestamps,
     std::map<std::string, std::string>* newHeaders) const {
   setLatencyHeader(
-      kReadLatencyHeader.str(),
-      folly::to<std::string>(timestamps.readEnd - timestamps.readBegin),
-      newHeaders);
-  setLatencyHeader(
       kQueueLatencyHeader.str(),
       folly::to<std::string>(timestamps.processBegin - timestamps.readEnd),
       newHeaders);
