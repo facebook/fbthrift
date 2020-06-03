@@ -29,8 +29,6 @@
 #include <folly/Likely.h>
 #include <folly/ScopeGuard.h>
 #include <folly/Try.h>
-#include <folly/fibers/FiberManager.h>
-#include <folly/fibers/FiberManagerMap.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/AsyncSocket.h>
@@ -75,7 +73,6 @@ RocketClient::RocketClient(
     folly::AsyncTransportWrapper::UniquePtr socket,
     std::unique_ptr<SetupFrame> setupFrame)
     : evb_(&evb),
-      fm_(&folly::fibers::getFiberManager(*evb_, fmOpts_)),
       socket_(std::move(socket)),
       setupFrame_(std::move(setupFrame)),
       parser_(*this),
@@ -692,27 +689,6 @@ void RocketClient::sendRequestStreamChannel(
       firstResponseTimeout);
 }
 
-folly::Try<void> RocketClient::sendPayloadSync(
-    StreamId streamId,
-    Payload&& payload,
-    Flags flags) {
-  RequestContext ctx(PayloadFrame(streamId, std::move(payload), flags), queue_);
-  if (auto ew = err(scheduleWrite(ctx))) {
-    return folly::Try<void>(std::move(ew));
-  }
-  return ctx.waitForWriteToComplete();
-}
-
-folly::Try<void> RocketClient::sendErrorSync(
-    StreamId streamId,
-    RocketException&& rex) {
-  RequestContext ctx(ErrorFrame(streamId, std::move(rex)), queue_);
-  if (auto ew = err(scheduleWrite(ctx))) {
-    return folly::Try<void>(std::move(ew));
-  }
-  return ctx.waitForWriteToComplete();
-}
-
 template <typename Frame, typename OnError>
 bool RocketClient::sendFrame(Frame&& frame, OnError&& onError) {
   class Context : public folly::fibers::Baton::Waiter {
@@ -790,41 +766,25 @@ void RocketClient::sendPayload(
     StreamId streamId,
     StreamPayload&& payload,
     Flags flags) {
-  auto g = makeRequestCountGuard();
-  fm_->addTaskFinally(
-      [this,
-       g = std::move(g),
-       streamId,
-       payload = pack(std::move(payload)),
-       flags]() mutable {
-        return sendPayloadSync(streamId, std::move(payload), flags);
-      },
-      [dg = DestructorGuard(this),
-       this](folly::Try<folly::Try<void>>&& result) {
-        auto resc = collapseTry(std::move(result));
-        if (resc.hasException()) {
-          FB_LOG_EVERY_MS(ERROR, 1000)
-              << "sendPayload failed, closing now: " << resc.exception().what();
-          close(toTransportException(std::move(resc.exception())));
-        }
+  std::ignore = sendFrame(
+      PayloadFrame(streamId, pack(std::move(payload)), flags),
+      [this, dg = DestructorGuard(this), g = makeRequestCountGuard()](
+          transport::TTransportException ex) {
+        FB_LOG_EVERY_MS(ERROR, 1000)
+            << "sendPayload failed, closing now: " << ex.what();
+        close(std::move(ex));
       });
 }
 
 void RocketClient::sendError(StreamId streamId, RocketException&& rex) {
-  auto g = makeRequestCountGuard();
   freeStream(streamId);
-  fm_->addTaskFinally(
-      [this, g = std::move(g), streamId, rex = std::move(rex)]() mutable {
-        return sendErrorSync(streamId, std::move(rex));
-      },
-      [dg = DestructorGuard(this),
-       this](folly::Try<folly::Try<void>>&& result) {
-        auto resc = collapseTry(std::move(result));
-        if (resc.hasException()) {
-          FB_LOG_EVERY_MS(ERROR, 1000)
-              << "sendError failed, closing now: " << resc.exception().what();
-          close(toTransportException(std::move(resc.exception())));
-        }
+  std::ignore = sendFrame(
+      ErrorFrame(streamId, std::move(rex)),
+      [this, dg = DestructorGuard(this), g = makeRequestCountGuard()](
+          transport::TTransportException ex) {
+        FB_LOG_EVERY_MS(ERROR, 1000)
+            << "sendError failed, closing now: " << ex.what();
+        close(std::move(ex));
       });
 }
 
@@ -1101,7 +1061,6 @@ void RocketClient::attachEventBase(folly::EventBase& evb) {
   evb.dcheckIsInEventBaseThread();
 
   evb_ = &evb;
-  fm_ = &folly::fibers::getFiberManager(*evb_, fmOpts_);
   socket_->attachEventBase(evb_);
   evb_->runOnDestruction(eventBaseDestructionCallback_);
 }
@@ -1114,7 +1073,6 @@ void RocketClient::detachEventBase() {
   eventBaseDestructionCallback_.cancel();
   detachableLoopCallback_.cancelLoopCallback();
   socket_->detachEventBase();
-  fm_ = nullptr;
   evb_ = nullptr;
   flushList_ = nullptr;
 }

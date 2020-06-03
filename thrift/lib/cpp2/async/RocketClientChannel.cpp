@@ -959,9 +959,5 @@ void RocketClientChannel::unsetOnDetachable() {
 }
 
 constexpr std::chrono::milliseconds RocketClientChannel::kDefaultRpcTimeout;
-
-folly::fibers::FiberManager& RocketClientChannel::getFiberManager() const {
-  return rclient_->getFiberManager();
-}
 } // namespace thrift
 } // namespace apache

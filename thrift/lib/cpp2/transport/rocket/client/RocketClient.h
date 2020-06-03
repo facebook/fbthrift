@@ -245,16 +245,8 @@ class RocketClient : public folly::DelayedDestruction,
     return negotiatedCompressionAlgo_;
   }
 
-  folly::fibers::FiberManager& getFiberManager() const {
-    DCHECK(fm_);
-    return *fm_;
-  }
-
  private:
   folly::EventBase* evb_;
-  folly::fibers::FiberManager::FrozenOptions fmOpts_{
-      folly::fibers::FiberManager::Options()};
-  folly::fibers::FiberManager* fm_;
   folly::AsyncTransportWrapper::UniquePtr socket_;
   folly::Function<void()> onDetachable_;
   size_t requests_{0};
@@ -458,12 +450,6 @@ class RocketClient : public folly::DelayedDestruction,
 
   template <typename Frame, typename OnError>
   FOLLY_NODISCARD bool sendFrame(Frame&& frame, OnError&& onError);
-
-  FOLLY_NODISCARD folly::Try<void>
-  sendPayloadSync(StreamId streamId, Payload&& payload, Flags flags);
-  FOLLY_NODISCARD folly::Try<void> sendErrorSync(
-      StreamId streamId,
-      RocketException&& rex);
 
   FOLLY_NODISCARD folly::Try<void> scheduleWrite(RequestContext& ctx);
 
