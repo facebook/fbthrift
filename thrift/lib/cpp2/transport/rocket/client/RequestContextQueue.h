@@ -47,6 +47,7 @@ class RequestContextQueue {
       auto& req = writeSendingQueue_.front();
       writeSendingQueue_.pop_front();
       lastInBatch = req.lastInWriteBatch_;
+      const bool shouldPostBaton = req.state() != State::WRITE_SENDING;
       if (LIKELY(req.state() == State::WRITE_SENDING)) {
         req.state_ = State::WRITE_SENT;
         // Move req to the WRITE_SENT queue even if req is not a
@@ -54,9 +55,11 @@ class RequestContextQueue {
         writeSentQueue_.push_back(req);
       } else {
         DCHECK(req.state() == State::COMPLETE);
-        req.baton_.post();
       }
       foreachRequest(req);
+      if (shouldPostBaton) {
+        req.baton_.post();
+      }
     }
   }
 

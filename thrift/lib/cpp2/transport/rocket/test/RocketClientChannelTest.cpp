@@ -447,6 +447,12 @@ TEST_F(RocketClientChannelTest, BatchedWriteFastFirstResponseSemiFuture) {
   futures.push_back(std::move(sf));
 
   for (size_t i = 0; i < 5; ++i) {
+    sf = echoSemiFuture(client, 25).via(&evb).thenTry([&](auto&& response) {
+      EXPECT_TRUE(response.hasValue());
+      EXPECT_EQ(25, response.value()->computeChainDataLength());
+    });
+    futures.push_back(std::move(sf));
+
     sf = noResponseIOBufSemiFuture(client, 25)
              .via(&evb)
              .thenTry(
