@@ -426,6 +426,26 @@ class FirstRequestProcessorSink : public SinkClientCallback,
   SinkClientCallback* clientCallback_;
   folly::EventBase* evb_;
 };
+
+void setCompression(RequestRpcMetadata& metadata, ssize_t payloadSize) {
+  if (auto compressionConfig = metadata.compressionConfig_ref()) {
+    if (auto codecRef = compressionConfig->codecConfig_ref()) {
+      if (payloadSize >
+          compressionConfig->compressionSizeLimit_ref().value_or(0)) {
+        switch (codecRef->getType()) {
+          case CodecConfig::zlibConfig:
+            metadata.compression_ref() = CompressionAlgorithm::ZLIB;
+            break;
+          case CodecConfig::zstdConfig:
+            metadata.compression_ref() = CompressionAlgorithm::ZSTD;
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+}
 } // namespace
 
 class RocketClientChannel::SingleRequestSingleResponseCallback final
@@ -668,11 +688,7 @@ void RocketClientChannel::sendRequestStream(
   }
 
   auto buf = std::move(request.buffer);
-
-  if (auto compression =
-          rclient_->getCompressionAlgorithm(buf->computeChainDataLength())) {
-    metadata.compression_ref() = *compression;
-  }
+  setCompression(metadata, buf->computeChainDataLength());
 
   return rclient_->sendRequestStream(
       rocket::pack(metadata, std::move(buf)),
@@ -707,11 +723,7 @@ void RocketClientChannel::sendRequestSink(
   }
 
   auto buf = std::move(request.buffer);
-
-  if (auto compression =
-          rclient_->getCompressionAlgorithm(buf->computeChainDataLength())) {
-    metadata.compression_ref() = *compression;
-  }
+  setCompression(metadata, buf->computeChainDataLength());
 
   return rclient_->sendRequestSink(
       rocket::pack(metadata, std::move(buf)),
@@ -745,11 +757,7 @@ void RocketClientChannel::sendThriftRequest(
   }
 
   auto buf = std::move(request.buffer);
-
-  if (auto compression =
-          rclient_->getCompressionAlgorithm(buf->computeChainDataLength())) {
-    metadata.compression_ref() = *compression;
-  }
+  setCompression(metadata, buf->computeChainDataLength());
 
   switch (kind) {
     case RpcKind::SINGLE_REQUEST_NO_RESPONSE:

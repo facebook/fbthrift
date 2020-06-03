@@ -59,6 +59,10 @@ RequestRpcMetadata makeRequestRpcMetadata(
   if (header.getCrc32c().has_value()) {
     metadata.crc32c_ref() = header.getCrc32c().value();
   }
+  // add user specified compression settings to metadata
+  if (auto compressionConfig = header.getDesiredCompressionConfig()) {
+    metadata.compressionConfig_ref() = *compressionConfig;
+  }
 
   auto writeHeaders = header.releaseWriteHeaders();
   if (auto* eh = header.getExtraWriteHeaders()) {
@@ -144,7 +148,6 @@ void fillResponseRpcMetadataFromTHeader(
   }
   responseMetadata.otherMetadata_ref() = std::move(otherMetadata);
 }
-
 } // namespace detail
 } // namespace thrift
 } // namespace apache

@@ -234,12 +234,10 @@ class RocketClient : public folly::DelayedDestruction,
     return negotiatedCompressionAlgo_;
   }
 
+  // used for sink payloads compression
   folly::Optional<CompressionAlgorithm> getCompressionAlgorithm(
       ssize_t payloadSize) {
-    if (!autoCompressSizeLimit_) {
-      return folly::none;
-    }
-    if (payloadSize <= *autoCompressSizeLimit_) {
+    if (payloadSize <= autoCompressSizeLimit_) {
       return folly::none;
     }
     return negotiatedCompressionAlgo_;
@@ -253,7 +251,7 @@ class RocketClient : public folly::DelayedDestruction,
   StreamId nextStreamId_{1};
   std::unique_ptr<SetupFrame> setupFrame_;
   folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;
-  folly::Optional<int32_t> autoCompressSizeLimit_;
+  int32_t autoCompressSizeLimit_{0};
   FlushList* flushList_{nullptr};
   enum class ConnectionState : uint8_t {
     CONNECTED,

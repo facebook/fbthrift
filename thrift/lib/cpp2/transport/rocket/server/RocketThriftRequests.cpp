@@ -304,7 +304,8 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
     std::unique_ptr<folly::IOBuf>& payload,
     RocketServerFrameContext& frameContext,
     apache::thrift::protocol::PROTOCOL_TYPES protType,
-    int32_t version) noexcept {
+    int32_t version,
+    const folly::Optional<CompressionConfig>& compressionConfig) noexcept {
   if (!payload) {
     return makeResponseRpcError(
         ResponseRpcErrorCode::UNKNOWN,
@@ -312,8 +313,28 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
         metadata);
   }
 
-  if (auto compression = frameContext.connection().getCompressionAlgorithm(
+  // apply compression if client has specified compression codec
+  if (compressionConfig.has_value()) {
+    if (auto codecRef = compressionConfig->codecConfig_ref()) {
+      if (payload->computeChainDataLength() >
+          static_cast<size_t>(
+              compressionConfig->compressionSizeLimit_ref().value_or(0))) {
+        switch (codecRef->getType()) {
+          case CodecConfig::zlibConfig:
+            metadata.compression_ref() = CompressionAlgorithm::ZLIB;
+            break;
+          case CodecConfig::zstdConfig:
+            metadata.compression_ref() = CompressionAlgorithm::ZSTD;
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  } else if (
+      auto compression = frameContext.connection().getCompressionAlgorithm(
           payload->computeChainDataLength())) {
+    // if negotiation is enabled, use the negotiated compression codec
     metadata.compression_ref() = *compression;
   }
 
@@ -371,7 +392,12 @@ void ThriftServerRequestResponse::sendThriftResponse(
     std::unique_ptr<folly::IOBuf> data,
     apache::thrift::MessageChannel::SendCallbackPtr cb) noexcept {
   if (auto error = processFirstResponse(
-          metadata, data, context_, getProtoId(), version_)) {
+          metadata,
+          data,
+          context_,
+          getProtoId(),
+          version_,
+          getCompressionConfig())) {
     error.handle(
         [&](RocketException& ex) {
           context_.sendError(std::move(ex), std::move(cb));
@@ -479,7 +505,12 @@ bool ThriftServerRequestStream::sendStreamThriftResponse(
     return false;
   }
   if (auto error = processFirstResponse(
-          metadata, data, context_, getProtoId(), version_)) {
+          metadata,
+          data,
+          context_,
+          getProtoId(),
+          version_,
+          getCompressionConfig())) {
     error.handle(
         [&](RocketException& ex) {
           std::exchange(clientCallback_, nullptr)
@@ -502,7 +533,12 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
     std::unique_ptr<folly::IOBuf> data,
     apache::thrift::detail::ServerStreamFactory&& stream) noexcept {
   if (auto error = processFirstResponse(
-          metadata, data, context_, getProtoId(), version_)) {
+          metadata,
+          data,
+          context_,
+          getProtoId(),
+          version_,
+          getCompressionConfig())) {
     error.handle(
         [&](RocketException& ex) {
           std::exchange(clientCallback_, nullptr)
@@ -524,7 +560,12 @@ void ThriftServerRequestStream::sendSerializedError(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> exbuf) noexcept {
   if (auto error = processFirstResponse(
-          metadata, exbuf, context_, getProtoId(), version_)) {
+          metadata,
+          exbuf,
+          context_,
+          getProtoId(),
+          version_,
+          getCompressionConfig())) {
     error.handle(
         [&](RocketException& ex) {
           std::exchange(clientCallback_, nullptr)
@@ -579,7 +620,12 @@ void ThriftServerRequestSink::sendSerializedError(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> exbuf) noexcept {
   if (auto error = processFirstResponse(
-          metadata, exbuf, context_, getProtoId(), version_)) {
+          metadata,
+          exbuf,
+          context_,
+          getProtoId(),
+          version_,
+          getCompressionConfig())) {
     error.handle(
         [&](RocketException& ex) {
           std::exchange(clientCallback_, nullptr)
@@ -604,7 +650,12 @@ void ThriftServerRequestSink::sendSinkThriftResponse(
     return;
   }
   if (auto error = processFirstResponse(
-          metadata, data, context_, getProtoId(), version_)) {
+          metadata,
+          data,
+          context_,
+          getProtoId(),
+          version_,
+          getCompressionConfig())) {
     error.handle(
         [&](RocketException& ex) {
           std::exchange(clientCallback_, nullptr)

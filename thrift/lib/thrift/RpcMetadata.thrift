@@ -61,6 +61,23 @@ enum CompressionAlgorithm {
   ZSTD = 2,
 }
 
+struct ZlibCompressionCodecConfig {
+}
+
+struct ZstdCompressionCodecConfig {
+}
+
+union CodecConfig {
+  1: ZlibCompressionCodecConfig zlibConfig
+  2: ZstdCompressionCodecConfig zstdConfig
+}
+
+// Represent the compression config user set
+struct CompressionConfig {
+  1: optional CodecConfig codecConfig
+  2: optional i64 compressionSizeLimit
+}
+
 // A TLS extension used for thrift parameters negotiation during TLS handshake.
 // All fields should be optional i64 bitmaps indicating feature presence.
 struct NegotiationParameters {
@@ -123,6 +140,8 @@ struct RequestRpcMetadata {
   13: optional string loadMetric;
   // The CompressionAlgorithm used to compress requests (if any)
   14: optional CompressionAlgorithm compression;
+  // Requested compression policy for responses
+  15: optional CompressionConfig compressionConfig;
 }
 
 struct PayloadResponseMetadata {

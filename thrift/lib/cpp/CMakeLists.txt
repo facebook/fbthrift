@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+get_property(RpcMetadata-cpp2-SOURCES GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES)
 get_property(reflection-cpp2-SOURCES GLOBAL PROPERTY reflection-cpp2-SOURCES)
 
 add_library(
@@ -71,6 +72,7 @@ target_link_libraries(
     thrift-core
 )
 
+bypass_source_check("${RpcMetadata-cpp2-SOURCES}")
 add_library(
   transport
 
@@ -86,6 +88,11 @@ add_library(
   util/PausableTimer.cpp
   util/THttpParser.cpp
   util/VarintUtils.cpp
+  ${RpcMetadata-cpp2-SOURCES}
+)
+add_dependencies(
+  transport
+  RpcMetadata-cpp2-target
 )
 target_link_libraries(
   transport

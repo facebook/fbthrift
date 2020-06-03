@@ -94,6 +94,13 @@ class ThriftRequestCore : public ResponseChannelRequest {
       header_.setReadHeaders(std::move(*otherMetadata));
     }
 
+    // Store client's compression configs (if client explicitly requested
+    // compression codec and size limit, use these settings to compress
+    // response)
+    if (auto compressionConfig = metadata.compressionConfig_ref()) {
+      compressionConfig_ = *compressionConfig;
+    }
+
     if (auto methodName = metadata.name_ref()) {
       reqContext_.setMethodName(std::move(*methodName));
     }
@@ -136,6 +143,10 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
   const std::string& getMethodName() const {
     return reqContext_.getMethodName();
+  }
+
+  const folly::Optional<CompressionConfig>& getCompressionConfig() {
+    return compressionConfig_;
   }
 
   // RequestTimestampSample is a wrapper for sampled requests
@@ -469,6 +480,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   const uint64_t requestFlags_{0};
   folly::Optional<std::string> loadMetric_;
   Cpp2RequestContext reqContext_;
+  folly::Optional<CompressionConfig> compressionConfig_;
 
   QueueTimeout queueTimeout_;
   TaskTimeout taskTimeout_;

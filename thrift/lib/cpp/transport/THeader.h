@@ -27,6 +27,7 @@
 #include <folly/portability/Unistd.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 #include <bitset>
 #include <chrono>
@@ -314,6 +315,14 @@ class THeader {
     return minCompressBytes_;
   }
 
+  void setDesiredCompressionConfig(CompressionConfig compressionConfig) {
+    compressionConfig_ = compressionConfig;
+  }
+
+  folly::Optional<CompressionConfig> getDesiredCompressionConfig() {
+    return compressionConfig_;
+  }
+
   void setCrc32c(folly::Optional<uint32_t> crc32c) {
     crc32c_ = crc32c;
   }
@@ -422,6 +431,7 @@ class THeader {
 
   uint32_t minCompressBytes_;
   bool allowBigFrames_;
+  folly::Optional<CompressionConfig> compressionConfig_;
 
   /**
    * Returns the maximum number of bytes that write k/v headers can take
