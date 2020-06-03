@@ -36,14 +36,17 @@
 
 namespace apache {
 namespace thrift {
-
-class RequestClientCallback;
-
 namespace rocket {
 class RequestContextQueue;
 
 class RequestContext {
  public:
+  class WriteSuccessCallback {
+   public:
+    virtual ~WriteSuccessCallback() = default;
+    virtual void onWriteSuccess() noexcept = 0;
+  };
+
   enum class State : uint8_t {
     WRITE_NOT_SCHEDULED,
     WRITE_SCHEDULED,
@@ -58,11 +61,11 @@ class RequestContext {
       Frame&& frame,
       RequestContextQueue& queue,
       SetupFrame* setupFrame = nullptr,
-      RequestClientCallback* writeCallback = nullptr)
+      WriteSuccessCallback* writeSuccessCallback = nullptr)
       : queue_(queue),
         streamId_(frame.streamId()),
         frameType_(Frame::frameType()),
-        writeCallback_(writeCallback) {
+        writeSuccessCallback_(writeSuccessCallback) {
     serialize(std::forward<Frame>(frame), setupFrame);
   }
 
@@ -143,7 +146,7 @@ class RequestContext {
   folly::HHWheelTimer* timer_{nullptr};
   folly::HHWheelTimer::Callback* timeoutCallback_{nullptr};
   folly::Try<Payload> responsePayload_;
-  RequestClientCallback* const writeCallback_;
+  WriteSuccessCallback* const writeSuccessCallback_{nullptr};
 
   template <class Frame>
   void serialize(Frame&& frame, SetupFrame* setupFrame) {

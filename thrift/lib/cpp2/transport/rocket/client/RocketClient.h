@@ -53,9 +53,6 @@ class FiberManager;
 
 namespace apache {
 namespace thrift {
-
-class RequestClientCallback;
-
 namespace rocket {
 
 class RocketClient : public folly::DelayedDestruction,
@@ -79,20 +76,34 @@ class RocketClient : public folly::DelayedDestruction,
       folly::AsyncTransportWrapper::UniquePtr socket,
       std::unique_ptr<SetupFrame> setupFrame);
 
+  using WriteSuccessCallback = RequestContext::WriteSuccessCallback;
+  class RequestResponseCallback : public WriteSuccessCallback {
+   public:
+    virtual ~RequestResponseCallback() = default;
+    virtual void onResponsePayload(folly::Try<Payload>&& response) noexcept = 0;
+  };
+
   FOLLY_NODISCARD folly::Try<Payload> sendRequestResponseSync(
       Payload&& request,
       std::chrono::milliseconds timeout,
-      RequestClientCallback* writeCallback);
+      WriteSuccessCallback* callback);
 
-  void sendRequestResponseAsync(
+  void sendRequestResponse(
       Payload&& request,
       std::chrono::milliseconds timeout,
-      RequestClientCallback* writeCallback,
-      folly::Function<void(folly::Try<Payload>&&)> responsePayloadCallback);
+      std::unique_ptr<RequestResponseCallback> callback);
 
-  FOLLY_NODISCARD folly::Try<void> sendRequestFnfSync(
+  class RequestFnfCallback {
+   public:
+    virtual ~RequestFnfCallback() = default;
+    virtual void onWrite(folly::Try<void> writeResult) noexcept = 0;
+  };
+
+  FOLLY_NODISCARD folly::Try<void> sendRequestFnfSync(Payload&& request);
+
+  void sendRequestFnf(
       Payload&& request,
-      RequestClientCallback* writeCallback);
+      std::unique_ptr<RequestFnfCallback> callback);
 
   void sendRequestStream(
       Payload&& request,

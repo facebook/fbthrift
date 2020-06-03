@@ -26,7 +26,6 @@
 #include <folly/lang/Assume.h>
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
-#include <thrift/lib/cpp2/async/RequestCallback.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContextQueue.h>
@@ -141,8 +140,8 @@ void RequestContext::onErrorFrame(ErrorFrame&& errorFrame) {
 }
 
 void RequestContext::onWriteSuccess() noexcept {
-  if (writeCallback_) {
-    writeCallback_->onRequestSent();
+  if (writeSuccessCallback_) {
+    writeSuccessCallback_->onWriteSuccess();
   }
 }
 

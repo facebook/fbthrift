@@ -386,7 +386,7 @@ StreamChannelStatus RocketClient::handleExtFrame(
 folly::Try<Payload> RocketClient::sendRequestResponseSync(
     Payload&& request,
     std::chrono::milliseconds timeout,
-    RequestClientCallback* writeCallback) {
+    WriteSuccessCallback* writeSuccessCallback) {
   DestructorGuard dg(this);
   auto g = makeRequestCountGuard();
   auto setupFrame = std::move(setupFrame_);
@@ -394,30 +394,29 @@ folly::Try<Payload> RocketClient::sendRequestResponseSync(
       RequestResponseFrame(makeStreamId(), std::move(request)),
       queue_,
       setupFrame.get(),
-      writeCallback);
+      writeSuccessCallback);
   if (auto ew = err(scheduleWrite(ctx))) {
     return folly::Try<Payload>(std::move(ew));
   }
   return ctx.waitForResponse(timeout);
 }
 
-void RocketClient::sendRequestResponseAsync(
+void RocketClient::sendRequestResponse(
     Payload&& request,
     std::chrono::milliseconds timeout,
-    RequestClientCallback* writeCallback,
-    folly::Function<void(folly::Try<Payload>&&)> responsePayloadCallback) {
+    std::unique_ptr<RequestResponseCallback> callback) {
   auto setupFrame = std::move(setupFrame_);
   auto rctx = std::make_unique<RequestContext>(
       RequestResponseFrame(makeStreamId(), std::move(request)),
       queue_,
       setupFrame.get(),
-      writeCallback);
-  auto callbackWithGuard =
-      [dg = DestructorGuard(this),
-       g = makeRequestCountGuard(),
-       callback = std::move(responsePayloadCallback)](auto&& response) mutable {
-        callback(std::move(response));
-      };
+      callback.get());
+  auto callbackWithGuard = [dg = DestructorGuard(this),
+                            g = makeRequestCountGuard(),
+                            callback =
+                                std::move(callback)](auto&& response) mutable {
+    callback->onResponsePayload(std::move(response));
+  };
 
   using CallbackWithGuard = decltype(callbackWithGuard);
   class Context : public folly::fibers::Baton::Waiter,
@@ -466,20 +465,70 @@ void RocketClient::sendRequestResponseAsync(
   std::move(*context).send(*this, timeout);
 }
 
-folly::Try<void> RocketClient::sendRequestFnfSync(
-    Payload&& request,
-    RequestClientCallback* writeCallback) {
+folly::Try<void> RocketClient::sendRequestFnfSync(Payload&& request) {
+  CHECK(folly::fibers::onFiber());
+  DestructorGuard dg(this);
   auto g = makeRequestCountGuard();
   auto setupFrame = std::move(setupFrame_);
   RequestContext ctx(
       RequestFnfFrame(makeStreamId(), std::move(request)),
       queue_,
-      setupFrame.get(),
-      writeCallback);
+      setupFrame.get());
   if (auto ew = err(scheduleWrite(ctx))) {
     return folly::Try<void>(std::move(ew));
   }
   return ctx.waitForWriteToComplete();
+}
+
+void RocketClient::sendRequestFnf(
+    Payload&& request,
+    std::unique_ptr<RequestFnfCallback> callback) {
+  auto setupFrame = std::move(setupFrame_);
+  auto rctx = std::make_unique<RequestContext>(
+      RequestFnfFrame(makeStreamId(), std::move(request)),
+      queue_,
+      setupFrame.get());
+  auto callbackWithGuard =
+      [dg = DestructorGuard(this),
+       g = makeRequestCountGuard(),
+       callback = std::move(callback)](auto&& writeResult) mutable {
+        callback->onWrite(std::move(writeResult));
+      };
+
+  using CallbackWithGuard = decltype(callbackWithGuard);
+  class Context : public folly::fibers::Baton::Waiter {
+   public:
+    Context(std::unique_ptr<RequestContext> rctx, CallbackWithGuard&& callback)
+        : callback_(std::move(callback)), rctx_(std::move(rctx)) {}
+
+    void send(RocketClient& client) && {
+      auto writeScheduled = client.scheduleWrite(*rctx_);
+      if (writeScheduled.hasException()) {
+        SCOPE_EXIT {
+          delete this;
+        };
+        return callback_(
+            folly::Try<void>(std::move(writeScheduled.exception())));
+      }
+      rctx_->waitForWriteToCompleteSchedule(this);
+    }
+
+   private:
+    // DestructorGuard held by callback_ is needed to avoid freeing
+    // RocketClient within the invocation of callback_.
+    CallbackWithGuard callback_;
+    std::unique_ptr<RequestContext> rctx_;
+
+    void post() override {
+      SCOPE_EXIT {
+        delete this;
+      };
+      callback_(rctx_->waitForWriteToCompleteResult());
+    }
+  };
+
+  auto* context = new Context(std::move(rctx), std::move(callbackWithGuard));
+  std::move(*context).send(*this);
 }
 
 void RocketClient::sendRequestStream(

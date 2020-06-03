@@ -27,6 +27,7 @@
 
 #include <thrift/lib/cpp2/async/ServerStream.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
+#include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -52,9 +53,6 @@ class ChannelClientCallback;
 class SinkClientCallback;
 
 namespace rocket {
-
-class RocketClient;
-
 namespace test {
 
 class RocketTestClient {
@@ -65,11 +63,9 @@ class RocketTestClient {
   folly::Try<Payload> sendRequestResponseSync(
       Payload request,
       std::chrono::milliseconds timeout = std::chrono::milliseconds(250),
-      RequestClientCallback* writeCallback = nullptr);
+      RocketClient::WriteSuccessCallback* writeSuccessCallback = nullptr);
 
-  folly::Try<void> sendRequestFnfSync(
-      Payload request,
-      RequestClientCallback* writeCallback = nullptr);
+  folly::Try<void> sendRequestFnfSync(Payload request);
 
   folly::Try<ClientBufferedStream<Payload>> sendRequestStreamSync(
       Payload request);

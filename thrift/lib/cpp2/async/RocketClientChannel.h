@@ -204,6 +204,9 @@ class RocketClientChannel final : public ClientChannel {
     ++shared_->inflightRequests;
     return folly::makeGuard([shared = shared_] { --shared->inflightRequests; });
   }
+
+  class SingleRequestSingleResponseCallback;
+  class SingleRequestNoResponseCallback;
 };
 
 } // namespace thrift
