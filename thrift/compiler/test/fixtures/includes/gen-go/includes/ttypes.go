@@ -32,6 +32,8 @@ type TransitiveFoo = transitive0.Foo
 
 func TransitiveFooPtr(v TransitiveFoo) *TransitiveFoo { return &v }
 
+func NewTransitiveFoo() *TransitiveFoo { return transitive0.NewFoo() }
+
 // Attributes:
 //  - MyIntField
 //  - MyTransitiveField

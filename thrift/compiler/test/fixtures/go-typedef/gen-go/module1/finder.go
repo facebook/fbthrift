@@ -742,7 +742,7 @@ func (p *FinderAliasByPlateResult) Read(iprot thrift.Protocol) error {
 }
 
 func (p *FinderAliasByPlateResult)  ReadField0(iprot thrift.Protocol) error {
-  p.Success = NewAutomobile()
+  p.Success = NewCar()
   if err := p.Success.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Success), err)
   }

@@ -30,6 +30,8 @@ type IncludesIncluded = includes1.Included
 
 func IncludesIncludedPtr(v IncludesIncluded) *IncludesIncluded { return &v }
 
+func NewIncludesIncluded() *IncludesIncluded { return includes1.NewIncluded() }
+
 type IncludesTransitiveFoo = *includes1.TransitiveFoo
 
 func IncludesTransitiveFooPtr(v IncludesTransitiveFoo) *IncludesTransitiveFoo { return &v }

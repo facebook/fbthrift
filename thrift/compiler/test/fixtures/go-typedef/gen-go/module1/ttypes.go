@@ -44,13 +44,19 @@ type Accessory = module00.Accessory
 
 func AccessoryPtr(v Accessory) *Accessory { return &v }
 
+func NewAccessory() *Accessory { return module00.NewAccessory() }
+
 type PartName = module00.PartName
 
 func PartNamePtr(v PartName) *PartName { return &v }
 
+func NewPartName() *PartName { return module00.NewPartName() }
+
 type Car = Automobile
 
 func CarPtr(v Car) *Car { return &v }
+
+func NewCar() *Car { return NewAutomobile() }
 
 // Attributes:
 //  - Plate
@@ -242,7 +248,7 @@ func (p *Automobile)  ReadField6(iprot thrift.Protocol) error {
   tSlice := make([]*Accessory, 0, size)
   p.Accessories =  tSlice
   for i := 0; i < size; i ++ {
-    _elem2 := module00.NewAccessory()
+    _elem2 := NewAccessory()
     if err := _elem2.Read(iprot); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem2), err)
     }
@@ -268,7 +274,7 @@ var _key3 int32
 } else {
     _key3 = v
 }
-    _val4 := module00.NewPartName()
+    _val4 := NewPartName()
     if err := _val4.Read(iprot); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _val4), err)
     }
@@ -729,7 +735,7 @@ func (p *Pair)  ReadField1(iprot thrift.Protocol) error {
 }
 
 func (p *Pair)  ReadField2(iprot thrift.Protocol) error {
-  p.Car = NewAutomobile()
+  p.Car = NewCar()
   if err := p.Car.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Car), err)
   }
@@ -874,7 +880,7 @@ func (p *Collection)  ReadField2(iprot thrift.Protocol) error {
   tSlice := make([]*Car, 0, size)
   p.Cars =  tSlice
   for i := 0; i < size; i ++ {
-    _elem8 := NewAutomobile()
+    _elem8 := NewCar()
     if err := _elem8.Read(iprot); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem8), err)
     }

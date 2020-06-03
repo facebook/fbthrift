@@ -363,7 +363,6 @@ class t_go_generator : public t_concat_generator {
       const std::string& value,
       bool is_args_or_result = false) const;
   std::string privatize(const std::string& value) const;
-  std::string new_prefix(const std::string& value) const;
   static std::string variable_name_to_go_name(const std::string& value);
   static bool is_pointer_field(t_field* tfield, bool in_container = false);
   static bool omit_initialization(t_field* tfield);
@@ -556,19 +555,6 @@ std::string t_go_generator::publicize(
   }
 
   return prefix + value2;
-}
-
-std::string t_go_generator::new_prefix(const std::string& value) const {
-  if (value.size() <= 0) {
-    return value;
-  }
-
-  string::size_type dot_pos = value.rfind('.');
-  if (dot_pos != string::npos) {
-    return value.substr(0, dot_pos + 1) + "New" +
-        publicize(value.substr(dot_pos + 1));
-  }
-  return "New" + publicize(value);
 }
 
 std::string t_go_generator::privatize(const std::string& value) const {
@@ -942,7 +928,8 @@ void t_go_generator::close_generator() {
 void t_go_generator::generate_typedef(t_typedef* ttypedef) {
   generate_go_docstring(f_types_, ttypedef);
   string new_type_name(publicize(ttypedef->get_symbolic()));
-  string base_type(type_to_go_type_with_opt(ttypedef->get_type(), false, true));
+  t_type* tbasetype(ttypedef->get_type());
+  string base_type(type_to_go_type_with_opt(tbasetype, false, true));
 
   if (base_type == new_type_name) {
     return;
@@ -964,6 +951,21 @@ void t_go_generator::generate_typedef(t_typedef* ttypedef) {
   } else {
     f_types_ << "func " << new_type_name << "Ptr(v " << new_type_name << ") *"
              << new_type_name << " { return &v }" << endl
+             << endl;
+  }
+  // Generate New* function
+  if (tbasetype->is_struct() || tbasetype->is_xception()) {
+    const t_program* program = tbasetype->get_program();
+    string ctor;
+    if (program != nullptr && program != program_) {
+      string module(package_identifiers[get_real_go_module(program)]);
+      ctor = module + ".New" + publicize(tbasetype->get_name());
+    } else {
+      ctor = "New" + publicize(tbasetype->get_name());
+    }
+    f_types_ << "func "
+             << "New" << new_type_name << "() *" << new_type_name
+             << " { return " << ctor << "() }" << endl
              << endl;
   }
 }
@@ -3121,7 +3123,7 @@ void t_go_generator::generate_deserialize_field(
   if (type->is_struct() || type->is_xception()) {
     generate_deserialize_struct(
         out,
-        (t_struct*)type,
+        (t_struct*)orig_type,
         is_pointer_field(tfield, in_container_value),
         declare,
         name);
