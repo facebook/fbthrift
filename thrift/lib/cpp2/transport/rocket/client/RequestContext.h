@@ -75,6 +75,7 @@ class RequestContext {
   // expected
   FOLLY_NODISCARD folly::Try<Payload> waitForResponse(
       std::chrono::milliseconds timeout);
+  FOLLY_NODISCARD folly::Try<Payload> getResponse() &&;
 
   // For request types for which an immediate matching response is not
   // necessarily expected, e.g., REQUEST_FNF and REQUEST_STREAM

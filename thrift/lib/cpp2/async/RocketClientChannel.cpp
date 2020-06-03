@@ -704,37 +704,25 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
     std::chrono::milliseconds timeout,
     std::unique_ptr<folly::IOBuf> buf,
     RequestClientCallback::Ptr cb) {
-  auto& cbRef = *cb;
-
   const auto requestSerializedSize = buf->computeChainDataLength();
   auto requestPayload = rocket::pack(metadata, std::move(buf));
   const auto requestWireSize = requestPayload.dataSize();
 
-  auto sendRequestFunc =
-      [&cbRef,
-       timeout,
-       rclientGuard =
-           folly::DelayedDestruction::DestructorGuard(rclient_.get()),
-       rclientPtr = rclient_.get(),
-       requestPayload = std::move(requestPayload)]() mutable {
-        return rclientPtr->sendRequestResponseSync(
-            std::move(requestPayload), timeout, &cbRef /* writeCallback */);
-      };
-
-  auto finallyFunc = [cb = std::move(cb),
-                      g = inflightGuard(),
-                      protocolId = static_cast<uint16_t>(
-                          metadata.protocol_ref().value_unchecked()),
-                      methodName = metadata.name_ref().value_or(""),
-                      requestSerializedSize,
-                      requestWireSize](
-                         folly::Try<rocket::Payload>&& payload) mutable {
+  auto* cbPtr = cb.get();
+  auto responsePayloadCallback = [cb = std::move(cb),
+                                  g = inflightGuard(),
+                                  protocolId = static_cast<uint16_t>(
+                                      metadata.protocol_ref()
+                                          .value_unchecked()),
+                                  methodName = metadata.name_ref().value_or(""),
+                                  requestSerializedSize,
+                                  requestWireSize](auto&& payload) mutable {
     folly::Try<FirstResponsePayload> response;
     RpcSizeStats stats;
     stats.requestSerializedSizeBytes = requestSerializedSize;
     stats.requestWireSizeBytes = requestWireSize;
     if (payload.hasException()) {
-      if (!payload.exception().with_exception<rocket::RocketException>(
+      if (!payload.exception().template with_exception<rocket::RocketException>(
               [&](auto& ex) {
                 response =
                     decodeResponseError(std::move(ex), protocolId, methodName);
@@ -777,16 +765,15 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
         stats));
   };
 
-  if (cbRef.isSync() && folly::fibers::onFiber()) {
-    finallyFunc(folly::makeTryWith(std::move(sendRequestFunc)));
+  if (cbPtr->isSync() && folly::fibers::onFiber()) {
+    responsePayloadCallback(rclient_->sendRequestResponseSync(
+        std::move(requestPayload), timeout, cbPtr));
   } else {
-    auto& fm = getFiberManager();
-    fm.addTaskFinallyEager(
-        std::move(sendRequestFunc),
-        [finallyFunc = std::move(finallyFunc)](
-            folly::Try<folly::Try<rocket::Payload>>&& arg) mutable {
-          finallyFunc(collapseTry(std::move(arg)));
-        });
+    rclient_->sendRequestResponseAsync(
+        std::move(requestPayload),
+        timeout,
+        cbPtr,
+        std::move(responsePayloadCallback));
   }
 }
 

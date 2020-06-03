@@ -84,7 +84,10 @@ folly::Try<Payload> RequestContext::waitForResponse(
       timeoutHandler,
       timeout);
   baton_.wait(timeoutHandler);
+  return std::move(*this).getResponse();
+}
 
+folly::Try<Payload> RequestContext::getResponse() && {
   switch (state_) {
     case State::WRITE_SENT:
       // writeSuccess() or writeErr() processed this request but a response was

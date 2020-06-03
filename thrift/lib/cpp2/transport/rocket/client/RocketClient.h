@@ -79,11 +79,16 @@ class RocketClient : public folly::DelayedDestruction,
       folly::AsyncTransportWrapper::UniquePtr socket,
       std::unique_ptr<SetupFrame> setupFrame);
 
-  // Main send*Sync() API. Must be called on the EventBase's FiberManager.
   FOLLY_NODISCARD folly::Try<Payload> sendRequestResponseSync(
       Payload&& request,
       std::chrono::milliseconds timeout,
       RequestClientCallback* writeCallback);
+
+  void sendRequestResponseAsync(
+      Payload&& request,
+      std::chrono::milliseconds timeout,
+      RequestClientCallback* writeCallback,
+      folly::Function<void(folly::Try<Payload>&&)> responsePayloadCallback);
 
   FOLLY_NODISCARD folly::Try<void> sendRequestFnfSync(
       Payload&& request,
