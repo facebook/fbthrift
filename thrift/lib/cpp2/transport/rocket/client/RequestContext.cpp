@@ -77,9 +77,9 @@ folly::Try<Payload> RequestContext::waitForResponse(
   // succeeds.
   folly::fibers::Baton::TimeoutHandler timeoutHandler;
   setTimeoutInfo(
-      folly::fibers::FiberManager::getFiberManagerUnsafe()
-          ->loopController()
-          .timer(),
+      *folly::fibers::FiberManager::getFiberManagerUnsafe()
+           ->loopController()
+           .timer(),
       timeoutHandler,
       timeout);
   baton_.wait(timeoutHandler);
