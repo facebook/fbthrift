@@ -22,6 +22,8 @@
 #include <thrift/compiler/ast/visitor.h>
 #include <thrift/compiler/validator/diagnostic.h>
 
+#include <boost/optional.hpp>
+
 namespace apache {
 namespace thrift {
 namespace compiler {
@@ -35,8 +37,10 @@ class validator : virtual public visitor {
 
   bool visit(t_program* program) override;
 
+  void set_program(t_program* const program);
+
  protected:
-  void add_error(int lineno, std::string const& message);
+  void add_error(boost::optional<int> const lineno, std::string const& message);
 
  private:
   template <typename T, typename... Args>

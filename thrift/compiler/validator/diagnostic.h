@@ -16,9 +16,10 @@
 
 #pragma once
 
-#include <iostream>
 #include <memory>
 #include <string>
+
+#include <boost/optional.hpp>
 
 namespace apache {
 namespace thrift {
@@ -50,9 +51,9 @@ class diagnostic {
   diagnostic(
       type type,
       std::string const& file,
-      int line,
+      boost::optional<int> const line,
       std::string const& message)
-      : file_(file), line_(line), message_(message), type_(type) {}
+      : type_(type), file_(file), line_(line), message_(message) {}
 
   type getType() const {
     return type_;
@@ -63,10 +64,10 @@ class diagnostic {
   friend std::ostream& operator<<(std::ostream& os, diagnostic e);
 
  private:
-  std::string file_;
-  int line_;
-  std::string message_;
   type type_;
+  std::string file_;
+  boost::optional<int> const line_;
+  std::string message_;
 
   static std::string getStringFromType(type type);
 };

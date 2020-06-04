@@ -25,8 +25,11 @@ namespace compiler {
 
 std::string diagnostic::str() {
   std::ostringstream ss;
-  ss << "[" << getStringFromType(type_) << ":" << file_ << ":" << line_ << "] "
-     << message_;
+  ss << "[" << getStringFromType(type_) << ":" << file_;
+  if (line_) {
+    ss << ":" << line_.value();
+  }
+  ss << "] " << message_;
   return ss.str();
 }
 

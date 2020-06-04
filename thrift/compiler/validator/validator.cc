@@ -44,9 +44,15 @@ validator::diagnostics_t validator::validate(t_program* const program) {
   return diagnostics;
 }
 
-void validator::add_error(int const lineno, std::string const& message) {
+void validator::add_error(
+    boost::optional<int> const lineno,
+    std::string const& message) {
   diagnostics_->emplace_back(
       diagnostic::type::failure, program_->get_path(), lineno, message);
+}
+
+void validator::set_program(t_program* const program) {
+  program_ = program;
 }
 
 bool validator::visit(t_program* const program) {

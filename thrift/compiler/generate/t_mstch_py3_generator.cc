@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 
@@ -1223,6 +1224,57 @@ class annotation_py3_generator : public annotation_generator {
   }
 };
 
+/**
+ * Generator-specific validator that enforces that reserved key is
+ * not used as namespace field name.
+ *
+ */
+class no_reserved_key_in_namespace_validator : virtual public validator {
+ public:
+  using validator::visit;
+
+  bool visit(t_program* const prog) override {
+    set_program(prog);
+    validate(prog);
+    return true;
+  }
+
+ private:
+  void validate(t_program* const prog) {
+    static const std::unordered_set<std::string> py3_reserved_keys = {
+        "include",
+    };
+
+    const auto& py3_namespace = prog->get_namespace("py3");
+    if (py3_namespace.empty()) {
+      return;
+    }
+
+    std::vector<std::string> namespace_tokens = split_namespace(py3_namespace);
+    for (const auto& field_name : namespace_tokens) {
+      if (py3_reserved_keys.find(field_name) != py3_reserved_keys.end()) {
+        std::ostringstream ss;
+        ss << "Namespace '" << py3_namespace << "' contains reserved keyword '"
+           << field_name << "'";
+        add_error(boost::none, ss.str());
+      }
+    }
+
+    std::string filepath_delimiters("\\/.");
+    std::vector<std::string> fields;
+    boost::split(
+        fields, prog->get_path(), boost::is_any_of(filepath_delimiters));
+    for (const auto& field : fields) {
+      if (py3_reserved_keys.find(field) != py3_reserved_keys.end()) {
+        std::ostringstream ss;
+        ss << "Path '" << prog->get_path() << "' contains reserved keyword '"
+           << field << "'";
+        add_error(boost::none, ss.str());
+      }
+    }
+  }
+};
+
 class t_mstch_py3_generator : public t_mstch_generator {
  public:
   enum class ModuleType {
@@ -1253,6 +1305,10 @@ class t_mstch_py3_generator : public t_mstch_generator {
     generate_module(ModuleType::SERVICES);
     generate_module(ModuleType::CLIENTS);
     generate_module(ModuleType::BUILDERS);
+  }
+
+  void fill_validator_list(validator_list& vl) const override {
+    vl.add<no_reserved_key_in_namespace_validator>();
   }
 
  protected:
