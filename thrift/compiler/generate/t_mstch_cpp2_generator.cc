@@ -1656,10 +1656,7 @@ class mstch_cpp2_program : public mstch_program {
   }
 
   void init_sorted_objects() {
-    auto lineno_less = [](const t_struct* a, const t_struct* b) {
-      return a->get_lineno() < b->get_lineno();
-    };
-    auto edges = [this, lineno_less](t_struct* obj) {
+    auto edges = [this](t_struct* obj) {
       std::vector<t_struct*> deps;
       for (auto* f : obj->get_members()) {
         // Ignore ref fields.
@@ -1683,7 +1680,10 @@ class mstch_cpp2_program : public mstch_program {
       }
 
       // Order all deps in the order they are defined in.
-      std::sort(deps.begin(), deps.end(), lineno_less);
+      std::sort(
+          deps.begin(), deps.end(), [](const t_struct* a, const t_struct* b) {
+            return a->get_lineno() < b->get_lineno();
+          });
 
       return deps;
     };
@@ -1691,8 +1691,7 @@ class mstch_cpp2_program : public mstch_program {
         std::make_unique<std::vector<t_struct*>>(topological_sort<t_struct*>(
             program_->get_objects().begin(),
             program_->get_objects().end(),
-            std::move(edges),
-            lineno_less));
+            std::move(edges)));
   }
 };
 

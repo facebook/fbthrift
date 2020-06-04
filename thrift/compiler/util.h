@@ -17,11 +17,10 @@
 #pragma once
 
 #include <iosfwd>
-#include <set>
 #include <stack>
 #include <string>
 #include <type_traits>
-#include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -110,68 +109,48 @@ auto make_scope_guard(F&& f) {
 //
 //  Given a container of objects and a function to obtain dependencies,
 //  produces a vector of those nodes in a topologicaly sorted order.
-//  This is a stable sort i.e. it preserves the relative order of elements that
-//  don't depend on each other, either directly or indirectly.
-template <
-    typename T,
-    typename ForwardIt,
-    typename Edges,
-    typename Compare = std::less<T>>
-std::vector<T> topological_sort(
-    ForwardIt begin,
-    ForwardIt end,
-    Edges edges,
-    Compare comp = {}) {
-  struct QueueItem {
-    T value;
-    size_t numOutEdges;
+template <typename T, typename ForwardIt, typename Edges>
+std::vector<T> topological_sort(ForwardIt begin, ForwardIt end, Edges edges) {
+  struct IterState {
+    T node;
+    std::vector<T> edges;
+    typename std::vector<T>::const_iterator pos;
+
+    IterState(T n, std::vector<T> e)
+        : node(std::move(n)), edges(std::move(e)), pos(edges.begin()) {}
+
+    // Prevent accidental move/copy, because the iterator needs to be properly
+    // updated.
+    IterState(const IterState&) = delete;
+    IterState(IterState&&) = delete;
+    IterState& operator=(const IterState&) = delete;
+    IterState& operator=(IterState&&) = delete;
   };
 
-  auto less = [comp](const QueueItem& lhs, const QueueItem& rhs) {
-    return lhs.numOutEdges != rhs.numOutEdges
-        ? lhs.numOutEdges < rhs.numOutEdges
-        : comp(lhs.value, rhs.value);
-  };
+  std::unordered_set<T> visited;
+  std::vector<T> output;
 
-  // A "priority queue" of nodes with lexicographical ordering on
-  // (number-of-out-edges, value). We use set instead of priority_queue
-  // because the latter doesn't permit removal of non-top elements.
-  auto queue = std::set<QueueItem, decltype(less)>(less);
-
-  struct NodeInfo {
-    std::vector<T> inEdges;
-    size_t numOutEdges;
-  };
-
-  // Get incoming edges for each node and populate queue.
-  auto nodeInfo = std::unordered_map<T, NodeInfo>();
   for (auto it = begin; it != end; ++it) {
-    auto outEdges = edges(*it);
-    auto node = QueueItem{*it, outEdges.size()};
-    queue.insert(node);
-    nodeInfo[*it].numOutEdges = outEdges.size();
-    for (const auto& edge : outEdges) {
-      nodeInfo[edge].inEdges.push_back(*it);
+    if (visited.count(*it) != 0) {
+      continue;
     }
-  }
-
-  auto output = std::vector<T>();
-  while (!queue.empty()) {
-    auto top = queue.begin();
-    const auto& info = nodeInfo[top->value];
-    for (const auto& neighbor : info.inEdges) {
-      auto& neighborInfo = nodeInfo[neighbor];
-      auto it = queue.find(QueueItem{neighbor, neighborInfo.numOutEdges});
-      if (it != queue.end()) {
-        auto item = *it;
-        --item.numOutEdges;
-        queue.erase(it);
-        queue.insert(item);
+    std::stack<IterState> st;
+    st.emplace(*it, edges(*it));
+    visited.insert(*it);
+    while (!st.empty()) {
+      IterState& s = st.top();
+      if (s.pos == s.edges.end()) {
+        output.emplace_back(s.node);
+        st.pop();
+        continue;
       }
-      --neighborInfo.numOutEdges;
+
+      if (visited.find(*s.pos) == visited.end()) {
+        st.emplace(*s.pos, edges(*s.pos));
+        visited.insert(*s.pos);
+      }
+      ++s.pos;
     }
-    output.push_back(top->value);
-    queue.erase(top);
   }
   return output;
 }

@@ -116,6 +116,21 @@ class StructMetadata<::apache::thrift::fixtures::types::AnnotatedTypes> {
   static void gen(ThriftMetadata& metadata);
 };
 template <>
+class StructMetadata<::apache::thrift::fixtures::types::ForwardUsageStruct> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::apache::thrift::fixtures::types::ForwardUsageRoot> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::apache::thrift::fixtures::types::ForwardUsageByRef> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
 class StructMetadata<::apache::thrift::fixtures::types::NoexceptMoveEmpty> {
  public:
   static void gen(ThriftMetadata& metadata);
@@ -132,21 +147,6 @@ class StructMetadata<::apache::thrift::fixtures::types::NoexceptMoveComplexStruc
 };
 template <>
 class StructMetadata<::apache::thrift::fixtures::types::NoExceptMoveUnion> {
- public:
-  static void gen(ThriftMetadata& metadata);
-};
-template <>
-class StructMetadata<::apache::thrift::fixtures::types::ForwardUsageRoot> {
- public:
-  static void gen(ThriftMetadata& metadata);
-};
-template <>
-class StructMetadata<::apache::thrift::fixtures::types::ForwardUsageStruct> {
- public:
-  static void gen(ThriftMetadata& metadata);
-};
-template <>
-class StructMetadata<::apache::thrift::fixtures::types::ForwardUsageByRef> {
  public:
   static void gen(ThriftMetadata& metadata);
 };

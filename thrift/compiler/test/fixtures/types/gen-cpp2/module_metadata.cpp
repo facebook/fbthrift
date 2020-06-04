@@ -369,6 +369,70 @@ void StructMetadata<::apache::thrift::fixtures::types::AnnotatedTypes>::gen(Thri
     module_AnnotatedTypes.fields.push_back(std::move(field));
   }
 }
+void StructMetadata<::apache::thrift::fixtures::types::ForwardUsageStruct>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.ForwardUsageStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_ForwardUsageStruct = res.first->second;
+  module_ForwardUsageStruct.name = "module.ForwardUsageStruct";
+  module_ForwardUsageStruct.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_ForwardUsageStruct_fields[] = {
+    std::make_tuple(1, "foo", true, std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageRoot>>("module.ForwardUsageRoot")),
+  };
+  for (const auto& f : module_ForwardUsageStruct_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
+    module_ForwardUsageStruct.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::apache::thrift::fixtures::types::ForwardUsageRoot>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.ForwardUsageRoot", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_ForwardUsageRoot = res.first->second;
+  module_ForwardUsageRoot.name = "module.ForwardUsageRoot";
+  module_ForwardUsageRoot.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_ForwardUsageRoot_fields[] = {
+    std::make_tuple(1, "ForwardUsageStruct", true, std::make_unique<Typedef>("module.ForwardUsageStruct", std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageStruct>>("module.ForwardUsageStruct"))),
+    std::make_tuple(2, "ForwardUsageByRef", true, std::make_unique<Typedef>("module.ForwardUsageByRef", std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageByRef>>("module.ForwardUsageByRef"))),
+  };
+  for (const auto& f : module_ForwardUsageRoot_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
+    module_ForwardUsageRoot.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::apache::thrift::fixtures::types::ForwardUsageByRef>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.ForwardUsageByRef", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_ForwardUsageByRef = res.first->second;
+  module_ForwardUsageByRef.name = "module.ForwardUsageByRef";
+  module_ForwardUsageByRef.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_ForwardUsageByRef_fields[] = {
+    std::make_tuple(1, "foo", true, std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageRoot>>("module.ForwardUsageRoot")),
+  };
+  for (const auto& f : module_ForwardUsageByRef_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
+    module_ForwardUsageByRef.fields.push_back(std::move(field));
+  }
+}
 void StructMetadata<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.NoexceptMoveEmpty", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
@@ -448,70 +512,6 @@ void StructMetadata<::apache::thrift::fixtures::types::NoExceptMoveUnion>::gen(T
     field.is_optional = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_NoExceptMoveUnion.fields.push_back(std::move(field));
-  }
-}
-void StructMetadata<::apache::thrift::fixtures::types::ForwardUsageRoot>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.ForwardUsageRoot", ::apache::thrift::metadata::ThriftStruct{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftStruct& module_ForwardUsageRoot = res.first->second;
-  module_ForwardUsageRoot.name = "module.ForwardUsageRoot";
-  module_ForwardUsageRoot.is_union = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
-  module_ForwardUsageRoot_fields[] = {
-    std::make_tuple(1, "ForwardUsageStruct", true, std::make_unique<Typedef>("module.ForwardUsageStruct", std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageStruct>>("module.ForwardUsageStruct"))),
-    std::make_tuple(2, "ForwardUsageByRef", true, std::make_unique<Typedef>("module.ForwardUsageByRef", std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageByRef>>("module.ForwardUsageByRef"))),
-  };
-  for (const auto& f : module_ForwardUsageRoot_fields) {
-    ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_ForwardUsageRoot.fields.push_back(std::move(field));
-  }
-}
-void StructMetadata<::apache::thrift::fixtures::types::ForwardUsageStruct>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.ForwardUsageStruct", ::apache::thrift::metadata::ThriftStruct{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftStruct& module_ForwardUsageStruct = res.first->second;
-  module_ForwardUsageStruct.name = "module.ForwardUsageStruct";
-  module_ForwardUsageStruct.is_union = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
-  module_ForwardUsageStruct_fields[] = {
-    std::make_tuple(1, "foo", true, std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageRoot>>("module.ForwardUsageRoot")),
-  };
-  for (const auto& f : module_ForwardUsageStruct_fields) {
-    ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_ForwardUsageStruct.fields.push_back(std::move(field));
-  }
-}
-void StructMetadata<::apache::thrift::fixtures::types::ForwardUsageByRef>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.ForwardUsageByRef", ::apache::thrift::metadata::ThriftStruct{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftStruct& module_ForwardUsageByRef = res.first->second;
-  module_ForwardUsageByRef.name = "module.ForwardUsageByRef";
-  module_ForwardUsageByRef.is_union = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
-  module_ForwardUsageByRef_fields[] = {
-    std::make_tuple(1, "foo", true, std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageRoot>>("module.ForwardUsageRoot")),
-  };
-  for (const auto& f : module_ForwardUsageByRef_fields) {
-    ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_ForwardUsageByRef.fields.push_back(std::move(field));
   }
 }
 

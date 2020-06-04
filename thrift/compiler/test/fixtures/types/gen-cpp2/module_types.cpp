@@ -364,6 +364,40 @@ void TccStructTraits<::apache::thrift::fixtures::types::AnnotatedTypes>::transla
     _ftype = apache::thrift::protocol::T_LIST;
   }
 }
+void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "foo") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageRoot>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "ForwardUsageStruct") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "ForwardUsageByRef") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageByRef>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "foo") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
 void TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
@@ -434,40 +468,6 @@ void TccStructTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion>::tran
   else if (_fname == "i32_field") {
     fid = 2;
     _ftype = apache::thrift::protocol::T_I32;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageRoot>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "ForwardUsageStruct") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "ForwardUsageByRef") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "foo") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageByRef>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "foo") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
 
@@ -1382,6 +1382,241 @@ template uint32_t AnnotatedTypes::serializedSizeZC<>(apache::thrift::CompactProt
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+ForwardUsageStruct::ForwardUsageStruct(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg) :
+    foo(std::move(foo__arg)) {
+  __isset.foo = true;
+}
+
+void ForwardUsageStruct::__clear() {
+  // clear all fields
+  ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::clear(&foo);
+  __isset = {};
+}
+
+bool ForwardUsageStruct::operator==(const ForwardUsageStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.__isset.foo != rhs.__isset.foo) {
+    return false;
+  }
+  if (lhs.__isset.foo) {
+    if (!(lhs.foo == rhs.foo)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool ForwardUsageStruct::operator<(const ForwardUsageStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.__isset.foo != rhs.__isset.foo) {
+    return lhs.__isset.foo < rhs.__isset.foo;
+  }
+  if (lhs.__isset.foo) {
+    if (!(lhs.foo == rhs.foo)) {
+      return lhs.foo < rhs.foo;
+    }
+  }
+  return false;
+}
+
+const  ::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageStruct::get_foo() const& {
+  return __isset.foo ? std::addressof(foo) : nullptr;
+}
+
+ ::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageStruct::get_foo() & {
+  return __isset.foo ? std::addressof(foo) : nullptr;
+}
+
+
+void swap(ForwardUsageStruct& a, ForwardUsageStruct& b) {
+  using ::std::swap;
+  swap(a.foo_ref().value_unchecked(), b.foo_ref().value_unchecked());
+  swap(a.__isset, b.__isset);
+}
+
+template void ForwardUsageStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t ForwardUsageStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t ForwardUsageStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t ForwardUsageStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void ForwardUsageStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t ForwardUsageStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t ForwardUsageStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t ForwardUsageStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+ForwardUsageRoot::ForwardUsageRoot(const ForwardUsageRoot& srcObj) {
+  ForwardUsageStruct = srcObj.ForwardUsageStruct;
+  __isset.ForwardUsageStruct = srcObj.__isset.ForwardUsageStruct;
+  if (srcObj.ForwardUsageByRef) ForwardUsageByRef.reset(new  ::apache::thrift::fixtures::types::ForwardUsageByRef(*srcObj.ForwardUsageByRef));
+}
+
+ForwardUsageRoot& ForwardUsageRoot::operator=(const ForwardUsageRoot& src) {
+  ForwardUsageRoot tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
+ForwardUsageRoot::ForwardUsageRoot(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct__arg, std::unique_ptr< ::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef__arg) :
+    ForwardUsageStruct(std::move(ForwardUsageStruct__arg)),
+    ForwardUsageByRef(std::move(ForwardUsageByRef__arg)) {
+  __isset.ForwardUsageStruct = true;
+}
+
+void ForwardUsageRoot::__clear() {
+  // clear all fields
+  ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageStruct>::clear(&ForwardUsageStruct);
+  ForwardUsageByRef.reset();
+  __isset = {};
+}
+
+bool ForwardUsageRoot::operator==(const ForwardUsageRoot& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.__isset.ForwardUsageStruct != rhs.__isset.ForwardUsageStruct) {
+    return false;
+  }
+  if (lhs.__isset.ForwardUsageStruct) {
+    if (!(lhs.ForwardUsageStruct == rhs.ForwardUsageStruct)) {
+      return false;
+    }
+  }
+  if (!!lhs.ForwardUsageByRef != !!rhs.ForwardUsageByRef) {
+    return false;
+  }
+  if (!!lhs.ForwardUsageByRef) {
+    if (lhs.ForwardUsageByRef != rhs.ForwardUsageByRef && !(*lhs.ForwardUsageByRef == *rhs.ForwardUsageByRef)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool ForwardUsageRoot::operator<(const ForwardUsageRoot& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.__isset.ForwardUsageStruct != rhs.__isset.ForwardUsageStruct) {
+    return lhs.__isset.ForwardUsageStruct < rhs.__isset.ForwardUsageStruct;
+  }
+  if (lhs.__isset.ForwardUsageStruct) {
+    if (!(lhs.ForwardUsageStruct == rhs.ForwardUsageStruct)) {
+      return lhs.ForwardUsageStruct < rhs.ForwardUsageStruct;
+    }
+  }
+  if (!!lhs.ForwardUsageByRef != !!rhs.ForwardUsageByRef) {
+    return !!lhs.ForwardUsageByRef < !!rhs.ForwardUsageByRef;
+  }
+  if (!!lhs.ForwardUsageByRef) {
+    if (lhs.ForwardUsageByRef != rhs.ForwardUsageByRef && !(*lhs.ForwardUsageByRef == *rhs.ForwardUsageByRef)) {
+      return *lhs.ForwardUsageByRef < *rhs.ForwardUsageByRef;
+    }
+  }
+  return false;
+}
+
+const  ::apache::thrift::fixtures::types::ForwardUsageStruct* ForwardUsageRoot::get_ForwardUsageStruct() const& {
+  return __isset.ForwardUsageStruct ? std::addressof(ForwardUsageStruct) : nullptr;
+}
+
+ ::apache::thrift::fixtures::types::ForwardUsageStruct* ForwardUsageRoot::get_ForwardUsageStruct() & {
+  return __isset.ForwardUsageStruct ? std::addressof(ForwardUsageStruct) : nullptr;
+}
+
+
+void swap(ForwardUsageRoot& a, ForwardUsageRoot& b) {
+  using ::std::swap;
+  swap(a.ForwardUsageStruct_ref().value_unchecked(), b.ForwardUsageStruct_ref().value_unchecked());
+  swap(a.ForwardUsageByRef, b.ForwardUsageByRef);
+  swap(a.__isset, b.__isset);
+}
+
+template void ForwardUsageRoot::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t ForwardUsageRoot::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t ForwardUsageRoot::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t ForwardUsageRoot::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void ForwardUsageRoot::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t ForwardUsageRoot::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t ForwardUsageRoot::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t ForwardUsageRoot::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+ForwardUsageByRef::ForwardUsageByRef(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg) :
+    foo(std::move(foo__arg)) {
+  __isset.foo = true;
+}
+
+void ForwardUsageByRef::__clear() {
+  // clear all fields
+  ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::clear(&foo);
+  __isset = {};
+}
+
+bool ForwardUsageByRef::operator==(const ForwardUsageByRef& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.__isset.foo != rhs.__isset.foo) {
+    return false;
+  }
+  if (lhs.__isset.foo) {
+    if (!(lhs.foo == rhs.foo)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool ForwardUsageByRef::operator<(const ForwardUsageByRef& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.__isset.foo != rhs.__isset.foo) {
+    return lhs.__isset.foo < rhs.__isset.foo;
+  }
+  if (lhs.__isset.foo) {
+    if (!(lhs.foo == rhs.foo)) {
+      return lhs.foo < rhs.foo;
+    }
+  }
+  return false;
+}
+
+const  ::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageByRef::get_foo() const& {
+  return __isset.foo ? std::addressof(foo) : nullptr;
+}
+
+ ::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageByRef::get_foo() & {
+  return __isset.foo ? std::addressof(foo) : nullptr;
+}
+
+
+void swap(ForwardUsageByRef& a, ForwardUsageByRef& b) {
+  using ::std::swap;
+  swap(a.foo_ref().value_unchecked(), b.foo_ref().value_unchecked());
+  swap(a.__isset, b.__isset);
+}
+
+template void ForwardUsageByRef::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t ForwardUsageByRef::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t ForwardUsageByRef::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t ForwardUsageByRef::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void ForwardUsageByRef::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t ForwardUsageByRef::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t ForwardUsageByRef::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t ForwardUsageByRef::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 NoexceptMoveEmpty::NoexceptMoveEmpty(apache::thrift::FragileConstructor) {}
 
 void NoexceptMoveEmpty::__clear() {
@@ -1718,240 +1953,5 @@ template void NoExceptMoveUnion::readNoXfer<>(apache::thrift::CompactProtocolRea
 template uint32_t NoExceptMoveUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t NoExceptMoveUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t NoExceptMoveUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
-
-ForwardUsageRoot::ForwardUsageRoot(const ForwardUsageRoot& srcObj) {
-  ForwardUsageStruct = srcObj.ForwardUsageStruct;
-  __isset.ForwardUsageStruct = srcObj.__isset.ForwardUsageStruct;
-  if (srcObj.ForwardUsageByRef) ForwardUsageByRef.reset(new  ::apache::thrift::fixtures::types::ForwardUsageByRef(*srcObj.ForwardUsageByRef));
-}
-
-ForwardUsageRoot& ForwardUsageRoot::operator=(const ForwardUsageRoot& src) {
-  ForwardUsageRoot tmp(src);
-  swap(*this, tmp);
-  return *this;
-}
-
-ForwardUsageRoot::ForwardUsageRoot(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct__arg, std::unique_ptr< ::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef__arg) :
-    ForwardUsageStruct(std::move(ForwardUsageStruct__arg)),
-    ForwardUsageByRef(std::move(ForwardUsageByRef__arg)) {
-  __isset.ForwardUsageStruct = true;
-}
-
-void ForwardUsageRoot::__clear() {
-  // clear all fields
-  ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageStruct>::clear(&ForwardUsageStruct);
-  ForwardUsageByRef.reset();
-  __isset = {};
-}
-
-bool ForwardUsageRoot::operator==(const ForwardUsageRoot& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (lhs.__isset.ForwardUsageStruct != rhs.__isset.ForwardUsageStruct) {
-    return false;
-  }
-  if (lhs.__isset.ForwardUsageStruct) {
-    if (!(lhs.ForwardUsageStruct == rhs.ForwardUsageStruct)) {
-      return false;
-    }
-  }
-  if (!!lhs.ForwardUsageByRef != !!rhs.ForwardUsageByRef) {
-    return false;
-  }
-  if (!!lhs.ForwardUsageByRef) {
-    if (lhs.ForwardUsageByRef != rhs.ForwardUsageByRef && !(*lhs.ForwardUsageByRef == *rhs.ForwardUsageByRef)) {
-      return false;
-    }
-  }
-  return true;
-}
-
-bool ForwardUsageRoot::operator<(const ForwardUsageRoot& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (lhs.__isset.ForwardUsageStruct != rhs.__isset.ForwardUsageStruct) {
-    return lhs.__isset.ForwardUsageStruct < rhs.__isset.ForwardUsageStruct;
-  }
-  if (lhs.__isset.ForwardUsageStruct) {
-    if (!(lhs.ForwardUsageStruct == rhs.ForwardUsageStruct)) {
-      return lhs.ForwardUsageStruct < rhs.ForwardUsageStruct;
-    }
-  }
-  if (!!lhs.ForwardUsageByRef != !!rhs.ForwardUsageByRef) {
-    return !!lhs.ForwardUsageByRef < !!rhs.ForwardUsageByRef;
-  }
-  if (!!lhs.ForwardUsageByRef) {
-    if (lhs.ForwardUsageByRef != rhs.ForwardUsageByRef && !(*lhs.ForwardUsageByRef == *rhs.ForwardUsageByRef)) {
-      return *lhs.ForwardUsageByRef < *rhs.ForwardUsageByRef;
-    }
-  }
-  return false;
-}
-
-const  ::apache::thrift::fixtures::types::ForwardUsageStruct* ForwardUsageRoot::get_ForwardUsageStruct() const& {
-  return __isset.ForwardUsageStruct ? std::addressof(ForwardUsageStruct) : nullptr;
-}
-
- ::apache::thrift::fixtures::types::ForwardUsageStruct* ForwardUsageRoot::get_ForwardUsageStruct() & {
-  return __isset.ForwardUsageStruct ? std::addressof(ForwardUsageStruct) : nullptr;
-}
-
-
-void swap(ForwardUsageRoot& a, ForwardUsageRoot& b) {
-  using ::std::swap;
-  swap(a.ForwardUsageStruct_ref().value_unchecked(), b.ForwardUsageStruct_ref().value_unchecked());
-  swap(a.ForwardUsageByRef, b.ForwardUsageByRef);
-  swap(a.__isset, b.__isset);
-}
-
-template void ForwardUsageRoot::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t ForwardUsageRoot::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t ForwardUsageRoot::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t ForwardUsageRoot::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void ForwardUsageRoot::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t ForwardUsageRoot::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t ForwardUsageRoot::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t ForwardUsageRoot::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
-
-ForwardUsageStruct::ForwardUsageStruct(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg) :
-    foo(std::move(foo__arg)) {
-  __isset.foo = true;
-}
-
-void ForwardUsageStruct::__clear() {
-  // clear all fields
-  ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::clear(&foo);
-  __isset = {};
-}
-
-bool ForwardUsageStruct::operator==(const ForwardUsageStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (lhs.__isset.foo != rhs.__isset.foo) {
-    return false;
-  }
-  if (lhs.__isset.foo) {
-    if (!(lhs.foo == rhs.foo)) {
-      return false;
-    }
-  }
-  return true;
-}
-
-bool ForwardUsageStruct::operator<(const ForwardUsageStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (lhs.__isset.foo != rhs.__isset.foo) {
-    return lhs.__isset.foo < rhs.__isset.foo;
-  }
-  if (lhs.__isset.foo) {
-    if (!(lhs.foo == rhs.foo)) {
-      return lhs.foo < rhs.foo;
-    }
-  }
-  return false;
-}
-
-const  ::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageStruct::get_foo() const& {
-  return __isset.foo ? std::addressof(foo) : nullptr;
-}
-
- ::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageStruct::get_foo() & {
-  return __isset.foo ? std::addressof(foo) : nullptr;
-}
-
-
-void swap(ForwardUsageStruct& a, ForwardUsageStruct& b) {
-  using ::std::swap;
-  swap(a.foo_ref().value_unchecked(), b.foo_ref().value_unchecked());
-  swap(a.__isset, b.__isset);
-}
-
-template void ForwardUsageStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t ForwardUsageStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t ForwardUsageStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t ForwardUsageStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void ForwardUsageStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t ForwardUsageStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t ForwardUsageStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t ForwardUsageStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
-
-ForwardUsageByRef::ForwardUsageByRef(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg) :
-    foo(std::move(foo__arg)) {
-  __isset.foo = true;
-}
-
-void ForwardUsageByRef::__clear() {
-  // clear all fields
-  ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::clear(&foo);
-  __isset = {};
-}
-
-bool ForwardUsageByRef::operator==(const ForwardUsageByRef& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (lhs.__isset.foo != rhs.__isset.foo) {
-    return false;
-  }
-  if (lhs.__isset.foo) {
-    if (!(lhs.foo == rhs.foo)) {
-      return false;
-    }
-  }
-  return true;
-}
-
-bool ForwardUsageByRef::operator<(const ForwardUsageByRef& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (lhs.__isset.foo != rhs.__isset.foo) {
-    return lhs.__isset.foo < rhs.__isset.foo;
-  }
-  if (lhs.__isset.foo) {
-    if (!(lhs.foo == rhs.foo)) {
-      return lhs.foo < rhs.foo;
-    }
-  }
-  return false;
-}
-
-const  ::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageByRef::get_foo() const& {
-  return __isset.foo ? std::addressof(foo) : nullptr;
-}
-
- ::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageByRef::get_foo() & {
-  return __isset.foo ? std::addressof(foo) : nullptr;
-}
-
-
-void swap(ForwardUsageByRef& a, ForwardUsageByRef& b) {
-  using ::std::swap;
-  swap(a.foo_ref().value_unchecked(), b.foo_ref().value_unchecked());
-  swap(a.__isset, b.__isset);
-}
-
-template void ForwardUsageByRef::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t ForwardUsageByRef::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t ForwardUsageByRef::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t ForwardUsageByRef::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void ForwardUsageByRef::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t ForwardUsageByRef::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t ForwardUsageByRef::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t ForwardUsageByRef::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}}} // apache::thrift::fixtures::types

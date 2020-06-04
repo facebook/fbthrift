@@ -261,19 +261,6 @@ TEST_F(UtilTest, scope_guard_throws_death) {
   EXPECT_DEATH(make_scope_guard(func), msg);
 }
 
-auto topological_sort(std::map<std::string, std::set<std::string>>& graph) {
-  std::vector<std::string> vertices;
-  vertices.reserve(graph.size());
-  for (const auto& kvp : graph) {
-    vertices.push_back(kvp.first);
-  }
-  return topological_sort<std::string>(
-      vertices.begin(), vertices.end(), [&](auto item) {
-        return std::vector<std::string>(graph[item].begin(), graph[item].end());
-      });
-  return vertices;
-}
-
 TEST_F(UtilTest, topological_sort_example) {
   std::map<std::string, std::set<std::string>> graph{
       {"e", {"c", "a"}},
@@ -282,16 +269,14 @@ TEST_F(UtilTest, topological_sort_example) {
       {"b", {}},
       {"a", {"b"}},
   };
-  auto result = topological_sort(graph);
-  EXPECT_EQ(std::vector<std::string>({"b", "a", "c", "d", "e"}), result);
-}
-
-TEST_F(UtilTest, topological_sort_stability) {
-  std::map<std::string, std::set<std::string>> graph{
-      {"a", {"c"}},
-      {"b", {}},
-      {"c", {}},
-  };
-  auto result = topological_sort(graph);
-  EXPECT_EQ(std::vector<std::string>({"b", "c", "a"}), result);
+  std::vector<std::string> vertices;
+  vertices.reserve(graph.size());
+  for (const auto& kvp : graph) {
+    vertices.push_back(kvp.first);
+  }
+  auto result = topological_sort<std::string>(
+      vertices.begin(), vertices.end(), [&](auto item) {
+        return std::vector<std::string>(graph[item].begin(), graph[item].end());
+      });
+  EXPECT_EQ(std::vector<std::string>({"b", "a", "d", "c", "e"}), result);
 }
