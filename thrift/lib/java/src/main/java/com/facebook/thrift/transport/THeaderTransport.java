@@ -375,10 +375,10 @@ public class THeaderTransport extends TFramedTransport {
       throw new TTransportException("Header size is larger than frame");
     }
     protoId = readVarint32Buf(frame);
-    int numHeaders = readVarint32Buf(frame);
+    int numTransforms = readVarint32Buf(frame);
 
     // Clear out any previous transforms
-    readTransforms = new ArrayList<Integer>(numHeaders);
+    readTransforms = new ArrayList<Integer>(numTransforms);
 
     if (protoId == T_JSON_PROTOCOL && clientType != ClientTypes.HTTP) {
       throw new TTransportException("Trying to recv JSON encoding " + "over binary");
@@ -387,7 +387,7 @@ public class THeaderTransport extends TFramedTransport {
     // Read in the headers.  Data for each varies. See
     // doc/HeaderFormat.txt
     int hmacSz = 0;
-    for (int i = 0; i < numHeaders; i++) {
+    for (int i = 0; i < numTransforms; i++) {
       int transId = readVarint32Buf(frame);
       if (transId == Transforms.ZLIB_TRANSFORM.getValue()) {
         readTransforms.add(transId);
