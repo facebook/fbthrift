@@ -201,7 +201,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
                 if (exPtr) {
                   if (*exPtr == kQueueOverloadedErrorCode &&
                       ex.getType() == TApplicationException::LOADSHEDDING) {
-                    ResponseRpcErrorCode::SHUTDOWN;
+                    return ResponseRpcErrorCode::SHUTDOWN;
                   }
 
                   static const auto& errorCodeMap = *new std::unordered_map<
