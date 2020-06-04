@@ -46,7 +46,7 @@ thrift_generate(
   "RpcMetadata" #file_name
   "" #services
   "cpp2" #language
-  "" #options
+  "no_metadata" #options
   "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
   "${CMAKE_CURRENT_BINARY_DIR}" #output_path
   "thrift/lib/thrift" #include_prefix
