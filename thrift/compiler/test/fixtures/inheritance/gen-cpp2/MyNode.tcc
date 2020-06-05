@@ -39,7 +39,6 @@ void MyNodeAsyncProcessor::process_do_mid(apache::thrift::ResponseChannelRequest
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_do_mid(std::move(callback));
 }
 

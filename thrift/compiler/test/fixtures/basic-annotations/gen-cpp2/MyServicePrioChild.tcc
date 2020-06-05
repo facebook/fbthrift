@@ -39,7 +39,6 @@ void MyServicePrioChildAsyncProcessor::process_pang(apache::thrift::ResponseChan
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_pang(std::move(callback));
 }
 

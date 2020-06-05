@@ -328,8 +328,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
       apache::thrift::transport::THeader* header = nullptr)
       : TConnectionContext(header),
         ctx_(ctx),
-        requestData_(nullptr, no_op_destructor),
-        startedProcessing_(false) {}
+        requestData_(nullptr, no_op_destructor) {}
 
   void setConnectionContext(Cpp2ConnContext* ctx) {
     ctx_ = ctx;
@@ -389,14 +388,6 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return ctx_;
   }
 
-  bool getStartedProcessing() const {
-    return startedProcessing_;
-  }
-
-  void setStartedProcessing() {
-    startedProcessing_ = true;
-  }
-
   std::chrono::milliseconds getRequestTimeout() const {
     return requestTimeout_;
   }
@@ -431,7 +422,6 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
  private:
   Cpp2ConnContext* ctx_;
   RequestDataPtr requestData_;
-  bool startedProcessing_ = false;
   std::chrono::milliseconds requestTimeout_{0};
   folly::Optional<std::chrono::steady_clock::time_point> processingStartTime_;
   std::string methodName_;

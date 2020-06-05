@@ -50,7 +50,6 @@ void ExtraServiceAsyncProcessor::process_simple_function(apache::thrift::Respons
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_simple_function(std::move(callback));
 }
 
@@ -96,7 +95,6 @@ void ExtraServiceAsyncProcessor::process_throws_function(apache::thrift::Respons
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_throws_function<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  ctx->setStartedProcessing();
   iface_->async_eb_throws_function(std::move(callback));
 }
 
@@ -165,7 +163,6 @@ void ExtraServiceAsyncProcessor::process_throws_function2(apache::thrift::Respon
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_throws_function2(std::move(callback), args.get<0>().ref());
 }
 
@@ -238,7 +235,6 @@ void ExtraServiceAsyncProcessor::process_throws_function3(apache::thrift::Respon
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_throws_function3(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 
@@ -301,7 +297,6 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret(apache::thrift::Respons
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
-  ctx->setStartedProcessing();
   iface_->async_tm_oneway_void_ret(std::move(callback));
 }
 
@@ -335,7 +330,6 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_i32_i32_i32_i32_i32_par
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
-  ctx->setStartedProcessing();
   iface_->async_tm_oneway_void_ret_i32_i32_i32_i32_i32_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref(), args.get<2>().ref(), args.get<3>().ref(), args.get<4>().ref());
 }
 
@@ -361,7 +355,6 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_map_setlist_param(apach
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
-  ctx->setStartedProcessing();
   iface_->async_eb_oneway_void_ret_map_setlist_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 
@@ -387,7 +380,6 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param(apache::th
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
-  ctx->setStartedProcessing();
   iface_->async_tm_oneway_void_ret_struct_param(std::move(callback), args.get<0>().ref());
 }
 
@@ -413,7 +405,6 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param(apache:
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
-  ctx->setStartedProcessing();
   iface_->async_tm_oneway_void_ret_listunion_param(std::move(callback), args.get<0>().ref());
 }
 

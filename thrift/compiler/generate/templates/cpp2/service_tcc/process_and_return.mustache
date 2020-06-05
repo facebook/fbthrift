@@ -79,7 +79,6 @@ void <%service:name%>AsyncProcessor::process_<%function:cpp_name%>(apache::thrif
   }
 <%/function:eb%>
 <%/function:oneway?%>
-  ctx->setStartedProcessing();
   iface_-><%#function:eb%>async_eb<%/function:eb%><%^function:eb%>async_tm<%/function:eb%>_<%function:cpp_name%>(std::move(callback)<% > service_tcc/get_args_ref%>);
 }
 

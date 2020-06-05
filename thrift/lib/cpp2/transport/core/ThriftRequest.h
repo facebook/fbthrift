@@ -430,7 +430,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
     QueueTimeout(const server::ServerConfigs& serverConfigs)
         : serverConfigs_(serverConfigs) {}
     void timeoutExpired() noexcept override {
-      if (!canceled_ && !request_->reqContext_.getStartedProcessing() &&
+      if (!canceled_ && !request_->getStartedProcessing() &&
           request_->active_.exchange(false) && !request_->isOneway()) {
         if (auto* observer = serverConfigs_.getObserver()) {
           observer->queueTimeout();

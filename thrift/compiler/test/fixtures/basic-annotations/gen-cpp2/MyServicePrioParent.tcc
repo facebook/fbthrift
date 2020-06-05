@@ -41,7 +41,6 @@ void MyServicePrioParentAsyncProcessor::process_ping(apache::thrift::ResponseCha
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_ping(std::move(callback));
 }
 
@@ -91,7 +90,6 @@ void MyServicePrioParentAsyncProcessor::process_pong(apache::thrift::ResponseCha
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_pong(std::move(callback));
 }
 

@@ -161,6 +161,10 @@ class ResponseChannelRequest {
     }
   }
 
+  virtual bool getStartedProcessing() {
+    return startedProcessing_;
+  }
+
   void setAdmissionController(
       std::shared_ptr<AdmissionController> admissionController) {
     admissionController_ = std::move(admissionController);

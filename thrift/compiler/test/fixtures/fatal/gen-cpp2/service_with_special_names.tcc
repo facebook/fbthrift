@@ -93,7 +93,6 @@ void service_with_special_namesAsyncProcessor::process_get(apache::thrift::Respo
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_get(std::move(callback));
 }
 
@@ -145,7 +144,6 @@ void service_with_special_namesAsyncProcessor::process_getter(apache::thrift::Re
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_getter(std::move(callback));
 }
 
@@ -197,7 +195,6 @@ void service_with_special_namesAsyncProcessor::process_lists(apache::thrift::Res
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_lists(std::move(callback));
 }
 
@@ -249,7 +246,6 @@ void service_with_special_namesAsyncProcessor::process_maps(apache::thrift::Resp
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_maps(std::move(callback));
 }
 
@@ -301,7 +297,6 @@ void service_with_special_namesAsyncProcessor::process_name(apache::thrift::Resp
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_name(std::move(callback));
 }
 
@@ -353,7 +348,6 @@ void service_with_special_namesAsyncProcessor::process_name_to_value(apache::thr
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_name_to_value(std::move(callback));
 }
 
@@ -405,7 +399,6 @@ void service_with_special_namesAsyncProcessor::process_names(apache::thrift::Res
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_names(std::move(callback));
 }
 
@@ -457,7 +450,6 @@ void service_with_special_namesAsyncProcessor::process_prefix_tree(apache::thrif
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_prefix_tree(std::move(callback));
 }
 
@@ -509,7 +501,6 @@ void service_with_special_namesAsyncProcessor::process_sets(apache::thrift::Resp
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_sets(std::move(callback));
 }
 
@@ -561,7 +552,6 @@ void service_with_special_namesAsyncProcessor::process_setter(apache::thrift::Re
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_setter(std::move(callback));
 }
 
@@ -613,7 +603,6 @@ void service_with_special_namesAsyncProcessor::process_str(apache::thrift::Respo
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_str(std::move(callback));
 }
 
@@ -665,7 +654,6 @@ void service_with_special_namesAsyncProcessor::process_strings(apache::thrift::R
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_strings(std::move(callback));
 }
 
@@ -717,7 +705,6 @@ void service_with_special_namesAsyncProcessor::process_type(apache::thrift::Resp
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_type(std::move(callback));
 }
 
@@ -769,7 +756,6 @@ void service_with_special_namesAsyncProcessor::process_value(apache::thrift::Res
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_value(std::move(callback));
 }
 
@@ -821,7 +807,6 @@ void service_with_special_namesAsyncProcessor::process_value_to_name(apache::thr
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_value_to_name(std::move(callback));
 }
 
@@ -873,7 +858,6 @@ void service_with_special_namesAsyncProcessor::process_values(apache::thrift::Re
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_values(std::move(callback));
 }
 
@@ -925,7 +909,6 @@ void service_with_special_namesAsyncProcessor::process_id(apache::thrift::Respon
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_id(std::move(callback));
 }
 
@@ -977,7 +960,6 @@ void service_with_special_namesAsyncProcessor::process_ids(apache::thrift::Respo
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_ids(std::move(callback));
 }
 
@@ -1029,7 +1011,6 @@ void service_with_special_namesAsyncProcessor::process_descriptor(apache::thrift
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_descriptor(std::move(callback));
 }
 
@@ -1081,7 +1062,6 @@ void service_with_special_namesAsyncProcessor::process_descriptors(apache::thrif
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_descriptors(std::move(callback));
 }
 
@@ -1133,7 +1113,6 @@ void service_with_special_namesAsyncProcessor::process_key(apache::thrift::Respo
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_key(std::move(callback));
 }
 
@@ -1185,7 +1164,6 @@ void service_with_special_namesAsyncProcessor::process_keys(apache::thrift::Resp
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_keys(std::move(callback));
 }
 
@@ -1237,7 +1215,6 @@ void service_with_special_namesAsyncProcessor::process_annotation(apache::thrift
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_annotation(std::move(callback));
 }
 
@@ -1289,7 +1266,6 @@ void service_with_special_namesAsyncProcessor::process_annotations(apache::thrif
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_annotations(std::move(callback));
 }
 
@@ -1341,7 +1317,6 @@ void service_with_special_namesAsyncProcessor::process_member(apache::thrift::Re
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_member(std::move(callback));
 }
 
@@ -1393,7 +1368,6 @@ void service_with_special_namesAsyncProcessor::process_members(apache::thrift::R
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_members(std::move(callback));
 }
 
@@ -1445,7 +1419,6 @@ void service_with_special_namesAsyncProcessor::process_field(apache::thrift::Res
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_field(std::move(callback));
 }
 
@@ -1497,7 +1470,6 @@ void service_with_special_namesAsyncProcessor::process_fields(apache::thrift::Re
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_fields(std::move(callback));
 }
 

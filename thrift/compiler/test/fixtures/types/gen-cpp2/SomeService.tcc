@@ -43,7 +43,6 @@ void SomeServiceAsyncProcessor::process_bounce_map(apache::thrift::ResponseChann
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_bounce_map(std::move(callback), std::move(uarg_m));
 }
 
@@ -97,7 +96,6 @@ void SomeServiceAsyncProcessor::process_binary_keyed_map(apache::thrift::Respons
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_binary_keyed_map(std::move(callback), std::move(uarg_r));
 }
 

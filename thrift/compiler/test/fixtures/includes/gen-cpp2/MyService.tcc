@@ -45,7 +45,6 @@ void MyServiceAsyncProcessor::process_query(apache::thrift::ResponseChannelReque
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_query(std::move(callback), std::move(uarg_s), std::move(uarg_i));
 }
 
@@ -99,7 +98,6 @@ void MyServiceAsyncProcessor::process_has_arg_docs(apache::thrift::ResponseChann
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_has_arg_docs(std::move(callback), std::move(uarg_s), std::move(uarg_i));
 }
 

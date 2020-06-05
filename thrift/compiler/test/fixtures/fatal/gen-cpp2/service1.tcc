@@ -49,7 +49,6 @@ void service1AsyncProcessor::process_method1(apache::thrift::ResponseChannelRequ
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_method1(std::move(callback));
 }
 
@@ -105,7 +104,6 @@ void service1AsyncProcessor::process_method2(apache::thrift::ResponseChannelRequ
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_method2(std::move(callback), args.get<0>().ref(), std::move(uarg_y), args.get<2>().ref());
 }
 
@@ -155,7 +153,6 @@ void service1AsyncProcessor::process_method3(apache::thrift::ResponseChannelRequ
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_method3(std::move(callback));
 }
 
@@ -213,7 +210,6 @@ void service1AsyncProcessor::process_method4(apache::thrift::ResponseChannelRequ
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_method4(std::move(callback), args.get<0>().ref(), std::move(uarg_j), args.get<2>().ref());
 }
 
@@ -265,7 +261,6 @@ void service1AsyncProcessor::process_method5(apache::thrift::ResponseChannelRequ
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_method5(std::move(callback));
 }
 
@@ -323,7 +318,6 @@ void service1AsyncProcessor::process_method6(apache::thrift::ResponseChannelRequ
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_method6(std::move(callback), args.get<0>().ref(), std::move(uarg_m), args.get<2>().ref());
 }
 

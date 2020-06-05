@@ -73,7 +73,6 @@ void ReturnServiceAsyncProcessor::process_noReturn(apache::thrift::ResponseChann
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_noReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_noReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  ctx->setStartedProcessing();
   iface_->async_eb_noReturn(std::move(callback));
 }
 
@@ -123,7 +122,6 @@ void ReturnServiceAsyncProcessor::process_boolReturn(apache::thrift::ResponseCha
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_boolReturn(std::move(callback));
 }
 
@@ -175,7 +173,6 @@ void ReturnServiceAsyncProcessor::process_i16Return(apache::thrift::ResponseChan
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_i16Return(std::move(callback));
 }
 
@@ -227,7 +224,6 @@ void ReturnServiceAsyncProcessor::process_i32Return(apache::thrift::ResponseChan
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_i32Return(std::move(callback));
 }
 
@@ -279,7 +275,6 @@ void ReturnServiceAsyncProcessor::process_i64Return(apache::thrift::ResponseChan
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_i64Return(std::move(callback));
 }
 
@@ -331,7 +326,6 @@ void ReturnServiceAsyncProcessor::process_floatReturn(apache::thrift::ResponseCh
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_floatReturn(std::move(callback));
 }
 
@@ -383,7 +377,6 @@ void ReturnServiceAsyncProcessor::process_doubleReturn(apache::thrift::ResponseC
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_doubleReturn(std::move(callback));
 }
 
@@ -429,7 +422,6 @@ void ReturnServiceAsyncProcessor::process_stringReturn(apache::thrift::ResponseC
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_stringReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_stringReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  ctx->setStartedProcessing();
   iface_->async_eb_stringReturn(std::move(callback));
 }
 
@@ -481,7 +473,6 @@ void ReturnServiceAsyncProcessor::process_binaryReturn(apache::thrift::ResponseC
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_binaryReturn(std::move(callback));
 }
 
@@ -533,7 +524,6 @@ void ReturnServiceAsyncProcessor::process_mapReturn(apache::thrift::ResponseChan
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_mapReturn(std::move(callback));
 }
 
@@ -585,7 +575,6 @@ void ReturnServiceAsyncProcessor::process_simpleTypedefReturn(apache::thrift::Re
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_simpleTypedefReturn(std::move(callback));
 }
 
@@ -637,7 +626,6 @@ void ReturnServiceAsyncProcessor::process_complexTypedefReturn(apache::thrift::R
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_complexTypedefReturn(std::move(callback));
 }
 
@@ -689,7 +677,6 @@ void ReturnServiceAsyncProcessor::process_list_mostComplexTypedefReturn(apache::
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_list_mostComplexTypedefReturn(std::move(callback));
 }
 
@@ -735,7 +722,6 @@ void ReturnServiceAsyncProcessor::process_enumReturn(apache::thrift::ResponseCha
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>>(std::move(req), std::move(ctxStack), return_enumReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_enumReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  ctx->setStartedProcessing();
   iface_->async_eb_enumReturn(std::move(callback));
 }
 
@@ -781,7 +767,6 @@ void ReturnServiceAsyncProcessor::process_list_EnumReturn(apache::thrift::Respon
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>>>(std::move(req), std::move(ctxStack), return_list_EnumReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_EnumReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  ctx->setStartedProcessing();
   iface_->async_eb_list_EnumReturn(std::move(callback));
 }
 
@@ -833,7 +818,6 @@ void ReturnServiceAsyncProcessor::process_structReturn(apache::thrift::ResponseC
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_structReturn(std::move(callback));
 }
 
@@ -885,7 +869,6 @@ void ReturnServiceAsyncProcessor::process_set_StructReturn(apache::thrift::Respo
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_set_StructReturn(std::move(callback));
 }
 
@@ -931,7 +914,6 @@ void ReturnServiceAsyncProcessor::process_unionReturn(apache::thrift::ResponseCh
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>>(std::move(req), std::move(ctxStack), return_unionReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_unionReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  ctx->setStartedProcessing();
   iface_->async_eb_unionReturn(std::move(callback));
 }
 
@@ -983,7 +965,6 @@ void ReturnServiceAsyncProcessor::process_list_UnionReturn(apache::thrift::Respo
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_list_UnionReturn(std::move(callback));
 }
 
@@ -1031,7 +1012,6 @@ void ReturnServiceAsyncProcessor::process_readDataEb(apache::thrift::ResponseCha
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBuf>>>(std::move(req), std::move(ctxStack), return_readDataEb<ProtocolIn_,ProtocolOut_>, throw_wrapped_readDataEb<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  ctx->setStartedProcessing();
   iface_->async_eb_readDataEb(std::move(callback), args.get<0>().ref());
 }
 
@@ -1085,7 +1065,6 @@ void ReturnServiceAsyncProcessor::process_readData(apache::thrift::ResponseChann
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_readData(std::move(callback), args.get<0>().ref());
 }
 

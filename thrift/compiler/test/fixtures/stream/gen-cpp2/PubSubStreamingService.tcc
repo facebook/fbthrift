@@ -61,7 +61,6 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstream(apache::thrift::
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_returnstream(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 
@@ -118,7 +117,6 @@ void PubSubStreamingServiceAsyncProcessor::process_streamthrows(apache::thrift::
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_streamthrows(std::move(callback), args.get<0>().ref());
 }
 
@@ -185,7 +183,6 @@ void PubSubStreamingServiceAsyncProcessor::process_boththrows(apache::thrift::Re
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_boththrows(std::move(callback), args.get<0>().ref());
 }
 
@@ -263,7 +260,6 @@ void PubSubStreamingServiceAsyncProcessor::process_responseandstreamthrows(apach
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_responseandstreamthrows(std::move(callback), args.get<0>().ref());
 }
 

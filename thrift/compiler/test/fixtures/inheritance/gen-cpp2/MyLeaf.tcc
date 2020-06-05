@@ -39,7 +39,6 @@ void MyLeafAsyncProcessor::process_do_leaf(apache::thrift::ResponseChannelReques
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_do_leaf(std::move(callback));
 }
 

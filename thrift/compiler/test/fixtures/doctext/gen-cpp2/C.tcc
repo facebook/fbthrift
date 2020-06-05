@@ -39,7 +39,6 @@ void CAsyncProcessor::process_f(apache::thrift::ResponseChannelRequest::UniquePt
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_f(std::move(callback));
 }
 

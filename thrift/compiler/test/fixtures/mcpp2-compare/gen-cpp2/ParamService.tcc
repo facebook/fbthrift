@@ -91,7 +91,6 @@ void ParamServiceAsyncProcessor::process_void_ret_i16_param(apache::thrift::Resp
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_void_ret_i16_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_i16_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  ctx->setStartedProcessing();
   iface_->async_eb_void_ret_i16_param(std::move(callback), args.get<0>().ref());
 }
 
@@ -145,7 +144,6 @@ void ParamServiceAsyncProcessor::process_void_ret_byte_i16_param(apache::thrift:
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_void_ret_byte_i16_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 
@@ -197,7 +195,6 @@ void ParamServiceAsyncProcessor::process_void_ret_map_param(apache::thrift::Resp
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_void_ret_map_param(std::move(callback), std::move(uarg_param1));
 }
 
@@ -251,7 +248,6 @@ void ParamServiceAsyncProcessor::process_void_ret_map_setlist_param(apache::thri
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_void_ret_map_setlist_param(std::move(callback), std::move(uarg_param1), std::move(uarg_param2));
 }
 
@@ -303,7 +299,6 @@ void ParamServiceAsyncProcessor::process_void_ret_map_typedef_param(apache::thri
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_void_ret_map_typedef_param(std::move(callback), args.get<0>().ref());
 }
 
@@ -355,7 +350,6 @@ void ParamServiceAsyncProcessor::process_void_ret_enum_param(apache::thrift::Res
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_void_ret_enum_param(std::move(callback), args.get<0>().ref());
 }
 
@@ -407,7 +401,6 @@ void ParamServiceAsyncProcessor::process_void_ret_struct_param(apache::thrift::R
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_void_ret_struct_param(std::move(callback), std::move(uarg_param1));
 }
 
@@ -459,7 +452,6 @@ void ParamServiceAsyncProcessor::process_void_ret_listunion_param(apache::thrift
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_void_ret_listunion_param(std::move(callback), std::move(uarg_param1));
 }
 
@@ -513,7 +505,6 @@ void ParamServiceAsyncProcessor::process_bool_ret_i32_i64_param(apache::thrift::
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_bool_ret_i32_i64_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 
@@ -567,7 +558,6 @@ void ParamServiceAsyncProcessor::process_bool_ret_map_param(apache::thrift::Resp
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_bool_ret_map_param(std::move(callback), std::move(uarg_param1));
 }
 
@@ -621,7 +611,6 @@ void ParamServiceAsyncProcessor::process_bool_ret_union_param(apache::thrift::Re
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_bool_ret_union_param(std::move(callback), std::move(uarg_param1));
 }
 
@@ -677,7 +666,6 @@ void ParamServiceAsyncProcessor::process_i64_ret_float_double_param(apache::thri
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_i64_ret_float_double_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 
@@ -733,7 +721,6 @@ void ParamServiceAsyncProcessor::process_i64_ret_string_typedef_param(apache::th
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_i64_ret_string_typedef_param(std::move(callback), std::move(uarg_param1), std::move(uarg_param2));
 }
 
@@ -789,7 +776,6 @@ void ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param(apach
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<int64_t>>(std::move(req), std::move(ctxStack), return_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  ctx->setStartedProcessing();
   iface_->async_eb_i64_ret_i32_i32_i32_i32_i32_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref(), args.get<2>().ref(), args.get<3>().ref(), args.get<4>().ref());
 }
 
@@ -843,7 +829,6 @@ void ParamServiceAsyncProcessor::process_double_ret_setstruct_param(apache::thri
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_double_ret_setstruct_param(std::move(callback), std::move(uarg_param1));
 }
 
@@ -897,7 +882,6 @@ void ParamServiceAsyncProcessor::process_string_ret_string_param(apache::thrift:
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_string_ret_string_param(std::move(callback), std::move(uarg_param1));
 }
 
@@ -951,7 +935,6 @@ void ParamServiceAsyncProcessor::process_binary_ret_binary_param(apache::thrift:
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_binary_ret_binary_param(std::move(callback), std::move(uarg_param1));
 }
 
@@ -1005,7 +988,6 @@ void ParamServiceAsyncProcessor::process_map_ret_bool_param(apache::thrift::Resp
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_map_ret_bool_param(std::move(callback), args.get<0>().ref());
 }
 
@@ -1061,7 +1043,6 @@ void ParamServiceAsyncProcessor::process_list_ret_map_setlist_param(apache::thri
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_list_ret_map_setlist_param(std::move(callback), std::move(uarg_param1), std::move(uarg_param2));
 }
 
@@ -1115,7 +1096,6 @@ void ParamServiceAsyncProcessor::process_mapsetlistmapliststring_ret_listlistlis
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_mapsetlistmapliststring_ret_listlistlist_param(std::move(callback), std::move(uarg_param1));
 }
 
@@ -1169,7 +1149,6 @@ void ParamServiceAsyncProcessor::process_typedef_ret_i32_param(apache::thrift::R
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_typedef_ret_i32_param(std::move(callback), args.get<0>().ref());
 }
 
@@ -1217,7 +1196,6 @@ void ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param(apache::t
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::simpleTypeDef>>>>(std::move(req), std::move(ctxStack), return_listtypedef_ret_typedef_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_listtypedef_ret_typedef_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  ctx->setStartedProcessing();
   iface_->async_eb_listtypedef_ret_typedef_param(std::move(callback), std::move(uarg_param1));
 }
 
@@ -1271,7 +1249,6 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_param(apache::thrift::R
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_enum_ret_double_param(std::move(callback), args.get<0>().ref());
 }
 
@@ -1327,7 +1304,6 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_enum_param(apache::thri
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_enum_ret_double_enum_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 
@@ -1381,7 +1357,6 @@ void ParamServiceAsyncProcessor::process_listenum_ret_map_param(apache::thrift::
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_listenum_ret_map_param(std::move(callback), std::move(uarg_param1));
 }
 
@@ -1429,7 +1404,6 @@ void ParamServiceAsyncProcessor::process_struct_ret_i16_param(apache::thrift::Re
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>>(std::move(req), std::move(ctxStack), return_struct_ret_i16_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_struct_ret_i16_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  ctx->setStartedProcessing();
   iface_->async_eb_struct_ret_i16_param(std::move(callback), args.get<0>().ref());
 }
 
@@ -1483,7 +1457,6 @@ void ParamServiceAsyncProcessor::process_setstruct_ret_set_param(apache::thrift:
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_setstruct_ret_set_param(std::move(callback), std::move(uarg_param1));
 }
 
@@ -1539,7 +1512,6 @@ void ParamServiceAsyncProcessor::process_union_ret_i32_i32_param(apache::thrift:
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_union_ret_i32_i32_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 
@@ -1593,7 +1565,6 @@ void ParamServiceAsyncProcessor::process_listunion_string_param(apache::thrift::
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_listunion_string_param(std::move(callback), std::move(uarg_param1));
 }
 

@@ -73,7 +73,6 @@ void SinkServiceAsyncProcessor::process_method(apache::thrift::ResponseChannelRe
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_method(std::move(callback));
 }
 
@@ -137,7 +136,6 @@ void SinkServiceAsyncProcessor::process_methodAndReponse(apache::thrift::Respons
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_methodAndReponse(std::move(callback));
 }
 
@@ -203,7 +201,6 @@ void SinkServiceAsyncProcessor::process_methodThrow(apache::thrift::ResponseChan
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_methodThrow(std::move(callback));
 }
 
@@ -278,7 +275,6 @@ void SinkServiceAsyncProcessor::process_methodSinkThrow(apache::thrift::Response
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_methodSinkThrow(std::move(callback));
 }
 
@@ -342,7 +338,6 @@ void SinkServiceAsyncProcessor::process_methodFinalThrow(apache::thrift::Respons
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_methodFinalThrow(std::move(callback));
 }
 
@@ -416,7 +411,6 @@ void SinkServiceAsyncProcessor::process_methodBothThrow(apache::thrift::Response
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_methodBothThrow(std::move(callback));
 }
 

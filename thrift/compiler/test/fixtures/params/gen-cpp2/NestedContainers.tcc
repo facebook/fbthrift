@@ -49,7 +49,6 @@ void NestedContainersAsyncProcessor::process_mapList(apache::thrift::ResponseCha
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_mapList(std::move(callback), std::move(uarg_foo));
 }
 
@@ -101,7 +100,6 @@ void NestedContainersAsyncProcessor::process_mapSet(apache::thrift::ResponseChan
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_mapSet(std::move(callback), std::move(uarg_foo));
 }
 
@@ -153,7 +151,6 @@ void NestedContainersAsyncProcessor::process_listMap(apache::thrift::ResponseCha
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_listMap(std::move(callback), std::move(uarg_foo));
 }
 
@@ -205,7 +202,6 @@ void NestedContainersAsyncProcessor::process_listSet(apache::thrift::ResponseCha
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_listSet(std::move(callback), std::move(uarg_foo));
 }
 
@@ -257,7 +253,6 @@ void NestedContainersAsyncProcessor::process_turtles(apache::thrift::ResponseCha
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_turtles(std::move(callback), std::move(uarg_foo));
 }
 

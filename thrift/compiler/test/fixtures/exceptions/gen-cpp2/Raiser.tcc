@@ -45,7 +45,6 @@ void RaiserAsyncProcessor::process_doBland(apache::thrift::ResponseChannelReques
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_doBland(std::move(callback));
 }
 
@@ -95,7 +94,6 @@ void RaiserAsyncProcessor::process_doRaise(apache::thrift::ResponseChannelReques
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_doRaise(std::move(callback));
 }
 
@@ -168,7 +166,6 @@ void RaiserAsyncProcessor::process_get200(apache::thrift::ResponseChannelRequest
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_get200(std::move(callback));
 }
 
@@ -220,7 +217,6 @@ void RaiserAsyncProcessor::process_get500(apache::thrift::ResponseChannelRequest
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_get500(std::move(callback));
 }
 

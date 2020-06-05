@@ -290,7 +290,7 @@ void ProxygenThriftServer::ThriftRequestHandler::sendErrorWrapped(
 
 void ProxygenThriftServer::ThriftRequestHandler::TaskTimeout::
     timeoutExpired() noexcept {
-  if (hard_ || !request_->reqCtx_->getStartedProcessing()) {
+  if (hard_ || !request_->getStartedProcessing()) {
     request_->sendErrorWrapped(
         folly::make_exception_wrapper<TApplicationException>(
             TApplicationException::TApplicationExceptionType::TIMEOUT,

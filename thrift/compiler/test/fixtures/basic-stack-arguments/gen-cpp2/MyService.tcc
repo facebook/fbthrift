@@ -46,7 +46,6 @@ void MyServiceAsyncProcessor::process_hasDataById(apache::thrift::ResponseChanne
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_hasDataById(std::move(callback), args.get<0>().ref());
 }
 
@@ -100,7 +99,6 @@ void MyServiceAsyncProcessor::process_getDataById(apache::thrift::ResponseChanne
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_getDataById(std::move(callback), args.get<0>().ref());
 }
 
@@ -156,7 +154,6 @@ void MyServiceAsyncProcessor::process_putDataById(apache::thrift::ResponseChanne
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_putDataById(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 
@@ -204,7 +201,6 @@ void MyServiceAsyncProcessor::process_lobDataById(apache::thrift::ResponseChanne
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
-  ctx->setStartedProcessing();
   iface_->async_tm_lobDataById(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 

@@ -556,7 +556,7 @@ void Cpp2Connection::Cpp2Request::TaskTimeout::timeoutExpired() noexcept {
 }
 
 void Cpp2Connection::Cpp2Request::QueueTimeout::timeoutExpired() noexcept {
-  if (!request_->reqContext_.getStartedProcessing()) {
+  if (!request_->getStartedProcessing()) {
     request_->req_->cancel();
     request_->sendTimeoutResponse(
         HeaderServerChannel::HeaderRequest::TimeoutResponseType::QUEUE);

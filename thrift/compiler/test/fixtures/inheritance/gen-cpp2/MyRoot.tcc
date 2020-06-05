@@ -39,7 +39,6 @@ void MyRootAsyncProcessor::process_do_root(apache::thrift::ResponseChannelReques
     callback.release()->deleteInThread();
     return;
   }
-  ctx->setStartedProcessing();
   iface_->async_tm_do_root(std::move(callback));
 }
 
