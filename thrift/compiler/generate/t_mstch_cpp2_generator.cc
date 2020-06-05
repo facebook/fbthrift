@@ -1667,15 +1667,23 @@ class mstch_cpp2_program : public mstch_program {
           continue;
         }
 
-        auto t = f->get_type()->get_true_type();
-        if (!t->is_struct()) {
-          continue;
-        }
+        auto add_dependency = [&](t_type* type) {
+          if (type->is_struct()) {
+            auto* strct = dynamic_cast<t_struct*>(type);
+            // We're only interested in types defined in the current program.
+            if (strct->get_program() == program_) {
+              deps.emplace_back(strct);
+            }
+          }
+        };
 
-        auto* strct = dynamic_cast<t_struct*>(t);
-        // We're only interested in structs defined in the current program.
-        if (strct->get_program() == program_) {
-          deps.emplace_back(strct);
+        auto t = f->get_type()->get_true_type();
+        if (t->is_map()) {
+          auto* map = dynamic_cast<t_map*>(t);
+          add_dependency(map->get_key_type());
+          add_dependency(map->get_val_type());
+        } else {
+          add_dependency(t);
         }
       }
 
