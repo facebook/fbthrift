@@ -20,7 +20,11 @@
 #include <stdint.h>
 #include <string>
 
-#include <folly/io/IOBuf.h>
+#include <folly/Range.h>
+
+namespace folly {
+class IOBuf;
+}
 
 namespace apache {
 namespace thrift {

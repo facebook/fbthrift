@@ -18,6 +18,12 @@
 
 using std::string;
 
+#ifdef __cpp_deduction_guides
+#undef __cpp_deduction_guides
+#endif
+
+#include <folly/io/IOBuf.h>
+
 namespace apache {
 namespace thrift {
 namespace protocol {
