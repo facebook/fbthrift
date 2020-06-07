@@ -198,7 +198,7 @@ HeaderServerChannel::HeaderRequest::HeaderRequest(
   this->buf_ = std::move(buf);
   if (samplingStatus.isEnabled()) {
     timestamps_.setStatus(samplingStatus);
-    timestamps_.readEnd = concurrency::Util::currentTimeUsec();
+    timestamps_.readEnd = std::chrono::steady_clock::now();
   }
 }
 

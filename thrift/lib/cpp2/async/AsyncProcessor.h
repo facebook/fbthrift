@@ -286,7 +286,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
                 // Since this request was queued, reset the processBegin
                 // time to the actual start time, and not the queue time.
                 rq->getTimestamps().processBegin =
-                    apache::thrift::concurrency::Util::currentTimeUsec();
+                    std::chrono::steady_clock::now();
               }
               // Oneway request won't be canceled if expired. see
               // D1006482 for furhter details.  TODO: fix this

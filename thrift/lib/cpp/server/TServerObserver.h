@@ -18,7 +18,10 @@
 #define THRIFT_SERVER_TSERVEROBSERVER_H_ 1
 
 #include <stdint.h>
+#include <chrono>
 #include <memory>
+
+#include <folly/Optional.h>
 
 namespace apache {
 namespace thrift {
@@ -55,21 +58,51 @@ class TServerObserver {
   };
 
   class CallTimestamps {
-   public:
-    uint64_t readEnd;
-    uint64_t processBegin;
-    uint64_t processEnd;
-    uint64_t writeBegin;
-    uint64_t writeEnd;
+   protected:
+    using clock = std::chrono::steady_clock;
+    using us = std::chrono::microseconds;
 
-    CallTimestamps() {
-      init();
+   public:
+    clock::time_point readEnd;
+    clock::time_point processBegin;
+    clock::time_point processEnd;
+    clock::time_point writeBegin;
+    clock::time_point writeEnd;
+
+    static uint64_t to_microseconds(clock::duration dur) {
+      return std::chrono::duration_cast<us>(dur).count();
+    }
+    static clock::time_point from_microseconds(uint64_t usec) {
+      return clock::time_point() + us(usec);
     }
 
-    void init() {
-      readEnd = 0;
-      processBegin = processEnd = 0;
-      writeBegin = writeEnd = 0;
+    folly::Optional<uint64_t> processDelayLatencyUsec() const {
+      if (processBegin != clock::time_point()) {
+        return to_microseconds(processBegin - readEnd);
+      }
+      return {};
+    }
+
+    folly::Optional<uint64_t> processLatencyUsec() const {
+      if (processBegin != clock::time_point() &&
+          processEnd != clock::time_point()) {
+        return to_microseconds(processEnd - processBegin);
+      }
+      return {};
+    }
+
+    folly::Optional<uint64_t> writeDelayLatencyUsec() const {
+      if (writeBegin != clock::time_point()) {
+        return to_microseconds(writeBegin - processEnd);
+      }
+      return {};
+    }
+
+    folly::Optional<uint64_t> writeLatencyUsec() const {
+      if (writeBegin != clock::time_point()) {
+        return to_microseconds(writeEnd - writeBegin);
+      }
+      return {};
     }
 
     void setStatus(const SamplingStatus& status) {

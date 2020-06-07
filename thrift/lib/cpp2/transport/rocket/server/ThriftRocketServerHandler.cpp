@@ -286,9 +286,9 @@ void ThriftRocketServerHandler::handleRequestCommon(
     F&& makeRequest) {
   // setup request sampling for counters and stats
   auto samplingStatus = shouldSample();
-  uint64_t readEnd = 0;
+  std::chrono::steady_clock::time_point readEnd;
   if (UNLIKELY(samplingStatus.isEnabled())) {
-    readEnd = concurrency::Util::currentTimeUsec();
+    readEnd = std::chrono::steady_clock::now();
   }
 
   auto baseReqCtx = cpp2Processor_->getBaseContextForRequest();
@@ -366,18 +366,17 @@ void ThriftRocketServerHandler::handleRequestCommon(
   auto request = makeRequest(
       std::move(metadata), std::move(debugPayload), std::move(reqCtx));
   request->timestamps_.setStatus(samplingStatus);
-  request->timestamps_.readEnd = readEnd;
+  if (UNLIKELY(samplingStatus.isEnabled())) {
+    request->timestamps_.readEnd = readEnd;
+    request->timestamps_.processBegin = std::chrono::steady_clock::now();
+  }
 
   if (serverConfigs_) {
     if (auto* observer = serverConfigs_->getObserver()) {
-      if (UNLIKELY(samplingStatus.isEnabled())) {
-        // Expensive operations; happens only when sampling is enabled
-        request->timestamps_.processBegin =
-            concurrency::Util::currentTimeUsec();
-        if (samplingStatus.isEnabledByServer()) {
-          observer->queuedRequests(threadManager_->pendingTaskCount());
-          observer->activeRequests(serverConfigs_->getActiveRequests());
-        }
+      // Expensive operations; happens only when sampling is enabled
+      if (samplingStatus.isEnabledByServer()) {
+        observer->queuedRequests(threadManager_->pendingTaskCount());
+        observer->activeRequests(serverConfigs_->getActiveRequests());
       }
     }
   }

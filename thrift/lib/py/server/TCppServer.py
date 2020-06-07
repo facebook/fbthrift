@@ -101,10 +101,8 @@ class _ProcessorAdapter(object):
             should_sample = self._shouldSample()
 
             timestamps = CallTimestamps()
-            timestamps.processBegin = 0
-            timestamps.processEnd = 0
             if self.observer and should_sample:
-                timestamps.processBegin = int(time.time() * 10**6)
+                timestamps.setProcessBeginNow()
 
             write_buf = TMemoryBuffer()
             trans = THeaderTransport(write_buf)
@@ -130,7 +128,7 @@ class _ProcessorAdapter(object):
 
             if self.observer:
                 if should_sample:
-                    timestamps.processEnd = int(time.time() * 10**6)
+                    timestamps.setProcessEndNow()
 
                 # This only bumps counters if `processBegin != 0` and
                 # `processEnd != 0` and these will only be non-zero if

@@ -359,8 +359,7 @@ void Cpp2Connection::requestReceived(
   auto samplingStatus = hreq->timestamps_.getSamplingStatus();
   if (samplingStatus.isEnabled()) {
     // Expensive operations; happens only when sampling is enabled
-    hreq->timestamps_.processBegin =
-        apache::thrift::concurrency::Util::currentTimeUsec();
+    hreq->timestamps_.processBegin = std::chrono::steady_clock::now();
     if (samplingStatus.isEnabledByServer() && observer) {
       observer->queuedRequests(threadManager_->pendingTaskCount());
       observer->activeRequests(server->getActiveRequests());
@@ -568,8 +567,7 @@ void Cpp2Connection::Cpp2Request::markProcessEnd(
     std::map<std::string, std::string>* newHeaders) {
   auto samplingStatus = req_->timestamps_.getSamplingStatus();
   if (samplingStatus.isEnabled()) {
-    req_->timestamps_.processEnd =
-        apache::thrift::concurrency::Util::currentTimeUsec();
+    req_->timestamps_.processEnd = std::chrono::steady_clock::now();
     if (samplingStatus.isEnabledByClient()) {
       // Latency headers are set after processEnd itself. Can't be
       // done after write, since headers transform happens during write.
@@ -581,14 +579,14 @@ void Cpp2Connection::Cpp2Request::markProcessEnd(
 void Cpp2Connection::Cpp2Request::setLatencyHeaders(
     const apache::thrift::server::TServerObserver::CallTimestamps& timestamps,
     std::map<std::string, std::string>* newHeaders) const {
-  setLatencyHeader(
-      kQueueLatencyHeader.str(),
-      folly::to<std::string>(timestamps.processBegin - timestamps.readEnd),
-      newHeaders);
-  setLatencyHeader(
-      kProcessLatencyHeader.str(),
-      folly::to<std::string>(timestamps.processEnd - timestamps.processBegin),
-      newHeaders);
+  if (auto v = timestamps.processDelayLatencyUsec()) {
+    setLatencyHeader(
+        kQueueLatencyHeader.str(), folly::to<std::string>(*v), newHeaders);
+  }
+  if (auto v = timestamps.processLatencyUsec()) {
+    setLatencyHeader(
+        kProcessLatencyHeader.str(), folly::to<std::string>(*v), newHeaders);
+  }
 }
 
 void Cpp2Connection::Cpp2Request::setLatencyHeader(
@@ -629,14 +627,14 @@ void Cpp2Connection::Cpp2Sample::sendQueued() {
   if (chainedCallback_ != nullptr) {
     chainedCallback_->sendQueued();
   }
-  timestamps_.writeBegin = apache::thrift::concurrency::Util::currentTimeUsec();
+  timestamps_.writeBegin = std::chrono::steady_clock::now();
 }
 
 void Cpp2Connection::Cpp2Sample::messageSent() {
   if (chainedCallback_ != nullptr) {
     chainedCallback_->messageSent();
   }
-  timestamps_.writeEnd = apache::thrift::concurrency::Util::currentTimeUsec();
+  timestamps_.writeEnd = std::chrono::steady_clock::now();
   delete this;
 }
 
@@ -645,7 +643,7 @@ void Cpp2Connection::Cpp2Sample::messageSendError(
   if (chainedCallback_ != nullptr) {
     chainedCallback_->messageSendError(std::move(e));
   }
-  timestamps_.writeEnd = apache::thrift::concurrency::Util::currentTimeUsec();
+  timestamps_.writeEnd = std::chrono::steady_clock::now();
   delete this;
 }
 

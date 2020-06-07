@@ -155,6 +155,40 @@ class CppServerEventHandler : public TServerEventHandler {
   std::shared_ptr<object> handler_;
 };
 
+class PythonCallTimestamps : public TServerObserver::CallTimestamps {
+ public:
+  void set_readEndNow() {
+    readEnd = clock::now();
+  }
+  uint64_t get_readEndUsec() const noexcept {
+    return to_microseconds(readEnd.time_since_epoch());
+  }
+  void set_processBeginNow() {
+    processBegin = clock::now();
+  }
+  uint64_t get_processBeginUsec() const noexcept {
+    return to_microseconds(processBegin.time_since_epoch());
+  }
+  void set_processEndNow() {
+    processEnd = clock::now();
+  }
+  uint64_t get_processEndUsec() const noexcept {
+    return to_microseconds(processEnd.time_since_epoch());
+  }
+  void set_writeBeginNow() {
+    writeBegin = clock::now();
+  }
+  uint64_t get_writeBeginUsec() const noexcept {
+    return to_microseconds(writeBegin.time_since_epoch());
+  }
+  void set_writeEndNow() {
+    writeEnd = clock::now();
+  }
+  uint64_t get_writeEndUsec() const noexcept {
+    return to_microseconds(writeEnd.time_since_epoch());
+  }
+};
+
 class CppServerObserver : public TServerObserver {
  public:
   explicit CppServerObserver(object serverObserver)
@@ -206,7 +240,9 @@ class CppServerObserver : public TServerObserver {
     this->call("activeRequests", n);
   }
   void callCompleted(const CallTimestamps& runtimes) override {
-    this->call("callCompleted", runtimes);
+    this->call(
+        "callCompleted",
+        reinterpret_cast<const PythonCallTimestamps&>(runtimes));
   }
   void tlsWithClientCert() override {
     this->call("tlsWithClientCert");
@@ -792,13 +828,17 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
       .def("expiredTaskCount", &ThreadManager::expiredTaskCount)
       .def("clearPending", &ThreadManager::clearPending);
 
-  class_<TServerObserver::CallTimestamps>("CallTimestamps")
-      .def_readwrite("readEnd", &TServerObserver::CallTimestamps::readEnd)
-      .def_readwrite(
-          "processBegin", &TServerObserver::CallTimestamps::processBegin)
-      .def_readwrite("processEnd", &TServerObserver::CallTimestamps::processEnd)
-      .def_readwrite("writeBegin", &TServerObserver::CallTimestamps::writeBegin)
-      .def_readwrite("writeEnd", &TServerObserver::CallTimestamps::writeEnd);
+  class_<PythonCallTimestamps>("CallTimestamps")
+      .def("getReadEnd", &PythonCallTimestamps::get_readEndUsec)
+      .def("setReadEndNow", &PythonCallTimestamps::set_readEndNow)
+      .def("getProcessBegin", &PythonCallTimestamps::get_processBeginUsec)
+      .def("setProcessBeginNow", &PythonCallTimestamps::set_processBeginNow)
+      .def("getProcessEnd", &PythonCallTimestamps::get_processEndUsec)
+      .def("setProcessEndNow", &PythonCallTimestamps::set_processEndNow)
+      .def("getWriteBegin", &PythonCallTimestamps::get_writeBeginUsec)
+      .def("setWriteBeginNow", &PythonCallTimestamps::set_writeBeginNow)
+      .def("getWriteEnd", &PythonCallTimestamps::get_writeEndUsec)
+      .def("setWriteEndNow", &PythonCallTimestamps::set_writeEndNow);
 
   enum_<SSLPolicy>("SSLPolicy")
       .value("DISABLED", SSLPolicy::DISABLED)

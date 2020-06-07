@@ -30,7 +30,7 @@ ThriftRequestCore::RequestTimestampSample::RequestTimestampSample(
 }
 
 void ThriftRequestCore::RequestTimestampSample::sendQueued() {
-  timestamps_.writeBegin = apache::thrift::concurrency::Util::currentTimeUsec();
+  timestamps_.writeBegin = std::chrono::steady_clock::now();
   if (chainedCallback_ != nullptr) {
     chainedCallback_->sendQueued();
   }
@@ -40,7 +40,7 @@ void ThriftRequestCore::RequestTimestampSample::messageSent() {
   SCOPE_EXIT {
     delete this;
   };
-  timestamps_.writeEnd = apache::thrift::concurrency::Util::currentTimeUsec();
+  timestamps_.writeEnd = std::chrono::steady_clock::now();
   if (chainedCallback_ != nullptr) {
     chainedCallback_->messageSent();
   }
@@ -51,7 +51,7 @@ void ThriftRequestCore::RequestTimestampSample::messageSendError(
   SCOPE_EXIT {
     delete this;
   };
-  timestamps_.writeEnd = apache::thrift::concurrency::Util::currentTimeUsec();
+  timestamps_.writeEnd = std::chrono::steady_clock::now();
   if (chainedCallback_ != nullptr) {
     chainedCallback_->messageSendError(std::move(e));
   }
@@ -105,7 +105,7 @@ void ThriftRequestCore::sendReply(
     // TODO: refactor to move response compression to CPU thread.
     auto samplingStatus = timestamps_.getSamplingStatus();
     if (UNLIKELY(samplingStatus.isEnabled())) {
-      timestamps_.processEnd = concurrency::Util::currentTimeUsec();
+      timestamps_.processEnd = std::chrono::steady_clock::now();
     }
     if (!isOneway()) {
       auto metadata = makeResponseRpcMetadata();
