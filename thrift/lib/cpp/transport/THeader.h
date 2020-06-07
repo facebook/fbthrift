@@ -220,7 +220,10 @@ class THeader {
     return writeHeaders_.empty();
   }
 
-  StringToStringMap&& releaseWriteHeaders() {
+  StringToStringMap& mutableWriteHeaders() {
+    return writeHeaders_;
+  }
+  StringToStringMap releaseWriteHeaders() {
     return std::move(writeHeaders_);
   }
   const StringToStringMap& getWriteHeaders() const {

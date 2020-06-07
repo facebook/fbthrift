@@ -209,7 +209,7 @@ void ProxygenThriftServer::ThriftRequestHandler::sendReply(
   response.status(200, "OK");
 
   for (auto itr : header_->releaseWriteHeaders()) {
-    response.header(itr.first, itr.second);
+    response.header(std::move(itr.first), std::move(itr.second));
   }
 
   response.header(
