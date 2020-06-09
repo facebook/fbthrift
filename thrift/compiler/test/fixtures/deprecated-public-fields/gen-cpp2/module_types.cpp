@@ -33,25 +33,28 @@ void TccStructTraits<::cpp2::Foo>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo(apache::thrift::FragileConstructor, int32_t bar__arg) :
     bar(std::move(bar__arg)) {
   __isset.bar = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Foo::__clear() {
   // clear all fields
   bar = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool Foo::operator==(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.__isset.bar != rhs.__isset.bar) {
+  if (lhs.bar_ref().has_value() != rhs.bar_ref().has_value()) {
     return false;
   }
-  if (lhs.__isset.bar) {
+  if (lhs.bar_ref().has_value()) {
     if (!(lhs.bar == rhs.bar)) {
       return false;
     }
@@ -63,10 +66,10 @@ bool Foo::operator<(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.__isset.bar != rhs.__isset.bar) {
-    return lhs.__isset.bar < rhs.__isset.bar;
+  if (lhs.bar_ref().has_value() != rhs.bar_ref().has_value()) {
+    return lhs.bar_ref().has_value() < rhs.bar_ref().has_value();
   }
-  if (lhs.__isset.bar) {
+  if (lhs.bar_ref().has_value()) {
     if (!(lhs.bar == rhs.bar)) {
       return lhs.bar < rhs.bar;
     }
@@ -78,7 +81,9 @@ bool Foo::operator<(const Foo& rhs) const {
 void swap(Foo& a, Foo& b) {
   using ::std::swap;
   swap(a.bar_ref().value_unchecked(), b.bar_ref().value_unchecked());
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void Foo::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

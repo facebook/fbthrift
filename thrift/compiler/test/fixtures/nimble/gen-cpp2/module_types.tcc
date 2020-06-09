@@ -60,7 +60,9 @@ _readField_first:
 _readField_second:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->second, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.second = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -73,7 +75,9 @@ _readField_second:
 _readField_third:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->third, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.third = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -86,7 +90,9 @@ _readField_third:
 _readField_isTrue:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::readWithContext(*iprot, this->isTrue, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.isTrue = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -161,11 +167,11 @@ uint32_t BasicTypes::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("BasicTypes");
   xfer += prot_->serializedFieldSize("first", apache::thrift::protocol::T_I32, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->first);
-  if (this->__isset.second) {
+  if (this->second_ref().has_value()) {
     xfer += prot_->serializedFieldSize("second", apache::thrift::protocol::T_I32, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->second);
   }
-  if (this->__isset.third) {
+  if (this->third_ref().has_value()) {
     xfer += prot_->serializedFieldSize("third", apache::thrift::protocol::T_I64, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->third);
   }
@@ -181,11 +187,11 @@ uint32_t BasicTypes::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("BasicTypes");
   xfer += prot_->serializedFieldSize("first", apache::thrift::protocol::T_I32, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->first);
-  if (this->__isset.second) {
+  if (this->second_ref().has_value()) {
     xfer += prot_->serializedFieldSize("second", apache::thrift::protocol::T_I32, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->second);
   }
-  if (this->__isset.third) {
+  if (this->third_ref().has_value()) {
     xfer += prot_->serializedFieldSize("third", apache::thrift::protocol::T_I64, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->third);
   }
@@ -202,12 +208,12 @@ uint32_t BasicTypes::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("first", apache::thrift::protocol::T_I32, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->first);
   xfer += prot_->writeFieldEnd();
-  if (this->__isset.second) {
+  if (this->second_ref().has_value()) {
     xfer += prot_->writeFieldBegin("second", apache::thrift::protocol::T_I32, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->second);
     xfer += prot_->writeFieldEnd();
   }
-  if (this->__isset.third) {
+  if (this->third_ref().has_value()) {
     xfer += prot_->writeFieldBegin("third", apache::thrift::protocol::T_I64, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->third);
     xfer += prot_->writeFieldEnd();

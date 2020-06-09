@@ -77,7 +77,9 @@ _readField_name:
   {
     
     iprot->readString(this->name);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.name = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -185,7 +187,9 @@ void MyStructAnnotation::readNoXfer(Protocol_* iprot) {
 _readField_count:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->count, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.count = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -199,7 +203,9 @@ _readField_name:
   {
     
     iprot->readString(this->name);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.name = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -213,7 +219,9 @@ _readField_extra:
   {
     
     iprot->readString(this->extra);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.extra = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -227,7 +235,9 @@ _readField_nest:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::cpp2::MyStructNestedAnnotation>::read(iprot, &this->nest);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.nest = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -305,7 +315,7 @@ uint32_t MyStructAnnotation::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->count);
   xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->name);
-  if (this->__isset.extra) {
+  if (this->extra_ref().has_value()) {
     xfer += prot_->serializedFieldSize("extra", apache::thrift::protocol::T_STRING, 3);
     xfer += prot_->serializedSizeString(this->extra);
   }
@@ -323,7 +333,7 @@ uint32_t MyStructAnnotation::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->count);
   xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->name);
-  if (this->__isset.extra) {
+  if (this->extra_ref().has_value()) {
     xfer += prot_->serializedFieldSize("extra", apache::thrift::protocol::T_STRING, 3);
     xfer += prot_->serializedSizeString(this->extra);
   }
@@ -343,7 +353,7 @@ uint32_t MyStructAnnotation::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->writeString(this->name);
   xfer += prot_->writeFieldEnd();
-  if (this->__isset.extra) {
+  if (this->extra_ref().has_value()) {
     xfer += prot_->writeFieldBegin("extra", apache::thrift::protocol::T_STRING, 3);
     xfer += prot_->writeString(this->extra);
     xfer += prot_->writeFieldEnd();
@@ -387,7 +397,9 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
 _readField_majorVer:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->majorVer, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.majorVer = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -401,7 +413,9 @@ _readField_package:
   {
     
     iprot->readString(this->package);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.package = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -415,7 +429,9 @@ _readField_annotation_with_quote:
   {
     
     iprot->readString(this->annotation_with_quote);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.annotation_with_quote = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -429,7 +445,9 @@ _readField_class_:
   {
     
     iprot->readString(this->class_);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.class_ = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -582,7 +600,9 @@ void SecretStruct::readNoXfer(Protocol_* iprot) {
 _readField_id:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->id, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.id = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -596,7 +616,9 @@ _readField_password:
   {
     
     iprot->readString(this->password);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.password = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

@@ -48,7 +48,9 @@ void Foo::readNoXfer(Protocol_* iprot) {
 _readField_bar:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->bar, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.bar = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -97,7 +99,7 @@ template <class Protocol_>
 uint32_t Foo::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Foo");
-  if (this->__isset.bar) {
+  if (this->bar_ref().has_value()) {
     xfer += prot_->serializedFieldSize("bar", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->bar);
   }
@@ -109,7 +111,7 @@ template <class Protocol_>
 uint32_t Foo::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Foo");
-  if (this->__isset.bar) {
+  if (this->bar_ref().has_value()) {
     xfer += prot_->serializedFieldSize("bar", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->bar);
   }
@@ -121,7 +123,7 @@ template <class Protocol_>
 uint32_t Foo::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Foo");
-  if (this->__isset.bar) {
+  if (this->bar_ref().has_value()) {
     xfer += prot_->writeFieldBegin("bar", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->bar);
     xfer += prot_->writeFieldEnd();

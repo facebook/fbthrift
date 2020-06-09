@@ -1203,18 +1203,21 @@ template uint32_t union3::serializedSizeZC<>(apache::thrift::CompactProtocolWrit
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structA::structA(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
   __isset.a = true;
   __isset.b = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void structA::__clear() {
   // clear all fields
   a = 0;
   b = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool structA::operator==(const structA& rhs) const {
@@ -1248,7 +1251,9 @@ void swap(structA& a, structA& b) {
   using ::std::swap;
   swap(a.a, b.a);
   swap(a.b, b.b);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void structA::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1372,18 +1377,21 @@ template uint32_t unionA::serializedSizeZC<>(apache::thrift::CompactProtocolWrit
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structB::structB(apache::thrift::FragileConstructor, double c__arg, bool d__arg) :
     c(std::move(c__arg)),
     d(std::move(d__arg)) {
   __isset.c = true;
   __isset.d = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void structB::__clear() {
   // clear all fields
   c = 0;
   d = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool structB::operator==(const structB& rhs) const {
@@ -1417,7 +1425,9 @@ void swap(structB& a, structB& b) {
   using ::std::swap;
   swap(a.c, b.c);
   swap(a.d, b.d);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void structB::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1432,16 +1442,19 @@ template uint32_t structB::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structC::structC() :
       a(0),
       c(0),
       d(0),
       e( ::test_cpp2::cpp_reflection::enum1::field0),
       f( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 structC::~structC() {}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structC::structC(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg, double c__arg, bool d__arg,  ::test_cpp2::cpp_reflection::enum1 e__arg,  ::test_cpp2::cpp_reflection::enum2 f__arg,  ::test_cpp2::cpp_reflection::union1 g__arg,  ::test_cpp2::cpp_reflection::unionA h__arg,  ::test_cpp2::cpp_reflection::unionA i__arg, ::std::vector<int32_t> j__arg, ::std::vector<int32_t> j1__arg, ::std::vector< ::test_cpp2::cpp_reflection::enum1> j2__arg, ::std::vector< ::test_cpp2::cpp_reflection::structA> j3__arg, ::std::set<int32_t> k__arg, ::std::set<int32_t> k1__arg, ::std::set< ::test_cpp2::cpp_reflection::enum2> k2__arg, ::std::set< ::test_cpp2::cpp_reflection::structB> k3__arg, ::std::map<int32_t, int32_t> l__arg, ::std::map<int32_t, int32_t> l1__arg, ::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> l2__arg, ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> l3__arg, ::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> m1__arg, ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> m2__arg, ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> m3__arg, ::std::map<::std::string, int32_t> n1__arg, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1> n2__arg, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB> n3__arg, ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t> o1__arg, ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> o2__arg, ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> o3__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)),
@@ -1504,7 +1517,7 @@ structC::structC(apache::thrift::FragileConstructor, int32_t a__arg, ::std::stri
   __isset.o2 = true;
   __isset.o3 = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void structC::__clear() {
   // clear all fields
   a = 0;
@@ -1537,7 +1550,9 @@ void structC::__clear() {
   o1.clear();
   o2.clear();
   o3.clear();
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool structC::operator==(const structC& rhs) const {
@@ -1959,7 +1974,9 @@ void swap(structC& a, structC& b) {
   swap(a.o1, b.o1);
   swap(a.o2, b.o2);
   swap(a.o3, b.o3);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void structC::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1974,14 +1991,17 @@ template uint32_t structC::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1() :
       field0(0),
       field2( ::test_cpp2::cpp_reflection::enum1::field0),
       field3( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 struct1::~struct1() {}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1(apache::thrift::FragileConstructor, int32_t field0__arg, ::std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::enum2 field3__arg,  ::test_cpp2::cpp_reflection::union1 field4__arg,  ::test_cpp2::cpp_reflection::union2 field5__arg) :
     field0(std::move(field0__arg)),
     field1(std::move(field1__arg)),
@@ -1994,7 +2014,7 @@ struct1::struct1(apache::thrift::FragileConstructor, int32_t field0__arg, ::std:
   __isset.field4 = true;
   __isset.field5 = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct1::__clear() {
   // clear all fields
   field0 = 0;
@@ -2003,7 +2023,9 @@ void struct1::__clear() {
   field3 =  ::test_cpp2::cpp_reflection::enum2::field0_2;
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::clear(&field4);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::clear(&field5);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct1::operator==(const struct1& rhs) const {
@@ -2013,10 +2035,10 @@ bool struct1::operator==(const struct1& rhs) const {
   if (!(lhs.field0 == rhs.field0)) {
     return false;
   }
-  if (lhs.__isset.field1 != rhs.__isset.field1) {
+  if (lhs.field1_ref().has_value() != rhs.field1_ref().has_value()) {
     return false;
   }
-  if (lhs.__isset.field1) {
+  if (lhs.field1_ref().has_value()) {
     if (!(lhs.field1 == rhs.field1)) {
       return false;
     }
@@ -2027,10 +2049,10 @@ bool struct1::operator==(const struct1& rhs) const {
   if (!(lhs.field3 == rhs.field3)) {
     return false;
   }
-  if (lhs.__isset.field4 != rhs.__isset.field4) {
+  if (lhs.field4_ref().has_value() != rhs.field4_ref().has_value()) {
     return false;
   }
-  if (lhs.__isset.field4) {
+  if (lhs.field4_ref().has_value()) {
     if (!(lhs.field4 == rhs.field4)) {
       return false;
     }
@@ -2048,10 +2070,10 @@ bool struct1::operator<(const struct1& rhs) const {
   if (!(lhs.field0 == rhs.field0)) {
     return lhs.field0 < rhs.field0;
   }
-  if (lhs.__isset.field1 != rhs.__isset.field1) {
-    return lhs.__isset.field1 < rhs.__isset.field1;
+  if (lhs.field1_ref().has_value() != rhs.field1_ref().has_value()) {
+    return lhs.field1_ref().has_value() < rhs.field1_ref().has_value();
   }
-  if (lhs.__isset.field1) {
+  if (lhs.field1_ref().has_value()) {
     if (!(lhs.field1 == rhs.field1)) {
       return lhs.field1 < rhs.field1;
     }
@@ -2062,10 +2084,10 @@ bool struct1::operator<(const struct1& rhs) const {
   if (!(lhs.field3 == rhs.field3)) {
     return lhs.field3 < rhs.field3;
   }
-  if (lhs.__isset.field4 != rhs.__isset.field4) {
-    return lhs.__isset.field4 < rhs.__isset.field4;
+  if (lhs.field4_ref().has_value() != rhs.field4_ref().has_value()) {
+    return lhs.field4_ref().has_value() < rhs.field4_ref().has_value();
   }
-  if (lhs.__isset.field4) {
+  if (lhs.field4_ref().has_value()) {
     if (!(lhs.field4 == rhs.field4)) {
       return lhs.field4 < rhs.field4;
     }
@@ -2077,11 +2099,11 @@ bool struct1::operator<(const struct1& rhs) const {
 }
 
 const  ::test_cpp2::cpp_reflection::union1* struct1::get_field4() const& {
-  return __isset.field4 ? std::addressof(field4) : nullptr;
+  return field4_ref().has_value() ? std::addressof(field4) : nullptr;
 }
 
  ::test_cpp2::cpp_reflection::union1* struct1::get_field4() & {
-  return __isset.field4 ? std::addressof(field4) : nullptr;
+  return field4_ref().has_value() ? std::addressof(field4) : nullptr;
 }
 
 const  ::test_cpp2::cpp_reflection::union2& struct1::get_field5() const& {
@@ -2101,7 +2123,9 @@ void swap(struct1& a, struct1& b) {
   swap(a.field3, b.field3);
   swap(a.field4_ref().value_unchecked(), b.field4_ref().value_unchecked());
   swap(a.field5, b.field5);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct1::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -2116,14 +2140,17 @@ template uint32_t struct1::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct2::struct2() :
       fieldA(0),
       fieldC( ::test_cpp2::cpp_reflection::enum1::field0),
       fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 struct2::~struct2() {}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct2::struct2(apache::thrift::FragileConstructor, int32_t fieldA__arg, ::std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg) :
     fieldA(std::move(fieldA__arg)),
     fieldB(std::move(fieldB__arg)),
@@ -2140,7 +2167,7 @@ struct2::struct2(apache::thrift::FragileConstructor, int32_t fieldA__arg, ::std:
   __isset.fieldF = true;
   __isset.fieldG = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct2::__clear() {
   // clear all fields
   fieldA = 0;
@@ -2150,7 +2177,9 @@ void struct2::__clear() {
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::clear(&fieldE);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::clear(&fieldF);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::struct1>::clear(&fieldG);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct2::operator==(const struct2& rhs) const {
@@ -2243,7 +2272,9 @@ void swap(struct2& a, struct2& b) {
   swap(a.fieldE, b.fieldE);
   swap(a.fieldF, b.fieldF);
   swap(a.fieldG, b.fieldG);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -2258,14 +2289,17 @@ template uint32_t struct2::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct3::struct3() :
       fieldA(0),
       fieldC( ::test_cpp2::cpp_reflection::enum1::field0),
       fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 struct3::~struct3() {}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct3::struct3(apache::thrift::FragileConstructor, int32_t fieldA__arg, ::std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg,  ::test_cpp2::cpp_reflection::union2 fieldH__arg, ::std::vector<int32_t> fieldI__arg, ::std::vector<::std::string> fieldJ__arg, ::std::vector<::std::string> fieldK__arg, ::std::vector< ::test_cpp2::cpp_reflection::structA> fieldL__arg, ::std::set<int32_t> fieldM__arg, ::std::set<::std::string> fieldN__arg, ::std::set<::std::string> fieldO__arg, ::std::set< ::test_cpp2::cpp_reflection::structB> fieldP__arg, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA> fieldQ__arg, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB> fieldR__arg) :
     fieldA(std::move(fieldA__arg)),
     fieldB(std::move(fieldB__arg)),
@@ -2304,7 +2338,7 @@ struct3::struct3(apache::thrift::FragileConstructor, int32_t fieldA__arg, ::std:
   __isset.fieldQ = true;
   __isset.fieldR = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct3::__clear() {
   // clear all fields
   fieldA = 0;
@@ -2325,7 +2359,9 @@ void struct3::__clear() {
   fieldP.clear();
   fieldQ.clear();
   fieldR.clear();
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct3::operator==(const struct3& rhs) const {
@@ -2583,7 +2619,9 @@ void swap(struct3& a, struct3& b) {
   swap(a.fieldP, b.fieldP);
   swap(a.fieldQ, b.fieldQ);
   swap(a.fieldR, b.fieldR);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct3::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -2601,9 +2639,13 @@ namespace test_cpp2 { namespace cpp_reflection {
 struct4::struct4(const struct4& srcObj) {
   field0 = srcObj.field0;
   field1 = srcObj.field1;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.field1 = srcObj.__isset.field1;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   field2 = srcObj.field2;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.field2 = srcObj.__isset.field2;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   if (srcObj.field3) field3.reset(new  ::test_cpp2::cpp_reflection::structA(*srcObj.field3));
 }
 
@@ -2613,6 +2655,7 @@ struct4& struct4::operator=(const struct4& src) {
   return *this;
 }
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct4::struct4(apache::thrift::FragileConstructor, int32_t field0__arg, ::std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg, std::unique_ptr< ::test_cpp2::cpp_reflection::structA> field3__arg) :
     field0(std::move(field0__arg)),
     field1(std::move(field1__arg)),
@@ -2621,14 +2664,16 @@ struct4::struct4(apache::thrift::FragileConstructor, int32_t field0__arg, ::std:
   __isset.field1 = true;
   __isset.field2 = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct4::__clear() {
   // clear all fields
   field0 = 0;
   field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
   if (field3) ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::clear(field3.get());
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct4::operator==(const struct4& rhs) const {
@@ -2638,10 +2683,10 @@ bool struct4::operator==(const struct4& rhs) const {
   if (!(lhs.field0 == rhs.field0)) {
     return false;
   }
-  if (lhs.__isset.field1 != rhs.__isset.field1) {
+  if (lhs.field1_ref().has_value() != rhs.field1_ref().has_value()) {
     return false;
   }
-  if (lhs.__isset.field1) {
+  if (lhs.field1_ref().has_value()) {
     if (!(lhs.field1 == rhs.field1)) {
       return false;
     }
@@ -2667,10 +2712,10 @@ bool struct4::operator<(const struct4& rhs) const {
   if (!(lhs.field0 == rhs.field0)) {
     return lhs.field0 < rhs.field0;
   }
-  if (lhs.__isset.field1 != rhs.__isset.field1) {
-    return lhs.__isset.field1 < rhs.__isset.field1;
+  if (lhs.field1_ref().has_value() != rhs.field1_ref().has_value()) {
+    return lhs.field1_ref().has_value() < rhs.field1_ref().has_value();
   }
-  if (lhs.__isset.field1) {
+  if (lhs.field1_ref().has_value()) {
     if (!(lhs.field1 == rhs.field1)) {
       return lhs.field1 < rhs.field1;
     }
@@ -2696,7 +2741,9 @@ void swap(struct4& a, struct4& b) {
   swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
   swap(a.field2, b.field2);
   swap(a.field3, b.field3);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct4::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -2711,13 +2758,16 @@ template uint32_t struct4::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct5::struct5() :
       field0(0),
       field2( ::test_cpp2::cpp_reflection::enum1::field0) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 struct5::~struct5() {}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct5::struct5(apache::thrift::FragileConstructor, int32_t field0__arg, ::std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::structA field3__arg,  ::test_cpp2::cpp_reflection::structB field4__arg) :
     field0(std::move(field0__arg)),
     field1(std::move(field1__arg)),
@@ -2729,7 +2779,7 @@ struct5::struct5(apache::thrift::FragileConstructor, int32_t field0__arg, ::std:
   __isset.field3 = true;
   __isset.field4 = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct5::__clear() {
   // clear all fields
   field0 = 0;
@@ -2737,7 +2787,9 @@ void struct5::__clear() {
   field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::clear(&field3);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structB>::clear(&field4);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct5::operator==(const struct5& rhs) const {
@@ -2747,10 +2799,10 @@ bool struct5::operator==(const struct5& rhs) const {
   if (!(lhs.field0 == rhs.field0)) {
     return false;
   }
-  if (lhs.__isset.field1 != rhs.__isset.field1) {
+  if (lhs.field1_ref().has_value() != rhs.field1_ref().has_value()) {
     return false;
   }
-  if (lhs.__isset.field1) {
+  if (lhs.field1_ref().has_value()) {
     if (!(lhs.field1 == rhs.field1)) {
       return false;
     }
@@ -2774,10 +2826,10 @@ bool struct5::operator<(const struct5& rhs) const {
   if (!(lhs.field0 == rhs.field0)) {
     return lhs.field0 < rhs.field0;
   }
-  if (lhs.__isset.field1 != rhs.__isset.field1) {
-    return lhs.__isset.field1 < rhs.__isset.field1;
+  if (lhs.field1_ref().has_value() != rhs.field1_ref().has_value()) {
+    return lhs.field1_ref().has_value() < rhs.field1_ref().has_value();
   }
-  if (lhs.__isset.field1) {
+  if (lhs.field1_ref().has_value()) {
     if (!(lhs.field1 == rhs.field1)) {
       return lhs.field1 < rhs.field1;
     }
@@ -2818,7 +2870,9 @@ void swap(struct5& a, struct5& b) {
   swap(a.field2, b.field2);
   swap(a.field3, b.field3);
   swap(a.field4, b.field4);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct5::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -2833,15 +2887,18 @@ template uint32_t struct5::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_binary::struct_binary(apache::thrift::FragileConstructor, ::std::string bi__arg) :
     bi(std::move(bi__arg)) {
   __isset.bi = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct_binary::__clear() {
   // clear all fields
   bi = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct_binary::operator==(const struct_binary& rhs) const {
@@ -2868,7 +2925,9 @@ bool struct_binary::operator<(const struct_binary& rhs) const {
 void swap(struct_binary& a, struct_binary& b) {
   using ::std::swap;
   swap(a.bi, b.bi);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct_binary::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -2883,6 +2942,7 @@ template uint32_t struct_binary::serializedSizeZC<>(apache::thrift::CompactProto
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 dep_A_struct::dep_A_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp_reflection::dep_B_struct b__arg,  ::test_cpp2::cpp_reflection::dep_C_struct c__arg, int32_t i_a__arg) :
     b(std::move(b__arg)),
     c(std::move(c__arg)),
@@ -2891,13 +2951,15 @@ dep_A_struct::dep_A_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp
   __isset.c = true;
   __isset.i_a = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void dep_A_struct::__clear() {
   // clear all fields
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_B_struct>::clear(&b);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_C_struct>::clear(&c);
   i_a = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool dep_A_struct::operator==(const dep_A_struct& rhs) const {
@@ -2954,7 +3016,9 @@ void swap(dep_A_struct& a, dep_A_struct& b) {
   swap(a.b, b.b);
   swap(a.c, b.c);
   swap(a.i_a, b.i_a);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void dep_A_struct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -2969,6 +3033,7 @@ template uint32_t dep_A_struct::serializedSizeZC<>(apache::thrift::CompactProtoc
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 dep_B_struct::dep_B_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp_reflection::dep_B_struct b__arg,  ::test_cpp2::cpp_reflection::dep_C_struct c__arg, int32_t i_a__arg) :
     b(std::move(b__arg)),
     c(std::move(c__arg)),
@@ -2977,13 +3042,15 @@ dep_B_struct::dep_B_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp
   __isset.c = true;
   __isset.i_a = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void dep_B_struct::__clear() {
   // clear all fields
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_B_struct>::clear(&b);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_C_struct>::clear(&c);
   i_a = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool dep_B_struct::operator==(const dep_B_struct& rhs) const {
@@ -3040,7 +3107,9 @@ void swap(dep_B_struct& a, dep_B_struct& b) {
   swap(a.b, b.b);
   swap(a.c, b.c);
   swap(a.i_a, b.i_a);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void dep_B_struct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -3055,15 +3124,18 @@ template uint32_t dep_B_struct::serializedSizeZC<>(apache::thrift::CompactProtoc
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 annotated::annotated(apache::thrift::FragileConstructor, int32_t a__arg) :
     a(std::move(a__arg)) {
   __isset.a = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void annotated::__clear() {
   // clear all fields
   a = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool annotated::operator==(const annotated& rhs) const {
@@ -3090,7 +3162,9 @@ bool annotated::operator<(const annotated& rhs) const {
 void swap(annotated& a, annotated& b) {
   using ::std::swap;
   swap(a.a, b.a);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void annotated::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -3467,6 +3541,7 @@ template uint32_t union_with_special_names::serializedSizeZC<>(apache::thrift::C
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_with_special_names::struct_with_special_names(apache::thrift::FragileConstructor, int32_t get__arg, int32_t getter__arg, int32_t lists__arg, int32_t maps__arg, int32_t name__arg, int32_t name_to_value__arg, int32_t names__arg, int32_t prefix_tree__arg, int32_t sets__arg, int32_t setter__arg, int32_t str__arg, int32_t strings__arg, int32_t type__arg, int32_t value__arg, int32_t value_to_name__arg, int32_t values__arg, int32_t id__arg, int32_t ids__arg, int32_t descriptor__arg, int32_t descriptors__arg, int32_t key__arg, int32_t keys__arg, int32_t annotation__arg, int32_t annotations__arg, int32_t member__arg, int32_t members__arg, int32_t field__arg, int32_t fields__arg) :
     get(std::move(get__arg)),
     getter(std::move(getter__arg)),
@@ -3525,7 +3600,7 @@ struct_with_special_names::struct_with_special_names(apache::thrift::FragileCons
   __isset.field = true;
   __isset.fields = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct_with_special_names::__clear() {
   // clear all fields
   get = 0;
@@ -3556,7 +3631,9 @@ void struct_with_special_names::__clear() {
   members = 0;
   field = 0;
   fields = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct_with_special_names::operator==(const struct_with_special_names& rhs) const {
@@ -3772,7 +3849,9 @@ void swap(struct_with_special_names& a, struct_with_special_names& b) {
   swap(a.members, b.members);
   swap(a.field, b.field);
   swap(a.fields, b.fields);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct_with_special_names::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -3787,15 +3866,18 @@ template uint32_t struct_with_special_names::serializedSizeZC<>(apache::thrift::
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_with_indirections::struct_with_indirections() :
       real(0),
       fake(0),
       number(0),
       result(0) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 struct_with_indirections::~struct_with_indirections() {}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_with_indirections::struct_with_indirections(apache::thrift::FragileConstructor, int32_t real__arg,  ::test_cpp2::cpp_reflection::FakeI32 fake__arg,  ::test_cpp2::cpp_reflection::HasANumber number__arg,  ::test_cpp2::cpp_reflection::HasAResult result__arg,  ::test_cpp2::cpp_reflection::HasAPhrase phrase__arg) :
     real(std::move(real__arg)),
     fake(std::move(fake__arg)),
@@ -3808,7 +3890,7 @@ struct_with_indirections::struct_with_indirections(apache::thrift::FragileConstr
   __isset.result = true;
   __isset.phrase = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct_with_indirections::__clear() {
   // clear all fields
   real = 0;
@@ -3816,7 +3898,9 @@ void struct_with_indirections::__clear() {
   number.number = 0;
   result.foo().result() = 0;
   phrase.phrase = apache::thrift::StringTraits< folly::remove_cvref_t<decltype(std::declval<CppHasAPhrase>().phrase)>>::fromStringLiteral("");
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct_with_indirections::operator==(const struct_with_indirections& rhs) const {
@@ -3871,7 +3955,9 @@ void swap(struct_with_indirections& a, struct_with_indirections& b) {
   swap(a.number, b.number);
   swap(a.result, b.result);
   swap(a.phrase, b.phrase);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct_with_indirections::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

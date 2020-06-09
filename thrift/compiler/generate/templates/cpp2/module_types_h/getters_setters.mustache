@@ -20,11 +20,11 @@
 <%^type:string_or_binary?%>
 <%#field:optional?%>
   const <% > types/type%>* get_<%field:cpp_name%>() const& {
-    return __isset.<%field:cpp_name%> ? std::addressof(<%field:cpp_name%>) : nullptr;
+    return <%field:cpp_name%>_ref() ? std::addressof(<%field:cpp_name%>) : nullptr;
   }
 
   <% > types/type%>* get_<%field:cpp_name%>() & {
-    return __isset.<%field:cpp_name%> ? std::addressof(<%field:cpp_name%>) : nullptr;
+    return <%field:cpp_name%>_ref() ? std::addressof(<%field:cpp_name%>) : nullptr;
   }
   <% > types/type%>* get_<%field:cpp_name%>() && = delete;
 
@@ -38,7 +38,9 @@
   <% > types/type%>& set_<%field:cpp_name%>(<% > types/type%> <%field:cpp_name%>_) {
     <%field:cpp_name%> = <%field:cpp_name%>_;
 <%^field:required?%>
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.<%field:cpp_name%> = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/field:required?%>
     return <%field:cpp_name%>;
   }
@@ -46,11 +48,11 @@
 <%#type:string_or_binary?%>
 <%#field:optional?%>
   const <% > types/type%>* get_<%field:cpp_name%>() const& {
-    return __isset.<%field:cpp_name%> ? std::addressof(<%field:cpp_name%>) : nullptr;
+    return <%field:cpp_name%>_ref() ? std::addressof(<%field:cpp_name%>) : nullptr;
   }
 
   <% > types/type%>* get_<%field:cpp_name%>() & {
-    return __isset.<%field:cpp_name%> ? std::addressof(<%field:cpp_name%>) : nullptr;
+    return <%field:cpp_name%>_ref() ? std::addressof(<%field:cpp_name%>) : nullptr;
   }
   <% > types/type%>* get_<%field:cpp_name%>() && = delete;
 <%/field:optional?%>
@@ -68,7 +70,9 @@
   <% > types/type%>& set_<%field:cpp_name%>(T_<%struct:name%>_<%field:cpp_name%>_struct_setter&& <%field:cpp_name%>_) {
     <%field:cpp_name%> = std::forward<T_<%struct:name%>_<%field:cpp_name%>_struct_setter>(<%field:cpp_name%>_);
 <%^field:required?%>
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.<%field:cpp_name%> = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/field:required?%>
     return <%field:cpp_name%>;
   }
@@ -89,7 +93,9 @@
   <% > types/type%>& set_<%field:cpp_name%>(T_<%struct:name%>_<%field:cpp_name%>_struct_setter&& <%field:cpp_name%>_) {
     <%field:cpp_name%> = std::forward<T_<%struct:name%>_<%field:cpp_name%>_struct_setter>(<%field:cpp_name%>_);
 <%^field:required?%>
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.<%field:cpp_name%> = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/field:required?%>
     return <%field:cpp_name%>;
   }

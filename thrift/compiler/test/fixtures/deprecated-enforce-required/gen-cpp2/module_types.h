@@ -44,6 +44,7 @@ namespace cpp2 {
 class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Foo() :
       bar(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -57,6 +58,7 @@ class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
   Foo& operator=(Foo&&) = default;
 
   Foo& operator=(const Foo&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   int32_t bar;

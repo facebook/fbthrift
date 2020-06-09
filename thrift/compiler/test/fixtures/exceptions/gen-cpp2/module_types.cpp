@@ -49,8 +49,9 @@ void TccStructTraits<::cpp2::Serious>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Banal::Banal(apache::thrift::FragileConstructor) {}
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Banal::__clear() {
   // clear all fields
 }
@@ -88,9 +89,10 @@ template uint32_t Banal::serializedSizeZC<>(apache::thrift::CompactProtocolWrite
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Fiery::Fiery(apache::thrift::FragileConstructor, ::std::string message__arg) :
     message(std::move(message__arg)) {}
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Fiery::__clear() {
   // clear all fields
   message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
@@ -134,25 +136,28 @@ template uint32_t Fiery::serializedSizeZC<>(apache::thrift::CompactProtocolWrite
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Serious::Serious(apache::thrift::FragileConstructor, ::std::string sonnet__arg) :
     sonnet(std::move(sonnet__arg)) {
   __isset.sonnet = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Serious::__clear() {
   // clear all fields
   sonnet = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool Serious::operator==(const Serious& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.__isset.sonnet != rhs.__isset.sonnet) {
+  if (lhs.sonnet_ref().has_value() != rhs.sonnet_ref().has_value()) {
     return false;
   }
-  if (lhs.__isset.sonnet) {
+  if (lhs.sonnet_ref().has_value()) {
     if (!(lhs.sonnet == rhs.sonnet)) {
       return false;
     }
@@ -164,10 +169,10 @@ bool Serious::operator<(const Serious& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.__isset.sonnet != rhs.__isset.sonnet) {
-    return lhs.__isset.sonnet < rhs.__isset.sonnet;
+  if (lhs.sonnet_ref().has_value() != rhs.sonnet_ref().has_value()) {
+    return lhs.sonnet_ref().has_value() < rhs.sonnet_ref().has_value();
   }
-  if (lhs.__isset.sonnet) {
+  if (lhs.sonnet_ref().has_value()) {
     if (!(lhs.sonnet == rhs.sonnet)) {
       return lhs.sonnet < rhs.sonnet;
     }
@@ -179,7 +184,9 @@ bool Serious::operator<(const Serious& rhs) const {
 void swap(Serious& a, Serious& b) {
   using ::std::swap;
   swap(a.sonnet_ref().value_unchecked(), b.sonnet_ref().value_unchecked());
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void Serious::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

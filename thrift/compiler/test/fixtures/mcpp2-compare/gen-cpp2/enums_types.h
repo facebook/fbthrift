@@ -231,6 +231,7 @@ namespace facebook { namespace ns { namespace qwerty {
 class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators<SomeStruct> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SomeStruct() :
       fieldA(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -244,17 +245,20 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
   SomeStruct& operator=(SomeStruct&&) = default;
 
   SomeStruct& operator=(const SomeStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   int32_t fieldA;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
   } __isset = {};
   bool operator==(const SomeStruct& rhs) const;
   bool operator<(const SomeStruct& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
     return {this->fieldA, __isset.fieldA};
@@ -274,6 +278,7 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA_ref() && {
     return {std::move(this->fieldA), __isset.fieldA};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   int32_t get_fieldA() const {
     return fieldA;
@@ -281,7 +286,9 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
 
   int32_t& set_fieldA(int32_t fieldA_) {
     fieldA = fieldA_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldA = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldA;
   }
 

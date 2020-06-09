@@ -148,7 +148,9 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
 _readField_MyIntField:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->MyIntField, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyIntField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -162,7 +164,9 @@ _readField_MyStringField:
   {
     
     iprot->readString(this->MyStringField);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyStringField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -176,7 +180,9 @@ _readField_MyDataField:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::cpp2::MyDataItem>::read(iprot, &this->MyDataField);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyDataField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -190,7 +196,9 @@ _readField_MyDataField:
 _readField_myEnum:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::readWithContext(*iprot, this->myEnum, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.myEnum = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

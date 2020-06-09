@@ -62,6 +62,7 @@ namespace module2 {
 class Struct final : private apache::thrift::detail::st::ComparisonOperators<Struct> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Struct() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -74,6 +75,7 @@ class Struct final : private apache::thrift::detail::st::ComparisonOperators<Str
   Struct& operator=(Struct&&) = default;
 
   Struct& operator=(const Struct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
    ::module0::Struct first;
@@ -81,6 +83,7 @@ class Struct final : private apache::thrift::detail::st::ComparisonOperators<Str
    ::module1::Struct second;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool first;
     bool second;
@@ -88,6 +91,7 @@ class Struct final : private apache::thrift::detail::st::ComparisonOperators<Str
   bool operator==(const Struct& rhs) const;
   bool operator<(const Struct& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::module0::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> first_ref() const& {
     return {this->first, __isset.first};
@@ -107,7 +111,9 @@ class Struct final : private apache::thrift::detail::st::ComparisonOperators<Str
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> first_ref() && {
     return {std::move(this->first), __isset.first};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::module1::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> second_ref() const& {
     return {this->second, __isset.second};
@@ -127,13 +133,16 @@ class Struct final : private apache::thrift::detail::st::ComparisonOperators<Str
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> second_ref() && {
     return {std::move(this->second), __isset.second};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   const  ::module0::Struct& get_first() const&;
    ::module0::Struct get_first() &&;
 
   template <typename T_Struct_first_struct_setter =  ::module0::Struct>
    ::module0::Struct& set_first(T_Struct_first_struct_setter&& first_) {
     first = std::forward<T_Struct_first_struct_setter>(first_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.first = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return first;
   }
   const  ::module1::Struct& get_second() const&;
@@ -142,7 +151,9 @@ class Struct final : private apache::thrift::detail::st::ComparisonOperators<Str
   template <typename T_Struct_second_struct_setter =  ::module1::Struct>
    ::module1::Struct& set_second(T_Struct_second_struct_setter&& second_) {
     second = std::forward<T_Struct_second_struct_setter>(second_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.second = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return second;
   }
 
@@ -176,6 +187,7 @@ namespace module2 {
 class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<BigStruct> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   BigStruct() :
       id(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -189,6 +201,7 @@ class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<
   BigStruct& operator=(BigStruct&&) = default;
 
   BigStruct& operator=(const BigStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
    ::module2::Struct s;
@@ -196,6 +209,7 @@ class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<
   int32_t id;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool s;
     bool id;
@@ -203,6 +217,7 @@ class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<
   bool operator==(const BigStruct& rhs) const;
   bool operator<(const BigStruct& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::module2::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> s_ref() const& {
     return {this->s, __isset.s};
@@ -222,7 +237,9 @@ class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> s_ref() && {
     return {std::move(this->s), __isset.s};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> id_ref() const& {
     return {this->id, __isset.id};
@@ -242,13 +259,16 @@ class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> id_ref() && {
     return {std::move(this->id), __isset.id};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   const  ::module2::Struct& get_s() const&;
    ::module2::Struct get_s() &&;
 
   template <typename T_BigStruct_s_struct_setter =  ::module2::Struct>
    ::module2::Struct& set_s(T_BigStruct_s_struct_setter&& s_) {
     s = std::forward<T_BigStruct_s_struct_setter>(s_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.s = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return s;
   }
 
@@ -258,7 +278,9 @@ class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<
 
   int32_t& set_id(int32_t id_) {
     id = id_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.id = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return id;
   }
 

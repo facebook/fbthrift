@@ -183,6 +183,7 @@ namespace test { namespace fixtures { namespace enumstrict {
 class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct() :
       myEnum(static_cast< ::test::fixtures::enumstrict::MyEnum>(0)),
       myBigEnum( ::test::fixtures::enumstrict::MyBigEnum::ONE) {}
@@ -197,6 +198,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   MyStruct& operator=(MyStruct&&) = default;
 
   MyStruct& operator=(const MyStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
    ::test::fixtures::enumstrict::MyEnum myEnum;
@@ -204,6 +206,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
    ::test::fixtures::enumstrict::MyBigEnum myBigEnum;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool myEnum;
     bool myBigEnum;
@@ -211,6 +214,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::test::fixtures::enumstrict::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myEnum_ref() const& {
     return {this->myEnum, __isset.myEnum};
@@ -230,7 +234,9 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myEnum_ref() && {
     return {std::move(this->myEnum), __isset.myEnum};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::test::fixtures::enumstrict::MyBigEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myBigEnum_ref() const& {
     return {this->myBigEnum, __isset.myBigEnum};
@@ -250,6 +256,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myBigEnum_ref() && {
     return {std::move(this->myBigEnum), __isset.myBigEnum};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
    ::test::fixtures::enumstrict::MyEnum get_myEnum() const {
     return myEnum;
@@ -257,7 +264,9 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
    ::test::fixtures::enumstrict::MyEnum& set_myEnum( ::test::fixtures::enumstrict::MyEnum myEnum_) {
     myEnum = myEnum_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myEnum = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myEnum;
   }
 
@@ -267,7 +276,9 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
    ::test::fixtures::enumstrict::MyBigEnum& set_myBigEnum( ::test::fixtures::enumstrict::MyBigEnum myBigEnum_) {
     myBigEnum = myBigEnum_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myBigEnum = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myBigEnum;
   }
 

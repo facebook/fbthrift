@@ -631,7 +631,9 @@ _readField_strVal:
   {
     
     iprot->readString(this->strVal);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.strVal = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -644,7 +646,9 @@ _readField_strVal:
 _readField_intVal:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->intVal, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.intVal = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -660,7 +664,9 @@ _readField_typedefValue:
     
     this->typedefValue =  ::cpp2::containerTypedef();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::cpp2::containerTypedef>::read(*iprot, this->typedefValue);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.typedefValue = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1071,7 +1077,9 @@ void NonCopyableStruct::readNoXfer(Protocol_* iprot) {
 _readField_num:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->num, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.num = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

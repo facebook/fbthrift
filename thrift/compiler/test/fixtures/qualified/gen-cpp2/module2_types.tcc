@@ -56,7 +56,9 @@ _readField_first:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::module0::Struct>::read(iprot, &this->first);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.first = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -71,7 +73,9 @@ _readField_second:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::module1::Struct>::read(iprot, &this->second);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.second = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -196,7 +200,9 @@ _readField_s:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::module2::Struct>::read(iprot, &this->s);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.s = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -210,7 +216,9 @@ _readField_s:
 _readField_id:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->id, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.id = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

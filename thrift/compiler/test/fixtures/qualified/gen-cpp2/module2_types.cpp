@@ -51,18 +51,21 @@ void TccStructTraits<::module2::BigStruct>::translateFieldName(
 
 namespace module2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Struct::Struct(apache::thrift::FragileConstructor,  ::module0::Struct first__arg,  ::module1::Struct second__arg) :
     first(std::move(first__arg)),
     second(std::move(second__arg)) {
   __isset.first = true;
   __isset.second = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Struct::__clear() {
   // clear all fields
   ::apache::thrift::Cpp2Ops<  ::module0::Struct>::clear(&first);
   ::apache::thrift::Cpp2Ops<  ::module1::Struct>::clear(&second);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool Struct::operator==(const Struct& rhs) const {
@@ -112,7 +115,9 @@ void swap(Struct& a, Struct& b) {
   using ::std::swap;
   swap(a.first, b.first);
   swap(a.second, b.second);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void Struct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -127,18 +132,21 @@ template uint32_t Struct::serializedSizeZC<>(apache::thrift::CompactProtocolWrit
 } // module2
 namespace module2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BigStruct::BigStruct(apache::thrift::FragileConstructor,  ::module2::Struct s__arg, int32_t id__arg) :
     s(std::move(s__arg)),
     id(std::move(id__arg)) {
   __isset.s = true;
   __isset.id = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void BigStruct::__clear() {
   // clear all fields
   ::apache::thrift::Cpp2Ops<  ::module2::Struct>::clear(&s);
   id = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool BigStruct::operator==(const BigStruct& rhs) const {
@@ -180,7 +188,9 @@ void swap(BigStruct& a, BigStruct& b) {
   using ::std::swap;
   swap(a.s, b.s);
   swap(a.id, b.id);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void BigStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

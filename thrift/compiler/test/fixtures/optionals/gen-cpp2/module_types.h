@@ -192,6 +192,7 @@ namespace cpp2 {
 class Color final : private apache::thrift::detail::st::ComparisonOperators<Color> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Color() :
       red(0),
       green(0),
@@ -208,6 +209,7 @@ class Color final : private apache::thrift::detail::st::ComparisonOperators<Colo
   Color& operator=(Color&&) = default;
 
   Color& operator=(const Color&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   double red;
@@ -253,6 +255,7 @@ class Vehicle final : private apache::thrift::detail::st::ComparisonOperators<Ve
  public:
 
   Vehicle();
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -265,6 +268,7 @@ class Vehicle final : private apache::thrift::detail::st::ComparisonOperators<Ve
   Vehicle& operator=(Vehicle&&) = default;
 
   Vehicle& operator=(const Vehicle&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
 
   ~Vehicle();
@@ -379,6 +383,7 @@ class Person final : private apache::thrift::detail::st::ComparisonOperators<Per
  public:
 
   Person();
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -391,6 +396,7 @@ class Person final : private apache::thrift::detail::st::ComparisonOperators<Per
   Person& operator=(Person&&) = default;
 
   Person& operator=(const Person&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
 
   ~Person();

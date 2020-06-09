@@ -198,15 +198,18 @@ void TccStructTraits<::facebook::ns::qwerty::SomeStruct>::translateFieldName(
 
 namespace facebook { namespace ns { namespace qwerty {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SomeStruct::SomeStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg) :
     fieldA(std::move(fieldA__arg)) {
   __isset.fieldA = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void SomeStruct::__clear() {
   // clear all fields
   fieldA = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool SomeStruct::operator==(const SomeStruct& rhs) const {
@@ -233,7 +236,9 @@ bool SomeStruct::operator<(const SomeStruct& rhs) const {
 void swap(SomeStruct& a, SomeStruct& b) {
   using ::std::swap;
   swap(a.fieldA, b.fieldA);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void SomeStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

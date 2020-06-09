@@ -100,6 +100,7 @@ namespace cpp2 {
 class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct() :
       MyIntField(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -113,6 +114,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   MyStruct& operator=(MyStruct&&) = default;
 
   MyStruct& operator=(const MyStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   int64_t MyIntField;
@@ -120,6 +122,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   ::std::string MyStringField;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool MyIntField;
     bool MyStringField;
@@ -127,6 +130,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
     return {this->MyIntField, __isset.MyIntField};
@@ -146,7 +150,9 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyStringField_ref() const& {
     return {this->MyStringField, __isset.MyStringField};
@@ -166,6 +172,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField_ref() && {
     return {std::move(this->MyStringField), __isset.MyStringField};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   int64_t get_MyIntField() const {
     return MyIntField;
@@ -173,7 +180,9 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
   int64_t& set_MyIntField(int64_t MyIntField_) {
     MyIntField = MyIntField_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyIntField = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyIntField;
   }
 
@@ -188,7 +197,9 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   template <typename T_MyStruct_MyStringField_struct_setter = ::std::string>
   ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyStringField = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyStringField;
   }
 

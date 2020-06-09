@@ -70,7 +70,9 @@ _readField_field1:
   {
     
     iprot->readString(this->field1);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field1 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -179,7 +181,9 @@ _readField_m1:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::cpp2::Mixin1>::read(iprot, &this->m1);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.m1 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -194,7 +198,9 @@ _readField_field2:
   {
     
     iprot->readString(this->field2);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field2 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -253,7 +259,7 @@ uint32_t Mixin2::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("Mixin2");
   xfer += prot_->serializedFieldSize("m1", apache::thrift::protocol::T_STRUCT, 1);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Mixin1>::serializedSize(prot_, &this->m1);
-  if (this->__isset.field2) {
+  if (this->field2_ref().has_value()) {
     xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_STRING, 2);
     xfer += prot_->serializedSizeString(this->field2);
   }
@@ -267,7 +273,7 @@ uint32_t Mixin2::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("Mixin2");
   xfer += prot_->serializedFieldSize("m1", apache::thrift::protocol::T_STRUCT, 1);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Mixin1>::serializedSizeZC(prot_, &this->m1);
-  if (this->__isset.field2) {
+  if (this->field2_ref().has_value()) {
     xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_STRING, 2);
     xfer += prot_->serializedSizeString(this->field2);
   }
@@ -282,7 +288,7 @@ uint32_t Mixin2::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("m1", apache::thrift::protocol::T_STRUCT, 1);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Mixin1>::write(prot_, &this->m1);
   xfer += prot_->writeFieldEnd();
-  if (this->__isset.field2) {
+  if (this->field2_ref().has_value()) {
     xfer += prot_->writeFieldBegin("field2", apache::thrift::protocol::T_STRING, 2);
     xfer += prot_->writeString(this->field2);
     xfer += prot_->writeFieldEnd();
@@ -324,7 +330,9 @@ _readField_field3:
   {
     
     iprot->readString(this->field3);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field3 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -433,7 +441,9 @@ _readField_field4:
   {
     
     iprot->readString(this->field4);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field4 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -447,7 +457,9 @@ _readField_m2:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::cpp2::Mixin2>::read(iprot, &this->m2);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.m2 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -462,7 +474,9 @@ _readField_m3:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::cpp2::Mixin3>::read(iprot, &this->m3);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.m3 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 

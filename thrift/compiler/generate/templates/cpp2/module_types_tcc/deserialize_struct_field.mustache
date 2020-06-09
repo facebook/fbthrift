@@ -72,7 +72,9 @@ this-><%field:cpp_name%> = <% > types/type%>();
 isset_<%field:cpp_name%> = true;<%!
 %><%/field:required?%><%/program:enforce_required?%><%!
 %><%^field:required?%><%^struct:optionals?%><%^field:cpp_ref?%>
-this->__isset.<%field:cpp_name%> = true;<%!
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+this->__isset.<%field:cpp_name%> = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END<%!
 %><%/field:cpp_ref?%><%/struct:optionals?%><%/field:required?%><%!
 
 %><%#type:resolves_to_container_or_struct?%>

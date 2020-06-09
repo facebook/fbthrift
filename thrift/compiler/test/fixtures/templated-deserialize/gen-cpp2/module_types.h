@@ -249,6 +249,7 @@ namespace cpp2 {
 class SmallStruct final : private apache::thrift::detail::st::ComparisonOperators<SmallStruct> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SmallStruct() :
       small_A(0),
       small_B(0) {}
@@ -263,6 +264,7 @@ class SmallStruct final : private apache::thrift::detail::st::ComparisonOperator
   SmallStruct& operator=(SmallStruct&&) = default;
 
   SmallStruct& operator=(const SmallStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   bool small_A;
@@ -270,6 +272,7 @@ class SmallStruct final : private apache::thrift::detail::st::ComparisonOperator
   int32_t small_B;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool small_A;
     bool small_B;
@@ -277,6 +280,7 @@ class SmallStruct final : private apache::thrift::detail::st::ComparisonOperator
   bool operator==(const SmallStruct& rhs) const;
   bool operator<(const SmallStruct& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> small_A_ref() const& {
     return {this->small_A, __isset.small_A};
@@ -296,7 +300,9 @@ class SmallStruct final : private apache::thrift::detail::st::ComparisonOperator
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> small_A_ref() && {
     return {std::move(this->small_A), __isset.small_A};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> small_B_ref() const& {
     return {this->small_B, __isset.small_B};
@@ -316,6 +322,7 @@ class SmallStruct final : private apache::thrift::detail::st::ComparisonOperator
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> small_B_ref() && {
     return {std::move(this->small_B), __isset.small_B};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   bool get_small_A() const {
     return small_A;
@@ -323,7 +330,9 @@ class SmallStruct final : private apache::thrift::detail::st::ComparisonOperator
 
   bool& set_small_A(bool small_A_) {
     small_A = small_A_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.small_A = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return small_A;
   }
 
@@ -333,7 +342,9 @@ class SmallStruct final : private apache::thrift::detail::st::ComparisonOperator
 
   int32_t& set_small_B(int32_t small_B_) {
     small_B = small_B_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.small_B = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return small_B;
   }
 
@@ -368,6 +379,7 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
  public:
 
   containerStruct();
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -378,6 +390,7 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
 
   containerStruct& operator=(containerStruct&&) = default;
   containerStruct& operator=(const containerStruct& src);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
 
   ~containerStruct();
@@ -428,6 +441,7 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   std::unique_ptr< ::cpp2::SmallStruct> fieldX;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
     bool fieldB;
@@ -450,6 +464,7 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   bool operator==(const containerStruct& rhs) const;
   bool operator<(const containerStruct& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
     return {this->fieldA, __isset.fieldA};
@@ -469,7 +484,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA_ref() && {
     return {std::move(this->fieldA), __isset.fieldA};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldB_ref() const& {
     return {this->fieldB, __isset.fieldB};
@@ -489,7 +506,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldB_ref() && {
     return {std::move(this->fieldB), __isset.fieldB};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::set<int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldC_ref() const& {
     return {this->fieldC, __isset.fieldC};
@@ -509,7 +528,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldC_ref() && {
     return {std::move(this->fieldC), __isset.fieldC};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldD_ref() const& {
     return {this->fieldD, __isset.fieldD};
@@ -529,7 +550,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldD_ref() && {
     return {std::move(this->fieldD), __isset.fieldD};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldE_ref() const& {
     return {this->fieldE, __isset.fieldE};
@@ -549,7 +572,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldE_ref() && {
     return {std::move(this->fieldE), __isset.fieldE};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::std::vector<::std::vector<int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldF_ref() const& {
     return {this->fieldF, __isset.fieldF};
@@ -569,7 +594,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldF_ref() && {
     return {std::move(this->fieldF), __isset.fieldF};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldG_ref() const& {
     return {this->fieldG, __isset.fieldG};
@@ -589,7 +616,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldG_ref() && {
     return {std::move(this->fieldG), __isset.fieldG};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::std::set<int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldH_ref() const& {
     return {this->fieldH, __isset.fieldH};
@@ -609,7 +638,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldH_ref() && {
     return {std::move(this->fieldH), __isset.fieldH};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldI_ref() const& {
     return {this->fieldI, __isset.fieldI};
@@ -629,7 +660,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldI_ref() && {
     return {std::move(this->fieldI), __isset.fieldI};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::string, ::std::vector<int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldJ_ref() const& {
     return {this->fieldJ, __isset.fieldJ};
@@ -649,7 +682,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldJ_ref() && {
     return {std::move(this->fieldJ), __isset.fieldJ};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldK_ref() const& {
     return {this->fieldK, __isset.fieldK};
@@ -669,7 +704,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldK_ref() && {
     return {std::move(this->fieldK), __isset.fieldK};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::set<::std::set<::std::set<bool>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldL_ref() const& {
     return {this->fieldL, __isset.fieldL};
@@ -689,7 +726,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldL_ref() && {
     return {std::move(this->fieldL), __isset.fieldL};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldM_ref() const& {
     return {this->fieldM, __isset.fieldM};
@@ -709,7 +748,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldM_ref() && {
     return {std::move(this->fieldM), __isset.fieldM};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector< ::cpp2::IndirectionA>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldN_ref() const& {
     return {this->fieldN, __isset.fieldN};
@@ -729,7 +770,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldN_ref() && {
     return {std::move(this->fieldN), __isset.fieldN};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector< ::cpp2::IndirectionB>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldO_ref() const& {
     return {this->fieldO, __isset.fieldO};
@@ -749,7 +792,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldO_ref() && {
     return {std::move(this->fieldO), __isset.fieldO};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector< ::cpp2::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldP_ref() const& {
     return {this->fieldP, __isset.fieldP};
@@ -769,7 +814,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldP_ref() && {
     return {std::move(this->fieldP), __isset.fieldP};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::cpp2::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldQ_ref() const& {
     return {this->fieldQ, __isset.fieldQ};
@@ -789,6 +836,7 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldQ_ref() && {
     return {std::move(this->fieldQ), __isset.fieldQ};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   bool get_fieldA() const {
     return fieldA;
@@ -796,7 +844,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
 
   bool& set_fieldA(bool fieldA_) {
     fieldA = fieldA_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldA = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldA;
   }
   const ::std::map<::std::string, bool>& get_fieldB() const&;
@@ -805,7 +855,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   template <typename T_containerStruct_fieldB_struct_setter = ::std::map<::std::string, bool>>
   ::std::map<::std::string, bool>& set_fieldB(T_containerStruct_fieldB_struct_setter&& fieldB_) {
     fieldB = std::forward<T_containerStruct_fieldB_struct_setter>(fieldB_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldB = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldB;
   }
   const ::std::set<int32_t>& get_fieldC() const&;
@@ -814,7 +866,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   template <typename T_containerStruct_fieldC_struct_setter = ::std::set<int32_t>>
   ::std::set<int32_t>& set_fieldC(T_containerStruct_fieldC_struct_setter&& fieldC_) {
     fieldC = std::forward<T_containerStruct_fieldC_struct_setter>(fieldC_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldC = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldC;
   }
 
@@ -829,7 +883,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   template <typename T_containerStruct_fieldD_struct_setter = ::std::string>
   ::std::string& set_fieldD(T_containerStruct_fieldD_struct_setter&& fieldD_) {
     fieldD = std::forward<T_containerStruct_fieldD_struct_setter>(fieldD_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldD = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldD;
   }
 
@@ -844,7 +900,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   template <typename T_containerStruct_fieldE_struct_setter = ::std::string>
   ::std::string& set_fieldE(T_containerStruct_fieldE_struct_setter&& fieldE_) {
     fieldE = std::forward<T_containerStruct_fieldE_struct_setter>(fieldE_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldE = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldE;
   }
   const ::std::vector<::std::vector<::std::vector<int32_t>>>& get_fieldF() const&;
@@ -853,7 +911,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   template <typename T_containerStruct_fieldF_struct_setter = ::std::vector<::std::vector<::std::vector<int32_t>>>>
   ::std::vector<::std::vector<::std::vector<int32_t>>>& set_fieldF(T_containerStruct_fieldF_struct_setter&& fieldF_) {
     fieldF = std::forward<T_containerStruct_fieldF_struct_setter>(fieldF_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldF = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldF;
   }
   const ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>& get_fieldG() const&;
@@ -862,7 +922,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   template <typename T_containerStruct_fieldG_struct_setter = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>>
   ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>& set_fieldG(T_containerStruct_fieldG_struct_setter&& fieldG_) {
     fieldG = std::forward<T_containerStruct_fieldG_struct_setter>(fieldG_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldG = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldG;
   }
   const ::std::vector<::std::set<int32_t>>& get_fieldH() const&;
@@ -871,7 +933,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   template <typename T_containerStruct_fieldH_struct_setter = ::std::vector<::std::set<int32_t>>>
   ::std::vector<::std::set<int32_t>>& set_fieldH(T_containerStruct_fieldH_struct_setter&& fieldH_) {
     fieldH = std::forward<T_containerStruct_fieldH_struct_setter>(fieldH_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldH = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldH;
   }
 
@@ -881,7 +945,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
 
   bool& set_fieldI(bool fieldI_) {
     fieldI = fieldI_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldI = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldI;
   }
   const ::std::map<::std::string, ::std::vector<int32_t>>& get_fieldJ() const&;
@@ -890,7 +956,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   template <typename T_containerStruct_fieldJ_struct_setter = ::std::map<::std::string, ::std::vector<int32_t>>>
   ::std::map<::std::string, ::std::vector<int32_t>>& set_fieldJ(T_containerStruct_fieldJ_struct_setter&& fieldJ_) {
     fieldJ = std::forward<T_containerStruct_fieldJ_struct_setter>(fieldJ_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldJ = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldJ;
   }
   const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& get_fieldK() const&;
@@ -899,7 +967,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   template <typename T_containerStruct_fieldK_struct_setter = ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>>
   ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& set_fieldK(T_containerStruct_fieldK_struct_setter&& fieldK_) {
     fieldK = std::forward<T_containerStruct_fieldK_struct_setter>(fieldK_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldK = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldK;
   }
   const ::std::set<::std::set<::std::set<bool>>>& get_fieldL() const&;
@@ -908,7 +978,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   template <typename T_containerStruct_fieldL_struct_setter = ::std::set<::std::set<::std::set<bool>>>>
   ::std::set<::std::set<::std::set<bool>>>& set_fieldL(T_containerStruct_fieldL_struct_setter&& fieldL_) {
     fieldL = std::forward<T_containerStruct_fieldL_struct_setter>(fieldL_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldL = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldL;
   }
   const ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& get_fieldM() const&;
@@ -917,7 +989,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   template <typename T_containerStruct_fieldM_struct_setter = ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
   ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& set_fieldM(T_containerStruct_fieldM_struct_setter&& fieldM_) {
     fieldM = std::forward<T_containerStruct_fieldM_struct_setter>(fieldM_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldM = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldM;
   }
   const ::std::vector< ::cpp2::IndirectionA>& get_fieldN() const&;
@@ -926,7 +1000,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   template <typename T_containerStruct_fieldN_struct_setter = ::std::vector< ::cpp2::IndirectionA>>
   ::std::vector< ::cpp2::IndirectionA>& set_fieldN(T_containerStruct_fieldN_struct_setter&& fieldN_) {
     fieldN = std::forward<T_containerStruct_fieldN_struct_setter>(fieldN_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldN = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldN;
   }
   const ::std::vector< ::cpp2::IndirectionB>& get_fieldO() const&;
@@ -935,7 +1011,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   template <typename T_containerStruct_fieldO_struct_setter = ::std::vector< ::cpp2::IndirectionB>>
   ::std::vector< ::cpp2::IndirectionB>& set_fieldO(T_containerStruct_fieldO_struct_setter&& fieldO_) {
     fieldO = std::forward<T_containerStruct_fieldO_struct_setter>(fieldO_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldO = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldO;
   }
   const ::std::vector< ::cpp2::IndirectionC>& get_fieldP() const&;
@@ -944,7 +1022,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   template <typename T_containerStruct_fieldP_struct_setter = ::std::vector< ::cpp2::IndirectionC>>
   ::std::vector< ::cpp2::IndirectionC>& set_fieldP(T_containerStruct_fieldP_struct_setter&& fieldP_) {
     fieldP = std::forward<T_containerStruct_fieldP_struct_setter>(fieldP_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldP = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldP;
   }
 
@@ -954,7 +1034,9 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
 
    ::cpp2::MyEnumA& set_fieldQ( ::cpp2::MyEnumA fieldQ_) {
     fieldQ = fieldQ_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldQ = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldQ;
   }
 

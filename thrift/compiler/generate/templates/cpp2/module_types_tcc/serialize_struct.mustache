@@ -20,7 +20,7 @@ uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("<%struct:name%>");
 <%#struct:fields%><%#field:type%>
 <%#field:optional?%>
-  if (this-><%^field:optionals?%><%^field:cpp_ref?%>__isset.<%/field:cpp_ref?%><%/field:optionals?%><%field:cpp_name%><%#field:optionals?%>.has_value()<%/field:optionals?%>) {
+  if (this-><%field:cpp_name%><%^field:optionals?%><%^field:cpp_ref?%>_ref().has_value()<%/field:cpp_ref?%><%/field:optionals?%><%#field:optionals?%>.has_value()<%/field:optionals?%>) {
 <%/field:optional?%>
 <%#field:terse_writes?%><% > module_types_tcc/terse_if%><%/field:terse_writes?%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
@@ -71,7 +71,7 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("<%struct:name%>");
 <%#struct:fields%><%#field:type%>
 <%#field:optional?%>
-  if (this-><%^field:optionals?%><%^field:cpp_ref?%>__isset.<%/field:cpp_ref?%><%/field:optionals?%><%field:cpp_name%><%#field:optionals?%>.has_value()<%/field:optionals?%>) {
+  if (this-><%field:cpp_name%><%^field:optionals?%><%^field:cpp_ref?%>_ref().has_value()<%/field:cpp_ref?%><%/field:optionals?%><%#field:optionals?%>.has_value()<%/field:optionals?%>) {
 <%/field:optional?%>
 <%#field:terse_writes?%><% > module_types_tcc/terse_if%><%/field:terse_writes?%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
@@ -122,7 +122,7 @@ uint32_t <%struct:name%>::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("<%struct:name%>");
 <%#struct:fields%><%#field:type%>
 <%#field:optional?%>
-  if (this-><%^field:optionals?%><%^field:cpp_ref?%>__isset.<%/field:cpp_ref?%><%/field:optionals?%><%field:cpp_name%><%#field:optionals?%>.has_value()<%/field:optionals?%>) {
+  if (this-><%field:cpp_name%><%^field:optionals?%><%^field:cpp_ref?%>_ref().has_value()<%/field:cpp_ref?%><%/field:optionals?%><%#field:optionals?%>.has_value()<%/field:optionals?%>) {
 <%/field:optional?%>
 <%#field:terse_writes?%><% > module_types_tcc/terse_if%><%/field:terse_writes?%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->writeFieldBegin("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);

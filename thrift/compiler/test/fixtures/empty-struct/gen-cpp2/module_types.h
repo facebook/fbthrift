@@ -40,6 +40,7 @@ namespace cpp2 {
 class Empty final : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Empty() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -52,6 +53,7 @@ class Empty final : private apache::thrift::detail::st::ComparisonOperators<Empt
   Empty& operator=(Empty&&) = default;
 
   Empty& operator=(const Empty&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
   bool operator==(const Empty& rhs) const;
   bool operator<(const Empty& rhs) const;

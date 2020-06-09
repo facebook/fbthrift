@@ -164,18 +164,21 @@ void TccStructTraits<::cpp2::containerStruct>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SmallStruct::SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, int32_t small_B__arg) :
     small_A(std::move(small_A__arg)),
     small_B(std::move(small_B__arg)) {
   __isset.small_A = true;
   __isset.small_B = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void SmallStruct::__clear() {
   // clear all fields
   small_A = 0;
   small_B = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool SmallStruct::operator==(const SmallStruct& rhs) const {
@@ -209,7 +212,9 @@ void swap(SmallStruct& a, SmallStruct& b) {
   using ::std::swap;
   swap(a.small_A, b.small_A);
   swap(a.small_B, b.small_B);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void SmallStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -226,39 +231,73 @@ namespace cpp2 {
 
 containerStruct::containerStruct(const containerStruct& srcObj) {
   fieldA = srcObj.fieldA;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldA = srcObj.__isset.fieldA;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   fieldB = srcObj.fieldB;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldB = srcObj.__isset.fieldB;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   fieldC = srcObj.fieldC;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldC = srcObj.__isset.fieldC;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   fieldD = srcObj.fieldD;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldD = srcObj.__isset.fieldD;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   fieldE = srcObj.fieldE;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldE = srcObj.__isset.fieldE;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   fieldF = srcObj.fieldF;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldF = srcObj.__isset.fieldF;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   fieldG = srcObj.fieldG;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldG = srcObj.__isset.fieldG;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   fieldH = srcObj.fieldH;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldH = srcObj.__isset.fieldH;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   fieldI = srcObj.fieldI;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldI = srcObj.__isset.fieldI;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   fieldJ = srcObj.fieldJ;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldJ = srcObj.__isset.fieldJ;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   fieldK = srcObj.fieldK;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldK = srcObj.__isset.fieldK;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   fieldL = srcObj.fieldL;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldL = srcObj.__isset.fieldL;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   fieldM = srcObj.fieldM;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldM = srcObj.__isset.fieldM;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   fieldN = srcObj.fieldN;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldN = srcObj.__isset.fieldN;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   fieldO = srcObj.fieldO;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldO = srcObj.__isset.fieldO;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   fieldP = srcObj.fieldP;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldP = srcObj.__isset.fieldP;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   fieldQ = srcObj.fieldQ;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldQ = srcObj.__isset.fieldQ;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   if (srcObj.fieldR) fieldR.reset(new ::std::map<::std::string, bool>(*srcObj.fieldR));
   if (srcObj.fieldS) fieldS.reset(new  ::cpp2::SmallStruct(*srcObj.fieldS));
   fieldT = srcObj.fieldT;
@@ -272,6 +311,7 @@ containerStruct& containerStruct::operator=(const containerStruct& src) {
   return *this;
 }
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 containerStruct::containerStruct() :
       fieldA(0),
       fieldC(std::initializer_list<int32_t>{1,
@@ -294,10 +334,12 @@ containerStruct::containerStruct() :
       fieldT(std::make_shared< ::cpp2::SmallStruct>()),
       fieldU(std::make_shared< ::cpp2::SmallStruct>()),
       fieldX(std::make_unique< ::cpp2::SmallStruct>()) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 containerStruct::~containerStruct() {}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 containerStruct::containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::set<int32_t> fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::vector<::std::vector<::std::vector<int32_t>>> fieldF__arg, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> fieldG__arg, ::std::vector<::std::set<int32_t>> fieldH__arg, bool fieldI__arg, ::std::map<::std::string, ::std::vector<int32_t>> fieldJ__arg, ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> fieldK__arg, ::std::set<::std::set<::std::set<bool>>> fieldL__arg, ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM__arg, ::std::vector< ::cpp2::IndirectionA> fieldN__arg, ::std::vector< ::cpp2::IndirectionB> fieldO__arg, ::std::vector< ::cpp2::IndirectionC> fieldP__arg,  ::cpp2::MyEnumA fieldQ__arg, std::unique_ptr<::std::map<::std::string, bool>> fieldR__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldS__arg, std::shared_ptr< ::cpp2::SmallStruct> fieldT__arg, std::shared_ptr<const  ::cpp2::SmallStruct> fieldU__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldX__arg) :
     fieldA(std::move(fieldA__arg)),
     fieldB(std::move(fieldB__arg)),
@@ -339,7 +381,7 @@ containerStruct::containerStruct(apache::thrift::FragileConstructor, bool fieldA
   __isset.fieldP = true;
   __isset.fieldQ = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void containerStruct::__clear() {
   // clear all fields
   fieldA = 0;
@@ -364,7 +406,9 @@ void containerStruct::__clear() {
   if (fieldT) ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::clear(fieldT.get());
   if (fieldU) fieldU.reset(new typename decltype(fieldU)::element_type());
   if (fieldX) ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::clear(fieldX.get());
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool containerStruct::operator==(const containerStruct& rhs) const {
@@ -684,7 +728,9 @@ void swap(containerStruct& a, containerStruct& b) {
   swap(a.fieldT, b.fieldT);
   swap(a.fieldU, b.fieldU);
   swap(a.fieldX, b.fieldX);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void containerStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

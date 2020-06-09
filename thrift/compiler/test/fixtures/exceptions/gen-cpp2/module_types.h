@@ -51,6 +51,7 @@ namespace cpp2 {
 class Banal final : private apache::thrift::detail::st::ComparisonOperators<Banal>, public apache::thrift::TException {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Banal() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -63,6 +64,7 @@ class Banal final : private apache::thrift::detail::st::ComparisonOperators<Bana
   Banal& operator=(Banal&&) = default;
 
   Banal& operator=(const Banal&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
   bool operator==(const Banal& rhs) const;
   bool operator<(const Banal& rhs) const;
@@ -101,6 +103,7 @@ namespace cpp2 {
 class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fiery>, public apache::thrift::TException {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Fiery() {}
 
   explicit Fiery(const std::string& __message) :
@@ -119,6 +122,7 @@ class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fier
   Fiery& operator=(Fiery&&) = default;
 
   Fiery& operator=(const Fiery&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   ::std::string message;
@@ -175,6 +179,7 @@ namespace cpp2 {
 class Serious final : private apache::thrift::detail::st::ComparisonOperators<Serious>, public apache::thrift::TException {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Serious() {}
 
   explicit Serious(const std::string& __message) :
@@ -193,17 +198,20 @@ class Serious final : private apache::thrift::detail::st::ComparisonOperators<Se
   Serious& operator=(Serious&&) = default;
 
   Serious& operator=(const Serious&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::string sonnet;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool sonnet;
   } __isset = {};
   bool operator==(const Serious& rhs) const;
   bool operator<(const Serious& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> sonnet_ref() const& {
     return {sonnet, __isset.sonnet};
   }
@@ -219,20 +227,23 @@ class Serious final : private apache::thrift::detail::st::ComparisonOperators<Se
   FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&&> sonnet_ref() && {
     return {std::move(sonnet), __isset.sonnet};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string* get_sonnet() const& {
-    return __isset.sonnet ? std::addressof(sonnet) : nullptr;
+    return sonnet_ref() ? std::addressof(sonnet) : nullptr;
   }
 
   ::std::string* get_sonnet() & {
-    return __isset.sonnet ? std::addressof(sonnet) : nullptr;
+    return sonnet_ref() ? std::addressof(sonnet) : nullptr;
   }
   ::std::string* get_sonnet() && = delete;
 
   template <typename T_Serious_sonnet_struct_setter = ::std::string>
   ::std::string& set_sonnet(T_Serious_sonnet_struct_setter&& sonnet_) {
     sonnet = std::forward<T_Serious_sonnet_struct_setter>(sonnet_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.sonnet = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return sonnet;
   }
 

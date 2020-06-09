@@ -59,6 +59,7 @@ namespace cpp2 {
 class BasicTypes final : private apache::thrift::detail::st::ComparisonOperators<BasicTypes> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   BasicTypes() :
       first(0),
       second(0),
@@ -75,6 +76,7 @@ class BasicTypes final : private apache::thrift::detail::st::ComparisonOperators
   BasicTypes& operator=(BasicTypes&&) = default;
 
   BasicTypes& operator=(const BasicTypes&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   int32_t first;
@@ -86,6 +88,7 @@ class BasicTypes final : private apache::thrift::detail::st::ComparisonOperators
   bool isTrue;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool second;
     bool third;
@@ -94,6 +97,7 @@ class BasicTypes final : private apache::thrift::detail::st::ComparisonOperators
   bool operator==(const BasicTypes& rhs) const;
   bool operator<(const BasicTypes& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const int32_t&> second_ref() const& {
     return {second, __isset.second};
   }
@@ -109,7 +113,9 @@ class BasicTypes final : private apache::thrift::detail::st::ComparisonOperators
   FOLLY_ERASE ::apache::thrift::optional_field_ref<int32_t&&> second_ref() && {
     return {std::move(second), __isset.second};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const int64_t&> third_ref() const& {
     return {third, __isset.third};
   }
@@ -125,7 +131,9 @@ class BasicTypes final : private apache::thrift::detail::st::ComparisonOperators
   FOLLY_ERASE ::apache::thrift::optional_field_ref<int64_t&&> third_ref() && {
     return {std::move(third), __isset.third};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> isTrue_ref() const& {
     return {this->isTrue, __isset.isTrue};
@@ -145,6 +153,7 @@ class BasicTypes final : private apache::thrift::detail::st::ComparisonOperators
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> isTrue_ref() && {
     return {std::move(this->isTrue), __isset.isTrue};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   int32_t get_first() const {
     return first;
@@ -156,32 +165,36 @@ class BasicTypes final : private apache::thrift::detail::st::ComparisonOperators
   }
 
   const int32_t* get_second() const& {
-    return __isset.second ? std::addressof(second) : nullptr;
+    return second_ref() ? std::addressof(second) : nullptr;
   }
 
   int32_t* get_second() & {
-    return __isset.second ? std::addressof(second) : nullptr;
+    return second_ref() ? std::addressof(second) : nullptr;
   }
   int32_t* get_second() && = delete;
 
   int32_t& set_second(int32_t second_) {
     second = second_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.second = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return second;
   }
 
   const int64_t* get_third() const& {
-    return __isset.third ? std::addressof(third) : nullptr;
+    return third_ref() ? std::addressof(third) : nullptr;
   }
 
   int64_t* get_third() & {
-    return __isset.third ? std::addressof(third) : nullptr;
+    return third_ref() ? std::addressof(third) : nullptr;
   }
   int64_t* get_third() && = delete;
 
   int64_t& set_third(int64_t third_) {
     third = third_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.third = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return third;
   }
 
@@ -191,7 +204,9 @@ class BasicTypes final : private apache::thrift::detail::st::ComparisonOperators
 
   bool& set_isTrue(bool isTrue_) {
     isTrue = isTrue_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.isTrue = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return isTrue;
   }
 

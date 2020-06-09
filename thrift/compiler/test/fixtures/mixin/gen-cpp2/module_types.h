@@ -77,6 +77,7 @@ namespace cpp2 {
 class Mixin1 final : private apache::thrift::detail::st::ComparisonOperators<Mixin1> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Mixin1() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -89,17 +90,20 @@ class Mixin1 final : private apache::thrift::detail::st::ComparisonOperators<Mix
   Mixin1& operator=(Mixin1&&) = default;
 
   Mixin1& operator=(const Mixin1&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   ::std::string field1;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field1;
   } __isset = {};
   bool operator==(const Mixin1& rhs) const;
   bool operator<(const Mixin1& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field1_ref() const& {
     return {this->field1, __isset.field1};
@@ -119,6 +123,7 @@ class Mixin1 final : private apache::thrift::detail::st::ComparisonOperators<Mix
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field1_ref() && {
     return {std::move(this->field1), __isset.field1};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_field1() const& {
     return field1;
@@ -131,7 +136,9 @@ class Mixin1 final : private apache::thrift::detail::st::ComparisonOperators<Mix
   template <typename T_Mixin1_field1_struct_setter = ::std::string>
   ::std::string& set_field1(T_Mixin1_field1_struct_setter&& field1_) {
     field1 = std::forward<T_Mixin1_field1_struct_setter>(field1_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.field1 = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return field1;
   }
 
@@ -165,6 +172,7 @@ namespace cpp2 {
 class Mixin2 final : private apache::thrift::detail::st::ComparisonOperators<Mixin2> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Mixin2() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -177,6 +185,7 @@ class Mixin2 final : private apache::thrift::detail::st::ComparisonOperators<Mix
   Mixin2& operator=(Mixin2&&) = default;
 
   Mixin2& operator=(const Mixin2&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
    ::cpp2::Mixin1 m1;
@@ -184,6 +193,7 @@ class Mixin2 final : private apache::thrift::detail::st::ComparisonOperators<Mix
   ::std::string field2;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool m1;
     bool field2;
@@ -191,6 +201,7 @@ class Mixin2 final : private apache::thrift::detail::st::ComparisonOperators<Mix
   bool operator==(const Mixin2& rhs) const;
   bool operator<(const Mixin2& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::cpp2::Mixin1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> m1_ref() const& {
     return {this->m1, __isset.m1};
@@ -210,7 +221,9 @@ class Mixin2 final : private apache::thrift::detail::st::ComparisonOperators<Mix
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> m1_ref() && {
     return {std::move(this->m1), __isset.m1};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> field2_ref() const& {
     return {field2, __isset.field2};
   }
@@ -226,6 +239,7 @@ class Mixin2 final : private apache::thrift::detail::st::ComparisonOperators<Mix
   FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&&> field2_ref() && {
     return {std::move(field2), __isset.field2};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   FOLLY_ERASE auto field1_ref() &       { return m1.field1_ref();            }
   FOLLY_ERASE auto field1_ref() const&  { return m1.field1_ref();            }
   FOLLY_ERASE auto field1_ref() &&      { return std::move(m1).field1_ref(); }
@@ -236,23 +250,27 @@ class Mixin2 final : private apache::thrift::detail::st::ComparisonOperators<Mix
   template <typename T_Mixin2_m1_struct_setter =  ::cpp2::Mixin1>
    ::cpp2::Mixin1& set_m1(T_Mixin2_m1_struct_setter&& m1_) {
     m1 = std::forward<T_Mixin2_m1_struct_setter>(m1_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.m1 = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return m1;
   }
 
   const ::std::string* get_field2() const& {
-    return __isset.field2 ? std::addressof(field2) : nullptr;
+    return field2_ref() ? std::addressof(field2) : nullptr;
   }
 
   ::std::string* get_field2() & {
-    return __isset.field2 ? std::addressof(field2) : nullptr;
+    return field2_ref() ? std::addressof(field2) : nullptr;
   }
   ::std::string* get_field2() && = delete;
 
   template <typename T_Mixin2_field2_struct_setter = ::std::string>
   ::std::string& set_field2(T_Mixin2_field2_struct_setter&& field2_) {
     field2 = std::forward<T_Mixin2_field2_struct_setter>(field2_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.field2 = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return field2;
   }
 
@@ -286,6 +304,7 @@ namespace cpp2 {
 class Mixin3 final : private apache::thrift::detail::st::ComparisonOperators<Mixin3> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Mixin3() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -298,17 +317,20 @@ class Mixin3 final : private apache::thrift::detail::st::ComparisonOperators<Mix
   Mixin3& operator=(Mixin3&&) = default;
 
   Mixin3& operator=(const Mixin3&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   ::std::string field3;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field3;
   } __isset = {};
   bool operator==(const Mixin3& rhs) const;
   bool operator<(const Mixin3& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field3_ref() const& {
     return {this->field3, __isset.field3};
@@ -328,6 +350,7 @@ class Mixin3 final : private apache::thrift::detail::st::ComparisonOperators<Mix
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field3_ref() && {
     return {std::move(this->field3), __isset.field3};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_field3() const& {
     return field3;
@@ -340,7 +363,9 @@ class Mixin3 final : private apache::thrift::detail::st::ComparisonOperators<Mix
   template <typename T_Mixin3_field3_struct_setter = ::std::string>
   ::std::string& set_field3(T_Mixin3_field3_struct_setter&& field3_) {
     field3 = std::forward<T_Mixin3_field3_struct_setter>(field3_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.field3 = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return field3;
   }
 
@@ -374,6 +399,7 @@ namespace cpp2 {
 class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Foo() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -386,6 +412,7 @@ class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
   Foo& operator=(Foo&&) = default;
 
   Foo& operator=(const Foo&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   ::std::string field4;
@@ -395,6 +422,7 @@ class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
    ::cpp2::Mixin3 m3;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field4;
     bool m2;
@@ -403,6 +431,7 @@ class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
   bool operator==(const Foo& rhs) const;
   bool operator<(const Foo& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field4_ref() const& {
     return {this->field4, __isset.field4};
@@ -422,7 +451,9 @@ class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field4_ref() && {
     return {std::move(this->field4), __isset.field4};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::cpp2::Mixin2>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> m2_ref() const& {
     return {this->m2, __isset.m2};
@@ -442,7 +473,9 @@ class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> m2_ref() && {
     return {std::move(this->m2), __isset.m2};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::cpp2::Mixin3>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> m3_ref() const& {
     return {this->m3, __isset.m3};
@@ -462,6 +495,7 @@ class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> m3_ref() && {
     return {std::move(this->m3), __isset.m3};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   FOLLY_ERASE auto m1_ref() &       { return m2.m1_ref();            }
   FOLLY_ERASE auto m1_ref() const&  { return m2.m1_ref();            }
   FOLLY_ERASE auto m1_ref() &&      { return std::move(m2).m1_ref(); }
@@ -490,7 +524,9 @@ class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
   template <typename T_Foo_field4_struct_setter = ::std::string>
   ::std::string& set_field4(T_Foo_field4_struct_setter&& field4_) {
     field4 = std::forward<T_Foo_field4_struct_setter>(field4_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.field4 = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return field4;
   }
   const  ::cpp2::Mixin2& get_m2() const&;
@@ -499,7 +535,9 @@ class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
   template <typename T_Foo_m2_struct_setter =  ::cpp2::Mixin2>
    ::cpp2::Mixin2& set_m2(T_Foo_m2_struct_setter&& m2_) {
     m2 = std::forward<T_Foo_m2_struct_setter>(m2_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.m2 = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return m2;
   }
   const  ::cpp2::Mixin3& get_m3() const&;
@@ -508,7 +546,9 @@ class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
   template <typename T_Foo_m3_struct_setter =  ::cpp2::Mixin3>
    ::cpp2::Mixin3& set_m3(T_Foo_m3_struct_setter&& m3_) {
     m3 = std::forward<T_Foo_m3_struct_setter>(m3_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.m3 = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return m3;
   }
 

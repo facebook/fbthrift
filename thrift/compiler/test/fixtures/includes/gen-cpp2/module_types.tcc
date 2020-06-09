@@ -49,7 +49,9 @@ _readField_MyIncludedField:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::read(iprot, &this->MyIncludedField);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyIncludedField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -64,7 +66,9 @@ _readField_MyOtherIncludedField:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::read(iprot, &this->MyOtherIncludedField);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyOtherIncludedField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -78,7 +82,9 @@ _readField_MyOtherIncludedField:
 _readField_MyIncludedInt:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::IncludedInt64>::readWithContext(*iprot, this->MyIncludedInt, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyIncludedInt = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

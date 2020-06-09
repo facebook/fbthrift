@@ -55,11 +55,12 @@ void TccStructTraits<::cpp2::Field>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 House::House(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, ::std::string houseName__arg, ::std::set< ::cpp2::ColorID> houseColors__arg) :
     id(std::move(id__arg)),
     houseName(std::move(houseName__arg)),
     houseColors(std::move(houseColors__arg)) {}
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void House::__clear() {
   // clear all fields
   id = 0;
@@ -119,10 +120,11 @@ template uint32_t House::serializedSizeZC<>(apache::thrift::CompactProtocolWrite
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Field::Field(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, int32_t fieldType__arg) :
     id(std::move(id__arg)),
     fieldType(std::move(fieldType__arg)) {}
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Field::__clear() {
   // clear all fields
   id = 0;

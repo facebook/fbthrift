@@ -37,18 +37,21 @@ void TccStructTraits<::some::ns::IncludedA>::translateFieldName(
 
 namespace some { namespace ns {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 IncludedA::IncludedA(apache::thrift::FragileConstructor, int32_t i32Field__arg, ::std::string strField__arg) :
     i32Field(std::move(i32Field__arg)),
     strField(std::move(strField__arg)) {
   __isset.i32Field = true;
   __isset.strField = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void IncludedA::__clear() {
   // clear all fields
   i32Field = 0;
   strField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool IncludedA::operator==(const IncludedA& rhs) const {
@@ -82,7 +85,9 @@ void swap(IncludedA& a, IncludedA& b) {
   using ::std::swap;
   swap(a.i32Field, b.i32Field);
   swap(a.strField, b.strField);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void IncludedA::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

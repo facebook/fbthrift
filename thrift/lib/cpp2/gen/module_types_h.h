@@ -62,6 +62,12 @@
     }                                                                         \
   }
 
+// Temporarily disable warnings about internal deprecated use of __isset.
+#define THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN \
+  FOLLY_PUSH_WARNING                          \
+  FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
+#define THRIFT_IGNORE_ISSET_USE_WARNING_END FOLLY_POP_WARNING
+
 namespace apache {
 namespace thrift {
 
@@ -155,6 +161,8 @@ struct assign_isset_<A, false> {
     return b;
   }
 };
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 template <typename A>
 struct assign_isset_<A, true> {
   template <typename S>
@@ -164,6 +172,8 @@ struct assign_isset_<A, true> {
     return access_field<A>{}(s.__isset) = b;
   }
 };
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 template <typename A, typename S>
 using assign_isset =
     assign_isset_<A, folly::is_invocable_v<assign_isset_<A, true>, S&, bool>>;

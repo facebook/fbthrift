@@ -105,6 +105,7 @@ namespace a { namespace different { namespace ns {
 class AStruct final : private apache::thrift::detail::st::ComparisonOperators<AStruct> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AStruct() :
       FieldA(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -118,17 +119,20 @@ class AStruct final : private apache::thrift::detail::st::ComparisonOperators<AS
   AStruct& operator=(AStruct&&) = default;
 
   AStruct& operator=(const AStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   int32_t FieldA;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool FieldA;
   } __isset = {};
   bool operator==(const AStruct& rhs) const;
   bool operator<(const AStruct& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> FieldA_ref() const& {
     return {this->FieldA, __isset.FieldA};
@@ -148,6 +152,7 @@ class AStruct final : private apache::thrift::detail::st::ComparisonOperators<AS
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> FieldA_ref() && {
     return {std::move(this->FieldA), __isset.FieldA};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   int32_t get_FieldA() const {
     return FieldA;
@@ -155,7 +160,9 @@ class AStruct final : private apache::thrift::detail::st::ComparisonOperators<AS
 
   int32_t& set_FieldA(int32_t FieldA_) {
     FieldA = FieldA_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.FieldA = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return FieldA;
   }
 
@@ -189,6 +196,7 @@ namespace a { namespace different { namespace ns {
 class AStructB final : private apache::thrift::detail::st::ComparisonOperators<AStructB> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AStructB() :
       FieldA(std::make_shared< ::a::different::ns::AStruct>()) {}
   // FragileConstructor for use in initialization lists only.
@@ -202,6 +210,7 @@ class AStructB final : private apache::thrift::detail::st::ComparisonOperators<A
   AStructB& operator=(AStructB&&) = default;
 
   AStructB& operator=(const AStructB&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   std::shared_ptr<const  ::a::different::ns::AStruct> FieldA;

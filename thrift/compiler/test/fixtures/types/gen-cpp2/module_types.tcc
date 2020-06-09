@@ -217,7 +217,9 @@ _readField_field:
   {
     
     iprot->readString(this->field);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -328,7 +330,9 @@ _readField_fieldA:
     
     this->fieldA = ::std::vector<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, this->fieldA);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldA = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -345,7 +349,9 @@ _readField_fieldB:
     
     this->fieldB = std::list<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::read(*iprot, this->fieldB);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldB = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -362,7 +368,9 @@ _readField_fieldC:
     
     this->fieldC = std::deque<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::deque<int32_t>>::read(*iprot, this->fieldC);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldC = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -379,7 +387,9 @@ _readField_fieldD:
     
     this->fieldD = folly::fbvector<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::fbvector<int32_t>>::read(*iprot, this->fieldD);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldD = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -396,7 +406,9 @@ _readField_fieldE:
     
     this->fieldE = folly::small_vector<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::small_vector<int32_t>>::read(*iprot, this->fieldE);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldE = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -413,7 +425,9 @@ _readField_fieldF:
     
     this->fieldF = folly::sorted_vector_set<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, folly::sorted_vector_set<int32_t>>::read(*iprot, this->fieldF);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldF = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -430,7 +444,9 @@ _readField_fieldG:
     
     this->fieldG = folly::sorted_vector_map<int32_t, ::std::string>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<int32_t, ::std::string>>::read(*iprot, this->fieldG);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldG = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -447,7 +463,9 @@ _readField_fieldH:
     
     this->fieldH =  ::apache::thrift::fixtures::types::SomeMap();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::apache::thrift::fixtures::types::SomeMap>::read(*iprot, this->fieldH);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldH = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -664,7 +682,9 @@ _readField_fieldA:
     
     this->fieldA = std::list<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::read(*iprot, this->fieldA);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldA = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -773,7 +793,9 @@ void VirtualStruct::readNoXfer(Protocol_* iprot) {
 _readField_MyIntField:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->MyIntField, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyIntField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -881,7 +903,9 @@ void MyStructWithForwardRefEnum::readNoXfer(Protocol_* iprot) {
 _readField_a:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::apache::thrift::fixtures::types::MyForwardRefEnum>::readWithContext(*iprot, this->a, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.a = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -894,7 +918,9 @@ _readField_a:
 _readField_b:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::apache::thrift::fixtures::types::MyForwardRefEnum>::readWithContext(*iprot, this->b, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.b = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1017,7 +1043,9 @@ void TrivialNumeric::readNoXfer(Protocol_* iprot) {
 _readField_a:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->a, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.a = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1030,7 +1058,9 @@ _readField_a:
 _readField_b:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::readWithContext(*iprot, this->b, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.b = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1153,7 +1183,9 @@ void TrivialNestedWithDefault::readNoXfer(Protocol_* iprot) {
 _readField_z:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->z, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.z = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1167,7 +1199,9 @@ _readField_n:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::TrivialNumeric>::read(iprot, &this->n);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.n = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1292,7 +1326,9 @@ _readField_a:
   {
     
     iprot->readString(this->a);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.a = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1308,7 +1344,9 @@ _readField_b:
     
     this->b = ::std::map<::std::string, int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::read(*iprot, this->b);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.b = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1433,7 +1471,9 @@ _readField_z:
   {
     
     iprot->readString(this->z);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.z = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1447,7 +1487,9 @@ _readField_n:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ComplexString>::read(iprot, &this->n);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.n = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1865,7 +1907,9 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
 _readField_MyIntField:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->MyIntField, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyIntField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1879,7 +1923,9 @@ _readField_MyStringField:
   {
     
     iprot->readString(this->MyStringField);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyStringField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1892,7 +1938,9 @@ _readField_MyStringField:
 _readField_majorVer:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->majorVer, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.majorVer = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1906,7 +1954,9 @@ _readField_data:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::MyDataItem>::read(iprot, &this->data);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.data = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -2060,7 +2110,9 @@ void Renaming::readNoXfer(Protocol_* iprot) {
 _readField_bar:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->bar, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.bar = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2169,7 +2221,9 @@ _readField_binary_field:
   {
     
     iprot->readBinary(this->binary_field);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.binary_field = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2185,7 +2239,9 @@ _readField_list_field:
     
     this->list_field =  ::apache::thrift::fixtures::types::SomeListOfTypeMap();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>>,  ::apache::thrift::fixtures::types::SomeListOfTypeMap>::read(*iprot, this->list_field);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.list_field = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -2310,7 +2366,9 @@ _readField_foo:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::read(iprot, &this->foo);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.foo = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -2360,7 +2418,7 @@ template <class Protocol_>
 uint32_t ForwardUsageStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ForwardUsageStruct");
-  if (this->__isset.foo) {
+  if (this->foo_ref().has_value()) {
     xfer += prot_->serializedFieldSize("foo", apache::thrift::protocol::T_STRUCT, 1);
     xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::serializedSize(prot_, &this->foo);
   }
@@ -2372,7 +2430,7 @@ template <class Protocol_>
 uint32_t ForwardUsageStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ForwardUsageStruct");
-  if (this->__isset.foo) {
+  if (this->foo_ref().has_value()) {
     xfer += prot_->serializedFieldSize("foo", apache::thrift::protocol::T_STRUCT, 1);
     xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::serializedSizeZC(prot_, &this->foo);
   }
@@ -2384,7 +2442,7 @@ template <class Protocol_>
 uint32_t ForwardUsageStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("ForwardUsageStruct");
-  if (this->__isset.foo) {
+  if (this->foo_ref().has_value()) {
     xfer += prot_->writeFieldBegin("foo", apache::thrift::protocol::T_STRUCT, 1);
     xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::write(prot_, &this->foo);
     xfer += prot_->writeFieldEnd();
@@ -2426,7 +2484,9 @@ _readField_ForwardUsageStruct:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageStruct>::read(iprot, &this->ForwardUsageStruct);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.ForwardUsageStruct = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -2501,7 +2561,7 @@ template <class Protocol_>
 uint32_t ForwardUsageRoot::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ForwardUsageRoot");
-  if (this->__isset.ForwardUsageStruct) {
+  if (this->ForwardUsageStruct_ref().has_value()) {
     xfer += prot_->serializedFieldSize("ForwardUsageStruct", apache::thrift::protocol::T_STRUCT, 1);
     xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageStruct>::serializedSize(prot_, &this->ForwardUsageStruct);
   }
@@ -2523,7 +2583,7 @@ template <class Protocol_>
 uint32_t ForwardUsageRoot::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ForwardUsageRoot");
-  if (this->__isset.ForwardUsageStruct) {
+  if (this->ForwardUsageStruct_ref().has_value()) {
     xfer += prot_->serializedFieldSize("ForwardUsageStruct", apache::thrift::protocol::T_STRUCT, 1);
     xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageStruct>::serializedSizeZC(prot_, &this->ForwardUsageStruct);
   }
@@ -2545,7 +2605,7 @@ template <class Protocol_>
 uint32_t ForwardUsageRoot::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("ForwardUsageRoot");
-  if (this->__isset.ForwardUsageStruct) {
+  if (this->ForwardUsageStruct_ref().has_value()) {
     xfer += prot_->writeFieldBegin("ForwardUsageStruct", apache::thrift::protocol::T_STRUCT, 1);
     xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageStruct>::write(prot_, &this->ForwardUsageStruct);
     xfer += prot_->writeFieldEnd();
@@ -2599,7 +2659,9 @@ _readField_foo:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::read(iprot, &this->foo);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.foo = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -2649,7 +2711,7 @@ template <class Protocol_>
 uint32_t ForwardUsageByRef::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ForwardUsageByRef");
-  if (this->__isset.foo) {
+  if (this->foo_ref().has_value()) {
     xfer += prot_->serializedFieldSize("foo", apache::thrift::protocol::T_STRUCT, 1);
     xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::serializedSize(prot_, &this->foo);
   }
@@ -2661,7 +2723,7 @@ template <class Protocol_>
 uint32_t ForwardUsageByRef::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ForwardUsageByRef");
-  if (this->__isset.foo) {
+  if (this->foo_ref().has_value()) {
     xfer += prot_->serializedFieldSize("foo", apache::thrift::protocol::T_STRUCT, 1);
     xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::serializedSizeZC(prot_, &this->foo);
   }
@@ -2673,7 +2735,7 @@ template <class Protocol_>
 uint32_t ForwardUsageByRef::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("ForwardUsageByRef");
-  if (this->__isset.foo) {
+  if (this->foo_ref().has_value()) {
     xfer += prot_->writeFieldBegin("foo", apache::thrift::protocol::T_STRUCT, 1);
     xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::write(prot_, &this->foo);
     xfer += prot_->writeFieldEnd();
@@ -2793,7 +2855,9 @@ void NoexceptMoveSimpleStruct::readNoXfer(Protocol_* iprot) {
 _readField_boolField:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->boolField, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.boolField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2901,7 +2965,9 @@ void NoexceptMoveComplexStruct::readNoXfer(Protocol_* iprot) {
 _readField_MyBoolField:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::readWithContext(*iprot, this->MyBoolField, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyBoolField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2914,7 +2980,9 @@ _readField_MyBoolField:
 _readField_MyIntField:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->MyIntField, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyIntField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2928,7 +2996,9 @@ _readField_MyStringField:
   {
     
     iprot->readString(this->MyStringField);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyStringField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2942,7 +3012,9 @@ _readField_MyStringField2:
   {
     
     iprot->readString(this->MyStringField2);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyStringField2 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2956,7 +3028,9 @@ _readField_MyBinaryField:
   {
     
     iprot->readBinary(this->MyBinaryField);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyBinaryField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2970,7 +3044,9 @@ _readField_MyBinaryField2:
   {
     
     iprot->readBinary(this->MyBinaryField2);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyBinaryField2 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2999,7 +3075,9 @@ _readField_MyBinaryListField4:
     
     this->MyBinaryListField4 = ::std::vector<::std::string>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, ::std::vector<::std::string>>::read(*iprot, this->MyBinaryListField4);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyBinaryListField4 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -3016,7 +3094,9 @@ _readField_MyMapEnumAndInt:
     
     this->MyMapEnumAndInt = ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>::read(*iprot, this->MyMapEnumAndInt);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyMapEnumAndInt = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -3140,7 +3220,7 @@ uint32_t NoexceptMoveComplexStruct::serializedSize(Protocol_ const* prot_) const
   xfer += prot_->serializedSizeString(this->MyStringField2);
   xfer += prot_->serializedFieldSize("MyBinaryField", apache::thrift::protocol::T_STRING, 5);
   xfer += prot_->serializedSizeBinary(this->MyBinaryField);
-  if (this->__isset.MyBinaryField2) {
+  if (this->MyBinaryField2_ref().has_value()) {
     xfer += prot_->serializedFieldSize("MyBinaryField2", apache::thrift::protocol::T_STRING, 6);
     xfer += prot_->serializedSizeBinary(this->MyBinaryField2);
   }
@@ -3168,7 +3248,7 @@ uint32_t NoexceptMoveComplexStruct::serializedSizeZC(Protocol_ const* prot_) con
   xfer += prot_->serializedSizeString(this->MyStringField2);
   xfer += prot_->serializedFieldSize("MyBinaryField", apache::thrift::protocol::T_STRING, 5);
   xfer += prot_->serializedSizeZCBinary(this->MyBinaryField);
-  if (this->__isset.MyBinaryField2) {
+  if (this->MyBinaryField2_ref().has_value()) {
     xfer += prot_->serializedFieldSize("MyBinaryField2", apache::thrift::protocol::T_STRING, 6);
     xfer += prot_->serializedSizeZCBinary(this->MyBinaryField2);
   }
@@ -3201,7 +3281,7 @@ uint32_t NoexceptMoveComplexStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("MyBinaryField", apache::thrift::protocol::T_STRING, 5);
   xfer += prot_->writeBinary(this->MyBinaryField);
   xfer += prot_->writeFieldEnd();
-  if (this->__isset.MyBinaryField2) {
+  if (this->MyBinaryField2_ref().has_value()) {
     xfer += prot_->writeFieldBegin("MyBinaryField2", apache::thrift::protocol::T_STRING, 6);
     xfer += prot_->writeBinary(this->MyBinaryField2);
     xfer += prot_->writeFieldEnd();

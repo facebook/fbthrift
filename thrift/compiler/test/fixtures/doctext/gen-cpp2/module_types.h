@@ -94,6 +94,7 @@ namespace cpp2 {
 class A final : private apache::thrift::detail::st::ComparisonOperators<A> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   A() :
       useless_field(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -107,17 +108,20 @@ class A final : private apache::thrift::detail::st::ComparisonOperators<A> {
   A& operator=(A&&) = default;
 
   A& operator=(const A&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   int32_t useless_field;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool useless_field;
   } __isset = {};
   bool operator==(const A& rhs) const;
   bool operator<(const A& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> useless_field_ref() const& {
     return {this->useless_field, __isset.useless_field};
@@ -137,6 +141,7 @@ class A final : private apache::thrift::detail::st::ComparisonOperators<A> {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> useless_field_ref() && {
     return {std::move(this->useless_field), __isset.useless_field};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   int32_t get_useless_field() const {
     return useless_field;
@@ -144,7 +149,9 @@ class A final : private apache::thrift::detail::st::ComparisonOperators<A> {
 
   int32_t& set_useless_field(int32_t useless_field_) {
     useless_field = useless_field_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.useless_field = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return useless_field;
   }
 

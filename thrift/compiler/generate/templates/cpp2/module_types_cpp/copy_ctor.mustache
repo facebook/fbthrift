@@ -27,7 +27,9 @@
 <%/field:cpp_ref_unique?%>
 <%/field:cpp_ref_unique_either?%>
 <%^type:optionals?%><%^field:cpp_ref?%><%^field:required?%>
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.<%field:cpp_name%> = srcObj.__isset.<%field:cpp_name%>;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/field:required?%><%/field:cpp_ref?%><%/type:optionals?%>
 <%/field:type%><%/struct:fields%>
 }

@@ -133,6 +133,7 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
  public:
 
   ModuleA();
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -145,6 +146,7 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   ModuleA& operator=(ModuleA&&) = default;
 
   ModuleA& operator=(const ModuleA&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
 
   ~ModuleA();
@@ -163,6 +165,7 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
    ::some::ns::IncludedB inclBField;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool i32Field;
     bool strField;
@@ -174,6 +177,7 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   bool operator==(const ModuleA& rhs) const;
   bool operator<(const ModuleA& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> i32Field_ref() const& {
     return {this->i32Field, __isset.i32Field};
@@ -193,7 +197,9 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> i32Field_ref() && {
     return {std::move(this->i32Field), __isset.i32Field};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> strField_ref() const& {
     return {this->strField, __isset.strField};
@@ -213,7 +219,9 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> strField_ref() && {
     return {std::move(this->strField), __isset.strField};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<int16_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> listField_ref() const& {
     return {this->listField, __isset.listField};
@@ -233,7 +241,9 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> listField_ref() && {
     return {std::move(this->listField), __isset.listField};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::string, int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mapField_ref() const& {
     return {this->mapField, __isset.mapField};
@@ -253,7 +263,9 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mapField_ref() && {
     return {std::move(this->mapField), __isset.mapField};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::some::ns::IncludedA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> inclAField_ref() const& {
     return {this->inclAField, __isset.inclAField};
@@ -273,7 +285,9 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> inclAField_ref() && {
     return {std::move(this->inclAField), __isset.inclAField};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::some::ns::IncludedB>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> inclBField_ref() const& {
     return {this->inclBField, __isset.inclBField};
@@ -293,6 +307,7 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> inclBField_ref() && {
     return {std::move(this->inclBField), __isset.inclBField};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   int32_t get_i32Field() const {
     return i32Field;
@@ -300,7 +315,9 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
 
   int32_t& set_i32Field(int32_t i32Field_) {
     i32Field = i32Field_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.i32Field = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return i32Field;
   }
 
@@ -315,7 +332,9 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   template <typename T_ModuleA_strField_struct_setter = ::std::string>
   ::std::string& set_strField(T_ModuleA_strField_struct_setter&& strField_) {
     strField = std::forward<T_ModuleA_strField_struct_setter>(strField_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.strField = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return strField;
   }
   const ::std::vector<int16_t>& get_listField() const&;
@@ -324,7 +343,9 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   template <typename T_ModuleA_listField_struct_setter = ::std::vector<int16_t>>
   ::std::vector<int16_t>& set_listField(T_ModuleA_listField_struct_setter&& listField_) {
     listField = std::forward<T_ModuleA_listField_struct_setter>(listField_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.listField = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return listField;
   }
   const ::std::map<::std::string, int32_t>& get_mapField() const&;
@@ -333,7 +354,9 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   template <typename T_ModuleA_mapField_struct_setter = ::std::map<::std::string, int32_t>>
   ::std::map<::std::string, int32_t>& set_mapField(T_ModuleA_mapField_struct_setter&& mapField_) {
     mapField = std::forward<T_ModuleA_mapField_struct_setter>(mapField_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mapField = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mapField;
   }
   const  ::some::ns::IncludedA& get_inclAField() const&;
@@ -342,7 +365,9 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   template <typename T_ModuleA_inclAField_struct_setter =  ::some::ns::IncludedA>
    ::some::ns::IncludedA& set_inclAField(T_ModuleA_inclAField_struct_setter&& inclAField_) {
     inclAField = std::forward<T_ModuleA_inclAField_struct_setter>(inclAField_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.inclAField = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return inclAField;
   }
   const  ::some::ns::IncludedB& get_inclBField() const&;
@@ -351,7 +376,9 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   template <typename T_ModuleA_inclBField_struct_setter =  ::some::ns::IncludedB>
    ::some::ns::IncludedB& set_inclBField(T_ModuleA_inclBField_struct_setter&& inclBField_) {
     inclBField = std::forward<T_ModuleA_inclBField_struct_setter>(inclBField_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.inclBField = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return inclBField;
   }
 
@@ -385,6 +412,7 @@ namespace some { namespace ns {
 class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<ModuleB> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ModuleB() :
       i32Field(0),
       inclEnumB(static_cast< ::some::ns::EnumB>(0)) {}
@@ -399,6 +427,7 @@ class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<Mo
   ModuleB& operator=(ModuleB&&) = default;
 
   ModuleB& operator=(const ModuleB&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   int32_t i32Field;
@@ -406,6 +435,7 @@ class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<Mo
    ::some::ns::EnumB inclEnumB;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool i32Field;
     bool inclEnumB;
@@ -413,6 +443,7 @@ class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<Mo
   bool operator==(const ModuleB& rhs) const;
   bool operator<(const ModuleB& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> i32Field_ref() const& {
     return {this->i32Field, __isset.i32Field};
@@ -432,7 +463,9 @@ class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<Mo
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> i32Field_ref() && {
     return {std::move(this->i32Field), __isset.i32Field};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::some::ns::EnumB>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> inclEnumB_ref() const& {
     return {this->inclEnumB, __isset.inclEnumB};
@@ -452,6 +485,7 @@ class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<Mo
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> inclEnumB_ref() && {
     return {std::move(this->inclEnumB), __isset.inclEnumB};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   int32_t get_i32Field() const {
     return i32Field;
@@ -459,7 +493,9 @@ class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<Mo
 
   int32_t& set_i32Field(int32_t i32Field_) {
     i32Field = i32Field_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.i32Field = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return i32Field;
   }
 
@@ -469,7 +505,9 @@ class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<Mo
 
    ::some::ns::EnumB& set_inclEnumB( ::some::ns::EnumB inclEnumB_) {
     inclEnumB = inclEnumB_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.inclEnumB = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return inclEnumB;
   }
 

@@ -273,7 +273,9 @@ void MyField::readNoXfer(Protocol_* iprot) {
 _readField_opt_value:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->opt_value, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.opt_value = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -286,7 +288,9 @@ _readField_opt_value:
 _readField_value:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->value, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.value = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -363,7 +367,7 @@ template <class Protocol_>
 uint32_t MyField::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyField");
-  if (this->__isset.opt_value) {
+  if (this->opt_value_ref().has_value()) {
     xfer += prot_->serializedFieldSize("opt_value", apache::thrift::protocol::T_I64, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->opt_value);
   }
@@ -379,7 +383,7 @@ template <class Protocol_>
 uint32_t MyField::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyField");
-  if (this->__isset.opt_value) {
+  if (this->opt_value_ref().has_value()) {
     xfer += prot_->serializedFieldSize("opt_value", apache::thrift::protocol::T_I64, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->opt_value);
   }
@@ -395,7 +399,7 @@ template <class Protocol_>
 uint32_t MyField::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyField");
-  if (this->__isset.opt_value) {
+  if (this->opt_value_ref().has_value()) {
     xfer += prot_->writeFieldBegin("opt_value", apache::thrift::protocol::T_I64, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->opt_value);
     xfer += prot_->writeFieldEnd();
@@ -698,7 +702,9 @@ _readField_u:
 _readField_aDouble:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::readWithContext(*iprot, this->aDouble, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.aDouble = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -712,7 +718,9 @@ _readField_f:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, &this->f);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.f = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -873,7 +881,9 @@ _readField_mes:
     
     this->mes = ::std::vector< ::cpp2::RecursiveStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::cpp2::RecursiveStruct>>::read(*iprot, this->mes);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.mes = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -923,7 +933,7 @@ template <class Protocol_>
 uint32_t RecursiveStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("RecursiveStruct");
-  if (this->__isset.mes) {
+  if (this->mes_ref().has_value()) {
     xfer += prot_->serializedFieldSize("mes", apache::thrift::protocol::T_LIST, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::cpp2::RecursiveStruct>>::serializedSize<false>(*prot_, this->mes);
   }
@@ -935,7 +945,7 @@ template <class Protocol_>
 uint32_t RecursiveStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("RecursiveStruct");
-  if (this->__isset.mes) {
+  if (this->mes_ref().has_value()) {
     xfer += prot_->serializedFieldSize("mes", apache::thrift::protocol::T_LIST, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::cpp2::RecursiveStruct>>::serializedSize<false>(*prot_, this->mes);
   }
@@ -947,7 +957,7 @@ template <class Protocol_>
 uint32_t RecursiveStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("RecursiveStruct");
-  if (this->__isset.mes) {
+  if (this->mes_ref().has_value()) {
     xfer += prot_->writeFieldBegin("mes", apache::thrift::protocol::T_LIST, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::cpp2::RecursiveStruct>>::write(*prot_, this->mes);
     xfer += prot_->writeFieldEnd();

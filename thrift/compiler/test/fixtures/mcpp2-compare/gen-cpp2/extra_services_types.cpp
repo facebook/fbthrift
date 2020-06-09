@@ -81,6 +81,7 @@ void TccStructTraits<::extra::svc::containerStruct2>::translateFieldName(
 
 namespace extra { namespace svc {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 containerStruct2::containerStruct2() :
       fieldA(0),
       req_fieldA(0),
@@ -94,10 +95,12 @@ containerStruct2::containerStruct2() :
   4}),
       fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
       req_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 containerStruct2::~containerStruct2() {}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 containerStruct2::containerStruct2(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::map<::std::string, bool> req_fieldB__arg, ::std::map<::std::string, bool> opt_fieldB__arg, ::std::set<int32_t> fieldC__arg, ::std::set<int32_t> req_fieldC__arg, ::std::set<int32_t> opt_fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::string req_fieldE__arg, ::std::string opt_fieldE__arg) :
     fieldA(std::move(fieldA__arg)),
     req_fieldA(std::move(req_fieldA__arg)),
@@ -112,7 +115,7 @@ containerStruct2::containerStruct2(apache::thrift::FragileConstructor, bool fiel
     fieldE(std::move(fieldE__arg)),
     req_fieldE(std::move(req_fieldE__arg)),
     opt_fieldE(std::move(opt_fieldE__arg)) {}
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void containerStruct2::__clear() {
   // clear all fields
   fieldA = 0;

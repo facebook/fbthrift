@@ -250,7 +250,9 @@ _readField_sonnet:
   {
     
     iprot->readString(this->sonnet);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.sonnet = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -299,7 +301,7 @@ template <class Protocol_>
 uint32_t Serious::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Serious");
-  if (this->__isset.sonnet) {
+  if (this->sonnet_ref().has_value()) {
     xfer += prot_->serializedFieldSize("sonnet", apache::thrift::protocol::T_STRING, 1);
     xfer += prot_->serializedSizeString(this->sonnet);
   }
@@ -311,7 +313,7 @@ template <class Protocol_>
 uint32_t Serious::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Serious");
-  if (this->__isset.sonnet) {
+  if (this->sonnet_ref().has_value()) {
     xfer += prot_->serializedFieldSize("sonnet", apache::thrift::protocol::T_STRING, 1);
     xfer += prot_->serializedSizeString(this->sonnet);
   }
@@ -323,7 +325,7 @@ template <class Protocol_>
 uint32_t Serious::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Serious");
-  if (this->__isset.sonnet) {
+  if (this->sonnet_ref().has_value()) {
     xfer += prot_->writeFieldBegin("sonnet", apache::thrift::protocol::T_STRING, 1);
     xfer += prot_->writeString(this->sonnet);
     xfer += prot_->writeFieldEnd();

@@ -93,15 +93,18 @@ void TccStructTraits<::cpp2::SinkException2>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 InitialResponse::InitialResponse(apache::thrift::FragileConstructor, ::std::string content__arg) :
     content(std::move(content__arg)) {
   __isset.content = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void InitialResponse::__clear() {
   // clear all fields
   content = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool InitialResponse::operator==(const InitialResponse& rhs) const {
@@ -128,7 +131,9 @@ bool InitialResponse::operator<(const InitialResponse& rhs) const {
 void swap(InitialResponse& a, InitialResponse& b) {
   using ::std::swap;
   swap(a.content, b.content);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void InitialResponse::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -143,15 +148,18 @@ template uint32_t InitialResponse::serializedSizeZC<>(apache::thrift::CompactPro
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 FinalResponse::FinalResponse(apache::thrift::FragileConstructor, ::std::string content__arg) :
     content(std::move(content__arg)) {
   __isset.content = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void FinalResponse::__clear() {
   // clear all fields
   content = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool FinalResponse::operator==(const FinalResponse& rhs) const {
@@ -178,7 +186,9 @@ bool FinalResponse::operator<(const FinalResponse& rhs) const {
 void swap(FinalResponse& a, FinalResponse& b) {
   using ::std::swap;
   swap(a.content, b.content);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void FinalResponse::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -193,15 +203,18 @@ template uint32_t FinalResponse::serializedSizeZC<>(apache::thrift::CompactProto
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkPayload::SinkPayload(apache::thrift::FragileConstructor, ::std::string content__arg) :
     content(std::move(content__arg)) {
   __isset.content = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void SinkPayload::__clear() {
   // clear all fields
   content = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool SinkPayload::operator==(const SinkPayload& rhs) const {
@@ -228,7 +241,9 @@ bool SinkPayload::operator<(const SinkPayload& rhs) const {
 void swap(SinkPayload& a, SinkPayload& b) {
   using ::std::swap;
   swap(a.content, b.content);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void SinkPayload::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -243,15 +258,18 @@ template uint32_t SinkPayload::serializedSizeZC<>(apache::thrift::CompactProtoco
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CompatibleWithKeywordSink::CompatibleWithKeywordSink(apache::thrift::FragileConstructor, ::std::string sink__arg) :
     sink(std::move(sink__arg)) {
   __isset.sink = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void CompatibleWithKeywordSink::__clear() {
   // clear all fields
   sink = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool CompatibleWithKeywordSink::operator==(const CompatibleWithKeywordSink& rhs) const {
@@ -278,7 +296,9 @@ bool CompatibleWithKeywordSink::operator<(const CompatibleWithKeywordSink& rhs) 
 void swap(CompatibleWithKeywordSink& a, CompatibleWithKeywordSink& b) {
   using ::std::swap;
   swap(a.sink, b.sink);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void CompatibleWithKeywordSink::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -293,15 +313,18 @@ template uint32_t CompatibleWithKeywordSink::serializedSizeZC<>(apache::thrift::
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 InitialException::InitialException(apache::thrift::FragileConstructor, ::std::string reason__arg) :
     reason(std::move(reason__arg)) {
   __isset.reason = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void InitialException::__clear() {
   // clear all fields
   reason = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool InitialException::operator==(const InitialException& rhs) const {
@@ -328,7 +351,9 @@ bool InitialException::operator<(const InitialException& rhs) const {
 void swap(InitialException& a, InitialException& b) {
   using ::std::swap;
   swap(a.reason, b.reason);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void InitialException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -343,15 +368,18 @@ template uint32_t InitialException::serializedSizeZC<>(apache::thrift::CompactPr
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkException1::SinkException1(apache::thrift::FragileConstructor, ::std::string reason__arg) :
     reason(std::move(reason__arg)) {
   __isset.reason = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void SinkException1::__clear() {
   // clear all fields
   reason = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool SinkException1::operator==(const SinkException1& rhs) const {
@@ -378,7 +406,9 @@ bool SinkException1::operator<(const SinkException1& rhs) const {
 void swap(SinkException1& a, SinkException1& b) {
   using ::std::swap;
   swap(a.reason, b.reason);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void SinkException1::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -393,15 +423,18 @@ template uint32_t SinkException1::serializedSizeZC<>(apache::thrift::CompactProt
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkException2::SinkException2(apache::thrift::FragileConstructor, int64_t reason__arg) :
     reason(std::move(reason__arg)) {
   __isset.reason = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void SinkException2::__clear() {
   // clear all fields
   reason = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool SinkException2::operator==(const SinkException2& rhs) const {
@@ -428,7 +461,9 @@ bool SinkException2::operator<(const SinkException2& rhs) const {
 void swap(SinkException2& a, SinkException2& b) {
   using ::std::swap;
   swap(a.reason, b.reason);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void SinkException2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

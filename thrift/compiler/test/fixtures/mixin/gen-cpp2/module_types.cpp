@@ -75,15 +75,18 @@ void TccStructTraits<::cpp2::Foo>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin1::Mixin1(apache::thrift::FragileConstructor, ::std::string field1__arg) :
     field1(std::move(field1__arg)) {
   __isset.field1 = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Mixin1::__clear() {
   // clear all fields
   field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool Mixin1::operator==(const Mixin1& rhs) const {
@@ -110,7 +113,9 @@ bool Mixin1::operator<(const Mixin1& rhs) const {
 void swap(Mixin1& a, Mixin1& b) {
   using ::std::swap;
   swap(a.field1, b.field1);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void Mixin1::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -125,18 +130,21 @@ template uint32_t Mixin1::serializedSizeZC<>(apache::thrift::CompactProtocolWrit
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin2::Mixin2(apache::thrift::FragileConstructor,  ::cpp2::Mixin1 m1__arg, ::std::string field2__arg) :
     m1(std::move(m1__arg)),
     field2(std::move(field2__arg)) {
   __isset.m1 = true;
   __isset.field2 = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Mixin2::__clear() {
   // clear all fields
   ::apache::thrift::Cpp2Ops<  ::cpp2::Mixin1>::clear(&m1);
   field2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool Mixin2::operator==(const Mixin2& rhs) const {
@@ -146,10 +154,10 @@ bool Mixin2::operator==(const Mixin2& rhs) const {
   if (!(lhs.m1 == rhs.m1)) {
     return false;
   }
-  if (lhs.__isset.field2 != rhs.__isset.field2) {
+  if (lhs.field2_ref().has_value() != rhs.field2_ref().has_value()) {
     return false;
   }
-  if (lhs.__isset.field2) {
+  if (lhs.field2_ref().has_value()) {
     if (!(lhs.field2 == rhs.field2)) {
       return false;
     }
@@ -164,10 +172,10 @@ bool Mixin2::operator<(const Mixin2& rhs) const {
   if (!(lhs.m1 == rhs.m1)) {
     return lhs.m1 < rhs.m1;
   }
-  if (lhs.__isset.field2 != rhs.__isset.field2) {
-    return lhs.__isset.field2 < rhs.__isset.field2;
+  if (lhs.field2_ref().has_value() != rhs.field2_ref().has_value()) {
+    return lhs.field2_ref().has_value() < rhs.field2_ref().has_value();
   }
-  if (lhs.__isset.field2) {
+  if (lhs.field2_ref().has_value()) {
     if (!(lhs.field2 == rhs.field2)) {
       return lhs.field2 < rhs.field2;
     }
@@ -188,7 +196,9 @@ void swap(Mixin2& a, Mixin2& b) {
   using ::std::swap;
   swap(a.m1, b.m1);
   swap(a.field2_ref().value_unchecked(), b.field2_ref().value_unchecked());
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void Mixin2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -203,15 +213,18 @@ template uint32_t Mixin2::serializedSizeZC<>(apache::thrift::CompactProtocolWrit
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin3::Mixin3(apache::thrift::FragileConstructor, ::std::string field3__arg) :
     field3(std::move(field3__arg)) {
   __isset.field3 = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Mixin3::__clear() {
   // clear all fields
   field3 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool Mixin3::operator==(const Mixin3& rhs) const {
@@ -238,7 +251,9 @@ bool Mixin3::operator<(const Mixin3& rhs) const {
 void swap(Mixin3& a, Mixin3& b) {
   using ::std::swap;
   swap(a.field3, b.field3);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void Mixin3::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -253,6 +268,7 @@ template uint32_t Mixin3::serializedSizeZC<>(apache::thrift::CompactProtocolWrit
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo(apache::thrift::FragileConstructor, ::std::string field4__arg,  ::cpp2::Mixin2 m2__arg,  ::cpp2::Mixin3 m3__arg) :
     field4(std::move(field4__arg)),
     m2(std::move(m2__arg)),
@@ -261,13 +277,15 @@ Foo::Foo(apache::thrift::FragileConstructor, ::std::string field4__arg,  ::cpp2:
   __isset.m2 = true;
   __isset.m3 = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Foo::__clear() {
   // clear all fields
   field4 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   ::apache::thrift::Cpp2Ops<  ::cpp2::Mixin2>::clear(&m2);
   ::apache::thrift::Cpp2Ops<  ::cpp2::Mixin3>::clear(&m3);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool Foo::operator==(const Foo& rhs) const {
@@ -324,7 +342,9 @@ void swap(Foo& a, Foo& b) {
   swap(a.field4, b.field4);
   swap(a.m2, b.m2);
   swap(a.m3, b.m3);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void Foo::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

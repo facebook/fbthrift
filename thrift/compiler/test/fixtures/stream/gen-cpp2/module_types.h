@@ -39,6 +39,7 @@ namespace cpp2 {
 class FooEx final : private apache::thrift::detail::st::ComparisonOperators<FooEx>, public apache::thrift::TException {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FooEx() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -51,6 +52,7 @@ class FooEx final : private apache::thrift::detail::st::ComparisonOperators<FooE
   FooEx& operator=(FooEx&&) = default;
 
   FooEx& operator=(const FooEx&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
   bool operator==(const FooEx& rhs) const;
   bool operator<(const FooEx& rhs) const;

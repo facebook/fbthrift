@@ -80,6 +80,7 @@ namespace cpp2 {
 class InitialResponse final : private apache::thrift::detail::st::ComparisonOperators<InitialResponse> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   InitialResponse() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -92,17 +93,20 @@ class InitialResponse final : private apache::thrift::detail::st::ComparisonOper
   InitialResponse& operator=(InitialResponse&&) = default;
 
   InitialResponse& operator=(const InitialResponse&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   ::std::string content;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool content;
   } __isset = {};
   bool operator==(const InitialResponse& rhs) const;
   bool operator<(const InitialResponse& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> content_ref() const& {
     return {this->content, __isset.content};
@@ -122,6 +126,7 @@ class InitialResponse final : private apache::thrift::detail::st::ComparisonOper
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> content_ref() && {
     return {std::move(this->content), __isset.content};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_content() const& {
     return content;
@@ -134,7 +139,9 @@ class InitialResponse final : private apache::thrift::detail::st::ComparisonOper
   template <typename T_InitialResponse_content_struct_setter = ::std::string>
   ::std::string& set_content(T_InitialResponse_content_struct_setter&& content_) {
     content = std::forward<T_InitialResponse_content_struct_setter>(content_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.content = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return content;
   }
 
@@ -168,6 +175,7 @@ namespace cpp2 {
 class FinalResponse final : private apache::thrift::detail::st::ComparisonOperators<FinalResponse> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FinalResponse() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -180,17 +188,20 @@ class FinalResponse final : private apache::thrift::detail::st::ComparisonOperat
   FinalResponse& operator=(FinalResponse&&) = default;
 
   FinalResponse& operator=(const FinalResponse&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   ::std::string content;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool content;
   } __isset = {};
   bool operator==(const FinalResponse& rhs) const;
   bool operator<(const FinalResponse& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> content_ref() const& {
     return {this->content, __isset.content};
@@ -210,6 +221,7 @@ class FinalResponse final : private apache::thrift::detail::st::ComparisonOperat
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> content_ref() && {
     return {std::move(this->content), __isset.content};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_content() const& {
     return content;
@@ -222,7 +234,9 @@ class FinalResponse final : private apache::thrift::detail::st::ComparisonOperat
   template <typename T_FinalResponse_content_struct_setter = ::std::string>
   ::std::string& set_content(T_FinalResponse_content_struct_setter&& content_) {
     content = std::forward<T_FinalResponse_content_struct_setter>(content_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.content = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return content;
   }
 
@@ -256,6 +270,7 @@ namespace cpp2 {
 class SinkPayload final : private apache::thrift::detail::st::ComparisonOperators<SinkPayload> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkPayload() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -268,17 +283,20 @@ class SinkPayload final : private apache::thrift::detail::st::ComparisonOperator
   SinkPayload& operator=(SinkPayload&&) = default;
 
   SinkPayload& operator=(const SinkPayload&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   ::std::string content;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool content;
   } __isset = {};
   bool operator==(const SinkPayload& rhs) const;
   bool operator<(const SinkPayload& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> content_ref() const& {
     return {this->content, __isset.content};
@@ -298,6 +316,7 @@ class SinkPayload final : private apache::thrift::detail::st::ComparisonOperator
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> content_ref() && {
     return {std::move(this->content), __isset.content};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_content() const& {
     return content;
@@ -310,7 +329,9 @@ class SinkPayload final : private apache::thrift::detail::st::ComparisonOperator
   template <typename T_SinkPayload_content_struct_setter = ::std::string>
   ::std::string& set_content(T_SinkPayload_content_struct_setter&& content_) {
     content = std::forward<T_SinkPayload_content_struct_setter>(content_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.content = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return content;
   }
 
@@ -344,6 +365,7 @@ namespace cpp2 {
 class CompatibleWithKeywordSink final : private apache::thrift::detail::st::ComparisonOperators<CompatibleWithKeywordSink> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   CompatibleWithKeywordSink() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -356,17 +378,20 @@ class CompatibleWithKeywordSink final : private apache::thrift::detail::st::Comp
   CompatibleWithKeywordSink& operator=(CompatibleWithKeywordSink&&) = default;
 
   CompatibleWithKeywordSink& operator=(const CompatibleWithKeywordSink&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   ::std::string sink;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool sink;
   } __isset = {};
   bool operator==(const CompatibleWithKeywordSink& rhs) const;
   bool operator<(const CompatibleWithKeywordSink& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> sink_ref() const& {
     return {this->sink, __isset.sink};
@@ -386,6 +411,7 @@ class CompatibleWithKeywordSink final : private apache::thrift::detail::st::Comp
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> sink_ref() && {
     return {std::move(this->sink), __isset.sink};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_sink() const& {
     return sink;
@@ -398,7 +424,9 @@ class CompatibleWithKeywordSink final : private apache::thrift::detail::st::Comp
   template <typename T_CompatibleWithKeywordSink_sink_struct_setter = ::std::string>
   ::std::string& set_sink(T_CompatibleWithKeywordSink_sink_struct_setter&& sink_) {
     sink = std::forward<T_CompatibleWithKeywordSink_sink_struct_setter>(sink_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.sink = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return sink;
   }
 
@@ -432,6 +460,7 @@ namespace cpp2 {
 class InitialException final : private apache::thrift::detail::st::ComparisonOperators<InitialException>, public apache::thrift::TException {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   InitialException() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -444,17 +473,20 @@ class InitialException final : private apache::thrift::detail::st::ComparisonOpe
   InitialException& operator=(InitialException&&) = default;
 
   InitialException& operator=(const InitialException&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   ::std::string reason;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool reason;
   } __isset = {};
   bool operator==(const InitialException& rhs) const;
   bool operator<(const InitialException& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason_ref() const& {
     return {this->reason, __isset.reason};
@@ -474,6 +506,7 @@ class InitialException final : private apache::thrift::detail::st::ComparisonOpe
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> reason_ref() && {
     return {std::move(this->reason), __isset.reason};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_reason() const& {
     return reason;
@@ -486,7 +519,9 @@ class InitialException final : private apache::thrift::detail::st::ComparisonOpe
   template <typename T_InitialException_reason_struct_setter = ::std::string>
   ::std::string& set_reason(T_InitialException_reason_struct_setter&& reason_) {
     reason = std::forward<T_InitialException_reason_struct_setter>(reason_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.reason = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return reason;
   }
 
@@ -524,6 +559,7 @@ namespace cpp2 {
 class SinkException1 final : private apache::thrift::detail::st::ComparisonOperators<SinkException1>, public apache::thrift::TException {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkException1() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -536,17 +572,20 @@ class SinkException1 final : private apache::thrift::detail::st::ComparisonOpera
   SinkException1& operator=(SinkException1&&) = default;
 
   SinkException1& operator=(const SinkException1&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   ::std::string reason;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool reason;
   } __isset = {};
   bool operator==(const SinkException1& rhs) const;
   bool operator<(const SinkException1& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason_ref() const& {
     return {this->reason, __isset.reason};
@@ -566,6 +605,7 @@ class SinkException1 final : private apache::thrift::detail::st::ComparisonOpera
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> reason_ref() && {
     return {std::move(this->reason), __isset.reason};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_reason() const& {
     return reason;
@@ -578,7 +618,9 @@ class SinkException1 final : private apache::thrift::detail::st::ComparisonOpera
   template <typename T_SinkException1_reason_struct_setter = ::std::string>
   ::std::string& set_reason(T_SinkException1_reason_struct_setter&& reason_) {
     reason = std::forward<T_SinkException1_reason_struct_setter>(reason_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.reason = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return reason;
   }
 
@@ -616,6 +658,7 @@ namespace cpp2 {
 class SinkException2 final : private apache::thrift::detail::st::ComparisonOperators<SinkException2>, public apache::thrift::TException {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkException2() :
       reason(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -629,17 +672,20 @@ class SinkException2 final : private apache::thrift::detail::st::ComparisonOpera
   SinkException2& operator=(SinkException2&&) = default;
 
   SinkException2& operator=(const SinkException2&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   int64_t reason;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool reason;
   } __isset = {};
   bool operator==(const SinkException2& rhs) const;
   bool operator<(const SinkException2& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason_ref() const& {
     return {this->reason, __isset.reason};
@@ -659,6 +705,7 @@ class SinkException2 final : private apache::thrift::detail::st::ComparisonOpera
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> reason_ref() && {
     return {std::move(this->reason), __isset.reason};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   int64_t get_reason() const {
     return reason;
@@ -666,7 +713,9 @@ class SinkException2 final : private apache::thrift::detail::st::ComparisonOpera
 
   int64_t& set_reason(int64_t reason_) {
     reason = reason_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.reason = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return reason;
   }
 

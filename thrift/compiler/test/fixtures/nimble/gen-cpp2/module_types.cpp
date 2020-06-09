@@ -45,6 +45,7 @@ void TccStructTraits<::cpp2::BasicTypes>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BasicTypes::BasicTypes(apache::thrift::FragileConstructor, int32_t first__arg, int32_t second__arg, int64_t third__arg, bool isTrue__arg) :
     first(std::move(first__arg)),
     second(std::move(second__arg)),
@@ -54,14 +55,16 @@ BasicTypes::BasicTypes(apache::thrift::FragileConstructor, int32_t first__arg, i
   __isset.third = true;
   __isset.isTrue = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void BasicTypes::__clear() {
   // clear all fields
   first = 0;
   second = 0;
   third = 0;
   isTrue = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool BasicTypes::operator==(const BasicTypes& rhs) const {
@@ -71,18 +74,18 @@ bool BasicTypes::operator==(const BasicTypes& rhs) const {
   if (!(lhs.first == rhs.first)) {
     return false;
   }
-  if (lhs.__isset.second != rhs.__isset.second) {
+  if (lhs.second_ref().has_value() != rhs.second_ref().has_value()) {
     return false;
   }
-  if (lhs.__isset.second) {
+  if (lhs.second_ref().has_value()) {
     if (!(lhs.second == rhs.second)) {
       return false;
     }
   }
-  if (lhs.__isset.third != rhs.__isset.third) {
+  if (lhs.third_ref().has_value() != rhs.third_ref().has_value()) {
     return false;
   }
-  if (lhs.__isset.third) {
+  if (lhs.third_ref().has_value()) {
     if (!(lhs.third == rhs.third)) {
       return false;
     }
@@ -100,18 +103,18 @@ bool BasicTypes::operator<(const BasicTypes& rhs) const {
   if (!(lhs.first == rhs.first)) {
     return lhs.first < rhs.first;
   }
-  if (lhs.__isset.second != rhs.__isset.second) {
-    return lhs.__isset.second < rhs.__isset.second;
+  if (lhs.second_ref().has_value() != rhs.second_ref().has_value()) {
+    return lhs.second_ref().has_value() < rhs.second_ref().has_value();
   }
-  if (lhs.__isset.second) {
+  if (lhs.second_ref().has_value()) {
     if (!(lhs.second == rhs.second)) {
       return lhs.second < rhs.second;
     }
   }
-  if (lhs.__isset.third != rhs.__isset.third) {
-    return lhs.__isset.third < rhs.__isset.third;
+  if (lhs.third_ref().has_value() != rhs.third_ref().has_value()) {
+    return lhs.third_ref().has_value() < rhs.third_ref().has_value();
   }
-  if (lhs.__isset.third) {
+  if (lhs.third_ref().has_value()) {
     if (!(lhs.third == rhs.third)) {
       return lhs.third < rhs.third;
     }
@@ -129,7 +132,9 @@ void swap(BasicTypes& a, BasicTypes& b) {
   swap(a.second_ref().value_unchecked(), b.second_ref().value_unchecked());
   swap(a.third_ref().value_unchecked(), b.third_ref().value_unchecked());
   swap(a.isTrue, b.isTrue);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void BasicTypes::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

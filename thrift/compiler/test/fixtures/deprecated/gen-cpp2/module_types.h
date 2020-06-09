@@ -69,6 +69,7 @@ namespace cpp2 {
 class House final : private apache::thrift::detail::st::ComparisonOperators<House> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   House() :
       id(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -82,6 +83,7 @@ class House final : private apache::thrift::detail::st::ComparisonOperators<Hous
   House& operator=(House&&) = default;
 
   House& operator=(const House&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
    ::cpp2::ColorID id;
@@ -140,6 +142,7 @@ namespace cpp2 {
 class Field final : private apache::thrift::detail::st::ComparisonOperators<Field> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Field() :
       id(0),
       fieldType(5) {}
@@ -154,6 +157,7 @@ class Field final : private apache::thrift::detail::st::ComparisonOperators<Fiel
   Field& operator=(Field&&) = default;
 
   Field& operator=(const Field&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
    ::cpp2::ColorID id;

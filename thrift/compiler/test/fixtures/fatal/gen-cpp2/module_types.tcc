@@ -778,7 +778,9 @@ void structA::readNoXfer(Protocol_* iprot) {
 _readField_a:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->a, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.a = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -792,7 +794,9 @@ _readField_b:
   {
     
     iprot->readString(this->b);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.b = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1138,7 +1142,9 @@ void structB::readNoXfer(Protocol_* iprot) {
 _readField_c:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::readWithContext(*iprot, this->c, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.c = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1151,7 +1157,9 @@ _readField_c:
 _readField_d:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::readWithContext(*iprot, this->d, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.d = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1274,7 +1282,9 @@ void structC::readNoXfer(Protocol_* iprot) {
 _readField_a:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->a, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.a = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1288,7 +1298,9 @@ _readField_b:
   {
     
     iprot->readString(this->b);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.b = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1301,7 +1313,9 @@ _readField_b:
 _readField_c:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::readWithContext(*iprot, this->c, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.c = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1314,7 +1328,9 @@ _readField_c:
 _readField_d:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::readWithContext(*iprot, this->d, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.d = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1327,7 +1343,9 @@ _readField_d:
 _readField_e:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::readWithContext(*iprot, this->e, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.e = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1340,7 +1358,9 @@ _readField_e:
 _readField_f:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::readWithContext(*iprot, this->f, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.f = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1354,7 +1374,9 @@ _readField_g:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::read(iprot, &this->g);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.g = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1369,7 +1391,9 @@ _readField_h:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::unionA>::read(iprot, &this->h);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.h = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1384,7 +1408,9 @@ _readField_i:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::unionA>::read(iprot, &this->i);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.i = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1401,7 +1427,9 @@ _readField_j:
     
     this->j = ::std::vector<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, this->j);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.j = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1418,7 +1446,9 @@ _readField_j1:
     
     this->j1 = ::std::vector<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, this->j1);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.j1 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1435,7 +1465,9 @@ _readField_j2:
     
     this->j2 = ::std::vector< ::test_cpp2::cpp_reflection::enum1>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, ::std::vector< ::test_cpp2::cpp_reflection::enum1>>::read(*iprot, this->j2);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.j2 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1452,7 +1484,9 @@ _readField_j3:
     
     this->j3 = ::std::vector< ::test_cpp2::cpp_reflection::structA>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::test_cpp2::cpp_reflection::structA>>::read(*iprot, this->j3);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.j3 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1469,7 +1503,9 @@ _readField_k:
     
     this->k = ::std::set<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::read(*iprot, this->k);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.k = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1486,7 +1522,9 @@ _readField_k1:
     
     this->k1 = ::std::set<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::read(*iprot, this->k1);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.k1 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1503,7 +1541,9 @@ _readField_k2:
     
     this->k2 = ::std::set< ::test_cpp2::cpp_reflection::enum2>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::enumeration>, ::std::set< ::test_cpp2::cpp_reflection::enum2>>::read(*iprot, this->k2);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.k2 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1520,7 +1560,9 @@ _readField_k3:
     
     this->k3 = ::std::set< ::test_cpp2::cpp_reflection::structB>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>, ::std::set< ::test_cpp2::cpp_reflection::structB>>::read(*iprot, this->k3);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.k3 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1537,7 +1579,9 @@ _readField_l:
     
     this->l = ::std::map<int32_t, int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::map<int32_t, int32_t>>::read(*iprot, this->l);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.l = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1554,7 +1598,9 @@ _readField_l1:
     
     this->l1 = ::std::map<int32_t, int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::map<int32_t, int32_t>>::read(*iprot, this->l1);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.l1 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1571,7 +1617,9 @@ _readField_l2:
     
     this->l2 = ::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::enumeration>, ::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1>>::read(*iprot, this->l2);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.l2 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1588,7 +1636,9 @@ _readField_l3:
     
     this->l3 = ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::structure>, ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>>::read(*iprot, this->l3);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.l3 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1605,7 +1655,9 @@ _readField_m1:
     
     this->m1 = ::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::integral>, ::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t>>::read(*iprot, this->m1);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.m1 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1622,7 +1674,9 @@ _readField_m2:
     
     this->m2 = ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::enumeration>, ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2>>::read(*iprot, this->m2);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.m2 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1639,7 +1693,9 @@ _readField_m3:
     
     this->m3 = ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::structure>, ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>>::read(*iprot, this->m3);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.m3 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1656,7 +1712,9 @@ _readField_n1:
     
     this->n1 = ::std::map<::std::string, int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::read(*iprot, this->n1);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.n1 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1673,7 +1731,9 @@ _readField_n2:
     
     this->n2 = ::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::enumeration>, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1>>::read(*iprot, this->n2);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.n2 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1690,7 +1750,9 @@ _readField_n3:
     
     this->n3 = ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>>::read(*iprot, this->n3);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.n3 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1707,7 +1769,9 @@ _readField_o1:
     
     this->o1 = ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::integral>, ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t>>::read(*iprot, this->o1);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.o1 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1724,7 +1788,9 @@ _readField_o2:
     
     this->o2 = ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::enumeration>, ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>>::read(*iprot, this->o2);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.o2 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -1741,7 +1807,9 @@ _readField_o3:
     
     this->o3 = ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>, ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>>::read(*iprot, this->o3);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.o3 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -2298,7 +2366,9 @@ _readField_field1:
   {
     
     iprot->readString(this->field1);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field1 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2311,7 +2381,9 @@ _readField_field1:
 _readField_field2:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::readWithContext(*iprot, this->field2, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field2 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2337,7 +2409,9 @@ _readField_field4:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::read(iprot, &this->field4);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field4 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -2352,7 +2426,9 @@ _readField_field5:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::read(iprot, &this->field5);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field5 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -2444,7 +2520,7 @@ uint32_t struct1::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("struct1");
   xfer += prot_->serializedFieldSize("field0", apache::thrift::protocol::T_I32, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->field0);
-  if (this->__isset.field1) {
+  if (this->field1_ref().has_value()) {
     xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_STRING, 2);
     xfer += prot_->serializedSizeString(this->field1);
   }
@@ -2452,7 +2528,7 @@ uint32_t struct1::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, this->field2);
   xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_I32, 4);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::serializedSize<false>(*prot_, this->field3);
-  if (this->__isset.field4) {
+  if (this->field4_ref().has_value()) {
     xfer += prot_->serializedFieldSize("field4", apache::thrift::protocol::T_STRUCT, 5);
     xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::serializedSize(prot_, &this->field4);
   }
@@ -2468,7 +2544,7 @@ uint32_t struct1::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("struct1");
   xfer += prot_->serializedFieldSize("field0", apache::thrift::protocol::T_I32, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->field0);
-  if (this->__isset.field1) {
+  if (this->field1_ref().has_value()) {
     xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_STRING, 2);
     xfer += prot_->serializedSizeString(this->field1);
   }
@@ -2476,7 +2552,7 @@ uint32_t struct1::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, this->field2);
   xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_I32, 4);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::serializedSize<false>(*prot_, this->field3);
-  if (this->__isset.field4) {
+  if (this->field4_ref().has_value()) {
     xfer += prot_->serializedFieldSize("field4", apache::thrift::protocol::T_STRUCT, 5);
     xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::serializedSizeZC(prot_, &this->field4);
   }
@@ -2493,7 +2569,7 @@ uint32_t struct1::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("field0", apache::thrift::protocol::T_I32, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->field0);
   xfer += prot_->writeFieldEnd();
-  if (this->__isset.field1) {
+  if (this->field1_ref().has_value()) {
     xfer += prot_->writeFieldBegin("field1", apache::thrift::protocol::T_STRING, 2);
     xfer += prot_->writeString(this->field1);
     xfer += prot_->writeFieldEnd();
@@ -2504,7 +2580,7 @@ uint32_t struct1::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("field3", apache::thrift::protocol::T_I32, 4);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::write(*prot_, this->field3);
   xfer += prot_->writeFieldEnd();
-  if (this->__isset.field4) {
+  if (this->field4_ref().has_value()) {
     xfer += prot_->writeFieldBegin("field4", apache::thrift::protocol::T_STRUCT, 5);
     xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::write(prot_, &this->field4);
     xfer += prot_->writeFieldEnd();
@@ -2548,7 +2624,9 @@ void struct2::readNoXfer(Protocol_* iprot) {
 _readField_fieldA:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->fieldA, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldA = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2562,7 +2640,9 @@ _readField_fieldB:
   {
     
     iprot->readString(this->fieldB);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldB = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2575,7 +2655,9 @@ _readField_fieldB:
 _readField_fieldC:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::readWithContext(*iprot, this->fieldC, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldC = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2588,7 +2670,9 @@ _readField_fieldC:
 _readField_fieldD:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::readWithContext(*iprot, this->fieldD, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldD = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2602,7 +2686,9 @@ _readField_fieldE:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::read(iprot, &this->fieldE);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldE = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -2617,7 +2703,9 @@ _readField_fieldF:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::read(iprot, &this->fieldF);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldF = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -2632,7 +2720,9 @@ _readField_fieldG:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::struct1>::read(iprot, &this->fieldG);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldG = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -2831,7 +2921,9 @@ void struct3::readNoXfer(Protocol_* iprot) {
 _readField_fieldA:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->fieldA, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldA = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2845,7 +2937,9 @@ _readField_fieldB:
   {
     
     iprot->readString(this->fieldB);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldB = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2858,7 +2952,9 @@ _readField_fieldB:
 _readField_fieldC:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::readWithContext(*iprot, this->fieldC, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldC = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2871,7 +2967,9 @@ _readField_fieldC:
 _readField_fieldD:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::readWithContext(*iprot, this->fieldD, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldD = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2885,7 +2983,9 @@ _readField_fieldE:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::read(iprot, &this->fieldE);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldE = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -2900,7 +3000,9 @@ _readField_fieldF:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::read(iprot, &this->fieldF);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldF = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -2915,7 +3017,9 @@ _readField_fieldG:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::struct1>::read(iprot, &this->fieldG);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldG = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -2930,7 +3034,9 @@ _readField_fieldH:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::read(iprot, &this->fieldH);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldH = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -2947,7 +3053,9 @@ _readField_fieldI:
     
     this->fieldI = ::std::vector<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, this->fieldI);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldI = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -2964,7 +3072,9 @@ _readField_fieldJ:
     
     this->fieldJ = ::std::vector<::std::string>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::std::vector<::std::string>>::read(*iprot, this->fieldJ);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldJ = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -2981,7 +3091,9 @@ _readField_fieldK:
     
     this->fieldK = ::std::vector<::std::string>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::std::vector<::std::string>>::read(*iprot, this->fieldK);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldK = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -2998,7 +3110,9 @@ _readField_fieldL:
     
     this->fieldL = ::std::vector< ::test_cpp2::cpp_reflection::structA>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::test_cpp2::cpp_reflection::structA>>::read(*iprot, this->fieldL);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldL = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -3015,7 +3129,9 @@ _readField_fieldM:
     
     this->fieldM = ::std::set<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::read(*iprot, this->fieldM);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldM = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -3032,7 +3148,9 @@ _readField_fieldN:
     
     this->fieldN = ::std::set<::std::string>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::read(*iprot, this->fieldN);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldN = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -3049,7 +3167,9 @@ _readField_fieldO:
     
     this->fieldO = ::std::set<::std::string>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::read(*iprot, this->fieldO);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldO = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -3066,7 +3186,9 @@ _readField_fieldP:
     
     this->fieldP = ::std::set< ::test_cpp2::cpp_reflection::structB>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>, ::std::set< ::test_cpp2::cpp_reflection::structB>>::read(*iprot, this->fieldP);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldP = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -3083,7 +3205,9 @@ _readField_fieldQ:
     
     this->fieldQ = ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA>>::read(*iprot, this->fieldQ);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldQ = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -3100,7 +3224,9 @@ _readField_fieldR:
     
     this->fieldR = ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>>::read(*iprot, this->fieldR);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldR = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -3477,7 +3603,9 @@ _readField_field1:
   {
     
     iprot->readString(this->field1);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field1 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -3490,7 +3618,9 @@ _readField_field1:
 _readField_field2:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::readWithContext(*iprot, this->field2, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field2 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -3582,7 +3712,7 @@ uint32_t struct4::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("struct4");
   xfer += prot_->serializedFieldSize("field0", apache::thrift::protocol::T_I32, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->field0);
-  if (this->__isset.field1) {
+  if (this->field1_ref().has_value()) {
     xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_STRING, 2);
     xfer += prot_->serializedSizeString(this->field1);
   }
@@ -3606,7 +3736,7 @@ uint32_t struct4::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("struct4");
   xfer += prot_->serializedFieldSize("field0", apache::thrift::protocol::T_I32, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->field0);
-  if (this->__isset.field1) {
+  if (this->field1_ref().has_value()) {
     xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_STRING, 2);
     xfer += prot_->serializedSizeString(this->field1);
   }
@@ -3631,7 +3761,7 @@ uint32_t struct4::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("field0", apache::thrift::protocol::T_I32, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->field0);
   xfer += prot_->writeFieldEnd();
-  if (this->__isset.field1) {
+  if (this->field1_ref().has_value()) {
     xfer += prot_->writeFieldBegin("field1", apache::thrift::protocol::T_STRING, 2);
     xfer += prot_->writeString(this->field1);
     xfer += prot_->writeFieldEnd();
@@ -3698,7 +3828,9 @@ _readField_field1:
   {
     
     iprot->readString(this->field1);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field1 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -3711,7 +3843,9 @@ _readField_field1:
 _readField_field2:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::readWithContext(*iprot, this->field2, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field2 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -3725,7 +3859,9 @@ _readField_field3:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::read(iprot, &this->field3);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field3 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -3740,7 +3876,9 @@ _readField_field4:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structB>::read(iprot, &this->field4);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field4 = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -3824,7 +3962,7 @@ uint32_t struct5::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("struct5");
   xfer += prot_->serializedFieldSize("field0", apache::thrift::protocol::T_I32, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->field0);
-  if (this->__isset.field1) {
+  if (this->field1_ref().has_value()) {
     xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_STRING, 2);
     xfer += prot_->serializedSizeString(this->field1);
   }
@@ -3844,7 +3982,7 @@ uint32_t struct5::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("struct5");
   xfer += prot_->serializedFieldSize("field0", apache::thrift::protocol::T_I32, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->field0);
-  if (this->__isset.field1) {
+  if (this->field1_ref().has_value()) {
     xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_STRING, 2);
     xfer += prot_->serializedSizeString(this->field1);
   }
@@ -3865,7 +4003,7 @@ uint32_t struct5::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("field0", apache::thrift::protocol::T_I32, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->field0);
   xfer += prot_->writeFieldEnd();
-  if (this->__isset.field1) {
+  if (this->field1_ref().has_value()) {
     xfer += prot_->writeFieldBegin("field1", apache::thrift::protocol::T_STRING, 2);
     xfer += prot_->writeString(this->field1);
     xfer += prot_->writeFieldEnd();
@@ -3916,7 +4054,9 @@ _readField_bi:
   {
     
     iprot->readBinary(this->bi);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.bi = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -4025,7 +4165,9 @@ _readField_b:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_B_struct>::read(iprot, &this->b);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.b = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -4040,7 +4182,9 @@ _readField_c:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_C_struct>::read(iprot, &this->c);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.c = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -4054,7 +4198,9 @@ _readField_c:
 _readField_i_a:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->i_a, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.i_a = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -4193,7 +4339,9 @@ _readField_b:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_B_struct>::read(iprot, &this->b);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.b = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -4208,7 +4356,9 @@ _readField_c:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_C_struct>::read(iprot, &this->c);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.c = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -4222,7 +4372,9 @@ _readField_c:
 _readField_i_a:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->i_a, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.i_a = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -4360,7 +4512,9 @@ void annotated::readNoXfer(Protocol_* iprot) {
 _readField_a:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->a, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.a = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5356,7 +5510,9 @@ void struct_with_special_names::readNoXfer(Protocol_* iprot) {
 _readField_get:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->get, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.get = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5369,7 +5525,9 @@ _readField_get:
 _readField_getter:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->getter, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.getter = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5382,7 +5540,9 @@ _readField_getter:
 _readField_lists:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->lists, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.lists = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5395,7 +5555,9 @@ _readField_lists:
 _readField_maps:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->maps, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.maps = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5408,7 +5570,9 @@ _readField_maps:
 _readField_name:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->name, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.name = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5421,7 +5585,9 @@ _readField_name:
 _readField_name_to_value:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->name_to_value, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.name_to_value = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5434,7 +5600,9 @@ _readField_name_to_value:
 _readField_names:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->names, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.names = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5447,7 +5615,9 @@ _readField_names:
 _readField_prefix_tree:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->prefix_tree, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.prefix_tree = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5460,7 +5630,9 @@ _readField_prefix_tree:
 _readField_sets:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->sets, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.sets = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5473,7 +5645,9 @@ _readField_sets:
 _readField_setter:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->setter, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.setter = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5486,7 +5660,9 @@ _readField_setter:
 _readField_str:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->str, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.str = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5499,7 +5675,9 @@ _readField_str:
 _readField_strings:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->strings, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.strings = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5512,7 +5690,9 @@ _readField_strings:
 _readField_type:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->type, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.type = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5525,7 +5705,9 @@ _readField_type:
 _readField_value:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->value, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.value = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5538,7 +5720,9 @@ _readField_value:
 _readField_value_to_name:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->value_to_name, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.value_to_name = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5551,7 +5735,9 @@ _readField_value_to_name:
 _readField_values:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->values, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.values = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5564,7 +5750,9 @@ _readField_values:
 _readField_id:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->id, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.id = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5577,7 +5765,9 @@ _readField_id:
 _readField_ids:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->ids, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.ids = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5590,7 +5780,9 @@ _readField_ids:
 _readField_descriptor:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->descriptor, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.descriptor = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5603,7 +5795,9 @@ _readField_descriptor:
 _readField_descriptors:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->descriptors, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.descriptors = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5616,7 +5810,9 @@ _readField_descriptors:
 _readField_key:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->key, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.key = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5629,7 +5825,9 @@ _readField_key:
 _readField_keys:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->keys, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.keys = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5642,7 +5840,9 @@ _readField_keys:
 _readField_annotation:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->annotation, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.annotation = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5655,7 +5855,9 @@ _readField_annotation:
 _readField_annotations:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->annotations, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.annotations = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5668,7 +5870,9 @@ _readField_annotations:
 _readField_member:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->member, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.member = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5681,7 +5885,9 @@ _readField_member:
 _readField_members:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->members, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.members = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5694,7 +5900,9 @@ _readField_members:
 _readField_field:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->field, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5707,7 +5915,9 @@ _readField_field:
 _readField_fields:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->fields, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fields = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -6220,7 +6430,9 @@ void struct_with_indirections::readNoXfer(Protocol_* iprot) {
 _readField_real:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->real, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.real = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -6233,7 +6445,9 @@ _readField_real:
 _readField_fake:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::test_cpp2::cpp_reflection::FakeI32>::readWithContext(*iprot, this->fake, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fake = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -6246,7 +6460,9 @@ _readField_fake:
 _readField_number:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::test_cpp2::cpp_reflection::apache_thrift_indirection_module_HasANumber>,  ::test_cpp2::cpp_reflection::HasANumber>::readWithContext(*iprot, this->number, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.number = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -6259,7 +6475,9 @@ _readField_number:
 _readField_result:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::test_cpp2::cpp_reflection::apache_thrift_indirection_module_HasAResult>,  ::test_cpp2::cpp_reflection::HasAResult>::readWithContext(*iprot, this->result, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.result = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -6273,7 +6491,9 @@ _readField_phrase:
   {
     
     iprot->readString(this->phrase.phrase);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.phrase = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

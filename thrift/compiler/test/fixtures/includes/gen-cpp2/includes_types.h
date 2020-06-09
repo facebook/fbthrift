@@ -54,6 +54,7 @@ namespace cpp2 {
 class Included final : private apache::thrift::detail::st::ComparisonOperators<Included> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Included() :
       MyIntField(0LL),
       MyTransitiveField(::apache::thrift::detail::make_constant< ::cpp2::Foo>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(2LL))) {}
@@ -68,6 +69,7 @@ class Included final : private apache::thrift::detail::st::ComparisonOperators<I
   Included& operator=(Included&&) = default;
 
   Included& operator=(const Included&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   int64_t MyIntField;
@@ -75,6 +77,7 @@ class Included final : private apache::thrift::detail::st::ComparisonOperators<I
    ::cpp2::Foo MyTransitiveField;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool MyIntField;
     bool MyTransitiveField;
@@ -82,6 +85,7 @@ class Included final : private apache::thrift::detail::st::ComparisonOperators<I
   bool operator==(const Included& rhs) const;
   bool operator<(const Included& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
     return {this->MyIntField, __isset.MyIntField};
@@ -101,7 +105,9 @@ class Included final : private apache::thrift::detail::st::ComparisonOperators<I
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::cpp2::Foo>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyTransitiveField_ref() const& {
     return {this->MyTransitiveField, __isset.MyTransitiveField};
@@ -121,6 +127,7 @@ class Included final : private apache::thrift::detail::st::ComparisonOperators<I
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyTransitiveField_ref() && {
     return {std::move(this->MyTransitiveField), __isset.MyTransitiveField};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   int64_t get_MyIntField() const {
     return MyIntField;
@@ -128,7 +135,9 @@ class Included final : private apache::thrift::detail::st::ComparisonOperators<I
 
   int64_t& set_MyIntField(int64_t MyIntField_) {
     MyIntField = MyIntField_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyIntField = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyIntField;
   }
   const  ::cpp2::Foo& get_MyTransitiveField() const&;
@@ -137,7 +146,9 @@ class Included final : private apache::thrift::detail::st::ComparisonOperators<I
   template <typename T_Included_MyTransitiveField_struct_setter =  ::cpp2::Foo>
    ::cpp2::Foo& set_MyTransitiveField(T_Included_MyTransitiveField_struct_setter&& MyTransitiveField_) {
     MyTransitiveField = std::forward<T_Included_MyTransitiveField_struct_setter>(MyTransitiveField_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyTransitiveField = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyTransitiveField;
   }
 

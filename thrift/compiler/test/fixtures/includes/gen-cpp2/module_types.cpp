@@ -41,6 +41,7 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor,  ::cpp2::Included MyIncludedField__arg,  ::cpp2::Included MyOtherIncludedField__arg,  ::cpp2::IncludedInt64 MyIncludedInt__arg) :
     MyIncludedField(std::move(MyIncludedField__arg)),
     MyOtherIncludedField(std::move(MyOtherIncludedField__arg)),
@@ -49,13 +50,15 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor,  ::cpp2::Included MyInclu
   __isset.MyOtherIncludedField = true;
   __isset.MyIncludedInt = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
   // clear all fields
   ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::clear(&MyIncludedField);
   ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::clear(&MyOtherIncludedField);
   MyIncludedInt = 42LL;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
@@ -112,7 +115,9 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.MyIncludedField, b.MyIncludedField);
   swap(a.MyOtherIncludedField, b.MyOtherIncludedField);
   swap(a.MyIncludedInt, b.MyIncludedInt);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

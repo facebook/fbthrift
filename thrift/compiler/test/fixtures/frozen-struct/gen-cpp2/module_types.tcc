@@ -62,7 +62,9 @@ void ModuleA::readNoXfer(Protocol_* iprot) {
 _readField_i32Field:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->i32Field, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.i32Field = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -76,7 +78,9 @@ _readField_strField:
   {
     
     iprot->readString(this->strField);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.strField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -92,7 +96,9 @@ _readField_listField:
     
     this->listField = ::std::vector<int16_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int16_t>>::read(*iprot, this->listField);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.listField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -109,7 +115,9 @@ _readField_mapField:
     
     this->mapField = ::std::map<::std::string, int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::read(*iprot, this->mapField);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.mapField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -124,7 +132,9 @@ _readField_inclAField:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::some::ns::IncludedA>::read(iprot, &this->inclAField);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.inclAField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -139,7 +149,9 @@ _readField_inclBField:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::some::ns::IncludedB>::read(iprot, &this->inclBField);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.inclBField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 
@@ -323,7 +335,9 @@ void ModuleB::readNoXfer(Protocol_* iprot) {
 _readField_i32Field:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->i32Field, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.i32Field = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -336,7 +350,9 @@ _readField_i32Field:
 _readField_inclEnumB:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::ns::EnumB>::readWithContext(*iprot, this->inclEnumB, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.inclEnumB = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

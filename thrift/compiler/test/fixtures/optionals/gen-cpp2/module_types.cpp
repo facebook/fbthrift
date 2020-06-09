@@ -150,12 +150,13 @@ void TccStructTraits<::cpp2::Person>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Color::Color(apache::thrift::FragileConstructor, double red__arg, double green__arg, double blue__arg, double alpha__arg) :
     red(std::move(red__arg)),
     green(std::move(green__arg)),
     blue(std::move(blue__arg)),
     alpha(std::move(alpha__arg)) {}
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Color::__clear() {
   // clear all fields
   red = 0;
@@ -223,18 +224,21 @@ template uint32_t Color::serializedSizeZC<>(apache::thrift::CompactProtocolWrite
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Vehicle::Vehicle() {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 Vehicle::~Vehicle() {}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Vehicle::Vehicle(apache::thrift::FragileConstructor,  ::cpp2::Color color__arg, ::std::string licensePlate__arg, ::std::string description__arg, ::std::string name__arg, bool hasAC__arg) :
     color(std::move(color__arg)),
     licensePlate(std::move(licensePlate__arg)),
     description(std::move(description__arg)),
     name(std::move(name__arg)),
     hasAC(std::move(hasAC__arg)) {}
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Vehicle::__clear() {
   // clear all fields
   ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::clear(&color);
@@ -310,12 +314,15 @@ template uint32_t Vehicle::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Person::Person() :
       id(0) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 Person::~Person() {}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Person::Person(apache::thrift::FragileConstructor,  ::cpp2::PersonID id__arg, ::std::string name__arg, int16_t age__arg, ::std::string address__arg,  ::cpp2::Color favoriteColor__arg, ::std::set< ::cpp2::PersonID> friends__arg,  ::cpp2::PersonID bestFriend__arg, ::std::map< ::cpp2::Animal, ::std::string> petNames__arg,  ::cpp2::Animal afraidOfAnimal__arg, ::std::vector< ::cpp2::Vehicle> vehicles__arg) :
     id(std::move(id__arg)),
     name(std::move(name__arg)),
@@ -327,7 +334,7 @@ Person::Person(apache::thrift::FragileConstructor,  ::cpp2::PersonID id__arg, ::
     petNames(std::move(petNames__arg)),
     afraidOfAnimal(std::move(afraidOfAnimal__arg)),
     vehicles(std::move(vehicles__arg)) {}
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Person::__clear() {
   // clear all fields
   id = 0;

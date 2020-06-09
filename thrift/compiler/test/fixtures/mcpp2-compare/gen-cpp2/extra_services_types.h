@@ -107,6 +107,7 @@ class containerStruct2 final : private apache::thrift::detail::st::ComparisonOpe
  public:
 
   containerStruct2();
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -119,6 +120,7 @@ class containerStruct2 final : private apache::thrift::detail::st::ComparisonOpe
   containerStruct2& operator=(containerStruct2&&) = default;
 
   containerStruct2& operator=(const containerStruct2&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
 
   ~containerStruct2();

@@ -48,7 +48,9 @@ void IncludedA::readNoXfer(Protocol_* iprot) {
 _readField_i32Field:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->i32Field, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.i32Field = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -62,7 +64,9 @@ _readField_strField:
   {
     
     iprot->readString(this->strField);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.strField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

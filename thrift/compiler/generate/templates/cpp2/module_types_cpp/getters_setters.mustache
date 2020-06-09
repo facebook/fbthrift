@@ -18,11 +18,11 @@
 <%^type:optionals?%><%^type:no_getters_setters?%>
 <%#field:optional?%><%^field:cpp_ref?%>
 const <% > types/type%>* <%struct:name%>::get_<%field:cpp_name%>() const& {
-  return __isset.<%field:cpp_name%> ? std::addressof(<%field:cpp_name%>) : nullptr;
+  return <%field:cpp_name%>_ref().has_value() ? std::addressof(<%field:cpp_name%>) : nullptr;
 }
 
 <% > types/type%>* <%struct:name%>::get_<%field:cpp_name%>() & {
-  return __isset.<%field:cpp_name%> ? std::addressof(<%field:cpp_name%>) : nullptr;
+  return <%field:cpp_name%>_ref().has_value() ? std::addressof(<%field:cpp_name%>) : nullptr;
 }
 
 <%/field:cpp_ref?%><%/field:optional?%>

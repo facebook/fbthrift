@@ -91,7 +91,9 @@ _readField_content:
   {
     
     iprot->readString(this->content);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.content = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -200,7 +202,9 @@ _readField_content:
   {
     
     iprot->readString(this->content);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.content = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -309,7 +313,9 @@ _readField_content:
   {
     
     iprot->readString(this->content);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.content = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -418,7 +424,9 @@ _readField_sink:
   {
     
     iprot->readString(this->sink);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.sink = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -527,7 +535,9 @@ _readField_reason:
   {
     
     iprot->readString(this->reason);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.reason = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -636,7 +646,9 @@ _readField_reason:
   {
     
     iprot->readString(this->reason);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.reason = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -744,7 +756,9 @@ void SinkException2::readNoXfer(Protocol_* iprot) {
 _readField_reason:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->reason, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.reason = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

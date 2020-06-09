@@ -149,6 +149,7 @@ namespace cpp2 {
 class MyStructNestedAnnotation final : private apache::thrift::detail::st::ComparisonOperators<MyStructNestedAnnotation> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructNestedAnnotation() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -161,17 +162,20 @@ class MyStructNestedAnnotation final : private apache::thrift::detail::st::Compa
   MyStructNestedAnnotation& operator=(MyStructNestedAnnotation&&) = default;
 
   MyStructNestedAnnotation& operator=(const MyStructNestedAnnotation&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   ::std::string name;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool name;
   } __isset = {};
   bool operator==(const MyStructNestedAnnotation& rhs) const;
   bool operator<(const MyStructNestedAnnotation& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
     return {this->name, __isset.name};
@@ -191,6 +195,7 @@ class MyStructNestedAnnotation final : private apache::thrift::detail::st::Compa
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
     return {std::move(this->name), __isset.name};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_name() const& {
     return name;
@@ -203,7 +208,9 @@ class MyStructNestedAnnotation final : private apache::thrift::detail::st::Compa
   template <typename T_MyStructNestedAnnotation_name_struct_setter = ::std::string>
   ::std::string& set_name(T_MyStructNestedAnnotation_name_struct_setter&& name_) {
     name = std::forward<T_MyStructNestedAnnotation_name_struct_setter>(name_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.name = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return name;
   }
 
@@ -237,6 +244,7 @@ namespace cpp2 {
 class MyStructAnnotation final : private apache::thrift::detail::st::ComparisonOperators<MyStructAnnotation> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructAnnotation() :
       count(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -250,6 +258,7 @@ class MyStructAnnotation final : private apache::thrift::detail::st::ComparisonO
   MyStructAnnotation& operator=(MyStructAnnotation&&) = default;
 
   MyStructAnnotation& operator=(const MyStructAnnotation&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   int64_t count;
@@ -261,6 +270,7 @@ class MyStructAnnotation final : private apache::thrift::detail::st::ComparisonO
    ::cpp2::MyStructNestedAnnotation nest;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool count;
     bool name;
@@ -270,6 +280,7 @@ class MyStructAnnotation final : private apache::thrift::detail::st::ComparisonO
   bool operator==(const MyStructAnnotation& rhs) const;
   bool operator<(const MyStructAnnotation& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> count_ref() const& {
     return {this->count, __isset.count};
@@ -289,7 +300,9 @@ class MyStructAnnotation final : private apache::thrift::detail::st::ComparisonO
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> count_ref() && {
     return {std::move(this->count), __isset.count};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
     return {this->name, __isset.name};
@@ -309,7 +322,9 @@ class MyStructAnnotation final : private apache::thrift::detail::st::ComparisonO
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
     return {std::move(this->name), __isset.name};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> extra_ref() const& {
     return {extra, __isset.extra};
   }
@@ -325,7 +340,9 @@ class MyStructAnnotation final : private apache::thrift::detail::st::ComparisonO
   FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&&> extra_ref() && {
     return {std::move(extra), __isset.extra};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::cpp2::MyStructNestedAnnotation>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> nest_ref() const& {
     return {this->nest, __isset.nest};
@@ -345,6 +362,7 @@ class MyStructAnnotation final : private apache::thrift::detail::st::ComparisonO
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> nest_ref() && {
     return {std::move(this->nest), __isset.nest};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   int64_t get_count() const {
     return count;
@@ -352,7 +370,9 @@ class MyStructAnnotation final : private apache::thrift::detail::st::ComparisonO
 
   int64_t& set_count(int64_t count_) {
     count = count_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.count = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return count;
   }
 
@@ -367,23 +387,27 @@ class MyStructAnnotation final : private apache::thrift::detail::st::ComparisonO
   template <typename T_MyStructAnnotation_name_struct_setter = ::std::string>
   ::std::string& set_name(T_MyStructAnnotation_name_struct_setter&& name_) {
     name = std::forward<T_MyStructAnnotation_name_struct_setter>(name_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.name = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return name;
   }
 
   const ::std::string* get_extra() const& {
-    return __isset.extra ? std::addressof(extra) : nullptr;
+    return extra_ref() ? std::addressof(extra) : nullptr;
   }
 
   ::std::string* get_extra() & {
-    return __isset.extra ? std::addressof(extra) : nullptr;
+    return extra_ref() ? std::addressof(extra) : nullptr;
   }
   ::std::string* get_extra() && = delete;
 
   template <typename T_MyStructAnnotation_extra_struct_setter = ::std::string>
   ::std::string& set_extra(T_MyStructAnnotation_extra_struct_setter&& extra_) {
     extra = std::forward<T_MyStructAnnotation_extra_struct_setter>(extra_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.extra = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return extra;
   }
   const  ::cpp2::MyStructNestedAnnotation& get_nest() const&;
@@ -392,7 +416,9 @@ class MyStructAnnotation final : private apache::thrift::detail::st::ComparisonO
   template <typename T_MyStructAnnotation_nest_struct_setter =  ::cpp2::MyStructNestedAnnotation>
    ::cpp2::MyStructNestedAnnotation& set_nest(T_MyStructAnnotation_nest_struct_setter&& nest_) {
     nest = std::forward<T_MyStructAnnotation_nest_struct_setter>(nest_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.nest = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return nest;
   }
 
@@ -426,6 +452,7 @@ namespace cpp2 {
 class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct() :
       majorVer(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -439,6 +466,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   MyStruct& operator=(MyStruct&&) = default;
 
   MyStruct& operator=(const MyStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   int64_t majorVer;
@@ -450,6 +478,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   ::std::string class_;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool majorVer;
     bool package;
@@ -459,6 +488,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> majorVer_ref() const& {
     return {this->majorVer, __isset.majorVer};
@@ -478,7 +508,9 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> majorVer_ref() && {
     return {std::move(this->majorVer), __isset.majorVer};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> package_ref() const& {
     return {this->package, __isset.package};
@@ -498,7 +530,9 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> package_ref() && {
     return {std::move(this->package), __isset.package};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotation_with_quote_ref() const& {
     return {this->annotation_with_quote, __isset.annotation_with_quote};
@@ -518,7 +552,9 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotation_with_quote_ref() && {
     return {std::move(this->annotation_with_quote), __isset.annotation_with_quote};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> class__ref() const& {
     return {this->class_, __isset.class_};
@@ -538,6 +574,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> class__ref() && {
     return {std::move(this->class_), __isset.class_};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   int64_t get_majorVer() const {
     return majorVer;
@@ -545,7 +582,9 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
   int64_t& set_majorVer(int64_t majorVer_) {
     majorVer = majorVer_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.majorVer = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return majorVer;
   }
 
@@ -560,7 +599,9 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   template <typename T_MyStruct_package_struct_setter = ::std::string>
   ::std::string& set_package(T_MyStruct_package_struct_setter&& package_) {
     package = std::forward<T_MyStruct_package_struct_setter>(package_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.package = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return package;
   }
 
@@ -575,7 +616,9 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   template <typename T_MyStruct_annotation_with_quote_struct_setter = ::std::string>
   ::std::string& set_annotation_with_quote(T_MyStruct_annotation_with_quote_struct_setter&& annotation_with_quote_) {
     annotation_with_quote = std::forward<T_MyStruct_annotation_with_quote_struct_setter>(annotation_with_quote_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.annotation_with_quote = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return annotation_with_quote;
   }
 
@@ -590,7 +633,9 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   template <typename T_MyStruct_class__struct_setter = ::std::string>
   ::std::string& set_class_(T_MyStruct_class__struct_setter&& class__) {
     class_ = std::forward<T_MyStruct_class__struct_setter>(class__);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.class_ = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return class_;
   }
 
@@ -624,6 +669,7 @@ namespace cpp2 {
 class SecretStruct final : private apache::thrift::detail::st::ComparisonOperators<SecretStruct> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SecretStruct() :
       id(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -637,6 +683,7 @@ class SecretStruct final : private apache::thrift::detail::st::ComparisonOperato
   SecretStruct& operator=(SecretStruct&&) = default;
 
   SecretStruct& operator=(const SecretStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   int64_t id;
@@ -644,6 +691,7 @@ class SecretStruct final : private apache::thrift::detail::st::ComparisonOperato
   ::std::string password;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool id;
     bool password;
@@ -651,6 +699,7 @@ class SecretStruct final : private apache::thrift::detail::st::ComparisonOperato
   bool operator==(const SecretStruct& rhs) const;
   bool operator<(const SecretStruct& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> id_ref() const& {
     return {this->id, __isset.id};
@@ -670,7 +719,9 @@ class SecretStruct final : private apache::thrift::detail::st::ComparisonOperato
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> id_ref() && {
     return {std::move(this->id), __isset.id};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> password_ref() const& {
     return {this->password, __isset.password};
@@ -690,6 +741,7 @@ class SecretStruct final : private apache::thrift::detail::st::ComparisonOperato
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> password_ref() && {
     return {std::move(this->password), __isset.password};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   int64_t get_id() const {
     return id;
@@ -697,7 +749,9 @@ class SecretStruct final : private apache::thrift::detail::st::ComparisonOperato
 
   int64_t& set_id(int64_t id_) {
     id = id_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.id = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return id;
   }
 
@@ -712,7 +766,9 @@ class SecretStruct final : private apache::thrift::detail::st::ComparisonOperato
   template <typename T_SecretStruct_password_struct_setter = ::std::string>
   ::std::string& set_password(T_SecretStruct_password_struct_setter&& password_) {
     password = std::forward<T_SecretStruct_password_struct_setter>(password_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.password = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return password;
   }
 

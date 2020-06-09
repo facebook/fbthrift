@@ -37,18 +37,21 @@ void TccStructTraits<::cpp2::Included>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Included::Included(apache::thrift::FragileConstructor, int64_t MyIntField__arg,  ::cpp2::Foo MyTransitiveField__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyTransitiveField(std::move(MyTransitiveField__arg)) {
   __isset.MyIntField = true;
   __isset.MyTransitiveField = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Included::__clear() {
   // clear all fields
   MyIntField = 0LL;
   ::apache::thrift::Cpp2Ops<  ::cpp2::Foo>::clear(&MyTransitiveField);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool Included::operator==(const Included& rhs) const {
@@ -90,7 +93,9 @@ void swap(Included& a, Included& b) {
   using ::std::swap;
   swap(a.MyIntField, b.MyIntField);
   swap(a.MyTransitiveField, b.MyTransitiveField);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void Included::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

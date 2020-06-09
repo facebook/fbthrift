@@ -244,6 +244,7 @@ void TccStructTraits<::cpp2::union2>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Internship::Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, ::std::string title__arg,  ::cpp2::Company employer__arg) :
     weeks(std::move(weeks__arg)),
     title(std::move(title__arg)),
@@ -251,13 +252,15 @@ Internship::Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, :
   __isset.title = true;
   __isset.employer = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Internship::__clear() {
   // clear all fields
   weeks = 0;
   title = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   employer =  ::cpp2::Company::FACEBOOK;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool Internship::operator==(const Internship& rhs) const {
@@ -270,10 +273,10 @@ bool Internship::operator==(const Internship& rhs) const {
   if (!(lhs.title == rhs.title)) {
     return false;
   }
-  if (lhs.__isset.employer != rhs.__isset.employer) {
+  if (lhs.employer_ref().has_value() != rhs.employer_ref().has_value()) {
     return false;
   }
-  if (lhs.__isset.employer) {
+  if (lhs.employer_ref().has_value()) {
     if (!(lhs.employer == rhs.employer)) {
       return false;
     }
@@ -291,10 +294,10 @@ bool Internship::operator<(const Internship& rhs) const {
   if (!(lhs.title == rhs.title)) {
     return lhs.title < rhs.title;
   }
-  if (lhs.__isset.employer != rhs.__isset.employer) {
-    return lhs.__isset.employer < rhs.__isset.employer;
+  if (lhs.employer_ref().has_value() != rhs.employer_ref().has_value()) {
+    return lhs.employer_ref().has_value() < rhs.employer_ref().has_value();
   }
-  if (lhs.__isset.employer) {
+  if (lhs.employer_ref().has_value()) {
     if (!(lhs.employer == rhs.employer)) {
       return lhs.employer < rhs.employer;
     }
@@ -308,7 +311,9 @@ void swap(Internship& a, Internship& b) {
   swap(a.weeks, b.weeks);
   swap(a.title, b.title);
   swap(a.employer_ref().value_unchecked(), b.employer_ref().value_unchecked());
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void Internship::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -323,10 +328,11 @@ template uint32_t Internship::serializedSizeZC<>(apache::thrift::CompactProtocol
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Range::Range(apache::thrift::FragileConstructor, int32_t min__arg, int32_t max__arg) :
     min(std::move(min__arg)),
     max(std::move(max__arg)) {}
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Range::__clear() {
   // clear all fields
   min = 0;
@@ -378,18 +384,21 @@ template uint32_t Range::serializedSizeZC<>(apache::thrift::CompactProtocolWrite
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
   __isset.a = true;
   __isset.b = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct1::__clear() {
   // clear all fields
   a = 1234567;
   b = apache::thrift::StringTraits< std::string>::fromStringLiteral("<uninitialized>");
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct1::operator==(const struct1& rhs) const {
@@ -423,7 +432,9 @@ void swap(struct1& a, struct1& b) {
   using ::std::swap;
   swap(a.a, b.a);
   swap(a.b, b.b);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct1::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -438,6 +449,7 @@ template uint32_t struct1::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct2::struct2(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg,  ::cpp2::struct1 c__arg, ::std::vector<int32_t> d__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)),
@@ -448,14 +460,16 @@ struct2::struct2(apache::thrift::FragileConstructor, int32_t a__arg, ::std::stri
   __isset.c = true;
   __isset.d = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct2::__clear() {
   // clear all fields
   a = 0;
   b = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   ::apache::thrift::Cpp2Ops<  ::cpp2::struct1>::clear(&c);
   d.clear();
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct2::operator==(const struct2& rhs) const {
@@ -519,7 +533,9 @@ void swap(struct2& a, struct2& b) {
   swap(a.b, b.b);
   swap(a.c, b.c);
   swap(a.d, b.d);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -534,6 +550,7 @@ template uint32_t struct2::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct3::struct3(apache::thrift::FragileConstructor, ::std::string a__arg, int32_t b__arg,  ::cpp2::struct2 c__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)),
@@ -542,13 +559,15 @@ struct3::struct3(apache::thrift::FragileConstructor, ::std::string a__arg, int32
   __isset.b = true;
   __isset.c = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct3::__clear() {
   // clear all fields
   a = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   b = 0;
   ::apache::thrift::Cpp2Ops<  ::cpp2::struct2>::clear(&c);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct3::operator==(const struct3& rhs) const {
@@ -597,7 +616,9 @@ void swap(struct3& a, struct3& b) {
   swap(a.a, b.a);
   swap(a.b, b.b);
   swap(a.c, b.c);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct3::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

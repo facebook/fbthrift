@@ -102,8 +102,9 @@ void TccStructTraits<::cpp2::MyUnion>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyDataItem::__clear() {
   // clear all fields
 }
@@ -141,6 +142,7 @@ template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocol
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg,  ::cpp2::MyEnum myEnum__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)),
@@ -151,13 +153,15 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, 
   __isset.MyDataField = true;
   __isset.myEnum = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
   // clear all fields
   MyIntField = 0;
   MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   myEnum =  ::cpp2::MyEnum::MyValue1;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
@@ -213,7 +217,9 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.MyStringField, b.MyStringField);
   swap(a.MyDataField, b.MyDataField);
   swap(a.myEnum, b.myEnum);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

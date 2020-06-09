@@ -29,8 +29,9 @@ void TccStructTraits<::cpp2::FooEx>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 FooEx::FooEx(apache::thrift::FragileConstructor) {}
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void FooEx::__clear() {
   // clear all fields
 }

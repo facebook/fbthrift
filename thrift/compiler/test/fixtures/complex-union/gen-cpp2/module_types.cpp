@@ -419,6 +419,7 @@ template uint32_t DataUnion::serializedSizeZC<>(apache::thrift::CompactProtocolW
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Val::Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, int32_t intVal__arg,  ::cpp2::containerTypedef typedefValue__arg) :
     strVal(std::move(strVal__arg)),
     intVal(std::move(intVal__arg)),
@@ -427,13 +428,15 @@ Val::Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, int32_t 
   __isset.intVal = true;
   __isset.typedefValue = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Val::__clear() {
   // clear all fields
   strVal = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   intVal = 0;
   typedefValue.clear();
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool Val::operator==(const Val& rhs) const {
@@ -482,7 +485,9 @@ void swap(Val& a, Val& b) {
   swap(a.strVal, b.strVal);
   swap(a.intVal, b.intVal);
   swap(a.typedefValue, b.typedefValue);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void Val::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -649,15 +654,18 @@ template uint32_t VirtualComplexUnion::serializedSizeZC<>(apache::thrift::Compac
 } // cpp2
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 NonCopyableStruct::NonCopyableStruct(apache::thrift::FragileConstructor, int64_t num__arg) :
     num(std::move(num__arg)) {
   __isset.num = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void NonCopyableStruct::__clear() {
   // clear all fields
   num = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool NonCopyableStruct::operator==(const NonCopyableStruct& rhs) const {
@@ -684,7 +692,9 @@ bool NonCopyableStruct::operator<(const NonCopyableStruct& rhs) const {
 void swap(NonCopyableStruct& a, NonCopyableStruct& b) {
   using ::std::swap;
   swap(a.num, b.num);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void NonCopyableStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

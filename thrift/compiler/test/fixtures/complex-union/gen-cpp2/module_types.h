@@ -1052,6 +1052,7 @@ namespace cpp2 {
 class Val final : private apache::thrift::detail::st::ComparisonOperators<Val> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Val() :
       intVal(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -1065,6 +1066,7 @@ class Val final : private apache::thrift::detail::st::ComparisonOperators<Val> {
   Val& operator=(Val&&) = default;
 
   Val& operator=(const Val&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   ::std::string strVal;
@@ -1074,6 +1076,7 @@ class Val final : private apache::thrift::detail::st::ComparisonOperators<Val> {
    ::cpp2::containerTypedef typedefValue;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool strVal;
     bool intVal;
@@ -1082,6 +1085,7 @@ class Val final : private apache::thrift::detail::st::ComparisonOperators<Val> {
   bool operator==(const Val& rhs) const;
   bool operator<(const Val& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> strVal_ref() const& {
     return {this->strVal, __isset.strVal};
@@ -1101,7 +1105,9 @@ class Val final : private apache::thrift::detail::st::ComparisonOperators<Val> {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> strVal_ref() && {
     return {std::move(this->strVal), __isset.strVal};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> intVal_ref() const& {
     return {this->intVal, __isset.intVal};
@@ -1121,7 +1127,9 @@ class Val final : private apache::thrift::detail::st::ComparisonOperators<Val> {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> intVal_ref() && {
     return {std::move(this->intVal), __isset.intVal};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> typedefValue_ref() const& {
     return {this->typedefValue, __isset.typedefValue};
@@ -1141,6 +1149,7 @@ class Val final : private apache::thrift::detail::st::ComparisonOperators<Val> {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> typedefValue_ref() && {
     return {std::move(this->typedefValue), __isset.typedefValue};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_strVal() const& {
     return strVal;
@@ -1153,7 +1162,9 @@ class Val final : private apache::thrift::detail::st::ComparisonOperators<Val> {
   template <typename T_Val_strVal_struct_setter = ::std::string>
   ::std::string& set_strVal(T_Val_strVal_struct_setter&& strVal_) {
     strVal = std::forward<T_Val_strVal_struct_setter>(strVal_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.strVal = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return strVal;
   }
 
@@ -1163,7 +1174,9 @@ class Val final : private apache::thrift::detail::st::ComparisonOperators<Val> {
 
   int32_t& set_intVal(int32_t intVal_) {
     intVal = intVal_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.intVal = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return intVal;
   }
   const  ::cpp2::containerTypedef& get_typedefValue() const&;
@@ -1172,7 +1185,9 @@ class Val final : private apache::thrift::detail::st::ComparisonOperators<Val> {
   template <typename T_Val_typedefValue_struct_setter =  ::cpp2::containerTypedef>
    ::cpp2::containerTypedef& set_typedefValue(T_Val_typedefValue_struct_setter&& typedefValue_) {
     typedefValue = std::forward<T_Val_typedefValue_struct_setter>(typedefValue_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.typedefValue = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return typedefValue;
   }
 
@@ -1667,6 +1682,7 @@ namespace cpp2 {
 class NonCopyableStruct final : private apache::thrift::detail::st::ComparisonOperators<NonCopyableStruct> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   NonCopyableStruct() :
       num(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -1681,12 +1697,14 @@ class NonCopyableStruct final : private apache::thrift::detail::st::ComparisonOp
   int64_t num;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool num;
   } __isset = {};
   bool operator==(const NonCopyableStruct& rhs) const;
   bool operator<(const NonCopyableStruct& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> num_ref() const& {
     return {this->num, __isset.num};
@@ -1706,6 +1724,7 @@ class NonCopyableStruct final : private apache::thrift::detail::st::ComparisonOp
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> num_ref() && {
     return {std::move(this->num), __isset.num};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   int64_t get_num() const {
     return num;
@@ -1713,7 +1732,9 @@ class NonCopyableStruct final : private apache::thrift::detail::st::ComparisonOp
 
   int64_t& set_num(int64_t num_) {
     num = num_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.num = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return num;
   }
 

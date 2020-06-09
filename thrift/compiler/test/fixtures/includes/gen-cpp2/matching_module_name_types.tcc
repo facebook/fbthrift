@@ -49,7 +49,9 @@ _readField_OtherStructField:
   {
     _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::matching_module_name::OtherStruct>::read(iprot, &this->OtherStructField);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.OtherStructField = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
     _readState.afterSubobject(iprot);
   }
 

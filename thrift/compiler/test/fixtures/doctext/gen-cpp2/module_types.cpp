@@ -66,15 +66,18 @@ void TccStructTraits<::cpp2::A>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 A::A(apache::thrift::FragileConstructor, int32_t useless_field__arg) :
     useless_field(std::move(useless_field__arg)) {
   __isset.useless_field = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void A::__clear() {
   // clear all fields
   useless_field = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool A::operator==(const A& rhs) const {
@@ -101,7 +104,9 @@ bool A::operator<(const A& rhs) const {
 void swap(A& a, A& b) {
   using ::std::swap;
   swap(a.useless_field, b.useless_field);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void A::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

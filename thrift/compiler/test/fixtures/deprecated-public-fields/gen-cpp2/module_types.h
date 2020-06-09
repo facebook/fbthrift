@@ -44,6 +44,7 @@ namespace cpp2 {
 class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Foo() :
       bar(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -57,17 +58,20 @@ class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
   Foo& operator=(Foo&&) = default;
 
   Foo& operator=(const Foo&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   int32_t bar;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool bar;
   } __isset = {};
   bool operator==(const Foo& rhs) const;
   bool operator<(const Foo& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const int32_t&> bar_ref() const& {
     return {bar, __isset.bar};
   }
@@ -83,19 +87,22 @@ class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
   FOLLY_ERASE ::apache::thrift::optional_field_ref<int32_t&&> bar_ref() && {
     return {std::move(bar), __isset.bar};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const int32_t* get_bar() const& {
-    return __isset.bar ? std::addressof(bar) : nullptr;
+    return bar_ref() ? std::addressof(bar) : nullptr;
   }
 
   int32_t* get_bar() & {
-    return __isset.bar ? std::addressof(bar) : nullptr;
+    return bar_ref() ? std::addressof(bar) : nullptr;
   }
   int32_t* get_bar() && = delete;
 
   int32_t& set_bar(int32_t bar_) {
     bar = bar_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.bar = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return bar;
   }
 
