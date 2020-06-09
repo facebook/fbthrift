@@ -37,7 +37,7 @@ namespace apache {
 namespace thrift {
 
 Cpp2Channel::Cpp2Channel(
-    const std::shared_ptr<folly::AsyncTransportWrapper>& transport,
+    const std::shared_ptr<folly::AsyncTransport>& transport,
     std::unique_ptr<FramingHandler> framingHandler)
     : transport_(transport),
       recvCallback_(nullptr),

@@ -42,7 +42,7 @@ namespace thrift {
 std::atomic<uint32_t> HeaderServerChannel::sample_(0);
 
 HeaderServerChannel::HeaderServerChannel(
-    const std::shared_ptr<folly::AsyncTransportWrapper>& transport)
+    const std::shared_ptr<folly::AsyncTransport>& transport)
     : HeaderServerChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
           transport,
           make_unique<ServerFramingHandler>(*this)))) {}
@@ -167,7 +167,7 @@ std::string HeaderServerChannel::getTHeaderPayloadString(IOBuf* buf) {
 }
 
 std::string HeaderServerChannel::getTransportDebugString(
-    folly::AsyncTransportWrapper* transport) {
+    folly::AsyncTransport* transport) {
   if (!transport) {
     return std::string();
   }

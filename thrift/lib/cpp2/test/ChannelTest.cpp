@@ -137,13 +137,13 @@ class TestFramingHandler : public FramingHandler {
 
 template <typename Channel>
 unique_ptr<Channel, folly::DelayedDestruction::Destructor> createChannel(
-    const shared_ptr<folly::AsyncTransportWrapper>& transport) {
+    const shared_ptr<folly::AsyncTransport>& transport) {
   return Channel::newChannel(transport);
 }
 
 template <>
 unique_ptr<Cpp2Channel, folly::DelayedDestruction::Destructor> createChannel(
-    const shared_ptr<folly::AsyncTransportWrapper>& transport) {
+    const shared_ptr<folly::AsyncTransport>& transport) {
   return Cpp2Channel::newChannel(transport, make_unique<TestFramingHandler>());
 }
 
@@ -1096,28 +1096,28 @@ TEST(Channel, ClientCloseOnErrorTest) {
       .run();
 }
 
-class DestroyAsyncTransport : public folly::AsyncTransportWrapper {
+class DestroyAsyncTransport : public folly::AsyncTransport {
  public:
   DestroyAsyncTransport() : cb_(nullptr) {}
   void setReadCB(
-      folly::AsyncTransportWrapper::ReadCallback* callback) override {
+      folly::AsyncTransport::ReadCallback* callback) override {
     cb_ = callback;
   }
   ReadCallback* getReadCallback() const override {
     return dynamic_cast<ReadCallback*>(cb_);
   }
   void write(
-      folly::AsyncTransportWrapper::WriteCallback*,
+      folly::AsyncTransport::WriteCallback*,
       const void*,
       size_t,
       WriteFlags) override {}
   void writev(
-      folly::AsyncTransportWrapper::WriteCallback*,
+      folly::AsyncTransport::WriteCallback*,
       const iovec*,
       size_t,
       WriteFlags) override {}
   void writeChain(
-      folly::AsyncTransportWrapper::WriteCallback*,
+      folly::AsyncTransport::WriteCallback*,
       std::unique_ptr<folly::IOBuf>&&,
       WriteFlags) override {}
   void close() override {}
@@ -1172,7 +1172,7 @@ class DestroyAsyncTransport : public folly::AsyncTransportWrapper {
   }
 
  private:
-  folly::AsyncTransportWrapper::ReadCallback* cb_;
+  folly::AsyncTransport::ReadCallback* cb_;
 };
 
 class DestroyRecvCallback : public MessageChannel::RecvCallback {
@@ -1200,7 +1200,7 @@ class DestroyRecvCallback : public MessageChannel::RecvCallback {
 
 TEST(Channel, DestroyInEOF) {
   auto t = new DestroyAsyncTransport;
-  std::shared_ptr<folly::AsyncTransportWrapper> transport(t);
+  std::shared_ptr<folly::AsyncTransport> transport(t);
   auto channel = createChannel<Cpp2Channel>(transport);
   DestroyRecvCallback drc(std::move(channel));
   t->invokeEOF();

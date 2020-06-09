@@ -50,14 +50,14 @@ class HeaderServerChannel : public ServerChannel,
 
  public:
   explicit HeaderServerChannel(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport);
+      const std::shared_ptr<folly::AsyncTransport>& transport);
 
   explicit HeaderServerChannel(const std::shared_ptr<Cpp2Channel>& cpp2Channel);
 
   static std::unique_ptr<
       HeaderServerChannel,
       folly::DelayedDestruction::Destructor>
-  newChannel(const std::shared_ptr<folly::AsyncTransportWrapper>& transport) {
+  newChannel(const std::shared_ptr<folly::AsyncTransport>& transport) {
     return std::
         unique_ptr<HeaderServerChannel, folly::DelayedDestruction::Destructor>(
             new HeaderServerChannel(transport));
@@ -66,11 +66,11 @@ class HeaderServerChannel : public ServerChannel,
   // DelayedDestruction methods
   void destroy() override;
 
-  folly::AsyncTransportWrapper* getTransport() {
+  folly::AsyncTransport* getTransport() {
     return cpp2Channel_->getTransport();
   }
 
-  void setTransport(std::shared_ptr<folly::AsyncTransportWrapper> transport) {
+  void setTransport(std::shared_ptr<folly::AsyncTransport> transport) {
     cpp2Channel_->setTransport(transport);
   }
 
@@ -219,7 +219,7 @@ class HeaderServerChannel : public ServerChannel,
  private:
   static std::string getTHeaderPayloadString(folly::IOBuf* buf);
   static std::string getTransportDebugString(
-      folly::AsyncTransportWrapper* transport);
+      folly::AsyncTransport* transport);
 
   server::TServerObserver::SamplingStatus shouldSample(
       const apache::thrift::transport::THeader* header) const;

@@ -55,7 +55,7 @@ class HeaderClientChannel : public ClientChannel,
 
  public:
   explicit HeaderClientChannel(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport);
+      const std::shared_ptr<folly::AsyncTransport>& transport);
 
   explicit HeaderClientChannel(const std::shared_ptr<Cpp2Channel>& cpp2Channel);
 
@@ -64,7 +64,7 @@ class HeaderClientChannel : public ClientChannel,
           Ptr;
 
   static Ptr newChannel(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport) {
+      const std::shared_ptr<folly::AsyncTransport>& transport) {
     return Ptr(new HeaderClientChannel(transport));
   }
 
@@ -80,7 +80,7 @@ class HeaderClientChannel : public ClientChannel,
   // DelayedDestruction methods
   void destroy() override;
 
-  folly::AsyncTransportWrapper* getTransport() override {
+  folly::AsyncTransport* getTransport() override {
     return cpp2Channel_->getTransport();
   }
 

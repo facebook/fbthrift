@@ -98,11 +98,11 @@ class TAsyncChannelWriteRequestBase {
 
 /**
  * TStreamAsyncChannel is a helper class for channel implementations that use
- * AsyncTransportWrapper underneath.
+ * AsyncTransport underneath.
  *
  * TStreamAsyncChannel provides the basic functionality for implementing a
  * message-based asynchronous channel on top of a streaming
- * AsyncTransportWrapper.
+ * AsyncTransport.
  *
  * It requires two template arguments that control how the stream is broken up
  * into messagess:
@@ -128,8 +128,8 @@ class TAsyncChannelWriteRequestBase {
  *       objects.  This is used when multiple write requests are pending on the
  *       channel.
  *
- *   - void write(AsyncTransportWrapper* transport,
- *                AsyncTransportWrapper::WriteCallback* callback) noexcept;
+ *   - void write(AsyncTransport* transport,
+ *                AsyncTransport::WriteCallback* callback) noexcept;
  *
  *       This method will be called to schedule the write.  The WriteRequest_
  *       should invoke the transport's write() or writev() method with the data
@@ -137,7 +137,7 @@ class TAsyncChannelWriteRequestBase {
  *
  *       Note that this API requires the WriteRequest_ to write the entire
  *       message with a single write() or writev() call.  This allows the code
- *       to let the AsyncTransportWrapper perform the write queuing when
+ *       to let the AsyncTransport perform the write queuing when
  *       multiple messages are pending.  (If needed we could rewrite this API in
  *       the future to relax this restriction.)
  *
@@ -198,12 +198,12 @@ class TAsyncChannelWriteRequestBase {
 template <typename WriteRequest_, typename ReadState_>
 class TStreamAsyncChannel
     : public TAsyncEventChannel,
-      protected folly::AsyncTransportWrapper::ReadCallback,
-      protected folly::AsyncTransportWrapper::WriteCallback,
+      protected folly::AsyncTransport::ReadCallback,
+      protected folly::AsyncTransport::WriteCallback,
       protected folly::AsyncTimeout {
  public:
   explicit TStreamAsyncChannel(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport);
+      const std::shared_ptr<folly::AsyncTransport>& transport);
 
   /**
    * Helper function to create a shared_ptr<TStreamAsyncChannel>.
@@ -212,7 +212,7 @@ class TStreamAsyncChannel
    * destructor is protected and cannot be invoked directly.
    */
   static std::shared_ptr<TStreamAsyncChannel> newChannel(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport) {
+      const std::shared_ptr<folly::AsyncTransport>& transport) {
     return std::shared_ptr<TStreamAsyncChannel>(
         new TStreamAsyncChannel(transport), Destructor());
   }
@@ -367,9 +367,9 @@ class TStreamAsyncChannel
   }
 
   /**
-   * Get the AsyncTransportWrapper used by this channel.
+   * Get the AsyncTransport used by this channel.
    */
-  std::shared_ptr<folly::AsyncTransportWrapper> getTransport() override {
+  std::shared_ptr<folly::AsyncTransport> getTransport() override {
     return transport_;
   }
 
@@ -406,7 +406,7 @@ class TStreamAsyncChannel
    */
   ~TStreamAsyncChannel() override {}
 
-  // callbacks from AsyncTransportWrapper
+  // callbacks from AsyncTransport
   void getReadBuffer(void** bufReturn, size_t* lenReturn) override;
   void readDataAvailable(size_t len) noexcept override;
   void readEOF() noexcept override;
@@ -453,7 +453,7 @@ class TStreamAsyncChannel
 
   void failAllReads();
 
-  std::shared_ptr<folly::AsyncTransportWrapper> transport_;
+  std::shared_ptr<folly::AsyncTransport> transport_;
   WriteRequest_* writeReqHead_;
   WriteRequest_* writeReqTail_;
 
@@ -478,7 +478,7 @@ class TStreamAsyncChannelFactory {
   virtual ~TStreamAsyncChannelFactory() {}
 
   virtual std::shared_ptr<TAsyncEventChannel> newChannel(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport) = 0;
+      const std::shared_ptr<folly::AsyncTransport>& transport) = 0;
 };
 
 } // namespace async

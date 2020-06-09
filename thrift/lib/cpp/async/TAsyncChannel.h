@@ -146,7 +146,7 @@ class TAsyncChannel {
 
   // TODO(dreiss): Make this nonvirtual when TFramedSocketAsyncChannel gets
   // renamed to TFramedAsyncChannel.
-  virtual std::shared_ptr<folly::AsyncTransportWrapper> getTransport() = 0;
+  virtual std::shared_ptr<folly::AsyncTransport> getTransport() = 0;
 };
 
 } // namespace async

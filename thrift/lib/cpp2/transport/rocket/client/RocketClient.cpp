@@ -70,7 +70,7 @@ transport::TTransportException toTransportException(
 
 RocketClient::RocketClient(
     folly::EventBase& evb,
-    folly::AsyncTransportWrapper::UniquePtr socket,
+    folly::AsyncTransport::UniquePtr socket,
     std::unique_ptr<SetupFrame> setupFrame)
     : evb_(&evb),
       socket_(std::move(socket)),
@@ -99,7 +99,7 @@ RocketClient::~RocketClient() {
 
 RocketClient::Ptr RocketClient::create(
     folly::EventBase& evb,
-    folly::AsyncTransportWrapper::UniquePtr socket,
+    folly::AsyncTransport::UniquePtr socket,
     std::unique_ptr<SetupFrame> setupFrame) {
   return Ptr(new RocketClient(evb, std::move(socket), std::move(setupFrame)));
 }

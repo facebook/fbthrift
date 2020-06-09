@@ -37,7 +37,7 @@ using namespace std;
 using apache::thrift::TApplicationException;
 
 Cpp2Connection::Cpp2Connection(
-    const std::shared_ptr<folly::AsyncTransportWrapper>& transport,
+    const std::shared_ptr<folly::AsyncTransport>& transport,
     const folly::SocketAddress* address,
     std::shared_ptr<Cpp2Worker> worker,
     const std::shared_ptr<HeaderServerChannel>& serverChannel)

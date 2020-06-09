@@ -34,8 +34,8 @@ TUnframedACWriteRequest::TUnframedACWriteRequest(
     : TAsyncChannelWriteRequestBase(callback, errorCallback, message) {}
 
 void TUnframedACWriteRequest::write(
-    folly::AsyncTransportWrapper* transport,
-    folly::AsyncTransportWrapper::WriteCallback* callback) noexcept {
+    folly::AsyncTransport* transport,
+    folly::AsyncTransport::WriteCallback* callback) noexcept {
   uint32_t len = buffer_.available_read();
 
   const int kNOps = 1;

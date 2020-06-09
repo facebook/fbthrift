@@ -236,7 +236,7 @@ struct ChunkInfo {
  */
 using ChunkSchedule = vector<ChunkInfo>;
 
-class ChunkSender : private AsyncTransportWrapper::WriteCallback,
+class ChunkSender : private AsyncTransport::WriteCallback,
                     private AsyncTimeout {
  public:
   ChunkSender(
@@ -365,7 +365,7 @@ class MultiMessageSize : public vector<int> {
   }
 };
 
-class MultiMessageSenderReceiver : private AsyncTransportWrapper::WriteCallback,
+class MultiMessageSenderReceiver : private AsyncTransport::WriteCallback,
                                    private AsyncTimeout {
  public:
   MultiMessageSenderReceiver(

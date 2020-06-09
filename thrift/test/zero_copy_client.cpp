@@ -47,7 +47,7 @@ class Client {
   Client(const std::string& server, int port) {
     folly::SocketAddress addr(server, port, true);
     std::shared_ptr<fizz::client::FizzClientContext> fizzCtx;
-    folly::AsyncTransportWrapper::UniquePtr socket;
+    folly::AsyncTransport::UniquePtr socket;
     if (FLAGS_use_crypto) {
       auto* fizzClient = new fizz::client::AsyncFizzClient(
           &evb_, std::make_shared<fizz::client::FizzClientContext>());

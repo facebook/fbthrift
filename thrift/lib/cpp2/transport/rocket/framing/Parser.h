@@ -29,7 +29,7 @@ namespace thrift {
 namespace rocket {
 
 template <class T>
-class Parser final : public folly::AsyncTransportWrapper::ReadCallback {
+class Parser final : public folly::AsyncTransport::ReadCallback {
  public:
   explicit Parser(
       T& owner,
@@ -37,7 +37,7 @@ class Parser final : public folly::AsyncTransportWrapper::ReadCallback {
           kDefaultBufferResizeInterval)
       : owner_(owner), resizeBufferTimeout_(resizeBufferTimeout) {}
 
-  // AsyncTransportWrapper::ReadCallback implementation
+  // AsyncTransport::ReadCallback implementation
   FOLLY_NOINLINE void getReadBuffer(void** bufout, size_t* lenout) override;
   FOLLY_NOINLINE void readDataAvailable(size_t nbytes) noexcept override;
   FOLLY_NOINLINE void readEOF() noexcept override;

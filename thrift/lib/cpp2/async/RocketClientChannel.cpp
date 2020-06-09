@@ -586,7 +586,7 @@ rocket::SetupFrame RocketClientChannel::makeSetupFrame(
 }
 
 RocketClientChannel::RocketClientChannel(
-    folly::AsyncTransportWrapper::UniquePtr socket,
+    folly::AsyncTransport::UniquePtr socket,
     RequestSetupMetadata meta)
     : evb_(socket->getEventBase()),
       rclient_(rocket::RocketClient::create(
@@ -628,7 +628,7 @@ void RocketClientChannel::setAutoCompressSizeLimit(int32_t size) {
 }
 
 RocketClientChannel::Ptr RocketClientChannel::newChannel(
-    folly::AsyncTransportWrapper::UniquePtr socket,
+    folly::AsyncTransport::UniquePtr socket,
     RequestSetupMetadata meta) {
   return RocketClientChannel::Ptr(
       new RocketClientChannel(std::move(socket), std::move(meta)));
@@ -895,7 +895,7 @@ void RocketClientChannel::setCloseCallback(CloseCallback* closeCallback) {
   }
 }
 
-folly::AsyncTransportWrapper* FOLLY_NULLABLE
+folly::AsyncTransport* FOLLY_NULLABLE
 RocketClientChannel::getTransport() {
   if (!rclient_) {
     return nullptr;
@@ -903,7 +903,7 @@ RocketClientChannel::getTransport() {
 
   auto* transportWrapper = rclient_->getTransportWrapper();
   return transportWrapper
-      ? transportWrapper->getUnderlyingTransport<folly::AsyncTransportWrapper>()
+      ? transportWrapper->getUnderlyingTransport<folly::AsyncTransport>()
       : nullptr;
 }
 

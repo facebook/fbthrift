@@ -33,7 +33,7 @@ namespace thrift {
 
 DuplexChannel::DuplexChannel(
     Who::WhoEnum who,
-    const shared_ptr<folly::AsyncTransportWrapper>& transport)
+    const shared_ptr<folly::AsyncTransport>& transport)
     : cpp2Channel_(
           new DuplexCpp2Channel(
               who,

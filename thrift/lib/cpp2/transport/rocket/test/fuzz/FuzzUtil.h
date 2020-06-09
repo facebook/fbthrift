@@ -34,7 +34,7 @@ namespace thrift {
 namespace rocket {
 namespace test {
 
-class FakeTransport final : public folly::AsyncTransportWrapper {
+class FakeTransport final : public folly::AsyncTransport {
  public:
   explicit FakeTransport(folly::EventBase* e) : eventBase_(e) {}
   void setReadCB(ReadCallback*) override {}
@@ -135,7 +135,7 @@ class FakeProcessorFactory final
 
 void testServerOneInput(const uint8_t* Data, size_t Size) {
   folly::EventBase evb;
-  auto sock = folly::AsyncTransportWrapper::UniquePtr(
+  auto sock = folly::AsyncTransport::UniquePtr(
       new apache::thrift::rocket::test::FakeTransport(&evb));
   auto* const sockPtr = sock.get();
   apache::thrift::ThriftServer server;
@@ -171,7 +171,7 @@ void testServerOneInput(const uint8_t* Data, size_t Size) {
 void testClientOneInput(const uint8_t* Data, size_t Size) {
   folly::EventBase evb;
   folly::SocketPair sp;
-  auto sock = folly::AsyncTransportWrapper::UniquePtr(
+  auto sock = folly::AsyncTransport::UniquePtr(
       new folly::AsyncSocket(&evb, sp.extractNetworkSocket0()));
   auto channel =
       apache::thrift::RocketClientChannel::newChannel(std::move(sock));

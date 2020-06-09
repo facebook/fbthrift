@@ -71,7 +71,7 @@ class TZlibAsyncChannel : public TAsyncEventChannel {
       transport::TMemoryBuffer* sendBuf,
       transport::TMemoryBuffer* recvBuf) override;
 
-  std::shared_ptr<folly::AsyncTransportWrapper> getTransport() override {
+  std::shared_ptr<folly::AsyncTransport> getTransport() override {
     return channel_->getTransport();
   }
 

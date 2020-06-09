@@ -214,7 +214,7 @@ void ThriftClient::setCloseCallback(CloseCallback* cb) {
   connection_->setCloseCallback(this, cb);
 }
 
-folly::AsyncTransportWrapper* ThriftClient::getTransport() {
+folly::AsyncTransport* ThriftClient::getTransport() {
   return connection_->getTransport();
 }
 

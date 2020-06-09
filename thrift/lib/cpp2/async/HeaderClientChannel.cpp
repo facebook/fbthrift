@@ -40,7 +40,7 @@ namespace thrift {
 template class ChannelCallbacks::TwowayCallback<HeaderClientChannel>;
 
 HeaderClientChannel::HeaderClientChannel(
-    const std::shared_ptr<folly::AsyncTransportWrapper>& transport)
+    const std::shared_ptr<folly::AsyncTransport>& transport)
     : HeaderClientChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
           transport,
           make_unique<ClientFramingHandler>(*this)))) {}

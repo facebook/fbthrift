@@ -58,7 +58,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
    *        should be nullptr in normal mode
    */
   Cpp2Connection(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport,
+      const std::shared_ptr<folly::AsyncTransport>& transport,
       const folly::SocketAddress* address,
       std::shared_ptr<Cpp2Worker> worker,
       const std::shared_ptr<HeaderServerChannel>& serverChannel = nullptr);
@@ -121,7 +121,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
   }
   Cpp2ConnContext context_;
 
-  std::shared_ptr<folly::AsyncTransportWrapper> transport_;
+  std::shared_ptr<folly::AsyncTransport> transport_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
   folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;
 

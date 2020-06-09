@@ -48,7 +48,7 @@ class AdmissionStrategy;
 
 typedef std::function<void(
     folly::EventBase*,
-    std::shared_ptr<folly::AsyncTransportWrapper>,
+    std::shared_ptr<folly::AsyncTransport>,
     std::unique_ptr<folly::IOBuf>)>
     getHandlerFunc;
 

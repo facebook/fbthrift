@@ -328,7 +328,7 @@ void TransportCompatibilityTest::TestConnectionContext() {
 void TransportCompatibilityTest::TestClientIdentityHook() {
   bool flag{false};
   auto hook = [&flag](
-                  const folly::AsyncTransportWrapper* /* unused */,
+                  const folly::AsyncTransport* /* unused */,
                   const X509* /* unused */,
                   const folly::SocketAddress& /* unused */) {
     flag = true;

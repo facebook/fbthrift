@@ -35,7 +35,7 @@ namespace apache {
 namespace thrift {
 
 using ClientIdentityHook = std::function<std::unique_ptr<void, void (*)(void*)>(
-    const folly::AsyncTransportWrapper* transport,
+    const folly::AsyncTransport* transport,
     X509* cert,
     const folly::SocketAddress& peerAddress)>;
 
@@ -46,7 +46,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
  public:
   explicit Cpp2ConnContext(
       const folly::SocketAddress* address = nullptr,
-      const folly::AsyncTransportWrapper* transport = nullptr,
+      const folly::AsyncTransport* transport = nullptr,
       folly::EventBaseManager* manager = nullptr,
       const std::shared_ptr<RequestChannel>& duplexChannel = nullptr,
       const std::shared_ptr<X509> peerCert = nullptr /*overridden from socket*/,
@@ -140,7 +140,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return peerIdentities_.get();
   }
 
-  const folly::AsyncTransportWrapper* getTransport() const {
+  const folly::AsyncTransport* getTransport() const {
     return transport_;
   }
 
@@ -303,7 +303,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   std::shared_ptr<X509> peerCert_;
   std::unique_ptr<void, void (*)(void*)> peerIdentities_;
   std::string securityProtocol_;
-  const folly::AsyncTransportWrapper* transport_;
+  const folly::AsyncTransport* transport_;
   PeerCred peerCred_;
   // A CancellationSource that will be signaled when the connection is closed.
   folly::CancellationSource cancellationSource_;

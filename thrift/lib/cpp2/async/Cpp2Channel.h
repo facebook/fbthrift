@@ -48,7 +48,7 @@ class Cpp2Channel
           std::pair<std::unique_ptr<folly::IOBuf>, THeader*>> {
  public:
   explicit Cpp2Channel(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport,
+      const std::shared_ptr<folly::AsyncTransport>& transport,
       std::unique_ptr<FramingHandler> framingHandler);
 
   // TODO(jsedgwick) This should be protected, but wangle::StaticPipeline
@@ -58,7 +58,7 @@ class Cpp2Channel
 
   static std::unique_ptr<Cpp2Channel, folly::DelayedDestruction::Destructor>
   newChannel(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport,
+      const std::shared_ptr<folly::AsyncTransport>& transport,
       std::unique_ptr<FramingHandler> framingHandler) {
     return std::unique_ptr<Cpp2Channel, folly::DelayedDestruction::Destructor>(
         new Cpp2Channel(transport, std::move(framingHandler)));
@@ -66,11 +66,11 @@ class Cpp2Channel
   void closeNow();
 
   void setTransport(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport) {
+      const std::shared_ptr<folly::AsyncTransport>& transport) {
     transport_ = transport;
     transportHandler_->setTransport(transport);
   }
-  folly::AsyncTransportWrapper* getTransport() {
+  folly::AsyncTransport* getTransport() {
     return transport_.get();
   }
 
@@ -134,7 +134,7 @@ class Cpp2Channel
   }
 
  private:
-  std::shared_ptr<folly::AsyncTransportWrapper> transport_;
+  std::shared_ptr<folly::AsyncTransport> transport_;
   std::deque<SendCallback*> sendCallbacks_;
 
   RecvCallback* recvCallback_;

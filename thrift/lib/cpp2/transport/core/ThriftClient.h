@@ -119,7 +119,7 @@ class ThriftClient : public ClientChannel {
   //
   // TODO: Refactor this to be cleaner.
 
-  folly::AsyncTransportWrapper* getTransport() override;
+  folly::AsyncTransport* getTransport() override;
   bool good() override;
   SaturationStatus getSaturationStatus() override;
   void attachEventBase(folly::EventBase* eventBase) override;

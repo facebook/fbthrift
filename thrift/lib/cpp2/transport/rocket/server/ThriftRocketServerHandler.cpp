@@ -62,7 +62,7 @@ bool isMetadataValid(const RequestRpcMetadata& metadata) {
 ThriftRocketServerHandler::ThriftRocketServerHandler(
     std::shared_ptr<Cpp2Worker> worker,
     const folly::SocketAddress& clientAddress,
-    const folly::AsyncTransportWrapper* transport,
+    const folly::AsyncTransport* transport,
     const std::vector<std::unique_ptr<SetupFrameHandler>>& handlers)
     : worker_(std::move(worker)),
       connectionGuard_(worker_->getActiveRequestsGuard()),

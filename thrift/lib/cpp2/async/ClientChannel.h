@@ -48,7 +48,7 @@ class ClientChannel : public RequestChannel, public HeaderChannel {
   typedef std::unique_ptr<ClientChannel, folly::DelayedDestruction::Destructor>
       Ptr;
 
-  virtual folly::AsyncTransportWrapper* getTransport() = 0;
+  virtual folly::AsyncTransport* getTransport() = 0;
 
   virtual bool good() = 0;
 

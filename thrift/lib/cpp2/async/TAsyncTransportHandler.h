@@ -31,10 +31,10 @@ namespace thrift {
 // This Handler may only be used in a single Pipeline
 class TAsyncTransportHandler
     : public wangle::BytesToBytesHandler,
-      public folly::AsyncTransportWrapper::ReadCallback {
+      public folly::AsyncTransport::ReadCallback {
  public:
   explicit TAsyncTransportHandler(
-      std::shared_ptr<folly::AsyncTransportWrapper> transport)
+      std::shared_ptr<folly::AsyncTransport> transport)
       : transport_(std::move(transport)) {}
 
   TAsyncTransportHandler(TAsyncTransportHandler&&) = default;
@@ -46,7 +46,7 @@ class TAsyncTransportHandler
   }
 
   void setTransport(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport) {
+      const std::shared_ptr<folly::AsyncTransport>& transport) {
     transport_ = transport;
   }
 
@@ -106,7 +106,7 @@ class TAsyncTransportHandler
   }
 
   // Must override to avoid warnings about hidden overloaded virtual due to
-  // AsyncTransportWrapper::ReadCallback::readEOF()
+  // AsyncTransport::ReadCallback::readEOF()
   void readEOF(Context* ctx) override {
     ctx->fireReadEOF();
   }
@@ -157,7 +157,7 @@ class TAsyncTransportHandler
     return folly::makeFuture();
   }
 
-  class WriteCallback : private folly::AsyncTransportWrapper::WriteCallback {
+  class WriteCallback : private folly::AsyncTransport::WriteCallback {
     void writeSuccess() noexcept override {
       promise_.setValue();
       delete this;
@@ -176,7 +176,7 @@ class TAsyncTransportHandler
   };
 
   folly::IOBufQueue bufQueue_{folly::IOBufQueue::cacheChainLength()};
-  std::shared_ptr<folly::AsyncTransportWrapper> transport_;
+  std::shared_ptr<folly::AsyncTransport> transport_;
 };
 
 } // namespace thrift

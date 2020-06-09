@@ -26,7 +26,7 @@ namespace async {
 
 template <typename WriteRequest_, typename ReadState_>
 TStreamAsyncChannel<WriteRequest_, ReadState_>::TStreamAsyncChannel(
-    const std::shared_ptr<folly::AsyncTransportWrapper>& transport)
+    const std::shared_ptr<folly::AsyncTransport>& transport)
     : folly::AsyncTimeout(transport->getEventBase()),
       transport_(transport),
       writeReqHead_(nullptr),
@@ -405,10 +405,10 @@ bool TStreamAsyncChannel<WriteRequest_, ReadState_>::invokeReadDataAvailable(
   invokeReadCallback(readCallback_, "read callback");
 
   // Note that we cleared readCallback_ and readErrorCallback_ before invoking
-  // the callback, but left ourself installed as the AsyncTransportWrapper read
+  // the callback, but left ourself installed as the AsyncTransport read
   // callback.
   //
-  // This allows us to avoid changing the AsyncTransportWrapper read callback if
+  // This allows us to avoid changing the AsyncTransport read callback if
   // the channel read callback immediately called recvMessage() again.  This is
   // fairly common, and we avoid 2 unnecessary epoll_ctl() calls by not
   // changing the transport read callback.  This results in a noticeable

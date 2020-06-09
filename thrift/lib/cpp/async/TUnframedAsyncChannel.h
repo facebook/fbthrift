@@ -41,8 +41,8 @@ class TUnframedACWriteRequest
       TAsyncEventChannel* channel);
 
   void write(
-      folly::AsyncTransportWrapper* transport,
-      folly::AsyncTransportWrapper::WriteCallback* callback) noexcept;
+      folly::AsyncTransport* transport,
+      folly::AsyncTransport::WriteCallback* callback) noexcept;
 
   void writeSuccess() noexcept;
   void writeError(
@@ -135,7 +135,7 @@ class TUnframedAsyncChannel
 
  public:
   explicit TUnframedAsyncChannel(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport)
+      const std::shared_ptr<folly::AsyncTransport>& transport)
       : Parent(transport) {}
 
   /**
@@ -145,7 +145,7 @@ class TUnframedAsyncChannel
    * destructor is protected and cannot be invoked directly.
    */
   static std::shared_ptr<Self> newChannel(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport) {
+      const std::shared_ptr<folly::AsyncTransport>& transport) {
     return std::shared_ptr<Self>(
         new Self(transport), typename Self::Destructor());
   }

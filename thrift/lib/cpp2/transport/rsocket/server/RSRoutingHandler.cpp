@@ -80,7 +80,7 @@ bool RSRoutingHandler::canAcceptEncryptedConnection(
 
 void RSRoutingHandler::handleConnection(
     wangle::ConnectionManager* connectionManager,
-    folly::AsyncTransportWrapper::UniquePtr sock,
+    folly::AsyncTransport::UniquePtr sock,
     folly::SocketAddress const* address,
     wangle::TransportInfo const&,
     std::shared_ptr<Cpp2Worker> worker) {

@@ -41,7 +41,7 @@ class InMemoryConnection : public ClientConnectionIf {
   void setCloseCallback(ThriftClient* client, CloseCallback* cb) override;
   folly::EventBase* getEventBase() const override;
 
-  folly::AsyncTransportWrapper* getTransport() override;
+  folly::AsyncTransport* getTransport() override;
   bool good() override;
   ClientChannel::SaturationStatus getSaturationStatus() override;
   void attachEventBase(folly::EventBase* evb) override;

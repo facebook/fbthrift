@@ -47,8 +47,8 @@ class THttpACWriteRequest
       TAsyncEventChannel* channel);
 
   void write(
-      folly::AsyncTransportWrapper* transport,
-      folly::AsyncTransportWrapper::WriteCallback* callback) noexcept;
+      folly::AsyncTransport* transport,
+      folly::AsyncTransport::WriteCallback* callback) noexcept;
 
   void writeSuccess() noexcept;
   void writeError(
@@ -120,7 +120,7 @@ class THttpAsyncChannel : public TStreamAsyncChannel<
 
  public:
   explicit THttpAsyncChannel(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport)
+      const std::shared_ptr<folly::AsyncTransport>& transport)
       : Parent(transport) {}
 
   /**
@@ -130,7 +130,7 @@ class THttpAsyncChannel : public TStreamAsyncChannel<
    * destructor is protected and cannot be invoked directly.
    */
   static std::shared_ptr<THttpAsyncChannel> newChannel(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport) {
+      const std::shared_ptr<folly::AsyncTransport>& transport) {
     return std::shared_ptr<THttpAsyncChannel>(
         new THttpAsyncChannel(transport), Destructor());
   }
@@ -185,7 +185,7 @@ class THttpAsyncChannelFactory : public TStreamAsyncChannelFactory {
   }
 
   std::shared_ptr<TAsyncEventChannel> newChannel(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport) override {
+      const std::shared_ptr<folly::AsyncTransport>& transport) override {
     std::shared_ptr<THttpAsyncChannel> channel(
         THttpAsyncChannel::newChannel(transport));
     transport->setSendTimeout(sendTimeout_);

@@ -25,7 +25,7 @@ struct TestClientChannelFactory {
   virtual ~TestClientChannelFactory() {}
 
   virtual apache::thrift::ClientChannel::Ptr create(
-      folly::AsyncTransportWrapper::UniquePtr socket) = 0;
+      folly::AsyncTransport::UniquePtr socket) = 0;
 
   TestClientChannelFactory& setProtocolId(
       apache::thrift::protocol::PROTOCOL_TYPES protocol) {

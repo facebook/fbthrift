@@ -1160,7 +1160,7 @@ TEST(ThriftServer, useExistingSocketAndConnectionIdleTimeout) {
 }
 
 namespace {
-class ReadCallbackTest : public folly::AsyncTransportWrapper::ReadCallback {
+class ReadCallbackTest : public folly::AsyncTransport::ReadCallback {
  public:
   void getReadBuffer(void**, size_t*) override {}
   void readDataAvailable(size_t) noexcept override {}
@@ -1346,7 +1346,7 @@ TEST(ThriftServer, ClientIdentityHook) {
 
   std::atomic<bool> flag{false};
   auto hook = [&flag](
-                  const folly::AsyncTransportWrapper* /* unused */,
+                  const folly::AsyncTransport* /* unused */,
                   const X509* /* unused */,
                   const folly::SocketAddress& /* unused */) {
     flag = true;
@@ -1402,7 +1402,7 @@ void doBadRequestHeaderTest(bool duplex, bool secure) {
   socket->connect(nullptr /* connect callback */, *sst.getAddress());
 
   class RecordWriteSuccessCallback
-      : public folly::AsyncTransportWrapper::WriteCallback {
+      : public folly::AsyncTransport::WriteCallback {
    public:
     void writeSuccess() noexcept override {
       EXPECT_FALSE(success_);
@@ -1426,7 +1426,7 @@ void doBadRequestHeaderTest(bool duplex, bool secure) {
   RecordWriteSuccessCallback recordSuccessWriteCallback;
 
   class CheckClosedReadCallback
-      : public folly::AsyncTransportWrapper::ReadCallback {
+      : public folly::AsyncTransport::ReadCallback {
    public:
     explicit CheckClosedReadCallback(folly::AsyncSocket& socket)
         : socket_(socket) {

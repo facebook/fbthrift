@@ -927,7 +927,7 @@ TEST_F(RocketNetworkTest, SinkCloseClient) {
 }
 
 TEST_F(RocketNetworkTest, CloseNowWithPendingWriteCallback) {
-  class FakeTransport final : public folly::AsyncTransportWrapper {
+  class FakeTransport final : public folly::AsyncTransport {
    public:
     explicit FakeTransport(folly::EventBase* e) : eventBase_(e) {}
     void setReadCB(ReadCallback*) override {}
@@ -1011,7 +1011,7 @@ TEST_F(RocketNetworkTest, CloseNowWithPendingWriteCallback) {
 
   auto evb = std::make_unique<folly::EventBase>();
   auto sock =
-      folly::AsyncTransportWrapper::UniquePtr(new FakeTransport(evb.get()));
+      folly::AsyncTransport::UniquePtr(new FakeTransport(evb.get()));
   auto client = RocketClient::create(
       *evb,
       std::move(sock),

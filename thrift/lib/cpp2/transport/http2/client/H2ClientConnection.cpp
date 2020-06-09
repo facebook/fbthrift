@@ -46,7 +46,7 @@ using proxygen::WheelTimerInstance;
 using std::string;
 
 std::unique_ptr<ClientConnectionIf> H2ClientConnection::newHTTP2Connection(
-    folly::AsyncTransportWrapper::UniquePtr transport,
+    folly::AsyncTransport::UniquePtr transport,
     FlowControlSettings flowControlSettings) {
   std::unique_ptr<H2ClientConnection> connection(new H2ClientConnection(
       std::move(transport),
@@ -57,7 +57,7 @@ std::unique_ptr<ClientConnectionIf> H2ClientConnection::newHTTP2Connection(
 }
 
 H2ClientConnection::H2ClientConnection(
-    folly::AsyncTransportWrapper::UniquePtr transport,
+    folly::AsyncTransport::UniquePtr transport,
     std::unique_ptr<proxygen::HTTPCodec> codec,
     FlowControlSettings flowControlSettings)
     : evb_(transport->getEventBase()) {
@@ -133,7 +133,7 @@ HTTPTransaction* H2ClientConnection::newTransaction(H2Channel* channel) {
   return txn.value();
 }
 
-folly::AsyncTransportWrapper* H2ClientConnection::getTransport() {
+folly::AsyncTransport* H2ClientConnection::getTransport() {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
   if (httpSession_) {
     return httpSession_->getTransport();

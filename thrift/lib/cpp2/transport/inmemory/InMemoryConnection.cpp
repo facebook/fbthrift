@@ -56,7 +56,7 @@ folly::EventBase* InMemoryConnection::getEventBase() const {
   return runner_.getEventBase();
 }
 
-folly::AsyncTransportWrapper* InMemoryConnection::getTransport() {
+folly::AsyncTransport* InMemoryConnection::getTransport() {
   LOG(FATAL) << "Method should not be called";
 }
 

@@ -119,13 +119,13 @@ class Cpp2Worker : public wangle::Acceptor,
    * SSL stats hook
    */
   void updateSSLStats(
-      const folly::AsyncTransportWrapper* sock,
+      const folly::AsyncTransport* sock,
       std::chrono::milliseconds acceptLatency,
       wangle::SSLErrorEnum error,
       const folly::exception_wrapper& ex) noexcept override;
 
   void handleHeader(
-      folly::AsyncTransportWrapper::UniquePtr sock,
+      folly::AsyncTransport::UniquePtr sock,
       const folly::SocketAddress* addr);
 
   RequestsRegistry* getRequestsRegistry() const {
@@ -184,19 +184,19 @@ class Cpp2Worker : public wangle::Acceptor,
   }
 
   void onNewConnection(
-      folly::AsyncTransportWrapper::UniquePtr,
+      folly::AsyncTransport::UniquePtr,
       const folly::SocketAddress*,
       const std::string&,
       wangle::SecureTransportType,
       const wangle::TransportInfo&) override;
 
-  virtual std::shared_ptr<folly::AsyncTransportWrapper> createThriftTransport(
-      folly::AsyncTransportWrapper::UniquePtr);
+  virtual std::shared_ptr<folly::AsyncTransport> createThriftTransport(
+      folly::AsyncTransport::UniquePtr);
 
   void markSocketAccepted(folly::AsyncSocket* sock);
 
   void plaintextConnectionReady(
-      folly::AsyncTransportWrapper::UniquePtr sock,
+      folly::AsyncTransport::UniquePtr sock,
       const folly::SocketAddress& clientAddr,
       const std::string& nextProtocolName,
       wangle::SecureTransportType secureTransportType,

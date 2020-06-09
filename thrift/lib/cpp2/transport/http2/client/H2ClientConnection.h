@@ -72,7 +72,7 @@ class H2ClientConnection : public ClientConnectionIf,
   };
 
   static std::unique_ptr<ClientConnectionIf> newHTTP2Connection(
-      folly::AsyncTransportWrapper::UniquePtr transport,
+      folly::AsyncTransport::UniquePtr transport,
       FlowControlSettings flowControlSettings = FlowControlSettings());
 
   virtual ~H2ClientConnection() override;
@@ -92,7 +92,7 @@ class H2ClientConnection : public ClientConnectionIf,
   bool isStable();
   void setIsStable();
 
-  folly::AsyncTransportWrapper* getTransport() override;
+  folly::AsyncTransport* getTransport() override;
   bool good() override;
   ClientChannel::SaturationStatus getSaturationStatus() override;
   void attachEventBase(folly::EventBase* evb) override;
@@ -108,7 +108,7 @@ class H2ClientConnection : public ClientConnectionIf,
 
  private:
   H2ClientConnection(
-      folly::AsyncTransportWrapper::UniquePtr transport,
+      folly::AsyncTransport::UniquePtr transport,
       std::unique_ptr<proxygen::HTTPCodec> codec,
       FlowControlSettings flowControlSettings);
 

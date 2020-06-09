@@ -65,7 +65,7 @@ class PeekingManager : public wangle::ManagedConnection,
   ~PeekingManager() override = default;
 
   void start(
-      folly::AsyncTransportWrapper::UniquePtr socket,
+      folly::AsyncTransport::UniquePtr socket,
       std::shared_ptr<apache::thrift::server::TServerObserver> obs) noexcept {
     socket_ = std::move(socket);
     observer_ = std::move(obs);
@@ -191,7 +191,7 @@ class PeekingManager : public wangle::ManagedConnection,
   void dumpConnectionState(uint8_t /* loglevel */) override {}
 
  private:
-  folly::AsyncTransportWrapper::UniquePtr socket_;
+  folly::AsyncTransport::UniquePtr socket_;
   std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
   typename wangle::SocketPeeker::UniquePtr peeker_;
 

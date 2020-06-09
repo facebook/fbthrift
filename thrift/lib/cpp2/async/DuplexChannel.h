@@ -49,7 +49,7 @@ class DuplexChannel {
 
   explicit DuplexChannel(
       Who::WhoEnum mainChannel,
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport);
+      const std::shared_ptr<folly::AsyncTransport>& transport);
 
   ~DuplexChannel() {
     clientChannel_->duplex_ = nullptr;
@@ -127,7 +127,7 @@ class DuplexChannel {
    public:
     DuplexCpp2Channel(
         Who::WhoEnum duplex_main_channel,
-        const std::shared_ptr<folly::AsyncTransportWrapper>& transport,
+        const std::shared_ptr<folly::AsyncTransport>& transport,
         std::unique_ptr<FramingHandler> framingHandler)
         : Cpp2Channel(transport, std::move(framingHandler)),
           duplexMainChannel_(duplex_main_channel),

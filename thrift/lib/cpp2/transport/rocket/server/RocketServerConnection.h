@@ -52,13 +52,13 @@ namespace rocket {
 
 class RocketServerConnection final
     : public wangle::ManagedConnection,
-      private folly::AsyncTransportWrapper::WriteCallback {
+      private folly::AsyncTransport::WriteCallback {
  public:
   using UniquePtr = std::
       unique_ptr<RocketServerConnection, folly::DelayedDestruction::Destructor>;
 
   RocketServerConnection(
-      folly::AsyncTransportWrapper::UniquePtr socket,
+      folly::AsyncTransport::UniquePtr socket,
       std::unique_ptr<RocketServerHandler> frameHandler,
       std::chrono::milliseconds streamStarvationTimeout,
       std::chrono::milliseconds writeBatchingInterval =
@@ -82,7 +82,7 @@ class RocketServerConnection final
   void handleFrame(std::unique_ptr<folly::IOBuf> frame);
   void close(folly::exception_wrapper ew);
 
-  // AsyncTransportWrapper::WriteCallback implementation
+  // AsyncTransport::WriteCallback implementation
   void writeSuccess() noexcept final;
   void writeErr(
       size_t bytesWritten,
@@ -150,7 +150,7 @@ class RocketServerConnection final
   // Note that attachEventBase()/detachEventBase() are not supported in server
   // code
   folly::EventBase& evb_;
-  folly::AsyncTransportWrapper::UniquePtr socket_;
+  folly::AsyncTransport::UniquePtr socket_;
 
   Parser<RocketServerConnection> parser_{*this};
   std::unique_ptr<RocketServerHandler> frameHandler_;

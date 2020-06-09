@@ -80,7 +80,7 @@ class TBinaryAsyncChannel
 
  public:
   explicit TBinaryAsyncChannel(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport)
+      const std::shared_ptr<folly::AsyncTransport>& transport)
       : Parent(transport) {}
 
   /**
@@ -90,7 +90,7 @@ class TBinaryAsyncChannel
    * destructor is protected and cannot be invoked directly.
    */
   static std::shared_ptr<TBinaryAsyncChannel> newChannel(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport) {
+      const std::shared_ptr<folly::AsyncTransport>& transport) {
     return std::shared_ptr<TBinaryAsyncChannel>(
         new TBinaryAsyncChannel(transport), Destructor());
   }
@@ -140,7 +140,7 @@ class TBinaryAsyncChannelFactory : public TStreamAsyncChannelFactory {
   }
 
   std::shared_ptr<TAsyncEventChannel> newChannel(
-      const std::shared_ptr<folly::AsyncTransportWrapper>& transport) override {
+      const std::shared_ptr<folly::AsyncTransport>& transport) override {
     std::shared_ptr<TBinaryAsyncChannel> channel(
         TBinaryAsyncChannel::newChannel(transport));
     transport->setSendTimeout(sendTimeout_);

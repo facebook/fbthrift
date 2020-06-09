@@ -49,7 +49,7 @@ const std::chrono::milliseconds HTTPClientChannel::kDefaultTransactionTimeout =
     std::chrono::milliseconds(500);
 
 HTTPClientChannel::Ptr HTTPClientChannel::newHTTP1xChannel(
-    folly::AsyncTransportWrapper::UniquePtr transport,
+    folly::AsyncTransport::UniquePtr transport,
     const std::string& httpHost,
     const std::string& httpUrl) {
   HTTPClientChannel::Ptr channel(new HTTPClientChannel(
@@ -62,7 +62,7 @@ HTTPClientChannel::Ptr HTTPClientChannel::newHTTP1xChannel(
 }
 
 HTTPClientChannel::Ptr HTTPClientChannel::newHTTP2Channel(
-    folly::AsyncTransportWrapper::UniquePtr transport) {
+    folly::AsyncTransport::UniquePtr transport) {
   return HTTPClientChannel::Ptr(new HTTPClientChannel(
       std::move(transport),
       std::make_unique<proxygen::HTTP2Codec>(
@@ -70,7 +70,7 @@ HTTPClientChannel::Ptr HTTPClientChannel::newHTTP2Channel(
 }
 
 HTTPClientChannel::HTTPClientChannel(
-    folly::AsyncTransportWrapper::UniquePtr transport,
+    folly::AsyncTransport::UniquePtr transport,
     std::unique_ptr<proxygen::HTTPCodec> codec)
     : evb_(transport->getEventBase()) {
   auto localAddress = transport->getLocalAddress();

@@ -58,7 +58,7 @@ class RocketClientChannel final : public ClientChannel {
       unique_ptr<RocketClientChannel, folly::DelayedDestruction::Destructor>;
 
   static Ptr newChannel(
-      folly::AsyncTransportWrapper::UniquePtr socket,
+      folly::AsyncTransport::UniquePtr socket,
       RequestSetupMetadata meta = RequestSetupMetadata());
 
   using RequestChannel::sendRequestNoResponse;
@@ -106,7 +106,7 @@ class RocketClientChannel final : public ClientChannel {
     protocolId_ = protocolId;
   }
 
-  folly::AsyncTransportWrapper* FOLLY_NULLABLE getTransport() override;
+  folly::AsyncTransport* FOLLY_NULLABLE getTransport() override;
   bool good() override;
 
   size_t inflightRequestsAndStreams() const;
@@ -162,7 +162,7 @@ class RocketClientChannel final : public ClientChannel {
   const std::shared_ptr<Shared> shared_{std::make_shared<Shared>()};
 
   RocketClientChannel(
-      folly::AsyncTransportWrapper::UniquePtr socket,
+      folly::AsyncTransport::UniquePtr socket,
       RequestSetupMetadata meta);
 
   RocketClientChannel(const RocketClientChannel&) = delete;

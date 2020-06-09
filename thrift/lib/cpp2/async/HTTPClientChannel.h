@@ -50,12 +50,12 @@ class HTTPClientChannel : public ClientChannel,
       std::unique_ptr<HTTPClientChannel, folly::DelayedDestruction::Destructor>;
 
   static HTTPClientChannel::Ptr newHTTP1xChannel(
-      folly::AsyncTransportWrapper::UniquePtr transport,
+      folly::AsyncTransport::UniquePtr transport,
       const std::string& httpHost,
       const std::string& httpUrl);
 
   static HTTPClientChannel::Ptr newHTTP2Channel(
-      folly::AsyncTransportWrapper::UniquePtr transport);
+      folly::AsyncTransport::UniquePtr transport);
 
   void setHTTPHost(const std::string& host) {
     httpHost_ = host;
@@ -134,9 +134,9 @@ class HTTPClientChannel : public ClientChannel,
     return protocolId_;
   }
 
-  folly::AsyncTransportWrapper* getTransport() override {
+  folly::AsyncTransport* getTransport() override {
     if (httpSession_) {
-      return dynamic_cast<folly::AsyncTransportWrapper*>(
+      return dynamic_cast<folly::AsyncTransport*>(
           httpSession_->getTransport());
     } else {
       return nullptr;
@@ -160,7 +160,7 @@ class HTTPClientChannel : public ClientChannel,
 
  private:
   HTTPClientChannel(
-      folly::AsyncTransportWrapper::UniquePtr transport,
+      folly::AsyncTransport::UniquePtr transport,
       std::unique_ptr<proxygen::HTTPCodec> codec);
 
   ~HTTPClientChannel() override;

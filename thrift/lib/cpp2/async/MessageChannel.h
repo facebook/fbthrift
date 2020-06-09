@@ -89,7 +89,7 @@ class MessageChannel : virtual public folly::DelayedDestruction {
    */
   virtual void setReceiveCallback(RecvCallback*) = 0;
 
-  folly::AsyncTransportWrapper* getTransport() {
+  folly::AsyncTransport* getTransport() {
     return nullptr;
   }
 };

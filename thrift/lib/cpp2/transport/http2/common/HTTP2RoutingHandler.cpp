@@ -57,7 +57,7 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
   ~HTTP2RoutingSessionManager() override = default;
 
   proxygen::HTTPDownstreamSession* createSession(
-      folly::AsyncTransportWrapper::UniquePtr sock,
+      folly::AsyncTransport::UniquePtr sock,
       folly::SocketAddress* peerAddress,
       std::unique_ptr<proxygen::HTTP2Codec> h2codec,
       wangle::TransportInfo const& tinfo) {
@@ -159,7 +159,7 @@ bool HTTP2RoutingHandler::canAcceptEncryptedConnection(
 
 void HTTP2RoutingHandler::handleConnection(
     wangle::ConnectionManager* connectionManager,
-    folly::AsyncTransportWrapper::UniquePtr sock,
+    folly::AsyncTransport::UniquePtr sock,
     folly::SocketAddress const* peerAddress,
     wangle::TransportInfo const& tinfo,
     std::shared_ptr<Cpp2Worker>) {

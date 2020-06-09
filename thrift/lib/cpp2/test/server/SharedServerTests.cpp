@@ -195,7 +195,7 @@ class SharedServerTests
     if (!sst) {
       startServer();
     }
-    socket = folly::AsyncTransportWrapper::UniquePtr(
+    socket = folly::AsyncTransport::UniquePtr(
         new folly::AsyncSocket(base.get(), *sst->getAddress()));
   }
 
@@ -240,7 +240,7 @@ class SharedServerTests
   std::shared_ptr<BaseThriftServer> server{nullptr};
   std::unique_ptr<ScopedServerThread> sst{nullptr};
 
-  folly::AsyncTransportWrapper::UniquePtr socket{nullptr};
+  folly::AsyncTransport::UniquePtr socket{nullptr};
   apache::thrift::ClientChannel::Ptr channel{nullptr};
   std::unique_ptr<TestServiceAsyncClient> client{nullptr};
 };

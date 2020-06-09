@@ -56,7 +56,7 @@ namespace thrift {
 namespace rocket {
 
 class RocketClient : public folly::DelayedDestruction,
-                     private folly::AsyncTransportWrapper::WriteCallback {
+                     private folly::AsyncTransport::WriteCallback {
  public:
   using FlushList = boost::intrusive::list<
       folly::EventBase::LoopCallback,
@@ -73,7 +73,7 @@ class RocketClient : public folly::DelayedDestruction,
       std::unique_ptr<RocketClient, folly::DelayedDestruction::Destructor>;
   static Ptr create(
       folly::EventBase& evb,
-      folly::AsyncTransportWrapper::UniquePtr socket,
+      folly::AsyncTransport::UniquePtr socket,
       std::unique_ptr<SetupFrame> setupFrame);
 
   using WriteSuccessCallback = RequestContext::WriteSuccessCallback;
@@ -138,7 +138,7 @@ class RocketClient : public folly::DelayedDestruction,
 
   bool streamExists(StreamId streamId) const;
 
-  // AsyncTransportWrapper::WriteCallback implementation
+  // AsyncTransport::WriteCallback implementation
   void writeSuccess() noexcept override;
   void writeErr(
       size_t bytesWritten,
@@ -156,11 +156,11 @@ class RocketClient : public folly::DelayedDestruction,
     return streams_.size();
   }
 
-  const folly::AsyncTransportWrapper* getTransportWrapper() const {
+  const folly::AsyncTransport* getTransportWrapper() const {
     return socket_.get();
   }
 
-  folly::AsyncTransportWrapper* getTransportWrapper() {
+  folly::AsyncTransport* getTransportWrapper() {
     return socket_.get();
   }
 
@@ -245,7 +245,7 @@ class RocketClient : public folly::DelayedDestruction,
 
  private:
   folly::EventBase* evb_;
-  folly::AsyncTransportWrapper::UniquePtr socket_;
+  folly::AsyncTransport::UniquePtr socket_;
   folly::Function<void()> onDetachable_;
   size_t requests_{0};
   StreamId nextStreamId_{1};
@@ -411,12 +411,12 @@ class RocketClient : public folly::DelayedDestruction,
   };
   DetachableLoopCallback detachableLoopCallback_;
   class CloseLoopCallback : public folly::EventBase::LoopCallback,
-                            public folly::AsyncTransportWrapper::ReadCallback {
+                            public folly::AsyncTransport::ReadCallback {
    public:
     explicit CloseLoopCallback(RocketClient& client) : client_(client) {}
     void runLoopCallback() noexcept override;
 
-    // AsyncTransportWrapper::ReadCallback implementation
+    // AsyncTransport::ReadCallback implementation
     void getReadBuffer(void** bufout, size_t* lenout) override;
     void readDataAvailable(size_t nbytes) noexcept override;
     void readEOF() noexcept override;
@@ -443,7 +443,7 @@ class RocketClient : public folly::DelayedDestruction,
 
   RocketClient(
       folly::EventBase& evb,
-      folly::AsyncTransportWrapper::UniquePtr socket,
+      folly::AsyncTransport::UniquePtr socket,
       std::unique_ptr<SetupFrame> setupFrame);
 
   template <typename Frame, typename OnError>

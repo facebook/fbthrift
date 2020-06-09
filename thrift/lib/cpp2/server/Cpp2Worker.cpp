@@ -61,7 +61,7 @@ void Cpp2Worker::initRequestsRegistry() {
 }
 
 void Cpp2Worker::onNewConnection(
-    folly::AsyncTransportWrapper::UniquePtr sock,
+    folly::AsyncTransport::UniquePtr sock,
     const folly::SocketAddress* addr,
     const std::string& nextProtocolName,
     wangle::SecureTransportType secureTransportType,
@@ -138,7 +138,7 @@ void Cpp2Worker::onNewConnection(
 }
 
 void Cpp2Worker::handleHeader(
-    folly::AsyncTransportWrapper::UniquePtr sock,
+    folly::AsyncTransport::UniquePtr sock,
     const folly::SocketAddress* addr) {
   auto fd = sock->getUnderlyingTransport<folly::AsyncSocket>()
                 ->getNetworkSocket()
@@ -169,8 +169,8 @@ void Cpp2Worker::handleHeader(
   }
 }
 
-std::shared_ptr<folly::AsyncTransportWrapper> Cpp2Worker::createThriftTransport(
-    folly::AsyncTransportWrapper::UniquePtr sock) {
+std::shared_ptr<folly::AsyncTransport> Cpp2Worker::createThriftTransport(
+    folly::AsyncTransport::UniquePtr sock) {
   auto fizzServer = dynamic_cast<fizz::server::AsyncFizzServer*>(sock.get());
   if (fizzServer) {
     auto asyncSock = sock->getUnderlyingTransport<folly::AsyncSocket>();
@@ -196,7 +196,7 @@ void Cpp2Worker::markSocketAccepted(folly::AsyncSocket* sock) {
 }
 
 void Cpp2Worker::plaintextConnectionReady(
-    folly::AsyncTransportWrapper::UniquePtr sock,
+    folly::AsyncTransport::UniquePtr sock,
     const folly::SocketAddress& clientAddr,
     const std::string& nextProtocolName,
     wangle::SecureTransportType secureTransportType,
@@ -241,7 +241,7 @@ void Cpp2Worker::stopDuplex(std::shared_ptr<ThriftServer> myServer) {
 }
 
 void Cpp2Worker::updateSSLStats(
-    const folly::AsyncTransportWrapper* sock,
+    const folly::AsyncTransport* sock,
     std::chrono::milliseconds /* acceptLatency */,
     wangle::SSLErrorEnum error,
     const folly::exception_wrapper& /*ex*/) noexcept {

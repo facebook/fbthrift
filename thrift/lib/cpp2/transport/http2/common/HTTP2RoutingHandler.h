@@ -46,7 +46,7 @@ class HTTP2RoutingHandler : public TransportRoutingHandler {
   bool canAcceptEncryptedConnection(const std::string& protocolName) override;
   void handleConnection(
       wangle::ConnectionManager* connectionManager,
-      folly::AsyncTransportWrapper::UniquePtr sock,
+      folly::AsyncTransport::UniquePtr sock,
       folly::SocketAddress const* peerAddress,
       wangle::TransportInfo const& tinfo,
       std::shared_ptr<Cpp2Worker>) override;

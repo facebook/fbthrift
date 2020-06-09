@@ -318,7 +318,7 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
   }
 
   void onNewConnection(
-      folly::AsyncTransportWrapper::UniquePtr socket,
+      folly::AsyncTransport::UniquePtr socket,
       const folly::SocketAddress*,
       const std::string&,
       wangle::SecureTransportType,
