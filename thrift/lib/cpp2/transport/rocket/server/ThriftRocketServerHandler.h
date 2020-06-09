@@ -28,7 +28,7 @@
 #include <thrift/lib/cpp2/transport/rocket/server/SetupFrameHandler.h>
 
 namespace folly {
-class AsyncTransportWrapper;
+class AsyncTransport;
 } // namespace folly
 
 namespace apache {
@@ -66,7 +66,7 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   ThriftRocketServerHandler(
       std::shared_ptr<Cpp2Worker> worker,
       const folly::SocketAddress& clientAddress,
-      const folly::AsyncTransportWrapper* transport,
+      const folly::AsyncTransport* transport,
       const std::vector<std::unique_ptr<SetupFrameHandler>>& handlers);
 
   ~ThriftRocketServerHandler() override;
