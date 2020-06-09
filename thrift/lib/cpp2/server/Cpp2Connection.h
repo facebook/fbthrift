@@ -217,7 +217,6 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
       queueTimeout_.cancelTimeout();
       taskTimeout_.cancelTimeout();
     }
-    void setServerHeaders();
     void markProcessEnd(
         std::map<std::string, std::string>* newHeaders = nullptr);
     void setLatencyHeaders(
@@ -262,6 +261,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
       const char* comment);
   void disconnect(const char* comment) noexcept;
 
+  void setServerHeaders(std::map<std::string, std::string>& writeHeaders);
   void setServerHeaders(HeaderServerChannel::HeaderRequest& request);
 
   friend class Cpp2Request;

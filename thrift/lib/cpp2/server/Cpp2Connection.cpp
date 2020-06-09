@@ -139,24 +139,22 @@ void Cpp2Connection::disconnect(const char* comment) noexcept {
 }
 
 void Cpp2Connection::setServerHeaders(
-    HeaderServerChannel::HeaderRequest& request) {
+    std::map<std::string, std::string>& writeHeaders) {
   if (getWorker()->isStopping()) {
-    request.getHeader()->setHeader("connection", "goaway");
+    writeHeaders["connection"] = "goaway";
   }
+}
 
-  const auto& headers = request.getHeader()->getHeaders();
-  std::string loadHeaderFound;
-  auto it = headers.find(THeader::QUERY_LOAD_HEADER);
-  if (it != headers.end()) {
-    loadHeaderFound = it->second;
-  } else {
-    return;
+void Cpp2Connection::setServerHeaders(
+    HeaderServerChannel::HeaderRequest& request) {
+  auto& writeHeaders = request.getHeader()->mutableWriteHeaders();
+  setServerHeaders(writeHeaders);
+  const auto& readHeaders = request.getHeader()->getHeaders();
+  auto ptr = folly::get_ptr(readHeaders, THeader::QUERY_LOAD_HEADER);
+  if (ptr) {
+    auto load = getWorker()->getServer()->getLoad(*ptr);
+    writeHeaders[THeader::QUERY_LOAD_HEADER] = folly::to<std::string>(load);
   }
-
-  auto load = getWorker()->getServer()->getLoad(loadHeaderFound);
-
-  request.getHeader()->setHeader(
-      THeader::QUERY_LOAD_HEADER, folly::to<std::string>(load));
 }
 
 void Cpp2Connection::requestTimeoutExpired() {
@@ -480,16 +478,12 @@ MessageChannel::SendCallback* Cpp2Connection::Cpp2Request::prepareSendCallback(
   return cb;
 }
 
-void Cpp2Connection::Cpp2Request::setServerHeaders() {
-  connection_->setServerHeaders(*req_);
-}
-
 void Cpp2Connection::Cpp2Request::sendReply(
     std::unique_ptr<folly::IOBuf>&& buf,
     MessageChannel::SendCallback* sendCallback,
     folly::Optional<uint32_t>) {
   if (req_->isActive()) {
-    setServerHeaders();
+    connection_->setServerHeaders(*req_);
     markProcessEnd();
     auto* observer = connection_->getWorker()->getServer()->getObserver();
     auto maxResponseSize =
@@ -519,7 +513,7 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
     folly::exception_wrapper ew,
     std::string exCode) {
   if (req_->isActive()) {
-    setServerHeaders();
+    connection_->setServerHeaders(*req_);
     markProcessEnd();
     auto* observer = connection_->getWorker()->getServer()->getObserver();
     req_->sendErrorWrapped(
@@ -536,7 +530,7 @@ void Cpp2Connection::Cpp2Request::sendTimeoutResponse(
     HeaderServerChannel::HeaderRequest::TimeoutResponseType responseType) {
   auto* observer = connection_->getWorker()->getServer()->getObserver();
   std::map<std::string, std::string> headers;
-  setServerHeaders();
+  connection_->setServerHeaders(headers);
   markProcessEnd(&headers);
   req_->sendTimeoutResponse(
       reqContext_.getMethodName(),

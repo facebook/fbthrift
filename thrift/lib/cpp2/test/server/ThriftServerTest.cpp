@@ -344,9 +344,20 @@ TEST(ThriftServer, HeaderTest) {
 }
 
 namespace {
-template <class MakeClientFunc>
-void doLoadHeaderTest(MakeClientFunc&& makeClient) {
+void doLoadHeaderTest(bool isRocket) {
   static constexpr int kEmptyMetricLoad = 12345;
+
+  auto makeClient = [=](auto& runner) {
+    if (!isRocket) {
+      return runner.template newClient<TestServiceAsyncClient>(
+          (folly::Executor*)nullptr);
+    } else {
+      return runner.template newClient<TestServiceAsyncClient>(
+          nullptr /* executor */, [](auto socket) mutable {
+            return RocketClientChannel::newChannel(std::move(socket));
+          });
+    }
+  };
 
   auto checkLoadHeader = [](const auto& headers,
                             folly::Optional<std::string> loadMetric) {
@@ -367,9 +378,19 @@ void doLoadHeaderTest(MakeClientFunc&& makeClient) {
     }
   };
 
+  class BlockInterface : public TestServiceSvIf {
+   public:
+    folly::Optional<folly::Baton<>> block;
+    void voidResponse() override {
+      if (block) {
+        block.value().wait();
+      }
+    }
+  };
+
   uint32_t nCalls = 0;
   ScopedServerInterfaceThread runner(
-      std::make_shared<TestInterface>(), "::1", 0, [&nCalls](auto& server) {
+      std::make_shared<BlockInterface>(), "::1", 0, [&nCalls](auto& server) {
         server.setGetLoad([](const std::string& metric) {
           folly::StringPiece metricPiece(metric);
           if (metricPiece.removePrefix("custom_load_metric_")) {
@@ -432,23 +453,89 @@ void doLoadHeaderTest(MakeClientFunc&& makeClient) {
     ASSERT_TRUE(matched);
     checkLoadHeader(options.getReadHeaders(), kLoadMetric);
   }
+
+  {
+    // Force queue timeout.
+    // for Rocket: load should still be returned
+    // for Header: load is not returned because of thread safety concerns.
+    auto handler = dynamic_cast<BlockInterface*>(
+        runner.getThriftServer().getProcessorFactory().get());
+    handler->block.emplace();
+    auto fut = client->semifuture_voidResponse();
+    auto guard = folly::makeGuard([&] {
+      handler->block.value().post();
+      std::move(fut).get();
+    });
+    RpcOptions options;
+    const std::string kLoadMetric;
+    options.setWriteHeader(THeader::QUERY_LOAD_HEADER, kLoadMetric);
+    options.setQueueTimeout(std::chrono::milliseconds(10));
+    auto ew = folly::try_and_catch<std::exception>(
+        [&] { client->sync_voidResponse(options); });
+    // Check that request was actually rejected due to queue timeout
+    const bool matched =
+        ew.with_exception([](const TApplicationException& tae) {
+          ASSERT_EQ(TApplicationException::TIMEOUT, tae.getType());
+        });
+    ASSERT_TRUE(matched);
+    if (isRocket) {
+      checkLoadHeader(options.getReadHeaders(), kLoadMetric);
+    } else {
+      checkLoadHeader(options.getReadHeaders(), folly::none);
+    }
+
+    EXPECT_EQ(
+        *folly::get_ptr(options.getReadHeaders(), "ex"),
+        kServerQueueTimeoutErrorCode);
+  }
+
+  {
+    // Force task timeout.
+    // for Rocket: load should still be returned
+    // for Header: load is not returned because of thread safety concerns.
+    auto handler = dynamic_cast<BlockInterface*>(
+        runner.getThriftServer().getProcessorFactory().get());
+    handler->block.emplace();
+
+    RpcOptions options;
+    const std::string kLoadMetric;
+    options.setWriteHeader(THeader::QUERY_LOAD_HEADER, kLoadMetric);
+    options.setTimeout(std::chrono::seconds(1));
+
+    auto prevTaskExpireTime = runner.getThriftServer().getTaskExpireTime();
+    auto prevUseClientTimeout = runner.getThriftServer().getUseClientTimeout();
+    runner.getThriftServer().setTaskExpireTime(std::chrono::milliseconds(100));
+    runner.getThriftServer().setUseClientTimeout(false);
+    auto guard = folly::makeGuard([&] {
+      handler->block.value().post();
+      runner.getThriftServer().setTaskExpireTime(prevTaskExpireTime);
+      runner.getThriftServer().setUseClientTimeout(prevUseClientTimeout);
+    });
+    auto ew = folly::try_and_catch<std::exception>(
+        [&] { client->sync_voidResponse(options); });
+    // Check that request was actually rejected due to task timeout
+    const bool matched =
+        ew.with_exception([](const TApplicationException& tae) {
+          ASSERT_EQ(TApplicationException::TIMEOUT, tae.getType());
+        });
+    ASSERT_TRUE(matched);
+    if (isRocket) {
+      checkLoadHeader(options.getReadHeaders(), kLoadMetric);
+    } else {
+      checkLoadHeader(options.getReadHeaders(), folly::none);
+    }
+
+    EXPECT_EQ(
+        *folly::get_ptr(options.getReadHeaders(), "ex"), kTaskExpiredErrorCode);
+  }
 }
 } // namespace
 
 TEST(ThriftServer, LoadHeaderTest_HeaderClientChannel) {
-  doLoadHeaderTest([](auto& runner) {
-    return runner.template newClient<TestServiceAsyncClient>(
-        (folly::Executor*)nullptr);
-  });
+  doLoadHeaderTest(false);
 }
-
 TEST(ThriftServer, LoadHeaderTest_RocketClientChannel) {
-  doLoadHeaderTest([](auto& runner) {
-    return runner.template newClient<TestServiceAsyncClient>(
-        nullptr /* executor */, [](auto socket) mutable {
-          return RocketClientChannel::newChannel(std::move(socket));
-        });
-  });
+  doLoadHeaderTest(true);
 }
 
 enum LatencyHeaderStatus {
