@@ -62,6 +62,10 @@ void TccStructTraits<::cpp2::SomeStruct>::translateFieldName(
     fid = 2;
     _ftype = apache::thrift::protocol::T_I32;
   }
+  else if (_fname == "questionable") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
   else if (_fname == "tags") {
     fid = 4;
     _ftype = apache::thrift::protocol::T_SET;
@@ -74,12 +78,14 @@ void TccStructTraits<::cpp2::SomeStruct>::translateFieldName(
 
 namespace cpp2 {
 
-SomeStruct::SomeStruct(apache::thrift::FragileConstructor,  ::cpp2::Metasyntactic reasonable__arg,  ::cpp2::Metasyntactic fine__arg, ::std::set<int32_t> tags__arg) :
+SomeStruct::SomeStruct(apache::thrift::FragileConstructor,  ::cpp2::Metasyntactic reasonable__arg,  ::cpp2::Metasyntactic fine__arg,  ::cpp2::Metasyntactic questionable__arg, ::std::set<int32_t> tags__arg) :
     reasonable(std::move(reasonable__arg)),
     fine(std::move(fine__arg)),
+    questionable(std::move(questionable__arg)),
     tags(std::move(tags__arg)) {
   __isset.reasonable = true;
   __isset.fine = true;
+  __isset.questionable = true;
   __isset.tags = true;
 }
 
@@ -87,6 +93,7 @@ void SomeStruct::__clear() {
   // clear all fields
   reasonable =  ::cpp2::Metasyntactic::FOO;
   fine =  ::cpp2::Metasyntactic::BAR;
+  questionable = static_cast< ::cpp2::Metasyntactic>(-1);
   tags.clear();
   __isset = {};
 }
@@ -99,6 +106,9 @@ bool SomeStruct::operator==(const SomeStruct& rhs) const {
     return false;
   }
   if (!(lhs.fine == rhs.fine)) {
+    return false;
+  }
+  if (!(lhs.questionable == rhs.questionable)) {
     return false;
   }
   if (!(lhs.tags == rhs.tags)) {
@@ -116,6 +126,9 @@ bool SomeStruct::operator<(const SomeStruct& rhs) const {
   }
   if (!(lhs.fine == rhs.fine)) {
     return lhs.fine < rhs.fine;
+  }
+  if (!(lhs.questionable == rhs.questionable)) {
+    return lhs.questionable < rhs.questionable;
   }
   if (!(lhs.tags == rhs.tags)) {
     return lhs.tags < rhs.tags;
@@ -136,6 +149,7 @@ void swap(SomeStruct& a, SomeStruct& b) {
   using ::std::swap;
   swap(a.reasonable, b.reasonable);
   swap(a.fine, b.fine);
+  swap(a.questionable, b.questionable);
   swap(a.tags, b.tags);
   swap(a.__isset, b.__isset);
 }

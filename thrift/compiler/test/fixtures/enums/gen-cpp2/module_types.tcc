@@ -74,6 +74,19 @@ _readField_fine:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           2,
+          3,
+          apache::thrift::protocol::T_I32))) {
+    goto _loop;
+  }
+_readField_questionable:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Metasyntactic>::readWithContext(*iprot, this->questionable, _readState);
+    this->__isset.questionable = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          3,
           4,
           apache::thrift::protocol::T_SET))) {
     goto _loop;
@@ -127,6 +140,14 @@ _loop:
         goto _skip;
       }
     }
+    case 3:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
+        goto _readField_questionable;
+      } else {
+        goto _skip;
+      }
+    }
     case 4:
     {
       if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_SET))) {
@@ -154,6 +175,8 @@ uint32_t SomeStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Metasyntactic>::serializedSize<false>(*prot_, this->reasonable);
   xfer += prot_->serializedFieldSize("fine", apache::thrift::protocol::T_I32, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Metasyntactic>::serializedSize<false>(*prot_, this->fine);
+  xfer += prot_->serializedFieldSize("questionable", apache::thrift::protocol::T_I32, 3);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Metasyntactic>::serializedSize<false>(*prot_, this->questionable);
   xfer += prot_->serializedFieldSize("tags", apache::thrift::protocol::T_SET, 4);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::serializedSize<false>(*prot_, this->tags);
   xfer += prot_->serializedSizeStop();
@@ -168,6 +191,8 @@ uint32_t SomeStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Metasyntactic>::serializedSize<false>(*prot_, this->reasonable);
   xfer += prot_->serializedFieldSize("fine", apache::thrift::protocol::T_I32, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Metasyntactic>::serializedSize<false>(*prot_, this->fine);
+  xfer += prot_->serializedFieldSize("questionable", apache::thrift::protocol::T_I32, 3);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Metasyntactic>::serializedSize<false>(*prot_, this->questionable);
   xfer += prot_->serializedFieldSize("tags", apache::thrift::protocol::T_SET, 4);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::serializedSize<false>(*prot_, this->tags);
   xfer += prot_->serializedSizeStop();
@@ -183,6 +208,9 @@ uint32_t SomeStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fine", apache::thrift::protocol::T_I32, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Metasyntactic>::write(*prot_, this->fine);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("questionable", apache::thrift::protocol::T_I32, 3);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Metasyntactic>::write(*prot_, this->questionable);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("tags", apache::thrift::protocol::T_SET, 4);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::write(*prot_, this->tags);

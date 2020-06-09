@@ -666,8 +666,11 @@ class mstch_swift_const_value : public mstch_const_value {
   }
   mstch::node java_enum_value_name() {
     if (type_ == cv::CV_INTEGER && const_value_->is_enum()) {
-      return java::mangle_java_constant_name(
-          const_value_->get_enum_value()->get_name());
+      const t_enum_value* enum_value = const_value_->get_enum_value();
+      if (enum_value != nullptr) {
+        return java::mangle_java_constant_name(enum_value->get_name());
+      }
+      return "fromInteger(" + std::to_string(const_value_->get_integer()) + ")";
     }
     return mstch::node();
   }

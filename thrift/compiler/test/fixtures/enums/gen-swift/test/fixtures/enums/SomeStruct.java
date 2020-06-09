@@ -30,10 +30,12 @@ public final class SomeStruct {
     public SomeStruct(
         @ThriftField(value=1, name="reasonable", requiredness=Requiredness.NONE) final test.fixtures.enums.Metasyntactic reasonable,
         @ThriftField(value=2, name="fine", requiredness=Requiredness.NONE) final test.fixtures.enums.Metasyntactic fine,
+        @ThriftField(value=3, name="questionable", requiredness=Requiredness.NONE) final test.fixtures.enums.Metasyntactic questionable,
         @ThriftField(value=4, name="tags", requiredness=Requiredness.NONE) final Set<Integer> tags
     ) {
         this.reasonable = reasonable;
         this.fine = fine;
+        this.questionable = questionable;
         this.tags = tags;
     }
     
@@ -41,12 +43,14 @@ public final class SomeStruct {
     protected SomeStruct() {
       this.reasonable = null;
       this.fine = null;
+      this.questionable = null;
       this.tags = null;
     }
     
     public static class Builder {
         private test.fixtures.enums.Metasyntactic reasonable = test.fixtures.enums.Metasyntactic.FOO;
         private test.fixtures.enums.Metasyntactic fine = test.fixtures.enums.Metasyntactic.BAR;
+        private test.fixtures.enums.Metasyntactic questionable = test.fixtures.enums.Metasyntactic.fromInteger(-1);
         private Set<Integer> tags = ImmutableSet.<Integer>builder()
         .build();
     
@@ -66,6 +70,14 @@ public final class SomeStruct {
         
         public test.fixtures.enums.Metasyntactic getFine() { return fine; }
     
+            @ThriftField(value=3, name="questionable", requiredness=Requiredness.NONE)
+        public Builder setQuestionable(test.fixtures.enums.Metasyntactic questionable) {
+            this.questionable = questionable;
+            return this;
+        }
+        
+        public test.fixtures.enums.Metasyntactic getQuestionable() { return questionable; }
+    
             @ThriftField(value=4, name="tags", requiredness=Requiredness.NONE)
         public Builder setTags(Set<Integer> tags) {
             this.tags = tags;
@@ -78,6 +90,7 @@ public final class SomeStruct {
         public Builder(SomeStruct other) {
             this.reasonable = other.reasonable;
             this.fine = other.fine;
+            this.questionable = other.questionable;
             this.tags = other.tags;
         }
     
@@ -86,6 +99,7 @@ public final class SomeStruct {
             return new SomeStruct (
                 this.reasonable,
                 this.fine,
+                this.questionable,
                 this.tags
             );
         }
@@ -98,6 +112,9 @@ public final class SomeStruct {
     private final test.fixtures.enums.Metasyntactic fine;
     public static final int _FINE = 2;
     private static final TField FINE_FIELD_DESC = new TField("fine", TType.I32, (short)2);
+    private final test.fixtures.enums.Metasyntactic questionable;
+    public static final int _QUESTIONABLE = 3;
+    private static final TField QUESTIONABLE_FIELD_DESC = new TField("questionable", TType.I32, (short)3);
     private final Set<Integer> tags;
     public static final int _TAGS = 4;
     private static final TField TAGS_FIELD_DESC = new TField("tags", TType.SET, (short)4);
@@ -109,6 +126,9 @@ public final class SomeStruct {
     @ThriftField(value=2, name="fine", requiredness=Requiredness.NONE)
     public test.fixtures.enums.Metasyntactic getFine() { return fine; }
         
+    @ThriftField(value=3, name="questionable", requiredness=Requiredness.NONE)
+    public test.fixtures.enums.Metasyntactic getQuestionable() { return questionable; }
+        
     @ThriftField(value=4, name="tags", requiredness=Requiredness.NONE)
     public Set<Integer> getTags() { return tags; }
     
@@ -117,6 +137,7 @@ public final class SomeStruct {
         ToStringHelper helper = toStringHelper(this);
         helper.add("reasonable", reasonable);
         helper.add("fine", fine);
+        helper.add("questionable", questionable);
         helper.add("tags", tags);
         return helper.toString();
     }
@@ -135,6 +156,7 @@ public final class SomeStruct {
         return
             Objects.equals(reasonable, other.reasonable) &&
             Objects.equals(fine, other.fine) &&
+            Objects.equals(questionable, other.questionable) &&
             Objects.equals(tags, other.tags) &&
             true;
     }
@@ -144,6 +166,7 @@ public final class SomeStruct {
         return Arrays.deepHashCode(new Object[] {
             reasonable,
             fine,
+            questionable,
             tags
         });
     }
@@ -171,6 +194,14 @@ public final class SomeStruct {
           if (__field.type == TType.I32) {
             test.fixtures.enums.Metasyntactic fine = test.fixtures.enums.Metasyntactic.fromInteger(oprot.readI32());
             builder.setFine(fine);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _QUESTIONABLE:
+          if (__field.type == TType.I32) {
+            test.fixtures.enums.Metasyntactic questionable = test.fixtures.enums.Metasyntactic.fromInteger(oprot.readI32());
+            builder.setQuestionable(questionable);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
@@ -213,6 +244,9 @@ public final class SomeStruct {
       oprot.writeFieldEnd();
       oprot.writeFieldBegin(FINE_FIELD_DESC);
       oprot.writeI32(this.fine == null ? 0 : this.fine.getValue());
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(QUESTIONABLE_FIELD_DESC);
+      oprot.writeI32(this.questionable == null ? 0 : this.questionable.getValue());
       oprot.writeFieldEnd();
       if (this.tags != null) {
         oprot.writeFieldBegin(TAGS_FIELD_DESC);

@@ -15,6 +15,7 @@ namespace thrift {
 namespace tag {
 struct reasonable;
 struct fine;
+struct questionable;
 struct tags;
 } // namespace tag
 namespace detail {
@@ -25,6 +26,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(reasonable);
 #ifndef APACHE_THRIFT_ACCESSOR_fine
 #define APACHE_THRIFT_ACCESSOR_fine
 APACHE_THRIFT_DEFINE_ACCESSOR(fine);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_questionable
+#define APACHE_THRIFT_ACCESSOR_questionable
+APACHE_THRIFT_DEFINE_ACCESSOR(questionable);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_tags
 #define APACHE_THRIFT_ACCESSOR_tags
@@ -109,10 +114,11 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
 
   SomeStruct() :
       reasonable( ::cpp2::Metasyntactic::FOO),
-      fine( ::cpp2::Metasyntactic::BAR) {}
+      fine( ::cpp2::Metasyntactic::BAR),
+      questionable(static_cast< ::cpp2::Metasyntactic>(-1)) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  SomeStruct(apache::thrift::FragileConstructor,  ::cpp2::Metasyntactic reasonable__arg,  ::cpp2::Metasyntactic fine__arg, ::std::set<int32_t> tags__arg);
+  SomeStruct(apache::thrift::FragileConstructor,  ::cpp2::Metasyntactic reasonable__arg,  ::cpp2::Metasyntactic fine__arg,  ::cpp2::Metasyntactic questionable__arg, ::std::set<int32_t> tags__arg);
 
   SomeStruct(SomeStruct&&) = default;
 
@@ -127,12 +133,15 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
  public:
    ::cpp2::Metasyntactic fine;
  public:
+   ::cpp2::Metasyntactic questionable;
+ public:
   ::std::set<int32_t> tags;
 
  public:
   struct __isset {
     bool reasonable;
     bool fine;
+    bool questionable;
     bool tags;
   } __isset = {};
   bool operator==(const SomeStruct& rhs) const;
@@ -178,6 +187,26 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
     return {std::move(this->fine), __isset.fine};
   }
 
+  template <typename..., typename T =  ::cpp2::Metasyntactic>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> questionable_ref() const& {
+    return {this->questionable, __isset.questionable};
+  }
+
+  template <typename..., typename T =  ::cpp2::Metasyntactic>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> questionable_ref() const&& {
+    return {std::move(this->questionable), __isset.questionable};
+  }
+
+  template <typename..., typename T =  ::cpp2::Metasyntactic>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> questionable_ref() & {
+    return {this->questionable, __isset.questionable};
+  }
+
+  template <typename..., typename T =  ::cpp2::Metasyntactic>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> questionable_ref() && {
+    return {std::move(this->questionable), __isset.questionable};
+  }
+
   template <typename..., typename T = ::std::set<int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> tags_ref() const& {
     return {this->tags, __isset.tags};
@@ -216,6 +245,16 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
     fine = fine_;
     __isset.fine = true;
     return fine;
+  }
+
+   ::cpp2::Metasyntactic get_questionable() const {
+    return questionable;
+  }
+
+   ::cpp2::Metasyntactic& set_questionable( ::cpp2::Metasyntactic questionable_) {
+    questionable = questionable_;
+    __isset.questionable = true;
+    return questionable;
   }
   const ::std::set<int32_t>& get_tags() const&;
   ::std::set<int32_t> get_tags() &&;

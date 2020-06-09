@@ -43,6 +43,7 @@ void StructMetadata<::cpp2::SomeStruct>::gen(ThriftMetadata& metadata) {
   module_SomeStruct_fields[] = {
     std::make_tuple(1, "reasonable", false, std::make_unique<Enum< ::cpp2::Metasyntactic>>("module.Metasyntactic")),
     std::make_tuple(2, "fine", false, std::make_unique<Enum< ::cpp2::Metasyntactic>>("module.Metasyntactic")),
+    std::make_tuple(3, "questionable", false, std::make_unique<Enum< ::cpp2::Metasyntactic>>("module.Metasyntactic")),
     std::make_tuple(4, "tags", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))),
   };
   for (const auto& f : module_SomeStruct_fields) {

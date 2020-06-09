@@ -26,7 +26,6 @@ enum Metasyntactic {
 struct SomeStruct {
     1: Metasyntactic reasonable = FOO;
     2: Metasyntactic fine = 2;
-    // The following will cause thrift compiler to crush when generating java stubs
-    // 3: Metasyntactic questionable = -1;
+    3: Metasyntactic questionable = -1;
     4: set<i32> tags = [];
 }
