@@ -1328,8 +1328,8 @@ TEST(ThriftServer, MultiPort) {
   folly::EventBase base;
 
   auto testFn = [&](folly::SocketAddress& address) {
-    std::shared_ptr<TAsyncSocket> socket(
-        TAsyncSocket::newSocket(&base, address));
+    std::shared_ptr<folly::AsyncSocket> socket(
+        folly::AsyncSocket::newSocket(&base, address));
     TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
     std::string response;
     client.sync_sendResponse(response, 42);

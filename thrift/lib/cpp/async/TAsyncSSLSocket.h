@@ -19,7 +19,7 @@
 #include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncSSLSocket.h>
 #include <folly/net/NetworkSocket.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
 
 namespace apache {
 namespace thrift {
@@ -35,14 +35,14 @@ namespace async {
 
 // Wrapper around folly's AsyncSSLSocket to maintain backwards compatibility:
 // Converts exceptions to thrift's TTransportException type.
-class TAsyncSSLSocket : public folly::AsyncSSLSocket, public TAsyncSocket {
+class TAsyncSSLSocket : public folly::AsyncSSLSocket {
  public:
   typedef std::unique_ptr<TAsyncSSLSocket, Destructor> UniquePtr;
 
   explicit TAsyncSSLSocket(
       const std::shared_ptr<folly::SSLContext>& ctx,
       folly::EventBase* evb)
-      : AsyncSocket(evb), folly::AsyncSSLSocket(ctx, evb), TAsyncSocket(evb) {}
+      : folly::AsyncSSLSocket(ctx, evb) {}
 
   TAsyncSSLSocket(
       const std::shared_ptr<folly::SSLContext>& ctx,
@@ -50,9 +50,7 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket, public TAsyncSocket {
       folly::NetworkSocket fd,
       bool server = true,
       bool deferSecurityNegotiation = false)
-      : AsyncSocket(evb, fd),
-        folly::AsyncSSLSocket(ctx, evb, fd, server, deferSecurityNegotiation),
-        TAsyncSocket(evb, fd) {}
+      : folly::AsyncSSLSocket(ctx, evb, fd, server, deferSecurityNegotiation) {}
 
   static std::shared_ptr<TAsyncSSLSocket> newSocket(
       const std::shared_ptr<folly::SSLContext>& ctx,
@@ -75,18 +73,14 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket, public TAsyncSocket {
       const std::shared_ptr<folly::SSLContext>& ctx,
       folly::EventBase* evb,
       const std::string& serverName)
-      : AsyncSocket(evb),
-        folly::AsyncSSLSocket(ctx, evb, serverName),
-        TAsyncSocket(evb) {}
+      : folly::AsyncSSLSocket(ctx, evb, serverName) {}
 
   TAsyncSSLSocket(
       const std::shared_ptr<folly::SSLContext>& ctx,
       folly::EventBase* evb,
       folly::NetworkSocket fd,
       const std::string& serverName)
-      : AsyncSocket(evb, fd),
-        folly::AsyncSSLSocket(ctx, evb, fd, serverName),
-        TAsyncSocket(evb, fd) {}
+      : folly::AsyncSSLSocket(ctx, evb, fd, serverName) {}
 
   static std::shared_ptr<TAsyncSSLSocket> newSocket(
       const std::shared_ptr<folly::SSLContext>& ctx,

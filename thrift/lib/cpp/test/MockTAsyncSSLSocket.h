@@ -32,7 +32,7 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
   MockTAsyncSSLSocket(
       const std::shared_ptr<folly::SSLContext> ctx,
       folly::EventBase* base)
-      : AsyncSocket(base), TAsyncSSLSocket(ctx, base) {}
+      : TAsyncSSLSocket(ctx, base) {}
 
   static MockTAsyncSSLSocket::UniquePtr newSocket(
       const std::shared_ptr<folly::SSLContext> ctx,
