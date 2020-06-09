@@ -407,14 +407,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
   }
 
   void cancelTimeout() {
-    queueTimeout_.canceled_ = true;
-    taskTimeout_.canceled_ = true;
-    if (queueTimeout_.isScheduled()) {
-      queueTimeout_.cancelTimeout();
-    }
-    if (taskTimeout_.isScheduled()) {
-      taskTimeout_.cancelTimeout();
-    }
+    queueTimeout_.cancelTimeout();
+    taskTimeout_.cancelTimeout();
   }
 
   bool checkResponseSize(const folly::IOBuf& buf) {
@@ -425,12 +419,11 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
   class QueueTimeout : public folly::HHWheelTimer::Callback {
     ThriftRequestCore* request_;
-    bool canceled_{false};
     const server::ServerConfigs& serverConfigs_;
     QueueTimeout(const server::ServerConfigs& serverConfigs)
         : serverConfigs_(serverConfigs) {}
     void timeoutExpired() noexcept override {
-      if (!canceled_ && !request_->getStartedProcessing() &&
+      if (!request_->getStartedProcessing() &&
           request_->active_.exchange(false) && !request_->isOneway()) {
         if (auto* observer = serverConfigs_.getObserver()) {
           observer->queueTimeout();
@@ -446,13 +439,11 @@ class ThriftRequestCore : public ResponseChannelRequest {
   };
   class TaskTimeout : public folly::HHWheelTimer::Callback {
     ThriftRequestCore* request_;
-    bool canceled_{false};
     const server::ServerConfigs& serverConfigs_;
     TaskTimeout(const server::ServerConfigs& serverConfigs)
         : serverConfigs_(serverConfigs) {}
     void timeoutExpired() noexcept override {
-      if (!canceled_ && request_->active_.exchange(false) &&
-          !request_->isOneway()) {
+      if (request_->active_.exchange(false) && !request_->isOneway()) {
         if (auto* observer = serverConfigs_.getObserver()) {
           observer->taskTimeout();
         }
