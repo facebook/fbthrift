@@ -24,7 +24,6 @@
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/perf/cpp/ClientLoadConfig.h>
 
-using namespace apache::thrift::transport;
 using namespace apache::thrift::async;
 
 namespace apache {
@@ -39,10 +38,12 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
   std::unique_ptr<RequestChannel, folly::DelayedDestruction::Destructor>
       channel;
   if (config->useSSL()) {
-    std::shared_ptr<SSLContext> context = std::make_shared<SSLContext>();
+    std::shared_ptr<folly::SSLContext> context =
+        std::make_shared<folly::SSLContext>();
     if (!config->trustedCAList().empty()) {
       context->loadTrustedCertificates(config->trustedCAList().c_str());
-      context->setVerificationOption(SSLContext::SSLVerifyPeerEnum::VERIFY);
+      context->setVerificationOption(
+          folly::SSLContext::SSLVerifyPeerEnum::VERIFY);
     }
 
     if (!config->ciphers().empty()) {

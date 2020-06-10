@@ -23,14 +23,6 @@
 
 namespace apache {
 namespace thrift {
-namespace transport {
-typedef folly::SSLContext SSLContext;
-}
-} // namespace thrift
-} // namespace apache
-
-namespace apache {
-namespace thrift {
 namespace async {
 
 // Wrapper around folly's AsyncSSLSocket to maintain backwards compatibility:

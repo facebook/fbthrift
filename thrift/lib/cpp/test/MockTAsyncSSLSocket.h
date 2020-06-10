@@ -101,8 +101,7 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
   void sslConnect(
       TAsyncSSLSocket::HandshakeCallback* cb,
       uint64_t timeout,
-      const apache::thrift::transport::SSLContext::SSLVerifyPeerEnum& verify)
-      override {
+      const folly::SSLContext::SSLVerifyPeerEnum& verify) override {
     if (timeout > 0) {
       handshakeTimeout_.scheduleTimeout((uint32_t)timeout);
     }
@@ -118,7 +117,7 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
       void(
           TAsyncSSLSocket::HandshakeCallback*,
           uint64_t,
-          const apache::thrift::transport::SSLContext::SSLVerifyPeerEnum&));
+          const folly::SSLContext::SSLVerifyPeerEnum&));
 };
 } // namespace test
 } // namespace thrift

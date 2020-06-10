@@ -213,7 +213,7 @@ TEST(ThriftServer, SSLClientOnPlaintextServerTest) {
   TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
   folly::EventBase base;
-  auto sslCtx = std::make_shared<SSLContext>();
+  auto sslCtx = std::make_shared<folly::SSLContext>();
   std::shared_ptr<folly::AsyncSocket> socket(
       TAsyncSSLSocket::newSocket(sslCtx, &base));
   TestConnCallback cb;
@@ -1425,8 +1425,7 @@ void doBadRequestHeaderTest(bool duplex, bool secure) {
   };
   RecordWriteSuccessCallback recordSuccessWriteCallback;
 
-  class CheckClosedReadCallback
-      : public folly::AsyncTransport::ReadCallback {
+  class CheckClosedReadCallback : public folly::AsyncTransport::ReadCallback {
    public:
     explicit CheckClosedReadCallback(folly::AsyncSocket& socket)
         : socket_(socket) {
