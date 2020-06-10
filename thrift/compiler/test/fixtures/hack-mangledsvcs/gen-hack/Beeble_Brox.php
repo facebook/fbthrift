@@ -36,6 +36,11 @@ trait Beeble_BroxClientBase {
 
 }
 
+class Beeble_BroxAsyncRpcOptionsClient extends \ThriftClientBase implements Beeble_BroxAsyncIf {
+  use Beeble_BroxClientBase;
+
+}
+
 class Beeble_BroxAsyncClient extends \ThriftClientBase implements Beeble_BroxAsyncIf {
   use Beeble_BroxClientBase;
 

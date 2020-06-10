@@ -173,6 +173,38 @@ trait BarClientBase {
 
 }
 
+class BarAsyncRpcOptionsClient extends \ThriftClientBase implements BarAsyncIf {
+  use BarClientBase;
+
+  /**
+   * Original thrift definition:-
+   * string
+   *   baz(1: set<i32> a,
+   *       2: list<map<i32, set<string>>> b,
+   *       3: i64 c,
+   *       4: Foo d,
+   *       5: i64 e);
+   */
+  public async function baz(\RpcOptions $rpc_options, dict<int, bool> $a, KeyedContainer<int, KeyedContainer<int, dict<string, bool>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
+    await $this->asyncHandler_->genBefore("Bar", "baz");
+    $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    return $this->recvImpl_baz($currentseqid);
+  }
+
+}
+
 class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
   use BarClientBase;
 
@@ -194,7 +226,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RpcOptionsTemp::get(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -226,7 +258,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RpcOptionsTemp::get(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {

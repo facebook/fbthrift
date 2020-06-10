@@ -148,6 +148,34 @@ return;
 
 }
 
+class MyServicePrioChildAsyncRpcOptionsClient extends MyServicePrioParentAsyncRpcOptionsClient implements MyServicePrioChildAsyncIf {
+  use MyServicePrioChildClientBase;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   pang();
+   */
+  public async function pang(\RpcOptions $rpc_options): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyServicePrioChild", "pang");
+    $currentseqid = $this->sendImpl_pang();
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    $this->recvImpl_pang($currentseqid);
+  }
+
+}
+
 class MyServicePrioChildAsyncClient extends MyServicePrioParentAsyncClient implements MyServicePrioChildAsyncIf {
   use MyServicePrioChildClientBase;
 
@@ -165,7 +193,7 @@ class MyServicePrioChildAsyncClient extends MyServicePrioParentAsyncClient imple
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RpcOptionsTemp::get(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -193,7 +221,7 @@ class MyServicePrioChildClient extends MyServicePrioParentClient implements MySe
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RpcOptionsTemp::get(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {

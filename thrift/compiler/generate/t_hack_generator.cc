@@ -16,14 +16,13 @@
 
 #include <stdlib.h>
 
+#include <boost/filesystem.hpp>
 #include <fstream>
 #include <iostream>
 #include <iterator>
 #include <sstream>
 #include <string>
 #include <vector>
-
-#include <boost/filesystem.hpp>
 
 #include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
@@ -198,7 +197,8 @@ class t_hack_generator : public t_oop_generator {
       std::ofstream& out,
       t_service* tservice,
       bool mangle,
-      bool async);
+      bool async,
+      bool with_options);
   void generate_service_processor(t_service* tservice, bool mangle, bool async);
   void generate_process_function(
       t_service* tservice,
@@ -356,11 +356,13 @@ class t_hack_generator : public t_oop_generator {
       bool thrift = false);
   std::string function_signature(
       t_function* tfunction,
-      std::string moreparameters = "",
+      std::string more_head_parameters = "",
+      std::string more_tail_parameters = "",
       std::string typehint = "");
   std::string argument_list(
       t_struct* tstruct,
-      std::string moreparameters = "",
+      std::string more_head_parameters = "",
+      std::string more_tail_parameters = "",
       bool typehints = true,
       bool force_nullable = false);
   std::string type_to_cast(t_type* ttype);
@@ -3604,11 +3606,11 @@ void t_hack_generator::generate_service_interface(
       string funname = (*f_iter)->get_name();
       indent(f_service_) << "public function " << funname << "("
                          << argument_list(
-                                (*f_iter)->get_arglist(), "", true, true)
+                                (*f_iter)->get_arglist(), "", "", true, true)
                          << "): " << return_typehint << ";\n";
     } else {
       indent(f_service_) << "public function "
-                         << function_signature(*f_iter, "", return_typehint)
+                         << function_signature(*f_iter, "", "", return_typehint)
                          << ";\n";
     }
   }
@@ -3649,11 +3651,11 @@ void t_hack_generator::_generate_service_client(
 
     if (nullable_everything_) {
       indent(out) << "protected function sendImpl_" << funname << "("
-                  << argument_list((*f_iter)->get_arglist(), "", true, true)
+                  << argument_list((*f_iter)->get_arglist(), "", "", true, true)
                   << "): int {\n";
     } else {
       indent(out) << "protected function sendImpl_"
-                  << function_signature(*f_iter, "", "int") << " {\n";
+                  << function_signature(*f_iter, "", "", "int") << " {\n";
     }
     indent_up();
 
@@ -3772,6 +3774,7 @@ void t_hack_generator::_generate_service_client(
           << indent() << "protected function "
           << function_signature(
                  &recv_function,
+                 "",
                  "?int $expectedsequenceid = null",
                  return_typehint)
           << " {\n";
@@ -3918,8 +3921,12 @@ void t_hack_generator::_generate_service_client(
   scope_down(out);
   out << "\n";
 
-  _generate_service_client_children(out, tservice, mangle, /*async*/ true);
-  _generate_service_client_children(out, tservice, mangle, /*async*/ false);
+  _generate_service_client_children(
+      out, tservice, mangle, /*async*/ true, /*with_options*/ true);
+  _generate_service_client_children(
+      out, tservice, mangle, /*async*/ true, /*with_options*/ false);
+  _generate_service_client_children(
+      out, tservice, mangle, /*async*/ false, /*with_options*/ false);
 }
 
 // If !strict_types, containers are typehinted as KeyedContainer<Key, Value>
@@ -4019,9 +4026,11 @@ void t_hack_generator::_generate_service_client_children(
     ofstream& out,
     t_service* tservice,
     bool mangle,
-    bool async) {
+    bool async,
+    bool with_options) {
   string long_name = php_servicename_mangle(mangle, tservice);
-  string suffix = (async ? "Async" : "");
+  string suffix =
+      string(async ? "Async" : "") + (with_options ? "RpcOptions" : "");
   string extends = "\\ThriftClientBase";
   bool root = tservice->get_extends() == nullptr;
   bool first = true;
@@ -4047,15 +4056,23 @@ void t_hack_generator::_generate_service_client_children(
     string funname = (*f_iter)->get_name();
     const string& tservice_name = tservice->get_name();
     string return_typehint = type_to_typehint((*f_iter)->get_returntype());
+    string head_parameters = with_options ? "\\RpcOptions $rpc_options" : "";
+    string rpc_options = with_options ? "$rpc_options" : "new \\RpcOptions()";
+
     generate_php_docstring(out, *f_iter);
     if (nullable_everything_) {
-      indent(out) << "public async function " << funname << "("
-                  << argument_list((*f_iter)->get_arglist(), "", true, true)
-                  << "): Awaitable<" + return_typehint + "> {\n";
+      indent(out)
+          << "public async function " << funname << "("
+          << argument_list(
+                 (*f_iter)->get_arglist(), head_parameters, "", true, true)
+          << "): Awaitable<" + return_typehint + "> {\n";
     } else {
       indent(out) << "public async function "
                   << function_signature(
-                         *f_iter, "", "Awaitable<" + return_typehint + ">")
+                         *f_iter,
+                         head_parameters,
+                         "",
+                         "Awaitable<" + return_typehint + ">")
                   << " {\n";
     }
 
@@ -4085,7 +4102,8 @@ void t_hack_generator::_generate_service_client_children(
       out << indent() << "$msg = $out_transport->getBuffer();\n"
           << indent() << "$out_transport->resetBuffer();\n"
           << indent()
-          << "list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RpcOptionsTemp::get(), $msg);\n"
+          << "list($result_msg, $_read_headers) = await $channel->genSendRequestResponse("
+          << rpc_options << ", $msg);\n"
           << indent() << "$in_transport->resetBuffer();\n"
           << indent() << "$in_transport->write($result_msg);\n";
       indent_down();
@@ -4106,8 +4124,8 @@ void t_hack_generator::_generate_service_client_children(
       indent_up();
       out << indent() << "$msg = $out_transport->getBuffer();\n"
           << indent() << "$out_transport->resetBuffer();\n"
-          << indent()
-          << "await $channel->genSendRequestNoResponse(RpcOptionsTemp::get(), $msg);\n";
+          << indent() << "await $channel->genSendRequestNoResponse("
+          << rpc_options << ", $msg);\n";
       scope_down(out);
     }
     scope_down(out);
@@ -4125,7 +4143,7 @@ void t_hack_generator::_generate_service_client_children(
       string return_typehint = type_to_typehint((*f_iter)->get_returntype());
 
       out << indent() << "public function send_"
-          << function_signature(*f_iter, "", "int") << " {\n"
+          << function_signature(*f_iter, "", "", "int") << " {\n"
           << indent() << "  return $this->sendImpl_" << funname << "(";
       first = true;
       for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
@@ -4147,6 +4165,7 @@ void t_hack_generator::_generate_service_client_children(
         out << indent() << "public function "
             << function_signature(
                    &recv_function,
+                   "",
                    "?int $expectedsequenceid = null",
                    return_typehint)
             << " {\n"
@@ -4715,14 +4734,18 @@ string t_hack_generator::declare_field(
  */
 string t_hack_generator::function_signature(
     t_function* tfunction,
-    string moreparameters,
+    string more_head_parameters,
+    string more_tail_parameters,
     string typehint) {
   if (typehint.empty()) {
     typehint = type_to_typehint(tfunction->get_returntype());
   }
 
   return tfunction->get_name() + "(" +
-      argument_list(tfunction->get_arglist(), moreparameters) +
+      argument_list(
+             tfunction->get_arglist(),
+             more_head_parameters,
+             more_tail_parameters) +
       "): " + typehint;
 }
 
@@ -4731,7 +4754,8 @@ string t_hack_generator::function_signature(
  */
 string t_hack_generator::argument_list(
     t_struct* tstruct,
-    string moreparameters,
+    string more_head_parameters,
+    string more_tail_parameters,
     bool typehints,
     bool force_nullable) {
   string result = "";
@@ -4739,6 +4763,12 @@ string t_hack_generator::argument_list(
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
   bool first = true;
+
+  if (more_head_parameters.length() > 0) {
+    result += more_head_parameters;
+    first = false;
+  }
+
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     if (first) {
       first = false;
@@ -4761,11 +4791,11 @@ string t_hack_generator::argument_list(
     result += "$" + (*f_iter)->get_name();
   }
 
-  if (moreparameters.length() > 0) {
+  if (more_tail_parameters.length() > 0) {
     if (!first) {
       result += ", ";
     }
-    result += moreparameters;
+    result += more_tail_parameters;
   }
   return result;
 }

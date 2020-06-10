@@ -38,6 +38,11 @@ trait FooHackServiceClientBase {
 
 }
 
+class FooHackServiceAsyncRpcOptionsClient extends \ThriftClientBase implements FooHackServiceAsyncIf {
+  use FooHackServiceClientBase;
+
+}
+
 class FooHackServiceAsyncClient extends \ThriftClientBase implements FooHackServiceAsyncIf {
   use FooHackServiceClientBase;
 

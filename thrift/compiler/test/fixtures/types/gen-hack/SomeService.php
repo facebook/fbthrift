@@ -277,6 +277,57 @@ trait SomeServiceClientBase {
 
 }
 
+class SomeServiceAsyncRpcOptionsClient extends \ThriftClientBase implements SomeServiceAsyncIf {
+  use SomeServiceClientBase;
+
+  /**
+   * Original thrift definition:-
+   * include.SomeMap
+   *   bounce_map(1: include.SomeMap m);
+   */
+  public async function bounce_map(\RpcOptions $rpc_options, Map<int, string> $m): Awaitable<Map<int, string>> {
+    await $this->asyncHandler_->genBefore("SomeService", "bounce_map");
+    $currentseqid = $this->sendImpl_bounce_map($m);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    return $this->recvImpl_bounce_map($currentseqid);
+  }
+
+  /**
+   * Original thrift definition:-
+   * map<TBinary, i64>
+   *   binary_keyed_map(1: list<i64> r);
+   */
+  public async function binary_keyed_map(\RpcOptions $rpc_options, KeyedContainer<int, int> $r): Awaitable<Map<string, int>> {
+    await $this->asyncHandler_->genBefore("SomeService", "binary_keyed_map");
+    $currentseqid = $this->sendImpl_binary_keyed_map($r);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    return $this->recvImpl_binary_keyed_map($currentseqid);
+  }
+
+}
+
 class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsyncIf {
   use SomeServiceClientBase;
 
@@ -294,7 +345,7 @@ class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsy
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RpcOptionsTemp::get(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -317,7 +368,7 @@ class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsy
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RpcOptionsTemp::get(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -345,7 +396,7 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RpcOptionsTemp::get(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -368,7 +419,7 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(RpcOptionsTemp::get(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
