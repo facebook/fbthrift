@@ -1029,6 +1029,9 @@ Field:
             }
             break;
           }
+          if (it.first == "cpp.mixin") {
+            $$->mark_as_mixin();
+          }
         }
         $$->annotations_ = $7->annotations_;
         $$->annotation_objects_ = $7->annotation_objects_;

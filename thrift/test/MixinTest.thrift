@@ -30,5 +30,5 @@ struct Mixin3 {
 struct Foo {
   1: string field4;
   2: mixin Mixin2 m2;
-  3: mixin Mixin3 m3;
+  3: Mixin3 m3 (cpp.mixin);
 }
