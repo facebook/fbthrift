@@ -139,8 +139,6 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket {
   }
 };
 
-typedef folly::WriteFlags WriteFlags;
-
 } // namespace async
 } // namespace thrift
 } // namespace apache

@@ -1110,16 +1110,16 @@ class DestroyAsyncTransport : public folly::AsyncTransport {
       folly::AsyncTransport::WriteCallback*,
       const void*,
       size_t,
-      WriteFlags) override {}
+      folly::WriteFlags) override {}
   void writev(
       folly::AsyncTransport::WriteCallback*,
       const iovec*,
       size_t,
-      WriteFlags) override {}
+      folly::WriteFlags) override {}
   void writeChain(
       folly::AsyncTransport::WriteCallback*,
       std::unique_ptr<folly::IOBuf>&&,
-      WriteFlags) override {}
+      folly::WriteFlags) override {}
   void close() override {}
   void closeNow() override {}
   void shutdownWrite() override {}
