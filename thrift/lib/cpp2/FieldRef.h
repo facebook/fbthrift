@@ -119,6 +119,11 @@ class field_ref {
     return &value_;
   }
 
+  FOLLY_ERASE reference_type ensure() noexcept {
+    is_set_ = true;
+    return std::forward<reference_type>(value_);
+  }
+
   template <typename Index>
   FOLLY_ERASE auto operator[](const Index& index) const
       -> decltype(std::declval<reference_type>()[index]) {
@@ -391,6 +396,13 @@ class optional_field_ref {
     return &static_cast<pointee_type&>(value());
   }
 
+  FOLLY_ERASE reference_type ensure() noexcept {
+    if (!is_set_) {
+      emplace();
+    }
+    return std::forward<reference_type>(value_);
+  }
+
   template <typename... Args>
   FOLLY_ERASE value_type& emplace(Args&&... args) {
     reset(); // C++ Standard requires *this to be empty if `emplace(...)` throws
@@ -421,6 +433,13 @@ class optional_field_ref {
 
   FOLLY_ERASE void copy_from(DeprecatedOptionalField<value_type>&& other) =
       delete;
+
+  template <typename R>
+  [[deprecated(
+      "Use emplace() or operator=() to set Thrift fields.")]] FOLLY_ERASE static void
+  ensure_isset_unsafe(optional_field_ref<R>&& ref) {
+    ref.is_set_ = true;
+  }
 
  private:
   value_type& value_;

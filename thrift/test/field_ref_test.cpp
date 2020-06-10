@@ -250,6 +250,15 @@ TEST(field_ref_test, mutable_accessors) {
   EXPECT_FALSE(name.is_set());
 }
 
+TEST(field_ref_test, ensure) {
+  TestStruct s;
+  s.name().value() = "foo";
+  EXPECT_FALSE(s.name().has_value());
+  s.name().ensure();
+  EXPECT_TRUE(s.name().has_value());
+  EXPECT_EQ(s.name(), "foo");
+}
+
 using expander = int[];
 
 template <template <typename, typename> class F, typename T, typename... Args>
@@ -552,6 +561,13 @@ TEST(optional_field_ref_test, get_pointer) {
   EXPECT_EQ(*apache::thrift::get_pointer(s.opt_name()), "bar");
   s.opt_name().reset();
   EXPECT_EQ(apache::thrift::get_pointer(s.opt_name()), nullptr);
+}
+
+TEST(optional_field_ref_test, ensure) {
+  TestStruct s;
+  EXPECT_FALSE(s.opt_name().has_value());
+  EXPECT_EQ(s.opt_name().ensure(), "");
+  EXPECT_TRUE(s.opt_name());
 }
 
 #ifdef THRIFT_HAS_OPTIONAL
