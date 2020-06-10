@@ -66,15 +66,15 @@ trait BarClientBase {
 
   protected function sendImpl_baz(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new Bar_baz_args(Map {
-      'a' => $a === null ? null : $a,
-      'b' => $b === null ? null : varray(Vec\map($b, 
+    $args = new Bar_baz_args(
+      $a === null ? null : $a,
+      $b === null ? null : varray(Vec\map($b, 
         $_val0 ==> darray($_val0)
       )),
-      'c' => $c === null ? null : $c,
-      'd' => $d === null ? null : $d,
-      'e' => $e === null ? null : $e,
-    });
+      $c === null ? null : $c,
+      $d === null ? null : $d,
+      $e === null ? null : $e,
+    );
     try {
       $this->eventHandler_->preSend('baz', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -456,28 +456,36 @@ class Bar_baz_args implements \IThriftStruct {
   public ?int $e;
 
   <<__Rx>>
-  public function __construct(@KeyedContainer<string, mixed> $vals = darray[]) {
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->a = idx($vals, 'a', null);
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->b = idx($vals, 'b', null);
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->c = idx($vals, 'c', null);
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->d = idx($vals, 'd', null);
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->e = idx($vals, 'e', 4);
+  public function __construct(?darray<int, bool> $a = null, ?varray<darray<int, darray<string, bool>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null  ) {
+    $this->a = $a;
+    $this->b = $b;
+    $this->c = $c;
+    $this->d = $d;
+    $this->e = $e ?? 4;
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
-      Map {
-        'a' => Shapes::idx($shape, 'a'),
-        'b' => Shapes::idx($shape, 'b'),
-        'c' => Shapes::idx($shape, 'c'),
-        'd' => Shapes::idx($shape, 'd'),
-        'e' => Shapes::idx($shape, 'e'),
-      },
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
+      Shapes::idx($shape, 'c'),
+      Shapes::idx($shape, 'd'),
+      Shapes::idx($shape, 'e'),
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
+    return new static(
+      /* HH_FIXME[4110] previously hidden by unsafe */
+      idx($map, 'a'),
+      /* HH_FIXME[4110] previously hidden by unsafe */
+      idx($map, 'b'),
+      /* HH_FIXME[4110] previously hidden by unsafe */
+      idx($map, 'c'),
+      /* HH_FIXME[4110] previously hidden by unsafe */
+      idx($map, 'd'),
+      /* HH_FIXME[4110] previously hidden by unsafe */
+      idx($map, 'e'),
     );
   }
 
@@ -512,14 +520,19 @@ class Bar_baz_result implements \IThriftStruct {
   public ?string $success;
 
   <<__Rx>>
-  public function __construct(@KeyedContainer<string, mixed> $vals = darray[]) {
+  public function __construct(?string $success = null  ) {
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
-      Map {
-        'success' => Shapes::idx($shape, 'success'),
-      },
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
+    return new static(
+      /* HH_FIXME[4110] previously hidden by unsafe */
+      idx($map, 'success'),
     );
   }
 

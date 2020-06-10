@@ -53,6 +53,8 @@ class t_hack_generator : public t_oop_generator {
     arraysets_ = option_is_specified(parsed_options, "arraysets");
     no_nullables_ = option_is_specified(parsed_options, "nonullables");
     map_construct_ = option_is_specified(parsed_options, "mapconstruct");
+    from_map_construct_ =
+        option_is_specified(parsed_options, "frommap_construct");
     struct_trait_ = option_is_specified(parsed_options, "structtrait");
     shapes_ = option_is_specified(parsed_options, "shapes");
     shape_arraykeys_ = option_is_specified(parsed_options, "shape_arraykeys");
@@ -88,6 +90,10 @@ class t_hack_generator : public t_oop_generator {
           "Don't use no_use_hack_collections with arrays. Just use arrays");
     } else if (mangled_services_ && !hack_namespace(program).empty()) {
       throw std::runtime_error("Don't use mangledsvcs with hack namespaces");
+    } else if (from_map_construct_ && !map_construct_) {
+      throw std::runtime_error(
+          "frommap_construct is meant to be used only "
+          "with map_construct for migration, don't use it.");
     }
 
     out_dir_base_ = "gen-hack";
@@ -154,6 +160,10 @@ class t_hack_generator : public t_oop_generator {
       t_name_generator& namer,
       t_type* t);
   void generate_php_struct_from_shape(std::ofstream& out, t_struct* tstruct);
+  void generate_php_struct_from_map(
+      std::ofstream& out,
+      t_struct* tstruct,
+      bool is_exception = false);
   bool type_has_nested_struct(t_type* t);
   bool field_is_nullable(t_struct* tstruct, const t_field* field, string dval);
   void generate_php_struct_shape_json_conversion(
@@ -580,6 +590,12 @@ class t_hack_generator : public t_oop_generator {
    * fields
    */
   bool map_construct_;
+
+  /**
+   * True if structs should have a fromMap_DEPRECATED method, only to migrate
+   * away from map_construct
+   */
+  bool from_map_construct_;
 
   /**
    * True if we should add a "use StructNameTrait" to the generated class
@@ -2592,7 +2608,7 @@ void t_hack_generator::_generate_php_struct_definition(
 
   out << indent() << "<<__Rx>>\n";
   out << indent() << "public function __construct(";
-  if (map_construct_) {
+  if (map_construct_ && !from_map_construct_) {
     if (strict_types_) {
       // Generate constructor from Map
       out << (const_collections_ ? "Const" : "")
@@ -2654,7 +2670,7 @@ void t_hack_generator::_generate_php_struct_definition(
       dval = render_default_value(t);
     }
 
-    if (map_construct_) {
+    if (map_construct_ && !from_map_construct_) {
       string cast;
       if (nullable_everything_ &&
           !(is_exception && is_base_exception_property(*m_iter))) {
@@ -2734,6 +2750,11 @@ void t_hack_generator::_generate_php_struct_definition(
   generate_php_struct_from_shape(out, tstruct);
   out << "\n";
 
+  if (from_map_construct_) {
+    generate_php_struct_from_map(out, tstruct, is_exception);
+    out << "\n";
+  }
+
   out << indent() << "public function getName(): string {\n"
       << indent() << "  return '" << tstruct->get_name() << "';\n"
       << indent() << "}\n\n";
@@ -2790,7 +2811,7 @@ void t_hack_generator::generate_php_struct_from_shape(
   indent_up();
   out << indent() << "return new static(\n";
   indent_up();
-  if (map_construct_) {
+  if (map_construct_ && !from_map_construct_) {
     out << indent() << "Map {\n";
     indent_up();
   }
@@ -2798,12 +2819,93 @@ void t_hack_generator::generate_php_struct_from_shape(
   vector<t_field*>::const_iterator m_iter;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     string name = (*m_iter)->get_name();
-    out << indent() << (map_construct_ ? "'" + name + "' => " : "")
+    out << indent()
+        << (map_construct_ && !from_map_construct_ ? "'" + name + "' => " : "")
         << "Shapes::idx($shape, '" << name << "'),\n";
   }
-  if (map_construct_) {
+  if (map_construct_ && !from_map_construct_) {
     indent_down();
     out << indent() << "},\n";
+  }
+  indent_down();
+  out << indent() << ");\n";
+  indent_down();
+  out << indent() << "}\n";
+}
+
+void t_hack_generator::generate_php_struct_from_map(
+    ofstream& out,
+    t_struct* tstruct,
+    bool is_exception) {
+  out << indent() << "public static function fromMap_DEPRECATED(";
+  if (strict_types_) {
+    // Generate constructor from Map
+    out << (const_collections_ ? "Const" : "") << "Map<string, mixed> $maps";
+  } else {
+    // Generate constructor from KeyedContainer
+    out << (soft_attribute_ ? "<<__Soft>> " : "@")
+        << "KeyedContainer<string, mixed> $map";
+  }
+  out << "): this {\n";
+  indent_up();
+  out << indent() << "return new static(\n";
+  indent_up();
+  const vector<t_field*>& members = tstruct->get_members();
+  vector<t_field*>::const_iterator m_iter;
+  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    t_type* t = (*m_iter)->get_type()->get_true_type();
+    string name = (*m_iter)->get_name();
+    string cast;
+    string dval = "";
+    if ((*m_iter)->get_value() != nullptr &&
+        !(t->is_struct() || t->is_xception())) {
+      dval = render_const_value(t, (*m_iter)->get_value());
+    } else if (
+        is_exception &&
+        ((*m_iter)->get_name() == "code" || (*m_iter)->get_name() == "line")) {
+      if (t->is_any_int()) {
+        dval = "0";
+      } else {
+        // just use the lowest value
+        t_enum* tenum = (t_enum*)t;
+        dval = hack_name(tenum) +
+            "::" + (*(tenum->get_enum_values().begin()))->get_name();
+      }
+    } else if (
+        is_exception &&
+        ((*m_iter)->get_name() == "message" ||
+         (*m_iter)->get_name() == "file")) {
+      dval = "''";
+    } else if (tstruct->is_union() || nullable_everything_) {
+      dval = "null";
+    } else {
+      dval = render_default_value(t);
+    }
+
+    if (nullable_everything_ &&
+        !(is_exception && is_base_exception_property(*m_iter))) {
+      cast = "";
+    } else {
+      cast = type_to_cast(t);
+    }
+
+    if (strict_types_) {
+      if (t->is_container() || t->is_enum()) {
+        out << indent()
+            << "/* HH_FIXME[4110] mixed vs default conflict previously hidden by unsafe */\n";
+      }
+      out << indent() << cast << (cast != "" ? "(" : "") << "$map->get('"
+          << name << "')" << (cast != "" ? " ?: " + dval + ")" : "") << ",\n";
+    } else {
+      if (is_exception && name == "code" && t->is_enum()) {
+        out << indent()
+            << "/* HH_FIXME[4110] exposed by decl fixme scope refinement */\n";
+      } else if (cast == "") {
+        out << indent() << "/* HH_FIXME[4110] previously hidden by unsafe */\n";
+      }
+      out << indent() << cast << "idx($map, '" << name << "'"
+          << (cast != "" ? ", " + dval : "") << "),\n";
+    }
   }
   indent_down();
   out << indent() << ");\n";
@@ -3639,13 +3741,13 @@ void t_hack_generator::_generate_service_client(
 
     out << indent() << "$currentseqid = $this->getNextSequenceID();\n"
         << indent() << "$args = new " << argsname << "("
-        << (map_construct_ ? "Map {" : "") << "\n";
+        << (map_construct_ && !from_map_construct_ ? "Map {" : "") << "\n";
     indent_up();
     // Loop through the fields and assign to the args struct
     for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
       indent(out);
       string name = "$" + (*fld_iter)->get_name();
-      if (map_construct_) {
+      if (map_construct_ && !from_map_construct_) {
         out << "'" << (*fld_iter)->get_name() << "' => ";
       }
       if (nullable_everything_) {
@@ -3657,7 +3759,8 @@ void t_hack_generator::_generate_service_client(
       out << ",\n";
     }
     indent_down();
-    out << indent() << (map_construct_ ? "}" : "") << ");\n";
+    out << indent() << (map_construct_ && !from_map_construct_ ? "}" : "")
+        << ");\n";
     out << indent() << "try {\n";
     indent_up();
     out << indent() << "$this->eventHandler_->preSend('"
@@ -4867,6 +4970,7 @@ THRIFT_REGISTER_GENERATOR(
     "                        replace array<string, TValue> with array<arraykey, TValue>\n"
     "    shapes_allow_unknown_fields Allow unknown fields and implicit subtyping for shapes \n"
     "    lazy_constants   Generate lazy initialization code for global constants.\n"
+    "    frommap_construct Generate fromMap_DEPRECATED method to migrate from mapconstruct.\n"
     "    arrays           Use Hack arrays for maps/lists/sets instead of objects.\n"
     "    const_collections Use ConstCollection objects rather than their mutable counterparts.\n"
     "    enum_transparenttype Use transparent typing for Hack enums: 'enum FooBar: int as int'.\n");
