@@ -7,21 +7,21 @@ pub use self::errors::*;
 pub use self::types::*;
 
 pub mod consts {
-    pub const myInt: i32 = 1337;
+    pub const myInt: ::std::primitive::i32 = 1337;
 
-    pub const name: &str = "Mark Zuckerberg";
+    pub const name: &::std::primitive::str = "Mark Zuckerberg";
 
     lazy_static::lazy_static! {
-        pub static ref states: Vec<std::collections::BTreeMap<String, i32>> = vec![
+        pub static ref states: ::std::vec::Vec<::std::collections::BTreeMap<::std::string::String, ::std::primitive::i32>> = vec![
             {
-                let mut map = std::collections::BTreeMap::new();
+                let mut map = ::std::collections::BTreeMap::new();
                 map.insert("San Diego".to_owned(), 3211000);
                 map.insert("Sacramento".to_owned(), 479600);
                 map.insert("SF".to_owned(), 837400);
                 map
             },
             {
-                let mut map = std::collections::BTreeMap::new();
+                let mut map = ::std::collections::BTreeMap::new();
                 map.insert("New York".to_owned(), 8406000);
                 map.insert("Albany".to_owned(), 98400);
                 map
@@ -29,25 +29,25 @@ pub mod consts {
         ];
     }
 
-    pub const x: f64 = 1.0;
+    pub const x: ::std::primitive::f64 = 1.0;
 
-    pub const y: f64 = 0.0;
+    pub const y: ::std::primitive::f64 = 0.0;
 
-    pub const z: f64 = 1000000000.0;
+    pub const z: ::std::primitive::f64 = 1000000000.0;
 
-    pub const zeroDoubleValue: f64 = 0.0;
+    pub const zeroDoubleValue: ::std::primitive::f64 = 0.0;
 
-    pub const longDoubleValue: f64 = 2.59961000990301e-05;
+    pub const longDoubleValue: ::std::primitive::f64 = 2.59961000990301e-05;
 
     pub const my_company: crate::types::MyCompany = crate::types::Company::FACEBOOK;
 
-    pub const foo: &str = "foo";
+    pub const foo: &::std::primitive::str = "foo";
 
     pub const bar: crate::types::MyIntIdentifier = 42;
 
     lazy_static::lazy_static! {
         pub static ref mymap: crate::types::MyMapIdentifier = {
-            let mut map = std::collections::BTreeMap::new();
+            let mut map = ::std::collections::BTreeMap::new();
             map.insert("keys".to_owned(), "values".to_owned());
             map
         };
@@ -57,7 +57,7 @@ pub mod consts {
         pub static ref instagram: crate::types::Internship = crate::types::Internship {
             weeks: 12,
             title: "Software Engineer".to_owned(),
-            employer: Some(crate::types::Company::INSTAGRAM),
+            employer: ::std::option::Option::Some(crate::types::Company::INSTAGRAM),
         };
     }
 
@@ -65,12 +65,12 @@ pub mod consts {
         pub static ref partial_const: crate::types::Internship = crate::types::Internship {
             weeks: 8,
             title: "Some Job".to_owned(),
-            employer: Default::default(),
+            employer: ::std::default::Default::default(),
         };
     }
 
     lazy_static::lazy_static! {
-        pub static ref kRanges: Vec<crate::types::Range> = vec![
+        pub static ref kRanges: ::std::vec::Vec<crate::types::Range> = vec![
             crate::types::Range {
                 min: 1,
                 max: 2,
@@ -83,16 +83,16 @@ pub mod consts {
     }
 
     lazy_static::lazy_static! {
-        pub static ref internList: Vec<crate::types::Internship> = vec![
+        pub static ref internList: ::std::vec::Vec<crate::types::Internship> = vec![
             crate::types::Internship {
                 weeks: 12,
                 title: "Software Engineer".to_owned(),
-                employer: Some(crate::types::Company::INSTAGRAM),
+                employer: ::std::option::Option::Some(crate::types::Company::INSTAGRAM),
             },
             crate::types::Internship {
                 weeks: 10,
                 title: "Sales Intern".to_owned(),
-                employer: Some(crate::types::Company::FACEBOOK),
+                employer: ::std::option::Option::Some(crate::types::Company::FACEBOOK),
             },
         ];
     }
@@ -133,7 +133,7 @@ pub mod consts {
             b: 456,
             c: crate::types::struct2 {
                 a: 888,
-                b: Default::default(),
+                b: ::std::default::Default::default(),
                 c: crate::types::struct1 {
                     a: 1234567,
                     b: "gaz".to_owned(),
@@ -186,19 +186,19 @@ pub mod consts {
         pub static ref u_2_6: crate::types::union2 = crate::types::union2::u(crate::types::union1::default());
     }
 
-    pub const apostrophe: &str = "'";
+    pub const apostrophe: &::std::primitive::str = "'";
 
-    pub const tripleApostrophe: &str = "'''";
+    pub const tripleApostrophe: &::std::primitive::str = "'''";
 
-    pub const quotationMark: &str = "\"";
+    pub const quotationMark: &::std::primitive::str = "\"";
 
-    pub const backslash: &str = "\\\\";
+    pub const backslash: &::std::primitive::str = "\\\\";
 
-    pub const escaped_a: &str = "\\x61";
+    pub const escaped_a: &::std::primitive::str = "\\x61";
 
     lazy_static::lazy_static! {
-        pub static ref char2ascii: std::collections::BTreeMap<String, i32> = {
-            let mut map = std::collections::BTreeMap::new();
+        pub static ref char2ascii: ::std::collections::BTreeMap<::std::string::String, ::std::primitive::i32> = {
+            let mut map = ::std::collections::BTreeMap::new();
             map.insert("'".to_owned(), 39);
             map.insert("\"".to_owned(), 34);
             map.insert("\\\\".to_owned(), 92);
@@ -208,7 +208,7 @@ pub mod consts {
     }
 
     lazy_static::lazy_static! {
-        pub static ref escaped_strings: Vec<String> = vec![
+        pub static ref escaped_strings: ::std::vec::Vec<::std::string::String> = vec![
             "\\x61".to_owned(),
             "\\xab".to_owned(),
             "\\x6a".to_owned(),
@@ -228,195 +228,198 @@ pub mod consts {
         ];
     }
 
-    pub const false_c: bool = false;
+    pub const false_c: ::std::primitive::bool = false;
 
-    pub const true_c: bool = true;
+    pub const true_c: ::std::primitive::bool = true;
 
-    pub const zero_byte: i8 = 0;
+    pub const zero_byte: ::std::primitive::i8 = 0;
 
-    pub const zero16: i16 = 0;
+    pub const zero16: ::std::primitive::i16 = 0;
 
-    pub const zero32: i32 = 0;
+    pub const zero32: ::std::primitive::i32 = 0;
 
-    pub const zero64: i64 = 0;
+    pub const zero64: ::std::primitive::i64 = 0;
 
-    pub const zero_dot_zero: f64 = 0.0;
+    pub const zero_dot_zero: ::std::primitive::f64 = 0.0;
 
-    pub const empty_string: &str = "";
+    pub const empty_string: &::std::primitive::str = "";
 
     lazy_static::lazy_static! {
-        pub static ref empty_int_list: Vec<i32> = Vec::new();
+        pub static ref empty_int_list: ::std::vec::Vec<::std::primitive::i32> = ::std::vec::Vec::new();
     }
 
     lazy_static::lazy_static! {
-        pub static ref empty_string_list: Vec<String> = Vec::new();
+        pub static ref empty_string_list: ::std::vec::Vec<::std::string::String> = ::std::vec::Vec::new();
     }
 
     lazy_static::lazy_static! {
-        pub static ref empty_int_set: std::collections::BTreeSet<i32> = std::collections::BTreeSet::new();
+        pub static ref empty_int_set: ::std::collections::BTreeSet<::std::primitive::i32> = ::std::collections::BTreeSet::new();
     }
 
     lazy_static::lazy_static! {
-        pub static ref empty_string_set: std::collections::BTreeSet<String> = std::collections::BTreeSet::new();
+        pub static ref empty_string_set: ::std::collections::BTreeSet<::std::string::String> = ::std::collections::BTreeSet::new();
     }
 
     lazy_static::lazy_static! {
-        pub static ref empty_int_int_map: std::collections::BTreeMap<i32, i32> = std::collections::BTreeMap::new();
+        pub static ref empty_int_int_map: ::std::collections::BTreeMap<::std::primitive::i32, ::std::primitive::i32> = ::std::collections::BTreeMap::new();
     }
 
     lazy_static::lazy_static! {
-        pub static ref empty_int_string_map: std::collections::BTreeMap<i32, String> = std::collections::BTreeMap::new();
+        pub static ref empty_int_string_map: ::std::collections::BTreeMap<::std::primitive::i32, ::std::string::String> = ::std::collections::BTreeMap::new();
     }
 
     lazy_static::lazy_static! {
-        pub static ref empty_string_int_map: std::collections::BTreeMap<String, i32> = std::collections::BTreeMap::new();
+        pub static ref empty_string_int_map: ::std::collections::BTreeMap<::std::string::String, ::std::primitive::i32> = ::std::collections::BTreeMap::new();
     }
 
     lazy_static::lazy_static! {
-        pub static ref empty_string_string_map: std::collections::BTreeMap<String, String> = std::collections::BTreeMap::new();
+        pub static ref empty_string_string_map: ::std::collections::BTreeMap<::std::string::String, ::std::string::String> = ::std::collections::BTreeMap::new();
     }
 }
 
 pub mod types {
     #![allow(clippy::redundant_closure)]
 
-    use fbthrift::{
-        Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
-    };
 
     pub type MyCompany = crate::types::Company;
 
-    pub type MyStringIdentifier = String;
+    pub type MyStringIdentifier = ::std::string::String;
 
-    pub type MyIntIdentifier = i32;
+    pub type MyIntIdentifier = ::std::primitive::i32;
 
-    pub type MyMapIdentifier = std::collections::BTreeMap<String, String>;
+    pub type MyMapIdentifier = ::std::collections::BTreeMap<::std::string::String, ::std::string::String>;
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Internship {
-        pub weeks: i32,
-        pub title: String,
-        pub employer: Option<crate::types::Company>,
+        pub weeks: ::std::primitive::i32,
+        pub title: ::std::string::String,
+        pub employer: ::std::option::Option<crate::types::Company>,
     }
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Range {
-        pub min: i32,
-        pub max: i32,
+        pub min: ::std::primitive::i32,
+        pub max: ::std::primitive::i32,
     }
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct struct1 {
-        pub a: i32,
-        pub b: String,
+        pub a: ::std::primitive::i32,
+        pub b: ::std::string::String,
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct struct2 {
-        pub a: i32,
-        pub b: String,
+        pub a: ::std::primitive::i32,
+        pub b: ::std::string::String,
         pub c: crate::types::struct1,
-        pub d: Vec<i32>,
+        pub d: ::std::vec::Vec<::std::primitive::i32>,
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct struct3 {
-        pub a: String,
-        pub b: i32,
+        pub a: ::std::string::String,
+        pub b: ::std::primitive::i32,
         pub c: crate::types::struct2,
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub enum union1 {
-        i(i32),
-        d(f64),
-        UnknownField(i32),
+        i(::std::primitive::i32),
+        d(::std::primitive::f64),
+        UnknownField(::std::primitive::i32),
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub enum union2 {
-        i(i32),
-        d(f64),
+        i(::std::primitive::i32),
+        d(::std::primitive::f64),
         s(crate::types::struct1),
         u(crate::types::union1),
-        UnknownField(i32),
+        UnknownField(::std::primitive::i32),
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
-    pub struct EmptyEnum(pub i32);
+    pub struct EmptyEnum(pub ::std::primitive::i32);
 
     impl EmptyEnum {
     }
 
-    impl Default for EmptyEnum {
+    impl ::std::default::Default for EmptyEnum {
         fn default() -> Self {
-            EmptyEnum(fbthrift::__UNKNOWN_ID)
+            EmptyEnum(::fbthrift::__UNKNOWN_ID)
         }
     }
 
-    impl<'a> From<&'a EmptyEnum> for i32 {
+    impl<'a> ::std::convert::From<&'a EmptyEnum> for ::std::primitive::i32 {
         #[inline]
-        fn from(x: &'a EmptyEnum) -> i32 {
+        fn from(x: &'a EmptyEnum) -> Self {
             x.0
         }
     }
 
-    impl From<EmptyEnum> for i32 {
+    impl ::std::convert::From<EmptyEnum> for ::std::primitive::i32 {
         #[inline]
-        fn from(x: EmptyEnum) -> i32 {
+        fn from(x: EmptyEnum) -> Self {
             x.0
         }
     }
 
-    impl From<i32> for EmptyEnum {
+    impl ::std::convert::From<::std::primitive::i32> for EmptyEnum {
         #[inline]
-        fn from(x: i32) -> Self {
+        fn from(x: ::std::primitive::i32) -> Self {
             Self(x)
         }
     }
 
-    impl std::fmt::Display for EmptyEnum {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+    impl ::std::fmt::Display for EmptyEnum {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
             write!(fmt, "{}", self.0)
         }
     }
 
-    impl std::fmt::Debug for EmptyEnum {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+    impl ::std::fmt::Debug for EmptyEnum {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
             write!(fmt, "EmptyEnum::{}", self)
         }
     }
 
-    impl std::str::FromStr for EmptyEnum {
-        type Err = anyhow::Error;
+    impl ::std::str::FromStr for EmptyEnum {
+        type Err = ::anyhow::Error;
 
-        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
+        fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
             match string {
-                _ => anyhow::bail!("Unable to parse {} as EmptyEnum", string),
+                _ => ::anyhow::bail!("Unable to parse {} as EmptyEnum", string),
             }
         }
     }
 
-    impl GetTType for EmptyEnum {
-        const TTYPE: TType = TType::I32;
+    impl ::fbthrift::GetTType for EmptyEnum {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for EmptyEnum {
+    impl<P> ::fbthrift::Serialize<P> for EmptyEnum
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         #[inline]
         fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for EmptyEnum {
+    impl<P> ::fbthrift::Deserialize<P> for EmptyEnum
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
         #[inline]
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            Ok(EmptyEnum::from(p.read_i32()?))
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            ::std::result::Result::Ok(EmptyEnum::from(p.read_i32()?))
         }
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
-    pub struct City(pub i32);
+    pub struct City(pub ::std::primitive::i32);
 
     impl City {
         pub const NYC: Self = City(0i32);
@@ -425,36 +428,36 @@ pub mod types {
         pub const LON: Self = City(3i32);
     }
 
-    impl Default for City {
+    impl ::std::default::Default for City {
         fn default() -> Self {
-            City(fbthrift::__UNKNOWN_ID)
+            City(::fbthrift::__UNKNOWN_ID)
         }
     }
 
-    impl<'a> From<&'a City> for i32 {
+    impl<'a> ::std::convert::From<&'a City> for ::std::primitive::i32 {
         #[inline]
-        fn from(x: &'a City) -> i32 {
+        fn from(x: &'a City) -> Self {
             x.0
         }
     }
 
-    impl From<City> for i32 {
+    impl ::std::convert::From<City> for ::std::primitive::i32 {
         #[inline]
-        fn from(x: City) -> i32 {
+        fn from(x: City) -> Self {
             x.0
         }
     }
 
-    impl From<i32> for City {
+    impl ::std::convert::From<::std::primitive::i32> for City {
         #[inline]
-        fn from(x: i32) -> Self {
+        fn from(x: ::std::primitive::i32) -> Self {
             Self(x)
         }
     }
 
-    impl std::fmt::Display for City {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            let s: &str = match *self {
+    impl ::std::fmt::Display for City {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            let s: &::std::primitive::str = match *self {
                 City::NYC => "NYC",
                 City::MPK => "MPK",
                 City::SEA => "SEA",
@@ -465,46 +468,52 @@ pub mod types {
         }
     }
 
-    impl std::fmt::Debug for City {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+    impl ::std::fmt::Debug for City {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
             write!(fmt, "City::{}", self)
         }
     }
 
-    impl std::str::FromStr for City {
-        type Err = anyhow::Error;
+    impl ::std::str::FromStr for City {
+        type Err = ::anyhow::Error;
 
-        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
+        fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
             match string {
-                "NYC" => Ok(City::NYC),
-                "MPK" => Ok(City::MPK),
-                "SEA" => Ok(City::SEA),
-                "LON" => Ok(City::LON),
-                _ => anyhow::bail!("Unable to parse {} as City", string),
+                "NYC" => ::std::result::Result::Ok(City::NYC),
+                "MPK" => ::std::result::Result::Ok(City::MPK),
+                "SEA" => ::std::result::Result::Ok(City::SEA),
+                "LON" => ::std::result::Result::Ok(City::LON),
+                _ => ::anyhow::bail!("Unable to parse {} as City", string),
             }
         }
     }
 
-    impl GetTType for City {
-        const TTYPE: TType = TType::I32;
+    impl ::fbthrift::GetTType for City {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for City {
+    impl<P> ::fbthrift::Serialize<P> for City
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         #[inline]
         fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for City {
+    impl<P> ::fbthrift::Deserialize<P> for City
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
         #[inline]
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            Ok(City::from(p.read_i32()?))
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            ::std::result::Result::Ok(City::from(p.read_i32()?))
         }
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
-    pub struct Company(pub i32);
+    pub struct Company(pub ::std::primitive::i32);
 
     impl Company {
         pub const FACEBOOK: Self = Company(0i32);
@@ -513,36 +522,36 @@ pub mod types {
         pub const INSTAGRAM: Self = Company(3i32);
     }
 
-    impl Default for Company {
+    impl ::std::default::Default for Company {
         fn default() -> Self {
-            Company(fbthrift::__UNKNOWN_ID)
+            Company(::fbthrift::__UNKNOWN_ID)
         }
     }
 
-    impl<'a> From<&'a Company> for i32 {
+    impl<'a> ::std::convert::From<&'a Company> for ::std::primitive::i32 {
         #[inline]
-        fn from(x: &'a Company) -> i32 {
+        fn from(x: &'a Company) -> Self {
             x.0
         }
     }
 
-    impl From<Company> for i32 {
+    impl ::std::convert::From<Company> for ::std::primitive::i32 {
         #[inline]
-        fn from(x: Company) -> i32 {
+        fn from(x: Company) -> Self {
             x.0
         }
     }
 
-    impl From<i32> for Company {
+    impl ::std::convert::From<::std::primitive::i32> for Company {
         #[inline]
-        fn from(x: i32) -> Self {
+        fn from(x: ::std::primitive::i32) -> Self {
             Self(x)
         }
     }
 
-    impl std::fmt::Display for Company {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            let s: &str = match *self {
+    impl ::std::fmt::Display for Company {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            let s: &::std::primitive::str = match *self {
                 Company::FACEBOOK => "FACEBOOK",
                 Company::WHATSAPP => "WHATSAPP",
                 Company::OCULUS => "OCULUS",
@@ -553,41 +562,47 @@ pub mod types {
         }
     }
 
-    impl std::fmt::Debug for Company {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+    impl ::std::fmt::Debug for Company {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
             write!(fmt, "Company::{}", self)
         }
     }
 
-    impl std::str::FromStr for Company {
-        type Err = anyhow::Error;
+    impl ::std::str::FromStr for Company {
+        type Err = ::anyhow::Error;
 
-        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
+        fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
             match string {
-                "FACEBOOK" => Ok(Company::FACEBOOK),
-                "WHATSAPP" => Ok(Company::WHATSAPP),
-                "OCULUS" => Ok(Company::OCULUS),
-                "INSTAGRAM" => Ok(Company::INSTAGRAM),
-                _ => anyhow::bail!("Unable to parse {} as Company", string),
+                "FACEBOOK" => ::std::result::Result::Ok(Company::FACEBOOK),
+                "WHATSAPP" => ::std::result::Result::Ok(Company::WHATSAPP),
+                "OCULUS" => ::std::result::Result::Ok(Company::OCULUS),
+                "INSTAGRAM" => ::std::result::Result::Ok(Company::INSTAGRAM),
+                _ => ::anyhow::bail!("Unable to parse {} as Company", string),
             }
         }
     }
 
-    impl GetTType for Company {
-        const TTYPE: TType = TType::I32;
+    impl ::fbthrift::GetTType for Company {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for Company {
+    impl<P> ::fbthrift::Serialize<P> for Company
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         #[inline]
         fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for Company {
+    impl<P> ::fbthrift::Deserialize<P> for Company
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
         #[inline]
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            Ok(Company::from(p.read_i32()?))
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            ::std::result::Result::Ok(Company::from(p.read_i32()?))
         }
     }
 
@@ -595,32 +610,35 @@ pub mod types {
 
 
 
-    impl Default for self::Internship {
+    impl ::std::default::Default for self::Internship {
         fn default() -> Self {
             Self {
-                weeks: Default::default(),
-                title: Default::default(),
-                employer: None,
+                weeks: ::std::default::Default::default(),
+                title: ::std::default::Default::default(),
+                employer: ::std::option::Option::None,
             }
         }
     }
 
-    impl GetTType for self::Internship {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for self::Internship {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for self::Internship {
+    impl<P> ::fbthrift::Serialize<P> for self::Internship
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("Internship");
-            p.write_field_begin("weeks", TType::I32, 1);
-            Serialize::write(&self.weeks, p);
+            p.write_field_begin("weeks", ::fbthrift::TType::I32, 1);
+            ::fbthrift::Serialize::write(&self.weeks, p);
             p.write_field_end();
-            p.write_field_begin("title", TType::String, 2);
-            Serialize::write(&self.title, p);
+            p.write_field_begin("title", ::fbthrift::TType::String, 2);
+            ::fbthrift::Serialize::write(&self.title, p);
             p.write_field_end();
-            if let Some(some) = &self.employer {
-                p.write_field_begin("employer", TType::I32, 3);
-                Serialize::write(some, p);
+            if let ::std::option::Option::Some(some) = &self.employer {
+                p.write_field_begin("employer", ::fbthrift::TType::I32, 3);
+                ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
             p.write_field_stop();
@@ -628,25 +646,28 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for self::Internship {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            let mut field_weeks = None;
-            let mut field_title = None;
-            let mut field_employer = None;
+    impl<P> ::fbthrift::Deserialize<P> for self::Internship
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            let mut field_weeks = ::std::option::Option::None;
+            let mut field_title = ::std::option::Option::None;
+            let mut field_employer = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::I32, 1) => field_weeks = Some(Deserialize::read(p)?),
-                    (TType::String, 2) => field_title = Some(Deserialize::read(p)?),
-                    (TType::I32, 3) => field_employer = Some(Deserialize::read(p)?),
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I32, 1) => field_weeks = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 2) => field_title = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 3) => field_employer = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
+            ::std::result::Result::Ok(Self {
                 weeks: field_weeks.unwrap_or_default(),
                 title: field_title.unwrap_or_default(),
                 employer: field_employer,
@@ -655,50 +676,56 @@ pub mod types {
     }
 
 
-    impl Default for self::Range {
+    impl ::std::default::Default for self::Range {
         fn default() -> Self {
             Self {
-                min: Default::default(),
-                max: Default::default(),
+                min: ::std::default::Default::default(),
+                max: ::std::default::Default::default(),
             }
         }
     }
 
-    impl GetTType for self::Range {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for self::Range {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for self::Range {
+    impl<P> ::fbthrift::Serialize<P> for self::Range
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("Range");
-            p.write_field_begin("min", TType::I32, 1);
-            Serialize::write(&self.min, p);
+            p.write_field_begin("min", ::fbthrift::TType::I32, 1);
+            ::fbthrift::Serialize::write(&self.min, p);
             p.write_field_end();
-            p.write_field_begin("max", TType::I32, 2);
-            Serialize::write(&self.max, p);
+            p.write_field_begin("max", ::fbthrift::TType::I32, 2);
+            ::fbthrift::Serialize::write(&self.max, p);
             p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for self::Range {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            let mut field_min = None;
-            let mut field_max = None;
+    impl<P> ::fbthrift::Deserialize<P> for self::Range
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            let mut field_min = ::std::option::Option::None;
+            let mut field_max = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::I32, 1) => field_min = Some(Deserialize::read(p)?),
-                    (TType::I32, 2) => field_max = Some(Deserialize::read(p)?),
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I32, 1) => field_min = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 2) => field_max = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
+            ::std::result::Result::Ok(Self {
                 min: field_min.unwrap_or_default(),
                 max: field_max.unwrap_or_default(),
             })
@@ -706,7 +733,7 @@ pub mod types {
     }
 
 
-    impl Default for self::struct1 {
+    impl ::std::default::Default for self::struct1 {
         fn default() -> Self {
             Self {
                 a: 1234567,
@@ -715,41 +742,47 @@ pub mod types {
         }
     }
 
-    impl GetTType for self::struct1 {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for self::struct1 {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for self::struct1 {
+    impl<P> ::fbthrift::Serialize<P> for self::struct1
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("struct1");
-            p.write_field_begin("a", TType::I32, 1);
-            Serialize::write(&self.a, p);
+            p.write_field_begin("a", ::fbthrift::TType::I32, 1);
+            ::fbthrift::Serialize::write(&self.a, p);
             p.write_field_end();
-            p.write_field_begin("b", TType::String, 2);
-            Serialize::write(&self.b, p);
+            p.write_field_begin("b", ::fbthrift::TType::String, 2);
+            ::fbthrift::Serialize::write(&self.b, p);
             p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for self::struct1 {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            let mut field_a = None;
-            let mut field_b = None;
+    impl<P> ::fbthrift::Deserialize<P> for self::struct1
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            let mut field_a = ::std::option::Option::None;
+            let mut field_b = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::I32, 1) => field_a = Some(Deserialize::read(p)?),
-                    (TType::String, 2) => field_b = Some(Deserialize::read(p)?),
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I32, 1) => field_a = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 2) => field_b = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
+            ::std::result::Result::Ok(Self {
                 a: field_a.unwrap_or_else(|| 1234567),
                 b: field_b.unwrap_or_else(|| "<uninitialized>".to_owned()),
             })
@@ -757,62 +790,68 @@ pub mod types {
     }
 
 
-    impl Default for self::struct2 {
+    impl ::std::default::Default for self::struct2 {
         fn default() -> Self {
             Self {
-                a: Default::default(),
-                b: Default::default(),
-                c: Default::default(),
-                d: Default::default(),
+                a: ::std::default::Default::default(),
+                b: ::std::default::Default::default(),
+                c: ::std::default::Default::default(),
+                d: ::std::default::Default::default(),
             }
         }
     }
 
-    impl GetTType for self::struct2 {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for self::struct2 {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for self::struct2 {
+    impl<P> ::fbthrift::Serialize<P> for self::struct2
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("struct2");
-            p.write_field_begin("a", TType::I32, 1);
-            Serialize::write(&self.a, p);
+            p.write_field_begin("a", ::fbthrift::TType::I32, 1);
+            ::fbthrift::Serialize::write(&self.a, p);
             p.write_field_end();
-            p.write_field_begin("b", TType::String, 2);
-            Serialize::write(&self.b, p);
+            p.write_field_begin("b", ::fbthrift::TType::String, 2);
+            ::fbthrift::Serialize::write(&self.b, p);
             p.write_field_end();
-            p.write_field_begin("c", TType::Struct, 3);
-            Serialize::write(&self.c, p);
+            p.write_field_begin("c", ::fbthrift::TType::Struct, 3);
+            ::fbthrift::Serialize::write(&self.c, p);
             p.write_field_end();
-            p.write_field_begin("d", TType::List, 4);
-            Serialize::write(&self.d, p);
+            p.write_field_begin("d", ::fbthrift::TType::List, 4);
+            ::fbthrift::Serialize::write(&self.d, p);
             p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for self::struct2 {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            let mut field_a = None;
-            let mut field_b = None;
-            let mut field_c = None;
-            let mut field_d = None;
+    impl<P> ::fbthrift::Deserialize<P> for self::struct2
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            let mut field_a = ::std::option::Option::None;
+            let mut field_b = ::std::option::Option::None;
+            let mut field_c = ::std::option::Option::None;
+            let mut field_d = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::I32, 1) => field_a = Some(Deserialize::read(p)?),
-                    (TType::String, 2) => field_b = Some(Deserialize::read(p)?),
-                    (TType::Struct, 3) => field_c = Some(Deserialize::read(p)?),
-                    (TType::List, 4) => field_d = Some(Deserialize::read(p)?),
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I32, 1) => field_a = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 2) => field_b = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 3) => field_c = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::List, 4) => field_d = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
+            ::std::result::Result::Ok(Self {
                 a: field_a.unwrap_or_default(),
                 b: field_b.unwrap_or_default(),
                 c: field_c.unwrap_or_default(),
@@ -822,56 +861,62 @@ pub mod types {
     }
 
 
-    impl Default for self::struct3 {
+    impl ::std::default::Default for self::struct3 {
         fn default() -> Self {
             Self {
-                a: Default::default(),
-                b: Default::default(),
-                c: Default::default(),
+                a: ::std::default::Default::default(),
+                b: ::std::default::Default::default(),
+                c: ::std::default::Default::default(),
             }
         }
     }
 
-    impl GetTType for self::struct3 {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for self::struct3 {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for self::struct3 {
+    impl<P> ::fbthrift::Serialize<P> for self::struct3
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("struct3");
-            p.write_field_begin("a", TType::String, 1);
-            Serialize::write(&self.a, p);
+            p.write_field_begin("a", ::fbthrift::TType::String, 1);
+            ::fbthrift::Serialize::write(&self.a, p);
             p.write_field_end();
-            p.write_field_begin("b", TType::I32, 2);
-            Serialize::write(&self.b, p);
+            p.write_field_begin("b", ::fbthrift::TType::I32, 2);
+            ::fbthrift::Serialize::write(&self.b, p);
             p.write_field_end();
-            p.write_field_begin("c", TType::Struct, 3);
-            Serialize::write(&self.c, p);
+            p.write_field_begin("c", ::fbthrift::TType::Struct, 3);
+            ::fbthrift::Serialize::write(&self.c, p);
             p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for self::struct3 {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            let mut field_a = None;
-            let mut field_b = None;
-            let mut field_c = None;
+    impl<P> ::fbthrift::Deserialize<P> for self::struct3
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            let mut field_a = ::std::option::Option::None;
+            let mut field_b = ::std::option::Option::None;
+            let mut field_c = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::String, 1) => field_a = Some(Deserialize::read(p)?),
-                    (TType::I32, 2) => field_b = Some(Deserialize::read(p)?),
-                    (TType::Struct, 3) => field_c = Some(Deserialize::read(p)?),
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::String, 1) => field_a = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 2) => field_b = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 3) => field_c = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
+            ::std::result::Result::Ok(Self {
                 a: field_a.unwrap_or_default(),
                 b: field_b.unwrap_or_default(),
                 c: field_c.unwrap_or_default(),
@@ -881,32 +926,35 @@ pub mod types {
 
 
 
-    impl Default for union1 {
+    impl ::std::default::Default for union1 {
         fn default() -> Self {
             Self::UnknownField(-1)
         }
     }
 
-    impl GetTType for union1 {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for union1 {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for union1 {
+    impl<P> ::fbthrift::Serialize<P> for union1
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("union1");
             match self {
                 union1::i(inner) => {
-                    p.write_field_begin("i", TType::I32, 1);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("i", ::fbthrift::TType::I32, 1);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 union1::d(inner) => {
-                    p.write_field_begin("d", TType::Double, 2);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("d", ::fbthrift::TType::Double, 2);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 union1::UnknownField(x) => {
-                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    p.write_field_begin("UnknownField", ::fbthrift::TType::I32, *x as ::std::primitive::i16);
                     x.write(p);
                     p.write_field_end();
                 }
@@ -916,25 +964,28 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for union1 {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
+    impl<P> ::fbthrift::Deserialize<P> for union1
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             let mut once = false;
-            let mut alt = None;
+            let mut alt = ::std::option::Option::None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32, once) {
-                    (TType::Stop, _, _) => break,
-                    (TType::I32, 1, false) => {
+                match (fty, fid as ::std::primitive::i32, once) {
+                    (::fbthrift::TType::Stop, _, _) => break,
+                    (::fbthrift::TType::I32, 1, false) => {
                         once = true;
-                        alt = Some(union1::i(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(union1::i(::fbthrift::Deserialize::read(p)?));
                     }
-                    (TType::Double, 2, false) => {
+                    (::fbthrift::TType::Double, 2, false) => {
                         once = true;
-                        alt = Some(union1::d(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(union1::d(::fbthrift::Deserialize::read(p)?));
                     }
                     (fty, _, false) => p.skip(fty)?,
-                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                    (badty, badid, true) => return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
                         ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                         format!(
                             "unwanted extra union {} field ty {:?} id {}",
@@ -947,47 +998,50 @@ pub mod types {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(alt.unwrap_or_default())
+            ::std::result::Result::Ok(alt.unwrap_or_default())
         }
     }
 
 
-    impl Default for union2 {
+    impl ::std::default::Default for union2 {
         fn default() -> Self {
             Self::UnknownField(-1)
         }
     }
 
-    impl GetTType for union2 {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for union2 {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for union2 {
+    impl<P> ::fbthrift::Serialize<P> for union2
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("union2");
             match self {
                 union2::i(inner) => {
-                    p.write_field_begin("i", TType::I32, 1);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("i", ::fbthrift::TType::I32, 1);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 union2::d(inner) => {
-                    p.write_field_begin("d", TType::Double, 2);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("d", ::fbthrift::TType::Double, 2);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 union2::s(inner) => {
-                    p.write_field_begin("s", TType::Struct, 3);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("s", ::fbthrift::TType::Struct, 3);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 union2::u(inner) => {
-                    p.write_field_begin("u", TType::Struct, 4);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("u", ::fbthrift::TType::Struct, 4);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 union2::UnknownField(x) => {
-                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    p.write_field_begin("UnknownField", ::fbthrift::TType::I32, *x as ::std::primitive::i16);
                     x.write(p);
                     p.write_field_end();
                 }
@@ -997,33 +1051,36 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for union2 {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
+    impl<P> ::fbthrift::Deserialize<P> for union2
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             let mut once = false;
-            let mut alt = None;
+            let mut alt = ::std::option::Option::None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32, once) {
-                    (TType::Stop, _, _) => break,
-                    (TType::I32, 1, false) => {
+                match (fty, fid as ::std::primitive::i32, once) {
+                    (::fbthrift::TType::Stop, _, _) => break,
+                    (::fbthrift::TType::I32, 1, false) => {
                         once = true;
-                        alt = Some(union2::i(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(union2::i(::fbthrift::Deserialize::read(p)?));
                     }
-                    (TType::Double, 2, false) => {
+                    (::fbthrift::TType::Double, 2, false) => {
                         once = true;
-                        alt = Some(union2::d(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(union2::d(::fbthrift::Deserialize::read(p)?));
                     }
-                    (TType::Struct, 3, false) => {
+                    (::fbthrift::TType::Struct, 3, false) => {
                         once = true;
-                        alt = Some(union2::s(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(union2::s(::fbthrift::Deserialize::read(p)?));
                     }
-                    (TType::Struct, 4, false) => {
+                    (::fbthrift::TType::Struct, 4, false) => {
                         once = true;
-                        alt = Some(union2::u(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(union2::u(::fbthrift::Deserialize::read(p)?));
                     }
                     (fty, _, false) => p.skip(fty)?,
-                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                    (badty, badid, true) => return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
                         ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                         format!(
                             "unwanted extra union {} field ty {:?} id {}",
@@ -1036,7 +1093,7 @@ pub mod types {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(alt.unwrap_or_default())
+            ::std::result::Result::Ok(alt.unwrap_or_default())
         }
     }
 }

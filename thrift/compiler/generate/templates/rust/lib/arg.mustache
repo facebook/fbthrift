@@ -16,7 +16,7 @@
 
 }}{{^field:primitive?}}&{{/field:primitive?}}{{!
 }}{{#field:type}}{{!
-    }}{{#type:string?}}str{{/type:string?}}{{!
+    }}{{#type:string?}}::std::primitive::str{{/type:string?}}{{!
     }}{{#type:list?}}{{!
       }}[{{#type:listElemType}}{{>lib/type}}{{/type:listElemType}}]{{!
     }}{{/type:list?}}{{!

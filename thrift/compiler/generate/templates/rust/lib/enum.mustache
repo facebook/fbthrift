@@ -17,9 +17,9 @@
 }}
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash{{!
-        }}{{#program:serde?}}, Serialize, Deserialize{{/program:serde?}}{{!
+        }}{{#program:serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/program:serde?}}{{!
     }})]
-    pub struct {{enum:rust_name}}(pub i32);
+    pub struct {{enum:rust_name}}(pub ::std::primitive::i32);
 
     impl {{enum:rust_name}} {{>lib/block}}{{!
         }}{{#enum:values}}
@@ -28,37 +28,37 @@
         }}{{/enum:values}}
     }
 
-    impl Default for {{enum:rust_name}} {
+    impl ::std::default::Default for {{enum:rust_name}} {
         fn default() -> Self {
-            {{enum:rust_name}}(fbthrift::__UNKNOWN_ID)
+            {{enum:rust_name}}(::fbthrift::__UNKNOWN_ID)
         }
     }
 
-    impl<'a> From<&'a {{enum:rust_name}}> for i32 {
+    impl<'a> ::std::convert::From<&'a {{enum:rust_name}}> for ::std::primitive::i32 {
         #[inline]
-        fn from(x: &'a {{enum:rust_name}}) -> i32 {
+        fn from(x: &'a {{enum:rust_name}}) -> Self {
             x.0
         }
     }
 
-    impl From<{{enum:rust_name}}> for i32 {
+    impl ::std::convert::From<{{enum:rust_name}}> for ::std::primitive::i32 {
         #[inline]
-        fn from(x: {{enum:rust_name}}) -> i32 {
+        fn from(x: {{enum:rust_name}}) -> Self {
             x.0
         }
     }
 
-    impl From<i32> for {{enum:rust_name}} {
+    impl ::std::convert::From<::std::primitive::i32> for {{enum:rust_name}} {
         #[inline]
-        fn from(x: i32) -> Self {
+        fn from(x: ::std::primitive::i32) -> Self {
             Self(x)
         }
     }
 
-    impl std::fmt::Display for {{enum:rust_name}} {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {{>lib/block}}{{!
+    impl ::std::fmt::Display for {{enum:rust_name}} {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {{>lib/block}}{{!
             }}{{#enum:values?}}
-            let s: &str = match *self {{>lib/block}}{{!
+            let s: &::std::primitive::str = match *self {{>lib/block}}{{!
                 }}{{#enum:values}}
                 {{enum:rust_name}}::{{enumValue:rust_name}} => "{{enumValue:name}}",{{!
                 }}{{/enum:values}}
@@ -72,40 +72,46 @@
         }
     }
 
-    impl std::fmt::Debug for {{enum:rust_name}} {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+    impl ::std::fmt::Debug for {{enum:rust_name}} {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
             write!(fmt, "{{enum:name}}::{}", self)
         }
     }
 
-    impl std::str::FromStr for {{enum:rust_name}} {
-        type Err = anyhow::Error;
+    impl ::std::str::FromStr for {{enum:rust_name}} {
+        type Err = ::anyhow::Error;
 
-        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
+        fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
             match string {{>lib/block}}{{!
                 }}{{#enum:values}}
-                "{{enumValue:name}}" => Ok({{enum:rust_name}}::{{enumValue:rust_name}}),{{!
+                "{{enumValue:name}}" => ::std::result::Result::Ok({{enum:rust_name}}::{{enumValue:rust_name}}),{{!
                 }}{{/enum:values}}
-                _ => anyhow::bail!("Unable to parse {} as {{enum:name}}", string),
+                _ => ::anyhow::bail!("Unable to parse {} as {{enum:name}}", string),
             }
         }
     }
 
-    impl GetTType for {{enum:rust_name}} {
-        const TTYPE: TType = TType::I32;
+    impl ::fbthrift::GetTType for {{enum:rust_name}} {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for {{enum:rust_name}} {
+    impl<P> ::fbthrift::Serialize<P> for {{enum:rust_name}}
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         #[inline]
         fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for {{enum:rust_name}} {
+    impl<P> ::fbthrift::Deserialize<P> for {{enum:rust_name}}
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
         #[inline]
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            Ok({{enum:rust_name}}::from(p.read_i32()?))
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            ::std::result::Result::Ok({{enum:rust_name}}::from(p.read_i32()?))
         }
     }
 {{!newline}}

@@ -21,7 +21,7 @@
 {{^constant:lazy?}}
     pub const {{constant:name}}{{!
     }}: {{!
-    }}{{#type:string?}}&str = {{value:quoted}}{{/type:string?}}{{!
+    }}{{#type:string?}}&::std::primitive::str = {{value:quoted}}{{/type:string?}}{{!
     }}{{^type:string?}}{{>lib/type}} = {{>lib/value}}{{/type:string?}}{{!
     }};
 {{/constant:lazy?}}

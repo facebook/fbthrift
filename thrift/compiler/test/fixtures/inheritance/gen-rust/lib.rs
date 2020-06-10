@@ -9,35 +9,34 @@ pub mod dependencies {
 
 pub mod services {
     pub mod my_root {
-        use fbthrift::{
-            ApplicationException, ApplicationExceptionErrorCode, Deserialize, ProtocolReader,
-            ProtocolWriter, Serialize, TType,
-        };
 
         #[derive(Clone, Debug)]
         pub enum DoRootExn {
             Success(()),
-            ApplicationException(::fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::ApplicationException),
         }
 
-        impl From<ApplicationException> for DoRootExn {
-            fn from(exn: ApplicationException) -> Self {
+        impl ::std::convert::From<::fbthrift::ApplicationException> for DoRootExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
                 DoRootExn::ApplicationException(exn)
             }
         }
 
-        impl fbthrift::GetTType for DoRootExn {
-            const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
+        impl ::fbthrift::GetTType for DoRootExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P: ProtocolWriter> Serialize<P> for DoRootExn {
+        impl<P> ::fbthrift::Serialize<P> for DoRootExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("DoRoot");
                 match self {
                     DoRootExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
-                            TType::Void,
+                            ::fbthrift::TType::Void,
                             0i16,
                         );
                         inner.write(p);
@@ -54,26 +53,29 @@ pub mod services {
             }
         }
 
-        impl<P: ProtocolReader> Deserialize<P> for DoRootExn {
-            fn read(p: &mut P) -> anyhow::Result<Self> {
+        impl<P> ::fbthrift::Deserialize<P> for DoRootExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = DoRootExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                    match ((fty, fid as i32), once) {
-                        ((TType::Stop, _), _) => {
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
                             p.read_field_end()?;
                             break;
                         }
-                        ((TType::Void, 0i32), false) => {
+                        ((::fbthrift::TType::Void, 0i32), false) => {
                             once = true;
-                            alt = DoRootExn::Success(Deserialize::read(p)?);
+                            alt = DoRootExn::Success(::fbthrift::Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
-                        ((badty, badid), true) => return Err(From::from(
-                            ApplicationException::new(
-                                ApplicationExceptionErrorCode::ProtocolError,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                                 format!(
                                     "unwanted extra union {} field ty {:?} id {}",
                                     "DoRootExn",
@@ -86,41 +88,40 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                Ok(alt)
+                ::std::result::Result::Ok(alt)
             }
         }
     }
 
     pub mod my_node {
-        use fbthrift::{
-            ApplicationException, ApplicationExceptionErrorCode, Deserialize, ProtocolReader,
-            ProtocolWriter, Serialize, TType,
-        };
 
         #[derive(Clone, Debug)]
         pub enum DoMidExn {
             Success(()),
-            ApplicationException(::fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::ApplicationException),
         }
 
-        impl From<ApplicationException> for DoMidExn {
-            fn from(exn: ApplicationException) -> Self {
+        impl ::std::convert::From<::fbthrift::ApplicationException> for DoMidExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
                 DoMidExn::ApplicationException(exn)
             }
         }
 
-        impl fbthrift::GetTType for DoMidExn {
-            const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
+        impl ::fbthrift::GetTType for DoMidExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P: ProtocolWriter> Serialize<P> for DoMidExn {
+        impl<P> ::fbthrift::Serialize<P> for DoMidExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("DoMid");
                 match self {
                     DoMidExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
-                            TType::Void,
+                            ::fbthrift::TType::Void,
                             0i16,
                         );
                         inner.write(p);
@@ -137,26 +138,29 @@ pub mod services {
             }
         }
 
-        impl<P: ProtocolReader> Deserialize<P> for DoMidExn {
-            fn read(p: &mut P) -> anyhow::Result<Self> {
+        impl<P> ::fbthrift::Deserialize<P> for DoMidExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = DoMidExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                    match ((fty, fid as i32), once) {
-                        ((TType::Stop, _), _) => {
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
                             p.read_field_end()?;
                             break;
                         }
-                        ((TType::Void, 0i32), false) => {
+                        ((::fbthrift::TType::Void, 0i32), false) => {
                             once = true;
-                            alt = DoMidExn::Success(Deserialize::read(p)?);
+                            alt = DoMidExn::Success(::fbthrift::Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
-                        ((badty, badid), true) => return Err(From::from(
-                            ApplicationException::new(
-                                ApplicationExceptionErrorCode::ProtocolError,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                                 format!(
                                     "unwanted extra union {} field ty {:?} id {}",
                                     "DoMidExn",
@@ -169,41 +173,40 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                Ok(alt)
+                ::std::result::Result::Ok(alt)
             }
         }
     }
 
     pub mod my_leaf {
-        use fbthrift::{
-            ApplicationException, ApplicationExceptionErrorCode, Deserialize, ProtocolReader,
-            ProtocolWriter, Serialize, TType,
-        };
 
         #[derive(Clone, Debug)]
         pub enum DoLeafExn {
             Success(()),
-            ApplicationException(::fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::ApplicationException),
         }
 
-        impl From<ApplicationException> for DoLeafExn {
-            fn from(exn: ApplicationException) -> Self {
+        impl ::std::convert::From<::fbthrift::ApplicationException> for DoLeafExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
                 DoLeafExn::ApplicationException(exn)
             }
         }
 
-        impl fbthrift::GetTType for DoLeafExn {
-            const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
+        impl ::fbthrift::GetTType for DoLeafExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P: ProtocolWriter> Serialize<P> for DoLeafExn {
+        impl<P> ::fbthrift::Serialize<P> for DoLeafExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("DoLeaf");
                 match self {
                     DoLeafExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
-                            TType::Void,
+                            ::fbthrift::TType::Void,
                             0i16,
                         );
                         inner.write(p);
@@ -220,26 +223,29 @@ pub mod services {
             }
         }
 
-        impl<P: ProtocolReader> Deserialize<P> for DoLeafExn {
-            fn read(p: &mut P) -> anyhow::Result<Self> {
+        impl<P> ::fbthrift::Deserialize<P> for DoLeafExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = DoLeafExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                    match ((fty, fid as i32), once) {
-                        ((TType::Stop, _), _) => {
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
                             p.read_field_end()?;
                             break;
                         }
-                        ((TType::Void, 0i32), false) => {
+                        ((::fbthrift::TType::Void, 0i32), false) => {
                             once = true;
-                            alt = DoLeafExn::Success(Deserialize::read(p)?);
+                            alt = DoLeafExn::Success(::fbthrift::Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
-                        ((badty, badid), true) => return Err(From::from(
-                            ApplicationException::new(
-                                ApplicationExceptionErrorCode::ProtocolError,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                                 format!(
                                     "unwanted extra union {} field ty {:?} id {}",
                                     "DoLeafExn",
@@ -252,20 +258,17 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                Ok(alt)
+                ::std::result::Result::Ok(alt)
             }
         }
     }
 }
 
 pub mod client {
-    use fbthrift::*;
-    use std::marker::PhantomData;
-    use std::sync::Arc;
 
     pub struct MyRootImpl<P, T> {
         transport: T,
-        _phantom: PhantomData<fn() -> P>,
+        _phantom: ::std::marker::PhantomData<fn() -> P>,
     }
 
     impl<P, T> MyRootImpl<P, T> {
@@ -274,7 +277,7 @@ pub mod client {
         ) -> Self {
             Self {
                 transport,
-                _phantom: PhantomData,
+                _phantom: ::std::marker::PhantomData,
             }
         }
 
@@ -283,26 +286,27 @@ pub mod client {
         }
     }
 
-    pub trait MyRoot: Send {
+    pub trait MyRoot: ::std::marker::Send {
         fn do_root(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_root::DoRootError>> + Send + 'static>>;
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_root::DoRootError>> + ::std::marker::Send + 'static>>;
     }
 
     impl<P, T> MyRoot for MyRootImpl<P, T>
     where
-        P: Protocol,
-        T: Transport,
-        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
-        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
     {        fn do_root(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_root::DoRootError>> + Send + 'static>> {
-            use futures::future::{FutureExt, TryFutureExt};
-            let request = serialize!(P, |p| protocol::write_message(
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_root::DoRootError>> + ::std::marker::Send + 'static>> {
+            use ::fbthrift::{ProtocolReader as _, ProtocolWriter as _};
+            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "do_root",
-                MessageType::Call,
+                ::fbthrift::MessageType::Call,
                 // Note: we send a 0 message sequence ID from clients because
                 // this field should not be used by the server (except for some
                 // language implementations).
@@ -315,29 +319,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .map_err(From::from)
-                .and_then(|reply| futures::future::ready({
+                .map_err(::std::convert::From::from)
+                .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::my_root::DoRootError> {
+                    move |mut p: P::Deserializer| -> ::std::result::Result<(), crate::errors::my_root::DoRootError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
-                            MessageType::Reply => {
-                                let exn = crate::services::my_root::DoRootExn::read(p)?;
+                            ::fbthrift::MessageType::Reply => {
+                                let exn: crate::services::my_root::DoRootExn = ::fbthrift::Deserialize::read(p)?;
                                 match exn {
-                                    crate::services::my_root::DoRootExn::Success(x) => Ok(x),
+                                    crate::services::my_root::DoRootExn::Success(x) => ::std::result::Result::Ok(x),
                                     crate::services::my_root::DoRootExn::ApplicationException(ae) => {
-                                        Err(crate::errors::my_root::DoRootError::ApplicationException(ae))
+                                        ::std::result::Result::Err(crate::errors::my_root::DoRootError::ApplicationException(ae))
                                     }
                                 }
                             }
-                            MessageType::Exception => {
-                                let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::my_root::DoRootError::ApplicationException(ae))
+                            ::fbthrift::MessageType::Exception => {
+                                let ae: ::fbthrift::ApplicationException = ::fbthrift::Deserialize::read(p)?;
+                                ::std::result::Result::Err(crate::errors::my_root::DoRootError::ApplicationException(ae))
                             }
-                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                Err(crate::errors::my_root::DoRootError::ThriftError(err))
+                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                ::std::result::Result::Err(crate::errors::my_root::DoRootError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -350,12 +354,12 @@ pub mod client {
 
     impl<'a, T> MyRoot for T
     where
-        T: AsRef<dyn MyRoot + 'a>,
-        T: Send,
+        T: ::std::convert::AsRef<dyn MyRoot + 'a>,
+        T: ::std::marker::Send,
     {
         fn do_root(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_root::DoRootError>> + Send + 'static>> {
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_root::DoRootError>> + ::std::marker::Send + 'static>> {
             self.as_ref().do_root(
             )
         }
@@ -378,30 +382,29 @@ pub mod client {
         pub fn new<P, T>(
             protocol: P,
             transport: T,
-        ) -> Arc<impl MyRoot + Send + 'static>
+        ) -> ::std::sync::Arc<impl MyRoot + ::std::marker::Send + 'static>
         where
-            P: Protocol<Frame = T>,
-            T: Transport,
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport,
         {
             let _ = protocol;
-            Arc::new(MyRootImpl::<P, T>::new(transport))
+            ::std::sync::Arc::new(MyRootImpl::<P, T>::new(transport))
         }
     }
 
     /// The same thing, but to be called from generic contexts where we are
     /// working with a type parameter `C: ClientFactory` to produce clients.
-    impl ClientFactory for make_MyRoot {
-        type Api = dyn MyRoot + Send + Sync + 'static;
+    impl ::fbthrift::ClientFactory for make_MyRoot {
+        type Api = dyn MyRoot + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
+        fn new<P, T>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
         where
-            P: Protocol<Frame = T>,
-            T: Transport + Sync,
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport + ::std::marker::Sync,
         {
             MyRoot::new(protocol, transport)
         }
     }
-
     pub struct MyNodeImpl<P, T> {
         parent: crate::client::MyRootImpl<P, T>,
     }
@@ -419,12 +422,12 @@ pub mod client {
         }
     }
 
-    impl<P, T> AsRef<dyn crate::client::MyRoot + 'static> for MyNodeImpl<P, T>
+    impl<P, T> ::std::convert::AsRef<dyn crate::client::MyRoot + 'static> for MyNodeImpl<P, T>
     where
-        P: Protocol,
-        T: Transport,
-        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
-        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
     {
         fn as_ref(&self) -> &(dyn crate::client::MyRoot + 'static)
         {
@@ -432,26 +435,27 @@ pub mod client {
         }
     }
 
-    pub trait MyNode: crate::client::MyRoot + Send {
+    pub trait MyNode: crate::client::MyRoot + ::std::marker::Send {
         fn do_mid(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_node::DoMidError>> + Send + 'static>>;
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_node::DoMidError>> + ::std::marker::Send + 'static>>;
     }
 
     impl<P, T> MyNode for MyNodeImpl<P, T>
     where
-        P: Protocol,
-        T: Transport,
-        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
-        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
     {        fn do_mid(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_node::DoMidError>> + Send + 'static>> {
-            use futures::future::{FutureExt, TryFutureExt};
-            let request = serialize!(P, |p| protocol::write_message(
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_node::DoMidError>> + ::std::marker::Send + 'static>> {
+            use ::fbthrift::{ProtocolReader as _, ProtocolWriter as _};
+            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "do_mid",
-                MessageType::Call,
+                ::fbthrift::MessageType::Call,
                 // Note: we send a 0 message sequence ID from clients because
                 // this field should not be used by the server (except for some
                 // language implementations).
@@ -464,29 +468,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .map_err(From::from)
-                .and_then(|reply| futures::future::ready({
+                .map_err(::std::convert::From::from)
+                .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::my_node::DoMidError> {
+                    move |mut p: P::Deserializer| -> ::std::result::Result<(), crate::errors::my_node::DoMidError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
-                            MessageType::Reply => {
-                                let exn = crate::services::my_node::DoMidExn::read(p)?;
+                            ::fbthrift::MessageType::Reply => {
+                                let exn: crate::services::my_node::DoMidExn = ::fbthrift::Deserialize::read(p)?;
                                 match exn {
-                                    crate::services::my_node::DoMidExn::Success(x) => Ok(x),
+                                    crate::services::my_node::DoMidExn::Success(x) => ::std::result::Result::Ok(x),
                                     crate::services::my_node::DoMidExn::ApplicationException(ae) => {
-                                        Err(crate::errors::my_node::DoMidError::ApplicationException(ae))
+                                        ::std::result::Result::Err(crate::errors::my_node::DoMidError::ApplicationException(ae))
                                     }
                                 }
                             }
-                            MessageType::Exception => {
-                                let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::my_node::DoMidError::ApplicationException(ae))
+                            ::fbthrift::MessageType::Exception => {
+                                let ae: ::fbthrift::ApplicationException = ::fbthrift::Deserialize::read(p)?;
+                                ::std::result::Result::Err(crate::errors::my_node::DoMidError::ApplicationException(ae))
                             }
-                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                Err(crate::errors::my_node::DoMidError::ThriftError(err))
+                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                ::std::result::Result::Err(crate::errors::my_node::DoMidError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -499,13 +503,13 @@ pub mod client {
 
     impl<'a, T> MyNode for T
     where
-        T: AsRef<dyn MyNode + 'a>,
+        T: ::std::convert::AsRef<dyn MyNode + 'a>,
         T: crate::client::MyRoot,
-        T: Send,
+        T: ::std::marker::Send,
     {
         fn do_mid(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_node::DoMidError>> + Send + 'static>> {
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_node::DoMidError>> + ::std::marker::Send + 'static>> {
             self.as_ref().do_mid(
             )
         }
@@ -528,30 +532,29 @@ pub mod client {
         pub fn new<P, T>(
             protocol: P,
             transport: T,
-        ) -> Arc<impl MyNode + Send + 'static>
+        ) -> ::std::sync::Arc<impl MyNode + ::std::marker::Send + 'static>
         where
-            P: Protocol<Frame = T>,
-            T: Transport,
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport,
         {
             let _ = protocol;
-            Arc::new(MyNodeImpl::<P, T>::new(transport))
+            ::std::sync::Arc::new(MyNodeImpl::<P, T>::new(transport))
         }
     }
 
     /// The same thing, but to be called from generic contexts where we are
     /// working with a type parameter `C: ClientFactory` to produce clients.
-    impl ClientFactory for make_MyNode {
-        type Api = dyn MyNode + Send + Sync + 'static;
+    impl ::fbthrift::ClientFactory for make_MyNode {
+        type Api = dyn MyNode + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
+        fn new<P, T>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
         where
-            P: Protocol<Frame = T>,
-            T: Transport + Sync,
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport + ::std::marker::Sync,
         {
             MyNode::new(protocol, transport)
         }
     }
-
     pub struct MyLeafImpl<P, T> {
         parent: crate::client::MyNodeImpl<P, T>,
     }
@@ -569,12 +572,12 @@ pub mod client {
         }
     }
 
-    impl<P, T> AsRef<dyn crate::client::MyNode + 'static> for MyLeafImpl<P, T>
+    impl<P, T> ::std::convert::AsRef<dyn crate::client::MyNode + 'static> for MyLeafImpl<P, T>
     where
-        P: Protocol,
-        T: Transport,
-        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
-        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
     {
         fn as_ref(&self) -> &(dyn crate::client::MyNode + 'static)
         {
@@ -582,12 +585,12 @@ pub mod client {
         }
     }
 
-    impl<P, T> AsRef<dyn crate::client::MyRoot + 'static> for MyLeafImpl<P, T>
+    impl<P, T> ::std::convert::AsRef<dyn crate::client::MyRoot + 'static> for MyLeafImpl<P, T>
     where
-        P: Protocol,
-        T: Transport,
-        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
-        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
     {
         fn as_ref(&self) -> &(dyn crate::client::MyRoot + 'static)
         {
@@ -595,26 +598,27 @@ pub mod client {
         }
     }
 
-    pub trait MyLeaf: crate::client::MyNode + Send {
+    pub trait MyLeaf: crate::client::MyNode + ::std::marker::Send {
         fn do_leaf(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + Send + 'static>>;
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + ::std::marker::Send + 'static>>;
     }
 
     impl<P, T> MyLeaf for MyLeafImpl<P, T>
     where
-        P: Protocol,
-        T: Transport,
-        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
-        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
     {        fn do_leaf(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + Send + 'static>> {
-            use futures::future::{FutureExt, TryFutureExt};
-            let request = serialize!(P, |p| protocol::write_message(
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + ::std::marker::Send + 'static>> {
+            use ::fbthrift::{ProtocolReader as _, ProtocolWriter as _};
+            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "do_leaf",
-                MessageType::Call,
+                ::fbthrift::MessageType::Call,
                 // Note: we send a 0 message sequence ID from clients because
                 // this field should not be used by the server (except for some
                 // language implementations).
@@ -627,29 +631,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .map_err(From::from)
-                .and_then(|reply| futures::future::ready({
+                .map_err(::std::convert::From::from)
+                .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::my_leaf::DoLeafError> {
+                    move |mut p: P::Deserializer| -> ::std::result::Result<(), crate::errors::my_leaf::DoLeafError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
-                            MessageType::Reply => {
-                                let exn = crate::services::my_leaf::DoLeafExn::read(p)?;
+                            ::fbthrift::MessageType::Reply => {
+                                let exn: crate::services::my_leaf::DoLeafExn = ::fbthrift::Deserialize::read(p)?;
                                 match exn {
-                                    crate::services::my_leaf::DoLeafExn::Success(x) => Ok(x),
+                                    crate::services::my_leaf::DoLeafExn::Success(x) => ::std::result::Result::Ok(x),
                                     crate::services::my_leaf::DoLeafExn::ApplicationException(ae) => {
-                                        Err(crate::errors::my_leaf::DoLeafError::ApplicationException(ae))
+                                        ::std::result::Result::Err(crate::errors::my_leaf::DoLeafError::ApplicationException(ae))
                                     }
                                 }
                             }
-                            MessageType::Exception => {
-                                let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::my_leaf::DoLeafError::ApplicationException(ae))
+                            ::fbthrift::MessageType::Exception => {
+                                let ae: ::fbthrift::ApplicationException = ::fbthrift::Deserialize::read(p)?;
+                                ::std::result::Result::Err(crate::errors::my_leaf::DoLeafError::ApplicationException(ae))
                             }
-                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                Err(crate::errors::my_leaf::DoLeafError::ThriftError(err))
+                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                ::std::result::Result::Err(crate::errors::my_leaf::DoLeafError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -662,14 +666,14 @@ pub mod client {
 
     impl<'a, T> MyLeaf for T
     where
-        T: AsRef<dyn MyLeaf + 'a>,
+        T: ::std::convert::AsRef<dyn MyLeaf + 'a>,
         T: crate::client::MyNode,
         T: crate::client::MyRoot,
-        T: Send,
+        T: ::std::marker::Send,
     {
         fn do_leaf(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + Send + 'static>> {
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + ::std::marker::Send + 'static>> {
             self.as_ref().do_leaf(
             )
         }
@@ -692,25 +696,25 @@ pub mod client {
         pub fn new<P, T>(
             protocol: P,
             transport: T,
-        ) -> Arc<impl MyLeaf + Send + 'static>
+        ) -> ::std::sync::Arc<impl MyLeaf + ::std::marker::Send + 'static>
         where
-            P: Protocol<Frame = T>,
-            T: Transport,
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport,
         {
             let _ = protocol;
-            Arc::new(MyLeafImpl::<P, T>::new(transport))
+            ::std::sync::Arc::new(MyLeafImpl::<P, T>::new(transport))
         }
     }
 
     /// The same thing, but to be called from generic contexts where we are
     /// working with a type parameter `C: ClientFactory` to produce clients.
-    impl ClientFactory for make_MyLeaf {
-        type Api = dyn MyLeaf + Send + Sync + 'static;
+    impl ::fbthrift::ClientFactory for make_MyLeaf {
+        type Api = dyn MyLeaf + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
+        fn new<P, T>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
         where
-            P: Protocol<Frame = T>,
-            T: Transport + Sync,
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport + ::std::marker::Sync,
         {
             MyLeaf::new(protocol, transport)
         }
@@ -718,17 +722,13 @@ pub mod client {
 }
 
 pub mod server {
-    use async_trait::async_trait;
-    use fbthrift::*;
-    use std::marker::PhantomData;
-
-    #[async_trait]
-    pub trait MyRoot: Send + Sync + 'static {
+    #[::async_trait::async_trait]
+    pub trait MyRoot: ::std::marker::Send + ::std::marker::Sync + 'static {
         async fn do_root(
             &self,
-        ) -> Result<(), crate::services::my_root::DoRootExn> {
-            Err(crate::services::my_root::DoRootExn::ApplicationException(
-                ApplicationException::unimplemented_method(
+        ) -> ::std::result::Result<(), crate::services::my_root::DoRootExn> {
+            ::std::result::Result::Err(crate::services::my_root::DoRootExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
                     "MyRoot",
                     "do_root",
                 ),
@@ -739,21 +739,21 @@ pub mod server {
     #[derive(Clone, Debug)]
     pub struct MyRootProcessor<P, H, R> {
         service: H,
-        supa: fbthrift::NullServiceProcessor<P, R>,
-        _phantom: PhantomData<(P, H, R)>,
+        supa: ::fbthrift::NullServiceProcessor<P, R>,
+        _phantom: ::std::marker::PhantomData<(P, H, R)>,
     }
 
     impl<P, H, R> MyRootProcessor<P, H, R>
     where
-        P: Protocol + Send + Sync + 'static,
-        P::Deserializer: Send,
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
         H: MyRoot,
     {
         pub fn new(service: H) -> Self {
             Self {
                 service,
-                supa: fbthrift::NullServiceProcessor::new(),
-                _phantom: PhantomData,
+                supa: ::fbthrift::NullServiceProcessor::new(),
+                _phantom: ::std::marker::PhantomData,
             }
         }
 
@@ -765,13 +765,14 @@ pub mod server {
             &'a self,
             p: &'a mut P::Deserializer,
             _req_ctxt: &R,
-            seqid: u32,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
+            seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::ProtocolReader as _;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -780,55 +781,55 @@ pub mod server {
             let res = self.service.do_root(
             ).await;
             let res = match res {
-                Ok(res) => {
+                ::std::result::Result::Ok(res) => {
                     crate::services::my_root::DoRootExn::Success(res)
                 }
-                Err(crate::services::my_root::DoRootExn::ApplicationException(aexn)) => {
-                    return Err(aexn.into())
+                ::std::result::Result::Err(crate::services::my_root::DoRootExn::ApplicationException(aexn)) => {
+                    return ::std::result::Result::Err(aexn.into())
                 }
-                Err(crate::services::my_root::DoRootExn::Success(_)) => {
+                ::std::result::Result::Err(crate::services::my_root::DoRootExn::Success(_)) => {
                     panic!(
                         "{} attempted to return success via error",
                         "do_root",
                     )
                 }
             };
-            let res = serialize!(P, |p| fbthrift::protocol::write_message(
+            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "do_root",
-                MessageType::Reply,
+                ::fbthrift::MessageType::Reply,
                 seqid,
-                |p| res.write(p),
+                |p| ::fbthrift::Serialize::write(&res, p),
             ));
-            Ok(res)
+            ::std::result::Result::Ok(res)
         }
     }
 
-    #[async_trait]
-    impl<P, H, R> fbthrift::ServiceProcessor<P> for MyRootProcessor<P, H, R>
+    #[::async_trait::async_trait]
+    impl<P, H, R> ::fbthrift::ServiceProcessor<P> for MyRootProcessor<P, H, R>
     where
-        P: Protocol + Send + Sync + 'static,
-        P::Deserializer: Send,
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
         H: MyRoot,
-        R: Send + Sync + 'static,
+        R: ::std::marker::Send + ::std::marker::Sync + 'static,
     {
         type RequestContext = R;
 
         #[inline]
-        fn method_idx(&self, name: &[u8]) -> Result<usize, ApplicationException> {
+        fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
-                b"do_root" => Ok(0usize),
-                _ => Err(ApplicationException::unknown_method()),
+                b"do_root" => ::std::result::Result::Ok(0usize),
+                _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
 
         async fn handle_method(
             &self,
-            idx: usize,
+            idx: ::std::primitive::usize,
             p: &mut P::Deserializer,
             r: &R,
-            seqid: u32,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
+            seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             match idx {
                 0usize => self.handle_do_root(p, r, seqid).await,
                 bad => panic!(
@@ -840,34 +841,35 @@ pub mod server {
         }
     }
 
-    #[async_trait]
-    impl<P, H, R> ThriftService<P::Frame> for MyRootProcessor<P, H, R>
+    #[::async_trait::async_trait]
+    impl<P, H, R> ::fbthrift::ThriftService<P::Frame> for MyRootProcessor<P, H, R>
     where
-        P: Protocol + Send + Sync + 'static,
-        P::Deserializer: Send,
-        P::Frame: Send + 'static,
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
+        P::Frame: ::std::marker::Send + 'static,
         H: MyRoot,
-        R: Send + Sync + 'static,
+        R: ::std::marker::Send + ::std::marker::Sync + 'static,
     {
         type Handler = H;
         type RequestContext = R;
 
         async fn call(
             &self,
-            req: ProtocolDecoded<P>,
+            req: ::fbthrift::ProtocolDecoded<P>,
             req_ctxt: &R,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::{BufExt as _, ProtocolReader as _, ServiceProcessor as _};
             let mut p = P::deserializer(req);
             let (idx, mty, seqid) = p.read_message_begin(|name| self.method_idx(name))?;
-            if mty != MessageType::Call {
-                return Err(From::from(ApplicationException::new(
-                    ApplicationExceptionErrorCode::InvalidMessageType,
+            if mty != ::fbthrift::MessageType::Call {
+                return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
+                    ::fbthrift::ApplicationExceptionErrorCode::InvalidMessageType,
                     format!("message type {:?} not handled", mty)
                 )));
             }
             let idx = match idx {
-                Ok(idx) => idx,
-                Err(_) => {
+                ::std::result::Result::Ok(idx) => idx,
+                ::std::result::Result::Err(_) => {
                     let cur = P::into_buffer(p).reset();
                     return self.supa.call(cur, req_ctxt).await;
                 }
@@ -875,53 +877,52 @@ pub mod server {
             let res = self.handle_method(idx, &mut p, req_ctxt, seqid).await;
             p.read_message_end()?;
             match res {
-                Ok(bytes) => Ok(bytes),
-                Err(err) => match err.downcast_ref::<fbthrift::ProtocolError>() {
-                    Some(fbthrift::ProtocolError::ApplicationException(ae)) => {
-                        let res = serialize!(P, |p| {
-                            fbthrift::protocol::write_message(
+                ::std::result::Result::Ok(bytes) => ::std::result::Result::Ok(bytes),
+                ::std::result::Result::Err(err) => match err.downcast_ref::<::fbthrift::ProtocolError>() {
+                    ::std::option::Option::Some(::fbthrift::ProtocolError::ApplicationException(ae)) => {
+                        let res = ::fbthrift::serialize!(P, |p| {
+                            ::fbthrift::protocol::write_message(
                                 p,
                                 "MyRootProcessor",
-                                MessageType::Exception,
+                                ::fbthrift::MessageType::Exception,
                                 seqid,
-                                |p| ae.write(p),
+                                |p| ::fbthrift::Serialize::write(&ae, p),
                             )
                         });
-                        Ok(res)
+                        ::std::result::Result::Ok(res)
                     }
-                    _ => Err(err),
+                    _ => ::std::result::Result::Err(err),
                 },
             }
         }
     }
 
     pub fn make_MyRoot_server<F, H, R>(
-        proto: ProtocolID,
+        proto: ::fbthrift::ProtocolID,
         handler: H,
-    ) -> Result<Box<dyn ThriftService<F, Handler = H, RequestContext = R> + Send + 'static>, ApplicationException>
+    ) -> ::std::result::Result<::std::boxed::Box<dyn ::fbthrift::ThriftService<F, Handler = H, RequestContext = R> + ::std::marker::Send + 'static>, ::fbthrift::ApplicationException>
     where
-        F: Framing + Send + Sync + 'static,
+        F: ::fbthrift::Framing + ::std::marker::Send + ::std::marker::Sync + 'static,
         H: MyRoot,
-        R: Send + Sync + 'static,
+        R: ::std::marker::Send + ::std::marker::Sync + 'static,
     {
         match proto {
-            ProtocolID::BinaryProtocol => {
-                Ok(Box::new(MyRootProcessor::<BinaryProtocol<F>, H, R>::new(handler)))
+            ::fbthrift::ProtocolID::BinaryProtocol => {
+                ::std::result::Result::Ok(::std::boxed::Box::new(MyRootProcessor::<::fbthrift::BinaryProtocol<F>, H, R>::new(handler)))
             }
-            ProtocolID::CompactProtocol => {
-                Ok(Box::new(MyRootProcessor::<CompactProtocol<F>, H, R>::new(handler)))
+            ::fbthrift::ProtocolID::CompactProtocol => {
+                ::std::result::Result::Ok(::std::boxed::Box::new(MyRootProcessor::<::fbthrift::CompactProtocol<F>, H, R>::new(handler)))
             }
-            bad => Err(ApplicationException::invalid_protocol(bad)),
+            bad => ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad)),
         }
     }
-
-    #[async_trait]
-    pub trait MyNode: Send + Sync + 'static {
+    #[::async_trait::async_trait]
+    pub trait MyNode: ::std::marker::Send + ::std::marker::Sync + 'static {
         async fn do_mid(
             &self,
-        ) -> Result<(), crate::services::my_node::DoMidExn> {
-            Err(crate::services::my_node::DoMidExn::ApplicationException(
-                ApplicationException::unimplemented_method(
+        ) -> ::std::result::Result<(), crate::services::my_node::DoMidExn> {
+            ::std::result::Result::Err(crate::services::my_node::DoMidExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
                     "MyNode",
                     "do_mid",
                 ),
@@ -933,24 +934,24 @@ pub mod server {
     pub struct MyNodeProcessor<P, H, R, SS> {
         service: H,
         supa: SS,
-        _phantom: PhantomData<(P, H, R)>,
+        _phantom: ::std::marker::PhantomData<(P, H, R)>,
     }
 
     impl<P, H, R, SS> MyNodeProcessor<P, H, R, SS>
     where
-        P: Protocol + Send + Sync + 'static,
-        P::Deserializer: Send,
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
         H: MyNode,
-        SS: ThriftService<P::Frame>,
+        SS: ::fbthrift::ThriftService<P::Frame>,
         SS::Handler: crate::server::MyRoot,
-        P::Frame: Send + 'static,
-        R: Sync,
+        P::Frame: ::std::marker::Send + 'static,
+        R: ::std::marker::Sync,
     {
         pub fn new(service: H, supa: SS) -> Self {
             Self {
                 service,
                 supa,
-                _phantom: PhantomData,
+                _phantom: ::std::marker::PhantomData,
             }
         }
 
@@ -962,13 +963,14 @@ pub mod server {
             &'a self,
             p: &'a mut P::Deserializer,
             _req_ctxt: &R,
-            seqid: u32,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
+            seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::ProtocolReader as _;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -977,58 +979,58 @@ pub mod server {
             let res = self.service.do_mid(
             ).await;
             let res = match res {
-                Ok(res) => {
+                ::std::result::Result::Ok(res) => {
                     crate::services::my_node::DoMidExn::Success(res)
                 }
-                Err(crate::services::my_node::DoMidExn::ApplicationException(aexn)) => {
-                    return Err(aexn.into())
+                ::std::result::Result::Err(crate::services::my_node::DoMidExn::ApplicationException(aexn)) => {
+                    return ::std::result::Result::Err(aexn.into())
                 }
-                Err(crate::services::my_node::DoMidExn::Success(_)) => {
+                ::std::result::Result::Err(crate::services::my_node::DoMidExn::Success(_)) => {
                     panic!(
                         "{} attempted to return success via error",
                         "do_mid",
                     )
                 }
             };
-            let res = serialize!(P, |p| fbthrift::protocol::write_message(
+            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "do_mid",
-                MessageType::Reply,
+                ::fbthrift::MessageType::Reply,
                 seqid,
-                |p| res.write(p),
+                |p| ::fbthrift::Serialize::write(&res, p),
             ));
-            Ok(res)
+            ::std::result::Result::Ok(res)
         }
     }
 
-    #[async_trait]
-    impl<P, H, R, SS> fbthrift::ServiceProcessor<P> for MyNodeProcessor<P, H, R, SS>
+    #[::async_trait::async_trait]
+    impl<P, H, R, SS> ::fbthrift::ServiceProcessor<P> for MyNodeProcessor<P, H, R, SS>
     where
-        P: Protocol + Send + Sync + 'static,
-        P::Deserializer: Send,
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
         H: MyNode,
-        SS: ThriftService<P::Frame>,
+        SS: ::fbthrift::ThriftService<P::Frame>,
         SS::Handler: crate::server::MyRoot,
-        P::Frame: Send + 'static,
-        R: Send + Sync + 'static,
+        P::Frame: ::std::marker::Send + 'static,
+        R: ::std::marker::Send + ::std::marker::Sync + 'static,
     {
         type RequestContext = R;
 
         #[inline]
-        fn method_idx(&self, name: &[u8]) -> Result<usize, ApplicationException> {
+        fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
-                b"do_mid" => Ok(0usize),
-                _ => Err(ApplicationException::unknown_method()),
+                b"do_mid" => ::std::result::Result::Ok(0usize),
+                _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
 
         async fn handle_method(
             &self,
-            idx: usize,
+            idx: ::std::primitive::usize,
             p: &mut P::Deserializer,
             r: &R,
-            seqid: u32,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
+            seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             match idx {
                 0usize => self.handle_do_mid(p, r, seqid).await,
                 bad => panic!(
@@ -1040,37 +1042,38 @@ pub mod server {
         }
     }
 
-    #[async_trait]
-    impl<P, H, R, SS> ThriftService<P::Frame> for MyNodeProcessor<P, H, R, SS>
+    #[::async_trait::async_trait]
+    impl<P, H, R, SS> ::fbthrift::ThriftService<P::Frame> for MyNodeProcessor<P, H, R, SS>
     where
-        P: Protocol + Send + Sync + 'static,
-        P::Deserializer: Send,
-        P::Frame: Send + 'static,
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
+        P::Frame: ::std::marker::Send + 'static,
         H: MyNode,
-        SS: ThriftService<P::Frame, RequestContext = R>,
+        SS: ::fbthrift::ThriftService<P::Frame, RequestContext = R>,
         SS::Handler: crate::server::MyRoot,
-        P::Frame: Send + 'static,
-        R: Send + Sync + 'static,
+        P::Frame: ::std::marker::Send + 'static,
+        R: ::std::marker::Send + ::std::marker::Sync + 'static,
     {
         type Handler = H;
         type RequestContext = R;
 
         async fn call(
             &self,
-            req: ProtocolDecoded<P>,
+            req: ::fbthrift::ProtocolDecoded<P>,
             req_ctxt: &R,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::{BufExt as _, ProtocolReader as _, ServiceProcessor as _};
             let mut p = P::deserializer(req);
             let (idx, mty, seqid) = p.read_message_begin(|name| self.method_idx(name))?;
-            if mty != MessageType::Call {
-                return Err(From::from(ApplicationException::new(
-                    ApplicationExceptionErrorCode::InvalidMessageType,
+            if mty != ::fbthrift::MessageType::Call {
+                return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
+                    ::fbthrift::ApplicationExceptionErrorCode::InvalidMessageType,
                     format!("message type {:?} not handled", mty)
                 )));
             }
             let idx = match idx {
-                Ok(idx) => idx,
-                Err(_) => {
+                ::std::result::Result::Ok(idx) => idx,
+                ::std::result::Result::Err(_) => {
                     let cur = P::into_buffer(p).reset();
                     return self.supa.call(cur, req_ctxt).await;
                 }
@@ -1078,57 +1081,56 @@ pub mod server {
             let res = self.handle_method(idx, &mut p, req_ctxt, seqid).await;
             p.read_message_end()?;
             match res {
-                Ok(bytes) => Ok(bytes),
-                Err(err) => match err.downcast_ref::<fbthrift::ProtocolError>() {
-                    Some(fbthrift::ProtocolError::ApplicationException(ae)) => {
-                        let res = serialize!(P, |p| {
-                            fbthrift::protocol::write_message(
+                ::std::result::Result::Ok(bytes) => ::std::result::Result::Ok(bytes),
+                ::std::result::Result::Err(err) => match err.downcast_ref::<::fbthrift::ProtocolError>() {
+                    ::std::option::Option::Some(::fbthrift::ProtocolError::ApplicationException(ae)) => {
+                        let res = ::fbthrift::serialize!(P, |p| {
+                            ::fbthrift::protocol::write_message(
                                 p,
                                 "MyNodeProcessor",
-                                MessageType::Exception,
+                                ::fbthrift::MessageType::Exception,
                                 seqid,
-                                |p| ae.write(p),
+                                |p| ::fbthrift::Serialize::write(&ae, p),
                             )
                         });
-                        Ok(res)
+                        ::std::result::Result::Ok(res)
                     }
-                    _ => Err(err),
+                    _ => ::std::result::Result::Err(err),
                 },
             }
         }
     }
 
     pub fn make_MyNode_server<F, H, R, SMAKE, SS>(
-        proto: ProtocolID,
+        proto: ::fbthrift::ProtocolID,
         handler: H,
         supa: SMAKE,
-    ) -> Result<Box<dyn ThriftService<F, Handler = H, RequestContext = R> + Send + 'static>, ApplicationException>
+    ) -> ::std::result::Result<::std::boxed::Box<dyn ::fbthrift::ThriftService<F, Handler = H, RequestContext = R> + ::std::marker::Send + 'static>, ::fbthrift::ApplicationException>
     where
-        F: Framing + Send + Sync + 'static,
+        F: ::fbthrift::Framing + ::std::marker::Send + ::std::marker::Sync + 'static,
         H: MyNode,
-        SMAKE: Fn(ProtocolID) -> Result<SS, ApplicationException>,
-        SS: ThriftService<F, RequestContext = R>,
+        SMAKE: ::std::ops::Fn(::fbthrift::ProtocolID) -> ::std::result::Result<SS, ::fbthrift::ApplicationException>,
+        SS: ::fbthrift::ThriftService<F, RequestContext = R>,
         SS::Handler: crate::server::MyRoot,
-        R: Send + Sync + 'static,
+        R: ::std::marker::Send + ::std::marker::Sync + 'static,
     {
         match proto {
-            ProtocolID::BinaryProtocol => {
-                Ok(Box::new(MyNodeProcessor::<BinaryProtocol<F>, H, R, SS>::new(handler, supa(proto)?)))
+            ::fbthrift::ProtocolID::BinaryProtocol => {
+                ::std::result::Result::Ok(::std::boxed::Box::new(MyNodeProcessor::<::fbthrift::BinaryProtocol<F>, H, R, SS>::new(handler, supa(proto)?)))
             }
-            ProtocolID::CompactProtocol => {
-                Ok(Box::new(MyNodeProcessor::<CompactProtocol<F>, H, R, SS>::new(handler, supa(proto)?)))
+            ::fbthrift::ProtocolID::CompactProtocol => {
+                ::std::result::Result::Ok(::std::boxed::Box::new(MyNodeProcessor::<::fbthrift::CompactProtocol<F>, H, R, SS>::new(handler, supa(proto)?)))
             }
-            bad => Err(ApplicationException::invalid_protocol(bad)),
+            bad => ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad)),
         }
     }
-
-    #[async_trait]
-    pub trait MyLeaf: Send + Sync + 'static {
+    #[::async_trait::async_trait]
+    pub trait MyLeaf: ::std::marker::Send + ::std::marker::Sync + 'static {
         async fn do_leaf(
             &self,
-        ) -> Result<(), crate::services::my_leaf::DoLeafExn> {
-            Err(crate::services::my_leaf::DoLeafExn::ApplicationException(
-                ApplicationException::unimplemented_method(
+        ) -> ::std::result::Result<(), crate::services::my_leaf::DoLeafExn> {
+            ::std::result::Result::Err(crate::services::my_leaf::DoLeafExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
                     "MyLeaf",
                     "do_leaf",
                 ),
@@ -1140,24 +1142,24 @@ pub mod server {
     pub struct MyLeafProcessor<P, H, R, SS> {
         service: H,
         supa: SS,
-        _phantom: PhantomData<(P, H, R)>,
+        _phantom: ::std::marker::PhantomData<(P, H, R)>,
     }
 
     impl<P, H, R, SS> MyLeafProcessor<P, H, R, SS>
     where
-        P: Protocol + Send + Sync + 'static,
-        P::Deserializer: Send,
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
         H: MyLeaf,
-        SS: ThriftService<P::Frame>,
+        SS: ::fbthrift::ThriftService<P::Frame>,
         SS::Handler: crate::server::MyNode,
-        P::Frame: Send + 'static,
-        R: Sync,
+        P::Frame: ::std::marker::Send + 'static,
+        R: ::std::marker::Sync,
     {
         pub fn new(service: H, supa: SS) -> Self {
             Self {
                 service,
                 supa,
-                _phantom: PhantomData,
+                _phantom: ::std::marker::PhantomData,
             }
         }
 
@@ -1169,13 +1171,14 @@ pub mod server {
             &'a self,
             p: &'a mut P::Deserializer,
             _req_ctxt: &R,
-            seqid: u32,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
+            seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::ProtocolReader as _;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -1184,58 +1187,58 @@ pub mod server {
             let res = self.service.do_leaf(
             ).await;
             let res = match res {
-                Ok(res) => {
+                ::std::result::Result::Ok(res) => {
                     crate::services::my_leaf::DoLeafExn::Success(res)
                 }
-                Err(crate::services::my_leaf::DoLeafExn::ApplicationException(aexn)) => {
-                    return Err(aexn.into())
+                ::std::result::Result::Err(crate::services::my_leaf::DoLeafExn::ApplicationException(aexn)) => {
+                    return ::std::result::Result::Err(aexn.into())
                 }
-                Err(crate::services::my_leaf::DoLeafExn::Success(_)) => {
+                ::std::result::Result::Err(crate::services::my_leaf::DoLeafExn::Success(_)) => {
                     panic!(
                         "{} attempted to return success via error",
                         "do_leaf",
                     )
                 }
             };
-            let res = serialize!(P, |p| fbthrift::protocol::write_message(
+            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "do_leaf",
-                MessageType::Reply,
+                ::fbthrift::MessageType::Reply,
                 seqid,
-                |p| res.write(p),
+                |p| ::fbthrift::Serialize::write(&res, p),
             ));
-            Ok(res)
+            ::std::result::Result::Ok(res)
         }
     }
 
-    #[async_trait]
-    impl<P, H, R, SS> fbthrift::ServiceProcessor<P> for MyLeafProcessor<P, H, R, SS>
+    #[::async_trait::async_trait]
+    impl<P, H, R, SS> ::fbthrift::ServiceProcessor<P> for MyLeafProcessor<P, H, R, SS>
     where
-        P: Protocol + Send + Sync + 'static,
-        P::Deserializer: Send,
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
         H: MyLeaf,
-        SS: ThriftService<P::Frame>,
+        SS: ::fbthrift::ThriftService<P::Frame>,
         SS::Handler: crate::server::MyNode,
-        P::Frame: Send + 'static,
-        R: Send + Sync + 'static,
+        P::Frame: ::std::marker::Send + 'static,
+        R: ::std::marker::Send + ::std::marker::Sync + 'static,
     {
         type RequestContext = R;
 
         #[inline]
-        fn method_idx(&self, name: &[u8]) -> Result<usize, ApplicationException> {
+        fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
-                b"do_leaf" => Ok(0usize),
-                _ => Err(ApplicationException::unknown_method()),
+                b"do_leaf" => ::std::result::Result::Ok(0usize),
+                _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
 
         async fn handle_method(
             &self,
-            idx: usize,
+            idx: ::std::primitive::usize,
             p: &mut P::Deserializer,
             r: &R,
-            seqid: u32,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
+            seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             match idx {
                 0usize => self.handle_do_leaf(p, r, seqid).await,
                 bad => panic!(
@@ -1247,37 +1250,38 @@ pub mod server {
         }
     }
 
-    #[async_trait]
-    impl<P, H, R, SS> ThriftService<P::Frame> for MyLeafProcessor<P, H, R, SS>
+    #[::async_trait::async_trait]
+    impl<P, H, R, SS> ::fbthrift::ThriftService<P::Frame> for MyLeafProcessor<P, H, R, SS>
     where
-        P: Protocol + Send + Sync + 'static,
-        P::Deserializer: Send,
-        P::Frame: Send + 'static,
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
+        P::Frame: ::std::marker::Send + 'static,
         H: MyLeaf,
-        SS: ThriftService<P::Frame, RequestContext = R>,
+        SS: ::fbthrift::ThriftService<P::Frame, RequestContext = R>,
         SS::Handler: crate::server::MyNode,
-        P::Frame: Send + 'static,
-        R: Send + Sync + 'static,
+        P::Frame: ::std::marker::Send + 'static,
+        R: ::std::marker::Send + ::std::marker::Sync + 'static,
     {
         type Handler = H;
         type RequestContext = R;
 
         async fn call(
             &self,
-            req: ProtocolDecoded<P>,
+            req: ::fbthrift::ProtocolDecoded<P>,
             req_ctxt: &R,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::{BufExt as _, ProtocolReader as _, ServiceProcessor as _};
             let mut p = P::deserializer(req);
             let (idx, mty, seqid) = p.read_message_begin(|name| self.method_idx(name))?;
-            if mty != MessageType::Call {
-                return Err(From::from(ApplicationException::new(
-                    ApplicationExceptionErrorCode::InvalidMessageType,
+            if mty != ::fbthrift::MessageType::Call {
+                return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
+                    ::fbthrift::ApplicationExceptionErrorCode::InvalidMessageType,
                     format!("message type {:?} not handled", mty)
                 )));
             }
             let idx = match idx {
-                Ok(idx) => idx,
-                Err(_) => {
+                ::std::result::Result::Ok(idx) => idx,
+                ::std::result::Result::Err(_) => {
                     let cur = P::into_buffer(p).reset();
                     return self.supa.call(cur, req_ctxt).await;
                 }
@@ -1285,47 +1289,47 @@ pub mod server {
             let res = self.handle_method(idx, &mut p, req_ctxt, seqid).await;
             p.read_message_end()?;
             match res {
-                Ok(bytes) => Ok(bytes),
-                Err(err) => match err.downcast_ref::<fbthrift::ProtocolError>() {
-                    Some(fbthrift::ProtocolError::ApplicationException(ae)) => {
-                        let res = serialize!(P, |p| {
-                            fbthrift::protocol::write_message(
+                ::std::result::Result::Ok(bytes) => ::std::result::Result::Ok(bytes),
+                ::std::result::Result::Err(err) => match err.downcast_ref::<::fbthrift::ProtocolError>() {
+                    ::std::option::Option::Some(::fbthrift::ProtocolError::ApplicationException(ae)) => {
+                        let res = ::fbthrift::serialize!(P, |p| {
+                            ::fbthrift::protocol::write_message(
                                 p,
                                 "MyLeafProcessor",
-                                MessageType::Exception,
+                                ::fbthrift::MessageType::Exception,
                                 seqid,
-                                |p| ae.write(p),
+                                |p| ::fbthrift::Serialize::write(&ae, p),
                             )
                         });
-                        Ok(res)
+                        ::std::result::Result::Ok(res)
                     }
-                    _ => Err(err),
+                    _ => ::std::result::Result::Err(err),
                 },
             }
         }
     }
 
     pub fn make_MyLeaf_server<F, H, R, SMAKE, SS>(
-        proto: ProtocolID,
+        proto: ::fbthrift::ProtocolID,
         handler: H,
         supa: SMAKE,
-    ) -> Result<Box<dyn ThriftService<F, Handler = H, RequestContext = R> + Send + 'static>, ApplicationException>
+    ) -> ::std::result::Result<::std::boxed::Box<dyn ::fbthrift::ThriftService<F, Handler = H, RequestContext = R> + ::std::marker::Send + 'static>, ::fbthrift::ApplicationException>
     where
-        F: Framing + Send + Sync + 'static,
+        F: ::fbthrift::Framing + ::std::marker::Send + ::std::marker::Sync + 'static,
         H: MyLeaf,
-        SMAKE: Fn(ProtocolID) -> Result<SS, ApplicationException>,
-        SS: ThriftService<F, RequestContext = R>,
+        SMAKE: ::std::ops::Fn(::fbthrift::ProtocolID) -> ::std::result::Result<SS, ::fbthrift::ApplicationException>,
+        SS: ::fbthrift::ThriftService<F, RequestContext = R>,
         SS::Handler: crate::server::MyNode,
-        R: Send + Sync + 'static,
+        R: ::std::marker::Send + ::std::marker::Sync + 'static,
     {
         match proto {
-            ProtocolID::BinaryProtocol => {
-                Ok(Box::new(MyLeafProcessor::<BinaryProtocol<F>, H, R, SS>::new(handler, supa(proto)?)))
+            ::fbthrift::ProtocolID::BinaryProtocol => {
+                ::std::result::Result::Ok(::std::boxed::Box::new(MyLeafProcessor::<::fbthrift::BinaryProtocol<F>, H, R, SS>::new(handler, supa(proto)?)))
             }
-            ProtocolID::CompactProtocol => {
-                Ok(Box::new(MyLeafProcessor::<CompactProtocol<F>, H, R, SS>::new(handler, supa(proto)?)))
+            ::fbthrift::ProtocolID::CompactProtocol => {
+                ::std::result::Result::Ok(::std::boxed::Box::new(MyLeafProcessor::<::fbthrift::CompactProtocol<F>, H, R, SS>::new(handler, supa(proto)?)))
             }
-            bad => Err(ApplicationException::invalid_protocol(bad)),
+            bad => ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad)),
         }
     }
 }
@@ -1407,50 +1411,46 @@ pub mod server {
 ///         client: Arc<dyn MyService + Send + Sync + 'static>,
 ///     ) -> impl Future<Item = Out> {...}
 pub mod mock {
-    use async_trait::async_trait;
-    use std::marker::PhantomData;
-
     pub struct MyRoot<'mock> {
         pub do_root: my_root::do_root<'mock>,
-        _marker: PhantomData<&'mock ()>,
+        _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
     impl dyn super::client::MyRoot {
         pub fn mock<'mock>() -> MyRoot<'mock> {
             MyRoot {
                 do_root: my_root::do_root::unimplemented(),
-                _marker: PhantomData,
+                _marker: ::std::marker::PhantomData,
             }
         }
     }
 
-    #[async_trait]
+    #[::async_trait::async_trait]
     impl<'mock> super::client::MyRoot for MyRoot<'mock> {
         fn do_root(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_root::DoRootError>> + Send + 'static>> {
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_root::DoRootError>> + ::std::marker::Send + 'static>> {
             let mut closure = self.do_root.closure.lock().unwrap();
-            let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure()))
+            let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure()))
         }
     }
 
     mod my_root {
-        use std::sync::Mutex;
 
         pub struct do_root<'mock> {
-            pub(super) closure: Mutex<Box<
-                dyn FnMut() -> Result<
+            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
+                dyn ::std::ops::FnMut() -> ::std::result::Result<
                     (),
                     crate::errors::my_root::DoRootError,
-                > + Send + Sync + 'mock,
+                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
             >>,
         }
 
         impl<'mock> do_root<'mock> {
             pub fn unimplemented() -> Self {
                 do_root {
-                    closure: Mutex::new(Box::new(|| panic!(
+                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
                         "{}::{} is not mocked",
                         "MyRoot",
                         "do_root",
@@ -1462,26 +1462,25 @@ pub mod mock {
                 self.mock(move || value.clone());
             }
 
-            pub fn mock(&self, mut mock: impl FnMut() -> () + Send + Sync + 'mock) {
+            pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move || Ok(mock()));
+                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
             }
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::errors::my_root::DoRootError>,
-                E: Clone + Send + Sync + 'mock,
+                E: ::std::convert::Into<crate::errors::my_root::DoRootError>,
+                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move || Err(exception.clone().into()));
+                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
             }
         }
     }
-
     pub struct MyNode<'mock> {
         pub parent: crate::mock::MyRoot<'mock>,
         pub do_mid: my_node::do_mid<'mock>,
-        _marker: PhantomData<&'mock ()>,
+        _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
     impl dyn super::client::MyNode {
@@ -1489,24 +1488,24 @@ pub mod mock {
             MyNode {
                 parent: crate::client::MyRoot::mock(),
                 do_mid: my_node::do_mid::unimplemented(),
-                _marker: PhantomData,
+                _marker: ::std::marker::PhantomData,
             }
         }
     }
 
-    #[async_trait]
+    #[::async_trait::async_trait]
     impl<'mock> super::client::MyNode for MyNode<'mock> {
         fn do_mid(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_node::DoMidError>> + Send + 'static>> {
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_node::DoMidError>> + ::std::marker::Send + 'static>> {
             let mut closure = self.do_mid.closure.lock().unwrap();
-            let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure()))
+            let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure()))
         }
     }
 
-    #[async_trait]
-    impl<'mock> AsRef<dyn crate::client::MyRoot + 'mock> for MyNode<'mock>
+    #[::async_trait::async_trait]
+    impl<'mock> ::std::convert::AsRef<dyn crate::client::MyRoot + 'mock> for MyNode<'mock>
     {
         fn as_ref(&self) -> &(dyn crate::client::MyRoot + 'mock) {
             self
@@ -1514,21 +1513,20 @@ pub mod mock {
     }
 
     mod my_node {
-        use std::sync::Mutex;
 
         pub struct do_mid<'mock> {
-            pub(super) closure: Mutex<Box<
-                dyn FnMut() -> Result<
+            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
+                dyn ::std::ops::FnMut() -> ::std::result::Result<
                     (),
                     crate::errors::my_node::DoMidError,
-                > + Send + Sync + 'mock,
+                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
             >>,
         }
 
         impl<'mock> do_mid<'mock> {
             pub fn unimplemented() -> Self {
                 do_mid {
-                    closure: Mutex::new(Box::new(|| panic!(
+                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
                         "{}::{} is not mocked",
                         "MyNode",
                         "do_mid",
@@ -1540,26 +1538,25 @@ pub mod mock {
                 self.mock(move || value.clone());
             }
 
-            pub fn mock(&self, mut mock: impl FnMut() -> () + Send + Sync + 'mock) {
+            pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move || Ok(mock()));
+                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
             }
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::errors::my_node::DoMidError>,
-                E: Clone + Send + Sync + 'mock,
+                E: ::std::convert::Into<crate::errors::my_node::DoMidError>,
+                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move || Err(exception.clone().into()));
+                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
             }
         }
     }
-
     pub struct MyLeaf<'mock> {
         pub parent: crate::mock::MyNode<'mock>,
         pub do_leaf: my_leaf::do_leaf<'mock>,
-        _marker: PhantomData<&'mock ()>,
+        _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
     impl dyn super::client::MyLeaf {
@@ -1567,32 +1564,32 @@ pub mod mock {
             MyLeaf {
                 parent: crate::client::MyNode::mock(),
                 do_leaf: my_leaf::do_leaf::unimplemented(),
-                _marker: PhantomData,
+                _marker: ::std::marker::PhantomData,
             }
         }
     }
 
-    #[async_trait]
+    #[::async_trait::async_trait]
     impl<'mock> super::client::MyLeaf for MyLeaf<'mock> {
         fn do_leaf(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + Send + 'static>> {
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + ::std::marker::Send + 'static>> {
             let mut closure = self.do_leaf.closure.lock().unwrap();
-            let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure()))
+            let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure()))
         }
     }
 
-    #[async_trait]
-    impl<'mock> AsRef<dyn crate::client::MyNode + 'mock> for MyLeaf<'mock>
+    #[::async_trait::async_trait]
+    impl<'mock> ::std::convert::AsRef<dyn crate::client::MyNode + 'mock> for MyLeaf<'mock>
     {
         fn as_ref(&self) -> &(dyn crate::client::MyNode + 'mock) {
             self
         }
     }
 
-    #[async_trait]
-    impl<'mock> AsRef<dyn crate::client::MyRoot + 'mock> for MyLeaf<'mock>
+    #[::async_trait::async_trait]
+    impl<'mock> ::std::convert::AsRef<dyn crate::client::MyRoot + 'mock> for MyLeaf<'mock>
     {
         fn as_ref(&self) -> &(dyn crate::client::MyRoot + 'mock) {
             self
@@ -1600,21 +1597,20 @@ pub mod mock {
     }
 
     mod my_leaf {
-        use std::sync::Mutex;
 
         pub struct do_leaf<'mock> {
-            pub(super) closure: Mutex<Box<
-                dyn FnMut() -> Result<
+            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
+                dyn ::std::ops::FnMut() -> ::std::result::Result<
                     (),
                     crate::errors::my_leaf::DoLeafError,
-                > + Send + Sync + 'mock,
+                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
             >>,
         }
 
         impl<'mock> do_leaf<'mock> {
             pub fn unimplemented() -> Self {
                 do_leaf {
-                    closure: Mutex::new(Box::new(|| panic!(
+                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
                         "{}::{} is not mocked",
                         "MyLeaf",
                         "do_leaf",
@@ -1626,18 +1622,18 @@ pub mod mock {
                 self.mock(move || value.clone());
             }
 
-            pub fn mock(&self, mut mock: impl FnMut() -> () + Send + Sync + 'mock) {
+            pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move || Ok(mock()));
+                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
             }
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::errors::my_leaf::DoLeafError>,
-                E: Clone + Send + Sync + 'mock,
+                E: ::std::convert::Into<crate::errors::my_leaf::DoLeafError>,
+                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move || Err(exception.clone().into()));
+                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
             }
         }
     }

@@ -8,45 +8,42 @@ pub use self::types::*;
 pub mod types {
     #![allow(clippy::redundant_closure)]
 
-    use fbthrift::{
-        Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
-    };
 
-    pub type PersonID = i64;
+    pub type PersonID = ::std::primitive::i64;
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct Color {
-        pub red: f64,
-        pub green: f64,
-        pub blue: f64,
-        pub alpha: f64,
+        pub red: ::std::primitive::f64,
+        pub green: ::std::primitive::f64,
+        pub blue: ::std::primitive::f64,
+        pub alpha: ::std::primitive::f64,
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct Vehicle {
         pub color: crate::types::Color,
-        pub licensePlate: Option<String>,
-        pub description: Option<String>,
-        pub name: Option<String>,
-        pub hasAC: Option<bool>,
+        pub licensePlate: ::std::option::Option<::std::string::String>,
+        pub description: ::std::option::Option<::std::string::String>,
+        pub name: ::std::option::Option<::std::string::String>,
+        pub hasAC: ::std::option::Option<::std::primitive::bool>,
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct Person {
         pub id: crate::types::PersonID,
-        pub name: String,
-        pub age: Option<i16>,
-        pub address: Option<String>,
-        pub favoriteColor: Option<crate::types::Color>,
-        pub friends: Option<std::collections::BTreeSet<crate::types::PersonID>>,
-        pub bestFriend: Option<crate::types::PersonID>,
-        pub petNames: Option<std::collections::BTreeMap<crate::types::Animal, String>>,
-        pub afraidOfAnimal: Option<crate::types::Animal>,
-        pub vehicles: Option<Vec<crate::types::Vehicle>>,
+        pub name: ::std::string::String,
+        pub age: ::std::option::Option<::std::primitive::i16>,
+        pub address: ::std::option::Option<::std::string::String>,
+        pub favoriteColor: ::std::option::Option<crate::types::Color>,
+        pub friends: ::std::option::Option<::std::collections::BTreeSet<crate::types::PersonID>>,
+        pub bestFriend: ::std::option::Option<crate::types::PersonID>,
+        pub petNames: ::std::option::Option<::std::collections::BTreeMap<crate::types::Animal, ::std::string::String>>,
+        pub afraidOfAnimal: ::std::option::Option<crate::types::Animal>,
+        pub vehicles: ::std::option::Option<::std::vec::Vec<crate::types::Vehicle>>,
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
-    pub struct Animal(pub i32);
+    pub struct Animal(pub ::std::primitive::i32);
 
     impl Animal {
         pub const DOG: Self = Animal(1i32);
@@ -54,36 +51,36 @@ pub mod types {
         pub const TARANTULA: Self = Animal(3i32);
     }
 
-    impl Default for Animal {
+    impl ::std::default::Default for Animal {
         fn default() -> Self {
-            Animal(fbthrift::__UNKNOWN_ID)
+            Animal(::fbthrift::__UNKNOWN_ID)
         }
     }
 
-    impl<'a> From<&'a Animal> for i32 {
+    impl<'a> ::std::convert::From<&'a Animal> for ::std::primitive::i32 {
         #[inline]
-        fn from(x: &'a Animal) -> i32 {
+        fn from(x: &'a Animal) -> Self {
             x.0
         }
     }
 
-    impl From<Animal> for i32 {
+    impl ::std::convert::From<Animal> for ::std::primitive::i32 {
         #[inline]
-        fn from(x: Animal) -> i32 {
+        fn from(x: Animal) -> Self {
             x.0
         }
     }
 
-    impl From<i32> for Animal {
+    impl ::std::convert::From<::std::primitive::i32> for Animal {
         #[inline]
-        fn from(x: i32) -> Self {
+        fn from(x: ::std::primitive::i32) -> Self {
             Self(x)
         }
     }
 
-    impl std::fmt::Display for Animal {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            let s: &str = match *self {
+    impl ::std::fmt::Display for Animal {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            let s: &::std::primitive::str = match *self {
                 Animal::DOG => "DOG",
                 Animal::CAT => "CAT",
                 Animal::TARANTULA => "TARANTULA",
@@ -93,100 +90,112 @@ pub mod types {
         }
     }
 
-    impl std::fmt::Debug for Animal {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+    impl ::std::fmt::Debug for Animal {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
             write!(fmt, "Animal::{}", self)
         }
     }
 
-    impl std::str::FromStr for Animal {
-        type Err = anyhow::Error;
+    impl ::std::str::FromStr for Animal {
+        type Err = ::anyhow::Error;
 
-        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
+        fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
             match string {
-                "DOG" => Ok(Animal::DOG),
-                "CAT" => Ok(Animal::CAT),
-                "TARANTULA" => Ok(Animal::TARANTULA),
-                _ => anyhow::bail!("Unable to parse {} as Animal", string),
+                "DOG" => ::std::result::Result::Ok(Animal::DOG),
+                "CAT" => ::std::result::Result::Ok(Animal::CAT),
+                "TARANTULA" => ::std::result::Result::Ok(Animal::TARANTULA),
+                _ => ::anyhow::bail!("Unable to parse {} as Animal", string),
             }
         }
     }
 
-    impl GetTType for Animal {
-        const TTYPE: TType = TType::I32;
+    impl ::fbthrift::GetTType for Animal {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for Animal {
+    impl<P> ::fbthrift::Serialize<P> for Animal
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         #[inline]
         fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for Animal {
+    impl<P> ::fbthrift::Deserialize<P> for Animal
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
         #[inline]
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            Ok(Animal::from(p.read_i32()?))
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            ::std::result::Result::Ok(Animal::from(p.read_i32()?))
         }
     }
 
 
-    impl Default for self::Color {
+    impl ::std::default::Default for self::Color {
         fn default() -> Self {
             Self {
-                red: Default::default(),
-                green: Default::default(),
-                blue: Default::default(),
-                alpha: Default::default(),
+                red: ::std::default::Default::default(),
+                green: ::std::default::Default::default(),
+                blue: ::std::default::Default::default(),
+                alpha: ::std::default::Default::default(),
             }
         }
     }
 
-    impl GetTType for self::Color {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for self::Color {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for self::Color {
+    impl<P> ::fbthrift::Serialize<P> for self::Color
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("Color");
-            p.write_field_begin("red", TType::Double, 1);
-            Serialize::write(&self.red, p);
+            p.write_field_begin("red", ::fbthrift::TType::Double, 1);
+            ::fbthrift::Serialize::write(&self.red, p);
             p.write_field_end();
-            p.write_field_begin("green", TType::Double, 2);
-            Serialize::write(&self.green, p);
+            p.write_field_begin("green", ::fbthrift::TType::Double, 2);
+            ::fbthrift::Serialize::write(&self.green, p);
             p.write_field_end();
-            p.write_field_begin("blue", TType::Double, 3);
-            Serialize::write(&self.blue, p);
+            p.write_field_begin("blue", ::fbthrift::TType::Double, 3);
+            ::fbthrift::Serialize::write(&self.blue, p);
             p.write_field_end();
-            p.write_field_begin("alpha", TType::Double, 4);
-            Serialize::write(&self.alpha, p);
+            p.write_field_begin("alpha", ::fbthrift::TType::Double, 4);
+            ::fbthrift::Serialize::write(&self.alpha, p);
             p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for self::Color {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            let mut field_red = None;
-            let mut field_green = None;
-            let mut field_blue = None;
-            let mut field_alpha = None;
+    impl<P> ::fbthrift::Deserialize<P> for self::Color
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            let mut field_red = ::std::option::Option::None;
+            let mut field_green = ::std::option::Option::None;
+            let mut field_blue = ::std::option::Option::None;
+            let mut field_alpha = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::Double, 1) => field_red = Some(Deserialize::read(p)?),
-                    (TType::Double, 2) => field_green = Some(Deserialize::read(p)?),
-                    (TType::Double, 3) => field_blue = Some(Deserialize::read(p)?),
-                    (TType::Double, 4) => field_alpha = Some(Deserialize::read(p)?),
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::Double, 1) => field_red = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Double, 2) => field_green = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Double, 3) => field_blue = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Double, 4) => field_alpha = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
+            ::std::result::Result::Ok(Self {
                 red: field_red.unwrap_or_default(),
                 green: field_green.unwrap_or_default(),
                 blue: field_blue.unwrap_or_default(),
@@ -196,46 +205,49 @@ pub mod types {
     }
 
 
-    impl Default for self::Vehicle {
+    impl ::std::default::Default for self::Vehicle {
         fn default() -> Self {
             Self {
-                color: Default::default(),
-                licensePlate: None,
-                description: None,
-                name: None,
-                hasAC: Some(false),
+                color: ::std::default::Default::default(),
+                licensePlate: ::std::option::Option::None,
+                description: ::std::option::Option::None,
+                name: ::std::option::Option::None,
+                hasAC: ::std::option::Option::Some(false),
             }
         }
     }
 
-    impl GetTType for self::Vehicle {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for self::Vehicle {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for self::Vehicle {
+    impl<P> ::fbthrift::Serialize<P> for self::Vehicle
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("Vehicle");
-            p.write_field_begin("color", TType::Struct, 1);
-            Serialize::write(&self.color, p);
+            p.write_field_begin("color", ::fbthrift::TType::Struct, 1);
+            ::fbthrift::Serialize::write(&self.color, p);
             p.write_field_end();
-            if let Some(some) = &self.licensePlate {
-                p.write_field_begin("licensePlate", TType::String, 2);
-                Serialize::write(some, p);
+            if let ::std::option::Option::Some(some) = &self.licensePlate {
+                p.write_field_begin("licensePlate", ::fbthrift::TType::String, 2);
+                ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
-            if let Some(some) = &self.description {
-                p.write_field_begin("description", TType::String, 3);
-                Serialize::write(some, p);
+            if let ::std::option::Option::Some(some) = &self.description {
+                p.write_field_begin("description", ::fbthrift::TType::String, 3);
+                ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
-            if let Some(some) = &self.name {
-                p.write_field_begin("name", TType::String, 4);
-                Serialize::write(some, p);
+            if let ::std::option::Option::Some(some) = &self.name {
+                p.write_field_begin("name", ::fbthrift::TType::String, 4);
+                ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
-            if let Some(some) = &self.hasAC {
-                p.write_field_begin("hasAC", TType::Bool, 5);
-                Serialize::write(some, p);
+            if let ::std::option::Option::Some(some) = &self.hasAC {
+                p.write_field_begin("hasAC", ::fbthrift::TType::Bool, 5);
+                ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
             p.write_field_stop();
@@ -243,29 +255,32 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for self::Vehicle {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            let mut field_color = None;
-            let mut field_licensePlate = None;
-            let mut field_description = None;
-            let mut field_name = None;
-            let mut field_hasAC = None;
+    impl<P> ::fbthrift::Deserialize<P> for self::Vehicle
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            let mut field_color = ::std::option::Option::None;
+            let mut field_licensePlate = ::std::option::Option::None;
+            let mut field_description = ::std::option::Option::None;
+            let mut field_name = ::std::option::Option::None;
+            let mut field_hasAC = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::Struct, 1) => field_color = Some(Deserialize::read(p)?),
-                    (TType::String, 2) => field_licensePlate = Some(Deserialize::read(p)?),
-                    (TType::String, 3) => field_description = Some(Deserialize::read(p)?),
-                    (TType::String, 4) => field_name = Some(Deserialize::read(p)?),
-                    (TType::Bool, 5) => field_hasAC = Some(Deserialize::read(p)?),
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::Struct, 1) => field_color = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 2) => field_licensePlate = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 3) => field_description = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 4) => field_name = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Bool, 5) => field_hasAC = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
+            ::std::result::Result::Ok(Self {
                 color: field_color.unwrap_or_default(),
                 licensePlate: field_licensePlate,
                 description: field_description,
@@ -276,74 +291,77 @@ pub mod types {
     }
 
 
-    impl Default for self::Person {
+    impl ::std::default::Default for self::Person {
         fn default() -> Self {
             Self {
-                id: Default::default(),
-                name: Default::default(),
-                age: None,
-                address: None,
-                favoriteColor: None,
-                friends: None,
-                bestFriend: None,
-                petNames: None,
-                afraidOfAnimal: None,
-                vehicles: None,
+                id: ::std::default::Default::default(),
+                name: ::std::default::Default::default(),
+                age: ::std::option::Option::None,
+                address: ::std::option::Option::None,
+                favoriteColor: ::std::option::Option::None,
+                friends: ::std::option::Option::None,
+                bestFriend: ::std::option::Option::None,
+                petNames: ::std::option::Option::None,
+                afraidOfAnimal: ::std::option::Option::None,
+                vehicles: ::std::option::Option::None,
             }
         }
     }
 
-    impl GetTType for self::Person {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for self::Person {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for self::Person {
+    impl<P> ::fbthrift::Serialize<P> for self::Person
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("Person");
-            p.write_field_begin("id", TType::I64, 1);
-            Serialize::write(&self.id, p);
+            p.write_field_begin("id", ::fbthrift::TType::I64, 1);
+            ::fbthrift::Serialize::write(&self.id, p);
             p.write_field_end();
-            p.write_field_begin("name", TType::String, 2);
-            Serialize::write(&self.name, p);
+            p.write_field_begin("name", ::fbthrift::TType::String, 2);
+            ::fbthrift::Serialize::write(&self.name, p);
             p.write_field_end();
-            if let Some(some) = &self.age {
-                p.write_field_begin("age", TType::I16, 3);
-                Serialize::write(some, p);
+            if let ::std::option::Option::Some(some) = &self.age {
+                p.write_field_begin("age", ::fbthrift::TType::I16, 3);
+                ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
-            if let Some(some) = &self.address {
-                p.write_field_begin("address", TType::String, 4);
-                Serialize::write(some, p);
+            if let ::std::option::Option::Some(some) = &self.address {
+                p.write_field_begin("address", ::fbthrift::TType::String, 4);
+                ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
-            if let Some(some) = &self.favoriteColor {
-                p.write_field_begin("favoriteColor", TType::Struct, 5);
-                Serialize::write(some, p);
+            if let ::std::option::Option::Some(some) = &self.favoriteColor {
+                p.write_field_begin("favoriteColor", ::fbthrift::TType::Struct, 5);
+                ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
-            if let Some(some) = &self.friends {
-                p.write_field_begin("friends", TType::Set, 6);
-                Serialize::write(some, p);
+            if let ::std::option::Option::Some(some) = &self.friends {
+                p.write_field_begin("friends", ::fbthrift::TType::Set, 6);
+                ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
-            if let Some(some) = &self.bestFriend {
-                p.write_field_begin("bestFriend", TType::I64, 7);
-                Serialize::write(some, p);
+            if let ::std::option::Option::Some(some) = &self.bestFriend {
+                p.write_field_begin("bestFriend", ::fbthrift::TType::I64, 7);
+                ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
-            if let Some(some) = &self.petNames {
-                p.write_field_begin("petNames", TType::Map, 8);
-                Serialize::write(some, p);
+            if let ::std::option::Option::Some(some) = &self.petNames {
+                p.write_field_begin("petNames", ::fbthrift::TType::Map, 8);
+                ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
-            if let Some(some) = &self.afraidOfAnimal {
-                p.write_field_begin("afraidOfAnimal", TType::I32, 9);
-                Serialize::write(some, p);
+            if let ::std::option::Option::Some(some) = &self.afraidOfAnimal {
+                p.write_field_begin("afraidOfAnimal", ::fbthrift::TType::I32, 9);
+                ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
-            if let Some(some) = &self.vehicles {
-                p.write_field_begin("vehicles", TType::List, 10);
-                Serialize::write(some, p);
+            if let ::std::option::Option::Some(some) = &self.vehicles {
+                p.write_field_begin("vehicles", ::fbthrift::TType::List, 10);
+                ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
             p.write_field_stop();
@@ -351,39 +369,42 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for self::Person {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            let mut field_id = None;
-            let mut field_name = None;
-            let mut field_age = None;
-            let mut field_address = None;
-            let mut field_favoriteColor = None;
-            let mut field_friends = None;
-            let mut field_bestFriend = None;
-            let mut field_petNames = None;
-            let mut field_afraidOfAnimal = None;
-            let mut field_vehicles = None;
+    impl<P> ::fbthrift::Deserialize<P> for self::Person
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            let mut field_id = ::std::option::Option::None;
+            let mut field_name = ::std::option::Option::None;
+            let mut field_age = ::std::option::Option::None;
+            let mut field_address = ::std::option::Option::None;
+            let mut field_favoriteColor = ::std::option::Option::None;
+            let mut field_friends = ::std::option::Option::None;
+            let mut field_bestFriend = ::std::option::Option::None;
+            let mut field_petNames = ::std::option::Option::None;
+            let mut field_afraidOfAnimal = ::std::option::Option::None;
+            let mut field_vehicles = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::I64, 1) => field_id = Some(Deserialize::read(p)?),
-                    (TType::String, 2) => field_name = Some(Deserialize::read(p)?),
-                    (TType::I16, 3) => field_age = Some(Deserialize::read(p)?),
-                    (TType::String, 4) => field_address = Some(Deserialize::read(p)?),
-                    (TType::Struct, 5) => field_favoriteColor = Some(Deserialize::read(p)?),
-                    (TType::Set, 6) => field_friends = Some(Deserialize::read(p)?),
-                    (TType::I64, 7) => field_bestFriend = Some(Deserialize::read(p)?),
-                    (TType::Map, 8) => field_petNames = Some(Deserialize::read(p)?),
-                    (TType::I32, 9) => field_afraidOfAnimal = Some(Deserialize::read(p)?),
-                    (TType::List, 10) => field_vehicles = Some(Deserialize::read(p)?),
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I64, 1) => field_id = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 2) => field_name = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I16, 3) => field_age = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 4) => field_address = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 5) => field_favoriteColor = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Set, 6) => field_friends = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I64, 7) => field_bestFriend = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Map, 8) => field_petNames = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 9) => field_afraidOfAnimal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::List, 10) => field_vehicles = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
+            ::std::result::Result::Ok(Self {
                 id: field_id.unwrap_or_default(),
                 name: field_name.unwrap_or_default(),
                 age: field_age,

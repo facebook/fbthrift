@@ -24,15 +24,15 @@
 }}{{#value:integer?}}{{value:integerValue}}{{/value:integer?}}{{!
 }}{{#value:double?}}{{value:doubleValue}}{{/value:double?}}{{!
 }}{{#value:string?}}{{!
-    }}{{#value:empty?}}String::new(){{/value:empty?}}{{!
+    }}{{#value:empty?}}::std::string::String::new(){{/value:empty?}}{{!
     }}{{^value:empty?}}{{value:quoted}}.to_owned(){{/value:empty?}}{{!
 }}{{/value:string?}}{{!
 }}{{#value:binary?}}{{!
-    }}{{#value:empty?}}Vec::new(){{/value:empty?}}{{!
+    }}{{#value:empty?}}::std::vec::Vec::new(){{/value:empty?}}{{!
     }}{{^value:empty?}}{{value:quoted}}.as_bytes().to_owned(){{/value:empty?}}{{!
 }}{{/value:binary?}}{{!
 }}{{#value:list?}}{{!
-    }}{{#value:empty?}}Vec::new(){{/value:empty?}}{{!
+    }}{{#value:empty?}}::std::vec::Vec::new(){{/value:empty?}}{{!
     }}{{^value:empty?}}{{!
         }}vec![{{!
         }}{{#value:listElements}}
@@ -43,14 +43,14 @@
 }}{{/value:list?}}{{!
 }}{{#value:set?}}{{!
     }}{{#value:empty?}}{{!
-        }}std::collections::{{!
+        }}::std::collections::{{!
             }}{{#type:rust}}{{type:rust}}{{/type:rust}}{{!
             }}{{^type:rust}}BTreeSet{{/type:rust}}{{!
         }}::new(){{!
     }}{{/value:empty?}}{{!
     }}{{^value:empty?}}{{!
         }}{
-            {{value:indent}}let mut set = std::collections::{{!
+            {{value:indent}}let mut set = ::std::collections::{{!
                 }}{{#type:rust}}{{type:rust}}{{/type:rust}}{{!
                 }}{{^type:rust}}BTreeSet{{/type:rust}}{{!
             }}::new();{{!
@@ -63,14 +63,14 @@
 }}{{/value:set?}}{{!
 }}{{#value:map?}}{{!
     }}{{#value:empty?}}{{!
-        }}std::collections::{{!
+        }}::std::collections::{{!
             }}{{#type:rust}}{{type:rust}}{{/type:rust}}{{!
             }}{{^type:rust}}BTreeMap{{/type:rust}}{{!
         }}::new(){{!
     }}{{/value:empty?}}{{!
     }}{{^value:empty?}}{{!
         }}{
-            {{value:indent}}let mut map = std::collections::{{!
+            {{value:indent}}let mut map = ::std::collections::{{!
                 }}{{#type:rust}}{{type:rust}}{{/type:rust}}{{!
                 }}{{^type:rust}}BTreeMap{{/type:rust}}{{!
             }}::new();{{!
@@ -89,7 +89,7 @@
         }}{{#value:structFields}}
             {{value:indent}}{{field:rust_name}}: {{!
             }}{{#field:value}}{{>lib/fieldvalue}}{{/field:value}}{{!
-            }}{{^field:value}}Default::default(){{/field:value}}{{!
+            }}{{^field:value}}::std::default::Default::default(){{/field:value}}{{!
             }},{{!
         }}{{/value:structFields}}
         {{value:indent}}}{{!

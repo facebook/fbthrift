@@ -13,9 +13,6 @@ pub mod consts {
 pub mod types {
     #![allow(clippy::redundant_closure)]
 
-    use fbthrift::{
-        Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
-    };
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MyStruct {
@@ -24,116 +21,122 @@ pub mod types {
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
-    pub struct EmptyEnum(pub i32);
+    pub struct EmptyEnum(pub ::std::primitive::i32);
 
     impl EmptyEnum {
     }
 
-    impl Default for EmptyEnum {
+    impl ::std::default::Default for EmptyEnum {
         fn default() -> Self {
-            EmptyEnum(fbthrift::__UNKNOWN_ID)
+            EmptyEnum(::fbthrift::__UNKNOWN_ID)
         }
     }
 
-    impl<'a> From<&'a EmptyEnum> for i32 {
+    impl<'a> ::std::convert::From<&'a EmptyEnum> for ::std::primitive::i32 {
         #[inline]
-        fn from(x: &'a EmptyEnum) -> i32 {
+        fn from(x: &'a EmptyEnum) -> Self {
             x.0
         }
     }
 
-    impl From<EmptyEnum> for i32 {
+    impl ::std::convert::From<EmptyEnum> for ::std::primitive::i32 {
         #[inline]
-        fn from(x: EmptyEnum) -> i32 {
+        fn from(x: EmptyEnum) -> Self {
             x.0
         }
     }
 
-    impl From<i32> for EmptyEnum {
+    impl ::std::convert::From<::std::primitive::i32> for EmptyEnum {
         #[inline]
-        fn from(x: i32) -> Self {
+        fn from(x: ::std::primitive::i32) -> Self {
             Self(x)
         }
     }
 
-    impl std::fmt::Display for EmptyEnum {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+    impl ::std::fmt::Display for EmptyEnum {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
             write!(fmt, "{}", self.0)
         }
     }
 
-    impl std::fmt::Debug for EmptyEnum {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+    impl ::std::fmt::Debug for EmptyEnum {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
             write!(fmt, "EmptyEnum::{}", self)
         }
     }
 
-    impl std::str::FromStr for EmptyEnum {
-        type Err = anyhow::Error;
+    impl ::std::str::FromStr for EmptyEnum {
+        type Err = ::anyhow::Error;
 
-        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
+        fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
             match string {
-                _ => anyhow::bail!("Unable to parse {} as EmptyEnum", string),
+                _ => ::anyhow::bail!("Unable to parse {} as EmptyEnum", string),
             }
         }
     }
 
-    impl GetTType for EmptyEnum {
-        const TTYPE: TType = TType::I32;
+    impl ::fbthrift::GetTType for EmptyEnum {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for EmptyEnum {
+    impl<P> ::fbthrift::Serialize<P> for EmptyEnum
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         #[inline]
         fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for EmptyEnum {
+    impl<P> ::fbthrift::Deserialize<P> for EmptyEnum
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
         #[inline]
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            Ok(EmptyEnum::from(p.read_i32()?))
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            ::std::result::Result::Ok(EmptyEnum::from(p.read_i32()?))
         }
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
-    pub struct MyEnum(pub i32);
+    pub struct MyEnum(pub ::std::primitive::i32);
 
     impl MyEnum {
         pub const ONE: Self = MyEnum(1i32);
         pub const TWO: Self = MyEnum(2i32);
     }
 
-    impl Default for MyEnum {
+    impl ::std::default::Default for MyEnum {
         fn default() -> Self {
-            MyEnum(fbthrift::__UNKNOWN_ID)
+            MyEnum(::fbthrift::__UNKNOWN_ID)
         }
     }
 
-    impl<'a> From<&'a MyEnum> for i32 {
+    impl<'a> ::std::convert::From<&'a MyEnum> for ::std::primitive::i32 {
         #[inline]
-        fn from(x: &'a MyEnum) -> i32 {
+        fn from(x: &'a MyEnum) -> Self {
             x.0
         }
     }
 
-    impl From<MyEnum> for i32 {
+    impl ::std::convert::From<MyEnum> for ::std::primitive::i32 {
         #[inline]
-        fn from(x: MyEnum) -> i32 {
+        fn from(x: MyEnum) -> Self {
             x.0
         }
     }
 
-    impl From<i32> for MyEnum {
+    impl ::std::convert::From<::std::primitive::i32> for MyEnum {
         #[inline]
-        fn from(x: i32) -> Self {
+        fn from(x: ::std::primitive::i32) -> Self {
             Self(x)
         }
     }
 
-    impl std::fmt::Display for MyEnum {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            let s: &str = match *self {
+    impl ::std::fmt::Display for MyEnum {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            let s: &::std::primitive::str = match *self {
                 MyEnum::ONE => "ONE",
                 MyEnum::TWO => "TWO",
                 MyEnum(x) => return write!(fmt, "{}", x),
@@ -142,44 +145,50 @@ pub mod types {
         }
     }
 
-    impl std::fmt::Debug for MyEnum {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+    impl ::std::fmt::Debug for MyEnum {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
             write!(fmt, "MyEnum::{}", self)
         }
     }
 
-    impl std::str::FromStr for MyEnum {
-        type Err = anyhow::Error;
+    impl ::std::str::FromStr for MyEnum {
+        type Err = ::anyhow::Error;
 
-        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
+        fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
             match string {
-                "ONE" => Ok(MyEnum::ONE),
-                "TWO" => Ok(MyEnum::TWO),
-                _ => anyhow::bail!("Unable to parse {} as MyEnum", string),
+                "ONE" => ::std::result::Result::Ok(MyEnum::ONE),
+                "TWO" => ::std::result::Result::Ok(MyEnum::TWO),
+                _ => ::anyhow::bail!("Unable to parse {} as MyEnum", string),
             }
         }
     }
 
-    impl GetTType for MyEnum {
-        const TTYPE: TType = TType::I32;
+    impl ::fbthrift::GetTType for MyEnum {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for MyEnum {
+    impl<P> ::fbthrift::Serialize<P> for MyEnum
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         #[inline]
         fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for MyEnum {
+    impl<P> ::fbthrift::Deserialize<P> for MyEnum
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
         #[inline]
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            Ok(MyEnum::from(p.read_i32()?))
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            ::std::result::Result::Ok(MyEnum::from(p.read_i32()?))
         }
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
-    pub struct MyBigEnum(pub i32);
+    pub struct MyBigEnum(pub ::std::primitive::i32);
 
     impl MyBigEnum {
         pub const UNKNOWN: Self = MyBigEnum(0i32);
@@ -204,36 +213,36 @@ pub mod types {
         pub const NINETEEN: Self = MyBigEnum(19i32);
     }
 
-    impl Default for MyBigEnum {
+    impl ::std::default::Default for MyBigEnum {
         fn default() -> Self {
-            MyBigEnum(fbthrift::__UNKNOWN_ID)
+            MyBigEnum(::fbthrift::__UNKNOWN_ID)
         }
     }
 
-    impl<'a> From<&'a MyBigEnum> for i32 {
+    impl<'a> ::std::convert::From<&'a MyBigEnum> for ::std::primitive::i32 {
         #[inline]
-        fn from(x: &'a MyBigEnum) -> i32 {
+        fn from(x: &'a MyBigEnum) -> Self {
             x.0
         }
     }
 
-    impl From<MyBigEnum> for i32 {
+    impl ::std::convert::From<MyBigEnum> for ::std::primitive::i32 {
         #[inline]
-        fn from(x: MyBigEnum) -> i32 {
+        fn from(x: MyBigEnum) -> Self {
             x.0
         }
     }
 
-    impl From<i32> for MyBigEnum {
+    impl ::std::convert::From<::std::primitive::i32> for MyBigEnum {
         #[inline]
-        fn from(x: i32) -> Self {
+        fn from(x: ::std::primitive::i32) -> Self {
             Self(x)
         }
     }
 
-    impl std::fmt::Display for MyBigEnum {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            let s: &str = match *self {
+    impl ::std::fmt::Display for MyBigEnum {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            let s: &::std::primitive::str = match *self {
                 MyBigEnum::UNKNOWN => "UNKNOWN",
                 MyBigEnum::ONE => "ONE",
                 MyBigEnum::TWO => "TWO",
@@ -260,104 +269,116 @@ pub mod types {
         }
     }
 
-    impl std::fmt::Debug for MyBigEnum {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+    impl ::std::fmt::Debug for MyBigEnum {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
             write!(fmt, "MyBigEnum::{}", self)
         }
     }
 
-    impl std::str::FromStr for MyBigEnum {
-        type Err = anyhow::Error;
+    impl ::std::str::FromStr for MyBigEnum {
+        type Err = ::anyhow::Error;
 
-        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
+        fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
             match string {
-                "UNKNOWN" => Ok(MyBigEnum::UNKNOWN),
-                "ONE" => Ok(MyBigEnum::ONE),
-                "TWO" => Ok(MyBigEnum::TWO),
-                "THREE" => Ok(MyBigEnum::THREE),
-                "FOUR" => Ok(MyBigEnum::FOUR),
-                "FIVE" => Ok(MyBigEnum::FIVE),
-                "SIX" => Ok(MyBigEnum::SIX),
-                "SEVEN" => Ok(MyBigEnum::SEVEN),
-                "EIGHT" => Ok(MyBigEnum::EIGHT),
-                "NINE" => Ok(MyBigEnum::NINE),
-                "TEN" => Ok(MyBigEnum::TEN),
-                "ELEVEN" => Ok(MyBigEnum::ELEVEN),
-                "TWELVE" => Ok(MyBigEnum::TWELVE),
-                "THIRTEEN" => Ok(MyBigEnum::THIRTEEN),
-                "FOURTEEN" => Ok(MyBigEnum::FOURTEEN),
-                "FIFTEEN" => Ok(MyBigEnum::FIFTEEN),
-                "SIXTEEN" => Ok(MyBigEnum::SIXTEEN),
-                "SEVENTEEN" => Ok(MyBigEnum::SEVENTEEN),
-                "EIGHTEEN" => Ok(MyBigEnum::EIGHTEEN),
-                "NINETEEN" => Ok(MyBigEnum::NINETEEN),
-                _ => anyhow::bail!("Unable to parse {} as MyBigEnum", string),
+                "UNKNOWN" => ::std::result::Result::Ok(MyBigEnum::UNKNOWN),
+                "ONE" => ::std::result::Result::Ok(MyBigEnum::ONE),
+                "TWO" => ::std::result::Result::Ok(MyBigEnum::TWO),
+                "THREE" => ::std::result::Result::Ok(MyBigEnum::THREE),
+                "FOUR" => ::std::result::Result::Ok(MyBigEnum::FOUR),
+                "FIVE" => ::std::result::Result::Ok(MyBigEnum::FIVE),
+                "SIX" => ::std::result::Result::Ok(MyBigEnum::SIX),
+                "SEVEN" => ::std::result::Result::Ok(MyBigEnum::SEVEN),
+                "EIGHT" => ::std::result::Result::Ok(MyBigEnum::EIGHT),
+                "NINE" => ::std::result::Result::Ok(MyBigEnum::NINE),
+                "TEN" => ::std::result::Result::Ok(MyBigEnum::TEN),
+                "ELEVEN" => ::std::result::Result::Ok(MyBigEnum::ELEVEN),
+                "TWELVE" => ::std::result::Result::Ok(MyBigEnum::TWELVE),
+                "THIRTEEN" => ::std::result::Result::Ok(MyBigEnum::THIRTEEN),
+                "FOURTEEN" => ::std::result::Result::Ok(MyBigEnum::FOURTEEN),
+                "FIFTEEN" => ::std::result::Result::Ok(MyBigEnum::FIFTEEN),
+                "SIXTEEN" => ::std::result::Result::Ok(MyBigEnum::SIXTEEN),
+                "SEVENTEEN" => ::std::result::Result::Ok(MyBigEnum::SEVENTEEN),
+                "EIGHTEEN" => ::std::result::Result::Ok(MyBigEnum::EIGHTEEN),
+                "NINETEEN" => ::std::result::Result::Ok(MyBigEnum::NINETEEN),
+                _ => ::anyhow::bail!("Unable to parse {} as MyBigEnum", string),
             }
         }
     }
 
-    impl GetTType for MyBigEnum {
-        const TTYPE: TType = TType::I32;
+    impl ::fbthrift::GetTType for MyBigEnum {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for MyBigEnum {
+    impl<P> ::fbthrift::Serialize<P> for MyBigEnum
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         #[inline]
         fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for MyBigEnum {
+    impl<P> ::fbthrift::Deserialize<P> for MyBigEnum
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
         #[inline]
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            Ok(MyBigEnum::from(p.read_i32()?))
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            ::std::result::Result::Ok(MyBigEnum::from(p.read_i32()?))
         }
     }
 
-    impl Default for self::MyStruct {
+    impl ::std::default::Default for self::MyStruct {
         fn default() -> Self {
             Self {
-                myEnum: Default::default(),
+                myEnum: ::std::default::Default::default(),
                 myBigEnum: crate::types::MyBigEnum::ONE,
             }
         }
     }
 
-    impl GetTType for self::MyStruct {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for self::MyStruct {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for self::MyStruct {
+    impl<P> ::fbthrift::Serialize<P> for self::MyStruct
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("MyStruct");
-            p.write_field_begin("myEnum", TType::I32, 1);
-            Serialize::write(&self.myEnum, p);
+            p.write_field_begin("myEnum", ::fbthrift::TType::I32, 1);
+            ::fbthrift::Serialize::write(&self.myEnum, p);
             p.write_field_end();
-            p.write_field_begin("myBigEnum", TType::I32, 2);
-            Serialize::write(&self.myBigEnum, p);
+            p.write_field_begin("myBigEnum", ::fbthrift::TType::I32, 2);
+            ::fbthrift::Serialize::write(&self.myBigEnum, p);
             p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for self::MyStruct {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            let mut field_myEnum = None;
-            let mut field_myBigEnum = None;
+    impl<P> ::fbthrift::Deserialize<P> for self::MyStruct
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            let mut field_myEnum = ::std::option::Option::None;
+            let mut field_myBigEnum = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::I32, 1) => field_myEnum = Some(Deserialize::read(p)?),
-                    (TType::I32, 2) => field_myBigEnum = Some(Deserialize::read(p)?),
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I32, 1) => field_myEnum = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 2) => field_myBigEnum = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
+            ::std::result::Result::Ok(Self {
                 myEnum: field_myEnum.unwrap_or_default(),
                 myBigEnum: field_myBigEnum.unwrap_or_else(|| crate::types::MyBigEnum::ONE),
             })

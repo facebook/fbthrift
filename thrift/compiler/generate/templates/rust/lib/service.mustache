@@ -17,12 +17,6 @@
 }}
 
     pub mod {{service:snake}} {{>lib/block}}{{!
-        }}{{#service:functions?}}
-        use fbthrift::{
-            ApplicationException, ApplicationExceptionErrorCode, Deserialize, ProtocolReader,
-            ProtocolWriter, Serialize, TType,
-        };{{!
-        }}{{/service:functions?}}{{!
         }}{{#service:rustFunctions}}{{^function:any_streams?}}
 
         #[derive(Clone, Debug)]
@@ -31,28 +25,31 @@
             }}{{#function:exceptions}}
             {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),{{!
             }}{{/function:exceptions}}
-            ApplicationException(::fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::ApplicationException),
         }{{!
         }}{{#function:uniqueExceptions}}
 
-        impl From<{{#field:type}}{{>lib/type}}{{/field:type}}> for {{function:upcamel}}Exn {
+        impl ::std::convert::From<{{#field:type}}{{>lib/type}}{{/field:type}}> for {{function:upcamel}}Exn {
             fn from(exn: {{#field:type}}{{>lib/type}}{{/field:type}}) -> Self {
                 {{function:upcamel}}Exn::{{field:rust_name}}(exn)
             }
         }{{!
         }}{{/function:uniqueExceptions}}
 
-        impl From<ApplicationException> for {{function:upcamel}}Exn {
-            fn from(exn: ApplicationException) -> Self {
+        impl ::std::convert::From<::fbthrift::ApplicationException> for {{function:upcamel}}Exn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
                 {{function:upcamel}}Exn::ApplicationException(exn)
             }
         }
 
-        impl fbthrift::GetTType for {{function:upcamel}}Exn {
-            const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
+        impl ::fbthrift::GetTType for {{function:upcamel}}Exn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P: ProtocolWriter> Serialize<P> for {{function:upcamel}}Exn {
+        impl<P> ::fbthrift::Serialize<P> for {{function:upcamel}}Exn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("{{function:upcamel}}");
                 match self {
@@ -87,28 +84,31 @@
             }
         }
 
-        impl<P: ProtocolReader> Deserialize<P> for {{function:upcamel}}Exn {
-            fn read(p: &mut P) -> anyhow::Result<Self> {
+        impl<P> ::fbthrift::Deserialize<P> for {{function:upcamel}}Exn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = {{!
                     }}{{#function:void?}}{{!
                         }}{{function:upcamel}}Exn::Success(()){{!
                     }}{{/function:void?}}{{!
-                    }}{{^function:void?}}None{{/function:void?}}{{!
+                    }}{{^function:void?}}::std::option::Option::None{{/function:void?}}{{!
                 }};
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                    match ((fty, fid as i32), once) {
-                        ((TType::Stop, _), _) => {
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
                             p.read_field_end()?;
                             break;
                         }
                         (({{#function:returnType}}{{>lib/ttype}}{{/function:returnType}}, 0i32), false) => {
                             once = true;
                             alt = {{!
-                                }}{{^function:void?}}Some({{/function:void?}}{{!
-                                }}{{function:upcamel}}Exn::Success(Deserialize::read(p)?){{!
+                                }}{{^function:void?}}::std::option::Option::Some({{/function:void?}}{{!
+                                }}{{function:upcamel}}Exn::Success(::fbthrift::Deserialize::read(p)?){{!
                                 }}{{^function:void?}}){{/function:void?}}{{!
                             }};
                         }{{!
@@ -116,16 +116,16 @@
                         (({{#field:type}}{{>lib/ttype}}{{/field:type}}, {{field:key}}), false) => {
                             once = true;
                             alt = {{!
-                                }}{{^function:void?}}Some({{/function:void?}}{{!
-                                }}{{function:upcamel}}Exn::{{field:rust_name}}(Deserialize::read(p)?){{!
+                                }}{{^function:void?}}::std::option::Option::Some({{/function:void?}}{{!
+                                }}{{function:upcamel}}Exn::{{field:rust_name}}(::fbthrift::Deserialize::read(p)?){{!
                                 }}{{^function:void?}}){{/function:void?}}{{!
                             }};
                         }{{!
                         }}{{/function:exceptions}}
                         ((ty, _id), false) => p.skip(ty)?,
-                        ((badty, badid), true) => return Err(From::from(
-                            ApplicationException::new(
-                                ApplicationExceptionErrorCode::ProtocolError,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                                 format!(
                                     "unwanted extra union {} field ty {:?} id {}",
                                     "{{function:upcamel}}Exn",
@@ -139,12 +139,12 @@
                 }
                 p.read_struct_end()?;{{!
                 }}{{#function:void?}}
-                Ok(alt){{!
+                ::std::result::Result::Ok(alt){{!
                 }}{{/function:void?}}{{!
                 }}{{^function:void?}}
                 alt.ok_or_else(||
-                    ApplicationException::new(
-                        ApplicationExceptionErrorCode::MissingResult,
+                    ::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
                         format!("Empty union {}", "{{function:upcamel}}Exn"),
                     )
                     .into(),

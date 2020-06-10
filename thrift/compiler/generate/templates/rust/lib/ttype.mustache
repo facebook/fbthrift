@@ -20,7 +20,7 @@
 }}{{#type:streamresponse?}}{{!
     }}compile_error!("Thrift streaming in Rust is not implemented"){{!
 }}{{/type:streamresponse?}}{{!
-}}{{^type:typedef?}}{{^type:streamresponse?}}TType::{{!
+}}{{^type:typedef?}}{{^type:streamresponse?}}::fbthrift::TType::{{!
 }}{{#type:void?}}Void{{/type:void?}}{{!
 }}{{#type:string?}}String{{/type:string?}}{{!
 }}{{#type:binary?}}String{{/type:binary?}}{{!

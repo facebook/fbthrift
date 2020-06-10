@@ -8,14 +8,11 @@ pub use self::types::*;
 pub mod types {
     #![allow(clippy::redundant_closure)]
 
-    use fbthrift::{
-        Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
-    };
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct MyStruct {
-        pub MyIntField: i64,
-        pub MyStringField: String,
+        pub MyIntField: ::std::primitive::i64,
+        pub MyStringField: ::std::string::String,
         pub MyDataField: crate::types::MyDataItem,
         pub myEnum: crate::types::MyEnum,
     }
@@ -29,47 +26,47 @@ pub mod types {
         myEnum(crate::types::MyEnum),
         myStruct(crate::types::MyStruct),
         myDataItem(crate::types::MyDataItem),
-        UnknownField(i32),
+        UnknownField(::std::primitive::i32),
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
-    pub struct MyEnum(pub i32);
+    pub struct MyEnum(pub ::std::primitive::i32);
 
     impl MyEnum {
         pub const MyValue1: Self = MyEnum(0i32);
         pub const MyValue2: Self = MyEnum(1i32);
     }
 
-    impl Default for MyEnum {
+    impl ::std::default::Default for MyEnum {
         fn default() -> Self {
-            MyEnum(fbthrift::__UNKNOWN_ID)
+            MyEnum(::fbthrift::__UNKNOWN_ID)
         }
     }
 
-    impl<'a> From<&'a MyEnum> for i32 {
+    impl<'a> ::std::convert::From<&'a MyEnum> for ::std::primitive::i32 {
         #[inline]
-        fn from(x: &'a MyEnum) -> i32 {
+        fn from(x: &'a MyEnum) -> Self {
             x.0
         }
     }
 
-    impl From<MyEnum> for i32 {
+    impl ::std::convert::From<MyEnum> for ::std::primitive::i32 {
         #[inline]
-        fn from(x: MyEnum) -> i32 {
+        fn from(x: MyEnum) -> Self {
             x.0
         }
     }
 
-    impl From<i32> for MyEnum {
+    impl ::std::convert::From<::std::primitive::i32> for MyEnum {
         #[inline]
-        fn from(x: i32) -> Self {
+        fn from(x: ::std::primitive::i32) -> Self {
             Self(x)
         }
     }
 
-    impl std::fmt::Display for MyEnum {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            let s: &str = match *self {
+    impl ::std::fmt::Display for MyEnum {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            let s: &::std::primitive::str = match *self {
                 MyEnum::MyValue1 => "MyValue1",
                 MyEnum::MyValue2 => "MyValue2",
                 MyEnum(x) => return write!(fmt, "{}", x),
@@ -78,98 +75,110 @@ pub mod types {
         }
     }
 
-    impl std::fmt::Debug for MyEnum {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+    impl ::std::fmt::Debug for MyEnum {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
             write!(fmt, "MyEnum::{}", self)
         }
     }
 
-    impl std::str::FromStr for MyEnum {
-        type Err = anyhow::Error;
+    impl ::std::str::FromStr for MyEnum {
+        type Err = ::anyhow::Error;
 
-        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
+        fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
             match string {
-                "MyValue1" => Ok(MyEnum::MyValue1),
-                "MyValue2" => Ok(MyEnum::MyValue2),
-                _ => anyhow::bail!("Unable to parse {} as MyEnum", string),
+                "MyValue1" => ::std::result::Result::Ok(MyEnum::MyValue1),
+                "MyValue2" => ::std::result::Result::Ok(MyEnum::MyValue2),
+                _ => ::anyhow::bail!("Unable to parse {} as MyEnum", string),
             }
         }
     }
 
-    impl GetTType for MyEnum {
-        const TTYPE: TType = TType::I32;
+    impl ::fbthrift::GetTType for MyEnum {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for MyEnum {
+    impl<P> ::fbthrift::Serialize<P> for MyEnum
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         #[inline]
         fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for MyEnum {
+    impl<P> ::fbthrift::Deserialize<P> for MyEnum
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
         #[inline]
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            Ok(MyEnum::from(p.read_i32()?))
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            ::std::result::Result::Ok(MyEnum::from(p.read_i32()?))
         }
     }
 
-    impl Default for self::MyStruct {
+    impl ::std::default::Default for self::MyStruct {
         fn default() -> Self {
             Self {
-                MyIntField: Default::default(),
-                MyStringField: Default::default(),
-                MyDataField: Default::default(),
-                myEnum: Default::default(),
+                MyIntField: ::std::default::Default::default(),
+                MyStringField: ::std::default::Default::default(),
+                MyDataField: ::std::default::Default::default(),
+                myEnum: ::std::default::Default::default(),
             }
         }
     }
 
-    impl GetTType for self::MyStruct {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for self::MyStruct {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for self::MyStruct {
+    impl<P> ::fbthrift::Serialize<P> for self::MyStruct
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("MyStruct");
-            p.write_field_begin("MyIntField", TType::I64, 1);
-            Serialize::write(&self.MyIntField, p);
+            p.write_field_begin("MyIntField", ::fbthrift::TType::I64, 1);
+            ::fbthrift::Serialize::write(&self.MyIntField, p);
             p.write_field_end();
-            p.write_field_begin("MyStringField", TType::String, 2);
-            Serialize::write(&self.MyStringField, p);
+            p.write_field_begin("MyStringField", ::fbthrift::TType::String, 2);
+            ::fbthrift::Serialize::write(&self.MyStringField, p);
             p.write_field_end();
-            p.write_field_begin("MyDataField", TType::Struct, 3);
-            Serialize::write(&self.MyDataField, p);
+            p.write_field_begin("MyDataField", ::fbthrift::TType::Struct, 3);
+            ::fbthrift::Serialize::write(&self.MyDataField, p);
             p.write_field_end();
-            p.write_field_begin("myEnum", TType::I32, 4);
-            Serialize::write(&self.myEnum, p);
+            p.write_field_begin("myEnum", ::fbthrift::TType::I32, 4);
+            ::fbthrift::Serialize::write(&self.myEnum, p);
             p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for self::MyStruct {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            let mut field_MyIntField = None;
-            let mut field_MyStringField = None;
-            let mut field_MyDataField = None;
-            let mut field_myEnum = None;
+    impl<P> ::fbthrift::Deserialize<P> for self::MyStruct
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            let mut field_MyIntField = ::std::option::Option::None;
+            let mut field_MyStringField = ::std::option::Option::None;
+            let mut field_MyDataField = ::std::option::Option::None;
+            let mut field_myEnum = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::I64, 1) => field_MyIntField = Some(Deserialize::read(p)?),
-                    (TType::String, 2) => field_MyStringField = Some(Deserialize::read(p)?),
-                    (TType::Struct, 3) => field_MyDataField = Some(Deserialize::read(p)?),
-                    (TType::I32, 4) => field_myEnum = Some(Deserialize::read(p)?),
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I64, 1) => field_MyIntField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 2) => field_MyStringField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 3) => field_MyDataField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 4) => field_myEnum = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
+            ::std::result::Result::Ok(Self {
                 MyIntField: field_MyIntField.unwrap_or_default(),
                 MyStringField: field_MyStringField.unwrap_or_default(),
                 MyDataField: field_MyDataField.unwrap_or_default(),
@@ -179,18 +188,21 @@ pub mod types {
     }
 
 
-    impl Default for self::MyDataItem {
+    impl ::std::default::Default for self::MyDataItem {
         fn default() -> Self {
             Self {
             }
         }
     }
 
-    impl GetTType for self::MyDataItem {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for self::MyDataItem {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for self::MyDataItem {
+    impl<P> ::fbthrift::Serialize<P> for self::MyDataItem
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("MyDataItem");
             p.write_field_stop();
@@ -198,56 +210,62 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for self::MyDataItem {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
+    impl<P> ::fbthrift::Deserialize<P> for self::MyDataItem
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
+            ::std::result::Result::Ok(Self {
             })
         }
     }
 
 
 
-    impl Default for MyUnion {
+    impl ::std::default::Default for MyUnion {
         fn default() -> Self {
             Self::UnknownField(-1)
         }
     }
 
-    impl GetTType for MyUnion {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for MyUnion {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for MyUnion {
+    impl<P> ::fbthrift::Serialize<P> for MyUnion
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("MyUnion");
             match self {
                 MyUnion::myEnum(inner) => {
-                    p.write_field_begin("myEnum", TType::I32, 1);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("myEnum", ::fbthrift::TType::I32, 1);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 MyUnion::myStruct(inner) => {
-                    p.write_field_begin("myStruct", TType::Struct, 2);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("myStruct", ::fbthrift::TType::Struct, 2);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 MyUnion::myDataItem(inner) => {
-                    p.write_field_begin("myDataItem", TType::Struct, 3);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("myDataItem", ::fbthrift::TType::Struct, 3);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 MyUnion::UnknownField(x) => {
-                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    p.write_field_begin("UnknownField", ::fbthrift::TType::I32, *x as ::std::primitive::i16);
                     x.write(p);
                     p.write_field_end();
                 }
@@ -257,29 +275,32 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for MyUnion {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
+    impl<P> ::fbthrift::Deserialize<P> for MyUnion
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             let mut once = false;
-            let mut alt = None;
+            let mut alt = ::std::option::Option::None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32, once) {
-                    (TType::Stop, _, _) => break,
-                    (TType::I32, 1, false) => {
+                match (fty, fid as ::std::primitive::i32, once) {
+                    (::fbthrift::TType::Stop, _, _) => break,
+                    (::fbthrift::TType::I32, 1, false) => {
                         once = true;
-                        alt = Some(MyUnion::myEnum(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(MyUnion::myEnum(::fbthrift::Deserialize::read(p)?));
                     }
-                    (TType::Struct, 2, false) => {
+                    (::fbthrift::TType::Struct, 2, false) => {
                         once = true;
-                        alt = Some(MyUnion::myStruct(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(MyUnion::myStruct(::fbthrift::Deserialize::read(p)?));
                     }
-                    (TType::Struct, 3, false) => {
+                    (::fbthrift::TType::Struct, 3, false) => {
                         once = true;
-                        alt = Some(MyUnion::myDataItem(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(MyUnion::myDataItem(::fbthrift::Deserialize::read(p)?));
                     }
                     (fty, _, false) => p.skip(fty)?,
-                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                    (badty, badid, true) => return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
                         ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                         format!(
                             "unwanted extra union {} field ty {:?} id {}",
@@ -292,7 +313,7 @@ pub mod types {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(alt.unwrap_or_default())
+            ::std::result::Result::Ok(alt.unwrap_or_default())
         }
     }
 }
@@ -302,35 +323,34 @@ pub mod dependencies {
 
 pub mod services {
     pub mod my_service {
-        use fbthrift::{
-            ApplicationException, ApplicationExceptionErrorCode, Deserialize, ProtocolReader,
-            ProtocolWriter, Serialize, TType,
-        };
 
         #[derive(Clone, Debug)]
         pub enum PingExn {
             Success(()),
-            ApplicationException(::fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::ApplicationException),
         }
 
-        impl From<ApplicationException> for PingExn {
-            fn from(exn: ApplicationException) -> Self {
+        impl ::std::convert::From<::fbthrift::ApplicationException> for PingExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
                 PingExn::ApplicationException(exn)
             }
         }
 
-        impl fbthrift::GetTType for PingExn {
-            const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
+        impl ::fbthrift::GetTType for PingExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P: ProtocolWriter> Serialize<P> for PingExn {
+        impl<P> ::fbthrift::Serialize<P> for PingExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("Ping");
                 match self {
                     PingExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
-                            TType::Void,
+                            ::fbthrift::TType::Void,
                             0i16,
                         );
                         inner.write(p);
@@ -347,26 +367,29 @@ pub mod services {
             }
         }
 
-        impl<P: ProtocolReader> Deserialize<P> for PingExn {
-            fn read(p: &mut P) -> anyhow::Result<Self> {
+        impl<P> ::fbthrift::Deserialize<P> for PingExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = PingExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                    match ((fty, fid as i32), once) {
-                        ((TType::Stop, _), _) => {
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
                             p.read_field_end()?;
                             break;
                         }
-                        ((TType::Void, 0i32), false) => {
+                        ((::fbthrift::TType::Void, 0i32), false) => {
                             once = true;
-                            alt = PingExn::Success(Deserialize::read(p)?);
+                            alt = PingExn::Success(::fbthrift::Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
-                        ((badty, badid), true) => return Err(From::from(
-                            ApplicationException::new(
-                                ApplicationExceptionErrorCode::ProtocolError,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                                 format!(
                                     "unwanted extra union {} field ty {:?} id {}",
                                     "PingExn",
@@ -379,34 +402,37 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                Ok(alt)
+                ::std::result::Result::Ok(alt)
             }
         }
 
         #[derive(Clone, Debug)]
         pub enum GetRandomDataExn {
-            Success(String),
-            ApplicationException(::fbthrift::types::ApplicationException),
+            Success(::std::string::String),
+            ApplicationException(::fbthrift::ApplicationException),
         }
 
-        impl From<ApplicationException> for GetRandomDataExn {
-            fn from(exn: ApplicationException) -> Self {
+        impl ::std::convert::From<::fbthrift::ApplicationException> for GetRandomDataExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
                 GetRandomDataExn::ApplicationException(exn)
             }
         }
 
-        impl fbthrift::GetTType for GetRandomDataExn {
-            const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
+        impl ::fbthrift::GetTType for GetRandomDataExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P: ProtocolWriter> Serialize<P> for GetRandomDataExn {
+        impl<P> ::fbthrift::Serialize<P> for GetRandomDataExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("GetRandomData");
                 match self {
                     GetRandomDataExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
-                            TType::String,
+                            ::fbthrift::TType::String,
                             0i16,
                         );
                         inner.write(p);
@@ -423,26 +449,29 @@ pub mod services {
             }
         }
 
-        impl<P: ProtocolReader> Deserialize<P> for GetRandomDataExn {
-            fn read(p: &mut P) -> anyhow::Result<Self> {
+        impl<P> ::fbthrift::Deserialize<P> for GetRandomDataExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt = None;
+                let mut alt = ::std::option::Option::None;
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                    match ((fty, fid as i32), once) {
-                        ((TType::Stop, _), _) => {
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
                             p.read_field_end()?;
                             break;
                         }
-                        ((TType::String, 0i32), false) => {
+                        ((::fbthrift::TType::String, 0i32), false) => {
                             once = true;
-                            alt = Some(GetRandomDataExn::Success(Deserialize::read(p)?));
+                            alt = ::std::option::Option::Some(GetRandomDataExn::Success(::fbthrift::Deserialize::read(p)?));
                         }
                         ((ty, _id), false) => p.skip(ty)?,
-                        ((badty, badid), true) => return Err(From::from(
-                            ApplicationException::new(
-                                ApplicationExceptionErrorCode::ProtocolError,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                                 format!(
                                     "unwanted extra union {} field ty {:?} id {}",
                                     "GetRandomDataExn",
@@ -456,8 +485,8 @@ pub mod services {
                 }
                 p.read_struct_end()?;
                 alt.ok_or_else(||
-                    ApplicationException::new(
-                        ApplicationExceptionErrorCode::MissingResult,
+                    ::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
                         format!("Empty union {}", "GetRandomDataExn"),
                     )
                     .into(),
@@ -467,28 +496,31 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum HasDataByIdExn {
-            Success(bool),
-            ApplicationException(::fbthrift::types::ApplicationException),
+            Success(::std::primitive::bool),
+            ApplicationException(::fbthrift::ApplicationException),
         }
 
-        impl From<ApplicationException> for HasDataByIdExn {
-            fn from(exn: ApplicationException) -> Self {
+        impl ::std::convert::From<::fbthrift::ApplicationException> for HasDataByIdExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
                 HasDataByIdExn::ApplicationException(exn)
             }
         }
 
-        impl fbthrift::GetTType for HasDataByIdExn {
-            const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
+        impl ::fbthrift::GetTType for HasDataByIdExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P: ProtocolWriter> Serialize<P> for HasDataByIdExn {
+        impl<P> ::fbthrift::Serialize<P> for HasDataByIdExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("HasDataById");
                 match self {
                     HasDataByIdExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
-                            TType::Bool,
+                            ::fbthrift::TType::Bool,
                             0i16,
                         );
                         inner.write(p);
@@ -505,26 +537,29 @@ pub mod services {
             }
         }
 
-        impl<P: ProtocolReader> Deserialize<P> for HasDataByIdExn {
-            fn read(p: &mut P) -> anyhow::Result<Self> {
+        impl<P> ::fbthrift::Deserialize<P> for HasDataByIdExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt = None;
+                let mut alt = ::std::option::Option::None;
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                    match ((fty, fid as i32), once) {
-                        ((TType::Stop, _), _) => {
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
                             p.read_field_end()?;
                             break;
                         }
-                        ((TType::Bool, 0i32), false) => {
+                        ((::fbthrift::TType::Bool, 0i32), false) => {
                             once = true;
-                            alt = Some(HasDataByIdExn::Success(Deserialize::read(p)?));
+                            alt = ::std::option::Option::Some(HasDataByIdExn::Success(::fbthrift::Deserialize::read(p)?));
                         }
                         ((ty, _id), false) => p.skip(ty)?,
-                        ((badty, badid), true) => return Err(From::from(
-                            ApplicationException::new(
-                                ApplicationExceptionErrorCode::ProtocolError,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                                 format!(
                                     "unwanted extra union {} field ty {:?} id {}",
                                     "HasDataByIdExn",
@@ -538,8 +573,8 @@ pub mod services {
                 }
                 p.read_struct_end()?;
                 alt.ok_or_else(||
-                    ApplicationException::new(
-                        ApplicationExceptionErrorCode::MissingResult,
+                    ::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
                         format!("Empty union {}", "HasDataByIdExn"),
                     )
                     .into(),
@@ -549,28 +584,31 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum GetDataByIdExn {
-            Success(String),
-            ApplicationException(::fbthrift::types::ApplicationException),
+            Success(::std::string::String),
+            ApplicationException(::fbthrift::ApplicationException),
         }
 
-        impl From<ApplicationException> for GetDataByIdExn {
-            fn from(exn: ApplicationException) -> Self {
+        impl ::std::convert::From<::fbthrift::ApplicationException> for GetDataByIdExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
                 GetDataByIdExn::ApplicationException(exn)
             }
         }
 
-        impl fbthrift::GetTType for GetDataByIdExn {
-            const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
+        impl ::fbthrift::GetTType for GetDataByIdExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P: ProtocolWriter> Serialize<P> for GetDataByIdExn {
+        impl<P> ::fbthrift::Serialize<P> for GetDataByIdExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("GetDataById");
                 match self {
                     GetDataByIdExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
-                            TType::String,
+                            ::fbthrift::TType::String,
                             0i16,
                         );
                         inner.write(p);
@@ -587,26 +625,29 @@ pub mod services {
             }
         }
 
-        impl<P: ProtocolReader> Deserialize<P> for GetDataByIdExn {
-            fn read(p: &mut P) -> anyhow::Result<Self> {
+        impl<P> ::fbthrift::Deserialize<P> for GetDataByIdExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt = None;
+                let mut alt = ::std::option::Option::None;
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                    match ((fty, fid as i32), once) {
-                        ((TType::Stop, _), _) => {
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
                             p.read_field_end()?;
                             break;
                         }
-                        ((TType::String, 0i32), false) => {
+                        ((::fbthrift::TType::String, 0i32), false) => {
                             once = true;
-                            alt = Some(GetDataByIdExn::Success(Deserialize::read(p)?));
+                            alt = ::std::option::Option::Some(GetDataByIdExn::Success(::fbthrift::Deserialize::read(p)?));
                         }
                         ((ty, _id), false) => p.skip(ty)?,
-                        ((badty, badid), true) => return Err(From::from(
-                            ApplicationException::new(
-                                ApplicationExceptionErrorCode::ProtocolError,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                                 format!(
                                     "unwanted extra union {} field ty {:?} id {}",
                                     "GetDataByIdExn",
@@ -620,8 +661,8 @@ pub mod services {
                 }
                 p.read_struct_end()?;
                 alt.ok_or_else(||
-                    ApplicationException::new(
-                        ApplicationExceptionErrorCode::MissingResult,
+                    ::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
                         format!("Empty union {}", "GetDataByIdExn"),
                     )
                     .into(),
@@ -632,27 +673,30 @@ pub mod services {
         #[derive(Clone, Debug)]
         pub enum PutDataByIdExn {
             Success(()),
-            ApplicationException(::fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::ApplicationException),
         }
 
-        impl From<ApplicationException> for PutDataByIdExn {
-            fn from(exn: ApplicationException) -> Self {
+        impl ::std::convert::From<::fbthrift::ApplicationException> for PutDataByIdExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
                 PutDataByIdExn::ApplicationException(exn)
             }
         }
 
-        impl fbthrift::GetTType for PutDataByIdExn {
-            const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
+        impl ::fbthrift::GetTType for PutDataByIdExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P: ProtocolWriter> Serialize<P> for PutDataByIdExn {
+        impl<P> ::fbthrift::Serialize<P> for PutDataByIdExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("PutDataById");
                 match self {
                     PutDataByIdExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
-                            TType::Void,
+                            ::fbthrift::TType::Void,
                             0i16,
                         );
                         inner.write(p);
@@ -669,26 +713,29 @@ pub mod services {
             }
         }
 
-        impl<P: ProtocolReader> Deserialize<P> for PutDataByIdExn {
-            fn read(p: &mut P) -> anyhow::Result<Self> {
+        impl<P> ::fbthrift::Deserialize<P> for PutDataByIdExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = PutDataByIdExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                    match ((fty, fid as i32), once) {
-                        ((TType::Stop, _), _) => {
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
                             p.read_field_end()?;
                             break;
                         }
-                        ((TType::Void, 0i32), false) => {
+                        ((::fbthrift::TType::Void, 0i32), false) => {
                             once = true;
-                            alt = PutDataByIdExn::Success(Deserialize::read(p)?);
+                            alt = PutDataByIdExn::Success(::fbthrift::Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
-                        ((badty, badid), true) => return Err(From::from(
-                            ApplicationException::new(
-                                ApplicationExceptionErrorCode::ProtocolError,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                                 format!(
                                     "unwanted extra union {} field ty {:?} id {}",
                                     "PutDataByIdExn",
@@ -701,34 +748,37 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                Ok(alt)
+                ::std::result::Result::Ok(alt)
             }
         }
 
         #[derive(Clone, Debug)]
         pub enum LobDataByIdExn {
             Success(()),
-            ApplicationException(::fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::ApplicationException),
         }
 
-        impl From<ApplicationException> for LobDataByIdExn {
-            fn from(exn: ApplicationException) -> Self {
+        impl ::std::convert::From<::fbthrift::ApplicationException> for LobDataByIdExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
                 LobDataByIdExn::ApplicationException(exn)
             }
         }
 
-        impl fbthrift::GetTType for LobDataByIdExn {
-            const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
+        impl ::fbthrift::GetTType for LobDataByIdExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
 
-        impl<P: ProtocolWriter> Serialize<P> for LobDataByIdExn {
+        impl<P> ::fbthrift::Serialize<P> for LobDataByIdExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
             fn write(&self, p: &mut P) {
                 p.write_struct_begin("LobDataById");
                 match self {
                     LobDataByIdExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
-                            TType::Void,
+                            ::fbthrift::TType::Void,
                             0i16,
                         );
                         inner.write(p);
@@ -745,26 +795,29 @@ pub mod services {
             }
         }
 
-        impl<P: ProtocolReader> Deserialize<P> for LobDataByIdExn {
-            fn read(p: &mut P) -> anyhow::Result<Self> {
+        impl<P> ::fbthrift::Deserialize<P> for LobDataByIdExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = LobDataByIdExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                    match ((fty, fid as i32), once) {
-                        ((TType::Stop, _), _) => {
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
                             p.read_field_end()?;
                             break;
                         }
-                        ((TType::Void, 0i32), false) => {
+                        ((::fbthrift::TType::Void, 0i32), false) => {
                             once = true;
-                            alt = LobDataByIdExn::Success(Deserialize::read(p)?);
+                            alt = LobDataByIdExn::Success(::fbthrift::Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
-                        ((badty, badid), true) => return Err(From::from(
-                            ApplicationException::new(
-                                ApplicationExceptionErrorCode::ProtocolError,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                                 format!(
                                     "unwanted extra union {} field ty {:?} id {}",
                                     "LobDataByIdExn",
@@ -777,20 +830,17 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                Ok(alt)
+                ::std::result::Result::Ok(alt)
             }
         }
     }
 }
 
 pub mod client {
-    use fbthrift::*;
-    use std::marker::PhantomData;
-    use std::sync::Arc;
 
     pub struct MyServiceImpl<P, T> {
         transport: T,
-        _phantom: PhantomData<fn() -> P>,
+        _phantom: ::std::marker::PhantomData<fn() -> P>,
     }
 
     impl<P, T> MyServiceImpl<P, T> {
@@ -799,7 +849,7 @@ pub mod client {
         ) -> Self {
             Self {
                 transport,
-                _phantom: PhantomData,
+                _phantom: ::std::marker::PhantomData,
             }
         }
 
@@ -808,47 +858,48 @@ pub mod client {
         }
     }
 
-    pub trait MyService: Send {
+    pub trait MyService: ::std::marker::Send {
         fn ping(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::PingError>> + Send + 'static>>;
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>>;
         fn getRandomData(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::my_service::GetRandomDataError>> + Send + 'static>>;
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>>;
         fn hasDataById(
             &self,
-            arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<bool, crate::errors::my_service::HasDataByIdError>> + Send + 'static>>;
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> + ::std::marker::Send + 'static>>;
         fn getDataById(
             &self,
-            arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::my_service::GetDataByIdError>> + Send + 'static>>;
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> + ::std::marker::Send + 'static>>;
         fn putDataById(
             &self,
-            arg_id: i64,
-            arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + Send + 'static>>;
+            arg_id: ::std::primitive::i64,
+            arg_data: &::std::primitive::str,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + ::std::marker::Send + 'static>>;
         fn lobDataById(
             &self,
-            arg_id: i64,
-            arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + Send + 'static>>;
+            arg_id: ::std::primitive::i64,
+            arg_data: &::std::primitive::str,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>>;
     }
 
     impl<P, T> MyService for MyServiceImpl<P, T>
     where
-        P: Protocol,
-        T: Transport,
-        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
-        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
     {        fn ping(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::PingError>> + Send + 'static>> {
-            use futures::future::{FutureExt, TryFutureExt};
-            let request = serialize!(P, |p| protocol::write_message(
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>> {
+            use ::fbthrift::{ProtocolReader as _, ProtocolWriter as _};
+            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "ping",
-                MessageType::Call,
+                ::fbthrift::MessageType::Call,
                 // Note: we send a 0 message sequence ID from clients because
                 // this field should not be used by the server (except for some
                 // language implementations).
@@ -861,29 +912,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .map_err(From::from)
-                .and_then(|reply| futures::future::ready({
+                .map_err(::std::convert::From::from)
+                .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::my_service::PingError> {
+                    move |mut p: P::Deserializer| -> ::std::result::Result<(), crate::errors::my_service::PingError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
-                            MessageType::Reply => {
-                                let exn = crate::services::my_service::PingExn::read(p)?;
+                            ::fbthrift::MessageType::Reply => {
+                                let exn: crate::services::my_service::PingExn = ::fbthrift::Deserialize::read(p)?;
                                 match exn {
-                                    crate::services::my_service::PingExn::Success(x) => Ok(x),
+                                    crate::services::my_service::PingExn::Success(x) => ::std::result::Result::Ok(x),
                                     crate::services::my_service::PingExn::ApplicationException(ae) => {
-                                        Err(crate::errors::my_service::PingError::ApplicationException(ae))
+                                        ::std::result::Result::Err(crate::errors::my_service::PingError::ApplicationException(ae))
                                     }
                                 }
                             }
-                            MessageType::Exception => {
-                                let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::my_service::PingError::ApplicationException(ae))
+                            ::fbthrift::MessageType::Exception => {
+                                let ae: ::fbthrift::ApplicationException = ::fbthrift::Deserialize::read(p)?;
+                                ::std::result::Result::Err(crate::errors::my_service::PingError::ApplicationException(ae))
                             }
-                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                Err(crate::errors::my_service::PingError::ThriftError(err))
+                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                ::std::result::Result::Err(crate::errors::my_service::PingError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -894,12 +945,13 @@ pub mod client {
         }
         fn getRandomData(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::my_service::GetRandomDataError>> + Send + 'static>> {
-            use futures::future::{FutureExt, TryFutureExt};
-            let request = serialize!(P, |p| protocol::write_message(
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>> {
+            use ::fbthrift::{ProtocolReader as _, ProtocolWriter as _};
+            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "getRandomData",
-                MessageType::Call,
+                ::fbthrift::MessageType::Call,
                 // Note: we send a 0 message sequence ID from clients because
                 // this field should not be used by the server (except for some
                 // language implementations).
@@ -912,29 +964,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .map_err(From::from)
-                .and_then(|reply| futures::future::ready({
+                .map_err(::std::convert::From::from)
+                .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> std::result::Result<String, crate::errors::my_service::GetRandomDataError> {
+                    move |mut p: P::Deserializer| -> ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
-                            MessageType::Reply => {
-                                let exn = crate::services::my_service::GetRandomDataExn::read(p)?;
+                            ::fbthrift::MessageType::Reply => {
+                                let exn: crate::services::my_service::GetRandomDataExn = ::fbthrift::Deserialize::read(p)?;
                                 match exn {
-                                    crate::services::my_service::GetRandomDataExn::Success(x) => Ok(x),
+                                    crate::services::my_service::GetRandomDataExn::Success(x) => ::std::result::Result::Ok(x),
                                     crate::services::my_service::GetRandomDataExn::ApplicationException(ae) => {
-                                        Err(crate::errors::my_service::GetRandomDataError::ApplicationException(ae))
+                                        ::std::result::Result::Err(crate::errors::my_service::GetRandomDataError::ApplicationException(ae))
                                     }
                                 }
                             }
-                            MessageType::Exception => {
-                                let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::my_service::GetRandomDataError::ApplicationException(ae))
+                            ::fbthrift::MessageType::Exception => {
+                                let ae: ::fbthrift::ApplicationException = ::fbthrift::Deserialize::read(p)?;
+                                ::std::result::Result::Err(crate::errors::my_service::GetRandomDataError::ApplicationException(ae))
                             }
-                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                Err(crate::errors::my_service::GetRandomDataError::ThriftError(err))
+                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                ::std::result::Result::Err(crate::errors::my_service::GetRandomDataError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -945,21 +997,22 @@ pub mod client {
         }
         fn hasDataById(
             &self,
-            arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<bool, crate::errors::my_service::HasDataByIdError>> + Send + 'static>> {
-            use futures::future::{FutureExt, TryFutureExt};
-            let request = serialize!(P, |p| protocol::write_message(
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> + ::std::marker::Send + 'static>> {
+            use ::fbthrift::{ProtocolReader as _, ProtocolWriter as _};
+            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "hasDataById",
-                MessageType::Call,
+                ::fbthrift::MessageType::Call,
                 // Note: we send a 0 message sequence ID from clients because
                 // this field should not be used by the server (except for some
                 // language implementations).
                 0,
                 |p| {
                     p.write_struct_begin("args");
-                    p.write_field_begin("arg_id", TType::I64, 1i16);
-                    arg_id.write(p);
+                    p.write_field_begin("arg_id", ::fbthrift::TType::I64, 1i16);
+                    ::fbthrift::Serialize::write(&arg_id, p);
                     p.write_field_end();
                     p.write_field_stop();
                     p.write_struct_end();
@@ -967,29 +1020,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .map_err(From::from)
-                .and_then(|reply| futures::future::ready({
+                .map_err(::std::convert::From::from)
+                .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> std::result::Result<bool, crate::errors::my_service::HasDataByIdError> {
+                    move |mut p: P::Deserializer| -> ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
-                            MessageType::Reply => {
-                                let exn = crate::services::my_service::HasDataByIdExn::read(p)?;
+                            ::fbthrift::MessageType::Reply => {
+                                let exn: crate::services::my_service::HasDataByIdExn = ::fbthrift::Deserialize::read(p)?;
                                 match exn {
-                                    crate::services::my_service::HasDataByIdExn::Success(x) => Ok(x),
+                                    crate::services::my_service::HasDataByIdExn::Success(x) => ::std::result::Result::Ok(x),
                                     crate::services::my_service::HasDataByIdExn::ApplicationException(ae) => {
-                                        Err(crate::errors::my_service::HasDataByIdError::ApplicationException(ae))
+                                        ::std::result::Result::Err(crate::errors::my_service::HasDataByIdError::ApplicationException(ae))
                                     }
                                 }
                             }
-                            MessageType::Exception => {
-                                let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::my_service::HasDataByIdError::ApplicationException(ae))
+                            ::fbthrift::MessageType::Exception => {
+                                let ae: ::fbthrift::ApplicationException = ::fbthrift::Deserialize::read(p)?;
+                                ::std::result::Result::Err(crate::errors::my_service::HasDataByIdError::ApplicationException(ae))
                             }
-                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                Err(crate::errors::my_service::HasDataByIdError::ThriftError(err))
+                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                ::std::result::Result::Err(crate::errors::my_service::HasDataByIdError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -1000,21 +1053,22 @@ pub mod client {
         }
         fn getDataById(
             &self,
-            arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::my_service::GetDataByIdError>> + Send + 'static>> {
-            use futures::future::{FutureExt, TryFutureExt};
-            let request = serialize!(P, |p| protocol::write_message(
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> + ::std::marker::Send + 'static>> {
+            use ::fbthrift::{ProtocolReader as _, ProtocolWriter as _};
+            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "getDataById",
-                MessageType::Call,
+                ::fbthrift::MessageType::Call,
                 // Note: we send a 0 message sequence ID from clients because
                 // this field should not be used by the server (except for some
                 // language implementations).
                 0,
                 |p| {
                     p.write_struct_begin("args");
-                    p.write_field_begin("arg_id", TType::I64, 1i16);
-                    arg_id.write(p);
+                    p.write_field_begin("arg_id", ::fbthrift::TType::I64, 1i16);
+                    ::fbthrift::Serialize::write(&arg_id, p);
                     p.write_field_end();
                     p.write_field_stop();
                     p.write_struct_end();
@@ -1022,29 +1076,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .map_err(From::from)
-                .and_then(|reply| futures::future::ready({
+                .map_err(::std::convert::From::from)
+                .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> std::result::Result<String, crate::errors::my_service::GetDataByIdError> {
+                    move |mut p: P::Deserializer| -> ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
-                            MessageType::Reply => {
-                                let exn = crate::services::my_service::GetDataByIdExn::read(p)?;
+                            ::fbthrift::MessageType::Reply => {
+                                let exn: crate::services::my_service::GetDataByIdExn = ::fbthrift::Deserialize::read(p)?;
                                 match exn {
-                                    crate::services::my_service::GetDataByIdExn::Success(x) => Ok(x),
+                                    crate::services::my_service::GetDataByIdExn::Success(x) => ::std::result::Result::Ok(x),
                                     crate::services::my_service::GetDataByIdExn::ApplicationException(ae) => {
-                                        Err(crate::errors::my_service::GetDataByIdError::ApplicationException(ae))
+                                        ::std::result::Result::Err(crate::errors::my_service::GetDataByIdError::ApplicationException(ae))
                                     }
                                 }
                             }
-                            MessageType::Exception => {
-                                let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::my_service::GetDataByIdError::ApplicationException(ae))
+                            ::fbthrift::MessageType::Exception => {
+                                let ae: ::fbthrift::ApplicationException = ::fbthrift::Deserialize::read(p)?;
+                                ::std::result::Result::Err(crate::errors::my_service::GetDataByIdError::ApplicationException(ae))
                             }
-                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                Err(crate::errors::my_service::GetDataByIdError::ThriftError(err))
+                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                ::std::result::Result::Err(crate::errors::my_service::GetDataByIdError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -1055,25 +1109,26 @@ pub mod client {
         }
         fn putDataById(
             &self,
-            arg_id: i64,
-            arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + Send + 'static>> {
-            use futures::future::{FutureExt, TryFutureExt};
-            let request = serialize!(P, |p| protocol::write_message(
+            arg_id: ::std::primitive::i64,
+            arg_data: &::std::primitive::str,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + ::std::marker::Send + 'static>> {
+            use ::fbthrift::{ProtocolReader as _, ProtocolWriter as _};
+            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "putDataById",
-                MessageType::Call,
+                ::fbthrift::MessageType::Call,
                 // Note: we send a 0 message sequence ID from clients because
                 // this field should not be used by the server (except for some
                 // language implementations).
                 0,
                 |p| {
                     p.write_struct_begin("args");
-                    p.write_field_begin("arg_id", TType::I64, 1i16);
-                    arg_id.write(p);
+                    p.write_field_begin("arg_id", ::fbthrift::TType::I64, 1i16);
+                    ::fbthrift::Serialize::write(&arg_id, p);
                     p.write_field_end();
-                    p.write_field_begin("arg_data", TType::String, 2i16);
-                    arg_data.write(p);
+                    p.write_field_begin("arg_data", ::fbthrift::TType::String, 2i16);
+                    ::fbthrift::Serialize::write(&arg_data, p);
                     p.write_field_end();
                     p.write_field_stop();
                     p.write_struct_end();
@@ -1081,29 +1136,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .map_err(From::from)
-                .and_then(|reply| futures::future::ready({
+                .map_err(::std::convert::From::from)
+                .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::my_service::PutDataByIdError> {
+                    move |mut p: P::Deserializer| -> ::std::result::Result<(), crate::errors::my_service::PutDataByIdError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
-                            MessageType::Reply => {
-                                let exn = crate::services::my_service::PutDataByIdExn::read(p)?;
+                            ::fbthrift::MessageType::Reply => {
+                                let exn: crate::services::my_service::PutDataByIdExn = ::fbthrift::Deserialize::read(p)?;
                                 match exn {
-                                    crate::services::my_service::PutDataByIdExn::Success(x) => Ok(x),
+                                    crate::services::my_service::PutDataByIdExn::Success(x) => ::std::result::Result::Ok(x),
                                     crate::services::my_service::PutDataByIdExn::ApplicationException(ae) => {
-                                        Err(crate::errors::my_service::PutDataByIdError::ApplicationException(ae))
+                                        ::std::result::Result::Err(crate::errors::my_service::PutDataByIdError::ApplicationException(ae))
                                     }
                                 }
                             }
-                            MessageType::Exception => {
-                                let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::my_service::PutDataByIdError::ApplicationException(ae))
+                            ::fbthrift::MessageType::Exception => {
+                                let ae: ::fbthrift::ApplicationException = ::fbthrift::Deserialize::read(p)?;
+                                ::std::result::Result::Err(crate::errors::my_service::PutDataByIdError::ApplicationException(ae))
                             }
-                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                Err(crate::errors::my_service::PutDataByIdError::ThriftError(err))
+                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                ::std::result::Result::Err(crate::errors::my_service::PutDataByIdError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -1114,25 +1169,26 @@ pub mod client {
         }
         fn lobDataById(
             &self,
-            arg_id: i64,
-            arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + Send + 'static>> {
-            use futures::future::{FutureExt, TryFutureExt};
-            let request = serialize!(P, |p| protocol::write_message(
+            arg_id: ::std::primitive::i64,
+            arg_data: &::std::primitive::str,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>> {
+            use ::fbthrift::{ProtocolReader as _, ProtocolWriter as _};
+            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "lobDataById",
-                MessageType::Call,
+                ::fbthrift::MessageType::Call,
                 // Note: we send a 0 message sequence ID from clients because
                 // this field should not be used by the server (except for some
                 // language implementations).
                 0,
                 |p| {
                     p.write_struct_begin("args");
-                    p.write_field_begin("arg_id", TType::I64, 1i16);
-                    arg_id.write(p);
+                    p.write_field_begin("arg_id", ::fbthrift::TType::I64, 1i16);
+                    ::fbthrift::Serialize::write(&arg_id, p);
                     p.write_field_end();
-                    p.write_field_begin("arg_data", TType::String, 2i16);
-                    arg_data.write(p);
+                    p.write_field_begin("arg_data", ::fbthrift::TType::String, 2i16);
+                    ::fbthrift::Serialize::write(&arg_data, p);
                     p.write_field_end();
                     p.write_field_stop();
                     p.write_struct_end();
@@ -1140,29 +1196,29 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .map_err(From::from)
-                .and_then(|reply| futures::future::ready({
+                .map_err(::std::convert::From::from)
+                .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> std::result::Result<(), crate::errors::my_service::LobDataByIdError> {
+                    move |mut p: P::Deserializer| -> ::std::result::Result<(), crate::errors::my_service::LobDataByIdError> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
-                            MessageType::Reply => {
-                                let exn = crate::services::my_service::LobDataByIdExn::read(p)?;
+                            ::fbthrift::MessageType::Reply => {
+                                let exn: crate::services::my_service::LobDataByIdExn = ::fbthrift::Deserialize::read(p)?;
                                 match exn {
-                                    crate::services::my_service::LobDataByIdExn::Success(x) => Ok(x),
+                                    crate::services::my_service::LobDataByIdExn::Success(x) => ::std::result::Result::Ok(x),
                                     crate::services::my_service::LobDataByIdExn::ApplicationException(ae) => {
-                                        Err(crate::errors::my_service::LobDataByIdError::ApplicationException(ae))
+                                        ::std::result::Result::Err(crate::errors::my_service::LobDataByIdError::ApplicationException(ae))
                                     }
                                 }
                             }
-                            MessageType::Exception => {
-                                let ae = ApplicationException::read(p)?;
-                                Err(crate::errors::my_service::LobDataByIdError::ApplicationException(ae))
+                            ::fbthrift::MessageType::Exception => {
+                                let ae: ::fbthrift::ApplicationException = ::fbthrift::Deserialize::read(p)?;
+                                ::std::result::Result::Err(crate::errors::my_service::LobDataByIdError::ApplicationException(ae))
                             }
-                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                Err(crate::errors::my_service::LobDataByIdError::ThriftError(err))
+                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                ::std::result::Result::Err(crate::errors::my_service::LobDataByIdError::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -1175,42 +1231,42 @@ pub mod client {
 
     impl<'a, T> MyService for T
     where
-        T: AsRef<dyn MyService + 'a>,
-        T: Send,
+        T: ::std::convert::AsRef<dyn MyService + 'a>,
+        T: ::std::marker::Send,
     {
         fn ping(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::PingError>> + Send + 'static>> {
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>> {
             self.as_ref().ping(
             )
         }
         fn getRandomData(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::my_service::GetRandomDataError>> + Send + 'static>> {
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>> {
             self.as_ref().getRandomData(
             )
         }
         fn hasDataById(
             &self,
-            arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<bool, crate::errors::my_service::HasDataByIdError>> + Send + 'static>> {
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> + ::std::marker::Send + 'static>> {
             self.as_ref().hasDataById(
                 arg_id,
             )
         }
         fn getDataById(
             &self,
-            arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::my_service::GetDataByIdError>> + Send + 'static>> {
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> + ::std::marker::Send + 'static>> {
             self.as_ref().getDataById(
                 arg_id,
             )
         }
         fn putDataById(
             &self,
-            arg_id: i64,
-            arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + Send + 'static>> {
+            arg_id: ::std::primitive::i64,
+            arg_data: &::std::primitive::str,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + ::std::marker::Send + 'static>> {
             self.as_ref().putDataById(
                 arg_id,
                 arg_data,
@@ -1218,9 +1274,9 @@ pub mod client {
         }
         fn lobDataById(
             &self,
-            arg_id: i64,
-            arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + Send + 'static>> {
+            arg_id: ::std::primitive::i64,
+            arg_data: &::std::primitive::str,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>> {
             self.as_ref().lobDataById(
                 arg_id,
                 arg_data,
@@ -1242,29 +1298,29 @@ pub mod client {
     /// let client = BuckGraphService::new(protocol, transport);
     /// ```
     impl dyn MyService {
-        pub const rust_request_context: &'static str = "1";
+        pub const rust_request_context: &'static ::std::primitive::str = "1";
         pub fn new<P, T>(
             protocol: P,
             transport: T,
-        ) -> Arc<impl MyService + Send + 'static>
+        ) -> ::std::sync::Arc<impl MyService + ::std::marker::Send + 'static>
         where
-            P: Protocol<Frame = T>,
-            T: Transport,
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport,
         {
             let _ = protocol;
-            Arc::new(MyServiceImpl::<P, T>::new(transport))
+            ::std::sync::Arc::new(MyServiceImpl::<P, T>::new(transport))
         }
     }
 
     /// The same thing, but to be called from generic contexts where we are
     /// working with a type parameter `C: ClientFactory` to produce clients.
-    impl ClientFactory for make_MyService {
-        type Api = dyn MyService + Send + Sync + 'static;
+    impl ::fbthrift::ClientFactory for make_MyService {
+        type Api = dyn MyService + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
+        fn new<P, T>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
         where
-            P: Protocol<Frame = T>,
-            T: Transport + Sync,
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport + ::std::marker::Sync,
         {
             MyService::new(protocol, transport)
         }
@@ -1272,19 +1328,15 @@ pub mod client {
 }
 
 pub mod server {
-    use async_trait::async_trait;
-    use fbthrift::*;
-    use std::marker::PhantomData;
-
-    #[async_trait]
-    pub trait MyService: Send + Sync + 'static {
-        type RequestContext: Sync;
+    #[::async_trait::async_trait]
+    pub trait MyService: ::std::marker::Send + ::std::marker::Sync + 'static {
+        type RequestContext: ::std::marker::Sync;
         async fn ping(
             &self,
             _request_context: &Self::RequestContext,
-        ) -> Result<(), crate::services::my_service::PingExn> {
-            Err(crate::services::my_service::PingExn::ApplicationException(
-                ApplicationException::unimplemented_method(
+        ) -> ::std::result::Result<(), crate::services::my_service::PingExn> {
+            ::std::result::Result::Err(crate::services::my_service::PingExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
                     "ping",
                 ),
@@ -1293,9 +1345,9 @@ pub mod server {
         async fn getRandomData(
             &self,
             _request_context: &Self::RequestContext,
-        ) -> Result<String, crate::services::my_service::GetRandomDataExn> {
-            Err(crate::services::my_service::GetRandomDataExn::ApplicationException(
-                ApplicationException::unimplemented_method(
+        ) -> ::std::result::Result<::std::string::String, crate::services::my_service::GetRandomDataExn> {
+            ::std::result::Result::Err(crate::services::my_service::GetRandomDataExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
                     "getRandomData",
                 ),
@@ -1304,10 +1356,10 @@ pub mod server {
         async fn hasDataById(
             &self,
             _request_context: &Self::RequestContext,
-            _id: i64,
-        ) -> Result<bool, crate::services::my_service::HasDataByIdExn> {
-            Err(crate::services::my_service::HasDataByIdExn::ApplicationException(
-                ApplicationException::unimplemented_method(
+            _id: ::std::primitive::i64,
+        ) -> ::std::result::Result<::std::primitive::bool, crate::services::my_service::HasDataByIdExn> {
+            ::std::result::Result::Err(crate::services::my_service::HasDataByIdExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
                     "hasDataById",
                 ),
@@ -1316,10 +1368,10 @@ pub mod server {
         async fn getDataById(
             &self,
             _request_context: &Self::RequestContext,
-            _id: i64,
-        ) -> Result<String, crate::services::my_service::GetDataByIdExn> {
-            Err(crate::services::my_service::GetDataByIdExn::ApplicationException(
-                ApplicationException::unimplemented_method(
+            _id: ::std::primitive::i64,
+        ) -> ::std::result::Result<::std::string::String, crate::services::my_service::GetDataByIdExn> {
+            ::std::result::Result::Err(crate::services::my_service::GetDataByIdExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
                     "getDataById",
                 ),
@@ -1328,11 +1380,11 @@ pub mod server {
         async fn putDataById(
             &self,
             _request_context: &Self::RequestContext,
-            _id: i64,
-            _data: String,
-        ) -> Result<(), crate::services::my_service::PutDataByIdExn> {
-            Err(crate::services::my_service::PutDataByIdExn::ApplicationException(
-                ApplicationException::unimplemented_method(
+            _id: ::std::primitive::i64,
+            _data: ::std::string::String,
+        ) -> ::std::result::Result<(), crate::services::my_service::PutDataByIdExn> {
+            ::std::result::Result::Err(crate::services::my_service::PutDataByIdExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
                     "putDataById",
                 ),
@@ -1341,11 +1393,11 @@ pub mod server {
         async fn lobDataById(
             &self,
             _request_context: &Self::RequestContext,
-            _id: i64,
-            _data: String,
-        ) -> Result<(), crate::services::my_service::LobDataByIdExn> {
-            Err(crate::services::my_service::LobDataByIdExn::ApplicationException(
-                ApplicationException::unimplemented_method(
+            _id: ::std::primitive::i64,
+            _data: ::std::string::String,
+        ) -> ::std::result::Result<(), crate::services::my_service::LobDataByIdExn> {
+            ::std::result::Result::Err(crate::services::my_service::LobDataByIdExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
                     "lobDataById",
                 ),
@@ -1356,21 +1408,21 @@ pub mod server {
     #[derive(Clone, Debug)]
     pub struct MyServiceProcessor<P, H, R> {
         service: H,
-        supa: fbthrift::NullServiceProcessor<P, R>,
-        _phantom: PhantomData<(P, H, R)>,
+        supa: ::fbthrift::NullServiceProcessor<P, R>,
+        _phantom: ::std::marker::PhantomData<(P, H, R)>,
     }
 
     impl<P, H, R> MyServiceProcessor<P, H, R>
     where
-        P: Protocol + Send + Sync + 'static,
-        P::Deserializer: Send,
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
         H: MyService<RequestContext = R>,
     {
         pub fn new(service: H) -> Self {
             Self {
                 service,
-                supa: fbthrift::NullServiceProcessor::new(),
-                _phantom: PhantomData,
+                supa: ::fbthrift::NullServiceProcessor::new(),
+                _phantom: ::std::marker::PhantomData,
             }
         }
 
@@ -1382,13 +1434,14 @@ pub mod server {
             &'a self,
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
-            seqid: u32,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
+            seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::ProtocolReader as _;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -1398,40 +1451,41 @@ pub mod server {
                 req_ctxt,
             ).await;
             let res = match res {
-                Ok(res) => {
+                ::std::result::Result::Ok(res) => {
                     crate::services::my_service::PingExn::Success(res)
                 }
-                Err(crate::services::my_service::PingExn::ApplicationException(aexn)) => {
-                    return Err(aexn.into())
+                ::std::result::Result::Err(crate::services::my_service::PingExn::ApplicationException(aexn)) => {
+                    return ::std::result::Result::Err(aexn.into())
                 }
-                Err(crate::services::my_service::PingExn::Success(_)) => {
+                ::std::result::Result::Err(crate::services::my_service::PingExn::Success(_)) => {
                     panic!(
                         "{} attempted to return success via error",
                         "ping",
                     )
                 }
             };
-            let res = serialize!(P, |p| fbthrift::protocol::write_message(
+            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "ping",
-                MessageType::Reply,
+                ::fbthrift::MessageType::Reply,
                 seqid,
-                |p| res.write(p),
+                |p| ::fbthrift::Serialize::write(&res, p),
             ));
-            Ok(res)
+            ::std::result::Result::Ok(res)
         }
 
         async fn handle_getRandomData<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
-            seqid: u32,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
+            seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::ProtocolReader as _;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -1441,42 +1495,43 @@ pub mod server {
                 req_ctxt,
             ).await;
             let res = match res {
-                Ok(res) => {
+                ::std::result::Result::Ok(res) => {
                     crate::services::my_service::GetRandomDataExn::Success(res)
                 }
-                Err(crate::services::my_service::GetRandomDataExn::ApplicationException(aexn)) => {
-                    return Err(aexn.into())
+                ::std::result::Result::Err(crate::services::my_service::GetRandomDataExn::ApplicationException(aexn)) => {
+                    return ::std::result::Result::Err(aexn.into())
                 }
-                Err(crate::services::my_service::GetRandomDataExn::Success(_)) => {
+                ::std::result::Result::Err(crate::services::my_service::GetRandomDataExn::Success(_)) => {
                     panic!(
                         "{} attempted to return success via error",
                         "getRandomData",
                     )
                 }
             };
-            let res = serialize!(P, |p| fbthrift::protocol::write_message(
+            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "getRandomData",
-                MessageType::Reply,
+                ::fbthrift::MessageType::Reply,
                 seqid,
-                |p| res.write(p),
+                |p| ::fbthrift::Serialize::write(&res, p),
             ));
-            Ok(res)
+            ::std::result::Result::Ok(res)
         }
 
         async fn handle_hasDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
-            seqid: u32,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
-            let mut field_id = None;
+            seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::ProtocolReader as _;
+            let mut field_id = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::I64, 1) => field_id = Some(Deserialize::read(p)?),
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I64, 1) => field_id = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -1485,49 +1540,50 @@ pub mod server {
             let res = self.service.hasDataById(
                 req_ctxt,
                 field_id.ok_or_else(|| {
-                    ApplicationException::missing_arg(
+                    ::fbthrift::ApplicationException::missing_arg(
                         "hasDataById",
                         "id",
                     )
                 })?,
             ).await;
             let res = match res {
-                Ok(res) => {
+                ::std::result::Result::Ok(res) => {
                     crate::services::my_service::HasDataByIdExn::Success(res)
                 }
-                Err(crate::services::my_service::HasDataByIdExn::ApplicationException(aexn)) => {
-                    return Err(aexn.into())
+                ::std::result::Result::Err(crate::services::my_service::HasDataByIdExn::ApplicationException(aexn)) => {
+                    return ::std::result::Result::Err(aexn.into())
                 }
-                Err(crate::services::my_service::HasDataByIdExn::Success(_)) => {
+                ::std::result::Result::Err(crate::services::my_service::HasDataByIdExn::Success(_)) => {
                     panic!(
                         "{} attempted to return success via error",
                         "hasDataById",
                     )
                 }
             };
-            let res = serialize!(P, |p| fbthrift::protocol::write_message(
+            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "hasDataById",
-                MessageType::Reply,
+                ::fbthrift::MessageType::Reply,
                 seqid,
-                |p| res.write(p),
+                |p| ::fbthrift::Serialize::write(&res, p),
             ));
-            Ok(res)
+            ::std::result::Result::Ok(res)
         }
 
         async fn handle_getDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
-            seqid: u32,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
-            let mut field_id = None;
+            seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::ProtocolReader as _;
+            let mut field_id = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::I64, 1) => field_id = Some(Deserialize::read(p)?),
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I64, 1) => field_id = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -1536,51 +1592,52 @@ pub mod server {
             let res = self.service.getDataById(
                 req_ctxt,
                 field_id.ok_or_else(|| {
-                    ApplicationException::missing_arg(
+                    ::fbthrift::ApplicationException::missing_arg(
                         "getDataById",
                         "id",
                     )
                 })?,
             ).await;
             let res = match res {
-                Ok(res) => {
+                ::std::result::Result::Ok(res) => {
                     crate::services::my_service::GetDataByIdExn::Success(res)
                 }
-                Err(crate::services::my_service::GetDataByIdExn::ApplicationException(aexn)) => {
-                    return Err(aexn.into())
+                ::std::result::Result::Err(crate::services::my_service::GetDataByIdExn::ApplicationException(aexn)) => {
+                    return ::std::result::Result::Err(aexn.into())
                 }
-                Err(crate::services::my_service::GetDataByIdExn::Success(_)) => {
+                ::std::result::Result::Err(crate::services::my_service::GetDataByIdExn::Success(_)) => {
                     panic!(
                         "{} attempted to return success via error",
                         "getDataById",
                     )
                 }
             };
-            let res = serialize!(P, |p| fbthrift::protocol::write_message(
+            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "getDataById",
-                MessageType::Reply,
+                ::fbthrift::MessageType::Reply,
                 seqid,
-                |p| res.write(p),
+                |p| ::fbthrift::Serialize::write(&res, p),
             ));
-            Ok(res)
+            ::std::result::Result::Ok(res)
         }
 
         async fn handle_putDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
-            seqid: u32,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
-            let mut field_id = None;
-            let mut field_data = None;
+            seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::ProtocolReader as _;
+            let mut field_id = ::std::option::Option::None;
+            let mut field_data = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::I64, 1) => field_id = Some(Deserialize::read(p)?),
-                    (TType::String, 2) => field_data = Some(Deserialize::read(p)?),
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I64, 1) => field_id = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 2) => field_data = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -1589,57 +1646,58 @@ pub mod server {
             let res = self.service.putDataById(
                 req_ctxt,
                 field_id.ok_or_else(|| {
-                    ApplicationException::missing_arg(
+                    ::fbthrift::ApplicationException::missing_arg(
                         "putDataById",
                         "id",
                     )
                 })?,
                 field_data.ok_or_else(|| {
-                    ApplicationException::missing_arg(
+                    ::fbthrift::ApplicationException::missing_arg(
                         "putDataById",
                         "data",
                     )
                 })?,
             ).await;
             let res = match res {
-                Ok(res) => {
+                ::std::result::Result::Ok(res) => {
                     crate::services::my_service::PutDataByIdExn::Success(res)
                 }
-                Err(crate::services::my_service::PutDataByIdExn::ApplicationException(aexn)) => {
-                    return Err(aexn.into())
+                ::std::result::Result::Err(crate::services::my_service::PutDataByIdExn::ApplicationException(aexn)) => {
+                    return ::std::result::Result::Err(aexn.into())
                 }
-                Err(crate::services::my_service::PutDataByIdExn::Success(_)) => {
+                ::std::result::Result::Err(crate::services::my_service::PutDataByIdExn::Success(_)) => {
                     panic!(
                         "{} attempted to return success via error",
                         "putDataById",
                     )
                 }
             };
-            let res = serialize!(P, |p| fbthrift::protocol::write_message(
+            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "putDataById",
-                MessageType::Reply,
+                ::fbthrift::MessageType::Reply,
                 seqid,
-                |p| res.write(p),
+                |p| ::fbthrift::Serialize::write(&res, p),
             ));
-            Ok(res)
+            ::std::result::Result::Ok(res)
         }
 
         async fn handle_lobDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
             req_ctxt: &R,
-            seqid: u32,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
-            let mut field_id = None;
-            let mut field_data = None;
+            seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::ProtocolReader as _;
+            let mut field_id = ::std::option::Option::None;
+            let mut field_data = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::I64, 1) => field_id = Some(Deserialize::read(p)?),
-                    (TType::String, 2) => field_data = Some(Deserialize::read(p)?),
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I64, 1) => field_id = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 2) => field_data = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -1648,73 +1706,73 @@ pub mod server {
             let res = self.service.lobDataById(
                 req_ctxt,
                 field_id.ok_or_else(|| {
-                    ApplicationException::missing_arg(
+                    ::fbthrift::ApplicationException::missing_arg(
                         "lobDataById",
                         "id",
                     )
                 })?,
                 field_data.ok_or_else(|| {
-                    ApplicationException::missing_arg(
+                    ::fbthrift::ApplicationException::missing_arg(
                         "lobDataById",
                         "data",
                     )
                 })?,
             ).await;
             let res = match res {
-                Ok(res) => {
+                ::std::result::Result::Ok(res) => {
                     crate::services::my_service::LobDataByIdExn::Success(res)
                 }
-                Err(crate::services::my_service::LobDataByIdExn::ApplicationException(aexn)) => {
-                    return Err(aexn.into())
+                ::std::result::Result::Err(crate::services::my_service::LobDataByIdExn::ApplicationException(aexn)) => {
+                    return ::std::result::Result::Err(aexn.into())
                 }
-                Err(crate::services::my_service::LobDataByIdExn::Success(_)) => {
+                ::std::result::Result::Err(crate::services::my_service::LobDataByIdExn::Success(_)) => {
                     panic!(
                         "{} attempted to return success via error",
                         "lobDataById",
                     )
                 }
             };
-            let res = serialize!(P, |p| fbthrift::protocol::write_message(
+            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "lobDataById",
-                MessageType::Reply,
+                ::fbthrift::MessageType::Reply,
                 seqid,
-                |p| res.write(p),
+                |p| ::fbthrift::Serialize::write(&res, p),
             ));
-            Ok(res)
+            ::std::result::Result::Ok(res)
         }
     }
 
-    #[async_trait]
-    impl<P, H, R> fbthrift::ServiceProcessor<P> for MyServiceProcessor<P, H, R>
+    #[::async_trait::async_trait]
+    impl<P, H, R> ::fbthrift::ServiceProcessor<P> for MyServiceProcessor<P, H, R>
     where
-        P: Protocol + Send + Sync + 'static,
-        P::Deserializer: Send,
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
         H: MyService<RequestContext = R>,
-        R: Send + Sync + 'static,
+        R: ::std::marker::Send + ::std::marker::Sync + 'static,
     {
         type RequestContext = R;
 
         #[inline]
-        fn method_idx(&self, name: &[u8]) -> Result<usize, ApplicationException> {
+        fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
-                b"ping" => Ok(0usize),
-                b"getRandomData" => Ok(1usize),
-                b"hasDataById" => Ok(2usize),
-                b"getDataById" => Ok(3usize),
-                b"putDataById" => Ok(4usize),
-                b"lobDataById" => Ok(5usize),
-                _ => Err(ApplicationException::unknown_method()),
+                b"ping" => ::std::result::Result::Ok(0usize),
+                b"getRandomData" => ::std::result::Result::Ok(1usize),
+                b"hasDataById" => ::std::result::Result::Ok(2usize),
+                b"getDataById" => ::std::result::Result::Ok(3usize),
+                b"putDataById" => ::std::result::Result::Ok(4usize),
+                b"lobDataById" => ::std::result::Result::Ok(5usize),
+                _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
 
         async fn handle_method(
             &self,
-            idx: usize,
+            idx: ::std::primitive::usize,
             p: &mut P::Deserializer,
             r: &R,
-            seqid: u32,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
+            seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             match idx {
                 0usize => self.handle_ping(p, r, seqid).await,
                 1usize => self.handle_getRandomData(p, r, seqid).await,
@@ -1731,34 +1789,35 @@ pub mod server {
         }
     }
 
-    #[async_trait]
-    impl<P, H, R> ThriftService<P::Frame> for MyServiceProcessor<P, H, R>
+    #[::async_trait::async_trait]
+    impl<P, H, R> ::fbthrift::ThriftService<P::Frame> for MyServiceProcessor<P, H, R>
     where
-        P: Protocol + Send + Sync + 'static,
-        P::Deserializer: Send,
-        P::Frame: Send + 'static,
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
+        P::Frame: ::std::marker::Send + 'static,
         H: MyService<RequestContext = R>,
-        R: Send + Sync + 'static,
+        R: ::std::marker::Send + ::std::marker::Sync + 'static,
     {
         type Handler = H;
         type RequestContext = R;
 
         async fn call(
             &self,
-            req: ProtocolDecoded<P>,
+            req: ::fbthrift::ProtocolDecoded<P>,
             req_ctxt: &R,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::{BufExt as _, ProtocolReader as _, ServiceProcessor as _};
             let mut p = P::deserializer(req);
             let (idx, mty, seqid) = p.read_message_begin(|name| self.method_idx(name))?;
-            if mty != MessageType::Call {
-                return Err(From::from(ApplicationException::new(
-                    ApplicationExceptionErrorCode::InvalidMessageType,
+            if mty != ::fbthrift::MessageType::Call {
+                return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
+                    ::fbthrift::ApplicationExceptionErrorCode::InvalidMessageType,
                     format!("message type {:?} not handled", mty)
                 )));
             }
             let idx = match idx {
-                Ok(idx) => idx,
-                Err(_) => {
+                ::std::result::Result::Ok(idx) => idx,
+                ::std::result::Result::Err(_) => {
                     let cur = P::into_buffer(p).reset();
                     return self.supa.call(cur, req_ctxt).await;
                 }
@@ -1766,43 +1825,43 @@ pub mod server {
             let res = self.handle_method(idx, &mut p, req_ctxt, seqid).await;
             p.read_message_end()?;
             match res {
-                Ok(bytes) => Ok(bytes),
-                Err(err) => match err.downcast_ref::<fbthrift::ProtocolError>() {
-                    Some(fbthrift::ProtocolError::ApplicationException(ae)) => {
-                        let res = serialize!(P, |p| {
-                            fbthrift::protocol::write_message(
+                ::std::result::Result::Ok(bytes) => ::std::result::Result::Ok(bytes),
+                ::std::result::Result::Err(err) => match err.downcast_ref::<::fbthrift::ProtocolError>() {
+                    ::std::option::Option::Some(::fbthrift::ProtocolError::ApplicationException(ae)) => {
+                        let res = ::fbthrift::serialize!(P, |p| {
+                            ::fbthrift::protocol::write_message(
                                 p,
                                 "MyServiceProcessor",
-                                MessageType::Exception,
+                                ::fbthrift::MessageType::Exception,
                                 seqid,
-                                |p| ae.write(p),
+                                |p| ::fbthrift::Serialize::write(&ae, p),
                             )
                         });
-                        Ok(res)
+                        ::std::result::Result::Ok(res)
                     }
-                    _ => Err(err),
+                    _ => ::std::result::Result::Err(err),
                 },
             }
         }
     }
 
     pub fn make_MyService_server<F, H, R>(
-        proto: ProtocolID,
+        proto: ::fbthrift::ProtocolID,
         handler: H,
-    ) -> Result<Box<dyn ThriftService<F, Handler = H, RequestContext = R> + Send + 'static>, ApplicationException>
+    ) -> ::std::result::Result<::std::boxed::Box<dyn ::fbthrift::ThriftService<F, Handler = H, RequestContext = R> + ::std::marker::Send + 'static>, ::fbthrift::ApplicationException>
     where
-        F: Framing + Send + Sync + 'static,
+        F: ::fbthrift::Framing + ::std::marker::Send + ::std::marker::Sync + 'static,
         H: MyService<RequestContext = R>,
-        R: Send + Sync + 'static,
+        R: ::std::marker::Send + ::std::marker::Sync + 'static,
     {
         match proto {
-            ProtocolID::BinaryProtocol => {
-                Ok(Box::new(MyServiceProcessor::<BinaryProtocol<F>, H, R>::new(handler)))
+            ::fbthrift::ProtocolID::BinaryProtocol => {
+                ::std::result::Result::Ok(::std::boxed::Box::new(MyServiceProcessor::<::fbthrift::BinaryProtocol<F>, H, R>::new(handler)))
             }
-            ProtocolID::CompactProtocol => {
-                Ok(Box::new(MyServiceProcessor::<CompactProtocol<F>, H, R>::new(handler)))
+            ::fbthrift::ProtocolID::CompactProtocol => {
+                ::std::result::Result::Ok(::std::boxed::Box::new(MyServiceProcessor::<::fbthrift::CompactProtocol<F>, H, R>::new(handler)))
             }
-            bad => Err(ApplicationException::invalid_protocol(bad)),
+            bad => ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad)),
         }
     }
 }
@@ -1884,9 +1943,6 @@ pub mod server {
 ///         client: Arc<dyn MyService + Send + Sync + 'static>,
 ///     ) -> impl Future<Item = Out> {...}
 pub mod mock {
-    use async_trait::async_trait;
-    use std::marker::PhantomData;
-
     pub struct MyService<'mock> {
         pub ping: my_service::ping<'mock>,
         pub getRandomData: my_service::getRandomData<'mock>,
@@ -1894,7 +1950,7 @@ pub mod mock {
         pub getDataById: my_service::getDataById<'mock>,
         pub putDataById: my_service::putDataById<'mock>,
         pub lobDataById: my_service::lobDataById<'mock>,
-        _marker: PhantomData<&'mock ()>,
+        _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
     impl dyn super::client::MyService {
@@ -1906,79 +1962,78 @@ pub mod mock {
                 getDataById: my_service::getDataById::unimplemented(),
                 putDataById: my_service::putDataById::unimplemented(),
                 lobDataById: my_service::lobDataById::unimplemented(),
-                _marker: PhantomData,
+                _marker: ::std::marker::PhantomData,
             }
         }
     }
 
-    #[async_trait]
+    #[::async_trait::async_trait]
     impl<'mock> super::client::MyService for MyService<'mock> {
         fn ping(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::PingError>> + Send + 'static>> {
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>> {
             let mut closure = self.ping.closure.lock().unwrap();
-            let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure()))
+            let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure()))
         }
         fn getRandomData(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::my_service::GetRandomDataError>> + Send + 'static>> {
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>> {
             let mut closure = self.getRandomData.closure.lock().unwrap();
-            let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure()))
+            let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure()))
         }
         fn hasDataById(
             &self,
-            arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<bool, crate::errors::my_service::HasDataByIdError>> + Send + 'static>> {
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> + ::std::marker::Send + 'static>> {
             let mut closure = self.hasDataById.closure.lock().unwrap();
-            let closure: &mut dyn FnMut(i64) -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure(arg_id.clone())))
+            let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i64) -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure(arg_id.clone())))
         }
         fn getDataById(
             &self,
-            arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<String, crate::errors::my_service::GetDataByIdError>> + Send + 'static>> {
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> + ::std::marker::Send + 'static>> {
             let mut closure = self.getDataById.closure.lock().unwrap();
-            let closure: &mut dyn FnMut(i64) -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure(arg_id.clone())))
+            let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i64) -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure(arg_id.clone())))
         }
         fn putDataById(
             &self,
-            arg_id: i64,
-            arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + Send + 'static>> {
+            arg_id: ::std::primitive::i64,
+            arg_data: &::std::primitive::str,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + ::std::marker::Send + 'static>> {
             let mut closure = self.putDataById.closure.lock().unwrap();
-            let closure: &mut dyn FnMut(i64, String) -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure(arg_id.clone(), arg_data.to_owned())))
+            let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i64, ::std::string::String) -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure(arg_id.clone(), arg_data.to_owned())))
         }
         fn lobDataById(
             &self,
-            arg_id: i64,
-            arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + Send + 'static>> {
+            arg_id: ::std::primitive::i64,
+            arg_data: &::std::primitive::str,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>> {
             let mut closure = self.lobDataById.closure.lock().unwrap();
-            let closure: &mut dyn FnMut(i64, String) -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure(arg_id.clone(), arg_data.to_owned())))
+            let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i64, ::std::string::String) -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure(arg_id.clone(), arg_data.to_owned())))
         }
     }
 
     mod my_service {
-        use std::sync::Mutex;
 
         pub struct ping<'mock> {
-            pub(super) closure: Mutex<Box<
-                dyn FnMut() -> Result<
+            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
+                dyn ::std::ops::FnMut() -> ::std::result::Result<
                     (),
                     crate::errors::my_service::PingError,
-                > + Send + Sync + 'mock,
+                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
             >>,
         }
 
         impl<'mock> ping<'mock> {
             pub fn unimplemented() -> Self {
                 ping {
-                    closure: Mutex::new(Box::new(|| panic!(
+                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
                         "{}::{} is not mocked",
                         "MyService",
                         "ping",
@@ -1990,34 +2045,34 @@ pub mod mock {
                 self.mock(move || value.clone());
             }
 
-            pub fn mock(&self, mut mock: impl FnMut() -> () + Send + Sync + 'mock) {
+            pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move || Ok(mock()));
+                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
             }
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::errors::my_service::PingError>,
-                E: Clone + Send + Sync + 'mock,
+                E: ::std::convert::Into<crate::errors::my_service::PingError>,
+                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move || Err(exception.clone().into()));
+                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
             }
         }
 
         pub struct getRandomData<'mock> {
-            pub(super) closure: Mutex<Box<
-                dyn FnMut() -> Result<
-                    String,
+            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
+                dyn ::std::ops::FnMut() -> ::std::result::Result<
+                    ::std::string::String,
                     crate::errors::my_service::GetRandomDataError,
-                > + Send + Sync + 'mock,
+                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
             >>,
         }
 
         impl<'mock> getRandomData<'mock> {
             pub fn unimplemented() -> Self {
                 getRandomData {
-                    closure: Mutex::new(Box::new(|| panic!(
+                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
                         "{}::{} is not mocked",
                         "MyService",
                         "getRandomData",
@@ -2025,38 +2080,38 @@ pub mod mock {
                 }
             }
 
-            pub fn ret(&self, value: String) {
+            pub fn ret(&self, value: ::std::string::String) {
                 self.mock(move || value.clone());
             }
 
-            pub fn mock(&self, mut mock: impl FnMut() -> String + Send + Sync + 'mock) {
+            pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> ::std::string::String + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move || Ok(mock()));
+                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
             }
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::errors::my_service::GetRandomDataError>,
-                E: Clone + Send + Sync + 'mock,
+                E: ::std::convert::Into<crate::errors::my_service::GetRandomDataError>,
+                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move || Err(exception.clone().into()));
+                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
             }
         }
 
         pub struct hasDataById<'mock> {
-            pub(super) closure: Mutex<Box<
-                dyn FnMut(i64) -> Result<
-                    bool,
+            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
+                dyn ::std::ops::FnMut(::std::primitive::i64) -> ::std::result::Result<
+                    ::std::primitive::bool,
                     crate::errors::my_service::HasDataByIdError,
-                > + Send + Sync + 'mock,
+                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
             >>,
         }
 
         impl<'mock> hasDataById<'mock> {
             pub fn unimplemented() -> Self {
                 hasDataById {
-                    closure: Mutex::new(Box::new(|_: i64| panic!(
+                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i64| panic!(
                         "{}::{} is not mocked",
                         "MyService",
                         "hasDataById",
@@ -2064,38 +2119,38 @@ pub mod mock {
                 }
             }
 
-            pub fn ret(&self, value: bool) {
-                self.mock(move |_: i64| value.clone());
+            pub fn ret(&self, value: ::std::primitive::bool) {
+                self.mock(move |_: ::std::primitive::i64| value.clone());
             }
 
-            pub fn mock(&self, mut mock: impl FnMut(i64) -> bool + Send + Sync + 'mock) {
+            pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i64) -> ::std::primitive::bool + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move |id| Ok(mock(id)));
+                *closure = ::std::boxed::Box::new(move |id| ::std::result::Result::Ok(mock(id)));
             }
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::errors::my_service::HasDataByIdError>,
-                E: Clone + Send + Sync + 'mock,
+                E: ::std::convert::Into<crate::errors::my_service::HasDataByIdError>,
+                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move |_: i64| Err(exception.clone().into()));
+                *closure = ::std::boxed::Box::new(move |_: ::std::primitive::i64| ::std::result::Result::Err(exception.clone().into()));
             }
         }
 
         pub struct getDataById<'mock> {
-            pub(super) closure: Mutex<Box<
-                dyn FnMut(i64) -> Result<
-                    String,
+            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
+                dyn ::std::ops::FnMut(::std::primitive::i64) -> ::std::result::Result<
+                    ::std::string::String,
                     crate::errors::my_service::GetDataByIdError,
-                > + Send + Sync + 'mock,
+                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
             >>,
         }
 
         impl<'mock> getDataById<'mock> {
             pub fn unimplemented() -> Self {
                 getDataById {
-                    closure: Mutex::new(Box::new(|_: i64| panic!(
+                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i64| panic!(
                         "{}::{} is not mocked",
                         "MyService",
                         "getDataById",
@@ -2103,38 +2158,38 @@ pub mod mock {
                 }
             }
 
-            pub fn ret(&self, value: String) {
-                self.mock(move |_: i64| value.clone());
+            pub fn ret(&self, value: ::std::string::String) {
+                self.mock(move |_: ::std::primitive::i64| value.clone());
             }
 
-            pub fn mock(&self, mut mock: impl FnMut(i64) -> String + Send + Sync + 'mock) {
+            pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i64) -> ::std::string::String + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move |id| Ok(mock(id)));
+                *closure = ::std::boxed::Box::new(move |id| ::std::result::Result::Ok(mock(id)));
             }
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::errors::my_service::GetDataByIdError>,
-                E: Clone + Send + Sync + 'mock,
+                E: ::std::convert::Into<crate::errors::my_service::GetDataByIdError>,
+                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move |_: i64| Err(exception.clone().into()));
+                *closure = ::std::boxed::Box::new(move |_: ::std::primitive::i64| ::std::result::Result::Err(exception.clone().into()));
             }
         }
 
         pub struct putDataById<'mock> {
-            pub(super) closure: Mutex<Box<
-                dyn FnMut(i64, String) -> Result<
+            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
+                dyn ::std::ops::FnMut(::std::primitive::i64, ::std::string::String) -> ::std::result::Result<
                     (),
                     crate::errors::my_service::PutDataByIdError,
-                > + Send + Sync + 'mock,
+                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
             >>,
         }
 
         impl<'mock> putDataById<'mock> {
             pub fn unimplemented() -> Self {
                 putDataById {
-                    closure: Mutex::new(Box::new(|_: i64, _: String| panic!(
+                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i64, _: ::std::string::String| panic!(
                         "{}::{} is not mocked",
                         "MyService",
                         "putDataById",
@@ -2143,37 +2198,37 @@ pub mod mock {
             }
 
             pub fn ret(&self, value: ()) {
-                self.mock(move |_: i64, _: String| value.clone());
+                self.mock(move |_: ::std::primitive::i64, _: ::std::string::String| value.clone());
             }
 
-            pub fn mock(&self, mut mock: impl FnMut(i64, String) -> () + Send + Sync + 'mock) {
+            pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i64, ::std::string::String) -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move |id, data| Ok(mock(id, data)));
+                *closure = ::std::boxed::Box::new(move |id, data| ::std::result::Result::Ok(mock(id, data)));
             }
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::errors::my_service::PutDataByIdError>,
-                E: Clone + Send + Sync + 'mock,
+                E: ::std::convert::Into<crate::errors::my_service::PutDataByIdError>,
+                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move |_: i64, _: String| Err(exception.clone().into()));
+                *closure = ::std::boxed::Box::new(move |_: ::std::primitive::i64, _: ::std::string::String| ::std::result::Result::Err(exception.clone().into()));
             }
         }
 
         pub struct lobDataById<'mock> {
-            pub(super) closure: Mutex<Box<
-                dyn FnMut(i64, String) -> Result<
+            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
+                dyn ::std::ops::FnMut(::std::primitive::i64, ::std::string::String) -> ::std::result::Result<
                     (),
                     crate::errors::my_service::LobDataByIdError,
-                > + Send + Sync + 'mock,
+                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
             >>,
         }
 
         impl<'mock> lobDataById<'mock> {
             pub fn unimplemented() -> Self {
                 lobDataById {
-                    closure: Mutex::new(Box::new(|_: i64, _: String| panic!(
+                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i64, _: ::std::string::String| panic!(
                         "{}::{} is not mocked",
                         "MyService",
                         "lobDataById",
@@ -2182,21 +2237,21 @@ pub mod mock {
             }
 
             pub fn ret(&self, value: ()) {
-                self.mock(move |_: i64, _: String| value.clone());
+                self.mock(move |_: ::std::primitive::i64, _: ::std::string::String| value.clone());
             }
 
-            pub fn mock(&self, mut mock: impl FnMut(i64, String) -> () + Send + Sync + 'mock) {
+            pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i64, ::std::string::String) -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move |id, data| Ok(mock(id, data)));
+                *closure = ::std::boxed::Box::new(move |id, data| ::std::result::Result::Ok(mock(id, data)));
             }
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::errors::my_service::LobDataByIdError>,
-                E: Clone + Send + Sync + 'mock,
+                E: ::std::convert::Into<crate::errors::my_service::LobDataByIdError>,
+                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move |_: i64, _: String| Err(exception.clone().into()));
+                *closure = ::std::boxed::Box::new(move |_: ::std::primitive::i64, _: ::std::string::String| ::std::result::Result::Err(exception.clone().into()));
             }
         }
     }

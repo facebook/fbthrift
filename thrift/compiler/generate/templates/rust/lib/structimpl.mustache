@@ -17,7 +17,7 @@
 }}
 
 {{^struct:union?}}
-    impl Default for self::{{struct:rust_name}} {
+    impl ::std::default::Default for self::{{struct:rust_name}} {
         fn default() -> Self {
             Self {{>lib/block}}{{!
             }}{{#struct:fields}}
@@ -27,10 +27,10 @@
                     }}{{/field:default}}{{!
                     }}{{^field:default}}{{!
                         }}{{#field:optional?}}{{!
-                            }}None{{!
+                            }}::std::option::Option::None{{!
                         }}{{/field:optional?}}{{!
                         }}{{^field:optional?}}{{!
-                            }}Default::default(){{!
+                            }}::std::default::Default::default(){{!
                         }}{{/field:optional?}}{{!
                     }}{{/field:default}}{{!
                 }},{{!
@@ -39,22 +39,25 @@
         }
     }
 
-    impl GetTType for self::{{struct:rust_name}} {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for self::{{struct:rust_name}} {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for self::{{struct:rust_name}} {
+    impl<P> ::fbthrift::Serialize<P> for self::{{struct:rust_name}}
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("{{struct:name}}");{{!
             }}{{#struct:fields}}{{!
             }}{{#field:optional?}}
-            if let Some(some) = &self.{{field:rust_name}} {
+            if let ::std::option::Option::Some(some) = &self.{{field:rust_name}} {
                 p.write_field_begin({{!
                     }}"{{field:name}}", {{!
                     }}{{#field:type}}{{>lib/ttype}}{{/field:type}}, {{!
                     }}{{field:key}}{{!
                 }});
-                Serialize::write(some, p);
+                ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }{{!
             }}{{/field:optional?}}{{!
@@ -64,7 +67,7 @@
                 }}{{#field:type}}{{>lib/ttype}}{{/field:type}}, {{!
                 }}{{field:key}}{{!
             }});
-            Serialize::write(&self.{{field:rust_name}}, p);
+            ::fbthrift::Serialize::write(&self.{{field:rust_name}}, p);
             p.write_field_end();{{!
             }}{{/field:optional?}}{{!
             }}{{/struct:fields}}
@@ -73,26 +76,29 @@
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for self::{{struct:rust_name}} {
-        fn read(p: &mut P) -> anyhow::Result<Self> {{>lib/block}}{{!
+    impl<P> ::fbthrift::Deserialize<P> for self::{{struct:rust_name}}
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {{>lib/block}}{{!
             }}{{#struct:fields}}
-            let mut field_{{field:name}} = None;{{!
+            let mut field_{{field:name}} = ::std::option::Option::None;{{!
             }}{{/struct:fields}}
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,{{!
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,{{!
                     }}{{#struct:fields}}
                     ({{#field:type}}{{>lib/ttype}}{{/field:type}}, {{field:key}}) => {{!
-                        }}field_{{field:name}} = Some(Deserialize::read(p)?),{{!
+                        }}field_{{field:name}} = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),{{!
                     }}{{/struct:fields}}
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {{>lib/block}}{{!
+            ::std::result::Result::Ok(Self {{>lib/block}}{{!
                 }}{{#struct:fields}}
                 {{field:rust_name}}: field_{{field:name}}{{!
                     }}{{^field:optional?}}{{!

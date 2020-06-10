@@ -18,14 +18,7 @@
 
     #![allow(clippy::redundant_closure)]
 
-    use fbthrift::{
-        Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
-    };
-{{#program:structsOrEnums?}}{{#program:serde?}}
-    use serde_derive::{Deserialize, Serialize};
-{{/program:serde?}}{{/program:structsOrEnums?}}
-{{!
-}}{{#program:typedefs}}{{>lib/typedef}}{{/program:typedefs}}{{!
+{{#program:typedefs}}{{>lib/typedef}}{{/program:typedefs}}{{!
 
 }}{{#program:structs}}{{>lib/struct}}{{/program:structs}}{{!
 

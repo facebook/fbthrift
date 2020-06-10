@@ -25,7 +25,7 @@
         }}{{#typedef:copy?}}Copy, {{/typedef:copy?}}{{!
         }}Clone, Debug, PartialEq{{!
         }}{{#typedef:ord?}}, Eq, PartialOrd, Ord, Hash{{/typedef:ord?}}{{!
-        }}{{#program:serde?}}, Serialize, Deserialize{{/program:serde?}}{{!
+        }}{{#program:serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/program:serde?}}{{!
     }})]
     pub struct {{typedef:rust_name}}(pub {{#typedef:type}}{{>lib/type}}{{/typedef:type}});
 {{/typedef:newtype?}}

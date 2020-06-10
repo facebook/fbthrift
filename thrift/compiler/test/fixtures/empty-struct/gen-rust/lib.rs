@@ -8,9 +8,6 @@ pub use self::types::*;
 pub mod types {
     #![allow(clippy::redundant_closure)]
 
-    use fbthrift::{
-        Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
-    };
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Empty {
@@ -18,21 +15,24 @@ pub mod types {
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub enum Nada {
-        UnknownField(i32),
+        UnknownField(::std::primitive::i32),
     }
 
-    impl Default for self::Empty {
+    impl ::std::default::Default for self::Empty {
         fn default() -> Self {
             Self {
             }
         }
     }
 
-    impl GetTType for self::Empty {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for self::Empty {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for self::Empty {
+    impl<P> ::fbthrift::Serialize<P> for self::Empty
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("Empty");
             p.write_field_stop();
@@ -40,41 +40,47 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for self::Empty {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
+    impl<P> ::fbthrift::Deserialize<P> for self::Empty
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
+            ::std::result::Result::Ok(Self {
             })
         }
     }
 
 
 
-    impl Default for Nada {
+    impl ::std::default::Default for Nada {
         fn default() -> Self {
             Self::UnknownField(-1)
         }
     }
 
-    impl GetTType for Nada {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for Nada {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for Nada {
+    impl<P> ::fbthrift::Serialize<P> for Nada
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("Nada");
             match self {
                 Nada::UnknownField(x) => {
-                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    p.write_field_begin("UnknownField", ::fbthrift::TType::I32, *x as ::std::primitive::i16);
                     x.write(p);
                     p.write_field_end();
                 }
@@ -84,17 +90,20 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for Nada {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
+    impl<P> ::fbthrift::Deserialize<P> for Nada
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             let mut once = false;
-            let mut alt = None;
+            let mut alt = ::std::option::Option::None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32, once) {
-                    (TType::Stop, _, _) => break,
+                match (fty, fid as ::std::primitive::i32, once) {
+                    (::fbthrift::TType::Stop, _, _) => break,
                     (fty, _, false) => p.skip(fty)?,
-                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                    (badty, badid, true) => return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
                         ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                         format!(
                             "unwanted extra union {} field ty {:?} id {}",
@@ -107,7 +116,7 @@ pub mod types {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(alt.unwrap_or_default())
+            ::std::result::Result::Ok(alt.unwrap_or_default())
         }
     }
 }

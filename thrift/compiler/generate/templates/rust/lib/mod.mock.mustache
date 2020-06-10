@@ -14,10 +14,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}
-
-    use async_trait::async_trait;
-    use std::marker::PhantomData;{{!
 }}{{#program:services}}
 
     pub struct {{service:name}}<'mock> {{>lib/block}}
@@ -27,7 +23,7 @@
         {{#service:rustFunctions}}{{^function:any_streams?}}
         pub {{function:name}}: {{service:snake}}::{{function:name}}<'mock>,
         {{/function:any_streams?}}{{/service:rustFunctions}}
-        _marker: PhantomData<&'mock ()>,
+        _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
     impl dyn super::client::{{service:name}} {
@@ -40,12 +36,12 @@
                 {{function:name}}: {{!
                     }}{{service:snake}}::{{function:name}}::unimplemented(),
                 {{/function:any_streams?}}{{/service:rustFunctions}}
-                _marker: PhantomData,
+                _marker: ::std::marker::PhantomData,
             }
         }
     }
 
-    #[async_trait]
+    #[::async_trait::async_trait]
     impl<'mock> super::client::{{service:name}} for {{service:name}}<'mock> {{>lib/block}}{{!
         }}{{#service:rustFunctions}}{{^function:any_streams?}}
         fn {{function:name}}(
@@ -53,18 +49,18 @@
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<{{!
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
             }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
-        }}>> + Send + 'static>> {
+        }}>> + ::std::marker::Send + 'static>> {
             let mut closure = self.{{function:name}}.closure.lock().unwrap();
-            let closure: &mut dyn FnMut({{!
+            let closure: &mut dyn ::std::ops::FnMut({{!
                 }}{{#function:args}}{{!
                 }}{{#field:type}}{{>lib/type}}{{/field:type}}{{!
                 }}{{^last?}}, {{/last?}}{{!
                 }}{{/function:args}}{{!
             }}) -> _ = &mut **closure;
-            Box::pin(futures::future::ready(closure({{!
+            ::std::boxed::Box::pin(::futures::future::ready(closure({{!
                 }}{{#function:args}}{{!
                 }}arg_{{field:name}}{{#field:type}}{{!
                     }}{{#type:string?}}.to_owned(){{/type:string?}}{{!
@@ -81,10 +77,10 @@
     }
 
     {{#service:extendedServices}}
-    #[async_trait]
+    #[::async_trait::async_trait]
     impl<'mock> {{!
         }}{{#extendedService:service}}{{!
-        }}AsRef<dyn {{extendedService:packagePrefix}}::client::{{service:name}} + 'mock> {{!
+        }}::std::convert::AsRef<dyn {{extendedService:packagePrefix}}::client::{{service:name}} + 'mock> {{!
         }}{{/extendedService:service}}{{!
         }}for {{service:name}}<'mock>
     {
@@ -97,30 +93,27 @@
 
     {{/service:extendedServices}}
     mod {{service:snake}} {{>lib/block}}{{!
-        }}{{#service:functions?}}
-        use std::sync::Mutex;{{!
-        }}{{/service:functions?}}{{!
 
         }}{{#service:rustFunctions}}{{^function:any_streams?}}
 
         pub struct {{function:name}}<'mock> {
-            pub(super) closure: Mutex<Box<
-                dyn FnMut({{!
+            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
+                dyn ::std::ops::FnMut({{!
                     }}{{#function:args}}{{!
                     }}{{#field:type}}{{>lib/type}}{{/field:type}}{{!
                     }}{{^last?}}, {{/last?}}{{!
                     }}{{/function:args}}{{!
-                }}) -> Result<
+                }}) -> ::std::result::Result<
                     {{#function:returnType}}{{>lib/type}}{{/function:returnType}},
                     {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error,
-                > + Send + Sync + 'mock,
+                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
             >>,
         }
 
         impl<'mock> {{function:name}}<'mock> {
             pub fn unimplemented() -> Self {
                 {{function:name}} {
-                    closure: Mutex::new(Box::new(|{{!
+                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|{{!
                         }}{{#function:args}}{{!
                         }}_: {{#field:type}}{{>lib/type}}{{/field:type}}{{!
                         }}{{^last?}}, {{/last?}}{{!
@@ -145,21 +138,21 @@
                 }}| value.clone());
             }
 
-            pub fn mock(&self, mut mock: impl FnMut({{!
+            pub fn mock(&self, mut mock: impl ::std::ops::FnMut({{!
                 }}{{#function:args}}{{!
                 }}{{#field:type}}{{>lib/type}}{{/field:type}}{{!
                 }}{{^last?}}, {{/last?}}{{!
                 }}{{/function:args}}{{!
             }}) -> {{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
-                }} + Send + Sync + 'mock) {{!
+                }} + ::std::marker::Send + ::std::marker::Sync + 'mock) {{!
             }}{
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move |{{!
+                *closure = ::std::boxed::Box::new(move |{{!
                     }}{{#function:args}}{{!
                     }}{{field:rust_name}}{{!
                     }}{{^last?}}, {{/last?}}{{!
                     }}{{/function:args}}{{!
-                }}| Ok(mock({{!
+                }}| ::std::result::Result::Ok(mock({{!
                     }}{{#function:args}}{{!
                     }}{{field:rust_name}}{{!
                     }}{{^last?}}, {{/last?}}{{!
@@ -169,16 +162,16 @@
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error>,
-                E: Clone + Send + Sync + 'mock,
+                E: ::std::convert::Into<{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error>,
+                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move |{{!
+                *closure = ::std::boxed::Box::new(move |{{!
                     }}{{#function:args}}{{!
                     }}_: {{#field:type}}{{>lib/type}}{{/field:type}}{{!
                     }}{{^last?}}, {{/last?}}{{!
                     }}{{/function:args}}{{!
-                }}| Err(exception.clone().into()));
+                }}| ::std::result::Result::Err(exception.clone().into()));
             }
         }{{!
         }}{{/function:any_streams?}}{{/service:rustFunctions}}

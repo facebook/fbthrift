@@ -20,7 +20,7 @@
         }}{{#struct:copy?}}Copy, {{/struct:copy?}}{{!
         }}Clone, Debug, PartialEq{{!
         }}{{#struct:ord?}}, Eq, PartialOrd, Ord, Hash{{/struct:ord?}}{{!
-        }}{{#program:serde?}}, Serialize, Deserialize{{/program:serde?}}{{!
+        }}{{#program:serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/program:serde?}}{{!
     }})]
 {{^struct:union?}}
     pub struct {{struct:rust_name}} {{>lib/block}}{{!
@@ -39,7 +39,7 @@
     }}{{#struct:fields}}
         {{field:rust_name}}({{>lib/fieldtype}}),{{!
     }}{{/struct:fields}}
-        UnknownField(i32),
+        UnknownField(::std::primitive::i32),
     }
 {{/struct:union?}}
 {{!newline}}

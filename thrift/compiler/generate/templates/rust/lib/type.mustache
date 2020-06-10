@@ -19,15 +19,15 @@
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
 }}{{#type:void?}}(){{/type:void?}}{{!
-}}{{#type:string?}}String{{/type:string?}}{{!
-}}{{#type:binary?}}Vec<u8>{{/type:binary?}}{{!
-}}{{#type:bool?}}bool{{/type:bool?}}{{!
-}}{{#type:byte?}}i8{{/type:byte?}}{{!
-}}{{#type:i16?}}i16{{/type:i16?}}{{!
-}}{{#type:i32?}}i32{{/type:i32?}}{{!
-}}{{#type:i64?}}i64{{/type:i64?}}{{!
-}}{{#type:double?}}f64{{/type:double?}}{{!
-}}{{#type:float?}}f32{{/type:float?}}{{!
+}}{{#type:string?}}::std::string::String{{/type:string?}}{{!
+}}{{#type:binary?}}::std::vec::Vec<::std::primitive::u8>{{/type:binary?}}{{!
+}}{{#type:bool?}}::std::primitive::bool{{/type:bool?}}{{!
+}}{{#type:byte?}}::std::primitive::i8{{/type:byte?}}{{!
+}}{{#type:i16?}}::std::primitive::i16{{/type:i16?}}{{!
+}}{{#type:i32?}}::std::primitive::i32{{/type:i32?}}{{!
+}}{{#type:i64?}}::std::primitive::i64{{/type:i64?}}{{!
+}}{{#type:double?}}::std::primitive::f64{{/type:double?}}{{!
+}}{{#type:float?}}::std::primitive::f32{{/type:float?}}{{!
 }}{{#type:struct}}{{!
     }}{{struct:package}}::types::{{struct:rust_name}}{{!
 }}{{/type:struct}}{{!
@@ -35,7 +35,7 @@
     }}{{enum:package}}::types::{{enum:rust_name}}{{!
 }}{{/type:enum}}{{!
 }}{{#type:list?}}{{!
-    }}Vec<{{#type:listElemType}}{{>lib/type}}{{/type:listElemType}}>{{!
+    }}::std::vec::Vec<{{#type:listElemType}}{{>lib/type}}{{/type:listElemType}}>{{!
 }}{{/type:list?}}{{!
 }}{{#type:stream?}}{{!
     }}compile_error!("Thrift streaming in Rust is not implemented"){{!
@@ -44,7 +44,7 @@
     }}compile_error!("Thrift streaming in Rust is not implemented"){{!
 }}{{/type:streamresponse?}}{{!
 }}{{#type:set?}}{{!
-    }}std::collections::{{!
+    }}::std::collections::{{!
     }}{{#type:rust}}{{type:rust}}{{/type:rust}}{{!
     }}{{^type:rust}}BTreeSet{{/type:rust}}{{!
     }}<{{!
@@ -52,7 +52,7 @@
     }}>{{!
 }}{{/type:set?}}{{!
 }}{{#type:map?}}{{!
-    }}std::collections::{{!
+    }}::std::collections::{{!
     }}{{#type:rust}}{{type:rust}}{{/type:rust}}{{!
     }}{{^type:rust}}BTreeMap{{/type:rust}}{{!
     }}<{{!

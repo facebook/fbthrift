@@ -14,17 +14,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}
-
-    use async_trait::async_trait;
-    use fbthrift::*;
-    use std::marker::PhantomData;{{!
 }}{{#program:services}}
 
-    #[async_trait]
-    pub trait {{service:name}}: Send + Sync + 'static {{>lib/block}}{{!
+    #[::async_trait::async_trait]
+    pub trait {{service:name}}: ::std::marker::Send + ::std::marker::Sync + 'static {{>lib/block}}{{!
     }}{{#service:requestContext?}}
-        type RequestContext: Sync;{{!
+        type RequestContext: ::std::marker::Sync;{{!
     }}{{/service:requestContext?}}
     {{#service:rustFunctions}}{{^function:any_streams?}}
         async fn {{function:name}}(
@@ -35,12 +30,12 @@
             }}{{#function:args}}
             _{{field:name}}: {{#field:type}}{{>lib/type}}{{/field:type}},{{!
             }}{{/function:args}}
-        ) -> Result<{{!
+        ) -> ::std::result::Result<{{!
             }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
             }}{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn{{!
         }}> {
-            Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(
-                ApplicationException::unimplemented_method(
+            ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
                     "{{service:name}}",
                     "{{function:name}}",
                 ),
@@ -59,9 +54,9 @@
         supa: SS,{{!
         }}{{/service:extends?}}{{!
         }}{{^service:extends?}}
-        supa: fbthrift::NullServiceProcessor<P, R>,{{!
+        supa: ::fbthrift::NullServiceProcessor<P, R>,{{!
         }}{{/service:extends?}}
-        _phantom: PhantomData<(P, H, R)>,
+        _phantom: ::std::marker::PhantomData<(P, H, R)>,
     }
 
     impl<P, H, R{{!
@@ -70,15 +65,15 @@
         }}{{#service:extends?}}, SS{{/service:extends?}}{{!
     }}>
     where
-        P: Protocol + Send + Sync + 'static,
-        P::Deserializer: Send,
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
         H: {{service:name}}{{!
         }}{{#service:requestContext?}}<RequestContext = R>{{/service:requestContext?}},{{!
         }}{{#service:extends?}}
-        SS: ThriftService<P::Frame>,
+        SS: ::fbthrift::ThriftService<P::Frame>,
         SS::Handler: {{>lib/super}},
-        P::Frame: Send + 'static,
-        R: Sync,{{!
+        P::Frame: ::std::marker::Send + 'static,
+        R: ::std::marker::Sync,{{!
         }}{{/service:extends?}}
     {
         pub fn new({{!
@@ -88,9 +83,9 @@
             Self {
                 service,
                 supa{{^service:extends?}}{{!
-                    }}: fbthrift::NullServiceProcessor::new(){{!
+                    }}: ::fbthrift::NullServiceProcessor::new(){{!
                 }}{{/service:extends?}},
-                _phantom: PhantomData,
+                _phantom: ::std::marker::PhantomData,
             }
         }
 
@@ -103,19 +98,20 @@
             &'a self,
             p: &'a mut P::Deserializer,
             {{^service:requestContext?}}_{{/service:requestContext?}}req_ctxt: &R,
-            seqid: u32,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {{>lib/block}}{{!
+            seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::ProtocolReader as _;{{!
             }}{{#function:args}}
-            let mut field_{{field:name}} = None;{{!
+            let mut field_{{field:name}} = ::std::option::Option::None;{{!
             }}{{/function:args}}
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,{{!
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,{{!
                     }}{{#function:args}}
                     ({{#field:type}}{{>lib/ttype}}{{/field:type}}, {{field:key}}) => {{!
-                        }}field_{{field:name}} = Some(Deserialize::read(p)?),{{!
+                        }}field_{{field:name}} = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),{{!
                     }}{{/function:args}}
                     (fty, _) => p.skip(fty)?,
                 }
@@ -128,7 +124,7 @@
                 }}{{/service:requestContext?}}{{!
                 }}{{#function:args}}
                 field_{{field:name}}.ok_or_else(|| {
-                    ApplicationException::missing_arg(
+                    ::fbthrift::ApplicationException::missing_arg(
                         "{{function:name}}",
                         "{{field:name}}",
                     )
@@ -136,74 +132,74 @@
                 }}{{/function:args}}
             ).await;
             let res = match res {
-                Ok(res) => {
+                ::std::result::Result::Ok(res) => {
                     {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res)
                 }
-                Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(aexn)) => {
-                    return Err(aexn.into())
+                ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(aexn)) => {
+                    return ::std::result::Result::Err(aexn.into())
                 }
-                Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(_)) => {
+                ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(_)) => {
                     panic!(
                         "{} attempted to return success via error",
                         "{{function:name}}",
                     )
                 }
                 {{#function:exceptions?}}
-                Err(exn) => exn,
+                ::std::result::Result::Err(exn) => exn,
                 {{/function:exceptions?}}
             };
-            let res = serialize!(P, |p| fbthrift::protocol::write_message(
+            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "{{function:name}}",
-                MessageType::Reply,
+                ::fbthrift::MessageType::Reply,
                 seqid,
-                |p| res.write(p),
+                |p| ::fbthrift::Serialize::write(&res, p),
             ));
-            Ok(res)
+            ::std::result::Result::Ok(res)
         }{{!
         }}{{/function:any_streams?}}{{/service:rustFunctions}}
     }
 
-    #[async_trait]
+    #[::async_trait::async_trait]
     impl<P, H, R{{!
         }}{{#service:extends?}}, SS{{/service:extends?}}{{!
-    }}> fbthrift::ServiceProcessor<P> for {{service:name}}Processor<P, H, R{{!
+    }}> ::fbthrift::ServiceProcessor<P> for {{service:name}}Processor<P, H, R{{!
         }}{{#service:extends?}}, SS{{/service:extends?}}{{!
     }}>
     where
-        P: Protocol + Send + Sync + 'static,
-        P::Deserializer: Send,
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
         H: {{service:name}}{{!
         }}{{#service:requestContext?}}<RequestContext = R>{{/service:requestContext?}},{{!
         }}{{#service:extends?}}
-        SS: ThriftService<P::Frame>,
+        SS: ::fbthrift::ThriftService<P::Frame>,
         SS::Handler: {{>lib/super}},
-        P::Frame: Send + 'static,{{!
+        P::Frame: ::std::marker::Send + 'static,{{!
         }}{{/service:extends?}}
-        R: Send + Sync + 'static,
+        R: ::std::marker::Send + ::std::marker::Sync + 'static,
     {
         type RequestContext = R;
 
         #[inline]
-        fn method_idx(&self, name: &[u8]) -> Result<usize, ApplicationException> {
+        fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {{>lib/block}}{{!
                 }}{{#service:rustFunctions}}{{^function:any_streams?}}
-                b"{{function:name}}" => Ok({{function:index}}usize),{{!
+                b"{{function:name}}" => ::std::result::Result::Ok({{function:index}}usize),{{!
                 }}{{/function:any_streams?}}{{/service:rustFunctions}}
-                _ => Err(ApplicationException::unknown_method()),
+                _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
 
         async fn handle_method(
             &self,
-            idx: usize,
+            idx: ::std::primitive::usize,
             {{^service:functions?}}_{{/service:functions?}}{{!
             }}p: &mut P::Deserializer,
             {{^service:functions?}}_{{/service:functions?}}{{!
             }}r: &R,
             {{^service:functions?}}_{{/service:functions?}}{{!
-            }}seqid: u32,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
+            }}seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             match idx {{>lib/block}}{{!
                 }}{{#service:rustFunctions}}{{^function:any_streams?}}
                 {{function:index}}usize => self.handle_{{function:name}}(p, r, seqid).await,{{!
@@ -217,44 +213,45 @@
         }
     }
 
-    #[async_trait]
+    #[::async_trait::async_trait]
     impl<P, H, R{{!
         }}{{#service:extends?}}, SS{{/service:extends?}}{{!
-    }}> ThriftService<P::Frame> for {{service:name}}Processor<P, H, R{{!
+    }}> ::fbthrift::ThriftService<P::Frame> for {{service:name}}Processor<P, H, R{{!
         }}{{#service:extends?}}, SS{{/service:extends?}}{{!
     }}>
     where
-        P: Protocol + Send + Sync + 'static,
-        P::Deserializer: Send,
-        P::Frame: Send + 'static,
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
+        P::Frame: ::std::marker::Send + 'static,
         H: {{service:name}}{{!
         }}{{#service:requestContext?}}<RequestContext = R>{{/service:requestContext?}},{{!
         }}{{#service:extends?}}
-        SS: ThriftService<P::Frame, RequestContext = R>,
+        SS: ::fbthrift::ThriftService<P::Frame, RequestContext = R>,
         SS::Handler: {{>lib/super}},
-        P::Frame: Send + 'static,{{!
+        P::Frame: ::std::marker::Send + 'static,{{!
         }}{{/service:extends?}}
-        R: Send + Sync + 'static,
+        R: ::std::marker::Send + ::std::marker::Sync + 'static,
     {
         type Handler = H;
         type RequestContext = R;
 
         async fn call(
             &self,
-            req: ProtocolDecoded<P>,
+            req: ::fbthrift::ProtocolDecoded<P>,
             req_ctxt: &R,
-        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::{BufExt as _, ProtocolReader as _, ServiceProcessor as _};
             let mut p = P::deserializer(req);
             let (idx, mty, seqid) = p.read_message_begin(|name| self.method_idx(name))?;
-            if mty != MessageType::Call {
-                return Err(From::from(ApplicationException::new(
-                    ApplicationExceptionErrorCode::InvalidMessageType,
+            if mty != ::fbthrift::MessageType::Call {
+                return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
+                    ::fbthrift::ApplicationExceptionErrorCode::InvalidMessageType,
                     format!("message type {:?} not handled", mty)
                 )));
             }
             let idx = match idx {
-                Ok(idx) => idx,
-                Err(_) => {
+                ::std::result::Result::Ok(idx) => idx,
+                ::std::result::Result::Err(_) => {
                     let cur = P::into_buffer(p).reset();
                     return self.supa.call(cur, req_ctxt).await;
                 }
@@ -262,21 +259,21 @@
             let res = self.handle_method(idx, &mut p, req_ctxt, seqid).await;
             p.read_message_end()?;
             match res {
-                Ok(bytes) => Ok(bytes),
-                Err(err) => match err.downcast_ref::<fbthrift::ProtocolError>() {
-                    Some(fbthrift::ProtocolError::ApplicationException(ae)) => {
-                        let res = serialize!(P, |p| {
-                            fbthrift::protocol::write_message(
+                ::std::result::Result::Ok(bytes) => ::std::result::Result::Ok(bytes),
+                ::std::result::Result::Err(err) => match err.downcast_ref::<::fbthrift::ProtocolError>() {
+                    ::std::option::Option::Some(::fbthrift::ProtocolError::ApplicationException(ae)) => {
+                        let res = ::fbthrift::serialize!(P, |p| {
+                            ::fbthrift::protocol::write_message(
                                 p,
                                 "{{service:name}}Processor",
-                                MessageType::Exception,
+                                ::fbthrift::MessageType::Exception,
                                 seqid,
-                                |p| ae.write(p),
+                                |p| ::fbthrift::Serialize::write(&ae, p),
                             )
                         });
-                        Ok(res)
+                        ::std::result::Result::Ok(res)
                     }
-                    _ => Err(err),
+                    _ => ::std::result::Result::Err(err),
                 },
             }
         }
@@ -285,39 +282,39 @@
     pub fn make_{{service:name}}_server<F, H, R{{!
         }}{{#service:extends?}}, SMAKE, SS{{/service:extends?}}{{!
     }}>(
-        proto: ProtocolID,
+        proto: ::fbthrift::ProtocolID,
         handler: H,{{!
         }}{{#service:extends?}}
         supa: SMAKE,{{!
         }}{{/service:extends?}}
-    ) -> Result<Box<dyn ThriftService<F, Handler = H, RequestContext = R> + Send + 'static>, ApplicationException>
+    ) -> ::std::result::Result<::std::boxed::Box<dyn ::fbthrift::ThriftService<F, Handler = H, RequestContext = R> + ::std::marker::Send + 'static>, ::fbthrift::ApplicationException>
     where
-        F: Framing + Send + Sync + 'static,
+        F: ::fbthrift::Framing + ::std::marker::Send + ::std::marker::Sync + 'static,
         H: {{service:name}}{{!
         }}{{#service:requestContext?}}<RequestContext = R>{{/service:requestContext?}},{{!
         }}{{#service:extends?}}
-        SMAKE: Fn(ProtocolID) -> Result<SS, ApplicationException>,
-        SS: ThriftService<F, RequestContext = R>,
+        SMAKE: ::std::ops::Fn(::fbthrift::ProtocolID) -> ::std::result::Result<SS, ::fbthrift::ApplicationException>,
+        SS: ::fbthrift::ThriftService<F, RequestContext = R>,
         SS::Handler: {{>lib/super}},{{!
         }}{{/service:extends?}}
-        R: Send + Sync + 'static,
+        R: ::std::marker::Send + ::std::marker::Sync + 'static,
     {
         match proto {
-            ProtocolID::BinaryProtocol => {
-                Ok(Box::new({{service:name}}Processor::<BinaryProtocol<F>, H, R{{!
+            ::fbthrift::ProtocolID::BinaryProtocol => {
+                ::std::result::Result::Ok(::std::boxed::Box::new({{service:name}}Processor::<::fbthrift::BinaryProtocol<F>, H, R{{!
                     }}{{#service:extends?}}, SS{{/service:extends?}}{{!
                 }}>::new(handler{{!
                     }}{{#service:extends?}}, supa(proto)?{{/service:extends?}}{{!
                 }})))
             }
-            ProtocolID::CompactProtocol => {
-                Ok(Box::new({{service:name}}Processor::<CompactProtocol<F>, H, R{{!
+            ::fbthrift::ProtocolID::CompactProtocol => {
+                ::std::result::Result::Ok(::std::boxed::Box::new({{service:name}}Processor::<::fbthrift::CompactProtocol<F>, H, R{{!
                     }}{{#service:extends?}}, SS{{/service:extends?}}{{!
                 }}>::new(handler{{!
                     }}{{#service:extends?}}, supa(proto)?{{/service:extends?}}{{!
                 }})))
             }
-            bad => Err(ApplicationException::invalid_protocol(bad)),
+            bad => ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad)),
         }
     }{{!
 }}{{/program:services}}

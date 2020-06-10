@@ -21,7 +21,7 @@
 
         {{#service:rustFunctions}}{{^function:any_streams?}}
         {{#function:exceptions?}}
-        #[derive(Debug, thiserror::Error)]
+        #[derive(Debug, ::thiserror::Error)]
         pub enum {{function:upcamel}}Error {
             {{#function:exceptions}}
             #[error("{{service:name}}::{{function:name}} failed with {0:?}")]
@@ -34,20 +34,20 @@
         }
 
         {{#function:uniqueExceptions}}
-        impl From<{{#field:type}}{{>lib/type}}{{/field:type}}> for {{function:upcamel}}Error {
+        impl ::std::convert::From<{{#field:type}}{{>lib/type}}{{/field:type}}> for {{function:upcamel}}Error {
             fn from(e: {{#field:type}}{{>lib/type}}{{/field:type}}) -> Self {
                 {{function:upcamel}}Error::{{field:rust_name}}(e)
             }
         }
 
         {{/function:uniqueExceptions}}
-        impl From<::anyhow::Error> for {{function:upcamel}}Error {
+        impl ::std::convert::From<::anyhow::Error> for {{function:upcamel}}Error {
             fn from(err: ::anyhow::Error) -> Self {
                 {{function:upcamel}}Error::ThriftError(err)
             }
         }
 
-        impl From<::fbthrift::ApplicationException> for {{function:upcamel}}Error {
+        impl ::std::convert::From<::fbthrift::ApplicationException> for {{function:upcamel}}Error {
             fn from(ae: ::fbthrift::ApplicationException) -> Self {
                 {{function:upcamel}}Error::ApplicationException(ae)
             }

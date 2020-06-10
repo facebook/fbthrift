@@ -14,9 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#field:optional?}}Some({{/field:optional?}}{{!
-}}{{#field:box?}}Box::new({{/field:box?}}{{!
-}}{{#field:arc?}}std::sync::Arc::new({{/field:arc?}}{{!
+}}{{#field:optional?}}::std::option::Option::Some({{/field:optional?}}{{!
+}}{{#field:box?}}::std::boxed::Box::new({{/field:box?}}{{!
+}}{{#field:arc?}}::std::sync::Arc::new({{/field:arc?}}{{!
     }}{{>lib/value}}{{!
 }}{{#field:arc?}}){{/field:arc?}}{{!
 }}{{#field:box?}}){{/field:box?}}{{!

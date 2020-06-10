@@ -8,41 +8,38 @@ pub use self::types::*;
 pub mod types {
     #![allow(clippy::redundant_closure)]
 
-    use fbthrift::{
-        Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
-    };
 
-    pub type containerTypedef = std::collections::BTreeMap<i16, String>;
+    pub type containerTypedef = ::std::collections::BTreeMap<::std::primitive::i16, ::std::string::String>;
 
     #[derive(Clone, Debug, PartialEq)]
     pub enum ComplexUnion {
-        intValue(i64),
-        stringValue(String),
-        intListValue(Vec<i64>),
-        stringListValue(Vec<String>),
+        intValue(::std::primitive::i64),
+        stringValue(::std::string::String),
+        intListValue(::std::vec::Vec<::std::primitive::i64>),
+        stringListValue(::std::vec::Vec<::std::string::String>),
         typedefValue(crate::types::containerTypedef),
-        stringRef(String),
-        UnknownField(i32),
+        stringRef(::std::string::String),
+        UnknownField(::std::primitive::i32),
     }
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub enum ListUnion {
-        intListValue(Vec<i64>),
-        stringListValue(Vec<String>),
-        UnknownField(i32),
+        intListValue(::std::vec::Vec<::std::primitive::i64>),
+        stringListValue(::std::vec::Vec<::std::string::String>),
+        UnknownField(::std::primitive::i32),
     }
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub enum DataUnion {
-        binaryData(Vec<u8>),
-        stringData(String),
-        UnknownField(i32),
+        binaryData(::std::vec::Vec<::std::primitive::u8>),
+        stringData(::std::string::String),
+        UnknownField(::std::primitive::i32),
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct Val {
-        pub strVal: String,
-        pub intVal: i32,
+        pub strVal: ::std::string::String,
+        pub intVal: ::std::primitive::i32,
         pub typedefValue: crate::types::containerTypedef,
     }
 
@@ -50,75 +47,78 @@ pub mod types {
     pub enum ValUnion {
         v1(crate::types::Val),
         v2(crate::types::Val),
-        UnknownField(i32),
+        UnknownField(::std::primitive::i32),
     }
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub enum VirtualComplexUnion {
-        thingOne(String),
-        thingTwo(String),
-        UnknownField(i32),
+        thingOne(::std::string::String),
+        thingTwo(::std::string::String),
+        UnknownField(::std::primitive::i32),
     }
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct NonCopyableStruct {
-        pub num: i64,
+        pub num: ::std::primitive::i64,
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub enum NonCopyableUnion {
         s(crate::types::NonCopyableStruct),
-        UnknownField(i32),
+        UnknownField(::std::primitive::i32),
     }
 
 
 
-    impl Default for ComplexUnion {
+    impl ::std::default::Default for ComplexUnion {
         fn default() -> Self {
             Self::UnknownField(-1)
         }
     }
 
-    impl GetTType for ComplexUnion {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for ComplexUnion {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for ComplexUnion {
+    impl<P> ::fbthrift::Serialize<P> for ComplexUnion
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("ComplexUnion");
             match self {
                 ComplexUnion::intValue(inner) => {
-                    p.write_field_begin("intValue", TType::I64, 1);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("intValue", ::fbthrift::TType::I64, 1);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 ComplexUnion::stringValue(inner) => {
-                    p.write_field_begin("stringValue", TType::String, 5);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("stringValue", ::fbthrift::TType::String, 5);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 ComplexUnion::intListValue(inner) => {
-                    p.write_field_begin("intListValue", TType::List, 2);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("intListValue", ::fbthrift::TType::List, 2);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 ComplexUnion::stringListValue(inner) => {
-                    p.write_field_begin("stringListValue", TType::List, 3);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("stringListValue", ::fbthrift::TType::List, 3);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 ComplexUnion::typedefValue(inner) => {
-                    p.write_field_begin("typedefValue", TType::Map, 9);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("typedefValue", ::fbthrift::TType::Map, 9);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 ComplexUnion::stringRef(inner) => {
-                    p.write_field_begin("stringRef", TType::String, 14);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("stringRef", ::fbthrift::TType::String, 14);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 ComplexUnion::UnknownField(x) => {
-                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    p.write_field_begin("UnknownField", ::fbthrift::TType::I32, *x as ::std::primitive::i16);
                     x.write(p);
                     p.write_field_end();
                 }
@@ -128,41 +128,44 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for ComplexUnion {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
+    impl<P> ::fbthrift::Deserialize<P> for ComplexUnion
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             let mut once = false;
-            let mut alt = None;
+            let mut alt = ::std::option::Option::None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32, once) {
-                    (TType::Stop, _, _) => break,
-                    (TType::I64, 1, false) => {
+                match (fty, fid as ::std::primitive::i32, once) {
+                    (::fbthrift::TType::Stop, _, _) => break,
+                    (::fbthrift::TType::I64, 1, false) => {
                         once = true;
-                        alt = Some(ComplexUnion::intValue(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(ComplexUnion::intValue(::fbthrift::Deserialize::read(p)?));
                     }
-                    (TType::String, 5, false) => {
+                    (::fbthrift::TType::String, 5, false) => {
                         once = true;
-                        alt = Some(ComplexUnion::stringValue(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(ComplexUnion::stringValue(::fbthrift::Deserialize::read(p)?));
                     }
-                    (TType::List, 2, false) => {
+                    (::fbthrift::TType::List, 2, false) => {
                         once = true;
-                        alt = Some(ComplexUnion::intListValue(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(ComplexUnion::intListValue(::fbthrift::Deserialize::read(p)?));
                     }
-                    (TType::List, 3, false) => {
+                    (::fbthrift::TType::List, 3, false) => {
                         once = true;
-                        alt = Some(ComplexUnion::stringListValue(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(ComplexUnion::stringListValue(::fbthrift::Deserialize::read(p)?));
                     }
-                    (TType::Map, 9, false) => {
+                    (::fbthrift::TType::Map, 9, false) => {
                         once = true;
-                        alt = Some(ComplexUnion::typedefValue(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(ComplexUnion::typedefValue(::fbthrift::Deserialize::read(p)?));
                     }
-                    (TType::String, 14, false) => {
+                    (::fbthrift::TType::String, 14, false) => {
                         once = true;
-                        alt = Some(ComplexUnion::stringRef(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(ComplexUnion::stringRef(::fbthrift::Deserialize::read(p)?));
                     }
                     (fty, _, false) => p.skip(fty)?,
-                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                    (badty, badid, true) => return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
                         ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                         format!(
                             "unwanted extra union {} field ty {:?} id {}",
@@ -175,37 +178,40 @@ pub mod types {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(alt.unwrap_or_default())
+            ::std::result::Result::Ok(alt.unwrap_or_default())
         }
     }
 
 
-    impl Default for ListUnion {
+    impl ::std::default::Default for ListUnion {
         fn default() -> Self {
             Self::UnknownField(-1)
         }
     }
 
-    impl GetTType for ListUnion {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for ListUnion {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for ListUnion {
+    impl<P> ::fbthrift::Serialize<P> for ListUnion
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("ListUnion");
             match self {
                 ListUnion::intListValue(inner) => {
-                    p.write_field_begin("intListValue", TType::List, 2);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("intListValue", ::fbthrift::TType::List, 2);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 ListUnion::stringListValue(inner) => {
-                    p.write_field_begin("stringListValue", TType::List, 3);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("stringListValue", ::fbthrift::TType::List, 3);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 ListUnion::UnknownField(x) => {
-                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    p.write_field_begin("UnknownField", ::fbthrift::TType::I32, *x as ::std::primitive::i16);
                     x.write(p);
                     p.write_field_end();
                 }
@@ -215,25 +221,28 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for ListUnion {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
+    impl<P> ::fbthrift::Deserialize<P> for ListUnion
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             let mut once = false;
-            let mut alt = None;
+            let mut alt = ::std::option::Option::None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32, once) {
-                    (TType::Stop, _, _) => break,
-                    (TType::List, 2, false) => {
+                match (fty, fid as ::std::primitive::i32, once) {
+                    (::fbthrift::TType::Stop, _, _) => break,
+                    (::fbthrift::TType::List, 2, false) => {
                         once = true;
-                        alt = Some(ListUnion::intListValue(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(ListUnion::intListValue(::fbthrift::Deserialize::read(p)?));
                     }
-                    (TType::List, 3, false) => {
+                    (::fbthrift::TType::List, 3, false) => {
                         once = true;
-                        alt = Some(ListUnion::stringListValue(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(ListUnion::stringListValue(::fbthrift::Deserialize::read(p)?));
                     }
                     (fty, _, false) => p.skip(fty)?,
-                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                    (badty, badid, true) => return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
                         ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                         format!(
                             "unwanted extra union {} field ty {:?} id {}",
@@ -246,37 +255,40 @@ pub mod types {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(alt.unwrap_or_default())
+            ::std::result::Result::Ok(alt.unwrap_or_default())
         }
     }
 
 
-    impl Default for DataUnion {
+    impl ::std::default::Default for DataUnion {
         fn default() -> Self {
             Self::UnknownField(-1)
         }
     }
 
-    impl GetTType for DataUnion {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for DataUnion {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for DataUnion {
+    impl<P> ::fbthrift::Serialize<P> for DataUnion
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("DataUnion");
             match self {
                 DataUnion::binaryData(inner) => {
-                    p.write_field_begin("binaryData", TType::String, 1);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("binaryData", ::fbthrift::TType::String, 1);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 DataUnion::stringData(inner) => {
-                    p.write_field_begin("stringData", TType::String, 2);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("stringData", ::fbthrift::TType::String, 2);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 DataUnion::UnknownField(x) => {
-                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    p.write_field_begin("UnknownField", ::fbthrift::TType::I32, *x as ::std::primitive::i16);
                     x.write(p);
                     p.write_field_end();
                 }
@@ -286,25 +298,28 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for DataUnion {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
+    impl<P> ::fbthrift::Deserialize<P> for DataUnion
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             let mut once = false;
-            let mut alt = None;
+            let mut alt = ::std::option::Option::None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32, once) {
-                    (TType::Stop, _, _) => break,
-                    (TType::String, 1, false) => {
+                match (fty, fid as ::std::primitive::i32, once) {
+                    (::fbthrift::TType::Stop, _, _) => break,
+                    (::fbthrift::TType::String, 1, false) => {
                         once = true;
-                        alt = Some(DataUnion::binaryData(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(DataUnion::binaryData(::fbthrift::Deserialize::read(p)?));
                     }
-                    (TType::String, 2, false) => {
+                    (::fbthrift::TType::String, 2, false) => {
                         once = true;
-                        alt = Some(DataUnion::stringData(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(DataUnion::stringData(::fbthrift::Deserialize::read(p)?));
                     }
                     (fty, _, false) => p.skip(fty)?,
-                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                    (badty, badid, true) => return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
                         ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                         format!(
                             "unwanted extra union {} field ty {:?} id {}",
@@ -317,60 +332,66 @@ pub mod types {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(alt.unwrap_or_default())
+            ::std::result::Result::Ok(alt.unwrap_or_default())
         }
     }
 
-    impl Default for self::Val {
+    impl ::std::default::Default for self::Val {
         fn default() -> Self {
             Self {
-                strVal: Default::default(),
-                intVal: Default::default(),
-                typedefValue: Default::default(),
+                strVal: ::std::default::Default::default(),
+                intVal: ::std::default::Default::default(),
+                typedefValue: ::std::default::Default::default(),
             }
         }
     }
 
-    impl GetTType for self::Val {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for self::Val {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for self::Val {
+    impl<P> ::fbthrift::Serialize<P> for self::Val
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("Val");
-            p.write_field_begin("strVal", TType::String, 1);
-            Serialize::write(&self.strVal, p);
+            p.write_field_begin("strVal", ::fbthrift::TType::String, 1);
+            ::fbthrift::Serialize::write(&self.strVal, p);
             p.write_field_end();
-            p.write_field_begin("intVal", TType::I32, 2);
-            Serialize::write(&self.intVal, p);
+            p.write_field_begin("intVal", ::fbthrift::TType::I32, 2);
+            ::fbthrift::Serialize::write(&self.intVal, p);
             p.write_field_end();
-            p.write_field_begin("typedefValue", TType::Map, 9);
-            Serialize::write(&self.typedefValue, p);
+            p.write_field_begin("typedefValue", ::fbthrift::TType::Map, 9);
+            ::fbthrift::Serialize::write(&self.typedefValue, p);
             p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for self::Val {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            let mut field_strVal = None;
-            let mut field_intVal = None;
-            let mut field_typedefValue = None;
+    impl<P> ::fbthrift::Deserialize<P> for self::Val
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            let mut field_strVal = ::std::option::Option::None;
+            let mut field_intVal = ::std::option::Option::None;
+            let mut field_typedefValue = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::String, 1) => field_strVal = Some(Deserialize::read(p)?),
-                    (TType::I32, 2) => field_intVal = Some(Deserialize::read(p)?),
-                    (TType::Map, 9) => field_typedefValue = Some(Deserialize::read(p)?),
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::String, 1) => field_strVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 2) => field_intVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Map, 9) => field_typedefValue = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
+            ::std::result::Result::Ok(Self {
                 strVal: field_strVal.unwrap_or_default(),
                 intVal: field_intVal.unwrap_or_default(),
                 typedefValue: field_typedefValue.unwrap_or_default(),
@@ -380,32 +401,35 @@ pub mod types {
 
 
 
-    impl Default for ValUnion {
+    impl ::std::default::Default for ValUnion {
         fn default() -> Self {
             Self::UnknownField(-1)
         }
     }
 
-    impl GetTType for ValUnion {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for ValUnion {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for ValUnion {
+    impl<P> ::fbthrift::Serialize<P> for ValUnion
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("ValUnion");
             match self {
                 ValUnion::v1(inner) => {
-                    p.write_field_begin("v1", TType::Struct, 1);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("v1", ::fbthrift::TType::Struct, 1);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 ValUnion::v2(inner) => {
-                    p.write_field_begin("v2", TType::Struct, 2);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("v2", ::fbthrift::TType::Struct, 2);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 ValUnion::UnknownField(x) => {
-                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    p.write_field_begin("UnknownField", ::fbthrift::TType::I32, *x as ::std::primitive::i16);
                     x.write(p);
                     p.write_field_end();
                 }
@@ -415,25 +439,28 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for ValUnion {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
+    impl<P> ::fbthrift::Deserialize<P> for ValUnion
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             let mut once = false;
-            let mut alt = None;
+            let mut alt = ::std::option::Option::None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32, once) {
-                    (TType::Stop, _, _) => break,
-                    (TType::Struct, 1, false) => {
+                match (fty, fid as ::std::primitive::i32, once) {
+                    (::fbthrift::TType::Stop, _, _) => break,
+                    (::fbthrift::TType::Struct, 1, false) => {
                         once = true;
-                        alt = Some(ValUnion::v1(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(ValUnion::v1(::fbthrift::Deserialize::read(p)?));
                     }
-                    (TType::Struct, 2, false) => {
+                    (::fbthrift::TType::Struct, 2, false) => {
                         once = true;
-                        alt = Some(ValUnion::v2(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(ValUnion::v2(::fbthrift::Deserialize::read(p)?));
                     }
                     (fty, _, false) => p.skip(fty)?,
-                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                    (badty, badid, true) => return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
                         ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                         format!(
                             "unwanted extra union {} field ty {:?} id {}",
@@ -446,37 +473,40 @@ pub mod types {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(alt.unwrap_or_default())
+            ::std::result::Result::Ok(alt.unwrap_or_default())
         }
     }
 
 
-    impl Default for VirtualComplexUnion {
+    impl ::std::default::Default for VirtualComplexUnion {
         fn default() -> Self {
             Self::UnknownField(-1)
         }
     }
 
-    impl GetTType for VirtualComplexUnion {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for VirtualComplexUnion {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for VirtualComplexUnion {
+    impl<P> ::fbthrift::Serialize<P> for VirtualComplexUnion
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("VirtualComplexUnion");
             match self {
                 VirtualComplexUnion::thingOne(inner) => {
-                    p.write_field_begin("thingOne", TType::String, 1);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("thingOne", ::fbthrift::TType::String, 1);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 VirtualComplexUnion::thingTwo(inner) => {
-                    p.write_field_begin("thingTwo", TType::String, 2);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("thingTwo", ::fbthrift::TType::String, 2);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 VirtualComplexUnion::UnknownField(x) => {
-                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    p.write_field_begin("UnknownField", ::fbthrift::TType::I32, *x as ::std::primitive::i16);
                     x.write(p);
                     p.write_field_end();
                 }
@@ -486,25 +516,28 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for VirtualComplexUnion {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
+    impl<P> ::fbthrift::Deserialize<P> for VirtualComplexUnion
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             let mut once = false;
-            let mut alt = None;
+            let mut alt = ::std::option::Option::None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32, once) {
-                    (TType::Stop, _, _) => break,
-                    (TType::String, 1, false) => {
+                match (fty, fid as ::std::primitive::i32, once) {
+                    (::fbthrift::TType::Stop, _, _) => break,
+                    (::fbthrift::TType::String, 1, false) => {
                         once = true;
-                        alt = Some(VirtualComplexUnion::thingOne(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(VirtualComplexUnion::thingOne(::fbthrift::Deserialize::read(p)?));
                     }
-                    (TType::String, 2, false) => {
+                    (::fbthrift::TType::String, 2, false) => {
                         once = true;
-                        alt = Some(VirtualComplexUnion::thingTwo(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(VirtualComplexUnion::thingTwo(::fbthrift::Deserialize::read(p)?));
                     }
                     (fty, _, false) => p.skip(fty)?,
-                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                    (badty, badid, true) => return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
                         ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                         format!(
                             "unwanted extra union {} field ty {:?} id {}",
@@ -517,48 +550,54 @@ pub mod types {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(alt.unwrap_or_default())
+            ::std::result::Result::Ok(alt.unwrap_or_default())
         }
     }
 
-    impl Default for self::NonCopyableStruct {
+    impl ::std::default::Default for self::NonCopyableStruct {
         fn default() -> Self {
             Self {
-                num: Default::default(),
+                num: ::std::default::Default::default(),
             }
         }
     }
 
-    impl GetTType for self::NonCopyableStruct {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for self::NonCopyableStruct {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for self::NonCopyableStruct {
+    impl<P> ::fbthrift::Serialize<P> for self::NonCopyableStruct
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("NonCopyableStruct");
-            p.write_field_begin("num", TType::I64, 1);
-            Serialize::write(&self.num, p);
+            p.write_field_begin("num", ::fbthrift::TType::I64, 1);
+            ::fbthrift::Serialize::write(&self.num, p);
             p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for self::NonCopyableStruct {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            let mut field_num = None;
+    impl<P> ::fbthrift::Deserialize<P> for self::NonCopyableStruct
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            let mut field_num = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::I64, 1) => field_num = Some(Deserialize::read(p)?),
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I64, 1) => field_num = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
+            ::std::result::Result::Ok(Self {
                 num: field_num.unwrap_or_default(),
             })
         }
@@ -566,27 +605,30 @@ pub mod types {
 
 
 
-    impl Default for NonCopyableUnion {
+    impl ::std::default::Default for NonCopyableUnion {
         fn default() -> Self {
             Self::UnknownField(-1)
         }
     }
 
-    impl GetTType for NonCopyableUnion {
-        const TTYPE: TType = TType::Struct;
+    impl ::fbthrift::GetTType for NonCopyableUnion {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for NonCopyableUnion {
+    impl<P> ::fbthrift::Serialize<P> for NonCopyableUnion
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("NonCopyableUnion");
             match self {
                 NonCopyableUnion::s(inner) => {
-                    p.write_field_begin("s", TType::Struct, 1);
-                    Serialize::write(inner, p);
+                    p.write_field_begin("s", ::fbthrift::TType::Struct, 1);
+                    ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
                 NonCopyableUnion::UnknownField(x) => {
-                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    p.write_field_begin("UnknownField", ::fbthrift::TType::I32, *x as ::std::primitive::i16);
                     x.write(p);
                     p.write_field_end();
                 }
@@ -596,21 +638,24 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for NonCopyableUnion {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
+    impl<P> ::fbthrift::Deserialize<P> for NonCopyableUnion
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             let mut once = false;
-            let mut alt = None;
+            let mut alt = ::std::option::Option::None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32, once) {
-                    (TType::Stop, _, _) => break,
-                    (TType::Struct, 1, false) => {
+                match (fty, fid as ::std::primitive::i32, once) {
+                    (::fbthrift::TType::Stop, _, _) => break,
+                    (::fbthrift::TType::Struct, 1, false) => {
                         once = true;
-                        alt = Some(NonCopyableUnion::s(Deserialize::read(p)?));
+                        alt = ::std::option::Option::Some(NonCopyableUnion::s(::fbthrift::Deserialize::read(p)?));
                     }
                     (fty, _, false) => p.skip(fty)?,
-                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                    (badty, badid, true) => return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
                         ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
                         format!(
                             "unwanted extra union {} field ty {:?} id {}",
@@ -623,7 +668,7 @@ pub mod types {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(alt.unwrap_or_default())
+            ::std::result::Result::Ok(alt.unwrap_or_default())
         }
     }
 }

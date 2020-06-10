@@ -16,12 +16,7 @@
 
 }}
 
-    use fbthrift::*;
-    {{#program:anyServiceWithoutParent?}}
-    use std::marker::PhantomData;
-    {{/program:anyServiceWithoutParent?}}
-    use std::sync::Arc;{{!
-}}{{#program:services}}
+{{#program:services}}
 
     pub struct {{service:name}}Impl<P, T> {
         {{#service:extends}}
@@ -29,7 +24,7 @@
         {{/service:extends}}
         {{^service:extends}}
         transport: T,
-        _phantom: PhantomData<fn() -> P>,
+        _phantom: ::std::marker::PhantomData<fn() -> P>,
         {{/service:extends}}
     }
 
@@ -44,7 +39,7 @@
             {{^service:extends}}
             Self {
                 transport,
-                _phantom: PhantomData,
+                _phantom: ::std::marker::PhantomData,
             }
             {{/service:extends}}
         }
@@ -62,15 +57,15 @@
     {{#service:extendedServices}}
     impl<P, T> {{!
         }}{{#extendedService:service}}{{!
-        }}AsRef<dyn {{extendedService:packagePrefix}}::client::{{service:name}} + 'static> {{!
+        }}::std::convert::AsRef<dyn {{extendedService:packagePrefix}}::client::{{service:name}} + 'static> {{!
         }}{{/extendedService:service}}{{!
         }}for {{service:name}}Impl<P, T>
     where
-        P: Protocol,
-        T: Transport,
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
         {{! require P::Frame and T to have compatible DecBuf and EncBuf::Final }}
-        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
-        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
     {
         fn as_ref(&self) -> &(dyn {{#extendedService:service}}{{!
             }}{{extendedService:packagePrefix}}::client::{{service:name}}{{!
@@ -84,7 +79,7 @@
     {{/service:extendedServices}}
     pub trait {{service:name}}: {{!
         }}{{#service:extends}}{{service:package}}::client::{{service:name}} + {{/service:extends}}{{!
-        }}Send {{>lib/block}}{{!
+        }}::std::marker::Send {{>lib/block}}{{!
 
         }}{{#service:rustFunctions}}{{^function:any_streams?}}
         fn {{function:name}}(
@@ -92,20 +87,20 @@
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<{{!
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
             }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
-        }}>> + Send + 'static>>;{{!
+        }}>> + ::std::marker::Send + 'static>>;{{!
         }}{{/function:any_streams?}}{{/service:rustFunctions}}
     }
 
     impl<P, T> {{service:name}} for {{service:name}}Impl<P, T>
     where
-        P: Protocol,
-        T: Transport,
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
         {{! require P::Frame and T to have compatible DecBuf and EncBuf::Final }}
-        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
-        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
     {{>lib/block}}{{!
         }}{{#service:rustFunctions}}{{^function:any_streams?}}
         fn {{function:name}}(
@@ -113,15 +108,16 @@
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<{{!
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
             }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
-        }}>> + Send + 'static>> {
-            use futures::future::{FutureExt, TryFutureExt};
-            let request = serialize!(P, |p| protocol::write_message(
+        }}>> + ::std::marker::Send + 'static>> {
+            use ::fbthrift::{ProtocolReader as _, ProtocolWriter as _};
+            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "{{function:name}}",
-                MessageType::Call,
+                ::fbthrift::MessageType::Call,
                 // Note: we send a 0 message sequence ID from clients because
                 // this field should not be used by the server (except for some
                 // language implementations).
@@ -134,7 +130,7 @@
                         }}{{#field:type}}{{>lib/ttype}}{{/field:type}}, {{!
                         }}{{field:key}}i16{{!
                     }});
-                    arg_{{field:name}}.write(p);
+                    ::fbthrift::Serialize::write(&arg_{{field:name}}, p);
                     p.write_field_end();{{!
                     }}{{/function:args}}
                     p.write_field_stop();
@@ -143,37 +139,37 @@
             ));
             self.transport()
                 .call(request)
-                .map_err(From::from)
-                .and_then(|reply| futures::future::ready({
+                .map_err(::std::convert::From::from)
+                .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> std::result::Result<{{!
+                    move |mut p: P::Deserializer| -> ::std::result::Result<{{!
                         }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
                         }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
                     }}> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
-                            MessageType::Reply => {
-                                let exn = {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::read(p)?;
+                            ::fbthrift::MessageType::Reply => {
+                                let exn: {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn = ::fbthrift::Deserialize::read(p)?;
                                 match exn {
-                                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(x) => Ok(x),
+                                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(x) => ::std::result::Result::Ok(x),
                                     {{#function:exceptions}}
                                     {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::{{field:name}}(err) => {
-                                        Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::{{field:name}}(err))
+                                        ::std::result::Result::Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::{{field:name}}(err))
                                     }
                                     {{/function:exceptions}}
                                     {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(ae) => {
-                                        Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::ApplicationException(ae))
+                                        ::std::result::Result::Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::ApplicationException(ae))
                                     }
                                 }
                             }
-                            MessageType::Exception => {
-                                let ae = ApplicationException::read(p)?;
-                                Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::ApplicationException(ae))
+                            ::fbthrift::MessageType::Exception => {
+                                let ae: ::fbthrift::ApplicationException = ::fbthrift::Deserialize::read(p)?;
+                                ::std::result::Result::Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::ApplicationException(ae))
                             }
-                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                let err = anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::ThriftError(err))
+                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                ::std::result::Result::Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::ThriftError(err))
                             }
                         };
                         p.read_message_end()?;
@@ -187,13 +183,13 @@
 
     impl<'a, T> {{service:name}} for T
     where
-        T: AsRef<dyn {{service:name}} + 'a>,
+        T: ::std::convert::AsRef<dyn {{service:name}} + 'a>,
         {{#service:extendedServices}}
         {{#extendedService:service}}
         T: {{extendedService:packagePrefix}}::client::{{service:name}},
         {{/extendedService:service}}
         {{/service:extendedServices}}
-        T: Send,
+        T: ::std::marker::Send,
     {
         {{#service:rustFunctions}}{{^function:any_streams?}}
         fn {{function:name}}(
@@ -201,10 +197,10 @@
             {{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},
             {{/function:args}}
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = std::result::Result<{{!
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
             }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
-        }}>> + Send + 'static>> {
+        }}>> + ::std::marker::Send + 'static>> {
             self.as_ref().{{function:name}}(
                 {{#function:args}}
                 arg_{{field:name}},
@@ -230,31 +226,31 @@
     impl dyn {{service:name}} {
         {{#service:annotations}}
         {{#annotation:value?}}
-        pub const {{annotation:rust_name}}: &'static str = {{annotation:rust_value}};
+        pub const {{annotation:rust_name}}: &'static ::std::primitive::str = {{annotation:rust_value}};
         {{/annotation:value?}}
         {{/service:annotations}}
         pub fn new<P, T>(
             protocol: P,
             transport: T,
-        ) -> Arc<impl {{service:name}} + Send + 'static>
+        ) -> ::std::sync::Arc<impl {{service:name}} + ::std::marker::Send + 'static>
         where
-            P: Protocol<Frame = T>,
-            T: Transport,
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport,
         {
             let _ = protocol;
-            Arc::new({{service:name}}Impl::<P, T>::new(transport))
+            ::std::sync::Arc::new({{service:name}}Impl::<P, T>::new(transport))
         }
     }
 
     /// The same thing, but to be called from generic contexts where we are
     /// working with a type parameter `C: ClientFactory` to produce clients.
-    impl ClientFactory for make_{{service:name}} {
-        type Api = dyn {{service:name}} + Send + Sync + 'static;
+    impl ::fbthrift::ClientFactory for make_{{service:name}} {
+        type Api = dyn {{service:name}} + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
+        fn new<P, T>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
         where
-            P: Protocol<Frame = T>,
-            T: Transport + Sync,
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport + ::std::marker::Sync,
         {
             {{service:name}}::new(protocol, transport)
         }

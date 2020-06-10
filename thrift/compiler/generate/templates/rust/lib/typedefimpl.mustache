@@ -17,19 +17,25 @@
 }}
 
 {{#typedef:newtype?}}
-    impl GetTType for {{typedef:rust_name}} {
-        const TTYPE: TType = <{{#typedef:type}}{{>lib/type}}{{/typedef:type}} as GetTType>::TTYPE;
+    impl ::fbthrift::GetTType for {{typedef:rust_name}} {
+        const TTYPE: ::fbthrift::TType = <{{#typedef:type}}{{>lib/type}}{{/typedef:type}} as ::fbthrift::GetTType>::TTYPE;
     }
 
-    impl<P: ProtocolWriter> Serialize<P> for {{typedef:rust_name}} {
+    impl<P> ::fbthrift::Serialize<P> for {{typedef:rust_name}}
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
         fn write(&self, p: &mut P) {
             self.0.write(p)
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for {{typedef:rust_name}} {
-        fn read(p: &mut P) -> anyhow::Result<Self> {
-            Deserialize::read(p).map({{typedef:rust_name}})
+    impl<P> ::fbthrift::Deserialize<P> for {{typedef:rust_name}}
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            ::fbthrift::Deserialize::read(p).map({{typedef:rust_name}})
         }
     }
 {{/typedef:newtype?}}
