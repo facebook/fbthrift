@@ -32,7 +32,7 @@ where
 impl<P, T> Serialize<P> for &T
 where
     P: ProtocolWriter,
-    T: Serialize<P>,
+    T: ?Sized + Serialize<P>,
 {
     fn write(&self, p: &mut P) {
         (**self).write(p);
