@@ -169,10 +169,12 @@ class module_CONSTANTS {
   private static ?Internship $__instagram = null;
   public static function instagram(): Internship {
     if (self::$__instagram === null) {
-      self::$__instagram = new Internship(
-        12,
-        "Software Engineer",
-        Company::INSTAGRAM,
+      self::$__instagram = Internship::fromShape(
+        shape(
+          "weeks" => 12,
+          "title" => "Software Engineer",
+          "employer" => Company::INSTAGRAM,
+        )
       );
     }
     return self::$__instagram;
@@ -185,10 +187,11 @@ class module_CONSTANTS {
   private static ?Internship $__partial_const = null;
   public static function partial_const(): Internship {
     if (self::$__partial_const === null) {
-      self::$__partial_const = new Internship(
-        8,
-        "Some Job",
-        null,
+      self::$__partial_const = Internship::fromShape(
+        shape(
+          "weeks" => 8,
+          "title" => "Some Job",
+        )
       );
     }
     return self::$__partial_const;
@@ -202,13 +205,17 @@ class module_CONSTANTS {
   public static function kRanges(): Vector<Range> {
     if (self::$__kRanges === null) {
       self::$__kRanges = Vector {
-        new Range(
-          1,
-          2,
+        Range::fromShape(
+          shape(
+            "min" => 1,
+            "max" => 2,
+          )
         ),
-        new Range(
-          5,
-          6,
+        Range::fromShape(
+          shape(
+            "min" => 5,
+            "max" => 6,
+          )
         ),
       };
     }
@@ -223,15 +230,19 @@ class module_CONSTANTS {
   public static function internList(): Vector<Internship> {
     if (self::$__internList === null) {
       self::$__internList = Vector {
-        new Internship(
-          12,
-          "Software Engineer",
-          Company::INSTAGRAM,
+        Internship::fromShape(
+          shape(
+            "weeks" => 12,
+            "title" => "Software Engineer",
+            "employer" => Company::INSTAGRAM,
+          )
         ),
-        new Internship(
-          10,
-          "Sales Intern",
-          Company::FACEBOOK,
+        Internship::fromShape(
+          shape(
+            "weeks" => 10,
+            "title" => "Sales Intern",
+            "employer" => Company::FACEBOOK,
+          )
         ),
       };
     }
@@ -245,9 +256,9 @@ class module_CONSTANTS {
   private static ?struct1 $__pod_0 = null;
   public static function pod_0(): struct1 {
     if (self::$__pod_0 === null) {
-      self::$__pod_0 = new struct1(
-        null,
-        null,
+      self::$__pod_0 = struct1::fromShape(
+        shape(
+        )
       );
     }
     return self::$__pod_0;
@@ -260,9 +271,11 @@ class module_CONSTANTS {
   private static ?struct1 $__pod_1 = null;
   public static function pod_1(): struct1 {
     if (self::$__pod_1 === null) {
-      self::$__pod_1 = new struct1(
-        10,
-        "foo",
+      self::$__pod_1 = struct1::fromShape(
+        shape(
+          "a" => 10,
+          "b" => "foo",
+        )
       );
     }
     return self::$__pod_1;
@@ -275,18 +288,22 @@ class module_CONSTANTS {
   private static ?struct2 $__pod_2 = null;
   public static function pod_2(): struct2 {
     if (self::$__pod_2 === null) {
-      self::$__pod_2 = new struct2(
-        98,
-        "gaz",
-        new struct1(
-          12,
-          "bar",
-        ),
-        Vector {
-          11,
-          22,
-          33,
-        },
+      self::$__pod_2 = struct2::fromShape(
+        shape(
+          "a" => 98,
+          "b" => "gaz",
+          "c" => struct1::fromShape(
+            shape(
+              "a" => 12,
+              "b" => "bar",
+            )
+          ),
+          "d" => Vector {
+            11,
+            22,
+            33,
+          },
+        )
       );
     }
     return self::$__pod_2;
@@ -299,22 +316,26 @@ class module_CONSTANTS {
   private static ?struct3 $__pod_3 = null;
   public static function pod_3(): struct3 {
     if (self::$__pod_3 === null) {
-      self::$__pod_3 = new struct3(
-        "abc",
-        456,
-        new struct2(
-          888,
-          null,
-          new struct1(
-            null,
-            "gaz",
+      self::$__pod_3 = struct3::fromShape(
+        shape(
+          "a" => "abc",
+          "b" => 456,
+          "c" => struct2::fromShape(
+            shape(
+              "a" => 888,
+              "c" => struct1::fromShape(
+                shape(
+                  "b" => "gaz",
+                )
+              ),
+              "d" => Vector {
+                1,
+                2,
+                3,
+              },
+            )
           ),
-          Vector {
-            1,
-            2,
-            3,
-          },
-        ),
+        )
       );
     }
     return self::$__pod_3;
@@ -327,9 +348,10 @@ class module_CONSTANTS {
   private static ?union1 $__u_1_1 = null;
   public static function u_1_1(): union1 {
     if (self::$__u_1_1 === null) {
-      self::$__u_1_1 = new union1(
-        97,
-        null,
+      self::$__u_1_1 = union1::fromShape(
+        shape(
+          "i" => 97,
+        )
       );
     }
     return self::$__u_1_1;
@@ -342,9 +364,10 @@ class module_CONSTANTS {
   private static ?union1 $__u_1_2 = null;
   public static function u_1_2(): union1 {
     if (self::$__u_1_2 === null) {
-      self::$__u_1_2 = new union1(
-        null,
-        5.6,
+      self::$__u_1_2 = union1::fromShape(
+        shape(
+          "d" => 5.6,
+        )
       );
     }
     return self::$__u_1_2;
@@ -357,9 +380,9 @@ class module_CONSTANTS {
   private static ?union1 $__u_1_3 = null;
   public static function u_1_3(): union1 {
     if (self::$__u_1_3 === null) {
-      self::$__u_1_3 = new union1(
-        null,
-        null,
+      self::$__u_1_3 = union1::fromShape(
+        shape(
+        )
       );
     }
     return self::$__u_1_3;
@@ -372,11 +395,10 @@ class module_CONSTANTS {
   private static ?union2 $__u_2_1 = null;
   public static function u_2_1(): union2 {
     if (self::$__u_2_1 === null) {
-      self::$__u_2_1 = new union2(
-        51,
-        null,
-        null,
-        null,
+      self::$__u_2_1 = union2::fromShape(
+        shape(
+          "i" => 51,
+        )
       );
     }
     return self::$__u_2_1;
@@ -389,11 +411,10 @@ class module_CONSTANTS {
   private static ?union2 $__u_2_2 = null;
   public static function u_2_2(): union2 {
     if (self::$__u_2_2 === null) {
-      self::$__u_2_2 = new union2(
-        null,
-        6.7,
-        null,
-        null,
+      self::$__u_2_2 = union2::fromShape(
+        shape(
+          "d" => 6.7,
+        )
       );
     }
     return self::$__u_2_2;
@@ -406,14 +427,15 @@ class module_CONSTANTS {
   private static ?union2 $__u_2_3 = null;
   public static function u_2_3(): union2 {
     if (self::$__u_2_3 === null) {
-      self::$__u_2_3 = new union2(
-        null,
-        null,
-        new struct1(
-          8,
-          "abacabb",
-        ),
-        null,
+      self::$__u_2_3 = union2::fromShape(
+        shape(
+          "s" => struct1::fromShape(
+            shape(
+              "a" => 8,
+              "b" => "abacabb",
+            )
+          ),
+        )
       );
     }
     return self::$__u_2_3;
@@ -426,14 +448,14 @@ class module_CONSTANTS {
   private static ?union2 $__u_2_4 = null;
   public static function u_2_4(): union2 {
     if (self::$__u_2_4 === null) {
-      self::$__u_2_4 = new union2(
-        null,
-        null,
-        null,
-        new union1(
-          43,
-          null,
-        ),
+      self::$__u_2_4 = union2::fromShape(
+        shape(
+          "u" => union1::fromShape(
+            shape(
+              "i" => 43,
+            )
+          ),
+        )
       );
     }
     return self::$__u_2_4;
@@ -446,14 +468,14 @@ class module_CONSTANTS {
   private static ?union2 $__u_2_5 = null;
   public static function u_2_5(): union2 {
     if (self::$__u_2_5 === null) {
-      self::$__u_2_5 = new union2(
-        null,
-        null,
-        null,
-        new union1(
-          null,
-          9.8,
-        ),
+      self::$__u_2_5 = union2::fromShape(
+        shape(
+          "u" => union1::fromShape(
+            shape(
+              "d" => 9.8,
+            )
+          ),
+        )
       );
     }
     return self::$__u_2_5;
@@ -466,14 +488,13 @@ class module_CONSTANTS {
   private static ?union2 $__u_2_6 = null;
   public static function u_2_6(): union2 {
     if (self::$__u_2_6 === null) {
-      self::$__u_2_6 = new union2(
-        null,
-        null,
-        null,
-        new union1(
-          null,
-          null,
-        ),
+      self::$__u_2_6 = union2::fromShape(
+        shape(
+          "u" => union1::fromShape(
+            shape(
+            )
+          ),
+        )
       );
     }
     return self::$__u_2_6;
@@ -814,135 +835,156 @@ class module_CONSTANTS {
         "mymap" => Map {
           "keys" => "values",
         },
-        "instagram" => new Internship(
-          12,
-          "Software Engineer",
-          Company::INSTAGRAM,
+        "instagram" => Internship::fromShape(
+          shape(
+            "weeks" => 12,
+            "title" => "Software Engineer",
+            "employer" => Company::INSTAGRAM,
+          )
         ),
-        "partial_const" => new Internship(
-          8,
-          "Some Job",
-          null,
+        "partial_const" => Internship::fromShape(
+          shape(
+            "weeks" => 8,
+            "title" => "Some Job",
+          )
         ),
         "kRanges" => Vector {
-          new Range(
-            1,
-            2,
+          Range::fromShape(
+            shape(
+              "min" => 1,
+              "max" => 2,
+            )
           ),
-          new Range(
-            5,
-            6,
+          Range::fromShape(
+            shape(
+              "min" => 5,
+              "max" => 6,
+            )
           ),
         },
         "internList" => Vector {
-          new Internship(
-            12,
-            "Software Engineer",
-            Company::INSTAGRAM,
+          Internship::fromShape(
+            shape(
+              "weeks" => 12,
+              "title" => "Software Engineer",
+              "employer" => Company::INSTAGRAM,
+            )
           ),
-          new Internship(
-            10,
-            "Sales Intern",
-            Company::FACEBOOK,
+          Internship::fromShape(
+            shape(
+              "weeks" => 10,
+              "title" => "Sales Intern",
+              "employer" => Company::FACEBOOK,
+            )
           ),
         },
-        "pod_0" => new struct1(
-          null,
-          null,
+        "pod_0" => struct1::fromShape(
+          shape(
+          )
         ),
-        "pod_1" => new struct1(
-          10,
-          "foo",
+        "pod_1" => struct1::fromShape(
+          shape(
+            "a" => 10,
+            "b" => "foo",
+          )
         ),
-        "pod_2" => new struct2(
-          98,
-          "gaz",
-          new struct1(
-            12,
-            "bar",
-          ),
-          Vector {
-            11,
-            22,
-            33,
-          },
-        ),
-        "pod_3" => new struct3(
-          "abc",
-          456,
-          new struct2(
-            888,
-            null,
-            new struct1(
-              null,
-              "gaz",
+        "pod_2" => struct2::fromShape(
+          shape(
+            "a" => 98,
+            "b" => "gaz",
+            "c" => struct1::fromShape(
+              shape(
+                "a" => 12,
+                "b" => "bar",
+              )
             ),
-            Vector {
-              1,
-              2,
-              3,
+            "d" => Vector {
+              11,
+              22,
+              33,
             },
-          ),
+          )
         ),
-        "u_1_1" => new union1(
-          97,
-          null,
+        "pod_3" => struct3::fromShape(
+          shape(
+            "a" => "abc",
+            "b" => 456,
+            "c" => struct2::fromShape(
+              shape(
+                "a" => 888,
+                "c" => struct1::fromShape(
+                  shape(
+                    "b" => "gaz",
+                  )
+                ),
+                "d" => Vector {
+                  1,
+                  2,
+                  3,
+                },
+              )
+            ),
+          )
         ),
-        "u_1_2" => new union1(
-          null,
-          5.6,
+        "u_1_1" => union1::fromShape(
+          shape(
+            "i" => 97,
+          )
         ),
-        "u_1_3" => new union1(
-          null,
-          null,
+        "u_1_2" => union1::fromShape(
+          shape(
+            "d" => 5.6,
+          )
         ),
-        "u_2_1" => new union2(
-          51,
-          null,
-          null,
-          null,
+        "u_1_3" => union1::fromShape(
+          shape(
+          )
         ),
-        "u_2_2" => new union2(
-          null,
-          6.7,
-          null,
-          null,
+        "u_2_1" => union2::fromShape(
+          shape(
+            "i" => 51,
+          )
         ),
-        "u_2_3" => new union2(
-          null,
-          null,
-          new struct1(
-            8,
-            "abacabb",
-          ),
-          null,
+        "u_2_2" => union2::fromShape(
+          shape(
+            "d" => 6.7,
+          )
         ),
-        "u_2_4" => new union2(
-          null,
-          null,
-          null,
-          new union1(
-            43,
-            null,
-          ),
+        "u_2_3" => union2::fromShape(
+          shape(
+            "s" => struct1::fromShape(
+              shape(
+                "a" => 8,
+                "b" => "abacabb",
+              )
+            ),
+          )
         ),
-        "u_2_5" => new union2(
-          null,
-          null,
-          null,
-          new union1(
-            null,
-            9.8,
-          ),
+        "u_2_4" => union2::fromShape(
+          shape(
+            "u" => union1::fromShape(
+              shape(
+                "i" => 43,
+              )
+            ),
+          )
         ),
-        "u_2_6" => new union2(
-          null,
-          null,
-          null,
-          new union1(
-            null,
-            null,
-          ),
+        "u_2_5" => union2::fromShape(
+          shape(
+            "u" => union1::fromShape(
+              shape(
+                "d" => 9.8,
+              )
+            ),
+          )
+        ),
+        "u_2_6" => union2::fromShape(
+          shape(
+            "u" => union1::fromShape(
+              shape(
+              )
+            ),
+          )
         ),
         "apostrophe" => "'",
         "tripleApostrophe" => "'''",

@@ -1229,18 +1229,11 @@ string t_hack_generator::render_const_value(
       out << hack_name(tenum) << "::coerce(" << value->get_integer() << ")";
     }
   } else if (type->is_struct() || type->is_xception()) {
-    out << "new " << hack_name(type) << "(\n";
+    out << hack_name(type) << "::fromShape(\n";
     indent_up();
-    if (map_construct_) {
-      if (arrays_) {
-        out << indent() << "dict[\n";
-      } else if (no_use_hack_collections_) {
-        out << indent() << "darray[\n";
-      } else {
-        out << indent() << "Map {\n";
-      }
-      indent_up();
-    }
+    indent(out) << "shape(\n";
+    indent_up();
+
     const vector<t_field*>& fields = ((t_struct*)type)->get_members();
     vector<t_field*>::const_iterator f_iter;
     const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
@@ -1266,31 +1259,13 @@ string t_hack_generator::render_const_value(
           v = v_iter->second;
         }
       }
-      out << indent();
-      if (map_construct_) {
-        if (v != nullptr) {
-          out << render_const_value(string_type(), k);
-          out << " => ";
-          out << render_const_value((*f_iter)->get_type(), v);
-          out << ",\n";
-        }
-      } else {
-        if (v == nullptr) {
-          out << "null,\n";
-        } else {
-          out << render_const_value((*f_iter)->get_type(), v);
-          out << ",\n";
-        }
+      if (v != nullptr) {
+        indent(out) << render_const_value(string_type(), k) << " => "
+                    << render_const_value((*f_iter)->get_type(), v) << ",\n";
       }
     }
-    if (map_construct_) {
-      indent_down();
-      if (arrays_ || no_use_hack_collections_) {
-        out << indent() << "]\n";
-      } else {
-        out << indent() << "}\n";
-      }
-    }
+    indent_down();
+    indent(out) << ")\n";
     indent_down();
     indent(out) << ")";
   } else if (type->is_map()) {

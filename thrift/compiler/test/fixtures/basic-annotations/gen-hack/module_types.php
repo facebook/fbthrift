@@ -327,13 +327,16 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
       'android.generate_builder' => "1",
-      'struct_annotation' => new MyStructAnnotation(
-        123,
-        "\"structy\"",
-        null,
-        new MyStructNestedAnnotation(
-          "'nesty'",
-        ),
+      'struct_annotation' => MyStructAnnotation::fromShape(
+        shape(
+          "count" => 123,
+          "name" => "\"structy\"",
+          "nest" => MyStructNestedAnnotation::fromShape(
+            shape(
+              "name" => "'nesty'",
+            )
+          ),
+        )
       ),
     ];
   }

@@ -95,10 +95,12 @@ class module_CONSTANTS {
   private static ?Internship $__instagram = null;
   public static function instagram(): Internship {
     if (self::$__instagram === null) {
-      self::$__instagram = new Internship(
-        12,
-        "Software Engineer",
-        Company::INSTAGRAM,
+      self::$__instagram = Internship::fromShape(
+        shape(
+          "weeks" => 12,
+          "title" => "Software Engineer",
+          "employer" => Company::INSTAGRAM,
+        )
       );
     }
     return self::$__instagram;
@@ -112,13 +114,17 @@ class module_CONSTANTS {
   public static function kRanges(): Vector<Range> {
     if (self::$__kRanges === null) {
       self::$__kRanges = Vector {
-        new Range(
-          1,
-          2,
+        Range::fromShape(
+          shape(
+            "min" => 1,
+            "max" => 2,
+          )
         ),
-        new Range(
-          5,
-          6,
+        Range::fromShape(
+          shape(
+            "min" => 5,
+            "max" => 6,
+          )
         ),
       };
     }
@@ -133,15 +139,19 @@ class module_CONSTANTS {
   public static function internList(): Vector<Internship> {
     if (self::$__internList === null) {
       self::$__internList = Vector {
-        new Internship(
-          12,
-          "Software Engineer",
-          Company::INSTAGRAM,
+        Internship::fromShape(
+          shape(
+            "weeks" => 12,
+            "title" => "Software Engineer",
+            "employer" => Company::INSTAGRAM,
+          )
         ),
-        new Internship(
-          10,
-          "Sales Intern",
-          Company::FACEBOOK,
+        Internship::fromShape(
+          shape(
+            "weeks" => 10,
+            "title" => "Sales Intern",
+            "employer" => Company::FACEBOOK,
+          )
         ),
       };
     }
@@ -246,31 +256,41 @@ class module_CONSTANTS {
         "x" => 1.0,
         "y" => 1000000.0,
         "z" => 1e+09,
-        "instagram" => new Internship(
-          12,
-          "Software Engineer",
-          Company::INSTAGRAM,
+        "instagram" => Internship::fromShape(
+          shape(
+            "weeks" => 12,
+            "title" => "Software Engineer",
+            "employer" => Company::INSTAGRAM,
+          )
         ),
         "kRanges" => Vector {
-          new Range(
-            1,
-            2,
+          Range::fromShape(
+            shape(
+              "min" => 1,
+              "max" => 2,
+            )
           ),
-          new Range(
-            5,
-            6,
+          Range::fromShape(
+            shape(
+              "min" => 5,
+              "max" => 6,
+            )
           ),
         },
         "internList" => Vector {
-          new Internship(
-            12,
-            "Software Engineer",
-            Company::INSTAGRAM,
+          Internship::fromShape(
+            shape(
+              "weeks" => 12,
+              "title" => "Software Engineer",
+              "employer" => Company::INSTAGRAM,
+            )
           ),
-          new Internship(
-            10,
-            "Sales Intern",
-            Company::FACEBOOK,
+          Internship::fromShape(
+            shape(
+              "weeks" => 10,
+              "title" => "Sales Intern",
+              "employer" => Company::FACEBOOK,
+            )
           ),
         },
         "apostrophe" => "'",
