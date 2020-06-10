@@ -226,7 +226,7 @@ pub trait ProtocolReader {
 #[macro_export]
 macro_rules! serialize {
     ($protocol:ty, $serializer:expr) => {
-        <$protocol as Protocol>::serializer($serializer, $serializer)
+        <$protocol as $crate::Protocol>::serializer($serializer, $serializer)
     };
 }
 
