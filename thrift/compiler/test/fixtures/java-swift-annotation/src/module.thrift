@@ -20,7 +20,7 @@ typedef map<i32, i64> (java.swift.type = "com.foo.FastIntLongMap") FMap
 
 struct MyStruct {
   1: i64 intField,
-  2: string stringField,
+  2: string stringField (java.swift.annotations = '@com.foo.Bar("BAZ")'),
   3: string detailField (java.swift.annotations = "@com.foo.Ignored"),
   4: FMap detailMap (java.swift.annotations = "@com.foo.Ignored"),
   5: string titi (java.swift.name = "toto"),

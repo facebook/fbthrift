@@ -122,7 +122,7 @@ public final class MyStruct {
     private final long intField;
     public static final int _INTFIELD = 1;
     private static final TField INT_FIELD_FIELD_DESC = new TField("intField", TType.I64, (short)1);
-    private final String stringField;
+    @com.foo.Bar("BAZ") private final String stringField;
     public static final int _STRINGFIELD = 2;
     private static final TField STRING_FIELD_FIELD_DESC = new TField("stringField", TType.STRING, (short)2);
     @com.foo.Ignored private final String detailField;
