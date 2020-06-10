@@ -78,6 +78,7 @@ void TccStructTraits<::cpp2::SomeStruct>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SomeStruct::SomeStruct(apache::thrift::FragileConstructor,  ::cpp2::Metasyntactic reasonable__arg,  ::cpp2::Metasyntactic fine__arg,  ::cpp2::Metasyntactic questionable__arg, ::std::set<int32_t> tags__arg) :
     reasonable(std::move(reasonable__arg)),
     fine(std::move(fine__arg)),
@@ -88,14 +89,16 @@ SomeStruct::SomeStruct(apache::thrift::FragileConstructor,  ::cpp2::Metasyntacti
   __isset.questionable = true;
   __isset.tags = true;
 }
-
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 void SomeStruct::__clear() {
   // clear all fields
   reasonable =  ::cpp2::Metasyntactic::FOO;
   fine =  ::cpp2::Metasyntactic::BAR;
   questionable = static_cast< ::cpp2::Metasyntactic>(-1);
   tags.clear();
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool SomeStruct::operator==(const SomeStruct& rhs) const {
@@ -151,7 +154,9 @@ void swap(SomeStruct& a, SomeStruct& b) {
   swap(a.fine, b.fine);
   swap(a.questionable, b.questionable);
   swap(a.tags, b.tags);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void SomeStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

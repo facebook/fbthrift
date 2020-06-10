@@ -112,6 +112,7 @@ namespace cpp2 {
 class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators<SomeStruct> {
  public:
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SomeStruct() :
       reasonable( ::cpp2::Metasyntactic::FOO),
       fine( ::cpp2::Metasyntactic::BAR),
@@ -127,6 +128,7 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
   SomeStruct& operator=(SomeStruct&&) = default;
 
   SomeStruct& operator=(const SomeStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
    ::cpp2::Metasyntactic reasonable;
@@ -138,6 +140,7 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
   ::std::set<int32_t> tags;
 
  public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool reasonable;
     bool fine;
@@ -147,6 +150,7 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
   bool operator==(const SomeStruct& rhs) const;
   bool operator<(const SomeStruct& rhs) const;
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reasonable_ref() const& {
     return {this->reasonable, __isset.reasonable};
@@ -166,7 +170,9 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> reasonable_ref() && {
     return {std::move(this->reasonable), __isset.reasonable};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fine_ref() const& {
     return {this->fine, __isset.fine};
@@ -186,7 +192,9 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fine_ref() && {
     return {std::move(this->fine), __isset.fine};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> questionable_ref() const& {
     return {this->questionable, __isset.questionable};
@@ -206,7 +214,9 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> questionable_ref() && {
     return {std::move(this->questionable), __isset.questionable};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::set<int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> tags_ref() const& {
     return {this->tags, __isset.tags};
@@ -226,6 +236,7 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> tags_ref() && {
     return {std::move(this->tags), __isset.tags};
   }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
    ::cpp2::Metasyntactic get_reasonable() const {
     return reasonable;
@@ -233,7 +244,9 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
 
    ::cpp2::Metasyntactic& set_reasonable( ::cpp2::Metasyntactic reasonable_) {
     reasonable = reasonable_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.reasonable = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return reasonable;
   }
 
@@ -243,7 +256,9 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
 
    ::cpp2::Metasyntactic& set_fine( ::cpp2::Metasyntactic fine_) {
     fine = fine_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fine = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fine;
   }
 
@@ -253,7 +268,9 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
 
    ::cpp2::Metasyntactic& set_questionable( ::cpp2::Metasyntactic questionable_) {
     questionable = questionable_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.questionable = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return questionable;
   }
   const ::std::set<int32_t>& get_tags() const&;
@@ -262,7 +279,9 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
   template <typename T_SomeStruct_tags_struct_setter = ::std::set<int32_t>>
   ::std::set<int32_t>& set_tags(T_SomeStruct_tags_struct_setter&& tags_) {
     tags = std::forward<T_SomeStruct_tags_struct_setter>(tags_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.tags = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
     return tags;
   }
 
