@@ -78,6 +78,11 @@ void ThriftProcessor::onThriftRequest(
     return;
   }
 
+  auto baseReqCtx = cpp2Processor_->getBaseContextForRequest();
+  auto reqCtx = baseReqCtx ? folly::RequestContext::copyAsChild(*baseReqCtx)
+                           : std::make_shared<folly::RequestContext>();
+  folly::RequestContextScopeGuard rctx(reqCtx);
+
   auto protoId = request->getProtoId();
   auto reqContext = request->getRequestContext();
   cpp2Processor_->processSerializedRequest(
