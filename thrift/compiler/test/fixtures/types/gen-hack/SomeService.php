@@ -70,6 +70,26 @@ interface SomeServiceClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * SomeService
  */
+interface SomeServiceAsyncRpcOptionsClientIf extends \IThriftAsyncRpcOptionsIf {
+  /**
+   * Original thrift definition:-
+   * include.SomeMap
+   *   bounce_map(1: include.SomeMap m);
+   */
+  public function bounce_map(\RpcOptions $rpc_options, Map<int, string> $m): Awaitable<Map<int, string>>;
+
+  /**
+   * Original thrift definition:-
+   * map<TBinary, i64>
+   *   binary_keyed_map(1: list<i64> r);
+   */
+  public function binary_keyed_map(\RpcOptions $rpc_options, KeyedContainer<int, int> $r): Awaitable<Map<string, int>>;
+}
+
+/**
+ * Original thrift service:-
+ * SomeService
+ */
 trait SomeServiceClientBase {
   require extends \ThriftClientBase;
 

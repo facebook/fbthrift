@@ -61,6 +61,23 @@ interface BarClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * Bar
  */
+interface BarAsyncRpcOptionsClientIf extends \IThriftAsyncRpcOptionsIf {
+  /**
+   * Original thrift definition:-
+   * string
+   *   baz(1: set<i32> a,
+   *       2: list<map<i32, set<string>>> b,
+   *       3: i64 c,
+   *       4: Foo d,
+   *       5: i64 e);
+   */
+  public function baz(\RpcOptions $rpc_options, ?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string>;
+}
+
+/**
+ * Original thrift service:-
+ * Bar
+ */
 trait BarClientBase {
   require extends \ThriftClientBase;
 

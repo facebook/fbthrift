@@ -51,6 +51,19 @@ interface TestServiceClientIf extends \foo\hack_ns\FooHackServiceClientIf {
  * Original thrift service:-
  * TestService
  */
+interface TestServiceAsyncRpcOptionsClientIf extends \foo\hack_ns\FooHackServiceAsyncRpcOptionsClientIf {
+  /**
+   * Original thrift definition:-
+   * i32
+   *   ping(1: string str_arg);
+   */
+  public function ping(\RpcOptions $rpc_options, string $str_arg): Awaitable<int>;
+}
+
+/**
+ * Original thrift service:-
+ * TestService
+ */
 trait TestServiceClientBase {
   require extends \ThriftClientBase;
 

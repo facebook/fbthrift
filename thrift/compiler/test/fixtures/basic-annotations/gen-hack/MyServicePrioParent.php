@@ -70,6 +70,26 @@ interface MyServicePrioParentClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * MyServicePrioParent
  */
+interface MyServicePrioParentAsyncRpcOptionsClientIf extends \IThriftAsyncRpcOptionsIf {
+  /**
+   * Original thrift definition:-
+   * void
+   *   ping();
+   */
+  public function ping(\RpcOptions $rpc_options): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   pong();
+   */
+  public function pong(\RpcOptions $rpc_options): Awaitable<void>;
+}
+
+/**
+ * Original thrift service:-
+ * MyServicePrioParent
+ */
 trait MyServicePrioParentClientBase {
   require extends \ThriftClientBase;
 

@@ -130,6 +130,46 @@ interface RaiserClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * Raiser
  */
+interface RaiserAsyncRpcOptionsClientIf extends \IThriftAsyncRpcOptionsIf {
+  /**
+   * Original thrift definition:-
+   * void
+   *   doBland();
+   */
+  public function doBland(\RpcOptions $rpc_options): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   doRaise()
+   *   throws (1: Banal b,
+   *           2: Fiery f,
+   *           3: Serious s);
+   */
+  public function doRaise(\RpcOptions $rpc_options): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * string
+   *   get200();
+   */
+  public function get200(\RpcOptions $rpc_options): Awaitable<string>;
+
+  /**
+   * Original thrift definition:-
+   * string
+   *   get500()
+   *   throws (1: Fiery f,
+   *           2: Banal b,
+   *           3: Serious s);
+   */
+  public function get500(\RpcOptions $rpc_options): Awaitable<string>;
+}
+
+/**
+ * Original thrift service:-
+ * Raiser
+ */
 trait RaiserClientBase {
   require extends \ThriftClientBase;
 

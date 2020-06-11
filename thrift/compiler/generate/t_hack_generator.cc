@@ -192,6 +192,7 @@ class t_hack_generator : public t_oop_generator {
       t_service* tservice,
       bool mangle,
       bool async,
+      bool rpc_options,
       bool client);
   void generate_service_client(t_service* tservice, bool mangle);
   void _generate_service_client(
@@ -208,7 +209,7 @@ class t_hack_generator : public t_oop_generator {
       t_service* tservice,
       bool mangle,
       bool async,
-      bool with_options);
+      bool rpc_options);
   void generate_service_processor(t_service* tservice, bool mangle, bool async);
   void generate_process_function(
       t_service* tservice,
@@ -2951,13 +2952,30 @@ void t_hack_generator::generate_service(t_service* tservice, bool mangle) {
   }
 
   // Generate the main parts of the service
-  generate_service_interface(tservice, mangle, true, false);
-  generate_service_interface(tservice, mangle, false, false);
-  generate_service_interface(tservice, mangle, false, true);
+  generate_service_interface(
+      tservice,
+      mangle,
+      /*async*/ true,
+      /*rpc_options*/ false,
+      /*client*/ false);
+  generate_service_interface(
+      tservice,
+      mangle,
+      /*async*/ false,
+      /*rpc_options*/ false,
+      /*client*/ false);
+  generate_service_interface(
+      tservice,
+      mangle,
+      /*async*/ false,
+      /*rpc_options*/ false,
+      /*client*/ true);
+  generate_service_interface(
+      tservice, mangle, /*async*/ true, /*rpc_options*/ true, /*client*/ true);
   generate_service_client(tservice, mangle);
   if (phps_) {
-    generate_service_processor(tservice, mangle, true);
-    generate_service_processor(tservice, mangle, false);
+    generate_service_processor(tservice, mangle, /*async*/ true);
+    generate_service_processor(tservice, mangle, /*async*/ false);
   }
   // Generate the structures passed around and helper functions
   generate_service_helpers(tservice);
@@ -3647,19 +3665,20 @@ void t_hack_generator::generate_service_interface(
     t_service* tservice,
     bool mangle,
     bool async,
+    bool rpc_options,
     bool client) {
   generate_php_docstring(f_service_, tservice);
-  string suffix = async ? "Async" : "";
-  if (client) {
-    suffix += "Client";
-  }
-  string extends_if = string("\\IThrift") + (async ? "Async" : "Sync") + "If";
+  string suffix = string(async ? "Async" : "") +
+      (rpc_options ? "RpcOptions" : "") + (client ? "Client" : "");
+  string extends_if = string("\\IThrift") + (async ? "Async" : "Sync") +
+      (rpc_options ? "RpcOptions" : "") + "If";
   if (tservice->get_extends() != nullptr) {
     string ext_prefix =
         php_servicename_mangle(mangle, tservice->get_extends(), true);
     extends_if = ext_prefix + suffix + "If";
   }
   string long_name = php_servicename_mangle(mangle, tservice);
+  string head_parameters = rpc_options ? "\\RpcOptions $rpc_options" : "";
   f_service_ << "interface " << long_name << suffix << "If extends "
              << extends_if << " {\n";
   indent_up();
@@ -3679,15 +3698,18 @@ void t_hack_generator::generate_service_interface(
     if (async || client) {
       return_typehint = "Awaitable<" + return_typehint + ">";
     }
+
     if (nullable_everything_) {
       string funname = (*f_iter)->get_name();
-      indent(f_service_) << "public function " << funname << "("
-                         << argument_list(
-                                (*f_iter)->get_arglist(), "", "", true, true)
-                         << "): " << return_typehint << ";\n";
+      indent(f_service_)
+          << "public function " << funname << "("
+          << argument_list(
+                 (*f_iter)->get_arglist(), head_parameters, "", true, true)
+          << "): " << return_typehint << ";\n";
     } else {
       indent(f_service_) << "public function "
-                         << function_signature(*f_iter, "", "", return_typehint)
+                         << function_signature(
+                                *f_iter, head_parameters, "", return_typehint)
                          << ";\n";
     }
   }
@@ -4000,11 +4022,11 @@ void t_hack_generator::_generate_service_client(
   out << "\n";
 
   _generate_service_client_children(
-      out, tservice, mangle, /*async*/ true, /*with_options*/ true);
+      out, tservice, mangle, /*async*/ true, /*rpc_options*/ true);
   _generate_service_client_children(
-      out, tservice, mangle, /*async*/ true, /*with_options*/ false);
+      out, tservice, mangle, /*async*/ true, /*rpc_options*/ false);
   _generate_service_client_children(
-      out, tservice, mangle, /*async*/ false, /*with_options*/ false);
+      out, tservice, mangle, /*async*/ false, /*rpc_options*/ false);
 }
 
 // If !strict_types, containers are typehinted as KeyedContainer<Key, Value>
@@ -4105,10 +4127,10 @@ void t_hack_generator::_generate_service_client_children(
     t_service* tservice,
     bool mangle,
     bool async,
-    bool with_options) {
+    bool rpc_options) {
   string long_name = php_servicename_mangle(mangle, tservice);
   string suffix =
-      string(async ? "Async" : "") + (with_options ? "RpcOptions" : "");
+      string(async ? "Async" : "") + (rpc_options ? "RpcOptions" : "");
   string extends = "\\ThriftClientBase";
   bool root = tservice->get_extends() == nullptr;
   bool first = true;
@@ -4134,8 +4156,9 @@ void t_hack_generator::_generate_service_client_children(
     string funname = (*f_iter)->get_name();
     const string& tservice_name = tservice->get_name();
     string return_typehint = type_to_typehint((*f_iter)->get_returntype());
-    string head_parameters = with_options ? "\\RpcOptions $rpc_options" : "";
-    string rpc_options = with_options ? "$rpc_options" : "new \\RpcOptions()";
+    string head_parameters = rpc_options ? "\\RpcOptions $rpc_options" : "";
+    string rpc_options_param =
+        rpc_options ? "$rpc_options" : "new \\RpcOptions()";
 
     generate_php_docstring(out, *f_iter);
     if (nullable_everything_) {
@@ -4181,7 +4204,7 @@ void t_hack_generator::_generate_service_client_children(
           << indent() << "$out_transport->resetBuffer();\n"
           << indent()
           << "list($result_msg, $_read_headers) = await $channel->genSendRequestResponse("
-          << rpc_options << ", $msg);\n"
+          << rpc_options_param << ", $msg);\n"
           << indent() << "$in_transport->resetBuffer();\n"
           << indent() << "$in_transport->write($result_msg);\n";
       indent_down();
@@ -4203,7 +4226,7 @@ void t_hack_generator::_generate_service_client_children(
       out << indent() << "$msg = $out_transport->getBuffer();\n"
           << indent() << "$out_transport->resetBuffer();\n"
           << indent() << "await $channel->genSendRequestNoResponse("
-          << rpc_options << ", $msg);\n";
+          << rpc_options_param << ", $msg);\n";
       scope_down(out);
     }
     scope_down(out);

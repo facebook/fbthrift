@@ -49,6 +49,19 @@ interface MyServicePrioChildClientIf extends MyServicePrioParentClientIf {
  * Original thrift service:-
  * MyServicePrioChild
  */
+interface MyServicePrioChildAsyncRpcOptionsClientIf extends MyServicePrioParentAsyncRpcOptionsClientIf {
+  /**
+   * Original thrift definition:-
+   * void
+   *   pang();
+   */
+  public function pang(\RpcOptions $rpc_options): Awaitable<void>;
+}
+
+/**
+ * Original thrift service:-
+ * MyServicePrioChild
+ */
 trait MyServicePrioChildClientBase {
   require extends \ThriftClientBase;
 

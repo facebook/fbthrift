@@ -33,6 +33,13 @@ interface FooHackServiceClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * FooHackService
  */
+interface FooHackServiceAsyncRpcOptionsClientIf extends \IThriftAsyncRpcOptionsIf {
+}
+
+/**
+ * Original thrift service:-
+ * FooHackService
+ */
 trait FooHackServiceClientBase {
   require extends \ThriftClientBase;
 

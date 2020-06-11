@@ -133,6 +133,47 @@ interface NestedContainersClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * NestedContainers
  */
+interface NestedContainersAsyncRpcOptionsClientIf extends \IThriftAsyncRpcOptionsIf {
+  /**
+   * Original thrift definition:-
+   * void
+   *   mapList(1: map<i32, list<i32>> foo);
+   */
+  public function mapList(\RpcOptions $rpc_options, KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   mapSet(1: map<i32, set<i32>> foo);
+   */
+  public function mapSet(\RpcOptions $rpc_options, KeyedContainer<int, Set<int>> $foo): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   listMap(1: list<map<i32, i32>> foo);
+   */
+  public function listMap(\RpcOptions $rpc_options, KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   listSet(1: list<set<i32>> foo);
+   */
+  public function listSet(\RpcOptions $rpc_options, KeyedContainer<int, Set<int>> $foo): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   turtles(1: list<list<map<i32, map<i32, set<i32>>>>> foo);
+   */
+  public function turtles(\RpcOptions $rpc_options, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, Set<int>>>>> $foo): Awaitable<void>;
+}
+
+/**
+ * Original thrift service:-
+ * NestedContainers
+ */
 trait NestedContainersClientBase {
   require extends \ThriftClientBase;
 

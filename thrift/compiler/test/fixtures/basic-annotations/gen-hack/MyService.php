@@ -181,6 +181,63 @@ interface MyServiceClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * MyService
  */
+interface MyServiceAsyncRpcOptionsClientIf extends \IThriftAsyncRpcOptionsIf {
+  /**
+   * Original thrift definition:-
+   * void
+   *   ping();
+   */
+  public function ping(\RpcOptions $rpc_options): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * string
+   *   getRandomData();
+   */
+  public function getRandomData(\RpcOptions $rpc_options): Awaitable<string>;
+
+  /**
+   * Original thrift definition:-
+   * bool
+   *   hasDataById(1: i64 id);
+   */
+  public function hasDataById(\RpcOptions $rpc_options, int $id): Awaitable<bool>;
+
+  /**
+   * Original thrift definition:-
+   * string
+   *   getDataById(1: i64 id);
+   */
+  public function getDataById(\RpcOptions $rpc_options, int $id): Awaitable<string>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   putDataById(1: i64 id,
+   *               2: string data);
+   */
+  public function putDataById(\RpcOptions $rpc_options, int $id, string $data): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * oneway void
+   *   lobDataById(1: i64 id,
+   *               2: string data);
+   */
+  public function lobDataById(\RpcOptions $rpc_options, int $id, string $data): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   doNothing();
+   */
+  public function doNothing(\RpcOptions $rpc_options): Awaitable<void>;
+}
+
+/**
+ * Original thrift service:-
+ * MyService
+ */
 trait MyServiceClientBase {
   require extends \ThriftClientBase;
 

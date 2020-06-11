@@ -31,6 +31,13 @@ interface Beeble_BroxClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * Brox
  */
+interface Beeble_BroxAsyncRpcOptionsClientIf extends \IThriftAsyncRpcOptionsIf {
+}
+
+/**
+ * Original thrift service:-
+ * Brox
+ */
 trait Beeble_BroxClientBase {
   require extends \ThriftClientBase;
 
