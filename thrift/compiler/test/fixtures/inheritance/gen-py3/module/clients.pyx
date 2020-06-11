@@ -27,15 +27,14 @@ from libcpp.typeinfo cimport type_info
 import thrift.py3.types
 cimport thrift.py3.types
 from thrift.py3.types cimport move
-from thrift.py3.types import NumberType as __NumberType
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.common import (
-  RpcOptions as __RpcOptions,
-  InterfaceSpec as __InterfaceSpec,
-  MethodSpec as __MethodSpec,
-  ArgumentSpec as __ArgumentSpec,
+from thrift.py3.reflection cimport (
+    ArgumentSpec as __ArgumentSpec,
+    InterfaceSpec as __InterfaceSpec,
+    MethodSpec as __MethodSpec,
+    NumberType as __NumberType
 )
 
 from folly.futures cimport bridgeFutureWith
@@ -136,27 +135,27 @@ cdef class MyRoot(thrift.py3.client.Client):
 
     @staticmethod
     def __get_reflection_for_do_root():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="do_root",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec(
+        return __InterfaceSpec.create(
             name="MyRoot",
-            methods=[
+            methods=(
                 cls.__get_reflection_for_do_root(),
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            ),
+            annotations={
+            },
         )
 
 cdef object _MyNode_annotations = _py_types.MappingProxyType({
@@ -198,27 +197,27 @@ cdef class MyNode(MyRoot):
 
     @staticmethod
     def __get_reflection_for_do_mid():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="do_mid",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec(
+        return __InterfaceSpec.create(
             name="MyNode",
-            methods=[
+            methods=(
                 cls.__get_reflection_for_do_mid(),
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            ),
+            annotations={
+            },
         )
 
 cdef object _MyLeaf_annotations = _py_types.MappingProxyType({
@@ -260,26 +259,26 @@ cdef class MyLeaf(MyNode):
 
     @staticmethod
     def __get_reflection_for_do_leaf():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="do_leaf",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec(
+        return __InterfaceSpec.create(
             name="MyLeaf",
-            methods=[
+            methods=(
                 cls.__get_reflection_for_do_leaf(),
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            ),
+            annotations={
+            },
         )
 

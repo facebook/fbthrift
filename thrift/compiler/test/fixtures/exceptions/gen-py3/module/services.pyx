@@ -22,7 +22,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.py3.common import (
+from thrift.py3.reflection cimport (
   InterfaceSpec as __InterfaceSpec,
   MethodSpec as __MethodSpec,
   ArgumentSpec as __ArgumentSpec,
@@ -39,7 +39,7 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
-from thrift.py3.types import NumberType as __NumberType
+from thrift.py3.reflection cimport NumberType as __NumberType
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
     from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
@@ -138,78 +138,78 @@ cdef class RaiserInterface(
 
     @staticmethod
     def __get_reflection_for_doBland():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="doBland",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_doRaise():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="doRaise",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
                 _module_types.Banal,
                 _module_types.Fiery,
                 _module_types.Serious,
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_get200():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="get200",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=str,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_get500():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="get500",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=str,
-            result_kind=None,
-            exceptions=[
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
                 _module_types.Fiery,
                 _module_types.Banal,
                 _module_types.Serious,
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            ),
+            annotations={
+            },
         )
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec(
+        return __InterfaceSpec.create(
             name="Raiser",
-            methods=[
+            methods=(
                 cls.__get_reflection_for_doBland(),
                 cls.__get_reflection_for_doRaise(),
                 cls.__get_reflection_for_get200(),
                 cls.__get_reflection_for_get500(),
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            ),
+            annotations={
+            },
         )
 
 

@@ -16,8 +16,8 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import (
-    NOTSET as __NOTSET,
+from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.reflection cimport (
     NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
@@ -290,22 +290,22 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = MyStructNestedAnnotation.create(constant_shared_ptr[cMyStructNestedAnnotation](default_inst[cMyStructNestedAnnotation]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="MyStructNestedAnnotation",
         kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="name",
   type=str,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(MyStructNestedAnnotation self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -583,49 +583,49 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = MyStructAnnotation.create(constant_shared_ptr[cMyStructAnnotation](default_inst[cMyStructAnnotation]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="MyStructAnnotation",
         kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="count",
   type=int,
   kind=__NumberType.I64,
-  qualifier=__Qualifier.NONE,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="name",
   type=str,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="extra",
   type=str,
-  kind=None,
+  kind=__NumberType.NOT_A_NUMBER,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="nest",
   type=MyStructNestedAnnotation,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(MyStructAnnotation self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -962,67 +962,67 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = MyStruct.create(constant_shared_ptr[cMyStruct](default_inst[cMyStruct]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="MyStruct",
         kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="major",
   type=int,
   kind=__NumberType.I64,
-  qualifier=__Qualifier.NONE,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.name""": """majorVer""",  }),
+  annotations={
+    """cpp.name""": """majorVer""",  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="package",
   type=str,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-    """java.swift.name""": """_package""",  }),
+  annotations={
+    """java.swift.name""": """_package""",  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="annotation_with_quote",
   type=str,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-    """go.tag""": """tag:\"somevalue\"""",  }),
+  annotations={
+    """go.tag""": """tag:\"somevalue\"""",  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="class_",
   type=str,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-    """java.swift.name""": """class_""",  }),
+  annotations={
+    """java.swift.name""": """class_""",  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="annotation_with_trailing_comma",
   type=str,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-    """custom""": """test""",  }),
+  annotations={
+    """custom""": """test""",  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="empty_annotations",
   type=str,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-          """android.generate_builder""": """1""",    }),
+          ),
+        annotations={
+          """android.generate_builder""": """1""",    },
       )
     cdef __iobuf.IOBuf _serialize(MyStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -1235,31 +1235,31 @@ cdef class SecretStruct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = SecretStruct.create(constant_shared_ptr[cSecretStruct](default_inst[cSecretStruct]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="SecretStruct",
         kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="id",
   type=int,
   kind=__NumberType.I64,
-  qualifier=__Qualifier.NONE,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="password",
   type=str,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-    """java.sensitive""": """1""",  }),
+  annotations={
+    """java.sensitive""": """1""",  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(SecretStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())

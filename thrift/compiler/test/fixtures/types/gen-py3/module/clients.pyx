@@ -27,15 +27,14 @@ from libcpp.typeinfo cimport type_info
 import thrift.py3.types
 cimport thrift.py3.types
 from thrift.py3.types cimport move
-from thrift.py3.types import NumberType as __NumberType
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.common import (
-  RpcOptions as __RpcOptions,
-  InterfaceSpec as __InterfaceSpec,
-  MethodSpec as __MethodSpec,
-  ArgumentSpec as __ArgumentSpec,
+from thrift.py3.reflection cimport (
+    ArgumentSpec as __ArgumentSpec,
+    InterfaceSpec as __InterfaceSpec,
+    MethodSpec as __MethodSpec,
+    NumberType as __NumberType
 )
 
 from folly.futures cimport bridgeFutureWith
@@ -151,55 +150,55 @@ cdef class SomeService(thrift.py3.client.Client):
 
     @staticmethod
     def __get_reflection_for_bounce_map():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="bounce_map",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="m",
                     type=_module_types.std_unordered_map__Map__i32_string,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=_module_types.std_unordered_map__Map__i32_string,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_binary_keyed_map():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="binary_keyed_map",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="r",
                     type=_module_types.List__i64,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=_module_types.Map__binary_i64,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec(
+        return __InterfaceSpec.create(
             name="SomeService",
-            methods=[
+            methods=(
                 cls.__get_reflection_for_bounce_map(),
                 cls.__get_reflection_for_binary_keyed_map(),
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            ),
+            annotations={
+            },
         )
 

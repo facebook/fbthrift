@@ -17,9 +17,7 @@ from typing import (
     Any,
     Iterator,
     Mapping,
-    NamedTuple,
     Optional,
-    Sequence,
     SupportsInt,
     Tuple,
     Type,
@@ -34,16 +32,6 @@ class NOTSETTYPE(enum.Enum):
     token: NOTSETTYPE = ...
 
 NOTSET = NOTSETTYPE.token
-
-class NumberType(enum.Enum):
-    NONE = ...
-    BYTE = ...
-    I08 = ...
-    I16 = ...
-    I32 = ...
-    I64 = ...
-    FLOAT = ...
-    DOUBLE = ...
 
 class Struct:
     def __copy__(self: _T) -> _T: ...
@@ -85,41 +73,3 @@ class BadEnum(SupportsInt):
     def __init__(self, the_enum: Type[eT], value: int) -> None: ...
     def __repr__(self) -> str: ...
     def __int__(self) -> int: ...
-
-class StructType(enum.Enum):
-    STRUCT: StructType = ...
-    UNION: StructType = ...
-    EXCEPTION: StructType = ...
-
-class Qualifier(enum.Enum):
-    NONE: Qualifier = ...
-    REQUIRED: Qualifier = ...
-    OPTIONAL: Qualifier = ...
-
-class StructSpec(NamedTuple):
-    name: str
-    fields: Sequence[FieldSpec]
-    kind: StructType
-    annotations: Mapping[str, str] = {}
-
-class FieldSpec(NamedTuple):
-    name: str
-    type: Type[Any]
-    kind: Optional[NumberType]
-    qualifier: Qualifier
-    default: Optional[Any]
-    annotations: Mapping[str, str] = {}
-
-class ListSpec(NamedTuple):
-    value: Type[Any]
-    kind: Optional[NumberType]
-
-class SetSpec(NamedTuple):
-    value: Type[Any]
-    kind: Optional[NumberType]
-
-class MapSpec(NamedTuple):
-    key: Type[Any]
-    key_kind: Optional[NumberType]
-    value: Type[Any]
-    value_kind: Optional[NumberType]

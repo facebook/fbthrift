@@ -16,8 +16,8 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import (
-    NOTSET as __NOTSET,
+from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.reflection cimport (
     NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
@@ -258,40 +258,40 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = MyStruct.create(constant_shared_ptr[cMyStruct](default_inst[cMyStruct]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="MyStruct",
         kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="MyIncludedField",
   type=_includes_types.Included,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=defaults.MyIncludedField,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="MyOtherIncludedField",
   type=_includes_types.Included,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="MyIncludedInt",
   type=int,
   kind=__NumberType.I64,
-  qualifier=__Qualifier.NONE,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=defaults.MyIncludedInt,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(MyStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())

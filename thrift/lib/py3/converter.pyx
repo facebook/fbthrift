@@ -14,8 +14,8 @@
 
 from typing import Any, Type
 
-from thrift.py3.reflection import inspect
-from thrift.py3.types import CompiledEnum, Container, MapSpec, Struct, StructType
+from thrift.py3.reflection import MapSpec, StructType, inspect
+from thrift.py3.types import CompiledEnum, Container, Struct
 
 
 def to_py3_struct(cls, obj):

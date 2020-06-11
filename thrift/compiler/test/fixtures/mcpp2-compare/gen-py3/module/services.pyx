@@ -22,7 +22,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.py3.common import (
+from thrift.py3.reflection cimport (
   InterfaceSpec as __InterfaceSpec,
   MethodSpec as __MethodSpec,
   ArgumentSpec as __ArgumentSpec,
@@ -39,7 +39,7 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
-from thrift.py3.types import NumberType as __NumberType
+from thrift.py3.reflection cimport NumberType as __NumberType
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
     from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
@@ -362,12 +362,12 @@ cdef class EmptyServiceInterface(
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec(
+        return __InterfaceSpec.create(
             name="EmptyService",
-            methods=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            methods=(
+            ),
+            annotations={
+            },
         )
 
 cdef object _ReturnService_annotations = _py_types.MappingProxyType({
@@ -558,323 +558,323 @@ cdef class ReturnServiceInterface(
 
     @staticmethod
     def __get_reflection_for_noReturn():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="noReturn",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
                 """thread""": """eb""",
-            }),
+            },
         )
 
     @staticmethod
     def __get_reflection_for_boolReturn():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="boolReturn",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=bool,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_i16Return():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="i16Return",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=int,
             result_kind=__NumberType.I16,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_i32Return():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="i32Return",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=int,
             result_kind=__NumberType.I32,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_i64Return():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="i64Return",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=int,
             result_kind=__NumberType.I64,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_floatReturn():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="floatReturn",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=float,
             result_kind=__NumberType.FLOAT,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_doubleReturn():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="doubleReturn",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=float,
             result_kind=__NumberType.DOUBLE,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_stringReturn():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="stringReturn",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=str,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
                 """thread""": """eb""",
-            }),
+            },
         )
 
     @staticmethod
     def __get_reflection_for_binaryReturn():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="binaryReturn",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=bytes,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_mapReturn():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="mapReturn",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=_module_types.Map__string_i64,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_simpleTypedefReturn():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="simpleTypedefReturn",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=int,
             result_kind=__NumberType.I32,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_complexTypedefReturn():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="complexTypedefReturn",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=_module_types.List__Map__Empty_MyStruct,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_list_mostComplexTypedefReturn():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="list_mostComplexTypedefReturn",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=_module_types.List__List__List__Map__Empty_MyStruct,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_enumReturn():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="enumReturn",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=_module_types.MyEnumA,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
                 """thread""": """eb""",
-            }),
+            },
         )
 
     @staticmethod
     def __get_reflection_for_list_EnumReturn():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="list_EnumReturn",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=_module_types.List__MyEnumA,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
                 """thread""": """eb""",
-            }),
+            },
         )
 
     @staticmethod
     def __get_reflection_for_structReturn():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="structReturn",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=_module_types.MyStruct,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_set_StructReturn():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="set_StructReturn",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=_module_types.Set__MyStruct,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_unionReturn():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="unionReturn",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=_module_types.ComplexUnion,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
                 """thread""": """eb""",
-            }),
+            },
         )
 
     @staticmethod
     def __get_reflection_for_list_UnionReturn():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="list_UnionReturn",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=_module_types.List__ComplexUnion,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_readDataEb():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="readDataEb",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="size",
                     type=int,
                     kind=__NumberType.I64,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=__iobuf.IOBuf,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
                 """thread""": """eb""",
-            }),
+            },
         )
 
     @staticmethod
     def __get_reflection_for_readData():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="readData",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="size",
                     type=int,
                     kind=__NumberType.I64,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=__iobuf.IOBuf,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec(
+        return __InterfaceSpec.create(
             name="ReturnService",
-            methods=[
+            methods=(
                 cls.__get_reflection_for_noReturn(),
                 cls.__get_reflection_for_boolReturn(),
                 cls.__get_reflection_for_i16Return(),
@@ -896,9 +896,9 @@ cdef class ReturnServiceInterface(
                 cls.__get_reflection_for_list_UnionReturn(),
                 cls.__get_reflection_for_readDataEb(),
                 cls.__get_reflection_for_readData(),
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            ),
+            annotations={
+            },
         )
 
 cdef object _ParamService_annotations = _py_types.MappingProxyType({
@@ -1192,706 +1192,706 @@ cdef class ParamServiceInterface(
 
     @staticmethod
     def __get_reflection_for_void_ret_i16_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="void_ret_i16_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=int,
                     kind=__NumberType.I16,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
                 """thread""": """eb""",
-            }),
+            },
         )
 
     @staticmethod
     def __get_reflection_for_void_ret_byte_i16_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="void_ret_byte_i16_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=int,
                     kind=__NumberType.BYTE,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-                __ArgumentSpec(
+                __ArgumentSpec.create(
                     name="param2",
                     type=int,
                     kind=__NumberType.I16,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_void_ret_map_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="void_ret_map_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=_module_types.Map__string_i64,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_void_ret_map_setlist_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="void_ret_map_setlist_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=_module_types.Map__string_i64,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-                __ArgumentSpec(
+                __ArgumentSpec.create(
                     name="param2",
                     type=_module_types.Set__List__string,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_void_ret_map_typedef_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="void_ret_map_typedef_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=int,
                     kind=__NumberType.I32,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_void_ret_enum_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="void_ret_enum_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=_module_types.MyEnumA,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_void_ret_struct_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="void_ret_struct_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=_module_types.MyStruct,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_void_ret_listunion_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="void_ret_listunion_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=_module_types.List__ComplexUnion,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_bool_ret_i32_i64_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="bool_ret_i32_i64_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=int,
                     kind=__NumberType.I32,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-                __ArgumentSpec(
+                __ArgumentSpec.create(
                     name="param2",
                     type=int,
                     kind=__NumberType.I64,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=bool,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_bool_ret_map_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="bool_ret_map_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=_module_types.Map__string_i64,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=bool,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_bool_ret_union_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="bool_ret_union_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=_module_types.ComplexUnion,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=bool,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_i64_ret_float_double_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="i64_ret_float_double_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=float,
                     kind=__NumberType.FLOAT,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-                __ArgumentSpec(
+                __ArgumentSpec.create(
                     name="param2",
                     type=float,
                     kind=__NumberType.DOUBLE,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=int,
             result_kind=__NumberType.I64,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_i64_ret_string_typedef_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="i64_ret_string_typedef_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=str,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-                __ArgumentSpec(
+                __ArgumentSpec.create(
                     name="param2",
                     type=_module_types.Set__List__List__Map__Empty_MyStruct,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=int,
             result_kind=__NumberType.I64,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_i64_ret_i32_i32_i32_i32_i32_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="i64_ret_i32_i32_i32_i32_i32_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=int,
                     kind=__NumberType.I32,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-                __ArgumentSpec(
+                __ArgumentSpec.create(
                     name="param2",
                     type=int,
                     kind=__NumberType.I32,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-                __ArgumentSpec(
+                __ArgumentSpec.create(
                     name="param3",
                     type=int,
                     kind=__NumberType.I32,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-                __ArgumentSpec(
+                __ArgumentSpec.create(
                     name="param4",
                     type=int,
                     kind=__NumberType.I32,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-                __ArgumentSpec(
+                __ArgumentSpec.create(
                     name="param5",
                     type=int,
                     kind=__NumberType.I32,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=int,
             result_kind=__NumberType.I64,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
+            exceptions=(
+            ),
+            annotations={
                 """thread""": """eb""",
-            }),
+            },
         )
 
     @staticmethod
     def __get_reflection_for_double_ret_setstruct_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="double_ret_setstruct_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=_module_types.Set__MyStruct,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=float,
             result_kind=__NumberType.DOUBLE,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_string_ret_string_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="string_ret_string_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=str,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=str,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_binary_ret_binary_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="binary_ret_binary_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=bytes,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=bytes,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_map_ret_bool_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="map_ret_bool_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=bool,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=_module_types.Map__string_i64,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_list_ret_map_setlist_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="list_ret_map_setlist_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=_module_types.Map__i32_List__string,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-                __ArgumentSpec(
+                __ArgumentSpec.create(
                     name="param2",
                     type=_module_types.List__string,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=_module_types.List__bool,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_mapsetlistmapliststring_ret_listlistlist_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="mapsetlistmapliststring_ret_listlistlist_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=_module_types.List__List__List__List__i32,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=_module_types.Map__Set__List__i32_Map__List__Set__string_string,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_typedef_ret_i32_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="typedef_ret_i32_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=int,
                     kind=__NumberType.I32,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=int,
             result_kind=__NumberType.I32,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_listtypedef_ret_typedef_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="listtypedef_ret_typedef_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=_module_types.List__Map__Empty_MyStruct,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=_module_types.List__i32,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
                 """thread""": """eb""",
-            }),
+            },
         )
 
     @staticmethod
     def __get_reflection_for_enum_ret_double_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="enum_ret_double_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=float,
                     kind=__NumberType.DOUBLE,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=_module_types.MyEnumA,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_enum_ret_double_enum_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="enum_ret_double_enum_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=float,
                     kind=__NumberType.DOUBLE,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-                __ArgumentSpec(
+                __ArgumentSpec.create(
                     name="param2",
                     type=_module_types.MyEnumA,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=_module_types.MyEnumA,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_listenum_ret_map_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="listenum_ret_map_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=_module_types.Map__string_i64,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=_module_types.List__MyEnumA,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_struct_ret_i16_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="struct_ret_i16_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=int,
                     kind=__NumberType.I16,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=_module_types.MyStruct,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
                 """thread""": """eb""",
-            }),
+            },
         )
 
     @staticmethod
     def __get_reflection_for_setstruct_ret_set_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="setstruct_ret_set_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=_module_types.Set__string,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=_module_types.Set__MyStruct,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_union_ret_i32_i32_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="union_ret_i32_i32_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=int,
                     kind=__NumberType.I32,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-                __ArgumentSpec(
+                __ArgumentSpec.create(
                     name="param2",
                     type=int,
                     kind=__NumberType.I32,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=_module_types.ComplexUnion,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_listunion_string_param():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="listunion_string_param",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="param1",
                     type=str,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=_module_types.List__ComplexUnion,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec(
+        return __InterfaceSpec.create(
             name="ParamService",
-            methods=[
+            methods=(
                 cls.__get_reflection_for_void_ret_i16_param(),
                 cls.__get_reflection_for_void_ret_byte_i16_param(),
                 cls.__get_reflection_for_void_ret_map_param(),
@@ -1921,9 +1921,9 @@ cdef class ParamServiceInterface(
                 cls.__get_reflection_for_setstruct_ret_set_param(),
                 cls.__get_reflection_for_union_ret_i32_i32_param(),
                 cls.__get_reflection_for_listunion_string_param(),
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            ),
+            annotations={
+            },
         )
 
 

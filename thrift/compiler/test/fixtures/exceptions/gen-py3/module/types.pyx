@@ -16,8 +16,8 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import (
-    NOTSET as __NOTSET,
+from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.reflection cimport (
     NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
@@ -134,13 +134,13 @@ cdef class Banal(thrift.py3.exceptions.Error):
     @staticmethod
     def __get_reflection__():
       defaults = Banal.create(constant_shared_ptr[cBanal](default_inst[cBanal]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="Banal",
         kind=__StructType.EXCEPTION,
-        fields=[
-    ],
-        annotations=_py_types.MappingProxyType({
-        }),
+        fields=(
+    ),
+        annotations={
+        },
       )
 
 
@@ -245,22 +245,22 @@ cdef class Fiery(thrift.py3.exceptions.Error):
     @staticmethod
     def __get_reflection__():
       defaults = Fiery.create(constant_shared_ptr[cFiery](default_inst[cFiery]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="Fiery",
         kind=__StructType.EXCEPTION,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="message",
   type=str,
-  kind=None,
+  kind=__NumberType.NOT_A_NUMBER,
   qualifier=__Qualifier.REQUIRED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-          """message""": """message""",    }),
+          ),
+        annotations={
+          """message""": """message""",    },
       )
 
 
@@ -368,22 +368,22 @@ cdef class Serious(thrift.py3.exceptions.Error):
     @staticmethod
     def __get_reflection__():
       defaults = Serious.create(constant_shared_ptr[cSerious](default_inst[cSerious]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="Serious",
         kind=__StructType.EXCEPTION,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="sonnet",
   type=str,
-  kind=None,
+  kind=__NumberType.NOT_A_NUMBER,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-          """message""": """sonnet""",    }),
+          ),
+        annotations={
+          """message""": """sonnet""",    },
       )
 
 

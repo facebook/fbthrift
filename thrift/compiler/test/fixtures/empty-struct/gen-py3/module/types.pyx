@@ -16,8 +16,8 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import (
-    NOTSET as __NOTSET,
+from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.reflection cimport (
     NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
@@ -230,13 +230,13 @@ cdef class Empty(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = Empty.create(constant_shared_ptr[cEmpty](default_inst[cEmpty]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="Empty",
         kind=__StructType.STRUCT,
-        fields=[
-    ],
-        annotations=_py_types.MappingProxyType({
-        }),
+        fields=(
+    ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(Empty self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -375,13 +375,13 @@ cdef class Nada(thrift.py3.types.Union):
 
     @staticmethod
     def __get_reflection__():
-      return __StructSpec(
+      return __StructSpec.create(
         name="Nada",
         kind=__StructType.UNION,
-        fields=[
-    ],
-        annotations=_py_types.MappingProxyType({
-        }),
+        fields=(
+    ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(Nada self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())

@@ -13,9 +13,7 @@
 # limitations under the License.
 
 from enum import Enum
-from typing import Any, Iterator, Mapping, NamedTuple, Optional, Sequence, Type
-
-from thrift.py3.types import NumberType
+from typing import Iterator, Mapping
 
 class Protocol(Enum):
     COMPACT: Protocol = ...
@@ -69,22 +67,3 @@ class RpcOptions:
     def read_headers(self) -> ReadHeaders: ...
     @property
     def write_headers(self) -> WriteHeaders: ...
-
-class InterfaceSpec(NamedTuple):
-    name: str
-    methods: Sequence[MethodSpec]
-    annotations: Mapping[str, str] = {}
-
-class MethodSpec(NamedTuple):
-    name: str
-    arguments: Sequence[ArgumentSpec]
-    result: Optional[Type[Any]]
-    result_kind: Optional[NumberType]
-    exceptions: Sequence[Type[Any]] = []
-    annotations: Mapping[str, str] = {}
-
-class ArgumentSpec(NamedTuple):
-    name: str
-    type: Type[Any]
-    kind: Optional[NumberType]
-    annotations: Mapping[str, str] = {}

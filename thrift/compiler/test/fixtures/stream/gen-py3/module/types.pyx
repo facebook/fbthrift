@@ -16,8 +16,8 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import (
-    NOTSET as __NOTSET,
+from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.reflection cimport (
     NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
@@ -136,13 +136,13 @@ cdef class FooEx(thrift.py3.exceptions.Error):
     @staticmethod
     def __get_reflection__():
       defaults = FooEx.create(constant_shared_ptr[cFooEx](default_inst[cFooEx]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="FooEx",
         kind=__StructType.EXCEPTION,
-        fields=[
-    ],
-        annotations=_py_types.MappingProxyType({
-        }),
+        fields=(
+    ),
+        annotations={
+        },
       )
 
 

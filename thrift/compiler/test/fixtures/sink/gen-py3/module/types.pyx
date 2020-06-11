@@ -16,8 +16,8 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import (
-    NOTSET as __NOTSET,
+from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.reflection cimport (
     NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
@@ -184,22 +184,22 @@ cdef class InitialResponse(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = InitialResponse.create(constant_shared_ptr[cInitialResponse](default_inst[cInitialResponse]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="InitialResponse",
         kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="content",
   type=str,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(InitialResponse self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -375,22 +375,22 @@ cdef class FinalResponse(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = FinalResponse.create(constant_shared_ptr[cFinalResponse](default_inst[cFinalResponse]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="FinalResponse",
         kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="content",
   type=str,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(FinalResponse self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -566,22 +566,22 @@ cdef class SinkPayload(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = SinkPayload.create(constant_shared_ptr[cSinkPayload](default_inst[cSinkPayload]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="SinkPayload",
         kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="content",
   type=str,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(SinkPayload self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -757,22 +757,22 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = CompatibleWithKeywordSink.create(constant_shared_ptr[cCompatibleWithKeywordSink](default_inst[cCompatibleWithKeywordSink]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="CompatibleWithKeywordSink",
         kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="sink",
   type=str,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(CompatibleWithKeywordSink self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -909,22 +909,22 @@ cdef class InitialException(thrift.py3.exceptions.Error):
     @staticmethod
     def __get_reflection__():
       defaults = InitialException.create(constant_shared_ptr[cInitialException](default_inst[cInitialException]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="InitialException",
         kind=__StructType.EXCEPTION,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="reason",
   type=str,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
 
 
@@ -1024,22 +1024,22 @@ cdef class SinkException1(thrift.py3.exceptions.Error):
     @staticmethod
     def __get_reflection__():
       defaults = SinkException1.create(constant_shared_ptr[cSinkException1](default_inst[cSinkException1]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="SinkException1",
         kind=__StructType.EXCEPTION,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="reason",
   type=str,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
 
 
@@ -1144,22 +1144,22 @@ cdef class SinkException2(thrift.py3.exceptions.Error):
     @staticmethod
     def __get_reflection__():
       defaults = SinkException2.create(constant_shared_ptr[cSinkException2](default_inst[cSinkException2]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="SinkException2",
         kind=__StructType.EXCEPTION,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="reason",
   type=int,
   kind=__NumberType.I64,
-  qualifier=__Qualifier.NONE,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
 
 

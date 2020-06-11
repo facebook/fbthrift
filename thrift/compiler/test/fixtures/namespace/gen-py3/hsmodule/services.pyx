@@ -22,7 +22,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.py3.common import (
+from thrift.py3.reflection cimport (
   InterfaceSpec as __InterfaceSpec,
   MethodSpec as __MethodSpec,
   ArgumentSpec as __ArgumentSpec,
@@ -39,7 +39,7 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
-from thrift.py3.types import NumberType as __NumberType
+from thrift.py3.reflection cimport NumberType as __NumberType
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
     from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
@@ -103,34 +103,34 @@ cdef class HsTestServiceInterface(
 
     @staticmethod
     def __get_reflection_for_init():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="init",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="int1",
                     type=int,
                     kind=__NumberType.I64,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=int,
             result_kind=__NumberType.I64,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec(
+        return __InterfaceSpec.create(
             name="HsTestService",
-            methods=[
+            methods=(
                 cls.__get_reflection_for_init(),
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            ),
+            annotations={
+            },
         )
 
 

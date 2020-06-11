@@ -16,8 +16,8 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import (
-    NOTSET as __NOTSET,
+from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.reflection cimport (
     NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
@@ -391,49 +391,49 @@ cdef class Color(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = Color.create(constant_shared_ptr[cColor](default_inst[cColor]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="Color",
         kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="red",
   type=float,
   kind=__NumberType.DOUBLE,
-  qualifier=__Qualifier.NONE,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="green",
   type=float,
   kind=__NumberType.DOUBLE,
-  qualifier=__Qualifier.NONE,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="blue",
   type=float,
   kind=__NumberType.DOUBLE,
-  qualifier=__Qualifier.NONE,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="alpha",
   type=float,
   kind=__NumberType.DOUBLE,
-  qualifier=__Qualifier.NONE,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(Color self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -733,58 +733,58 @@ cdef class Vehicle(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = Vehicle.create(constant_shared_ptr[cVehicle](default_inst[cVehicle]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="Vehicle",
         kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="color",
   type=Color,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="licensePlate",
   type=str,
-  kind=None,
+  kind=__NumberType.NOT_A_NUMBER,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="description",
   type=str,
-  kind=None,
+  kind=__NumberType.NOT_A_NUMBER,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="name",
   type=str,
-  kind=None,
+  kind=__NumberType.NOT_A_NUMBER,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="hasAC",
   type=bool,
-  kind=None,
+  kind=__NumberType.NOT_A_NUMBER,
   qualifier=__Qualifier.OPTIONAL,
   default=defaults.hasAC,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(Vehicle self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -1249,103 +1249,103 @@ cdef class Person(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = Person.create(constant_shared_ptr[cPerson](default_inst[cPerson]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="Person",
         kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="id",
   type=int,
   kind=__NumberType.I64,
-  qualifier=__Qualifier.NONE,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="name",
   type=str,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="age",
   type=int,
   kind=__NumberType.I16,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="address",
   type=str,
-  kind=None,
+  kind=__NumberType.NOT_A_NUMBER,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="favoriteColor",
   type=Color,
-  kind=None,
+  kind=__NumberType.NOT_A_NUMBER,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="friends",
   type=Set__i64,
-  kind=None,
+  kind=__NumberType.NOT_A_NUMBER,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="bestFriend",
   type=int,
   kind=__NumberType.I64,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="petNames",
   type=Map__Animal_string,
-  kind=None,
+  kind=__NumberType.NOT_A_NUMBER,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="afraidOfAnimal",
   type=Animal,
-  kind=None,
+  kind=__NumberType.NOT_A_NUMBER,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="vehicles",
   type=List__Vehicle,
-  kind=None,
+  kind=__NumberType.NOT_A_NUMBER,
   qualifier=__Qualifier.OPTIONAL,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(Person self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -1769,7 +1769,7 @@ cdef class Map__Animal_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=Animal, key_kind=None, value=str, value_kind=None)
+        return __MapSpec(key=Animal, key_kind=__NumberType.NOT_A_NUMBER, value=str, value_kind=__NumberType.NOT_A_NUMBER)
 
 
 Mapping.register(Map__Animal_string)
@@ -1934,7 +1934,7 @@ cdef class List__Vehicle(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=Vehicle, kind=None)
+        return __ListSpec(value=Vehicle, kind=__NumberType.NOT_A_NUMBER)
 
 
 Sequence.register(List__Vehicle)

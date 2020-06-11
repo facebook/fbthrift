@@ -19,7 +19,7 @@
 Reflection info for a single field.
 
 }}
-__FieldSpec(
+__FieldSpec.create(
   name="{{field:name}}",
   type={{#field:type}}{{> types/PythonType}}{{/field:type}},
   kind={{#field:type}}{{> types/ThriftNumberType}}{{/field:type}},
@@ -27,7 +27,7 @@ __FieldSpec(
     }}{{#field:required?}}REQUIRED{{/field:required?}}{{!
     }}{{^field:required?}}{{!
       }}{{#field:optional?}}OPTIONAL{{/field:optional?}}{{!
-      }}{{^field:optional?}}NONE{{/field:optional?}}{{!
+      }}{{^field:optional?}}UNQUALIFIED{{/field:optional?}}{{!
     }}{{/field:required?}},
   default={{!
   }}{{^struct:union?}}{{!
@@ -35,9 +35,9 @@ __FieldSpec(
     }}{{^field:value}}None{{/field:value}}{{!
   }}{{/struct:union?}}{{!
   }}{{#struct:union?}}None{{/struct:union?}},
-  annotations=_py_types.MappingProxyType({
+  annotations={
   {{#field:annotations}}
     {{> Annotation }}
   {{/field:annotations}}
-  }),
+  },
 )

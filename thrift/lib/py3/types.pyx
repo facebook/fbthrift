@@ -14,21 +14,11 @@
 
 import enum
 cimport cython
-from collections import namedtuple
 from folly.iobuf import IOBuf
 from types import MappingProxyType
 
-__all__ = ['NumberType', 'Struct', 'BadEnum', 'NOTSET', 'Union', 'Enum', 'Flag']
+__all__ = ['Struct', 'BadEnum', 'NOTSET', 'Union', 'Enum', 'Flag']
 
-class NumberType(enum.Enum):
-    NONE = 0
-    BYTE = 1
-    I08 = 1
-    I16 = 2
-    I32 = 3
-    I64 = 4
-    FLOAT = 5
-    DOUBLE = 6
 
 class NOTSETTYPE(enum.Enum):
     token = 0
@@ -126,22 +116,3 @@ cdef translate_cpp_enum_to_python(object EnumClass, int value):
         return EnumClass(value)
     except ValueError:
         return BadEnum(EnumClass, value)
-
-
-class StructType(enum.Enum):
-  STRUCT = 1
-  UNION = 2
-  EXCEPTION = 3
-
-
-class Qualifier(enum.Enum):
-  NONE = 1
-  REQUIRED = 2
-  OPTIONAL = 3
-
-
-StructSpec = namedtuple('StructSpec', ['name', 'fields', 'kind', 'annotations'])
-FieldSpec = namedtuple('FieldSpec', ['name', 'type', 'kind', 'qualifier', 'default', 'annotations'])
-ListSpec = namedtuple('ListSpec', ['value', 'kind'])
-SetSpec = namedtuple('SetSpec', ['value', 'kind'])
-MapSpec = namedtuple('MapSpec', [ 'key', 'key_kind', 'value', 'value_kind'])

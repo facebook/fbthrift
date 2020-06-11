@@ -27,15 +27,14 @@ from libcpp.typeinfo cimport type_info
 import thrift.py3.types
 cimport thrift.py3.types
 from thrift.py3.types cimport move
-from thrift.py3.types import NumberType as __NumberType
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.common import (
-  RpcOptions as __RpcOptions,
-  InterfaceSpec as __InterfaceSpec,
-  MethodSpec as __MethodSpec,
-  ArgumentSpec as __ArgumentSpec,
+from thrift.py3.reflection cimport (
+    ArgumentSpec as __ArgumentSpec,
+    InterfaceSpec as __InterfaceSpec,
+    MethodSpec as __MethodSpec,
+    NumberType as __NumberType
 )
 
 from folly.futures cimport bridgeFutureWith
@@ -375,150 +374,150 @@ cdef class MyService(thrift.py3.client.Client):
 
     @staticmethod
     def __get_reflection_for_ping():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="ping",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_getRandomData():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="getRandomData",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=str,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_hasDataById():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="hasDataById",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="id",
                     type=int,
                     kind=__NumberType.I64,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=bool,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_getDataById():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="getDataById",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="id",
                     type=int,
                     kind=__NumberType.I64,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=str,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_putDataById():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="putDataById",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="id",
                     type=int,
                     kind=__NumberType.I64,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-                __ArgumentSpec(
+                __ArgumentSpec.create(
                     name="data",
                     type=str,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_lobDataById():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="lobDataById",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="id",
                     type=int,
                     kind=__NumberType.I64,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-                __ArgumentSpec(
+                __ArgumentSpec.create(
                     name="data",
                     type=str,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @staticmethod
     def __get_reflection_for_doNothing():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="doNothing",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
                 """cpp.name""": """cppDoNothing""",
-            }),
+            },
         )
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec(
+        return __InterfaceSpec.create(
             name="MyService",
-            methods=[
+            methods=(
                 cls.__get_reflection_for_ping(),
                 cls.__get_reflection_for_getRandomData(),
                 cls.__get_reflection_for_hasDataById(),
@@ -526,9 +525,9 @@ cdef class MyService(thrift.py3.client.Client):
                 cls.__get_reflection_for_putDataById(),
                 cls.__get_reflection_for_lobDataById(),
                 cls.__get_reflection_for_doNothing(),
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            ),
+            annotations={
+            },
         )
 
 cdef object _MyServicePrioParent_annotations = _py_types.MappingProxyType({
@@ -591,45 +590,45 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
 
     @staticmethod
     def __get_reflection_for_ping():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="ping",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
                 """priority""": """IMPORTANT""",
-            }),
+            },
         )
 
     @staticmethod
     def __get_reflection_for_pong():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="pong",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
                 """priority""": """HIGH_IMPORTANT""",
-            }),
+            },
         )
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec(
+        return __InterfaceSpec.create(
             name="MyServicePrioParent",
-            methods=[
+            methods=(
                 cls.__get_reflection_for_ping(),
                 cls.__get_reflection_for_pong(),
-            ],
-            annotations=_py_types.MappingProxyType({
+            ),
+            annotations={
                 """priority""": """HIGH""",
-            }),
+            },
         )
 
 cdef object _MyServicePrioChild_annotations = _py_types.MappingProxyType({
@@ -671,27 +670,27 @@ cdef class MyServicePrioChild(MyServicePrioParent):
 
     @staticmethod
     def __get_reflection_for_pang():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="pang",
-            arguments=[
-            ],
+            arguments=(
+            ),
             result=None,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
                 """priority""": """BEST_EFFORT""",
-            }),
+            },
         )
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec(
+        return __InterfaceSpec.create(
             name="MyServicePrioChild",
-            methods=[
+            methods=(
                 cls.__get_reflection_for_pang(),
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            ),
+            annotations={
+            },
         )
 

@@ -16,8 +16,8 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import (
-    NOTSET as __NOTSET,
+from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.reflection cimport (
     NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
@@ -327,31 +327,31 @@ cdef class SmallStruct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = SmallStruct.create(constant_shared_ptr[cSmallStruct](default_inst[cSmallStruct]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="SmallStruct",
         kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="small_A",
   type=bool,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="small_B",
   type=int,
   kind=__NumberType.I32,
-  qualifier=__Qualifier.NONE,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(SmallStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -1160,211 +1160,211 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = containerStruct.create(constant_shared_ptr[ccontainerStruct](default_inst[ccontainerStruct]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="containerStruct",
         kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="fieldA",
   type=bool,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldB",
   type=Map__string_bool,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldC",
   type=Set__i32,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=defaults.fieldC,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldD",
   type=str,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldE",
   type=str,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=defaults.fieldE,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldF",
   type=List__List__List__i32,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldG",
   type=Map__string_Map__string_Map__string_i32,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldH",
   type=List__Set__i32,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldI",
   type=bool,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=defaults.fieldI,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldJ",
   type=Map__string_List__i32,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=defaults.fieldJ,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldK",
   type=List__List__List__List__i32,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldL",
   type=Set__Set__Set__bool,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldM",
   type=Map__Set__List__i32_Map__List__Set__string_string,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldN",
   type=List__Foo__i64,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldO",
   type=List__Bar__double,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldP",
   type=List__Baz__i32,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldQ",
   type=MyEnumA,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldR",
   type=Map__string_bool,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref""": """1""",  }),
+  annotations={
+    """cpp.ref""": """1""",  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldS",
   type=SmallStruct,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """unique""",  }),
+  annotations={
+    """cpp.ref_type""": """unique""",  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldT",
   type=SmallStruct,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """shared""",  }),
+  annotations={
+    """cpp.ref_type""": """shared""",  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldU",
   type=SmallStruct,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """shared_const""",  }),
+  annotations={
+    """cpp.ref_type""": """shared_const""",  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="fieldX",
   type=SmallStruct,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref""": """1""",  }),
+  annotations={
+    """cpp.ref""": """1""",  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(containerStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -1538,7 +1538,7 @@ cdef class Map__string_bool(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=str, key_kind=None, value=bool, value_kind=None)
+        return __MapSpec(key=str, key_kind=__NumberType.NOT_A_NUMBER, value=bool, value_kind=__NumberType.NOT_A_NUMBER)
 
 
 Mapping.register(Map__string_bool)
@@ -2136,7 +2136,7 @@ cdef class List__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=List__i32, kind=None)
+        return __ListSpec(value=List__i32, kind=__NumberType.NOT_A_NUMBER)
 
 
 Sequence.register(List__List__i32)
@@ -2318,7 +2318,7 @@ cdef class List__List__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=List__List__i32, kind=None)
+        return __ListSpec(value=List__List__i32, kind=__NumberType.NOT_A_NUMBER)
 
 
 Sequence.register(List__List__List__i32)
@@ -2457,7 +2457,7 @@ cdef class Map__string_i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=str, key_kind=None, value=int, value_kind=__NumberType.I32)
+        return __MapSpec(key=str, key_kind=__NumberType.NOT_A_NUMBER, value=int, value_kind=__NumberType.I32)
 
 
 Mapping.register(Map__string_i32)
@@ -2597,7 +2597,7 @@ cdef class Map__string_Map__string_i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=str, key_kind=None, value=Map__string_i32, value_kind=None)
+        return __MapSpec(key=str, key_kind=__NumberType.NOT_A_NUMBER, value=Map__string_i32, value_kind=__NumberType.NOT_A_NUMBER)
 
 
 Mapping.register(Map__string_Map__string_i32)
@@ -2737,7 +2737,7 @@ cdef class Map__string_Map__string_Map__string_i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=str, key_kind=None, value=Map__string_Map__string_i32, value_kind=None)
+        return __MapSpec(key=str, key_kind=__NumberType.NOT_A_NUMBER, value=Map__string_Map__string_i32, value_kind=__NumberType.NOT_A_NUMBER)
 
 
 Mapping.register(Map__string_Map__string_Map__string_i32)
@@ -2919,7 +2919,7 @@ cdef class List__Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=Set__i32, kind=None)
+        return __ListSpec(value=Set__i32, kind=__NumberType.NOT_A_NUMBER)
 
 
 Sequence.register(List__Set__i32)
@@ -3059,7 +3059,7 @@ cdef class Map__string_List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=str, key_kind=None, value=List__i32, value_kind=None)
+        return __MapSpec(key=str, key_kind=__NumberType.NOT_A_NUMBER, value=List__i32, value_kind=__NumberType.NOT_A_NUMBER)
 
 
 Mapping.register(Map__string_List__i32)
@@ -3241,7 +3241,7 @@ cdef class List__List__List__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=List__List__List__i32, kind=None)
+        return __ListSpec(value=List__List__List__i32, kind=__NumberType.NOT_A_NUMBER)
 
 
 Sequence.register(List__List__List__List__i32)
@@ -3489,7 +3489,7 @@ cdef class Set__bool(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=bool, kind=None)
+        return __SetSpec(value=bool, kind=__NumberType.NOT_A_NUMBER)
 
 
 
@@ -3745,7 +3745,7 @@ cdef class Set__Set__bool(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=Set__bool, kind=None)
+        return __SetSpec(value=Set__bool, kind=__NumberType.NOT_A_NUMBER)
 
 
 
@@ -4001,7 +4001,7 @@ cdef class Set__Set__Set__bool(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=Set__Set__bool, kind=None)
+        return __SetSpec(value=Set__Set__bool, kind=__NumberType.NOT_A_NUMBER)
 
 
 
@@ -4257,7 +4257,7 @@ cdef class Set__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=List__i32, kind=None)
+        return __SetSpec(value=List__i32, kind=__NumberType.NOT_A_NUMBER)
 
 
 
@@ -4506,7 +4506,7 @@ cdef class Set__string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=str, kind=None)
+        return __SetSpec(value=str, kind=__NumberType.NOT_A_NUMBER)
 
 
 
@@ -4689,7 +4689,7 @@ cdef class List__Set__string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=Set__string, kind=None)
+        return __ListSpec(value=Set__string, kind=__NumberType.NOT_A_NUMBER)
 
 
 Sequence.register(List__Set__string)
@@ -4844,7 +4844,7 @@ cdef class Map__List__Set__string_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=List__Set__string, key_kind=None, value=str, value_kind=None)
+        return __MapSpec(key=List__Set__string, key_kind=__NumberType.NOT_A_NUMBER, value=str, value_kind=__NumberType.NOT_A_NUMBER)
 
 
 Mapping.register(Map__List__Set__string_string)
@@ -5001,7 +5001,7 @@ cdef class Map__Set__List__i32_Map__List__Set__string_string(thrift.py3.types.Co
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=Set__List__i32, key_kind=None, value=Map__List__Set__string_string, value_kind=None)
+        return __MapSpec(key=Set__List__i32, key_kind=__NumberType.NOT_A_NUMBER, value=Map__List__Set__string_string, value_kind=__NumberType.NOT_A_NUMBER)
 
 
 Mapping.register(Map__Set__List__i32_Map__List__Set__string_string)

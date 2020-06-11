@@ -16,8 +16,8 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import (
-    NOTSET as __NOTSET,
+from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.reflection cimport (
     NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
@@ -186,22 +186,22 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = MyStruct.create(constant_shared_ptr[cMyStruct](default_inst[cMyStruct]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="MyStruct",
         kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="field",
   type=str,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(MyStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -462,49 +462,49 @@ cdef class Combo(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = Combo.create(constant_shared_ptr[cCombo](default_inst[cCombo]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="Combo",
         kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="listOfOurMyStructLists",
   type=List__List__MyStruct,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="theirMyStructList",
   type=List__module_MyStruct,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="ourMyStructList",
   type=List__MyStruct,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-                __FieldSpec(
+                __FieldSpec.create(
   name="listOfTheirMyStructList",
   type=List__List__module_MyStruct,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(Combo self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -705,7 +705,7 @@ cdef class List__MyStruct(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=MyStruct, kind=None)
+        return __ListSpec(value=MyStruct, kind=__NumberType.NOT_A_NUMBER)
 
 
 Sequence.register(List__MyStruct)
@@ -887,7 +887,7 @@ cdef class List__List__MyStruct(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=List__MyStruct, kind=None)
+        return __ListSpec(value=List__MyStruct, kind=__NumberType.NOT_A_NUMBER)
 
 
 Sequence.register(List__List__MyStruct)
@@ -1052,7 +1052,7 @@ cdef class List__module_MyStruct(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=_module_types.MyStruct, kind=None)
+        return __ListSpec(value=_module_types.MyStruct, kind=__NumberType.NOT_A_NUMBER)
 
 
 Sequence.register(List__module_MyStruct)
@@ -1234,7 +1234,7 @@ cdef class List__List__module_MyStruct(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=List__module_MyStruct, kind=None)
+        return __ListSpec(value=List__module_MyStruct, kind=__NumberType.NOT_A_NUMBER)
 
 
 Sequence.register(List__List__module_MyStruct)

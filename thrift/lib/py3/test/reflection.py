@@ -30,9 +30,15 @@ from testing.types import (
     StrStrIntListMapMap,
     easy,
 )
-from thrift.py3.common import ArgumentSpec, MethodSpec
-from thrift.py3.reflection import inspect, inspectable
-from thrift.py3.types import NumberType, Qualifier, StructType
+from thrift.py3.reflection import (
+    ArgumentSpec,
+    MethodSpec,
+    NumberType,
+    Qualifier,
+    StructType,
+    inspect,
+    inspectable,
+)
 
 
 class ReflectionTests(unittest.TestCase):
@@ -52,7 +58,7 @@ class ReflectionTests(unittest.TestCase):
 
         self.assertEqual(r.fields[0].name, "opt_field")
         self.assertEqual(r.fields[0].type, str)
-        self.assertEqual(r.fields[0].kind, None)
+        self.assertEqual(r.fields[0].kind, NumberType.NOT_A_NUMBER)
         self.assertEqual(r.fields[0].qualifier, Qualifier.OPTIONAL)
         self.assertEqual(r.fields[0].default, None)
         self.assertEqual(
@@ -61,22 +67,22 @@ class ReflectionTests(unittest.TestCase):
 
         self.assertEqual(r.fields[1].name, "req_field")
         self.assertEqual(r.fields[1].type, str)
-        self.assertEqual(r.fields[0].kind, None)
+        self.assertEqual(r.fields[0].kind, NumberType.NOT_A_NUMBER)
         self.assertEqual(r.fields[1].qualifier, Qualifier.REQUIRED)
         self.assertEqual(r.fields[1].default, None)
         self.assertEqual(r.fields[1].annotations, {})
 
         self.assertEqual(r.fields[2].name, "unq_field")
         self.assertEqual(r.fields[2].type, str)
-        self.assertEqual(r.fields[0].kind, None)
-        self.assertEqual(r.fields[2].qualifier, Qualifier.NONE)
+        self.assertEqual(r.fields[0].kind, NumberType.NOT_A_NUMBER)
+        self.assertEqual(r.fields[2].qualifier, Qualifier.UNQUALIFIED)
         self.assertEqual(r.fields[2].default, "xyzzy")
         self.assertEqual(r.fields[2].annotations, {})
 
         self.assertEqual(r.fields[3].name, "struct_field")
         self.assertEqual(r.fields[3].type, Runtime)
-        self.assertEqual(r.fields[0].kind, None)
-        self.assertEqual(r.fields[3].qualifier, Qualifier.NONE)
+        self.assertEqual(r.fields[0].kind, NumberType.NOT_A_NUMBER)
+        self.assertEqual(r.fields[3].qualifier, Qualifier.UNQUALIFIED)
         self.assertEqual(
             r.fields[3].default,
             Runtime(bool_val=True, enum_val=Color.blue, int_list_val=[10, 20, 30]),
@@ -115,7 +121,7 @@ class ReflectionTests(unittest.TestCase):
         self.assertTrue(inspectable(Set__Color))
         r = inspect(x)
         self.assertEqual(r.value, Color)
-        self.assertEqual(r.kind, None)
+        self.assertEqual(r.kind, NumberType.NOT_A_NUMBER)
 
     def test_map_key_value(self) -> None:
         x = StrStrIntListMapMap({"a": StrI32ListMap({"b": I32List([7, 8, 9])})})
@@ -124,8 +130,8 @@ class ReflectionTests(unittest.TestCase):
         r = inspect(x)
         self.assertEqual(r.key, str)
         self.assertEqual(r.value, StrI32ListMap)
-        self.assertEqual(r.key_kind, None)
-        self.assertEqual(r.value_kind, None)
+        self.assertEqual(r.key_kind, NumberType.NOT_A_NUMBER)
+        self.assertEqual(r.value_kind, NumberType.NOT_A_NUMBER)
 
     def test_interface(self) -> None:
         self.assertTrue(inspectable(TestingService))
@@ -143,12 +149,12 @@ class ReflectionTests(unittest.TestCase):
             },
         )
 
-        methods = [
+        methods = (
             MethodSpec(
                 name="getName",
                 arguments=[],
                 result=str,
-                result_kind=None,
+                result_kind=NumberType.NOT_A_NUMBER,
                 exceptions=[],
                 annotations={},
             ),
@@ -156,30 +162,48 @@ class ReflectionTests(unittest.TestCase):
                 name="shutdown",
                 arguments=[],
                 result=None,
-                result_kind=None,
+                result_kind=NumberType.NOT_A_NUMBER,
                 exceptions=[],
                 annotations={},
             ),
             MethodSpec(
                 name="invert",
                 arguments=[
-                    ArgumentSpec(name="value", type=bool, kind=None, annotations={})
+                    ArgumentSpec(
+                        name="value",
+                        type=bool,
+                        kind=NumberType.NOT_A_NUMBER,
+                        annotations={},
+                    )
                 ],
                 result=bool,
-                result_kind=None,
+                result_kind=NumberType.NOT_A_NUMBER,
                 exceptions=[],
                 annotations={},
             ),
             MethodSpec(
                 name="complex_action",
                 arguments=[
-                    ArgumentSpec(name="first", type=str, kind=None, annotations={}),
-                    ArgumentSpec(name="second", type=str, kind=None, annotations={}),
+                    ArgumentSpec(
+                        name="first",
+                        type=str,
+                        kind=NumberType.NOT_A_NUMBER,
+                        annotations={},
+                    ),
+                    ArgumentSpec(
+                        name="second",
+                        type=str,
+                        kind=NumberType.NOT_A_NUMBER,
+                        annotations={},
+                    ),
                     ArgumentSpec(
                         name="third", type=int, kind=NumberType.I64, annotations={}
                     ),
                     ArgumentSpec(
-                        name="fourth", type=str, kind=None, annotations={"iv": "4"}
+                        name="fourth",
+                        type=str,
+                        kind=NumberType.NOT_A_NUMBER,
+                        annotations={"iv": "4"},
                     ),
                 ],
                 result=int,
@@ -190,10 +214,15 @@ class ReflectionTests(unittest.TestCase):
             MethodSpec(
                 name="takes_a_list",
                 arguments=[
-                    ArgumentSpec(name="ints", type=I32List, kind=None, annotations={})
+                    ArgumentSpec(
+                        name="ints",
+                        type=I32List,
+                        kind=NumberType.NOT_A_NUMBER,
+                        annotations={},
+                    )
                 ],
                 result=None,
-                result_kind=None,
+                result_kind=NumberType.NOT_A_NUMBER,
                 exceptions=[SimpleError],
                 annotations={},
             ),
@@ -203,20 +232,30 @@ class ReflectionTests(unittest.TestCase):
                     ArgumentSpec(
                         name="how", type=int, kind=NumberType.I32, annotations={}
                     ),
-                    ArgumentSpec(name="what", type=easy, kind=None, annotations={}),
+                    ArgumentSpec(
+                        name="what",
+                        type=easy,
+                        kind=NumberType.NOT_A_NUMBER,
+                        annotations={},
+                    ),
                 ],
                 result=None,
-                result_kind=None,
+                result_kind=NumberType.NOT_A_NUMBER,
                 exceptions=[],
                 annotations={"a": "b.c.d"},
             ),
             MethodSpec(
                 name="pick_a_color",
                 arguments=[
-                    ArgumentSpec(name="color", type=Color, kind=None, annotations={})
+                    ArgumentSpec(
+                        name="color",
+                        type=Color,
+                        kind=NumberType.NOT_A_NUMBER,
+                        annotations={},
+                    )
                 ],
                 result=None,
-                result_kind=None,
+                result_kind=NumberType.NOT_A_NUMBER,
                 exceptions=[],
                 annotations={},
             ),
@@ -237,11 +276,11 @@ class ReflectionTests(unittest.TestCase):
                     ),
                 ],
                 result=None,
-                result_kind=None,
+                result_kind=NumberType.NOT_A_NUMBER,
                 exceptions=[],
                 annotations={},
             ),
-        ]
+        )
         self.assertEqual(x.methods, methods)
 
     def test_other(self) -> None:

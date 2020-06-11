@@ -27,15 +27,14 @@ from libcpp.typeinfo cimport type_info
 import thrift.py3.types
 cimport thrift.py3.types
 from thrift.py3.types cimport move
-from thrift.py3.types import NumberType as __NumberType
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.common import (
-  RpcOptions as __RpcOptions,
-  InterfaceSpec as __InterfaceSpec,
-  MethodSpec as __MethodSpec,
-  ArgumentSpec as __ArgumentSpec,
+from thrift.py3.reflection cimport (
+    ArgumentSpec as __ArgumentSpec,
+    InterfaceSpec as __InterfaceSpec,
+    MethodSpec as __MethodSpec,
+    NumberType as __NumberType
 )
 
 from folly.futures cimport bridgeFutureWith
@@ -75,17 +74,17 @@ cdef class SinkService(thrift.py3.client.Client):
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec(
+        return __InterfaceSpec.create(
             name="SinkService",
-            methods=[
+            methods=(
                 cls.__get_reflection_for_method(),
                 cls.__get_reflection_for_methodAndReponse(),
                 cls.__get_reflection_for_methodThrow(),
                 cls.__get_reflection_for_methodSinkThrow(),
                 cls.__get_reflection_for_methodFinalThrow(),
                 cls.__get_reflection_for_methodBothThrow(),
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            ),
+            annotations={
+            },
         )
 

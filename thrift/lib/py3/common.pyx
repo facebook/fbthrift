@@ -14,7 +14,6 @@
 
 from cython.operator cimport dereference as deref, preincrement as inc
 from enum import Enum
-from collections import namedtuple
 from collections.abc import Mapping
 from functools import total_ordering
 
@@ -227,7 +226,3 @@ cdef class RpcOptions:
         if not self._writeheaders:
             self._writeheaders = WriteHeaders.create(self)
         return self._writeheaders
-
-InterfaceSpec = namedtuple('InterfaceSpec', ['name', 'methods', 'annotations'])
-MethodSpec = namedtuple('MethodSpec', ['name', 'arguments', 'result_kind', 'result', 'exceptions', 'annotations'])
-ArgumentSpec = namedtuple('ArgumentSpec', ['name', 'kind', 'type', 'annotations'])

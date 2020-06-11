@@ -26,19 +26,19 @@ def __get_reflection__():
    we can only do this for regular structs though }}
   defaults = {{struct:name}}.create(constant_shared_ptr[c{{struct:name}}](default_inst[c{{struct:name}}]()))
 {{/struct:union?}}
-  return __StructSpec(
+  return __StructSpec.create(
     name="{{struct:name}}",
     kind=__StructType.{{!
       }}{{#struct:exception?}}EXCEPTION{{/struct:exception?}}{{!
       }}{{#struct:union?}}UNION{{/struct:union?}}{{!
       }}{{#struct:plain?}}STRUCT{{/struct:plain?}},
-    fields=[
+    fields=(
       {{#struct:fields}}
       {{> reflection/Field }},
-      {{/struct:fields}}],
-    annotations=_py_types.MappingProxyType({
+      {{/struct:fields}}),
+    annotations={
     {{#struct:annotations}}
       {{> Annotation }}
     {{/struct:annotations}}
-    }),
+    },
   )

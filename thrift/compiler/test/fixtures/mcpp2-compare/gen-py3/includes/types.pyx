@@ -16,8 +16,8 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import (
-    NOTSET as __NOTSET,
+from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.reflection cimport (
     NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
@@ -290,22 +290,22 @@ cdef class AStruct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = AStruct.create(constant_shared_ptr[cAStruct](default_inst[cAStruct]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="AStruct",
         kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="FieldA",
   type=int,
   kind=__NumberType.I32,
-  qualifier=__Qualifier.NONE,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
+  annotations={
+  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(AStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -483,22 +483,22 @@ cdef class AStructB(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
       defaults = AStructB.create(constant_shared_ptr[cAStructB](default_inst[cAStructB]()))
-      return __StructSpec(
+      return __StructSpec.create(
         name="AStructB",
         kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
+        fields=(
+          __FieldSpec.create(
   name="FieldA",
   type=AStruct,
-  kind=None,
-  qualifier=__Qualifier.NONE,
+  kind=__NumberType.NOT_A_NUMBER,
+  qualifier=__Qualifier.UNQUALIFIED,
   default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp2.ref_type""": """shared_const""",  }),
+  annotations={
+    """cpp2.ref_type""": """shared_const""",  },
 ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
+          ),
+        annotations={
+        },
       )
     cdef __iobuf.IOBuf _serialize(AStructB self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())

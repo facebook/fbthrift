@@ -16,8 +16,8 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import (
-    NOTSET as __NOTSET,
+from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.reflection cimport (
     NumberType as __NumberType,
     StructSpec as __StructSpec,
     ListSpec as __ListSpec,
@@ -183,7 +183,7 @@ cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, key_kind=__NumberType.I32, value=str, value_kind=None)
+        return __MapSpec(key=int, key_kind=__NumberType.I32, value=str, value_kind=__NumberType.NOT_A_NUMBER)
 
 
 Mapping.register(std_unordered_map__Map__i32_string)
@@ -365,7 +365,7 @@ cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=std_unordered_map__Map__i32_string, kind=None)
+        return __ListSpec(value=std_unordered_map__Map__i32_string, kind=__NumberType.NOT_A_NUMBER)
 
 
 Sequence.register(List__std_unordered_map__Map__i32_string)

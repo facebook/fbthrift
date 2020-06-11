@@ -18,19 +18,19 @@
 Used by services/ReflectionInterface and clients/ReflectionInterface.
 }}@classmethod
 def __get_reflection__(cls):
-    return __InterfaceSpec(
+    return __InterfaceSpec.create(
         name="{{service:name}}",
-        methods=[
+        methods=(
             {{#service:functions}}
             cls.__get_reflection_for_{{function:name}}(),
             {{/service:functions}}
-        ],
-        annotations=_py_types.MappingProxyType({
+        ),
+        annotations={
             {{#service:annotations}}
             {{> Annotation }}
             {{#last?}}
 
             {{/last?}}
             {{/service:annotations}}
-        }),
+        },
     )

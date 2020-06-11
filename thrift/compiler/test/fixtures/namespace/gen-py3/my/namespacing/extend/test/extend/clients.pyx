@@ -27,15 +27,14 @@ from libcpp.typeinfo cimport type_info
 import thrift.py3.types
 cimport thrift.py3.types
 from thrift.py3.types cimport move
-from thrift.py3.types import NumberType as __NumberType
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.common import (
-  RpcOptions as __RpcOptions,
-  InterfaceSpec as __InterfaceSpec,
-  MethodSpec as __MethodSpec,
-  ArgumentSpec as __ArgumentSpec,
+from thrift.py3.reflection cimport (
+    ArgumentSpec as __ArgumentSpec,
+    InterfaceSpec as __InterfaceSpec,
+    MethodSpec as __MethodSpec,
+    NumberType as __NumberType
 )
 
 from folly.futures cimport bridgeFutureWith
@@ -115,33 +114,33 @@ cdef class ExtendTestService(_hsmodule_clients.HsTestService):
 
     @staticmethod
     def __get_reflection_for_check():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="check",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="struct1",
                     type=_hsmodule_types.HsFoo,
-                    kind=None,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=bool,
-            result_kind=None,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec(
+        return __InterfaceSpec.create(
             name="ExtendTestService",
-            methods=[
+            methods=(
                 cls.__get_reflection_for_check(),
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            ),
+            annotations={
+            },
         )
 

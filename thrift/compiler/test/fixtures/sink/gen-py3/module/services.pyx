@@ -22,7 +22,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.py3.common import (
+from thrift.py3.reflection cimport (
   InterfaceSpec as __InterfaceSpec,
   MethodSpec as __MethodSpec,
   ArgumentSpec as __ArgumentSpec,
@@ -39,7 +39,7 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
-from thrift.py3.types import NumberType as __NumberType
+from thrift.py3.reflection cimport NumberType as __NumberType
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
     from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
@@ -94,18 +94,18 @@ cdef class SinkServiceInterface(
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec(
+        return __InterfaceSpec.create(
             name="SinkService",
-            methods=[
+            methods=(
                 cls.__get_reflection_for_method(),
                 cls.__get_reflection_for_methodAndReponse(),
                 cls.__get_reflection_for_methodThrow(),
                 cls.__get_reflection_for_methodSinkThrow(),
                 cls.__get_reflection_for_methodFinalThrow(),
                 cls.__get_reflection_for_methodBothThrow(),
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            ),
+            annotations={
+            },
         )
 
 

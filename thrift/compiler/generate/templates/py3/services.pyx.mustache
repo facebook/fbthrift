@@ -42,7 +42,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.py3.common import (
+from thrift.py3.reflection cimport (
   InterfaceSpec as __InterfaceSpec,
   MethodSpec as __MethodSpec,
   ArgumentSpec as __ArgumentSpec,
@@ -59,7 +59,7 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
-from thrift.py3.types import NumberType as __NumberType
+from thrift.py3.reflection cimport NumberType as __NumberType
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
     from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
@@ -141,44 +141,44 @@ cdef class {{service:name}}Interface(
 
     @staticmethod
     def __get_reflection_for_{{function:name}}():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="{{function:name}}",
-            arguments=[
+            arguments=(
                 {{#function:args}}
-                __ArgumentSpec(
+                __ArgumentSpec.create(
                     name="{{field:name}}",
                     type={{#field:type}}{{> types/PythonType}}{{/field:type}},
                     kind={{#field:type}}{{> types/ThriftNumberType}}{{/field:type}},
-                    annotations=_py_types.MappingProxyType({
+                    annotations={
                         {{#field:annotations}}
                         {{> Annotation }}
                         {{#last?}}
 
                         {{/last?}}
                         {{/field:annotations}}
-                    }),
+                    },
                 ),
                 {{/function:args}}
-            ],
+            ),
             result={{#function:returnType}}{{!
                 }}{{#type:void?}}None{{/type:void?}}{{!
                 }}{{#type:streamresponse?}}{{> services/StreamResponseClassName}}{{/type:streamresponse?}}{{!
                 }}{{^type:void?}}{{> types/PythonType}}{{/type:void?}}{{!
                 }}{{/function:returnType}},
             result_kind={{#function:returnType}}{{> types/ThriftNumberType}}{{/function:returnType}},
-            exceptions=[
+            exceptions=(
                 {{#function:exceptions}}
                 {{#field:type}}{{> types/PythonType}}{{/field:type}},
                 {{/function:exceptions}}
-            ],
-            annotations=_py_types.MappingProxyType({
+            ),
+            annotations={
                 {{#function:annotations}}
                 {{> Annotation }}
                 {{#last?}}
 
                 {{/last?}}
                 {{/function:annotations}}
-            }),
+            },
         )
 {{/function:returns_sink?}}{{/service:functions}}
 

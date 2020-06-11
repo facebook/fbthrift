@@ -27,15 +27,14 @@ from libcpp.typeinfo cimport type_info
 import thrift.py3.types
 cimport thrift.py3.types
 from thrift.py3.types cimport move
-from thrift.py3.types import NumberType as __NumberType
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.common import (
-  RpcOptions as __RpcOptions,
-  InterfaceSpec as __InterfaceSpec,
-  MethodSpec as __MethodSpec,
-  ArgumentSpec as __ArgumentSpec,
+from thrift.py3.reflection cimport (
+    ArgumentSpec as __ArgumentSpec,
+    InterfaceSpec as __InterfaceSpec,
+    MethodSpec as __MethodSpec,
+    NumberType as __NumberType
 )
 
 from folly.futures cimport bridgeFutureWith
@@ -114,33 +113,33 @@ cdef class TestService(thrift.py3.client.Client):
 
     @staticmethod
     def __get_reflection_for_init():
-        return __MethodSpec(
+        return __MethodSpec.create(
             name="init",
-            arguments=[
-                __ArgumentSpec(
+            arguments=(
+                __ArgumentSpec.create(
                     name="int1",
                     type=int,
                     kind=__NumberType.I64,
-                    annotations=_py_types.MappingProxyType({
-                    }),
+                    annotations={
+                    },
                 ),
-            ],
+            ),
             result=int,
             result_kind=__NumberType.I64,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            exceptions=(
+            ),
+            annotations={
+            },
         )
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec(
+        return __InterfaceSpec.create(
             name="TestService",
-            methods=[
+            methods=(
                 cls.__get_reflection_for_init(),
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
+            ),
+            annotations={
+            },
         )
 
