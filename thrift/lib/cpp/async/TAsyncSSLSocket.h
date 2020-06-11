@@ -115,15 +115,6 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket {
           transport::TTransportException(ex));
     }
   };
-
-  virtual void sslConnect(
-      HandshakeCallback* callback,
-      uint64_t timeout = 0,
-      const folly::SSLContext::SSLVerifyPeerEnum& verifyPeer =
-          folly::SSLContext::SSLVerifyPeerEnum::USE_CTX) {
-    AsyncSSLSocket::sslConn(
-        callback, std::chrono::milliseconds(timeout), verifyPeer);
-  }
 };
 
 } // namespace async

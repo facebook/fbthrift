@@ -97,27 +97,6 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
   MOCK_CONST_METHOD2(
       getSelectedNextProtocolNoThrow,
       bool(const unsigned char**, unsigned*));
-
-  void sslConnect(
-      TAsyncSSLSocket::HandshakeCallback* cb,
-      uint64_t timeout,
-      const folly::SSLContext::SSLVerifyPeerEnum& verify) override {
-    if (timeout > 0) {
-      handshakeTimeout_.scheduleTimeout((uint32_t)timeout);
-    }
-
-    state_ = StateEnum::ESTABLISHED;
-    sslState_ = STATE_CONNECTING;
-    handshakeCallback_ = cb;
-
-    sslConnectMockable(cb, timeout, verify);
-  }
-  MOCK_METHOD3(
-      sslConnectMockable,
-      void(
-          TAsyncSSLSocket::HandshakeCallback*,
-          uint64_t,
-          const folly::SSLContext::SSLVerifyPeerEnum&));
 };
 } // namespace test
 } // namespace thrift
