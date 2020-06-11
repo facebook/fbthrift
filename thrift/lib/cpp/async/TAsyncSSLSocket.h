@@ -116,11 +116,6 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket {
     }
   };
 
-  static TAsyncSSLSocket* getFromSSL(const SSL* ssl) {
-    return static_cast<TAsyncSSLSocket*>(
-        folly::AsyncSSLSocket::getFromSSL(ssl));
-  }
-
   virtual void sslConnect(
       HandshakeCallback* callback,
       uint64_t timeout = 0,
