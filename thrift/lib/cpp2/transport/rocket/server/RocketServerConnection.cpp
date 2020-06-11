@@ -280,8 +280,8 @@ void RocketServerConnection::handleUntrackedFrame(
       }
 
       PayloadFrame payloadFrame(streamId, flags, cursor, std::move(frame));
-      const bool hasFollows = payloadFrame.hasFollows();
       folly::variant_match(it->second, [&](auto& requestFrame) {
+        const bool hasFollows = payloadFrame.hasFollows();
         requestFrame.payload().append(std::move(payloadFrame.payload()));
         if (!hasFollows) {
           RocketServerFrameContext(*this, streamId)
