@@ -705,14 +705,9 @@ TEST(DeprecatedOptionalField, MoveFrom) {
   EXPECT_FALSE(b.value());
 
   b = std::make_shared<int>(4);
-  optional_field_ref<std::shared_ptr<int>&>(a).move_from(std::move(b));
-  EXPECT_EQ(*a.value(), 4);
-  EXPECT_FALSE(b.value());
-
-  b = std::make_shared<int>(5);
   optional_field_ref<std::shared_ptr<int>&>(a).move_from(
       optional_field_ref<std::shared_ptr<int>&&>(std::move(b)));
-  EXPECT_EQ(*a.value(), 5);
+  EXPECT_EQ(*a.value(), 4);
   EXPECT_FALSE(b.value());
 }
 

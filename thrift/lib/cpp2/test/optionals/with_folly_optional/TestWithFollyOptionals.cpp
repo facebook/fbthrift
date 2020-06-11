@@ -253,7 +253,7 @@ TEST(TestWithFollyOptionals, CopyFrom) {
   EXPECT_EQ(obj2.int64Opt.value(), 2);
 
   obj1.int64Opt = 3;
-  obj2.int64Opt_ref().copy_from(obj1.int64Opt);
+  obj2.int64Opt_ref().copy_from(obj1.int64Opt_ref());
   EXPECT_EQ(obj1.int64Opt.value(), 3);
   EXPECT_EQ(obj2.int64Opt.value(), 3);
 
@@ -276,7 +276,7 @@ TEST(TestWithFollyOptionals, MoveFrom) {
   EXPECT_EQ(obj2.int64Opt.value(), 2);
 
   obj1.int64Opt = 3;
-  obj2.int64Opt_ref().move_from(std::move(obj1.int64Opt));
+  obj2.int64Opt_ref().move_from(std::move(obj1).int64Opt_ref());
   EXPECT_EQ(obj2.int64Opt.value(), 3);
 
   obj1.int64Opt = 4;

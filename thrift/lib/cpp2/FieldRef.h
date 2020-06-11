@@ -43,9 +43,6 @@ using is_set_t = std::conditional_t<std::is_const<T>::value, const bool, bool>;
 
 } // namespace detail
 
-template <typename T>
-class DeprecatedOptionalField;
-
 // A reference to an unqualified field of the possibly const-qualified type
 // std::remove_reference_t<T> in a Thrift-generated struct.
 template <typename T>
@@ -422,17 +419,6 @@ class optional_field_ref {
     is_set_ = true;
     return value_;
   }
-
-  FOLLY_ERASE void copy_from(const DeprecatedOptionalField<value_type>& other) {
-    copy_from(optional_field_ref<const value_type&>(other));
-  }
-
-  FOLLY_ERASE void move_from(DeprecatedOptionalField<value_type>&& other) {
-    move_from(optional_field_ref<value_type&&>(std::move(other)));
-  }
-
-  FOLLY_ERASE void copy_from(DeprecatedOptionalField<value_type>&& other) =
-      delete;
 
   template <typename R>
   [[deprecated(
