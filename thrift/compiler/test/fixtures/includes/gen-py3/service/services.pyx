@@ -22,11 +22,6 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.py3.reflection cimport (
-  InterfaceSpec as __InterfaceSpec,
-  MethodSpec as __MethodSpec,
-  ArgumentSpec as __ArgumentSpec,
-)
 from thrift.py3.exceptions cimport (
     cTApplicationException,
     ApplicationError as __ApplicationError,
@@ -39,7 +34,6 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
-from thrift.py3.reflection cimport NumberType as __NumberType
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
     from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
@@ -58,6 +52,8 @@ import module.types as _module_types
 cimport module.types as _module_types
 import transitive.types as _transitive_types
 cimport transitive.types as _transitive_types
+
+cimport service.services_reflection as _services_reflection
 
 import asyncio
 import functools
@@ -118,73 +114,9 @@ cdef class MyServiceInterface(
             i):
         raise NotImplementedError("async def has_arg_docs is not implemented")
 
-    @staticmethod
-    def __get_reflection_for_query():
-        return __MethodSpec.create(
-            name="query",
-            arguments=(
-                __ArgumentSpec.create(
-                    name="s",
-                    type=_module_types.MyStruct,
-                    kind=__NumberType.NOT_A_NUMBER,
-                    annotations={
-                    },
-                ),
-                __ArgumentSpec.create(
-                    name="i",
-                    type=_includes_types.Included,
-                    kind=__NumberType.NOT_A_NUMBER,
-                    annotations={
-                    },
-                ),
-            ),
-            result=None,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
-    @staticmethod
-    def __get_reflection_for_has_arg_docs():
-        return __MethodSpec.create(
-            name="has_arg_docs",
-            arguments=(
-                __ArgumentSpec.create(
-                    name="s",
-                    type=_module_types.MyStruct,
-                    kind=__NumberType.NOT_A_NUMBER,
-                    annotations={
-                    },
-                ),
-                __ArgumentSpec.create(
-                    name="i",
-                    type=_includes_types.Included,
-                    kind=__NumberType.NOT_A_NUMBER,
-                    annotations={
-                    },
-                ),
-            ),
-            result=None,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec.create(
-            name="MyService",
-            methods=(
-                cls.__get_reflection_for_query(),
-                cls.__get_reflection_for_has_arg_docs(),
-            ),
-            annotations={
-            },
-        )
+        return _services_reflection.get_reflection__MyService(for_clients=False)
 
 
 

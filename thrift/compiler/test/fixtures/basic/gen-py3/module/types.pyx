@@ -17,16 +17,6 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.reflection cimport (
-    NumberType as __NumberType,
-    StructSpec as __StructSpec,
-    ListSpec as __ListSpec,
-    SetSpec as __SetSpec,
-    MapSpec as __MapSpec,
-    FieldSpec as __FieldSpec,
-    StructType as __StructType,
-    Qualifier as __Qualifier,
-)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -41,12 +31,13 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
-import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
 import weakref as __weakref
 import builtins as _builtins
+
+cimport module.types_reflection as _types_reflection
 
 cdef object __MyEnumEnumInstances = None  # Set[MyEnum]
 cdef object __MyEnumEnumMembers = {}      # Dict[str, MyEnum]
@@ -491,51 +482,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = MyStruct.create(constant_shared_ptr[cMyStruct](default_inst[cMyStruct]()))
-      return __StructSpec.create(
-        name="MyStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="MyIntField",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyStringField",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyDataField",
-  type=MyDataItem,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="myEnum",
-  type=MyEnum,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__MyStruct()
+
     cdef __iobuf.IOBuf _serialize(MyStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cMyStruct* cpp_obj = self._cpp_obj.get()
@@ -668,15 +616,8 @@ cdef class MyDataItem(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = MyDataItem.create(constant_shared_ptr[cMyDataItem](default_inst[cMyDataItem]()))
-      return __StructSpec.create(
-        name="MyDataItem",
-        kind=__StructType.STRUCT,
-        fields=(
-    ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__MyDataItem()
+
     cdef __iobuf.IOBuf _serialize(MyDataItem self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cMyDataItem* cpp_obj = self._cpp_obj.get()
@@ -868,41 +809,8 @@ cdef class MyUnion(thrift.py3.types.Union):
 
     @staticmethod
     def __get_reflection__():
-      return __StructSpec.create(
-        name="MyUnion",
-        kind=__StructType.UNION,
-        fields=(
-          __FieldSpec.create(
-  name="myEnum",
-  type=MyEnum,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="myStruct",
-  type=MyStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="myDataItem",
-  type=MyDataItem,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__MyUnion()
+
     cdef __iobuf.IOBuf _serialize(MyUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cMyUnion* cpp_obj = self._cpp_obj.get()

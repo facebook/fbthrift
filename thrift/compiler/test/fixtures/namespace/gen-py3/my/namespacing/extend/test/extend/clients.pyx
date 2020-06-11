@@ -30,12 +30,6 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.reflection cimport (
-    ArgumentSpec as __ArgumentSpec,
-    InterfaceSpec as __InterfaceSpec,
-    MethodSpec as __MethodSpec,
-    NumberType as __NumberType
-)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -54,6 +48,8 @@ cimport hsmodule.types as _hsmodule_types
 import hsmodule.types as _hsmodule_types
 cimport hsmodule.clients as _hsmodule_clients
 import hsmodule.clients as _hsmodule_clients
+
+cimport my.namespacing.extend.test.extend.services_reflection as _services_reflection
 
 from my.namespacing.extend.test.extend.clients_wrapper cimport cExtendTestServiceAsyncClient, cExtendTestServiceClientWrapper
 from hsmodule.clients_wrapper cimport cHsTestServiceClientWrapper
@@ -112,35 +108,7 @@ cdef class ExtendTestService(_hsmodule_clients.HsTestService):
         return asyncio_shield(__future)
 
 
-    @staticmethod
-    def __get_reflection_for_check():
-        return __MethodSpec.create(
-            name="check",
-            arguments=(
-                __ArgumentSpec.create(
-                    name="struct1",
-                    type=_hsmodule_types.HsFoo,
-                    kind=__NumberType.NOT_A_NUMBER,
-                    annotations={
-                    },
-                ),
-            ),
-            result=bool,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec.create(
-            name="ExtendTestService",
-            methods=(
-                cls.__get_reflection_for_check(),
-            ),
-            annotations={
-            },
-        )
+        return _services_reflection.get_reflection__ExtendTestService(for_clients=True)
 

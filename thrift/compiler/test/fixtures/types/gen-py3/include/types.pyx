@@ -17,16 +17,6 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.reflection cimport (
-    NumberType as __NumberType,
-    StructSpec as __StructSpec,
-    ListSpec as __ListSpec,
-    SetSpec as __SetSpec,
-    MapSpec as __MapSpec,
-    FieldSpec as __FieldSpec,
-    StructType as __StructType,
-    Qualifier as __Qualifier,
-)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -41,12 +31,13 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
-import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
 import weakref as __weakref
 import builtins as _builtins
+
+cimport include.types_reflection as _types_reflection
 
 
 @__cython.auto_pickle(False)
@@ -183,7 +174,7 @@ cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, key_kind=__NumberType.I32, value=str, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__std_unordered_map__Map__i32_string()
 
 
 Mapping.register(std_unordered_map__Map__i32_string)
@@ -365,7 +356,7 @@ cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=std_unordered_map__Map__i32_string, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__std_unordered_map__Map__i32_string()
 
 
 Sequence.register(List__std_unordered_map__Map__i32_string)

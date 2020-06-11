@@ -17,16 +17,6 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.reflection cimport (
-    NumberType as __NumberType,
-    StructSpec as __StructSpec,
-    ListSpec as __ListSpec,
-    SetSpec as __SetSpec,
-    MapSpec as __MapSpec,
-    FieldSpec as __FieldSpec,
-    StructType as __StructType,
-    Qualifier as __Qualifier,
-)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -41,12 +31,13 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
-import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
 import weakref as __weakref
 import builtins as _builtins
+
+cimport module.types_reflection as _types_reflection
 
 
 @__cython.auto_pickle(False)
@@ -275,51 +266,8 @@ cdef class Foo(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = Foo.create(constant_shared_ptr[cFoo](default_inst[cFoo]()))
-      return __StructSpec.create(
-        name="Foo",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="myInteger",
-  type=int,
-  kind=__NumberType.I32,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="myString",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="myBools",
-  type=List__bool,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="myNumbers",
-  type=List__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__Foo()
+
     cdef __iobuf.IOBuf _serialize(Foo self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cFoo* cpp_obj = self._cpp_obj.get()
@@ -519,7 +467,7 @@ cdef class List__bool(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=bool, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__bool()
 
 
 Sequence.register(List__bool)
@@ -685,7 +633,7 @@ cdef class List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=int, kind=__NumberType.I32)
+        return _types_reflection.get_reflection__List__i32()
 
 
 Sequence.register(List__i32)

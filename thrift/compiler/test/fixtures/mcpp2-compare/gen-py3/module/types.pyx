@@ -17,16 +17,6 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.reflection cimport (
-    NumberType as __NumberType,
-    StructSpec as __StructSpec,
-    ListSpec as __ListSpec,
-    SetSpec as __SetSpec,
-    MapSpec as __MapSpec,
-    FieldSpec as __FieldSpec,
-    StructType as __StructType,
-    Qualifier as __Qualifier,
-)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -41,7 +31,6 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
-import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
@@ -49,6 +38,8 @@ import weakref as __weakref
 import builtins as _builtins
 cimport includes.types as _includes_types
 import includes.types as _includes_types
+
+cimport module.types_reflection as _types_reflection
 
 cdef object __MyEnumAEnumInstances = None  # Set[MyEnumA]
 cdef object __MyEnumAEnumMembers = {}      # Dict[str, MyEnumA]
@@ -1031,15 +1022,8 @@ cdef class Empty(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = Empty.create(constant_shared_ptr[cEmpty](default_inst[cEmpty]()))
-      return __StructSpec.create(
-        name="Empty",
-        kind=__StructType.STRUCT,
-        fields=(
-    ),
-        annotations={
-          """cpp.noexcept_move_ctor""": """1""",    },
-      )
+        return _types_reflection.get_reflection__Empty()
+
     cdef __iobuf.IOBuf _serialize(Empty self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cEmpty* cpp_obj = self._cpp_obj.get()
@@ -1211,24 +1195,8 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = ASimpleStruct.create(constant_shared_ptr[cASimpleStruct](default_inst[cASimpleStruct]()))
-      return __StructSpec.create(
-        name="ASimpleStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="boolField",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """no_default_comparators""": """1""",    },
-      )
+        return _types_reflection.get_reflection__ASimpleStruct()
+
     cdef __iobuf.IOBuf _serialize(ASimpleStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cASimpleStruct* cpp_obj = self._cpp_obj.get()
@@ -1408,24 +1376,8 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = ASimpleStructNoexcept.create(constant_shared_ptr[cASimpleStructNoexcept](default_inst[cASimpleStructNoexcept]()))
-      return __StructSpec.create(
-        name="ASimpleStructNoexcept",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="boolField",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp.noexcept_move_ctor""": """1""",    },
-      )
+        return _types_reflection.get_reflection__ASimpleStructNoexcept()
+
     cdef __iobuf.IOBuf _serialize(ASimpleStructNoexcept self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cASimpleStructNoexcept* cpp_obj = self._cpp_obj.get()
@@ -1848,96 +1800,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = MyStruct.create(constant_shared_ptr[cMyStruct](default_inst[cMyStruct]()))
-      return __StructSpec.create(
-        name="MyStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="MyBoolField",
-  type=bool,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyIntField",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.MyIntField,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyStringField",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.MyStringField,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyStringField2",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyBinaryField",
-  type=bytes,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyBinaryField2",
-  type=bytes,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyBinaryField3",
-  type=bytes,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyBinaryListField4",
-  type=List__binary,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyMapEnumAndInt",
-  type=Map__MyEnumA_string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.MyMapEnumAndInt,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp.noexcept_move_ctor""": """1""",    },
-      )
+        return _types_reflection.get_reflection__MyStruct()
+
     cdef __iobuf.IOBuf _serialize(MyStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cMyStruct* cpp_obj = self._cpp_obj.get()
@@ -2121,32 +1985,8 @@ cdef class SimpleUnion(thrift.py3.types.Union):
 
     @staticmethod
     def __get_reflection__():
-      return __StructSpec.create(
-        name="SimpleUnion",
-        kind=__StructType.UNION,
-        fields=(
-          __FieldSpec.create(
-  name="intValue",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="stringValue",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp.virtual""": """1""",    },
-      )
+        return _types_reflection.get_reflection__SimpleUnion()
+
     cdef __iobuf.IOBuf _serialize(SimpleUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cSimpleUnion* cpp_obj = self._cpp_obj.get()
@@ -2832,257 +2672,8 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 
     @staticmethod
     def __get_reflection__():
-      return __StructSpec.create(
-        name="ComplexUnion",
-        kind=__StructType.UNION,
-        fields=(
-          __FieldSpec.create(
-  name="intValue",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="opt_intValue",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="stringValue",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="opt_stringValue",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="intValue2",
-  type=int,
-  kind=__NumberType.I16,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="intValue3",
-  type=int,
-  kind=__NumberType.I32,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="doubelValue",
-  type=float,
-  kind=__NumberType.DOUBLE,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="boolValue",
-  type=bool,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="union_list",
-  type=List__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="union_set",
-  type=Set__i64,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="union_map",
-  type=Map__string_i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="opt_union_map",
-  type=Map__string_i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="enum_field",
-  type=MyEnumA,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="enum_container",
-  type=List__MyEnumA,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="a_struct",
-  type=MyStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="a_set_struct",
-  type=Set__MyStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="a_union",
-  type=SimpleUnion,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="opt_a_union",
-  type=SimpleUnion,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="a_union_list",
-  type=List__SimpleUnion,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="a_union_typedef",
-  type=Set__SimpleUnion,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="a_union_typedef_list",
-  type=List__Set__SimpleUnion,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyBinaryField",
-  type=bytes,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyBinaryField2",
-  type=bytes,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyBinaryListField4",
-  type=List__binary,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="ref_field",
-  type=MyStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-    """cpp.ref""": """1""",  },
-),
-                __FieldSpec.create(
-  name="ref_field2",
-  type=MyStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-    """cpp.ref_type""": """shared_const""",  },
-),
-                __FieldSpec.create(
-  name="excp_field",
-  type=AnException,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp.methods""": """void foo(const std::string& bar) {}""",    },
-      )
+        return _types_reflection.get_reflection__ComplexUnion()
+
     cdef __iobuf.IOBuf _serialize(ComplexUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cComplexUnion* cpp_obj = self._cpp_obj.get()
@@ -3420,150 +3011,8 @@ cdef class AnException(thrift.py3.exceptions.Error):
 
     @staticmethod
     def __get_reflection__():
-      defaults = AnException.create(constant_shared_ptr[cAnException](default_inst[cAnException]()))
-      return __StructSpec.create(
-        name="AnException",
-        kind=__StructType.EXCEPTION,
-        fields=(
-          __FieldSpec.create(
-  name="code",
-  type=int,
-  kind=__NumberType.I32,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="req_code",
-  type=int,
-  kind=__NumberType.I32,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="message2",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="req_message",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="exception_list",
-  type=List__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.exception_list,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="exception_set",
-  type=Set__i64,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="exception_map",
-  type=Map__string_i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="req_exception_map",
-  type=Map__string_i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="enum_field",
-  type=MyEnumA,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="enum_container",
-  type=List__MyEnumA,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="a_struct",
-  type=MyStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="a_set_struct",
-  type=Set__MyStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="a_union_list",
-  type=List__SimpleUnion,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="union_typedef",
-  type=Set__SimpleUnion,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="a_union_typedef_list",
-  type=List__Set__SimpleUnion,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """message""": """message2""",    },
-      )
+        return _types_reflection.get_reflection__AnException()
+
 
 
 @__cython.auto_pickle(False)
@@ -3694,42 +3143,8 @@ cdef class AnotherException(thrift.py3.exceptions.Error):
 
     @staticmethod
     def __get_reflection__():
-      defaults = AnotherException.create(constant_shared_ptr[cAnotherException](default_inst[cAnotherException]()))
-      return __StructSpec.create(
-        name="AnotherException",
-        kind=__StructType.EXCEPTION,
-        fields=(
-          __FieldSpec.create(
-  name="code",
-  type=int,
-  kind=__NumberType.I32,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="req_code",
-  type=int,
-  kind=__NumberType.I32,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="message",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp.virtual""": """1""",    },
-      )
+        return _types_reflection.get_reflection__AnotherException()
+
 
 
 @__cython.auto_pickle(False)
@@ -5223,429 +4638,8 @@ cdef class containerStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = containerStruct.create(constant_shared_ptr[ccontainerStruct](default_inst[ccontainerStruct]()))
-      return __StructSpec.create(
-        name="containerStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="fieldA",
-  type=bool,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="req_fieldA",
-  type=bool,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="opt_fieldA",
-  type=bool,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldB",
-  type=Map__string_bool,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="req_fieldB",
-  type=Map__string_bool,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="opt_fieldB",
-  type=Map__string_bool,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldC",
-  type=Set__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.fieldC,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="req_fieldC",
-  type=Set__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=defaults.req_fieldC,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="opt_fieldC",
-  type=Set__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=defaults.opt_fieldC,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldD",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldE",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.fieldE,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="req_fieldE",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=defaults.req_fieldE,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="opt_fieldE",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=defaults.opt_fieldE,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldF",
-  type=List__List__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.fieldF,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldG",
-  type=Map__string_Map__string_Map__string_i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldH",
-  type=List__Set__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldI",
-  type=bool,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.fieldI,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldJ",
-  type=Map__string_List__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.fieldJ,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldK",
-  type=List__List__List__List__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldL",
-  type=Set__Set__Set__bool,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldM",
-  type=Map__Set__List__i32_Map__List__Set__string_string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldN",
-  type=int,
-  kind=__NumberType.I32,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldO",
-  type=List__Map__Empty_MyStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldP",
-  type=List__List__List__Map__Empty_MyStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldQ",
-  type=MyEnumA,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldR",
-  type=MyEnumA,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.fieldR,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="req_fieldR",
-  type=MyEnumA,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=defaults.req_fieldR,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="opt_fieldR",
-  type=MyEnumA,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=defaults.opt_fieldR,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldS",
-  type=MyEnumA,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.fieldS,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldT",
-  type=List__MyEnumA,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldU",
-  type=List__MyEnumA,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.fieldU,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldV",
-  type=MyStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="req_fieldV",
-  type=MyStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="opt_fieldV",
-  type=MyStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldW",
-  type=Set__MyStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldX",
-  type=ComplexUnion,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="req_fieldX",
-  type=ComplexUnion,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="opt_fieldX",
-  type=ComplexUnion,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldY",
-  type=List__ComplexUnion,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldZ",
-  type=Set__SimpleUnion,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldAA",
-  type=List__Set__SimpleUnion,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldAB",
-  type=Map__Bar__double_Baz__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldAC",
-  type=MyEnumB,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldAD",
-  type=_includes_types.AnEnum,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldAE",
-  type=Map__string_i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.fieldAE,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldSD",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp.methods""": """void foo(const std::string& bar) {}""",      """cpp2.noncopyable""": """1""",    },
-      )
+        return _types_reflection.get_reflection__containerStruct()
+
     cdef __iobuf.IOBuf _serialize(containerStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef ccontainerStruct* cpp_obj = self._cpp_obj.get()
@@ -5922,51 +4916,8 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = MyIncludedStruct.create(constant_shared_ptr[cMyIncludedStruct](default_inst[cMyIncludedStruct]()))
-      return __StructSpec.create(
-        name="MyIncludedStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="MyIncludedInt",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.MyIncludedInt,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyIncludedStruct",
-  type=_includes_types.AStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="ARefField",
-  type=_includes_types.AStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-    """cpp.ref""": """true""",  },
-),
-                __FieldSpec.create(
-  name="ARequiredField",
-  type=_includes_types.AStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp2.declare_equal_to""": """1""",      """cpp2.declare_hash""": """1""",    },
-      )
+        return _types_reflection.get_reflection__MyIncludedStruct()
+
     cdef __iobuf.IOBuf _serialize(MyIncludedStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cMyIncludedStruct* cpp_obj = self._cpp_obj.get()
@@ -7353,375 +6304,8 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = AnnotatedStruct.create(constant_shared_ptr[cAnnotatedStruct](default_inst[cAnnotatedStruct]()))
-      return __StructSpec.create(
-        name="AnnotatedStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="no_annotation",
-  type=containerStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="cpp_unique_ref",
-  type=containerStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-    """cpp.ref""": """1""",  },
-),
-                __FieldSpec.create(
-  name="cpp2_unique_ref",
-  type=containerStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-    """cpp2.ref""": """1""",  },
-),
-                __FieldSpec.create(
-  name="container_with_ref",
-  type=Map__i32_List__string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-    """cpp2.ref""": """1""",  },
-),
-                __FieldSpec.create(
-  name="req_cpp_unique_ref",
-  type=containerStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-    """cpp.ref""": """1""",  },
-),
-                __FieldSpec.create(
-  name="req_cpp2_unique_ref",
-  type=containerStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-    """cpp2.ref""": """1""",  },
-),
-                __FieldSpec.create(
-  name="req_container_with_ref",
-  type=List__string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-    """cpp2.ref""": """1""",  },
-),
-                __FieldSpec.create(
-  name="opt_cpp_unique_ref",
-  type=containerStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-    """cpp.ref""": """1""",  },
-),
-                __FieldSpec.create(
-  name="opt_cpp2_unique_ref",
-  type=containerStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-    """cpp2.ref""": """1""",  },
-),
-                __FieldSpec.create(
-  name="opt_container_with_ref",
-  type=Set__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-    """cpp2.ref""": """1""",  },
-),
-                __FieldSpec.create(
-  name="ref_type_unique",
-  type=containerStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-    """cpp.ref_type""": """unique""",  },
-),
-                __FieldSpec.create(
-  name="ref_type_shared",
-  type=containerStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-    """cpp2.ref_type""": """shared""",  },
-),
-                __FieldSpec.create(
-  name="ref_type_const",
-  type=Map__i32_List__string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-    """cpp2.ref_type""": """shared_const""",  },
-),
-                __FieldSpec.create(
-  name="req_ref_type_shared",
-  type=containerStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-    """cpp.ref_type""": """shared""",  },
-),
-                __FieldSpec.create(
-  name="req_ref_type_const",
-  type=containerStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-    """cpp2.ref_type""": """shared_const""",  },
-),
-                __FieldSpec.create(
-  name="req_ref_type_unique",
-  type=List__string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-    """cpp2.ref_type""": """unique""",  },
-),
-                __FieldSpec.create(
-  name="opt_ref_type_const",
-  type=containerStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-    """cpp.ref_type""": """shared_const""",  },
-),
-                __FieldSpec.create(
-  name="opt_ref_type_unique",
-  type=containerStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-    """cpp2.ref_type""": """unique""",  },
-),
-                __FieldSpec.create(
-  name="opt_ref_type_shared",
-  type=Set__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-    """cpp2.ref_type""": """shared""",  },
-),
-                __FieldSpec.create(
-  name="base_type",
-  type=int,
-  kind=__NumberType.I32,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="list_type",
-  type=folly_small_vector_int64_t_8__List__i64,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="set_type",
-  type=folly_sorted_vector_set_std_string__Set__string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="map_type",
-  type=FakeMap__Map__i64_double,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="map_struct_type",
-  type=std_unordered_map_std_string_containerStruct__Map__string_containerStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="iobuf_type",
-  type=__iobuf.IOBuf,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="iobuf_ptr",
-  type=__iobuf.IOBuf,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="list_i32_template",
-  type=std_list__List__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="list_string_template",
-  type=std_deque__List__string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="set_template",
-  type=folly_sorted_vector_set__Set__string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="map_template",
-  type=folly_sorted_vector_map__Map__i64_string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="typedef_list_template",
-  type=std_list__List__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="typedef_deque_template",
-  type=std_deque__List__string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="typedef_set_template",
-  type=folly_sorted_vector_set__Set__string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="typedef_map_template",
-  type=folly_sorted_vector_map__Map__i64_string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="indirection_a",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="indirection_b",
-  type=List__Bar__double,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="indirection_c",
-  type=Set__Baz__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="iobuf_type_val",
-  type=__iobuf.IOBuf,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.iobuf_type_val,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="iobuf_ptr_val",
-  type=__iobuf.IOBuf,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.iobuf_ptr_val,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="struct_struct",
-  type=containerStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.struct_struct,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp.declare_equal_to""": """1""",      """cpp.declare_hash""": """1""",      """cpp.virtual""": """1""",      """cpp2.methods""": """void foo(const std::string& bar) {}""",      """cpp2.noexcept_move_ctor""": """1""",      """cpp2.noncopyable""": """1""",    },
-      )
+        return _types_reflection.get_reflection__AnnotatedStruct()
+
     cdef __iobuf.IOBuf _serialize(AnnotatedStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cAnnotatedStruct* cpp_obj = self._cpp_obj.get()
@@ -7922,33 +6506,8 @@ cdef class ComplexContainerStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = ComplexContainerStruct.create(constant_shared_ptr[cComplexContainerStruct](default_inst[cComplexContainerStruct]()))
-      return __StructSpec.create(
-        name="ComplexContainerStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="map_of_iobufs",
-  type=Map__string_folly_IOBuf__binary,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="map_of_iobuf_ptrs",
-  type=Map__string_std_unique_ptr_folly_IOBuf__binary,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__ComplexContainerStruct()
+
     cdef __iobuf.IOBuf _serialize(ComplexContainerStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cComplexContainerStruct* cpp_obj = self._cpp_obj.get()
@@ -8161,33 +6720,8 @@ cdef class FloatStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = FloatStruct.create(constant_shared_ptr[cFloatStruct](default_inst[cFloatStruct]()))
-      return __StructSpec.create(
-        name="FloatStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="floatField",
-  type=float,
-  kind=__NumberType.FLOAT,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="doubleField",
-  type=float,
-  kind=__NumberType.DOUBLE,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__FloatStruct()
+
     cdef __iobuf.IOBuf _serialize(FloatStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cFloatStruct* cpp_obj = self._cpp_obj.get()
@@ -8391,32 +6925,8 @@ cdef class FloatUnion(thrift.py3.types.Union):
 
     @staticmethod
     def __get_reflection__():
-      return __StructSpec.create(
-        name="FloatUnion",
-        kind=__StructType.UNION,
-        fields=(
-          __FieldSpec.create(
-  name="floatSide",
-  type=float,
-  kind=__NumberType.FLOAT,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="doubleSide",
-  type=float,
-  kind=__NumberType.DOUBLE,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__FloatUnion()
+
     cdef __iobuf.IOBuf _serialize(FloatUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cFloatUnion* cpp_obj = self._cpp_obj.get()
@@ -8596,24 +7106,8 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = AllRequiredNoExceptMoveCtrStruct.create(constant_shared_ptr[cAllRequiredNoExceptMoveCtrStruct](default_inst[cAllRequiredNoExceptMoveCtrStruct]()))
-      return __StructSpec.create(
-        name="AllRequiredNoExceptMoveCtrStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="intField",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp.noexcept_move_ctor""": """1""",    },
-      )
+        return _types_reflection.get_reflection__AllRequiredNoExceptMoveCtrStruct()
+
     cdef __iobuf.IOBuf _serialize(AllRequiredNoExceptMoveCtrStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cAllRequiredNoExceptMoveCtrStruct* cpp_obj = self._cpp_obj.get()
@@ -8787,7 +7281,7 @@ cdef class Map__string_i64(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=str, key_kind=__NumberType.NOT_A_NUMBER, value=int, value_kind=__NumberType.I64)
+        return _types_reflection.get_reflection__Map__string_i64()
 
 
 Mapping.register(Map__string_i64)
@@ -8925,7 +7419,7 @@ cdef class Map__Empty_MyStruct(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=Empty, key_kind=__NumberType.NOT_A_NUMBER, value=MyStruct, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__Map__Empty_MyStruct()
 
 
 Mapping.register(Map__Empty_MyStruct)
@@ -9107,7 +7601,7 @@ cdef class List__Map__Empty_MyStruct(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=Map__Empty_MyStruct, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__Map__Empty_MyStruct()
 
 
 Sequence.register(List__Map__Empty_MyStruct)
@@ -9289,7 +7783,7 @@ cdef class List__List__Map__Empty_MyStruct(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=List__Map__Empty_MyStruct, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__List__Map__Empty_MyStruct()
 
 
 Sequence.register(List__List__Map__Empty_MyStruct)
@@ -9471,7 +7965,7 @@ cdef class List__List__List__Map__Empty_MyStruct(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=List__List__Map__Empty_MyStruct, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__List__List__Map__Empty_MyStruct()
 
 
 Sequence.register(List__List__List__Map__Empty_MyStruct)
@@ -9636,7 +8130,7 @@ cdef class List__MyEnumA(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=MyEnumA, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__MyEnumA()
 
 
 Sequence.register(List__MyEnumA)
@@ -9884,8 +8378,7 @@ cdef class Set__MyStruct(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=MyStruct, kind=__NumberType.NOT_A_NUMBER)
-
+        return _types_reflection.get_reflection__Set__MyStruct()
 
 
 Set.register(Set__MyStruct)
@@ -10050,7 +8543,7 @@ cdef class List__ComplexUnion(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=ComplexUnion, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__ComplexUnion()
 
 
 Sequence.register(List__ComplexUnion)
@@ -10215,7 +8708,7 @@ cdef class List__string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=str, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__string()
 
 
 Sequence.register(List__string)
@@ -10470,8 +8963,7 @@ cdef class Set__List__string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=List__string, kind=__NumberType.NOT_A_NUMBER)
-
+        return _types_reflection.get_reflection__Set__List__string()
 
 
 Set.register(Set__List__string)
@@ -10726,8 +9218,7 @@ cdef class Set__List__List__Map__Empty_MyStruct(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=List__List__Map__Empty_MyStruct, kind=__NumberType.NOT_A_NUMBER)
-
+        return _types_reflection.get_reflection__Set__List__List__Map__Empty_MyStruct()
 
 
 Set.register(Set__List__List__Map__Empty_MyStruct)
@@ -10868,7 +9359,7 @@ cdef class Map__i32_List__string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, key_kind=__NumberType.I32, value=List__string, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__Map__i32_List__string()
 
 
 Mapping.register(Map__i32_List__string)
@@ -11033,7 +9524,7 @@ cdef class List__bool(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=bool, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__bool()
 
 
 Sequence.register(List__bool)
@@ -11199,7 +9690,7 @@ cdef class List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=int, kind=__NumberType.I32)
+        return _types_reflection.get_reflection__List__i32()
 
 
 Sequence.register(List__i32)
@@ -11381,7 +9872,7 @@ cdef class List__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=List__i32, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__List__i32()
 
 
 Sequence.register(List__List__i32)
@@ -11563,7 +10054,7 @@ cdef class List__List__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=List__List__i32, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__List__List__i32()
 
 
 Sequence.register(List__List__List__i32)
@@ -11745,7 +10236,7 @@ cdef class List__List__List__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=List__List__List__i32, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__List__List__List__i32()
 
 
 Sequence.register(List__List__List__List__i32)
@@ -12000,8 +10491,7 @@ cdef class Set__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=List__i32, kind=__NumberType.NOT_A_NUMBER)
-
+        return _types_reflection.get_reflection__Set__List__i32()
 
 
 Set.register(Set__List__i32)
@@ -12249,8 +10739,7 @@ cdef class Set__string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=str, kind=__NumberType.NOT_A_NUMBER)
-
+        return _types_reflection.get_reflection__Set__string()
 
 
 Set.register(Set__string)
@@ -12432,7 +10921,7 @@ cdef class List__Set__string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=Set__string, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__Set__string()
 
 
 Sequence.register(List__Set__string)
@@ -12587,7 +11076,7 @@ cdef class Map__List__Set__string_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=List__Set__string, key_kind=__NumberType.NOT_A_NUMBER, value=str, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__Map__List__Set__string_string()
 
 
 Mapping.register(Map__List__Set__string_string)
@@ -12744,7 +11233,7 @@ cdef class Map__Set__List__i32_Map__List__Set__string_string(thrift.py3.types.Co
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=Set__List__i32, key_kind=__NumberType.NOT_A_NUMBER, value=Map__List__Set__string_string, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__Map__Set__List__i32_Map__List__Set__string_string()
 
 
 Mapping.register(Map__Set__List__i32_Map__List__Set__string_string)
@@ -12909,7 +11398,7 @@ cdef class List__binary(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=bytes, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__binary()
 
 
 Sequence.register(List__binary)
@@ -13047,7 +11536,7 @@ cdef class Map__MyEnumA_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=MyEnumA, key_kind=__NumberType.NOT_A_NUMBER, value=str, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__Map__MyEnumA_string()
 
 
 Mapping.register(Map__MyEnumA_string)
@@ -13296,8 +11785,7 @@ cdef class Set__i64(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=int, kind=__NumberType.I64)
-
+        return _types_reflection.get_reflection__Set__i64()
 
 
 Set.register(Set__i64)
@@ -13436,7 +11924,7 @@ cdef class Map__string_i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=str, key_kind=__NumberType.NOT_A_NUMBER, value=int, value_kind=__NumberType.I32)
+        return _types_reflection.get_reflection__Map__string_i32()
 
 
 Mapping.register(Map__string_i32)
@@ -13601,7 +12089,7 @@ cdef class List__SimpleUnion(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=SimpleUnion, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__SimpleUnion()
 
 
 Sequence.register(List__SimpleUnion)
@@ -13849,8 +12337,7 @@ cdef class Set__SimpleUnion(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=SimpleUnion, kind=__NumberType.NOT_A_NUMBER)
-
+        return _types_reflection.get_reflection__Set__SimpleUnion()
 
 
 Set.register(Set__SimpleUnion)
@@ -14032,7 +12519,7 @@ cdef class List__Set__SimpleUnion(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=Set__SimpleUnion, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__Set__SimpleUnion()
 
 
 Sequence.register(List__Set__SimpleUnion)
@@ -14170,7 +12657,7 @@ cdef class Map__string_bool(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=str, key_kind=__NumberType.NOT_A_NUMBER, value=bool, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__Map__string_bool()
 
 
 Mapping.register(Map__string_bool)
@@ -14419,8 +12906,7 @@ cdef class Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=int, kind=__NumberType.I32)
-
+        return _types_reflection.get_reflection__Set__i32()
 
 
 Set.register(Set__i32)
@@ -14560,7 +13046,7 @@ cdef class Map__string_Map__string_i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=str, key_kind=__NumberType.NOT_A_NUMBER, value=Map__string_i32, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__Map__string_Map__string_i32()
 
 
 Mapping.register(Map__string_Map__string_i32)
@@ -14700,7 +13186,7 @@ cdef class Map__string_Map__string_Map__string_i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=str, key_kind=__NumberType.NOT_A_NUMBER, value=Map__string_Map__string_i32, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__Map__string_Map__string_Map__string_i32()
 
 
 Mapping.register(Map__string_Map__string_Map__string_i32)
@@ -14882,7 +13368,7 @@ cdef class List__Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=Set__i32, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__Set__i32()
 
 
 Sequence.register(List__Set__i32)
@@ -15022,7 +13508,7 @@ cdef class Map__string_List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=str, key_kind=__NumberType.NOT_A_NUMBER, value=List__i32, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__Map__string_List__i32()
 
 
 Mapping.register(Map__string_List__i32)
@@ -15270,8 +13756,7 @@ cdef class Set__bool(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=bool, kind=__NumberType.NOT_A_NUMBER)
-
+        return _types_reflection.get_reflection__Set__bool()
 
 
 Set.register(Set__bool)
@@ -15526,8 +14011,7 @@ cdef class Set__Set__bool(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=Set__bool, kind=__NumberType.NOT_A_NUMBER)
-
+        return _types_reflection.get_reflection__Set__Set__bool()
 
 
 Set.register(Set__Set__bool)
@@ -15782,8 +14266,7 @@ cdef class Set__Set__Set__bool(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=Set__Set__bool, kind=__NumberType.NOT_A_NUMBER)
-
+        return _types_reflection.get_reflection__Set__Set__Set__bool()
 
 
 Set.register(Set__Set__Set__bool)
@@ -15922,7 +14405,7 @@ cdef class Map__Bar__double_Baz__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=float, key_kind=__NumberType.DOUBLE, value=int, value_kind=__NumberType.I32)
+        return _types_reflection.get_reflection__Map__Bar__double_Baz__i32()
 
 
 Mapping.register(Map__Bar__double_Baz__i32)
@@ -16088,7 +14571,7 @@ cdef class folly_small_vector_int64_t_8__List__i64(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=int, kind=__NumberType.I64)
+        return _types_reflection.get_reflection__folly_small_vector_int64_t_8__List__i64()
 
 
 Sequence.register(folly_small_vector_int64_t_8__List__i64)
@@ -16336,8 +14819,7 @@ cdef class folly_sorted_vector_set_std_string__Set__string(thrift.py3.types.Cont
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=str, kind=__NumberType.NOT_A_NUMBER)
-
+        return _types_reflection.get_reflection__folly_sorted_vector_set_std_string__Set__string()
 
 
 Set.register(folly_sorted_vector_set_std_string__Set__string)
@@ -16476,7 +14958,7 @@ cdef class FakeMap__Map__i64_double(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, key_kind=__NumberType.I64, value=float, value_kind=__NumberType.DOUBLE)
+        return _types_reflection.get_reflection__FakeMap__Map__i64_double()
 
 
 Mapping.register(FakeMap__Map__i64_double)
@@ -16614,7 +15096,7 @@ cdef class std_unordered_map_std_string_containerStruct__Map__string_containerSt
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=str, key_kind=__NumberType.NOT_A_NUMBER, value=containerStruct, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__std_unordered_map_std_string_containerStruct__Map__string_containerStruct()
 
 
 Mapping.register(std_unordered_map_std_string_containerStruct__Map__string_containerStruct)
@@ -16780,7 +15262,7 @@ cdef class std_list__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=int, kind=__NumberType.I32)
+        return _types_reflection.get_reflection__std_list__List__i32()
 
 
 Sequence.register(std_list__List__i32)
@@ -16945,7 +15427,7 @@ cdef class std_deque__List__string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=str, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__std_deque__List__string()
 
 
 Sequence.register(std_deque__List__string)
@@ -17193,8 +15675,7 @@ cdef class folly_sorted_vector_set__Set__string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=str, kind=__NumberType.NOT_A_NUMBER)
-
+        return _types_reflection.get_reflection__folly_sorted_vector_set__Set__string()
 
 
 Set.register(folly_sorted_vector_set__Set__string)
@@ -17333,7 +15814,7 @@ cdef class folly_sorted_vector_map__Map__i64_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, key_kind=__NumberType.I64, value=str, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__folly_sorted_vector_map__Map__i64_string()
 
 
 Mapping.register(folly_sorted_vector_map__Map__i64_string)
@@ -17498,7 +15979,7 @@ cdef class List__Bar__double(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=float, kind=__NumberType.DOUBLE)
+        return _types_reflection.get_reflection__List__Bar__double()
 
 
 Sequence.register(List__Bar__double)
@@ -17747,8 +16228,7 @@ cdef class Set__Baz__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=int, kind=__NumberType.I32)
-
+        return _types_reflection.get_reflection__Set__Baz__i32()
 
 
 Set.register(Set__Baz__i32)
@@ -17886,7 +16366,7 @@ cdef class Map__string_folly_IOBuf__binary(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=str, key_kind=__NumberType.NOT_A_NUMBER, value=__iobuf.IOBuf, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__Map__string_folly_IOBuf__binary()
 
 
 Mapping.register(Map__string_folly_IOBuf__binary)
@@ -18024,7 +16504,7 @@ cdef class Map__string_std_unique_ptr_folly_IOBuf__binary(thrift.py3.types.Conta
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=str, key_kind=__NumberType.NOT_A_NUMBER, value=__iobuf.IOBuf, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__Map__string_std_unique_ptr_folly_IOBuf__binary()
 
 
 Mapping.register(Map__string_std_unique_ptr_folly_IOBuf__binary)
@@ -18163,7 +16643,7 @@ cdef class Map__i32_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, key_kind=__NumberType.I32, value=str, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__Map__i32_string()
 
 
 Mapping.register(Map__i32_string)
@@ -18345,7 +16825,7 @@ cdef class List__Map__string_i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=Map__string_i32, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__Map__string_i32()
 
 
 Sequence.register(List__Map__string_i32)
@@ -18484,7 +16964,7 @@ cdef class Map__i16_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, key_kind=__NumberType.I16, value=str, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__Map__i16_string()
 
 
 Mapping.register(Map__i16_string)
@@ -18666,7 +17146,7 @@ cdef class List__Map__i16_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=Map__i16_string, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__Map__i16_string()
 
 
 Sequence.register(List__Map__i16_string)
@@ -18831,7 +17311,7 @@ cdef class List__MyStruct(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=MyStruct, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__MyStruct()
 
 
 Sequence.register(List__MyStruct)

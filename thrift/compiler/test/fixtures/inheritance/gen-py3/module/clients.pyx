@@ -30,12 +30,6 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.reflection cimport (
-    ArgumentSpec as __ArgumentSpec,
-    InterfaceSpec as __InterfaceSpec,
-    MethodSpec as __MethodSpec,
-    NumberType as __NumberType
-)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -50,6 +44,8 @@ from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_
 
 cimport module.types as _module_types
 import module.types as _module_types
+
+cimport module.services_reflection as _services_reflection
 
 from module.clients_wrapper cimport cMyRootAsyncClient, cMyRootClientWrapper
 from module.clients_wrapper cimport cMyNodeAsyncClient, cMyNodeClientWrapper
@@ -133,30 +129,9 @@ cdef class MyRoot(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
-    @staticmethod
-    def __get_reflection_for_do_root():
-        return __MethodSpec.create(
-            name="do_root",
-            arguments=(
-            ),
-            result=None,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec.create(
-            name="MyRoot",
-            methods=(
-                cls.__get_reflection_for_do_root(),
-            ),
-            annotations={
-            },
-        )
+        return _services_reflection.get_reflection__MyRoot(for_clients=True)
 
 cdef object _MyNode_annotations = _py_types.MappingProxyType({
 })
@@ -195,30 +170,9 @@ cdef class MyNode(MyRoot):
         return asyncio_shield(__future)
 
 
-    @staticmethod
-    def __get_reflection_for_do_mid():
-        return __MethodSpec.create(
-            name="do_mid",
-            arguments=(
-            ),
-            result=None,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec.create(
-            name="MyNode",
-            methods=(
-                cls.__get_reflection_for_do_mid(),
-            ),
-            annotations={
-            },
-        )
+        return _services_reflection.get_reflection__MyNode(for_clients=True)
 
 cdef object _MyLeaf_annotations = _py_types.MappingProxyType({
 })
@@ -257,28 +211,7 @@ cdef class MyLeaf(MyNode):
         return asyncio_shield(__future)
 
 
-    @staticmethod
-    def __get_reflection_for_do_leaf():
-        return __MethodSpec.create(
-            name="do_leaf",
-            arguments=(
-            ),
-            result=None,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec.create(
-            name="MyLeaf",
-            methods=(
-                cls.__get_reflection_for_do_leaf(),
-            ),
-            annotations={
-            },
-        )
+        return _services_reflection.get_reflection__MyLeaf(for_clients=True)
 

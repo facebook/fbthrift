@@ -30,12 +30,6 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.reflection cimport (
-    ArgumentSpec as __ArgumentSpec,
-    InterfaceSpec as __InterfaceSpec,
-    MethodSpec as __MethodSpec,
-    NumberType as __NumberType
-)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -50,6 +44,8 @@ from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_
 
 cimport module.types as _module_types
 import module.types as _module_types
+
+cimport module.services_reflection as _services_reflection
 
 from module.clients_wrapper cimport cNestedContainersAsyncClient, cNestedContainersClientWrapper
 
@@ -257,123 +253,7 @@ cdef class NestedContainers(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
-    @staticmethod
-    def __get_reflection_for_mapList():
-        return __MethodSpec.create(
-            name="mapList",
-            arguments=(
-                __ArgumentSpec.create(
-                    name="foo",
-                    type=_module_types.Map__i32_List__i32,
-                    kind=__NumberType.NOT_A_NUMBER,
-                    annotations={
-                    },
-                ),
-            ),
-            result=None,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
-    @staticmethod
-    def __get_reflection_for_mapSet():
-        return __MethodSpec.create(
-            name="mapSet",
-            arguments=(
-                __ArgumentSpec.create(
-                    name="foo",
-                    type=_module_types.Map__i32_Set__i32,
-                    kind=__NumberType.NOT_A_NUMBER,
-                    annotations={
-                    },
-                ),
-            ),
-            result=None,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
-    @staticmethod
-    def __get_reflection_for_listMap():
-        return __MethodSpec.create(
-            name="listMap",
-            arguments=(
-                __ArgumentSpec.create(
-                    name="foo",
-                    type=_module_types.List__Map__i32_i32,
-                    kind=__NumberType.NOT_A_NUMBER,
-                    annotations={
-                    },
-                ),
-            ),
-            result=None,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
-    @staticmethod
-    def __get_reflection_for_listSet():
-        return __MethodSpec.create(
-            name="listSet",
-            arguments=(
-                __ArgumentSpec.create(
-                    name="foo",
-                    type=_module_types.List__Set__i32,
-                    kind=__NumberType.NOT_A_NUMBER,
-                    annotations={
-                    },
-                ),
-            ),
-            result=None,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
-    @staticmethod
-    def __get_reflection_for_turtles():
-        return __MethodSpec.create(
-            name="turtles",
-            arguments=(
-                __ArgumentSpec.create(
-                    name="foo",
-                    type=_module_types.List__List__Map__i32_Map__i32_Set__i32,
-                    kind=__NumberType.NOT_A_NUMBER,
-                    annotations={
-                    },
-                ),
-            ),
-            result=None,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec.create(
-            name="NestedContainers",
-            methods=(
-                cls.__get_reflection_for_mapList(),
-                cls.__get_reflection_for_mapSet(),
-                cls.__get_reflection_for_listMap(),
-                cls.__get_reflection_for_listSet(),
-                cls.__get_reflection_for_turtles(),
-            ),
-            annotations={
-            },
-        )
+        return _services_reflection.get_reflection__NestedContainers(for_clients=True)
 

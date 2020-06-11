@@ -17,16 +17,6 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.reflection cimport (
-    NumberType as __NumberType,
-    StructSpec as __StructSpec,
-    ListSpec as __ListSpec,
-    SetSpec as __SetSpec,
-    MapSpec as __MapSpec,
-    FieldSpec as __FieldSpec,
-    StructType as __StructType,
-    Qualifier as __Qualifier,
-)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -41,12 +31,13 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
-import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
 import weakref as __weakref
 import builtins as _builtins
+
+cimport module.types_reflection as _types_reflection
 
 
 
@@ -229,15 +220,8 @@ cdef class Empty(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = Empty.create(constant_shared_ptr[cEmpty](default_inst[cEmpty]()))
-      return __StructSpec.create(
-        name="Empty",
-        kind=__StructType.STRUCT,
-        fields=(
-    ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__Empty()
+
     cdef __iobuf.IOBuf _serialize(Empty self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cEmpty* cpp_obj = self._cpp_obj.get()
@@ -375,14 +359,8 @@ cdef class Nada(thrift.py3.types.Union):
 
     @staticmethod
     def __get_reflection__():
-      return __StructSpec.create(
-        name="Nada",
-        kind=__StructType.UNION,
-        fields=(
-    ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__Nada()
+
     cdef __iobuf.IOBuf _serialize(Nada self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cNada* cpp_obj = self._cpp_obj.get()

@@ -30,12 +30,6 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.reflection cimport (
-    ArgumentSpec as __ArgumentSpec,
-    InterfaceSpec as __InterfaceSpec,
-    MethodSpec as __MethodSpec,
-    NumberType as __NumberType
-)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -50,6 +44,8 @@ from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_
 
 cimport module.types as _module_types
 import module.types as _module_types
+
+cimport module.services_reflection as _services_reflection
 
 from module.clients_wrapper cimport cSinkServiceAsyncClient, cSinkServiceClientWrapper
 
@@ -74,17 +70,5 @@ cdef class SinkService(thrift.py3.client.Client):
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec.create(
-            name="SinkService",
-            methods=(
-                cls.__get_reflection_for_method(),
-                cls.__get_reflection_for_methodAndReponse(),
-                cls.__get_reflection_for_methodThrow(),
-                cls.__get_reflection_for_methodSinkThrow(),
-                cls.__get_reflection_for_methodFinalThrow(),
-                cls.__get_reflection_for_methodBothThrow(),
-            ),
-            annotations={
-            },
-        )
+        return _services_reflection.get_reflection__SinkService(for_clients=True)
 

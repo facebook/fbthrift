@@ -17,16 +17,6 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.reflection cimport (
-    NumberType as __NumberType,
-    StructSpec as __StructSpec,
-    ListSpec as __ListSpec,
-    SetSpec as __SetSpec,
-    MapSpec as __MapSpec,
-    FieldSpec as __FieldSpec,
-    StructType as __StructType,
-    Qualifier as __Qualifier,
-)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -41,12 +31,13 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
-import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
 import weakref as __weakref
 import builtins as _builtins
+
+cimport module.types_reflection as _types_reflection
 
 cdef object __MyEnumEnumInstances = None  # Set[MyEnum]
 cdef object __MyEnumEnumMembers = {}      # Dict[str, MyEnum]
@@ -289,24 +280,8 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = MyStructNestedAnnotation.create(constant_shared_ptr[cMyStructNestedAnnotation](default_inst[cMyStructNestedAnnotation]()))
-      return __StructSpec.create(
-        name="MyStructNestedAnnotation",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="name",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__MyStructNestedAnnotation()
+
     cdef __iobuf.IOBuf _serialize(MyStructNestedAnnotation self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cMyStructNestedAnnotation* cpp_obj = self._cpp_obj.get()
@@ -582,51 +557,8 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = MyStructAnnotation.create(constant_shared_ptr[cMyStructAnnotation](default_inst[cMyStructAnnotation]()))
-      return __StructSpec.create(
-        name="MyStructAnnotation",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="count",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="name",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="extra",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="nest",
-  type=MyStructNestedAnnotation,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__MyStructAnnotation()
+
     cdef __iobuf.IOBuf _serialize(MyStructAnnotation self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cMyStructAnnotation* cpp_obj = self._cpp_obj.get()
@@ -961,69 +893,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = MyStruct.create(constant_shared_ptr[cMyStruct](default_inst[cMyStruct]()))
-      return __StructSpec.create(
-        name="MyStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="major",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-    """cpp.name""": """majorVer""",  },
-),
-                __FieldSpec.create(
-  name="package",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-    """java.swift.name""": """_package""",  },
-),
-                __FieldSpec.create(
-  name="annotation_with_quote",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-    """go.tag""": """tag:\"somevalue\"""",  },
-),
-                __FieldSpec.create(
-  name="class_",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-    """java.swift.name""": """class_""",  },
-),
-                __FieldSpec.create(
-  name="annotation_with_trailing_comma",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-    """custom""": """test""",  },
-),
-                __FieldSpec.create(
-  name="empty_annotations",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """android.generate_builder""": """1""",    },
-      )
+        return _types_reflection.get_reflection__MyStruct()
+
     cdef __iobuf.IOBuf _serialize(MyStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cMyStruct* cpp_obj = self._cpp_obj.get()
@@ -1234,33 +1105,8 @@ cdef class SecretStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = SecretStruct.create(constant_shared_ptr[cSecretStruct](default_inst[cSecretStruct]()))
-      return __StructSpec.create(
-        name="SecretStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="id",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="password",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-    """java.sensitive""": """1""",  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__SecretStruct()
+
     cdef __iobuf.IOBuf _serialize(SecretStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cSecretStruct* cpp_obj = self._cpp_obj.get()

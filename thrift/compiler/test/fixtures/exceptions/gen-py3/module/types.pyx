@@ -17,16 +17,6 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.reflection cimport (
-    NumberType as __NumberType,
-    StructSpec as __StructSpec,
-    ListSpec as __ListSpec,
-    SetSpec as __SetSpec,
-    MapSpec as __MapSpec,
-    FieldSpec as __FieldSpec,
-    StructType as __StructType,
-    Qualifier as __Qualifier,
-)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -41,12 +31,13 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
-import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
 import weakref as __weakref
 import builtins as _builtins
+
+cimport module.types_reflection as _types_reflection
 
 
 @__cython.auto_pickle(False)
@@ -133,15 +124,8 @@ cdef class Banal(thrift.py3.exceptions.Error):
 
     @staticmethod
     def __get_reflection__():
-      defaults = Banal.create(constant_shared_ptr[cBanal](default_inst[cBanal]()))
-      return __StructSpec.create(
-        name="Banal",
-        kind=__StructType.EXCEPTION,
-        fields=(
-    ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__Banal()
+
 
 
 @__cython.auto_pickle(False)
@@ -244,24 +228,8 @@ cdef class Fiery(thrift.py3.exceptions.Error):
 
     @staticmethod
     def __get_reflection__():
-      defaults = Fiery.create(constant_shared_ptr[cFiery](default_inst[cFiery]()))
-      return __StructSpec.create(
-        name="Fiery",
-        kind=__StructType.EXCEPTION,
-        fields=(
-          __FieldSpec.create(
-  name="message",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """message""": """message""",    },
-      )
+        return _types_reflection.get_reflection__Fiery()
+
 
 
 @__cython.auto_pickle(False)
@@ -367,23 +335,7 @@ cdef class Serious(thrift.py3.exceptions.Error):
 
     @staticmethod
     def __get_reflection__():
-      defaults = Serious.create(constant_shared_ptr[cSerious](default_inst[cSerious]()))
-      return __StructSpec.create(
-        name="Serious",
-        kind=__StructType.EXCEPTION,
-        fields=(
-          __FieldSpec.create(
-  name="sonnet",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """message""": """sonnet""",    },
-      )
+        return _types_reflection.get_reflection__Serious()
+
 
 

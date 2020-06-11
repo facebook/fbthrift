@@ -30,12 +30,6 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.reflection cimport (
-    ArgumentSpec as __ArgumentSpec,
-    InterfaceSpec as __InterfaceSpec,
-    MethodSpec as __MethodSpec,
-    NumberType as __NumberType
-)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -50,6 +44,8 @@ from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_
 
 cimport empty.types as _empty_types
 import empty.types as _empty_types
+
+cimport empty.services_reflection as _services_reflection
 
 from empty.clients_wrapper cimport cNullServiceAsyncClient, cNullServiceClientWrapper
 
@@ -74,11 +70,5 @@ cdef class NullService(thrift.py3.client.Client):
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec.create(
-            name="NullService",
-            methods=(
-            ),
-            annotations={
-            },
-        )
+        return _services_reflection.get_reflection__NullService(for_clients=True)
 

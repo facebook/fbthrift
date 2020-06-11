@@ -17,16 +17,6 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.reflection cimport (
-    NumberType as __NumberType,
-    StructSpec as __StructSpec,
-    ListSpec as __ListSpec,
-    SetSpec as __SetSpec,
-    MapSpec as __MapSpec,
-    FieldSpec as __FieldSpec,
-    StructType as __StructType,
-    Qualifier as __Qualifier,
-)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -41,12 +31,13 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
-import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
 import weakref as __weakref
 import builtins as _builtins
+
+cimport module.types_reflection as _types_reflection
 
 
 
@@ -889,68 +880,8 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 
     @staticmethod
     def __get_reflection__():
-      return __StructSpec.create(
-        name="ComplexUnion",
-        kind=__StructType.UNION,
-        fields=(
-          __FieldSpec.create(
-  name="intValue",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="stringValue",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="intListValue",
-  type=List__i64,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="stringListValue",
-  type=List__string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="typedefValue",
-  type=Map__i16_string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="stringRef",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-    """cpp2.ref""": """true""",  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__ComplexUnion()
+
     cdef __iobuf.IOBuf _serialize(ComplexUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cComplexUnion* cpp_obj = self._cpp_obj.get()
@@ -1126,32 +1057,8 @@ cdef class ListUnion(thrift.py3.types.Union):
 
     @staticmethod
     def __get_reflection__():
-      return __StructSpec.create(
-        name="ListUnion",
-        kind=__StructType.UNION,
-        fields=(
-          __FieldSpec.create(
-  name="intListValue",
-  type=List__i64,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="stringListValue",
-  type=List__string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__ListUnion()
+
     cdef __iobuf.IOBuf _serialize(ListUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cListUnion* cpp_obj = self._cpp_obj.get()
@@ -1327,32 +1234,8 @@ cdef class DataUnion(thrift.py3.types.Union):
 
     @staticmethod
     def __get_reflection__():
-      return __StructSpec.create(
-        name="DataUnion",
-        kind=__StructType.UNION,
-        fields=(
-          __FieldSpec.create(
-  name="binaryData",
-  type=bytes,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="stringData",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__DataUnion()
+
     cdef __iobuf.IOBuf _serialize(DataUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cDataUnion* cpp_obj = self._cpp_obj.get()
@@ -1594,42 +1477,8 @@ cdef class Val(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = Val.create(constant_shared_ptr[cVal](default_inst[cVal]()))
-      return __StructSpec.create(
-        name="Val",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="strVal",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="intVal",
-  type=int,
-  kind=__NumberType.I32,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="typedefValue",
-  type=Map__i16_string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__Val()
+
     cdef __iobuf.IOBuf _serialize(Val self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cVal* cpp_obj = self._cpp_obj.get()
@@ -1803,32 +1652,8 @@ cdef class ValUnion(thrift.py3.types.Union):
 
     @staticmethod
     def __get_reflection__():
-      return __StructSpec.create(
-        name="ValUnion",
-        kind=__StructType.UNION,
-        fields=(
-          __FieldSpec.create(
-  name="v1",
-  type=Val,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="v2",
-  type=Val,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__ValUnion()
+
     cdef __iobuf.IOBuf _serialize(ValUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cValUnion* cpp_obj = self._cpp_obj.get()
@@ -2004,32 +1829,8 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
 
     @staticmethod
     def __get_reflection__():
-      return __StructSpec.create(
-        name="VirtualComplexUnion",
-        kind=__StructType.UNION,
-        fields=(
-          __FieldSpec.create(
-  name="thingOne",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="thingTwo",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp.virtual""": """1""",    },
-      )
+        return _types_reflection.get_reflection__VirtualComplexUnion()
+
     cdef __iobuf.IOBuf _serialize(VirtualComplexUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cVirtualComplexUnion* cpp_obj = self._cpp_obj.get()
@@ -2211,24 +2012,8 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = NonCopyableStruct.create(constant_shared_ptr[cNonCopyableStruct](default_inst[cNonCopyableStruct]()))
-      return __StructSpec.create(
-        name="NonCopyableStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="num",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp2.noncopyable""": """1""",    },
-      )
+        return _types_reflection.get_reflection__NonCopyableStruct()
+
     cdef __iobuf.IOBuf _serialize(NonCopyableStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cNonCopyableStruct* cpp_obj = self._cpp_obj.get()
@@ -2384,23 +2169,8 @@ cdef class NonCopyableUnion(thrift.py3.types.Union):
 
     @staticmethod
     def __get_reflection__():
-      return __StructSpec.create(
-        name="NonCopyableUnion",
-        kind=__StructType.UNION,
-        fields=(
-          __FieldSpec.create(
-  name="s",
-  type=NonCopyableStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp2.noncopyable""": """1""",    },
-      )
+        return _types_reflection.get_reflection__NonCopyableUnion()
+
     cdef __iobuf.IOBuf _serialize(NonCopyableUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cNonCopyableUnion* cpp_obj = self._cpp_obj.get()
@@ -2603,7 +2373,7 @@ cdef class List__i64(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=int, kind=__NumberType.I64)
+        return _types_reflection.get_reflection__List__i64()
 
 
 Sequence.register(List__i64)
@@ -2768,7 +2538,7 @@ cdef class List__string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=str, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__string()
 
 
 Sequence.register(List__string)
@@ -2907,7 +2677,7 @@ cdef class Map__i16_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, key_kind=__NumberType.I16, value=str, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__Map__i16_string()
 
 
 Mapping.register(Map__i16_string)

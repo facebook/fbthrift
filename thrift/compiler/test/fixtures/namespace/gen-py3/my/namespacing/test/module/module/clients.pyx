@@ -30,12 +30,6 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.reflection cimport (
-    ArgumentSpec as __ArgumentSpec,
-    InterfaceSpec as __InterfaceSpec,
-    MethodSpec as __MethodSpec,
-    NumberType as __NumberType
-)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -50,6 +44,8 @@ from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_
 
 cimport my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types
 import my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types
+
+cimport my.namespacing.test.module.module.services_reflection as _services_reflection
 
 from my.namespacing.test.module.module.clients_wrapper cimport cTestServiceAsyncClient, cTestServiceClientWrapper
 
@@ -111,35 +107,7 @@ cdef class TestService(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
-    @staticmethod
-    def __get_reflection_for_init():
-        return __MethodSpec.create(
-            name="init",
-            arguments=(
-                __ArgumentSpec.create(
-                    name="int1",
-                    type=int,
-                    kind=__NumberType.I64,
-                    annotations={
-                    },
-                ),
-            ),
-            result=int,
-            result_kind=__NumberType.I64,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec.create(
-            name="TestService",
-            methods=(
-                cls.__get_reflection_for_init(),
-            ),
-            annotations={
-            },
-        )
+        return _services_reflection.get_reflection__TestService(for_clients=True)
 

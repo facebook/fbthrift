@@ -17,16 +17,6 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.reflection cimport (
-    NumberType as __NumberType,
-    StructSpec as __StructSpec,
-    ListSpec as __ListSpec,
-    SetSpec as __SetSpec,
-    MapSpec as __MapSpec,
-    FieldSpec as __FieldSpec,
-    StructType as __StructType,
-    Qualifier as __Qualifier,
-)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -41,7 +31,6 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
-import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
@@ -49,6 +38,8 @@ import weakref as __weakref
 import builtins as _builtins
 cimport include.types as _include_types
 import include.types as _include_types
+
+cimport module.types_reflection as _types_reflection
 
 cdef object __has_bitwise_opsEnumInstances = None  # Set[has_bitwise_ops]
 cdef object __has_bitwise_opsEnumMembers = {}      # Dict[str, has_bitwise_ops]
@@ -709,24 +700,8 @@ cdef class decorated_struct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = decorated_struct.create(constant_shared_ptr[cdecorated_struct](default_inst[cdecorated_struct]()))
-      return __StructSpec.create(
-        name="decorated_struct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="field",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp.declare_equal_to""": """1""",      """cpp.declare_hash""": """1""",    },
-      )
+        return _types_reflection.get_reflection__decorated_struct()
+
     cdef __iobuf.IOBuf _serialize(decorated_struct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cdecorated_struct* cpp_obj = self._cpp_obj.get()
@@ -1093,87 +1068,8 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = ContainerStruct.create(constant_shared_ptr[cContainerStruct](default_inst[cContainerStruct]()))
-      return __StructSpec.create(
-        name="ContainerStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="fieldA",
-  type=List__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldB",
-  type=std_list__List__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldC",
-  type=std_deque__List__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldD",
-  type=folly_fbvector__List__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldE",
-  type=folly_small_vector__List__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldF",
-  type=folly_sorted_vector_set__Set__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldG",
-  type=folly_sorted_vector_map__Map__i32_string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="fieldH",
-  type=std_unordered_map__Map__i32_string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__ContainerStruct()
+
     cdef __iobuf.IOBuf _serialize(ContainerStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cContainerStruct* cpp_obj = self._cpp_obj.get()
@@ -1345,24 +1241,8 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = CppTypeStruct.create(constant_shared_ptr[cCppTypeStruct](default_inst[cCppTypeStruct]()))
-      return __StructSpec.create(
-        name="CppTypeStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="fieldA",
-  type=std_list_int32_t__List__i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__CppTypeStruct()
+
     cdef __iobuf.IOBuf _serialize(CppTypeStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cCppTypeStruct* cpp_obj = self._cpp_obj.get()
@@ -1542,24 +1422,8 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = VirtualStruct.create(constant_shared_ptr[cVirtualStruct](default_inst[cVirtualStruct]()))
-      return __StructSpec.create(
-        name="VirtualStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="MyIntField",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp.virtual""": """1""",    },
-      )
+        return _types_reflection.get_reflection__VirtualStruct()
+
     cdef __iobuf.IOBuf _serialize(VirtualStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cVirtualStruct* cpp_obj = self._cpp_obj.get()
@@ -1764,33 +1628,8 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = MyStructWithForwardRefEnum.create(constant_shared_ptr[cMyStructWithForwardRefEnum](default_inst[cMyStructWithForwardRefEnum]()))
-      return __StructSpec.create(
-        name="MyStructWithForwardRefEnum",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="a",
-  type=MyForwardRefEnum,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.a,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="b",
-  type=MyForwardRefEnum,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.b,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__MyStructWithForwardRefEnum()
+
     cdef __iobuf.IOBuf _serialize(MyStructWithForwardRefEnum self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cMyStructWithForwardRefEnum* cpp_obj = self._cpp_obj.get()
@@ -2001,33 +1840,8 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = TrivialNumeric.create(constant_shared_ptr[cTrivialNumeric](default_inst[cTrivialNumeric]()))
-      return __StructSpec.create(
-        name="TrivialNumeric",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="a",
-  type=int,
-  kind=__NumberType.I32,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="b",
-  type=bool,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__TrivialNumeric()
+
     cdef __iobuf.IOBuf _serialize(TrivialNumeric self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cTrivialNumeric* cpp_obj = self._cpp_obj.get()
@@ -2240,33 +2054,8 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = TrivialNestedWithDefault.create(constant_shared_ptr[cTrivialNestedWithDefault](default_inst[cTrivialNestedWithDefault]()))
-      return __StructSpec.create(
-        name="TrivialNestedWithDefault",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="z",
-  type=int,
-  kind=__NumberType.I32,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.z,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="n",
-  type=TrivialNumeric,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.n,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__TrivialNestedWithDefault()
+
     cdef __iobuf.IOBuf _serialize(TrivialNestedWithDefault self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cTrivialNestedWithDefault* cpp_obj = self._cpp_obj.get()
@@ -2469,33 +2258,8 @@ cdef class ComplexString(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = ComplexString.create(constant_shared_ptr[cComplexString](default_inst[cComplexString]()))
-      return __StructSpec.create(
-        name="ComplexString",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="a",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="b",
-  type=Map__string_i32,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__ComplexString()
+
     cdef __iobuf.IOBuf _serialize(ComplexString self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cComplexString* cpp_obj = self._cpp_obj.get()
@@ -2702,33 +2466,8 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = ComplexNestedWithDefault.create(constant_shared_ptr[cComplexNestedWithDefault](default_inst[cComplexNestedWithDefault]()))
-      return __StructSpec.create(
-        name="ComplexNestedWithDefault",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="z",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.z,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="n",
-  type=ComplexString,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.n,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__ComplexNestedWithDefault()
+
     cdef __iobuf.IOBuf _serialize(ComplexNestedWithDefault self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cComplexNestedWithDefault* cpp_obj = self._cpp_obj.get()
@@ -3046,60 +2785,8 @@ cdef class MinPadding(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = MinPadding.create(constant_shared_ptr[cMinPadding](default_inst[cMinPadding]()))
-      return __StructSpec.create(
-        name="MinPadding",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="small",
-  type=int,
-  kind=__NumberType.BYTE,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="big",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="medium",
-  type=int,
-  kind=__NumberType.I16,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="biggish",
-  type=int,
-  kind=__NumberType.I32,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="tiny",
-  type=int,
-  kind=__NumberType.BYTE,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp.minimize_padding""": """1""",    },
-      )
+        return _types_reflection.get_reflection__MinPadding()
+
     cdef __iobuf.IOBuf _serialize(MinPadding self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cMinPadding* cpp_obj = self._cpp_obj.get()
@@ -3381,51 +3068,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = MyStruct.create(constant_shared_ptr[cMyStruct](default_inst[cMyStruct]()))
-      return __StructSpec.create(
-        name="MyStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="MyIntField",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyStringField",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="majorVer",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="data",
-  type=MyDataItem,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp2.noncomparable""": """1""",    },
-      )
+        return _types_reflection.get_reflection__MyStruct()
+
     cdef __iobuf.IOBuf _serialize(MyStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cMyStruct* cpp_obj = self._cpp_obj.get()
@@ -3553,15 +3197,8 @@ cdef class MyDataItem(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = MyDataItem.create(constant_shared_ptr[cMyDataItem](default_inst[cMyDataItem]()))
-      return __StructSpec.create(
-        name="MyDataItem",
-        kind=__StructType.STRUCT,
-        fields=(
-    ),
-        annotations={
-          """cpp2.noncomparable""": """1""",    },
-      )
+        return _types_reflection.get_reflection__MyDataItem()
+
     cdef __iobuf.IOBuf _serialize(MyDataItem self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cMyDataItem* cpp_obj = self._cpp_obj.get()
@@ -3741,24 +3378,8 @@ cdef class Renaming(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = Renaming.create(constant_shared_ptr[cRenaming](default_inst[cRenaming]()))
-      return __StructSpec.create(
-        name="Renaming",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="foo",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-    """cpp.name""": """bar""",  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__Renaming()
+
     cdef __iobuf.IOBuf _serialize(Renaming self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cRenaming* cpp_obj = self._cpp_obj.get()
@@ -3953,33 +3574,8 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = AnnotatedTypes.create(constant_shared_ptr[cAnnotatedTypes](default_inst[cAnnotatedTypes]()))
-      return __StructSpec.create(
-        name="AnnotatedTypes",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="binary_field",
-  type=bytes,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="list_field",
-  type=List__std_unordered_map__Map__i32_string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__AnnotatedTypes()
+
     cdef __iobuf.IOBuf _serialize(AnnotatedTypes self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cAnnotatedTypes* cpp_obj = self._cpp_obj.get()
@@ -4189,33 +3785,8 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = ForwardUsageRoot.create(constant_shared_ptr[cForwardUsageRoot](default_inst[cForwardUsageRoot]()))
-      return __StructSpec.create(
-        name="ForwardUsageRoot",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="ForwardUsageStruct",
-  type=ForwardUsageStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="ForwardUsageByRef",
-  type=ForwardUsageByRef,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-    """cpp.ref""": """true""",  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__ForwardUsageRoot()
+
     cdef __iobuf.IOBuf _serialize(ForwardUsageRoot self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cForwardUsageRoot* cpp_obj = self._cpp_obj.get()
@@ -4392,24 +3963,8 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = ForwardUsageStruct.create(constant_shared_ptr[cForwardUsageStruct](default_inst[cForwardUsageStruct]()))
-      return __StructSpec.create(
-        name="ForwardUsageStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="foo",
-  type=ForwardUsageRoot,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__ForwardUsageStruct()
+
     cdef __iobuf.IOBuf _serialize(ForwardUsageStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cForwardUsageStruct* cpp_obj = self._cpp_obj.get()
@@ -4586,24 +4141,8 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = ForwardUsageByRef.create(constant_shared_ptr[cForwardUsageByRef](default_inst[cForwardUsageByRef]()))
-      return __StructSpec.create(
-        name="ForwardUsageByRef",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="foo",
-  type=ForwardUsageRoot,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__ForwardUsageByRef()
+
     cdef __iobuf.IOBuf _serialize(ForwardUsageByRef self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cForwardUsageByRef* cpp_obj = self._cpp_obj.get()
@@ -4736,15 +4275,8 @@ cdef class NoexceptMoveEmpty(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = NoexceptMoveEmpty.create(constant_shared_ptr[cNoexceptMoveEmpty](default_inst[cNoexceptMoveEmpty]()))
-      return __StructSpec.create(
-        name="NoexceptMoveEmpty",
-        kind=__StructType.STRUCT,
-        fields=(
-    ),
-        annotations={
-          """cpp.noexcept_move""": """1""",    },
-      )
+        return _types_reflection.get_reflection__NoexceptMoveEmpty()
+
     cdef __iobuf.IOBuf _serialize(NoexceptMoveEmpty self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cNoexceptMoveEmpty* cpp_obj = self._cpp_obj.get()
@@ -4924,24 +4456,8 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = NoexceptMoveSimpleStruct.create(constant_shared_ptr[cNoexceptMoveSimpleStruct](default_inst[cNoexceptMoveSimpleStruct]()))
-      return __StructSpec.create(
-        name="NoexceptMoveSimpleStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="boolField",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp.noexcept_move""": """1""",    },
-      )
+        return _types_reflection.get_reflection__NoexceptMoveSimpleStruct()
+
     cdef __iobuf.IOBuf _serialize(NoexceptMoveSimpleStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cNoexceptMoveSimpleStruct* cpp_obj = self._cpp_obj.get()
@@ -5364,96 +4880,8 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = NoexceptMoveComplexStruct.create(constant_shared_ptr[cNoexceptMoveComplexStruct](default_inst[cNoexceptMoveComplexStruct]()))
-      return __StructSpec.create(
-        name="NoexceptMoveComplexStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="MyBoolField",
-  type=bool,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyIntField",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.MyIntField,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyStringField",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.MyStringField,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyStringField2",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyBinaryField",
-  type=bytes,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyBinaryField2",
-  type=bytes,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyBinaryField3",
-  type=bytes,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyBinaryListField4",
-  type=List__binary,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="MyMapEnumAndInt",
-  type=Map__MyEnumA_string,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=defaults.MyMapEnumAndInt,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp.noexcept_move""": """1""",    },
-      )
+        return _types_reflection.get_reflection__NoexceptMoveComplexStruct()
+
     cdef __iobuf.IOBuf _serialize(NoexceptMoveComplexStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cNoexceptMoveComplexStruct* cpp_obj = self._cpp_obj.get()
@@ -5637,32 +5065,8 @@ cdef class NoExceptMoveUnion(thrift.py3.types.Union):
 
     @staticmethod
     def __get_reflection__():
-      return __StructSpec.create(
-        name="NoExceptMoveUnion",
-        kind=__StructType.UNION,
-        fields=(
-          __FieldSpec.create(
-  name="string_field",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="i32_field",
-  type=int,
-  kind=__NumberType.I32,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-          """cpp.noexcept_move""": """1""",    },
-      )
+        return _types_reflection.get_reflection__NoExceptMoveUnion()
+
     cdef __iobuf.IOBuf _serialize(NoExceptMoveUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cNoExceptMoveUnion* cpp_obj = self._cpp_obj.get()
@@ -5838,7 +5242,7 @@ cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, key_kind=__NumberType.I32, value=str, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__std_unordered_map__Map__i32_string()
 
 
 Mapping.register(std_unordered_map__Map__i32_string)
@@ -6004,7 +5408,7 @@ cdef class List__i64(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=int, kind=__NumberType.I64)
+        return _types_reflection.get_reflection__List__i64()
 
 
 Sequence.register(List__i64)
@@ -6143,7 +5547,7 @@ cdef class Map__binary_i64(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=bytes, key_kind=__NumberType.NOT_A_NUMBER, value=int, value_kind=__NumberType.I64)
+        return _types_reflection.get_reflection__Map__binary_i64()
 
 
 Mapping.register(Map__binary_i64)
@@ -6309,7 +5713,7 @@ cdef class List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=int, kind=__NumberType.I32)
+        return _types_reflection.get_reflection__List__i32()
 
 
 Sequence.register(List__i32)
@@ -6475,7 +5879,7 @@ cdef class std_list__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=int, kind=__NumberType.I32)
+        return _types_reflection.get_reflection__std_list__List__i32()
 
 
 Sequence.register(std_list__List__i32)
@@ -6641,7 +6045,7 @@ cdef class std_deque__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=int, kind=__NumberType.I32)
+        return _types_reflection.get_reflection__std_deque__List__i32()
 
 
 Sequence.register(std_deque__List__i32)
@@ -6807,7 +6211,7 @@ cdef class folly_fbvector__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=int, kind=__NumberType.I32)
+        return _types_reflection.get_reflection__folly_fbvector__List__i32()
 
 
 Sequence.register(folly_fbvector__List__i32)
@@ -6973,7 +6377,7 @@ cdef class folly_small_vector__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=int, kind=__NumberType.I32)
+        return _types_reflection.get_reflection__folly_small_vector__List__i32()
 
 
 Sequence.register(folly_small_vector__List__i32)
@@ -7222,8 +6626,7 @@ cdef class folly_sorted_vector_set__Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=int, kind=__NumberType.I32)
-
+        return _types_reflection.get_reflection__folly_sorted_vector_set__Set__i32()
 
 
 Set.register(folly_sorted_vector_set__Set__i32)
@@ -7362,7 +6765,7 @@ cdef class folly_sorted_vector_map__Map__i32_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, key_kind=__NumberType.I32, value=str, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__folly_sorted_vector_map__Map__i32_string()
 
 
 Mapping.register(folly_sorted_vector_map__Map__i32_string)
@@ -7528,7 +6931,7 @@ cdef class std_list_int32_t__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=int, kind=__NumberType.I32)
+        return _types_reflection.get_reflection__std_list_int32_t__List__i32()
 
 
 Sequence.register(std_list_int32_t__List__i32)
@@ -7667,7 +7070,7 @@ cdef class Map__string_i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=str, key_kind=__NumberType.NOT_A_NUMBER, value=int, value_kind=__NumberType.I32)
+        return _types_reflection.get_reflection__Map__string_i32()
 
 
 Mapping.register(Map__string_i32)
@@ -7849,7 +7252,7 @@ cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=std_unordered_map__Map__i32_string, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__std_unordered_map__Map__i32_string()
 
 
 Sequence.register(List__std_unordered_map__Map__i32_string)
@@ -8014,7 +7417,7 @@ cdef class List__binary(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=bytes, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__binary()
 
 
 Sequence.register(List__binary)
@@ -8152,7 +7555,7 @@ cdef class Map__MyEnumA_string(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=MyEnumA, key_kind=__NumberType.NOT_A_NUMBER, value=str, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__Map__MyEnumA_string()
 
 
 Mapping.register(Map__MyEnumA_string)

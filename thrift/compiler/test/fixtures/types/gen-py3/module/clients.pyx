@@ -30,12 +30,6 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.reflection cimport (
-    ArgumentSpec as __ArgumentSpec,
-    InterfaceSpec as __InterfaceSpec,
-    MethodSpec as __MethodSpec,
-    NumberType as __NumberType
-)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -52,6 +46,8 @@ cimport module.types as _module_types
 import module.types as _module_types
 cimport include.types as _include_types
 import include.types as _include_types
+
+cimport module.services_reflection as _services_reflection
 
 from module.clients_wrapper cimport cSomeServiceAsyncClient, cSomeServiceClientWrapper
 
@@ -148,57 +144,7 @@ cdef class SomeService(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
-    @staticmethod
-    def __get_reflection_for_bounce_map():
-        return __MethodSpec.create(
-            name="bounce_map",
-            arguments=(
-                __ArgumentSpec.create(
-                    name="m",
-                    type=_module_types.std_unordered_map__Map__i32_string,
-                    kind=__NumberType.NOT_A_NUMBER,
-                    annotations={
-                    },
-                ),
-            ),
-            result=_module_types.std_unordered_map__Map__i32_string,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
-    @staticmethod
-    def __get_reflection_for_binary_keyed_map():
-        return __MethodSpec.create(
-            name="binary_keyed_map",
-            arguments=(
-                __ArgumentSpec.create(
-                    name="r",
-                    type=_module_types.List__i64,
-                    kind=__NumberType.NOT_A_NUMBER,
-                    annotations={
-                    },
-                ),
-            ),
-            result=_module_types.Map__binary_i64,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec.create(
-            name="SomeService",
-            methods=(
-                cls.__get_reflection_for_bounce_map(),
-                cls.__get_reflection_for_binary_keyed_map(),
-            ),
-            annotations={
-            },
-        )
+        return _services_reflection.get_reflection__SomeService(for_clients=True)
 

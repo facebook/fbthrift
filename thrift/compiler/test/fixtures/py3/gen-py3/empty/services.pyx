@@ -22,11 +22,6 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.py3.reflection cimport (
-  InterfaceSpec as __InterfaceSpec,
-  MethodSpec as __MethodSpec,
-  ArgumentSpec as __ArgumentSpec,
-)
 from thrift.py3.exceptions cimport (
     cTApplicationException,
     ApplicationError as __ApplicationError,
@@ -39,7 +34,6 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
-from thrift.py3.reflection cimport NumberType as __NumberType
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
     from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
@@ -52,6 +46,8 @@ from folly.iobuf cimport move as move_iobuf
 
 cimport empty.types as _empty_types
 import empty.types as _empty_types
+
+cimport empty.services_reflection as _services_reflection
 
 import asyncio
 import functools
@@ -83,13 +79,7 @@ cdef class NullServiceInterface(
 
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec.create(
-            name="NullService",
-            methods=(
-            ),
-            annotations={
-            },
-        )
+        return _services_reflection.get_reflection__NullService(for_clients=False)
 
 
 

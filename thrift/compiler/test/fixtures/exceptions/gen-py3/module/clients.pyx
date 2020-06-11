@@ -30,12 +30,6 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.reflection cimport (
-    ArgumentSpec as __ArgumentSpec,
-    InterfaceSpec as __InterfaceSpec,
-    MethodSpec as __MethodSpec,
-    NumberType as __NumberType
-)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -50,6 +44,8 @@ from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_
 
 cimport module.types as _module_types
 import module.types as _module_types
+
+cimport module.services_reflection as _services_reflection
 
 from module.clients_wrapper cimport cRaiserAsyncClient, cRaiserClientWrapper
 
@@ -216,79 +212,7 @@ cdef class Raiser(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
-    @staticmethod
-    def __get_reflection_for_doBland():
-        return __MethodSpec.create(
-            name="doBland",
-            arguments=(
-            ),
-            result=None,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
-    @staticmethod
-    def __get_reflection_for_doRaise():
-        return __MethodSpec.create(
-            name="doRaise",
-            arguments=(
-            ),
-            result=None,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-                _module_types.Banal,
-                _module_types.Fiery,
-                _module_types.Serious,
-            ),
-            annotations={
-            },
-        )
-
-    @staticmethod
-    def __get_reflection_for_get200():
-        return __MethodSpec.create(
-            name="get200",
-            arguments=(
-            ),
-            result=str,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
-    @staticmethod
-    def __get_reflection_for_get500():
-        return __MethodSpec.create(
-            name="get500",
-            arguments=(
-            ),
-            result=str,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-                _module_types.Fiery,
-                _module_types.Banal,
-                _module_types.Serious,
-            ),
-            annotations={
-            },
-        )
-
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec.create(
-            name="Raiser",
-            methods=(
-                cls.__get_reflection_for_doBland(),
-                cls.__get_reflection_for_doRaise(),
-                cls.__get_reflection_for_get200(),
-                cls.__get_reflection_for_get500(),
-            ),
-            annotations={
-            },
-        )
+        return _services_reflection.get_reflection__Raiser(for_clients=True)
 

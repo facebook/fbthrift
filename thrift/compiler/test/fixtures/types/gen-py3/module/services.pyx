@@ -22,11 +22,6 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.py3.reflection cimport (
-  InterfaceSpec as __InterfaceSpec,
-  MethodSpec as __MethodSpec,
-  ArgumentSpec as __ArgumentSpec,
-)
 from thrift.py3.exceptions cimport (
     cTApplicationException,
     ApplicationError as __ApplicationError,
@@ -39,7 +34,6 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
-from thrift.py3.reflection cimport NumberType as __NumberType
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
     from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
@@ -54,6 +48,8 @@ cimport module.types as _module_types
 import module.types as _module_types
 import include.types as _include_types
 cimport include.types as _include_types
+
+cimport module.services_reflection as _services_reflection
 
 import asyncio
 import functools
@@ -124,59 +120,9 @@ cdef class SomeServiceInterface(
             r):
         raise NotImplementedError("async def binary_keyed_map is not implemented")
 
-    @staticmethod
-    def __get_reflection_for_bounce_map():
-        return __MethodSpec.create(
-            name="bounce_map",
-            arguments=(
-                __ArgumentSpec.create(
-                    name="m",
-                    type=_module_types.std_unordered_map__Map__i32_string,
-                    kind=__NumberType.NOT_A_NUMBER,
-                    annotations={
-                    },
-                ),
-            ),
-            result=_module_types.std_unordered_map__Map__i32_string,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
-    @staticmethod
-    def __get_reflection_for_binary_keyed_map():
-        return __MethodSpec.create(
-            name="binary_keyed_map",
-            arguments=(
-                __ArgumentSpec.create(
-                    name="r",
-                    type=_module_types.List__i64,
-                    kind=__NumberType.NOT_A_NUMBER,
-                    annotations={
-                    },
-                ),
-            ),
-            result=_module_types.Map__binary_i64,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec.create(
-            name="SomeService",
-            methods=(
-                cls.__get_reflection_for_bounce_map(),
-                cls.__get_reflection_for_binary_keyed_map(),
-            ),
-            annotations={
-            },
-        )
+        return _services_reflection.get_reflection__SomeService(for_clients=False)
 
 
 

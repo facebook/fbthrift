@@ -22,11 +22,6 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.py3.reflection cimport (
-  InterfaceSpec as __InterfaceSpec,
-  MethodSpec as __MethodSpec,
-  ArgumentSpec as __ArgumentSpec,
-)
 from thrift.py3.exceptions cimport (
     cTApplicationException,
     ApplicationError as __ApplicationError,
@@ -39,7 +34,6 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
-from thrift.py3.reflection cimport NumberType as __NumberType
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
     from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
@@ -52,6 +46,8 @@ from folly.iobuf cimport move as move_iobuf
 
 cimport module.types as _module_types
 import module.types as _module_types
+
+cimport module.services_reflection as _services_reflection
 
 import asyncio
 import functools
@@ -102,30 +98,9 @@ cdef class MyRootInterface(
             self):
         raise NotImplementedError("async def do_root is not implemented")
 
-    @staticmethod
-    def __get_reflection_for_do_root():
-        return __MethodSpec.create(
-            name="do_root",
-            arguments=(
-            ),
-            result=None,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec.create(
-            name="MyRoot",
-            methods=(
-                cls.__get_reflection_for_do_root(),
-            ),
-            annotations={
-            },
-        )
+        return _services_reflection.get_reflection__MyRoot(for_clients=False)
 
 cdef object _MyNode_annotations = _py_types.MappingProxyType({
 })
@@ -151,30 +126,9 @@ MyRootInterface
             self):
         raise NotImplementedError("async def do_mid is not implemented")
 
-    @staticmethod
-    def __get_reflection_for_do_mid():
-        return __MethodSpec.create(
-            name="do_mid",
-            arguments=(
-            ),
-            result=None,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec.create(
-            name="MyNode",
-            methods=(
-                cls.__get_reflection_for_do_mid(),
-            ),
-            annotations={
-            },
-        )
+        return _services_reflection.get_reflection__MyNode(for_clients=False)
 
 cdef object _MyLeaf_annotations = _py_types.MappingProxyType({
 })
@@ -200,30 +154,9 @@ MyNodeInterface
             self):
         raise NotImplementedError("async def do_leaf is not implemented")
 
-    @staticmethod
-    def __get_reflection_for_do_leaf():
-        return __MethodSpec.create(
-            name="do_leaf",
-            arguments=(
-            ),
-            result=None,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec.create(
-            name="MyLeaf",
-            methods=(
-                cls.__get_reflection_for_do_leaf(),
-            ),
-            annotations={
-            },
-        )
+        return _services_reflection.get_reflection__MyLeaf(for_clients=False)
 
 
 

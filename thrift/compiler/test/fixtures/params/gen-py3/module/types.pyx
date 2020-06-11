@@ -17,16 +17,6 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.reflection cimport (
-    NumberType as __NumberType,
-    StructSpec as __StructSpec,
-    ListSpec as __ListSpec,
-    SetSpec as __SetSpec,
-    MapSpec as __MapSpec,
-    FieldSpec as __FieldSpec,
-    StructType as __StructType,
-    Qualifier as __Qualifier,
-)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -41,12 +31,13 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
-import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
 import weakref as __weakref
 import builtins as _builtins
+
+cimport module.types_reflection as _types_reflection
 
 
 @__cython.auto_pickle(False)
@@ -210,7 +201,7 @@ cdef class List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=int, kind=__NumberType.I32)
+        return _types_reflection.get_reflection__List__i32()
 
 
 Sequence.register(List__i32)
@@ -351,7 +342,7 @@ cdef class Map__i32_List__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, key_kind=__NumberType.I32, value=List__i32, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__Map__i32_List__i32()
 
 
 Mapping.register(Map__i32_List__i32)
@@ -600,8 +591,7 @@ cdef class Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __SetSpec(value=int, kind=__NumberType.I32)
-
+        return _types_reflection.get_reflection__Set__i32()
 
 
 Set.register(Set__i32)
@@ -742,7 +732,7 @@ cdef class Map__i32_Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, key_kind=__NumberType.I32, value=Set__i32, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__Map__i32_Set__i32()
 
 
 Mapping.register(Map__i32_Set__i32)
@@ -882,7 +872,7 @@ cdef class Map__i32_i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, key_kind=__NumberType.I32, value=int, value_kind=__NumberType.I32)
+        return _types_reflection.get_reflection__Map__i32_i32()
 
 
 Mapping.register(Map__i32_i32)
@@ -1064,7 +1054,7 @@ cdef class List__Map__i32_i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=Map__i32_i32, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__Map__i32_i32()
 
 
 Sequence.register(List__Map__i32_i32)
@@ -1246,7 +1236,7 @@ cdef class List__Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=Set__i32, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__Set__i32()
 
 
 Sequence.register(List__Set__i32)
@@ -1387,7 +1377,7 @@ cdef class Map__i32_Map__i32_Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __MapSpec(key=int, key_kind=__NumberType.I32, value=Map__i32_Set__i32, value_kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__Map__i32_Map__i32_Set__i32()
 
 
 Mapping.register(Map__i32_Map__i32_Set__i32)
@@ -1569,7 +1559,7 @@ cdef class List__Map__i32_Map__i32_Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=Map__i32_Map__i32_Set__i32, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__Map__i32_Map__i32_Set__i32()
 
 
 Sequence.register(List__Map__i32_Map__i32_Set__i32)
@@ -1751,7 +1741,7 @@ cdef class List__List__Map__i32_Map__i32_Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     def __get_reflection__():
-        return __ListSpec(value=List__Map__i32_Map__i32_Set__i32, kind=__NumberType.NOT_A_NUMBER)
+        return _types_reflection.get_reflection__List__List__Map__i32_Map__i32_Set__i32()
 
 
 Sequence.register(List__List__Map__i32_Map__i32_Set__i32)

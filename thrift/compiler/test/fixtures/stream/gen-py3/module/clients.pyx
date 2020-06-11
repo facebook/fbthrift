@@ -30,12 +30,6 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.reflection cimport (
-    ArgumentSpec as __ArgumentSpec,
-    InterfaceSpec as __InterfaceSpec,
-    MethodSpec as __MethodSpec,
-    NumberType as __NumberType
-)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -51,6 +45,8 @@ from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_
 cimport module.types as _module_types
 import module.types as _module_types
 from thrift.py3.stream cimport cResponseAndClientBufferedStream, cClientBufferedStream
+
+cimport module.services_reflection as _services_reflection
 
 from module.clients_wrapper cimport cPubSubStreamingServiceAsyncClient, cPubSubStreamingServiceClientWrapper
 
@@ -239,110 +235,7 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
-    @staticmethod
-    def __get_reflection_for_returnstream():
-        return __MethodSpec.create(
-            name="returnstream",
-            arguments=(
-                __ArgumentSpec.create(
-                    name="i32_from",
-                    type=int,
-                    kind=__NumberType.I32,
-                    annotations={
-                    },
-                ),
-                __ArgumentSpec.create(
-                    name="i32_to",
-                    type=int,
-                    kind=__NumberType.I32,
-                    annotations={
-                    },
-                ),
-            ),
-            result=_module_types.ClientBufferedStream__i32,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
-    @staticmethod
-    def __get_reflection_for_streamthrows():
-        return __MethodSpec.create(
-            name="streamthrows",
-            arguments=(
-                __ArgumentSpec.create(
-                    name="foo",
-                    type=int,
-                    kind=__NumberType.I32,
-                    annotations={
-                    },
-                ),
-            ),
-            result=_module_types.ClientBufferedStream__i32,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-            ),
-            annotations={
-            },
-        )
-
-    @staticmethod
-    def __get_reflection_for_boththrows():
-        return __MethodSpec.create(
-            name="boththrows",
-            arguments=(
-                __ArgumentSpec.create(
-                    name="foo",
-                    type=int,
-                    kind=__NumberType.I32,
-                    annotations={
-                    },
-                ),
-            ),
-            result=_module_types.ClientBufferedStream__i32,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-                _module_types.FooEx,
-            ),
-            annotations={
-            },
-        )
-
-    @staticmethod
-    def __get_reflection_for_responseandstreamthrows():
-        return __MethodSpec.create(
-            name="responseandstreamthrows",
-            arguments=(
-                __ArgumentSpec.create(
-                    name="foo",
-                    type=int,
-                    kind=__NumberType.I32,
-                    annotations={
-                    },
-                ),
-            ),
-            result=_module_types.ResponseAndClientBufferedStream__i32_i32,
-            result_kind=__NumberType.NOT_A_NUMBER,
-            exceptions=(
-                _module_types.FooEx,
-            ),
-            annotations={
-            },
-        )
-
     @classmethod
     def __get_reflection__(cls):
-        return __InterfaceSpec.create(
-            name="PubSubStreamingService",
-            methods=(
-                cls.__get_reflection_for_returnstream(),
-                cls.__get_reflection_for_streamthrows(),
-                cls.__get_reflection_for_boththrows(),
-                cls.__get_reflection_for_responseandstreamthrows(),
-            ),
-            annotations={
-            },
-        )
+        return _services_reflection.get_reflection__PubSubStreamingService(for_clients=True)
 

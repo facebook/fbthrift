@@ -1282,6 +1282,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
     CLIENTS,
     SERVICES,
     BUILDERS,
+    REFLECTIONS,
   };
 
   t_mstch_py3_generator(
@@ -1305,6 +1306,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
     generate_module(ModuleType::SERVICES);
     generate_module(ModuleType::CLIENTS);
     generate_module(ModuleType::BUILDERS);
+    generate_module(ModuleType::REFLECTIONS);
   }
 
   void fill_validator_list(validator_list& vl) const override {
@@ -1326,6 +1328,8 @@ class t_mstch_py3_generator : public t_mstch_generator {
         return "services";
       case ModuleType::BUILDERS:
         return "builders";
+      case ModuleType::REFLECTIONS:
+        return "services_reflection";
     }
     // Should not happen
     assert(false);
@@ -1412,11 +1416,15 @@ void t_mstch_py3_generator::generate_module(ModuleType moduleType) {
   const auto& name = program->get_name();
   auto module = get_module_name(moduleType);
 
-  for (auto ext : {".pyx", ".pxd", ".pyi"}) {
+  std::vector<std::string> exts = {".pyx", ".pxd"};
+  if (moduleType != ModuleType::REFLECTIONS) {
+    exts.push_back(".pyi");
+  }
+  for (auto ext : exts) {
     render_to_file(
         nodePtr, module + ext, generateRootPath_ / name / (module + ext));
   }
-  if (moduleType != ModuleType::TYPES && moduleType != ModuleType::BUILDERS) {
+  if (moduleType == ModuleType::CLIENTS || moduleType == ModuleType::SERVICES) {
     auto basename = module + "_wrapper";
     auto cpp_path = boost::filesystem::path{name};
     for (auto ext : {".h", ".cpp"}) {
@@ -1427,6 +1435,14 @@ void t_mstch_py3_generator::generate_module(ModuleType moduleType) {
         nodePtr,
         basename + ".pxd",
         generateRootPath_ / name / (basename + ".pxd"));
+  }
+
+  if (moduleType == ModuleType::TYPES) {
+    programNodePtr->setTypeContext(false);
+    for (auto ext : {".pxd", ".pyx"}) {
+      const auto filename = std::string{"types_reflection"} + ext;
+      render_to_file(nodePtr, filename, generateRootPath_ / name / filename);
+    }
   }
 }
 

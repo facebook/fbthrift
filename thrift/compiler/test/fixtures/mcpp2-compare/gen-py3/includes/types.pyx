@@ -17,16 +17,6 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.reflection cimport (
-    NumberType as __NumberType,
-    StructSpec as __StructSpec,
-    ListSpec as __ListSpec,
-    SetSpec as __SetSpec,
-    MapSpec as __MapSpec,
-    FieldSpec as __FieldSpec,
-    StructType as __StructType,
-    Qualifier as __Qualifier,
-)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -41,12 +31,13 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
-import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
 import weakref as __weakref
 import builtins as _builtins
+
+cimport includes.types_reflection as _types_reflection
 
 cdef object __AnEnumEnumInstances = None  # Set[AnEnum]
 cdef object __AnEnumEnumMembers = {}      # Dict[str, AnEnum]
@@ -289,24 +280,8 @@ cdef class AStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = AStruct.create(constant_shared_ptr[cAStruct](default_inst[cAStruct]()))
-      return __StructSpec.create(
-        name="AStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="FieldA",
-  type=int,
-  kind=__NumberType.I32,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__AStruct()
+
     cdef __iobuf.IOBuf _serialize(AStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cAStruct* cpp_obj = self._cpp_obj.get()
@@ -482,24 +457,8 @@ cdef class AStructB(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = AStructB.create(constant_shared_ptr[cAStructB](default_inst[cAStructB]()))
-      return __StructSpec.create(
-        name="AStructB",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="FieldA",
-  type=AStruct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-    """cpp2.ref_type""": """shared_const""",  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__AStructB()
+
     cdef __iobuf.IOBuf _serialize(AStructB self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cAStructB* cpp_obj = self._cpp_obj.get()

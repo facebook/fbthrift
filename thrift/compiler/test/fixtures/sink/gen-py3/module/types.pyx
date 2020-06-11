@@ -17,16 +17,6 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.reflection cimport (
-    NumberType as __NumberType,
-    StructSpec as __StructSpec,
-    ListSpec as __ListSpec,
-    SetSpec as __SetSpec,
-    MapSpec as __MapSpec,
-    FieldSpec as __FieldSpec,
-    StructType as __StructType,
-    Qualifier as __Qualifier,
-)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -41,12 +31,13 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
-import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
 import weakref as __weakref
 import builtins as _builtins
+
+cimport module.types_reflection as _types_reflection
 
 
 @__cython.auto_pickle(False)
@@ -183,24 +174,8 @@ cdef class InitialResponse(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = InitialResponse.create(constant_shared_ptr[cInitialResponse](default_inst[cInitialResponse]()))
-      return __StructSpec.create(
-        name="InitialResponse",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="content",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__InitialResponse()
+
     cdef __iobuf.IOBuf _serialize(InitialResponse self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cInitialResponse* cpp_obj = self._cpp_obj.get()
@@ -374,24 +349,8 @@ cdef class FinalResponse(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = FinalResponse.create(constant_shared_ptr[cFinalResponse](default_inst[cFinalResponse]()))
-      return __StructSpec.create(
-        name="FinalResponse",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="content",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__FinalResponse()
+
     cdef __iobuf.IOBuf _serialize(FinalResponse self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cFinalResponse* cpp_obj = self._cpp_obj.get()
@@ -565,24 +524,8 @@ cdef class SinkPayload(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = SinkPayload.create(constant_shared_ptr[cSinkPayload](default_inst[cSinkPayload]()))
-      return __StructSpec.create(
-        name="SinkPayload",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="content",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__SinkPayload()
+
     cdef __iobuf.IOBuf _serialize(SinkPayload self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cSinkPayload* cpp_obj = self._cpp_obj.get()
@@ -756,24 +699,8 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = CompatibleWithKeywordSink.create(constant_shared_ptr[cCompatibleWithKeywordSink](default_inst[cCompatibleWithKeywordSink]()))
-      return __StructSpec.create(
-        name="CompatibleWithKeywordSink",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="sink",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__CompatibleWithKeywordSink()
+
     cdef __iobuf.IOBuf _serialize(CompatibleWithKeywordSink self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cCompatibleWithKeywordSink* cpp_obj = self._cpp_obj.get()
@@ -908,24 +835,8 @@ cdef class InitialException(thrift.py3.exceptions.Error):
 
     @staticmethod
     def __get_reflection__():
-      defaults = InitialException.create(constant_shared_ptr[cInitialException](default_inst[cInitialException]()))
-      return __StructSpec.create(
-        name="InitialException",
-        kind=__StructType.EXCEPTION,
-        fields=(
-          __FieldSpec.create(
-  name="reason",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__InitialException()
+
 
 
 @__cython.auto_pickle(False)
@@ -1023,24 +934,8 @@ cdef class SinkException1(thrift.py3.exceptions.Error):
 
     @staticmethod
     def __get_reflection__():
-      defaults = SinkException1.create(constant_shared_ptr[cSinkException1](default_inst[cSinkException1]()))
-      return __StructSpec.create(
-        name="SinkException1",
-        kind=__StructType.EXCEPTION,
-        fields=(
-          __FieldSpec.create(
-  name="reason",
-  type=str,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__SinkException1()
+
 
 
 @__cython.auto_pickle(False)
@@ -1143,23 +1038,7 @@ cdef class SinkException2(thrift.py3.exceptions.Error):
 
     @staticmethod
     def __get_reflection__():
-      defaults = SinkException2.create(constant_shared_ptr[cSinkException2](default_inst[cSinkException2]()))
-      return __StructSpec.create(
-        name="SinkException2",
-        kind=__StructType.EXCEPTION,
-        fields=(
-          __FieldSpec.create(
-  name="reason",
-  type=int,
-  kind=__NumberType.I64,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__SinkException2()
+
 
 

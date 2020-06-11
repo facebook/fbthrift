@@ -49,12 +49,6 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.reflection cimport (
-    ArgumentSpec as __ArgumentSpec,
-    InterfaceSpec as __InterfaceSpec,
-    MethodSpec as __MethodSpec,
-    NumberType as __NumberType
-)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -82,6 +76,8 @@ cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}clients as _{{#inclu
 import {{#includeNamespace}}{{value}}.{{/includeNamespace}}clients as _{{#includeNamespace}}{{value}}_{{/includeNamespace}}clients
 {{/hasServices?}}
 {{/program:includeNamespaces}}
+
+cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.services_reflection as _services_reflection
 
 {{#program:services}}
 from {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.clients_wrapper cimport c{{service:name}}AsyncClient, c{{service:name}}ClientWrapper
@@ -162,52 +158,9 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
         return asyncio_shield(__future)
 
 {{/function:returns_sink?}}{{/service:functions}}
-{{#service:functions}}{{^function:returns_sink?}}
 
-    @staticmethod
-    def __get_reflection_for_{{function:name}}():
-        return __MethodSpec.create(
-            name="{{function:name}}",
-            arguments=(
-                {{#function:args}}
-                __ArgumentSpec.create(
-                    name="{{field:name}}",
-                    type={{#field:type}}{{> types/PythonType}}{{/field:type}},
-                    kind={{#field:type}}{{> types/ThriftNumberType}}{{/field:type}},
-                    annotations={
-                        {{#field:annotations}}
-                        {{> Annotation }}
-                        {{#last?}}
-
-                        {{/last?}}
-                        {{/field:annotations}}
-                    },
-                ),
-                {{/function:args}}
-            ),
-            result={{#function:returnType}}{{!
-                }}{{#type:void?}}None{{/type:void?}}{{!
-                }}{{#type:streamresponse?}}{{> clients/StreamResponseClassName}}{{/type:streamresponse?}}{{!
-                }}{{^type:void?}}{{> types/PythonType}}{{/type:void?}}{{!
-                }}{{/function:returnType}},
-            result_kind={{#function:returnType}}{{> types/ThriftNumberType}}{{/function:returnType}},
-            exceptions=(
-                {{#function:exceptions}}
-                {{#field:type}}{{> types/PythonType}}{{/field:type}},
-                {{/function:exceptions}}
-            ),
-            annotations={
-                {{#function:annotations}}
-                {{> Annotation }}
-                {{#last?}}
-
-                {{/last?}}
-                {{/function:annotations}}
-            },
-        )
-{{/function:returns_sink?}}{{/service:functions}}
-
-    {{> reflection/GetReflectionMethod}}
-
+    @classmethod
+    def __get_reflection__(cls):
+        return _services_reflection.get_reflection__{{service:name}}(for_clients=True)
 
 {{/program:services}}

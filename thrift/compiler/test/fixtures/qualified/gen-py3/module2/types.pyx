@@ -17,16 +17,6 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.reflection cimport (
-    NumberType as __NumberType,
-    StructSpec as __StructSpec,
-    ListSpec as __ListSpec,
-    SetSpec as __SetSpec,
-    MapSpec as __MapSpec,
-    FieldSpec as __FieldSpec,
-    StructType as __StructType,
-    Qualifier as __Qualifier,
-)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -41,7 +31,6 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
-import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
@@ -51,6 +40,8 @@ cimport module0.types as _module0_types
 import module0.types as _module0_types
 cimport module1.types as _module1_types
 import module1.types as _module1_types
+
+cimport module2.types_reflection as _types_reflection
 
 
 @__cython.auto_pickle(False)
@@ -222,33 +213,8 @@ cdef class Struct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = Struct.create(constant_shared_ptr[cStruct](default_inst[cStruct]()))
-      return __StructSpec.create(
-        name="Struct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="first",
-  type=_module0_types.Struct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="second",
-  type=_module1_types.Struct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__Struct()
+
     cdef __iobuf.IOBuf _serialize(Struct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cStruct* cpp_obj = self._cpp_obj.get()
@@ -461,33 +427,8 @@ cdef class BigStruct(thrift.py3.types.Struct):
 
     @staticmethod
     def __get_reflection__():
-      defaults = BigStruct.create(constant_shared_ptr[cBigStruct](default_inst[cBigStruct]()))
-      return __StructSpec.create(
-        name="BigStruct",
-        kind=__StructType.STRUCT,
-        fields=(
-          __FieldSpec.create(
-  name="s",
-  type=Struct,
-  kind=__NumberType.NOT_A_NUMBER,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-                __FieldSpec.create(
-  name="id",
-  type=int,
-  kind=__NumberType.I32,
-  qualifier=__Qualifier.UNQUALIFIED,
-  default=None,
-  annotations={
-  },
-),
-          ),
-        annotations={
-        },
-      )
+        return _types_reflection.get_reflection__BigStruct()
+
     cdef __iobuf.IOBuf _serialize(BigStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cBigStruct* cpp_obj = self._cpp_obj.get()
