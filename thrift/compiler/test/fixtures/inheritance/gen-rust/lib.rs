@@ -826,12 +826,12 @@ pub mod server {
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
-            p: &mut P::Deserializer,
-            r: &R,
-            seqid: ::std::primitive::u32,
+            _p: &mut P::Deserializer,
+            _r: &R,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             match idx {
-                0usize => self.handle_do_root(p, r, seqid).await,
+                0usize => self.handle_do_root(_p, _r, _seqid).await,
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "MyRootProcessor",
@@ -1027,12 +1027,12 @@ pub mod server {
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
-            p: &mut P::Deserializer,
-            r: &R,
-            seqid: ::std::primitive::u32,
+            _p: &mut P::Deserializer,
+            _r: &R,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             match idx {
-                0usize => self.handle_do_mid(p, r, seqid).await,
+                0usize => self.handle_do_mid(_p, _r, _seqid).await,
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "MyNodeProcessor",
@@ -1235,12 +1235,12 @@ pub mod server {
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
-            p: &mut P::Deserializer,
-            r: &R,
-            seqid: ::std::primitive::u32,
+            _p: &mut P::Deserializer,
+            _r: &R,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             match idx {
-                0usize => self.handle_do_leaf(p, r, seqid).await,
+                0usize => self.handle_do_leaf(_p, _r, _seqid).await,
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "MyLeafProcessor",

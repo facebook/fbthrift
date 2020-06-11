@@ -193,16 +193,13 @@
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
-            {{^service:functions?}}_{{/service:functions?}}{{!
-            }}p: &mut P::Deserializer,
-            {{^service:functions?}}_{{/service:functions?}}{{!
-            }}r: &R,
-            {{^service:functions?}}_{{/service:functions?}}{{!
-            }}seqid: ::std::primitive::u32,
+            _p: &mut P::Deserializer,
+            _r: &R,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             match idx {{>lib/block}}{{!
                 }}{{#service:rustFunctions}}{{^function:any_streams?}}
-                {{function:index}}usize => self.handle_{{function:name}}(p, r, seqid).await,{{!
+                {{function:index}}usize => self.handle_{{function:name}}(_p, _r, _seqid).await,{{!
                 }}{{/function:any_streams?}}{{/service:rustFunctions}}
                 bad => panic!(
                     "{}: unexpected method idx {}",

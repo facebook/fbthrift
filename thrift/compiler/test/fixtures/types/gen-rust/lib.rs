@@ -2397,13 +2397,13 @@ pub mod server {
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
-            p: &mut P::Deserializer,
-            r: &R,
-            seqid: ::std::primitive::u32,
+            _p: &mut P::Deserializer,
+            _r: &R,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             match idx {
-                0usize => self.handle_bounce_map(p, r, seqid).await,
-                1usize => self.handle_binary_keyed_map(p, r, seqid).await,
+                0usize => self.handle_bounce_map(_p, _r, _seqid).await,
+                1usize => self.handle_binary_keyed_map(_p, _r, _seqid).await,
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "SomeServiceProcessor",

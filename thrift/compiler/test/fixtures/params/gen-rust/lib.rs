@@ -1210,16 +1210,16 @@ pub mod server {
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
-            p: &mut P::Deserializer,
-            r: &R,
-            seqid: ::std::primitive::u32,
+            _p: &mut P::Deserializer,
+            _r: &R,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             match idx {
-                0usize => self.handle_mapList(p, r, seqid).await,
-                1usize => self.handle_mapSet(p, r, seqid).await,
-                2usize => self.handle_listMap(p, r, seqid).await,
-                3usize => self.handle_listSet(p, r, seqid).await,
-                4usize => self.handle_turtles(p, r, seqid).await,
+                0usize => self.handle_mapList(_p, _r, _seqid).await,
+                1usize => self.handle_mapSet(_p, _r, _seqid).await,
+                2usize => self.handle_listMap(_p, _r, _seqid).await,
+                3usize => self.handle_listSet(_p, _r, _seqid).await,
+                4usize => self.handle_turtles(_p, _r, _seqid).await,
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "NestedContainersProcessor",

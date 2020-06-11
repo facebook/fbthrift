@@ -1755,17 +1755,17 @@ pub mod server {
         async fn handle_method(
             &self,
             idx: ::std::primitive::usize,
-            p: &mut P::Deserializer,
-            r: &R,
-            seqid: ::std::primitive::u32,
+            _p: &mut P::Deserializer,
+            _r: &R,
+            _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             match idx {
-                0usize => self.handle_ping(p, r, seqid).await,
-                1usize => self.handle_getRandomData(p, r, seqid).await,
-                2usize => self.handle_hasDataById(p, r, seqid).await,
-                3usize => self.handle_getDataById(p, r, seqid).await,
-                4usize => self.handle_putDataById(p, r, seqid).await,
-                5usize => self.handle_lobDataById(p, r, seqid).await,
+                0usize => self.handle_ping(_p, _r, _seqid).await,
+                1usize => self.handle_getRandomData(_p, _r, _seqid).await,
+                2usize => self.handle_hasDataById(_p, _r, _seqid).await,
+                3usize => self.handle_getDataById(_p, _r, _seqid).await,
+                4usize => self.handle_putDataById(_p, _r, _seqid).await,
+                5usize => self.handle_lobDataById(_p, _r, _seqid).await,
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "MyServiceProcessor",
