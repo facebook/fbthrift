@@ -669,21 +669,6 @@ TEST_P(OverloadTest, Test) {
   folly::EventBase base;
   auto client = makeClient(runner, &base);
 
-  // force overloaded
-  folly::Function<void()> onExit = [] {};
-  auto guard = folly::makeGuard([&] { onExit(); });
-  if (errorType == ErrorType::Overload) {
-    // Thrift is overloaded on max requests
-    runner.getThriftServer().setMaxRequests(1);
-    auto handler = dynamic_cast<BlockInterface*>(
-        runner.getThriftServer().getProcessorFactory().get());
-    client->semifuture_voidResponse();
-    while (runner.getThriftServer().getActiveRequests() < 1) {
-      std::this_thread::yield();
-    }
-    onExit = [handler] { handler->block.post(); };
-  }
-
   runner.getThriftServer().setIsOverloaded(
       [&](const auto*, const string* method) {
         if (errorType == ErrorType::AppOverload) {
@@ -705,6 +690,21 @@ TEST_P(OverloadTest, Test) {
   // avoid compressing loadshedding errors even if compression is enabled
   static_cast<ThriftServer*>(&runner.getThriftServer())
       ->setMinCompressBytes(100);
+
+  // force overloaded
+  folly::Function<void()> onExit = [] {};
+  auto guard = folly::makeGuard([&] { onExit(); });
+  if (errorType == ErrorType::Overload) {
+    // Thrift is overloaded on max requests
+    runner.getThriftServer().setMaxRequests(1);
+    auto handler = dynamic_cast<BlockInterface*>(
+        runner.getThriftServer().getProcessorFactory().get());
+    client->semifuture_voidResponse();
+    while (runner.getThriftServer().getActiveRequests() < 1) {
+      std::this_thread::yield();
+    }
+    onExit = [handler] { handler->block.post(); };
+  }
 
   RpcOptions rpcOptions;
   rpcOptions.setWriteHeader(kClientLoggingHeader.str(), "");
