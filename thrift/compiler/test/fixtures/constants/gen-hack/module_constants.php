@@ -10,1084 +10,671 @@ class module_CONSTANTS {
    * Original thrift constant:-
    * i32 myInt
    */
-  private static ?int $__myInt = null;
-  public static function myInt(): int {
-    if (self::$__myInt === null) {
-      self::$__myInt = 1337;
-    }
-    return self::$__myInt;
+  <<__Memoize>>
+  public static function myInt(): int{
+    return 1337;
   }
 
   /**
    * Original thrift constant:-
    * string name
    */
-  private static ?string $__name = null;
-  public static function name(): string {
-    if (self::$__name === null) {
-      self::$__name = "Mark Zuckerberg";
-    }
-    return self::$__name;
+  <<__Memoize>>
+  public static function name(): string{
+    return "Mark Zuckerberg";
   }
 
   /**
    * Original thrift constant:-
    * list<map<string, i32>> states
    */
-  private static ?Vector<Map<string, int>> $__states = null;
-  public static function states(): Vector<Map<string, int>> {
-    if (self::$__states === null) {
-      self::$__states = Vector {
-        Map {
-          "San Diego" => 3211000,
-          "Sacramento" => 479600,
-          "SF" => 837400,
-        },
-        Map {
-          "New York" => 8406000,
-          "Albany" => 98400,
-        },
-      };
-    }
-    return self::$__states;
+  <<__Memoize>>
+  public static function states(): ConstVector<ConstMap<string, int>>{
+    return ImmVector {
+      ImmMap {
+        "San Diego" => 3211000,
+        "Sacramento" => 479600,
+        "SF" => 837400,
+      },
+      ImmMap {
+        "New York" => 8406000,
+        "Albany" => 98400,
+      },
+    };
   }
 
   /**
    * Original thrift constant:-
    * double x
    */
-  private static ?float $__x = null;
-  public static function x(): float {
-    if (self::$__x === null) {
-      self::$__x = 1.0;
-    }
-    return self::$__x;
+  <<__Memoize>>
+  public static function x(): float{
+    return 1.0;
   }
 
   /**
    * Original thrift constant:-
    * double y
    */
-  private static ?float $__y = null;
-  public static function y(): float {
-    if (self::$__y === null) {
-      self::$__y = 1000000.0;
-    }
-    return self::$__y;
+  <<__Memoize>>
+  public static function y(): float{
+    return 1000000.0;
   }
 
   /**
    * Original thrift constant:-
    * double z
    */
-  private static ?float $__z = null;
-  public static function z(): float {
-    if (self::$__z === null) {
-      self::$__z = 1e+09;
-    }
-    return self::$__z;
+  <<__Memoize>>
+  public static function z(): float{
+    return 1e+09;
   }
 
   /**
    * Original thrift constant:-
    * double zeroDoubleValue
    */
-  private static ?float $__zeroDoubleValue = null;
-  public static function zeroDoubleValue(): float {
-    if (self::$__zeroDoubleValue === null) {
-      self::$__zeroDoubleValue = 0.0;
-    }
-    return self::$__zeroDoubleValue;
+  <<__Memoize>>
+  public static function zeroDoubleValue(): float{
+    return 0.0;
   }
 
   /**
    * Original thrift constant:-
    * double longDoubleValue
    */
-  private static ?float $__longDoubleValue = null;
-  public static function longDoubleValue(): float {
-    if (self::$__longDoubleValue === null) {
-      self::$__longDoubleValue = 2.59961e-05;
-    }
-    return self::$__longDoubleValue;
+  <<__Memoize>>
+  public static function longDoubleValue(): float{
+    return 2.59961e-05;
   }
 
   /**
    * Original thrift constant:-
    * enum module.Company my_company
    */
-  private static ?Company $__my_company = null;
-  public static function my_company(): Company {
-    if (self::$__my_company === null) {
-      self::$__my_company = Company::FACEBOOK;
-    }
-    return self::$__my_company;
+  <<__Memoize>>
+  public static function my_company(): Company{
+    return Company::FACEBOOK;
   }
 
   /**
    * Original thrift constant:-
    * string foo
    */
-  private static ?string $__foo = null;
-  public static function foo(): string {
-    if (self::$__foo === null) {
-      self::$__foo = "foo";
-    }
-    return self::$__foo;
+  <<__Memoize>>
+  public static function foo(): string{
+    return "foo";
   }
 
   /**
    * Original thrift constant:-
    * i32 bar
    */
-  private static ?int $__bar = null;
-  public static function bar(): int {
-    if (self::$__bar === null) {
-      self::$__bar = 42;
-    }
-    return self::$__bar;
+  <<__Memoize>>
+  public static function bar(): int{
+    return 42;
   }
 
   /**
    * Original thrift constant:-
    * map<string, string> mymap
    */
-  private static ?Map<string, string> $__mymap = null;
-  public static function mymap(): Map<string, string> {
-    if (self::$__mymap === null) {
-      self::$__mymap = Map {
-        "keys" => "values",
-      };
-    }
-    return self::$__mymap;
+  <<__Memoize>>
+  public static function mymap(): ConstMap<string, string>{
+    return ImmMap {
+      "keys" => "values",
+    };
   }
 
   /**
    * Original thrift constant:-
    * struct module.Internship instagram
    */
-  private static ?Internship $__instagram = null;
-  public static function instagram(): Internship {
-    if (self::$__instagram === null) {
-      self::$__instagram = Internship::fromShape(
-        shape(
-          "weeks" => 12,
-          "title" => "Software Engineer",
-          "employer" => Company::INSTAGRAM,
-        )
-      );
-    }
-    return self::$__instagram;
+  <<__Memoize>>
+  public static function instagram(): Internship{
+    return Internship::fromShape(
+      shape(
+        "weeks" => 12,
+        "title" => "Software Engineer",
+        "employer" => Company::INSTAGRAM,
+      )
+    );
   }
 
   /**
    * Original thrift constant:-
    * struct module.Internship partial_const
    */
-  private static ?Internship $__partial_const = null;
-  public static function partial_const(): Internship {
-    if (self::$__partial_const === null) {
-      self::$__partial_const = Internship::fromShape(
-        shape(
-          "weeks" => 8,
-          "title" => "Some Job",
-        )
-      );
-    }
-    return self::$__partial_const;
+  <<__Memoize>>
+  public static function partial_const(): Internship{
+    return Internship::fromShape(
+      shape(
+        "weeks" => 8,
+        "title" => "Some Job",
+      )
+    );
   }
 
   /**
    * Original thrift constant:-
    * list<struct module.Range> kRanges
    */
-  private static ?Vector<Range> $__kRanges = null;
-  public static function kRanges(): Vector<Range> {
-    if (self::$__kRanges === null) {
-      self::$__kRanges = Vector {
-        Range::fromShape(
-          shape(
-            "min" => 1,
-            "max" => 2,
-          )
-        ),
-        Range::fromShape(
-          shape(
-            "min" => 5,
-            "max" => 6,
-          )
-        ),
-      };
-    }
-    return self::$__kRanges;
+  <<__Memoize>>
+  public static function kRanges(): ConstVector<Range>{
+    return ImmVector {
+      Range::fromShape(
+        shape(
+          "min" => 1,
+          "max" => 2,
+        )
+      ),
+      Range::fromShape(
+        shape(
+          "min" => 5,
+          "max" => 6,
+        )
+      ),
+    };
   }
 
   /**
    * Original thrift constant:-
    * list<struct module.Internship> internList
    */
-  private static ?Vector<Internship> $__internList = null;
-  public static function internList(): Vector<Internship> {
-    if (self::$__internList === null) {
-      self::$__internList = Vector {
-        Internship::fromShape(
-          shape(
-            "weeks" => 12,
-            "title" => "Software Engineer",
-            "employer" => Company::INSTAGRAM,
-          )
-        ),
-        Internship::fromShape(
-          shape(
-            "weeks" => 10,
-            "title" => "Sales Intern",
-            "employer" => Company::FACEBOOK,
-          )
-        ),
-      };
-    }
-    return self::$__internList;
+  <<__Memoize>>
+  public static function internList(): ConstVector<Internship>{
+    return ImmVector {
+      Internship::fromShape(
+        shape(
+          "weeks" => 12,
+          "title" => "Software Engineer",
+          "employer" => Company::INSTAGRAM,
+        )
+      ),
+      Internship::fromShape(
+        shape(
+          "weeks" => 10,
+          "title" => "Sales Intern",
+          "employer" => Company::FACEBOOK,
+        )
+      ),
+    };
   }
 
   /**
    * Original thrift constant:-
    * struct module.struct1 pod_0
    */
-  private static ?struct1 $__pod_0 = null;
-  public static function pod_0(): struct1 {
-    if (self::$__pod_0 === null) {
-      self::$__pod_0 = struct1::fromShape(
-        shape(
-        )
-      );
-    }
-    return self::$__pod_0;
+  <<__Memoize>>
+  public static function pod_0(): struct1{
+    return struct1::fromShape(
+      shape(
+      )
+    );
   }
 
   /**
    * Original thrift constant:-
    * struct module.struct1 pod_1
    */
-  private static ?struct1 $__pod_1 = null;
-  public static function pod_1(): struct1 {
-    if (self::$__pod_1 === null) {
-      self::$__pod_1 = struct1::fromShape(
-        shape(
-          "a" => 10,
-          "b" => "foo",
-        )
-      );
-    }
-    return self::$__pod_1;
+  <<__Memoize>>
+  public static function pod_1(): struct1{
+    return struct1::fromShape(
+      shape(
+        "a" => 10,
+        "b" => "foo",
+      )
+    );
   }
 
   /**
    * Original thrift constant:-
    * struct module.struct2 pod_2
    */
-  private static ?struct2 $__pod_2 = null;
-  public static function pod_2(): struct2 {
-    if (self::$__pod_2 === null) {
-      self::$__pod_2 = struct2::fromShape(
-        shape(
-          "a" => 98,
-          "b" => "gaz",
-          "c" => struct1::fromShape(
-            shape(
-              "a" => 12,
-              "b" => "bar",
-            )
-          ),
-          "d" => Vector {
-            11,
-            22,
-            33,
-          },
-        )
-      );
-    }
-    return self::$__pod_2;
+  <<__Memoize>>
+  public static function pod_2(): struct2{
+    return struct2::fromShape(
+      shape(
+        "a" => 98,
+        "b" => "gaz",
+        "c" => struct1::fromShape(
+          shape(
+            "a" => 12,
+            "b" => "bar",
+          )
+        ),
+        "d" => Vector {
+          11,
+          22,
+          33,
+        },
+      )
+    );
   }
 
   /**
    * Original thrift constant:-
    * struct module.struct2 pod_trailing_commas
    */
-  private static ?struct2 $__pod_trailing_commas = null;
-  public static function pod_trailing_commas(): struct2 {
-    if (self::$__pod_trailing_commas === null) {
-      self::$__pod_trailing_commas = struct2::fromShape(
-        shape(
-          "a" => 98,
-          "b" => "gaz",
-          "c" => struct1::fromShape(
-            shape(
-              "a" => 12,
-              "b" => "bar",
-            )
-          ),
-          "d" => Vector {
-            11,
-            22,
-            33,
-          },
-        )
-      );
-    }
-    return self::$__pod_trailing_commas;
+  <<__Memoize>>
+  public static function pod_trailing_commas(): struct2{
+    return struct2::fromShape(
+      shape(
+        "a" => 98,
+        "b" => "gaz",
+        "c" => struct1::fromShape(
+          shape(
+            "a" => 12,
+            "b" => "bar",
+          )
+        ),
+        "d" => Vector {
+          11,
+          22,
+          33,
+        },
+      )
+    );
   }
 
   /**
    * Original thrift constant:-
    * struct module.struct3 pod_3
    */
-  private static ?struct3 $__pod_3 = null;
-  public static function pod_3(): struct3 {
-    if (self::$__pod_3 === null) {
-      self::$__pod_3 = struct3::fromShape(
-        shape(
-          "a" => "abc",
-          "b" => 456,
-          "c" => struct2::fromShape(
-            shape(
-              "a" => 888,
-              "c" => struct1::fromShape(
-                shape(
-                  "b" => "gaz",
-                )
-              ),
-              "d" => Vector {
-                1,
-                2,
-                3,
-              },
-            )
-          ),
-        )
-      );
-    }
-    return self::$__pod_3;
+  <<__Memoize>>
+  public static function pod_3(): struct3{
+    return struct3::fromShape(
+      shape(
+        "a" => "abc",
+        "b" => 456,
+        "c" => struct2::fromShape(
+          shape(
+            "a" => 888,
+            "c" => struct1::fromShape(
+              shape(
+                "b" => "gaz",
+              )
+            ),
+            "d" => Vector {
+              1,
+              2,
+              3,
+            },
+          )
+        ),
+      )
+    );
   }
 
   /**
    * Original thrift constant:-
    * struct module.union1 u_1_1
    */
-  private static ?union1 $__u_1_1 = null;
-  public static function u_1_1(): union1 {
-    if (self::$__u_1_1 === null) {
-      self::$__u_1_1 = union1::fromShape(
-        shape(
-          "i" => 97,
-        )
-      );
-    }
-    return self::$__u_1_1;
+  <<__Memoize>>
+  public static function u_1_1(): union1{
+    return union1::fromShape(
+      shape(
+        "i" => 97,
+      )
+    );
   }
 
   /**
    * Original thrift constant:-
    * struct module.union1 u_1_2
    */
-  private static ?union1 $__u_1_2 = null;
-  public static function u_1_2(): union1 {
-    if (self::$__u_1_2 === null) {
-      self::$__u_1_2 = union1::fromShape(
-        shape(
-          "d" => 5.6,
-        )
-      );
-    }
-    return self::$__u_1_2;
+  <<__Memoize>>
+  public static function u_1_2(): union1{
+    return union1::fromShape(
+      shape(
+        "d" => 5.6,
+      )
+    );
   }
 
   /**
    * Original thrift constant:-
    * struct module.union1 u_1_3
    */
-  private static ?union1 $__u_1_3 = null;
-  public static function u_1_3(): union1 {
-    if (self::$__u_1_3 === null) {
-      self::$__u_1_3 = union1::fromShape(
-        shape(
-        )
-      );
-    }
-    return self::$__u_1_3;
+  <<__Memoize>>
+  public static function u_1_3(): union1{
+    return union1::fromShape(
+      shape(
+      )
+    );
   }
 
   /**
    * Original thrift constant:-
    * struct module.union2 u_2_1
    */
-  private static ?union2 $__u_2_1 = null;
-  public static function u_2_1(): union2 {
-    if (self::$__u_2_1 === null) {
-      self::$__u_2_1 = union2::fromShape(
-        shape(
-          "i" => 51,
-        )
-      );
-    }
-    return self::$__u_2_1;
+  <<__Memoize>>
+  public static function u_2_1(): union2{
+    return union2::fromShape(
+      shape(
+        "i" => 51,
+      )
+    );
   }
 
   /**
    * Original thrift constant:-
    * struct module.union2 u_2_2
    */
-  private static ?union2 $__u_2_2 = null;
-  public static function u_2_2(): union2 {
-    if (self::$__u_2_2 === null) {
-      self::$__u_2_2 = union2::fromShape(
-        shape(
-          "d" => 6.7,
-        )
-      );
-    }
-    return self::$__u_2_2;
+  <<__Memoize>>
+  public static function u_2_2(): union2{
+    return union2::fromShape(
+      shape(
+        "d" => 6.7,
+      )
+    );
   }
 
   /**
    * Original thrift constant:-
    * struct module.union2 u_2_3
    */
-  private static ?union2 $__u_2_3 = null;
-  public static function u_2_3(): union2 {
-    if (self::$__u_2_3 === null) {
-      self::$__u_2_3 = union2::fromShape(
-        shape(
-          "s" => struct1::fromShape(
-            shape(
-              "a" => 8,
-              "b" => "abacabb",
-            )
-          ),
-        )
-      );
-    }
-    return self::$__u_2_3;
+  <<__Memoize>>
+  public static function u_2_3(): union2{
+    return union2::fromShape(
+      shape(
+        "s" => struct1::fromShape(
+          shape(
+            "a" => 8,
+            "b" => "abacabb",
+          )
+        ),
+      )
+    );
   }
 
   /**
    * Original thrift constant:-
    * struct module.union2 u_2_4
    */
-  private static ?union2 $__u_2_4 = null;
-  public static function u_2_4(): union2 {
-    if (self::$__u_2_4 === null) {
-      self::$__u_2_4 = union2::fromShape(
-        shape(
-          "u" => union1::fromShape(
-            shape(
-              "i" => 43,
-            )
-          ),
-        )
-      );
-    }
-    return self::$__u_2_4;
+  <<__Memoize>>
+  public static function u_2_4(): union2{
+    return union2::fromShape(
+      shape(
+        "u" => union1::fromShape(
+          shape(
+            "i" => 43,
+          )
+        ),
+      )
+    );
   }
 
   /**
    * Original thrift constant:-
    * struct module.union2 u_2_5
    */
-  private static ?union2 $__u_2_5 = null;
-  public static function u_2_5(): union2 {
-    if (self::$__u_2_5 === null) {
-      self::$__u_2_5 = union2::fromShape(
-        shape(
-          "u" => union1::fromShape(
-            shape(
-              "d" => 9.8,
-            )
-          ),
-        )
-      );
-    }
-    return self::$__u_2_5;
+  <<__Memoize>>
+  public static function u_2_5(): union2{
+    return union2::fromShape(
+      shape(
+        "u" => union1::fromShape(
+          shape(
+            "d" => 9.8,
+          )
+        ),
+      )
+    );
   }
 
   /**
    * Original thrift constant:-
    * struct module.union2 u_2_6
    */
-  private static ?union2 $__u_2_6 = null;
-  public static function u_2_6(): union2 {
-    if (self::$__u_2_6 === null) {
-      self::$__u_2_6 = union2::fromShape(
-        shape(
-          "u" => union1::fromShape(
-            shape(
-            )
-          ),
-        )
-      );
-    }
-    return self::$__u_2_6;
+  <<__Memoize>>
+  public static function u_2_6(): union2{
+    return union2::fromShape(
+      shape(
+        "u" => union1::fromShape(
+          shape(
+          )
+        ),
+      )
+    );
   }
 
   /**
    * Original thrift constant:-
    * string apostrophe
    */
-  private static ?string $__apostrophe = null;
-  public static function apostrophe(): string {
-    if (self::$__apostrophe === null) {
-      self::$__apostrophe = "'";
-    }
-    return self::$__apostrophe;
+  <<__Memoize>>
+  public static function apostrophe(): string{
+    return "'";
   }
 
   /**
    * Original thrift constant:-
    * string tripleApostrophe
    */
-  private static ?string $__tripleApostrophe = null;
-  public static function tripleApostrophe(): string {
-    if (self::$__tripleApostrophe === null) {
-      self::$__tripleApostrophe = "'''";
-    }
-    return self::$__tripleApostrophe;
+  <<__Memoize>>
+  public static function tripleApostrophe(): string{
+    return "'''";
   }
 
   /**
    * Original thrift constant:-
    * string quotationMark
    */
-  private static ?string $__quotationMark = null;
-  public static function quotationMark(): string {
-    if (self::$__quotationMark === null) {
-      self::$__quotationMark = "\"";
-    }
-    return self::$__quotationMark;
+  <<__Memoize>>
+  public static function quotationMark(): string{
+    return "\"";
   }
 
   /**
    * Original thrift constant:-
    * string backslash
    */
-  private static ?string $__backslash = null;
-  public static function backslash(): string {
-    if (self::$__backslash === null) {
-      self::$__backslash = "\\";
-    }
-    return self::$__backslash;
+  <<__Memoize>>
+  public static function backslash(): string{
+    return "\\";
   }
 
   /**
    * Original thrift constant:-
    * string escaped_a
    */
-  private static ?string $__escaped_a = null;
-  public static function escaped_a(): string {
-    if (self::$__escaped_a === null) {
-      self::$__escaped_a = "\x61";
-    }
-    return self::$__escaped_a;
+  <<__Memoize>>
+  public static function escaped_a(): string{
+    return "\x61";
   }
 
   /**
    * Original thrift constant:-
    * map<string, i32> char2ascii
    */
-  private static ?Map<string, int> $__char2ascii = null;
-  public static function char2ascii(): Map<string, int> {
-    if (self::$__char2ascii === null) {
-      self::$__char2ascii = Map {
-        "'" => 39,
-        "\"" => 34,
-        "\\" => 92,
-        "\x61" => 97,
-      };
-    }
-    return self::$__char2ascii;
+  <<__Memoize>>
+  public static function char2ascii(): ConstMap<string, int>{
+    return ImmMap {
+      "'" => 39,
+      "\"" => 34,
+      "\\" => 92,
+      "\x61" => 97,
+    };
   }
 
   /**
    * Original thrift constant:-
    * list<string> escaped_strings
    */
-  private static ?Vector<string> $__escaped_strings = null;
-  public static function escaped_strings(): Vector<string> {
-    if (self::$__escaped_strings === null) {
-      self::$__escaped_strings = Vector {
-        "\x61",
-        "\xab",
-        "\x6a",
-        "\xa6",
-        "\x61yyy",
-        "\xabyyy",
-        "\x6ayyy",
-        "\xa6yyy",
-        "zzz\x61",
-        "zzz\xab",
-        "zzz\x6a",
-        "zzz\xa6",
-        "zzz\x61yyy",
-        "zzz\xabyyy",
-        "zzz\x6ayyy",
-        "zzz\xa6yyy",
-      };
-    }
-    return self::$__escaped_strings;
+  <<__Memoize>>
+  public static function escaped_strings(): ConstVector<string>{
+    return ImmVector {
+      "\x61",
+      "\xab",
+      "\x6a",
+      "\xa6",
+      "\x61yyy",
+      "\xabyyy",
+      "\x6ayyy",
+      "\xa6yyy",
+      "zzz\x61",
+      "zzz\xab",
+      "zzz\x6a",
+      "zzz\xa6",
+      "zzz\x61yyy",
+      "zzz\xabyyy",
+      "zzz\x6ayyy",
+      "zzz\xa6yyy",
+    };
   }
 
   /**
    * Original thrift constant:-
    * bool false_c
    */
-  private static ?bool $__false_c = null;
-  public static function false_c(): bool {
-    if (self::$__false_c === null) {
-      self::$__false_c = false;
-    }
-    return self::$__false_c;
+  <<__Memoize>>
+  public static function false_c(): bool{
+    return false;
   }
 
   /**
    * Original thrift constant:-
    * bool true_c
    */
-  private static ?bool $__true_c = null;
-  public static function true_c(): bool {
-    if (self::$__true_c === null) {
-      self::$__true_c = true;
-    }
-    return self::$__true_c;
+  <<__Memoize>>
+  public static function true_c(): bool{
+    return true;
   }
 
   /**
    * Original thrift constant:-
    * byte zero_byte
    */
-  private static ?int $__zero_byte = null;
-  public static function zero_byte(): int {
-    if (self::$__zero_byte === null) {
-      self::$__zero_byte = 0;
-    }
-    return self::$__zero_byte;
+  <<__Memoize>>
+  public static function zero_byte(): int{
+    return 0;
   }
 
   /**
    * Original thrift constant:-
    * i16 zero16
    */
-  private static ?int $__zero16 = null;
-  public static function zero16(): int {
-    if (self::$__zero16 === null) {
-      self::$__zero16 = 0;
-    }
-    return self::$__zero16;
+  <<__Memoize>>
+  public static function zero16(): int{
+    return 0;
   }
 
   /**
    * Original thrift constant:-
    * i32 zero32
    */
-  private static ?int $__zero32 = null;
-  public static function zero32(): int {
-    if (self::$__zero32 === null) {
-      self::$__zero32 = 0;
-    }
-    return self::$__zero32;
+  <<__Memoize>>
+  public static function zero32(): int{
+    return 0;
   }
 
   /**
    * Original thrift constant:-
    * i64 zero64
    */
-  private static ?int $__zero64 = null;
-  public static function zero64(): int {
-    if (self::$__zero64 === null) {
-      self::$__zero64 = 0;
-    }
-    return self::$__zero64;
+  <<__Memoize>>
+  public static function zero64(): int{
+    return 0;
   }
 
   /**
    * Original thrift constant:-
    * double zero_dot_zero
    */
-  private static ?float $__zero_dot_zero = null;
-  public static function zero_dot_zero(): float {
-    if (self::$__zero_dot_zero === null) {
-      self::$__zero_dot_zero = 0.0;
-    }
-    return self::$__zero_dot_zero;
+  <<__Memoize>>
+  public static function zero_dot_zero(): float{
+    return 0.0;
   }
 
   /**
    * Original thrift constant:-
    * string empty_string
    */
-  private static ?string $__empty_string = null;
-  public static function empty_string(): string {
-    if (self::$__empty_string === null) {
-      self::$__empty_string = "";
-    }
-    return self::$__empty_string;
+  <<__Memoize>>
+  public static function empty_string(): string{
+    return "";
   }
 
   /**
    * Original thrift constant:-
    * list<i32> empty_int_list
    */
-  private static ?Vector<int> $__empty_int_list = null;
-  public static function empty_int_list(): Vector<int> {
-    if (self::$__empty_int_list === null) {
-      self::$__empty_int_list = Vector {
-      };
-    }
-    return self::$__empty_int_list;
+  <<__Memoize>>
+  public static function empty_int_list(): ConstVector<int>{
+    return ImmVector {
+    };
   }
 
   /**
    * Original thrift constant:-
    * list<string> empty_string_list
    */
-  private static ?Vector<string> $__empty_string_list = null;
-  public static function empty_string_list(): Vector<string> {
-    if (self::$__empty_string_list === null) {
-      self::$__empty_string_list = Vector {
-      };
-    }
-    return self::$__empty_string_list;
+  <<__Memoize>>
+  public static function empty_string_list(): ConstVector<string>{
+    return ImmVector {
+    };
   }
 
   /**
    * Original thrift constant:-
    * set<i32> empty_int_set
    */
-  private static ?Set<int> $__empty_int_set = null;
-  public static function empty_int_set(): Set<int> {
-    if (self::$__empty_int_set === null) {
-      self::$__empty_int_set = Set {
-      };
-    }
-    return self::$__empty_int_set;
+  <<__Memoize>>
+  public static function empty_int_set(): ConstSet<int>{
+    return ImmSet {
+    };
   }
 
   /**
    * Original thrift constant:-
    * set<string> empty_string_set
    */
-  private static ?Set<string> $__empty_string_set = null;
-  public static function empty_string_set(): Set<string> {
-    if (self::$__empty_string_set === null) {
-      self::$__empty_string_set = Set {
-      };
-    }
-    return self::$__empty_string_set;
+  <<__Memoize>>
+  public static function empty_string_set(): ConstSet<string>{
+    return ImmSet {
+    };
   }
 
   /**
    * Original thrift constant:-
    * map<i32, i32> empty_int_int_map
    */
-  private static ?Map<int, int> $__empty_int_int_map = null;
-  public static function empty_int_int_map(): Map<int, int> {
-    if (self::$__empty_int_int_map === null) {
-      self::$__empty_int_int_map = Map {
-      };
-    }
-    return self::$__empty_int_int_map;
+  <<__Memoize>>
+  public static function empty_int_int_map(): ConstMap<int, int>{
+    return ImmMap {
+    };
   }
 
   /**
    * Original thrift constant:-
    * map<i32, string> empty_int_string_map
    */
-  private static ?Map<int, string> $__empty_int_string_map = null;
-  public static function empty_int_string_map(): Map<int, string> {
-    if (self::$__empty_int_string_map === null) {
-      self::$__empty_int_string_map = Map {
-      };
-    }
-    return self::$__empty_int_string_map;
+  <<__Memoize>>
+  public static function empty_int_string_map(): ConstMap<int, string>{
+    return ImmMap {
+    };
   }
 
   /**
    * Original thrift constant:-
    * map<string, i32> empty_string_int_map
    */
-  private static ?Map<string, int> $__empty_string_int_map = null;
-  public static function empty_string_int_map(): Map<string, int> {
-    if (self::$__empty_string_int_map === null) {
-      self::$__empty_string_int_map = Map {
-      };
-    }
-    return self::$__empty_string_int_map;
+  <<__Memoize>>
+  public static function empty_string_int_map(): ConstMap<string, int>{
+    return ImmMap {
+    };
   }
 
   /**
    * Original thrift constant:-
    * map<string, string> empty_string_string_map
    */
-  private static ?Map<string, string> $__empty_string_string_map = null;
-  public static function empty_string_string_map(): Map<string, string> {
-    if (self::$__empty_string_string_map === null) {
-      self::$__empty_string_string_map = Map {
-      };
-    }
-    return self::$__empty_string_string_map;
+  <<__Memoize>>
+  public static function empty_string_string_map(): ConstMap<string, string>{
+    return ImmMap {
+    };
   }
 
-
-  private static ?dict<string, mixed> $____values = null;
-  public static function __values(): dict<string, mixed> {
-    if (self::$____values === null) {
-      self::$____values = dict[
-        "myInt" => 1337,
-        "name" => "Mark Zuckerberg",
-        "states" => Vector {
-          Map {
-            "San Diego" => 3211000,
-            "Sacramento" => 479600,
-            "SF" => 837400,
-          },
-          Map {
-            "New York" => 8406000,
-            "Albany" => 98400,
-          },
-        },
-        "x" => 1.0,
-        "y" => 1000000.0,
-        "z" => 1e+09,
-        "zeroDoubleValue" => 0.0,
-        "longDoubleValue" => 2.59961e-05,
-        "my_company" => Company::FACEBOOK,
-        "foo" => "foo",
-        "bar" => 42,
-        "mymap" => Map {
-          "keys" => "values",
-        },
-        "instagram" => Internship::fromShape(
-          shape(
-            "weeks" => 12,
-            "title" => "Software Engineer",
-            "employer" => Company::INSTAGRAM,
-          )
-        ),
-        "partial_const" => Internship::fromShape(
-          shape(
-            "weeks" => 8,
-            "title" => "Some Job",
-          )
-        ),
-        "kRanges" => Vector {
-          Range::fromShape(
-            shape(
-              "min" => 1,
-              "max" => 2,
-            )
-          ),
-          Range::fromShape(
-            shape(
-              "min" => 5,
-              "max" => 6,
-            )
-          ),
-        },
-        "internList" => Vector {
-          Internship::fromShape(
-            shape(
-              "weeks" => 12,
-              "title" => "Software Engineer",
-              "employer" => Company::INSTAGRAM,
-            )
-          ),
-          Internship::fromShape(
-            shape(
-              "weeks" => 10,
-              "title" => "Sales Intern",
-              "employer" => Company::FACEBOOK,
-            )
-          ),
-        },
-        "pod_0" => struct1::fromShape(
-          shape(
-          )
-        ),
-        "pod_1" => struct1::fromShape(
-          shape(
-            "a" => 10,
-            "b" => "foo",
-          )
-        ),
-        "pod_2" => struct2::fromShape(
-          shape(
-            "a" => 98,
-            "b" => "gaz",
-            "c" => struct1::fromShape(
-              shape(
-                "a" => 12,
-                "b" => "bar",
-              )
-            ),
-            "d" => Vector {
-              11,
-              22,
-              33,
-            },
-          )
-        ),
-        "pod_trailing_commas" => struct2::fromShape(
-          shape(
-            "a" => 98,
-            "b" => "gaz",
-            "c" => struct1::fromShape(
-              shape(
-                "a" => 12,
-                "b" => "bar",
-              )
-            ),
-            "d" => Vector {
-              11,
-              22,
-              33,
-            },
-          )
-        ),
-        "pod_3" => struct3::fromShape(
-          shape(
-            "a" => "abc",
-            "b" => 456,
-            "c" => struct2::fromShape(
-              shape(
-                "a" => 888,
-                "c" => struct1::fromShape(
-                  shape(
-                    "b" => "gaz",
-                  )
-                ),
-                "d" => Vector {
-                  1,
-                  2,
-                  3,
-                },
-              )
-            ),
-          )
-        ),
-        "u_1_1" => union1::fromShape(
-          shape(
-            "i" => 97,
-          )
-        ),
-        "u_1_2" => union1::fromShape(
-          shape(
-            "d" => 5.6,
-          )
-        ),
-        "u_1_3" => union1::fromShape(
-          shape(
-          )
-        ),
-        "u_2_1" => union2::fromShape(
-          shape(
-            "i" => 51,
-          )
-        ),
-        "u_2_2" => union2::fromShape(
-          shape(
-            "d" => 6.7,
-          )
-        ),
-        "u_2_3" => union2::fromShape(
-          shape(
-            "s" => struct1::fromShape(
-              shape(
-                "a" => 8,
-                "b" => "abacabb",
-              )
-            ),
-          )
-        ),
-        "u_2_4" => union2::fromShape(
-          shape(
-            "u" => union1::fromShape(
-              shape(
-                "i" => 43,
-              )
-            ),
-          )
-        ),
-        "u_2_5" => union2::fromShape(
-          shape(
-            "u" => union1::fromShape(
-              shape(
-                "d" => 9.8,
-              )
-            ),
-          )
-        ),
-        "u_2_6" => union2::fromShape(
-          shape(
-            "u" => union1::fromShape(
-              shape(
-              )
-            ),
-          )
-        ),
-        "apostrophe" => "'",
-        "tripleApostrophe" => "'''",
-        "quotationMark" => "\"",
-        "backslash" => "\\",
-        "escaped_a" => "\x61",
-        "char2ascii" => Map {
-          "'" => 39,
-          "\"" => 34,
-          "\\" => 92,
-          "\x61" => 97,
-        },
-        "escaped_strings" => Vector {
-          "\x61",
-          "\xab",
-          "\x6a",
-          "\xa6",
-          "\x61yyy",
-          "\xabyyy",
-          "\x6ayyy",
-          "\xa6yyy",
-          "zzz\x61",
-          "zzz\xab",
-          "zzz\x6a",
-          "zzz\xa6",
-          "zzz\x61yyy",
-          "zzz\xabyyy",
-          "zzz\x6ayyy",
-          "zzz\xa6yyy",
-        },
-        "false_c" => false,
-        "true_c" => true,
-        "zero_byte" => 0,
-        "zero16" => 0,
-        "zero32" => 0,
-        "zero64" => 0,
-        "zero_dot_zero" => 0.0,
-        "empty_string" => "",
-        "empty_int_list" => Vector {
-        },
-        "empty_string_list" => Vector {
-        },
-        "empty_int_set" => Set {
-        },
-        "empty_string_set" => Set {
-        },
-        "empty_int_int_map" => Map {
-        },
-        "empty_int_string_map" => Map {
-        },
-        "empty_string_int_map" => Map {
-        },
-        "empty_string_string_map" => Map {
-        },
-      ];
-    }
-    return self::$____values;
-  }
 
 }
 

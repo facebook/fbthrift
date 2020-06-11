@@ -118,7 +118,10 @@ class t_hack_generator : public t_oop_generator {
   void generate_xception(t_struct* txception) override;
   void generate_service(t_service* tservice) override;
 
-  std::string render_const_value(t_type* type, const t_const_value* value);
+  std::string render_const_value(
+      t_type* type,
+      const t_const_value* value,
+      bool immutable_collections = false);
   std::string render_default_value(t_type* type);
 
   /**
@@ -392,8 +395,11 @@ class t_hack_generator : public t_oop_generator {
   generate_php_docstring_args(ofstream& out, int start_pos, t_struct* arg_list);
   std::string render_string(std::string value);
 
-  std::string
-  type_to_typehint(t_type* ttype, bool nullable = false, bool shape = false);
+  std::string type_to_typehint(
+      t_type* ttype,
+      bool nullable = false,
+      bool shape = false,
+      bool immutable_collections = false);
   std::string type_to_param_typehint(t_type* ttype, bool nullable = false);
 
   bool is_type_arraykey(t_type* type);
@@ -493,12 +499,6 @@ class t_hack_generator : public t_oop_generator {
   }
 
   const char* UNION_EMPTY = "_EMPTY_";
-
-  void generate_lazy_init_for_constant(
-      ofstream& out,
-      const std::string& name,
-      const std::string& typehint,
-      const std::string& rendered_value);
 
   std::string generate_array_typehint(
       const std::string& key_type,
@@ -1022,11 +1022,6 @@ void t_hack_generator::close_generator() {
       indent(oss) << "    ]";
 
       string rendered_value = oss.str();
-      generate_lazy_init_for_constant(
-          f_consts_,
-          "__values",
-          generate_array_typehint("string", "mixed"),
-          rendered_value);
     }
     indent_down();
     // close constants class
@@ -1100,7 +1095,18 @@ void t_hack_generator::generate_const(t_const* tconst) {
 
   indent_up();
   generate_php_docstring(f_consts_, tconst);
-  if (!lazy_constants_) {
+  if (lazy_constants_) {
+    f_consts_ << indent();
+    f_consts_ << "<<__Memoize>>\n"
+              << indent() << "public static function " << name
+              << "(): " << type_to_typehint(type, false, false, true) << "{\n";
+    indent_up();
+    f_consts_ << indent() << "return ";
+    f_consts_ << render_const_value(type, value, true) << ";\n";
+    indent_down();
+    f_consts_ << indent() << "}\n";
+    f_consts_ << "\n";
+  } else {
     // for base php types, use const (guarantees optimization in hphp)
     if (type->is_base_type()) {
       indent(f_consts_) << "const " << type_to_typehint(type) << " " << name
@@ -1126,54 +1132,9 @@ void t_hack_generator::generate_const(t_const* tconst) {
     indent_down();
     indent_down();
     constants_values_.push_back(oss.str());
-  } else {
-    // generate rendered value with right number of identations (2)
-    indent_up();
-    indent_up();
-    stringstream val(stringstream::out);
-    val << render_const_value(type, value);
-    indent_down();
-    indent_down();
-
-    string rendered_value = val.str();
-    generate_lazy_init_for_constant(
-        f_consts_, name, type_to_typehint(type), rendered_value);
-
-    // add the definitions to a values array as well
-    // indent up 3 times cause we're going to be 2 levels deeper
-    // than in non lazy case
-    indent_up();
-    indent_up();
-    indent_up();
-    stringstream oss(stringstream::out);
-    indent(oss) << render_string(name) << " => ";
-    oss << render_const_value(type, value);
-    indent_down();
-    indent_down();
-    indent_down();
-
-    constants_values_.push_back(oss.str());
   }
 
   indent_down();
-}
-
-void t_hack_generator::generate_lazy_init_for_constant(
-    ofstream& out,
-    const std::string& name,
-    const std::string& typehint,
-    const std::string& rendered_value) {
-  string name_internal = "__" + name;
-  indent(out) << "private static ?" << typehint << " $" << name_internal
-              << " = null;\n";
-  indent(out) << "public static function " << name << "(): " << typehint
-              << " {\n";
-  indent(out) << "  if (self::$" << name_internal << " === null) {\n";
-  indent(out) << "    self::$" << name_internal << " = " << rendered_value
-              << ";\n";
-  indent(out) << "  }\n";
-  indent(out) << "  return self::$" << name_internal << ";\n";
-  indent(out) << "}\n\n";
 }
 
 std::string t_hack_generator::generate_array_typehint(
@@ -1202,7 +1163,8 @@ string t_hack_generator::render_string(string value) {
  */
 string t_hack_generator::render_const_value(
     t_type* type,
-    const t_const_value* value) {
+    const t_const_value* value,
+    bool immutable_collections) {
   std::ostringstream out;
   type = type->get_true_type();
   if (type->is_base_type()) {
@@ -1293,16 +1255,16 @@ string t_hack_generator::render_const_value(
     } else if (no_use_hack_collections_) {
       out << "darray[\n";
     } else {
-      out << "Map {\n";
+      out << (immutable_collections ? "Imm" : "") << "Map {\n";
     }
     indent_up();
     const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
     vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
       out << indent();
-      out << render_const_value(ktype, v_iter->first);
+      out << render_const_value(ktype, v_iter->first, immutable_collections);
       out << " => ";
-      out << render_const_value(vtype, v_iter->second);
+      out << render_const_value(vtype, v_iter->second, immutable_collections);
       out << ",\n";
     }
     indent_down();
@@ -1318,14 +1280,14 @@ string t_hack_generator::render_const_value(
     } else if (no_use_hack_collections_) {
       out << "varray[\n";
     } else {
-      out << "Vector {\n";
+      out << (immutable_collections ? "Imm" : "") << "Vector {\n";
     }
     indent_up();
     const vector<t_const_value*>& val = value->get_list();
     vector<t_const_value*>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
       out << indent();
-      out << render_const_value(etype, *v_iter);
+      out << render_const_value(etype, *v_iter, immutable_collections);
       out << ",\n";
     }
     indent_down();
@@ -1343,7 +1305,7 @@ string t_hack_generator::render_const_value(
       out << "keyset[\n";
       for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
         out << indent();
-        out << render_const_value(etype, *v_iter);
+        out << render_const_value(etype, *v_iter, immutable_collections);
         out << ",\n";
       }
       indent_down();
@@ -1352,17 +1314,17 @@ string t_hack_generator::render_const_value(
       out << array_keyword_ << "[\n";
       for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
         out << indent();
-        out << render_const_value(etype, *v_iter);
+        out << render_const_value(etype, *v_iter, immutable_collections);
         out << " => true";
         out << ",\n";
       }
       indent_down();
       indent(out) << "]";
     } else {
-      out << "Set {\n";
+      out << (immutable_collections ? "Imm" : "") << "Set {\n";
       for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
         out << indent();
-        out << render_const_value(etype, *v_iter);
+        out << render_const_value(etype, *v_iter, immutable_collections);
         out << ",\n";
       }
       indent_down();
@@ -3535,8 +3497,12 @@ void t_hack_generator::generate_php_docstring_args(
 /**
  * Generate an appropriate string for a php typehint
  */
-string
-t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool shape) {
+string t_hack_generator::type_to_typehint(
+    t_type* ttype,
+    bool nullable,
+    bool shape,
+    bool immutable_collections) {
+  immutable_collections = immutable_collections || const_collections_;
   if (ttype->is_base_type()) {
     switch (((t_base_type*)ttype)->get_base()) {
       case t_base_type::TYPE_VOID:
@@ -3558,7 +3524,11 @@ t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool shape) {
         return "mixed";
     }
   } else if (ttype->is_typedef()) {
-    return type_to_typehint(((t_typedef*)ttype)->get_type(), nullable, shape);
+    return type_to_typehint(
+        ((t_typedef*)ttype)->get_type(),
+        nullable,
+        shape,
+        immutable_collections);
   } else if (ttype->is_enum()) {
     if (is_bitmask_enum((t_enum*)ttype)) {
       return "int";
@@ -3576,10 +3546,15 @@ t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool shape) {
     } else if (shape) {
       prefix = array_migration_ ? "varray" : "vec";
     } else {
-      prefix = const_collections_ ? "ConstVector" : "Vector";
+      prefix = immutable_collections ? "ConstVector" : "Vector";
     }
     return prefix + "<" +
-        type_to_typehint(((t_list*)ttype)->get_elem_type(), false, shape) + ">";
+        type_to_typehint(
+               ((t_list*)ttype)->get_elem_type(),
+               false,
+               shape,
+               immutable_collections) +
+        ">";
   } else if (ttype->is_map()) {
     string prefix;
     if (arrays_) {
@@ -3589,17 +3564,22 @@ t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool shape) {
     } else if (shape) {
       prefix = array_keyword_;
     } else {
-      prefix = const_collections_ ? "ConstMap" : "Map";
+      prefix = immutable_collections ? "ConstMap" : "Map";
     }
-    string key_type =
-        type_to_typehint(((t_map*)ttype)->get_key_type(), false, shape);
+    string key_type = type_to_typehint(
+        ((t_map*)ttype)->get_key_type(), false, shape, immutable_collections);
     if (shape && shape_arraykeys_ && key_type == "string") {
       key_type = "arraykey";
     } else if (!is_type_arraykey(((t_map*)ttype)->get_key_type())) {
       key_type = "arraykey";
     }
     return prefix + "<" + key_type + ", " +
-        type_to_typehint(((t_map*)ttype)->get_val_type(), false, shape) + ">";
+        type_to_typehint(
+               ((t_map*)ttype)->get_val_type(),
+               false,
+               shape,
+               immutable_collections) +
+        ">";
   } else if (ttype->is_set()) {
     string prefix;
     if (arraysets_) {
@@ -3609,12 +3589,16 @@ t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool shape) {
     } else if (shape) {
       prefix = array_keyword_;
     } else {
-      prefix = const_collections_ ? "ConstSet" : "Set";
+      prefix = immutable_collections ? "ConstSet" : "Set";
     }
     string suffix = (arraysets_ || (shape && !arrays_)) ? ", bool>" : ">";
     string key_type = !is_type_arraykey(((t_set*)ttype)->get_elem_type())
         ? "arraykey"
-        : type_to_typehint(((t_set*)ttype)->get_elem_type(), false, shape);
+        : type_to_typehint(
+              ((t_set*)ttype)->get_elem_type(),
+              false,
+              shape,
+              immutable_collections);
     return prefix + "<" + key_type + suffix;
   } else {
     return "mixed";
