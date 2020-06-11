@@ -51,7 +51,7 @@ interface TestServiceClientIf extends \foo\hack_ns\FooHackServiceClientIf {
  * Original thrift service:-
  * TestService
  */
-interface TestServiceAsyncRpcOptionsClientIf extends \foo\hack_ns\FooHackServiceAsyncRpcOptionsClientIf {
+interface TestServiceAsyncRpcOptionsIf extends \foo\hack_ns\FooHackServiceAsyncRpcOptionsIf {
   /**
    * Original thrift definition:-
    * i32
@@ -170,34 +170,6 @@ trait TestServiceClientBase {
 
 }
 
-class TestServiceAsyncRpcOptionsClient extends \foo\hack_ns\FooHackServiceAsyncRpcOptionsClient implements TestServiceAsyncIf {
-  use TestServiceClientBase;
-
-  /**
-   * Original thrift definition:-
-   * i32
-   *   ping(1: string str_arg);
-   */
-  public async function ping(\RpcOptions $rpc_options, string $str_arg): Awaitable<int> {
-    await $this->asyncHandler_->genBefore("TestService", "ping");
-    $currentseqid = $this->sendImpl_ping($str_arg);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    return $this->recvImpl_ping($currentseqid);
-  }
-
-}
-
 class TestServiceAsyncClient extends \foo\hack_ns\FooHackServiceAsyncClient implements TestServiceAsyncIf {
   use TestServiceClientBase;
 
@@ -259,6 +231,34 @@ class TestServiceClient extends \foo\hack_ns\FooHackServiceClient implements Tes
   public function recv_ping(?int $expectedsequenceid = null): int {
     return $this->recvImpl_ping($expectedsequenceid);
   }
+}
+
+class TestServiceAsyncRpcOptionsClient extends \foo\hack_ns\FooHackServiceAsyncRpcOptionsClient implements TestServiceAsyncRpcOptionsIf {
+  use TestServiceClientBase;
+
+  /**
+   * Original thrift definition:-
+   * i32
+   *   ping(1: string str_arg);
+   */
+  public async function ping(\RpcOptions $rpc_options, string $str_arg): Awaitable<int> {
+    await $this->asyncHandler_->genBefore("TestService", "ping");
+    $currentseqid = $this->sendImpl_ping($str_arg);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    return $this->recvImpl_ping($currentseqid);
+  }
+
 }
 
 // HELPER FUNCTIONS AND STRUCTURES

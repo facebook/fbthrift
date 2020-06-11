@@ -2971,7 +2971,7 @@ void t_hack_generator::generate_service(t_service* tservice, bool mangle) {
       /*rpc_options*/ false,
       /*client*/ true);
   generate_service_interface(
-      tservice, mangle, /*async*/ true, /*rpc_options*/ true, /*client*/ true);
+      tservice, mangle, /*async*/ true, /*rpc_options*/ true, /*client*/ false);
   generate_service_client(tservice, mangle);
   if (phps_) {
     generate_service_processor(tservice, mangle, /*async*/ true);
@@ -4022,11 +4022,11 @@ void t_hack_generator::_generate_service_client(
   out << "\n";
 
   _generate_service_client_children(
-      out, tservice, mangle, /*async*/ true, /*rpc_options*/ true);
-  _generate_service_client_children(
       out, tservice, mangle, /*async*/ true, /*rpc_options*/ false);
   _generate_service_client_children(
       out, tservice, mangle, /*async*/ false, /*rpc_options*/ false);
+  _generate_service_client_children(
+      out, tservice, mangle, /*async*/ true, /*rpc_options*/ true);
 }
 
 // If !strict_types, containers are typehinted as KeyedContainer<Key, Value>
@@ -4129,18 +4129,24 @@ void t_hack_generator::_generate_service_client_children(
     bool async,
     bool rpc_options) {
   string long_name = php_servicename_mangle(mangle, tservice);
-  string suffix =
+  string class_suffix =
       string(async ? "Async" : "") + (rpc_options ? "RpcOptions" : "");
+  if (rpc_options && !async) {
+    throw std::runtime_error(
+        "RpcOptions are currently supported for async clients only");
+  }
+  string interface_suffix =
+      string(async ? "Async" : "Client") + (rpc_options ? "RpcOptions" : "");
   string extends = "\\ThriftClientBase";
   bool root = tservice->get_extends() == nullptr;
   bool first = true;
   if (!root) {
     extends = php_servicename_mangle(mangle, tservice->get_extends(), true) +
-        suffix + "Client";
+        class_suffix + "Client";
   }
 
-  out << "class " << long_name << suffix << "Client extends " << extends
-      << " implements " << long_name << (async ? "Async" : "Client") << "If {\n"
+  out << "class " << long_name << class_suffix << "Client extends " << extends
+      << " implements " << long_name << interface_suffix << "If {\n"
       << "  use " << long_name << "ClientBase;\n\n";
   indent_up();
 
