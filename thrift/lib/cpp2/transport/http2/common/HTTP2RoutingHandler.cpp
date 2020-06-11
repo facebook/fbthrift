@@ -32,8 +32,6 @@ DEFINE_uint32(stream_timeout_ms, 1000, "Stream timeout in milliseconds");
 
 namespace {
 const uint32_t kMaxConcurrentIncomingStreams = 100000;
-// Determined experimentally
-const uint32_t kMaxReadBufferSize = 7800;
 } // namespace
 
 namespace apache {
@@ -176,7 +174,6 @@ void HTTP2RoutingHandler::handleConnection(
       const_cast<folly::SocketAddress*>(peerAddress),
       std::move(h2codec),
       tinfo);
-  session->setMaxReadBufferSize(kMaxReadBufferSize);
   session->setByteEventTracker(nullptr);
   // Enable HTTP/2 priorities
   session->setHTTP2PrioritiesEnabled(true);
