@@ -352,11 +352,15 @@ func (p *MyStructAnnotation) String() string {
 //  - Package
 //  - AnnotationWithQuote
 //  - Class_
+//  - AnnotationWithTrailingComma
+//  - EmptyAnnotations
 type MyStruct struct {
   Major int64 `thrift:"major,1" db:"major" json:"major"`
   Package string `thrift:"package,2" db:"package" json:"package"`
   AnnotationWithQuote string `thrift:"annotation_with_quote,3" tag:"somevalue"`
   Class_ string `thrift:"class_,4" db:"class_" json:"class_"`
+  AnnotationWithTrailingComma string `thrift:"annotation_with_trailing_comma,5" db:"annotation_with_trailing_comma" json:"annotation_with_trailing_comma"`
+  EmptyAnnotations string `thrift:"empty_annotations,6" db:"empty_annotations" json:"empty_annotations"`
 }
 
 func NewMyStruct() *MyStruct {
@@ -378,6 +382,14 @@ func (p *MyStruct) GetAnnotationWithQuote() string {
 
 func (p *MyStruct) GetClass_() string {
   return p.Class_
+}
+
+func (p *MyStruct) GetAnnotationWithTrailingComma() string {
+  return p.AnnotationWithTrailingComma
+}
+
+func (p *MyStruct) GetEmptyAnnotations() string {
+  return p.EmptyAnnotations
 }
 func (p *MyStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
@@ -406,6 +418,14 @@ func (p *MyStruct) Read(iprot thrift.Protocol) error {
       }
     case 4:
       if err := p.ReadField4(iprot); err != nil {
+        return err
+      }
+    case 5:
+      if err := p.ReadField5(iprot); err != nil {
+        return err
+      }
+    case 6:
+      if err := p.ReadField6(iprot); err != nil {
         return err
       }
     default:
@@ -459,6 +479,24 @@ func (p *MyStruct)  ReadField4(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *MyStruct)  ReadField5(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 5: ", err)
+} else {
+  p.AnnotationWithTrailingComma = v
+}
+  return nil
+}
+
+func (p *MyStruct)  ReadField6(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 6: ", err)
+} else {
+  p.EmptyAnnotations = v
+}
+  return nil
+}
+
 func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("MyStruct"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -466,6 +504,8 @@ func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := p.writeField2(oprot); err != nil { return err }
   if err := p.writeField3(oprot); err != nil { return err }
   if err := p.writeField4(oprot); err != nil { return err }
+  if err := p.writeField5(oprot); err != nil { return err }
+  if err := p.writeField6(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -513,6 +553,26 @@ func (p *MyStruct) writeField4(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *MyStruct) writeField5(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("annotation_with_trailing_comma", thrift.STRING, 5); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:annotation_with_trailing_comma: ", p), err) }
+  if err := oprot.WriteString(string(p.AnnotationWithTrailingComma)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.annotation_with_trailing_comma (5) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:annotation_with_trailing_comma: ", p), err) }
+  return err
+}
+
+func (p *MyStruct) writeField6(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("empty_annotations", thrift.STRING, 6); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:empty_annotations: ", p), err) }
+  if err := oprot.WriteString(string(p.EmptyAnnotations)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.empty_annotations (6) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:empty_annotations: ", p), err) }
+  return err
+}
+
 func (p *MyStruct) String() string {
   if p == nil {
     return "<nil>"
@@ -522,7 +582,9 @@ func (p *MyStruct) String() string {
   packageVal := fmt.Sprintf("%v", p.Package)
   annotationWithQuoteVal := fmt.Sprintf("%v", p.AnnotationWithQuote)
   class_Val := fmt.Sprintf("%v", p.Class_)
-  return fmt.Sprintf("MyStruct({Major:%s Package:%s AnnotationWithQuote:%s Class_:%s})", majorVal, packageVal, annotationWithQuoteVal, class_Val)
+  annotationWithTrailingCommaVal := fmt.Sprintf("%v", p.AnnotationWithTrailingComma)
+  emptyAnnotationsVal := fmt.Sprintf("%v", p.EmptyAnnotations)
+  return fmt.Sprintf("MyStruct({Major:%s Package:%s AnnotationWithQuote:%s Class_:%s AnnotationWithTrailingComma:%s EmptyAnnotations:%s})", majorVal, packageVal, annotationWithQuoteVal, class_Val, annotationWithTrailingCommaVal, emptyAnnotationsVal)
 }
 
 // Attributes:

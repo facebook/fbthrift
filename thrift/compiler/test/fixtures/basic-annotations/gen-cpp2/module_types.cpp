@@ -102,6 +102,14 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
     fid = 4;
     _ftype = apache::thrift::protocol::T_STRING;
   }
+  else if (_fname == "annotation_with_trailing_comma") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "empty_annotations") {
+    fid = 6;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
 }
 void TccStructTraits<::cpp2::SecretStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
@@ -283,15 +291,27 @@ template uint32_t MyStructAnnotation::serializedSizeZC<>(apache::thrift::Compact
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg) :
+MyStruct::MyStruct() :
+      majorVer(0) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+MyStruct::~MyStruct() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg) :
     majorVer(std::move(majorVer__arg)),
     package(std::move(package__arg)),
     annotation_with_quote(std::move(annotation_with_quote__arg)),
-    class_(std::move(class___arg)) {
+    class_(std::move(class___arg)),
+    annotation_with_trailing_comma(std::move(annotation_with_trailing_comma__arg)),
+    empty_annotations(std::move(empty_annotations__arg)) {
   __isset.majorVer = true;
   __isset.package = true;
   __isset.annotation_with_quote = true;
   __isset.class_ = true;
+  __isset.annotation_with_trailing_comma = true;
+  __isset.empty_annotations = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
@@ -300,6 +320,8 @@ void MyStruct::__clear() {
   package = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   annotation_with_quote = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   class_ = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  annotation_with_trailing_comma = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  empty_annotations = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -321,6 +343,12 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   if (!(lhs.class_ == rhs.class_)) {
     return false;
   }
+  if (!(lhs.annotation_with_trailing_comma == rhs.annotation_with_trailing_comma)) {
+    return false;
+  }
+  if (!(lhs.empty_annotations == rhs.empty_annotations)) {
+    return false;
+  }
   return true;
 }
 
@@ -340,6 +368,12 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   if (!(lhs.class_ == rhs.class_)) {
     return lhs.class_ < rhs.class_;
   }
+  if (!(lhs.annotation_with_trailing_comma == rhs.annotation_with_trailing_comma)) {
+    return lhs.annotation_with_trailing_comma < rhs.annotation_with_trailing_comma;
+  }
+  if (!(lhs.empty_annotations == rhs.empty_annotations)) {
+    return lhs.empty_annotations < rhs.empty_annotations;
+  }
   return false;
 }
 
@@ -350,6 +384,8 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.package, b.package);
   swap(a.annotation_with_quote, b.annotation_with_quote);
   swap(a.class_, b.class_);
+  swap(a.annotation_with_trailing_comma, b.annotation_with_trailing_comma);
+  swap(a.empty_annotations, b.empty_annotations);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

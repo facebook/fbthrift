@@ -112,22 +112,37 @@ public class ModuleConstants {
 
     pod_2.addProperty(Module.struct2_d, tmp7);
   }
+  public static final ModuleLogger pod_trailing_commas = new ModuleLogger(Module.EventType.struct2);
+  static {
+    pod_trailing_commas.addProperty(Module.struct2_a, 98);
+    pod_trailing_commas.addProperty(Module.struct2_b, "gaz");
+    ModuleLogger tmp8 = new ModuleLogger(Module.EventType.struct1);
+    tmp8.addProperty(Module.struct1_a, 12);
+    tmp8.addProperty(Module.struct1_b, "bar");
+    pod_trailing_commas.addProperty(Module.struct2_c, tmp8);
+    List<Integer> tmp9 = new ArrayList<Integer>();
+    tmp9.add(11);
+    tmp9.add(22);
+    tmp9.add(33);
+
+    pod_trailing_commas.addProperty(Module.struct2_d, tmp9);
+  }
   public static final ModuleLogger pod_3 = new ModuleLogger(Module.EventType.struct3);
   static {
     pod_3.addProperty(Module.struct3_a, "abc");
     pod_3.addProperty(Module.struct3_b, 456);
-    ModuleLogger tmp8 = new ModuleLogger(Module.EventType.struct2);
-    tmp8.addProperty(Module.struct2_a, 888);
-    ModuleLogger tmp9 = new ModuleLogger(Module.EventType.struct1);
-    tmp9.addProperty(Module.struct1_b, "gaz");
-    tmp8.addProperty(Module.struct2_c, tmp9);
-    List<Integer> tmp10 = new ArrayList<Integer>();
-    tmp10.add(1);
-    tmp10.add(2);
-    tmp10.add(3);
+    ModuleLogger tmp10 = new ModuleLogger(Module.EventType.struct2);
+    tmp10.addProperty(Module.struct2_a, 888);
+    ModuleLogger tmp11 = new ModuleLogger(Module.EventType.struct1);
+    tmp11.addProperty(Module.struct1_b, "gaz");
+    tmp10.addProperty(Module.struct2_c, tmp11);
+    List<Integer> tmp12 = new ArrayList<Integer>();
+    tmp12.add(1);
+    tmp12.add(2);
+    tmp12.add(3);
 
-    tmp8.addProperty(Module.struct2_d, tmp10);
-    pod_3.addProperty(Module.struct3_c, tmp8);
+    tmp10.addProperty(Module.struct2_d, tmp12);
+    pod_3.addProperty(Module.struct3_c, tmp10);
   }
   public static final ModuleLogger u_1_1 = new ModuleLogger(Module.EventType.union1);
   static {
@@ -150,27 +165,27 @@ public class ModuleConstants {
   }
   public static final ModuleLogger u_2_3 = new ModuleLogger(Module.EventType.union2);
   static {
-    ModuleLogger tmp11 = new ModuleLogger(Module.EventType.struct1);
-    tmp11.addProperty(Module.struct1_a, 8);
-    tmp11.addProperty(Module.struct1_b, "abacabb");
-    u_2_3.addProperty(Module.union2_s, tmp11);
+    ModuleLogger tmp13 = new ModuleLogger(Module.EventType.struct1);
+    tmp13.addProperty(Module.struct1_a, 8);
+    tmp13.addProperty(Module.struct1_b, "abacabb");
+    u_2_3.addProperty(Module.union2_s, tmp13);
   }
   public static final ModuleLogger u_2_4 = new ModuleLogger(Module.EventType.union2);
   static {
-    ModuleLogger tmp12 = new ModuleLogger(Module.EventType.union1);
-    tmp12.addProperty(Module.union1_i, 43);
-    u_2_4.addProperty(Module.union2_u, tmp12);
+    ModuleLogger tmp14 = new ModuleLogger(Module.EventType.union1);
+    tmp14.addProperty(Module.union1_i, 43);
+    u_2_4.addProperty(Module.union2_u, tmp14);
   }
   public static final ModuleLogger u_2_5 = new ModuleLogger(Module.EventType.union2);
   static {
-    ModuleLogger tmp13 = new ModuleLogger(Module.EventType.union1);
-    tmp13.addProperty(Module.union1_d, 9.8);
-    u_2_5.addProperty(Module.union2_u, tmp13);
+    ModuleLogger tmp15 = new ModuleLogger(Module.EventType.union1);
+    tmp15.addProperty(Module.union1_d, 9.8);
+    u_2_5.addProperty(Module.union2_u, tmp15);
   }
   public static final ModuleLogger u_2_6 = new ModuleLogger(Module.EventType.union2);
   static {
-    ModuleLogger tmp14 = new ModuleLogger(Module.EventType.union1);
-    u_2_6.addProperty(Module.union2_u, tmp14);
+    ModuleLogger tmp16 = new ModuleLogger(Module.EventType.union1);
+    u_2_6.addProperty(Module.union2_u, tmp16);
   }
   public static final String apostrophe = "'";
 

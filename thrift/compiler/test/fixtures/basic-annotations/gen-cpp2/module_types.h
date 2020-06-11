@@ -22,6 +22,8 @@ struct majorVer;
 struct package;
 struct annotation_with_quote;
 struct class_;
+struct annotation_with_trailing_comma;
+struct empty_annotations;
 struct id;
 struct password;
 } // namespace tag
@@ -61,6 +63,14 @@ APACHE_THRIFT_DEFINE_ACCESSOR(annotation_with_quote);
 #ifndef APACHE_THRIFT_ACCESSOR_class_
 #define APACHE_THRIFT_ACCESSOR_class_
 APACHE_THRIFT_DEFINE_ACCESSOR(class_);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_annotation_with_trailing_comma
+#define APACHE_THRIFT_ACCESSOR_annotation_with_trailing_comma
+APACHE_THRIFT_DEFINE_ACCESSOR(annotation_with_trailing_comma);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_empty_annotations
+#define APACHE_THRIFT_ACCESSOR_empty_annotations
+APACHE_THRIFT_DEFINE_ACCESSOR(empty_annotations);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_id
 #define APACHE_THRIFT_ACCESSOR_id
@@ -452,12 +462,12 @@ namespace cpp2 {
 class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
 
+  MyStruct();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  MyStruct() :
-      majorVer(0) {}
+
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg);
+  MyStruct(apache::thrift::FragileConstructor, int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg);
 
   MyStruct(MyStruct&&) = default;
 
@@ -468,6 +478,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct& operator=(const MyStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
+
+  ~MyStruct();
+
  public:
   int64_t majorVer;
  public:
@@ -476,6 +489,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   ::std::string annotation_with_quote;
  public:
   ::std::string class_;
+ public:
+  ::std::string annotation_with_trailing_comma;
+ public:
+  ::std::string empty_annotations;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -484,6 +501,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool package;
     bool annotation_with_quote;
     bool class_;
+    bool annotation_with_trailing_comma;
+    bool empty_annotations;
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
@@ -576,6 +595,50 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotation_with_trailing_comma_ref() const& {
+    return {this->annotation_with_trailing_comma, __isset.annotation_with_trailing_comma};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotation_with_trailing_comma_ref() const&& {
+    return {std::move(this->annotation_with_trailing_comma), __isset.annotation_with_trailing_comma};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> annotation_with_trailing_comma_ref() & {
+    return {this->annotation_with_trailing_comma, __isset.annotation_with_trailing_comma};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotation_with_trailing_comma_ref() && {
+    return {std::move(this->annotation_with_trailing_comma), __isset.annotation_with_trailing_comma};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> empty_annotations_ref() const& {
+    return {this->empty_annotations, __isset.empty_annotations};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> empty_annotations_ref() const&& {
+    return {std::move(this->empty_annotations), __isset.empty_annotations};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> empty_annotations_ref() & {
+    return {this->empty_annotations, __isset.empty_annotations};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> empty_annotations_ref() && {
+    return {std::move(this->empty_annotations), __isset.empty_annotations};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
   int64_t get_majorVer() const {
     return majorVer;
   }
@@ -637,6 +700,40 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.class_ = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return class_;
+  }
+
+  const ::std::string& get_annotation_with_trailing_comma() const& {
+    return annotation_with_trailing_comma;
+  }
+
+  ::std::string get_annotation_with_trailing_comma() && {
+    return std::move(annotation_with_trailing_comma);
+  }
+
+  template <typename T_MyStruct_annotation_with_trailing_comma_struct_setter = ::std::string>
+  ::std::string& set_annotation_with_trailing_comma(T_MyStruct_annotation_with_trailing_comma_struct_setter&& annotation_with_trailing_comma_) {
+    annotation_with_trailing_comma = std::forward<T_MyStruct_annotation_with_trailing_comma_struct_setter>(annotation_with_trailing_comma_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.annotation_with_trailing_comma = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return annotation_with_trailing_comma;
+  }
+
+  const ::std::string& get_empty_annotations() const& {
+    return empty_annotations;
+  }
+
+  ::std::string get_empty_annotations() && {
+    return std::move(empty_annotations);
+  }
+
+  template <typename T_MyStruct_empty_annotations_struct_setter = ::std::string>
+  ::std::string& set_empty_annotations(T_MyStruct_empty_annotations_struct_setter&& empty_annotations_) {
+    empty_annotations = std::forward<T_MyStruct_empty_annotations_struct_setter>(empty_annotations_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.empty_annotations = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return empty_annotations;
   }
 
   template <class Protocol_>

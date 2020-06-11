@@ -34,6 +34,8 @@ class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     package: _typing.Optional[str]
     annotation_with_quote: _typing.Optional[str]
     class_: _typing.Optional[str]
+    annotation_with_trailing_comma: _typing.Optional[str]
+    empty_annotations: _typing.Optional[str]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

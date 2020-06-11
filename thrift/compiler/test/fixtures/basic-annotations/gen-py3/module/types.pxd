@@ -98,6 +98,8 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint package
         bint annotation_with_quote
         bint class_
+        bint annotation_with_trailing_comma
+        bint empty_annotations
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
@@ -112,6 +114,8 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         string package
         string annotation_with_quote
         string class_
+        string annotation_with_trailing_comma
+        string empty_annotations
         cMyStruct__isset __isset
 
     cdef cppclass cSecretStruct__isset "::cpp2::SecretStruct::__isset":
@@ -211,7 +215,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
         object major,
         str package,
         str annotation_with_quote,
-        str class_
+        str class_,
+        str annotation_with_trailing_comma,
+        str empty_annotations
     ) except *
 
     @staticmethod

@@ -285,6 +285,8 @@ class MyStruct:
    - package
    - annotation_with_quote
    - class_
+   - annotation_with_trailing_comma
+   - empty_annotations
   """
 
   thrift_spec = None
@@ -327,6 +329,16 @@ class MyStruct:
           self.class_ = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
+      elif fid == 5:
+        if ftype == TType.STRING:
+          self.annotation_with_trailing_comma = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
+      elif fid == 6:
+        if ftype == TType.STRING:
+          self.empty_annotations = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -356,6 +368,14 @@ class MyStruct:
       oprot.writeFieldBegin('class_', TType.STRING, 4)
       oprot.writeString(self.class_.encode('utf-8')) if UTF8STRINGS and not isinstance(self.class_, bytes) else oprot.writeString(self.class_)
       oprot.writeFieldEnd()
+    if self.annotation_with_trailing_comma != None:
+      oprot.writeFieldBegin('annotation_with_trailing_comma', TType.STRING, 5)
+      oprot.writeString(self.annotation_with_trailing_comma.encode('utf-8')) if UTF8STRINGS and not isinstance(self.annotation_with_trailing_comma, bytes) else oprot.writeString(self.annotation_with_trailing_comma)
+      oprot.writeFieldEnd()
+    if self.empty_annotations != None:
+      oprot.writeFieldBegin('empty_annotations', TType.STRING, 6)
+      oprot.writeString(self.empty_annotations.encode('utf-8')) if UTF8STRINGS and not isinstance(self.empty_annotations, bytes) else oprot.writeString(self.empty_annotations)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -379,6 +399,10 @@ class MyStruct:
       self.annotation_with_quote = json_obj['annotation_with_quote']
     if 'class_' in json_obj and json_obj['class_'] is not None:
       self.class_ = json_obj['class_']
+    if 'annotation_with_trailing_comma' in json_obj and json_obj['annotation_with_trailing_comma'] is not None:
+      self.annotation_with_trailing_comma = json_obj['annotation_with_trailing_comma']
+    if 'empty_annotations' in json_obj and json_obj['empty_annotations'] is not None:
+      self.empty_annotations = json_obj['empty_annotations']
 
   def __repr__(self):
     L = []
@@ -399,6 +423,14 @@ class MyStruct:
       value = pprint.pformat(self.class_, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    class_=%s' % (value))
+    if self.annotation_with_trailing_comma is not None:
+      value = pprint.pformat(self.annotation_with_trailing_comma, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    annotation_with_trailing_comma=%s' % (value))
+    if self.empty_annotations is not None:
+      value = pprint.pformat(self.empty_annotations, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    empty_annotations=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -580,6 +612,8 @@ MyStruct.thrift_spec = (
   (2, TType.STRING, 'package', True, None, 2, ), # 2
   (3, TType.STRING, 'annotation_with_quote', True, None, 2, ), # 3
   (4, TType.STRING, 'class_', True, None, 2, ), # 4
+  (5, TType.STRING, 'annotation_with_trailing_comma', True, None, 2, ), # 5
+  (6, TType.STRING, 'empty_annotations', True, None, 2, ), # 6
 )
 
 MyStruct.thrift_struct_annotations = {
@@ -598,13 +632,18 @@ MyStruct.thrift_field_annotations = {
   4: {
     "java.swift.name": """class_""",
   },
+  5: {
+    "custom": """test""",
+  },
 }
 
-def MyStruct__init__(self, major=None, package=None, annotation_with_quote=None, class_=None,):
+def MyStruct__init__(self, major=None, package=None, annotation_with_quote=None, class_=None, annotation_with_trailing_comma=None, empty_annotations=None,):
   self.major = major
   self.package = package
   self.annotation_with_quote = annotation_with_quote
   self.class_ = class_
+  self.annotation_with_trailing_comma = annotation_with_trailing_comma
+  self.empty_annotations = empty_annotations
 
 MyStruct.__init__ = MyStruct__init__
 
@@ -613,6 +652,8 @@ def MyStruct__setstate__(self, state):
   state.setdefault('package', None)
   state.setdefault('annotation_with_quote', None)
   state.setdefault('class_', None)
+  state.setdefault('annotation_with_trailing_comma', None)
+  state.setdefault('empty_annotations', None)
   self.__dict__ = state
 
 MyStruct.__getstate__ = lambda self: self.__dict__.copy()

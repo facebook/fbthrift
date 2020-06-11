@@ -27,6 +27,7 @@ internList: __T.List[Internship]
 pod_0: struct1
 pod_1: struct1
 pod_2: struct2
+pod_trailing_commas: struct2
 pod_3: struct3
 u_1_1: union1
 u_1_2: union1

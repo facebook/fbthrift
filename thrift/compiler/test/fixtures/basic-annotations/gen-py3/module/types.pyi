@@ -94,12 +94,18 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
 
     class_: Final[str] = ...
 
+    annotation_with_trailing_comma: Final[str] = ...
+
+    empty_annotations: Final[str] = ...
+
     def __init__(
         self, *,
         major: _typing.Optional[int]=None,
         package: _typing.Optional[str]=None,
         annotation_with_quote: _typing.Optional[str]=None,
-        class_: _typing.Optional[str]=None
+        class_: _typing.Optional[str]=None,
+        annotation_with_trailing_comma: _typing.Optional[str]=None,
+        empty_annotations: _typing.Optional[str]=None
     ) -> None: ...
 
     def __call__(
@@ -107,7 +113,9 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
         major: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
         package: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
         annotation_with_quote: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        class_: _typing.Union[str, NOTSETTYPE, None]=NOTSET
+        class_: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
+        annotation_with_trailing_comma: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
+        empty_annotations: _typing.Union[str, NOTSETTYPE, None]=NOTSET
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...

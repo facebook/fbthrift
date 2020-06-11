@@ -31,12 +31,16 @@ public final class MyStruct {
         @ThriftField(value=1, name="major", requiredness=Requiredness.NONE) final long major,
         @ThriftField(value=2, name="package", requiredness=Requiredness.NONE) final String _package,
         @ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE) final String annotationWithQuote,
-        @ThriftField(value=4, name="class_", requiredness=Requiredness.NONE) final String class_
+        @ThriftField(value=4, name="class_", requiredness=Requiredness.NONE) final String class_,
+        @ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE) final String annotationWithTrailingComma,
+        @ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE) final String emptyAnnotations
     ) {
         this.major = major;
         this._package = _package;
         this.annotationWithQuote = annotationWithQuote;
         this.class_ = class_;
+        this.annotationWithTrailingComma = annotationWithTrailingComma;
+        this.emptyAnnotations = emptyAnnotations;
     }
     
     @ThriftConstructor
@@ -45,6 +49,8 @@ public final class MyStruct {
       this._package = null;
       this.annotationWithQuote = null;
       this.class_ = null;
+      this.annotationWithTrailingComma = null;
+      this.emptyAnnotations = null;
     }
     
     public static class Builder {
@@ -52,6 +58,8 @@ public final class MyStruct {
         private String _package = null;
         private String annotationWithQuote = null;
         private String class_ = null;
+        private String annotationWithTrailingComma = null;
+        private String emptyAnnotations = null;
     
         @ThriftField(value=1, name="major", requiredness=Requiredness.NONE)
         public Builder setMajor(long major) {
@@ -85,12 +93,30 @@ public final class MyStruct {
         
         public String getClass_() { return class_; }
     
+            @ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE)
+        public Builder setAnnotationWithTrailingComma(String annotationWithTrailingComma) {
+            this.annotationWithTrailingComma = annotationWithTrailingComma;
+            return this;
+        }
+        
+        public String getAnnotationWithTrailingComma() { return annotationWithTrailingComma; }
+    
+            @ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE)
+        public Builder setEmptyAnnotations(String emptyAnnotations) {
+            this.emptyAnnotations = emptyAnnotations;
+            return this;
+        }
+        
+        public String getEmptyAnnotations() { return emptyAnnotations; }
+    
         public Builder() { }
         public Builder(MyStruct other) {
             this.major = other.major;
             this._package = other._package;
             this.annotationWithQuote = other.annotationWithQuote;
             this.class_ = other.class_;
+            this.annotationWithTrailingComma = other.annotationWithTrailingComma;
+            this.emptyAnnotations = other.emptyAnnotations;
         }
     
         @ThriftConstructor
@@ -99,7 +125,9 @@ public final class MyStruct {
                 this.major,
                 this._package,
                 this.annotationWithQuote,
-                this.class_
+                this.class_,
+                this.annotationWithTrailingComma,
+                this.emptyAnnotations
             );
         }
     }
@@ -117,6 +145,12 @@ public final class MyStruct {
     private final String class_;
     public static final int _CLASS_ = 4;
     private static final TField CLASS__FIELD_DESC = new TField("class_", TType.STRING, (short)4);
+    private final String annotationWithTrailingComma;
+    public static final int _ANNOTATION_WITH_TRAILING_COMMA = 5;
+    private static final TField ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC = new TField("annotationWithTrailingComma", TType.STRING, (short)5);
+    private final String emptyAnnotations;
+    public static final int _EMPTY_ANNOTATIONS = 6;
+    private static final TField EMPTY_ANNOTATIONS_FIELD_DESC = new TField("emptyAnnotations", TType.STRING, (short)6);
 
     
     @ThriftField(value=1, name="major", requiredness=Requiredness.NONE)
@@ -130,6 +164,12 @@ public final class MyStruct {
         
     @ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)
     public String getClass_() { return class_; }
+        
+    @ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE)
+    public String getAnnotationWithTrailingComma() { return annotationWithTrailingComma; }
+        
+    @ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE)
+    public String getEmptyAnnotations() { return emptyAnnotations; }
     
     @Override
     public String toString() {
@@ -138,6 +178,8 @@ public final class MyStruct {
         helper.add("_package", _package);
         helper.add("annotationWithQuote", annotationWithQuote);
         helper.add("class_", class_);
+        helper.add("annotationWithTrailingComma", annotationWithTrailingComma);
+        helper.add("emptyAnnotations", emptyAnnotations);
         return helper.toString();
     }
     
@@ -157,6 +199,8 @@ public final class MyStruct {
             Objects.equals(_package, other._package) &&
             Objects.equals(annotationWithQuote, other.annotationWithQuote) &&
             Objects.equals(class_, other.class_) &&
+            Objects.equals(annotationWithTrailingComma, other.annotationWithTrailingComma) &&
+            Objects.equals(emptyAnnotations, other.emptyAnnotations) &&
             true;
     }
     
@@ -166,7 +210,9 @@ public final class MyStruct {
             major,
             _package,
             annotationWithQuote,
-            class_
+            class_,
+            annotationWithTrailingComma,
+            emptyAnnotations
         });
     }
     
@@ -213,6 +259,22 @@ public final class MyStruct {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _ANNOTATION_WITH_TRAILING_COMMA:
+          if (__field.type == TType.STRING) {
+            String annotationWithTrailingComma = oprot.readString();
+            builder.setAnnotationWithTrailingComma(annotationWithTrailingComma);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _EMPTY_ANNOTATIONS:
+          if (__field.type == TType.STRING) {
+            String emptyAnnotations = oprot.readString();
+            builder.setEmptyAnnotations(emptyAnnotations);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -241,6 +303,16 @@ public final class MyStruct {
       if (this.class_ != null) {
         oprot.writeFieldBegin(CLASS__FIELD_DESC);
         oprot.writeString(this.class_);
+        oprot.writeFieldEnd();
+      }
+      if (this.annotationWithTrailingComma != null) {
+        oprot.writeFieldBegin(ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC);
+        oprot.writeString(this.annotationWithTrailingComma);
+        oprot.writeFieldEnd();
+      }
+      if (this.emptyAnnotations != null) {
+        oprot.writeFieldBegin(EMPTY_ANNOTATIONS_FIELD_DESC);
+        oprot.writeString(this.emptyAnnotations);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

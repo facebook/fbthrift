@@ -97,11 +97,26 @@
           "annotations" : {
             "java.swift.name" : "class_"
           }
+        },
+        "annotation_with_trailing_comma" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "annotations" : {
+            "custom" : "test"
+          }
+        },
+        "empty_annotations" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "annotations" : {
+          }
         }
       }
     },
     "SecretStruct" : {
-      "lineno" : 75,
+      "lineno" : 77,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -125,7 +140,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 56,
+      "lineno" : 58,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {
@@ -214,7 +229,7 @@
       }
     },
     "MyServicePrioParent" : {
-      "lineno" : 66,
+      "lineno" : 68,
       "functions" : {
         "MyServicePrioParent.ping" : {
           "return_type" : {
@@ -239,7 +254,7 @@
         "type_enum" : "SERVICE",
         "spec_args" : "MyServicePrioParent"
       },
-      "lineno" : 71,
+      "lineno" : 73,
       "functions" : {
         "MyServicePrioChild.pang" : {
           "return_type" : {

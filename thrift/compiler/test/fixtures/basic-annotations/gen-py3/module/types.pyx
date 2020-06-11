@@ -674,7 +674,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
         major=None,
         str package=None,
         str annotation_with_quote=None,
-        str class_=None
+        str class_=None,
+        str annotation_with_trailing_comma=None,
+        str empty_annotations=None
     ):
         if major is not None:
             if not isinstance(major, int):
@@ -688,6 +690,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
           package,
           annotation_with_quote,
           class_,
+          annotation_with_trailing_comma,
+          empty_annotations,
         ))
 
     def __call__(
@@ -695,10 +699,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
         major=__NOTSET,
         package=__NOTSET,
         annotation_with_quote=__NOTSET,
-        class_=__NOTSET
+        class_=__NOTSET,
+        annotation_with_trailing_comma=__NOTSET,
+        empty_annotations=__NOTSET
     ):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[4] __isNOTSET  # so make_instance is typed
+        cdef bint[6] __isNOTSET  # so make_instance is typed
 
         changes = False
         if major is ___NOTSET:
@@ -729,6 +735,20 @@ cdef class MyStruct(thrift.py3.types.Struct):
             __isNOTSET[3] = False
             changes = True
 
+        if annotation_with_trailing_comma is ___NOTSET:
+            __isNOTSET[4] = True
+            annotation_with_trailing_comma = None
+        else:
+            __isNOTSET[4] = False
+            changes = True
+
+        if empty_annotations is ___NOTSET:
+            __isNOTSET[5] = True
+            empty_annotations = None
+        else:
+            __isNOTSET[5] = False
+            changes = True
+
 
         if not changes:
             return self
@@ -750,6 +770,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
             if not isinstance(class_, str):
                 raise TypeError(f'class_ is not a { str !r}.')
 
+        if annotation_with_trailing_comma is not None:
+            if not isinstance(annotation_with_trailing_comma, str):
+                raise TypeError(f'annotation_with_trailing_comma is not a { str !r}.')
+
+        if empty_annotations is not None:
+            if not isinstance(empty_annotations, str):
+                raise TypeError(f'empty_annotations is not a { str !r}.')
+
         inst = <MyStruct>MyStruct.__new__(MyStruct)
         inst._cpp_obj = move(MyStruct._make_instance(
           self._cpp_obj.get(),
@@ -758,6 +786,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
           package,
           annotation_with_quote,
           class_,
+          annotation_with_trailing_comma,
+          empty_annotations,
         ))
         return inst
 
@@ -768,7 +798,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
         object major ,
         str package ,
         str annotation_with_quote ,
-        str class_ 
+        str class_ ,
+        str annotation_with_trailing_comma ,
+        str empty_annotations 
     ) except *:
         cdef unique_ptr[cMyStruct] c_inst
         if base_instance:
@@ -798,6 +830,16 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 deref(c_inst).__isset.class_ = False
                 pass
 
+            if not __isNOTSET[4] and annotation_with_trailing_comma is None:
+                deref(c_inst).annotation_with_trailing_comma = default_inst[cMyStruct]().annotation_with_trailing_comma
+                deref(c_inst).__isset.annotation_with_trailing_comma = False
+                pass
+
+            if not __isNOTSET[5] and empty_annotations is None:
+                deref(c_inst).empty_annotations = default_inst[cMyStruct]().empty_annotations
+                deref(c_inst).__isset.empty_annotations = False
+                pass
+
         if major is not None:
             deref(c_inst).major = major
             deref(c_inst).__isset.major = True
@@ -810,6 +852,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if class_ is not None:
             deref(c_inst).class_ = thrift.py3.types.move(thrift.py3.types.bytes_to_string(class_.encode('utf-8')))
             deref(c_inst).__isset.class_ = True
+        if annotation_with_trailing_comma is not None:
+            deref(c_inst).annotation_with_trailing_comma = thrift.py3.types.move(thrift.py3.types.bytes_to_string(annotation_with_trailing_comma.encode('utf-8')))
+            deref(c_inst).__isset.annotation_with_trailing_comma = True
+        if empty_annotations is not None:
+            deref(c_inst).empty_annotations = thrift.py3.types.move(thrift.py3.types.bytes_to_string(empty_annotations.encode('utf-8')))
+            deref(c_inst).__isset.empty_annotations = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -819,6 +867,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'package', self.package
         yield 'annotation_with_quote', self.annotation_with_quote
         yield 'class_', self.class_
+        yield 'annotation_with_trailing_comma', self.annotation_with_trailing_comma
+        yield 'empty_annotations', self.empty_annotations
 
     def __bool__(self):
         return True
@@ -849,6 +899,16 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
         return (<bytes>deref(self._cpp_obj).class_).decode('UTF-8')
 
+    @property
+    def annotation_with_trailing_comma(self):
+
+        return (<bytes>deref(self._cpp_obj).annotation_with_trailing_comma).decode('UTF-8')
+
+    @property
+    def empty_annotations(self):
+
+        return (<bytes>deref(self._cpp_obj).empty_annotations).decode('UTF-8')
+
 
     def __hash__(MyStruct self):
         if not self.__hash:
@@ -857,11 +917,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
             self.package,
             self.annotation_with_quote,
             self.class_,
+            self.annotation_with_trailing_comma,
+            self.empty_annotations,
             ))
         return self.__hash
 
     def __repr__(MyStruct self):
-        return f'MyStruct(major={repr(self.major)}, package={repr(self.package)}, annotation_with_quote={repr(self.annotation_with_quote)}, class_={repr(self.class_)})'
+        return f'MyStruct(major={repr(self.major)}, package={repr(self.package)}, annotation_with_quote={repr(self.annotation_with_quote)}, class_={repr(self.class_)}, annotation_with_trailing_comma={repr(self.annotation_with_trailing_comma)}, empty_annotations={repr(self.empty_annotations)})'
     def __copy__(MyStruct self):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)
@@ -939,6 +1001,24 @@ cdef class MyStruct(thrift.py3.types.Struct):
   default=None,
   annotations=_py_types.MappingProxyType({
     """java.swift.name""": """class_""",  }),
+),
+                __FieldSpec(
+  name="annotation_with_trailing_comma",
+  type=str,
+  kind=None,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """custom""": """test""",  }),
+),
+                __FieldSpec(
+  name="empty_annotations",
+  type=str,
+  kind=None,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
 ),
           ],
         annotations=_py_types.MappingProxyType({

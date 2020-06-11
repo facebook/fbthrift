@@ -30,15 +30,21 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   private static final TField PACKAGE_FIELD_DESC = new TField("package", TType.STRING, (short)2);
   private static final TField ANNOTATION_WITH_QUOTE_FIELD_DESC = new TField("annotation_with_quote", TType.STRING, (short)3);
   private static final TField CLASS__FIELD_DESC = new TField("class_", TType.STRING, (short)4);
+  private static final TField ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC = new TField("annotation_with_trailing_comma", TType.STRING, (short)5);
+  private static final TField EMPTY_ANNOTATIONS_FIELD_DESC = new TField("empty_annotations", TType.STRING, (short)6);
 
   public long major;
   public String package;
   public String annotation_with_quote;
   public String class_;
+  public String annotation_with_trailing_comma;
+  public String empty_annotations;
   public static final int MAJOR = 1;
   public static final int PACKAGE = 2;
   public static final int ANNOTATION_WITH_QUOTE = 3;
   public static final int CLASS_ = 4;
+  public static final int ANNOTATION_WITH_TRAILING_COMMA = 5;
+  public static final int EMPTY_ANNOTATIONS = 6;
 
   // isset id assignments
   private static final int __MAJOR_ISSET_ID = 0;
@@ -56,6 +62,10 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         new FieldValueMetaData(TType.STRING)));
     tmpMetaDataMap.put(CLASS_, new FieldMetaData("class_", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(ANNOTATION_WITH_TRAILING_COMMA, new FieldMetaData("annotation_with_trailing_comma", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(EMPTY_ANNOTATIONS, new FieldMetaData("empty_annotations", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -70,13 +80,17 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       long major,
       String package,
       String annotation_with_quote,
-      String class_) {
+      String class_,
+      String annotation_with_trailing_comma,
+      String empty_annotations) {
     this();
     this.major = major;
     setMajorIsSet(true);
     this.package = package;
     this.annotation_with_quote = annotation_with_quote;
     this.class_ = class_;
+    this.annotation_with_trailing_comma = annotation_with_trailing_comma;
+    this.empty_annotations = empty_annotations;
   }
 
   public static class Builder {
@@ -84,6 +98,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     private String package;
     private String annotation_with_quote;
     private String class_;
+    private String annotation_with_trailing_comma;
+    private String empty_annotations;
 
     BitSet __optional_isset = new BitSet(1);
 
@@ -111,6 +127,16 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return this;
     }
 
+    public Builder setAnnotation_with_trailing_comma(final String annotation_with_trailing_comma) {
+      this.annotation_with_trailing_comma = annotation_with_trailing_comma;
+      return this;
+    }
+
+    public Builder setEmpty_annotations(final String empty_annotations) {
+      this.empty_annotations = empty_annotations;
+      return this;
+    }
+
     public MyStruct build() {
       MyStruct result = new MyStruct();
       if (__optional_isset.get(__MAJOR_ISSET_ID)) {
@@ -119,6 +145,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       result.setPackage(this.package);
       result.setAnnotation_with_quote(this.annotation_with_quote);
       result.setClass_(this.class_);
+      result.setAnnotation_with_trailing_comma(this.annotation_with_trailing_comma);
+      result.setEmpty_annotations(this.empty_annotations);
       return result;
     }
   }
@@ -142,6 +170,12 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
     if (other.isSetClass_()) {
       this.class_ = TBaseHelper.deepCopy(other.class_);
+    }
+    if (other.isSetAnnotation_with_trailing_comma()) {
+      this.annotation_with_trailing_comma = TBaseHelper.deepCopy(other.annotation_with_trailing_comma);
+    }
+    if (other.isSetEmpty_annotations()) {
+      this.empty_annotations = TBaseHelper.deepCopy(other.empty_annotations);
     }
   }
 
@@ -244,6 +278,54 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
   }
 
+  public String getAnnotation_with_trailing_comma() {
+    return this.annotation_with_trailing_comma;
+  }
+
+  public MyStruct setAnnotation_with_trailing_comma(String annotation_with_trailing_comma) {
+    this.annotation_with_trailing_comma = annotation_with_trailing_comma;
+    return this;
+  }
+
+  public void unsetAnnotation_with_trailing_comma() {
+    this.annotation_with_trailing_comma = null;
+  }
+
+  // Returns true if field annotation_with_trailing_comma is set (has been assigned a value) and false otherwise
+  public boolean isSetAnnotation_with_trailing_comma() {
+    return this.annotation_with_trailing_comma != null;
+  }
+
+  public void setAnnotation_with_trailing_commaIsSet(boolean __value) {
+    if (!__value) {
+      this.annotation_with_trailing_comma = null;
+    }
+  }
+
+  public String getEmpty_annotations() {
+    return this.empty_annotations;
+  }
+
+  public MyStruct setEmpty_annotations(String empty_annotations) {
+    this.empty_annotations = empty_annotations;
+    return this;
+  }
+
+  public void unsetEmpty_annotations() {
+    this.empty_annotations = null;
+  }
+
+  // Returns true if field empty_annotations is set (has been assigned a value) and false otherwise
+  public boolean isSetEmpty_annotations() {
+    return this.empty_annotations != null;
+  }
+
+  public void setEmpty_annotationsIsSet(boolean __value) {
+    if (!__value) {
+      this.empty_annotations = null;
+    }
+  }
+
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case MAJOR:
@@ -278,6 +360,22 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       }
       break;
 
+    case ANNOTATION_WITH_TRAILING_COMMA:
+      if (__value == null) {
+        unsetAnnotation_with_trailing_comma();
+      } else {
+        setAnnotation_with_trailing_comma((String)__value);
+      }
+      break;
+
+    case EMPTY_ANNOTATIONS:
+      if (__value == null) {
+        unsetEmpty_annotations();
+      } else {
+        setEmpty_annotations((String)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -296,6 +394,12 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
     case CLASS_:
       return getClass_();
+
+    case ANNOTATION_WITH_TRAILING_COMMA:
+      return getAnnotation_with_trailing_comma();
+
+    case EMPTY_ANNOTATIONS:
+      return getEmpty_annotations();
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -320,12 +424,16 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
     if (!TBaseHelper.equalsNobinary(this.isSetClass_(), that.isSetClass_(), this.class_, that.class_)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetAnnotation_with_trailing_comma(), that.isSetAnnotation_with_trailing_comma(), this.annotation_with_trailing_comma, that.annotation_with_trailing_comma)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetEmpty_annotations(), that.isSetEmpty_annotations(), this.empty_annotations, that.empty_annotations)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {major, package, annotation_with_quote, class_});
+    return Arrays.deepHashCode(new Object[] {major, package, annotation_with_quote, class_, annotation_with_trailing_comma, empty_annotations});
   }
 
   @Override
@@ -372,6 +480,22 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     if (lastComparison != 0) { 
       return lastComparison;
     }
+    lastComparison = Boolean.valueOf(isSetAnnotation_with_trailing_comma()).compareTo(other.isSetAnnotation_with_trailing_comma());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(annotation_with_trailing_comma, other.annotation_with_trailing_comma);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetEmpty_annotations()).compareTo(other.isSetEmpty_annotations());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(empty_annotations, other.empty_annotations);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
     return 0;
   }
 
@@ -415,6 +539,20 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case ANNOTATION_WITH_TRAILING_COMMA:
+          if (__field.type == TType.STRING) {
+            this.annotation_with_trailing_comma = iprot.readString();
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case EMPTY_ANNOTATIONS:
+          if (__field.type == TType.STRING) {
+            this.empty_annotations = iprot.readString();
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -448,6 +586,16 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     if (this.class_ != null) {
       oprot.writeFieldBegin(CLASS__FIELD_DESC);
       oprot.writeString(this.class_);
+      oprot.writeFieldEnd();
+    }
+    if (this.annotation_with_trailing_comma != null) {
+      oprot.writeFieldBegin(ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC);
+      oprot.writeString(this.annotation_with_trailing_comma);
+      oprot.writeFieldEnd();
+    }
+    if (this.empty_annotations != null) {
+      oprot.writeFieldBegin(EMPTY_ANNOTATIONS_FIELD_DESC);
+      oprot.writeString(this.empty_annotations);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -507,6 +655,28 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       sb.append("null");
     } else {
       sb.append(TBaseHelper.toString(this.getClass_(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("annotation_with_trailing_comma");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getAnnotation_with_trailing_comma() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getAnnotation_with_trailing_comma(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("empty_annotations");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getEmpty_annotations() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getEmpty_annotations(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

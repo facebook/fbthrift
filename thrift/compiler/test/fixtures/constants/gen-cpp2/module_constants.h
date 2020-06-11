@@ -100,6 +100,8 @@ struct module_constants {
 
   static  ::cpp2::struct2 const& pod_2();
 
+  static  ::cpp2::struct2 const& pod_trailing_commas();
+
   static  ::cpp2::struct3 const& pod_3();
 
   static  ::cpp2::union1 const& u_1_1();

@@ -215,6 +215,26 @@ class module_CONSTANTS {
     return self::$__pod_2;
   }
 
+  private static $__pod_trailing_commas = null;
+  public static function pod_trailing_commas() {
+    if (self::$__pod_trailing_commas == null) {
+      self::$__pod_trailing_commas = new struct2(array(
+        "a" => 98,
+        "b" => "gaz",
+        "c" => new struct1(array(
+          "a" => 12,
+          "b" => "bar",
+        )),
+        "d" => array(
+          11,
+          22,
+          33,
+        ),
+      ));
+    }
+    return self::$__pod_trailing_commas;
+  }
+
   private static $__pod_3 = null;
   public static function pod_3() {
     if (self::$__pod_3 == null) {
@@ -615,6 +635,19 @@ class module_CONSTANTS {
           "b" => "foo",
         )),
         "pod_2" => new struct2(array(
+          "a" => 98,
+          "b" => "gaz",
+          "c" => new struct1(array(
+            "a" => 12,
+            "b" => "bar",
+          )),
+          "d" => array(
+            11,
+            22,
+            33,
+          ),
+        )),
+        "pod_trailing_commas" => new struct2(array(
           "a" => 98,
           "b" => "gaz",
           "c" => new struct1(array(

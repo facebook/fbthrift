@@ -453,6 +453,38 @@ _readField_class_:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           4,
+          5,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_annotation_with_trailing_comma:
+  {
+    
+    iprot->readString(this->annotation_with_trailing_comma);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    this->__isset.annotation_with_trailing_comma = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          5,
+          6,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_empty_annotations:
+  {
+    
+    iprot->readString(this->empty_annotations);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    this->__isset.empty_annotations = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          6,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -505,6 +537,22 @@ _loop:
         goto _skip;
       }
     }
+    case 5:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
+        goto _readField_annotation_with_trailing_comma;
+      } else {
+        goto _skip;
+      }
+    }
+    case 6:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
+        goto _readField_empty_annotations;
+      } else {
+        goto _skip;
+      }
+    }
     default:
     {
 _skip:
@@ -528,6 +576,10 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeString(this->annotation_with_quote);
   xfer += prot_->serializedFieldSize("class_", apache::thrift::protocol::T_STRING, 4);
   xfer += prot_->serializedSizeString(this->class_);
+  xfer += prot_->serializedFieldSize("annotation_with_trailing_comma", apache::thrift::protocol::T_STRING, 5);
+  xfer += prot_->serializedSizeString(this->annotation_with_trailing_comma);
+  xfer += prot_->serializedFieldSize("empty_annotations", apache::thrift::protocol::T_STRING, 6);
+  xfer += prot_->serializedSizeString(this->empty_annotations);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -544,6 +596,10 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeString(this->annotation_with_quote);
   xfer += prot_->serializedFieldSize("class_", apache::thrift::protocol::T_STRING, 4);
   xfer += prot_->serializedSizeString(this->class_);
+  xfer += prot_->serializedFieldSize("annotation_with_trailing_comma", apache::thrift::protocol::T_STRING, 5);
+  xfer += prot_->serializedSizeString(this->annotation_with_trailing_comma);
+  xfer += prot_->serializedFieldSize("empty_annotations", apache::thrift::protocol::T_STRING, 6);
+  xfer += prot_->serializedSizeString(this->empty_annotations);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -563,6 +619,12 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("class_", apache::thrift::protocol::T_STRING, 4);
   xfer += prot_->writeString(this->class_);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("annotation_with_trailing_comma", apache::thrift::protocol::T_STRING, 5);
+  xfer += prot_->writeString(this->annotation_with_trailing_comma);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("empty_annotations", apache::thrift::protocol::T_STRING, 6);
+  xfer += prot_->writeString(this->empty_annotations);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

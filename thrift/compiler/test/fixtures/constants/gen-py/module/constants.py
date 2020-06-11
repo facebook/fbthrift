@@ -108,6 +108,20 @@ pod_2 = struct2(**{
   ],
 })
 
+pod_trailing_commas = struct2(**{
+  "a" : 98,
+  "b" : "gaz",
+  "c" : struct1(**{
+    "a" : 12,
+    "b" : "bar",
+  }),
+  "d" : [
+    11,
+    22,
+    33,
+  ],
+})
+
 pod_3 = struct3(**{
   "a" : "abc",
   "b" : 456,

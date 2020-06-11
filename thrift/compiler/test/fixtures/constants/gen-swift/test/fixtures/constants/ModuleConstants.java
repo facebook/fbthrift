@@ -75,6 +75,12 @@ public final class ModuleConstants {
         .add(33)
         .build()).build();
 
+    public static final test.fixtures.constants.Struct2 POD_TRAILING_COMMAS = new test.fixtures.constants.Struct2.Builder().setA(98).setB("gaz").setC(new test.fixtures.constants.Struct1.Builder().setA(12).setB("bar").build()).setD(ImmutableList.<Integer>builder()
+        .add(11)
+        .add(22)
+        .add(33)
+        .build()).build();
+
     public static final test.fixtures.constants.Struct3 POD_3 = new test.fixtures.constants.Struct3.Builder().setA("abc").setB(456).setC(new test.fixtures.constants.Struct2.Builder().setA(888).setC(new test.fixtures.constants.Struct1.Builder().setB("gaz").build()).setD(ImmutableList.<Integer>builder()
         .add(1)
         .add(2)

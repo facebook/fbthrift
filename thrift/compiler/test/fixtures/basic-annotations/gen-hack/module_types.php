@@ -259,12 +259,22 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'var' => 'class_',
       'type' => \TType::STRING,
     ),
+    5 => shape(
+      'var' => 'annotation_with_trailing_comma',
+      'type' => \TType::STRING,
+    ),
+    6 => shape(
+      'var' => 'empty_annotations',
+      'type' => \TType::STRING,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'major' => 1,
     'package' => 2,
     'annotation_with_quote' => 3,
     'class_' => 4,
+    'annotation_with_trailing_comma' => 5,
+    'empty_annotations' => 6,
   ];
 
   const type TConstructorShape = shape(
@@ -272,6 +282,8 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     ?'package' => string,
     ?'annotation_with_quote' => string,
     ?'class_' => string,
+    ?'annotation_with_trailing_comma' => string,
+    ?'empty_annotations' => string,
   );
 
   const type TShape = shape(
@@ -279,9 +291,11 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     'package' => string,
     'annotation_with_quote' => string,
     'class_' => string,
+    'annotation_with_trailing_comma' => string,
+    'empty_annotations' => string,
     ...
   );
-  const int STRUCTURAL_ID = 3316847923183484409;
+  const int STRUCTURAL_ID = 7960127824272155634;
   /**
    * Original thrift field:-
    * 1: i64 major
@@ -302,13 +316,25 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
    * 4: string class_
    */
   public string $class_;
+  /**
+   * Original thrift field:-
+   * 5: string annotation_with_trailing_comma
+   */
+  public string $annotation_with_trailing_comma;
+  /**
+   * Original thrift field:-
+   * 6: string empty_annotations
+   */
+  public string $empty_annotations;
 
   <<__Rx>>
-  public function __construct(?int $major = null, ?string $package = null, ?string $annotation_with_quote = null, ?string $class_ = null  ) {
+  public function __construct(?int $major = null, ?string $package = null, ?string $annotation_with_quote = null, ?string $class_ = null, ?string $annotation_with_trailing_comma = null, ?string $empty_annotations = null  ) {
     $this->major = $major ?? 0;
     $this->package = $package ?? '';
     $this->annotation_with_quote = $annotation_with_quote ?? '';
     $this->class_ = $class_ ?? '';
+    $this->annotation_with_trailing_comma = $annotation_with_trailing_comma ?? '';
+    $this->empty_annotations = $empty_annotations ?? '';
   }
 
   public static function fromShape(self::TConstructorShape $shape): this {
@@ -317,6 +343,8 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       Shapes::idx($shape, 'package'),
       Shapes::idx($shape, 'annotation_with_quote'),
       Shapes::idx($shape, 'class_'),
+      Shapes::idx($shape, 'annotation_with_trailing_comma'),
+      Shapes::idx($shape, 'empty_annotations'),
     );
   }
 
@@ -346,6 +374,8 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     $me->package = $shape['package'];
     $me->annotation_with_quote = $shape['annotation_with_quote'];
     $me->class_ = $shape['class_'];
+    $me->annotation_with_trailing_comma = $shape['annotation_with_trailing_comma'];
+    $me->empty_annotations = $shape['empty_annotations'];
     return $me;
   }
 
@@ -356,6 +386,8 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'package' => $this->package,
       'annotation_with_quote' => $this->annotation_with_quote,
       'class_' => $this->class_,
+      'annotation_with_trailing_comma' => $this->annotation_with_trailing_comma,
+      'empty_annotations' => $this->empty_annotations,
     );
   }
   public function readFromJson(string $jsonText): void {
@@ -376,6 +408,12 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     }    
     if (idx($parsed, 'class_') !== null) {
       $this->class_ = /* HH_FIXME[4110] */ $parsed['class_'];
+    }    
+    if (idx($parsed, 'annotation_with_trailing_comma') !== null) {
+      $this->annotation_with_trailing_comma = /* HH_FIXME[4110] */ $parsed['annotation_with_trailing_comma'];
+    }    
+    if (idx($parsed, 'empty_annotations') !== null) {
+      $this->empty_annotations = /* HH_FIXME[4110] */ $parsed['empty_annotations'];
     }    
   }
 

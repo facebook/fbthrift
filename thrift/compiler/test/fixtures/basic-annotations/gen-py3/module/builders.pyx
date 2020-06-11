@@ -27,6 +27,8 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
         yield "package", self.package
         yield "annotation_with_quote", self.annotation_with_quote
         yield "class_", self.class_
+        yield "annotation_with_trailing_comma", self.annotation_with_trailing_comma
+        yield "empty_annotations", self.empty_annotations
 
 cdef class SecretStruct_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.SecretStruct

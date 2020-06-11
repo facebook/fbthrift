@@ -569,6 +569,7 @@ cdef extern from "src/gen-cpp2/module_constants.h" namespace "::cpp2":
     cdef cstruct1 cpod_0 "::cpp2::module_constants::pod_0"()
     cdef cstruct1 cpod_1 "::cpp2::module_constants::pod_1"()
     cdef cstruct2 cpod_2 "::cpp2::module_constants::pod_2"()
+    cdef cstruct2 cpod_trailing_commas "::cpp2::module_constants::pod_trailing_commas"()
     cdef cstruct3 cpod_3 "::cpp2::module_constants::pod_3"()
     cdef cunion1 cu_1_1 "::cpp2::module_constants::u_1_1"()
     cdef cunion1 cu_1_2 "::cpp2::module_constants::u_1_2"()

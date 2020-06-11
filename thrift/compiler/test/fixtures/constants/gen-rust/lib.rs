@@ -128,6 +128,22 @@ pub mod consts {
     }
 
     lazy_static::lazy_static! {
+        pub static ref pod_trailing_commas: crate::types::struct2 = crate::types::struct2 {
+            a: 98,
+            b: "gaz".to_owned(),
+            c: crate::types::struct1 {
+                a: 12,
+                b: "bar".to_owned(),
+            },
+            d: vec![
+                11,
+                22,
+                33,
+            ],
+        };
+    }
+
+    lazy_static::lazy_static! {
         pub static ref pod_3: crate::types::struct3 = crate::types::struct3 {
             a: "abc".to_owned(),
             b: 456,

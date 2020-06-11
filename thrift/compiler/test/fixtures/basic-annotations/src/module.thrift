@@ -41,7 +41,9 @@ struct MyStruct {
   2: string package (java.swift.name = '_package'),
   # should generate valid code even with double quotes in an annotation
   3: string annotation_with_quote (go.tag = 'tag:"somevalue"'),
-  4: string class_ (java.swift.name = 'class_')
+  4: string class_ (java.swift.name = 'class_'),
+  5: string annotation_with_trailing_comma (custom = 'test',),
+  6: string empty_annotations ()
 } (
   android.generate_builder,
   struct_annotation=MyStructAnnotation{

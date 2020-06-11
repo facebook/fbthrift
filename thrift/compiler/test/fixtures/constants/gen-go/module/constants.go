@@ -38,6 +38,7 @@ var InternList []*Internship
 var Pod_0 *Struct1
 var Pod_1 *Struct1
 var Pod_2 *Struct2
+var PodTrailingCommas *Struct2
 var Pod_3 *Struct3
 var U_1_1 *Union1
 var U_1_2 *Union1
@@ -139,6 +140,20 @@ Pod_1 = &Struct1{
 }
 
 Pod_2 = &Struct2{
+  A: 98,
+  B: "gaz",
+  C: &Struct1{
+    A: 12,
+    B: "bar",
+  },
+  D: []int32{
+    11,
+    22,
+    33,
+  },
+}
+
+PodTrailingCommas = &Struct2{
   A: 98,
   B: "gaz",
   C: &Struct1{

@@ -28,25 +28,35 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   private static final TField PACKAGE_FIELD_DESC = new TField("package", TType.STRING, (short)2);
   private static final TField ANNOTATION_WITH_QUOTE_FIELD_DESC = new TField("annotation_with_quote", TType.STRING, (short)3);
   private static final TField CLASS__FIELD_DESC = new TField("class_", TType.STRING, (short)4);
+  private static final TField ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC = new TField("annotation_with_trailing_comma", TType.STRING, (short)5);
+  private static final TField EMPTY_ANNOTATIONS_FIELD_DESC = new TField("empty_annotations", TType.STRING, (short)6);
 
   public final Long major;
   public final String package;
   public final String annotation_with_quote;
   public final String class_;
+  public final String annotation_with_trailing_comma;
+  public final String empty_annotations;
   public static final int MAJOR = 1;
   public static final int PACKAGE = 2;
   public static final int ANNOTATION_WITH_QUOTE = 3;
   public static final int CLASS_ = 4;
+  public static final int ANNOTATION_WITH_TRAILING_COMMA = 5;
+  public static final int EMPTY_ANNOTATIONS = 6;
 
   public MyStruct(
       Long major,
       String package,
       String annotation_with_quote,
-      String class_) {
+      String class_,
+      String annotation_with_trailing_comma,
+      String empty_annotations) {
     this.major = major;
     this.package = package;
     this.annotation_with_quote = annotation_with_quote;
     this.class_ = class_;
+    this.annotation_with_trailing_comma = annotation_with_trailing_comma;
+    this.empty_annotations = empty_annotations;
   }
 
   public static class Builder {
@@ -54,6 +64,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     private String package;
     private String annotation_with_quote;
     private String class_;
+    private String annotation_with_trailing_comma;
+    private String empty_annotations;
 
     public Builder() {
     }
@@ -78,12 +90,24 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       return this;
     }
 
+    public Builder setAnnotation_with_trailing_comma(final String annotation_with_trailing_comma) {
+      this.annotation_with_trailing_comma = annotation_with_trailing_comma;
+      return this;
+    }
+
+    public Builder setEmpty_annotations(final String empty_annotations) {
+      this.empty_annotations = empty_annotations;
+      return this;
+    }
+
     public MyStruct build() {
       return new MyStruct(
         this.major,
         this.package,
         this.annotation_with_quote,
-        this.class_
+        this.class_,
+        this.annotation_with_trailing_comma,
+        this.empty_annotations
       );
     }
   }
@@ -115,6 +139,16 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       this.class_ = TBaseHelper.deepCopy(other.class_);
     } else {
       this.class_ = null;
+    }
+    if (other.isSetAnnotation_with_trailing_comma()) {
+      this.annotation_with_trailing_comma = TBaseHelper.deepCopy(other.annotation_with_trailing_comma);
+    } else {
+      this.annotation_with_trailing_comma = null;
+    }
+    if (other.isSetEmpty_annotations()) {
+      this.empty_annotations = TBaseHelper.deepCopy(other.empty_annotations);
+    } else {
+      this.empty_annotations = null;
     }
   }
 
@@ -158,6 +192,24 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     return this.class_ != null;
   }
 
+  public String getAnnotation_with_trailing_comma() {
+    return this.annotation_with_trailing_comma;
+  }
+
+  // Returns true if field annotation_with_trailing_comma is set (has been assigned a value) and false otherwise
+  public boolean isSetAnnotation_with_trailing_comma() {
+    return this.annotation_with_trailing_comma != null;
+  }
+
+  public String getEmpty_annotations() {
+    return this.empty_annotations;
+  }
+
+  // Returns true if field empty_annotations is set (has been assigned a value) and false otherwise
+  public boolean isSetEmpty_annotations() {
+    return this.empty_annotations != null;
+  }
+
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -176,12 +228,16 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
 
     if (!TBaseHelper.equalsNobinary(this.isSetClass_(), that.isSetClass_(), this.class_, that.class_)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetAnnotation_with_trailing_comma(), that.isSetAnnotation_with_trailing_comma(), this.annotation_with_trailing_comma, that.annotation_with_trailing_comma)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetEmpty_annotations(), that.isSetEmpty_annotations(), this.empty_annotations, that.empty_annotations)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {major, package, annotation_with_quote, class_});
+    return Arrays.deepHashCode(new Object[] {major, package, annotation_with_quote, class_, annotation_with_trailing_comma, empty_annotations});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -194,6 +250,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     String tmp_package = null;
     String tmp_annotation_with_quote = null;
     String tmp_class_ = null;
+    String tmp_annotation_with_trailing_comma = null;
+    String tmp_empty_annotations = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -232,6 +290,20 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case ANNOTATION_WITH_TRAILING_COMMA:
+          if (__field.type == TType.STRING) {
+            tmp_annotation_with_trailing_comma = iprot.readString();
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case EMPTY_ANNOTATIONS:
+          if (__field.type == TType.STRING) {
+            tmp_empty_annotations = iprot.readString();
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -246,6 +318,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       ,tmp_package
       ,tmp_annotation_with_quote
       ,tmp_class_
+      ,tmp_annotation_with_trailing_comma
+      ,tmp_empty_annotations
     );
     _that.validate();
     return _that;
@@ -273,6 +347,16 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     if (this.class_ != null) {
       oprot.writeFieldBegin(CLASS__FIELD_DESC);
       oprot.writeString(this.class_);
+      oprot.writeFieldEnd();
+    }
+    if (this.annotation_with_trailing_comma != null) {
+      oprot.writeFieldBegin(ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC);
+      oprot.writeString(this.annotation_with_trailing_comma);
+      oprot.writeFieldEnd();
+    }
+    if (this.empty_annotations != null) {
+      oprot.writeFieldBegin(EMPTY_ANNOTATIONS_FIELD_DESC);
+      oprot.writeString(this.empty_annotations);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

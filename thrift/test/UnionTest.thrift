@@ -76,7 +76,7 @@ const list<StructWithUnionAndOther> NESTED = [
   },
   {
     "string_field": "hello",
-  }
+  },
   {
     "test_union": {
       "other_i32_field": 4,

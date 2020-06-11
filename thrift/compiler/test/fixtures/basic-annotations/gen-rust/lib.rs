@@ -28,6 +28,8 @@ pub mod types {
         pub package: ::std::string::String,
         pub annotation_with_quote: ::std::string::String,
         pub class_: ::std::string::String,
+        pub annotation_with_trailing_comma: ::std::string::String,
+        pub empty_annotations: ::std::string::String,
     }
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -257,6 +259,8 @@ pub mod types {
                 package: ::std::default::Default::default(),
                 annotation_with_quote: ::std::default::Default::default(),
                 class_: ::std::default::Default::default(),
+                annotation_with_trailing_comma: ::std::default::Default::default(),
+                empty_annotations: ::std::default::Default::default(),
             }
         }
     }
@@ -283,6 +287,12 @@ pub mod types {
             p.write_field_begin("class_", ::fbthrift::TType::String, 4);
             ::fbthrift::Serialize::write(&self.class_, p);
             p.write_field_end();
+            p.write_field_begin("annotation_with_trailing_comma", ::fbthrift::TType::String, 5);
+            ::fbthrift::Serialize::write(&self.annotation_with_trailing_comma, p);
+            p.write_field_end();
+            p.write_field_begin("empty_annotations", ::fbthrift::TType::String, 6);
+            ::fbthrift::Serialize::write(&self.empty_annotations, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -297,6 +307,8 @@ pub mod types {
             let mut field_package = ::std::option::Option::None;
             let mut field_annotation_with_quote = ::std::option::Option::None;
             let mut field_class_ = ::std::option::Option::None;
+            let mut field_annotation_with_trailing_comma = ::std::option::Option::None;
+            let mut field_empty_annotations = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
@@ -306,6 +318,8 @@ pub mod types {
                     (::fbthrift::TType::String, 2) => field_package = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 3) => field_annotation_with_quote = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 4) => field_class_ = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 5) => field_annotation_with_trailing_comma = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 6) => field_empty_annotations = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -316,6 +330,8 @@ pub mod types {
                 package: field_package.unwrap_or_default(),
                 annotation_with_quote: field_annotation_with_quote.unwrap_or_default(),
                 class_: field_class_.unwrap_or_default(),
+                annotation_with_trailing_comma: field_annotation_with_trailing_comma.unwrap_or_default(),
+                empty_annotations: field_empty_annotations.unwrap_or_default(),
             })
         }
     }

@@ -116,7 +116,7 @@ const BasicListExample kBasicListExample = {
         "b": "hello",
       },
     ],
-  }
+  },
   "nil": {
     "l": [
       {
@@ -151,7 +151,7 @@ const BasicSetExample kBasicSetExample = {
         "b": "hello",
       },
     ],
-  }
+  },
   "nil": {
     "l": [
       {
@@ -423,7 +423,7 @@ const IndirectionExample kIndirectionExample = {
   "nil": {
     "real": 45,
     "fake": 33,
-  }
+  },
 }
 
 union BasicUnion {

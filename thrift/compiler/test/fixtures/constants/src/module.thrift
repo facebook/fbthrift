@@ -129,6 +129,16 @@ const struct2 pod_2 = {
   "d": [11, 22, 33]
 }
 
+const struct2 pod_trailing_commas = {
+  "a": 98,
+  "b": "gaz",
+  "c": {
+    "a": 12,
+    "b": "bar",
+  },
+  "d": [11, 22, 33,],
+}
+
 struct struct3 {
   1: string a
   2: i32 b
@@ -142,7 +152,7 @@ const struct3 pod_3 = {
     "a":888,
     "c":{
       "b":"gaz"
-    }
+    },
     "d": [1, 2, 3]
   }
 }

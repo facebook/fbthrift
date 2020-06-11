@@ -29,6 +29,8 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public str package
     cdef public str annotation_with_quote
     cdef public str class_
+    cdef public str annotation_with_trailing_comma
+    cdef public str empty_annotations
 
 
 cdef class SecretStruct_Builder(thrift.py3.builder.StructBuilder):

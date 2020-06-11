@@ -311,6 +311,34 @@ class module_CONSTANTS {
 
   /**
    * Original thrift constant:-
+   * struct module.struct2 pod_trailing_commas
+   */
+  private static ?struct2 $__pod_trailing_commas = null;
+  public static function pod_trailing_commas(): struct2 {
+    if (self::$__pod_trailing_commas === null) {
+      self::$__pod_trailing_commas = struct2::fromShape(
+        shape(
+          "a" => 98,
+          "b" => "gaz",
+          "c" => struct1::fromShape(
+            shape(
+              "a" => 12,
+              "b" => "bar",
+            )
+          ),
+          "d" => Vector {
+            11,
+            22,
+            33,
+          },
+        )
+      );
+    }
+    return self::$__pod_trailing_commas;
+  }
+
+  /**
+   * Original thrift constant:-
    * struct module.struct3 pod_3
    */
   private static ?struct3 $__pod_3 = null;
@@ -889,6 +917,23 @@ class module_CONSTANTS {
           )
         ),
         "pod_2" => struct2::fromShape(
+          shape(
+            "a" => 98,
+            "b" => "gaz",
+            "c" => struct1::fromShape(
+              shape(
+                "a" => 12,
+                "b" => "bar",
+              )
+            ),
+            "d" => Vector {
+              11,
+              22,
+              33,
+            },
+          )
+        ),
+        "pod_trailing_commas" => struct2::fromShape(
           shape(
             "a" => 98,
             "b" => "gaz",
