@@ -41,6 +41,8 @@ using is_set_t = std::conditional_t<std::is_const<T>::value, const bool, bool>;
 
 [[noreturn]] void throw_on_bad_field_access();
 
+struct ensure_isset_unsafe_fn;
+
 } // namespace detail
 
 // A reference to an unqualified field of the possibly const-qualified type
@@ -248,6 +250,7 @@ class optional_field_ref {
 
   template <typename U>
   friend class optional_field_ref;
+  friend struct detail::ensure_isset_unsafe_fn;
 
  public:
   using value_type = std::remove_reference_t<T>;
@@ -420,13 +423,6 @@ class optional_field_ref {
     return value_;
   }
 
-  template <typename R>
-  [[deprecated(
-      "Use emplace() or operator=() to set Thrift fields.")]] FOLLY_ERASE static void
-  ensure_isset_unsafe(optional_field_ref<R>&& ref) {
-    ref.is_set_ = true;
-  }
-
  private:
   value_type& value_;
   detail::is_set_t<value_type>& is_set_;
@@ -560,6 +556,13 @@ struct can_throw_fn {
   }
 };
 
+struct ensure_isset_unsafe_fn {
+  template <typename T>
+  void operator()(optional_field_ref<T> ref) const noexcept {
+    ref.is_set_ = true;
+  }
+};
+
 } // namespace detail
 
 constexpr detail::get_pointer_fn get_pointer;
@@ -573,6 +576,9 @@ constexpr detail::get_pointer_fn get_pointer;
 //
 //    auto value = apache::thrift::can_throw(*obj.field_ref());
 constexpr detail::can_throw_fn can_throw;
+
+[[deprecated("Use `emplace` or `operator=` to set Thrift fields.")]] //
+constexpr detail::ensure_isset_unsafe_fn ensure_isset_unsafe;
 
 } // namespace thrift
 } // namespace apache

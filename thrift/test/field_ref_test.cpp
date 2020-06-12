@@ -570,6 +570,13 @@ TEST(optional_field_ref_test, ensure) {
   EXPECT_TRUE(s.opt_name());
 }
 
+TEST(optional_field_ref_test, ensure_isset_unsafe) {
+  TestStruct s;
+  s.opt_name().value_unchecked() = "foo";
+  apache::thrift::ensure_isset_unsafe(s.opt_name());
+  EXPECT_EQ(s.opt_name().value(), "foo");
+}
+
 #ifdef THRIFT_HAS_OPTIONAL
 TEST(optional_field_ref_test, copy_from_optional) {
   auto s = TestStruct();
