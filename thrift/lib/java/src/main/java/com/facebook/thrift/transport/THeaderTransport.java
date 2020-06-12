@@ -171,6 +171,20 @@ public class THeaderTransport extends TFramedTransport {
   }
 
   /**
+   * Returns the current client type we are reading/writing
+   *
+   * @return client type
+   */
+   public ClientTypes getClientType() {
+       return this.clientType;
+   }
+
+   /** Sets client type we are writing */
+   public void setClientType(ClientTypes clientType) {
+       this.clientType = clientType;
+   }
+
+  /**
    * Sets the internal buffer size for zlib transform This will work with any value (except 0), but
    * this is provided as an optimization knob.
    *
