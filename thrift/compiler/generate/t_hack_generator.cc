@@ -3663,8 +3663,21 @@ void t_hack_generator::generate_service_interface(
   }
   string long_name = php_servicename_mangle(mangle, tservice);
   string head_parameters = rpc_options ? "\\RpcOptions $rpc_options" : "";
-  f_service_ << "interface " << long_name << suffix << "If extends "
-             << extends_if << " {\n";
+
+  if (rpc_options) {
+    // That's a temporary trick for a multi-stage release. A one-stage release
+    // may introduce an inconsistent state with the child interface generated
+    // before the parent one. If something from the child interface's file is
+    // invoked in such state, there'd be a Hack error about the unknown class
+    // and the whole release process may be aborted. An idea of the multi-stage
+    // release is to generate all new interfaces first and add extends in the
+    // second pass.
+    // TODO (partisan): Remove this after the release.
+    f_service_ << "interface " << long_name << suffix << "If {\n";
+  } else {
+    f_service_ << "interface " << long_name << suffix << "If extends "
+               << extends_if << " {\n";
+  }
   indent_up();
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;

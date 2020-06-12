@@ -160,7 +160,7 @@ interface MyServiceClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * MyService
  */
-interface MyServiceAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
+interface MyServiceAsyncRpcOptionsIf {
   /**
    * Original thrift definition:-
    * void

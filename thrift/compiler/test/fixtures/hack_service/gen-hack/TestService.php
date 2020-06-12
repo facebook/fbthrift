@@ -51,7 +51,7 @@ interface TestServiceClientIf extends \foo\hack_ns\FooHackServiceClientIf {
  * Original thrift service:-
  * TestService
  */
-interface TestServiceAsyncRpcOptionsIf extends \foo\hack_ns\FooHackServiceAsyncRpcOptionsIf {
+interface TestServiceAsyncRpcOptionsIf {
   /**
    * Original thrift definition:-
    * i32

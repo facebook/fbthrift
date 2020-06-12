@@ -70,7 +70,7 @@ interface SomeServiceClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * SomeService
  */
-interface SomeServiceAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
+interface SomeServiceAsyncRpcOptionsIf {
   /**
    * Original thrift definition:-
    * include.SomeMap

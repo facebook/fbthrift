@@ -70,7 +70,7 @@ interface MyServicePrioParentClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * MyServicePrioParent
  */
-interface MyServicePrioParentAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
+interface MyServicePrioParentAsyncRpcOptionsIf {
   /**
    * Original thrift definition:-
    * void

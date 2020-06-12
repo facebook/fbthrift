@@ -52,7 +52,7 @@ interface BarClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * Bar
  */
-interface BarAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
+interface BarAsyncRpcOptionsIf {
   /**
    * Original thrift definition:-
    * string

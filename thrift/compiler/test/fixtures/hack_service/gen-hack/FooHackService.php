@@ -33,7 +33,7 @@ interface FooHackServiceClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * FooHackService
  */
-interface FooHackServiceAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
+interface FooHackServiceAsyncRpcOptionsIf {
 }
 
 /**

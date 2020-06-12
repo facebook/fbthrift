@@ -49,7 +49,7 @@ interface MyServicePrioChildClientIf extends MyServicePrioParentClientIf {
  * Original thrift service:-
  * MyServicePrioChild
  */
-interface MyServicePrioChildAsyncRpcOptionsIf extends MyServicePrioParentAsyncRpcOptionsIf {
+interface MyServicePrioChildAsyncRpcOptionsIf {
   /**
    * Original thrift definition:-
    * void
