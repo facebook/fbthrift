@@ -22,8 +22,10 @@
 namespace apache {
 namespace thrift {
 
-DebugProtocolWriter::DebugProtocolWriter(ExternalBufferSharing /*sharing*/)
-    : out_(nullptr, 0) {}
+DebugProtocolWriter::DebugProtocolWriter(
+    ExternalBufferSharing /*sharing*/,
+    Options options)
+    : out_(nullptr, 0), options_(options) {}
 
 namespace {
 
@@ -110,7 +112,11 @@ void DebugProtocolWriter::startItem() {
       writePlain(" -> ");
       break;
     case LIST:
-      writeIndented("[{}] = ", ws.index);
+      if (options_.printListIndices) {
+        writeIndented("[{}] = ", ws.index);
+      } else {
+        writeIndent();
+      }
       break;
   }
 }

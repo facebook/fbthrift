@@ -27,15 +27,18 @@
 namespace apache {
 namespace thrift {
 
-template <class T>
-std::string debugString(const T& obj);
-
 class DebugProtocolWriter {
  public:
+  struct Options {
+    Options() {}
+    bool printListIndices = true;
+  };
+
   using ProtocolReader = void;
 
   explicit DebugProtocolWriter(
-      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER /* ignored */);
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER /* ignored */,
+      Options options = Options{});
 
   static constexpr ProtocolType protocolType() {
     return ProtocolType::T_DEBUG_PROTOCOL;
@@ -164,12 +167,17 @@ class DebugProtocolWriter {
   folly::io::QueueAppender out_;
   std::string indent_;
   std::vector<WriteState> writeState_;
+  const Options options_;
 };
 
 template <class T>
-std::string debugString(const T& obj) {
+std::string debugString(
+    const T& obj,
+    DebugProtocolWriter::Options options = {}) {
   folly::IOBufQueue queue;
-  DebugProtocolWriter proto;
+  DebugProtocolWriter proto(
+      COPY_EXTERNAL_BUFFER, // Ignored by constructor.
+      options);
   proto.setOutput(&queue);
   Cpp2Ops<T>::write(&proto, &obj);
   auto buf = queue.move();

@@ -116,6 +116,10 @@ struct DebugSortedAssociative {
      value,
 }
 
+struct DebugList {
+  1: list<i32> aList,
+}
+
 struct StructWithF14VectorContainers {
   1: map<i32, i32> (cpp.template = 'folly::F14VectorMap') m,
   2: set<i32> (cpp.template = 'folly::F14VectorSet') s,

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <numeric>
+
 #include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
@@ -49,6 +51,24 @@ TEST(DebugProtocolTest, Containers) {
   bodyHashed.split_step('\n');
   bodySorted.split_step('\n');
   EXPECT_EQ(bodyHashed.str(), bodySorted.str());
+}
+
+TEST(DebugProtocolTest, NoIndices) {
+  DebugList debugList;
+  auto& list = *debugList.aList_ref();
+  list.resize(100);
+  std::iota(list.begin(), list.end(), 0);
+  DebugProtocolWriter::Options options;
+  options.printListIndices = false;
+  auto debug1 = debugString(debugList, options);
+  list.erase(list.begin() + 1);
+  auto debug2 = debugString(debugList, options);
+  folly::StringPiece sp1 = debug1;
+  folly::StringPiece sp2 = debug2;
+  EXPECT_NE(debug1, debug2);
+  EXPECT_EQ(
+      sp1.subpiece(sp1.size() - 100).str(),
+      sp2.subpiece(sp2.size() - 100).str());
 }
 
 } // namespace apache::thrift::protocol
