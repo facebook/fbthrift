@@ -54,9 +54,7 @@ class Beeble_BroxClient extends \ThriftClientBase implements Beeble_BroxClientIf
   /* send and recv functions */
 }
 
-class Beeble_BroxAsyncRpcOptionsClient extends \ThriftClientBase implements Beeble_BroxAsyncRpcOptionsIf {
-  use Beeble_BroxClientBase;
-
+class Beeble_BroxAsyncRpcOptionsClient  implements Beeble_BroxAsyncRpcOptionsIf {
 }
 
 // HELPER FUNCTIONS AND STRUCTURES
