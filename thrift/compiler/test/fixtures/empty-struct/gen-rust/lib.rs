@@ -96,8 +96,8 @@ pub mod types {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
-            let mut once = false;
-            let mut alt = ::std::option::Option::None;
+            let once = false;
+            let alt = ::std::option::Option::None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
                 match (fty, fid as ::std::primitive::i32, once) {
