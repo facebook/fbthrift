@@ -82,39 +82,6 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket {
         new TAsyncSSLSocket(ctx, evb, serverName), Destructor());
   }
 #endif
-
-  class HandshakeCallback : public folly::AsyncSSLSocket::HandshakeCB {
-   public:
-    virtual bool handshakeVerify(
-        TAsyncSSLSocket* /*sock*/,
-        bool preverifyOk,
-        X509_STORE_CTX* /*ctx*/) noexcept {
-      return preverifyOk;
-    }
-    virtual void handshakeSuccess(TAsyncSSLSocket* sock) noexcept = 0;
-    virtual void handshakeError(
-        TAsyncSSLSocket* sock,
-        const transport::TTransportException& ex) noexcept = 0;
-
-   private:
-    bool handshakeVer(
-        AsyncSSLSocket* sock,
-        bool preverifyOk,
-        X509_STORE_CTX* ctx) noexcept override {
-      return handshakeVerify(
-          static_cast<TAsyncSSLSocket*>(sock), preverifyOk, ctx);
-    }
-    void handshakeSuc(folly::AsyncSSLSocket* sock) noexcept override {
-      handshakeSuccess(static_cast<TAsyncSSLSocket*>(sock));
-    }
-    void handshakeErr(
-        folly::AsyncSSLSocket* sock,
-        const folly::AsyncSocketException& ex) noexcept override {
-      handshakeError(
-          static_cast<TAsyncSSLSocket*>(sock),
-          transport::TTransportException(ex));
-    }
-  };
 };
 
 } // namespace async
