@@ -212,8 +212,8 @@ TEST(TestWithoutFollyOptionals, emplace) {
         i.emplace() = "ccc";
         EXPECT_EQ(i.value(), "ccc");
         EXPECT_THROW(i.emplace(std::string(""), 1), std::out_of_range);
-        // C++ Standard requires *this to be empty if `emplace(...)` throws
-        EXPECT_EQ(i.has_value(), typeid(i) == typeid(field_ref<std::string&>));
+        EXPECT_FALSE(i.has_value()); // C++ Standard requires *this to be empty
+                                     // if `emplace(...)` throws
       });
 }
 

@@ -131,6 +131,8 @@ class field_ref {
 
   template <typename... Args>
   FOLLY_ERASE value_type& emplace(Args&&... args) {
+    is_set_ = false; // C++ Standard requires *this to be empty if
+                     // `std::optional::emplace(...)` throws
     value_ = value_type(static_cast<Args&&>(args)...);
     is_set_ = true;
     return value_;
@@ -142,6 +144,7 @@ class field_ref {
           value,
       value_type&>
   emplace(std::initializer_list<U> ilist, Args&&... args) {
+    is_set_ = false;
     value_ = value_type(ilist, std::forward<Args>(args)...);
     is_set_ = true;
     return value_;
@@ -405,7 +408,8 @@ class optional_field_ref {
 
   template <typename... Args>
   FOLLY_ERASE value_type& emplace(Args&&... args) {
-    reset(); // C++ Standard requires *this to be empty if `emplace(...)` throws
+    reset(); // C++ Standard requires *this to be empty if
+             // `std::optional::emplace(...)` throws
     value_ = value_type(static_cast<Args&&>(args)...);
     is_set_ = true;
     return value_;
