@@ -17,6 +17,7 @@
 #include <folly/container/Foreach.h>
 #include <folly/portability/GTest.h>
 
+#include <thrift/lib/cpp2/BadFieldAccess.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 #include <thrift/lib/cpp2/test/optionals/without_folly_optional/gen-cpp2/FollyOptionals_types.h>
 #include <thrift/lib/cpp2/test/optionals/without_folly_optional/gen-cpp2/FollyOptionals_types_custom_protocol.h>
@@ -111,6 +112,14 @@ TEST(TestWithoutFollyOptionals, SerDesTests) {
   EXPECT_EQ(obj1, obj2);
   json2 = objToJSON(obj2);
   EXPECT_EQ(json1, json2);
+}
+
+TEST(TestWithoutFollyOptionals, ValueUncheckedTest) {
+  cpp2::HasOptionals obj;
+  obj.stringOpt_ref().value_unchecked() = "helloOPTIONAL";
+  EXPECT_FALSE(obj.stringOpt_ref().has_value());
+  EXPECT_THROW(obj.stringOpt_ref().value(), bad_field_access);
+  EXPECT_EQ(obj.stringOpt_ref().value_unchecked(), "helloOPTIONAL");
 }
 
 TEST(TestWithoutFollyOptionals, EqualityTests) {
