@@ -302,77 +302,92 @@ bool operator!=(std::nullopt_t, const DeprecatedOptionalField<T>& a) {
 }
 #endif
 
-template <class T>
-[[deprecated(
-    "Use std::optional with optional_field_ref::to_optional() instead")]] folly::
-    Optional<std::remove_const_t<T>>
-    copyToFollyOptional(optional_field_ref<T&> t) {
-  if (t) {
-    return *t;
+namespace detail {
+struct CopyToFollyOptional {
+  template <class T>
+  [[deprecated(
+      "Use std::optional with optional_field_ref::to_optional() instead")]] folly::
+      Optional<std::remove_const_t<T>>
+      operator()(optional_field_ref<T&> t) const {
+    if (t) {
+      return *t;
+    }
+    return {};
   }
-  return {};
-}
+};
 
-template <class T>
-[[deprecated(
-    "Use std::optional with optional_field_ref::to_optional() instead")]] folly::
-    Optional<std::remove_const_t<T>>
-    moveToFollyOptional(optional_field_ref<T&&> t) {
-  if (t) {
-    return std::move(*t);
-  }
-  return {};
-}
-
-template <class T>
-[[deprecated(
-    "Use std::optional with optional_field_ref::to_optional() instead")]] folly::
-    Optional<T>
-    moveToFollyOptional(optional_field_ref<T&> t) {
-  if (t) {
-    return std::move(*t);
-  }
-  return {};
-}
-
-template <class T>
-[[deprecated(
-    "Use std::optional with optional_field_ref::from_optional(...) instead")]] auto
-fromFollyOptional(optional_field_ref<T&> lhs, const folly::Optional<T>& rhs) {
-  if (rhs) {
-    lhs = *rhs;
-  } else {
-    lhs.reset();
-  }
-  return lhs;
-}
-
-template <class T>
-[[deprecated(
-    "Use std::optional with optional_field_ref::from_optional(...) instead")]] auto
-fromFollyOptional(optional_field_ref<T&> lhs, folly::Optional<T>&& rhs) {
-  if (rhs) {
-    lhs = std::move(*rhs);
-  } else {
-    lhs.reset();
+struct MoveToFollyOptional {
+  template <class T>
+  [[deprecated(
+      "Use std::optional with optional_field_ref::to_optional() instead")]] folly::
+      Optional<std::remove_const_t<T>>
+      operator()(optional_field_ref<T&&> t) const {
+    if (t) {
+      return std::move(*t);
+    }
+    return {};
   }
 
-  return lhs;
-}
+  template <class T>
+  [[deprecated(
+      "Use std::optional with optional_field_ref::to_optional() instead")]] folly::
+      Optional<T>
+      operator()(optional_field_ref<T&> t) const {
+    if (t) {
+      return std::move(*t);
+    }
+    return {};
+  }
+};
 
-template <class T>
-bool equalToFollyOptional(
-    optional_field_ref<T> a,
-    const folly::Optional<folly::remove_cvref_t<T>>& b) {
-  return a && b ? *a == *b : a.has_value() == b.has_value();
-}
+struct FromFollyOptional {
+  template <class T>
+  [[deprecated(
+      "Use std::optional with optional_field_ref::from_optional(...) instead")]] auto
+  operator()(optional_field_ref<T&> lhs, const folly::Optional<T>& rhs) const {
+    if (rhs) {
+      lhs = *rhs;
+    } else {
+      lhs.reset();
+    }
+    return lhs;
+  }
 
-template <class T>
-bool equalToFollyOptional(
-    const DeprecatedOptionalField<T>& a,
-    const folly::Optional<T>& b) {
-  return a && b ? *a == *b : a.has_value() == b.has_value();
-}
+  template <class T>
+  [[deprecated(
+      "Use std::optional with optional_field_ref::from_optional(...) instead")]] auto
+  operator()(optional_field_ref<T&> lhs, folly::Optional<T>&& rhs) const {
+    if (rhs) {
+      lhs = std::move(*rhs);
+    } else {
+      lhs.reset();
+    }
+
+    return lhs;
+  }
+};
+
+struct EqualToFollyOptional {
+  template <class T>
+  bool operator()(
+      optional_field_ref<T> a,
+      const folly::Optional<folly::remove_cvref_t<T>>& b) const {
+    return a && b ? *a == *b : a.has_value() == b.has_value();
+  }
+
+  template <class T>
+  bool operator()(
+      const DeprecatedOptionalField<T>& a,
+      const folly::Optional<T>& b) const {
+    return a && b ? *a == *b : a.has_value() == b.has_value();
+  }
+};
+} // namespace detail
+
+constexpr detail::CopyToFollyOptional copyToFollyOptional;
+constexpr detail::MoveToFollyOptional moveToFollyOptional;
+constexpr detail::FromFollyOptional fromFollyOptional;
+constexpr detail::EqualToFollyOptional equalToFollyOptional;
 
 } // namespace thrift
 } // namespace apache
