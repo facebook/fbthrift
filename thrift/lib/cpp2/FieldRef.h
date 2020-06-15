@@ -18,7 +18,6 @@
 
 #include <initializer_list>
 #include <type_traits>
-#include <utility>
 
 #if (!defined(_MSC_VER) && __has_include(<optional>)) ||        \
     (defined(_MSC_VER) && __cplusplus >= 201703L)
@@ -30,7 +29,6 @@
 #endif
 
 #include <folly/CPortability.h>
-#include <folly/Likely.h>
 
 namespace apache {
 namespace thrift {
@@ -76,10 +74,10 @@ class field_ref {
 
   template <typename U = value_type>
   FOLLY_ERASE
-      std::enable_if_t<std::is_assignable<value_type&, U>::value, field_ref&>
+      std::enable_if_t<std::is_assignable<value_type&, U&&>::value, field_ref&>
       operator=(U&& value) noexcept(
-          std::is_nothrow_assignable<value_type&, U>::value) {
-    value_ = std::forward<U>(value);
+          std::is_nothrow_assignable<value_type&, U&&>::value) {
+    value_ = static_cast<U&&>(value);
     is_set_ = true;
     return *this;
   }
@@ -107,11 +105,11 @@ class field_ref {
 
   // Returns a reference to the value.
   FOLLY_ERASE reference_type value() const noexcept {
-    return std::forward<reference_type>(value_);
+    return static_cast<reference_type>(value_);
   }
 
   FOLLY_ERASE reference_type operator*() const noexcept {
-    return std::forward<reference_type>(value_);
+    return static_cast<reference_type>(value_);
   }
 
   FOLLY_ERASE value_type* operator->() const noexcept {
@@ -120,12 +118,11 @@ class field_ref {
 
   FOLLY_ERASE reference_type ensure() noexcept {
     is_set_ = true;
-    return std::forward<reference_type>(value_);
+    return static_cast<reference_type>(value_);
   }
 
   template <typename Index>
-  FOLLY_ERASE auto operator[](const Index& index) const
-      -> decltype(std::declval<reference_type>()[index]) {
+  FOLLY_ERASE auto operator[](const Index& index) const -> decltype(auto) {
     return value_[index];
   }
 
@@ -140,12 +137,12 @@ class field_ref {
 
   template <class U, class... Args>
   FOLLY_ERASE std::enable_if_t<
-      std::is_constructible<value_type, std::initializer_list<U>&, Args&&...>::
+      std::is_constructible<value_type, std::initializer_list<U>, Args&&...>::
           value,
       value_type&>
   emplace(std::initializer_list<U> ilist, Args&&... args) {
     is_set_ = false;
-    value_ = value_type(ilist, std::forward<Args>(args)...);
+    value_ = value_type(ilist, static_cast<Args&&>(args)...);
     is_set_ = true;
     return value_;
   }
@@ -294,11 +291,11 @@ class optional_field_ref {
 
   template <typename U = value_type>
   FOLLY_ERASE std::enable_if_t<
-      std::is_assignable<value_type&, U>::value,
+      std::is_assignable<value_type&, U&&>::value,
       optional_field_ref&>
   operator=(U&& value) noexcept(
-      std::is_nothrow_assignable<value_type&, U>::value) {
-    value_ = std::forward<U>(value);
+      std::is_nothrow_assignable<value_type&, U&&>::value) {
+    value_ = static_cast<U&&>(value);
     is_set_ = true;
     return *this;
   }
@@ -318,15 +315,16 @@ class optional_field_ref {
 
   template <typename U>
   FOLLY_ERASE void move_from(optional_field_ref<U> other) noexcept(
-      std::is_nothrow_assignable<value_type&, U&&>::value) {
-    value_ = std::move(other.value_);
+      std::is_nothrow_assignable<value_type&, std::remove_reference_t<U>&&>::
+          value) {
+    value_ = static_cast<std::remove_reference_t<U>&&>(other.value_);
     is_set_ = other.is_set_;
   }
 
 #ifdef THRIFT_HAS_OPTIONAL
   template <typename U>
   FOLLY_ERASE void from_optional(const std::optional<U>& other) noexcept(
-      std::is_nothrow_assignable<value_type&, U>::value) {
+      std::is_nothrow_assignable<value_type&, const U&>::value) {
     // Use if instead of a shorter ternary expression to prevent a potential
     // copy if T and U mismatch.
     if (other) {
@@ -341,11 +339,11 @@ class optional_field_ref {
   // move_from doesn't make other empty.
   template <typename U>
   FOLLY_ERASE void from_optional(std::optional<U>&& other) noexcept(
-      std::is_nothrow_assignable<value_type&, U>::value) {
+      std::is_nothrow_assignable<value_type&, U&&>::value) {
     // Use if instead of a shorter ternary expression to prevent a potential
     // copy if T and U mismatch.
     if (other) {
-      value_ = std::move(*other);
+      value_ = static_cast<U&&>(*other);
     } else {
       value_ = {};
     }
@@ -353,7 +351,8 @@ class optional_field_ref {
   }
 
   FOLLY_ERASE std::optional<value_type> to_optional() const {
-    return is_set_ ? std::make_optional(value_) : std::nullopt;
+    return is_set_ ? std::optional<value_type>(value_)
+                   : std::optional<value_type>();
   }
 #endif
 
@@ -373,22 +372,22 @@ class optional_field_ref {
   // Returns a reference to the value if this optional_field_ref has one; throws
   // bad_field_access otherwise.
   FOLLY_ERASE reference_type value() const {
-    if (FOLLY_UNLIKELY(!is_set_)) {
+    if (!is_set_) {
       detail::throw_on_bad_field_access();
     }
-    return std::forward<reference_type>(value_);
+    return static_cast<reference_type>(value_);
   }
 
   template <typename U = value_type>
   FOLLY_ERASE value_type value_or(U&& default_value) const {
     return is_set_
-        ? static_cast<value_type>(std::forward<reference_type>(value_))
-        : static_cast<value_type>(std::forward<U>(default_value));
+        ? static_cast<value_type>(static_cast<reference_type>(value_))
+        : static_cast<value_type>(static_cast<U&&>(default_value));
   }
 
   // Returns a reference to the value without checking whether it is available.
   FOLLY_ERASE reference_type value_unchecked() const {
-    return std::forward<reference_type>(value_);
+    return static_cast<reference_type>(value_);
   }
 
   FOLLY_ERASE reference_type operator*() const {
@@ -403,7 +402,7 @@ class optional_field_ref {
     if (!is_set_) {
       emplace();
     }
-    return std::forward<reference_type>(value_);
+    return static_cast<reference_type>(value_);
   }
 
   template <typename... Args>
@@ -422,7 +421,7 @@ class optional_field_ref {
       value_type&>
   emplace(std::initializer_list<U> ilist, Args&&... args) {
     reset();
-    value_ = value_type(ilist, std::forward<Args>(args)...);
+    value_ = value_type(ilist, static_cast<Args&&>(args)...);
     is_set_ = true;
     return value_;
   }
