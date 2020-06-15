@@ -179,44 +179,6 @@ TEST(TestWithFollyOptionals, EqualityTests) {
   EXPECT_EQ(obj1, obj2);
 }
 
-TEST(TestWithFollyOptionals, APITests) {
-  cpp2::HasOptionals obj;
-
-  obj.int64Opt = 1;
-  EXPECT_TRUE(obj.int64Opt.has_value());
-  EXPECT_EQ(obj.int64Opt.value(), 1);
-
-  folly::Optional<int64_t> f;
-  apache::thrift::fromFollyOptional(obj.int64Opt, f);
-  EXPECT_FALSE(obj.int64Opt.has_value());
-
-  apache::thrift::fromFollyOptional(obj.int64Opt, f = 2);
-  EXPECT_EQ(obj.int64Opt.value(), 2);
-
-  apache::thrift::fromFollyOptional(obj.int64Opt, folly::Optional<int64_t>{3});
-  EXPECT_EQ(obj.int64Opt.value(), 3);
-
-  static_assert(std::is_same_v<
-                decltype(obj.int64Opt),
-                apache::thrift::DeprecatedOptionalField<int64_t>>);
-  static_assert(std::is_same_v<
-                decltype(copyToFollyOptional(obj.int64Opt)),
-                folly::Optional<int64_t>>);
-  static_assert(std::is_same_v<
-                decltype(moveToFollyOptional(obj.int64Opt)),
-                folly::Optional<int64_t>>);
-  static_assert(std::is_same_v<
-                decltype(moveToFollyOptional(std::move(obj.int64Opt))),
-                folly::Optional<int64_t>>);
-
-  static_assert(!std::is_constructible_v<
-                apache::thrift::DeprecatedOptionalField<int>,
-                folly::Optional<int>>);
-  static_assert(!std::is_convertible_v<
-                folly::Optional<int>,
-                apache::thrift::DeprecatedOptionalField<int>>);
-}
-
 TEST(TestWithFollyOptionals, AddRef) {
   cpp2::HasOptionals obj;
   static_assert(std::is_same_v<

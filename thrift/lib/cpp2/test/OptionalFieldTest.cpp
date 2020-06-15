@@ -711,24 +711,6 @@ TEST(DeprecatedOptionalField, MoveFrom) {
   EXPECT_FALSE(b.value());
 }
 
-TEST(optional_field_ref_test, copy_to_folly_optional) {
-  DeprecatedOptionalField<std::string> name;
-  name = "foo";
-  EXPECT_EQ(*name, "foo");
-  auto f = apache::thrift::copyToFollyOptional(name);
-  EXPECT_EQ(*f, "foo");
-  EXPECT_EQ(*name, "foo");
-}
-
-TEST(optional_field_ref_test, move_to_folly_optional) {
-  DeprecatedOptionalField<std::unique_ptr<int>> uptr;
-  uptr.emplace(new int(42));
-  EXPECT_EQ(**uptr, 42);
-  auto f = apache::thrift::moveToFollyOptional(uptr);
-  EXPECT_EQ(**f, 42);
-  EXPECT_EQ(*uptr, nullptr);
-}
-
 } // namespace thrift
 } // namespace apache
 
