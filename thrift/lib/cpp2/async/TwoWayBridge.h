@@ -376,8 +376,8 @@ class TwoWayBridge {
       twowaybridge_detail::AtomicQueue<ServerConsumer, ServerMessage>;
 
  public:
-  using ClientQueue = typename ClientAtomicQueue::MessageQueue;
-  using ServerQueue = typename ServerAtomicQueue::MessageQueue;
+  using ClientQueue = twowaybridge_detail::Queue<ClientMessage>;
+  using ServerQueue = twowaybridge_detail::Queue<ServerMessage>;
 
   struct Deleter {
     void operator()(Derived* ptr) {

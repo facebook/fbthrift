@@ -49,6 +49,16 @@ struct SinkConsumerImpl {
   }
 };
 
+class ServerSinkBridge;
+
+// This template explicitly instantiated in ServerSinkBridge.cpp
+extern template class TwoWayBridge<
+    ServerSinkBridge,
+    ClientMessage,
+    CoroConsumer,
+    ServerMessage,
+    ServerSinkBridge>;
+
 class ServerSinkBridge : public TwoWayBridge<
                              ServerSinkBridge,
                              ClientMessage,
@@ -57,68 +67,29 @@ class ServerSinkBridge : public TwoWayBridge<
                              ServerSinkBridge>,
                          public SinkServerCallback {
  public:
+  ~ServerSinkBridge() override;
+
   static Ptr create(
       SinkConsumerImpl&& sinkConsumer,
       folly::EventBase& evb,
-      SinkClientCallback* callback) {
-    return (new ServerSinkBridge(std::move(sinkConsumer), evb, callback))
-        ->copy();
-  }
+      SinkClientCallback* callback);
 
   // SinkServerCallback method
-  bool onSinkNext(StreamPayload&& payload) override {
-    clientPush(folly::Try<StreamPayload>(std::move(payload)));
-    return true;
-  }
+  bool onSinkNext(StreamPayload&& payload) override;
 
-  void onSinkError(folly::exception_wrapper ew) override {
-    folly::exception_wrapper hijacked;
-    if (ew.with_exception([&hijacked](rocket::RocketException& rex) {
-          hijacked = folly::exception_wrapper(
-              apache::thrift::detail::EncodedError(rex.moveErrorData()));
-        })) {
-      clientPush(folly::Try<StreamPayload>(std::move(hijacked)));
-    } else {
-      clientPush(folly::Try<StreamPayload>(std::move(ew)));
-    }
-    close();
-  }
+  void onSinkError(folly::exception_wrapper ew) override;
 
-  bool onSinkComplete() override {
-    clientPush(SinkComplete{});
-    sinkComplete_ = true;
-    return true;
-  }
+  bool onSinkComplete() override;
 
-  void onStreamCancel() override {
-    clientPush(StreamCancel{});
-    close();
-  }
+  void onStreamCancel() override;
 
-  void resetClientCallback(SinkClientCallback& clientCallback) override {
-    DCHECK(clientCallback_);
-    clientCallback_ = &clientCallback;
-  }
+  void resetClientCallback(SinkClientCallback& clientCallback) override;
 
   // start should be called on threadmanager's thread
-  folly::coro::Task<void> start() {
-    serverPush(consumer_.bufferSize);
-    folly::Try<StreamPayload> finalResponse =
-        co_await consumer_.consumer(makeGenerator());
-
-    if (clientException_) {
-      co_return;
-    }
-
-    serverPush(std::move(finalResponse));
-  }
+  folly::coro::Task<void> start();
 
   // TwoWayBridge consumer
-  void consume() {
-    DCHECK(evb_);
-    evb_->runInEventBaseThread(
-        [self = copy()]() { self->processClientMessages(); });
-  }
+  void consume();
 
   void canceled() {}
 
@@ -126,102 +97,13 @@ class ServerSinkBridge : public TwoWayBridge<
   ServerSinkBridge(
       SinkConsumerImpl&& sinkConsumer,
       folly::EventBase& evb,
-      SinkClientCallback* callback)
-      : consumer_(std::move(sinkConsumer)),
-        evb_(folly::getKeepAliveToken(&evb)),
-        clientCallback_(callback) {
-    bool scheduledWait = clientWait(this);
-    DCHECK(scheduledWait);
-  }
+      SinkClientCallback* callback);
 
-  folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> makeGenerator() {
-    uint64_t counter = 0;
-    while (true) {
-      CoroConsumer consumer;
-      if (serverWait(&consumer)) {
-        co_await consumer.wait();
-      }
-      for (auto messages = serverGetMessages(); !messages.empty();
-           messages.pop()) {
-        auto& message = messages.front();
-        folly::Try<StreamPayload> ele;
+  folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> makeGenerator();
 
-        folly::variant_match(
-            message,
-            [&](folly::Try<StreamPayload>& payload) {
-              ele = std::move(payload);
-            },
-            [&](StreamCancel&) {
-              ele = folly::Try<StreamPayload>(
-                  folly::make_exception_wrapper<transport::TTransportException>(
-                      transport::TTransportException::TTransportExceptionType::
-                          INTERRUPTED,
-                      "sink cancelled"));
-            },
-            [](SinkComplete&) {});
+  void processClientMessages();
 
-        // empty Try represent the normal completion of the sink
-        if (!ele.hasValue() && !ele.hasException()) {
-          co_return;
-        }
-
-        if (ele.hasException()) {
-          clientException_ = true;
-          co_yield std::move(ele);
-          co_return;
-        }
-
-        co_yield std::move(ele);
-        counter++;
-        if (counter > consumer_.bufferSize / 2) {
-          serverPush(counter);
-          counter = 0;
-        }
-      }
-    }
-  }
-
-  void processClientMessages() {
-    if (!clientCallback_) {
-      return;
-    }
-
-    int64_t credits = 0;
-    do {
-      for (auto messages = clientGetMessages(); !messages.empty();
-           messages.pop()) {
-        bool terminated = false;
-        auto& message = messages.front();
-        folly::variant_match(
-            message,
-            [&](folly::Try<StreamPayload>& payload) {
-              terminated = true;
-              if (payload.hasValue()) {
-                clientCallback_->onFinalResponse(std::move(payload).value());
-              } else {
-                clientCallback_->onFinalResponseError(
-                    std::move(payload).exception());
-              }
-            },
-            [&](int64_t n) { credits += n; });
-        if (terminated) {
-          close();
-          return;
-        }
-      }
-    } while (!clientWait(this));
-
-    if (!sinkComplete_ && credits > 0) {
-      std::ignore = clientCallback_->onSinkRequestN(credits);
-    }
-  }
-
-  void close() {
-    clientClose();
-    evb_.reset();
-    clientCallback_ = nullptr;
-    Ptr(this);
-  }
+  void close();
 
   SinkConsumerImpl consumer_;
   folly::Executor::KeepAlive<folly::EventBase> evb_;

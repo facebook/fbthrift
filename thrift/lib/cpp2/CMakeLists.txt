@@ -93,6 +93,8 @@ add_library(
   GeneratedCodeHelper.cpp
   async/AsyncClient.cpp
   async/AsyncProcessor.cpp
+  async/ClientSinkBridge.cpp
+  async/ClientStreamBridge.cpp
   async/Cpp2Channel.cpp
   async/DuplexChannel.cpp
   async/FramingHandler.cpp
@@ -104,6 +106,8 @@ add_library(
   async/ResponseChannel.cpp
   async/RocketClientChannel.cpp
   async/RpcTypes.cpp
+  async/ServerGeneratorStream.cpp
+  async/ServerSinkBridge.cpp
   security/extensions/ThriftParametersClientExtension.cpp
   security/extensions/ThriftParametersContext.cpp
   security/extensions/Types.cpp

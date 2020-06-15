@@ -32,6 +32,16 @@ class ClientStreamConsumer {
   virtual void canceled() = 0;
 };
 
+class ClientStreamBridge;
+
+// This template explicitly instantiated in ClientStreamBridge.cpp
+extern template class TwoWayBridge<
+    ClientStreamConsumer,
+    folly::Try<StreamPayload>,
+    ClientStreamBridge,
+    int64_t,
+    ClientStreamBridge>;
+
 class ClientStreamBridge : public TwoWayBridge<
                                ClientStreamConsumer,
                                folly::Try<StreamPayload>,
@@ -40,11 +50,10 @@ class ClientStreamBridge : public TwoWayBridge<
                                ClientStreamBridge>,
                            private StreamClientCallback {
  public:
+  ~ClientStreamBridge() override;
+
   struct ClientDeleter : Deleter {
-    void operator()(ClientStreamBridge* ptr) {
-      ptr->cancel();
-      Deleter::operator()(ptr);
-    }
+    void operator()(ClientStreamBridge* ptr);
   };
   using ClientPtr = std::unique_ptr<ClientStreamBridge, ClientDeleter>;
 
@@ -57,109 +66,43 @@ class ClientStreamBridge : public TwoWayBridge<
     virtual void onFirstResponseError(folly::exception_wrapper) = 0;
   };
 
-  static StreamClientCallback* create(FirstResponseCallback* callback) {
-    return new ClientStreamBridge(callback);
-  }
+  static StreamClientCallback* create(FirstResponseCallback* callback);
 
-  bool wait(ClientStreamConsumer* consumer) {
-    return clientWait(consumer);
-  }
+  bool wait(ClientStreamConsumer* consumer);
 
-  ClientQueue getMessages() {
-    return clientGetMessages();
-  }
+  ClientQueue getMessages();
 
-  void requestN(int64_t credits) {
-    clientPush(std::move(credits));
-  }
+  void requestN(int64_t credits);
 
-  void cancel() {
-    clientPush(-1);
-    clientClose();
-  }
-  bool isCanceled() {
-    return isClientClosed();
-  }
+  void cancel();
 
-  void consume() {
-    DCHECK(serverExecutor_);
-    serverExecutor_->add([this]() { processCredits(); });
-  }
+  bool isCanceled();
 
-  void canceled() {
-    serverCleanup();
-  }
+  void consume();
+
+  void canceled();
 
  private:
-  explicit ClientStreamBridge(FirstResponseCallback* callback)
-      : firstResponseCallback_(callback) {}
+  explicit ClientStreamBridge(FirstResponseCallback* callback);
 
   bool onFirstResponse(
       FirstResponsePayload&& payload,
       folly::EventBase* evb,
-      StreamServerCallback* streamServerCallback) override {
-    auto firstResponseCallback = firstResponseCallback_;
-    serverExecutor_ = evb;
-    streamServerCallback_ = streamServerCallback;
-    auto scheduledWait = serverWait(this);
-    DCHECK(scheduledWait);
-    firstResponseCallback->onFirstResponse(
-        std::move(payload), ClientPtr(copy().release()));
-    return true;
-  }
+      StreamServerCallback* streamServerCallback) override;
 
-  void onFirstResponseError(folly::exception_wrapper ew) override {
-    firstResponseCallback_->onFirstResponseError(std::move(ew));
-    serverCleanup();
-  }
+  void onFirstResponseError(folly::exception_wrapper ew) override;
 
-  bool onStreamNext(StreamPayload&& payload) override {
-    serverPush(folly::Try<StreamPayload>(std::move(payload)));
-    return true;
-  }
+  bool onStreamNext(StreamPayload&& payload) override;
 
-  void onStreamError(folly::exception_wrapper ew) override {
-    serverPush(folly::Try<StreamPayload>(std::move(ew)));
-    serverClose();
-  }
+  void onStreamError(folly::exception_wrapper ew) override;
 
-  void onStreamComplete() override {
-    serverPush(folly::Try<StreamPayload>());
-    serverClose();
-  }
+  void onStreamComplete() override;
 
-  void resetServerCallback(StreamServerCallback& serverCallback) override {
-    streamServerCallback_ = &serverCallback;
-  }
+  void resetServerCallback(StreamServerCallback& serverCallback) override;
 
-  void processCredits() {
-    if (isServerClosed()) {
-      serverCleanup();
-      return;
-    }
+  void processCredits();
 
-    // serverClose() can't be called until this loop finishes
-    int64_t credits = 0;
-    while (!serverWait(this)) {
-      for (auto messages = serverGetMessages(); !messages.empty();
-           messages.pop()) {
-        if (messages.front() == -1) {
-          streamServerCallback_->onStreamCancel();
-          serverCleanup();
-          return;
-        }
-        credits += messages.front();
-      }
-    }
-
-    std::ignore = streamServerCallback_->onStreamRequestN(credits);
-  }
-
-  void serverCleanup() {
-    streamServerCallback_ = nullptr;
-    serverExecutor_.reset();
-    Ptr(this);
-  }
+  void serverCleanup();
 
   union {
     FirstResponseCallback* firstResponseCallback_;
