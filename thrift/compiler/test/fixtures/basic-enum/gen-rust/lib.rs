@@ -338,6 +338,9 @@ pub mod types {
         }
     }
 
+    unsafe impl ::std::marker::Send for self::MyStruct {}
+    unsafe impl ::std::marker::Sync for self::MyStruct {}
+
     impl ::fbthrift::GetTType for self::MyStruct {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }

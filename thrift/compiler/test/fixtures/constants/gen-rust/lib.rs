@@ -636,6 +636,9 @@ pub mod types {
         }
     }
 
+    unsafe impl ::std::marker::Send for self::Internship {}
+    unsafe impl ::std::marker::Sync for self::Internship {}
+
     impl ::fbthrift::GetTType for self::Internship {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
@@ -701,6 +704,9 @@ pub mod types {
         }
     }
 
+    unsafe impl ::std::marker::Send for self::Range {}
+    unsafe impl ::std::marker::Sync for self::Range {}
+
     impl ::fbthrift::GetTType for self::Range {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
@@ -757,6 +763,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::struct1 {}
+    unsafe impl ::std::marker::Sync for self::struct1 {}
 
     impl ::fbthrift::GetTType for self::struct1 {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
@@ -816,6 +825,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::struct2 {}
+    unsafe impl ::std::marker::Sync for self::struct2 {}
 
     impl ::fbthrift::GetTType for self::struct2 {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
@@ -886,6 +898,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::struct3 {}
+    unsafe impl ::std::marker::Sync for self::struct3 {}
 
     impl ::fbthrift::GetTType for self::struct3 {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;

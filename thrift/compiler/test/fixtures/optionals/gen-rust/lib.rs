@@ -145,6 +145,9 @@ pub mod types {
         }
     }
 
+    unsafe impl ::std::marker::Send for self::Color {}
+    unsafe impl ::std::marker::Sync for self::Color {}
+
     impl ::fbthrift::GetTType for self::Color {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
@@ -216,6 +219,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::Vehicle {}
+    unsafe impl ::std::marker::Sync for self::Vehicle {}
 
     impl ::fbthrift::GetTType for self::Vehicle {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
@@ -307,6 +313,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::Person {}
+    unsafe impl ::std::marker::Sync for self::Person {}
 
     impl ::fbthrift::GetTType for self::Person {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;

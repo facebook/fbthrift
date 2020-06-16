@@ -18,6 +18,10 @@
     }}{{type:package}}::types::{{type:rust_name}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
+    ====
+    If we ever add a type here which may not have a Send or Sync impl, the
+    unsafe impls in structimpl.mustache need to be revisited.
+    ====
 }}{{#type:void?}}(){{/type:void?}}{{!
 }}{{#type:string?}}::std::string::String{{/type:string?}}{{!
 }}{{#type:binary?}}::std::vec::Vec<::std::primitive::u8>{{/type:binary?}}{{!

@@ -39,6 +39,13 @@
         }
     }
 
+    {{! Avoid needing to raise the recursion_limit for the trait solver to
+        figure out autotrait impls for deeply nested data structures.
+        These unsafe impls are fine because all possible field types we allow
+        (primitives, string, vec, maps, sets) are Send and Sync. }}
+    unsafe impl ::std::marker::Send for self::{{struct:rust_name}} {}
+    unsafe impl ::std::marker::Sync for self::{{struct:rust_name}} {}
+
     impl ::fbthrift::GetTType for self::{{struct:rust_name}} {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }

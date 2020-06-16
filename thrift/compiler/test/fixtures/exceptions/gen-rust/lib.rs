@@ -30,6 +30,9 @@ pub mod types {
         }
     }
 
+    unsafe impl ::std::marker::Send for self::Banal {}
+    unsafe impl ::std::marker::Sync for self::Banal {}
+
     impl ::fbthrift::GetTType for self::Banal {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
@@ -73,6 +76,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::Fiery {}
+    unsafe impl ::std::marker::Sync for self::Fiery {}
 
     impl ::fbthrift::GetTType for self::Fiery {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
@@ -123,6 +129,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::Serious {}
+    unsafe impl ::std::marker::Sync for self::Serious {}
 
     impl ::fbthrift::GetTType for self::Serious {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;

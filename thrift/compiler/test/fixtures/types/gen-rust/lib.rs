@@ -518,6 +518,9 @@ pub mod types {
         }
     }
 
+    unsafe impl ::std::marker::Send for self::decorated_struct {}
+    unsafe impl ::std::marker::Sync for self::decorated_struct {}
+
     impl ::fbthrift::GetTType for self::decorated_struct {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
@@ -574,6 +577,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::ContainerStruct {}
+    unsafe impl ::std::marker::Sync for self::ContainerStruct {}
 
     impl ::fbthrift::GetTType for self::ContainerStruct {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
@@ -667,6 +673,9 @@ pub mod types {
         }
     }
 
+    unsafe impl ::std::marker::Send for self::CppTypeStruct {}
+    unsafe impl ::std::marker::Sync for self::CppTypeStruct {}
+
     impl ::fbthrift::GetTType for self::CppTypeStruct {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
@@ -716,6 +725,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::VirtualStruct {}
+    unsafe impl ::std::marker::Sync for self::VirtualStruct {}
 
     impl ::fbthrift::GetTType for self::VirtualStruct {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
@@ -767,6 +779,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::MyStructWithForwardRefEnum {}
+    unsafe impl ::std::marker::Sync for self::MyStructWithForwardRefEnum {}
 
     impl ::fbthrift::GetTType for self::MyStructWithForwardRefEnum {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
@@ -824,6 +839,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::TrivialNumeric {}
+    unsafe impl ::std::marker::Sync for self::TrivialNumeric {}
 
     impl ::fbthrift::GetTType for self::TrivialNumeric {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
@@ -885,6 +903,9 @@ pub mod types {
         }
     }
 
+    unsafe impl ::std::marker::Send for self::TrivialNestedWithDefault {}
+    unsafe impl ::std::marker::Sync for self::TrivialNestedWithDefault {}
+
     impl ::fbthrift::GetTType for self::TrivialNestedWithDefault {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
@@ -944,6 +965,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::ComplexString {}
+    unsafe impl ::std::marker::Sync for self::ComplexString {}
 
     impl ::fbthrift::GetTType for self::ComplexString {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
@@ -1008,6 +1032,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::ComplexNestedWithDefault {}
+    unsafe impl ::std::marker::Sync for self::ComplexNestedWithDefault {}
 
     impl ::fbthrift::GetTType for self::ComplexNestedWithDefault {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
@@ -1075,6 +1102,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::MinPadding {}
+    unsafe impl ::std::marker::Sync for self::MinPadding {}
 
     impl ::fbthrift::GetTType for self::MinPadding {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
@@ -1153,6 +1183,9 @@ pub mod types {
         }
     }
 
+    unsafe impl ::std::marker::Send for self::MyStruct {}
+    unsafe impl ::std::marker::Sync for self::MyStruct {}
+
     impl ::fbthrift::GetTType for self::MyStruct {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
@@ -1220,6 +1253,9 @@ pub mod types {
         }
     }
 
+    unsafe impl ::std::marker::Send for self::MyDataItem {}
+    unsafe impl ::std::marker::Sync for self::MyDataItem {}
+
     impl ::fbthrift::GetTType for self::MyDataItem {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
@@ -1263,6 +1299,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::Renaming {}
+    unsafe impl ::std::marker::Sync for self::Renaming {}
 
     impl ::fbthrift::GetTType for self::Renaming {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
@@ -1314,6 +1353,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::AnnotatedTypes {}
+    unsafe impl ::std::marker::Sync for self::AnnotatedTypes {}
 
     impl ::fbthrift::GetTType for self::AnnotatedTypes {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
@@ -1371,6 +1413,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::ForwardUsageRoot {}
+    unsafe impl ::std::marker::Sync for self::ForwardUsageRoot {}
 
     impl ::fbthrift::GetTType for self::ForwardUsageRoot {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
@@ -1432,6 +1477,9 @@ pub mod types {
         }
     }
 
+    unsafe impl ::std::marker::Send for self::ForwardUsageStruct {}
+    unsafe impl ::std::marker::Sync for self::ForwardUsageStruct {}
+
     impl ::fbthrift::GetTType for self::ForwardUsageStruct {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
@@ -1484,6 +1532,9 @@ pub mod types {
         }
     }
 
+    unsafe impl ::std::marker::Send for self::ForwardUsageByRef {}
+    unsafe impl ::std::marker::Sync for self::ForwardUsageByRef {}
+
     impl ::fbthrift::GetTType for self::ForwardUsageByRef {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
@@ -1535,6 +1586,9 @@ pub mod types {
         }
     }
 
+    unsafe impl ::std::marker::Send for self::NoexceptMoveEmpty {}
+    unsafe impl ::std::marker::Sync for self::NoexceptMoveEmpty {}
+
     impl ::fbthrift::GetTType for self::NoexceptMoveEmpty {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
@@ -1578,6 +1632,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::NoexceptMoveSimpleStruct {}
+    unsafe impl ::std::marker::Sync for self::NoexceptMoveSimpleStruct {}
 
     impl ::fbthrift::GetTType for self::NoexceptMoveSimpleStruct {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
@@ -1641,6 +1698,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::NoexceptMoveComplexStruct {}
+    unsafe impl ::std::marker::Sync for self::NoexceptMoveComplexStruct {}
 
     impl ::fbthrift::GetTType for self::NoexceptMoveComplexStruct {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;

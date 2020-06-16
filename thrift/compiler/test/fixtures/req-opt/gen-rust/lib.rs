@@ -28,6 +28,9 @@ pub mod types {
         }
     }
 
+    unsafe impl ::std::marker::Send for self::Foo {}
+    unsafe impl ::std::marker::Sync for self::Foo {}
+
     impl ::fbthrift::GetTType for self::Foo {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }

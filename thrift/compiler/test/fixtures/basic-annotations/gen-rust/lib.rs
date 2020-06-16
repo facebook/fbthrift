@@ -137,6 +137,9 @@ pub mod types {
         }
     }
 
+    unsafe impl ::std::marker::Send for self::MyStructNestedAnnotation {}
+    unsafe impl ::std::marker::Sync for self::MyStructNestedAnnotation {}
+
     impl ::fbthrift::GetTType for self::MyStructNestedAnnotation {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
@@ -189,6 +192,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::MyStructAnnotation {}
+    unsafe impl ::std::marker::Sync for self::MyStructAnnotation {}
 
     impl ::fbthrift::GetTType for self::MyStructAnnotation {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
@@ -264,6 +270,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::MyStruct {}
+    unsafe impl ::std::marker::Sync for self::MyStruct {}
 
     impl ::fbthrift::GetTType for self::MyStruct {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
@@ -345,6 +354,9 @@ pub mod types {
             }
         }
     }
+
+    unsafe impl ::std::marker::Send for self::SecretStruct {}
+    unsafe impl ::std::marker::Sync for self::SecretStruct {}
 
     impl ::fbthrift::GetTType for self::SecretStruct {
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
