@@ -91,6 +91,12 @@ enum RequestRpcMetadataFlags {
   QUERY_SERVER_LOAD = 0x1,
 }
 
+struct InteractionCreate {
+  // Must be > 0
+  1: i64 interactionId;
+  2: string interactionName;
+}
+
 // RPC metadata sent from the client to the server.  The lifetime of
 // objects of this type starts at the call to the generated client
 // code, and ends at the generated server code.
@@ -142,6 +148,11 @@ struct RequestRpcMetadata {
   14: optional CompressionAlgorithm compression;
   // Requested compression policy for responses
   15: optional CompressionConfig compressionConfig;
+  // Enables TILES
+  // Use interactionCreate for new interactions and this for existing
+  16: optional i64 interactionId;
+  // Id must be unique per connection
+  17: optional InteractionCreate interactionCreate;
 }
 
 struct PayloadResponseMetadata {

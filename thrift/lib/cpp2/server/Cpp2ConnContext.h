@@ -416,6 +416,22 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return protoSeqId_;
   }
 
+  void setInteractionId(int64_t id) {
+    interactionId_ = id;
+  }
+
+  int64_t getInteractionId() {
+    return interactionId_;
+  }
+
+  void setInteractionCreate(InteractionCreate interactionCreate) {
+    interactionCreate_ = std::move(interactionCreate);
+  }
+
+  folly::Optional<InteractionCreate>& getInteractionCreate() {
+    return interactionCreate_;
+  }
+
  protected:
   static void no_op_destructor(void* /*ptr*/) {}
 
@@ -426,6 +442,8 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   folly::Optional<std::chrono::steady_clock::time_point> processingStartTime_;
   std::string methodName_;
   int32_t protoSeqId_{0};
+  int64_t interactionId_{0};
+  folly::Optional<InteractionCreate> interactionCreate_;
 };
 
 } // namespace thrift

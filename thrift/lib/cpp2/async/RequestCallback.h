@@ -557,6 +557,29 @@ class RpcOptions {
     return headers;
   }
 
+  // For TILES, primarily used by ServiceRouter
+  RpcOptions& setExistingInteraction(int64_t id) {
+    DCHECK_GT(id, 0);
+    DCHECK(!interactionCreate_);
+    interactionId_ = id;
+    return *this;
+  }
+  RpcOptions& setNewInteraction(std::string name, int64_t id) {
+    DCHECK_GT(id, 0);
+    DCHECK(!name.empty());
+    DCHECK(!interactionId_);
+    interactionCreate_.emplace();
+    interactionCreate_->interactionName_ref() = std::move(name);
+    interactionCreate_->interactionId_ref() = id;
+    return *this;
+  }
+  int64_t getInteractionId() const {
+    return interactionId_;
+  }
+  const folly::Optional<InteractionCreate>& getInteractionCreate() const {
+    return interactionCreate_;
+  }
+
  private:
   std::chrono::milliseconds timeout_{0};
   std::chrono::milliseconds chunkTimeout_{0};
@@ -564,8 +587,10 @@ class RpcOptions {
   uint8_t priority_{apache::thrift::concurrency::N_PRIORITIES};
   bool clientOnlyTimeouts_{false};
   bool enableChecksum_{false};
-  int32_t chunkBufferSize_{100};
   bool enablePageAlignment_{false};
+  int32_t chunkBufferSize_{100};
+  int64_t interactionId_{0};
+  folly::Optional<InteractionCreate> interactionCreate_;
 
   std::string routingKey_;
   std::string shardId_;
@@ -573,7 +598,7 @@ class RpcOptions {
   // For sending and receiving headers.
   std::map<std::string, std::string> writeHeaders_;
   std::map<std::string, std::string> readHeaders_;
-};
+}; // namespace thrift
 
 struct RpcResponseContext {
   std::map<std::string, std::string> headers;

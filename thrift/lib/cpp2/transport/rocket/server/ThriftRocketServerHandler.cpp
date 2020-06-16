@@ -382,6 +382,14 @@ void ThriftRocketServerHandler::handleRequestCommon(
   }
   const auto protocolId = request->getProtoId();
   auto* const cpp2ReqCtx = request->getRequestContext();
+  if (auto interactionId = metadata.interactionId_ref()) {
+    cpp2ReqCtx->setInteractionId(*interactionId);
+  }
+  if (auto interactionCreate = metadata.interactionCreate_ref()) {
+    cpp2ReqCtx->setInteractionCreate(*interactionCreate);
+    DCHECK_EQ(cpp2ReqCtx->getInteractionId(), 0);
+    cpp2ReqCtx->setInteractionId(*interactionCreate->interactionId_ref());
+  }
   try {
     cpp2Processor_->processSerializedRequest(
         std::move(request),

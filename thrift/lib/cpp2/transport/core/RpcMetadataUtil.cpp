@@ -64,6 +64,13 @@ RequestRpcMetadata makeRequestRpcMetadata(
     metadata.compressionConfig_ref() = *compressionConfig;
   }
 
+  if (auto interactionId = rpcOptions.getInteractionId()) {
+    metadata.interactionId_ref() = interactionId;
+  }
+  if (auto interactionCreate = rpcOptions.getInteractionCreate()) {
+    metadata.interactionCreate_ref() = *interactionCreate;
+  }
+
   auto writeHeaders = header.releaseWriteHeaders();
   if (auto* eh = header.getExtraWriteHeaders()) {
     // Extra write headers always take precedence over write headers (see
