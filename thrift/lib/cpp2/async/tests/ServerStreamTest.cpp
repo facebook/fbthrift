@@ -91,21 +91,6 @@ class ClientCallback : public StreamClientCallback {
   folly::fibers::Baton started, completed;
   StreamServerCallback* cb;
 };
-class MyFirstResponseCallback
-    : public detail::ClientStreamBridge::FirstResponseCallback {
- public:
-  void onFirstResponse(
-      FirstResponsePayload&&,
-      detail::ClientStreamBridge::ClientPtr ptr) override {
-    clientStreamBridge = std::move(ptr);
-    baton.post();
-  }
-  void onFirstResponseError(folly::exception_wrapper) override {
-    std::terminate();
-  }
-  detail::ClientStreamBridge::ClientPtr clientStreamBridge;
-  folly::fibers::Baton baton;
-};
 
 #if FOLLY_HAS_COROUTINES
 TEST(ServerStreamTest, PublishConsumeCoro) {
@@ -416,78 +401,6 @@ TEST(ServerStreamTest, CancelDestroyPublisherRace) {
     EXPECT_FALSE(closed);
   }
   EXPECT_TRUE(closed);
-}
-
-TEST(ServerStreamTest, ClientBufferedStreamGeneratorIntegration) {
-  folly::ScopedEventBaseThread clientEb, serverEb;
-  MyFirstResponseCallback firstResponseCallback;
-  auto clientStreamBridge =
-      detail::ClientStreamBridge::create(&firstResponseCallback);
-
-  ServerStream<int> factory(
-      folly::coro::co_invoke([]() -> folly::coro::AsyncGenerator<int&&> {
-        for (int i = 0; i < 10; ++i) {
-          co_yield std::move(i);
-        }
-      }));
-  clientEb.add(
-      [&, innerFactory = factory(serverEb.getEventBase(), &encode)]() mutable {
-        innerFactory(
-            FirstResponsePayload{nullptr, {}},
-            clientStreamBridge,
-            clientEb.getEventBase());
-      });
-
-  size_t expected = 0;
-  bool done = false;
-  firstResponseCallback.baton.wait();
-  ClientBufferedStream<int> clientStream(
-      std::move(firstResponseCallback.clientStreamBridge), &decode, 0);
-  std::move(clientStream).subscribeInline([&](folly::Try<int>&& next) {
-    if (next.hasValue()) {
-      EXPECT_EQ(expected++, *next);
-    } else {
-      done = true;
-    }
-  });
-  EXPECT_EQ(10, expected);
-  EXPECT_TRUE(done);
-}
-
-TEST(ServerStreamTest, ClientBufferedStreamPublisherIntegration) {
-  folly::ScopedEventBaseThread clientEb, serverEb;
-  MyFirstResponseCallback firstResponseCallback;
-  auto clientStreamBridge =
-      detail::ClientStreamBridge::create(&firstResponseCallback);
-
-  auto [factory, publisher] = ServerStream<int>::createPublisher();
-  for (int i = 0; i < 5; i++) {
-    publisher.next(i);
-  }
-  factory(serverEb.getEventBase(), &encode)(
-      FirstResponsePayload{nullptr, {}},
-      clientStreamBridge,
-      clientEb.getEventBase());
-
-  for (int i = 5; i < 10; i++) {
-    publisher.next(i);
-  }
-  std::move(publisher).complete();
-
-  size_t expected = 0;
-  bool done = false;
-  firstResponseCallback.baton.wait();
-  ClientBufferedStream<int> clientStream(
-      std::move(firstResponseCallback.clientStreamBridge), &decode, 0);
-  std::move(clientStream).subscribeInline([&](folly::Try<int>&& next) {
-    if (next.hasValue()) {
-      EXPECT_EQ(expected++, *next);
-    } else {
-      done = true;
-    }
-  });
-  EXPECT_EQ(10, expected);
-  EXPECT_TRUE(done);
 }
 
 TEST(ServerStreamTest, FactoryLeak) {
