@@ -341,11 +341,12 @@ TEST(ServerStreamTest, CancelDestroyPublisher) {
 
 TEST(ServerStreamTest, CancelCompletePublisherRace) {
   ClientCallback clientCallback;
-  bool closed = false;
+  std::atomic<bool> closed = false;
   folly::ScopedEventBaseThread clientEb, serverEb;
-  folly::Baton<> baton;
+  folly::Baton<> enterBaton, closeBaton;
   auto [factory, publisher] = ServerStream<int>::createPublisher([&] {
-    baton.post();
+    enterBaton.post();
+    closeBaton.wait();
     /* sleep override */
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
     closed = true;
@@ -356,8 +357,9 @@ TEST(ServerStreamTest, CancelCompletePublisherRace) {
       clientEb.getEventBase());
   clientCallback.started.wait();
   clientEb.add([&] { clientCallback.cb->onStreamCancel(); });
-  baton.wait();
+  enterBaton.wait();
   EXPECT_FALSE(closed);
+  closeBaton.post();
   std::move(publisher).complete();
   EXPECT_TRUE(closed);
 }
@@ -365,7 +367,7 @@ TEST(ServerStreamTest, CancelCompletePublisherRace) {
 TEST(ServerStreamTest, CancelDestroyPublisherRace) {
   ClientCallback clientCallback;
   folly::Optional<ServerStreamPublisher<int>> pub;
-  bool closed = false;
+  std::atomic<bool> closed = false;
   {
     folly::ScopedEventBaseThread clientEb, serverEb;
     folly::Baton<> baton;

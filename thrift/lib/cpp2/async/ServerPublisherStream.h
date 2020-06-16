@@ -17,6 +17,7 @@
 #pragma once
 
 #include <folly/Try.h>
+#include <folly/synchronization/AtomicUtil.h>
 #include <folly/synchronization/Baton.h>
 #include <thrift/lib/cpp2/async/ServerStreamDetail.h>
 #include <thrift/lib/cpp2/async/TwoWayBridge.h>
@@ -75,18 +76,24 @@ class ServerPublisherStream : private StreamServerCallback {
     void call() {
       auto storage = storage_.load(std::memory_order_relaxed);
       if (static_cast<Type>(storage & kTypeMask) == Type::READY) {
-        if (storage_.compare_exchange_strong(
-                storage,
+        if (folly::atomic_compare_exchange_strong_explicit(
+                &storage_,
+                &storage,
                 static_cast<intptr_t>(Type::IN_PROGRESS),
-                std::memory_order_acquire)) {
+                std::memory_order_acquire,
+                std::memory_order_relaxed)) {
           auto func = reinterpret_cast<Function*>(storage & kPtrMask);
           storage = static_cast<intptr_t>(Type::IN_PROGRESS);
 
           SCOPE_EXIT {
-            if (!storage_.compare_exchange_strong(
-                    storage,
+            if (!folly::atomic_compare_exchange_strong_explicit(
+                    &storage_,
+                    &storage,
                     static_cast<intptr_t>(Type::DONE),
-                    std::memory_order_acq_rel)) {
+                    std::memory_order_release,
+                    std::memory_order_acquire)) {
+              DCHECK_EQ(
+                  storage & kTypeMask, static_cast<intptr_t>(Type::WAITING));
               reinterpret_cast<folly::Baton<>*>(storage & kPtrMask)->post();
             }
             delete func;
@@ -102,15 +109,18 @@ class ServerPublisherStream : private StreamServerCallback {
       auto storage = storage_.load(std::memory_order_relaxed);
       if (static_cast<Type>(storage & kTypeMask) == Type::IN_PROGRESS) {
         folly::Baton<> baton;
-        if (storage_.compare_exchange_strong(
-                storage,
+        if (folly::atomic_compare_exchange_strong_explicit(
+                &storage_,
+                &storage,
                 reinterpret_cast<intptr_t>(&baton) |
                     static_cast<intptr_t>(Type::WAITING),
+                std::memory_order_release,
                 std::memory_order_acquire)) {
           baton.wait();
+          // no one observes this final state transition; just for completeness
           DCHECK_EQ(
               storage_.exchange(
-                  static_cast<intptr_t>(Type::DONE), std::memory_order_release),
+                  static_cast<intptr_t>(Type::DONE), std::memory_order_relaxed),
               reinterpret_cast<intptr_t>(&baton) |
                   static_cast<intptr_t>(Type::WAITING));
         }
