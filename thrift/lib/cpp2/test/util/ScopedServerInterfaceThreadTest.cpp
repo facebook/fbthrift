@@ -109,6 +109,39 @@ TEST(ScopedServerInterfaceThread, newClient_SemiFuture) {
   EXPECT_EQ(6, cli->semifuture_add(-3, 9).get());
 }
 
+TEST(ScopedServerInterfaceThread, newRemoteClient) {
+  struct Handler : SimpleServiceSvIf {
+    struct State {
+      size_t requests = 0;
+    };
+    std::atomic<size_t> conns{0};
+    void async_tm_add(
+        unique_ptr<HandlerCallback<int64_t>> cb,
+        int64_t a,
+        int64_t b) override {
+      auto r = cb->getConnectionContext();
+      auto eb = cb->getEventBase();
+      eb->runInEventBaseThread([cb = std::move(cb), r, a, b] {
+        auto c = r->getConnectionContext();
+        auto s = static_cast<State*>(c->getUserData());
+        if (s == nullptr) {
+          s = new State();
+          c->setUserData(s, [](void* _) { delete static_cast<State*>(_); });
+        }
+        cb->result(++s->requests + a + b);
+      });
+    }
+  };
+
+  ScopedServerInterfaceThread ssit(make_shared<Handler>());
+
+  auto cli = ssit.newStickyClient<SimpleServiceAsyncClient>();
+
+  EXPECT_EQ(7, cli->semifuture_add(-3, 9).get());
+  EXPECT_EQ(8, cli->semifuture_add(-3, 9).get());
+  EXPECT_EQ(9, cli->semifuture_add(-3, 9).get());
+}
+
 TEST(ScopedServerInterfaceThread, getThriftServer) {
   ScopedServerInterfaceThread ssit(make_shared<SimpleServiceImpl>());
   auto& ts = ssit.getThriftServer();

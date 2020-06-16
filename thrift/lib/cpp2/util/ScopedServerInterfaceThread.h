@@ -63,6 +63,9 @@ class ScopedServerInterfaceThread {
   uint16_t getPort() const;
 
   template <class AsyncClientT>
+  std::unique_ptr<AsyncClientT> newStickyClient() const;
+
+  template <class AsyncClientT>
   std::unique_ptr<AsyncClientT> newClient(
       folly::Executor* callbackExecutor = nullptr,
       MakeChannelFunc channelFunc = [](auto socket) mutable {
