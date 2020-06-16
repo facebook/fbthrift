@@ -36,7 +36,8 @@
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/ServerInstrumentation.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
-#include <wangle/ssl/SSLContextManager.h>
+#include <wangle/acceptor/FizzConfigUtil.h>
+#include <wangle/acceptor/SharedSSLContextManager.h>
 
 DEFINE_string(
     thrift_ssl_policy,
@@ -66,19 +67,6 @@ using folly::NamedThreadFactory;
 using RequestSnapshot = ThriftServer::RequestSnapshot;
 using std::shared_ptr;
 using wangle::TLSCredProcessor;
-
-class ThriftAcceptorFactory : public wangle::AcceptorFactory {
- public:
-  explicit ThriftAcceptorFactory(ThriftServer* server) : server_(server) {}
-
-  std::shared_ptr<wangle::Acceptor> newAcceptor(
-      folly::EventBase* eventBase) override {
-    return Cpp2Worker::create(server_, nullptr, eventBase);
-  }
-
- private:
-  ThriftServer* server_;
-};
 
 ThriftServer::ThriftServer()
     : BaseThriftServer(),
@@ -302,9 +290,14 @@ void ThriftServer::setup() {
       VLOG(1) << "Using " << nSSLHandshakeWorkers << " SSL handshake threads";
       sslHandshakePool_->setNumThreads(nSSLHandshakeWorkers);
 
-      ServerBootstrap::childHandler(
-          acceptorFactory_ ? acceptorFactory_
-                           : std::make_shared<ThriftAcceptorFactory>(this));
+      auto acceptorFactory = acceptorFactory_
+          ? acceptorFactory_
+          : std::make_shared<DefaultThriftAcceptorFactory>(this);
+      if (auto factory = dynamic_cast<wangle::AcceptorFactorySharedSSLContext*>(
+              acceptorFactory.get())) {
+        sharedSSLContextManager_ = factory->initSharedSSLContextManager();
+      }
+      ServerBootstrap::childHandler(std::move(acceptorFactory));
 
       {
         std::lock_guard<std::mutex> lock(ioGroupMutex_);
@@ -345,7 +338,6 @@ void ThriftServer::setup() {
       if (eventHandler_ != nullptr) {
         eventHandler_->preServe(&addresses_.at(0));
       }
-
     } else {
       startDuplex();
     }
@@ -557,33 +549,41 @@ void ThriftServer::handleSetupFailure(void) {
 }
 
 void ThriftServer::updateTicketSeeds(wangle::TLSTicketKeySeeds seeds) {
-  forEachWorker([&](wangle::Acceptor* acceptor) {
-    if (!acceptor) {
-      return;
-    }
-    auto evb = acceptor->getEventBase();
-    if (!evb) {
-      return;
-    }
-    evb->runInEventBaseThread([acceptor, seeds] {
-      acceptor->setTLSTicketSecrets(
-          seeds.oldSeeds, seeds.currentSeeds, seeds.newSeeds);
+  if (sharedSSLContextManager_) {
+    sharedSSLContextManager_->updateTLSTicketKeys(seeds);
+  } else {
+    forEachWorker([&](wangle::Acceptor* acceptor) {
+      if (!acceptor) {
+        return;
+      }
+      auto evb = acceptor->getEventBase();
+      if (!evb) {
+        return;
+      }
+      evb->runInEventBaseThread([acceptor, seeds] {
+        acceptor->setTLSTicketSecrets(
+            seeds.oldSeeds, seeds.currentSeeds, seeds.newSeeds);
+      });
     });
-  });
+  }
 }
 
 void ThriftServer::updateTLSCert() {
-  forEachWorker([&](wangle::Acceptor* acceptor) {
-    if (!acceptor) {
-      return;
-    }
-    auto evb = acceptor->getEventBase();
-    if (!evb) {
-      return;
-    }
-    evb->runInEventBaseThread(
-        [acceptor] { acceptor->resetSSLContextConfigs(); });
-  });
+  if (sharedSSLContextManager_) {
+    sharedSSLContextManager_->reloadSSLContextConfigs();
+  } else {
+    forEachWorker([&](wangle::Acceptor* acceptor) {
+      if (!acceptor) {
+        return;
+      }
+      auto evb = acceptor->getEventBase();
+      if (!evb) {
+        return;
+      }
+      evb->runInEventBaseThread(
+          [acceptor] { acceptor->resetSSLContextConfigs(); });
+    });
+  }
 }
 
 void ThriftServer::updateCertsToWatch() {

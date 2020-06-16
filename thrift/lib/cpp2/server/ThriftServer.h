@@ -46,6 +46,7 @@
 #include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
+#include <wangle/acceptor/SharedSSLContextManager.h>
 #include <wangle/bootstrap/ServerBootstrap.h>
 #include <wangle/ssl/SSLContextConfig.h>
 #include <wangle/ssl/TLSCredProcessor.h>
@@ -149,6 +150,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    * helps create acceptors.
    */
   std::shared_ptr<wangle::AcceptorFactory> acceptorFactory_;
+  std::shared_ptr<wangle::SharedSSLContextManager> sharedSSLContextManager_;
 
   void handleSetupFailure(void);
 
@@ -373,13 +375,18 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
         });
     sslCallbackHandle_.cancel();
     sslCallbackHandle_ = sslContextObserver_->addCallback([&](auto ssl) {
-      // "this" needed due to https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67274
-      this->forEachWorker([&](wangle::Acceptor* acceptor) {
-        for (auto& sslContext : acceptor->getConfig().sslContextConfigs) {
-          sslContext = *ssl;
-        }
-        acceptor->resetSSLContextConfigs();
-      });
+      if (sharedSSLContextManager_) {
+        sharedSSLContextManager_->reloadSSLContextConfigs();
+      } else {
+        // "this" needed due to
+        // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67274
+        this->forEachWorker([&](wangle::Acceptor* acceptor) {
+          for (auto& sslContext : acceptor->getConfig().sslContextConfigs) {
+            sslContext = *ssl;
+          }
+          acceptor->resetSSLContextConfigs();
+        });
+      }
       this->updateCertsToWatch();
     });
   }
@@ -904,6 +911,45 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   folly::SemiFuture<std::vector<RequestSnapshot>> snapshotActiveRequests();
 };
 
+template <typename AcceptorClass, typename SharedSSLContextManagerClass>
+class ThriftAcceptorFactory : public wangle::AcceptorFactorySharedSSLContext {
+ public:
+  ThriftAcceptorFactory<AcceptorClass, SharedSSLContextManagerClass>(
+      ThriftServer* server)
+      : server_(server) {}
+
+  std::shared_ptr<wangle::SharedSSLContextManager>
+  initSharedSSLContextManager() {
+    if constexpr (!std::is_same<SharedSSLContextManagerClass, void>::value) {
+      sharedSSLContextManager_ = std::make_shared<SharedSSLContextManagerClass>(
+          server_->getServerSocketConfig());
+    }
+    return sharedSSLContextManager_;
+  }
+
+  std::shared_ptr<wangle::Acceptor> newAcceptor(folly::EventBase* eventBase) {
+    if (!sharedSSLContextManager_) {
+      return AcceptorClass::create(server_, nullptr, eventBase);
+    }
+    auto acceptor = AcceptorClass::create(
+        server_,
+        nullptr,
+        eventBase,
+        sharedSSLContextManager_->getCertManager(),
+        sharedSSLContextManager_->getContextManager(),
+        sharedSSLContextManager_->getFizzContext());
+    sharedSSLContextManager_->addAcceptor(acceptor);
+    return acceptor;
+  }
+
+ protected:
+  ThriftServer* server_;
+};
+using DefaultThriftAcceptorFactory = ThriftAcceptorFactory<Cpp2Worker, void>;
+
+using DefaultThriftAcceptorFactorySharedSSLContext = ThriftAcceptorFactory<
+    Cpp2Worker,
+    wangle::SharedSSLContextManagerImpl<wangle::FizzConfigUtil>>;
 } // namespace thrift
 } // namespace apache
 
