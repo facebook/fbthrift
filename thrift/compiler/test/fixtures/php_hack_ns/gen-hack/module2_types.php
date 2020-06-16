@@ -31,12 +31,12 @@ class FBStruct implements \IThriftStruct {
     2 => shape(
       'var' => 'enum_value',
       'type' => \TType::I32,
-      'enum' => foo_php_ns_Status::class,
+      'enum' => \foo_php_ns_Status::class,
     ),
     3 => shape(
       'var' => 'struct_value',
       'type' => \TType::STRUCT,
-      'class' => foo_php_ns_TestStruct::class,
+      'class' => \foo_php_ns_TestStruct::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -47,8 +47,8 @@ class FBStruct implements \IThriftStruct {
 
   const type TConstructorShape = shape(
     ?'str_value' => string,
-    ?'enum_value' => ?foo_php_ns_Status,
-    ?'struct_value' => ?foo_php_ns_TestStruct,
+    ?'enum_value' => ?\foo_php_ns_Status,
+    ?'struct_value' => ?\foo_php_ns_TestStruct,
   );
 
   const int STRUCTURAL_ID = 3033845145268312663;
@@ -61,15 +61,15 @@ class FBStruct implements \IThriftStruct {
    * Original thrift field:-
    * 2: enum module.Status enum_value
    */
-  public ?foo_php_ns_Status $enum_value;
+  public ?\foo_php_ns_Status $enum_value;
   /**
    * Original thrift field:-
    * 3: struct module.TestStruct struct_value
    */
-  public ?foo_php_ns_TestStruct $struct_value;
+  public ?\foo_php_ns_TestStruct $struct_value;
 
   <<__Rx>>
-  public function __construct(?string $str_value = null, ?foo_php_ns_Status $enum_value = null, ?foo_php_ns_TestStruct $struct_value = null  ) {
+  public function __construct(?string $str_value = null, ?\foo_php_ns_Status $enum_value = null, ?\foo_php_ns_TestStruct $struct_value = null  ) {
     $this->str_value = $str_value ?? '';
     $this->enum_value = $enum_value;
     $this->struct_value = $struct_value;

@@ -12,7 +12,7 @@ namespace hack_ns2;
  * Original thrift service:-
  * TestService
  */
-interface TestServiceAsyncIf extends FooHackServiceAsyncIf {
+interface TestServiceAsyncIf extends \FooHackServiceAsyncIf {
   /**
    * Original thrift definition:-
    * i32
@@ -25,7 +25,7 @@ interface TestServiceAsyncIf extends FooHackServiceAsyncIf {
  * Original thrift service:-
  * TestService
  */
-interface TestServiceIf extends FooHackServiceIf {
+interface TestServiceIf extends \FooHackServiceIf {
   /**
    * Original thrift definition:-
    * i32
@@ -38,7 +38,7 @@ interface TestServiceIf extends FooHackServiceIf {
  * Original thrift service:-
  * TestService
  */
-interface TestServiceClientIf extends FooHackServiceClientIf {
+interface TestServiceClientIf extends \FooHackServiceClientIf {
   /**
    * Original thrift definition:-
    * i32
@@ -164,7 +164,7 @@ trait TestServiceClientBase {
 
 }
 
-class TestServiceAsyncClient extends FooHackServiceAsyncClient implements TestServiceAsyncIf {
+class TestServiceAsyncClient extends \FooHackServiceAsyncClient implements TestServiceAsyncIf {
   use TestServiceClientBase;
 
   /**
@@ -192,7 +192,7 @@ class TestServiceAsyncClient extends FooHackServiceAsyncClient implements TestSe
 
 }
 
-class TestServiceClient extends FooHackServiceClient implements TestServiceClientIf {
+class TestServiceClient extends \FooHackServiceClient implements TestServiceClientIf {
   use TestServiceClientBase;
 
   /**

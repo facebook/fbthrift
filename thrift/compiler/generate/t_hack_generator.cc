@@ -77,6 +77,7 @@ class t_hack_generator : public t_oop_generator {
         option_is_specified(parsed_options, "arrprov_skip_frames");
     protected_unions_ = option_is_specified(parsed_options, "protected_unions");
     mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
+    has_hack_namespace = !hack_namespace(program).empty();
 
     // no_use_hack_collections_ is only used to migrate away from php gen
     if (no_use_hack_collections_ && strict_types_) {
@@ -88,7 +89,7 @@ class t_hack_generator : public t_oop_generator {
     } else if (no_use_hack_collections_ && arrays_) {
       throw std::runtime_error(
           "Don't use no_use_hack_collections with arrays. Just use arrays");
-    } else if (mangled_services_ && !hack_namespace(program).empty()) {
+    } else if (mangled_services_ && has_hack_namespace) {
       throw std::runtime_error("Don't use mangledsvcs with hack namespaces");
     } else if (from_map_construct_ && !map_construct_) {
       throw std::runtime_error(
@@ -461,13 +462,11 @@ class t_hack_generator : public t_oop_generator {
       if (decl) {
         return name;
       }
-      return '\\' + ns + '\\' + name;
+      return "\\" + ns + "\\" + name;
     }
     ns = prog->get_namespace("php");
-    if (!ns.empty()) {
-      return ns + "_" + name;
-    }
-    return name;
+    return (!decl && has_hack_namespace ? "\\" : "") +
+        (!ns.empty() ? ns + "_" : "") + name;
   }
 
   string hack_name(t_type* t, bool decl = false) {
@@ -515,7 +514,8 @@ class t_hack_generator : public t_oop_generator {
     if (extends && !hack_namespace(svc->get_program()).empty()) {
       return hack_name(svc);
     }
-    return (mangle ? php_namespace(svc) : "") + svc->get_name();
+    return (extends && has_hack_namespace ? "\\" : "") +
+        (mangle ? php_namespace(svc) : "") + svc->get_name();
   }
 
   /**
@@ -674,6 +674,8 @@ class t_hack_generator : public t_oop_generator {
   bool arrprov_skip_frames_;
 
   std::string array_keyword_;
+
+  bool has_hack_namespace;
 };
 
 void t_hack_generator::generate_json_enum(
