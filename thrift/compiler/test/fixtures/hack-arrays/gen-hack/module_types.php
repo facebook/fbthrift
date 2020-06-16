@@ -75,6 +75,7 @@ class Foo implements \IThriftStruct {
     $this->b = $b ?? dict[];
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),

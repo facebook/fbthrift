@@ -93,6 +93,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     $this->myEnum = $myEnum;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'MyIntField'),
@@ -181,6 +182,7 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
   public function __construct(  ) {
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -302,6 +304,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     }
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'myEnum'),

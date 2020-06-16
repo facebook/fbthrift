@@ -49,6 +49,7 @@ class TestStruct implements \IThriftStruct {
     $this->str_value = $str_value ?? '';
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'str_value'),

@@ -257,6 +257,7 @@ class TestService_ping_args implements \IThriftStruct {
     $this->str_arg = $str_arg ?? '';
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'str_arg'),
@@ -297,6 +298,7 @@ class TestService_ping_result implements \IThriftStruct {
   public function __construct(?int $success = null  ) {
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),

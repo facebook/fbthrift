@@ -78,6 +78,7 @@ class MyThriftStruct implements \IThriftStruct {
     $this->baz = $baz ?? '';
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),
@@ -156,6 +157,7 @@ class MySecondThriftStruct implements \IThriftStruct {
     $this->baz = $baz ?? 0;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),
@@ -236,6 +238,7 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
     }
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),

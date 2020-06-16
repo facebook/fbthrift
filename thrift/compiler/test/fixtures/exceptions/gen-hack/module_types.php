@@ -28,6 +28,7 @@ class Banal extends \TException implements \IThriftStruct {
     parent::__construct();
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -77,6 +78,7 @@ class Fiery extends \TException implements \IThriftStruct {
     $this->message = $message ?? '';
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'message'),
@@ -128,6 +130,7 @@ class Serious extends \TException implements \IThriftStruct {
     $this->sonnet = $sonnet;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'sonnet'),

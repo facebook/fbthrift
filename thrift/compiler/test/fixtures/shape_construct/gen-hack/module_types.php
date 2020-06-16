@@ -159,6 +159,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
     }
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'int_value'),
@@ -379,6 +380,7 @@ class Foo implements \IThriftStruct {
     $this->str_value = $str_value ?? "hello";
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -517,6 +519,7 @@ class TestStruct implements \IThriftStruct {
     $this->list_of_struct_self = $list_of_struct_self ?? Vector {};
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo_struct'),
@@ -614,6 +617,7 @@ class Baz extends \TException implements \IThriftStruct {
     $this->code = $code ?? 0;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'message'),
@@ -667,6 +671,7 @@ class OptBaz extends \TException implements \IThriftStruct {
     $this->message = $message ?? '';
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'message'),

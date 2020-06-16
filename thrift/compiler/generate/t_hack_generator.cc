@@ -1099,10 +1099,10 @@ void t_hack_generator::generate_const(t_const* tconst) {
     f_consts_ << indent();
     f_consts_ << "<<__Memoize>>\n"
               << indent() << "public static function " << name
-              << "(): " << type_to_typehint(type, false, false, true) << "{\n";
+              << "(): " << type_to_typehint(type, false, false, false) << "{\n";
     indent_up();
     f_consts_ << indent() << "return ";
-    f_consts_ << render_const_value(type, value, true) << ";\n";
+    f_consts_ << render_const_value(type, value, false) << ";\n";
     indent_down();
     f_consts_ << indent() << "}\n";
     f_consts_ << "\n";
@@ -2769,6 +2769,7 @@ void t_hack_generator::_generate_php_struct_definition(
 void t_hack_generator::generate_php_struct_from_shape(
     ofstream& out,
     t_struct* tstruct) {
+  indent(out) << "<<__Rx>>\n";
   out << indent() << "public static function fromShape"
       << "(self::TConstructorShape $shape): this {\n";
   indent_up();

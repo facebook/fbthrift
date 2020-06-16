@@ -65,6 +65,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     $this->map_of_string_to_string = $map_of_string_to_string;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -428,6 +429,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $this->list_of_map_of_string_to_list_of_A = $list_of_map_of_string_to_list_of_A;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'map_of_string_to_string'),
@@ -918,6 +920,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     $this->list_of_map_of_string_to_list_of_A = $list_of_map_of_string_to_list_of_A;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'map_of_string_to_string'),

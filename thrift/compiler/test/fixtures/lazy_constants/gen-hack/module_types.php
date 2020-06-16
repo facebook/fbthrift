@@ -86,6 +86,7 @@ class Internship implements \IThriftStruct {
     $this->employer = $employer;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'weeks'),
@@ -149,6 +150,7 @@ class Range implements \IThriftStruct {
     $this->max = $max ?? 0;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'min'),

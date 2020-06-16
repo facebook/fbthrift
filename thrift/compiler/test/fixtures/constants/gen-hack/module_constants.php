@@ -29,14 +29,14 @@ class module_CONSTANTS {
    * list<map<string, i32>> states
    */
   <<__Memoize>>
-  public static function states(): ConstVector<ConstMap<string, int>>{
-    return ImmVector {
-      ImmMap {
+  public static function states(): Vector<Map<string, int>>{
+    return Vector {
+      Map {
         "San Diego" => 3211000,
         "Sacramento" => 479600,
         "SF" => 837400,
       },
-      ImmMap {
+      Map {
         "New York" => 8406000,
         "Albany" => 98400,
       },
@@ -120,8 +120,8 @@ class module_CONSTANTS {
    * map<string, string> mymap
    */
   <<__Memoize>>
-  public static function mymap(): ConstMap<string, string>{
-    return ImmMap {
+  public static function mymap(): Map<string, string>{
+    return Map {
       "keys" => "values",
     };
   }
@@ -160,8 +160,8 @@ class module_CONSTANTS {
    * list<struct module.Range> kRanges
    */
   <<__Memoize>>
-  public static function kRanges(): ConstVector<Range>{
-    return ImmVector {
+  public static function kRanges(): Vector<Range>{
+    return Vector {
       Range::fromShape(
         shape(
           "min" => 1,
@@ -182,8 +182,8 @@ class module_CONSTANTS {
    * list<struct module.Internship> internList
    */
   <<__Memoize>>
-  public static function internList(): ConstVector<Internship>{
-    return ImmVector {
+  public static function internList(): Vector<Internship>{
+    return Vector {
       Internship::fromShape(
         shape(
           "weeks" => 12,
@@ -488,8 +488,8 @@ class module_CONSTANTS {
    * map<string, i32> char2ascii
    */
   <<__Memoize>>
-  public static function char2ascii(): ConstMap<string, int>{
-    return ImmMap {
+  public static function char2ascii(): Map<string, int>{
+    return Map {
       "'" => 39,
       "\"" => 34,
       "\\" => 92,
@@ -502,8 +502,8 @@ class module_CONSTANTS {
    * list<string> escaped_strings
    */
   <<__Memoize>>
-  public static function escaped_strings(): ConstVector<string>{
-    return ImmVector {
+  public static function escaped_strings(): Vector<string>{
+    return Vector {
       "\x61",
       "\xab",
       "\x6a",
@@ -600,8 +600,8 @@ class module_CONSTANTS {
    * list<i32> empty_int_list
    */
   <<__Memoize>>
-  public static function empty_int_list(): ConstVector<int>{
-    return ImmVector {
+  public static function empty_int_list(): Vector<int>{
+    return Vector {
     };
   }
 
@@ -610,8 +610,8 @@ class module_CONSTANTS {
    * list<string> empty_string_list
    */
   <<__Memoize>>
-  public static function empty_string_list(): ConstVector<string>{
-    return ImmVector {
+  public static function empty_string_list(): Vector<string>{
+    return Vector {
     };
   }
 
@@ -620,8 +620,8 @@ class module_CONSTANTS {
    * set<i32> empty_int_set
    */
   <<__Memoize>>
-  public static function empty_int_set(): ConstSet<int>{
-    return ImmSet {
+  public static function empty_int_set(): Set<int>{
+    return Set {
     };
   }
 
@@ -630,8 +630,8 @@ class module_CONSTANTS {
    * set<string> empty_string_set
    */
   <<__Memoize>>
-  public static function empty_string_set(): ConstSet<string>{
-    return ImmSet {
+  public static function empty_string_set(): Set<string>{
+    return Set {
     };
   }
 
@@ -640,8 +640,8 @@ class module_CONSTANTS {
    * map<i32, i32> empty_int_int_map
    */
   <<__Memoize>>
-  public static function empty_int_int_map(): ConstMap<int, int>{
-    return ImmMap {
+  public static function empty_int_int_map(): Map<int, int>{
+    return Map {
     };
   }
 
@@ -650,8 +650,8 @@ class module_CONSTANTS {
    * map<i32, string> empty_int_string_map
    */
   <<__Memoize>>
-  public static function empty_int_string_map(): ConstMap<int, string>{
-    return ImmMap {
+  public static function empty_int_string_map(): Map<int, string>{
+    return Map {
     };
   }
 
@@ -660,8 +660,8 @@ class module_CONSTANTS {
    * map<string, i32> empty_string_int_map
    */
   <<__Memoize>>
-  public static function empty_string_int_map(): ConstMap<string, int>{
-    return ImmMap {
+  public static function empty_string_int_map(): Map<string, int>{
+    return Map {
     };
   }
 
@@ -670,8 +670,8 @@ class module_CONSTANTS {
    * map<string, string> empty_string_string_map
    */
   <<__Memoize>>
-  public static function empty_string_string_map(): ConstMap<string, string>{
-    return ImmMap {
+  public static function empty_string_string_map(): Map<string, string>{
+    return Map {
     };
   }
 

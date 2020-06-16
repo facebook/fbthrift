@@ -82,6 +82,7 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     }
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'intValue'),
@@ -191,6 +192,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     $this->a = $a ?? '';
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -1051,6 +1053,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     };
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'just_an_A'),

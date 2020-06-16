@@ -208,6 +208,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     }
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Map {

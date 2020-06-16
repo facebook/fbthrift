@@ -438,6 +438,7 @@ class SomeService_bounce_map_args implements \IThriftStruct {
     $this->m = $m ?? Map {};
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'm'),
@@ -506,6 +507,7 @@ class SomeService_bounce_map_result implements \IThriftStruct {
   public function __construct(?Map<int, string> $success = null  ) {
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),
@@ -571,6 +573,7 @@ class SomeService_binary_keyed_map_args implements \IThriftStruct {
     $this->r = $r ?? Vector {};
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'r'),
@@ -639,6 +642,7 @@ class SomeService_binary_keyed_map_result implements \IThriftStruct {
   public function __construct(?Map<string, int> $success = null  ) {
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),

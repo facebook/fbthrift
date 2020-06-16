@@ -93,6 +93,7 @@ class Internship implements \IThriftStruct {
     $this->employer = $employer;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'weeks'),
@@ -156,6 +157,7 @@ class Range implements \IThriftStruct {
     $this->max = $max ?? 0;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'min'),
@@ -218,6 +220,7 @@ class struct1 implements \IThriftStruct {
     $this->b = $b ?? "<uninitialized>";
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -310,6 +313,7 @@ class struct2 implements \IThriftStruct {
     $this->d = $d ?? Vector {};
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -387,6 +391,7 @@ class struct3 implements \IThriftStruct {
     $this->c = $c;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -466,6 +471,7 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
     }
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'i'),
@@ -614,6 +620,7 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     }
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'i'),

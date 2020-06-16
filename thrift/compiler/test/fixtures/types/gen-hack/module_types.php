@@ -79,6 +79,7 @@ class decorated_struct implements \IThriftStruct {
     $this->field = $field ?? '';
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'field'),
@@ -274,6 +275,7 @@ class ContainerStruct implements \IThriftStruct {
     $this->fieldH = $fieldH ?? Map {};
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'fieldA'),
@@ -454,6 +456,7 @@ class CppTypeStruct implements \IThriftStruct {
     $this->fieldA = $fieldA ?? Vector {};
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'fieldA'),
@@ -527,6 +530,7 @@ class VirtualStruct implements \IThriftStruct {
     $this->MyIntField = $MyIntField ?? 0;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'MyIntField'),
@@ -603,6 +607,7 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
     $this->b = $b ?? MyForwardRefEnum::NONZERO;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -678,6 +683,7 @@ class TrivialNumeric implements \IThriftStruct {
     $this->b = $b ?? false;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -761,6 +767,7 @@ class TrivialNestedWithDefault implements \IThriftStruct {
     $this->n = $n;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'z'),
@@ -855,6 +862,7 @@ class ComplexString implements \IThriftStruct {
     $this->b = $b ?? Map {};
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -945,6 +953,7 @@ class ComplexNestedWithDefault implements \IThriftStruct {
     $this->n = $n;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'z'),
@@ -1061,6 +1070,7 @@ class MinPadding implements \IThriftStruct {
     $this->tiny = $tiny ?? 0;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'small'),
@@ -1206,6 +1216,7 @@ class MyStruct implements \IThriftStruct {
     $this->data = $data;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'MyIntField'),
@@ -1271,6 +1282,7 @@ class MyDataItem implements \IThriftStruct {
   public function __construct(  ) {
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -1329,6 +1341,7 @@ class Renaming implements \IThriftStruct {
     $this->foo = $foo ?? 0;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),
@@ -1416,6 +1429,7 @@ class AnnotatedTypes implements \IThriftStruct {
     $this->list_field = $list_field ?? Vector {};
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'binary_field'),
@@ -1509,6 +1523,7 @@ class ForwardUsageRoot implements \IThriftStruct {
     $this->ForwardUsageByRef = $ForwardUsageByRef;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'ForwardUsageStruct'),
@@ -1581,6 +1596,7 @@ class ForwardUsageStruct implements \IThriftStruct {
     $this->foo = $foo;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),
@@ -1646,6 +1662,7 @@ class ForwardUsageByRef implements \IThriftStruct {
     $this->foo = $foo;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),
@@ -1698,6 +1715,7 @@ class NoexceptMoveEmpty implements \IThriftStruct {
   public function __construct(  ) {
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -1756,6 +1774,7 @@ class NoexceptMoveSimpleStruct implements \IThriftStruct {
     $this->boolField = $boolField ?? 0;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'boolField'),
@@ -1932,6 +1951,7 @@ class NoexceptMoveComplexStruct implements \IThriftStruct {
     };
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'MyBoolField'),
@@ -2070,6 +2090,7 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
     }
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'string_field'),

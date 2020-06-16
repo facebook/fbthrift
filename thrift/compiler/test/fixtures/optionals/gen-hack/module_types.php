@@ -85,6 +85,7 @@ class Color implements \IThriftStruct {
     $this->alpha = $alpha ?? 0.0;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'red'),
@@ -186,6 +187,7 @@ class Vehicle implements \IThriftStruct {
     $this->hasAC = $hasAC ?? false;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'color'),
@@ -370,6 +372,7 @@ class Person implements \IThriftStruct {
     $this->vehicles = $vehicles;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'id'),

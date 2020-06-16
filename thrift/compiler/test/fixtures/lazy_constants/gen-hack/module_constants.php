@@ -29,14 +29,14 @@ class module_CONSTANTS {
    * list<map<string, i32>> states
    */
   <<__Memoize>>
-  public static function states(): ConstVector<ConstMap<string, int>>{
-    return ImmVector {
-      ImmMap {
+  public static function states(): Vector<Map<string, int>>{
+    return Vector {
+      Map {
         "San Diego" => 3211000,
         "Sacramento" => 479600,
         "SF" => 837400,
       },
-      ImmMap {
+      Map {
         "New York" => 8406000,
         "Albany" => 98400,
       },
@@ -90,8 +90,8 @@ class module_CONSTANTS {
    * list<struct module.Range> kRanges
    */
   <<__Memoize>>
-  public static function kRanges(): ConstVector<Range>{
-    return ImmVector {
+  public static function kRanges(): Vector<Range>{
+    return Vector {
       Range::fromShape(
         shape(
           "min" => 1,
@@ -112,8 +112,8 @@ class module_CONSTANTS {
    * list<struct module.Internship> internList
    */
   <<__Memoize>>
-  public static function internList(): ConstVector<Internship>{
-    return ImmVector {
+  public static function internList(): Vector<Internship>{
+    return Vector {
       Internship::fromShape(
         shape(
           "weeks" => 12,
@@ -181,8 +181,8 @@ class module_CONSTANTS {
    * map<string, i32> char2ascii
    */
   <<__Memoize>>
-  public static function char2ascii(): ConstMap<string, int>{
-    return ImmMap {
+  public static function char2ascii(): Map<string, int>{
+    return Map {
       "'" => 39,
       "\"" => 34,
       "\\" => 92,

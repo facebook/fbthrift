@@ -330,6 +330,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
     $this->e = $e ?? 4;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -393,6 +394,7 @@ class Bar_baz_result implements \IThriftStruct {
   public function __construct(?string $success = null  ) {
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),

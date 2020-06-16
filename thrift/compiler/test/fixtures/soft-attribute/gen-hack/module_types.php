@@ -51,6 +51,7 @@ class Foo implements \IThriftStruct {
     $this->b = (string)idx($vals, 'b', '');
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Map {

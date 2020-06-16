@@ -813,6 +813,7 @@ class Raiser_doBland_args implements \IThriftStruct {
   public function __construct(  ) {
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -845,6 +846,7 @@ class Raiser_doBland_result implements \IThriftStruct {
   public function __construct(  ) {
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -877,6 +879,7 @@ class Raiser_doRaise_args implements \IThriftStruct {
   public function __construct(  ) {
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -933,6 +936,7 @@ class Raiser_doRaise_result implements \IThriftStruct {
   public function __construct(?Banal $b = null, ?Fiery $f = null, ?Serious $s = null  ) {
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'b'),
@@ -968,6 +972,7 @@ class Raiser_get200_args implements \IThriftStruct {
   public function __construct(  ) {
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -1007,6 +1012,7 @@ class Raiser_get200_result implements \IThriftStruct {
   public function __construct(?string $success = null  ) {
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),
@@ -1040,6 +1046,7 @@ class Raiser_get500_args implements \IThriftStruct {
   public function __construct(  ) {
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -1103,6 +1110,7 @@ class Raiser_get500_result implements \IThriftStruct {
   public function __construct(?string $success = null, ?Fiery $f = null, ?Banal $b = null, ?Serious $s = null  ) {
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),

@@ -71,6 +71,7 @@ class MyException extends \TException implements \IThriftStruct {
     $this->code = $code ?? MyEnum::MyValue1;
   }
 
+  <<__Rx>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'message'),
