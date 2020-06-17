@@ -53,6 +53,8 @@ create_cybld_tree(thrift thrift/py3
                          exceptions.pyx
                          types.pxd
                          types.pyx
+                         reflection.pxd
+                         reflection.pyx
                          serializer.pxd
                          serializer.pyx)
 
@@ -69,6 +71,7 @@ set(cpp_tgts
   "thrift/py3/client.cpp"
   "thrift/py3/server.cpp"
   "thrift/py3/ssl.cpp"
+  "thrift/py3/reflection.cpp"
 )
 foreach(_mod ${cpp_tgts})
   get_filename_component(_f ${_mod} NAME_WE)
