@@ -65,10 +65,11 @@ void ReconnectingRequestChannel::sendRequestResponse(
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
+  reconnectIfNeeded();
   cob = RequestClientCallback::Ptr(
       new ChannelKeepAlive(impl_, std::move(cob), false));
 
-  return impl().sendRequestResponse(
+  return impl_->sendRequestResponse(
       options,
       methodName,
       std::move(request),
@@ -82,10 +83,11 @@ void ReconnectingRequestChannel::sendRequestNoResponse(
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
+  reconnectIfNeeded();
   cob = RequestClientCallback::Ptr(
       new ChannelKeepAlive(impl_, std::move(cob), true));
 
-  return impl().sendRequestNoResponse(
+  return impl_->sendRequestNoResponse(
       options,
       methodName,
       std::move(request),
@@ -93,11 +95,10 @@ void ReconnectingRequestChannel::sendRequestNoResponse(
       std::move(cob));
 }
 
-ReconnectingRequestChannel::Impl& ReconnectingRequestChannel::impl() {
+void ReconnectingRequestChannel::reconnectIfNeeded() {
   if (!impl_ || !impl_->good()) {
     impl_ = implCreator_(evb_);
   }
-  return *impl_;
 }
 
 } // namespace thrift

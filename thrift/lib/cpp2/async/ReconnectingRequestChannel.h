@@ -80,7 +80,8 @@ class ReconnectingRequestChannel : public RequestChannel {
   }
 
   uint16_t getProtocolId() override {
-    return impl().getProtocolId();
+    reconnectIfNeeded();
+    return impl_->getProtocolId();
   }
 
  protected:
@@ -90,7 +91,7 @@ class ReconnectingRequestChannel : public RequestChannel {
   ReconnectingRequestChannel(folly::EventBase& evb, ImplCreator implCreator)
       : implCreator_(std::move(implCreator)), evb_(evb) {}
 
-  Impl& impl();
+  void reconnectIfNeeded();
 
   ImplPtr impl_;
   ImplCreator implCreator_;

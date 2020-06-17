@@ -69,8 +69,8 @@ TEST_F(ReconnectingRequestChannelTest, ReconnectRocket) {
   auto channel = ReconnectingRequestChannel::newChannel(
       *eb, [this](folly::EventBase& eb) mutable {
         connection_count_++;
-        return HeaderClientChannel::newChannel(
-            AsyncSocket::newSocket(&eb, up_addr));
+        return RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
+            new folly::AsyncSocket(&eb, up_addr)));
       });
   TestServiceAsyncClient client(std::move(channel));
   runReconnect(client);
