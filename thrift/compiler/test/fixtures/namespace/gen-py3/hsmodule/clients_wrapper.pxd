@@ -39,7 +39,6 @@ cdef extern from "thrift/lib/cpp/TProcessorEventHandler.h" namespace "::apache::
 
 cdef extern from "gen-py3/hsmodule/clients_wrapper.h" namespace "::cpp2":
   cdef cppclass cHsTestServiceClientWrapper "::cpp2::HsTestServiceClientWrapper":
-    cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 

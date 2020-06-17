@@ -288,7 +288,7 @@ class ClientServerTests(unittest.TestCase):
 
         loop.run_until_complete(inner_test())
 
-    def test_client_aexit_cancel(self) -> None:
+    def test_client_aexit_no_await(self) -> None:
         """
         This actually handles the case if __aexit__ is not awaited
         """
@@ -303,7 +303,6 @@ class ClientServerTests(unittest.TestCase):
                 self.assertTrue(await client.invert(False))
                 self.assertFalse(await client.invert(True))
                 fut = client.__aexit__(None, None, None)
-                fut.cancel()  # type: ignore
                 del client  # If we do not abort here then good
 
         loop.run_until_complete(inner_test())

@@ -39,7 +39,6 @@ cdef extern from "thrift/lib/cpp/TProcessorEventHandler.h" namespace "::apache::
 
 cdef extern from "src/gen-py3/empty/clients_wrapper.h" namespace "::cpp2":
   cdef cppclass cNullServiceClientWrapper "::cpp2::NullServiceClientWrapper":
-    cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 

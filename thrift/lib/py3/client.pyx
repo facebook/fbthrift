@@ -81,8 +81,6 @@ cdef class Client:
     def __dealloc__(Client self):
         if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
-            if self._client:
-                deref(self._client).disconnect().get()
         self._client.reset()
 
     async def __aenter__(Client self):
@@ -99,35 +97,17 @@ cdef class Client:
 
         return self
 
-    def __aexit__(Client self, *exc):
+    async def __aexit__(Client self, *exc):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
-        userdata = (self, future, self._aexit_callback)
-        bridgeFutureWith[cFollyUnit](
-            self._executor,
-            deref(self._client).disconnect(),
-            closed_client_callback,
-            <PyObject *>userdata  # So we keep client alive until disconnect
-        )
+        self._client.reset()
+        aexit_callback = self._aexit_callback
+        if aexit_callback:
+            aexit_callback()
         # To break any future usage of this client
-        # Also to prevent dealloc from trying to disconnect in a blocking way.
-        badfuture = loop.create_future()
+        badfuture = asyncio.get_event_loop().create_future()
         badfuture.set_exception(asyncio.InvalidStateError('Client Out of Context'))
         badfuture.exception()
         self._connect_future = badfuture
-        return asyncio.shield(future)
-
-cdef void closed_client_callback(
-    cFollyTry[cFollyUnit]&& result,
-    PyObject* userdata,
-):
-    client, pyfuture, aexit_callback = <object> userdata
-    pyfuture.set_result(None)
-    # We call this here to insure its run before the async with exits, but after the future is done
-    # add_done_callback will not guarentee this behavior.
-    if aexit_callback:
-        aexit_callback()
 
 
 async def _no_op():

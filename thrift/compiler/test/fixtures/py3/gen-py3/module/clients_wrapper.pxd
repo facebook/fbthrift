@@ -53,7 +53,6 @@ cdef extern from "thrift/lib/cpp/TProcessorEventHandler.h" namespace "::apache::
 
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::py3::simple":
   cdef cppclass cSimpleServiceClientWrapper "::py3::simple::SimpleServiceClientWrapper":
-    cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 

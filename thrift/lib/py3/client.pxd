@@ -79,7 +79,6 @@ cdef extern from "thrift/lib/py3/client_wrapper.h" namespace "thrift::py3":
     cdef cppclass cClientWrapper "thrift::py3::ClientWrapper":
         void setPersistentHeader(const string& key, const string& value)
         void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
-        cFollyFuture[cFollyUnit] disconnect()
 
 cdef extern from "thrift/lib/cpp/TProcessorEventHandler.h" namespace "::apache::thrift":
     cdef cppclass cTProcessorEventHandler "apache::thrift::TProcessorEventHandler":

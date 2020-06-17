@@ -36,12 +36,12 @@ class ClientWrapper {
       std::unique_ptr<apache::thrift::GeneratedAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel)
       : async_client_(std::move(async_client)), channel_(std::move(channel)) {}
-  virtual ~ClientWrapper() {}
-
-  folly::Future<folly::Unit> disconnect() {
+  virtual ~ClientWrapper() {
     auto eb = channel_->getEventBase();
-    return folly::via(
-        eb, [cha = std::move(channel_), cli = std::move(async_client_)] {});
+    if (eb) {
+      eb->runInEventBaseThread(
+          [cha = std::move(channel_), cli = std::move(async_client_)] {});
+    }
   }
 
   void setPersistentHeader(const std::string& key, const std::string& value) {

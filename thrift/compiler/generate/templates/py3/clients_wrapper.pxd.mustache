@@ -82,7 +82,6 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrap
     }}{{/service:externalProgram?}}c{{service:name}}ClientWrapper{{!
   }}){{/service:extends}}:
     {{^service:extends?}}
-    cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
     {{/service:extends?}}
