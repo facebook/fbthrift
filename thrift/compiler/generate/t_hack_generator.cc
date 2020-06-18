@@ -1101,10 +1101,10 @@ void t_hack_generator::generate_const(t_const* tconst) {
     f_consts_ << indent();
     f_consts_ << "<<__Memoize>>\n"
               << indent() << "public static function " << name
-              << "(): " << type_to_typehint(type, false, false, false) << "{\n";
+              << "(): " << type_to_typehint(type, false, false, true) << "{\n";
     indent_up();
     f_consts_ << indent() << "return ";
-    f_consts_ << render_const_value(type, value, false) << ";\n";
+    f_consts_ << render_const_value(type, value, true) << ";\n";
     indent_down();
     f_consts_ << indent() << "}\n";
     f_consts_ << "\n";
