@@ -19,6 +19,7 @@
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/Request.h>
 #include <folly/portability/GTest.h>
+#include <folly/synchronization/Baton.h>
 #include <gmock/gmock.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
@@ -138,12 +139,16 @@ class TestInterface : public InstrumentationTestServiceSvIf {
     }
   }
 
-  void neverBlock() override {
-    return;
+  void runCallback() override {
+    if (callback_) {
+      callback_(this);
+    }
   }
 
-  void neverBlock2() override {
-    return;
+  void runCallback2() override {
+    if (callback2_) {
+      callback2_(this);
+    }
   }
 
   folly::coro::Task<void> co_wait(int value, bool busyWait, bool shallowRC)
@@ -165,9 +170,19 @@ class TestInterface : public InstrumentationTestServiceSvIf {
     return std::make_unique<InstrumentationTestProcessor>(this);
   }
 
+  void setCallback(folly::Function<void(TestInterface*)> cob) {
+    callback_ = std::move(cob);
+  }
+
+  void setCallback2(folly::Function<void(TestInterface*)> cob) {
+    callback2_ = std::move(cob);
+  }
+
  private:
   folly::coro::Baton finished_;
   std::atomic<int32_t> reqCount_{0};
+  folly::Function<void(TestInterface*)> callback_;
+  folly::Function<void(TestInterface*)> callback2_;
 };
 
 class DebugInterface : public DebugTestServiceSvIf {
@@ -648,7 +663,7 @@ class MaxRequestsTest : public RequestInstrumentationTest,
     rocket = GetParam();
     impl_ = std::make_unique<Impl>([&](auto& ts) {
       ts.setMaxRequests(1);
-      ts.setMethodsBypassMaxRequestsLimit({"neverBlock2"});
+      ts.setMethodsBypassMaxRequestsLimit({"runCallback2"});
     });
   }
 };
@@ -659,8 +674,8 @@ TEST_P(MaxRequestsTest, Bypass) {
   client->semifuture_sendRequest();
   handler()->waitForRequests(1);
 
-  EXPECT_ANY_THROW(client->sync_neverBlock());
-  EXPECT_NO_THROW(client->sync_neverBlock2());
+  EXPECT_ANY_THROW(client->sync_runCallback());
+  EXPECT_NO_THROW(client->sync_runCallback2());
   handler()->stopRequests();
 }
 
@@ -668,3 +683,79 @@ INSTANTIATE_TEST_CASE_P(
     MaxRequestsTestsSequence,
     MaxRequestsTest,
     testing::Values(true, false));
+
+class TimestampsTest
+    : public RequestInstrumentationTest,
+      public ::testing::WithParamInterface<std::tuple<bool, bool>> {
+ protected:
+  bool rocket;
+  bool forceTimestamps;
+  server::TServerObserver::CallTimestamps timestamps;
+  folly::Baton<> baton;
+  struct Observer : public server::TServerObserver {
+    explicit Observer(folly::Function<void(const CallTimestamps&)>&& f)
+        : server::TServerObserver(1), f_(std::move(f)) {}
+    void callCompleted(const CallTimestamps& timestamps) override {
+      f_(timestamps);
+    }
+    folly::Function<void(const CallTimestamps&)> f_;
+  };
+  void SetUp() override {
+    std::tie(rocket, forceTimestamps) = GetParam();
+    impl_ = std::make_unique<Impl>([&](auto& ts) {
+      if (forceTimestamps) {
+        ts.setObserver(std::make_shared<Observer>([&](auto& t) {
+          timestamps = t;
+          baton.post();
+        }));
+      }
+    });
+  }
+};
+
+namespace {
+void validateTimestamps(
+    bool expectTimestamps,
+    std::chrono::steady_clock::time_point started,
+    const server::TServerObserver::PreHandlerTimestamps& timestamps) {
+  auto now = std::chrono::steady_clock::now();
+  auto zero = std::chrono::steady_clock::time_point();
+  if (expectTimestamps) {
+    EXPECT_GT(timestamps.readEnd, started);
+    EXPECT_GT(timestamps.processBegin, timestamps.readEnd);
+    EXPECT_LE(timestamps.processBegin, now);
+    EXPECT_TRUE(timestamps.processDelayLatencyUsec().has_value());
+    EXPECT_GT(timestamps.processDelayLatencyUsec().value(), 0);
+  } else {
+    EXPECT_EQ(timestamps.readEnd, zero);
+    EXPECT_EQ(timestamps.processBegin, timestamps.readEnd);
+    EXPECT_FALSE(timestamps.processDelayLatencyUsec().has_value());
+  }
+}
+} // namespace
+
+using namespace std::literals::chrono_literals;
+
+TEST_P(TimestampsTest, Basic) {
+  auto client = rocket ? makeRocketClient() : makeHeaderClient();
+  auto now = std::chrono::steady_clock::now();
+  handler()->setCallback([&](TestInterface* ti) {
+    validateTimestamps(
+        forceTimestamps, now, ti->getConnectionContext()->getTimestamps());
+    now = std::chrono::steady_clock::now();
+  });
+  client->sync_runCallback();
+  if (forceTimestamps) {
+    baton.try_wait_for(1s);
+    EXPECT_GT(timestamps.processEnd, now);
+    EXPECT_GT(timestamps.writeBegin, timestamps.processEnd);
+    EXPECT_GT(timestamps.writeEnd, timestamps.writeBegin);
+  }
+}
+
+INSTANTIATE_TEST_CASE_P(
+    TimestampsTestSequence,
+    TimestampsTest,
+    testing::Combine(
+        testing::Values(true, false),
+        testing::Values(true, false)));

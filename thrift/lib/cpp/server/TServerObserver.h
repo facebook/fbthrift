@@ -57,18 +57,12 @@ class TServerObserver {
     bool isClientSamplingEnabled_;
   };
 
-  class CallTimestamps {
+  class PreHandlerTimestamps {
    protected:
     using clock = std::chrono::steady_clock;
     using us = std::chrono::microseconds;
 
    public:
-    clock::time_point readEnd;
-    clock::time_point processBegin;
-    clock::time_point processEnd;
-    clock::time_point writeBegin;
-    clock::time_point writeEnd;
-
     static uint64_t to_microseconds(clock::duration dur) {
       return std::chrono::duration_cast<us>(dur).count();
     }
@@ -76,12 +70,33 @@ class TServerObserver {
       return clock::time_point() + us(usec);
     }
 
+    clock::time_point readEnd;
+    clock::time_point processBegin;
+
     folly::Optional<uint64_t> processDelayLatencyUsec() const {
       if (processBegin != clock::time_point()) {
         return to_microseconds(processBegin - readEnd);
       }
       return {};
     }
+
+    void setStatus(const SamplingStatus& status) {
+      status_ = status;
+    }
+
+    const SamplingStatus getSamplingStatus() const {
+      return status_;
+    }
+
+   private:
+    SamplingStatus status_;
+  };
+
+  class CallTimestamps : public PreHandlerTimestamps {
+   public:
+    std::chrono::steady_clock::time_point processEnd;
+    std::chrono::steady_clock::time_point writeBegin;
+    std::chrono::steady_clock::time_point writeEnd;
 
     folly::Optional<uint64_t> processLatencyUsec() const {
       if (processBegin != clock::time_point() &&
@@ -104,17 +119,6 @@ class TServerObserver {
       }
       return {};
     }
-
-    void setStatus(const SamplingStatus& status) {
-      status_ = status;
-    }
-
-    SamplingStatus getSamplingStatus() const {
-      return status_;
-    }
-
-   private:
-    SamplingStatus status_;
   };
 
   virtual void connAccepted() {}

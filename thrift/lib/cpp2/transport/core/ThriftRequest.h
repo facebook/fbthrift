@@ -153,7 +153,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   class RequestTimestampSample : public MessageChannel::SendCallback {
    public:
     RequestTimestampSample(
-        const server::TServerObserver::CallTimestamps& timestamps,
+        server::TServerObserver::CallTimestamps& timestamps,
         server::TServerObserver* observer,
         MessageChannel::SendCallback* chainedCallback = nullptr);
 
@@ -163,7 +163,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
     ~RequestTimestampSample() override;
 
    private:
-    server::TServerObserver::CallTimestamps timestamps_;
+    server::TServerObserver::CallTimestamps& timestamps_;
     server::TServerObserver* observer_;
     MessageChannel::SendCallback* chainedCallback_;
   };
@@ -459,6 +459,11 @@ class ThriftRequestCore : public ResponseChannelRequest {
   friend class QueueTimeout;
   friend class TaskTimeout;
   friend class ThriftProcessor;
+
+  server::TServerObserver::CallTimestamps& getTimestamps() {
+    return static_cast<server::TServerObserver::CallTimestamps&>(
+        reqContext_.getTimestamps());
+  }
 
  protected:
   server::ServerConfigs& serverConfigs_;
