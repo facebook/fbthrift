@@ -189,9 +189,9 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
       return &reqContext_;
     }
 
-    server::TServerObserver::CallTimestamps& getTimestamps() {
-      return static_cast<server::TServerObserver::CallTimestamps&>(
-          reqContext_.getTimestamps());
+    apache::thrift::server::TServerObserver::CallTimestamps& getTimestamps()
+        override {
+      return req_->getTimestamps();
     }
 
    private:
@@ -231,7 +231,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
   class Cpp2Sample : public MessageChannel::SendCallback {
    public:
     Cpp2Sample(
-        apache::thrift::server::TServerObserver::CallTimestamps& timestamps,
+        apache::thrift::server::TServerObserver::CallTimestamps&& timestamps,
         apache::thrift::server::TServerObserver* observer,
         MessageChannel::SendCallback* chainedCallback = nullptr);
 
@@ -241,7 +241,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
     ~Cpp2Sample() override;
 
    private:
-    apache::thrift::server::TServerObserver::CallTimestamps& timestamps_;
+    apache::thrift::server::TServerObserver::CallTimestamps timestamps_;
     apache::thrift::server::TServerObserver* observer_;
     MessageChannel::SendCallback* chainedCallback_;
   };

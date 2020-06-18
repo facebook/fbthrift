@@ -54,7 +54,7 @@ class HeaderServerChannel : public ServerChannel,
 
   explicit HeaderServerChannel(const std::shared_ptr<Cpp2Channel>& cpp2Channel);
 
-  static std::unique_ptr< //
+  static std::unique_ptr<
       HeaderServerChannel,
       folly::DelayedDestruction::Destructor>
   newChannel(const std::shared_ptr<folly::AsyncTransport>& transport) {
@@ -164,17 +164,12 @@ class HeaderServerChannel : public ServerChannel,
         const std::map<std::string, std::string>& headers,
         TimeoutResponseType responseType);
 
-    const SamplingStatus& getSamplingStatus() const {
-      return samplingStatus_;
-    }
-
    private:
     HeaderServerChannel* channel_;
     std::unique_ptr<apache::thrift::transport::THeader> header_;
     std::unique_ptr<apache::thrift::transport::THeader> timeoutHeader_;
     uint32_t InOrderRecvSeqId_{0}; // Used internally for in-order requests
     std::atomic<bool> active_;
-    SamplingStatus samplingStatus_;
   };
 
   class Callback : public ResponseChannel::Callback {
@@ -223,7 +218,8 @@ class HeaderServerChannel : public ServerChannel,
 
  private:
   static std::string getTHeaderPayloadString(folly::IOBuf* buf);
-  static std::string getTransportDebugString(folly::AsyncTransport* transport);
+  static std::string getTransportDebugString(
+      folly::AsyncTransport* transport);
 
   server::TServerObserver::SamplingStatus shouldSample(
       const apache::thrift::transport::THeader* header) const;

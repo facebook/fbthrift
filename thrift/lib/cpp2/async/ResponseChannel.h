@@ -174,6 +174,13 @@ class ResponseChannelRequest {
     return admissionController_;
   }
 
+  virtual apache::thrift::server::TServerObserver::CallTimestamps&
+  getTimestamps() {
+    return timestamps_;
+  }
+
+  apache::thrift::server::TServerObserver::CallTimestamps timestamps_;
+
  protected:
   std::unique_ptr<folly::IOBuf> buf_;
   std::shared_ptr<apache::thrift::AdmissionController> admissionController_;

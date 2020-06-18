@@ -365,12 +365,10 @@ void ThriftRocketServerHandler::handleRequestCommon(
 
   auto request = makeRequest(
       std::move(metadata), std::move(debugPayload), std::move(reqCtx));
-  auto* cpp2ReqCtx = request->getRequestContext();
-  auto& timestamps = cpp2ReqCtx->getTimestamps();
-  timestamps.setStatus(samplingStatus);
+  request->timestamps_.setStatus(samplingStatus);
   if (UNLIKELY(samplingStatus.isEnabled())) {
-    timestamps.readEnd = readEnd;
-    timestamps.processBegin = std::chrono::steady_clock::now();
+    request->timestamps_.readEnd = readEnd;
+    request->timestamps_.processBegin = std::chrono::steady_clock::now();
   }
 
   if (serverConfigs_) {
@@ -383,6 +381,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
     }
   }
   const auto protocolId = request->getProtoId();
+  auto* const cpp2ReqCtx = request->getRequestContext();
   if (auto interactionId = metadata.interactionId_ref()) {
     cpp2ReqCtx->setInteractionId(*interactionId);
   }

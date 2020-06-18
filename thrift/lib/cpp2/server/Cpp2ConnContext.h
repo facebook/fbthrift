@@ -26,7 +26,6 @@
 #include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TConnectionContext.h>
-#include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <wangle/ssl/SSLUtil.h>
 
@@ -433,19 +432,14 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return interactionCreate_;
   }
 
-  server::TServerObserver::PreHandlerTimestamps& getTimestamps() {
-    return timestamps_;
-  }
-
  protected:
   static void no_op_destructor(void* /*ptr*/) {}
-
-  apache::thrift::server::TServerObserver::CallTimestamps timestamps_;
 
  private:
   Cpp2ConnContext* ctx_;
   RequestDataPtr requestData_;
   std::chrono::milliseconds requestTimeout_{0};
+  folly::Optional<std::chrono::steady_clock::time_point> processingStartTime_;
   std::string methodName_;
   int32_t protoSeqId_{0};
   int64_t interactionId_{0};

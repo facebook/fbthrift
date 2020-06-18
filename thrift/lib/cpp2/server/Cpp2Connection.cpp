@@ -226,12 +226,6 @@ void Cpp2Connection::killRequest(
 // Response Channel callbacks
 void Cpp2Connection::requestReceived(
     unique_ptr<HeaderServerChannel::HeaderRequest>&& hreq) {
-  auto& samplingStatus = hreq->getSamplingStatus();
-  std::chrono::steady_clock::time_point readEnd;
-  if (samplingStatus.isEnabled()) {
-    readEnd = std::chrono::steady_clock::now();
-  }
-
   auto baseReqCtx = processor_->getBaseContextForRequest();
   auto rootid = worker_->getRequestsRegistry()->genRootId();
   auto reqCtx = baseReqCtx
@@ -359,6 +353,17 @@ void Cpp2Connection::requestReceived(
     return;
   }
 
+  server->incActiveRequests();
+  auto samplingStatus = hreq->timestamps_.getSamplingStatus();
+  if (samplingStatus.isEnabled()) {
+    // Expensive operations; happens only when sampling is enabled
+    hreq->timestamps_.processBegin = std::chrono::steady_clock::now();
+    if (samplingStatus.isEnabledByServer() && observer) {
+      observer->queuedRequests(threadManager_->pendingTaskCount());
+      observer->activeRequests(server->getActiveRequests());
+    }
+  }
+
   // After this, the request buffer is no longer owned by the request
   // and will be released after deserializeRequest.
   auto serializedRequest = [&] {
@@ -383,20 +388,6 @@ void Cpp2Connection::requestReceived(
   if (admissionController) {
     t2r->setAdmissionController(std::move(admissionController));
   }
-
-  server->incActiveRequests();
-  if (samplingStatus.isEnabled()) {
-    // Expensive operations; happens only when sampling is enabled
-    auto& timestamps = t2r->getTimestamps();
-    timestamps.setStatus(samplingStatus);
-    timestamps.readEnd = readEnd;
-    timestamps.processBegin = std::chrono::steady_clock::now();
-    if (samplingStatus.isEnabledByServer() && observer) {
-      observer->queuedRequests(threadManager_->pendingTaskCount());
-      observer->activeRequests(server->getActiveRequests());
-    }
-  }
-
   activeRequests_.insert(t2r.get());
 
   if (observer) {
@@ -480,10 +471,9 @@ MessageChannel::SendCallback* Cpp2Connection::Cpp2Request::prepareSendCallback(
   // implements MessageChannel::SendCallback. Callers of sendReply/sendError
   // are responsible for cleaning up their own callbacks.
   MessageChannel::SendCallback* cb = sendCallback;
-  auto& timestamps = getTimestamps();
-  if (timestamps.getSamplingStatus().isEnabledByServer()) {
+  if (req_->timestamps_.getSamplingStatus().isEnabledByServer()) {
     // Cpp2Sample will delete itself when it's callback is called.
-    cb = new Cpp2Sample(timestamps, observer, sendCallback);
+    cb = new Cpp2Sample(std::move(req_->timestamps_), observer, sendCallback);
   }
   return cb;
 }
@@ -569,14 +559,13 @@ void Cpp2Connection::Cpp2Request::QueueTimeout::timeoutExpired() noexcept {
 
 void Cpp2Connection::Cpp2Request::markProcessEnd(
     std::map<std::string, std::string>* newHeaders) {
-  auto& timestamps = getTimestamps();
-  auto& samplingStatus = timestamps.getSamplingStatus();
+  auto samplingStatus = req_->timestamps_.getSamplingStatus();
   if (samplingStatus.isEnabled()) {
-    timestamps.processEnd = std::chrono::steady_clock::now();
+    req_->timestamps_.processEnd = std::chrono::steady_clock::now();
     if (samplingStatus.isEnabledByClient()) {
       // Latency headers are set after processEnd itself. Can't be
       // done after write, since headers transform happens during write.
-      setLatencyHeaders(timestamps, newHeaders);
+      setLatencyHeaders(req_->getTimestamps(), newHeaders);
     }
   }
 }
@@ -619,7 +608,7 @@ void Cpp2Connection::Cpp2Request::cancelRequest() {
 }
 
 Cpp2Connection::Cpp2Sample::Cpp2Sample(
-    apache::thrift::server::TServerObserver::CallTimestamps& timestamps,
+    apache::thrift::server::TServerObserver::CallTimestamps&& timestamps,
     apache::thrift::server::TServerObserver* observer,
     MessageChannel::SendCallback* chainedCallback)
     : timestamps_(timestamps),

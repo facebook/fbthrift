@@ -194,11 +194,12 @@ HeaderServerChannel::HeaderRequest::HeaderRequest(
     unique_ptr<IOBuf>&& buf,
     unique_ptr<THeader>&& header,
     const SamplingStatus& samplingStatus)
-    : channel_(channel),
-      header_(std::move(header)),
-      active_(true),
-      samplingStatus_(samplingStatus) {
+    : channel_(channel), header_(std::move(header)), active_(true) {
   this->buf_ = std::move(buf);
+  if (samplingStatus.isEnabled()) {
+    timestamps_.setStatus(samplingStatus);
+    timestamps_.readEnd = std::chrono::steady_clock::now();
+  }
 }
 
 /**
