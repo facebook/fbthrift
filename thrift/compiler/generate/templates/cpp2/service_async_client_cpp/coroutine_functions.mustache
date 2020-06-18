@@ -1,0 +1,48 @@
+<%!
+
+  Copyright 2019 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%>
+#if FOLLY_HAS_COROUTINES
+<%#function:returns_sink?%>
+folly::coro::Task<<% > types/service_type_coro%>> <%service:name%>AsyncClient::co_<%function:cpp_name%>(<% > service_common/function_param_list_const%>) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  co_return co_await co_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
+}
+folly::coro::Task<<% > types/service_type_coro%>> <%service:name%>AsyncClient::co_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
+  auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "<%service:name%>.<%function:name%>");
+  auto callback = apache::thrift::detail::ClientSinkBridge::create();
+  <%function:cpp_name%>Impl(rpcOptions, ctx, callback.get()<%function:comma%><% > service_common/param_list%>);
+  auto firstPayload = co_await callback->getFirstThriftResponse();
+  if (firstPayload.hasException()) {
+    firstPayload.exception().throw_exception();
+  }
+
+  auto tHeader = std::make_unique<apache::thrift::transport::THeader>();
+  tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
+  apache::thrift::detail::fillTHeaderFromResponseRpcMetadata(firstPayload->metadata, *tHeader);
+  apache::thrift::ClientReceiveState _returnState(
+      protocolId,
+      std::move(firstPayload->payload),
+      std::move(callback),
+      std::move(tHeader),
+      std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+  co_return recv_<%function:cpp_name%>(_returnState);
+}
+<%/function:returns_sink?%><%!
+Other coroutine functions are inline templates to prevent binary size regression
+%>
+#endif // FOLLY_HAS_COROUTINES

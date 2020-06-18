@@ -40,14 +40,14 @@ void PubSubStreamingServiceAsyncClient::returnstreamT(Protocol_* prot, apache::t
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, Protocol_>(
-    prot, 
-    rpcOptions, 
-    apache::thrift::createStreamClientCallback(std::move(callback), rpcOptions.getChunkBufferSize()), 
-    ctx->ctx, 
-    std::move(header), 
-    channel_.get(), 
-    "returnstream", 
-    writer, 
+    prot,
+    rpcOptions,
+    apache::thrift::createStreamClientCallback(std::move(callback), rpcOptions.getChunkBufferSize()),
+    ctx->ctx,
+    std::move(header),
+    channel_.get(),
+    "returnstream",
+    writer,
     sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
@@ -60,14 +60,14 @@ void PubSubStreamingServiceAsyncClient::streamthrowsT(Protocol_* prot, apache::t
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, Protocol_>(
-    prot, 
-    rpcOptions, 
-    apache::thrift::createStreamClientCallback(std::move(callback), rpcOptions.getChunkBufferSize()), 
-    ctx->ctx, 
-    std::move(header), 
-    channel_.get(), 
-    "streamthrows", 
-    writer, 
+    prot,
+    rpcOptions,
+    apache::thrift::createStreamClientCallback(std::move(callback), rpcOptions.getChunkBufferSize()),
+    ctx->ctx,
+    std::move(header),
+    channel_.get(),
+    "streamthrows",
+    writer,
     sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
@@ -80,14 +80,14 @@ void PubSubStreamingServiceAsyncClient::boththrowsT(Protocol_* prot, apache::thr
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, Protocol_>(
-    prot, 
-    rpcOptions, 
-    apache::thrift::createStreamClientCallback(std::move(callback), rpcOptions.getChunkBufferSize()), 
-    ctx->ctx, 
-    std::move(header), 
-    channel_.get(), 
-    "boththrows", 
-    writer, 
+    prot,
+    rpcOptions,
+    apache::thrift::createStreamClientCallback(std::move(callback), rpcOptions.getChunkBufferSize()),
+    ctx->ctx,
+    std::move(header),
+    channel_.get(),
+    "boththrows",
+    writer,
     sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
@@ -100,14 +100,14 @@ void PubSubStreamingServiceAsyncClient::responseandstreamthrowsT(Protocol_* prot
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, Protocol_>(
-    prot, 
-    rpcOptions, 
-    apache::thrift::createStreamClientCallback(std::move(callback), rpcOptions.getChunkBufferSize()), 
-    ctx->ctx, 
-    std::move(header), 
-    channel_.get(), 
-    "responseandstreamthrows", 
-    writer, 
+    prot,
+    rpcOptions,
+    apache::thrift::createStreamClientCallback(std::move(callback), rpcOptions.getChunkBufferSize()),
+    ctx->ctx,
+    std::move(header),
+    channel_.get(),
+    "responseandstreamthrows",
+    writer,
     sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
@@ -212,6 +212,8 @@ folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returnstream(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -357,6 +359,8 @@ folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_streamthrows(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -502,6 +506,8 @@ folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_boththrows(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -647,6 +653,8 @@ folly::SemiFuture<std::pair<apache::thrift::ResponseAndClientBufferedStream<int3
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_responseandstreamthrows(apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());

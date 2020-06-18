@@ -521,6 +521,8 @@ void ParamServiceAsyncClient::void_ret_i16_param(folly::Function<void (::apache:
   void_ret_i16_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_void_ret_i16_param(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -685,6 +687,8 @@ void ParamServiceAsyncClient::void_ret_byte_i16_param(folly::Function<void (::ap
   void_ret_byte_i16_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1, param2);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_void_ret_byte_i16_param(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -849,6 +853,8 @@ void ParamServiceAsyncClient::void_ret_map_param(folly::Function<void (::apache:
   void_ret_map_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_void_ret_map_param(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1013,6 +1019,8 @@ void ParamServiceAsyncClient::void_ret_map_setlist_param(folly::Function<void (:
   void_ret_map_setlist_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1, param2);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_void_ret_map_setlist_param(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1177,6 +1185,8 @@ void ParamServiceAsyncClient::void_ret_map_typedef_param(folly::Function<void (:
   void_ret_map_typedef_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_void_ret_map_typedef_param(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1341,6 +1351,8 @@ void ParamServiceAsyncClient::void_ret_enum_param(folly::Function<void (::apache
   void_ret_enum_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_void_ret_enum_param(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1505,6 +1517,8 @@ void ParamServiceAsyncClient::void_ret_struct_param(folly::Function<void (::apac
   void_ret_struct_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_void_ret_struct_param(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1669,6 +1683,8 @@ void ParamServiceAsyncClient::void_ret_listunion_param(folly::Function<void (::a
   void_ret_listunion_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_void_ret_listunion_param(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1833,6 +1849,8 @@ void ParamServiceAsyncClient::bool_ret_i32_i64_param(folly::Function<void (::apa
   bool_ret_i32_i64_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1, param2);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_bool_ret_i32_i64_param(bool& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1999,6 +2017,8 @@ void ParamServiceAsyncClient::bool_ret_map_param(folly::Function<void (::apache:
   bool_ret_map_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_bool_ret_map_param(bool& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -2165,6 +2185,8 @@ void ParamServiceAsyncClient::bool_ret_union_param(folly::Function<void (::apach
   bool_ret_union_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_bool_ret_union_param(bool& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -2331,6 +2353,8 @@ void ParamServiceAsyncClient::i64_ret_float_double_param(folly::Function<void (:
   i64_ret_float_double_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1, param2);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_i64_ret_float_double_param(int64_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -2497,6 +2521,8 @@ void ParamServiceAsyncClient::i64_ret_string_typedef_param(folly::Function<void 
   i64_ret_string_typedef_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1, param2);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_i64_ret_string_typedef_param(int64_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -2663,6 +2689,8 @@ void ParamServiceAsyncClient::i64_ret_i32_i32_i32_i32_i32_param(folly::Function<
   i64_ret_i32_i32_i32_i32_i32_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1, param2, param3, param4, param5);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_i64_ret_i32_i32_i32_i32_i32_param(int64_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -2829,6 +2857,8 @@ void ParamServiceAsyncClient::double_ret_setstruct_param(folly::Function<void (:
   double_ret_setstruct_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_double_ret_setstruct_param(double& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -2995,6 +3025,8 @@ void ParamServiceAsyncClient::string_ret_string_param(folly::Function<void (::ap
   string_ret_string_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_string_ret_string_param(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -3159,6 +3191,8 @@ void ParamServiceAsyncClient::binary_ret_binary_param(folly::Function<void (::ap
   binary_ret_binary_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_binary_ret_binary_param(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -3323,6 +3357,8 @@ void ParamServiceAsyncClient::map_ret_bool_param(folly::Function<void (::apache:
   map_ret_bool_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_map_ret_bool_param(::std::map<::std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -3487,6 +3523,8 @@ void ParamServiceAsyncClient::list_ret_map_setlist_param(folly::Function<void (:
   list_ret_map_setlist_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1, param2);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_list_ret_map_setlist_param(::std::vector<bool>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -3651,6 +3689,8 @@ void ParamServiceAsyncClient::mapsetlistmapliststring_ret_listlistlist_param(fol
   mapsetlistmapliststring_ret_listlistlist_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -3815,6 +3855,8 @@ void ParamServiceAsyncClient::typedef_ret_i32_param(folly::Function<void (::apac
   typedef_ret_i32_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_typedef_ret_i32_param( ::some::valid::ns::simpleTypeDef& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -3981,6 +4023,8 @@ void ParamServiceAsyncClient::listtypedef_ret_typedef_param(folly::Function<void
   listtypedef_ret_typedef_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_listtypedef_ret_typedef_param(::std::vector< ::some::valid::ns::simpleTypeDef>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -4145,6 +4189,8 @@ void ParamServiceAsyncClient::enum_ret_double_param(folly::Function<void (::apac
   enum_ret_double_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_enum_ret_double_param( ::some::valid::ns::MyEnumA& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -4311,6 +4357,8 @@ void ParamServiceAsyncClient::enum_ret_double_enum_param(folly::Function<void (:
   enum_ret_double_enum_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1, param2);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_enum_ret_double_enum_param( ::some::valid::ns::MyEnumA& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -4477,6 +4525,8 @@ void ParamServiceAsyncClient::listenum_ret_map_param(folly::Function<void (::apa
   listenum_ret_map_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_listenum_ret_map_param(::std::vector< ::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -4641,6 +4691,8 @@ void ParamServiceAsyncClient::struct_ret_i16_param(folly::Function<void (::apach
   struct_ret_i16_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_struct_ret_i16_param( ::some::valid::ns::MyStruct& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -4805,6 +4857,8 @@ void ParamServiceAsyncClient::setstruct_ret_set_param(folly::Function<void (::ap
   setstruct_ret_set_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_setstruct_ret_set_param(::std::set< ::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -4969,6 +5023,8 @@ void ParamServiceAsyncClient::union_ret_i32_i32_param(folly::Function<void (::ap
   union_ret_i32_i32_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1, param2);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_union_ret_i32_i32_param( ::some::valid::ns::ComplexUnion& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -5133,6 +5189,8 @@ void ParamServiceAsyncClient::listunion_string_param(folly::Function<void (::apa
   listunion_string_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_listunion_string_param(::std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());

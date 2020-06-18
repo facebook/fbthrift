@@ -160,6 +160,8 @@ void MyServiceAsyncClient::query(folly::Function<void (::apache::thrift::ClientR
   query(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), s, i);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_query(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -324,6 +326,8 @@ void MyServiceAsyncClient::has_arg_docs(folly::Function<void (::apache::thrift::
   has_arg_docs(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), s, i);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_has_arg_docs(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());

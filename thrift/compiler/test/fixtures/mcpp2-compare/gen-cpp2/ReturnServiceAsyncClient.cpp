@@ -386,6 +386,8 @@ void ReturnServiceAsyncClient::noReturn(folly::Function<void (::apache::thrift::
   noReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_noReturn(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -550,6 +552,8 @@ void ReturnServiceAsyncClient::boolReturn(folly::Function<void (::apache::thrift
   boolReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_boolReturn(bool& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -716,6 +720,8 @@ void ReturnServiceAsyncClient::i16Return(folly::Function<void (::apache::thrift:
   i16Return(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i16Return(int16_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -882,6 +888,8 @@ void ReturnServiceAsyncClient::i32Return(folly::Function<void (::apache::thrift:
   i32Return(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i32Return(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1048,6 +1056,8 @@ void ReturnServiceAsyncClient::i64Return(folly::Function<void (::apache::thrift:
   i64Return(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i64Return(int64_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1214,6 +1224,8 @@ void ReturnServiceAsyncClient::floatReturn(folly::Function<void (::apache::thrif
   floatReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_floatReturn(float& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1380,6 +1392,8 @@ void ReturnServiceAsyncClient::doubleReturn(folly::Function<void (::apache::thri
   doubleReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_doubleReturn(double& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1546,6 +1560,8 @@ void ReturnServiceAsyncClient::stringReturn(folly::Function<void (::apache::thri
   stringReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_stringReturn(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1710,6 +1726,8 @@ void ReturnServiceAsyncClient::binaryReturn(folly::Function<void (::apache::thri
   binaryReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_binaryReturn(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1874,6 +1892,8 @@ void ReturnServiceAsyncClient::mapReturn(folly::Function<void (::apache::thrift:
   mapReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_mapReturn(::std::map<::std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -2038,6 +2058,8 @@ void ReturnServiceAsyncClient::simpleTypedefReturn(folly::Function<void (::apach
   simpleTypedefReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_simpleTypedefReturn( ::some::valid::ns::simpleTypeDef& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -2204,6 +2226,8 @@ void ReturnServiceAsyncClient::complexTypedefReturn(folly::Function<void (::apac
   complexTypedefReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_complexTypedefReturn( ::some::valid::ns::complexStructTypeDef& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -2368,6 +2392,8 @@ void ReturnServiceAsyncClient::list_mostComplexTypedefReturn(folly::Function<voi
   list_mostComplexTypedefReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_mostComplexTypedefReturn(::std::vector< ::some::valid::ns::mostComplexTypeDef>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -2532,6 +2558,8 @@ void ReturnServiceAsyncClient::enumReturn(folly::Function<void (::apache::thrift
   enumReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_enumReturn( ::some::valid::ns::MyEnumA& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -2698,6 +2726,8 @@ void ReturnServiceAsyncClient::list_EnumReturn(folly::Function<void (::apache::t
   list_EnumReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_EnumReturn(::std::vector< ::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -2862,6 +2892,8 @@ void ReturnServiceAsyncClient::structReturn(folly::Function<void (::apache::thri
   structReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_structReturn( ::some::valid::ns::MyStruct& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -3026,6 +3058,8 @@ void ReturnServiceAsyncClient::set_StructReturn(folly::Function<void (::apache::
   set_StructReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_set_StructReturn(::std::set< ::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -3190,6 +3224,8 @@ void ReturnServiceAsyncClient::unionReturn(folly::Function<void (::apache::thrif
   unionReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_unionReturn( ::some::valid::ns::ComplexUnion& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -3354,6 +3390,8 @@ void ReturnServiceAsyncClient::list_UnionReturn(folly::Function<void (::apache::
   list_UnionReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_UnionReturn(::std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -3518,6 +3556,8 @@ void ReturnServiceAsyncClient::readDataEb(folly::Function<void (::apache::thrift
   readDataEb(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), size);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_readDataEb( ::some::valid::ns::IOBuf& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -3682,6 +3722,8 @@ void ReturnServiceAsyncClient::readData(folly::Function<void (::apache::thrift::
   readData(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), size);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_readData( ::some::valid::ns::IOBufPtr& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());

@@ -197,6 +197,8 @@ void NestedContainersAsyncClient::mapList(folly::Function<void (::apache::thrift
   mapList(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_mapList(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -361,6 +363,8 @@ void NestedContainersAsyncClient::mapSet(folly::Function<void (::apache::thrift:
   mapSet(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_mapSet(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -525,6 +529,8 @@ void NestedContainersAsyncClient::listMap(folly::Function<void (::apache::thrift
   listMap(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_listMap(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -689,6 +695,8 @@ void NestedContainersAsyncClient::listSet(folly::Function<void (::apache::thrift
   listSet(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_listSet(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -853,6 +861,8 @@ void NestedContainersAsyncClient::turtles(folly::Function<void (::apache::thrift
   turtles(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_turtles(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());

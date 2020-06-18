@@ -156,6 +156,8 @@ void MyServicePrioParentAsyncClient::ping(folly::Function<void (::apache::thrift
   ping(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper MyServicePrioParentAsyncClient::recv_wrapped_ping(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -320,6 +322,8 @@ void MyServicePrioParentAsyncClient::pong(folly::Function<void (::apache::thrift
   pong(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper MyServicePrioParentAsyncClient::recv_wrapped_pong(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());

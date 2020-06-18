@@ -158,6 +158,8 @@ void SomeServiceAsyncClient::bounce_map(folly::Function<void (::apache::thrift::
   bounce_map(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), m);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper SomeServiceAsyncClient::recv_wrapped_bounce_map( ::apache::thrift::fixtures::types::SomeMap& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -322,6 +324,8 @@ void SomeServiceAsyncClient::binary_keyed_map(folly::Function<void (::apache::th
   binary_keyed_map(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), r);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper SomeServiceAsyncClient::recv_wrapped_binary_keyed_map(::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());

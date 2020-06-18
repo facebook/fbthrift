@@ -33,26 +33,26 @@ void <%service:name%>AsyncClient::<%function:cpp_name%>T(Protocol_* prot, apache
   auto writer = [&](Protocol_* p) { args.write(p); };
 <%#function:returns_sink?%>
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(
-    prot, 
-    rpcOptions, 
-    callback, 
-    ctx->ctx, 
-    std::move(header), 
-    channel_.get(), 
-    "<%function:name%>", 
-    writer, 
+    prot,
+    rpcOptions,
+    callback,
+    ctx->ctx,
+    std::move(header),
+    channel_.get(),
+    "<%function:name%>",
+    writer,
     sizer);
 <%/function:returns_sink?%>
 <%#function:returns_stream?%>
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, Protocol_>(
-    prot, 
-    rpcOptions, 
-    apache::thrift::createStreamClientCallback(std::move(callback), rpcOptions.getChunkBufferSize()), 
-    ctx->ctx, 
-    std::move(header), 
-    channel_.get(), 
-    "<%function:name%>", 
-    writer, 
+    prot,
+    rpcOptions,
+    apache::thrift::createStreamClientCallback(std::move(callback), rpcOptions.getChunkBufferSize()),
+    ctx->ctx,
+    std::move(header),
+    channel_.get(),
+    "<%function:name%>",
+    writer,
     sizer);
   <%/function:returns_stream?%>
 <%^function:returns_sink?%><%^function:returns_stream?%>

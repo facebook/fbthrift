@@ -144,6 +144,8 @@ void CAsyncClient::f(folly::Function<void (::apache::thrift::ClientReceiveState&
   f(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper CAsyncClient::recv_wrapped_f(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());

@@ -468,6 +468,8 @@ void service_with_special_namesAsyncClient::get(folly::Function<void (::apache::
   get(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_get(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -634,6 +636,8 @@ void service_with_special_namesAsyncClient::getter(folly::Function<void (::apach
   getter(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_getter(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -800,6 +804,8 @@ void service_with_special_namesAsyncClient::lists(folly::Function<void (::apache
   lists(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_lists(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -966,6 +972,8 @@ void service_with_special_namesAsyncClient::maps(folly::Function<void (::apache:
   maps(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_maps(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1132,6 +1140,8 @@ void service_with_special_namesAsyncClient::name(folly::Function<void (::apache:
   name(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_name(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1298,6 +1308,8 @@ void service_with_special_namesAsyncClient::name_to_value(folly::Function<void (
   name_to_value(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_name_to_value(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1464,6 +1476,8 @@ void service_with_special_namesAsyncClient::names(folly::Function<void (::apache
   names(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_names(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1630,6 +1644,8 @@ void service_with_special_namesAsyncClient::prefix_tree(folly::Function<void (::
   prefix_tree(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_prefix_tree(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1796,6 +1812,8 @@ void service_with_special_namesAsyncClient::sets(folly::Function<void (::apache:
   sets(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_sets(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -1962,6 +1980,8 @@ void service_with_special_namesAsyncClient::setter(folly::Function<void (::apach
   setter(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_setter(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -2128,6 +2148,8 @@ void service_with_special_namesAsyncClient::str(folly::Function<void (::apache::
   str(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_str(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -2294,6 +2316,8 @@ void service_with_special_namesAsyncClient::strings(folly::Function<void (::apac
   strings(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_strings(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -2460,6 +2484,8 @@ void service_with_special_namesAsyncClient::type(folly::Function<void (::apache:
   type(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_type(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -2626,6 +2652,8 @@ void service_with_special_namesAsyncClient::value(folly::Function<void (::apache
   value(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_value(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -2792,6 +2820,8 @@ void service_with_special_namesAsyncClient::value_to_name(folly::Function<void (
   value_to_name(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_value_to_name(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -2958,6 +2988,8 @@ void service_with_special_namesAsyncClient::values(folly::Function<void (::apach
   values(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_values(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -3124,6 +3156,8 @@ void service_with_special_namesAsyncClient::id(folly::Function<void (::apache::t
   id(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_id(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -3290,6 +3324,8 @@ void service_with_special_namesAsyncClient::ids(folly::Function<void (::apache::
   ids(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_ids(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -3456,6 +3492,8 @@ void service_with_special_namesAsyncClient::descriptor(folly::Function<void (::a
   descriptor(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_descriptor(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -3622,6 +3660,8 @@ void service_with_special_namesAsyncClient::descriptors(folly::Function<void (::
   descriptors(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_descriptors(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -3788,6 +3828,8 @@ void service_with_special_namesAsyncClient::key(folly::Function<void (::apache::
   key(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_key(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -3954,6 +3996,8 @@ void service_with_special_namesAsyncClient::keys(folly::Function<void (::apache:
   keys(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_keys(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -4120,6 +4164,8 @@ void service_with_special_namesAsyncClient::annotation(folly::Function<void (::a
   annotation(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_annotation(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -4286,6 +4332,8 @@ void service_with_special_namesAsyncClient::annotations(folly::Function<void (::
   annotations(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_annotations(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -4452,6 +4500,8 @@ void service_with_special_namesAsyncClient::member(folly::Function<void (::apach
   member(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_member(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -4618,6 +4668,8 @@ void service_with_special_namesAsyncClient::members(folly::Function<void (::apac
   members(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_members(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -4784,6 +4836,8 @@ void service_with_special_namesAsyncClient::field(folly::Function<void (::apache
   field(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_field(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -4950,6 +5004,8 @@ void service_with_special_namesAsyncClient::fields(folly::Function<void (::apach
   fields(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_fields(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());

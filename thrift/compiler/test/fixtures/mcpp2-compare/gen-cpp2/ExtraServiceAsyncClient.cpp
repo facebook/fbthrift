@@ -247,6 +247,8 @@ void ExtraServiceAsyncClient::simple_function(folly::Function<void (::apache::th
   simple_function(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ExtraServiceAsyncClient::recv_wrapped_simple_function(bool& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -413,6 +415,8 @@ void ExtraServiceAsyncClient::throws_function(folly::Function<void (::apache::th
   throws_function(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ExtraServiceAsyncClient::recv_wrapped_throws_function(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -577,6 +581,8 @@ void ExtraServiceAsyncClient::throws_function2(folly::Function<void (::apache::t
   throws_function2(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ExtraServiceAsyncClient::recv_wrapped_throws_function2(bool& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -743,6 +749,8 @@ void ExtraServiceAsyncClient::throws_function3(folly::Function<void (::apache::t
   throws_function3(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1, param2);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper ExtraServiceAsyncClient::recv_wrapped_throws_function3(::std::map<int32_t, ::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
@@ -876,6 +884,8 @@ void ExtraServiceAsyncClient::oneway_void_ret(folly::Function<void (::apache::th
   oneway_void_ret(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 void ExtraServiceAsyncClient::oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
   ::apache::thrift::RpcOptions rpcOptions;
   oneway_void_ret_i32_i32_i32_i32_i32_param(rpcOptions, std::move(callback), param1, param2, param3, param4, param5);
@@ -964,6 +974,8 @@ void ExtraServiceAsyncClient::oneway_void_ret_i32_i32_i32_i32_i32_param(folly::F
   oneway_void_ret_i32_i32_i32_i32_i32_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1, param2, param3, param4, param5);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2) {
   ::apache::thrift::RpcOptions rpcOptions;
   oneway_void_ret_map_setlist_param(rpcOptions, std::move(callback), param1, param2);
@@ -1052,6 +1064,8 @@ void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_param(folly::Function<
   oneway_void_ret_map_setlist_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1, param2);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 void ExtraServiceAsyncClient::oneway_void_ret_struct_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& param1) {
   ::apache::thrift::RpcOptions rpcOptions;
   oneway_void_ret_struct_param(rpcOptions, std::move(callback), param1);
@@ -1140,6 +1154,8 @@ void ExtraServiceAsyncClient::oneway_void_ret_struct_param(folly::Function<void 
   oneway_void_ret_struct_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 void ExtraServiceAsyncClient::oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& param1) {
   ::apache::thrift::RpcOptions rpcOptions;
   oneway_void_ret_listunion_param(rpcOptions, std::move(callback), param1);
@@ -1228,4 +1244,6 @@ void ExtraServiceAsyncClient::oneway_void_ret_listunion_param(folly::Function<vo
   oneway_void_ret_listunion_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
 }} // extra::svc
