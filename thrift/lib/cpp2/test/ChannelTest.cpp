@@ -20,6 +20,7 @@
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
+#include <folly/io/async/AsyncSSLSocket.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTimeout.h>
 #include <folly/io/async/AsyncTransport.h>
@@ -165,8 +166,8 @@ class SocketPairTest {
           clientCtx, &eventBase_, socketPair.extractNetworkSocket0(), false);
       socket1_ = TAsyncSSLSocket::newSocket(
           serverCtx, &eventBase_, socketPair.extractNetworkSocket1(), true);
-      dynamic_cast<TAsyncSSLSocket*>(socket0_.get())->sslConn(nullptr);
-      dynamic_cast<TAsyncSSLSocket*>(socket1_.get())->sslAccept(nullptr);
+      dynamic_cast<folly::AsyncSSLSocket*>(socket0_.get())->sslConn(nullptr);
+      dynamic_cast<folly::AsyncSSLSocket*>(socket1_.get())->sslAccept(nullptr);
     } else {
       socket0_ = folly::AsyncSocket::newSocket(
           &eventBase_, socketPair.extractNetworkSocket0());
@@ -1099,8 +1100,7 @@ TEST(Channel, ClientCloseOnErrorTest) {
 class DestroyAsyncTransport : public folly::AsyncTransport {
  public:
   DestroyAsyncTransport() : cb_(nullptr) {}
-  void setReadCB(
-      folly::AsyncTransport::ReadCallback* callback) override {
+  void setReadCB(folly::AsyncTransport::ReadCallback* callback) override {
     cb_ = callback;
   }
   ReadCallback* getReadCallback() const override {
