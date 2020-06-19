@@ -31,6 +31,8 @@ cdef extern from "thrift/lib/cpp2/async/ClientBufferedStream.h" namespace "::apa
 cdef extern from "thrift/lib/cpp2/async/ServerStream.h" namespace "::apache::thrift":
     cdef cppclass cServerStream "::apache::thrift::ServerStream"[T]:
         cServerStream()
+        @staticmethod
+        cServerStream[T] createEmpty()
 
     cdef cppclass cResponseAndServerStream "::apache::thrift::ResponseAndServerStream"[R, S]:
         R response
@@ -42,6 +44,7 @@ cdef extern from "thrift/lib/py3/stream.h" namespace "::thrift::py3":
         cClientBufferedStreamWrapper() except +
         cClientBufferedStreamWrapper(cClientBufferedStream[T]&, int buffer_size) except +
         cFollyCoroTask[cOptional[T]] getNext()
+    cResponseAndServerStream[R, S] createEmptyResponseAndServerStream[R, S]()
 
 
 cdef class ClientBufferedStream:

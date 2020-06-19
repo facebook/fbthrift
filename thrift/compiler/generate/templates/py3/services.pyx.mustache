@@ -65,7 +65,7 @@ import folly.iobuf as __iobuf
 from folly.iobuf cimport move as move_iobuf
 
 {{#program:has_stream?}}
-from thrift.py3.stream cimport cServerStream, cResponseAndServerStream
+from thrift.py3.stream cimport cServerStream, cResponseAndServerStream, createEmptyResponseAndServerStream
 {{/program:has_stream?}}
 cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types as _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types
 import {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types as _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types

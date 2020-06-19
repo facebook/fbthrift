@@ -44,7 +44,7 @@ cimport folly.iobuf as __iobuf
 import folly.iobuf as __iobuf
 from folly.iobuf cimport move as move_iobuf
 
-from thrift.py3.stream cimport cServerStream, cResponseAndServerStream
+from thrift.py3.stream cimport cServerStream, cResponseAndServerStream, createEmptyResponseAndServerStream
 cimport module.types as _module_types
 import module.types as _module_types
 
@@ -200,7 +200,7 @@ async def PubSubStreamingService_returnstream_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(cServerStream[cint32_t]() # server streaming support is not implemented yet
+        promise.cPromise.setValue(cServerStream[cint32_t].createEmpty() # server streaming support is not implemented yet
 )
 
 cdef api void call_cy_PubSubStreamingService_streamthrows(
@@ -253,7 +253,7 @@ async def PubSubStreamingService_streamthrows_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(cServerStream[cint32_t]() # server streaming support is not implemented yet
+        promise.cPromise.setValue(cServerStream[cint32_t].createEmpty() # server streaming support is not implemented yet
 )
 
 cdef api void call_cy_PubSubStreamingService_boththrows(
@@ -308,7 +308,7 @@ async def PubSubStreamingService_boththrows_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(cServerStream[cint32_t]() # server streaming support is not implemented yet
+        promise.cPromise.setValue(cServerStream[cint32_t].createEmpty() # server streaming support is not implemented yet
 )
 
 cdef api void call_cy_PubSubStreamingService_responseandstreamthrows(
@@ -363,6 +363,6 @@ async def PubSubStreamingService_responseandstreamthrows_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(cResponseAndServerStream[cint32_t,cint32_t]() # server streaming support is not implemented yet
+        promise.cPromise.setValue(createEmptyResponseAndServerStream[cint32_t,cint32_t]() # server streaming support is not implemented yet
 )
 

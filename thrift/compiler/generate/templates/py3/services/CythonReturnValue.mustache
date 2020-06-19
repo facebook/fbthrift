@@ -58,7 +58,14 @@ to the client.
   }}{{^program:stack_arguments?}}){{/program:stack_arguments?}}{{!
 }}{{/type:struct}}{{!
 }}{{#type:streamresponse?}}{{!
-    }}{{> services/CythonReturnTypeCppType}}() # server streaming support is not implemented yet
+  }}{{#type:streamHasFirstResponse?}}createEmptyResponseAndServerStream[{{!
+  }}{{#type:streamFirstResponseType}}{{ >types/CythonCppType}}{{/type:streamFirstResponseType}},{{!
+  }}{{#type:streamElemType}}{{ >types/CythonCppType}}{{/type:streamElemType}}]{{!
+  }}{{/type:streamHasFirstResponse?}}{{!
+  }}{{^type:streamHasFirstResponse?}}cServerStream[{{!
+  }}{{#type:streamElemType}}{{ >types/CythonCppType}}{{/type:streamElemType}}].createEmpty{{!
+  }}{{/type:streamHasFirstResponse?}}{{!
+  }}() # server streaming support is not implemented yet
 {{/type:streamresponse?}}{{!
 }}{{#type:container?}}{{!
   }}{{^program:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/program:stack_arguments?}}{{!

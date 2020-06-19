@@ -22,6 +22,7 @@
 
 #include <folly/python/async_generator.h>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
+#include <thrift/lib/cpp2/async/ServerStream.h>
 
 namespace thrift {
 namespace py3 {
@@ -45,6 +46,12 @@ class ClientBufferedStreamWrapper {
  private:
   folly::python::AsyncGeneratorWrapper<T&&> gen_;
 };
+
+template <typename Response, typename StreamElement>
+apache::thrift::ResponseAndServerStream<Response, StreamElement>
+createEmptyResponseAndServerStream() {
+  return {{}, apache::thrift::ServerStream<StreamElement>::createEmpty()};
+}
 
 } // namespace py3
 } // namespace thrift
