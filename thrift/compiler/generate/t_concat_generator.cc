@@ -64,19 +64,23 @@ void t_concat_generator::generate_program() {
     generate_typedef(*td_iter);
   }
 
+  // Validate unions
+  vector<t_struct*>::iterator o_iter;
+  for (o_iter = objects.begin(); o_iter != objects.end(); ++o_iter) {
+    if ((*o_iter)->is_union()) {
+      validate_union_members(*o_iter);
+    }
+  }
+
   // Generate constants
   vector<t_const*> consts = program_->get_consts();
   generate_consts(consts);
 
   // Generate structs, exceptions, and unions in declared order
-  vector<t_struct*>::iterator o_iter;
   for (o_iter = objects.begin(); o_iter != objects.end(); ++o_iter) {
     if ((*o_iter)->is_xception()) {
       generate_xception(*o_iter);
     } else {
-      if ((*o_iter)->is_union()) {
-        validate_union_members(*o_iter);
-      }
       generate_struct(*o_iter);
     }
   }

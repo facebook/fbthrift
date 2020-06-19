@@ -115,7 +115,8 @@ class t_go_generator : public t_concat_generator {
   std::string render_const_value(
       t_type* type,
       const t_const_value* value,
-      const string& name);
+      const string& name,
+      bool is_optional = false);
 
   /**
    * Struct generation code
@@ -348,6 +349,7 @@ class t_go_generator : public t_concat_generator {
   std::string f_types_name_;
   std::ofstream f_consts_;
   std::string f_consts_name_;
+  std::ostringstream f_const_vars_;
   std::stringstream f_const_values_;
   std::ofstream f_service_;
 
@@ -913,6 +915,7 @@ string t_go_generator::go_imports_end() {
  */
 void t_go_generator::close_generator() {
   f_const_values_ << "}" << endl << endl;
+  f_consts_ << f_const_vars_.str();
   f_consts_ << f_const_values_.str();
 
   // Close types and constants files
@@ -1077,7 +1080,8 @@ void t_go_generator::generate_const(t_const* tconst) {
 string t_go_generator::render_const_value(
     t_type* type,
     const t_const_value* value,
-    const string& name) {
+    const string& name,
+    bool is_optional) {
   type = type->get_true_type();
   std::ostringstream out;
 
@@ -1099,18 +1103,37 @@ string t_go_generator::render_const_value(
       case t_base_type::TYPE_I16:
       case t_base_type::TYPE_I32:
       case t_base_type::TYPE_I64:
-        out << value->get_integer();
+        if (is_optional) {
+          f_const_vars_ << "var const_lit_" << name << " "
+                        << type_to_go_type(type) << " = "
+                        << value->get_integer() << endl;
+          out << "&const_lit_" << name;
+        } else {
+          out << value->get_integer();
+        }
         break;
 
       case t_base_type::TYPE_DOUBLE:
-      case t_base_type::TYPE_FLOAT:
+      case t_base_type::TYPE_FLOAT: {
+        if (is_optional) {
+          f_const_vars_ << "var const_lit_" << name << " "
+                        << type_to_go_type(type) << " = ";
+        }
+
+        std::ostringstream& value_out = (is_optional ? f_const_vars_ : out);
         if (value->get_type() == t_const_value::CV_INTEGER) {
-          out << value->get_integer();
+          value_out << value->get_integer();
         } else {
-          out << value->get_double();
+          value_out << value->get_double();
+        }
+
+        if (is_optional) {
+          f_const_vars_ << endl;
+          out << "&const_lit_" << name;
         }
 
         break;
+      }
 
       default:
         throw "compiler error: no const of base type " +
@@ -1127,12 +1150,23 @@ string t_go_generator::render_const_value(
     const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
     vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
 
+    if (((t_struct*)type)->is_union()) {
+      for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
+        (*f_iter)->set_req(t_field::T_OPTIONAL);
+      }
+    }
+
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
       t_type* field_type = nullptr;
+      bool is_field_optional = false;
+      string field_name;
 
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
+          field_name = name + "_" + (*f_iter)->get_name();
           field_type = (*f_iter)->get_type();
+          is_field_optional = ((*f_iter)->get_req() == t_field::T_OPTIONAL);
+          break;
         }
       }
 
@@ -1142,8 +1176,9 @@ string t_go_generator::render_const_value(
       }
 
       out << indent() << publicize(v_iter->first->get_string()) << ": "
-          << render_const_value(field_type, v_iter->second, name) << ","
-          << endl;
+          << render_const_value(
+                 field_type, v_iter->second, field_name, is_field_optional)
+          << "," << endl;
     }
     indent_down();
     out << indent() << "}";

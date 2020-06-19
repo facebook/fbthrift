@@ -73,6 +73,14 @@ var EmptyIntIntMap map[int32]int32
 var EmptyIntStringMap map[int32]string
 var EmptyStringIntMap map[string]int32
 var EmptyStringStringMap map[string]string
+var const_lit_Pod_4_b float64 = 0.333
+var const_lit_Pod_4_c int8 = 25
+var const_lit_U_1_1_i int32 = 97
+var const_lit_U_1_2_d float64 = 5.6
+var const_lit_U_2_1_i int32 = 51
+var const_lit_U_2_2_d float64 = 6.7
+var const_lit_U_2_4_u_i int32 = 43
+var const_lit_U_2_5_u_d float64 = 9.8
 
 func init() {
 States = []map[string]int32{
@@ -186,27 +194,27 @@ Pod_3 = &Struct3{
 
 Pod_4 = &Struct4{
   A: 1234,
-  B: 0.333,
-  C: 25,
+  B: &const_lit_Pod_4_b,
+  C: &const_lit_Pod_4_c,
 }
 
 U_1_1 = &Union1{
-  I: 97,
+  I: &const_lit_U_1_1_i,
 }
 
 U_1_2 = &Union1{
-  D: 5.6,
+  D: &const_lit_U_1_2_d,
 }
 
 U_1_3 = &Union1{
 }
 
 U_2_1 = &Union2{
-  I: 51,
+  I: &const_lit_U_2_1_i,
 }
 
 U_2_2 = &Union2{
-  D: 6.7,
+  D: &const_lit_U_2_2_d,
 }
 
 U_2_3 = &Union2{
@@ -218,13 +226,13 @@ U_2_3 = &Union2{
 
 U_2_4 = &Union2{
   U: &Union1{
-    I: 43,
+    I: &const_lit_U_2_4_u_i,
   },
 }
 
 U_2_5 = &Union2{
   U: &Union1{
-    D: 9.8,
+    D: &const_lit_U_2_5_u_d,
   },
 }
 
