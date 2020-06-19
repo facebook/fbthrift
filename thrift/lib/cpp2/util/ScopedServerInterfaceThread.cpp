@@ -41,6 +41,11 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
   ts->setProcessorFactory(move(apf));
   ts->setNumIOWorkerThreads(1);
   ts->setThreadManager(tm);
+  // The default behavior is to keep N recent requests per IO worker in memory.
+  // In unit-tests, this defers memory reclamation and potentially masks
+  // use-after-free bugs. Because this facility is used mostly in tests, it is
+  // better not to keep any recent requests in memory.
+  ts->setMaxFinishedDebugPayloadsPerWorker(0);
   if (configCb) {
     configCb(*ts);
   }
