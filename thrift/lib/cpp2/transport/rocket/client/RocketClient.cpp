@@ -653,17 +653,14 @@ void RocketClient::sendRequestStreamChannel(
       };
 
       auto writeCompleted = ctx_.waitForWriteToCompleteResult();
-      if (writeCompleted.hasException()) {
-        // Look up the stream in the map again. It may have already been erased,
-        // e.g., by closeNow() or an error frame that arrived before this fiber
-        // had a chance to resume, and we must guarantee that onInitialError()
-        // is not called more than once.
-        if (client_.streamExists(streamId_)) {
-          return serverCallback_.onInitialError(
-              std::move(writeCompleted.exception()));
-        }
+      // If the write failed, check that the stream has not already received the
+      // first response. The writeErr() callback for a batch of requests may
+      // fire after the initial payload/error has already been processed.
+      if (writeCompleted.hasException() &&
+          client_.firstResponseTimeouts_.count(streamId_)) {
+        return serverCallback_.onInitialError(
+            std::move(writeCompleted.exception()));
       }
-
       complete_ = true;
     }
 

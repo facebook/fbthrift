@@ -73,6 +73,6 @@ service TestService {
   i32 processHeader()
   IOBufPtr echoIOBuf(1: IOBuf buf)
   oneway void noResponseIOBuf(1: IOBuf buf)
-  stream<byte> echoIOBufAsByteStream(1: IOBuf buf)
+  stream<byte> echoIOBufAsByteStream(1: IOBuf buf, 2: i32 delayMs)
   void throwsHandlerException();
 }

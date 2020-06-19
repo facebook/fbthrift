@@ -72,14 +72,21 @@ class Handler : public test::TestServiceSvIf {
   }
 
   ServerStream<int8_t> echoIOBufAsByteStream(
-      std::unique_ptr<folly::IOBuf> iobuf) final {
+      std::unique_ptr<folly::IOBuf> iobuf,
+      int32_t delayMs) final {
     auto [stream, publisher] = ServerStream<int8_t>::createPublisher();
-    folly::io::Cursor cursor(iobuf.get());
-    int8_t byte;
-    while (cursor.tryRead(byte)) {
-      publisher.next(byte);
-    }
-    std::move(publisher).complete();
+    std::ignore = folly::makeSemiFuture()
+                      .delayed(std::chrono::milliseconds(delayMs))
+                      .via(getThreadManager())
+                      .thenValue([publisher = std::move(publisher),
+                                  iobuf = std::move(iobuf)](auto&&) mutable {
+                        folly::io::Cursor cursor(iobuf.get());
+                        int8_t byte;
+                        while (cursor.tryRead(byte)) {
+                          publisher.next(byte);
+                        }
+                        std::move(publisher).complete();
+                      });
     return std::move(stream);
   }
 
@@ -256,19 +263,21 @@ class SlowWritingSocket : public folly::AsyncSocket {
 
     std::unique_ptr<folly::IOBuf> writeNow;
     folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+    queue.append(std::move(buf));
     if (bytesRemainingBeforeDelayingWrites_ != 0) {
-      queue.append(std::move(buf));
       writeNow = queue.splitAtMost(bytesRemainingBeforeDelayingWrites_);
       bytesRemainingBeforeDelayingWrites_ -= writeNow->computeChainDataLength();
-    } else {
-      writeNow = std::move(buf);
     }
 
     if (!queue.empty()) {
       bufferedWrites_.emplace_back(
-          queue.move(), callback, writeNow->computeChainDataLength());
-      folly::AsyncSocket::writeChain(nullptr, std::move(writeNow), flags);
-    } else {
+          queue.move(),
+          callback,
+          writeNow ? writeNow->computeChainDataLength() : 0);
+      if (writeNow) {
+        folly::AsyncSocket::writeChain(nullptr, std::move(writeNow), flags);
+      }
+    } else if (!writeNow->empty()) {
       folly::AsyncSocket::writeChain(callback, std::move(writeNow), flags);
     }
   }
@@ -347,7 +356,9 @@ folly::SemiFuture<ClientBufferedStream<int8_t>> echoIOBufAsByteStreamSync(
   return fm.addTaskFuture([&, nbytes] {
     auto iobuf = folly::IOBuf::copyBuffer(std::string(nbytes, 'x'));
     return client.sync_echoIOBufAsByteStream(
-        RpcOptions().setTimeout(std::chrono::seconds(30)), *iobuf);
+        RpcOptions().setTimeout(std::chrono::seconds(30)),
+        *iobuf,
+        0 /* delayMs */);
   });
 }
 
@@ -357,7 +368,8 @@ folly::SemiFuture<ClientBufferedStream<int8_t>> echoIOBufAsByteStreamSemiFuture(
   return folly::makeSemiFutureWith([&] {
     auto iobuf = folly::IOBuf::copyBuffer(std::string(nbytes, 'x'));
     auto options = RpcOptions().setTimeout(std::chrono::seconds(30));
-    return client.semifuture_echoIOBufAsByteStream(options, *iobuf);
+    return client.semifuture_echoIOBufAsByteStream(
+        options, *iobuf, 0 /* delayMs */);
   });
 }
 } // namespace
@@ -630,4 +642,55 @@ TEST_F(RocketClientChannelTest, FailLastRequestInBatchSemiFuture) {
 TEST_F(RocketClientChannelTest, FailLastRequestWithZeroBytesWrittenSemiFuture) {
   doFailLastRequestsInBatchSemiFuture(
       runner_.getAddress(), folly::Optional<size_t>(0));
+}
+
+TEST_F(RocketClientChannelTest, StreamInitialResponseBeforeBatchedWriteFails) {
+  folly::EventBase evb;
+  auto* slowWritingSocket = new SlowWritingSocket(&evb, runner_.getAddress());
+  test::TestServiceAsyncClient client(RocketClientChannel::newChannel(
+      folly::AsyncSocket::UniquePtr(slowWritingSocket)));
+
+  // Ensure the first request is written completely to the socket quickly, but
+  // force the write for the whole batch of requests to fail.
+  slowWritingSocket->delayWritingAfterFirstNBytes(1000);
+
+  std::vector<folly::SemiFuture<folly::Unit>> futures;
+  auto sf = folly::makeSemiFuture()
+                .delayed(std::chrono::seconds(1))
+                .via(&evb)
+                .thenValue([&](auto&&) {
+                  slowWritingSocket->errorOutBufferedWrites(
+                      folly::Optional<size_t>(0));
+                });
+  futures.push_back(std::move(sf));
+
+  // Keep the stream alive on both client and server until the end of the test
+  std::optional<ClientBufferedStream<signed char>::Subscription> subscription;
+  sf = folly::makeSemiFutureWith([&] {
+         auto iobuf = folly::IOBuf::copyBuffer(std::string(25, 'x'));
+         auto options = RpcOptions().setTimeout(std::chrono::seconds(30));
+         return client.semifuture_echoIOBufAsByteStream(
+             options, *iobuf, 2000 /* delayMs */);
+       })
+           .via(&evb)
+           .thenTry([&](auto&& stream) {
+             subscription.emplace(
+                 std::move(*stream).subscribeExTry(&evb, [](auto&&) {}));
+           });
+  futures.push_back(std::move(sf));
+
+  // Include more requests in the write batch
+  for (size_t i = 0; i < 10; ++i) {
+    sf = echoSemiFuture(client, 1000).via(&evb).thenTry([&](auto&& response) {
+      EXPECT_TRUE(response.hasException());
+      EXPECT_TRUE(
+          response.exception()
+              .template is_compatible_with<transport::TTransportException>());
+    });
+    futures.push_back(std::move(sf));
+  }
+
+  folly::collectAllUnsafe(std::move(futures)).getVia(&evb);
+  subscription->cancel();
+  std::move(*subscription).join();
 }
