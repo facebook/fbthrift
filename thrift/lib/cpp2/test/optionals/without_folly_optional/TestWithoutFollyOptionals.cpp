@@ -348,3 +348,12 @@ TEST(TestWithoutFollyOptionals, Comparison) {
   EXPECT_GT(-1, obj.int64Opt_ref());
   EXPECT_GE(-1, obj.int64Opt_ref());
 }
+
+TEST(TestWithoutFollyOptionals, UnsetUnsafe) {
+  cpp2::HasOptionals obj;
+  EXPECT_FALSE(obj.int64Def_ref().has_value());
+  obj.int64Def_ref() = 1;
+  EXPECT_TRUE(obj.int64Def_ref().has_value());
+  detail::unset_unsafe(obj.int64Def_ref());
+  EXPECT_FALSE(obj.int64Def_ref().has_value());
+}

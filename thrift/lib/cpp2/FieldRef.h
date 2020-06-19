@@ -40,6 +40,7 @@ using is_set_t = std::conditional_t<std::is_const<T>::value, const bool, bool>;
 [[noreturn]] void throw_on_bad_field_access();
 
 struct ensure_isset_unsafe_fn;
+struct unset_unsafe_fn;
 
 } // namespace detail
 
@@ -51,6 +52,7 @@ class field_ref {
 
   template <typename U>
   friend class field_ref;
+  friend struct detail::unset_unsafe_fn;
 
  public:
   using value_type = std::remove_reference_t<T>;
@@ -565,6 +567,15 @@ struct ensure_isset_unsafe_fn {
     ref.is_set_ = true;
   }
 };
+
+struct unset_unsafe_fn {
+  template <typename T>
+  void operator()(field_ref<T> ref) const noexcept {
+    ref.is_set_ = false;
+  }
+};
+
+constexpr unset_unsafe_fn unset_unsafe;
 
 } // namespace detail
 
