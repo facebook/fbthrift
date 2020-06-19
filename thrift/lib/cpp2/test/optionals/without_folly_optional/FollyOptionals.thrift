@@ -17,36 +17,50 @@
 enum HasOptionalsTestEnum {
   FOO = 1,
   BAR = 2,
+  BAZ = 3,
 }
 
 struct HasOptionalsExtra {
-  1: i64 extraInt64Req;
-  2: optional i64 extraInt64Opt;
-  3: string extraStringReq;
-  4: optional string extraStringOpt;
-  5: set<i64> extraSetReq;
-  6: optional set<i64> extraSetOpt;
-  7: list<i64> extraListReq;
-  8: optional list<i64> extraListOpt;
-  9: map<i64, i64> extraMapReq;
-  10: optional map<i64, i64> extraMapOpt;
-  11: HasOptionalsTestEnum extraEnumReq;
-  12: optional HasOptionalsTestEnum extraEnumOpt;
+  1: i64 extraInt64Def;
+  2: required i64 extraInt64Req;
+  3: optional i64 extraInt64Opt;
+  4: string extraStringDef;
+  5: required string extraStringReq;
+  6: optional string extraStringOpt;
+  7: set<i64> extraSetDef;
+  8: required set<i64> extraSetReq;
+  9: optional set<i64> extraSetOpt;
+  10: list<i64> extraListDef;
+  11: required list<i64> extraListReq;
+  12: optional list<i64> extraListOpt;
+  13: map<i64, i64> extraMapDef;
+  14: required map<i64, i64> extraMapReq;
+  15: optional map<i64, i64> extraMapOpt;
+  16: HasOptionalsTestEnum extraEnumDef;
+  17: required HasOptionalsTestEnum extraEnumReq;
+  18: optional HasOptionalsTestEnum extraEnumOpt;
 }
 
 struct HasOptionals {
-  1: i64 int64Req;
-  2: optional i64 int64Opt;
-  3: string stringReq;
-  4: optional string stringOpt;
-  5: set<i64> setReq;
-  6: optional set<i64> setOpt;
-  7: list<i64> listReq;
-  8: optional list<i64> listOpt;
-  9: map<i64, i64> mapReq;
-  10: optional map<i64, i64> mapOpt;
-  11: HasOptionalsTestEnum enumReq;
-  12: optional HasOptionalsTestEnum enumOpt;
-  13: HasOptionalsExtra structReq;
-  14: optional HasOptionalsExtra structOpt;
+  1: i64 int64Def;
+  2: required i64 int64Req;
+  3: optional i64 int64Opt;
+  4: string stringDef;
+  5: required string stringReq;
+  6: optional string stringOpt;
+  7: set<i64> setDef;
+  8: required set<i64> setReq;
+  9: optional set<i64> setOpt;
+  10: list<i64> listDef;
+  11: required list<i64> listReq;
+  12: optional list<i64> listOpt;
+  13: map<i64, i64> mapDef;
+  14: required map<i64, i64> mapReq;
+  15: optional map<i64, i64> mapOpt;
+  16: HasOptionalsTestEnum enumDef;
+  17: required HasOptionalsTestEnum enumReq;
+  18: optional HasOptionalsTestEnum enumOpt;
+  19: HasOptionalsExtra structDef;
+  20: required HasOptionalsExtra structReq;
+  21: optional HasOptionalsExtra structOpt;
 }

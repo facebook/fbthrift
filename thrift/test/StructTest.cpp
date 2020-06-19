@@ -120,6 +120,23 @@ TEST_F(StructTest, equal_to) {
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
   }
+  {
+    Basic a;
+    Basic b;
+
+    a.req_field_ref() = 3;
+    b.req_field_ref() = 3;
+    EXPECT_TRUE(op(a, b));
+    EXPECT_TRUE(op(b, a));
+
+    a.req_field_ref() = 4;
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    b.req_field_ref() = 4;
+    EXPECT_TRUE(op(a, b));
+    EXPECT_TRUE(op(b, a));
+  }
 }
 
 // currently, binary fields are handled specially, so they get their own tests
@@ -188,6 +205,23 @@ TEST_F(StructTest, equal_to_binary) {
     EXPECT_FALSE(op(b, a));
 
     b.req_field = "world";
+    EXPECT_TRUE(op(a, b));
+    EXPECT_TRUE(op(b, a));
+  }
+  {
+    BasicBinaries a;
+    BasicBinaries b;
+
+    a.req_field_ref() = "hello";
+    b.req_field_ref() = "hello";
+    EXPECT_TRUE(op(a, b));
+    EXPECT_TRUE(op(b, a));
+
+    a.req_field_ref() = "world";
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    b.req_field_ref() = "world";
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
   }
@@ -323,6 +357,23 @@ TEST_F(StructTest, less) {
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
   }
+  {
+    Basic a;
+    Basic b;
+
+    b.req_field_ref() = 3;
+    a.req_field_ref() = 3;
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    b.req_field_ref() = 4;
+    EXPECT_TRUE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    a.req_field_ref() = 4;
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+  }
 }
 
 // currently, binary fields are handled specially, so they get their own tests
@@ -391,6 +442,23 @@ TEST_F(StructTest, less_binary) {
     EXPECT_FALSE(op(b, a));
 
     a.req_field = "world";
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+  }
+  {
+    BasicBinaries a;
+    BasicBinaries b;
+
+    b.req_field_ref() = "hello";
+    a.req_field_ref() = "hello";
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    b.req_field_ref() = "world";
+    EXPECT_TRUE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    a.req_field_ref() = "world";
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
   }

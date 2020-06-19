@@ -1551,6 +1551,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     return {std::move(MyBinaryField2), __isset.MyBinaryField2};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto MyBinaryField3_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->MyBinaryField3};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto MyBinaryField3_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->MyBinaryField3)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto MyBinaryField3_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->MyBinaryField3};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto MyBinaryField3_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->MyBinaryField3)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::std::string>>
@@ -3630,6 +3649,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     return {std::move(this->code), __isset.code};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto req_code_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->req_code};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto req_code_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_code)};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto req_code_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->req_code};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto req_code_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_code)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
@@ -3652,6 +3690,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     return {std::move(this->message2), __isset.message2};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto req_message_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->req_message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto req_message_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_message)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto req_message_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->req_message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto req_message_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_message)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<int32_t>>
@@ -3718,6 +3775,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     return {std::move(this->exception_map), __isset.exception_map};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  FOLLY_ERASE auto req_exception_map_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->req_exception_map};
+  }
+
+  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  FOLLY_ERASE auto req_exception_map_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_exception_map)};
+  }
+
+  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  FOLLY_ERASE auto req_exception_map_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->req_exception_map};
+  }
+
+  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  FOLLY_ERASE auto req_exception_map_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_exception_map)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::some::valid::ns::MyEnumA>
@@ -4135,6 +4211,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     return {std::move(this->code), __isset.code};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto req_code_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->req_code};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto req_code_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_code)};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto req_code_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->req_code};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto req_code_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_code)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
@@ -4404,6 +4499,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     return {std::move(this->fieldA), __isset.fieldA};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  template <typename..., typename T = bool>
+  FOLLY_ERASE auto req_fieldA_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->req_fieldA};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE auto req_fieldA_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldA)};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE auto req_fieldA_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->req_fieldA};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE auto req_fieldA_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldA)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const bool&> opt_fieldA_ref() const& {
@@ -4444,6 +4558,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     return {std::move(this->fieldB), __isset.fieldB};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  template <typename..., typename T = ::std::map<::std::string, bool>>
+  FOLLY_ERASE auto req_fieldB_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->req_fieldB};
+  }
+
+  template <typename..., typename T = ::std::map<::std::string, bool>>
+  FOLLY_ERASE auto req_fieldB_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldB)};
+  }
+
+  template <typename..., typename T = ::std::map<::std::string, bool>>
+  FOLLY_ERASE auto req_fieldB_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->req_fieldB};
+  }
+
+  template <typename..., typename T = ::std::map<::std::string, bool>>
+  FOLLY_ERASE auto req_fieldB_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldB)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::map<::std::string, bool>&> opt_fieldB_ref() const& {
@@ -4484,6 +4617,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     return {std::move(this->fieldC), __isset.fieldC};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  template <typename..., typename T = ::std::set<int32_t>>
+  FOLLY_ERASE auto req_fieldC_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->req_fieldC};
+  }
+
+  template <typename..., typename T = ::std::set<int32_t>>
+  FOLLY_ERASE auto req_fieldC_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldC)};
+  }
+
+  template <typename..., typename T = ::std::set<int32_t>>
+  FOLLY_ERASE auto req_fieldC_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->req_fieldC};
+  }
+
+  template <typename..., typename T = ::std::set<int32_t>>
+  FOLLY_ERASE auto req_fieldC_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldC)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::set<int32_t>&> opt_fieldC_ref() const& {
@@ -4546,6 +4698,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     return {std::move(this->fieldE), __isset.fieldE};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto req_fieldE_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->req_fieldE};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto req_fieldE_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldE)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto req_fieldE_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->req_fieldE};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto req_fieldE_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldE)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> opt_fieldE_ref() const& {
@@ -4850,6 +5021,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     return {std::move(this->fieldR), __isset.fieldR};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  FOLLY_ERASE auto req_fieldR_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->req_fieldR};
+  }
+
+  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  FOLLY_ERASE auto req_fieldR_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldR)};
+  }
+
+  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  FOLLY_ERASE auto req_fieldR_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->req_fieldR};
+  }
+
+  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  FOLLY_ERASE auto req_fieldR_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldR)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::some::valid::ns::MyEnumA&> opt_fieldR_ref() const& {
@@ -4956,6 +5146,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     return {std::move(this->fieldV), __isset.fieldV};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  FOLLY_ERASE auto req_fieldV_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->req_fieldV};
+  }
+
+  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  FOLLY_ERASE auto req_fieldV_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldV)};
+  }
+
+  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  FOLLY_ERASE auto req_fieldV_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->req_fieldV};
+  }
+
+  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  FOLLY_ERASE auto req_fieldV_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldV)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::some::valid::ns::MyStruct&> opt_fieldV_ref() const& {
@@ -5018,6 +5227,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     return {std::move(this->fieldX), __isset.fieldX};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  template <typename..., typename T =  ::some::valid::ns::ComplexUnion>
+  FOLLY_ERASE auto req_fieldX_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->req_fieldX};
+  }
+
+  template <typename..., typename T =  ::some::valid::ns::ComplexUnion>
+  FOLLY_ERASE auto req_fieldX_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldX)};
+  }
+
+  template <typename..., typename T =  ::some::valid::ns::ComplexUnion>
+  FOLLY_ERASE auto req_fieldX_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->req_fieldX};
+  }
+
+  template <typename..., typename T =  ::some::valid::ns::ComplexUnion>
+  FOLLY_ERASE auto req_fieldX_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldX)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::some::valid::ns::ComplexUnion&> opt_fieldX_ref() const& {
@@ -5863,6 +6091,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     return {std::move(this->MyIncludedStruct), __isset.MyIncludedStruct};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  template <typename..., typename T =  ::some::valid::ns::AStruct>
+  FOLLY_ERASE auto ARequiredField_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->ARequiredField};
+  }
+
+  template <typename..., typename T =  ::some::valid::ns::AStruct>
+  FOLLY_ERASE auto ARequiredField_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->ARequiredField)};
+  }
+
+  template <typename..., typename T =  ::some::valid::ns::AStruct>
+  FOLLY_ERASE auto ARequiredField_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->ARequiredField};
+  }
+
+  template <typename..., typename T =  ::some::valid::ns::AStruct>
+  FOLLY_ERASE auto ARequiredField_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->ARequiredField)};
+  }
 
    ::a::different::ns::IncludedInt64 get_MyIncludedInt() const {
     return MyIncludedInt;
@@ -7312,6 +7559,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  public:
   bool operator==(const AllRequiredNoExceptMoveCtrStruct& rhs) const;
   bool operator<(const AllRequiredNoExceptMoveCtrStruct& rhs) const;
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE auto intField_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->intField};
+  }
+
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE auto intField_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->intField)};
+  }
+
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE auto intField_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->intField};
+  }
+
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE auto intField_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->intField)};
+  }
 
   int64_t get_intField() const {
     return intField;

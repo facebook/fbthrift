@@ -96,6 +96,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   } __isset = {};
   bool operator==(const BasicTypes& rhs) const;
   bool operator<(const BasicTypes& rhs) const;
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto first_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->first};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto first_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->first)};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto first_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->first};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto first_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->first)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const int32_t&> second_ref() const& {

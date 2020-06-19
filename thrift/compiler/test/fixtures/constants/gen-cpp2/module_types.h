@@ -319,6 +319,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   } __isset = {};
   bool operator==(const Internship& rhs) const;
   bool operator<(const Internship& rhs) const;
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto weeks_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->weeks};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto weeks_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->weeks)};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto weeks_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->weeks};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto weeks_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->weeks)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
@@ -458,6 +477,44 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  public:
   bool operator==(const Range& rhs) const;
   bool operator<(const Range& rhs) const;
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto min_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->min};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto min_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->min)};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto min_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->min};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto min_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->min)};
+  }
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto max_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->max};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto max_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->max)};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto max_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->max};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto max_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->max)};
+  }
 
   int32_t get_min() const {
     return min;

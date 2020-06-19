@@ -56,22 +56,48 @@ TEST(TestWithoutFollyOptionals, SerDesTests) {
   obj1.__clear();
   obj2.__clear();
 
-  // first try with only the required fields, leave all optionals empty
-  obj1.int64Req = 42;
-  obj1.stringReq = "hello";
-  obj1.setReq = std::set<int64_t>{10, 20, 30};
-  obj1.listReq = std::vector<int64_t>{40, 50, 60};
-  obj1.mapReq = std::map<int64_t, int64_t>{{100, 101}, {102, 103}};
-  obj1.enumReq = cpp2::HasOptionalsTestEnum::FOO;
-  obj1.structReq = cpp2::HasOptionalsExtra();
-  obj1.structReq.__clear();
-  obj1.structReq.extraInt64Req = 69;
-  obj1.structReq.extraStringReq = "world";
-  obj1.structReq.extraSetReq = std::set<int64_t>{210, 220, 230};
-  obj1.structReq.extraListReq = std::vector<int64_t>{240, 250, 260};
-  obj1.structReq.extraMapReq =
+  // first try with only the default fields, leave all optionals empty
+  obj1.int64Def_ref() = 42;
+  obj1.stringDef_ref() = "hello";
+  obj1.setDef_ref() = std::set<int64_t>{10, 20, 30};
+  obj1.listDef_ref() = std::vector<int64_t>{40, 50, 60};
+  obj1.mapDef_ref() = std::map<int64_t, int64_t>{{100, 101}, {102, 103}};
+  obj1.enumDef_ref() = cpp2::HasOptionalsTestEnum::FOO;
+  obj1.structDef_ref() = cpp2::HasOptionalsExtra();
+  obj1.structDef_ref()->__clear();
+  obj1.structDef_ref()->extraInt64Def_ref() = 69;
+  obj1.structDef_ref()->extraStringDef_ref() = "world";
+  obj1.structDef_ref()->extraSetDef_ref() = std::set<int64_t>{210, 220, 230};
+  obj1.structDef_ref()->extraListDef_ref() =
+      std::vector<int64_t>{240, 250, 260};
+  obj1.structDef_ref()->extraMapDef_ref() =
       std::map<int64_t, int64_t>{{1000, 1001}, {1002, 1003}};
-  obj1.structReq.extraEnumReq = cpp2::HasOptionalsTestEnum::BAR;
+  obj1.structDef_ref()->extraEnumDef_ref() = cpp2::HasOptionalsTestEnum::BAR;
+  json1 = objToJSON(obj1);
+
+  obj2 = jsonToObj<cpp2::HasOptionals>(json1);
+
+  EXPECT_EQ(obj1, obj2);
+  json2 = objToJSON(obj2);
+  EXPECT_EQ(json1, json2);
+
+  // Then try with the required fields, leave all optionals empty
+  obj1.int64Req_ref() = 42;
+  obj1.stringReq_ref() = "helloREQUIRED";
+  obj1.setReq_ref() = std::set<int64_t>{10, 20, 30};
+  obj1.listReq_ref() = std::vector<int64_t>{40, 50, 60};
+  obj1.mapReq_ref() = std::map<int64_t, int64_t>{{100, 101}, {102, 103}};
+  obj1.enumReq_ref() = cpp2::HasOptionalsTestEnum::FOO;
+  obj1.structReq_ref() = cpp2::HasOptionalsExtra();
+  obj1.structReq_ref()->__clear();
+  obj1.structReq_ref()->extraInt64Req_ref() = 69;
+  obj1.structReq_ref()->extraStringReq_ref() = "world";
+  obj1.structReq_ref()->extraSetReq_ref() = std::set<int64_t>{210, 220, 230};
+  obj1.structReq_ref()->extraListReq_ref() =
+      std::vector<int64_t>{240, 250, 260};
+  obj1.structReq_ref()->extraMapReq_ref() =
+      std::map<int64_t, int64_t>{{1000, 1001}, {1002, 1003}};
+  obj1.structReq_ref()->extraEnumReq_ref() = cpp2::HasOptionalsTestEnum::BAR;
   json1 = objToJSON(obj1);
 
   obj2 = jsonToObj<cpp2::HasOptionals>(json1);
@@ -136,58 +162,87 @@ TEST(TestWithoutFollyOptionals, EqualityTests) {
   // both completely empty
   EXPECT_EQ(obj1, obj2);
 
-  obj1.int64Req = 1;
-  obj2.int64Req = 1;
+  obj1.int64Def_ref() = 1;
+  obj2.int64Def_ref() = 1;
   EXPECT_EQ(obj1, obj2);
-  obj1.int64Opt_ref() = 2;
+  obj1.int64Req_ref() = 2;
   EXPECT_NE(obj1, obj2);
-  obj2.int64Opt_ref() = 2;
+  obj2.int64Req_ref() = 2;
+  EXPECT_EQ(obj1, obj2);
+  obj1.int64Opt_ref() = 3;
+  EXPECT_NE(obj1, obj2);
+  obj2.int64Opt_ref() = 3;
   EXPECT_EQ(obj1, obj2);
 
-  obj1.stringReq = "hello";
-  obj2.stringReq = "hello";
+  obj1.stringDef_ref() = "hello";
+  obj2.stringDef_ref() = "hello";
+  EXPECT_EQ(obj1, obj2);
+  obj1.stringReq_ref() = "foo";
+  EXPECT_NE(obj1, obj2);
+  obj2.stringReq_ref() = "foo";
   EXPECT_EQ(obj1, obj2);
   obj1.stringOpt_ref() = "world";
   EXPECT_NE(obj1, obj2);
   obj2.stringOpt_ref() = "world";
   EXPECT_EQ(obj1, obj2);
 
-  obj1.setReq = std::set<int64_t>{1, 2};
-  obj2.setReq = std::set<int64_t>{1, 2};
+  obj1.setDef_ref() = std::set<int64_t>{1, 2};
+  obj2.setDef_ref() = std::set<int64_t>{1, 2};
   EXPECT_EQ(obj1, obj2);
-  obj1.setOpt_ref() = std::set<int64_t>{3, 4};
+  obj1.setReq_ref() = std::set<int64_t>{3, 4};
   EXPECT_NE(obj1, obj2);
-  obj2.setOpt_ref() = std::set<int64_t>{3, 4};
+  obj2.setReq_ref() = std::set<int64_t>{3, 4};
+  EXPECT_EQ(obj1, obj2);
+  obj1.setOpt_ref() = std::set<int64_t>{5, 6};
+  EXPECT_NE(obj1, obj2);
+  obj2.setOpt_ref() = std::set<int64_t>{5, 6};
   EXPECT_EQ(obj1, obj2);
 
-  obj1.listReq = std::vector<int64_t>{5, 6};
-  obj2.listReq = std::vector<int64_t>{5, 6};
+  obj1.listDef_ref() = std::vector<int64_t>{7, 8};
+  obj2.listDef_ref() = std::vector<int64_t>{7, 8};
   EXPECT_EQ(obj1, obj2);
-  obj1.listOpt_ref() = std::vector<int64_t>{7, 8};
+  obj1.listReq_ref() = std::vector<int64_t>{9, 10};
   EXPECT_NE(obj1, obj2);
-  obj2.listOpt_ref() = std::vector<int64_t>{7, 8};
+  obj2.listReq_ref() = std::vector<int64_t>{9, 10};
+  EXPECT_EQ(obj1, obj2);
+  obj1.listOpt_ref() = std::vector<int64_t>{11, 12};
+  EXPECT_NE(obj1, obj2);
+  obj2.listOpt_ref() = std::vector<int64_t>{11, 12};
   EXPECT_EQ(obj1, obj2);
 
-  obj1.mapReq = std::map<int64_t, int64_t>{{9, 10}, {11, 12}};
-  obj2.mapReq = std::map<int64_t, int64_t>{{9, 10}, {11, 12}};
+  obj1.mapDef_ref() = std::map<int64_t, int64_t>{{13, 14}, {15, 16}};
+  obj2.mapDef_ref() = std::map<int64_t, int64_t>{{13, 14}, {15, 16}};
   EXPECT_EQ(obj1, obj2);
-  obj1.mapOpt_ref() = std::map<int64_t, int64_t>{{13, 14}, {15, 16}};
+  obj1.mapReq_ref() = std::map<int64_t, int64_t>{{17, 18}, {19, 20}};
   EXPECT_NE(obj1, obj2);
-  obj2.mapOpt_ref() = std::map<int64_t, int64_t>{{13, 14}, {15, 16}};
+  obj2.mapReq_ref() = std::map<int64_t, int64_t>{{17, 18}, {19, 20}};
+  EXPECT_EQ(obj1, obj2);
+  obj1.mapOpt_ref() = std::map<int64_t, int64_t>{{21, 22}, {23, 24}};
+  EXPECT_NE(obj1, obj2);
+  obj2.mapOpt_ref() = std::map<int64_t, int64_t>{{21, 22}, {23, 24}};
   EXPECT_EQ(obj1, obj2);
 
-  obj1.enumReq = cpp2::HasOptionalsTestEnum::FOO;
-  obj2.enumReq = cpp2::HasOptionalsTestEnum::FOO;
+  obj1.enumDef_ref() = cpp2::HasOptionalsTestEnum::FOO;
+  obj2.enumDef_ref() = cpp2::HasOptionalsTestEnum::FOO;
   EXPECT_EQ(obj1, obj2);
-  obj1.enumOpt_ref() = cpp2::HasOptionalsTestEnum::BAR;
+  obj1.enumReq_ref() = cpp2::HasOptionalsTestEnum::BAR;
   EXPECT_NE(obj1, obj2);
-  obj2.enumOpt_ref() = cpp2::HasOptionalsTestEnum::BAR;
+  obj2.enumReq_ref() = cpp2::HasOptionalsTestEnum::BAR;
+  EXPECT_EQ(obj1, obj2);
+  obj1.enumOpt_ref() = cpp2::HasOptionalsTestEnum::BAZ;
+  EXPECT_NE(obj1, obj2);
+  obj2.enumOpt_ref() = cpp2::HasOptionalsTestEnum::BAZ;
   EXPECT_EQ(obj1, obj2);
 
-  obj1.structReq = cpp2::HasOptionalsExtra();
-  obj1.structReq.__clear();
-  obj2.structReq = cpp2::HasOptionalsExtra();
-  obj2.structReq.__clear();
+  obj1.structDef_ref() = cpp2::HasOptionalsExtra();
+  obj1.structDef_ref()->__clear();
+  obj2.structDef_ref() = cpp2::HasOptionalsExtra();
+  obj2.structDef_ref()->__clear();
+  EXPECT_EQ(obj1, obj2);
+  obj1.structReq_ref() = cpp2::HasOptionalsExtra();
+  obj1.structReq_ref()->__clear();
+  obj2.structReq_ref() = cpp2::HasOptionalsExtra();
+  obj2.structReq_ref()->__clear();
   EXPECT_EQ(obj1, obj2);
   obj1.structOpt_ref() = cpp2::HasOptionalsExtra();
   obj1.structOpt_ref()->__clear();
@@ -201,19 +256,62 @@ TEST(TestWithoutFollyOptionals, EqualityTests) {
   // just one more test: try required/optional fields in the optional struct
   // to verify that recursive checking w/ optional fields works.
   // Don't bother testing all the nested struct's fields, this is enough.
-  obj1.structOpt_ref()->extraInt64Req = 666;
-  obj2.structOpt_ref()->extraInt64Req = 666;
+  obj1.structOpt_ref()->extraInt64Opt_ref() = 666;
+  obj2.structOpt_ref()->extraInt64Opt_ref() = 666;
   EXPECT_EQ(obj1, obj2);
-  obj1.structOpt_ref()->extraInt64Opt_ref() = 13;
+
+  obj1.structOpt_ref()->extraInt64Opt_ref() = 1;
   EXPECT_NE(obj1, obj2);
-  obj2.structOpt_ref()->extraInt64Opt_ref() = 13;
+  obj2.structOpt_ref()->extraInt64Opt_ref() = 1;
+  EXPECT_EQ(obj1, obj2);
+
+  obj1.structOpt_ref()->extraInt64Def_ref() = 2;
+  EXPECT_NE(obj1, obj2);
+  obj2.structOpt_ref()->extraInt64Def_ref() = 2;
+  EXPECT_EQ(obj1, obj2);
+
+  obj1.structOpt_ref()->extraInt64Req_ref() = 3;
+  EXPECT_NE(obj1, obj2);
+  obj2.structOpt_ref()->extraInt64Req_ref() = 3;
+  EXPECT_EQ(obj1, obj2);
+
+  obj1.structDef_ref()->extraInt64Opt_ref() = 4;
+  EXPECT_NE(obj1, obj2);
+  obj2.structDef_ref()->extraInt64Opt_ref() = 4;
+  EXPECT_EQ(obj1, obj2);
+
+  obj1.structDef_ref()->extraInt64Def_ref() = 5;
+  EXPECT_NE(obj1, obj2);
+  obj2.structDef_ref()->extraInt64Def_ref() = 5;
+  EXPECT_EQ(obj1, obj2);
+
+  obj1.structDef_ref()->extraInt64Req_ref() = 6;
+  EXPECT_NE(obj1, obj2);
+  obj2.structDef_ref()->extraInt64Req_ref() = 6;
+  EXPECT_EQ(obj1, obj2);
+
+  obj1.structReq_ref()->extraInt64Opt_ref() = 7;
+  EXPECT_NE(obj1, obj2);
+  obj2.structReq_ref()->extraInt64Opt_ref() = 7;
+  EXPECT_EQ(obj1, obj2);
+
+  obj1.structReq_ref()->extraInt64Def_ref() = 8;
+  EXPECT_NE(obj1, obj2);
+  obj2.structReq_ref()->extraInt64Def_ref() = 8;
+  EXPECT_EQ(obj1, obj2);
+
+  obj1.structReq_ref()->extraInt64Req_ref() = 9;
+  EXPECT_NE(obj1, obj2);
+  obj2.structReq_ref()->extraInt64Req_ref() = 9;
   EXPECT_EQ(obj1, obj2);
 }
 
 TEST(TestWithoutFollyOptionals, emplace) {
   cpp2::HasOptionals obj;
   folly::for_each(
-      std::make_pair(obj.stringOpt_ref(), obj.stringReq_ref()), [](auto&& i) {
+      std::make_tuple(
+          obj.stringOpt_ref(), obj.stringReq_ref(), obj.stringDef_ref()),
+      [](auto&& i) {
         EXPECT_EQ(i.emplace(3, 'a'), "aaa");
         EXPECT_EQ(i.value(), "aaa");
         EXPECT_EQ(i.emplace(3, 'b'), "bbb");
@@ -221,8 +319,14 @@ TEST(TestWithoutFollyOptionals, emplace) {
         i.emplace() = "ccc";
         EXPECT_EQ(i.value(), "ccc");
         EXPECT_THROW(i.emplace(std::string(""), 1), std::out_of_range);
-        EXPECT_FALSE(i.has_value()); // C++ Standard requires *this to be empty
-                                     // if `emplace(...)` throws
+        if (typeid(i) ==
+            typeid(apache::thrift::required_field_ref<std::string&>)) {
+          // Required field always has value
+          EXPECT_TRUE(i.has_value());
+        } else {
+          // C++ Standard requires *this to be empty if `emplace(...)` throws
+          EXPECT_FALSE(i.has_value());
+        }
       });
 }
 

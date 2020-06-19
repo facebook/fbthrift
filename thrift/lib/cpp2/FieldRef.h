@@ -594,5 +594,189 @@ constexpr detail::can_throw_fn can_throw;
 [[deprecated("Use `emplace` or `operator=` to set Thrift fields.")]] //
 constexpr detail::ensure_isset_unsafe_fn ensure_isset_unsafe;
 
+// A reference to an required field of the possibly const-qualified type
+// std::remove_reference_t<T> in a Thrift-generated struct.
+template <typename T>
+class required_field_ref {
+  static_assert(std::is_reference<T>::value, "not a reference");
+
+  template <typename U>
+  friend class required_field_ref;
+
+ public:
+  using value_type = std::remove_reference_t<T>;
+  using reference_type = T;
+
+  FOLLY_ERASE explicit required_field_ref(reference_type value) noexcept
+      : value_(value) {}
+
+  template <
+      typename U,
+      std::enable_if_t<
+          std::is_same<
+              std::add_const_t<std::remove_reference_t<U>>,
+              value_type>{} &&
+              !(std::is_rvalue_reference<T>{} && std::is_lvalue_reference<U>{}),
+          int> = 0>
+  FOLLY_ERASE /* implicit */ required_field_ref(
+      const required_field_ref<U>& other) noexcept
+      : value_(other.value_) {}
+
+  template <typename U = value_type>
+  FOLLY_ERASE std::enable_if_t<
+      std::is_assignable<value_type&, U&&>::value,
+      required_field_ref&>
+  operator=(U&& value) noexcept(
+      std::is_nothrow_assignable<value_type&, U&&>::value) {
+    value_ = static_cast<U&&>(value);
+    return *this;
+  }
+
+  // Assignment from required_field_ref is intentionally not provided to prevent
+  // potential confusion between two possible behaviors, copying and reference
+  // rebinding. The copy_from method is provided instead.
+  template <typename U>
+  FOLLY_ERASE void copy_from(required_field_ref<U> other) noexcept(
+      std::is_nothrow_assignable<value_type&, U>::value) {
+    value_ = other.value();
+  }
+
+  // Returns true iff the field is set. required_field_ref doesn't provide
+  // conversion to bool to avoid confusion between checking if the field is set
+  // and getting the field's value, particularly for bool fields.
+  FOLLY_ERASE bool has_value() const noexcept {
+    return true;
+  }
+
+  // Returns a reference to the value.
+  FOLLY_ERASE reference_type value() const noexcept {
+    return static_cast<reference_type>(value_);
+  }
+
+  FOLLY_ERASE reference_type operator*() const noexcept {
+    return static_cast<reference_type>(value_);
+  }
+
+  FOLLY_ERASE value_type* operator->() const noexcept {
+    return &value_;
+  }
+
+  FOLLY_ERASE reference_type ensure() noexcept {
+    return static_cast<reference_type>(value_);
+  }
+
+  template <typename Index>
+  FOLLY_ERASE auto operator[](const Index& index) const -> decltype(auto) {
+    return value_[index];
+  }
+
+  template <typename... Args>
+  FOLLY_ERASE value_type& emplace(Args&&... args) {
+    return value_ = value_type(static_cast<Args&&>(args)...);
+  }
+
+  template <class U, class... Args>
+  FOLLY_ERASE std::enable_if_t<
+      std::is_constructible<value_type, std::initializer_list<U>, Args&&...>::
+          value,
+      value_type&>
+  emplace(std::initializer_list<U> ilist, Args&&... args) {
+    return value_ = value_type(ilist, static_cast<Args&&>(args)...);
+  }
+
+ private:
+  value_type& value_;
+};
+
+template <typename T, typename U>
+bool operator==(required_field_ref<T> lhs, required_field_ref<U> rhs) {
+  return *lhs == *rhs;
+}
+
+template <typename T, typename U>
+bool operator!=(required_field_ref<T> lhs, required_field_ref<U> rhs) {
+  return *lhs != *rhs;
+}
+
+template <typename T, typename U>
+bool operator<(required_field_ref<T> lhs, required_field_ref<U> rhs) {
+  return *lhs < *rhs;
+}
+
+template <typename T, typename U>
+bool operator>(required_field_ref<T> lhs, required_field_ref<U> rhs) {
+  return *lhs > *rhs;
+}
+
+template <typename T, typename U>
+bool operator<=(required_field_ref<T> lhs, required_field_ref<U> rhs) {
+  return *lhs <= *rhs;
+}
+
+template <typename T, typename U>
+bool operator>=(required_field_ref<T> lhs, required_field_ref<U> rhs) {
+  return *lhs >= *rhs;
+}
+
+template <typename T, typename U>
+bool operator==(required_field_ref<T> lhs, const U& rhs) {
+  return *lhs == rhs;
+}
+
+template <typename T, typename U>
+bool operator!=(required_field_ref<T> lhs, const U& rhs) {
+  return *lhs != rhs;
+}
+
+template <typename T, typename U>
+bool operator<(required_field_ref<T> lhs, const U& rhs) {
+  return *lhs < rhs;
+}
+
+template <typename T, typename U>
+bool operator>(required_field_ref<T> lhs, const U& rhs) {
+  return *lhs > rhs;
+}
+
+template <typename T, typename U>
+bool operator<=(required_field_ref<T> lhs, const U& rhs) {
+  return *lhs <= rhs;
+}
+
+template <typename T, typename U>
+bool operator>=(required_field_ref<T> lhs, const U& rhs) {
+  return *lhs >= rhs;
+}
+
+template <typename T, typename U>
+bool operator==(const T& lhs, required_field_ref<U> rhs) {
+  return lhs == *rhs;
+}
+
+template <typename T, typename U>
+bool operator!=(const T& lhs, required_field_ref<U> rhs) {
+  return lhs != *rhs;
+}
+
+template <typename T, typename U>
+bool operator<(const T& lhs, required_field_ref<U> rhs) {
+  return lhs < *rhs;
+}
+
+template <typename T, typename U>
+bool operator>(const T& lhs, required_field_ref<U> rhs) {
+  return lhs > *rhs;
+}
+
+template <typename T, typename U>
+bool operator<=(const T& lhs, required_field_ref<U> rhs) {
+  return lhs <= *rhs;
+}
+
+template <typename T, typename U>
+bool operator>=(const T& lhs, required_field_ref<U> rhs) {
+  return lhs >= *rhs;
+}
+
 } // namespace thrift
 } // namespace apache

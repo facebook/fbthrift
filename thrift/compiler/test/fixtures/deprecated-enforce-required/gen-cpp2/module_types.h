@@ -66,6 +66,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  public:
   bool operator==(const Foo& rhs) const;
   bool operator<(const Foo& rhs) const;
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto bar_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->bar};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto bar_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->bar)};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto bar_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->bar};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto bar_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->bar)};
+  }
 
   int32_t get_bar() const {
     return bar;

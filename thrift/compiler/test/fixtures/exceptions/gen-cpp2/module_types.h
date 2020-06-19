@@ -130,6 +130,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  public:
   bool operator==(const Fiery& rhs) const;
   bool operator<(const Fiery& rhs) const;
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto message_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto message_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->message)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto message_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto message_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->message)};
+  }
 
   const ::std::string& get_message() const& {
     return message;

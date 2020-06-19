@@ -3809,6 +3809,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   } __isset = {};
   bool operator==(const struct1& rhs) const;
   bool operator<(const struct1& rhs) const;
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto field0_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->field0};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto field0_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->field0)};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto field0_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->field0};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto field0_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->field0)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> field1_ref() const& {
@@ -3849,6 +3868,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     return {std::move(this->field2), __isset.field2};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  template <typename..., typename T =  ::test_cpp2::cpp_reflection::enum2>
+  FOLLY_ERASE auto field3_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->field3};
+  }
+
+  template <typename..., typename T =  ::test_cpp2::cpp_reflection::enum2>
+  FOLLY_ERASE auto field3_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->field3)};
+  }
+
+  template <typename..., typename T =  ::test_cpp2::cpp_reflection::enum2>
+  FOLLY_ERASE auto field3_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->field3};
+  }
+
+  template <typename..., typename T =  ::test_cpp2::cpp_reflection::enum2>
+  FOLLY_ERASE auto field3_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->field3)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::test_cpp2::cpp_reflection::union1&> field4_ref() const& {
@@ -5056,6 +5094,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   } __isset = {};
   bool operator==(const struct4& rhs) const;
   bool operator<(const struct4& rhs) const;
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto field0_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->field0};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto field0_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->field0)};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto field0_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->field0};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto field0_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->field0)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> field1_ref() const& {
@@ -5206,6 +5263,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   } __isset = {};
   bool operator==(const struct5& rhs) const;
   bool operator<(const struct5& rhs) const;
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto field0_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->field0};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto field0_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->field0)};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto field0_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->field0};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto field0_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->field0)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> field1_ref() const& {

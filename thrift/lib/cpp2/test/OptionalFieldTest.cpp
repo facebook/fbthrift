@@ -485,6 +485,13 @@ TEST(FieldRefTest, HeterogeneousComparisons) {
   heterogeneousComparisonsTest(genFieldRef, genFieldRef);
 }
 
+TEST(RequiredFieldRefTest, HeterogeneousComparisons) {
+  auto genRequiredFieldRef = [i_ = int8_t(0)](auto... i) mutable {
+    return required_field_ref<const int8_t&>(i_ = int(i...));
+  };
+  heterogeneousComparisonsTest(genRequiredFieldRef, genRequiredFieldRef);
+}
+
 TEST(DeprecatedOptionalField, NulloptComparisons) {
   using opt = DeprecatedOptionalField<int>;
   EXPECT_TRUE(opt() == std::nullopt);

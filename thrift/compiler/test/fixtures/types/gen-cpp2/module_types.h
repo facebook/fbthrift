@@ -1815,6 +1815,101 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  public:
   bool operator==(const MinPadding& rhs) const;
   bool operator<(const MinPadding& rhs) const;
+  template <typename..., typename T = int8_t>
+  FOLLY_ERASE auto small_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->small};
+  }
+
+  template <typename..., typename T = int8_t>
+  FOLLY_ERASE auto small_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->small)};
+  }
+
+  template <typename..., typename T = int8_t>
+  FOLLY_ERASE auto small_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->small};
+  }
+
+  template <typename..., typename T = int8_t>
+  FOLLY_ERASE auto small_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->small)};
+  }
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE auto big_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->big};
+  }
+
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE auto big_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->big)};
+  }
+
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE auto big_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->big};
+  }
+
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE auto big_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->big)};
+  }
+  template <typename..., typename T = int16_t>
+  FOLLY_ERASE auto medium_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->medium};
+  }
+
+  template <typename..., typename T = int16_t>
+  FOLLY_ERASE auto medium_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->medium)};
+  }
+
+  template <typename..., typename T = int16_t>
+  FOLLY_ERASE auto medium_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->medium};
+  }
+
+  template <typename..., typename T = int16_t>
+  FOLLY_ERASE auto medium_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->medium)};
+  }
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto biggish_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->biggish};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto biggish_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->biggish)};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto biggish_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->biggish};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE auto biggish_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->biggish)};
+  }
+  template <typename..., typename T = int8_t>
+  FOLLY_ERASE auto tiny_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->tiny};
+  }
+
+  template <typename..., typename T = int8_t>
+  FOLLY_ERASE auto tiny_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->tiny)};
+  }
+
+  template <typename..., typename T = int8_t>
+  FOLLY_ERASE auto tiny_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->tiny};
+  }
+
+  template <typename..., typename T = int8_t>
+  FOLLY_ERASE auto tiny_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->tiny)};
+  }
 
   int8_t get_small() const {
     return small;
@@ -2941,6 +3036,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     return {std::move(MyBinaryField2), __isset.MyBinaryField2};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto MyBinaryField3_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->MyBinaryField3};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto MyBinaryField3_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->MyBinaryField3)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto MyBinaryField3_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->MyBinaryField3};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto MyBinaryField3_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->MyBinaryField3)};
+  }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::std::string>>
