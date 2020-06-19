@@ -276,3 +276,16 @@ TEST(TestWithFollyOptionals, equalToFollyOptional) {
   EXPECT_TRUE(equalToFollyOptional(obj.int64Opt, opt));
   EXPECT_TRUE(equalToFollyOptional(obj.int64Opt_ref(), opt));
 }
+
+TEST(TestWithFollyOptionals, RefForUnqualifiedField) {
+  cpp2::HasOptionals obj;
+  EXPECT_TRUE(obj.int64Req_ref().has_value());
+  obj.int64Req_ref() = 42;
+  EXPECT_TRUE(obj.int64Req_ref().has_value());
+  EXPECT_EQ(obj.int64Req_ref(), 42);
+
+  EXPECT_TRUE(obj.stringReq_ref().has_value());
+  obj.stringReq_ref() = "foo";
+  EXPECT_TRUE(obj.stringReq_ref().has_value());
+  EXPECT_EQ(obj.stringReq_ref(), "foo");
+}

@@ -223,6 +223,82 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  public:
   bool operator==(const Color& rhs) const;
   bool operator<(const Color& rhs) const;
+  template <typename..., typename T = double>
+  FOLLY_ERASE auto red_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->red};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE auto red_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->red)};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE auto red_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->red};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE auto red_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->red)};
+  }
+  template <typename..., typename T = double>
+  FOLLY_ERASE auto green_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->green};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE auto green_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->green)};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE auto green_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->green};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE auto green_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->green)};
+  }
+  template <typename..., typename T = double>
+  FOLLY_ERASE auto blue_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->blue};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE auto blue_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->blue)};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE auto blue_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->blue};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE auto blue_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->blue)};
+  }
+  template <typename..., typename T = double>
+  FOLLY_ERASE auto alpha_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->alpha};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE auto alpha_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->alpha)};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE auto alpha_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->alpha};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE auto alpha_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->alpha)};
+  }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -287,6 +363,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  public:
   bool operator==(const Vehicle& rhs) const;
   bool operator<(const Vehicle& rhs) const;
+  template <typename..., typename T =  ::cpp2::Color>
+  FOLLY_ERASE auto color_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->color};
+  }
+
+  template <typename..., typename T =  ::cpp2::Color>
+  FOLLY_ERASE auto color_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->color)};
+  }
+
+  template <typename..., typename T =  ::cpp2::Color>
+  FOLLY_ERASE auto color_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->color};
+  }
+
+  template <typename..., typename T =  ::cpp2::Color>
+  FOLLY_ERASE auto color_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->color)};
+  }
 
   FOLLY_ERASE auto licensePlate_ref() const& {
     return ::apache::thrift::optional_field_ref<const ::std::string&>(licensePlate);
@@ -425,6 +520,44 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  public:
   bool operator==(const Person& rhs) const;
   bool operator<(const Person& rhs) const;
+  template <typename..., typename T =  ::cpp2::PersonID>
+  FOLLY_ERASE auto id_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->id};
+  }
+
+  template <typename..., typename T =  ::cpp2::PersonID>
+  FOLLY_ERASE auto id_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->id)};
+  }
+
+  template <typename..., typename T =  ::cpp2::PersonID>
+  FOLLY_ERASE auto id_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->id};
+  }
+
+  template <typename..., typename T =  ::cpp2::PersonID>
+  FOLLY_ERASE auto id_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->id)};
+  }
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto name_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->name};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto name_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->name)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto name_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->name};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto name_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->name)};
+  }
 
   FOLLY_ERASE auto age_ref() const& {
     return ::apache::thrift::optional_field_ref<const int16_t&>(age);

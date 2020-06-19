@@ -156,6 +156,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   bool operator==(const containerStruct2& rhs) const;
   bool operator<(const containerStruct2& rhs) const;
   template <typename..., typename T = bool>
+  FOLLY_ERASE auto fieldA_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->fieldA};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE auto fieldA_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->fieldA)};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE auto fieldA_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->fieldA};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE auto fieldA_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->fieldA)};
+  }
+  template <typename..., typename T = bool>
   FOLLY_ERASE auto req_fieldA_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldA};
   }
@@ -189,6 +208,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   FOLLY_ERASE auto opt_fieldA_ref() && {
     return ::apache::thrift::optional_field_ref<bool&&>(std::move(opt_fieldA));
+  }
+  template <typename..., typename T = ::std::map<::std::string, bool>>
+  FOLLY_ERASE auto fieldB_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->fieldB};
+  }
+
+  template <typename..., typename T = ::std::map<::std::string, bool>>
+  FOLLY_ERASE auto fieldB_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->fieldB)};
+  }
+
+  template <typename..., typename T = ::std::map<::std::string, bool>>
+  FOLLY_ERASE auto fieldB_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->fieldB};
+  }
+
+  template <typename..., typename T = ::std::map<::std::string, bool>>
+  FOLLY_ERASE auto fieldB_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->fieldB)};
   }
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE auto req_fieldB_ref() const& {
@@ -226,6 +264,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return ::apache::thrift::optional_field_ref<::std::map<::std::string, bool>&&>(std::move(opt_fieldB));
   }
   template <typename..., typename T = ::std::set<int32_t>>
+  FOLLY_ERASE auto fieldC_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->fieldC};
+  }
+
+  template <typename..., typename T = ::std::set<int32_t>>
+  FOLLY_ERASE auto fieldC_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->fieldC)};
+  }
+
+  template <typename..., typename T = ::std::set<int32_t>>
+  FOLLY_ERASE auto fieldC_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->fieldC};
+  }
+
+  template <typename..., typename T = ::std::set<int32_t>>
+  FOLLY_ERASE auto fieldC_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->fieldC)};
+  }
+  template <typename..., typename T = ::std::set<int32_t>>
   FOLLY_ERASE auto req_fieldC_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldC};
   }
@@ -259,6 +316,44 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   FOLLY_ERASE auto opt_fieldC_ref() && {
     return ::apache::thrift::optional_field_ref<::std::set<int32_t>&&>(std::move(opt_fieldC));
+  }
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto fieldD_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->fieldD};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto fieldD_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->fieldD)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto fieldD_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->fieldD};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto fieldD_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->fieldD)};
+  }
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto fieldE_ref() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->fieldE};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto fieldE_ref() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->fieldE)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto fieldE_ref() & {
+    return ::apache::thrift::required_field_ref<T&>{this->fieldE};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE auto fieldE_ref() && {
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this->fieldE)};
   }
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE auto req_fieldE_ref() const& {
