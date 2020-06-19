@@ -20,7 +20,7 @@ namespace apache {
 namespace thrift {
 
 ThriftRequestCore::RequestTimestampSample::RequestTimestampSample(
-    const server::TServerObserver::CallTimestamps& timestamps,
+    server::TServerObserver::CallTimestamps& timestamps,
     server::TServerObserver* observer,
     MessageChannel::SendCallback* chainedCallback)
     : timestamps_(timestamps),
@@ -70,11 +70,12 @@ MessageChannel::SendCallbackPtr ThriftRequestCore::prepareSendCallback(
   // If we are sampling this call, wrap it with a RequestTimestampSample,
   // which also implements MessageChannel::SendCallback. Callers of
   // sendReply/sendError are responsible for cleaning up their own callbacks.
-  if (timestamps_.getSamplingStatus().isEnabledByServer()) {
+  auto& timestamps = getTimestamps();
+  if (timestamps.getSamplingStatus().isEnabledByServer()) {
     auto chainedCallback = cbPtr.release();
     return MessageChannel::SendCallbackPtr(
         new ThriftRequestCore::RequestTimestampSample(
-            timestamps_, observer, chainedCallback));
+            timestamps, observer, chainedCallback));
   }
   return cbPtr;
 }
@@ -103,9 +104,10 @@ void ThriftRequestCore::sendReply(
     // to compress the response in rocket today (which happens in
     // ThriftServerRequestResponse::sendThriftResponse).
     // TODO: refactor to move response compression to CPU thread.
-    auto samplingStatus = timestamps_.getSamplingStatus();
-    if (UNLIKELY(samplingStatus.isEnabled())) {
-      timestamps_.processEnd = std::chrono::steady_clock::now();
+    ;
+    auto& timestamps = getTimestamps();
+    if (UNLIKELY(timestamps.getSamplingStatus().isEnabled())) {
+      timestamps.processEnd = std::chrono::steady_clock::now();
     }
     if (!isOneway()) {
       auto metadata = makeResponseRpcMetadata();

@@ -282,10 +282,10 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
             pri,
             [=, serializedRequest = std::move(serializedRequest)](
                 apache::thrift::ResponseChannelRequest::UniquePtr rq) mutable {
-              if (rq->getTimestamps().getSamplingStatus().isEnabled()) {
+              if (ctx->getTimestamps().getSamplingStatus().isEnabled()) {
                 // Since this request was queued, reset the processBegin
                 // time to the actual start time, and not the queue time.
-                rq->getTimestamps().processBegin =
+                ctx->getTimestamps().processBegin =
                     std::chrono::steady_clock::now();
               }
               // Oneway request won't be canceled if expired. see
