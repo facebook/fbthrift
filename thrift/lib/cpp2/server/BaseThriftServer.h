@@ -142,9 +142,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   //! Number of SSL handshake worker threads (may be set)
   ServerAttribute<size_t> nSSLHandshakeWorkers_{0};
 
-  //! Number of sync pool threads (may be set) (should be set to expected
-  //  sync load)
-  ServerAttribute<size_t> nPoolThreads_{0};
+  //! Number of CPU worker threads
+  ServerAttribute<size_t> nPoolThreads_{T_ASYNC_DEFAULT_WORKER_THREADS};
 
   ServerAttribute<bool> enableCodel_{false};
 
@@ -656,6 +655,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * Only valid if you do not also set a threadmanager. This controls the number
    * of normal priority threads; the Thrift thread manager can create additional
    * threads for other priorities.
+   * If set to 0, the number of normal priority threads will be the same as
+   * number of CPU cores.
    *
    * @param number of CPU (pool) threads
    */
@@ -687,7 +688,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * @return number of CPU (pool) threads
    */
   size_t getNumCPUWorkerThreads() const {
-    return nPoolThreads_.get();
+    auto nCPUWorkers = nPoolThreads_.get();
+    return nCPUWorkers ? nCPUWorkers : T_ASYNC_DEFAULT_WORKER_THREADS;
   }
 
   /**

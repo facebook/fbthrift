@@ -145,7 +145,7 @@ TEST(ScopedServerInterfaceThread, newRemoteClient) {
 TEST(ScopedServerInterfaceThread, getThriftServer) {
   ScopedServerInterfaceThread ssit(make_shared<SimpleServiceImpl>());
   auto& ts = ssit.getThriftServer();
-  EXPECT_EQ(0, ts.getNumCPUWorkerThreads());
+  EXPECT_EQ(1, ts.getNumCPUWorkerThreads());
   EXPECT_EQ(1, ts.getNumIOWorkerThreads());
 }
 

@@ -40,6 +40,7 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
   ts->setAddress(addr);
   ts->setProcessorFactory(move(apf));
   ts->setNumIOWorkerThreads(1);
+  ts->setNumCPUWorkerThreads(1);
   ts->setThreadManager(tm);
   // The default behavior is to keep N recent requests per IO worker in memory.
   // In unit-tests, this defers memory reclamation and potentially masks
