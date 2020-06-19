@@ -31,7 +31,7 @@ interface Beeble_BroxClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * Brox
  */
-interface Beeble_BroxAsyncRpcOptionsIf {
+interface Beeble_BroxAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
 }
 
 /**
@@ -54,7 +54,7 @@ class Beeble_BroxClient extends \ThriftClientBase implements Beeble_BroxClientIf
   /* send and recv functions */
 }
 
-class Beeble_BroxAsyncRpcOptionsClient  implements Beeble_BroxAsyncRpcOptionsIf {
+class Beeble_BroxAsyncRpcOptionsClient extends \ThriftClientBase implements Beeble_BroxAsyncRpcOptionsIf {
 }
 
 // HELPER FUNCTIONS AND STRUCTURES

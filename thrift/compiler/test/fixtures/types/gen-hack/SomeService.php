@@ -70,7 +70,7 @@ interface SomeServiceClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * SomeService
  */
-interface SomeServiceAsyncRpcOptionsIf {
+interface SomeServiceAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
 }
 
 /**
@@ -399,7 +399,7 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
   }
 }
 
-class SomeServiceAsyncRpcOptionsClient  implements SomeServiceAsyncRpcOptionsIf {
+class SomeServiceAsyncRpcOptionsClient extends \ThriftClientBase implements SomeServiceAsyncRpcOptionsIf {
 }
 
 // HELPER FUNCTIONS AND STRUCTURES

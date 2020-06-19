@@ -133,7 +133,7 @@ interface NestedContainersClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * NestedContainers
  */
-interface NestedContainersAsyncRpcOptionsIf {
+interface NestedContainersAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
 }
 
 /**
@@ -901,7 +901,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
   }
 }
 
-class NestedContainersAsyncRpcOptionsClient  implements NestedContainersAsyncRpcOptionsIf {
+class NestedContainersAsyncRpcOptionsClient extends \ThriftClientBase implements NestedContainersAsyncRpcOptionsIf {
 }
 
 abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor {

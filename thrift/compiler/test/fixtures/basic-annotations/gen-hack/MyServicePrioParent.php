@@ -70,7 +70,7 @@ interface MyServicePrioParentClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * MyServicePrioParent
  */
-interface MyServicePrioParentAsyncRpcOptionsIf {
+interface MyServicePrioParentAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
 }
 
 /**
@@ -385,7 +385,7 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
   }
 }
 
-class MyServicePrioParentAsyncRpcOptionsClient  implements MyServicePrioParentAsyncRpcOptionsIf {
+class MyServicePrioParentAsyncRpcOptionsClient extends \ThriftClientBase implements MyServicePrioParentAsyncRpcOptionsIf {
 }
 
 abstract class MyServicePrioParentAsyncProcessorBase extends \ThriftAsyncProcessor {

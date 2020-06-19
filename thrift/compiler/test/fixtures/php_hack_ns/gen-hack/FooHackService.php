@@ -31,7 +31,7 @@ interface FooHackServiceClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * FooHackService
  */
-interface FooHackServiceAsyncRpcOptionsIf {
+interface FooHackServiceAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
 }
 
 /**
@@ -54,7 +54,7 @@ class FooHackServiceClient extends \ThriftClientBase implements FooHackServiceCl
   /* send and recv functions */
 }
 
-class FooHackServiceAsyncRpcOptionsClient  implements FooHackServiceAsyncRpcOptionsIf {
+class FooHackServiceAsyncRpcOptionsClient extends \ThriftClientBase implements FooHackServiceAsyncRpcOptionsIf {
 }
 
 // HELPER FUNCTIONS AND STRUCTURES

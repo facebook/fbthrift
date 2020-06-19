@@ -3676,7 +3676,8 @@ void t_hack_generator::generate_service_interface(
     // release is to generate all new interfaces first and add extends and other
     // code in the second pass.
     // TODO (partisan): Remove this after the release.
-    f_service_ << "interface " << long_name << suffix << "If {\n";
+    f_service_ << "interface " << long_name << suffix << "If extends "
+               << extends_if << " {\n";
   } else {
     f_service_ << "interface " << long_name << suffix << "If extends "
                << extends_if << " {\n";
@@ -4154,7 +4155,7 @@ void t_hack_generator::_generate_service_client_children(
     // release is to generate all new interfaces first and add extends and other
     // code in the second pass.
     // TODO (partisan): Remove this after the release.
-    out << "class " << long_name << class_suffix << "Client "
+    out << "class " << long_name << class_suffix << "Client extends " << extends
         << " implements " << long_name << interface_suffix << "If {\n";
   } else {
     out << "class " << long_name << class_suffix << "Client extends " << extends

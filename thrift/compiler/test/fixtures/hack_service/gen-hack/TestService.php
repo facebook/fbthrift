@@ -51,7 +51,7 @@ interface TestServiceClientIf extends \foo\hack_ns\FooHackServiceClientIf {
  * Original thrift service:-
  * TestService
  */
-interface TestServiceAsyncRpcOptionsIf {
+interface TestServiceAsyncRpcOptionsIf extends \foo\hack_ns\FooHackServiceAsyncRpcOptionsIf {
 }
 
 /**
@@ -227,7 +227,7 @@ class TestServiceClient extends \foo\hack_ns\FooHackServiceClient implements Tes
   }
 }
 
-class TestServiceAsyncRpcOptionsClient  implements TestServiceAsyncRpcOptionsIf {
+class TestServiceAsyncRpcOptionsClient extends \foo\hack_ns\FooHackServiceAsyncRpcOptionsClient implements TestServiceAsyncRpcOptionsIf {
 }
 
 // HELPER FUNCTIONS AND STRUCTURES

@@ -49,7 +49,7 @@ interface MyServicePrioChildClientIf extends MyServicePrioParentClientIf {
  * Original thrift service:-
  * MyServicePrioChild
  */
-interface MyServicePrioChildAsyncRpcOptionsIf {
+interface MyServicePrioChildAsyncRpcOptionsIf extends MyServicePrioParentAsyncRpcOptionsIf {
 }
 
 /**
@@ -218,7 +218,7 @@ class MyServicePrioChildClient extends MyServicePrioParentClient implements MySe
   }
 }
 
-class MyServicePrioChildAsyncRpcOptionsClient  implements MyServicePrioChildAsyncRpcOptionsIf {
+class MyServicePrioChildAsyncRpcOptionsClient extends MyServicePrioParentAsyncRpcOptionsClient implements MyServicePrioChildAsyncRpcOptionsIf {
 }
 
 abstract class MyServicePrioChildAsyncProcessorBase extends MyServicePrioParentAsyncProcessorBase {

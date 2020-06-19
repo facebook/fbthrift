@@ -58,7 +58,7 @@ interface BarClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * Bar
  */
-interface BarAsyncRpcOptionsIf {
+interface BarAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
 }
 
 /**
@@ -245,7 +245,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
   }
 }
 
-class BarAsyncRpcOptionsClient  implements BarAsyncRpcOptionsIf {
+class BarAsyncRpcOptionsClient extends \ThriftClientBase implements BarAsyncRpcOptionsIf {
 }
 
 // HELPER FUNCTIONS AND STRUCTURES

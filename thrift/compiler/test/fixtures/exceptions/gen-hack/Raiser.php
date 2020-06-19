@@ -130,7 +130,7 @@ interface RaiserClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * Raiser
  */
-interface RaiserAsyncRpcOptionsIf {
+interface RaiserAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
 }
 
 /**
@@ -791,7 +791,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
   }
 }
 
-class RaiserAsyncRpcOptionsClient  implements RaiserAsyncRpcOptionsIf {
+class RaiserAsyncRpcOptionsClient extends \ThriftClientBase implements RaiserAsyncRpcOptionsIf {
 }
 
 // HELPER FUNCTIONS AND STRUCTURES
