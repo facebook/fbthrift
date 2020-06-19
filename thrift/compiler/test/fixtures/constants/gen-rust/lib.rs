@@ -164,6 +164,14 @@ pub mod consts {
     }
 
     lazy_static::lazy_static! {
+        pub static ref pod_4: crate::types::struct4 = crate::types::struct4 {
+            a: 1234,
+            b: ::std::option::Option::Some(0.333),
+            c: ::std::option::Option::Some(25),
+        };
+    }
+
+    lazy_static::lazy_static! {
         pub static ref u_1_1: crate::types::union1 = crate::types::union1::i(97);
     }
 
@@ -337,6 +345,13 @@ pub mod types {
         pub a: ::std::string::String,
         pub b: ::std::primitive::i32,
         pub c: crate::types::struct2,
+    }
+
+    #[derive(Clone, Debug, PartialEq)]
+    pub struct struct4 {
+        pub a: ::std::primitive::i32,
+        pub b: ::std::option::Option<::std::primitive::f64>,
+        pub c: ::std::option::Option<::std::primitive::i8>,
     }
 
     #[derive(Clone, Debug, PartialEq)]
@@ -951,6 +966,77 @@ pub mod types {
                 a: field_a.unwrap_or_default(),
                 b: field_b.unwrap_or_default(),
                 c: field_c.unwrap_or_default(),
+            })
+        }
+    }
+
+
+    impl ::std::default::Default for self::struct4 {
+        fn default() -> Self {
+            Self {
+                a: ::std::default::Default::default(),
+                b: ::std::option::Option::None,
+                c: ::std::option::Option::None,
+            }
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::struct4 {}
+    unsafe impl ::std::marker::Sync for self::struct4 {}
+
+    impl ::fbthrift::GetTType for self::struct4 {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::struct4
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("struct4");
+            p.write_field_begin("a", ::fbthrift::TType::I32, 1);
+            ::fbthrift::Serialize::write(&self.a, p);
+            p.write_field_end();
+            if let ::std::option::Option::Some(some) = &self.b {
+                p.write_field_begin("b", ::fbthrift::TType::Double, 2);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
+            if let ::std::option::Option::Some(some) = &self.c {
+                p.write_field_begin("c", ::fbthrift::TType::Byte, 3);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::struct4
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            let mut field_a = ::std::option::Option::None;
+            let mut field_b = ::std::option::Option::None;
+            let mut field_c = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| ())?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I32, 1) => field_a = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Double, 2) => field_b = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Byte, 3) => field_c = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                a: field_a.unwrap_or_default(),
+                b: field_b,
+                c: field_c,
             })
         }
     }

@@ -99,6 +99,11 @@ constexpr  ::cpp2::MyIntIdentifier const module_constants::bar_;
   return *instance;
 }
 
+ ::cpp2::struct4 const& module_constants::pod_4() {
+  static folly::Indestructible< ::cpp2::struct4> const instance(::apache::thrift::detail::make_constant< ::cpp2::struct4>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(1234), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(0.333), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::c>(static_cast<int8_t>(25))));
+  return *instance;
+}
+
  ::cpp2::union1 const& module_constants::u_1_1() {
   static folly::Indestructible< ::cpp2::union1> const instance(::apache::thrift::detail::make_constant< ::cpp2::union1>(::apache::thrift::type_class::variant{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::i>(97)));
   return *instance;

@@ -59,6 +59,11 @@ class StructMetadata<::cpp2::struct3> {
   static void gen(ThriftMetadata& metadata);
 };
 template <>
+class StructMetadata<::cpp2::struct4> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
 class StructMetadata<::cpp2::union1> {
  public:
   static void gen(ThriftMetadata& metadata);

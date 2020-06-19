@@ -257,6 +257,18 @@ class module_CONSTANTS {
     return self::$__pod_3;
   }
 
+  private static $__pod_4 = null;
+  public static function pod_4() {
+    if (self::$__pod_4 == null) {
+      self::$__pod_4 = new struct4(array(
+        "a" => 1234,
+        "b" => 0.333,
+        "c" => 25,
+      ));
+    }
+    return self::$__pod_4;
+  }
+
   private static $__u_1_1 = null;
   public static function u_1_1() {
     if (self::$__u_1_1 == null) {
@@ -674,6 +686,11 @@ class module_CONSTANTS {
               3,
             ),
           )),
+        )),
+        "pod_4" => new struct4(array(
+          "a" => 1234,
+          "b" => 0.333,
+          "c" => 25,
         )),
         "u_1_1" => new union1(array(
           "i" => 97,

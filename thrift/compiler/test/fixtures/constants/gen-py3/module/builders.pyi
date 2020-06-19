@@ -53,6 +53,14 @@ class struct3_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
+class struct4_Builder(thrift.py3.builder.StructBuilder):
+    a: _typing.Optional[int]
+    b: _typing.Optional[float]
+    c: _typing.Optional[int]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
 class union1_Builder(thrift.py3.builder.StructBuilder):
     i: _typing.Optional[int]
     d: _typing.Optional[float]

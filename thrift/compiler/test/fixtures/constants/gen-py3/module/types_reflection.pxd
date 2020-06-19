@@ -24,6 +24,8 @@ cdef __StructSpec get_reflection__struct2()
 
 cdef __StructSpec get_reflection__struct3()
 
+cdef __StructSpec get_reflection__struct4()
+
 cdef __StructSpec get_reflection__union1()
 
 cdef __StructSpec get_reflection__union2()

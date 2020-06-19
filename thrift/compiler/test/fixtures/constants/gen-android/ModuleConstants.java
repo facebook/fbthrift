@@ -144,6 +144,12 @@ public class ModuleConstants {
     tmp10.addProperty(Module.struct2_d, tmp12);
     pod_3.addProperty(Module.struct3_c, tmp10);
   }
+  public static final ModuleLogger pod_4 = new ModuleLogger(Module.EventType.struct4);
+  static {
+    pod_4.addProperty(Module.struct4_a, 1234);
+    pod_4.addProperty(Module.struct4_b, 0.333);
+    pod_4.addProperty(Module.struct4_c, (byte)25);
+  }
   public static final ModuleLogger u_1_1 = new ModuleLogger(Module.EventType.union1);
   static {
     u_1_1.addProperty(Module.union1_i, 97);

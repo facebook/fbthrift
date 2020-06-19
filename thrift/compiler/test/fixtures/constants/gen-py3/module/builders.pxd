@@ -42,6 +42,12 @@ cdef class struct3_Builder(thrift.py3.builder.StructBuilder):
     cdef public object c
 
 
+cdef class struct4_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pint a
+    cdef public pfloat b
+    cdef public pint c
+
+
 cdef class union1_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint i
     cdef public pfloat d

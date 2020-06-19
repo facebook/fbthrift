@@ -87,6 +87,8 @@ public final class ModuleConstants {
         .add(3)
         .build()).build()).build();
 
+    public static final test.fixtures.constants.Struct4 POD_4 = new test.fixtures.constants.Struct4.Builder().setA(1234).setB((double)0.333).setC((byte)25).build();
+
     public static final test.fixtures.constants.Union1 U_1_1 = test.fixtures.constants.Union1.fromI(97);
 
     public static final test.fixtures.constants.Union1 U_1_2 = test.fixtures.constants.Union1.fromD((double)5.6);

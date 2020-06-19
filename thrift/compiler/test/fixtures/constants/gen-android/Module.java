@@ -15,7 +15,7 @@ import com.facebook.thrift.lite.protocol.*;
 public class Module {
 
   public enum EventType {
-    Internship, Range, struct1, struct2, struct3, union1, union2;
+    Internship, Range, struct1, struct2, struct3, struct4, union1, union2;
   }
 
   public static final ThriftProperty<Integer> Internship_weeks =
@@ -46,6 +46,12 @@ public class Module {
       new ThriftProperty<Integer>("b", TType.I32, (short) 2);
   public static final ThriftProperty<ModuleLogger> struct3_c =
       new ThriftProperty<ModuleLogger>("c", TType.STRUCT, (short) 3);
+  public static final ThriftProperty<Integer> struct4_a =
+      new ThriftProperty<Integer>("a", TType.I32, (short) 1);
+  public static final ThriftProperty<Double> struct4_b =
+      new ThriftProperty<Double>("b", TType.DOUBLE, (short) 2);
+  public static final ThriftProperty<Byte> struct4_c =
+      new ThriftProperty<Byte>("c", TType.BYTE, (short) 3);
   public static final ThriftProperty<Integer> union1_i =
       new ThriftProperty<Integer>("i", TType.I32, (short) 1);
   public static final ThriftProperty<Double> union1_d =

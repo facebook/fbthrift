@@ -201,6 +201,24 @@ void TccStructTraits<::cpp2::struct3>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
+void TccStructTraits<::cpp2::struct4>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "a") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "b") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_DOUBLE;
+  }
+  else if (_fname == "c") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_BYTE;
+  }
+}
 void TccStructTraits<::cpp2::union1>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
@@ -629,6 +647,101 @@ template void struct3::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t struct3::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t struct3::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct3::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct4::struct4(apache::thrift::FragileConstructor, int32_t a__arg, double b__arg, int8_t c__arg) :
+    a(std::move(a__arg)),
+    b(std::move(b__arg)),
+    c(std::move(c__arg)) {
+  __isset.a = true;
+  __isset.b = true;
+  __isset.c = true;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+void struct4::__clear() {
+  // clear all fields
+  a = 0;
+  b = 0;
+  c = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+bool struct4::operator==(const struct4& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.a == rhs.a)) {
+    return false;
+  }
+  if (lhs.b_ref().has_value() != rhs.b_ref().has_value()) {
+    return false;
+  }
+  if (lhs.b_ref().has_value()) {
+    if (!(lhs.b == rhs.b)) {
+      return false;
+    }
+  }
+  if (lhs.c_ref().has_value() != rhs.c_ref().has_value()) {
+    return false;
+  }
+  if (lhs.c_ref().has_value()) {
+    if (!(lhs.c == rhs.c)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool struct4::operator<(const struct4& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.a == rhs.a)) {
+    return lhs.a < rhs.a;
+  }
+  if (lhs.b_ref().has_value() != rhs.b_ref().has_value()) {
+    return lhs.b_ref().has_value() < rhs.b_ref().has_value();
+  }
+  if (lhs.b_ref().has_value()) {
+    if (!(lhs.b == rhs.b)) {
+      return lhs.b < rhs.b;
+    }
+  }
+  if (lhs.c_ref().has_value() != rhs.c_ref().has_value()) {
+    return lhs.c_ref().has_value() < rhs.c_ref().has_value();
+  }
+  if (lhs.c_ref().has_value()) {
+    if (!(lhs.c == rhs.c)) {
+      return lhs.c < rhs.c;
+    }
+  }
+  return false;
+}
+
+
+void swap(struct4& a, struct4& b) {
+  using ::std::swap;
+  swap(a.a, b.a);
+  swap(a.b_ref().value_unchecked(), b.b_ref().value_unchecked());
+  swap(a.c_ref().value_unchecked(), b.c_ref().value_unchecked());
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+template void struct4::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t struct4::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t struct4::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct4::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void struct4::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t struct4::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t struct4::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t struct4::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {

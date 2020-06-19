@@ -43,6 +43,14 @@ cdef class struct3_Builder(thrift.py3.builder.StructBuilder):
         yield "b", self.b
         yield "c", self.c
 
+cdef class struct4_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.struct4
+
+    def __iter__(self):
+        yield "a", self.a
+        yield "b", self.b
+        yield "c", self.c
+
 cdef class union1_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.union1
 

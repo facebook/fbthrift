@@ -40,6 +40,7 @@ var Pod_1 *Struct1
 var Pod_2 *Struct2
 var PodTrailingCommas *Struct2
 var Pod_3 *Struct3
+var Pod_4 *Struct4
 var U_1_1 *Union1
 var U_1_2 *Union1
 var U_1_3 *Union1
@@ -181,6 +182,12 @@ Pod_3 = &Struct3{
       3,
     },
   },
+}
+
+Pod_4 = &Struct4{
+  A: 1234,
+  B: 0.333,
+  C: 25,
 }
 
 U_1_1 = &Union1{

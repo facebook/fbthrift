@@ -1748,6 +1748,261 @@ cdef class struct3(thrift.py3.types.Struct):
         return (deserialize, (struct3, serialize(self)))
 
 
+@__cython.auto_pickle(False)
+cdef class struct4(thrift.py3.types.Struct):
+
+    def __init__(
+        struct4 self, *,
+        a=None,
+        b=None,
+        c=None
+    ):
+        if a is not None:
+            if not isinstance(a, int):
+                raise TypeError(f'a is not a { int !r}.')
+            a = <cint32_t> a
+
+        if b is not None:
+            if not isinstance(b, (float, int)):
+                raise TypeError(f'b is not a { float !r}.')
+
+        if c is not None:
+            if not isinstance(c, int):
+                raise TypeError(f'c is not a { int !r}.')
+            c = <cint8_t> c
+
+        self._cpp_obj = move(struct4._make_instance(
+          NULL,
+          NULL,
+          a,
+          b,
+          c,
+        ))
+
+    def __call__(
+        struct4 self,
+        a=__NOTSET,
+        b=__NOTSET,
+        c=__NOTSET
+    ):
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[3] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if a is ___NOTSET:
+            __isNOTSET[0] = True
+            a = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
+        if b is ___NOTSET:
+            __isNOTSET[1] = True
+            b = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
+        if c is ___NOTSET:
+            __isNOTSET[2] = True
+            c = None
+        else:
+            __isNOTSET[2] = False
+            changes = True
+
+
+        if not changes:
+            return self
+
+        if a is not None:
+            if not isinstance(a, int):
+                raise TypeError(f'a is not a { int !r}.')
+            a = <cint32_t> a
+
+        if b is not None:
+            if not isinstance(b, (float, int)):
+                raise TypeError(f'b is not a { float !r}.')
+
+        if c is not None:
+            if not isinstance(c, int):
+                raise TypeError(f'c is not a { int !r}.')
+            c = <cint8_t> c
+
+        inst = <struct4>struct4.__new__(struct4)
+        inst._cpp_obj = move(struct4._make_instance(
+          self._cpp_obj.get(),
+          __isNOTSET,
+          a,
+          b,
+          c,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cstruct4] _make_instance(
+        cstruct4* base_instance,
+        bint* __isNOTSET,
+        object a ,
+        object b ,
+        object c 
+    ) except *:
+        cdef unique_ptr[cstruct4] c_inst
+        if base_instance:
+            c_inst = make_unique[cstruct4](deref(base_instance))
+        else:
+            c_inst = make_unique[cstruct4]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if not __isNOTSET[0] and a is None:
+                deref(c_inst).a = default_inst[cstruct4]().a
+                deref(c_inst).__isset.a = False
+                pass
+
+            if not __isNOTSET[1] and b is None:
+                deref(c_inst).__isset.b = False
+                pass
+
+            if not __isNOTSET[2] and c is None:
+                deref(c_inst).__isset.c = False
+                pass
+
+        if a is not None:
+            deref(c_inst).a = a
+            deref(c_inst).__isset.a = True
+        if b is not None:
+            deref(c_inst).b_ref().assign(b)
+            deref(c_inst).__isset.b = True
+        if c is not None:
+            deref(c_inst).c_ref().assign(c)
+            deref(c_inst).__isset.c = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'a', self.a
+        yield 'b', self.b
+        yield 'c', self.c
+
+    def __bool__(self):
+        return True
+
+    @staticmethod
+    cdef create(shared_ptr[cstruct4] cpp_obj):
+        inst = <struct4>struct4.__new__(struct4)
+        inst._cpp_obj = move_shared(cpp_obj)
+        return inst
+
+    @property
+    def a(self):
+
+        return deref(self._cpp_obj).a
+
+    @property
+    def b(self):
+        if not deref(self._cpp_obj).__isset.b:
+            return None
+
+        return deref(self._cpp_obj).b_ref().value_unchecked()
+
+    @property
+    def c(self):
+        if not deref(self._cpp_obj).__isset.c:
+            return None
+
+        return deref(self._cpp_obj).c_ref().value_unchecked()
+
+
+    def __hash__(struct4 self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.a,
+            self.b,
+            self.c,
+            ))
+        return self.__hash
+
+    def __repr__(struct4 self):
+        return f'struct4(a={repr(self.a)}, b={repr(self.b)}, c={repr(self.c)})'
+    def __copy__(struct4 self):
+        cdef shared_ptr[cstruct4] cpp_obj = make_shared[cstruct4](
+            deref(self._cpp_obj)
+        )
+        return struct4.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, struct4) and
+                isinstance(other, struct4)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cstruct4* cself = (<struct4>self)._cpp_obj.get()
+        cdef cstruct4* cother = (<struct4>other)._cpp_obj.get()
+        if cop == Py_EQ:
+            return deref(cself) == deref(cother)
+        elif cop == Py_NE:
+            return deref(cself) != deref(cother)
+        elif cop == Py_LT:
+            return deref(cself) < deref(cother)
+        elif cop == Py_LE:
+            return deref(cself) <= deref(cother)
+        elif cop == Py_GT:
+            return deref(cself) > deref(cother)
+        elif cop == Py_GE:
+            return deref(cself) >= deref(cother)
+        else:
+            return NotImplemented
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__struct4()
+
+    cdef __iobuf.IOBuf _serialize(struct4 self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cstruct4* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cstruct4](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cstruct4](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cstruct4](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cstruct4](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef cuint32_t _deserialize(struct4 self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cstruct4]()
+        cdef cstruct4* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cstruct4](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cstruct4](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cstruct4](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cstruct4](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (struct4, serialize(self)))
+
+
 
 
 @__cython.auto_pickle(False)
@@ -4103,6 +4358,7 @@ pod_1 = struct1.create(constant_shared_ptr(cpod_1()))
 pod_2 = struct2.create(constant_shared_ptr(cpod_2()))
 pod_trailing_commas = struct2.create(constant_shared_ptr(cpod_trailing_commas()))
 pod_3 = struct3.create(constant_shared_ptr(cpod_3()))
+pod_4 = struct4.create(constant_shared_ptr(cpod_4()))
 u_1_1 = union1.create(constant_shared_ptr(cu_1_1()))
 u_1_2 = union1.create(constant_shared_ptr(cu_1_2()))
 u_1_3 = union1.create(constant_shared_ptr(cu_1_3()))

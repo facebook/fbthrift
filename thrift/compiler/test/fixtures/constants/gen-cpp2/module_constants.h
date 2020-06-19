@@ -104,6 +104,8 @@ struct module_constants {
 
   static  ::cpp2::struct3 const& pod_3();
 
+  static  ::cpp2::struct4 const& pod_4();
+
   static  ::cpp2::union1 const& u_1_1();
 
   static  ::cpp2::union1 const& u_1_2();

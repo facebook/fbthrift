@@ -224,6 +224,48 @@ cdef __StructSpec get_reflection__struct3():
         },
     )
 
+cdef __StructSpec get_reflection__struct4():
+    cdef _module_types.struct4 defaults = _module_types.struct4.create(
+        constant_shared_ptr[_module_types.cstruct4](
+            default_inst[_module_types.cstruct4]()
+        )
+    )
+    return __StructSpec.create(
+        name="struct4",
+        kind=__StructType.STRUCT,
+        fields=(
+            __FieldSpec.create(
+                name="a",
+                type=int,
+                kind=__NumberType.I32,
+                qualifier=__Qualifier.UNQUALIFIED,
+                default=None,
+                annotations={
+                },
+            ),
+            __FieldSpec.create(
+                name="b",
+                type=float,
+                kind=__NumberType.DOUBLE,
+                qualifier=__Qualifier.OPTIONAL,
+                default=None,
+                annotations={
+                },
+            ),
+            __FieldSpec.create(
+                name="c",
+                type=int,
+                kind=__NumberType.BYTE,
+                qualifier=__Qualifier.OPTIONAL,
+                default=None,
+                annotations={
+                },
+            ),
+        ),
+        annotations={
+        },
+    )
+
 cdef __StructSpec get_reflection__union1():
     return __StructSpec.create(
         name="union1",

@@ -27,6 +27,9 @@ struct d;
 struct a;
 struct b;
 struct c;
+struct a;
+struct b;
+struct c;
 struct i;
 struct d;
 struct i;
@@ -78,6 +81,18 @@ APACHE_THRIFT_DEFINE_ACCESSOR(c);
 #ifndef APACHE_THRIFT_ACCESSOR_d
 #define APACHE_THRIFT_ACCESSOR_d
 APACHE_THRIFT_DEFINE_ACCESSOR(d);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_a
+#define APACHE_THRIFT_ACCESSOR_a
+APACHE_THRIFT_DEFINE_ACCESSOR(a);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_b
+#define APACHE_THRIFT_ACCESSOR_b
+APACHE_THRIFT_DEFINE_ACCESSOR(b);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_c
+#define APACHE_THRIFT_ACCESSOR_c
+APACHE_THRIFT_DEFINE_ACCESSOR(c);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_a
 #define APACHE_THRIFT_ACCESSOR_a
@@ -252,6 +267,7 @@ class Range;
 class struct1;
 class struct2;
 class struct3;
+class struct4;
 class union1;
 class union2;
 } // cpp2
@@ -989,6 +1005,175 @@ void swap(struct3& a, struct3& b);
 
 template <class Protocol_>
 uint32_t struct3::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+class struct4 final : private apache::thrift::detail::st::ComparisonOperators<struct4> {
+ public:
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  struct4() :
+      a(0),
+      b(0),
+      c(0) {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  struct4(apache::thrift::FragileConstructor, int32_t a__arg, double b__arg, int8_t c__arg);
+
+  struct4(struct4&&) = default;
+
+  struct4(const struct4&) = default;
+
+  struct4& operator=(struct4&&) = default;
+
+  struct4& operator=(const struct4&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  void __clear();
+ public:
+  int32_t a;
+ private:
+  double b;
+ private:
+  int8_t c;
+
+ public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
+  struct __isset {
+    bool a;
+    bool b;
+    bool c;
+  } __isset = {};
+  bool operator==(const struct4& rhs) const;
+  bool operator<(const struct4& rhs) const;
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
+    return {this->a, __isset.a};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a_ref() const&& {
+    return {std::move(this->a), __isset.a};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> a_ref() & {
+    return {this->a, __isset.a};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> a_ref() && {
+    return {std::move(this->a), __isset.a};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const double&> b_ref() const& {
+    return {b, __isset.b};
+  }
+
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const double&&> b_ref() const&& {
+    return {std::move(b), __isset.b};
+  }
+
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<double&> b_ref() & {
+    return {b, __isset.b};
+  }
+
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<double&&> b_ref() && {
+    return {std::move(b), __isset.b};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const int8_t&> c_ref() const& {
+    return {c, __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const int8_t&&> c_ref() const&& {
+    return {std::move(c), __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<int8_t&> c_ref() & {
+    return {c, __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<int8_t&&> c_ref() && {
+    return {std::move(c), __isset.c};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+  int32_t get_a() const {
+    return a;
+  }
+
+  int32_t& set_a(int32_t a_) {
+    a = a_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.a = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return a;
+  }
+
+  const double* get_b() const& {
+    return b_ref() ? std::addressof(b) : nullptr;
+  }
+
+  double* get_b() & {
+    return b_ref() ? std::addressof(b) : nullptr;
+  }
+  double* get_b() && = delete;
+
+  double& set_b(double b_) {
+    b = b_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.b = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return b;
+  }
+
+  const int8_t* get_c() const& {
+    return c_ref() ? std::addressof(c) : nullptr;
+  }
+
+  int8_t* get_c() & {
+    return c_ref() ? std::addressof(c) : nullptr;
+  }
+  int8_t* get_c() && = delete;
+
+  int8_t& set_c(int8_t c_) {
+    c = c_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.c = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return c;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< struct4 >;
+};
+
+void swap(struct4& a, struct4& b);
+
+template <class Protocol_>
+uint32_t struct4::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

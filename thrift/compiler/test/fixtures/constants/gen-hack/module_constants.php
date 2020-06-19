@@ -308,6 +308,21 @@ class module_CONSTANTS {
 
   /**
    * Original thrift constant:-
+   * struct module.struct4 pod_4
+   */
+  <<__Memoize>>
+  public static function pod_4(): struct4{
+    return struct4::fromShape(
+      shape(
+        "a" => 1234,
+        "b" => 0.333,
+        "c" => 25,
+      )
+    );
+  }
+
+  /**
+   * Original thrift constant:-
    * struct module.union1 u_1_1
    */
   <<__Memoize>>

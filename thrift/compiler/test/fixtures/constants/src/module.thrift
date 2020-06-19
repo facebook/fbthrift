@@ -157,6 +157,18 @@ const struct3 pod_3 = {
   }
 }
 
+struct struct4 {
+  1: i32 a
+  2: optional double b
+  3: optional byte c
+}
+
+const struct4 pod_4 = {
+  "a": 1234,
+  "b": 0.333,
+  "c": 25
+}
+
 union union1 {
   1: i32 i
   2: double d

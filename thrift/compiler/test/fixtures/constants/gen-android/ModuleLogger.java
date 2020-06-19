@@ -167,6 +167,31 @@ public class ModuleLogger {
         break;
       }
       
+      case struct4: {
+        oprot.writeStructBegin(new TStruct("struct4"));
+        if (mMap.containsKey(Module.struct4_a) && mMap.get(Module.struct4_a) != null) {
+          writeFieldBegin(oprot, Module.struct4_a);
+          oprot.writeI32((int) mMap.get(Module.struct4_a));
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.struct4_b) && mMap.get(Module.struct4_b) != null) {
+          writeFieldBegin(oprot, Module.struct4_b);
+          oprot.writeDouble((double) mMap.get(Module.struct4_b));
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.struct4_c) && mMap.get(Module.struct4_c) != null) {
+          writeFieldBegin(oprot, Module.struct4_c);
+          oprot.writeByte((byte) mMap.get(Module.struct4_c));
+          oprot.writeFieldEnd();
+        }
+      
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
       case union1: {
         if (this.mMap.size() < 1) {
           throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Cannot write a union with no set value!");

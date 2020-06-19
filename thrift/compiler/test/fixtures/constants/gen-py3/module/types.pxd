@@ -87,6 +87,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
     # Forward Declaration
     cdef cppclass cstruct3 "::cpp2::struct3"
     # Forward Declaration
+    cdef cppclass cstruct4 "::cpp2::struct4"
+    # Forward Declaration
     cdef cppclass cunion1 "::cpp2::union1"
     # Forward Declaration
     cdef cppclass cunion2 "::cpp2::union2"
@@ -185,6 +187,25 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cstruct2 c
         cstruct3__isset __isset
 
+    cdef cppclass cstruct4__isset "::cpp2::struct4::__isset":
+        bint a
+        bint b
+        bint c
+
+    cdef cppclass cstruct4 "::cpp2::struct4":
+        cstruct4() except +
+        cstruct4(const cstruct4&) except +
+        bint operator==(cstruct4&)
+        bint operator!=(cstruct4&)
+        bint operator<(cstruct4&)
+        bint operator>(cstruct4&)
+        bint operator<=(cstruct4&)
+        bint operator>=(cstruct4&)
+        cint32_t a
+        optional_field_ref[double] b_ref()
+        optional_field_ref[cint8_t] c_ref()
+        cstruct4__isset __isset
+
     cdef enum cunion1__type "::cpp2::union1::Type":
         cunion1__type___EMPTY__ "::cpp2::union1::Type::__EMPTY__",
         cunion1__type_i "::cpp2::union1::Type::i",
@@ -253,6 +274,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cstruct3] move(unique_ptr[cstruct3])
     cdef shared_ptr[cstruct3] move_shared "std::move"(shared_ptr[cstruct3])
     cdef unique_ptr[cstruct3] move_unique "std::move"(unique_ptr[cstruct3])
+    cdef shared_ptr[cstruct4] move(unique_ptr[cstruct4])
+    cdef shared_ptr[cstruct4] move_shared "std::move"(shared_ptr[cstruct4])
+    cdef unique_ptr[cstruct4] move_unique "std::move"(unique_ptr[cstruct4])
     cdef shared_ptr[cunion1] move(unique_ptr[cunion1])
     cdef shared_ptr[cunion1] move_shared "std::move"(shared_ptr[cunion1])
     cdef unique_ptr[cunion1] move_unique "std::move"(unique_ptr[cunion1])
@@ -266,6 +290,7 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cstruct1] const_pointer_cast "std::const_pointer_cast<const ::cpp2::struct1>"(shared_ptr[cstruct1])
     cdef shared_ptr[const cstruct2] const_pointer_cast "std::const_pointer_cast<const ::cpp2::struct2>"(shared_ptr[cstruct2])
     cdef shared_ptr[const cstruct3] const_pointer_cast "std::const_pointer_cast<const ::cpp2::struct3>"(shared_ptr[cstruct3])
+    cdef shared_ptr[const cstruct4] const_pointer_cast "std::const_pointer_cast<const ::cpp2::struct4>"(shared_ptr[cstruct4])
     cdef shared_ptr[const cunion1] const_pointer_cast "std::const_pointer_cast<const ::cpp2::union1>"(shared_ptr[cunion1])
     cdef shared_ptr[const cunion2] const_pointer_cast "std::const_pointer_cast<const ::cpp2::union2>"(shared_ptr[cunion2])
 
@@ -375,6 +400,27 @@ cdef class struct3(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cstruct3])
+
+# Forward Definition of the cython struct
+cdef class struct4(thrift.py3.types.Struct)
+
+
+cdef class struct4(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cstruct4] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cstruct4] _make_instance(
+        cstruct4* base_instance,
+        bint* __isNOTSET,
+        object a,
+        object b,
+        object c
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cstruct4])
 
 cdef class __union1Type(thrift.py3.types.CompiledEnum):
     pass
@@ -571,6 +617,7 @@ cdef extern from "src/gen-cpp2/module_constants.h" namespace "::cpp2":
     cdef cstruct2 cpod_2 "::cpp2::module_constants::pod_2"()
     cdef cstruct2 cpod_trailing_commas "::cpp2::module_constants::pod_trailing_commas"()
     cdef cstruct3 cpod_3 "::cpp2::module_constants::pod_3"()
+    cdef cstruct4 cpod_4 "::cpp2::module_constants::pod_4"()
     cdef cunion1 cu_1_1 "::cpp2::module_constants::u_1_1"()
     cdef cunion1 cu_1_2 "::cpp2::module_constants::u_1_2"()
     cdef cunion1 cu_1_3 "::cpp2::module_constants::u_1_3"()
