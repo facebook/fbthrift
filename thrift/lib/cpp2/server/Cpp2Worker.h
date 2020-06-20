@@ -204,7 +204,8 @@ class Cpp2Worker : public wangle::Acceptor,
 
   void requestStop();
 
-  void waitForStop(std::chrono::system_clock::time_point deadline);
+  // returns false if timed out due to deadline
+  bool waitForStop(std::chrono::system_clock::time_point deadline);
 
   virtual wangle::AcceptorHandshakeHelper::UniquePtr createSSLHelper(
       const std::vector<uint8_t>& bytes,

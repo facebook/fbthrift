@@ -51,6 +51,8 @@
 #include <wangle/ssl/SSLContextConfig.h>
 #include <wangle/ssl/TLSCredProcessor.h>
 
+DECLARE_bool(thrift_abort_if_exceeds_shutdown_deadline);
+
 namespace apache {
 namespace thrift {
 
@@ -190,6 +192,9 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   }
 
   wangle::TLSCredProcessor& getCredProcessor();
+
+  void stopWorkers();
+  void stopCPUWorkers();
 
   std::unique_ptr<wangle::TLSCredProcessor> tlsCredProcessor_;
 
@@ -629,20 +634,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void clearWorkers() {
     ioThreadPool_->join();
   }
-
-  /**
-   * Stops workers.  Call this method after calling stopListening() if you
-   * disabled the stopping of workers upon stopListening() via
-   * setStopWorkersOnStopListening() and need to stop the workers explicitly
-   * before server destruction.
-   */
-  void stopWorkers();
-
-  /**
-   * Stop accepting new requests, finish processing outstanding requests and
-   * join the CPU thread pool.
-   */
-  void stopCPUWorkers();
 
   /**
    * Set whether to stop io workers when stopListening() is called (we do stop

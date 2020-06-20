@@ -246,6 +246,16 @@ struct ScopedServerInterfaceThreadTest : public testing::Test {
   static bool isHeaderTransport() {
     return std::is_same_v<HeaderClientChannel, Channel>;
   }
+
+  void SetUp() {
+    // By default, ThriftServer aborts the process if unable to shutdown
+    // on deadline. Since client and server are running in the same process,
+    // this also would crash the tests.
+    FLAGS_thrift_abort_if_exceeds_shutdown_deadline = false;
+  }
+
+ private:
+  gflags::FlagSaver flagSaver;
 };
 
 class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {

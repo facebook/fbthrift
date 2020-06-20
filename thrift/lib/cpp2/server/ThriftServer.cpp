@@ -39,6 +39,11 @@
 #include <wangle/acceptor/FizzConfigUtil.h>
 #include <wangle/acceptor/SharedSSLContextManager.h>
 
+DEFINE_bool(
+    thrift_abort_if_exceeds_shutdown_deadline,
+    true,
+    "Abort the server if failed to drain active requests within deadline");
+
 DEFINE_string(
     thrift_ssl_policy,
     "disabled",
@@ -528,7 +533,13 @@ void ThriftServer::stopCPUWorkers() {
   auto deadline = std::chrono::system_clock::now() + workersJoinTimeout_;
   forEachWorker([&](wangle::Acceptor* acceptor) {
     if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {
-      worker->waitForStop(deadline);
+      if (!worker->waitForStop(deadline)) {
+        if (FLAGS_thrift_abort_if_exceeds_shutdown_deadline) {
+          LOG(FATAL)
+              << "Could not drain active requests within allotted deadline. "
+              << "Abort because undefined behavior is possible.";
+        }
+      }
     }
   });
   // Wait for any tasks currently running on the task queue workers to
