@@ -44,6 +44,10 @@ TEST(References, recursive_ref_fields) {
   // Check that optional fields are absent from a default-constructed object
   EXPECT_EQ(nullptr, a.opt_field.get());
 
+  EXPECT_EQ(nullptr, a.def_field_ref().get());
+  EXPECT_EQ(nullptr, a.req_field_ref().get());
+  EXPECT_EQ(nullptr, a.opt_field_ref().get());
+
   // this isn't the correct serialized size, but it's what simple json returns.
   // it is the correct length for a manually inspected, correct serializedSize
   EXPECT_EQ(120, a.serializedSize(&writer));
@@ -57,6 +61,12 @@ TEST(References, recursive_ref_fields) {
   a.opt_field = std::make_unique<cpp2::RecursiveStruct>();
   EXPECT_EQ(415, a.serializedSize(&writer));
   EXPECT_EQ(415, a.serializedSizeZC(&writer));
+
+  cpp2::RecursiveStruct b;
+  b.def_field_ref() = std::make_unique<cpp2::RecursiveStruct>();
+  b.opt_field_ref() = std::make_unique<cpp2::RecursiveStruct>();
+  EXPECT_EQ(415, b.serializedSize(&writer));
+  EXPECT_EQ(415, b.serializedSizeZC(&writer));
 }
 
 TEST(References, ref_struct_fields) {
@@ -71,12 +81,24 @@ TEST(References, ref_struct_fields) {
   EXPECT_NE(nullptr, a.req_shared_field);
   EXPECT_NE(nullptr, a.def_shared_const_field);
   EXPECT_NE(nullptr, a.req_shared_const_field);
+  EXPECT_NE(nullptr, a.def_field_ref());
+  EXPECT_NE(nullptr, a.req_field_ref());
+  EXPECT_NE(nullptr, a.def_unique_field_ref());
+  EXPECT_NE(nullptr, a.req_unique_field_ref());
+  EXPECT_NE(nullptr, a.def_shared_field_ref());
+  EXPECT_NE(nullptr, a.req_shared_field_ref());
+  EXPECT_NE(nullptr, a.def_shared_const_field_ref());
+  EXPECT_NE(nullptr, a.req_shared_const_field_ref());
 
   // Check that optional fields are absent from a default-constructed object
   EXPECT_EQ(nullptr, a.opt_field);
   EXPECT_EQ(nullptr, a.opt_unique_field);
   EXPECT_EQ(nullptr, a.opt_shared_field);
   EXPECT_EQ(nullptr, a.opt_shared_const_field);
+  EXPECT_EQ(nullptr, a.opt_field_ref());
+  EXPECT_EQ(nullptr, a.opt_unique_field_ref());
+  EXPECT_EQ(nullptr, a.opt_shared_field_ref());
+  EXPECT_EQ(nullptr, a.opt_shared_const_field_ref());
 }
 
 TEST(References, ref_container_fields) {
@@ -95,6 +117,18 @@ TEST(References, ref_container_fields) {
   EXPECT_NE(nullptr, a.req_list_ref_unique);
   EXPECT_NE(nullptr, a.req_set_ref_shared);
   EXPECT_NE(nullptr, a.req_list_ref_shared_const);
+  EXPECT_NE(nullptr, a.def_list_ref_ref());
+  EXPECT_NE(nullptr, a.def_set_ref_ref());
+  EXPECT_NE(nullptr, a.def_map_ref_ref());
+  EXPECT_NE(nullptr, a.def_list_ref_unique_ref());
+  EXPECT_NE(nullptr, a.def_set_ref_shared_ref());
+  EXPECT_NE(nullptr, a.def_list_ref_shared_const_ref());
+  EXPECT_NE(nullptr, a.req_list_ref_ref());
+  EXPECT_NE(nullptr, a.req_set_ref_ref());
+  EXPECT_NE(nullptr, a.req_map_ref_ref());
+  EXPECT_NE(nullptr, a.req_list_ref_unique_ref());
+  EXPECT_NE(nullptr, a.req_set_ref_shared_ref());
+  EXPECT_NE(nullptr, a.req_list_ref_shared_const_ref());
   // Check that optional fields are absent from a default-constructed object
   EXPECT_EQ(nullptr, a.opt_list_ref);
   EXPECT_EQ(nullptr, a.opt_set_ref);
@@ -102,6 +136,66 @@ TEST(References, ref_container_fields) {
   EXPECT_EQ(nullptr, a.opt_list_ref_unique);
   EXPECT_EQ(nullptr, a.opt_set_ref_shared);
   EXPECT_EQ(nullptr, a.opt_list_ref_shared_const);
+  EXPECT_EQ(nullptr, a.opt_list_ref_ref());
+  EXPECT_EQ(nullptr, a.opt_set_ref_ref());
+  EXPECT_EQ(nullptr, a.opt_map_ref_ref());
+  EXPECT_EQ(nullptr, a.opt_list_ref_unique_ref());
+  EXPECT_EQ(nullptr, a.opt_set_ref_shared_ref());
+  EXPECT_EQ(nullptr, a.opt_list_ref_shared_const_ref());
+}
+
+TEST(References, field_ref) {
+  cpp2::ReferringStruct a;
+
+  static_assert(std::is_same_v<
+                decltype(a.def_field_ref()),
+                std::unique_ptr<PlainStruct>&>);
+  static_assert(std::is_same_v<
+                decltype(std::move(a).def_field_ref()),
+                std::unique_ptr<PlainStruct>&&>);
+  static_assert(std::is_same_v<
+                decltype(std::as_const(a).def_field_ref()),
+                const std::unique_ptr<PlainStruct>&>);
+  static_assert(std::is_same_v<
+                decltype(std::move(std::as_const(a)).def_field_ref()),
+                const std::unique_ptr<PlainStruct>&&>);
+  static_assert(std::is_same_v<
+                decltype(a.def_shared_field_ref()),
+                std::shared_ptr<PlainStruct>&>);
+  static_assert(std::is_same_v<
+                decltype(std::move(a).def_shared_field_ref()),
+                std::shared_ptr<PlainStruct>&&>);
+  static_assert(std::is_same_v<
+                decltype(std::as_const(a).def_shared_field_ref()),
+                const std::shared_ptr<PlainStruct>&>);
+  static_assert(std::is_same_v<
+                decltype(std::move(std::as_const(a)).def_shared_field_ref()),
+                const std::shared_ptr<PlainStruct>&&>);
+  static_assert(std::is_same_v<
+                decltype(a.def_shared_const_field_ref()),
+                std::shared_ptr<const PlainStruct>&>);
+  static_assert(std::is_same_v<
+                decltype(std::move(a).def_shared_const_field_ref()),
+                std::shared_ptr<const PlainStruct>&&>);
+  static_assert(std::is_same_v<
+                decltype(std::as_const(a).def_shared_const_field_ref()),
+                const std::shared_ptr<const PlainStruct>&>);
+  static_assert(
+      std::is_same_v<
+          decltype(std::move(std::as_const(a)).def_shared_const_field_ref()),
+          const std::shared_ptr<const PlainStruct>&&>);
+
+  a.def_field_ref() = std::make_unique<PlainStruct>();
+  a.def_field_ref()->field_ref() = 10;
+  auto x = std::move(a).def_field_ref();
+  EXPECT_EQ(x->field_ref(), 10);
+  EXPECT_FALSE(a.def_field_ref());
+
+  a.def_field_ref() = std::make_unique<PlainStruct>();
+  a.def_field_ref()->field_ref() = 20;
+  auto y = std::move(a.def_field_ref());
+  EXPECT_EQ(y->field_ref(), 20);
+  EXPECT_FALSE(a.def_field_ref());
 }
 
 } // namespace cpp2

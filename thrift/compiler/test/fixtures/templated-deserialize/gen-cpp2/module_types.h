@@ -837,6 +837,61 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     return {std::move(this->fieldQ), __isset.fieldQ};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  template <typename ..., typename T = std::unique_ptr<::std::map<::std::string, bool>>>
+  FOLLY_ERASE T& fieldR_ref() & { return fieldR; }
+
+  template <typename ..., typename T = std::unique_ptr<::std::map<::std::string, bool>>>
+  FOLLY_ERASE const T& fieldR_ref() const& { return fieldR; }
+
+  template <typename ..., typename T = std::unique_ptr<::std::map<::std::string, bool>>>
+  FOLLY_ERASE T&& fieldR_ref() && { return std::move(fieldR); }
+
+  template <typename ..., typename T = std::unique_ptr<::std::map<::std::string, bool>>>
+  FOLLY_ERASE const T&& fieldR_ref() const&& { return std::move(fieldR); }
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::SmallStruct>>
+  FOLLY_ERASE T& fieldS_ref() & { return fieldS; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::SmallStruct>>
+  FOLLY_ERASE const T& fieldS_ref() const& { return fieldS; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::SmallStruct>>
+  FOLLY_ERASE T&& fieldS_ref() && { return std::move(fieldS); }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::SmallStruct>>
+  FOLLY_ERASE const T&& fieldS_ref() const&& { return std::move(fieldS); }
+  template <typename ..., typename T = std::shared_ptr< ::cpp2::SmallStruct>>
+  FOLLY_ERASE T& fieldT_ref() & { return fieldT; }
+
+  template <typename ..., typename T = std::shared_ptr< ::cpp2::SmallStruct>>
+  FOLLY_ERASE const T& fieldT_ref() const& { return fieldT; }
+
+  template <typename ..., typename T = std::shared_ptr< ::cpp2::SmallStruct>>
+  FOLLY_ERASE T&& fieldT_ref() && { return std::move(fieldT); }
+
+  template <typename ..., typename T = std::shared_ptr< ::cpp2::SmallStruct>>
+  FOLLY_ERASE const T&& fieldT_ref() const&& { return std::move(fieldT); }
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::SmallStruct>>
+  FOLLY_ERASE T& fieldU_ref() & { return fieldU; }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::SmallStruct>>
+  FOLLY_ERASE const T& fieldU_ref() const& { return fieldU; }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::SmallStruct>>
+  FOLLY_ERASE T&& fieldU_ref() && { return std::move(fieldU); }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::SmallStruct>>
+  FOLLY_ERASE const T&& fieldU_ref() const&& { return std::move(fieldU); }
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::SmallStruct>>
+  FOLLY_ERASE T& fieldX_ref() & { return fieldX; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::SmallStruct>>
+  FOLLY_ERASE const T& fieldX_ref() const& { return fieldX; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::SmallStruct>>
+  FOLLY_ERASE T&& fieldX_ref() && { return std::move(fieldX); }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::SmallStruct>>
+  FOLLY_ERASE const T&& fieldX_ref() const&& { return std::move(fieldX); }
 
   bool get_fieldA() const {
     return fieldA;

@@ -5153,6 +5153,17 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     return {std::move(this->field2), __isset.field2};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  template <typename ..., typename T = std::unique_ptr< ::test_cpp2::cpp_reflection::structA>>
+  FOLLY_ERASE T& field3_ref() & { return field3; }
+
+  template <typename ..., typename T = std::unique_ptr< ::test_cpp2::cpp_reflection::structA>>
+  FOLLY_ERASE const T& field3_ref() const& { return field3; }
+
+  template <typename ..., typename T = std::unique_ptr< ::test_cpp2::cpp_reflection::structA>>
+  FOLLY_ERASE T&& field3_ref() && { return std::move(field3); }
+
+  template <typename ..., typename T = std::unique_ptr< ::test_cpp2::cpp_reflection::structA>>
+  FOLLY_ERASE const T&& field3_ref() const&& { return std::move(field3); }
 
   int32_t get_field0() const {
     return field0;

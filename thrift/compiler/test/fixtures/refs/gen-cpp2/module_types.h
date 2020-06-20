@@ -674,6 +674,39 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  public:
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  FOLLY_ERASE T& opt_ref_ref() & { return opt_ref; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  FOLLY_ERASE const T& opt_ref_ref() const& { return opt_ref; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  FOLLY_ERASE T&& opt_ref_ref() && { return std::move(opt_ref); }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  FOLLY_ERASE const T&& opt_ref_ref() const&& { return std::move(opt_ref); }
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  FOLLY_ERASE T& ref_ref() & { return ref; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  FOLLY_ERASE const T& ref_ref() const& { return ref; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  FOLLY_ERASE T&& ref_ref() && { return std::move(ref); }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  FOLLY_ERASE const T&& ref_ref() const&& { return std::move(ref); }
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  FOLLY_ERASE T& req_ref_ref() & { return req_ref; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  FOLLY_ERASE const T& req_ref_ref() const& { return req_ref; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  FOLLY_ERASE T&& req_ref_ref() && { return std::move(req_ref); }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  FOLLY_ERASE const T&& req_ref_ref() const&& { return std::move(req_ref); }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -735,6 +768,17 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   } __isset = {};
   bool operator==(const StructWithUnion& rhs) const;
   bool operator<(const StructWithUnion& rhs) const;
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyUnion>>
+  FOLLY_ERASE T& u_ref() & { return u; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyUnion>>
+  FOLLY_ERASE const T& u_ref() const& { return u; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyUnion>>
+  FOLLY_ERASE T&& u_ref() && { return std::move(u); }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyUnion>>
+  FOLLY_ERASE const T&& u_ref() const&& { return std::move(u); }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = double>
@@ -952,6 +996,72 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  public:
   bool operator==(const StructWithContainers& rhs) const;
   bool operator<(const StructWithContainers& rhs) const;
+  template <typename ..., typename T = std::unique_ptr<::std::vector<int32_t>>>
+  FOLLY_ERASE T& list_ref_ref() & { return list_ref; }
+
+  template <typename ..., typename T = std::unique_ptr<::std::vector<int32_t>>>
+  FOLLY_ERASE const T& list_ref_ref() const& { return list_ref; }
+
+  template <typename ..., typename T = std::unique_ptr<::std::vector<int32_t>>>
+  FOLLY_ERASE T&& list_ref_ref() && { return std::move(list_ref); }
+
+  template <typename ..., typename T = std::unique_ptr<::std::vector<int32_t>>>
+  FOLLY_ERASE const T&& list_ref_ref() const&& { return std::move(list_ref); }
+  template <typename ..., typename T = std::unique_ptr<::std::set<int32_t>>>
+  FOLLY_ERASE T& set_ref_ref() & { return set_ref; }
+
+  template <typename ..., typename T = std::unique_ptr<::std::set<int32_t>>>
+  FOLLY_ERASE const T& set_ref_ref() const& { return set_ref; }
+
+  template <typename ..., typename T = std::unique_ptr<::std::set<int32_t>>>
+  FOLLY_ERASE T&& set_ref_ref() && { return std::move(set_ref); }
+
+  template <typename ..., typename T = std::unique_ptr<::std::set<int32_t>>>
+  FOLLY_ERASE const T&& set_ref_ref() const&& { return std::move(set_ref); }
+  template <typename ..., typename T = std::unique_ptr<::std::map<int32_t, int32_t>>>
+  FOLLY_ERASE T& map_ref_ref() & { return map_ref; }
+
+  template <typename ..., typename T = std::unique_ptr<::std::map<int32_t, int32_t>>>
+  FOLLY_ERASE const T& map_ref_ref() const& { return map_ref; }
+
+  template <typename ..., typename T = std::unique_ptr<::std::map<int32_t, int32_t>>>
+  FOLLY_ERASE T&& map_ref_ref() && { return std::move(map_ref); }
+
+  template <typename ..., typename T = std::unique_ptr<::std::map<int32_t, int32_t>>>
+  FOLLY_ERASE const T&& map_ref_ref() const&& { return std::move(map_ref); }
+  template <typename ..., typename T = std::unique_ptr<::std::vector<int32_t>>>
+  FOLLY_ERASE T& list_ref_unique_ref() & { return list_ref_unique; }
+
+  template <typename ..., typename T = std::unique_ptr<::std::vector<int32_t>>>
+  FOLLY_ERASE const T& list_ref_unique_ref() const& { return list_ref_unique; }
+
+  template <typename ..., typename T = std::unique_ptr<::std::vector<int32_t>>>
+  FOLLY_ERASE T&& list_ref_unique_ref() && { return std::move(list_ref_unique); }
+
+  template <typename ..., typename T = std::unique_ptr<::std::vector<int32_t>>>
+  FOLLY_ERASE const T&& list_ref_unique_ref() const&& { return std::move(list_ref_unique); }
+  template <typename ..., typename T = std::shared_ptr<::std::set<int32_t>>>
+  FOLLY_ERASE T& set_ref_shared_ref() & { return set_ref_shared; }
+
+  template <typename ..., typename T = std::shared_ptr<::std::set<int32_t>>>
+  FOLLY_ERASE const T& set_ref_shared_ref() const& { return set_ref_shared; }
+
+  template <typename ..., typename T = std::shared_ptr<::std::set<int32_t>>>
+  FOLLY_ERASE T&& set_ref_shared_ref() && { return std::move(set_ref_shared); }
+
+  template <typename ..., typename T = std::shared_ptr<::std::set<int32_t>>>
+  FOLLY_ERASE const T&& set_ref_shared_ref() const&& { return std::move(set_ref_shared); }
+  template <typename ..., typename T = std::shared_ptr<const ::std::vector<int32_t>>>
+  FOLLY_ERASE T& list_ref_shared_const_ref() & { return list_ref_shared_const; }
+
+  template <typename ..., typename T = std::shared_ptr<const ::std::vector<int32_t>>>
+  FOLLY_ERASE const T& list_ref_shared_const_ref() const& { return list_ref_shared_const; }
+
+  template <typename ..., typename T = std::shared_ptr<const ::std::vector<int32_t>>>
+  FOLLY_ERASE T&& list_ref_shared_const_ref() && { return std::move(list_ref_shared_const); }
+
+  template <typename ..., typename T = std::shared_ptr<const ::std::vector<int32_t>>>
+  FOLLY_ERASE const T&& list_ref_shared_const_ref() const&& { return std::move(list_ref_shared_const); }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1010,6 +1120,39 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  public:
   bool operator==(const StructWithSharedConst& rhs) const;
   bool operator<(const StructWithSharedConst& rhs) const;
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  FOLLY_ERASE T& opt_shared_const_ref() & { return opt_shared_const; }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  FOLLY_ERASE const T& opt_shared_const_ref() const& { return opt_shared_const; }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  FOLLY_ERASE T&& opt_shared_const_ref() && { return std::move(opt_shared_const); }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  FOLLY_ERASE const T&& opt_shared_const_ref() const&& { return std::move(opt_shared_const); }
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  FOLLY_ERASE T& shared_const_ref() & { return shared_const; }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  FOLLY_ERASE const T& shared_const_ref() const& { return shared_const; }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  FOLLY_ERASE T&& shared_const_ref() && { return std::move(shared_const); }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  FOLLY_ERASE const T&& shared_const_ref() const&& { return std::move(shared_const); }
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  FOLLY_ERASE T& req_shared_const_ref() & { return req_shared_const; }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  FOLLY_ERASE const T& req_shared_const_ref() const& { return req_shared_const; }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  FOLLY_ERASE T&& req_shared_const_ref() && { return std::move(req_shared_const); }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  FOLLY_ERASE const T&& req_shared_const_ref() const&& { return std::move(req_shared_const); }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1114,6 +1257,39 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  public:
   bool operator==(const StructWithRef& rhs) const;
   bool operator<(const StructWithRef& rhs) const;
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T& def_field_ref() & { return def_field; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T& def_field_ref() const& { return def_field; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T&& def_field_ref() && { return std::move(def_field); }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T&& def_field_ref() const&& { return std::move(def_field); }
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T& opt_field_ref() & { return opt_field; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T& opt_field_ref() const& { return opt_field; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T&& opt_field_ref() && { return std::move(opt_field); }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T&& opt_field_ref() const&& { return std::move(opt_field); }
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T& req_field_ref() & { return req_field; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T& req_field_ref() const& { return req_field; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T&& req_field_ref() && { return std::move(req_field); }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T&& req_field_ref() const&& { return std::move(req_field); }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1170,6 +1346,39 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  public:
   bool operator==(const StructWithRefTypeUnique& rhs) const;
   bool operator<(const StructWithRefTypeUnique& rhs) const;
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T& def_field_ref() & { return def_field; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T& def_field_ref() const& { return def_field; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T&& def_field_ref() && { return std::move(def_field); }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T&& def_field_ref() const&& { return std::move(def_field); }
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T& opt_field_ref() & { return opt_field; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T& opt_field_ref() const& { return opt_field; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T&& opt_field_ref() && { return std::move(opt_field); }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T&& opt_field_ref() const&& { return std::move(opt_field); }
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T& req_field_ref() & { return req_field; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T& req_field_ref() const& { return req_field; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T&& req_field_ref() && { return std::move(req_field); }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T&& req_field_ref() const&& { return std::move(req_field); }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1228,6 +1437,39 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  public:
   bool operator==(const StructWithRefTypeShared& rhs) const;
   bool operator<(const StructWithRefTypeShared& rhs) const;
+  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T& def_field_ref() & { return def_field; }
+
+  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T& def_field_ref() const& { return def_field; }
+
+  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T&& def_field_ref() && { return std::move(def_field); }
+
+  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T&& def_field_ref() const&& { return std::move(def_field); }
+  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T& opt_field_ref() & { return opt_field; }
+
+  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T& opt_field_ref() const& { return opt_field; }
+
+  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T&& opt_field_ref() && { return std::move(opt_field); }
+
+  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T&& opt_field_ref() const&& { return std::move(opt_field); }
+  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T& req_field_ref() & { return req_field; }
+
+  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T& req_field_ref() const& { return req_field; }
+
+  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T&& req_field_ref() && { return std::move(req_field); }
+
+  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T&& req_field_ref() const&& { return std::move(req_field); }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1286,6 +1528,39 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  public:
   bool operator==(const StructWithRefTypeSharedConst& rhs) const;
   bool operator<(const StructWithRefTypeSharedConst& rhs) const;
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  FOLLY_ERASE T& def_field_ref() & { return def_field; }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  FOLLY_ERASE const T& def_field_ref() const& { return def_field; }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  FOLLY_ERASE T&& def_field_ref() && { return std::move(def_field); }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  FOLLY_ERASE const T&& def_field_ref() const&& { return std::move(def_field); }
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  FOLLY_ERASE T& opt_field_ref() & { return opt_field; }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  FOLLY_ERASE const T& opt_field_ref() const& { return opt_field; }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  FOLLY_ERASE T&& opt_field_ref() && { return std::move(opt_field); }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  FOLLY_ERASE const T&& opt_field_ref() const&& { return std::move(opt_field); }
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  FOLLY_ERASE T& req_field_ref() & { return req_field; }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  FOLLY_ERASE const T& req_field_ref() const& { return req_field; }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  FOLLY_ERASE T&& req_field_ref() && { return std::move(req_field); }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  FOLLY_ERASE const T&& req_field_ref() const&& { return std::move(req_field); }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1339,6 +1614,17 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  public:
   bool operator==(const StructWithRefAndAnnotCppNoexceptMoveCtor& rhs) const;
   bool operator<(const StructWithRefAndAnnotCppNoexceptMoveCtor& rhs) const;
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T& def_field_ref() & { return def_field; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T& def_field_ref() const& { return def_field; }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE T&& def_field_ref() && { return std::move(def_field); }
+
+  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  FOLLY_ERASE const T&& def_field_ref() const&& { return std::move(def_field); }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

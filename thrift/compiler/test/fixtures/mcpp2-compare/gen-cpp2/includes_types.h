@@ -218,6 +218,17 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  public:
   bool operator==(const AStructB& rhs) const;
   bool operator<(const AStructB& rhs) const;
+  template <typename ..., typename T = std::shared_ptr<const  ::a::different::ns::AStruct>>
+  FOLLY_ERASE T& FieldA_ref() & { return FieldA; }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::a::different::ns::AStruct>>
+  FOLLY_ERASE const T& FieldA_ref() const& { return FieldA; }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::a::different::ns::AStruct>>
+  FOLLY_ERASE T&& FieldA_ref() && { return std::move(FieldA); }
+
+  template <typename ..., typename T = std::shared_ptr<const  ::a::different::ns::AStruct>>
+  FOLLY_ERASE const T&& FieldA_ref() const&& { return std::move(FieldA); }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
