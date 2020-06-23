@@ -216,7 +216,7 @@ struct impl<T, type_class::enumeration> {
   static void go(schema_t& schema) {
     using traits = TEnumTraits<T>;
     registering_datatype(schema, rname, rid(), [&](datatype_t& dt) {
-      dt.__isset.enumValues = true;
+      apache::thrift::ensure_isset_unsafe(dt.enumValues_ref());
       for (size_t i = 0; i < traits::size; ++i) {
         (*dt.enumValues_ref())[traits::names[i].str()] = int(traits::values[i]);
       }
@@ -288,7 +288,7 @@ struct impl<T, type_class::structure> {
   }
   static void go(schema_t& schema) {
     registering_datatype(schema, rname, rid(), [&](datatype_t& dt) {
-      dt.__isset.fields = true;
+      apache::thrift::ensure_isset_unsafe(dt.fields_ref());
       fatal::foreach<typename meta::members>(visitor(), schema, dt);
     });
   }
@@ -326,7 +326,7 @@ struct impl<T, type_class::variant> {
   }
   static void go(schema_t& schema) {
     registering_datatype(schema, rname, rid(), [&](datatype_t& dt) {
-      dt.__isset.fields = true;
+      apache::thrift::ensure_isset_unsafe(dt.fields_ref());
       fatal::foreach<typename meta::traits::descriptors>(visitor(), schema, dt);
     });
   }
