@@ -48,9 +48,6 @@ class CompactProtocolReader;
 
 namespace detail {
 
-// For streaming, the default 16KB Protocol growth can be memory aggressive.
-constexpr size_t kStreamingQueueAppenderGrowth = 4096;
-
 template <int N, int Size, class F, class Tuple>
 struct ForEachImpl {
   static uint32_t forEach(Tuple&& tuple, F&& f) {
@@ -928,7 +925,7 @@ std::unique_ptr<folly::IOBuf> encode_stream_payload(T&& _item) {
 
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
   Protocol prot;
-  prot.setOutput(&queue, kStreamingQueueAppenderGrowth);
+  prot.setOutput(&queue, res.serializedSizeZC(&prot));
 
   res.write(&prot);
   return std::move(queue).move();
@@ -945,11 +942,13 @@ std::unique_ptr<folly::IOBuf> encode_stream_exception(
   ErrorMapFunc mapException;
   Protocol prot;
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-  prot.setOutput(&queue, kStreamingQueueAppenderGrowth);
   PResult res;
   if (mapException(res, ew)) {
+    prot.setOutput(&queue, res.serializedSizeZC(&prot));
     res.write(&prot);
   } else {
+    constexpr size_t kQueueAppenderGrowth = 4096;
+    prot.setOutput(&queue, kQueueAppenderGrowth);
     TApplicationException ex(ew.what().toStdString());
     detail::serializeExceptionBody(&prot, &ex);
   }
