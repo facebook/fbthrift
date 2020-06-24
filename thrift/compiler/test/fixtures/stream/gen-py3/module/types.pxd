@@ -39,10 +39,6 @@ from thrift.py3.common cimport RpcOptions as __RpcOptions
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    # Forward Declaration
-    cdef cppclass cFooEx "::cpp2::FooEx"(cTException)
-
-cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cFooEx__isset "::cpp2::FooEx::__isset":
         pass
 
@@ -66,8 +62,6 @@ cdef extern from "<utility>" namespace "std" nogil:
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cFooEx] const_pointer_cast "std::const_pointer_cast<const ::cpp2::FooEx>"(shared_ptr[cFooEx])
 
-# Forward Definition of the cython struct
-cdef class FooEx(thrift.py3.exceptions.Error)
 
 
 cdef class FooEx(thrift.py3.exceptions.Error):

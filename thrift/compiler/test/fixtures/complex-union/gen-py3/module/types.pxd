@@ -31,24 +31,6 @@ from folly.optional cimport cOptional
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    # Forward Declaration
-    cdef cppclass cComplexUnion "::cpp2::ComplexUnion"
-    # Forward Declaration
-    cdef cppclass cListUnion "::cpp2::ListUnion"
-    # Forward Declaration
-    cdef cppclass cDataUnion "::cpp2::DataUnion"
-    # Forward Declaration
-    cdef cppclass cVal "::cpp2::Val"
-    # Forward Declaration
-    cdef cppclass cValUnion "::cpp2::ValUnion"
-    # Forward Declaration
-    cdef cppclass cVirtualComplexUnion "::cpp2::VirtualComplexUnion"
-    # Forward Declaration
-    cdef cppclass cNonCopyableStruct "::cpp2::NonCopyableStruct"
-    # Forward Declaration
-    cdef cppclass cNonCopyableUnion "::cpp2::NonCopyableUnion"
-
-cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef enum cComplexUnion__type "::cpp2::ComplexUnion::Type":
         cComplexUnion__type___EMPTY__ "::cpp2::ComplexUnion::Type::__EMPTY__",
         cComplexUnion__type_intValue "::cpp2::ComplexUnion::Type::intValue",
@@ -263,8 +245,6 @@ cdef class __ComplexUnionType(thrift.py3.types.CompiledEnum):
     pass
 
 
-# Forward Definition of the cython struct
-cdef class ComplexUnion(thrift.py3.types.Union)
 
 
 cdef class ComplexUnion(thrift.py3.types.Union):
@@ -293,8 +273,6 @@ cdef class __ListUnionType(thrift.py3.types.CompiledEnum):
     pass
 
 
-# Forward Definition of the cython struct
-cdef class ListUnion(thrift.py3.types.Union)
 
 
 cdef class ListUnion(thrift.py3.types.Union):
@@ -319,8 +297,6 @@ cdef class __DataUnionType(thrift.py3.types.CompiledEnum):
     pass
 
 
-# Forward Definition of the cython struct
-cdef class DataUnion(thrift.py3.types.Union)
 
 
 cdef class DataUnion(thrift.py3.types.Union):
@@ -341,8 +317,6 @@ cdef class DataUnion(thrift.py3.types.Union):
     @staticmethod
     cdef create(shared_ptr[cDataUnion])
 
-# Forward Definition of the cython struct
-cdef class Val(thrift.py3.types.Struct)
 
 
 cdef class Val(thrift.py3.types.Struct):
@@ -367,8 +341,6 @@ cdef class __ValUnionType(thrift.py3.types.CompiledEnum):
     pass
 
 
-# Forward Definition of the cython struct
-cdef class ValUnion(thrift.py3.types.Union)
 
 
 cdef class ValUnion(thrift.py3.types.Union):
@@ -393,8 +365,6 @@ cdef class __VirtualComplexUnionType(thrift.py3.types.CompiledEnum):
     pass
 
 
-# Forward Definition of the cython struct
-cdef class VirtualComplexUnion(thrift.py3.types.Union)
 
 
 cdef class VirtualComplexUnion(thrift.py3.types.Union):
@@ -415,8 +385,6 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
     @staticmethod
     cdef create(shared_ptr[cVirtualComplexUnion])
 
-# Forward Definition of the cython struct
-cdef class NonCopyableStruct(thrift.py3.types.Struct)
 
 
 cdef class NonCopyableStruct(thrift.py3.types.Struct):
@@ -438,8 +406,6 @@ cdef class __NonCopyableUnionType(thrift.py3.types.CompiledEnum):
     pass
 
 
-# Forward Definition of the cython struct
-cdef class NonCopyableUnion(thrift.py3.types.Union)
 
 
 cdef class NonCopyableUnion(thrift.py3.types.Union):

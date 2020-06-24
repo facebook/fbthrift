@@ -48,12 +48,6 @@ cdef cAnEnum AnEnum_to_cpp(AnEnum value)
 
 
 cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::a::different::ns":
-    # Forward Declaration
-    cdef cppclass cAStruct "::a::different::ns::AStruct"
-    # Forward Declaration
-    cdef cppclass cAStructB "::a::different::ns::AStructB"
-
-cdef extern from "gen-cpp2/includes_types.h" namespace "::a::different::ns":
     cdef cppclass cAStruct__isset "::a::different::ns::AStruct::__isset":
         bint FieldA
 
@@ -98,8 +92,6 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cAStruct] const_pointer_cast "std::const_pointer_cast<const ::a::different::ns::AStruct>"(shared_ptr[cAStruct])
     cdef shared_ptr[const cAStructB] const_pointer_cast "std::const_pointer_cast<const ::a::different::ns::AStructB>"(shared_ptr[cAStructB])
 
-# Forward Definition of the cython struct
-cdef class AStruct(thrift.py3.types.Struct)
 
 
 cdef class AStruct(thrift.py3.types.Struct):
@@ -117,8 +109,6 @@ cdef class AStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cAStruct])
 
-# Forward Definition of the cython struct
-cdef class AStructB(thrift.py3.types.Struct)
 
 
 cdef class AStructB(thrift.py3.types.Struct):

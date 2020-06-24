@@ -67,20 +67,6 @@ cdef cFlags Flags_to_cpp(Flags value)
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3::simple":
-    # Forward Declaration
-    cdef cppclass cSimpleException "::py3::simple::SimpleException"(cTException)
-    # Forward Declaration
-    cdef cppclass cOptionalRefStruct "::py3::simple::OptionalRefStruct"
-    # Forward Declaration
-    cdef cppclass cSimpleStruct "::py3::simple::SimpleStruct"
-    # Forward Declaration
-    cdef cppclass cComplexStruct "::py3::simple::ComplexStruct"
-    # Forward Declaration
-    cdef cppclass cBinaryUnion "::py3::simple::BinaryUnion"
-    # Forward Declaration
-    cdef cppclass cBinaryUnionStruct "::py3::simple::BinaryUnionStruct"
-
-cdef extern from "src/gen-cpp2/module_types.h" namespace "::py3::simple":
     cdef cppclass cSimpleException__isset "::py3::simple::SimpleException::__isset":
         bint err_code
 
@@ -223,8 +209,6 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cBinaryUnion] const_pointer_cast "std::const_pointer_cast<const ::py3::simple::BinaryUnion>"(shared_ptr[cBinaryUnion])
     cdef shared_ptr[const cBinaryUnionStruct] const_pointer_cast "std::const_pointer_cast<const ::py3::simple::BinaryUnionStruct>"(shared_ptr[cBinaryUnionStruct])
 
-# Forward Definition of the cython struct
-cdef class SimpleException(thrift.py3.exceptions.Error)
 
 
 cdef class SimpleException(thrift.py3.exceptions.Error):
@@ -242,8 +226,6 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
     @staticmethod
     cdef create(shared_ptr[cSimpleException])
 
-# Forward Definition of the cython struct
-cdef class OptionalRefStruct(thrift.py3.types.Struct)
 
 
 cdef class OptionalRefStruct(thrift.py3.types.Struct):
@@ -262,8 +244,6 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cOptionalRefStruct])
 
-# Forward Definition of the cython struct
-cdef class SimpleStruct(thrift.py3.types.Struct)
 
 
 cdef class SimpleStruct(thrift.py3.types.Struct):
@@ -287,8 +267,6 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cSimpleStruct])
 
-# Forward Definition of the cython struct
-cdef class ComplexStruct(thrift.py3.types.Struct)
 
 
 cdef class ComplexStruct(thrift.py3.types.Struct):
@@ -320,8 +298,6 @@ cdef class __BinaryUnionType(thrift.py3.types.CompiledEnum):
     pass
 
 
-# Forward Definition of the cython struct
-cdef class BinaryUnion(thrift.py3.types.Union)
 
 
 cdef class BinaryUnion(thrift.py3.types.Union):
@@ -342,8 +318,6 @@ cdef class BinaryUnion(thrift.py3.types.Union):
     @staticmethod
     cdef create(shared_ptr[cBinaryUnion])
 
-# Forward Definition of the cython struct
-cdef class BinaryUnionStruct(thrift.py3.types.Struct)
 
 
 cdef class BinaryUnionStruct(thrift.py3.types.Struct):

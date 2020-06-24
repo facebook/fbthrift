@@ -53,12 +53,6 @@ cdef cMyEnumA MyEnumA_to_cpp(MyEnumA value)
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    # Forward Declaration
-    cdef cppclass cSmallStruct "::cpp2::SmallStruct"
-    # Forward Declaration
-    cdef cppclass ccontainerStruct "::cpp2::containerStruct"
-
-cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cSmallStruct__isset "::cpp2::SmallStruct::__isset":
         bint small_A
         bint small_B
@@ -163,8 +157,6 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cSmallStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::SmallStruct>"(shared_ptr[cSmallStruct])
     cdef shared_ptr[const ccontainerStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::containerStruct>"(shared_ptr[ccontainerStruct])
 
-# Forward Definition of the cython struct
-cdef class SmallStruct(thrift.py3.types.Struct)
 
 
 cdef class SmallStruct(thrift.py3.types.Struct):
@@ -183,8 +175,6 @@ cdef class SmallStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cSmallStruct])
 
-# Forward Definition of the cython struct
-cdef class containerStruct(thrift.py3.types.Struct)
 
 
 cdef class containerStruct(thrift.py3.types.Struct):

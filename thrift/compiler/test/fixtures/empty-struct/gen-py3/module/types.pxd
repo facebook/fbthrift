@@ -31,12 +31,6 @@ from folly.optional cimport cOptional
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    # Forward Declaration
-    cdef cppclass cEmpty "::cpp2::Empty"
-    # Forward Declaration
-    cdef cppclass cNada "::cpp2::Nada"
-
-cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cEmpty__isset "::cpp2::Empty::__isset":
         pass
 
@@ -78,8 +72,6 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cEmpty] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Empty>"(shared_ptr[cEmpty])
     cdef shared_ptr[const cNada] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Nada>"(shared_ptr[cNada])
 
-# Forward Definition of the cython struct
-cdef class Empty(thrift.py3.types.Struct)
 
 
 cdef class Empty(thrift.py3.types.Struct):
@@ -100,8 +92,6 @@ cdef class __NadaType(thrift.py3.types.CompiledEnum):
     pass
 
 
-# Forward Definition of the cython struct
-cdef class Nada(thrift.py3.types.Union)
 
 
 cdef class Nada(thrift.py3.types.Union):

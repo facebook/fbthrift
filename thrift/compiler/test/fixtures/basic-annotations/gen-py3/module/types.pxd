@@ -47,16 +47,6 @@ cdef cMyEnum MyEnum_to_cpp(MyEnum value)
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    # Forward Declaration
-    cdef cppclass cMyStructNestedAnnotation "::cpp2::MyStructNestedAnnotation"
-    # Forward Declaration
-    cdef cppclass cMyStructAnnotation "::cpp2::MyStructAnnotation"
-    # Forward Declaration
-    cdef cppclass cMyStruct "::cpp2::MyStruct"
-    # Forward Declaration
-    cdef cppclass cSecretStruct "::cpp2::SecretStruct"
-
-cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cMyStructNestedAnnotation__isset "::cpp2::MyStructNestedAnnotation::__isset":
         bint name
 
@@ -157,8 +147,6 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyStruct>"(shared_ptr[cMyStruct])
     cdef shared_ptr[const cSecretStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::SecretStruct>"(shared_ptr[cSecretStruct])
 
-# Forward Definition of the cython struct
-cdef class MyStructNestedAnnotation(thrift.py3.types.Struct)
 
 
 cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
@@ -176,8 +164,6 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyStructNestedAnnotation])
 
-# Forward Definition of the cython struct
-cdef class MyStructAnnotation(thrift.py3.types.Struct)
 
 
 cdef class MyStructAnnotation(thrift.py3.types.Struct):
@@ -199,8 +185,6 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyStructAnnotation])
 
-# Forward Definition of the cython struct
-cdef class MyStruct(thrift.py3.types.Struct)
 
 
 cdef class MyStruct(thrift.py3.types.Struct):
@@ -223,8 +207,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyStruct])
 
-# Forward Definition of the cython struct
-cdef class SecretStruct(thrift.py3.types.Struct)
 
 
 cdef class SecretStruct(thrift.py3.types.Struct):

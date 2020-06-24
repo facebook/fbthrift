@@ -90,10 +90,6 @@ cdef cMyBigEnum MyBigEnum_to_cpp(MyBigEnum value)
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test::fixtures::enumstrict":
-    # Forward Declaration
-    cdef cppclass cMyStruct "::test::fixtures::enumstrict::MyStruct"
-
-cdef extern from "src/gen-cpp2/module_types.h" namespace "::test::fixtures::enumstrict":
     cdef cppclass cMyStruct__isset "::test::fixtures::enumstrict::MyStruct::__isset":
         bint myEnum
         bint myBigEnum
@@ -120,8 +116,6 @@ cdef extern from "<utility>" namespace "std" nogil:
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const ::test::fixtures::enumstrict::MyStruct>"(shared_ptr[cMyStruct])
 
-# Forward Definition of the cython struct
-cdef class MyStruct(thrift.py3.types.Struct)
 
 
 cdef class MyStruct(thrift.py3.types.Struct):

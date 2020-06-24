@@ -46,14 +46,6 @@ cdef cMyEnum MyEnum_to_cpp(MyEnum value)
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    # Forward Declaration
-    cdef cppclass cMyStruct "::cpp2::MyStruct"
-    # Forward Declaration
-    cdef cppclass cMyDataItem "::cpp2::MyDataItem"
-    # Forward Declaration
-    cdef cppclass cMyUnion "::cpp2::MyUnion"
-
-cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cMyStruct__isset "::cpp2::MyStruct::__isset":
         bint MyIntField
         bint MyStringField
@@ -132,8 +124,6 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cMyDataItem] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyDataItem>"(shared_ptr[cMyDataItem])
     cdef shared_ptr[const cMyUnion] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyUnion>"(shared_ptr[cMyUnion])
 
-# Forward Definition of the cython struct
-cdef class MyStruct(thrift.py3.types.Struct)
 
 
 cdef class MyStruct(thrift.py3.types.Struct):
@@ -155,8 +145,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyStruct])
 
-# Forward Definition of the cython struct
-cdef class MyDataItem(thrift.py3.types.Struct)
 
 
 cdef class MyDataItem(thrift.py3.types.Struct):
@@ -177,8 +165,6 @@ cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
     pass
 
 
-# Forward Definition of the cython struct
-cdef class MyUnion(thrift.py3.types.Union)
 
 
 cdef class MyUnion(thrift.py3.types.Union):

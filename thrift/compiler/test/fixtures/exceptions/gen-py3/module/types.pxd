@@ -31,14 +31,6 @@ from folly.optional cimport cOptional
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    # Forward Declaration
-    cdef cppclass cBanal "::cpp2::Banal"(cTException)
-    # Forward Declaration
-    cdef cppclass cFiery "::cpp2::Fiery"(cTException)
-    # Forward Declaration
-    cdef cppclass cSerious "::cpp2::Serious"(cTException)
-
-cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cBanal__isset "::cpp2::Banal::__isset":
         pass
 
@@ -100,8 +92,6 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cFiery] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Fiery>"(shared_ptr[cFiery])
     cdef shared_ptr[const cSerious] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Serious>"(shared_ptr[cSerious])
 
-# Forward Definition of the cython struct
-cdef class Banal(thrift.py3.exceptions.Error)
 
 
 cdef class Banal(thrift.py3.exceptions.Error):
@@ -118,8 +108,6 @@ cdef class Banal(thrift.py3.exceptions.Error):
     @staticmethod
     cdef create(shared_ptr[cBanal])
 
-# Forward Definition of the cython struct
-cdef class Fiery(thrift.py3.exceptions.Error)
 
 
 cdef class Fiery(thrift.py3.exceptions.Error):
@@ -137,8 +125,6 @@ cdef class Fiery(thrift.py3.exceptions.Error):
     @staticmethod
     cdef create(shared_ptr[cFiery])
 
-# Forward Definition of the cython struct
-cdef class Serious(thrift.py3.exceptions.Error)
 
 
 cdef class Serious(thrift.py3.exceptions.Error):

@@ -46,34 +46,6 @@ cdef cTypedEnum TypedEnum_to_cpp(TypedEnum value)
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    # Forward Declaration
-    cdef cppclass cMyUnion "::cpp2::MyUnion"
-    # Forward Declaration
-    cdef cppclass cMyField "::cpp2::MyField"
-    # Forward Declaration
-    cdef cppclass cMyStruct "::cpp2::MyStruct"
-    # Forward Declaration
-    cdef cppclass cStructWithUnion "::cpp2::StructWithUnion"
-    # Forward Declaration
-    cdef cppclass cRecursiveStruct "::cpp2::RecursiveStruct"
-    # Forward Declaration
-    cdef cppclass cStructWithContainers "::cpp2::StructWithContainers"
-    # Forward Declaration
-    cdef cppclass cStructWithSharedConst "::cpp2::StructWithSharedConst"
-    # Forward Declaration
-    cdef cppclass cEmpty "::cpp2::Empty"
-    # Forward Declaration
-    cdef cppclass cStructWithRef "::cpp2::StructWithRef"
-    # Forward Declaration
-    cdef cppclass cStructWithRefTypeUnique "::cpp2::StructWithRefTypeUnique"
-    # Forward Declaration
-    cdef cppclass cStructWithRefTypeShared "::cpp2::StructWithRefTypeShared"
-    # Forward Declaration
-    cdef cppclass cStructWithRefTypeSharedConst "::cpp2::StructWithRefTypeSharedConst"
-    # Forward Declaration
-    cdef cppclass cStructWithRefAndAnnotCppNoexceptMoveCtor "::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor"
-
-cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef enum cMyUnion__type "::cpp2::MyUnion::Type":
         cMyUnion__type___EMPTY__ "::cpp2::MyUnion::Type::__EMPTY__",
         cMyUnion__type_anInteger "::cpp2::MyUnion::Type::anInteger",
@@ -404,8 +376,6 @@ cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
     pass
 
 
-# Forward Definition of the cython struct
-cdef class MyUnion(thrift.py3.types.Union)
 
 
 cdef class MyUnion(thrift.py3.types.Union):
@@ -426,8 +396,6 @@ cdef class MyUnion(thrift.py3.types.Union):
     @staticmethod
     cdef create(shared_ptr[cMyUnion])
 
-# Forward Definition of the cython struct
-cdef class MyField(thrift.py3.types.Struct)
 
 
 cdef class MyField(thrift.py3.types.Struct):
@@ -447,8 +415,6 @@ cdef class MyField(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyField])
 
-# Forward Definition of the cython struct
-cdef class MyStruct(thrift.py3.types.Struct)
 
 
 cdef class MyStruct(thrift.py3.types.Struct):
@@ -471,8 +437,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyStruct])
 
-# Forward Definition of the cython struct
-cdef class StructWithUnion(thrift.py3.types.Struct)
 
 
 cdef class StructWithUnion(thrift.py3.types.Struct):
@@ -494,8 +458,6 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStructWithUnion])
 
-# Forward Definition of the cython struct
-cdef class RecursiveStruct(thrift.py3.types.Struct)
 
 
 cdef class RecursiveStruct(thrift.py3.types.Struct):
@@ -514,8 +476,6 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cRecursiveStruct])
 
-# Forward Definition of the cython struct
-cdef class StructWithContainers(thrift.py3.types.Struct)
 
 
 cdef class StructWithContainers(thrift.py3.types.Struct):
@@ -544,8 +504,6 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStructWithContainers])
 
-# Forward Definition of the cython struct
-cdef class StructWithSharedConst(thrift.py3.types.Struct)
 
 
 cdef class StructWithSharedConst(thrift.py3.types.Struct):
@@ -568,8 +526,6 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStructWithSharedConst])
 
-# Forward Definition of the cython struct
-cdef class Empty(thrift.py3.types.Struct)
 
 
 cdef class Empty(thrift.py3.types.Struct):
@@ -586,8 +542,6 @@ cdef class Empty(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cEmpty])
 
-# Forward Definition of the cython struct
-cdef class StructWithRef(thrift.py3.types.Struct)
 
 
 cdef class StructWithRef(thrift.py3.types.Struct):
@@ -610,8 +564,6 @@ cdef class StructWithRef(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStructWithRef])
 
-# Forward Definition of the cython struct
-cdef class StructWithRefTypeUnique(thrift.py3.types.Struct)
 
 
 cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
@@ -634,8 +586,6 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeUnique])
 
-# Forward Definition of the cython struct
-cdef class StructWithRefTypeShared(thrift.py3.types.Struct)
 
 
 cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
@@ -658,8 +608,6 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeShared])
 
-# Forward Definition of the cython struct
-cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct)
 
 
 cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
@@ -682,8 +630,6 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeSharedConst])
 
-# Forward Definition of the cython struct
-cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct)
 
 
 cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):

@@ -67,7 +67,6 @@ cdef extern from * nogil:
 
 
 
-
 cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
     cdef shared_ptr[std_unordered_map[cint32_t,string]] _cpp_obj
     @staticmethod

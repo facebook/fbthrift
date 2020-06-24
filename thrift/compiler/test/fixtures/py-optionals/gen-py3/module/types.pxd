@@ -47,14 +47,6 @@ cdef cAnimal Animal_to_cpp(Animal value)
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    # Forward Declaration
-    cdef cppclass cColor "::cpp2::Color"
-    # Forward Declaration
-    cdef cppclass cVehicle "::cpp2::Vehicle"
-    # Forward Declaration
-    cdef cppclass cPerson "::cpp2::Person"
-
-cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cColor__isset "::cpp2::Color::__isset":
         bint red
         bint green
@@ -154,8 +146,6 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cVehicle] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Vehicle>"(shared_ptr[cVehicle])
     cdef shared_ptr[const cPerson] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Person>"(shared_ptr[cPerson])
 
-# Forward Definition of the cython struct
-cdef class Color(thrift.py3.types.Struct)
 
 
 cdef class Color(thrift.py3.types.Struct):
@@ -176,8 +166,6 @@ cdef class Color(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cColor])
 
-# Forward Definition of the cython struct
-cdef class Vehicle(thrift.py3.types.Struct)
 
 
 cdef class Vehicle(thrift.py3.types.Struct):
@@ -200,8 +188,6 @@ cdef class Vehicle(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cVehicle])
 
-# Forward Definition of the cython struct
-cdef class Person(thrift.py3.types.Struct)
 
 
 cdef class Person(thrift.py3.types.Struct):

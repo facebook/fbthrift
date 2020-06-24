@@ -31,10 +31,6 @@ from folly.optional cimport cOptional
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    # Forward Declaration
-    cdef cppclass cFoo "::cpp2::Foo"
-
-cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cFoo__isset "::cpp2::Foo::__isset":
         bint MyInt
 
@@ -59,8 +55,6 @@ cdef extern from "<utility>" namespace "std" nogil:
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cFoo] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Foo>"(shared_ptr[cFoo])
 
-# Forward Definition of the cython struct
-cdef class Foo(thrift.py3.types.Struct)
 
 
 cdef class Foo(thrift.py3.types.Struct):

@@ -341,38 +341,6 @@ cdef cMyEnumB MyEnumB_to_cpp(MyEnumB value)
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some::valid::ns":
-    # Forward Declaration
-    cdef cppclass cEmpty "::some::valid::ns::Empty"
-    # Forward Declaration
-    cdef cppclass cASimpleStruct "::some::valid::ns::ASimpleStruct"
-    # Forward Declaration
-    cdef cppclass cASimpleStructNoexcept "::some::valid::ns::ASimpleStructNoexcept"
-    # Forward Declaration
-    cdef cppclass cMyStruct "::some::valid::ns::MyStruct"
-    # Forward Declaration
-    cdef cppclass cSimpleUnion "::some::valid::ns::SimpleUnion"
-    # Forward Declaration
-    cdef cppclass cComplexUnion "::some::valid::ns::ComplexUnion"
-    # Forward Declaration
-    cdef cppclass cAnException "::some::valid::ns::AnException"(cTException)
-    # Forward Declaration
-    cdef cppclass cAnotherException "::some::valid::ns::AnotherException"(cTException)
-    # Forward Declaration
-    cdef cppclass ccontainerStruct "::some::valid::ns::containerStruct"
-    # Forward Declaration
-    cdef cppclass cMyIncludedStruct "::some::valid::ns::MyIncludedStruct"
-    # Forward Declaration
-    cdef cppclass cAnnotatedStruct "::some::valid::ns::AnnotatedStruct"
-    # Forward Declaration
-    cdef cppclass cComplexContainerStruct "::some::valid::ns::ComplexContainerStruct"
-    # Forward Declaration
-    cdef cppclass cFloatStruct "::some::valid::ns::FloatStruct"
-    # Forward Declaration
-    cdef cppclass cFloatUnion "::some::valid::ns::FloatUnion"
-    # Forward Declaration
-    cdef cppclass cAllRequiredNoExceptMoveCtrStruct "::some::valid::ns::AllRequiredNoExceptMoveCtrStruct"
-
-cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
     cdef cppclass cEmpty__isset "::some::valid::ns::Empty::__isset":
         pass
 
@@ -1068,8 +1036,6 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cFloatUnion] const_pointer_cast "std::const_pointer_cast<const ::some::valid::ns::FloatUnion>"(shared_ptr[cFloatUnion])
     cdef shared_ptr[const cAllRequiredNoExceptMoveCtrStruct] const_pointer_cast "std::const_pointer_cast<const ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>"(shared_ptr[cAllRequiredNoExceptMoveCtrStruct])
 
-# Forward Definition of the cython struct
-cdef class Empty(thrift.py3.types.Struct)
 
 
 cdef class Empty(thrift.py3.types.Struct):
@@ -1086,8 +1052,6 @@ cdef class Empty(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cEmpty])
 
-# Forward Definition of the cython struct
-cdef class ASimpleStruct(thrift.py3.types.Struct)
 
 
 cdef class ASimpleStruct(thrift.py3.types.Struct):
@@ -1105,8 +1069,6 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cASimpleStruct])
 
-# Forward Definition of the cython struct
-cdef class ASimpleStructNoexcept(thrift.py3.types.Struct)
 
 
 cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
@@ -1124,8 +1086,6 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cASimpleStructNoexcept])
 
-# Forward Definition of the cython struct
-cdef class MyStruct(thrift.py3.types.Struct)
 
 
 cdef class MyStruct(thrift.py3.types.Struct):
@@ -1157,8 +1117,6 @@ cdef class __SimpleUnionType(thrift.py3.types.CompiledEnum):
     pass
 
 
-# Forward Definition of the cython struct
-cdef class SimpleUnion(thrift.py3.types.Union)
 
 
 cdef class SimpleUnion(thrift.py3.types.Union):
@@ -1183,8 +1141,6 @@ cdef class __ComplexUnionType(thrift.py3.types.CompiledEnum):
     pass
 
 
-# Forward Definition of the cython struct
-cdef class ComplexUnion(thrift.py3.types.Union)
 
 
 cdef class ComplexUnion(thrift.py3.types.Union):
@@ -1230,8 +1186,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     @staticmethod
     cdef create(shared_ptr[cComplexUnion])
 
-# Forward Definition of the cython struct
-cdef class AnException(thrift.py3.exceptions.Error)
 
 
 cdef class AnException(thrift.py3.exceptions.Error):
@@ -1273,8 +1227,6 @@ cdef class AnException(thrift.py3.exceptions.Error):
     @staticmethod
     cdef create(shared_ptr[cAnException])
 
-# Forward Definition of the cython struct
-cdef class AnotherException(thrift.py3.exceptions.Error)
 
 
 cdef class AnotherException(thrift.py3.exceptions.Error):
@@ -1294,8 +1246,6 @@ cdef class AnotherException(thrift.py3.exceptions.Error):
     @staticmethod
     cdef create(shared_ptr[cAnotherException])
 
-# Forward Definition of the cython struct
-cdef class containerStruct(thrift.py3.types.Struct)
 
 
 cdef class containerStruct(thrift.py3.types.Struct):
@@ -1387,8 +1337,6 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[ccontainerStruct])
 
-# Forward Definition of the cython struct
-cdef class MyIncludedStruct(thrift.py3.types.Struct)
 
 
 cdef class MyIncludedStruct(thrift.py3.types.Struct):
@@ -1412,8 +1360,6 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyIncludedStruct])
 
-# Forward Definition of the cython struct
-cdef class AnnotatedStruct(thrift.py3.types.Struct)
 
 
 cdef class AnnotatedStruct(thrift.py3.types.Struct):
@@ -1508,8 +1454,6 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cAnnotatedStruct])
 
-# Forward Definition of the cython struct
-cdef class ComplexContainerStruct(thrift.py3.types.Struct)
 
 
 cdef class ComplexContainerStruct(thrift.py3.types.Struct):
@@ -1530,8 +1474,6 @@ cdef class ComplexContainerStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cComplexContainerStruct])
 
-# Forward Definition of the cython struct
-cdef class FloatStruct(thrift.py3.types.Struct)
 
 
 cdef class FloatStruct(thrift.py3.types.Struct):
@@ -1554,8 +1496,6 @@ cdef class __FloatUnionType(thrift.py3.types.CompiledEnum):
     pass
 
 
-# Forward Definition of the cython struct
-cdef class FloatUnion(thrift.py3.types.Union)
 
 
 cdef class FloatUnion(thrift.py3.types.Union):
@@ -1576,8 +1516,6 @@ cdef class FloatUnion(thrift.py3.types.Union):
     @staticmethod
     cdef create(shared_ptr[cFloatUnion])
 
-# Forward Definition of the cython struct
-cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct)
 
 
 cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):

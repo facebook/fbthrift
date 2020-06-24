@@ -33,12 +33,6 @@ cimport module1.types as _module1_types
 
 
 cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "::module2":
-    # Forward Declaration
-    cdef cppclass cStruct "::module2::Struct"
-    # Forward Declaration
-    cdef cppclass cBigStruct "::module2::BigStruct"
-
-cdef extern from "src/gen-cpp2/module2_types.h" namespace "::module2":
     cdef cppclass cStruct__isset "::module2::Struct::__isset":
         bint first
         bint second
@@ -89,8 +83,6 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cStruct] const_pointer_cast "std::const_pointer_cast<const ::module2::Struct>"(shared_ptr[cStruct])
     cdef shared_ptr[const cBigStruct] const_pointer_cast "std::const_pointer_cast<const ::module2::BigStruct>"(shared_ptr[cBigStruct])
 
-# Forward Definition of the cython struct
-cdef class Struct(thrift.py3.types.Struct)
 
 
 cdef class Struct(thrift.py3.types.Struct):
@@ -111,8 +103,6 @@ cdef class Struct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStruct])
 
-# Forward Definition of the cython struct
-cdef class BigStruct(thrift.py3.types.Struct)
 
 
 cdef class BigStruct(thrift.py3.types.Struct):

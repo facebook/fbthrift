@@ -36,7 +36,6 @@ from folly.optional cimport cOptional
 
 
 
-
 cdef class List__i32(thrift.py3.types.Container):
     cdef shared_ptr[vector[cint32_t]] _cpp_obj
     @staticmethod

@@ -31,22 +31,6 @@ from folly.optional cimport cOptional
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    # Forward Declaration
-    cdef cppclass cInitialResponse "::cpp2::InitialResponse"
-    # Forward Declaration
-    cdef cppclass cFinalResponse "::cpp2::FinalResponse"
-    # Forward Declaration
-    cdef cppclass cSinkPayload "::cpp2::SinkPayload"
-    # Forward Declaration
-    cdef cppclass cCompatibleWithKeywordSink "::cpp2::CompatibleWithKeywordSink"
-    # Forward Declaration
-    cdef cppclass cInitialException "::cpp2::InitialException"(cTException)
-    # Forward Declaration
-    cdef cppclass cSinkException1 "::cpp2::SinkException1"(cTException)
-    # Forward Declaration
-    cdef cppclass cSinkException2 "::cpp2::SinkException2"(cTException)
-
-cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cInitialResponse__isset "::cpp2::InitialResponse::__isset":
         bint content
 
@@ -185,8 +169,6 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cSinkException1] const_pointer_cast "std::const_pointer_cast<const ::cpp2::SinkException1>"(shared_ptr[cSinkException1])
     cdef shared_ptr[const cSinkException2] const_pointer_cast "std::const_pointer_cast<const ::cpp2::SinkException2>"(shared_ptr[cSinkException2])
 
-# Forward Definition of the cython struct
-cdef class InitialResponse(thrift.py3.types.Struct)
 
 
 cdef class InitialResponse(thrift.py3.types.Struct):
@@ -204,8 +186,6 @@ cdef class InitialResponse(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cInitialResponse])
 
-# Forward Definition of the cython struct
-cdef class FinalResponse(thrift.py3.types.Struct)
 
 
 cdef class FinalResponse(thrift.py3.types.Struct):
@@ -223,8 +203,6 @@ cdef class FinalResponse(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cFinalResponse])
 
-# Forward Definition of the cython struct
-cdef class SinkPayload(thrift.py3.types.Struct)
 
 
 cdef class SinkPayload(thrift.py3.types.Struct):
@@ -242,8 +220,6 @@ cdef class SinkPayload(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cSinkPayload])
 
-# Forward Definition of the cython struct
-cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct)
 
 
 cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
@@ -261,8 +237,6 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cCompatibleWithKeywordSink])
 
-# Forward Definition of the cython struct
-cdef class InitialException(thrift.py3.exceptions.Error)
 
 
 cdef class InitialException(thrift.py3.exceptions.Error):
@@ -280,8 +254,6 @@ cdef class InitialException(thrift.py3.exceptions.Error):
     @staticmethod
     cdef create(shared_ptr[cInitialException])
 
-# Forward Definition of the cython struct
-cdef class SinkException1(thrift.py3.exceptions.Error)
 
 
 cdef class SinkException1(thrift.py3.exceptions.Error):
@@ -299,8 +271,6 @@ cdef class SinkException1(thrift.py3.exceptions.Error):
     @staticmethod
     cdef create(shared_ptr[cSinkException1])
 
-# Forward Definition of the cython struct
-cdef class SinkException2(thrift.py3.exceptions.Error)
 
 
 cdef class SinkException2(thrift.py3.exceptions.Error):

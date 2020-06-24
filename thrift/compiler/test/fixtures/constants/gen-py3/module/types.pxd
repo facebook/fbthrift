@@ -76,24 +76,6 @@ cdef cCompany Company_to_cpp(Company value)
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    # Forward Declaration
-    cdef cppclass cInternship "::cpp2::Internship"
-    # Forward Declaration
-    cdef cppclass cRange "::cpp2::Range"
-    # Forward Declaration
-    cdef cppclass cstruct1 "::cpp2::struct1"
-    # Forward Declaration
-    cdef cppclass cstruct2 "::cpp2::struct2"
-    # Forward Declaration
-    cdef cppclass cstruct3 "::cpp2::struct3"
-    # Forward Declaration
-    cdef cppclass cstruct4 "::cpp2::struct4"
-    # Forward Declaration
-    cdef cppclass cunion1 "::cpp2::union1"
-    # Forward Declaration
-    cdef cppclass cunion2 "::cpp2::union2"
-
-cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cInternship__isset "::cpp2::Internship::__isset":
         bint weeks
         bint title
@@ -294,8 +276,6 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cunion1] const_pointer_cast "std::const_pointer_cast<const ::cpp2::union1>"(shared_ptr[cunion1])
     cdef shared_ptr[const cunion2] const_pointer_cast "std::const_pointer_cast<const ::cpp2::union2>"(shared_ptr[cunion2])
 
-# Forward Definition of the cython struct
-cdef class Internship(thrift.py3.types.Struct)
 
 
 cdef class Internship(thrift.py3.types.Struct):
@@ -315,8 +295,6 @@ cdef class Internship(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cInternship])
 
-# Forward Definition of the cython struct
-cdef class Range(thrift.py3.types.Struct)
 
 
 cdef class Range(thrift.py3.types.Struct):
@@ -335,8 +313,6 @@ cdef class Range(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cRange])
 
-# Forward Definition of the cython struct
-cdef class struct1(thrift.py3.types.Struct)
 
 
 cdef class struct1(thrift.py3.types.Struct):
@@ -355,8 +331,6 @@ cdef class struct1(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cstruct1])
 
-# Forward Definition of the cython struct
-cdef class struct2(thrift.py3.types.Struct)
 
 
 cdef class struct2(thrift.py3.types.Struct):
@@ -379,8 +353,6 @@ cdef class struct2(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cstruct2])
 
-# Forward Definition of the cython struct
-cdef class struct3(thrift.py3.types.Struct)
 
 
 cdef class struct3(thrift.py3.types.Struct):
@@ -401,8 +373,6 @@ cdef class struct3(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cstruct3])
 
-# Forward Definition of the cython struct
-cdef class struct4(thrift.py3.types.Struct)
 
 
 cdef class struct4(thrift.py3.types.Struct):
@@ -426,8 +396,6 @@ cdef class __union1Type(thrift.py3.types.CompiledEnum):
     pass
 
 
-# Forward Definition of the cython struct
-cdef class union1(thrift.py3.types.Union)
 
 
 cdef class union1(thrift.py3.types.Union):
@@ -452,8 +420,6 @@ cdef class __union2Type(thrift.py3.types.CompiledEnum):
     pass
 
 
-# Forward Definition of the cython struct
-cdef class union2(thrift.py3.types.Union)
 
 
 cdef class union2(thrift.py3.types.Union):

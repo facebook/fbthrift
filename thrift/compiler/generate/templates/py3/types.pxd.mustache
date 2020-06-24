@@ -90,15 +90,6 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
 cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types_custom_protocol.h"{{!
 }} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
 {{/first?}}
-    # Forward Declaration
-    cdef cppclass c{{struct:name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}"{{#struct:exception?}}(cTException){{/struct:exception?}}
-{{/program:structs}}
-
-{{#program:structs}}
-{{#first?}}
-cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
-}} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
-{{/first?}}
     {{^struct:union?}}
     cdef cppclass c{{struct:name}}__isset "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::__isset":
     {{#struct:fields}}
@@ -186,8 +177,6 @@ cdef class __{{struct:name}}Type(thrift.py3.types.CompiledEnum):
 
 
 {{/struct:union?}}
-# Forward Definition of the cython struct
-cdef class {{struct:name}}({{> types/PythonStructClass}})
 
 
 cdef class {{struct:name}}({{> types/PythonStructClass}}):

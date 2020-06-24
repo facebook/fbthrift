@@ -32,12 +32,6 @@ cimport module.types as _module_types
 
 
 cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" namespace "::cpp2":
-    # Forward Declaration
-    cdef cppclass cMyStruct "::cpp2::MyStruct"
-    # Forward Declaration
-    cdef cppclass cCombo "::cpp2::Combo"
-
-cdef extern from "src/gen-cpp2/matching_struct_names_types.h" namespace "::cpp2":
     cdef cppclass cMyStruct__isset "::cpp2::MyStruct::__isset":
         bint field
 
@@ -91,8 +85,6 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyStruct>"(shared_ptr[cMyStruct])
     cdef shared_ptr[const cCombo] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Combo>"(shared_ptr[cCombo])
 
-# Forward Definition of the cython struct
-cdef class MyStruct(thrift.py3.types.Struct)
 
 
 cdef class MyStruct(thrift.py3.types.Struct):
@@ -110,8 +102,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyStruct])
 
-# Forward Definition of the cython struct
-cdef class Combo(thrift.py3.types.Struct)
 
 
 cdef class Combo(thrift.py3.types.Struct):

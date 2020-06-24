@@ -329,50 +329,6 @@ cdef cMyEnumA MyEnumA_to_cpp(MyEnumA value)
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apache::thrift::fixtures::types":
-    # Forward Declaration
-    cdef cppclass cdecorated_struct "::apache::thrift::fixtures::types::decorated_struct"
-    # Forward Declaration
-    cdef cppclass cContainerStruct "::apache::thrift::fixtures::types::ContainerStruct"
-    # Forward Declaration
-    cdef cppclass cCppTypeStruct "::apache::thrift::fixtures::types::CppTypeStruct"
-    # Forward Declaration
-    cdef cppclass cVirtualStruct "::apache::thrift::fixtures::types::VirtualStruct"
-    # Forward Declaration
-    cdef cppclass cMyStructWithForwardRefEnum "::apache::thrift::fixtures::types::MyStructWithForwardRefEnum"
-    # Forward Declaration
-    cdef cppclass cTrivialNumeric "::apache::thrift::fixtures::types::TrivialNumeric"
-    # Forward Declaration
-    cdef cppclass cTrivialNestedWithDefault "::apache::thrift::fixtures::types::TrivialNestedWithDefault"
-    # Forward Declaration
-    cdef cppclass cComplexString "::apache::thrift::fixtures::types::ComplexString"
-    # Forward Declaration
-    cdef cppclass cComplexNestedWithDefault "::apache::thrift::fixtures::types::ComplexNestedWithDefault"
-    # Forward Declaration
-    cdef cppclass cMinPadding "::apache::thrift::fixtures::types::MinPadding"
-    # Forward Declaration
-    cdef cppclass cMyStruct "::apache::thrift::fixtures::types::MyStruct"
-    # Forward Declaration
-    cdef cppclass cMyDataItem "::apache::thrift::fixtures::types::MyDataItem"
-    # Forward Declaration
-    cdef cppclass cRenaming "::apache::thrift::fixtures::types::Renaming"
-    # Forward Declaration
-    cdef cppclass cAnnotatedTypes "::apache::thrift::fixtures::types::AnnotatedTypes"
-    # Forward Declaration
-    cdef cppclass cForwardUsageRoot "::apache::thrift::fixtures::types::ForwardUsageRoot"
-    # Forward Declaration
-    cdef cppclass cForwardUsageStruct "::apache::thrift::fixtures::types::ForwardUsageStruct"
-    # Forward Declaration
-    cdef cppclass cForwardUsageByRef "::apache::thrift::fixtures::types::ForwardUsageByRef"
-    # Forward Declaration
-    cdef cppclass cNoexceptMoveEmpty "::apache::thrift::fixtures::types::NoexceptMoveEmpty"
-    # Forward Declaration
-    cdef cppclass cNoexceptMoveSimpleStruct "::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct"
-    # Forward Declaration
-    cdef cppclass cNoexceptMoveComplexStruct "::apache::thrift::fixtures::types::NoexceptMoveComplexStruct"
-    # Forward Declaration
-    cdef cppclass cNoExceptMoveUnion "::apache::thrift::fixtures::types::NoExceptMoveUnion"
-
-cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixtures::types":
     cdef cppclass cdecorated_struct__isset "::apache::thrift::fixtures::types::decorated_struct::__isset":
         bint field
 
@@ -838,8 +794,6 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cNoexceptMoveComplexStruct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>"(shared_ptr[cNoexceptMoveComplexStruct])
     cdef shared_ptr[const cNoExceptMoveUnion] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::NoExceptMoveUnion>"(shared_ptr[cNoExceptMoveUnion])
 
-# Forward Definition of the cython struct
-cdef class decorated_struct(thrift.py3.types.Struct)
 
 
 cdef class decorated_struct(thrift.py3.types.Struct):
@@ -857,8 +811,6 @@ cdef class decorated_struct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cdecorated_struct])
 
-# Forward Definition of the cython struct
-cdef class ContainerStruct(thrift.py3.types.Struct)
 
 
 cdef class ContainerStruct(thrift.py3.types.Struct):
@@ -891,8 +843,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cContainerStruct])
 
-# Forward Definition of the cython struct
-cdef class CppTypeStruct(thrift.py3.types.Struct)
 
 
 cdef class CppTypeStruct(thrift.py3.types.Struct):
@@ -911,8 +861,6 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cCppTypeStruct])
 
-# Forward Definition of the cython struct
-cdef class VirtualStruct(thrift.py3.types.Struct)
 
 
 cdef class VirtualStruct(thrift.py3.types.Struct):
@@ -930,8 +878,6 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cVirtualStruct])
 
-# Forward Definition of the cython struct
-cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct)
 
 
 cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
@@ -950,8 +896,6 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyStructWithForwardRefEnum])
 
-# Forward Definition of the cython struct
-cdef class TrivialNumeric(thrift.py3.types.Struct)
 
 
 cdef class TrivialNumeric(thrift.py3.types.Struct):
@@ -970,8 +914,6 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cTrivialNumeric])
 
-# Forward Definition of the cython struct
-cdef class TrivialNestedWithDefault(thrift.py3.types.Struct)
 
 
 cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
@@ -991,8 +933,6 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cTrivialNestedWithDefault])
 
-# Forward Definition of the cython struct
-cdef class ComplexString(thrift.py3.types.Struct)
 
 
 cdef class ComplexString(thrift.py3.types.Struct):
@@ -1012,8 +952,6 @@ cdef class ComplexString(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cComplexString])
 
-# Forward Definition of the cython struct
-cdef class ComplexNestedWithDefault(thrift.py3.types.Struct)
 
 
 cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
@@ -1033,8 +971,6 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cComplexNestedWithDefault])
 
-# Forward Definition of the cython struct
-cdef class MinPadding(thrift.py3.types.Struct)
 
 
 cdef class MinPadding(thrift.py3.types.Struct):
@@ -1056,8 +992,6 @@ cdef class MinPadding(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMinPadding])
 
-# Forward Definition of the cython struct
-cdef class MyStruct(thrift.py3.types.Struct)
 
 
 cdef class MyStruct(thrift.py3.types.Struct):
@@ -1080,8 +1014,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyStruct])
 
-# Forward Definition of the cython struct
-cdef class MyDataItem(thrift.py3.types.Struct)
 
 
 cdef class MyDataItem(thrift.py3.types.Struct):
@@ -1099,8 +1031,6 @@ cdef class MyDataItem(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyDataItem])
 
-# Forward Definition of the cython struct
-cdef class Renaming(thrift.py3.types.Struct)
 
 
 cdef class Renaming(thrift.py3.types.Struct):
@@ -1118,8 +1048,6 @@ cdef class Renaming(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cRenaming])
 
-# Forward Definition of the cython struct
-cdef class AnnotatedTypes(thrift.py3.types.Struct)
 
 
 cdef class AnnotatedTypes(thrift.py3.types.Struct):
@@ -1139,8 +1067,6 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cAnnotatedTypes])
 
-# Forward Definition of the cython struct
-cdef class ForwardUsageRoot(thrift.py3.types.Struct)
 
 
 cdef class ForwardUsageRoot(thrift.py3.types.Struct):
@@ -1161,8 +1087,6 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cForwardUsageRoot])
 
-# Forward Definition of the cython struct
-cdef class ForwardUsageStruct(thrift.py3.types.Struct)
 
 
 cdef class ForwardUsageStruct(thrift.py3.types.Struct):
@@ -1181,8 +1105,6 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cForwardUsageStruct])
 
-# Forward Definition of the cython struct
-cdef class ForwardUsageByRef(thrift.py3.types.Struct)
 
 
 cdef class ForwardUsageByRef(thrift.py3.types.Struct):
@@ -1201,8 +1123,6 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cForwardUsageByRef])
 
-# Forward Definition of the cython struct
-cdef class NoexceptMoveEmpty(thrift.py3.types.Struct)
 
 
 cdef class NoexceptMoveEmpty(thrift.py3.types.Struct):
@@ -1219,8 +1139,6 @@ cdef class NoexceptMoveEmpty(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cNoexceptMoveEmpty])
 
-# Forward Definition of the cython struct
-cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct)
 
 
 cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
@@ -1238,8 +1156,6 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cNoexceptMoveSimpleStruct])
 
-# Forward Definition of the cython struct
-cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct)
 
 
 cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
@@ -1271,8 +1187,6 @@ cdef class __NoExceptMoveUnionType(thrift.py3.types.CompiledEnum):
     pass
 
 
-# Forward Definition of the cython struct
-cdef class NoExceptMoveUnion(thrift.py3.types.Union)
 
 
 cdef class NoExceptMoveUnion(thrift.py3.types.Union):

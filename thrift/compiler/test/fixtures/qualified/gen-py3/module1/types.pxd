@@ -47,10 +47,6 @@ cdef cEnum Enum_to_cpp(Enum value)
 
 
 cdef extern from "gen-cpp2/module1_types_custom_protocol.h" namespace "::module1":
-    # Forward Declaration
-    cdef cppclass cStruct "::module1::Struct"
-
-cdef extern from "gen-cpp2/module1_types.h" namespace "::module1":
     cdef cppclass cStruct__isset "::module1::Struct::__isset":
         bint first
         bint second
@@ -77,8 +73,6 @@ cdef extern from "<utility>" namespace "std" nogil:
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cStruct] const_pointer_cast "std::const_pointer_cast<const ::module1::Struct>"(shared_ptr[cStruct])
 
-# Forward Definition of the cython struct
-cdef class Struct(thrift.py3.types.Struct)
 
 
 cdef class Struct(thrift.py3.types.Struct):

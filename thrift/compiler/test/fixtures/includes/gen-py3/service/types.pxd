@@ -42,4 +42,3 @@ cimport transitive.types as _transitive_types
 
 
 
-

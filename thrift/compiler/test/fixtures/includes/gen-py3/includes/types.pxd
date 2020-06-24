@@ -32,10 +32,6 @@ cimport transitive.types as _transitive_types
 
 
 cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::cpp2":
-    # Forward Declaration
-    cdef cppclass cIncluded "::cpp2::Included"
-
-cdef extern from "gen-cpp2/includes_types.h" namespace "::cpp2":
     cdef cppclass cIncluded__isset "::cpp2::Included::__isset":
         bint MyIntField
         bint MyTransitiveField
@@ -63,8 +59,6 @@ cdef extern from "<utility>" namespace "std" nogil:
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cIncluded] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Included>"(shared_ptr[cIncluded])
 
-# Forward Definition of the cython struct
-cdef class Included(thrift.py3.types.Struct)
 
 
 cdef class Included(thrift.py3.types.Struct):
