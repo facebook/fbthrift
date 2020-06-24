@@ -90,9 +90,12 @@ void RocketSinkClientCallback::onFirstResponseError(
 void RocketSinkClientCallback::onFinalResponse(StreamPayload&& finalResponse) {
   DCHECK(state_ == State::BothOpen || state_ == State::StreamOpen);
 
-  if (auto compression = connection_.getCompressionAlgorithm(
-          finalResponse.payload->computeChainDataLength())) {
-    finalResponse.metadata.compression_ref() = *compression;
+  // apply compression if client has specified compression codec
+  if (compressionConfig_) {
+    detail::setCompressionCodec(
+        *compressionConfig_,
+        finalResponse.metadata,
+        finalResponse.payload->computeChainDataLength());
   }
 
   connection_.sendPayload(
@@ -191,6 +194,11 @@ void RocketSinkClientCallback::timeoutExpired() noexcept {
 
 void RocketSinkClientCallback::setProtoId(protocol::PROTOCOL_TYPES protoId) {
   protoId_ = protoId;
+}
+
+void RocketSinkClientCallback::setCompressionConfig(
+    CompressionConfig compressionConfig) {
+  compressionConfig_ = std::make_unique<CompressionConfig>(compressionConfig);
 }
 
 void RocketSinkClientCallback::scheduleTimeout(

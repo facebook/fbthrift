@@ -121,7 +121,8 @@ class RocketClient : public folly::DelayedDestruction,
       Payload&& request,
       std::chrono::milliseconds firstResponseTimeout,
       SinkClientCallback* clientCallback,
-      bool pageAligned = false);
+      bool pageAligned = false,
+      folly::Optional<CompressionConfig> compressionConfig = folly::none);
 
   FOLLY_NODISCARD bool sendRequestN(StreamId streamId, int32_t n);
   void cancelStream(StreamId streamId);
@@ -228,19 +229,6 @@ class RocketClient : public folly::DelayedDestruction,
 
   void setAutoCompressSizeLimit(int32_t size) {
     autoCompressSizeLimit_ = size;
-  }
-
-  folly::Optional<CompressionAlgorithm> getNegotiatedCompressionAlgorithm() {
-    return negotiatedCompressionAlgo_;
-  }
-
-  // used for sink payloads compression
-  folly::Optional<CompressionAlgorithm> getCompressionAlgorithm(
-      ssize_t payloadSize) {
-    if (payloadSize <= autoCompressSizeLimit_) {
-      return folly::none;
-    }
-    return negotiatedCompressionAlgo_;
   }
 
  private:

@@ -25,42 +25,7 @@ namespace thrift {
 using namespace testutil::testservice;
 
 struct SinkServiceTest
-    : public AsyncTestSetup<TestSinkService, TestSinkServiceAsyncClient> {
-  // This test checks that if compression is enabled, the total number of bytes
-  // read from the socket is less than the size of the untransformed payload. If
-  // compression is disabled, it's greater.
-  int testCompression(bool enableCompression, int kSize, int count) {
-    setQueueTimeout(std::chrono::milliseconds(0));
-    setIdleTimeout(std::chrono::milliseconds(0));
-    setTaskExpireTime(std::chrono::milliseconds(0));
-    setStreamExpireTime(std::chrono::milliseconds(0));
-    server_ = createServer(
-        std::make_shared<ThriftServerAsyncProcessorFactory<TestSinkService>>(
-            handler_),
-        serverPort_,
-        0,
-        enableCompression);
-
-    connectToServer(
-        [kSize,
-         count](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
-          auto sink = co_await client.co_sinkBlobs(count);
-          int32_t finalResponse = co_await sink.sink(
-              [ kSize, count ]() -> folly::coro::AsyncGenerator<std::string&&> {
-                int i = count;
-                while (i--) {
-                  std::string str(kSize, 'a');
-                  co_yield std::move(str);
-                }
-              }());
-          EXPECT_EQ(kSize * count, finalResponse);
-        },
-        enableCompression);
-
-    EXPECT_NE(nullptr, socket_);
-    return socket_->getTotalBytesWritten();
-  }
-};
+    : public AsyncTestSetup<TestSinkService, TestSinkServiceAsyncClient> {};
 
 folly::coro::Task<bool> waitNoLeak(TestSinkServiceAsyncClient& client) {
   auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds{2};
@@ -238,20 +203,6 @@ TEST_F(SinkServiceTest, AssignmentNoLeak) {
         }
         EXPECT_TRUE(co_await waitNoLeak(client));
       });
-}
-
-TEST_F(SinkServiceTest, CompressionSink) {
-  int kSize = 32 << 10;
-  int count = 3;
-  auto bytesWritten = testCompression(true, kSize, count);
-  EXPECT_LT(bytesWritten, kSize * count);
-}
-
-TEST_F(SinkServiceTest, NoCompressionSink) {
-  int kSize = 32 << 10;
-  int count = 3;
-  auto bytesWritten = testCompression(false, kSize, count);
-  EXPECT_GT(bytesWritten, kSize * count);
 }
 
 TEST_F(SinkServiceTest, AlignedSink) {

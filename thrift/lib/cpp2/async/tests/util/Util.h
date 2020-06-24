@@ -30,7 +30,6 @@
 #include <thrift/lib/cpp2/async/tests/util/gen-cpp2/TestSinkServiceAsyncClient.h>
 #include <thrift/lib/cpp2/async/tests/util/gen-cpp2/TestStreamServiceAsyncClient.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/transport/core/testutil/TAsyncSocketIntercepted.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestUtil.h>
 
@@ -62,39 +61,19 @@ class AsyncTestSetup : public TestSetup {
   }
 
   void connectToServer(
-      folly::Function<folly::coro::Task<void>(Client&)> callMe,
-      bool enableCompressionForRocketClient = false) {
-    folly::coro::blockingWait(
-        [this,
-         &callMe,
-         enableCompressionForRocketClient]() -> folly::coro::Task<void> {
-          CHECK_GT(serverPort_, 0) << "Check if the server has started already";
-          folly::Executor* executor = co_await folly::coro::co_current_executor;
-          auto newChannel = PooledRequestChannel::newChannel(
-              executor, ioThread_, [&](folly::EventBase& evb) {
-                socket_ = new apache::thrift::async::TAsyncSocketIntercepted(
-                    &evb, "::1", serverPort_);
-                auto socket = folly::AsyncSocket::UniquePtr(socket_);
-                auto channel =
-                    [&]() -> std::unique_ptr<
-                              ClientChannel,
-                              folly::DelayedDestruction::Destructor> {
-                  return apache::thrift::RocketClientChannel::newChannel(
-                      std::move(socket));
-                }();
-
-                if (enableCompressionForRocketClient) {
-                  auto rocketChannel =
-                      dynamic_cast<RocketClientChannel*>(channel.get());
-                  rocketChannel->setNegotiatedCompressionAlgorithm(
-                      CompressionAlgorithm::ZSTD);
-                  rocketChannel->setAutoCompressSizeLimit(0);
-                }
-                return channel;
-              });
-          Client client(std::move(newChannel));
-          co_await callMe(client);
-        }());
+      folly::Function<folly::coro::Task<void>(Client&)> callMe) {
+    folly::coro::blockingWait([this, &callMe]() -> folly::coro::Task<void> {
+      CHECK_GT(serverPort_, 0) << "Check if the server has started already";
+      folly::Executor* executor = co_await folly::coro::co_current_executor;
+      auto channel = PooledRequestChannel::newChannel(
+          executor, ioThread_, [&](folly::EventBase& evb) {
+            return apache::thrift::RocketClientChannel::newChannel(
+                folly::AsyncSocket::UniquePtr(
+                    new folly::AsyncSocket(&evb, "::1", serverPort_)));
+          });
+      Client client(std::move(channel));
+      co_await callMe(client);
+    }());
   }
 
  protected:
@@ -105,9 +84,6 @@ class AsyncTestSetup : public TestSetup {
       std::make_shared<folly::ScopedEventBaseThread>()};
   std::unique_ptr<ThriftServer> server_;
   std::shared_ptr<Handler> handler_;
-  // store pointer to socket in order to check the total number of bytes
-  // read/written
-  apache::thrift::async::TAsyncSocketIntercepted* socket_;
 };
 
 } // namespace thrift

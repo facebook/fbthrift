@@ -158,11 +158,13 @@ class RocketSinkServerCallback : public SinkServerCallback {
       rocket::StreamId streamId,
       rocket::RocketClient& client,
       SinkClientCallback& clientCallback,
-      bool pageAligned)
+      bool pageAligned,
+      std::unique_ptr<CompressionConfig> compressionConfig)
       : client_(client),
         clientCallback_(&clientCallback),
         streamId_(streamId),
-        pageAligned_(pageAligned) {}
+        pageAligned_(pageAligned),
+        compressionConfig_(std::move(compressionConfig)) {}
 
   bool onSinkNext(StreamPayload&&) override;
   void onSinkError(folly::exception_wrapper) override;
@@ -198,6 +200,7 @@ class RocketSinkServerCallback : public SinkServerCallback {
   bool pageAligned_;
   enum class State { BothOpen, StreamOpen };
   State state_{State::BothOpen};
+  std::unique_ptr<CompressionConfig> compressionConfig_;
 };
 
 } // namespace rocket

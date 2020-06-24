@@ -576,10 +576,21 @@ void RocketClient::sendRequestSink(
     Payload&& request,
     std::chrono::milliseconds firstResponseTimeout,
     SinkClientCallback* clientCallback,
-    bool pageAligned) {
+    bool pageAligned,
+    folly::Optional<CompressionConfig> compressionConfig) {
   const auto streamId = makeStreamId();
+
+  std::unique_ptr<CompressionConfig> compressionConfigP;
+  if (compressionConfig.has_value()) {
+    compressionConfigP =
+        std::make_unique<CompressionConfig>(*compressionConfig);
+  }
   auto serverCallback = std::make_unique<RocketSinkServerCallback>(
-      streamId, *this, *clientCallback, pageAligned);
+      streamId,
+      *this,
+      *clientCallback,
+      pageAligned,
+      std::move(compressionConfigP));
   sendRequestStreamChannel(
       streamId,
       std::move(request),

@@ -104,7 +104,6 @@ class RocketServerConnection final
     minCompressBytes_ = bytes;
   }
 
-  // used for stream payloads compression
   folly::Optional<CompressionAlgorithm> getCompressionAlgorithm(
       ssize_t payloadSize) {
     if (payloadSize < minCompressBytes_) {

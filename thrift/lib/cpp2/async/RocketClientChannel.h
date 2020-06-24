@@ -142,8 +142,6 @@ class RocketClientChannel final : public ClientChannel {
 
   void setNegotiatedCompressionAlgorithm(CompressionAlgorithm compressionAlgo);
 
-  folly::Optional<CompressionAlgorithm> getNegotiatedCompressionAlgorithm();
-
   void setAutoCompressSizeLimit(int32_t size);
 
  private:

@@ -48,6 +48,5 @@ service TestSinkService {
   sink<i32, bool throws (1: FinalException e)> sinkFinalThrow();
   void purge();
 
-  sink<string, i32> sinkBlobs(1: i32 count);
   sink<IOBuf, i32> alignment(1: binary expected);
 }

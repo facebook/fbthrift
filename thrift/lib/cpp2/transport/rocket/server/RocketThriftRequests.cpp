@@ -595,6 +595,9 @@ ThriftServerRequestSink::ThriftServerRequestSink(
       std::move(rctx),
       getProtoId(),
       std::move(debugPayload));
+  if (auto compressionConfig = getCompressionConfig()) {
+    clientCallback_->setCompressionConfig(*compressionConfig);
+  }
   scheduleTimeouts();
 }
 

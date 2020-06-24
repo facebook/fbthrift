@@ -106,10 +106,6 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
     negotiatedCompressionAlgo_ = compressionAlgo;
   }
 
-  folly::Optional<CompressionAlgorithm> getNegotiatedCompressionAlgorithm() {
-    return negotiatedCompressionAlgo_;
-  }
-
  protected:
   std::unique_ptr<apache::thrift::AsyncProcessor> processor_;
   std::unique_ptr<DuplexChannel> duplexChannel_;

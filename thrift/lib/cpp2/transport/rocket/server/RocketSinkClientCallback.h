@@ -55,6 +55,7 @@ class RocketSinkClientCallback final : public SinkClientCallback {
   void setChunkTimeout(std::chrono::milliseconds timeout);
   void timeoutExpired() noexcept;
   void setProtoId(protocol::PROTOCOL_TYPES);
+  void setCompressionConfig(CompressionConfig compressionConfig);
   bool serverCallbackReady() const {
     return serverCallbackOrError_ != kErrorFlag && serverCallback();
   }
@@ -104,6 +105,7 @@ class RocketSinkClientCallback final : public SinkClientCallback {
   intptr_t serverCallbackOrError_{0};
   std::unique_ptr<TimeoutCallback> timeout_;
   protocol::PROTOCOL_TYPES protoId_;
+  std::unique_ptr<CompressionConfig> compressionConfig_;
 };
 
 } // namespace rocket

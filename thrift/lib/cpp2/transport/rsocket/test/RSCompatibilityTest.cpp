@@ -308,15 +308,11 @@ class RSCompatibilityTest2 : public testing::Test {
   std::unique_ptr<TransportCompatibilityTest> compatibilityTest_;
 };
 
-TEST_F(RSCompatibilityTest2, RequestResponse_CompressRequestResponse) {
+TEST_F(RSCompatibilityTest2, RequestResponse_CompressResponse) {
   compatibilityTest_->connectToServer([this](auto client) {
     EXPECT_CALL(*compatibilityTest_->handler_.get(), echo_(testing::_));
     auto* channel = dynamic_cast<RocketClientChannel*>(client->getChannel());
     ASSERT_NE(nullptr, channel);
-
-    // set the channel to compress requests
-    channel->setNegotiatedCompressionAlgorithm(CompressionAlgorithm::ZSTD);
-    channel->setAutoCompressSizeLimit(0);
 
     static const int kSize = 32 << 10;
     std::string asString(kSize, 'a');

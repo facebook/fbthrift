@@ -613,14 +613,6 @@ void RocketClientChannel::setNegotiatedCompressionAlgorithm(
   }
 }
 
-folly::Optional<CompressionAlgorithm>
-RocketClientChannel::getNegotiatedCompressionAlgorithm() {
-  if (!rclient_) {
-    return folly::none;
-  }
-  return rclient_->getNegotiatedCompressionAlgorithm();
-}
-
 void RocketClientChannel::setAutoCompressSizeLimit(int32_t size) {
   if (rclient_) {
     rclient_->setAutoCompressSizeLimit(size);
@@ -730,7 +722,8 @@ void RocketClientChannel::sendRequestSink(
       firstResponseTimeout,
       new FirstRequestProcessorSink(
           protocolId_, methodName, clientCallback, evb_),
-      rpcOptions.getEnablePageAlignment());
+      rpcOptions.getEnablePageAlignment(),
+      header->getDesiredCompressionConfig());
 }
 
 void RocketClientChannel::sendThriftRequest(
@@ -895,8 +888,7 @@ void RocketClientChannel::setCloseCallback(CloseCallback* closeCallback) {
   }
 }
 
-folly::AsyncTransport* FOLLY_NULLABLE
-RocketClientChannel::getTransport() {
+folly::AsyncTransport* FOLLY_NULLABLE RocketClientChannel::getTransport() {
   if (!rclient_) {
     return nullptr;
   }

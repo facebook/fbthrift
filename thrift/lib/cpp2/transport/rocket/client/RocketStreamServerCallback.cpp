@@ -309,9 +309,12 @@ StreamChannelStatus RocketChannelServerCallback::onSinkCancel() {
 bool RocketSinkServerCallback::onSinkNext(StreamPayload&& payload) {
   DCHECK(state_ == State::BothOpen);
   if (LIKELY(!pageAligned_)) {
-    if (auto compression = client_.getCompressionAlgorithm(
-            payload.payload->computeChainDataLength())) {
-      payload.metadata.compression_ref() = *compression;
+    // apply compression if client has specified compression codec
+    if (compressionConfig_) {
+      detail::setCompressionCodec(
+          *compressionConfig_,
+          payload.metadata,
+          payload.payload->computeChainDataLength());
     }
     client_.sendPayload(
         streamId_, std::move(payload), rocket::Flags::none().next(true));
