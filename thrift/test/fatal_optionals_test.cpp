@@ -56,39 +56,6 @@ TEST_F(FatalOptionalsTest, isset) {
   }
 
   {
-    using member = meta::member::optl;
-
-    type obj;
-    EXPECT_FALSE(meta::member::optl::is_set(obj));
-
-    EXPECT_TRUE(member::mark_set(obj, true));
-    EXPECT_TRUE(member::is_set(obj));
-
-    EXPECT_FALSE(member::mark_set(obj, false));
-    EXPECT_FALSE(member::is_set(obj));
-  }
-
-  {
-    using member = meta::member::optl;
-
-    type obj;
-    obj.optl_ref() = 3;
-    EXPECT_TRUE(meta::member::optl::is_set(obj));
-
-    EXPECT_TRUE(member::mark_set(obj, true));
-    EXPECT_TRUE(member::is_set(obj));
-
-    EXPECT_FALSE(member::mark_set(obj, false));
-    EXPECT_FALSE(member::is_set(obj));
-
-    static_assert(
-        std::is_same<
-            decltype(member::getter::ref(obj)),
-            apache::thrift::DeprecatedOptionalField<int32_t>&>::value,
-        "");
-  }
-
-  {
     meta::member::optl::field_ref_getter f;
     type obj;
     f(obj) = 3;

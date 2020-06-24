@@ -32,12 +32,6 @@ namespace detail {
 namespace reflection_impl {
 
 template <typename T>
-struct is_optional : std::false_type {};
-template <typename T>
-struct is_optional<apache::thrift::DeprecatedOptionalField<T>>
-    : std::true_type {};
-
-template <typename T>
 using isset_of = decltype(std::declval<T>().__isset);
 template <typename, typename T, typename Getter>
 struct has_isset_field_ : std::false_type {};

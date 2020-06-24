@@ -51,6 +51,12 @@ namespace reflection_impl {
 template <typename, typename>
 struct isset;
 
+template <typename T>
+struct is_optional : std::false_type {};
+template <typename T>
+struct is_optional<apache::thrift::DeprecatedOptionalField<T>>
+    : std::true_type {};
+
 struct variant_member_name {
   template <typename Descriptor>
   using apply = typename Descriptor::metadata::name;
@@ -97,6 +103,9 @@ struct invoker_adaptor {
   using type = folly::remove_cvref_t<reference<T>>;
   template <typename T>
   FOLLY_ERASE static constexpr reference<T> ref(T&& t) {
+    static_assert(
+        !is_optional<type<T>>::value,
+        "It is unsupported to use reflection with optionals flag");
     return A{}(static_cast<T&&>(t));
   }
   template <typename T>
