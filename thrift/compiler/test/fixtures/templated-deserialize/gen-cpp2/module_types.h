@@ -145,7 +145,7 @@ namespace cpp2 {
 enum class MyEnumA {
   fieldA = 1,
   fieldB = 2,
-  fieldC = 4
+  fieldC = 4,
 };
 
 

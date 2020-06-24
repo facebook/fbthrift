@@ -35,7 +35,7 @@ namespace a { namespace different { namespace ns {
 
 enum class AnEnum {
   FIELDA = 2,
-  FIELDB = 4
+  FIELDB = 4,
 };
 
 

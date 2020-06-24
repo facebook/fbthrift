@@ -59,7 +59,7 @@ namespace cpp2 {
 
 enum class MyEnum {
   MyValue1 = 0,
-  MyValue2 = 1
+  MyValue2 = 1,
 };
 
 

@@ -28,7 +28,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(fieldA);
 namespace facebook { namespace ns { namespace qwerty {
 
 enum class AnEnumA {
-  FIELDA = 0
+  FIELDA = 0,
 };
 
 
@@ -36,28 +36,28 @@ enum class AnEnumA {
 
 enum class AnEnumB {
   FIELDA = 0,
-  FIELDB = 2
+  FIELDB = 2,
 };
 
 
 
 
 enum class AnEnumC {
-  FIELDC = 0
+  FIELDC = 0,
 };
 
 
 
 
 enum class AnEnumD {
-  FIELDD = 0
+  FIELDD = 0,
 };
 
 
 
 
 enum class AnEnumE {
-  FIELDA = 0
+  FIELDA = 0,
 };
 
 

@@ -32,14 +32,15 @@ APACHE_THRIFT_DEFINE_ACCESSOR(myBigEnum);
 // BEGIN declare_enums
 namespace test { namespace fixtures { namespace enumstrict {
 
-enum class EmptyEnum {};
+enum class EmptyEnum {
+};
 
 
 
 
 enum class MyEnum {
   ONE = 1,
-  TWO = 2
+  TWO = 2,
 };
 
 
@@ -65,7 +66,7 @@ enum class MyBigEnum {
   SIXTEEN = 16,
   SEVENTEEN = 17,
   EIGHTEEN = 18,
-  NINETEEN = 19
+  NINETEEN = 19,
 };
 
 

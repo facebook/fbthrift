@@ -46,7 +46,7 @@ enum class Metasyntactic {
   FOO = 1,
   BAR = 2,
   BAZ = 3,
-  BAX = 4
+  BAX = 4,
 };
 
 

@@ -194,7 +194,7 @@ namespace cpp2 {
 
 enum class TypedEnum : short {
   VAL1 = 0,
-  VAL2 = 1
+  VAL2 = 1,
 };
 
 

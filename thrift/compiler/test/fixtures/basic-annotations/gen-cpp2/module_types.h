@@ -90,7 +90,7 @@ namespace cpp2 {
 enum class MyEnum {
   MyValue1 = 0,
   MyValue2 = 1,
-  REALM = 2
+  REALM = 2,
 };
 
 

@@ -20,13 +20,11 @@
 
 <%#program:enums%>
 
-enum <%^enum:cpp_is_unscoped%>class <%/enum:cpp_is_unscoped%><%enum:name%><%#enum:cpp_enum_type%> : <%enum:cpp_enum_type%><%/enum:cpp_enum_type%> {<%!
-  %><%#enum:values%><%#first?%>
-<%/first?%><%!
-    %>  <%enumValue:cpp_name%> = <%enumValue:value%><% > common/comma_newline%><%#last?%>
-<%/last?%><%!
-  %><%/enum:values%><%!
-%>}<% > common/semicolon_newline%>
+enum <%^enum:cpp_is_unscoped%>class <%/enum:cpp_is_unscoped%><%enum:name%><%#enum:cpp_enum_type%> : <%enum:cpp_enum_type%><%/enum:cpp_enum_type%> {
+<%#enum:values%>
+  <%enumValue:cpp_name%> = <%enumValue:value%>,
+<%/enum:values%>
+}<% > common/semicolon_newline%>
 
 <%#enum:cpp_declare_bitwise_ops%>
 <% > module_types_h/enum_bitwise_ops%>

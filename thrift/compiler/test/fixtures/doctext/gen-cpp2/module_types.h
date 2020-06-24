@@ -28,7 +28,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(useless_field);
 namespace cpp2 {
 
 enum class B {
-  HELLO = 0
+  HELLO = 0,
 };
 
 

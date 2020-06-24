@@ -802,7 +802,7 @@ namespace some { namespace valid { namespace ns {
 enum class MyEnumA {
   fieldA = 1,
   fieldB = 2,
-  fieldC = 4
+  fieldC = 4,
 };
 
 
@@ -811,7 +811,7 @@ enum class MyEnumA {
 enum class AnnotatedEnum : std::uint32_t {
   FIELDA = 2,
   FIELDB = 4,
-  FIELDC = 9
+  FIELDC = 9,
 };
 
 
@@ -851,7 +851,7 @@ inline constexpr AnnotatedEnum operator~(AnnotatedEnum a) {
 enum class AnnotatedEnum2 : short {
   FIELDA = 2,
   FIELDB = 4,
-  FIELDC = 9
+  FIELDC = 9,
 };
 
 
@@ -889,7 +889,7 @@ inline constexpr AnnotatedEnum2 operator~(AnnotatedEnum2 a) {
 }
 
 enum class MyEnumB {
-  AField = 0
+  AField = 0,
 };
 
 

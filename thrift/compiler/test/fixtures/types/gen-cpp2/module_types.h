@@ -273,7 +273,7 @@ enum class has_bitwise_ops {
   zero = 1,
   one = 2,
   two = 4,
-  three = 8
+  three = 8,
 };
 
 
@@ -312,7 +312,7 @@ inline constexpr has_bitwise_ops operator~(has_bitwise_ops a) {
 
 enum is_unscoped : int {
   hello = 0,
-  world = 1
+  world = 1,
 };
 
 
@@ -320,7 +320,7 @@ enum is_unscoped : int {
 
 enum class MyForwardRefEnum {
   ZERO = 0,
-  NONZERO = 12
+  NONZERO = 12,
 };
 
 
@@ -329,7 +329,7 @@ enum class MyForwardRefEnum {
 enum class MyEnumA {
   fieldA = 1,
   fieldB = 2,
-  fieldC = 4
+  fieldC = 4,
 };
 
 

@@ -828,7 +828,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 enum class enum1 {
   field0 = 0,
   field1 = 1,
-  field2 = 2
+  field2 = 2,
 };
 
 
@@ -837,7 +837,7 @@ enum class enum1 {
 enum class enum2 {
   field0_2 = 0,
   field1_2 = 1,
-  field2_2 = 2
+  field2_2 = 2,
 };
 
 
@@ -845,7 +845,7 @@ enum class enum2 {
 
 enum class enum3 {
   field0_3 = 0,
-  field1_3 = 1
+  field1_3 = 1,
 };
 
 
@@ -879,7 +879,7 @@ enum class enum_with_special_names {
   member = 24,
   members = 25,
   field = 26,
-  fields = 27
+  fields = 27,
 };
 
 

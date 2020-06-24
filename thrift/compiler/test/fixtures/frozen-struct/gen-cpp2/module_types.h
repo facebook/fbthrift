@@ -65,7 +65,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(inclEnumB);
 namespace some { namespace ns {
 
 enum class EnumB {
-  EMPTY = 1
+  EMPTY = 1,
 };
 
 

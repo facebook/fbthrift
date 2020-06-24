@@ -137,7 +137,8 @@ APACHE_THRIFT_DEFINE_ACCESSOR(u);
 // BEGIN declare_enums
 namespace cpp2 {
 
-enum class EmptyEnum {};
+enum class EmptyEnum {
+};
 
 
 
@@ -146,7 +147,7 @@ enum class City {
   NYC = 0,
   MPK = 1,
   SEA = 2,
-  LON = 3
+  LON = 3,
 };
 
 
@@ -156,7 +157,7 @@ enum class Company {
   FACEBOOK = 0,
   WHATSAPP = 1,
   OCULUS = 2,
-  INSTAGRAM = 3
+  INSTAGRAM = 3,
 };
 
 

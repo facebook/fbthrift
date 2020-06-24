@@ -121,7 +121,7 @@ namespace cpp2 {
 enum class Animal {
   DOG = 1,
   CAT = 2,
-  TARANTULA = 3
+  TARANTULA = 3,
 };
 
 
