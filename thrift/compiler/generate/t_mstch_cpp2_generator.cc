@@ -2144,10 +2144,56 @@ bool annotation_validator::visit(t_struct* s) {
   }
   return true;
 }
+class service_method_validator : public validator {
+ public:
+  explicit service_method_validator(bool stack_arguments)
+      : stack_arguments_on(stack_arguments) {}
+
+  using validator::visit;
+  /**
+   * Make sure there is no 'cpp.coroutine' annotation set when
+   * 'stack_arguments' is turned on.
+   */
+  bool visit(t_service* service) override;
+
+ private:
+  bool stack_arguments_on = false;
+};
+
+bool service_method_validator::visit(t_service* service) {
+  for (const auto func : service->get_functions()) {
+    bool hascoro = ((func->annotations_.count("cpp.coroutine")) != 0);
+    bool suppressed =
+        (func->annotations_.count(
+             "cpp.coroutine_stack_arguments_broken_suppress_error") != 0);
+    // when cpp.coroutine and stack_arguments are both on, return failure if
+    // this function has complex types (including string and binary).
+    auto arglist = func->get_arglist();
+    bool ok = true;
+    for (auto field : arglist->get_members()) {
+      auto tp = field->get_type()->get_true_type();
+      if ((!tp->is_base_type() || tp->is_string_or_binary()) && hascoro &&
+          stack_arguments_on && !suppressed) {
+        ok = false;
+        break;
+      }
+    }
+
+    if (!ok) {
+      add_error(
+          func->get_lineno(),
+          service->get_name() + ":" + func->get_name() +
+              " use of cpp.coroutine and stack_arguments together is "
+              "disallowed");
+    }
+  }
+  return true;
+}
 } // namespace
 
 void t_mstch_cpp2_generator::fill_validator_list(validator_list& l) const {
   l.add<annotation_validator>();
+  l.add<service_method_validator>(this->has_option("stack_arguments"));
 }
 
 THRIFT_REGISTER_GENERATOR(mstch_cpp2, "cpp2", "");

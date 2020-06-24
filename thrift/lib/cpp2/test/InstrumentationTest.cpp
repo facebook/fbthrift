@@ -114,16 +114,15 @@ class TestInterface : public InstrumentationTestServiceSvIf {
         []() -> folly::coro::AsyncGenerator<int32_t&&> { co_yield 0; });
   }
 
-  folly::coro::Task<apache::thrift::test::IOBuf> co_sendPayload(
-      int32_t id,
-      const std::string& /* str */) override {
+  folly::coro::Task<std::unique_ptr<::apache::thrift::test::IOBuf>>
+  co_sendPayload(int32_t id, std::unique_ptr<::std::string> /*str*/) override {
     auto rg = requestGuard();
     auto payload = dynamic_cast<RequestPayload*>(
         folly::RequestContext::get()->getContextData(
             RequestPayload::getRequestToken()));
     EXPECT_NE(payload, nullptr);
     co_await finished_;
-    co_return * payload->getPayload()->clone();
+    co_return payload->getPayload()->clone();
   }
 
   void stopRequests() {
@@ -187,8 +186,8 @@ class TestInterface : public InstrumentationTestServiceSvIf {
 
 class DebugInterface : public DebugTestServiceSvIf {
  public:
-  void echo(std::string& r, const std::string& s) override {
-    r = folly::format("{}:{}", s, folly::getCurrentThreadName().value()).str();
+  void echo(std::string& r, std::unique_ptr<::std::string> s) override {
+    r = folly::format("{}:{}", *s, folly::getCurrentThreadName().value()).str();
   }
 };
 

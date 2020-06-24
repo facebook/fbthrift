@@ -478,7 +478,7 @@ void t_mstch_generator::write_output(
   record_genfile(abs_path.string());
 }
 
-bool t_mstch_generator::has_option(const std::string& key) {
+bool t_mstch_generator::has_option(const std::string& key) const {
   return parsed_options_.find(key) != parsed_options_.end();
 }
 

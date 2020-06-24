@@ -73,6 +73,17 @@ class CompilerFailureTest(unittest.TestCase):
         err = err.replace("{}/".format(self.tmp), "")
         return p.returncode, out, err
 
+    def run_thrift_stack_arguments(self, *args):
+        argsx = [thrift, "--gen", "mstch_cpp2:stack_arguments"]
+        argsx.extend(args)
+        pipe = subprocess.PIPE
+        p = subprocess.Popen(argsx, stdout=pipe, stderr=pipe)
+        out, err = p.communicate()
+        out = out.decode(sys.getdefaultencoding())
+        err = err.decode(sys.getdefaultencoding())
+        err = err.replace("{}/".format(self.tmp), "")
+        return p.returncode, out, err
+
     def test_enum_wrong_default_value(self):
         # tests initializing enum with default value of wrong type
         write_file("foo.thrift", textwrap.dedent("""\
@@ -348,3 +359,36 @@ class CompilerFailureTest(unittest.TestCase):
             [WARNING:foo.thrift:3] cpp.ref field must be optional if it is recursive
         ''')
         )
+
+    def test_cpp_coroutine_mixin_stack_arguments(self):
+        write_file("foo.thrift", textwrap.dedent("""\
+            service SumService {
+                i32 sum(1: i32 num1, 2: i32 num2) (cpp.coroutine);
+            }
+        """))
+
+        ret, out, err = self.run_thrift_stack_arguments("foo.thrift")
+
+        self.assertEqual(ret, 0)
+
+        write_file("foo.thrift", textwrap.dedent("""\
+            service SumService {
+                i32 sum(1: i32 num1, 2: string str) (cpp.coroutine);
+            }
+        """))
+
+        ret, out, err = self.run_thrift_stack_arguments("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(err, "[FAILURE:foo.thrift:2] SumService:sum use of "
+            "cpp.coroutine and stack_arguments together is disallowed\n")
+
+        write_file("foo.thrift", textwrap.dedent("""\
+            service SumService {
+                i32 sum(1: i32 num1, 2: i32 num2);
+            }
+        """))
+
+        ret, out, err = self.run_thrift_stack_arguments("foo.thrift")
+
+        self.assertEqual(ret, 0)
