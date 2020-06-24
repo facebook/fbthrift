@@ -79,9 +79,42 @@ template Payload makePayload<>(
     const HeadersPayloadMetadata&,
     std::unique_ptr<folly::IOBuf> data);
 
-/**
- * Helper method to compress the request before sending to the server.
- */
+template <typename Metadata>
+void setCompressionCodec(
+    CompressionConfig compressionConfig,
+    Metadata& metadata,
+    size_t payloadSize) {
+  if (auto codecRef = compressionConfig.codecConfig_ref()) {
+    if (payloadSize >
+        static_cast<size_t>(
+            compressionConfig.compressionSizeLimit_ref().value_or(0))) {
+      switch (codecRef->getType()) {
+        case CodecConfig::zlibConfig:
+          metadata.compression_ref() = CompressionAlgorithm::ZLIB;
+          break;
+        case CodecConfig::zstdConfig:
+          metadata.compression_ref() = CompressionAlgorithm::ZSTD;
+          break;
+        default:
+          break;
+      }
+    }
+  }
+}
+
+template void setCompressionCodec<>(
+    CompressionConfig compressionConfig,
+    RequestRpcMetadata& metadata,
+    size_t payloadSize);
+template void setCompressionCodec<>(
+    CompressionConfig compressionConfig,
+    ResponseRpcMetadata& metadata,
+    size_t payloadSize);
+template void setCompressionCodec<>(
+    CompressionConfig compressionConfig,
+    StreamPayloadMetadata& metadata,
+    size_t payloadSize);
+
 void compressPayload(
     std::unique_ptr<folly::IOBuf>& data,
     CompressionAlgorithm compression) {

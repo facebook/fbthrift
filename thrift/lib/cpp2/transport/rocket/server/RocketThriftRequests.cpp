@@ -315,22 +315,8 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
 
   // apply compression if client has specified compression codec
   if (compressionConfig.has_value()) {
-    if (auto codecRef = compressionConfig->codecConfig_ref()) {
-      if (payload->computeChainDataLength() >
-          static_cast<size_t>(
-              compressionConfig->compressionSizeLimit_ref().value_or(0))) {
-        switch (codecRef->getType()) {
-          case CodecConfig::zlibConfig:
-            metadata.compression_ref() = CompressionAlgorithm::ZLIB;
-            break;
-          case CodecConfig::zstdConfig:
-            metadata.compression_ref() = CompressionAlgorithm::ZSTD;
-            break;
-          default:
-            break;
-        }
-      }
-    }
+    detail::setCompressionCodec(
+        *compressionConfig, metadata, payload->computeChainDataLength());
   } else if (
       auto compression = frameContext.connection().getCompressionAlgorithm(
           payload->computeChainDataLength())) {
@@ -486,6 +472,9 @@ ThriftServerRequestStream::ThriftServerRequestStream(
       std::move(rctx),
       getProtoId(),
       std::move(debugPayload));
+  if (auto compressionConfig = getCompressionConfig()) {
+    clientCallback_->setCompressionConfig(*compressionConfig);
+  }
   scheduleTimeouts();
 }
 

@@ -56,6 +56,25 @@ extern template Payload makePayload<>(
     const HeadersPayloadMetadata&,
     std::unique_ptr<folly::IOBuf> data);
 
+template <typename Metadata>
+void setCompressionCodec(
+    CompressionConfig compressionConfig,
+    Metadata& metadata,
+    size_t payloadSize);
+
+extern template void setCompressionCodec<>(
+    CompressionConfig compressionConfig,
+    RequestRpcMetadata& metadata,
+    size_t payloadSize);
+extern template void setCompressionCodec<>(
+    CompressionConfig compressionConfig,
+    ResponseRpcMetadata& metadata,
+    size_t payloadSize);
+extern template void setCompressionCodec<>(
+    CompressionConfig compressionConfig,
+    StreamPayloadMetadata& metadata,
+    size_t payloadSize);
+
 /**
  * Helper method to compress the payload before sending to the remote endpoint.
  */
@@ -64,7 +83,7 @@ void compressPayload(
     CompressionAlgorithm compression);
 
 /**
- * Helper method to uncompress the request on server side.
+ * Helper method to uncompress the payload from remote endpoint.
  */
 folly::Expected<std::unique_ptr<folly::IOBuf>, std::string> uncompressPayload(
     CompressionAlgorithm compression,

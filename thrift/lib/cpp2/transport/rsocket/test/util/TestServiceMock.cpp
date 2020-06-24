@@ -253,19 +253,6 @@ apache::thrift::ServerStream<int32_t> TestStreamServiceMock::requestWithBlob(
   return apache::thrift::ServerStream<int32_t>::createEmpty();
 }
 
-apache::thrift::ServerStream<std::string> TestStreamServiceMock::streamBlobs(
-    int32_t count) {
-  static const int kSize = 32 << 10;
-  std::string asString(kSize, 'a');
-
-  auto [stream, publisher] = ServerStream<std::string>::createPublisher();
-  while (count--) {
-    publisher.next(asString);
-  }
-  std::move(publisher).complete();
-  return std::move(stream);
-}
-
 void TestStreamServiceMock::async_eb_leakCallback(
     std::unique_ptr<apache::thrift::HandlerCallback<
         apache::thrift::ServerStream<int32_t>>>) {}

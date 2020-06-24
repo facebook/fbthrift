@@ -102,70 +102,6 @@ class StreamingTest : public TestSetup {
     }
   }
 
-  // This test checks that if compression is enabled, the total number of bytes
-  // read from the socket is lesser compared to the untransformed payload. If
-  // compression is disabled, it's greater.
-  void testCompression(bool enableCompression) {
-    if (enableCompression) {
-      // recreate server_ with compression enabled on the server side
-      server_ = createServer(
-          std::make_shared<
-              ThriftServerAsyncProcessorFactory<TestStreamServiceMock>>(
-              handler_),
-          port_,
-          0,
-          true /* enableCompressionForRocketServer */);
-    }
-
-    folly::EventBase evb;
-
-    auto makeChannel = [&] {
-      auto channel =
-          RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
-              new TAsyncSocketIntercepted(&evb, "::1", port_)));
-      if (enableCompression) {
-        // enable compression on client-side
-        channel->setNegotiatedCompressionAlgorithm(CompressionAlgorithm::ZSTD);
-        channel->setAutoCompressSizeLimit(0);
-      }
-      return channel;
-    };
-
-    auto callMe = [this, enableCompression](
-                      std::unique_ptr<StreamServiceAsyncClient> client) {
-      int32_t totalBytes = 0;
-      std::string str(32 << 10, 'a');
-      auto stream = client->sync_streamBlobs(3);
-      auto subscription = std::move(stream).subscribeExTry(
-          &executor_, [&totalBytes, &str](auto&& next) mutable {
-            if (next.hasValue()) {
-              EXPECT_EQ(str, *next);
-              totalBytes += (*next).size();
-            } else if (next.hasException()) {
-              FAIL() << "Should not call onError: " << next.exception().what();
-            }
-          });
-      std::move(subscription).join();
-
-      auto* channel = dynamic_cast<RocketClientChannel*>(client->getChannel());
-      ASSERT_NE(nullptr, channel);
-
-      auto sock = channel->getTransport()
-                      ->getUnderlyingTransport<TAsyncSocketIntercepted>();
-      ASSERT_NE(nullptr, sock);
-      int32_t numRead = sock->getTotalBytesRead();
-      // check that compression actually kicked in
-      if (enableCompression) {
-        EXPECT_LT(numRead, totalBytes);
-      } else {
-        EXPECT_GT(numRead, totalBytes);
-      }
-    };
-
-    StreamServiceAsyncClient client{makeChannel()};
-    callMe(std::make_unique<StreamServiceAsyncClient>(std::move(client)));
-  }
-
  private:
   using TestSetup::connectToServer;
 
@@ -175,14 +111,6 @@ class StreamingTest : public TestSetup {
 
   uint16_t port_;
 };
-
-TEST_F(StreamingTest, CompressRequestResponse) {
-  testCompression(true);
-}
-
-TEST_F(StreamingTest, NoCompressRequestResponse) {
-  testCompression(false);
-}
 
 TEST_F(StreamingTest, ClientStreamBridge) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {

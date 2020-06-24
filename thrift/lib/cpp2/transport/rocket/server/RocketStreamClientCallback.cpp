@@ -118,9 +118,12 @@ bool RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
     scheduleTimeout();
   }
 
-  if (auto compression = connection_.getCompressionAlgorithm(
-          payload.payload->computeChainDataLength())) {
-    payload.metadata.compression_ref() = *compression;
+  // apply compression if client has specified compression codec
+  if (compressionConfig_) {
+    detail::setCompressionCodec(
+        *compressionConfig_,
+        payload.metadata,
+        payload.payload->computeChainDataLength());
   }
 
   connection_.sendPayload(
@@ -204,6 +207,11 @@ void RocketStreamClientCallback::timeoutExpired() noexcept {
 
 void RocketStreamClientCallback::setProtoId(protocol::PROTOCOL_TYPES protoId) {
   protoId_ = protoId;
+}
+
+void RocketStreamClientCallback::setCompressionConfig(
+    CompressionConfig compressionConfig) {
+  compressionConfig_ = std::make_unique<CompressionConfig>(compressionConfig);
 }
 
 StreamServerCallback& RocketStreamClientCallback::getStreamServerCallback() {
