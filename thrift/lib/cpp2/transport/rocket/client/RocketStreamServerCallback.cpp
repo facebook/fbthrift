@@ -349,11 +349,6 @@ bool RocketSinkServerCallback::onSinkComplete() {
   return true;
 }
 
-void RocketSinkServerCallback::onStreamCancel() {
-  DCHECK(state_ == State::BothOpen || state_ == State::StreamOpen);
-  client_.cancelStream(streamId_);
-}
-
 void RocketSinkServerCallback::onInitialPayload(
     FirstResponsePayload&& payload,
     folly::EventBase* evb) {

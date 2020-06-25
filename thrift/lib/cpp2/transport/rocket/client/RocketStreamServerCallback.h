@@ -170,8 +170,6 @@ class RocketSinkServerCallback : public SinkServerCallback {
   void onSinkError(folly::exception_wrapper) override;
   bool onSinkComplete() override;
 
-  void onStreamCancel() override;
-
   void resetClientCallback(SinkClientCallback& clientCallback) override {
     clientCallback_ = &clientCallback;
   }

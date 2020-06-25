@@ -74,11 +74,6 @@ bool ServerSinkBridge::onSinkComplete() {
   return true;
 }
 
-void ServerSinkBridge::onStreamCancel() {
-  clientPush(StreamCancel{});
-  close();
-}
-
 void ServerSinkBridge::resetClientCallback(SinkClientCallback& clientCallback) {
   DCHECK(clientCallback_);
   clientCallback_ = &clientCallback;
@@ -120,13 +115,6 @@ ServerSinkBridge::makeGenerator() {
       folly::variant_match(
           message,
           [&](folly::Try<StreamPayload>& payload) { ele = std::move(payload); },
-          [&](StreamCancel&) {
-            ele = folly::Try<StreamPayload>(
-                folly::make_exception_wrapper<transport::TTransportException>(
-                    transport::TTransportException::TTransportExceptionType::
-                        INTERRUPTED,
-                    "sink cancelled"));
-          },
           [](SinkComplete&) {});
 
       // empty Try represent the normal completion of the sink

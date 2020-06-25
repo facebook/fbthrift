@@ -93,7 +93,6 @@ class ClientSinkBridge : public TwoWayBridge<
 
   void processServerMessages();
 
- private:
   folly::coro::Baton firstResponseBaton_{};
   folly::Try<FirstResponsePayload> firstResponse_;
 

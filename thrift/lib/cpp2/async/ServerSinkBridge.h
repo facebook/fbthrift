@@ -81,8 +81,6 @@ class ServerSinkBridge : public TwoWayBridge<
 
   bool onSinkComplete() override;
 
-  void onStreamCancel() override;
-
   void resetClientCallback(SinkClientCallback& clientCallback) override;
 
   // start should be called on threadmanager's thread

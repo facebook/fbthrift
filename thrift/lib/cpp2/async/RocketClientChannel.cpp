@@ -352,7 +352,10 @@ class FirstRequestProcessorSink : public SinkClientCallback,
             firstResponse.payload,
             protocolId_,
             methodName_)) {
-      serverCallback->onStreamCancel();
+      serverCallback->onSinkError(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::INTERRUPTION,
+              "process first response error"));
       clientCallback_->onFirstResponseError(std::move(error));
       return false;
     }
@@ -412,9 +415,6 @@ class FirstRequestProcessorSink : public SinkClientCallback,
   }
   bool onSinkComplete() override {
     return true;
-  }
-  void onStreamCancel() override {
-    clientCallback_ = nullptr;
   }
   void resetClientCallback(SinkClientCallback& clientCallback) override {
     clientCallback_ = &clientCallback;

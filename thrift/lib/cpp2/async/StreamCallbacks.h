@@ -185,8 +185,6 @@ class SinkServerCallback {
   virtual void onSinkError(folly::exception_wrapper) = 0;
   FOLLY_NODISCARD virtual bool onSinkComplete() = 0;
 
-  virtual void onStreamCancel() = 0;
-
   // not terminating
   virtual void resetClientCallback(SinkClientCallback&) = 0;
 };

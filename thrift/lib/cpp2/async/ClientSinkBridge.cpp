@@ -191,10 +191,6 @@ void ClientSinkBridge::processServerMessages() {
                   !serverCallback_->onSinkNext(std::move(payload).value());
             }
           },
-          [&](const StreamCancel&) {
-            serverCallback_->onStreamCancel();
-            terminated = true;
-          },
           [&](const SinkComplete&) {
             terminated = !serverCallback_->onSinkComplete();
           });

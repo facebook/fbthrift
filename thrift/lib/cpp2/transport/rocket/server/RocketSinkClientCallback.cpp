@@ -171,10 +171,6 @@ bool RocketSinkClientCallback::onSinkComplete() {
   return serverCallback()->onSinkComplete();
 }
 
-void RocketSinkClientCallback::onStreamCancel() {
-  serverCallback()->onStreamCancel();
-}
-
 void RocketSinkClientCallback::setChunkTimeout(
     std::chrono::milliseconds timeout) {
   if (timeout != std::chrono::milliseconds::zero()) {

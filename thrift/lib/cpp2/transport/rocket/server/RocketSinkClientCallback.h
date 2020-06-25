@@ -51,7 +51,6 @@ class RocketSinkClientCallback final : public SinkClientCallback {
   bool onSinkError(folly::exception_wrapper);
   bool onSinkComplete();
 
-  void onStreamCancel();
   void setChunkTimeout(std::chrono::milliseconds timeout);
   void timeoutExpired() noexcept;
   void setProtoId(protocol::PROTOCOL_TYPES);

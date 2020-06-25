@@ -474,11 +474,6 @@ void RocketServerConnection::handleSinkFrame(
       }
     } break;
 
-    case FrameType::CANCEL: {
-      clientCallback.onStreamCancel();
-      return freeStream(streamId, true);
-    } break;
-
     case FrameType::EXT: {
       ExtFrame extFrame(streamId, flags, cursor, std::move(frame));
       if (extFrame.extFrameType() == ExtFrameType::ALIGNED_PAGE) {

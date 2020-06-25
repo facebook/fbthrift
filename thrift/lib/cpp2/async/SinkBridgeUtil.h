@@ -31,10 +31,8 @@ namespace thrift {
 namespace detail {
 
 using ClientMessage = boost::variant<folly::Try<StreamPayload>, int64_t>;
-struct StreamCancel {};
 struct SinkComplete {};
-using ServerMessage =
-    boost::variant<folly::Try<StreamPayload>, StreamCancel, SinkComplete>;
+using ServerMessage = boost::variant<folly::Try<StreamPayload>, SinkComplete>;
 
 class CoroConsumer {
  public:
