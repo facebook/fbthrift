@@ -98,7 +98,7 @@ class PriorityEventTask : public concurrency::PriorityRunnable,
 
 class AsyncProcessor : public TProcessorBase {
  public:
-  virtual ~AsyncProcessor() {}
+  virtual ~AsyncProcessor() = default;
 
   virtual void processSerializedRequest(
       ResponseChannelRequest::UniquePtr,
@@ -117,8 +117,6 @@ class AsyncProcessor : public TProcessorBase {
 
 class GeneratedAsyncProcessor : public AsyncProcessor {
  public:
-  ~GeneratedAsyncProcessor() override {}
-
   virtual const char* getServiceName() = 0;
 
   template <typename Derived>
@@ -167,7 +165,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
 class AsyncProcessorFactory {
  public:
   virtual std::unique_ptr<AsyncProcessor> getProcessor() = 0;
-  virtual ~AsyncProcessorFactory() {}
+  virtual ~AsyncProcessorFactory() = default;
 };
 
 /**
@@ -208,8 +206,6 @@ class RequestParams {
 
 class ServerInterface : public AsyncProcessorFactory {
  public:
-  ~ServerInterface() override {}
-
   Cpp2RequestContext* getConnectionContext() const {
     return requestParams_.requestContext_;
   }
