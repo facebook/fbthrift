@@ -8,7 +8,7 @@
 import folly.iobuf as __iobuf
 import thrift.py3.types
 import thrift.py3.exceptions
-from thrift.py3.types import NOTSET, NOTSETTYPE
+from thrift.py3.types import __NotSet, NOTSET
 import typing as _typing
 from typing_extensions import Final
 
@@ -62,7 +62,7 @@ class OptionalRefStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Itera
 
     def __call__(
         self, *,
-        optional_blob: _typing.Union[__iobuf.IOBuf, NOTSETTYPE, None]=NOTSET
+        optional_blob: _typing.Union[__iobuf.IOBuf, __NotSet, None]=NOTSET
     ) -> OptionalRefStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['OptionalRefStruct'], bytes]]: ...
@@ -104,13 +104,13 @@ class SimpleStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_
 
     def __call__(
         self, *,
-        is_on: _typing.Union[bool, NOTSETTYPE, None]=NOTSET,
-        tiny_int: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        small_int: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        nice_sized_int: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        big_int: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        real: _typing.Union[float, NOTSETTYPE, None]=NOTSET,
-        smaller_real: _typing.Union[float, NOTSETTYPE, None]=NOTSET
+        is_on: _typing.Union[bool, __NotSet, None]=NOTSET,
+        tiny_int: _typing.Union[int, __NotSet, None]=NOTSET,
+        small_int: _typing.Union[int, __NotSet, None]=NOTSET,
+        nice_sized_int: _typing.Union[int, __NotSet, None]=NOTSET,
+        big_int: _typing.Union[int, __NotSet, None]=NOTSET,
+        real: _typing.Union[float, __NotSet, None]=NOTSET,
+        smaller_real: _typing.Union[float, __NotSet, None]=NOTSET
     ) -> SimpleStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['SimpleStruct'], bytes]]: ...
@@ -158,15 +158,15 @@ class ComplexStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[
 
     def __call__(
         self, *,
-        structOne: _typing.Union['SimpleStruct', NOTSETTYPE, None]=NOTSET,
-        structTwo: _typing.Union['SimpleStruct', NOTSETTYPE, None]=NOTSET,
-        an_integer: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        name: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        an_enum: _typing.Union[AnEnum, NOTSETTYPE, None]=NOTSET,
-        some_bytes: _typing.Union[bytes, NOTSETTYPE, None]=NOTSET,
-        sender: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        cdef_: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        bytes_with_cpp_type: _typing.Union[bytes, NOTSETTYPE, None]=NOTSET
+        structOne: _typing.Union['SimpleStruct', __NotSet, None]=NOTSET,
+        structTwo: _typing.Union['SimpleStruct', __NotSet, None]=NOTSET,
+        an_integer: _typing.Union[int, __NotSet, None]=NOTSET,
+        name: _typing.Union[str, __NotSet, None]=NOTSET,
+        an_enum: _typing.Union[AnEnum, __NotSet, None]=NOTSET,
+        some_bytes: _typing.Union[bytes, __NotSet, None]=NOTSET,
+        sender: _typing.Union[str, __NotSet, None]=NOTSET,
+        cdef_: _typing.Union[str, __NotSet, None]=NOTSET,
+        bytes_with_cpp_type: _typing.Union[bytes, __NotSet, None]=NOTSET
     ) -> ComplexStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['ComplexStruct'], bytes]]: ...
@@ -219,7 +219,7 @@ class BinaryUnionStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Itera
 
     def __call__(
         self, *,
-        u: _typing.Union['BinaryUnion', NOTSETTYPE, None]=NOTSET
+        u: _typing.Union['BinaryUnion', __NotSet, None]=NOTSET
     ) -> BinaryUnionStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['BinaryUnionStruct'], bytes]]: ...

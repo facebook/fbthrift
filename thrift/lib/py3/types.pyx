@@ -17,13 +17,10 @@ cimport cython
 from folly.iobuf import IOBuf
 from types import MappingProxyType
 
-__all__ = ['Struct', 'BadEnum', 'NOTSET', 'Union', 'Enum', 'Flag']
+__all__ = ['Struct', 'BadEnum', 'Union', 'Enum', 'Flag']
 
 
-class NOTSETTYPE(enum.Enum):
-    token = 0
-
-NOTSET = NOTSETTYPE.token
+cdef __NotSet NOTSET = __NotSet.__new__(__NotSet)
 
 
 cdef class Struct:

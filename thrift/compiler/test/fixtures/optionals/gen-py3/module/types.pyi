@@ -8,7 +8,7 @@
 import folly.iobuf as __iobuf
 import thrift.py3.types
 import thrift.py3.exceptions
-from thrift.py3.types import NOTSET, NOTSETTYPE
+from thrift.py3.types import __NotSet, NOTSET
 import typing as _typing
 from typing_extensions import Final
 
@@ -44,10 +44,10 @@ class Color(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.
 
     def __call__(
         self, *,
-        red: _typing.Union[float, NOTSETTYPE, None]=NOTSET,
-        green: _typing.Union[float, NOTSETTYPE, None]=NOTSET,
-        blue: _typing.Union[float, NOTSETTYPE, None]=NOTSET,
-        alpha: _typing.Union[float, NOTSETTYPE, None]=NOTSET
+        red: _typing.Union[float, __NotSet, None]=NOTSET,
+        green: _typing.Union[float, __NotSet, None]=NOTSET,
+        blue: _typing.Union[float, __NotSet, None]=NOTSET,
+        alpha: _typing.Union[float, __NotSet, None]=NOTSET
     ) -> Color: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Color'], bytes]]: ...
@@ -83,11 +83,11 @@ class Vehicle(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typin
 
     def __call__(
         self, *,
-        color: _typing.Union['Color', NOTSETTYPE, None]=NOTSET,
-        licensePlate: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        description: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        name: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        hasAC: _typing.Union[bool, NOTSETTYPE, None]=NOTSET
+        color: _typing.Union['Color', __NotSet, None]=NOTSET,
+        licensePlate: _typing.Union[str, __NotSet, None]=NOTSET,
+        description: _typing.Union[str, __NotSet, None]=NOTSET,
+        name: _typing.Union[str, __NotSet, None]=NOTSET,
+        hasAC: _typing.Union[bool, __NotSet, None]=NOTSET
     ) -> Vehicle: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Vehicle'], bytes]]: ...
@@ -138,16 +138,16 @@ class Person(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing
 
     def __call__(
         self, *,
-        id: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        name: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        age: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        address: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        favoriteColor: _typing.Union['Color', NOTSETTYPE, None]=NOTSET,
-        friends: _typing.Union[_typing.AbstractSet[int], NOTSETTYPE, None]=NOTSET,
-        bestFriend: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        petNames: _typing.Union[_typing.Mapping[Animal, str], NOTSETTYPE, None]=NOTSET,
-        afraidOfAnimal: _typing.Union[Animal, NOTSETTYPE, None]=NOTSET,
-        vehicles: _typing.Union[_typing.Sequence['Vehicle'], NOTSETTYPE, None]=NOTSET
+        id: _typing.Union[int, __NotSet, None]=NOTSET,
+        name: _typing.Union[str, __NotSet, None]=NOTSET,
+        age: _typing.Union[int, __NotSet, None]=NOTSET,
+        address: _typing.Union[str, __NotSet, None]=NOTSET,
+        favoriteColor: _typing.Union['Color', __NotSet, None]=NOTSET,
+        friends: _typing.Union[_typing.AbstractSet[int], __NotSet, None]=NOTSET,
+        bestFriend: _typing.Union[int, __NotSet, None]=NOTSET,
+        petNames: _typing.Union[_typing.Mapping[Animal, str], __NotSet, None]=NOTSET,
+        afraidOfAnimal: _typing.Union[Animal, __NotSet, None]=NOTSET,
+        vehicles: _typing.Union[_typing.Sequence['Vehicle'], __NotSet, None]=NOTSET
     ) -> Person: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Person'], bytes]]: ...

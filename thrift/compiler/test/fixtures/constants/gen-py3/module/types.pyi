@@ -8,7 +8,7 @@
 import folly.iobuf as __iobuf
 import thrift.py3.types
 import thrift.py3.exceptions
-from thrift.py3.types import NOTSET, NOTSETTYPE
+from thrift.py3.types import __NotSet, NOTSET
 import typing as _typing
 from typing_extensions import Final
 
@@ -53,9 +53,9 @@ class Internship(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_ty
 
     def __call__(
         self, *,
-        weeks: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        title: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        employer: _typing.Union[Company, NOTSETTYPE, None]=NOTSET
+        weeks: _typing.Union[int, __NotSet, None]=NOTSET,
+        title: _typing.Union[str, __NotSet, None]=NOTSET,
+        employer: _typing.Union[Company, __NotSet, None]=NOTSET
     ) -> Internship: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Internship'], bytes]]: ...
@@ -82,8 +82,8 @@ class Range(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.
 
     def __call__(
         self, *,
-        min: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        max: _typing.Union[int, NOTSETTYPE, None]=NOTSET
+        min: _typing.Union[int, __NotSet, None]=NOTSET,
+        max: _typing.Union[int, __NotSet, None]=NOTSET
     ) -> Range: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Range'], bytes]]: ...
@@ -110,8 +110,8 @@ class struct1(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typin
 
     def __call__(
         self, *,
-        a: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        b: _typing.Union[str, NOTSETTYPE, None]=NOTSET
+        a: _typing.Union[int, __NotSet, None]=NOTSET,
+        b: _typing.Union[str, __NotSet, None]=NOTSET
     ) -> struct1: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['struct1'], bytes]]: ...
@@ -144,10 +144,10 @@ class struct2(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typin
 
     def __call__(
         self, *,
-        a: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        b: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        c: _typing.Union['struct1', NOTSETTYPE, None]=NOTSET,
-        d: _typing.Union[_typing.Sequence[int], NOTSETTYPE, None]=NOTSET
+        a: _typing.Union[int, __NotSet, None]=NOTSET,
+        b: _typing.Union[str, __NotSet, None]=NOTSET,
+        c: _typing.Union['struct1', __NotSet, None]=NOTSET,
+        d: _typing.Union[_typing.Sequence[int], __NotSet, None]=NOTSET
     ) -> struct2: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['struct2'], bytes]]: ...
@@ -177,9 +177,9 @@ class struct3(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typin
 
     def __call__(
         self, *,
-        a: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        b: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        c: _typing.Union['struct2', NOTSETTYPE, None]=NOTSET
+        a: _typing.Union[str, __NotSet, None]=NOTSET,
+        b: _typing.Union[int, __NotSet, None]=NOTSET,
+        c: _typing.Union['struct2', __NotSet, None]=NOTSET
     ) -> struct3: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['struct3'], bytes]]: ...
@@ -209,9 +209,9 @@ class struct4(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typin
 
     def __call__(
         self, *,
-        a: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        b: _typing.Union[float, NOTSETTYPE, None]=NOTSET,
-        c: _typing.Union[int, NOTSETTYPE, None]=NOTSET
+        a: _typing.Union[int, __NotSet, None]=NOTSET,
+        b: _typing.Union[float, __NotSet, None]=NOTSET,
+        c: _typing.Union[int, __NotSet, None]=NOTSET
     ) -> struct4: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['struct4'], bytes]]: ...

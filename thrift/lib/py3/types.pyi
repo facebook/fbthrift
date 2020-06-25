@@ -28,10 +28,10 @@ from typing import (
 _T = TypeVar("_T")
 eT = TypeVar("eT", bound=Enum)
 
-class NOTSETTYPE(enum.Enum):
-    token: NOTSETTYPE = ...
+class __NotSet:
+    pass
 
-NOTSET = NOTSETTYPE.token
+NOTSET = __NotSet()
 
 class Struct:
     def __copy__(self: _T) -> _T: ...

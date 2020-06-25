@@ -8,7 +8,7 @@
 import folly.iobuf as __iobuf
 import thrift.py3.types
 import thrift.py3.exceptions
-from thrift.py3.types import NOTSET, NOTSETTYPE
+from thrift.py3.types import __NotSet, NOTSET
 import typing as _typing
 from typing_extensions import Final
 
@@ -38,10 +38,10 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tu
 
     def __call__(
         self, *,
-        myInteger: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        myString: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        myBools: _typing.Union[_typing.Sequence[bool], NOTSETTYPE, None]=NOTSET,
-        myNumbers: _typing.Union[_typing.Sequence[int], NOTSETTYPE, None]=NOTSET
+        myInteger: _typing.Union[int, __NotSet, None]=NOTSET,
+        myString: _typing.Union[str, __NotSet, None]=NOTSET,
+        myBools: _typing.Union[_typing.Sequence[bool], __NotSet, None]=NOTSET,
+        myNumbers: _typing.Union[_typing.Sequence[int], __NotSet, None]=NOTSET
     ) -> Foo: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Foo'], bytes]]: ...

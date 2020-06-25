@@ -8,7 +8,7 @@
 import folly.iobuf as __iobuf
 import thrift.py3.types
 import thrift.py3.exceptions
-from thrift.py3.types import NOTSET, NOTSETTYPE
+from thrift.py3.types import __NotSet, NOTSET
 import typing as _typing
 from typing_extensions import Final
 
@@ -34,7 +34,7 @@ class AStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typin
 
     def __call__(
         self, *,
-        FieldA: _typing.Union[int, NOTSETTYPE, None]=NOTSET
+        FieldA: _typing.Union[int, __NotSet, None]=NOTSET
     ) -> AStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['AStruct'], bytes]]: ...
@@ -58,7 +58,7 @@ class AStructB(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
 
     def __call__(
         self, *,
-        FieldA: _typing.Union['AStruct', NOTSETTYPE, None]=NOTSET
+        FieldA: _typing.Union['AStruct', __NotSet, None]=NOTSET
     ) -> AStructB: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['AStructB'], bytes]]: ...

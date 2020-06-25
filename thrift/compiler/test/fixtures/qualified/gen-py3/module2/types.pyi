@@ -8,7 +8,7 @@
 import folly.iobuf as __iobuf
 import thrift.py3.types
 import thrift.py3.exceptions
-from thrift.py3.types import NOTSET, NOTSETTYPE
+from thrift.py3.types import __NotSet, NOTSET
 import typing as _typing
 from typing_extensions import Final
 
@@ -34,8 +34,8 @@ class Struct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing
 
     def __call__(
         self, *,
-        first: _typing.Union[_module0_types.Struct, NOTSETTYPE, None]=NOTSET,
-        second: _typing.Union[_module1_types.Struct, NOTSETTYPE, None]=NOTSET
+        first: _typing.Union[_module0_types.Struct, __NotSet, None]=NOTSET,
+        second: _typing.Union[_module1_types.Struct, __NotSet, None]=NOTSET
     ) -> Struct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Struct'], bytes]]: ...
@@ -62,8 +62,8 @@ class BigStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typ
 
     def __call__(
         self, *,
-        s: _typing.Union['Struct', NOTSETTYPE, None]=NOTSET,
-        id: _typing.Union[int, NOTSETTYPE, None]=NOTSET
+        s: _typing.Union['Struct', __NotSet, None]=NOTSET,
+        id: _typing.Union[int, __NotSet, None]=NOTSET
     ) -> BigStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['BigStruct'], bytes]]: ...

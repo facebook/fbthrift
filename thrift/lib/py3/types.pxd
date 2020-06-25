@@ -35,6 +35,13 @@ cdef extern from "thrift/lib/py3/types.h" namespace "thrift::py3" nogil:
     shared_ptr[T] constant_shared_ptr[T](T)
     const T& default_inst[T]()
 
+
+cdef class __NotSet:
+    pass
+
+cdef __NotSet NOTSET
+
+
 cdef class Struct:
     cdef IOBuf _serialize(self, proto)
     cdef uint32_t _deserialize(self, const cIOBuf* buf, proto) except? 0

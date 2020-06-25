@@ -8,7 +8,7 @@
 import folly.iobuf as __iobuf
 import thrift.py3.types
 import thrift.py3.exceptions
-from thrift.py3.types import NOTSET, NOTSETTYPE
+from thrift.py3.types import __NotSet, NOTSET
 import typing as _typing
 from typing_extensions import Final
 
@@ -72,7 +72,7 @@ class ASimpleStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[
 
     def __call__(
         self, *,
-        boolField: _typing.Union[int, NOTSETTYPE, None]=NOTSET
+        boolField: _typing.Union[int, __NotSet, None]=NOTSET
     ) -> ASimpleStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['ASimpleStruct'], bytes]]: ...
@@ -92,7 +92,7 @@ class ASimpleStructNoexcept(thrift.py3.types.Struct, _typing.Hashable, _typing.I
 
     def __call__(
         self, *,
-        boolField: _typing.Union[int, NOTSETTYPE, None]=NOTSET
+        boolField: _typing.Union[int, __NotSet, None]=NOTSET
     ) -> ASimpleStructNoexcept: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['ASimpleStructNoexcept'], bytes]]: ...
@@ -140,15 +140,15 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
 
     def __call__(
         self, *,
-        MyBoolField: _typing.Union[bool, NOTSETTYPE, None]=NOTSET,
-        MyIntField: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        MyStringField: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        MyStringField2: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        MyBinaryField: _typing.Union[bytes, NOTSETTYPE, None]=NOTSET,
-        MyBinaryField2: _typing.Union[bytes, NOTSETTYPE, None]=NOTSET,
-        MyBinaryField3: _typing.Union[bytes, NOTSETTYPE, None]=NOTSET,
-        MyBinaryListField4: _typing.Union[_typing.Sequence[bytes], NOTSETTYPE, None]=NOTSET,
-        MyMapEnumAndInt: _typing.Union[_typing.Mapping[MyEnumA, str], NOTSETTYPE, None]=NOTSET
+        MyBoolField: _typing.Union[bool, __NotSet, None]=NOTSET,
+        MyIntField: _typing.Union[int, __NotSet, None]=NOTSET,
+        MyStringField: _typing.Union[str, __NotSet, None]=NOTSET,
+        MyStringField2: _typing.Union[str, __NotSet, None]=NOTSET,
+        MyBinaryField: _typing.Union[bytes, __NotSet, None]=NOTSET,
+        MyBinaryField2: _typing.Union[bytes, __NotSet, None]=NOTSET,
+        MyBinaryField3: _typing.Union[bytes, __NotSet, None]=NOTSET,
+        MyBinaryListField4: _typing.Union[_typing.Sequence[bytes], __NotSet, None]=NOTSET,
+        MyMapEnumAndInt: _typing.Union[_typing.Mapping[MyEnumA, str], __NotSet, None]=NOTSET
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...
@@ -557,52 +557,52 @@ class containerStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
 
     def __call__(
         self, *,
-        fieldA: _typing.Union[bool, NOTSETTYPE, None]=NOTSET,
-        req_fieldA: _typing.Union[bool, NOTSETTYPE, None]=NOTSET,
-        opt_fieldA: _typing.Union[bool, NOTSETTYPE, None]=NOTSET,
-        fieldB: _typing.Union[_typing.Mapping[str, bool], NOTSETTYPE, None]=NOTSET,
-        req_fieldB: _typing.Union[_typing.Mapping[str, bool], NOTSETTYPE, None]=NOTSET,
-        opt_fieldB: _typing.Union[_typing.Mapping[str, bool], NOTSETTYPE, None]=NOTSET,
-        fieldC: _typing.Union[_typing.AbstractSet[int], NOTSETTYPE, None]=NOTSET,
-        req_fieldC: _typing.Union[_typing.AbstractSet[int], NOTSETTYPE, None]=NOTSET,
-        opt_fieldC: _typing.Union[_typing.AbstractSet[int], NOTSETTYPE, None]=NOTSET,
-        fieldD: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        fieldE: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        req_fieldE: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        opt_fieldE: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        fieldF: _typing.Union[_typing.Sequence[_typing.Sequence[int]], NOTSETTYPE, None]=NOTSET,
-        fieldG: _typing.Union[_typing.Mapping[str, _typing.Mapping[str, _typing.Mapping[str, int]]], NOTSETTYPE, None]=NOTSET,
-        fieldH: _typing.Union[_typing.Sequence[_typing.AbstractSet[int]], NOTSETTYPE, None]=NOTSET,
-        fieldI: _typing.Union[bool, NOTSETTYPE, None]=NOTSET,
-        fieldJ: _typing.Union[_typing.Mapping[str, _typing.Sequence[int]], NOTSETTYPE, None]=NOTSET,
-        fieldK: _typing.Union[_typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[int]]]], NOTSETTYPE, None]=NOTSET,
-        fieldL: _typing.Union[_typing.AbstractSet[_typing.AbstractSet[_typing.AbstractSet[bool]]], NOTSETTYPE, None]=NOTSET,
-        fieldM: _typing.Union[_typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]], NOTSETTYPE, None]=NOTSET,
-        fieldN: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        fieldO: _typing.Union[_typing.Sequence[_typing.Mapping['Empty', 'MyStruct']], NOTSETTYPE, None]=NOTSET,
-        fieldP: _typing.Union[_typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Mapping['Empty', 'MyStruct']]]], NOTSETTYPE, None]=NOTSET,
-        fieldQ: _typing.Union[MyEnumA, NOTSETTYPE, None]=NOTSET,
-        fieldR: _typing.Union[MyEnumA, NOTSETTYPE, None]=NOTSET,
-        req_fieldR: _typing.Union[MyEnumA, NOTSETTYPE, None]=NOTSET,
-        opt_fieldR: _typing.Union[MyEnumA, NOTSETTYPE, None]=NOTSET,
-        fieldS: _typing.Union[MyEnumA, NOTSETTYPE, None]=NOTSET,
-        fieldT: _typing.Union[_typing.Sequence[MyEnumA], NOTSETTYPE, None]=NOTSET,
-        fieldU: _typing.Union[_typing.Sequence[MyEnumA], NOTSETTYPE, None]=NOTSET,
-        fieldV: _typing.Union['MyStruct', NOTSETTYPE, None]=NOTSET,
-        req_fieldV: _typing.Union['MyStruct', NOTSETTYPE, None]=NOTSET,
-        opt_fieldV: _typing.Union['MyStruct', NOTSETTYPE, None]=NOTSET,
-        fieldW: _typing.Union[_typing.AbstractSet['MyStruct'], NOTSETTYPE, None]=NOTSET,
-        fieldX: _typing.Union['ComplexUnion', NOTSETTYPE, None]=NOTSET,
-        req_fieldX: _typing.Union['ComplexUnion', NOTSETTYPE, None]=NOTSET,
-        opt_fieldX: _typing.Union['ComplexUnion', NOTSETTYPE, None]=NOTSET,
-        fieldY: _typing.Union[_typing.Sequence['ComplexUnion'], NOTSETTYPE, None]=NOTSET,
-        fieldZ: _typing.Union[_typing.AbstractSet['SimpleUnion'], NOTSETTYPE, None]=NOTSET,
-        fieldAA: _typing.Union[_typing.Sequence[_typing.AbstractSet['SimpleUnion']], NOTSETTYPE, None]=NOTSET,
-        fieldAB: _typing.Union[_typing.Mapping[float, int], NOTSETTYPE, None]=NOTSET,
-        fieldAC: _typing.Union[MyEnumB, NOTSETTYPE, None]=NOTSET,
-        fieldAD: _typing.Union[_includes_types.AnEnum, NOTSETTYPE, None]=NOTSET,
-        fieldAE: _typing.Union[_typing.Mapping[str, int], NOTSETTYPE, None]=NOTSET,
-        fieldSD: _typing.Union[str, NOTSETTYPE, None]=NOTSET
+        fieldA: _typing.Union[bool, __NotSet, None]=NOTSET,
+        req_fieldA: _typing.Union[bool, __NotSet, None]=NOTSET,
+        opt_fieldA: _typing.Union[bool, __NotSet, None]=NOTSET,
+        fieldB: _typing.Union[_typing.Mapping[str, bool], __NotSet, None]=NOTSET,
+        req_fieldB: _typing.Union[_typing.Mapping[str, bool], __NotSet, None]=NOTSET,
+        opt_fieldB: _typing.Union[_typing.Mapping[str, bool], __NotSet, None]=NOTSET,
+        fieldC: _typing.Union[_typing.AbstractSet[int], __NotSet, None]=NOTSET,
+        req_fieldC: _typing.Union[_typing.AbstractSet[int], __NotSet, None]=NOTSET,
+        opt_fieldC: _typing.Union[_typing.AbstractSet[int], __NotSet, None]=NOTSET,
+        fieldD: _typing.Union[str, __NotSet, None]=NOTSET,
+        fieldE: _typing.Union[str, __NotSet, None]=NOTSET,
+        req_fieldE: _typing.Union[str, __NotSet, None]=NOTSET,
+        opt_fieldE: _typing.Union[str, __NotSet, None]=NOTSET,
+        fieldF: _typing.Union[_typing.Sequence[_typing.Sequence[int]], __NotSet, None]=NOTSET,
+        fieldG: _typing.Union[_typing.Mapping[str, _typing.Mapping[str, _typing.Mapping[str, int]]], __NotSet, None]=NOTSET,
+        fieldH: _typing.Union[_typing.Sequence[_typing.AbstractSet[int]], __NotSet, None]=NOTSET,
+        fieldI: _typing.Union[bool, __NotSet, None]=NOTSET,
+        fieldJ: _typing.Union[_typing.Mapping[str, _typing.Sequence[int]], __NotSet, None]=NOTSET,
+        fieldK: _typing.Union[_typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[int]]]], __NotSet, None]=NOTSET,
+        fieldL: _typing.Union[_typing.AbstractSet[_typing.AbstractSet[_typing.AbstractSet[bool]]], __NotSet, None]=NOTSET,
+        fieldM: _typing.Union[_typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]], __NotSet, None]=NOTSET,
+        fieldN: _typing.Union[int, __NotSet, None]=NOTSET,
+        fieldO: _typing.Union[_typing.Sequence[_typing.Mapping['Empty', 'MyStruct']], __NotSet, None]=NOTSET,
+        fieldP: _typing.Union[_typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Mapping['Empty', 'MyStruct']]]], __NotSet, None]=NOTSET,
+        fieldQ: _typing.Union[MyEnumA, __NotSet, None]=NOTSET,
+        fieldR: _typing.Union[MyEnumA, __NotSet, None]=NOTSET,
+        req_fieldR: _typing.Union[MyEnumA, __NotSet, None]=NOTSET,
+        opt_fieldR: _typing.Union[MyEnumA, __NotSet, None]=NOTSET,
+        fieldS: _typing.Union[MyEnumA, __NotSet, None]=NOTSET,
+        fieldT: _typing.Union[_typing.Sequence[MyEnumA], __NotSet, None]=NOTSET,
+        fieldU: _typing.Union[_typing.Sequence[MyEnumA], __NotSet, None]=NOTSET,
+        fieldV: _typing.Union['MyStruct', __NotSet, None]=NOTSET,
+        req_fieldV: _typing.Union['MyStruct', __NotSet, None]=NOTSET,
+        opt_fieldV: _typing.Union['MyStruct', __NotSet, None]=NOTSET,
+        fieldW: _typing.Union[_typing.AbstractSet['MyStruct'], __NotSet, None]=NOTSET,
+        fieldX: _typing.Union['ComplexUnion', __NotSet, None]=NOTSET,
+        req_fieldX: _typing.Union['ComplexUnion', __NotSet, None]=NOTSET,
+        opt_fieldX: _typing.Union['ComplexUnion', __NotSet, None]=NOTSET,
+        fieldY: _typing.Union[_typing.Sequence['ComplexUnion'], __NotSet, None]=NOTSET,
+        fieldZ: _typing.Union[_typing.AbstractSet['SimpleUnion'], __NotSet, None]=NOTSET,
+        fieldAA: _typing.Union[_typing.Sequence[_typing.AbstractSet['SimpleUnion']], __NotSet, None]=NOTSET,
+        fieldAB: _typing.Union[_typing.Mapping[float, int], __NotSet, None]=NOTSET,
+        fieldAC: _typing.Union[MyEnumB, __NotSet, None]=NOTSET,
+        fieldAD: _typing.Union[_includes_types.AnEnum, __NotSet, None]=NOTSET,
+        fieldAE: _typing.Union[_typing.Mapping[str, int], __NotSet, None]=NOTSET,
+        fieldSD: _typing.Union[str, __NotSet, None]=NOTSET
     ) -> containerStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['containerStruct'], bytes]]: ...
@@ -635,10 +635,10 @@ class MyIncludedStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterab
 
     def __call__(
         self, *,
-        MyIncludedInt: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        MyIncludedStruct: _typing.Union[_includes_types.AStruct, NOTSETTYPE, None]=NOTSET,
-        ARefField: _typing.Union[_includes_types.AStruct, NOTSETTYPE, None]=NOTSET,
-        ARequiredField: _typing.Union[_includes_types.AStruct, NOTSETTYPE, None]=NOTSET
+        MyIncludedInt: _typing.Union[int, __NotSet, None]=NOTSET,
+        MyIncludedStruct: _typing.Union[_includes_types.AStruct, __NotSet, None]=NOTSET,
+        ARefField: _typing.Union[_includes_types.AStruct, __NotSet, None]=NOTSET,
+        ARequiredField: _typing.Union[_includes_types.AStruct, __NotSet, None]=NOTSET
     ) -> MyIncludedStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyIncludedStruct'], bytes]]: ...
@@ -779,46 +779,46 @@ class AnnotatedStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
 
     def __call__(
         self, *,
-        no_annotation: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
-        cpp_unique_ref: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
-        cpp2_unique_ref: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
-        container_with_ref: _typing.Union[_typing.Mapping[int, _typing.Sequence[str]], NOTSETTYPE, None]=NOTSET,
-        req_cpp_unique_ref: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
-        req_cpp2_unique_ref: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
-        req_container_with_ref: _typing.Union[_typing.Sequence[str], NOTSETTYPE, None]=NOTSET,
-        opt_cpp_unique_ref: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
-        opt_cpp2_unique_ref: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
-        opt_container_with_ref: _typing.Union[_typing.AbstractSet[int], NOTSETTYPE, None]=NOTSET,
-        ref_type_unique: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
-        ref_type_shared: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
-        ref_type_const: _typing.Union[_typing.Mapping[int, _typing.Sequence[str]], NOTSETTYPE, None]=NOTSET,
-        req_ref_type_shared: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
-        req_ref_type_const: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
-        req_ref_type_unique: _typing.Union[_typing.Sequence[str], NOTSETTYPE, None]=NOTSET,
-        opt_ref_type_const: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
-        opt_ref_type_unique: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET,
-        opt_ref_type_shared: _typing.Union[_typing.AbstractSet[int], NOTSETTYPE, None]=NOTSET,
-        base_type: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        list_type: _typing.Union[_typing.Sequence[int], NOTSETTYPE, None]=NOTSET,
-        set_type: _typing.Union[_typing.AbstractSet[str], NOTSETTYPE, None]=NOTSET,
-        map_type: _typing.Union[_typing.Mapping[int, float], NOTSETTYPE, None]=NOTSET,
-        map_struct_type: _typing.Union[_typing.Mapping[str, 'containerStruct'], NOTSETTYPE, None]=NOTSET,
-        iobuf_type: _typing.Union[__iobuf.IOBuf, NOTSETTYPE, None]=NOTSET,
-        iobuf_ptr: _typing.Union[__iobuf.IOBuf, NOTSETTYPE, None]=NOTSET,
-        list_i32_template: _typing.Union[_typing.Sequence[int], NOTSETTYPE, None]=NOTSET,
-        list_string_template: _typing.Union[_typing.Sequence[str], NOTSETTYPE, None]=NOTSET,
-        set_template: _typing.Union[_typing.AbstractSet[str], NOTSETTYPE, None]=NOTSET,
-        map_template: _typing.Union[_typing.Mapping[int, str], NOTSETTYPE, None]=NOTSET,
-        typedef_list_template: _typing.Union[_typing.Sequence[int], NOTSETTYPE, None]=NOTSET,
-        typedef_deque_template: _typing.Union[_typing.Sequence[str], NOTSETTYPE, None]=NOTSET,
-        typedef_set_template: _typing.Union[_typing.AbstractSet[str], NOTSETTYPE, None]=NOTSET,
-        typedef_map_template: _typing.Union[_typing.Mapping[int, str], NOTSETTYPE, None]=NOTSET,
-        indirection_a: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        indirection_b: _typing.Union[_typing.Sequence[float], NOTSETTYPE, None]=NOTSET,
-        indirection_c: _typing.Union[_typing.AbstractSet[int], NOTSETTYPE, None]=NOTSET,
-        iobuf_type_val: _typing.Union[__iobuf.IOBuf, NOTSETTYPE, None]=NOTSET,
-        iobuf_ptr_val: _typing.Union[__iobuf.IOBuf, NOTSETTYPE, None]=NOTSET,
-        struct_struct: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET
+        no_annotation: _typing.Union['containerStruct', __NotSet, None]=NOTSET,
+        cpp_unique_ref: _typing.Union['containerStruct', __NotSet, None]=NOTSET,
+        cpp2_unique_ref: _typing.Union['containerStruct', __NotSet, None]=NOTSET,
+        container_with_ref: _typing.Union[_typing.Mapping[int, _typing.Sequence[str]], __NotSet, None]=NOTSET,
+        req_cpp_unique_ref: _typing.Union['containerStruct', __NotSet, None]=NOTSET,
+        req_cpp2_unique_ref: _typing.Union['containerStruct', __NotSet, None]=NOTSET,
+        req_container_with_ref: _typing.Union[_typing.Sequence[str], __NotSet, None]=NOTSET,
+        opt_cpp_unique_ref: _typing.Union['containerStruct', __NotSet, None]=NOTSET,
+        opt_cpp2_unique_ref: _typing.Union['containerStruct', __NotSet, None]=NOTSET,
+        opt_container_with_ref: _typing.Union[_typing.AbstractSet[int], __NotSet, None]=NOTSET,
+        ref_type_unique: _typing.Union['containerStruct', __NotSet, None]=NOTSET,
+        ref_type_shared: _typing.Union['containerStruct', __NotSet, None]=NOTSET,
+        ref_type_const: _typing.Union[_typing.Mapping[int, _typing.Sequence[str]], __NotSet, None]=NOTSET,
+        req_ref_type_shared: _typing.Union['containerStruct', __NotSet, None]=NOTSET,
+        req_ref_type_const: _typing.Union['containerStruct', __NotSet, None]=NOTSET,
+        req_ref_type_unique: _typing.Union[_typing.Sequence[str], __NotSet, None]=NOTSET,
+        opt_ref_type_const: _typing.Union['containerStruct', __NotSet, None]=NOTSET,
+        opt_ref_type_unique: _typing.Union['containerStruct', __NotSet, None]=NOTSET,
+        opt_ref_type_shared: _typing.Union[_typing.AbstractSet[int], __NotSet, None]=NOTSET,
+        base_type: _typing.Union[int, __NotSet, None]=NOTSET,
+        list_type: _typing.Union[_typing.Sequence[int], __NotSet, None]=NOTSET,
+        set_type: _typing.Union[_typing.AbstractSet[str], __NotSet, None]=NOTSET,
+        map_type: _typing.Union[_typing.Mapping[int, float], __NotSet, None]=NOTSET,
+        map_struct_type: _typing.Union[_typing.Mapping[str, 'containerStruct'], __NotSet, None]=NOTSET,
+        iobuf_type: _typing.Union[__iobuf.IOBuf, __NotSet, None]=NOTSET,
+        iobuf_ptr: _typing.Union[__iobuf.IOBuf, __NotSet, None]=NOTSET,
+        list_i32_template: _typing.Union[_typing.Sequence[int], __NotSet, None]=NOTSET,
+        list_string_template: _typing.Union[_typing.Sequence[str], __NotSet, None]=NOTSET,
+        set_template: _typing.Union[_typing.AbstractSet[str], __NotSet, None]=NOTSET,
+        map_template: _typing.Union[_typing.Mapping[int, str], __NotSet, None]=NOTSET,
+        typedef_list_template: _typing.Union[_typing.Sequence[int], __NotSet, None]=NOTSET,
+        typedef_deque_template: _typing.Union[_typing.Sequence[str], __NotSet, None]=NOTSET,
+        typedef_set_template: _typing.Union[_typing.AbstractSet[str], __NotSet, None]=NOTSET,
+        typedef_map_template: _typing.Union[_typing.Mapping[int, str], __NotSet, None]=NOTSET,
+        indirection_a: _typing.Union[int, __NotSet, None]=NOTSET,
+        indirection_b: _typing.Union[_typing.Sequence[float], __NotSet, None]=NOTSET,
+        indirection_c: _typing.Union[_typing.AbstractSet[int], __NotSet, None]=NOTSET,
+        iobuf_type_val: _typing.Union[__iobuf.IOBuf, __NotSet, None]=NOTSET,
+        iobuf_ptr_val: _typing.Union[__iobuf.IOBuf, __NotSet, None]=NOTSET,
+        struct_struct: _typing.Union['containerStruct', __NotSet, None]=NOTSET
     ) -> AnnotatedStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['AnnotatedStruct'], bytes]]: ...
@@ -841,8 +841,8 @@ class ComplexContainerStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.
 
     def __call__(
         self, *,
-        map_of_iobufs: _typing.Union[_typing.Mapping[str, __iobuf.IOBuf], NOTSETTYPE, None]=NOTSET,
-        map_of_iobuf_ptrs: _typing.Union[_typing.Mapping[str, __iobuf.IOBuf], NOTSETTYPE, None]=NOTSET
+        map_of_iobufs: _typing.Union[_typing.Mapping[str, __iobuf.IOBuf], __NotSet, None]=NOTSET,
+        map_of_iobuf_ptrs: _typing.Union[_typing.Mapping[str, __iobuf.IOBuf], __NotSet, None]=NOTSET
     ) -> ComplexContainerStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['ComplexContainerStruct'], bytes]]: ...
@@ -869,8 +869,8 @@ class FloatStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_t
 
     def __call__(
         self, *,
-        floatField: _typing.Union[float, NOTSETTYPE, None]=NOTSET,
-        doubleField: _typing.Union[float, NOTSETTYPE, None]=NOTSET
+        floatField: _typing.Union[float, __NotSet, None]=NOTSET,
+        doubleField: _typing.Union[float, __NotSet, None]=NOTSET
     ) -> FloatStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['FloatStruct'], bytes]]: ...
@@ -927,7 +927,7 @@ class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct, _typing.Hashable
 
     def __call__(
         self, *,
-        intField: _typing.Union[int, NOTSETTYPE, None]=NOTSET
+        intField: _typing.Union[int, __NotSet, None]=NOTSET
     ) -> AllRequiredNoExceptMoveCtrStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['AllRequiredNoExceptMoveCtrStruct'], bytes]]: ...
