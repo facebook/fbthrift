@@ -66,24 +66,24 @@ void EventTask::expired() {
 }
 
 bool GeneratedAsyncProcessor::validateRpcKind(
-    apache::thrift::ResponseChannelRequest::UniquePtr& req,
-    apache::thrift::RpcKind kind) {
+    ResponseChannelRequest::UniquePtr& req,
+    RpcKind kind) {
   switch (kind) {
-    case apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE:
+    case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
       switch (req->rpcKind()) {
-        case apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE:
+        case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
           return true;
-        case apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+        case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
           req->sendReply(std::unique_ptr<folly::IOBuf>());
           return true;
         default:
           break;
       }
       break;
-    case apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+    case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
       switch (req->rpcKind()) {
-        case apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE:
-        case apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+        case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
+        case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
           return true;
         default:
           break;
@@ -94,7 +94,7 @@ bool GeneratedAsyncProcessor::validateRpcKind(
         return true;
       }
   }
-  if (req->rpcKind() != apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
+  if (req->rpcKind() != RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
     req->sendErrorWrapped(
         folly::make_exception_wrapper<TApplicationException>(
             TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
@@ -104,13 +104,11 @@ bool GeneratedAsyncProcessor::validateRpcKind(
   return false;
 }
 
-apache::thrift::concurrency::PRIORITY ServerInterface::getRequestPriority(
-    apache::thrift::Cpp2RequestContext* ctx,
-    apache::thrift::concurrency::PRIORITY prio) {
-  apache::thrift::concurrency::PRIORITY callPriority = ctx->getCallPriority();
-  return callPriority == apache::thrift::concurrency::N_PRIORITIES
-      ? prio
-      : callPriority;
+concurrency::PRIORITY ServerInterface::getRequestPriority(
+    Cpp2RequestContext* ctx,
+    concurrency::PRIORITY prio) {
+  concurrency::PRIORITY callPriority = ctx->getCallPriority();
+  return callPriority == concurrency::N_PRIORITIES ? prio : callPriority;
 }
 
 void ServerInterface::setEventBase(folly::EventBase* eb) {
@@ -119,7 +117,7 @@ void ServerInterface::setEventBase(folly::EventBase* eb) {
 }
 
 void ServerInterface::BlockingThreadManager::add(folly::Func f) {
-  std::shared_ptr<apache::thrift::concurrency::Runnable> task =
+  std::shared_ptr<concurrency::Runnable> task =
       concurrency::FunctionRunner::create(std::move(f));
   try {
     executor_->add(
@@ -198,8 +196,7 @@ folly::EventBase* HandlerCallbackBase::getEventBase() {
   return eb_;
 }
 
-apache::thrift::concurrency::ThreadManager*
-HandlerCallbackBase::getThreadManager() {
+concurrency::ThreadManager* HandlerCallbackBase::getThreadManager() {
   assert(tm_ != nullptr);
   return tm_;
 }
@@ -281,7 +278,7 @@ void HandlerCallbackBase::sendReply(
 
 #if FOLLY_HAS_COROUTINES
 void HandlerCallbackBase::sendReply(
-    std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl>&&
+    std::pair<folly::IOBufQueue, detail::SinkConsumerImpl>&&
         responseAndSinkConsumer) {
   auto& queue = responseAndSinkConsumer.first;
   auto& sinkConsumer = responseAndSinkConsumer.second;
@@ -305,12 +302,12 @@ void HandlerCallbackBase::sendReply(
 
 HandlerCallback<void>::HandlerCallback(
     ResponseChannelRequest::UniquePtr req,
-    std::unique_ptr<apache::thrift::ContextStack> ctx,
+    std::unique_ptr<ContextStack> ctx,
     cob_ptr cp,
     exnw_ptr ewp,
     int32_t protoSeqId,
     folly::EventBase* eb,
-    apache::thrift::concurrency::ThreadManager* tm,
+    concurrency::ThreadManager* tm,
     Cpp2RequestContext* reqCtx)
     : HandlerCallbackBase(std::move(req), std::move(ctx), ewp, eb, tm, reqCtx),
       cp_(cp) {

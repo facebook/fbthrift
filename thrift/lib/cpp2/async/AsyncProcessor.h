@@ -51,12 +51,11 @@ template <typename T>
 struct HandlerCallbackHelper;
 }
 
-class EventTask : public virtual apache::thrift::concurrency::Runnable {
+class EventTask : public virtual concurrency::Runnable {
  public:
   EventTask(
-      folly::Function<void(apache::thrift::ResponseChannelRequest::UniquePtr)>&&
-          taskFunc,
-      apache::thrift::ResponseChannelRequest::UniquePtr req,
+      folly::Function<void(ResponseChannelRequest::UniquePtr)>&& taskFunc,
+      ResponseChannelRequest::UniquePtr req,
       folly::EventBase* base,
       bool oneway)
       : taskFunc_(std::move(taskFunc)),
@@ -70,34 +69,31 @@ class EventTask : public virtual apache::thrift::concurrency::Runnable {
   void expired();
 
  private:
-  folly::Function<void(apache::thrift::ResponseChannelRequest::UniquePtr)>
-      taskFunc_;
-  apache::thrift::ResponseChannelRequest::UniquePtr req_;
+  folly::Function<void(ResponseChannelRequest::UniquePtr)> taskFunc_;
+  ResponseChannelRequest::UniquePtr req_;
   folly::EventBase* base_;
   bool oneway_;
 };
 
-class PriorityEventTask : public apache::thrift::concurrency::PriorityRunnable,
+class PriorityEventTask : public concurrency::PriorityRunnable,
                           public EventTask {
  public:
   PriorityEventTask(
-      apache::thrift::concurrency::PriorityThreadManager::PRIORITY priority,
-      folly::Function<void(apache::thrift::ResponseChannelRequest::UniquePtr)>&&
-          taskFunc,
-      apache::thrift::ResponseChannelRequest::UniquePtr req,
+      concurrency::PriorityThreadManager::PRIORITY priority,
+      folly::Function<void(ResponseChannelRequest::UniquePtr)>&& taskFunc,
+      ResponseChannelRequest::UniquePtr req,
       folly::EventBase* base,
       bool oneway)
       : EventTask(std::move(taskFunc), std::move(req), base, oneway),
         priority_(priority) {}
 
-  apache::thrift::concurrency::PriorityThreadManager::PRIORITY getPriority()
-      const override {
+  concurrency::PriorityThreadManager::PRIORITY getPriority() const override {
     return priority_;
   }
   using EventTask::run;
 
  private:
-  apache::thrift::concurrency::PriorityThreadManager::PRIORITY priority_;
+  concurrency::PriorityThreadManager::PRIORITY priority_;
 };
 
 class AsyncProcessor : public TProcessorBase {
@@ -106,18 +102,17 @@ class AsyncProcessor : public TProcessorBase {
 
   virtual void processSerializedRequest(
       ResponseChannelRequest::UniquePtr,
-      apache::thrift::SerializedRequest&&,
-      apache::thrift::protocol::PROTOCOL_TYPES,
+      SerializedRequest&&,
+      protocol::PROTOCOL_TYPES,
       Cpp2RequestContext*,
       folly::EventBase*,
-      apache::thrift::concurrency::ThreadManager*) = 0;
+      concurrency::ThreadManager*) = 0;
 
   virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest() {
     return nullptr;
   }
 
-  virtual void getServiceMetadata(
-      apache::thrift::metadata::ThriftServiceMetadataResponse&) {}
+  virtual void getServiceMetadata(metadata::ThriftServiceMetadataResponse&) {}
 };
 
 class GeneratedAsyncProcessor : public AsyncProcessor {
@@ -128,11 +123,11 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
 
   template <typename Derived>
   using ProcessFunc = void (Derived::*)(
-      apache::thrift::ResponseChannelRequest::UniquePtr,
-      apache::thrift::SerializedRequest&&,
-      apache::thrift::Cpp2RequestContext* context,
+      ResponseChannelRequest::UniquePtr,
+      SerializedRequest&&,
+      Cpp2RequestContext* context,
       folly::EventBase* eb,
-      apache::thrift::concurrency::ThreadManager* tm);
+      concurrency::ThreadManager* tm);
   template <typename ProcessFunc>
   using ProcessMap = folly::F14ValueMap<std::string, ProcessFunc>;
 
@@ -141,37 +136,37 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
   static void deserializeRequest(
       Args& args,
       folly::StringPiece methodName,
-      const apache::thrift::SerializedRequest& serializedRequest,
-      apache::thrift::ContextStack* c);
+      const SerializedRequest& serializedRequest,
+      ContextStack* c);
 
   template <typename ProtocolOut, typename Result>
   static folly::IOBufQueue serializeResponse(
       const char* method,
       ProtocolOut* prot,
       int32_t protoSeqId,
-      apache::thrift::ContextStack* ctx,
+      ContextStack* ctx,
       const Result& result);
 
   static bool validateRpcKind(
-      apache::thrift::ResponseChannelRequest::UniquePtr& req,
-      apache::thrift::RpcKind kind);
+      ResponseChannelRequest::UniquePtr& req,
+      RpcKind kind);
 
   template <typename ProtocolIn_, typename ProtocolOut_, typename ChildType>
   static void processInThread(
-      apache::thrift::ResponseChannelRequest::UniquePtr req,
-      apache::thrift::SerializedRequest&& serializedRequest,
-      apache::thrift::Cpp2RequestContext* ctx,
+      ResponseChannelRequest::UniquePtr req,
+      SerializedRequest&& serializedRequest,
+      Cpp2RequestContext* ctx,
       folly::EventBase* eb,
-      apache::thrift::concurrency::ThreadManager* tm,
-      apache::thrift::concurrency::PRIORITY pri,
-      apache::thrift::RpcKind kind,
+      concurrency::ThreadManager* tm,
+      concurrency::PRIORITY pri,
+      RpcKind kind,
       ProcessFunc<ChildType> processFunc,
       ChildType* childClass);
 };
 
 class AsyncProcessorFactory {
  public:
-  virtual std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() = 0;
+  virtual std::unique_ptr<AsyncProcessor> getProcessor() = 0;
   virtual ~AsyncProcessorFactory() {}
 };
 
@@ -184,7 +179,7 @@ class RequestParams {
  public:
   RequestParams(
       Cpp2RequestContext* requestContext,
-      apache::thrift::concurrency::ThreadManager* threadManager,
+      concurrency::ThreadManager* threadManager,
       folly::EventBase* eventBase)
       : requestContext_(requestContext),
         threadManager_(threadManager),
@@ -196,7 +191,7 @@ class RequestParams {
   Cpp2RequestContext* getRequestContext() const {
     return requestContext_;
   }
-  apache::thrift::concurrency::ThreadManager* getThreadManager() const {
+  concurrency::ThreadManager* getThreadManager() const {
     return threadManager_;
   }
   folly::EventBase* getEventBase() const {
@@ -207,7 +202,7 @@ class RequestParams {
   friend class ServerInterface;
 
   Cpp2RequestContext* requestContext_;
-  apache::thrift::concurrency::ThreadManager* threadManager_;
+  concurrency::ThreadManager* threadManager_;
   folly::EventBase* eventBase_;
 };
 
@@ -223,11 +218,11 @@ class ServerInterface : public AsyncProcessorFactory {
     requestParams_.requestContext_ = c;
   }
 
-  void setThreadManager(apache::thrift::concurrency::ThreadManager* tm) {
+  void setThreadManager(concurrency::ThreadManager* tm) {
     requestParams_.threadManager_ = tm;
   }
 
-  apache::thrift::concurrency::ThreadManager* getThreadManager() {
+  concurrency::ThreadManager* getThreadManager() {
     return requestParams_.threadManager_;
   }
 
@@ -255,10 +250,9 @@ class ServerInterface : public AsyncProcessorFactory {
     return nullptr;
   }
 
-  virtual apache::thrift::concurrency::PRIORITY getRequestPriority(
-      apache::thrift::Cpp2RequestContext* ctx,
-      apache::thrift::concurrency::PRIORITY prio =
-          apache::thrift::concurrency::NORMAL);
+  virtual concurrency::PRIORITY getRequestPriority(
+      Cpp2RequestContext* ctx,
+      concurrency::PRIORITY prio = concurrency::NORMAL);
 
  private:
   class BlockingThreadManager : public folly::Executor {
@@ -316,7 +310,7 @@ class HandlerCallbackBase {
   typedef void (*exnw_ptr)(
       ResponseChannelRequest::UniquePtr,
       int32_t protoSeqId,
-      apache::thrift::ContextStack*,
+      ContextStack*,
       folly::exception_wrapper,
       Cpp2RequestContext*);
 
@@ -326,10 +320,10 @@ class HandlerCallbackBase {
 
   HandlerCallbackBase(
       ResponseChannelRequest::UniquePtr req,
-      std::unique_ptr<apache::thrift::ContextStack> ctx,
+      std::unique_ptr<ContextStack> ctx,
       exnw_ptr ewp,
       folly::EventBase* eb,
-      apache::thrift::concurrency::ThreadManager* tm,
+      concurrency::ThreadManager* tm,
       Cpp2RequestContext* reqCtx)
       : req_(std::move(req)),
         ctx_(std::move(ctx)),
@@ -391,7 +385,7 @@ class HandlerCallbackBase {
 
   folly::EventBase* getEventBase();
 
-  apache::thrift::concurrency::ThreadManager* getThreadManager();
+  concurrency::ThreadManager* getThreadManager();
 
   Cpp2RequestContext* getConnectionContext() {
     return reqCtx_;
@@ -435,21 +429,20 @@ class HandlerCallbackBase {
   void sendReply(folly::IOBufQueue queue);
   void sendReply(ResponseAndServerStreamFactory&& responseAndStream);
 #if FOLLY_HAS_COROUTINES
-  void sendReply(
-      std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl>&&
-          responseAndSinkConsumer);
+  void sendReply(std::pair<folly::IOBufQueue, detail::SinkConsumerImpl>&&
+                     responseAndSinkConsumer);
 #endif
 
   // Required for this call
   ResponseChannelRequest::UniquePtr req_;
-  std::unique_ptr<apache::thrift::ContextStack> ctx_;
+  std::unique_ptr<ContextStack> ctx_;
 
   // May be null in a oneway call
   exnw_ptr ewp_;
 
   // Useful pointers, so handler doesn't need to have a pointer to the server
   folly::EventBase* eb_;
-  apache::thrift::concurrency::ThreadManager* tm_;
+  concurrency::ThreadManager* tm_;
   Cpp2RequestContext* reqCtx_;
 
   int32_t protoSeqId_;
@@ -469,12 +462,12 @@ class HandlerCallback : public HandlerCallbackBase {
 
   HandlerCallback(
       ResponseChannelRequest::UniquePtr req,
-      std::unique_ptr<apache::thrift::ContextStack> ctx,
+      std::unique_ptr<ContextStack> ctx,
       cob_ptr cp,
       exnw_ptr ewp,
       int32_t protoSeqId,
       folly::EventBase* eb,
-      apache::thrift::concurrency::ThreadManager* tm,
+      concurrency::ThreadManager* tm,
       Cpp2RequestContext* reqCtx);
 
   void result(InputType r) {
@@ -504,8 +497,7 @@ class HandlerCallback : public HandlerCallbackBase {
 
 template <>
 class HandlerCallback<void> : public HandlerCallbackBase {
-  using cob_ptr =
-      folly::IOBufQueue (*)(int32_t protoSeqId, apache::thrift::ContextStack*);
+  using cob_ptr = folly::IOBufQueue (*)(int32_t protoSeqId, ContextStack*);
 
  public:
   using ResultType = void;
@@ -514,12 +506,12 @@ class HandlerCallback<void> : public HandlerCallbackBase {
 
   HandlerCallback(
       ResponseChannelRequest::UniquePtr req,
-      std::unique_ptr<apache::thrift::ContextStack> ctx,
+      std::unique_ptr<ContextStack> ctx,
       cob_ptr cp,
       exnw_ptr ewp,
       int32_t protoSeqId,
       folly::EventBase* eb,
-      apache::thrift::concurrency::ThreadManager* tm,
+      concurrency::ThreadManager* tm,
       Cpp2RequestContext* reqCtx);
 
   void done() {
@@ -548,12 +540,12 @@ template <typename ProtocolIn, typename Args>
 void GeneratedAsyncProcessor::deserializeRequest(
     Args& args,
     folly::StringPiece methodName,
-    const apache::thrift::SerializedRequest& serializedRequest,
-    apache::thrift::ContextStack* c) {
+    const SerializedRequest& serializedRequest,
+    ContextStack* c) {
   ProtocolIn iprot;
   iprot.setInput(serializedRequest.buffer.get());
   c->preRead();
-  apache::thrift::SerializedMessage smsg;
+  SerializedMessage smsg;
   smsg.protocolType = iprot.protocolType();
   smsg.buffer = serializedRequest.buffer.get();
   smsg.methodName = methodName;
@@ -568,7 +560,7 @@ folly::IOBufQueue GeneratedAsyncProcessor::serializeResponse(
     const char* method,
     ProtocolOut* prot,
     int32_t protoSeqId,
-    apache::thrift::ContextStack* ctx,
+    ContextStack* ctx,
     const Result& result) {
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
   size_t bufSize = detail::serializedResponseBodySizeZC(prot, &result);
@@ -582,10 +574,10 @@ folly::IOBufQueue GeneratedAsyncProcessor::serializeResponse(
 
   prot->setOutput(&queue, bufSize);
   ctx->preWrite();
-  prot->writeMessageBegin(method, apache::thrift::T_REPLY, protoSeqId);
+  prot->writeMessageBegin(method, T_REPLY, protoSeqId);
   detail::serializeResponseBody(prot, &result);
   prot->writeMessageEnd();
-  ::apache::thrift::SerializedMessage smsg;
+  SerializedMessage smsg;
   smsg.protocolType = prot->protocolType();
   smsg.buffer = queue.front();
   ctx->onWriteData(smsg);
@@ -596,23 +588,23 @@ folly::IOBufQueue GeneratedAsyncProcessor::serializeResponse(
 
 template <typename ProtocolIn_, typename ProtocolOut_, typename ChildType>
 void GeneratedAsyncProcessor::processInThread(
-    apache::thrift::ResponseChannelRequest::UniquePtr req,
-    apache::thrift::SerializedRequest&& serializedRequest,
-    apache::thrift::Cpp2RequestContext* ctx,
+    ResponseChannelRequest::UniquePtr req,
+    SerializedRequest&& serializedRequest,
+    Cpp2RequestContext* ctx,
     folly::EventBase* eb,
-    apache::thrift::concurrency::ThreadManager* tm,
-    apache::thrift::concurrency::PRIORITY pri,
-    apache::thrift::RpcKind kind,
+    concurrency::ThreadManager* tm,
+    concurrency::PRIORITY pri,
+    RpcKind kind,
     ProcessFunc<ChildType> processFunc,
     ChildType* childClass) {
   if (!validateRpcKind(req, kind)) {
     return;
   }
   tm->add(
-      std::make_shared<apache::thrift::PriorityEventTask>(
+      std::make_shared<PriorityEventTask>(
           pri,
           [=, serializedRequest = std::move(serializedRequest)](
-              apache::thrift::ResponseChannelRequest::UniquePtr rq) mutable {
+              ResponseChannelRequest::UniquePtr rq) mutable {
             if (ctx->getTimestamps().getSamplingStatus().isEnabled()) {
               // Since this request was queued, reset the processBegin
               // time to the actual start time, and not the queue time.
@@ -621,7 +613,7 @@ void GeneratedAsyncProcessor::processInThread(
             }
             // Oneway request won't be canceled if expired. see
             // D1006482 for furhter details.  TODO: fix this
-            if (kind != apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
+            if (kind != RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
               if (!rq->isActive()) {
                 eb->runInEventBaseThread(
                     [rq = std::move(rq)]() mutable { rq.reset(); });
@@ -633,7 +625,7 @@ void GeneratedAsyncProcessor::processInThread(
           },
           std::move(req),
           eb,
-          kind == apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE),
+          kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE),
       0, // timeout
       0, // expiration
       true); // upstream
@@ -663,8 +655,7 @@ void HandlerCallbackBase::runFuncInQueue(F&& func, bool oneway) {
       return;
     }
 
-    apache::thrift::TApplicationException ex(
-        "Failed to add task to queue, too full");
+    TApplicationException ex("Failed to add task to queue, too full");
     if (req_ != nullptr && ewp_ != nullptr) {
       std::exchange(req_, {})->sendErrorWrapped(
           folly::make_exception_wrapper<TApplicationException>(std::move(ex)),
@@ -701,12 +692,12 @@ void HandlerCallbackBase::callExceptionInEventBaseThread(F&& f, T&& ex) {
 template <typename T>
 HandlerCallback<T>::HandlerCallback(
     ResponseChannelRequest::UniquePtr req,
-    std::unique_ptr<apache::thrift::ContextStack> ctx,
+    std::unique_ptr<ContextStack> ctx,
     cob_ptr cp,
     exnw_ptr ewp,
     int32_t protoSeqId,
     folly::EventBase* eb,
-    apache::thrift::concurrency::ThreadManager* tm,
+    concurrency::ThreadManager* tm,
     Cpp2RequestContext* reqCtx)
     : HandlerCallbackBase(std::move(req), std::move(ctx), ewp, eb, tm, reqCtx),
       cp_(cp) {
@@ -804,15 +795,13 @@ struct inner_type<std::unique_ptr<S>> {
 template <typename T>
 struct HandlerCallbackHelper {
   using InputType = const typename detail::inner_type<T>::type&;
-  using CobPtr = folly::IOBufQueue (*)(
-      int32_t protoSeqId,
-      apache::thrift::ContextStack*,
-      InputType);
+  using CobPtr =
+      folly::IOBufQueue (*)(int32_t protoSeqId, ContextStack*, InputType);
   static folly::IOBufQueue call(
       CobPtr cob,
       int32_t protoSeqId,
-      apache::thrift::ContextStack* ctx,
-      apache::thrift::concurrency::ThreadManager*,
+      ContextStack* ctx,
+      concurrency::ThreadManager*,
       InputType input) {
     return cob(protoSeqId, ctx, std::move(input));
   }
@@ -823,14 +812,14 @@ struct HandlerCallbackHelperServerStream {
   using InputType = StreamInputType;
   using CobPtr = ResponseAndServerStreamFactory (*)(
       int32_t protoSeqId,
-      apache::thrift::ContextStack*,
+      ContextStack*,
       folly::Executor::KeepAlive<>,
       InputType);
   static ResponseAndServerStreamFactory call(
       CobPtr cob,
       int32_t protoSeqId,
-      apache::thrift::ContextStack* ctx,
-      apache::thrift::concurrency::ThreadManager* tm,
+      ContextStack* ctx,
+      concurrency::ThreadManager* tm,
       InputType input) {
     return cob(
         protoSeqId,
@@ -853,17 +842,15 @@ struct HandlerCallbackHelper<ServerStream<StreamItem>>
 template <typename SinkInputType>
 struct HandlerCallbackHelperSink {
   using InputType = SinkInputType;
-  using CobPtr = std::
-      pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> (*)(
-          ContextStack*,
-          InputType&&,
-          folly::Executor::KeepAlive<>);
-  static std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl>
-  call(
+  using CobPtr = std::pair<folly::IOBufQueue, SinkConsumerImpl> (*)(
+      ContextStack*,
+      InputType&&,
+      folly::Executor::KeepAlive<>);
+  static std::pair<folly::IOBufQueue, SinkConsumerImpl> call(
       CobPtr cob,
       int32_t,
-      apache::thrift::ContextStack* ctx,
-      apache::thrift::concurrency::ThreadManager* tm,
+      ContextStack* ctx,
+      concurrency::ThreadManager* tm,
       InputType input) {
     return cob(
         ctx, std::move(input), ServerInterface::getBlockingThreadManager(tm));
