@@ -162,15 +162,16 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
   if (config->useSSL()) {
     auto sslSocket = TAsyncSSLSocket::newSocket(sslContext_, &eb_);
     if (session_) {
-      sslSocket->setSSLSession(session_.get());
+      sslSocket->setSSLSessionV2(session_);
     }
     sslSocket->connect(nullptr, *config->getAddress(), kTimeout);
     // Loop until connection is established and TLS handshake completes.
     // Unlike a regular AsyncSocket which is usable even before TCP handshke
     // completes, an SSL socket reports !good() until TLS handshake completes.
     eb_.loop();
-    if (config->useTickets() && sslSocket->getSSLSession()) {
-      session_.reset(sslSocket->getSSLSession());
+    auto session = sslSocket->getSSLSessionV2();
+    if (config->useTickets() && session) {
+      session_ = session;
     }
     socket = std::move(sslSocket);
   } else {
@@ -263,11 +264,6 @@ void AsyncClientWorker2::run() {
 }
 
 void AsyncClientWorker2::setupSSLContext() {
-  // Sets some sane properties on the context for ticket caching.
-  SSL_CTX_set_session_cache_mode(
-      sslContext_->getSSLCtx(),
-      SSL_SESS_CACHE_NO_INTERNAL | SSL_SESS_CACHE_CLIENT);
-
   if (getConfig()->cert().empty() ^ getConfig()->key().empty()) {
     throw std::runtime_error("Must supply both key and cert or none");
   }

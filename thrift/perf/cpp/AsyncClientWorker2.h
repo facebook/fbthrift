@@ -19,6 +19,7 @@
 
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/SSLContext.h>
+#include <folly/ssl/SSLSession.h>
 #include <thrift/lib/cpp/test/loadgen/Worker.h>
 #include <thrift/perf/cpp/AsyncIntervalTimer.h>
 #include <thrift/perf/cpp/ClientLoadConfig.h>
@@ -58,13 +59,7 @@ class AsyncClientWorker2
   folly::EventBase eb_;
   AsyncIntervalTimer asyncTimer_;
   std::shared_ptr<folly::SSLContext> sslContext_;
-
-  struct SessionDeleter {
-    void operator()(SSL_SESSION* s) {
-      SSL_SESSION_free(s);
-    }
-  };
-  std::unique_ptr<SSL_SESSION, SessionDeleter> session_;
+  std::shared_ptr<folly::ssl::SSLSession> session_;
 };
 
 } // namespace thrift
