@@ -30,6 +30,13 @@ cdef extern from "thrift/lib/cpp/protocol/TProtocolTypes.h" namespace "apache::t
         T_SIMPLE_JSON_PROTOCOL,
 
 
+cpdef enum Protocol:
+    COMPACT = 0
+    BINARY = 1
+    JSON = 3
+    COMPACT_JSON = 4
+
+
 cdef inline PROTOCOL_TYPES Protocol2PROTOCOL_TYPES(object proto):
     cdef int value = proto.value
     if value == 0:

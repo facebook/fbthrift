@@ -24,7 +24,6 @@ from thrift.py3.types cimport (
     NOTSET as __NOTSET,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
-from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
@@ -176,37 +175,37 @@ cdef class InitialResponse(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__InitialResponse()
 
-    cdef __iobuf.IOBuf _serialize(InitialResponse self, proto):
+    cdef __iobuf.IOBuf _serialize(InitialResponse self, __Protocol proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cInitialResponse* cpp_obj = self._cpp_obj.get()
-        if proto is __Protocol.COMPACT:
+        if proto == __Protocol.COMPACT:
             with nogil:
                 serializer.CompactSerialize[cInitialResponse](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.BINARY:
+        elif proto == __Protocol.BINARY:
             with nogil:
                 serializer.BinarySerialize[cInitialResponse](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.JSON:
+        elif proto == __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cInitialResponse](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.COMPACT_JSON:
+        elif proto == __Protocol.COMPACT_JSON:
             with nogil:
                 serializer.CompactJSONSerialize[cInitialResponse](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef cuint32_t _deserialize(InitialResponse self, const __iobuf.cIOBuf* buf, proto) except? 0:
+    cdef cuint32_t _deserialize(InitialResponse self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cInitialResponse]()
         cdef cInitialResponse* cpp_obj = self._cpp_obj.get()
-        if proto is __Protocol.COMPACT:
+        if proto == __Protocol.COMPACT:
             with nogil:
                 needed = serializer.CompactDeserialize[cInitialResponse](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.BINARY:
+        elif proto == __Protocol.BINARY:
             with nogil:
                 needed = serializer.BinaryDeserialize[cInitialResponse](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.JSON:
+        elif proto == __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cInitialResponse](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.COMPACT_JSON:
+        elif proto == __Protocol.COMPACT_JSON:
             with nogil:
                 needed = serializer.CompactJSONDeserialize[cInitialResponse](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
@@ -351,37 +350,37 @@ cdef class FinalResponse(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__FinalResponse()
 
-    cdef __iobuf.IOBuf _serialize(FinalResponse self, proto):
+    cdef __iobuf.IOBuf _serialize(FinalResponse self, __Protocol proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cFinalResponse* cpp_obj = self._cpp_obj.get()
-        if proto is __Protocol.COMPACT:
+        if proto == __Protocol.COMPACT:
             with nogil:
                 serializer.CompactSerialize[cFinalResponse](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.BINARY:
+        elif proto == __Protocol.BINARY:
             with nogil:
                 serializer.BinarySerialize[cFinalResponse](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.JSON:
+        elif proto == __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cFinalResponse](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.COMPACT_JSON:
+        elif proto == __Protocol.COMPACT_JSON:
             with nogil:
                 serializer.CompactJSONSerialize[cFinalResponse](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef cuint32_t _deserialize(FinalResponse self, const __iobuf.cIOBuf* buf, proto) except? 0:
+    cdef cuint32_t _deserialize(FinalResponse self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cFinalResponse]()
         cdef cFinalResponse* cpp_obj = self._cpp_obj.get()
-        if proto is __Protocol.COMPACT:
+        if proto == __Protocol.COMPACT:
             with nogil:
                 needed = serializer.CompactDeserialize[cFinalResponse](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.BINARY:
+        elif proto == __Protocol.BINARY:
             with nogil:
                 needed = serializer.BinaryDeserialize[cFinalResponse](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.JSON:
+        elif proto == __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cFinalResponse](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.COMPACT_JSON:
+        elif proto == __Protocol.COMPACT_JSON:
             with nogil:
                 needed = serializer.CompactJSONDeserialize[cFinalResponse](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
@@ -526,37 +525,37 @@ cdef class SinkPayload(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__SinkPayload()
 
-    cdef __iobuf.IOBuf _serialize(SinkPayload self, proto):
+    cdef __iobuf.IOBuf _serialize(SinkPayload self, __Protocol proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cSinkPayload* cpp_obj = self._cpp_obj.get()
-        if proto is __Protocol.COMPACT:
+        if proto == __Protocol.COMPACT:
             with nogil:
                 serializer.CompactSerialize[cSinkPayload](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.BINARY:
+        elif proto == __Protocol.BINARY:
             with nogil:
                 serializer.BinarySerialize[cSinkPayload](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.JSON:
+        elif proto == __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cSinkPayload](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.COMPACT_JSON:
+        elif proto == __Protocol.COMPACT_JSON:
             with nogil:
                 serializer.CompactJSONSerialize[cSinkPayload](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef cuint32_t _deserialize(SinkPayload self, const __iobuf.cIOBuf* buf, proto) except? 0:
+    cdef cuint32_t _deserialize(SinkPayload self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cSinkPayload]()
         cdef cSinkPayload* cpp_obj = self._cpp_obj.get()
-        if proto is __Protocol.COMPACT:
+        if proto == __Protocol.COMPACT:
             with nogil:
                 needed = serializer.CompactDeserialize[cSinkPayload](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.BINARY:
+        elif proto == __Protocol.BINARY:
             with nogil:
                 needed = serializer.BinaryDeserialize[cSinkPayload](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.JSON:
+        elif proto == __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cSinkPayload](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.COMPACT_JSON:
+        elif proto == __Protocol.COMPACT_JSON:
             with nogil:
                 needed = serializer.CompactJSONDeserialize[cSinkPayload](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
@@ -701,37 +700,37 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__CompatibleWithKeywordSink()
 
-    cdef __iobuf.IOBuf _serialize(CompatibleWithKeywordSink self, proto):
+    cdef __iobuf.IOBuf _serialize(CompatibleWithKeywordSink self, __Protocol proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cCompatibleWithKeywordSink* cpp_obj = self._cpp_obj.get()
-        if proto is __Protocol.COMPACT:
+        if proto == __Protocol.COMPACT:
             with nogil:
                 serializer.CompactSerialize[cCompatibleWithKeywordSink](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.BINARY:
+        elif proto == __Protocol.BINARY:
             with nogil:
                 serializer.BinarySerialize[cCompatibleWithKeywordSink](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.JSON:
+        elif proto == __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cCompatibleWithKeywordSink](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.COMPACT_JSON:
+        elif proto == __Protocol.COMPACT_JSON:
             with nogil:
                 serializer.CompactJSONSerialize[cCompatibleWithKeywordSink](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
-    cdef cuint32_t _deserialize(CompatibleWithKeywordSink self, const __iobuf.cIOBuf* buf, proto) except? 0:
+    cdef cuint32_t _deserialize(CompatibleWithKeywordSink self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cCompatibleWithKeywordSink]()
         cdef cCompatibleWithKeywordSink* cpp_obj = self._cpp_obj.get()
-        if proto is __Protocol.COMPACT:
+        if proto == __Protocol.COMPACT:
             with nogil:
                 needed = serializer.CompactDeserialize[cCompatibleWithKeywordSink](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.BINARY:
+        elif proto == __Protocol.BINARY:
             with nogil:
                 needed = serializer.BinaryDeserialize[cCompatibleWithKeywordSink](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.JSON:
+        elif proto == __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cCompatibleWithKeywordSink](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is __Protocol.COMPACT_JSON:
+        elif proto == __Protocol.COMPACT_JSON:
             with nogil:
                 needed = serializer.CompactJSONDeserialize[cCompatibleWithKeywordSink](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed

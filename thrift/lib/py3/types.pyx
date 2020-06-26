@@ -27,10 +27,10 @@ cdef class Struct:
     """
     Base class for all thrift structs
     """
-    cdef IOBuf _serialize(self, proto):
+    cdef IOBuf _serialize(self, Protocol proto):
         return IOBuf(b'')
 
-    cdef uint32_t _deserialize(self, const cIOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(self, const cIOBuf* buf, Protocol proto) except? 0:
         return 0
 
 

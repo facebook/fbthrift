@@ -21,6 +21,8 @@ from libcpp.string cimport string
 from libcpp.memory cimport shared_ptr
 from collections.abc import Iterable
 
+from thrift.py3.common cimport Protocol
+
 cdef extern from "":
     """
         static CYTHON_INLINE void SetMetaClass(PyTypeObject* t, PyTypeObject* m)
@@ -43,8 +45,8 @@ cdef __NotSet NOTSET
 
 
 cdef class Struct:
-    cdef IOBuf _serialize(self, proto)
-    cdef uint32_t _deserialize(self, const cIOBuf* buf, proto) except? 0
+    cdef IOBuf _serialize(self, Protocol proto)
+    cdef uint32_t _deserialize(self, const cIOBuf* buf, Protocol proto) except? 0
 
 
 cdef class Union(Struct):
