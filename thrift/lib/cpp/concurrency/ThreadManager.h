@@ -306,6 +306,9 @@ class PriorityThreadManager : public ThreadManager {
   using ThreadManager::pendingTaskCount;
   virtual size_t pendingTaskCount(PRIORITY priority) const = 0;
 
+  using ThreadManager::idleWorkerCount;
+  virtual size_t idleWorkerCount(PRIORITY priority) const = 0;
+
   using ThreadManager::add;
   virtual void add(
       PRIORITY priority,

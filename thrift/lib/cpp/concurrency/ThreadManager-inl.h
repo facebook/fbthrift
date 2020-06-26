@@ -906,6 +906,10 @@ class PriorityThreadManager::PriorityImplT
     return sum(&ThreadManager::idleWorkerCount);
   }
 
+  size_t idleWorkerCount(PRIORITY priority) const override {
+    return managers_[priority]->idleWorkerCount();
+  }
+
   size_t workerCount() const override {
     return sum(&ThreadManager::workerCount);
   }
