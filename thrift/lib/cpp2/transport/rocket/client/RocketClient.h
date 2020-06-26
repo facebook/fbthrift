@@ -237,6 +237,7 @@ class RocketClient : public folly::DelayedDestruction,
   folly::Function<void()> onDetachable_;
   size_t requests_{0};
   StreamId nextStreamId_{1};
+  bool hitMaxStreamId_{false};
   std::unique_ptr<SetupFrame> setupFrame_;
   folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;
   int32_t autoCompressSizeLimit_{0};
@@ -439,12 +440,7 @@ class RocketClient : public folly::DelayedDestruction,
 
   FOLLY_NODISCARD folly::Try<void> scheduleWrite(RequestContext& ctx);
 
-  StreamId makeStreamId() {
-    const StreamId rid = nextStreamId_;
-    // rsocket protocol specifies that clients must generate odd stream IDs
-    nextStreamId_ += 2;
-    return rid;
-  }
+  StreamId makeStreamId();
 
   template <typename ServerCallback>
   void sendRequestStreamChannel(

@@ -18,6 +18,7 @@
 
 #include <chrono>
 #include <functional>
+#include <limits>
 #include <string>
 #include <utility>
 
@@ -423,13 +424,11 @@ void RocketClient::sendRequestResponse(
         : callback_(std::move(callback)), rctx_(std::move(rctx)) {}
 
     void send(RocketClient& client, std::chrono::milliseconds timeout) && {
-      auto writeScheduled = client.scheduleWrite(*rctx_);
-      if (writeScheduled.hasException()) {
+      if (auto ew = err(client.scheduleWrite(*rctx_))) {
         SCOPE_EXIT {
           delete this;
         };
-        return callback_(
-            folly::Try<rocket::Payload>(std::move(writeScheduled.exception())));
+        return callback_(folly::Try<rocket::Payload>(std::move(ew)));
       }
       rctx_->setTimeoutInfo(client.evb_->timer(), *this, timeout);
       rctx_->waitForWriteToCompleteSchedule(this);
@@ -499,13 +498,11 @@ void RocketClient::sendRequestFnf(
         : callback_(std::move(callback)), rctx_(std::move(rctx)) {}
 
     void send(RocketClient& client) && {
-      auto writeScheduled = client.scheduleWrite(*rctx_);
-      if (writeScheduled.hasException()) {
+      if (auto ew = err(client.scheduleWrite(*rctx_))) {
         SCOPE_EXIT {
           delete this;
         };
-        return callback_(
-            folly::Try<void>(std::move(writeScheduled.exception())));
+        return callback_(folly::Try<void>(std::move(ew)));
       }
       rctx_->waitForWriteToCompleteSchedule(this);
     }
@@ -871,6 +868,19 @@ folly::Try<void> RocketClient::scheduleWrite(RequestContext& ctx) {
   return {};
 }
 
+StreamId RocketClient::makeStreamId() {
+  StreamId id;
+  do {
+    id = nextStreamId_;
+    nextStreamId_ += 2;
+  } while (hitMaxStreamId_ && streams_.contains(id));
+
+  if (UNLIKELY(id == StreamId(std::numeric_limits<uint32_t>::max()))) {
+    hitMaxStreamId_ = true;
+  }
+  return id;
+}
+
 void RocketClient::WriteLoopCallback::runLoopCallback() noexcept {
   if (!client_.flushList_ && !std::exchange(rescheduled_, true)) {
     client_.evb_->runInLoop(this, true /* thisIteration */);
@@ -921,9 +931,8 @@ void RocketClient::writeErr(
           transport::TTransportException(
               transport::TTransportException::NOT_OPEN,
               fmt::format(
-                  "Failed to write to remote endpoint. Wrote {} bytes."
+                  "Failed to write to remote endpoint. Wrote 0 bytes."
                   " AsyncSocketException: {}",
-                  bytesWritten,
                   ex.what())));
     }
   });
