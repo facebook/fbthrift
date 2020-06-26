@@ -290,6 +290,8 @@ struct t_field_qualifiers {
                         CaptureDocText
 %type<std::string>      IntOrLiteral
 
+%type<bool>             CommaOrSemicolonOptional
+
 %%
 
 /**
@@ -499,13 +501,21 @@ Typedef:
       }
     }
 
-CommaOrSemicolonOptional:
+CommaOrSemicolon:
   ","
     {}
 | ";"
     {}
+
+CommaOrSemicolonOptional:
+  CommaOrSemicolon
+    {
+      $$ = true;
+    }
 |
-    {}
+    {
+      $$ = false;
+    }
 
 Enum:
   tok_enum
@@ -640,9 +650,9 @@ ConstValue:
       $$ = new t_const_value();
       $$->set_bool($1);
     }
-|  tok_int_constant
+| tok_int_constant
     {
-      driver.debug("constvalue => tok_int_constant");
+      driver.debug("ConstValue => tok_int_constant");
       $$ = new t_const_value();
       $$->set_integer($1);
       if (driver.mode == parsing_mode::PROGRAM) {
@@ -702,45 +712,72 @@ ConstValue:
     }
 
 ConstList:
-  "[" ConstListContents "]"
+  "[" ConstListContents CommaOrSemicolonOptional "]"
     {
-      driver.debug("ConstList => [ ConstListContents ]");
+      driver.debug("ConstList => [ ConstListContents CommaOrSemicolonOptional ]");
       $$ = $2;
     }
-
-ConstListContents:
-  ConstListContents ConstValue CommaOrSemicolonOptional
+| "[" "]"
     {
-      driver.debug("ConstListContents => ConstListContents ConstValue CommaOrSemicolonOptional");
-      $$ = $1;
-      $$->add_list(std::unique_ptr<t_const_value>($2));
-    }
-|
-    {
-      driver.debug("ConstListContents =>");
+      driver.debug("ConstList => [ ]");
       $$ = new t_const_value();
       $$->set_list();
     }
 
-ConstMap:
-  "{" ConstMapContents "}"
+ConstListContents:
+  ConstListContents CommaOrSemicolonOptional ConstValue
     {
-      driver.debug("ConstMap => { ConstMapContents }");
+      driver.debug("ConstListContents => ConstListContents CommaOrSemicolonOptional ConstValue");
+      if (driver.mode == parsing_mode::PROGRAM &&
+          !$2 &&
+          !driver.params.disable_const_collections_comma_enforcement) {
+        driver.yyerror("Commas/semicolons between const list entries are mandatory "
+          "(pass --disable-const-collections-comma-enforcement option to temporarily ignore).");
+      }
+      $$ = $1;
+      $$->add_list(std::unique_ptr<t_const_value>($3));
+    }
+| ConstValue
+    {
+      driver.debug("ConstListContents => ConstValue");
+      $$ = new t_const_value();
+      $$->set_list();
+      $$->add_list(std::unique_ptr<t_const_value>($1));
+    }
+
+ConstMap:
+  "{" ConstMapContents CommaOrSemicolonOptional "}"
+    {
+      driver.debug("ConstMap => { ConstMapContents CommaOrSemicolonOptional }");
       $$ = $2;
+    }
+|
+  "{" "}"
+    {
+      driver.debug("ConstMap => { }");
+      $$ = new t_const_value();
+      $$->set_map();
     }
 
 ConstMapContents:
-  ConstMapContents ConstValue ":" ConstValue CommaOrSemicolonOptional
+  ConstMapContents CommaOrSemicolonOptional ConstValue ":" ConstValue
     {
-      driver.debug("ConstMapContents => ConstMapContents ConstValue CommaOrSemicolonOptional");
+      driver.debug("ConstMapContents => ConstMapContents CommaOrSemicolonOptional ConstValue : ConstValue");
+      if (driver.mode == parsing_mode::PROGRAM &&
+          !$2 &&
+          !driver.params.disable_const_collections_comma_enforcement) {
+        driver.yyerror("Commas/semicolons between const map entries are mandatory "
+          "(pass --disable-const-collections-comma-enforcement option to temporarily ignore).");
+      }
       $$ = $1;
-      $$->add_map(std::unique_ptr<t_const_value>($2), std::unique_ptr<t_const_value>($4));
+      $$->add_map(std::unique_ptr<t_const_value>($3), std::unique_ptr<t_const_value>($5));
     }
-|
+| ConstValue ":" ConstValue
     {
-      driver.debug("ConstMapContents =>");
+      driver.debug("ConstMapContents => ConstValue : ConstValue");
       $$ = new t_const_value();
       $$->set_map();
+      $$->add_map(std::unique_ptr<t_const_value>($1), std::unique_ptr<t_const_value>($3));
     }
 
 StructHead:
@@ -1235,7 +1272,6 @@ FieldType:
       if (driver.mode == parsing_mode::INCLUDES) {
         // Ignore identifiers in include mode
         $$ = NULL;
-
         delete $2;
       } else {
         // Lookup the identifier in the current scope
@@ -1404,37 +1440,55 @@ ListType:
     }
 
 TypeAnnotations:
-  "(" TypeAnnotationList ")"
+  "(" TypeAnnotationList CommaOrSemicolonOptional ")"
     {
-      driver.debug("TypeAnnotations -> ( TypeAnnotationList )");
+      driver.debug("TypeAnnotations => ( TypeAnnotationList CommaOrSemicolonOptional)");
       $$ = $2;
+    }
+| "(" ")"
+    {
+      driver.debug("TypeAnnotations => ( )");
+      $$ = NULL;
     }
 |
     {
-      driver.debug("TypeAnnotations -> nil");
+      driver.debug("TypeAnnotations =>");
       $$ = NULL;
     }
 
 TypeAnnotationList:
-  TypeAnnotationList TypeAnnotation
+  TypeAnnotationList CommaOrSemicolonOptional TypeAnnotation
     {
-      driver.debug("TypeAnnotationList -> TypeAnnotationList , TypeAnnotation");
-      $$ = $1;
-      if ($2->object_val == nullptr) {
-        $$->annotations_[$2->key] = $2->val;
-      } else {
-        $$->annotation_objects_[$2->key] = $2->object_val;     
+      driver.debug("TypeAnnotationList => TypeAnnotationList CommaOrSemicolonOptional TypeAnnotation");
+      if (driver.mode == parsing_mode::PROGRAM &&
+          !$2 &&
+          !driver.params.disable_const_collections_comma_enforcement) {
+        driver.yyerror("Commas/semicolons between type annotations entries are mandatory "
+          "(pass --disable-const-collections-comma-enforcement option to temporarily ignore).");
       }
-      delete $2;
+      $$ = $1;
+      if ($3->object_val == nullptr) {
+        $$->annotations_[$3->key] = $3->val;
+      } else {
+        $$->annotation_objects_[$3->key] = $3->object_val;
+      }
+      delete $3;
     }
-|
+| TypeAnnotation
     {
+      driver.debug("TypeAnnotationList => TypeAnnotation");
       /* Just use a dummy structure to hold the annotations. */
       $$ = new t_struct(driver.program);
+      if ($1->object_val == nullptr) {
+        $$->annotations_[$1->key] = $1->val;
+      } else {
+        $$->annotation_objects_[$1->key] = $1->object_val;
+      }
+      delete $1;
     }
 
 TypeAnnotation:
-  tok_identifier "=" FieldType ConstMap CommaOrSemicolonOptional
+  tok_identifier "=" FieldType ConstMap
     {
       driver.debug("TypeAnnotation TypeAnnotationValueObject");
       $$ = new t_annotation;
@@ -1450,7 +1504,7 @@ TypeAnnotation:
       }
     }
 |
-  tok_identifier TypeAnnotationValue CommaOrSemicolonOptional
+  tok_identifier TypeAnnotationValue
     {
       driver.debug("TypeAnnotation TypeAnnotationValue");
       $$ = new t_annotation;
