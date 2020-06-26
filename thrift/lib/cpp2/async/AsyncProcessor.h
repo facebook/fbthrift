@@ -248,7 +248,10 @@ class ServerInterface : public AsyncProcessorFactory {
 
   virtual concurrency::PRIORITY getRequestPriority(
       Cpp2RequestContext* ctx,
-      concurrency::PRIORITY prio = concurrency::NORMAL);
+      concurrency::PRIORITY prio);
+  concurrency::PRIORITY getRequestPriority(Cpp2RequestContext* ctx) {
+    return getRequestPriority(ctx, concurrency::NORMAL);
+  }
 
  private:
   class BlockingThreadManager : public folly::Executor {
@@ -303,7 +306,7 @@ class ServerInterface : public AsyncProcessorFactory {
  */
 class HandlerCallbackBase {
  protected:
-  typedef void (*exnw_ptr)(
+  using exnw_ptr = void (*)(
       ResponseChannelRequest::UniquePtr,
       int32_t protoSeqId,
       ContextStack*,
