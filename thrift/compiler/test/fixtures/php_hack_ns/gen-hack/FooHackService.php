@@ -55,6 +55,8 @@ class FooHackServiceClient extends \ThriftClientBase implements FooHackServiceCl
 }
 
 class FooHackServiceAsyncRpcOptionsClient extends \ThriftClientBase implements FooHackServiceAsyncRpcOptionsIf {
+  use FooHackServiceClientBase;
+
 }
 
 // HELPER FUNCTIONS AND STRUCTURES

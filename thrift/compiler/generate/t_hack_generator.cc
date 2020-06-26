@@ -3667,54 +3667,41 @@ void t_hack_generator::generate_service_interface(
   string long_name = php_servicename_mangle(mangle, tservice);
   string head_parameters = rpc_options ? "\\RpcOptions $rpc_options" : "";
 
-  if (rpc_options) {
-    // That's a temporary trick for a multi-stage release. A one-stage release
-    // may introduce an inconsistent state with the child interface generated
-    // before the parent one. If something from the child interface's file is
-    // invoked in such state, there'd be a Hack error about the unknown class
-    // and the whole release process may be aborted. An idea of the multi-stage
-    // release is to generate all new interfaces first and add extends and other
-    // code in the second pass.
-    // TODO (partisan): Remove this after the release.
-    f_service_ << "interface " << long_name << suffix << "If extends "
-               << extends_if << " {\n";
-  } else {
-    f_service_ << "interface " << long_name << suffix << "If extends "
-               << extends_if << " {\n";
-    indent_up();
-    vector<t_function*> functions = tservice->get_functions();
-    vector<t_function*>::iterator f_iter;
-    for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-      // Add a blank line before the start of a new function definition
-      if (f_iter != functions.begin()) {
-        f_service_ << "\n";
-      }
-
-      // Add the doxygen style comments.
-      generate_php_docstring(f_service_, *f_iter);
-
-      // Finally, the function declaration.
-      string return_typehint = type_to_typehint((*f_iter)->get_returntype());
-      if (async || client) {
-        return_typehint = "Awaitable<" + return_typehint + ">";
-      }
-
-      if (nullable_everything_) {
-        string funname = (*f_iter)->get_name();
-        indent(f_service_)
-            << "public function " << funname << "("
-            << argument_list(
-                   (*f_iter)->get_arglist(), head_parameters, "", true, true)
-            << "): " << return_typehint << ";\n";
-      } else {
-        indent(f_service_) << "public function "
-                           << function_signature(
-                                  *f_iter, head_parameters, "", return_typehint)
-                           << ";\n";
-      }
+  f_service_ << "interface " << long_name << suffix << "If extends "
+             << extends_if << " {\n";
+  indent_up();
+  vector<t_function*> functions = tservice->get_functions();
+  vector<t_function*>::iterator f_iter;
+  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+    // Add a blank line before the start of a new function definition
+    if (f_iter != functions.begin()) {
+      f_service_ << "\n";
     }
-    indent_down();
+
+    // Add the doxygen style comments.
+    generate_php_docstring(f_service_, *f_iter);
+
+    // Finally, the function declaration.
+    string return_typehint = type_to_typehint((*f_iter)->get_returntype());
+    if (async || client) {
+      return_typehint = "Awaitable<" + return_typehint + ">";
+    }
+
+    if (nullable_everything_) {
+      string funname = (*f_iter)->get_name();
+      indent(f_service_)
+          << "public function " << funname << "("
+          << argument_list(
+                 (*f_iter)->get_arglist(), head_parameters, "", true, true)
+          << "): " << return_typehint << ";\n";
+    } else {
+      indent(f_service_) << "public function "
+                         << function_signature(
+                                *f_iter, head_parameters, "", return_typehint)
+                         << ";\n";
+    }
   }
+  indent_down();
   f_service_ << "}\n\n";
 }
 
@@ -4146,61 +4133,113 @@ void t_hack_generator::_generate_service_client_children(
         class_suffix + "Client";
   }
 
-  if (rpc_options) {
-    // That's a temporary trick for a multi-stage release. A one-stage release
-    // may introduce an inconsistent state with the child interface generated
-    // before the parent one. If something from the child interface's file is
-    // invoked in such state, there'd be a Hack error about the unknown class
-    // and the whole release process may be aborted. An idea of the multi-stage
-    // release is to generate all new interfaces first and add extends and other
-    // code in the second pass.
-    // TODO (partisan): Remove this after the release.
-    out << "class " << long_name << class_suffix << "Client extends " << extends
-        << " implements " << long_name << interface_suffix << "If {\n";
-  } else {
-    out << "class " << long_name << class_suffix << "Client extends " << extends
-        << " implements " << long_name << interface_suffix << "If {\n"
-        << "  use " << long_name << "ClientBase;\n\n";
+  out << "class " << long_name << class_suffix << "Client extends " << extends
+      << " implements " << long_name << interface_suffix << "If {\n"
+      << "  use " << long_name << "ClientBase;\n\n";
+  indent_up();
+
+  // Generate client method implementations
+  vector<t_function*> functions = tservice->get_functions();
+  vector<t_function*>::const_iterator f_iter;
+
+  // generate functions as necessary
+  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+    t_struct* arg_struct = (*f_iter)->get_arglist();
+    const vector<t_field*>& fields = arg_struct->get_members();
+    vector<t_field*>::const_iterator fld_iter;
+    string funname = (*f_iter)->get_name();
+    const string& tservice_name = tservice->get_name();
+    string return_typehint = type_to_typehint((*f_iter)->get_returntype());
+    string head_parameters = rpc_options ? "\\RpcOptions $rpc_options" : "";
+    string rpc_options_param =
+        rpc_options ? "$rpc_options" : "new \\RpcOptions()";
+
+    generate_php_docstring(out, *f_iter);
+    if (nullable_everything_) {
+      indent(out)
+          << "public async function " << funname << "("
+          << argument_list(
+                 (*f_iter)->get_arglist(), head_parameters, "", true, true)
+          << "): Awaitable<" + return_typehint + "> {\n";
+    } else {
+      indent(out) << "public async function "
+                  << function_signature(
+                         *f_iter,
+                         head_parameters,
+                         "",
+                         "Awaitable<" + return_typehint + ">")
+                  << " {\n";
+    }
+
     indent_up();
+    indent(out) << "await $this->asyncHandler_->genBefore(\"" << tservice_name
+                << "\", \"" << funname << "\");\n";
+    indent(out) << "$currentseqid = $this->sendImpl_" << funname << "(";
 
-    // Generate client method implementations
-    vector<t_function*> functions = tservice->get_functions();
-    vector<t_function*>::const_iterator f_iter;
+    first = true;
+    for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
+      if (first) {
+        first = false;
+      } else {
+        out << ", ";
+      }
+      out << "$" << (*fld_iter)->get_name();
+    }
+    out << ");\n";
 
-    // generate functions as necessary
+    if (!(*f_iter)->is_oneway()) {
+      out << indent() << "$channel = $this->channel_;\n"
+          << indent() << "$out_transport = $this->output_->getTransport();\n"
+          << indent() << "$in_transport = $this->input_->getTransport();\n"
+          << indent()
+          << "if ($channel !== null && $out_transport is \\TMemoryBuffer && $in_transport is \\TMemoryBuffer) {\n";
+      indent_up();
+      out << indent() << "$msg = $out_transport->getBuffer();\n"
+          << indent() << "$out_transport->resetBuffer();\n"
+          << indent()
+          << "list($result_msg, $_read_headers) = await $channel->genSendRequestResponse("
+          << rpc_options_param << ", $msg);\n"
+          << indent() << "$in_transport->resetBuffer();\n"
+          << indent() << "$in_transport->write($result_msg);\n";
+      indent_down();
+      indent(out) << "} else {\n";
+      indent_up();
+      indent(out) << "await $this->asyncHandler_->genWait($currentseqid);\n";
+      scope_down(out);
+      out << indent();
+      if (!(*f_iter)->get_returntype()->is_void()) {
+        out << "return ";
+      }
+      out << "$this->recvImpl_" << funname << "($currentseqid);\n";
+    } else {
+      out << indent() << "$channel = $this->channel_;\n"
+          << indent() << "$out_transport = $this->output_->getTransport();\n"
+          << indent()
+          << "if ($channel !== null && $out_transport is \\TMemoryBuffer) {\n";
+      indent_up();
+      out << indent() << "$msg = $out_transport->getBuffer();\n"
+          << indent() << "$out_transport->resetBuffer();\n"
+          << indent() << "await $channel->genSendRequestNoResponse("
+          << rpc_options_param << ", $msg);\n";
+      scope_down(out);
+    }
+    scope_down(out);
+    out << "\n";
+  }
+
+  if (!async) {
+    out << indent() << "/* send and recv functions */\n";
+
     for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
       t_struct* arg_struct = (*f_iter)->get_arglist();
       const vector<t_field*>& fields = arg_struct->get_members();
       vector<t_field*>::const_iterator fld_iter;
       string funname = (*f_iter)->get_name();
-      const string& tservice_name = tservice->get_name();
       string return_typehint = type_to_typehint((*f_iter)->get_returntype());
-      string head_parameters = rpc_options ? "\\RpcOptions $rpc_options" : "";
-      string rpc_options_param =
-          rpc_options ? "$rpc_options" : "new \\RpcOptions()";
 
-      generate_php_docstring(out, *f_iter);
-      if (nullable_everything_) {
-        indent(out)
-            << "public async function " << funname << "("
-            << argument_list(
-                   (*f_iter)->get_arglist(), head_parameters, "", true, true)
-            << "): Awaitable<" + return_typehint + "> {\n";
-      } else {
-        indent(out) << "public async function "
-                    << function_signature(
-                           *f_iter,
-                           head_parameters,
-                           "",
-                           "Awaitable<" + return_typehint + ">")
-                    << " {\n";
-      }
-
-      indent_up();
-      indent(out) << "await $this->asyncHandler_->genBefore(\"" << tservice_name
-                  << "\", \"" << funname << "\");\n";
-      indent(out) << "$currentseqid = $this->sendImpl_" << funname << "(";
-
+      out << indent() << "public function send_"
+          << function_signature(*f_iter, "", "", "int") << " {\n"
+          << indent() << "  return $this->sendImpl_" << funname << "(";
       first = true;
       for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
         if (first) {
@@ -4210,94 +4249,29 @@ void t_hack_generator::_generate_service_client_children(
         }
         out << "$" << (*fld_iter)->get_name();
       }
-      out << ");\n";
-
+      out << ");\n" << indent() << "}\n";
       if (!(*f_iter)->is_oneway()) {
-        out << indent() << "$channel = $this->channel_;\n"
-            << indent() << "$out_transport = $this->output_->getTransport();\n"
-            << indent() << "$in_transport = $this->input_->getTransport();\n"
-            << indent()
-            << "if ($channel !== null && $out_transport is \\TMemoryBuffer && $in_transport is \\TMemoryBuffer) {\n";
-        indent_up();
-        out << indent() << "$msg = $out_transport->getBuffer();\n"
-            << indent() << "$out_transport->resetBuffer();\n"
-            << indent()
-            << "list($result_msg, $_read_headers) = await $channel->genSendRequestResponse("
-            << rpc_options_param << ", $msg);\n"
-            << indent() << "$in_transport->resetBuffer();\n"
-            << indent() << "$in_transport->write($result_msg);\n";
-        indent_down();
-        indent(out) << "} else {\n";
-        indent_up();
-        indent(out) << "await $this->asyncHandler_->genWait($currentseqid);\n";
-        scope_down(out);
-        out << indent();
-        if (!(*f_iter)->get_returntype()->is_void()) {
-          out << "return ";
-        }
-        out << "$this->recvImpl_" << funname << "($currentseqid);\n";
-      } else {
-        out << indent() << "$channel = $this->channel_;\n"
-            << indent() << "$out_transport = $this->output_->getTransport();\n"
-            << indent()
-            << "if ($channel !== null && $out_transport is \\TMemoryBuffer) {\n";
-        indent_up();
-        out << indent() << "$msg = $out_transport->getBuffer();\n"
-            << indent() << "$out_transport->resetBuffer();\n"
-            << indent() << "await $channel->genSendRequestNoResponse("
-            << rpc_options_param << ", $msg);\n";
-        scope_down(out);
-      }
-      scope_down(out);
-      out << "\n";
-    }
-
-    if (!async) {
-      out << indent() << "/* send and recv functions */\n";
-
-      for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-        t_struct* arg_struct = (*f_iter)->get_arglist();
-        const vector<t_field*>& fields = arg_struct->get_members();
-        vector<t_field*>::const_iterator fld_iter;
-        string funname = (*f_iter)->get_name();
-        string return_typehint = type_to_typehint((*f_iter)->get_returntype());
-
-        out << indent() << "public function send_"
-            << function_signature(*f_iter, "", "", "int") << " {\n"
-            << indent() << "  return $this->sendImpl_" << funname << "(";
-        first = true;
-        for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-          if (first) {
-            first = false;
-          } else {
-            out << ", ";
-          }
-          out << "$" << (*fld_iter)->get_name();
-        }
-        out << ");\n" << indent() << "}\n";
-        if (!(*f_iter)->is_oneway()) {
-          t_function recv_function(
-              (*f_iter)->get_returntype(),
-              string("recv_") + (*f_iter)->get_name(),
-              std::make_unique<t_struct>(program_));
-          // Open function
-          bool is_void = (*f_iter)->get_returntype()->is_void();
-          out << indent() << "public function "
-              << function_signature(
-                     &recv_function,
-                     "",
-                     "?int $expectedsequenceid = null",
-                     return_typehint)
-              << " {\n"
-              << indent() << "  " << (is_void ? "" : "return ")
-              << "$this->recvImpl_" << funname << "($expectedsequenceid);\n"
-              << indent() << "}\n";
-        }
+        t_function recv_function(
+            (*f_iter)->get_returntype(),
+            string("recv_") + (*f_iter)->get_name(),
+            std::make_unique<t_struct>(program_));
+        // Open function
+        bool is_void = (*f_iter)->get_returntype()->is_void();
+        out << indent() << "public function "
+            << function_signature(
+                   &recv_function,
+                   "",
+                   "?int $expectedsequenceid = null",
+                   return_typehint)
+            << " {\n"
+            << indent() << "  " << (is_void ? "" : "return ")
+            << "$this->recvImpl_" << funname << "($expectedsequenceid);\n"
+            << indent() << "}\n";
       }
     }
-
-    indent_down();
   }
+
+  indent_down();
   out << "}\n\n";
 }
 

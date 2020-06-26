@@ -131,6 +131,39 @@ interface RaiserClientIf extends \IThriftSyncIf {
  * Raiser
  */
 interface RaiserAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
+  /**
+   * Original thrift definition:-
+   * void
+   *   doBland();
+   */
+  public function doBland(\RpcOptions $rpc_options): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   doRaise()
+   *   throws (1: Banal b,
+   *           2: Fiery f,
+   *           3: Serious s);
+   */
+  public function doRaise(\RpcOptions $rpc_options): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * string
+   *   get200();
+   */
+  public function get200(\RpcOptions $rpc_options): Awaitable<string>;
+
+  /**
+   * Original thrift definition:-
+   * string
+   *   get500()
+   *   throws (1: Fiery f,
+   *           2: Banal b,
+   *           3: Serious s);
+   */
+  public function get500(\RpcOptions $rpc_options): Awaitable<string>;
 }
 
 /**
@@ -792,6 +825,106 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
 }
 
 class RaiserAsyncRpcOptionsClient extends \ThriftClientBase implements RaiserAsyncRpcOptionsIf {
+  use RaiserClientBase;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   doBland();
+   */
+  public async function doBland(\RpcOptions $rpc_options): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("Raiser", "doBland");
+    $currentseqid = $this->sendImpl_doBland();
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    $this->recvImpl_doBland($currentseqid);
+  }
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   doRaise()
+   *   throws (1: Banal b,
+   *           2: Fiery f,
+   *           3: Serious s);
+   */
+  public async function doRaise(\RpcOptions $rpc_options): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("Raiser", "doRaise");
+    $currentseqid = $this->sendImpl_doRaise();
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    $this->recvImpl_doRaise($currentseqid);
+  }
+
+  /**
+   * Original thrift definition:-
+   * string
+   *   get200();
+   */
+  public async function get200(\RpcOptions $rpc_options): Awaitable<string> {
+    await $this->asyncHandler_->genBefore("Raiser", "get200");
+    $currentseqid = $this->sendImpl_get200();
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    return $this->recvImpl_get200($currentseqid);
+  }
+
+  /**
+   * Original thrift definition:-
+   * string
+   *   get500()
+   *   throws (1: Fiery f,
+   *           2: Banal b,
+   *           3: Serious s);
+   */
+  public async function get500(\RpcOptions $rpc_options): Awaitable<string> {
+    await $this->asyncHandler_->genBefore("Raiser", "get500");
+    $currentseqid = $this->sendImpl_get500();
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    return $this->recvImpl_get500($currentseqid);
+  }
+
 }
 
 // HELPER FUNCTIONS AND STRUCTURES
