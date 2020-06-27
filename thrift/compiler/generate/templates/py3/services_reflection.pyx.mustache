@@ -38,61 +38,53 @@ cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:
 
 
 cdef __InterfaceSpec get_reflection__{{service:name}}(bint for_clients):
-    return __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec.create(
         name="{{service:name}}",
-        methods=(
-{{#service:functions}}{{^function:returns_sink?}}
-            __MethodSpec.create(
-                name="{{function:name}}",
-                arguments=(
-                    {{#function:args}}
-                    __ArgumentSpec.create(
-                        name="{{field:name}}",
-                        type={{#field:type}}{{> types/PythonType}}{{/field:type}},
-                        kind={{#field:type}}{{> types/ThriftNumberType}}{{/field:type}},
-                        annotations={
-                            {{#field:annotations}}
-                            {{> Annotation }}
-                            {{#last?}}
-
-                            {{/last?}}
-                            {{/field:annotations}}
-                        },
-                    ),
-                    {{/function:args}}
-                ),
-                result={{#function:returnType}}{{!
-                    }}{{#type:void?}}None{{/type:void?}}{{!
-                    }}{{#type:streamresponse?}}{{!
-                        }}{{> clients/StreamResponseClassName}} if for_clients else {{!
-                        }}{{> services/StreamResponseClassName}}{{!
-                    }}{{/type:streamresponse?}}{{!
-                    }}{{^type:void?}}{{> types/PythonType}}{{/type:void?}}{{!
-                    }}{{/function:returnType}},
-                result_kind={{#function:returnType}}{{> types/ThriftNumberType}}{{/function:returnType}},
-                exceptions=(
-                    {{#function:exceptions}}
-                    {{#field:type}}{{> types/PythonType}}{{/field:type}},
-                    {{/function:exceptions}}
-                ),
-                annotations={
-                    {{#function:annotations}}
-                    {{> Annotation }}
-                    {{#last?}}
-
-                    {{/last?}}
-                    {{/function:annotations}}
-                },
-            ),
-{{/function:returns_sink?}}{{/service:functions}}
-        ),
         annotations={
             {{#service:annotations}}
             {{> Annotation }}
-            {{#last?}}
-
-            {{/last?}}
             {{/service:annotations}}
         },
     )
+{{#service:functions}}{{^function:returns_sink?}}
+    spec.add_method(
+        __MethodSpec.create(
+            name="{{function:name}}",
+            arguments=(
+                {{#function:args}}
+                __ArgumentSpec.create(
+                    name="{{field:name}}",
+                    type={{#field:type}}{{> types/PythonType}}{{/field:type}},
+                    kind={{#field:type}}{{> types/ThriftNumberType}}{{/field:type}},
+                    annotations={
+                        {{#field:annotations}}
+                        {{> Annotation }}
+                        {{/field:annotations}}
+                    },
+                ),
+                {{/function:args}}
+            ),
+            result={{#function:returnType}}{{!
+                }}{{#type:void?}}None{{/type:void?}}{{!
+                }}{{#type:streamresponse?}}{{!
+                    }}{{> clients/StreamResponseClassName}} if for_clients else {{!
+                    }}{{> services/StreamResponseClassName}}{{!
+                }}{{/type:streamresponse?}}{{!
+                }}{{^type:void?}}{{> types/PythonType}}{{/type:void?}}{{!
+                }}{{/function:returnType}},
+            result_kind={{#function:returnType}}{{> types/ThriftNumberType}}{{/function:returnType}},
+            exceptions=(
+                {{#function:exceptions}}
+                {{#field:type}}{{> types/PythonType}}{{/field:type}},
+                {{/function:exceptions}}
+            ),
+            annotations={
+                {{#function:annotations}}
+                {{> Annotation }}
+                {{/function:annotations}}
+            },
+        )
+    )
+{{/function:returns_sink?}}{{/service:functions}}
+    return spec
 {{/program:services}}

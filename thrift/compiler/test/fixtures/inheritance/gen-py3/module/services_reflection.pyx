@@ -18,63 +18,66 @@ cimport module.types as _module_types
 
 
 cdef __InterfaceSpec get_reflection__MyRoot(bint for_clients):
-    return __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec.create(
         name="MyRoot",
-        methods=(
-            __MethodSpec.create(
-                name="do_root",
-                arguments=(
-                ),
-                result=None,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                ),
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
+    spec.add_method(
+        __MethodSpec.create(
+            name="do_root",
+            arguments=(
+            ),
+            result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    return spec
 
 
 cdef __InterfaceSpec get_reflection__MyNode(bint for_clients):
-    return __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec.create(
         name="MyNode",
-        methods=(
-            __MethodSpec.create(
-                name="do_mid",
-                arguments=(
-                ),
-                result=None,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                ),
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
+    spec.add_method(
+        __MethodSpec.create(
+            name="do_mid",
+            arguments=(
+            ),
+            result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    return spec
 
 
 cdef __InterfaceSpec get_reflection__MyLeaf(bint for_clients):
-    return __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec.create(
         name="MyLeaf",
-        methods=(
-            __MethodSpec.create(
-                name="do_leaf",
-                arguments=(
-                ),
-                result=None,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                ),
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
+    spec.add_method(
+        __MethodSpec.create(
+            name="do_leaf",
+            arguments=(
+            ),
+            result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    return spec

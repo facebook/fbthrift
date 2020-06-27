@@ -19,28 +19,29 @@ cimport my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_e
 
 
 cdef __InterfaceSpec get_reflection__ExtendTestService(bint for_clients):
-    return __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec.create(
         name="ExtendTestService",
-        methods=(
-            __MethodSpec.create(
-                name="check",
-                arguments=(
-                    __ArgumentSpec.create(
-                        name="struct1",
-                        type=_hsmodule_types.HsFoo,
-                        kind=__NumberType.NOT_A_NUMBER,
-                        annotations={
-                        },
-                    ),
-                ),
-                result=bool,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                ),
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
+    spec.add_method(
+        __MethodSpec.create(
+            name="check",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="struct1",
+                    type=_hsmodule_types.HsFoo,
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
+                ),
+            ),
+            result=bool,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    return spec

@@ -30,75 +30,81 @@ cdef __StructSpec get_reflection__MyStruct():
             default_inst[_matching_struct_names_types.cMyStruct]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="MyStruct",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="field",
-                type=str,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="field",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__Combo():
     cdef _matching_struct_names_types.Combo defaults = _matching_struct_names_types.Combo.create(
         constant_shared_ptr[_matching_struct_names_types.cCombo](
             default_inst[_matching_struct_names_types.cCombo]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="Combo",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="listOfOurMyStructLists",
-                type=_matching_struct_names_types.List__List__MyStruct,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="theirMyStructList",
-                type=_matching_struct_names_types.List__module_MyStruct,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="ourMyStructList",
-                type=_matching_struct_names_types.List__MyStruct,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="listOfTheirMyStructList",
-                type=_matching_struct_names_types.List__List__module_MyStruct,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="listOfOurMyStructLists",
+            type=_matching_struct_names_types.List__List__MyStruct,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="theirMyStructList",
+            type=_matching_struct_names_types.List__module_MyStruct,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="ourMyStructList",
+            type=_matching_struct_names_types.List__MyStruct,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="listOfTheirMyStructList",
+            type=_matching_struct_names_types.List__List__module_MyStruct,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __ListSpec get_reflection__List__MyStruct():
     return __ListSpec.create(
         value=_matching_struct_names_types.MyStruct,

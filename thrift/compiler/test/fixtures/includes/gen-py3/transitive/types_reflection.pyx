@@ -29,21 +29,21 @@ cdef __StructSpec get_reflection__Foo():
             default_inst[_transitive_types.cFoo]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="Foo",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="a",
-                type=int,
-                kind=__NumberType.I64,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=defaults.a,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="a",
+            type=int,
+            kind=__NumberType.I64,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=defaults.a,
+            annotations={
+            },
+        ),
+    )
+    return spec

@@ -14,6 +14,9 @@
 
 from types import MappingProxyType
 
+from cpython.ref cimport PyObject, Py_INCREF, Py_XDECREF
+from libcpp.vector cimport vector as cvector
+
 cpdef enum NumberType:
     NOT_A_NUMBER = 0
     BYTE = 1
@@ -39,12 +42,13 @@ cpdef enum StructType:
 
 cdef class StructSpec:
     cdef readonly str name
-    cdef readonly tuple fields
+    cdef cvector[PyObject*] _fields
     cdef readonly StructType kind
     cdef readonly object annotations
 
     @staticmethod
-    cdef create(str name, tuple fields, StructType kind, dict annotations)
+    cdef create(str name, StructType kind, dict annotations)
+    cdef void add_field(self, FieldSpec field)
 
 
 cdef class FieldSpec:
@@ -99,11 +103,12 @@ cdef class MapSpec:
 
 cdef class InterfaceSpec:
     cdef readonly str name
-    cdef readonly tuple methods
+    cdef cvector[PyObject*] _methods
     cdef readonly object annotations
 
     @staticmethod
-    cdef create(str name, tuple methods, dict annotations)
+    cdef create(str name, dict annotations)
+    cdef void add_method(self, MethodSpec method)
 
 
 cdef class MethodSpec:

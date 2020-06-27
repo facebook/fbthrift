@@ -29,30 +29,32 @@ cdef __StructSpec get_reflection__MyStruct():
             default_inst[_module_types.cMyStruct]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="MyStruct",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="MyIntField",
-                type=int,
-                kind=__NumberType.I64,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="MyStringField",
-                type=str,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="MyIntField",
+            type=int,
+            kind=__NumberType.I64,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="MyStringField",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec

@@ -29,265 +29,293 @@ cdef __StructSpec get_reflection__SimpleException():
             default_inst[_module_types.cSimpleException]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="SimpleException",
         kind=__StructType.EXCEPTION,
-        fields=(
-            __FieldSpec.create(
-                name="err_code",
-                type=int,
-                kind=__NumberType.I16,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="err_code",
+            type=int,
+            kind=__NumberType.I16,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__OptionalRefStruct():
     cdef _module_types.OptionalRefStruct defaults = _module_types.OptionalRefStruct.create(
         constant_shared_ptr[_module_types.cOptionalRefStruct](
             default_inst[_module_types.cOptionalRefStruct]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="OptionalRefStruct",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="optional_blob",
-                type=__iobuf.IOBuf,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="optional_blob",
+            type=__iobuf.IOBuf,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__SimpleStruct():
     cdef _module_types.SimpleStruct defaults = _module_types.SimpleStruct.create(
         constant_shared_ptr[_module_types.cSimpleStruct](
             default_inst[_module_types.cSimpleStruct]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="SimpleStruct",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="is_on",
-                type=bool,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="tiny_int",
-                type=int,
-                kind=__NumberType.BYTE,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="small_int",
-                type=int,
-                kind=__NumberType.I16,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="nice_sized_int",
-                type=int,
-                kind=__NumberType.I32,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="big_int",
-                type=int,
-                kind=__NumberType.I64,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="real",
-                type=float,
-                kind=__NumberType.DOUBLE,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="smaller_real",
-                type=float,
-                kind=__NumberType.FLOAT,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="is_on",
+            type=bool,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="tiny_int",
+            type=int,
+            kind=__NumberType.BYTE,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="small_int",
+            type=int,
+            kind=__NumberType.I16,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="nice_sized_int",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="big_int",
+            type=int,
+            kind=__NumberType.I64,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="real",
+            type=float,
+            kind=__NumberType.DOUBLE,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="smaller_real",
+            type=float,
+            kind=__NumberType.FLOAT,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__ComplexStruct():
     cdef _module_types.ComplexStruct defaults = _module_types.ComplexStruct.create(
         constant_shared_ptr[_module_types.cComplexStruct](
             default_inst[_module_types.cComplexStruct]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="ComplexStruct",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="structOne",
-                type=_module_types.SimpleStruct,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="structTwo",
-                type=_module_types.SimpleStruct,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="an_integer",
-                type=int,
-                kind=__NumberType.I32,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="name",
-                type=str,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="an_enum",
-                type=_module_types.AnEnum,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="some_bytes",
-                type=bytes,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="from",
-                type=str,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                    """py3.name""": """sender""",                },
-            ),
-            __FieldSpec.create(
-                name="cdef",
-                type=str,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="bytes_with_cpp_type",
-                type=bytes,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="structOne",
+            type=_module_types.SimpleStruct,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="structTwo",
+            type=_module_types.SimpleStruct,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="an_integer",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="name",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="an_enum",
+            type=_module_types.AnEnum,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="some_bytes",
+            type=bytes,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="from",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """py3.name""": """sender""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="cdef",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="bytes_with_cpp_type",
+            type=bytes,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__BinaryUnion():
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="BinaryUnion",
         kind=__StructType.UNION,
-        fields=(
-            __FieldSpec.create(
-                name="iobuf_val",
-                type=__iobuf.IOBuf,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
             """cpp2.noncomparable""": """1""",        },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="iobuf_val",
+            type=__iobuf.IOBuf,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__BinaryUnionStruct():
     cdef _module_types.BinaryUnionStruct defaults = _module_types.BinaryUnionStruct.create(
         constant_shared_ptr[_module_types.cBinaryUnionStruct](
             default_inst[_module_types.cBinaryUnionStruct]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="BinaryUnionStruct",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="u",
-                type=_module_types.BinaryUnion,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
             """cpp2.noncomparable""": """1""",        },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="u",
+            type=_module_types.BinaryUnion,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __ListSpec get_reflection__List__i16():
     return __ListSpec.create(
         value=int,

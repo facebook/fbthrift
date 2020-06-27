@@ -14,33 +14,62 @@
 
 cimport cython
 
+import threading
+from functools import wraps
 from types import MappingProxyType
 
-def inspect(cls):
-  if not isinstance(cls, type):
-    cls = type(cls)
-  if hasattr(cls, '__get_reflection__'):
+
+cdef threadsafe_cached(fn):
+    __cache = {}
+    lock = threading.Lock()
+    @wraps(fn)
+    def wrapper(key):
+        # lock free read when present in cache
+        if key in __cache:
+            return __cache[key]
+        with lock:
+            # check again if in cache
+            if key in __cache:
+                return __cache[key]
+            # update cache
+            result = __cache[key] = fn(key)
+            return result
+    return wrapper
+
+
+@threadsafe_cached
+def _inspect_impl(cls):
     return cls.__get_reflection__()
-  raise TypeError('No reflection information found')
+
+
+def inspect(cls):
+    if not isinstance(cls, type):
+        cls = type(cls)
+    if not hasattr(cls, '__get_reflection__'):
+        raise TypeError('No reflection information found')
+    return _inspect_impl(cls)
 
 
 def inspectable(cls):
-  if not isinstance(cls, type):
-    cls = type(cls)
-  return hasattr(cls, '__get_reflection__')
+    if not isinstance(cls, type):
+        cls = type(cls)
+    return hasattr(cls, '__get_reflection__')
 
 
 @cython.auto_pickle(False)
 cdef class StructSpec:
     def __cinit__(self, str name, fields, StructType kind, dict annotations = {}):
         self.name = name
-        self.fields = tuple(fields)
+        if fields:
+            for field in fields:
+                Py_INCREF(field)
+                self._fields.push_back(<PyObject*>fields)
         self.kind = kind
         self.annotations = MappingProxyType(annotations)
 
     @staticmethod
-    cdef create(str name, tuple fields, StructType kind, dict annotations):
-        return StructSpec.__new__(StructSpec, name, fields, kind, annotations)
+    cdef create(str name, StructType kind, dict annotations):
+        return StructSpec.__new__(StructSpec, name, None, kind, annotations)
 
     def __iter__(self):
         yield self.name
@@ -52,6 +81,18 @@ cdef class StructSpec:
         if not isinstance(other, StructSpec):
             return False
         return tuple(self) == tuple(other)
+
+    cdef void add_field(self, FieldSpec field):
+        Py_INCREF(field)
+        self._fields.push_back(<PyObject*>field)
+
+    def __dealloc__(self):
+        for _field in self._fields:
+            Py_XDECREF(_field)
+
+    @property
+    def fields(self):
+        return tuple(<object>field for field in self._fields)
 
 
 @cython.auto_pickle(False)
@@ -176,12 +217,27 @@ cdef class MapSpec:
 cdef class InterfaceSpec:
     def __cinit__(self, str name, methods, dict annotations = {}):
         self.name = name
-        self.methods = tuple(methods)
+        if methods:
+            for method in methods:
+                Py_INCREF(method)
+                self._methods.push_back(<PyObject*>method)
         self.annotations = MappingProxyType(annotations)
 
     @staticmethod
-    cdef create(str name, tuple methods, dict annotations):
-        return InterfaceSpec.__new__(InterfaceSpec, name, methods, annotations)
+    cdef create(str name, dict annotations):
+        return InterfaceSpec.__new__(InterfaceSpec, name, None, annotations)
+
+    cdef void add_method(self, MethodSpec method):
+        Py_INCREF(method)
+        self._methods.push_back(<PyObject*>method)
+
+    def __dealloc__(self):
+        for method in self._methods:
+            Py_XDECREF(method)
+
+    @property
+    def methods(self):
+        return tuple(<object>method for method in self._methods)
 
     def __iter__(self):
         yield self.name

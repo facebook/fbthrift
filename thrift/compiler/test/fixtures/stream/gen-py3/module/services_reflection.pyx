@@ -18,91 +18,98 @@ cimport module.types as _module_types
 
 
 cdef __InterfaceSpec get_reflection__PubSubStreamingService(bint for_clients):
-    return __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec.create(
         name="PubSubStreamingService",
-        methods=(
-            __MethodSpec.create(
-                name="returnstream",
-                arguments=(
-                    __ArgumentSpec.create(
-                        name="i32_from",
-                        type=int,
-                        kind=__NumberType.I32,
-                        annotations={
-                        },
-                    ),
-                    __ArgumentSpec.create(
-                        name="i32_to",
-                        type=int,
-                        kind=__NumberType.I32,
-                        annotations={
-                        },
-                    ),
-                ),
-                result=_module_types.ClientBufferedStream__i32 if for_clients else _module_types.ServerStream__i32,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                ),
-                annotations={
-                },
-            ),
-            __MethodSpec.create(
-                name="streamthrows",
-                arguments=(
-                    __ArgumentSpec.create(
-                        name="foo",
-                        type=int,
-                        kind=__NumberType.I32,
-                        annotations={
-                        },
-                    ),
-                ),
-                result=_module_types.ClientBufferedStream__i32 if for_clients else _module_types.ServerStream__i32,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                ),
-                annotations={
-                },
-            ),
-            __MethodSpec.create(
-                name="boththrows",
-                arguments=(
-                    __ArgumentSpec.create(
-                        name="foo",
-                        type=int,
-                        kind=__NumberType.I32,
-                        annotations={
-                        },
-                    ),
-                ),
-                result=_module_types.ClientBufferedStream__i32 if for_clients else _module_types.ServerStream__i32,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                    _module_types.FooEx,
-                ),
-                annotations={
-                },
-            ),
-            __MethodSpec.create(
-                name="responseandstreamthrows",
-                arguments=(
-                    __ArgumentSpec.create(
-                        name="foo",
-                        type=int,
-                        kind=__NumberType.I32,
-                        annotations={
-                        },
-                    ),
-                ),
-                result=_module_types.ResponseAndClientBufferedStream__i32_i32 if for_clients else _module_types.ResponseAndServerStream__i32_i32,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                    _module_types.FooEx,
-                ),
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
+    spec.add_method(
+        __MethodSpec.create(
+            name="returnstream",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="i32_from",
+                    type=int,
+                    kind=__NumberType.I32,
+                    annotations={
+                    },
+                ),
+                __ArgumentSpec.create(
+                    name="i32_to",
+                    type=int,
+                    kind=__NumberType.I32,
+                    annotations={
+                    },
+                ),
+            ),
+            result=_module_types.ClientBufferedStream__i32 if for_clients else _module_types.ServerStream__i32,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec.create(
+            name="streamthrows",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="foo",
+                    type=int,
+                    kind=__NumberType.I32,
+                    annotations={
+                    },
+                ),
+            ),
+            result=_module_types.ClientBufferedStream__i32 if for_clients else _module_types.ServerStream__i32,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec.create(
+            name="boththrows",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="foo",
+                    type=int,
+                    kind=__NumberType.I32,
+                    annotations={
+                    },
+                ),
+            ),
+            result=_module_types.ClientBufferedStream__i32 if for_clients else _module_types.ServerStream__i32,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+                _module_types.FooEx,
+            ),
+            annotations={
+            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec.create(
+            name="responseandstreamthrows",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="foo",
+                    type=int,
+                    kind=__NumberType.I32,
+                    annotations={
+                    },
+                ),
+            ),
+            result=_module_types.ResponseAndClientBufferedStream__i32_i32 if for_clients else _module_types.ResponseAndServerStream__i32_i32,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+                _module_types.FooEx,
+            ),
+            annotations={
+            },
+        )
+    )
+    return spec

@@ -68,45 +68,45 @@ cdef __StructSpec get_reflection__{{struct:name}}():
         )
     )
     {{/struct:union?}}
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="{{struct:name}}",
         kind=__StructType.{{!
             }}{{#struct:exception?}}EXCEPTION{{/struct:exception?}}{{!
             }}{{#struct:union?}}UNION{{/struct:union?}}{{!
             }}{{#struct:plain?}}STRUCT{{/struct:plain?}},
-        fields=(
-            {{#struct:fields}}
-            __FieldSpec.create(
-                name="{{field:name}}",
-                type={{#field:type}}{{> types/PythonType}}{{/field:type}},
-                kind={{#field:type}}{{> types/ThriftNumberType}}{{/field:type}},
-                qualifier=__Qualifier.{{!
-                    }}{{#field:required?}}REQUIRED{{/field:required?}}{{!
-                    }}{{^field:required?}}{{!
-                    }}{{#field:optional?}}OPTIONAL{{/field:optional?}}{{!
-                    }}{{^field:optional?}}UNQUALIFIED{{/field:optional?}}{{!
-                    }}{{/field:required?}},
-                default={{!
-                }}{{^struct:union?}}{{!
-                    }}{{#field:value}}defaults.{{field:name}}{{/field:value}}{{!
-                    }}{{^field:value}}None{{/field:value}}{{!
-                }}{{/struct:union?}}{{!
-                }}{{#struct:union?}}None{{/struct:union?}},
-                annotations={
-                    {{#field:annotations}}
-                    {{> Annotation }}
-                    {{/field:annotations}}
-                },
-            ),
-            {{/struct:fields}}
-        ),
         annotations={
             {{#struct:annotations}}
             {{> Annotation }}
             {{/struct:annotations}}
         },
     )
-
+{{#struct:fields}}
+    spec.add_field(
+        __FieldSpec.create(
+            name="{{field:name}}",
+            type={{#field:type}}{{> types/PythonType}}{{/field:type}},
+            kind={{#field:type}}{{> types/ThriftNumberType}}{{/field:type}},
+            qualifier=__Qualifier.{{!
+                }}{{#field:required?}}REQUIRED{{/field:required?}}{{!
+                }}{{^field:required?}}{{!
+                }}{{#field:optional?}}OPTIONAL{{/field:optional?}}{{!
+                }}{{^field:optional?}}UNQUALIFIED{{/field:optional?}}{{!
+                }}{{/field:required?}},
+            default={{!
+            }}{{^struct:union?}}{{!
+                }}{{#field:value}}defaults.{{field:name}}{{/field:value}}{{!
+                }}{{^field:value}}None{{/field:value}}{{!
+            }}{{/struct:union?}}{{!
+            }}{{#struct:union?}}None{{/struct:union?}},
+            annotations={
+                {{#field:annotations}}
+                {{> Annotation }}
+                {{/field:annotations}}
+            },
+        ),
+    )
+{{/struct:fields}}
+    return spec
 {{/program:structs}}
 {{#program:containerTypes}}
 {{#type:list?}}

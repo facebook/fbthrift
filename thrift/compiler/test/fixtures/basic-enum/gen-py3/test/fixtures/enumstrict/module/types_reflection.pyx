@@ -29,30 +29,32 @@ cdef __StructSpec get_reflection__MyStruct():
             default_inst[_test_fixtures_enumstrict_module_types.cMyStruct]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="MyStruct",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="myEnum",
-                type=_test_fixtures_enumstrict_module_types.MyEnum,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="myBigEnum",
-                type=_test_fixtures_enumstrict_module_types.MyBigEnum,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=defaults.myBigEnum,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="myEnum",
+            type=_test_fixtures_enumstrict_module_types.MyEnum,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="myBigEnum",
+            type=_test_fixtures_enumstrict_module_types.MyBigEnum,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=defaults.myBigEnum,
+            annotations={
+            },
+        ),
+    )
+    return spec

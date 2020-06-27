@@ -29,21 +29,21 @@ cdef __StructSpec get_reflection__HsFoo():
             default_inst[_hsmodule_types.cHsFoo]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="HsFoo",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="MyInt",
-                type=int,
-                kind=__NumberType.I64,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="MyInt",
+            type=int,
+            kind=__NumberType.I64,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec

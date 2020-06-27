@@ -29,21 +29,21 @@ cdef __StructSpec get_reflection__Foo():
             default_inst[_my_namespacing_test_module_module_types.cFoo]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="Foo",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="MyInt",
-                type=int,
-                kind=__NumberType.I64,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="MyInt",
+            type=int,
+            kind=__NumberType.I64,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec

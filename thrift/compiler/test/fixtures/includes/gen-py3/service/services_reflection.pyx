@@ -21,60 +21,63 @@ cimport service.types as _service_types
 
 
 cdef __InterfaceSpec get_reflection__MyService(bint for_clients):
-    return __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec.create(
         name="MyService",
-        methods=(
-            __MethodSpec.create(
-                name="query",
-                arguments=(
-                    __ArgumentSpec.create(
-                        name="s",
-                        type=_module_types.MyStruct,
-                        kind=__NumberType.NOT_A_NUMBER,
-                        annotations={
-                        },
-                    ),
-                    __ArgumentSpec.create(
-                        name="i",
-                        type=_includes_types.Included,
-                        kind=__NumberType.NOT_A_NUMBER,
-                        annotations={
-                        },
-                    ),
-                ),
-                result=None,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                ),
-                annotations={
-                },
-            ),
-            __MethodSpec.create(
-                name="has_arg_docs",
-                arguments=(
-                    __ArgumentSpec.create(
-                        name="s",
-                        type=_module_types.MyStruct,
-                        kind=__NumberType.NOT_A_NUMBER,
-                        annotations={
-                        },
-                    ),
-                    __ArgumentSpec.create(
-                        name="i",
-                        type=_includes_types.Included,
-                        kind=__NumberType.NOT_A_NUMBER,
-                        annotations={
-                        },
-                    ),
-                ),
-                result=None,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                ),
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
+    spec.add_method(
+        __MethodSpec.create(
+            name="query",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="s",
+                    type=_module_types.MyStruct,
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
+                ),
+                __ArgumentSpec.create(
+                    name="i",
+                    type=_includes_types.Included,
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
+                ),
+            ),
+            result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec.create(
+            name="has_arg_docs",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="s",
+                    type=_module_types.MyStruct,
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
+                ),
+                __ArgumentSpec.create(
+                    name="i",
+                    type=_includes_types.Included,
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
+                ),
+            ),
+            result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    return spec

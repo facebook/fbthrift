@@ -30,30 +30,32 @@ cdef __StructSpec get_reflection__Included():
             default_inst[_includes_types.cIncluded]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="Included",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="MyIntField",
-                type=int,
-                kind=__NumberType.I64,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=defaults.MyIntField,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="MyTransitiveField",
-                type=_transitive_types.Foo,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=defaults.MyTransitiveField,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="MyIntField",
+            type=int,
+            kind=__NumberType.I64,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=defaults.MyIntField,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="MyTransitiveField",
+            type=_transitive_types.Foo,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=defaults.MyTransitiveField,
+            annotations={
+            },
+        ),
+    )
+    return spec

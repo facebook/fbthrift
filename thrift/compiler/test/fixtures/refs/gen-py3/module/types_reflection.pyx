@@ -24,501 +24,543 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__MyUnion():
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="MyUnion",
         kind=__StructType.UNION,
-        fields=(
-            __FieldSpec.create(
-                name="anInteger",
-                type=int,
-                kind=__NumberType.I32,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="aString",
-                type=str,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="anInteger",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="aString",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__MyField():
     cdef _module_types.MyField defaults = _module_types.MyField.create(
         constant_shared_ptr[_module_types.cMyField](
             default_inst[_module_types.cMyField]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="MyField",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="opt_value",
-                type=int,
-                kind=__NumberType.I64,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="value",
-                type=int,
-                kind=__NumberType.I64,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="req_value",
-                type=int,
-                kind=__NumberType.I64,
-                qualifier=__Qualifier.REQUIRED,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="opt_value",
+            type=int,
+            kind=__NumberType.I64,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="value",
+            type=int,
+            kind=__NumberType.I64,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="req_value",
+            type=int,
+            kind=__NumberType.I64,
+            qualifier=__Qualifier.REQUIRED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__MyStruct():
     cdef _module_types.MyStruct defaults = _module_types.MyStruct.create(
         constant_shared_ptr[_module_types.cMyStruct](
             default_inst[_module_types.cMyStruct]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="MyStruct",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="opt_ref",
-                type=_module_types.MyField,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                    """cpp.ref""": """true""",                    """cpp2.ref""": """true""",                },
-            ),
-            __FieldSpec.create(
-                name="ref",
-                type=_module_types.MyField,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                    """cpp.ref""": """true""",                    """cpp2.ref""": """true""",                },
-            ),
-            __FieldSpec.create(
-                name="req_ref",
-                type=_module_types.MyField,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.REQUIRED,
-                default=None,
-                annotations={
-                    """cpp.ref""": """true""",                    """cpp2.ref""": """true""",                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="opt_ref",
+            type=_module_types.MyField,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="ref",
+            type=_module_types.MyField,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="req_ref",
+            type=_module_types.MyField,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.REQUIRED,
+            default=None,
+            annotations={
+                """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__StructWithUnion():
     cdef _module_types.StructWithUnion defaults = _module_types.StructWithUnion.create(
         constant_shared_ptr[_module_types.cStructWithUnion](
             default_inst[_module_types.cStructWithUnion]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="StructWithUnion",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="u",
-                type=_module_types.MyUnion,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                    """cpp.ref""": """true""",                },
-            ),
-            __FieldSpec.create(
-                name="aDouble",
-                type=float,
-                kind=__NumberType.DOUBLE,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="f",
-                type=_module_types.MyField,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="u",
+            type=_module_types.MyUnion,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref""": """true""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="aDouble",
+            type=float,
+            kind=__NumberType.DOUBLE,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="f",
+            type=_module_types.MyField,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__RecursiveStruct():
     cdef _module_types.RecursiveStruct defaults = _module_types.RecursiveStruct.create(
         constant_shared_ptr[_module_types.cRecursiveStruct](
             default_inst[_module_types.cRecursiveStruct]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="RecursiveStruct",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="mes",
-                type=_module_types.List__RecursiveStruct,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                    """swift.recursive_reference""": """true""",                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="mes",
+            type=_module_types.List__RecursiveStruct,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """swift.recursive_reference""": """true""",            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__StructWithContainers():
     cdef _module_types.StructWithContainers defaults = _module_types.StructWithContainers.create(
         constant_shared_ptr[_module_types.cStructWithContainers](
             default_inst[_module_types.cStructWithContainers]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="StructWithContainers",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="list_ref",
-                type=_module_types.List__i32,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                    """cpp.ref""": """true""",                    """cpp2.ref""": """true""",                },
-            ),
-            __FieldSpec.create(
-                name="set_ref",
-                type=_module_types.Set__i32,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                    """cpp.ref""": """true""",                    """cpp2.ref""": """true""",                },
-            ),
-            __FieldSpec.create(
-                name="map_ref",
-                type=_module_types.Map__i32_i32,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                    """cpp.ref""": """true""",                    """cpp2.ref""": """true""",                },
-            ),
-            __FieldSpec.create(
-                name="list_ref_unique",
-                type=_module_types.List__i32,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                    """cpp.ref_type""": """unique""",                    """cpp2.ref_type""": """unique""",                },
-            ),
-            __FieldSpec.create(
-                name="set_ref_shared",
-                type=_module_types.Set__i32,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                    """cpp.ref_type""": """shared""",                    """cpp2.ref_type""": """shared""",                },
-            ),
-            __FieldSpec.create(
-                name="list_ref_shared_const",
-                type=_module_types.List__i32,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                    """cpp.ref_type""": """shared_const""",                    """cpp2.ref_type""": """shared_const""",                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="list_ref",
+            type=_module_types.List__i32,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="set_ref",
+            type=_module_types.Set__i32,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="map_ref",
+            type=_module_types.Map__i32_i32,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="list_ref_unique",
+            type=_module_types.List__i32,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """unique""",                """cpp2.ref_type""": """unique""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="set_ref_shared",
+            type=_module_types.Set__i32,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """shared""",                """cpp2.ref_type""": """shared""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="list_ref_shared_const",
+            type=_module_types.List__i32,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """shared_const""",                """cpp2.ref_type""": """shared_const""",            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__StructWithSharedConst():
     cdef _module_types.StructWithSharedConst defaults = _module_types.StructWithSharedConst.create(
         constant_shared_ptr[_module_types.cStructWithSharedConst](
             default_inst[_module_types.cStructWithSharedConst]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="StructWithSharedConst",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="opt_shared_const",
-                type=_module_types.MyField,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                    """cpp.ref_type""": """shared_const""",                    """cpp2.ref_type""": """shared_const""",                },
-            ),
-            __FieldSpec.create(
-                name="shared_const",
-                type=_module_types.MyField,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                    """cpp.ref_type""": """shared_const""",                    """cpp2.ref_type""": """shared_const""",                },
-            ),
-            __FieldSpec.create(
-                name="req_shared_const",
-                type=_module_types.MyField,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.REQUIRED,
-                default=None,
-                annotations={
-                    """cpp.ref_type""": """shared_const""",                    """cpp2.ref_type""": """shared_const""",                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="opt_shared_const",
+            type=_module_types.MyField,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """shared_const""",                """cpp2.ref_type""": """shared_const""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="shared_const",
+            type=_module_types.MyField,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """shared_const""",                """cpp2.ref_type""": """shared_const""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="req_shared_const",
+            type=_module_types.MyField,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.REQUIRED,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """shared_const""",                """cpp2.ref_type""": """shared_const""",            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__Empty():
     cdef _module_types.Empty defaults = _module_types.Empty.create(
         constant_shared_ptr[_module_types.cEmpty](
             default_inst[_module_types.cEmpty]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="Empty",
         kind=__StructType.STRUCT,
-        fields=(
-        ),
         annotations={
         },
     )
-
+    return spec
 cdef __StructSpec get_reflection__StructWithRef():
     cdef _module_types.StructWithRef defaults = _module_types.StructWithRef.create(
         constant_shared_ptr[_module_types.cStructWithRef](
             default_inst[_module_types.cStructWithRef]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="StructWithRef",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="def_field",
-                type=_module_types.Empty,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                    """cpp.ref""": """1""",                },
-            ),
-            __FieldSpec.create(
-                name="opt_field",
-                type=_module_types.Empty,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                    """cpp.ref""": """1""",                },
-            ),
-            __FieldSpec.create(
-                name="req_field",
-                type=_module_types.Empty,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.REQUIRED,
-                default=None,
-                annotations={
-                    """cpp.ref""": """1""",                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="def_field",
+            type=_module_types.Empty,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref""": """1""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="opt_field",
+            type=_module_types.Empty,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """cpp.ref""": """1""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="req_field",
+            type=_module_types.Empty,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.REQUIRED,
+            default=None,
+            annotations={
+                """cpp.ref""": """1""",            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__StructWithRefTypeUnique():
     cdef _module_types.StructWithRefTypeUnique defaults = _module_types.StructWithRefTypeUnique.create(
         constant_shared_ptr[_module_types.cStructWithRefTypeUnique](
             default_inst[_module_types.cStructWithRefTypeUnique]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="StructWithRefTypeUnique",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="def_field",
-                type=_module_types.Empty,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                    """cpp.ref_type""": """unique""",                },
-            ),
-            __FieldSpec.create(
-                name="opt_field",
-                type=_module_types.Empty,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                    """cpp.ref_type""": """unique""",                },
-            ),
-            __FieldSpec.create(
-                name="req_field",
-                type=_module_types.Empty,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.REQUIRED,
-                default=None,
-                annotations={
-                    """cpp.ref_type""": """unique""",                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="def_field",
+            type=_module_types.Empty,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """unique""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="opt_field",
+            type=_module_types.Empty,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """unique""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="req_field",
+            type=_module_types.Empty,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.REQUIRED,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """unique""",            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__StructWithRefTypeShared():
     cdef _module_types.StructWithRefTypeShared defaults = _module_types.StructWithRefTypeShared.create(
         constant_shared_ptr[_module_types.cStructWithRefTypeShared](
             default_inst[_module_types.cStructWithRefTypeShared]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="StructWithRefTypeShared",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="def_field",
-                type=_module_types.Empty,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                    """cpp.ref_type""": """shared""",                },
-            ),
-            __FieldSpec.create(
-                name="opt_field",
-                type=_module_types.Empty,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                    """cpp.ref_type""": """shared""",                },
-            ),
-            __FieldSpec.create(
-                name="req_field",
-                type=_module_types.Empty,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.REQUIRED,
-                default=None,
-                annotations={
-                    """cpp.ref_type""": """shared""",                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="def_field",
+            type=_module_types.Empty,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """shared""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="opt_field",
+            type=_module_types.Empty,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """shared""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="req_field",
+            type=_module_types.Empty,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.REQUIRED,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """shared""",            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__StructWithRefTypeSharedConst():
     cdef _module_types.StructWithRefTypeSharedConst defaults = _module_types.StructWithRefTypeSharedConst.create(
         constant_shared_ptr[_module_types.cStructWithRefTypeSharedConst](
             default_inst[_module_types.cStructWithRefTypeSharedConst]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="StructWithRefTypeSharedConst",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="def_field",
-                type=_module_types.Empty,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                    """cpp.ref_type""": """shared_const""",                },
-            ),
-            __FieldSpec.create(
-                name="opt_field",
-                type=_module_types.Empty,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                    """cpp.ref_type""": """shared_const""",                },
-            ),
-            __FieldSpec.create(
-                name="req_field",
-                type=_module_types.Empty,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.REQUIRED,
-                default=None,
-                annotations={
-                    """cpp.ref_type""": """shared_const""",                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="def_field",
+            type=_module_types.Empty,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """shared_const""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="opt_field",
+            type=_module_types.Empty,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """shared_const""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="req_field",
+            type=_module_types.Empty,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.REQUIRED,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """shared_const""",            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__StructWithRefAndAnnotCppNoexceptMoveCtor():
     cdef _module_types.StructWithRefAndAnnotCppNoexceptMoveCtor defaults = _module_types.StructWithRefAndAnnotCppNoexceptMoveCtor.create(
         constant_shared_ptr[_module_types.cStructWithRefAndAnnotCppNoexceptMoveCtor](
             default_inst[_module_types.cStructWithRefAndAnnotCppNoexceptMoveCtor]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="StructWithRefAndAnnotCppNoexceptMoveCtor",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="def_field",
-                type=_module_types.Empty,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                    """cpp.ref""": """1""",                },
-            ),
-        ),
         annotations={
             """cpp.noexcept_move_ctor""": """1""",        },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="def_field",
+            type=_module_types.Empty,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref""": """1""",            },
+        ),
+    )
+    return spec
 cdef __ListSpec get_reflection__List__RecursiveStruct():
     return __ListSpec.create(
         value=_module_types.RecursiveStruct,

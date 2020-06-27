@@ -29,216 +29,248 @@ cdef __StructSpec get_reflection__Color():
             default_inst[_module_types.cColor]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="Color",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="red",
-                type=float,
-                kind=__NumberType.DOUBLE,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="green",
-                type=float,
-                kind=__NumberType.DOUBLE,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="blue",
-                type=float,
-                kind=__NumberType.DOUBLE,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="alpha",
-                type=float,
-                kind=__NumberType.DOUBLE,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="red",
+            type=float,
+            kind=__NumberType.DOUBLE,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="green",
+            type=float,
+            kind=__NumberType.DOUBLE,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="blue",
+            type=float,
+            kind=__NumberType.DOUBLE,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="alpha",
+            type=float,
+            kind=__NumberType.DOUBLE,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__Vehicle():
     cdef _module_types.Vehicle defaults = _module_types.Vehicle.create(
         constant_shared_ptr[_module_types.cVehicle](
             default_inst[_module_types.cVehicle]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="Vehicle",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="color",
-                type=_module_types.Color,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="licensePlate",
-                type=str,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="description",
-                type=str,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="name",
-                type=str,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="hasAC",
-                type=bool,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=defaults.hasAC,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="color",
+            type=_module_types.Color,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="licensePlate",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="description",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="name",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="hasAC",
+            type=bool,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=defaults.hasAC,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__Person():
     cdef _module_types.Person defaults = _module_types.Person.create(
         constant_shared_ptr[_module_types.cPerson](
             default_inst[_module_types.cPerson]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="Person",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="id",
-                type=int,
-                kind=__NumberType.I64,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="name",
-                type=str,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="age",
-                type=int,
-                kind=__NumberType.I16,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="address",
-                type=str,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="favoriteColor",
-                type=_module_types.Color,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="friends",
-                type=_module_types.Set__i64,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="bestFriend",
-                type=int,
-                kind=__NumberType.I64,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="petNames",
-                type=_module_types.Map__Animal_string,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="afraidOfAnimal",
-                type=_module_types.Animal,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="vehicles",
-                type=_module_types.List__Vehicle,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="id",
+            type=int,
+            kind=__NumberType.I64,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="name",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="age",
+            type=int,
+            kind=__NumberType.I16,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="address",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="favoriteColor",
+            type=_module_types.Color,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="friends",
+            type=_module_types.Set__i64,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="bestFriend",
+            type=int,
+            kind=__NumberType.I64,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="petNames",
+            type=_module_types.Map__Animal_string,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="afraidOfAnimal",
+            type=_module_types.Animal,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="vehicles",
+            type=_module_types.List__Vehicle,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __SetSpec get_reflection__Set__i64():
     return __SetSpec.create(
         value=int,

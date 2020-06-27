@@ -18,10 +18,9 @@ cimport module.types as _module_types
 
 
 cdef __InterfaceSpec get_reflection__SinkService(bint for_clients):
-    return __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec.create(
         name="SinkService",
-        methods=(
-        ),
         annotations={
         },
     )
+    return spec

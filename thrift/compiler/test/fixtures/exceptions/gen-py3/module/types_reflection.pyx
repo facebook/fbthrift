@@ -29,60 +29,58 @@ cdef __StructSpec get_reflection__Banal():
             default_inst[_module_types.cBanal]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="Banal",
         kind=__StructType.EXCEPTION,
-        fields=(
-        ),
         annotations={
         },
     )
-
+    return spec
 cdef __StructSpec get_reflection__Fiery():
     cdef _module_types.Fiery defaults = _module_types.Fiery.create(
         constant_shared_ptr[_module_types.cFiery](
             default_inst[_module_types.cFiery]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="Fiery",
         kind=__StructType.EXCEPTION,
-        fields=(
-            __FieldSpec.create(
-                name="message",
-                type=str,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.REQUIRED,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
             """message""": """message""",        },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="message",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.REQUIRED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__Serious():
     cdef _module_types.Serious defaults = _module_types.Serious.create(
         constant_shared_ptr[_module_types.cSerious](
             default_inst[_module_types.cSerious]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="Serious",
         kind=__StructType.EXCEPTION,
-        fields=(
-            __FieldSpec.create(
-                name="sonnet",
-                type=str,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
             """message""": """sonnet""",        },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="sonnet",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec

@@ -29,51 +29,57 @@ cdef __StructSpec get_reflection__Foo():
             default_inst[_module_types.cFoo]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="Foo",
         kind=__StructType.STRUCT,
-        fields=(
-            __FieldSpec.create(
-                name="myInteger",
-                type=int,
-                kind=__NumberType.I32,
-                qualifier=__Qualifier.REQUIRED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="myString",
-                type=str,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.OPTIONAL,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="myBools",
-                type=_module_types.List__bool,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.UNQUALIFIED,
-                default=None,
-                annotations={
-                },
-            ),
-            __FieldSpec.create(
-                name="myNumbers",
-                type=_module_types.List__i32,
-                kind=__NumberType.NOT_A_NUMBER,
-                qualifier=__Qualifier.REQUIRED,
-                default=None,
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
-
+    spec.add_field(
+        __FieldSpec.create(
+            name="myInteger",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.REQUIRED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="myString",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="myBools",
+            type=_module_types.List__bool,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="myNumbers",
+            type=_module_types.List__i32,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.REQUIRED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __ListSpec get_reflection__List__bool():
     return __ListSpec.create(
         value=bool,

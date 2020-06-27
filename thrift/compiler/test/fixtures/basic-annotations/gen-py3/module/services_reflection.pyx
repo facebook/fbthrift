@@ -18,187 +18,199 @@ cimport module.types as _module_types
 
 
 cdef __InterfaceSpec get_reflection__MyService(bint for_clients):
-    return __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec.create(
         name="MyService",
-        methods=(
-            __MethodSpec.create(
-                name="ping",
-                arguments=(
-                ),
-                result=None,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                ),
-                annotations={
-                },
-            ),
-            __MethodSpec.create(
-                name="getRandomData",
-                arguments=(
-                ),
-                result=str,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                ),
-                annotations={
-                },
-            ),
-            __MethodSpec.create(
-                name="hasDataById",
-                arguments=(
-                    __ArgumentSpec.create(
-                        name="id",
-                        type=int,
-                        kind=__NumberType.I64,
-                        annotations={
-                        },
-                    ),
-                ),
-                result=bool,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                ),
-                annotations={
-                },
-            ),
-            __MethodSpec.create(
-                name="getDataById",
-                arguments=(
-                    __ArgumentSpec.create(
-                        name="id",
-                        type=int,
-                        kind=__NumberType.I64,
-                        annotations={
-                        },
-                    ),
-                ),
-                result=str,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                ),
-                annotations={
-                },
-            ),
-            __MethodSpec.create(
-                name="putDataById",
-                arguments=(
-                    __ArgumentSpec.create(
-                        name="id",
-                        type=int,
-                        kind=__NumberType.I64,
-                        annotations={
-                        },
-                    ),
-                    __ArgumentSpec.create(
-                        name="data",
-                        type=str,
-                        kind=__NumberType.NOT_A_NUMBER,
-                        annotations={
-                        },
-                    ),
-                ),
-                result=None,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                ),
-                annotations={
-                },
-            ),
-            __MethodSpec.create(
-                name="lobDataById",
-                arguments=(
-                    __ArgumentSpec.create(
-                        name="id",
-                        type=int,
-                        kind=__NumberType.I64,
-                        annotations={
-                        },
-                    ),
-                    __ArgumentSpec.create(
-                        name="data",
-                        type=str,
-                        kind=__NumberType.NOT_A_NUMBER,
-                        annotations={
-                        },
-                    ),
-                ),
-                result=None,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                ),
-                annotations={
-                },
-            ),
-            __MethodSpec.create(
-                name="doNothing",
-                arguments=(
-                ),
-                result=None,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                ),
-                annotations={
-                    """cpp.name""": """cppDoNothing""",
-                },
-            ),
-        ),
         annotations={
         },
     )
+    spec.add_method(
+        __MethodSpec.create(
+            name="ping",
+            arguments=(
+            ),
+            result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec.create(
+            name="getRandomData",
+            arguments=(
+            ),
+            result=str,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec.create(
+            name="hasDataById",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="id",
+                    type=int,
+                    kind=__NumberType.I64,
+                    annotations={
+                    },
+                ),
+            ),
+            result=bool,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec.create(
+            name="getDataById",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="id",
+                    type=int,
+                    kind=__NumberType.I64,
+                    annotations={
+                    },
+                ),
+            ),
+            result=str,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec.create(
+            name="putDataById",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="id",
+                    type=int,
+                    kind=__NumberType.I64,
+                    annotations={
+                    },
+                ),
+                __ArgumentSpec.create(
+                    name="data",
+                    type=str,
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
+                ),
+            ),
+            result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec.create(
+            name="lobDataById",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="id",
+                    type=int,
+                    kind=__NumberType.I64,
+                    annotations={
+                    },
+                ),
+                __ArgumentSpec.create(
+                    name="data",
+                    type=str,
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
+                ),
+            ),
+            result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec.create(
+            name="doNothing",
+            arguments=(
+            ),
+            result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+                """cpp.name""": """cppDoNothing""",            },
+        )
+    )
+    return spec
 
 
 cdef __InterfaceSpec get_reflection__MyServicePrioParent(bint for_clients):
-    return __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec.create(
         name="MyServicePrioParent",
-        methods=(
-            __MethodSpec.create(
-                name="ping",
-                arguments=(
-                ),
-                result=None,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                ),
-                annotations={
-                    """priority""": """IMPORTANT""",
-                },
-            ),
-            __MethodSpec.create(
-                name="pong",
-                arguments=(
-                ),
-                result=None,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                ),
-                annotations={
-                    """priority""": """HIGH_IMPORTANT""",
-                },
-            ),
-        ),
         annotations={
-            """priority""": """HIGH""",
-        },
+            """priority""": """HIGH""",        },
     )
+    spec.add_method(
+        __MethodSpec.create(
+            name="ping",
+            arguments=(
+            ),
+            result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+                """priority""": """IMPORTANT""",            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec.create(
+            name="pong",
+            arguments=(
+            ),
+            result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+                """priority""": """HIGH_IMPORTANT""",            },
+        )
+    )
+    return spec
 
 
 cdef __InterfaceSpec get_reflection__MyServicePrioChild(bint for_clients):
-    return __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec.create(
         name="MyServicePrioChild",
-        methods=(
-            __MethodSpec.create(
-                name="pang",
-                arguments=(
-                ),
-                result=None,
-                result_kind=__NumberType.NOT_A_NUMBER,
-                exceptions=(
-                ),
-                annotations={
-                    """priority""": """BEST_EFFORT""",
-                },
-            ),
-        ),
         annotations={
         },
     )
+    spec.add_method(
+        __MethodSpec.create(
+            name="pang",
+            arguments=(
+            ),
+            result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+                """priority""": """BEST_EFFORT""",            },
+        )
+    )
+    return spec

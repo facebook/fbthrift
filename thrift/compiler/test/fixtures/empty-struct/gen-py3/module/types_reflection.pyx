@@ -29,22 +29,18 @@ cdef __StructSpec get_reflection__Empty():
             default_inst[_module_types.cEmpty]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="Empty",
         kind=__StructType.STRUCT,
-        fields=(
-        ),
         annotations={
         },
     )
-
+    return spec
 cdef __StructSpec get_reflection__Nada():
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="Nada",
         kind=__StructType.UNION,
-        fields=(
-        ),
         annotations={
         },
     )
-
+    return spec

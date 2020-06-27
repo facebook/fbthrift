@@ -18,28 +18,29 @@ cimport my.namespacing.test.module.module.types as _my_namespacing_test_module_m
 
 
 cdef __InterfaceSpec get_reflection__TestService(bint for_clients):
-    return __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec.create(
         name="TestService",
-        methods=(
-            __MethodSpec.create(
-                name="init",
-                arguments=(
-                    __ArgumentSpec.create(
-                        name="int1",
-                        type=int,
-                        kind=__NumberType.I64,
-                        annotations={
-                        },
-                    ),
-                ),
-                result=int,
-                result_kind=__NumberType.I64,
-                exceptions=(
-                ),
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
+    spec.add_method(
+        __MethodSpec.create(
+            name="init",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="int1",
+                    type=int,
+                    kind=__NumberType.I64,
+                    annotations={
+                    },
+                ),
+            ),
+            result=int,
+            result_kind=__NumberType.I64,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    return spec

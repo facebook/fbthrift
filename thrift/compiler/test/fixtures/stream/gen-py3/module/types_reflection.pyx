@@ -29,12 +29,10 @@ cdef __StructSpec get_reflection__FooEx():
             default_inst[_module_types.cFooEx]()
         )
     )
-    return __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec.create(
         name="FooEx",
         kind=__StructType.EXCEPTION,
-        fields=(
-        ),
         annotations={
         },
     )
-
+    return spec

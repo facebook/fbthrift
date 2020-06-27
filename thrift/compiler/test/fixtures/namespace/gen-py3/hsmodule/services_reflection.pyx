@@ -18,28 +18,29 @@ cimport hsmodule.types as _hsmodule_types
 
 
 cdef __InterfaceSpec get_reflection__HsTestService(bint for_clients):
-    return __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec.create(
         name="HsTestService",
-        methods=(
-            __MethodSpec.create(
-                name="init",
-                arguments=(
-                    __ArgumentSpec.create(
-                        name="int1",
-                        type=int,
-                        kind=__NumberType.I64,
-                        annotations={
-                        },
-                    ),
-                ),
-                result=int,
-                result_kind=__NumberType.I64,
-                exceptions=(
-                ),
-                annotations={
-                },
-            ),
-        ),
         annotations={
         },
     )
+    spec.add_method(
+        __MethodSpec.create(
+            name="init",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="int1",
+                    type=int,
+                    kind=__NumberType.I64,
+                    annotations={
+                    },
+                ),
+            ),
+            result=int,
+            result_kind=__NumberType.I64,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    return spec
