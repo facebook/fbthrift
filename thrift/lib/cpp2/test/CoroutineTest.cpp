@@ -56,13 +56,6 @@ class CoroutineServiceHandlerCoro : virtual public CoroutineSvIf {
     co_return response;
   }
 
-  folly::coro::Task<std::unique_ptr<SumResponse>> co_computeSumEb(
-      std::unique_ptr<SumRequest> request) override {
-    auto response = std::make_unique<SumResponse>();
-    response->sum = request->x + request->y;
-    co_return response;
-  }
-
   folly::coro::Task<int32_t> co_computeSumPrimitive(int32_t x, int32_t y)
       override {
     co_return x + y;
@@ -129,17 +122,6 @@ class CoroutineServiceHandlerCoro : virtual public CoroutineSvIf {
     throw Ex();
   }
 
-  folly::coro::Task<std::unique_ptr<SumResponse>> co_computeSumThrowsUserExEb(
-      std::unique_ptr<SumRequest>) override {
-    throw Ex();
-  }
-
-  folly::coro::Task<int32_t> co_computeSumThrowsUserExPrimitiveEb(
-      int32_t,
-      int32_t) override {
-    throw Ex();
-  }
-
   folly::Promise<int32_t> onewayRequestPromise;
 };
 
@@ -154,13 +136,6 @@ class CoroutineServiceHandlerFuture : virtual public CoroutineSvIf {
   }
 
   folly::Future<std::unique_ptr<SumResponse>> future_computeSum(
-      std::unique_ptr<SumRequest> request) override {
-    auto response = std::make_unique<SumResponse>();
-    response->sum = request->x + request->y;
-    return folly::makeFuture(std::move(response));
-  }
-
-  folly::Future<std::unique_ptr<SumResponse>> future_computeSumEb(
       std::unique_ptr<SumRequest> request) override {
     auto response = std::make_unique<SumResponse>();
     response->sum = request->x + request->y;
@@ -230,19 +205,6 @@ class CoroutineServiceHandlerFuture : virtual public CoroutineSvIf {
         folly::exception_wrapper(folly::in_place, Ex()));
   }
 
-  folly::Future<std::unique_ptr<SumResponse>> future_computeSumThrowsUserExEb(
-      std::unique_ptr<SumRequest> /* request */) override {
-    return folly::makeFuture<std::unique_ptr<SumResponse>>(
-        folly::exception_wrapper(folly::in_place, Ex()));
-  }
-
-  folly::Future<int32_t> future_computeSumThrowsUserExPrimitiveEb(
-      int32_t,
-      int32_t) override {
-    return folly::makeFuture<int32_t>(
-        folly::exception_wrapper(folly::in_place, Ex()));
-  }
-
   folly::Promise<int32_t> onewayRequestPromise;
 };
 
@@ -303,17 +265,6 @@ TYPED_TEST_P(CoroutineTest, SumVoid) {
   this->expectSumResults([&](int x, int y) {
     this->client_->sync_computeSumVoid(x, y);
     return voidReturnValue;
-  });
-}
-
-TYPED_TEST_P(CoroutineTest, SumEb) {
-  this->expectSumResults([&](int x, int y) {
-    SumRequest request;
-    request.x = x;
-    request.y = y;
-    SumResponse response;
-    this->client_->sync_computeSumEb(response, request);
-    return response.sum;
   });
 }
 
@@ -456,41 +407,12 @@ TYPED_TEST_P(CoroutineTest, SumThrowsUserExPrimitive) {
   }
 }
 
-TYPED_TEST_P(CoroutineTest, SumThrowsUserExEb) {
-  for (int i = 0; i < 10; ++i) {
-    bool error = false;
-    try {
-      SumRequest request;
-      request.x = i;
-      request.y = i;
-      SumResponse response;
-      this->client_->sync_computeSumThrowsUserExEb(response, request);
-    } catch (const Ex&) {
-      error = true;
-    }
-    EXPECT_TRUE(error);
-  }
-}
-
-TYPED_TEST_P(CoroutineTest, SumThrowsUserExPrimitiveEb) {
-  for (int i = 0; i < 10; ++i) {
-    bool error = false;
-    try {
-      this->client_->sync_computeSumThrowsUserExPrimitiveEb(i, i);
-    } catch (const Ex&) {
-      error = true;
-    }
-    EXPECT_TRUE(error);
-  }
-}
-
 REGISTER_TYPED_TEST_CASE_P(
     CoroutineTest,
     SumNoCoro,
     Sum,
     SumPrimitive,
     SumVoid,
-    SumEb,
     SumUnimplemented,
     SumUnimplementedPrimitive,
     SumThrows,
@@ -501,9 +423,7 @@ REGISTER_TYPED_TEST_CASE_P(
     Oneway,
     TakesRequestParams,
     SumThrowsUserEx,
-    SumThrowsUserExPrimitive,
-    SumThrowsUserExEb,
-    SumThrowsUserExPrimitiveEb);
+    SumThrowsUserExPrimitive);
 
 INSTANTIATE_TYPED_TEST_CASE_P(
     CoroutineTest,
@@ -577,20 +497,6 @@ TEST_F(CoroutineClientTest, SumPrimitiveCoroClient) {
       .semi()
       .via(&eventBase_)
       .then([&](folly::Try<int32_t> result) { EXPECT_EQ(420, *result); })
-      .getVia(&eventBase_);
-}
-
-TEST_F(CoroutineClientTest, SumEbCoroClient) {
-  SumRequest request;
-  request.x = 77;
-  request.y = 941;
-
-  client_->co_computeSumEb(request)
-      .semi()
-      .via(&eventBase_)
-      .then([&](folly::Try<SumResponse> response) {
-        EXPECT_EQ(1018, response->sum);
-      })
       .getVia(&eventBase_);
 }
 

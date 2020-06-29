@@ -36,25 +36,9 @@ void ExtraServiceSvIf::async_tm_simple_function(std::unique_ptr<apache::thrift::
   });
 }
 
-void ExtraServiceSvIf::throws_function() {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("throws_function");
-}
-
-folly::SemiFuture<folly::Unit> ExtraServiceSvIf::semifuture_throws_function() {
-  return apache::thrift::detail::si::semifuture([&] {
-    return throws_function();
-  });
-}
-
-folly::Future<folly::Unit> ExtraServiceSvIf::future_throws_function() {
-  return apache::thrift::detail::si::future(semifuture_throws_function(), getThreadManager());
-}
-
 
 void ExtraServiceSvIf::async_eb_throws_function(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable {
-    return future_throws_function();
-  });
+  callback->exception(apache::thrift::TApplicationException("Function throws_function is unimplemented"));
 }
 
 bool ExtraServiceSvIf::throws_function2(bool /*param1*/) {
@@ -139,25 +123,9 @@ void ExtraServiceSvIf::async_tm_oneway_void_ret_i32_i32_i32_i32_i32_param(std::u
   });
 }
 
-void ExtraServiceSvIf::oneway_void_ret_map_setlist_param(const ::std::map<::std::string, int64_t>& /*param1*/, const ::std::set<::std::vector<::std::string>>& /*param2*/) {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("oneway_void_ret_map_setlist_param");
-}
 
-folly::SemiFuture<folly::Unit> ExtraServiceSvIf::semifuture_oneway_void_ret_map_setlist_param(const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2) {
-  return apache::thrift::detail::si::semifuture([&] {
-    return oneway_void_ret_map_setlist_param(param1, param2);
-  });
-}
-
-folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret_map_setlist_param(const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2) {
-  return apache::thrift::detail::si::future(semifuture_oneway_void_ret_map_setlist_param(param1, param2), getThreadManager());
-}
-
-
-void ExtraServiceSvIf::async_eb_oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2) {
-  apache::thrift::detail::si::async_eb_oneway(this, std::move(callback), [this, param1 = std::move(param1), param2 = std::move(param2)]() mutable {
-    return future_oneway_void_ret_map_setlist_param(param1, param2);
-  });
+void ExtraServiceSvIf::async_eb_oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> /*callback*/, const ::std::map<::std::string, int64_t>& /*param1*/, const ::std::set<::std::vector<::std::string>>& /*param2*/) {
+  LOG(DFATAL) << "Function oneway_void_ret_map_setlist_param is unimplemented";
 }
 
 void ExtraServiceSvIf::oneway_void_ret_struct_param(const  ::some::valid::ns::MyStruct& /*param1*/) {

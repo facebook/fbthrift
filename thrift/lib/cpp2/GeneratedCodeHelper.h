@@ -1249,17 +1249,6 @@ void async_tm_oneway_coro_start(
 }
 
 template <typename T>
-void async_eb_oneway_coro_start(
-    folly::coro::Task<T>&& task,
-    folly::Executor::KeepAlive<> executor,
-    CallbackBasePtr&& callback) {
-  std::move(task)
-      .scheduleOn(std::move(executor))
-      .start([callback = std::move(callback)](
-                 folly::Try<folly::lift_unit_t<T>>&&) mutable {});
-}
-
-template <typename T>
 void async_tm_coro_start(
     folly::coro::Task<T>&& task,
     folly::Executor::KeepAlive<> executor,
@@ -1274,20 +1263,6 @@ void async_tm_coro_start(
           });
 }
 
-template <typename T>
-void async_eb_coro_start(
-    folly::coro::Task<T>&& task,
-    folly::Executor::KeepAlive<> executor,
-    std::unique_ptr<apache::thrift::HandlerCallback<T>>&& callback) {
-  std::move(task)
-      .scheduleOn(std::move(executor))
-      .start([callback = std::move(callback)](
-                 folly::Try<folly::lift_unit_t<T>>&& tryResult) mutable {
-        apache::thrift::HandlerCallback<T>::completeInThread(
-            std::move(callback), std::move(tryResult));
-      });
-}
-
 inline folly::coro::Task<void> future_to_task(folly::Future<folly::Unit> f) {
   co_await std::move(f);
 }
@@ -1297,25 +1272,6 @@ folly::coro::Task<T> future_to_task(folly::Future<T> f) {
   co_return co_await std::move(f);
 }
 #endif
-
-template <class F>
-void async_eb_oneway(ServerInterface* si, CallbackBasePtr callback, F&& f) {
-  auto callbackp = callback.get();
-  callbackp->runFuncInQueue(
-      [si, callback = std::move(callback), f = std::forward<F>(f)]() mutable {
-        async_tm_oneway(si, std::move(callback), std::move(f));
-      },
-      true);
-}
-
-template <class F>
-void async_eb(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
-  auto callbackp = callback.get();
-  callbackp->runFuncInQueue(
-      [si, callback = std::move(callback), f = std::forward<F>(f)]() mutable {
-        async_tm(si, std::move(callback), std::move(f));
-      });
-}
 
 [[noreturn]] void throw_app_exn_unimplemented(char const* name);
 } // namespace si

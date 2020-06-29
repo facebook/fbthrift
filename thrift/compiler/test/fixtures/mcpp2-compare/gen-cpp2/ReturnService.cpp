@@ -15,25 +15,9 @@ std::unique_ptr<apache::thrift::AsyncProcessor> ReturnServiceSvIf::getProcessor(
 }
 
 
-void ReturnServiceSvIf::noReturn() {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("noReturn");
-}
-
-folly::SemiFuture<folly::Unit> ReturnServiceSvIf::semifuture_noReturn() {
-  return apache::thrift::detail::si::semifuture([&] {
-    return noReturn();
-  });
-}
-
-folly::Future<folly::Unit> ReturnServiceSvIf::future_noReturn() {
-  return apache::thrift::detail::si::future(semifuture_noReturn(), getThreadManager());
-}
-
 
 void ReturnServiceSvIf::async_eb_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable {
-    return future_noReturn();
-  });
+  callback->exception(apache::thrift::TApplicationException("Function noReturn is unimplemented"));
 }
 
 bool ReturnServiceSvIf::boolReturn() {
@@ -162,23 +146,9 @@ void ReturnServiceSvIf::async_tm_doubleReturn(std::unique_ptr<apache::thrift::Ha
   });
 }
 
-void ReturnServiceSvIf::stringReturn(::std::string& /*_return*/) {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("stringReturn");
-}
-
-folly::SemiFuture<std::unique_ptr<::std::string>> ReturnServiceSvIf::semifuture_stringReturn() {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::string& _return) { stringReturn(_return); });
-}
-
-folly::Future<std::unique_ptr<::std::string>> ReturnServiceSvIf::future_stringReturn() {
-  return apache::thrift::detail::si::future(semifuture_stringReturn(), getThreadManager());
-}
-
 
 void ReturnServiceSvIf::async_eb_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable {
-    return future_stringReturn();
-  });
+  callback->exception(apache::thrift::TApplicationException("Function stringReturn is unimplemented"));
 }
 
 void ReturnServiceSvIf::binaryReturn(::std::string& /*_return*/) {
@@ -278,44 +248,14 @@ void ReturnServiceSvIf::async_tm_list_mostComplexTypedefReturn(std::unique_ptr<a
   });
 }
 
- ::some::valid::ns::MyEnumA ReturnServiceSvIf::enumReturn() {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("enumReturn");
-}
-
-folly::SemiFuture< ::some::valid::ns::MyEnumA> ReturnServiceSvIf::semifuture_enumReturn() {
-  return apache::thrift::detail::si::semifuture([&] {
-    return enumReturn();
-  });
-}
-
-folly::Future< ::some::valid::ns::MyEnumA> ReturnServiceSvIf::future_enumReturn() {
-  return apache::thrift::detail::si::future(semifuture_enumReturn(), getThreadManager());
-}
-
 
 void ReturnServiceSvIf::async_eb_enumReturn(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback) {
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable {
-    return future_enumReturn();
-  });
-}
-
-void ReturnServiceSvIf::list_EnumReturn(::std::vector< ::some::valid::ns::MyEnumA>& /*_return*/) {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("list_EnumReturn");
-}
-
-folly::SemiFuture<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>> ReturnServiceSvIf::semifuture_list_EnumReturn() {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::vector< ::some::valid::ns::MyEnumA>& _return) { list_EnumReturn(_return); });
-}
-
-folly::Future<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>> ReturnServiceSvIf::future_list_EnumReturn() {
-  return apache::thrift::detail::si::future(semifuture_list_EnumReturn(), getThreadManager());
+  callback->exception(apache::thrift::TApplicationException("Function enumReturn is unimplemented"));
 }
 
 
 void ReturnServiceSvIf::async_eb_list_EnumReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>>> callback) {
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable {
-    return future_list_EnumReturn();
-  });
+  callback->exception(apache::thrift::TApplicationException("Function list_EnumReturn is unimplemented"));
 }
 
 void ReturnServiceSvIf::structReturn( ::some::valid::ns::MyStruct& /*_return*/) {
@@ -356,23 +296,9 @@ void ReturnServiceSvIf::async_tm_set_StructReturn(std::unique_ptr<apache::thrift
   });
 }
 
-void ReturnServiceSvIf::unionReturn( ::some::valid::ns::ComplexUnion& /*_return*/) {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("unionReturn");
-}
-
-folly::SemiFuture<std::unique_ptr< ::some::valid::ns::ComplexUnion>> ReturnServiceSvIf::semifuture_unionReturn() {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&]( ::some::valid::ns::ComplexUnion& _return) { unionReturn(_return); });
-}
-
-folly::Future<std::unique_ptr< ::some::valid::ns::ComplexUnion>> ReturnServiceSvIf::future_unionReturn() {
-  return apache::thrift::detail::si::future(semifuture_unionReturn(), getThreadManager());
-}
-
 
 void ReturnServiceSvIf::async_eb_unionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>> callback) {
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable {
-    return future_unionReturn();
-  });
+  callback->exception(apache::thrift::TApplicationException("Function unionReturn is unimplemented"));
 }
 
 void ReturnServiceSvIf::list_UnionReturn(::std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/) {
@@ -394,23 +320,9 @@ void ReturnServiceSvIf::async_tm_list_UnionReturn(std::unique_ptr<apache::thrift
   });
 }
 
-void ReturnServiceSvIf::readDataEb( ::some::valid::ns::IOBuf& /*_return*/, int64_t /*size*/) {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("readDataEb");
-}
 
-folly::SemiFuture<std::unique_ptr< ::some::valid::ns::IOBuf>> ReturnServiceSvIf::semifuture_readDataEb(int64_t size) {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&]( ::some::valid::ns::IOBuf& _return) { readDataEb(_return, size); });
-}
-
-folly::Future<std::unique_ptr< ::some::valid::ns::IOBuf>> ReturnServiceSvIf::future_readDataEb(int64_t size) {
-  return apache::thrift::detail::si::future(semifuture_readDataEb(size), getThreadManager());
-}
-
-
-void ReturnServiceSvIf::async_eb_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBuf>>> callback, int64_t size) {
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [this, size]() mutable {
-    return future_readDataEb(size);
-  });
+void ReturnServiceSvIf::async_eb_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBuf>>> callback, int64_t /*size*/) {
+  callback->exception(apache::thrift::TApplicationException("Function readDataEb is unimplemented"));
 }
 
 void ReturnServiceSvIf::readData( ::some::valid::ns::IOBufPtr& /*_return*/, int64_t /*size*/) {

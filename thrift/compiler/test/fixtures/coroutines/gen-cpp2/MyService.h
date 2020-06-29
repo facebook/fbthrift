@@ -37,8 +37,6 @@ class MyServiceSvAsyncIf {
   virtual folly::Future<bool> future_hasDataById(int64_t id) = 0;
   virtual folly::SemiFuture<bool> semifuture_hasDataById(int64_t id) = 0;
   virtual void async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, int64_t id) = 0;
-  virtual folly::Future<std::unique_ptr<::std::string>> future_getDataById(int64_t id) = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getDataById(int64_t id) = 0;
   virtual void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<::std::string> data) = 0;
   virtual folly::Future<folly::Unit> future_putDataById(int64_t id, std::unique_ptr<::std::string> data) = 0;
   virtual folly::SemiFuture<folly::Unit> semifuture_putDataById(int64_t id, std::unique_ptr<::std::string> data) = 0;
@@ -70,13 +68,6 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
   virtual folly::coro::Task<bool> co_hasDataById(apache::thrift::RequestParams params, int64_t id);
 #endif
   void async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) override;
-  virtual void getDataById(::std::string& /*_return*/, int64_t /*id*/);
-  folly::Future<std::unique_ptr<::std::string>> future_getDataById(int64_t id) override;
-  folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getDataById(int64_t id) override;
-#if FOLLY_HAS_COROUTINES
-  virtual folly::coro::Task<std::unique_ptr<::std::string>> co_getDataById(int64_t id);
-  virtual folly::coro::Task<std::unique_ptr<::std::string>> co_getDataById(apache::thrift::RequestParams params, int64_t id);
-#endif
   void async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, int64_t id) override;
   virtual void putDataById(int64_t /*id*/, std::unique_ptr<::std::string> /*data*/);
   folly::Future<folly::Unit> future_putDataById(int64_t id, std::unique_ptr<::std::string> data) override;

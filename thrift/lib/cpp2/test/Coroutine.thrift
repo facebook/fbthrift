@@ -32,7 +32,6 @@ service Coroutine {
 
   SumResponse computeSum(1: SumRequest request) (cpp.coroutine);
   i32 computeSumPrimitive(1: i32 x, 2: i32 y) (cpp.coroutine);
-  SumResponse computeSumEb(1: SumRequest request) (cpp.coroutine, thread='eb');
 
   void computeSumVoid(1: i32 x, 2: i32 y) (cpp.coroutine);
 
@@ -55,8 +54,4 @@ service Coroutine {
     (cpp.coroutine);
   i32 computeSumThrowsUserExPrimitive(1: i32 x, 2: i32 y) throws (1: Ex e)
     (cpp.coroutine);
-  SumResponse computeSumThrowsUserExEb(1: SumRequest request) throws (1: Ex e)
-    (cpp.coroutine, thread='eb');
-  i32 computeSumThrowsUserExPrimitiveEb(1: i32 x, 2: i32 y) throws (1: Ex e)
-    (cpp.coroutine, thread='eb');
 }

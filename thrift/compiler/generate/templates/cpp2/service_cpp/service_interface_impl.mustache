@@ -16,6 +16,7 @@
 
 %><%#service:functions%><%#function:returnType%>
 
+<%^function:eb%>
 <% > service_common/function_return_type %> <%service:name%>SvIf::<%function:cpp_name%>(<% > service_common/function_return_param %><% > service_common/function_param_list_commented_out%>) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("<%function:name%>");
 }
@@ -47,19 +48,20 @@ folly::coro::Task<<% > service_common/callback_type %>> <%service:name%>SvIf::co
 }
 #endif // FOLLY_HAS_COROUTINES
 <%/function:coroutine?%>
+<%/function:eb%>
 
 <%#function:oneway?%>
+<%^function:eb%>
 <%^function:coroutine?%>
-void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list%>) {
-  apache::thrift::detail::si::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_oneway(this, std::move(callback), <%#function:eb%>[this<%function:comma%><% > service_common/param_list_move_assignment%>]() mutable<%/function:eb%><%^function:eb%>[&]<%/function:eb%> {
+void <%service:name%>SvIf::async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list%>) {
+  apache::thrift::detail::si::async_tm_oneway(this, std::move(callback), [&] {
     return future_<%function:cpp_name%>(<% > service_common/param_list_move%>);
   });
 }
 <%/function:coroutine?%>
 <%#function:coroutine?%>
-void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list%>) {
+void <%service:name%>SvIf::async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list%>) {
 #if FOLLY_HAS_COROUTINES
-<%^function:eb%>
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we have to
@@ -67,11 +69,10 @@ void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:e
   // shouldn't generate the future, semifuture, and synchronous member functions
   // for entry points that explicitly ask for coroutines.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-<%/function:eb%>
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
   try {
-    apache::thrift::detail::si::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_oneway_coro_start(
+    apache::thrift::detail::si::async_tm_oneway_coro_start(
       co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>),
       params.getThreadManager(),
       std::move(callback));
@@ -79,25 +80,31 @@ void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:e
     callback->exception(std::current_exception());
   }
 #else // FOLLY_HAS_COROUTINES
-  apache::thrift::detail::si::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_oneway(this, std::move(callback), <%#function:eb%>[this<%function:comma%><% > service_common/param_list_move_assignment%>]() mutable<%/function:eb%><%^function:eb%>[&]<%/function:eb%> {
+  apache::thrift::detail::si::async_tm_oneway(this, std::move(callback), [&] {
     return future_<%function:cpp_name%>(<% > service_common/param_list_move%>);
   });
 #endif // FOLLY_HAS_COROUTINES
 }
 <%/function:coroutine?%>
+<%/function:eb%>
+<%#function:eb%>
+void <%service:name%>SvIf::async_eb_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> /*callback*/<%function:comma%><% > service_common/function_param_list_commented_out%>) {
+  LOG(DFATAL) << "Function <%function:cpp_name%> is unimplemented";
+}
+<%/function:eb%>
 <%/function:oneway?%>
 <%^function:oneway?%>
+<%^function:eb%>
 <%^function:coroutine?%>
-void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list%>) {
-  apache::thrift::detail::si::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>(this, std::move(callback), <%#function:eb%>[this<%function:comma%><% > service_common/param_list_move_assignment%>]() mutable<%/function:eb%><%^function:eb%>[&]<%/function:eb%> {
+void <%service:name%>SvIf::async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list%>) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_<%function:cpp_name%>(<% > service_common/param_list_move%>);
   });
 }
 <%/function:coroutine?%>
 <%#function:coroutine?%>
-void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list%>) {
+void <%service:name%>SvIf::async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list%>) {
 #if FOLLY_HAS_COROUTINES
-<%^function:eb%>
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we have to
@@ -105,11 +112,10 @@ void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:e
   // shouldn't generate the future, semifuture, and synchronous member functions
   // for entry points that explicitly ask for coroutines.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-<%/function:eb%>
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
   try {
-    apache::thrift::detail::si::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_coro_start(
+    apache::thrift::detail::si::async_tm_coro_start(
       co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>),
       params.getThreadManager(),
       std::move(callback));
@@ -117,11 +123,17 @@ void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:e
     callback->exception(std::current_exception());
   }
 #else // FOLLY_HAS_COROUTINES
-  apache::thrift::detail::si::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>(this, std::move(callback), <%#function:eb%>[this<%function:comma%><% > service_common/param_list_move_assignment%>]() mutable<%/function:eb%><%^function:eb%>[&]<%/function:eb%> {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_<%function:cpp_name%>(<% > service_common/param_list_move%>);
   });
 #endif // FOLLY_HAS_COROUTINES
 }
 <%/function:coroutine?%>
+<%/function:eb%>
+<%#function:eb%>
+void <%service:name%>SvIf::async_eb_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list_commented_out%>) {
+  callback->exception(apache::thrift::TApplicationException("Function <%function:cpp_name%> is unimplemented"));
+}
+<%/function:eb%>
 <%/function:oneway?%>
 <%/function:returnType%><%/service:functions%>

@@ -136,46 +136,9 @@ void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::Handler
 #endif // FOLLY_HAS_COROUTINES
 }
 
-void MyServiceSvIf::getDataById(::std::string& /*_return*/, int64_t /*id*/) {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("getDataById");
-}
 
-folly::SemiFuture<std::unique_ptr<::std::string>> MyServiceSvIf::semifuture_getDataById(int64_t id) {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::string& _return) { getDataById(_return, id); });
-}
-
-folly::Future<std::unique_ptr<::std::string>> MyServiceSvIf::future_getDataById(int64_t id) {
-  return apache::thrift::detail::si::future(semifuture_getDataById(id), getThreadManager());
-}
-
-#if FOLLY_HAS_COROUTINES
-folly::coro::Task<std::unique_ptr<::std::string>> MyServiceSvIf::co_getDataById(int64_t id) {
-  auto future = future_getDataById(id);
-  return apache::thrift::detail::si::future_to_task(std::move(future));
-}
-
-folly::coro::Task<std::unique_ptr<::std::string>> MyServiceSvIf::co_getDataById(apache::thrift::RequestParams /* params */, int64_t id) {
-  return co_getDataById(id);
-}
-#endif // FOLLY_HAS_COROUTINES
-
-void MyServiceSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, int64_t id) {
-#if FOLLY_HAS_COROUTINES
-  apache::thrift::RequestParams params{callback->getConnectionContext(),
-    callback->getThreadManager(), callback->getEventBase()};
-  try {
-    apache::thrift::detail::si::async_eb_coro_start(
-      co_getDataById(params, id),
-      params.getThreadManager(),
-      std::move(callback));
-  } catch (...) {
-    callback->exception(std::current_exception());
-  }
-#else // FOLLY_HAS_COROUTINES
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [this, id]() mutable {
-    return future_getDataById(id);
-  });
-#endif // FOLLY_HAS_COROUTINES
+void MyServiceSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, int64_t /*id*/) {
+  callback->exception(apache::thrift::TApplicationException("Function getDataById is unimplemented"));
 }
 
 void MyServiceSvIf::putDataById(int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) {
