@@ -461,3 +461,83 @@ TEST(TestWithoutFollyOptionals, UnsetUnsafe) {
   detail::unset_unsafe(obj.int64Def_ref());
   EXPECT_FALSE(obj.int64Def_ref().has_value());
 }
+
+TEST(TestWithoutFollyOptionals, RefForUnqualifiedField) {
+  cpp2::HasOptionals obj;
+  EXPECT_TRUE(obj.int64Req_ref().has_value());
+  obj.int64Req_ref() = 42;
+  EXPECT_TRUE(obj.int64Req_ref().has_value());
+  EXPECT_EQ(obj.int64Req_ref(), 42);
+
+  EXPECT_TRUE(obj.stringReq_ref().has_value());
+  obj.stringReq_ref() = "foo";
+  EXPECT_TRUE(obj.stringReq_ref().has_value());
+  EXPECT_EQ(obj.stringReq_ref(), "foo");
+}
+
+TEST(TestWithoutFollyOptionals, MoveFrom) {
+  cpp2::HasOptionals obj1;
+  cpp2::HasOptionals obj2;
+
+  obj1.int64Opt_ref() = 1;
+  obj2.int64Opt_ref().move_from(obj1.int64Opt_ref());
+  EXPECT_EQ(obj2.int64Opt_ref(), 1);
+
+  obj1.int64Opt_ref() = 2;
+  obj2.int64Opt_ref().move_from(std::move(obj1).int64Opt_ref());
+  EXPECT_EQ(obj2.int64Opt_ref(), 2);
+
+  obj1.int64Opt_ref() = 3;
+  obj2.int64Opt_ref().move_from(std::move(obj1).int64Opt_ref());
+  EXPECT_EQ(obj2.int64Opt_ref().value(), 3);
+
+  obj1.int64Opt_ref() = 4;
+  obj2.int64Opt_ref().move_from(std::move(obj1).int64Opt_ref());
+  EXPECT_EQ(obj2.int64Opt_ref().value(), 4);
+}
+
+TEST(TestWithoutFollyOptionals, CopyFrom) {
+  cpp2::HasOptionals obj1;
+  cpp2::HasOptionals obj2;
+
+  obj1.int64Opt_ref() = 1;
+  obj2.int64Opt_ref().copy_from(obj1.int64Opt_ref());
+  EXPECT_EQ(obj1.int64Opt_ref().value(), 1);
+  EXPECT_EQ(obj2.int64Opt_ref().value(), 1);
+
+  obj1.int64Opt_ref() = 2;
+  obj2.int64Opt_ref().copy_from(obj1.int64Opt_ref());
+  EXPECT_EQ(obj1.int64Opt_ref().value(), 2);
+  EXPECT_EQ(obj2.int64Opt_ref().value(), 2);
+
+  obj1.int64Opt_ref() = 3;
+  obj2.int64Opt_ref().copy_from(obj1.int64Opt_ref());
+  EXPECT_EQ(obj1.int64Opt_ref().value(), 3);
+  EXPECT_EQ(obj2.int64Opt_ref().value(), 3);
+
+  obj1.int64Opt_ref() = 4;
+  obj2.int64Opt_ref().copy_from(obj1.int64Opt_ref());
+  EXPECT_EQ(obj1.int64Opt_ref().value(), 4);
+  EXPECT_EQ(obj2.int64Opt_ref().value(), 4);
+}
+
+TEST(TestWithoutFollyOptionals, AddRef) {
+  cpp2::HasOptionals obj;
+  static_assert(std::is_same_v<
+                decltype(obj.int64Opt_ref()),
+                optional_field_ref<int64_t&>>);
+  static_assert(std::is_same_v<
+                decltype(std::as_const(obj).int64Opt_ref()),
+                optional_field_ref<const int64_t&>>);
+  static_assert(std::is_same_v<
+                decltype(std::move(obj).int64Opt_ref()),
+                optional_field_ref<int64_t&&>>);
+  static_assert(std::is_same_v<
+                decltype(std::move(std::as_const(obj)).int64Opt_ref()),
+                optional_field_ref<const int64_t&&>>);
+  obj.int64Opt_ref() = 42;
+  EXPECT_EQ(obj.int64Opt_ref(), 42);
+  auto value = std::map<int64_t, int64_t>{{1, 2}};
+  obj.mapOpt_ref() = value;
+  EXPECT_EQ(*obj.mapOpt_ref(), value);
+}
