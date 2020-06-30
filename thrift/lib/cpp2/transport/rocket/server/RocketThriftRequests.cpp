@@ -302,7 +302,6 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
 FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
     ResponseRpcMetadata& metadata,
     std::unique_ptr<folly::IOBuf>& payload,
-    RocketServerFrameContext& frameContext,
     apache::thrift::protocol::PROTOCOL_TYPES protType,
     int32_t version,
     const folly::Optional<CompressionConfig>& compressionConfig) noexcept {
@@ -317,11 +316,6 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
   if (compressionConfig.has_value()) {
     detail::setCompressionCodec(
         *compressionConfig, metadata, payload->computeChainDataLength());
-  } else if (
-      auto compression = frameContext.connection().getCompressionAlgorithm(
-          payload->computeChainDataLength())) {
-    // if negotiation is enabled, use the negotiated compression codec
-    metadata.compression_ref() = *compression;
   }
 
   DCHECK(version >= 0);
@@ -378,12 +372,7 @@ void ThriftServerRequestResponse::sendThriftResponse(
     std::unique_ptr<folly::IOBuf> data,
     apache::thrift::MessageChannel::SendCallbackPtr cb) noexcept {
   if (auto error = processFirstResponse(
-          metadata,
-          data,
-          context_,
-          getProtoId(),
-          version_,
-          getCompressionConfig())) {
+          metadata, data, getProtoId(), version_, getCompressionConfig())) {
     error.handle(
         [&](RocketException& ex) {
           context_.sendError(std::move(ex), std::move(cb));
@@ -494,12 +483,7 @@ bool ThriftServerRequestStream::sendStreamThriftResponse(
     return false;
   }
   if (auto error = processFirstResponse(
-          metadata,
-          data,
-          context_,
-          getProtoId(),
-          version_,
-          getCompressionConfig())) {
+          metadata, data, getProtoId(), version_, getCompressionConfig())) {
     error.handle(
         [&](RocketException& ex) {
           std::exchange(clientCallback_, nullptr)
@@ -522,12 +506,7 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
     std::unique_ptr<folly::IOBuf> data,
     apache::thrift::detail::ServerStreamFactory&& stream) noexcept {
   if (auto error = processFirstResponse(
-          metadata,
-          data,
-          context_,
-          getProtoId(),
-          version_,
-          getCompressionConfig())) {
+          metadata, data, getProtoId(), version_, getCompressionConfig())) {
     error.handle(
         [&](RocketException& ex) {
           std::exchange(clientCallback_, nullptr)
@@ -549,12 +528,7 @@ void ThriftServerRequestStream::sendSerializedError(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> exbuf) noexcept {
   if (auto error = processFirstResponse(
-          metadata,
-          exbuf,
-          context_,
-          getProtoId(),
-          version_,
-          getCompressionConfig())) {
+          metadata, exbuf, getProtoId(), version_, getCompressionConfig())) {
     error.handle(
         [&](RocketException& ex) {
           std::exchange(clientCallback_, nullptr)
@@ -612,12 +586,7 @@ void ThriftServerRequestSink::sendSerializedError(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> exbuf) noexcept {
   if (auto error = processFirstResponse(
-          metadata,
-          exbuf,
-          context_,
-          getProtoId(),
-          version_,
-          getCompressionConfig())) {
+          metadata, exbuf, getProtoId(), version_, getCompressionConfig())) {
     error.handle(
         [&](RocketException& ex) {
           std::exchange(clientCallback_, nullptr)
@@ -642,12 +611,7 @@ void ThriftServerRequestSink::sendSinkThriftResponse(
     return;
   }
   if (auto error = processFirstResponse(
-          metadata,
-          data,
-          context_,
-          getProtoId(),
-          version_,
-          getCompressionConfig())) {
+          metadata, data, getProtoId(), version_, getCompressionConfig())) {
     error.handle(
         [&](RocketException& ex) {
           std::exchange(clientCallback_, nullptr)

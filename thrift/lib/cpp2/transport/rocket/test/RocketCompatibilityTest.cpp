@@ -284,52 +284,6 @@ TEST_F(RocketCompatibilityTest, ClientIdentityHook) {
   compatibilityTest_->TestClientIdentityHook();
 }
 
-/**
- * This is a test class with customized RoutingHandler. The main purpose is to
- * set compression on the server-side and test the behavior.
- */
-class RocketCompatibilityTest2 : public testing::Test {
- public:
-  RocketCompatibilityTest2() {
-    FLAGS_transport = "rocket";
-
-    compatibilityTest_ = std::make_unique<TransportCompatibilityTest>();
-    auto server = compatibilityTest_->getServer();
-    for (const auto& rh : *server->getRoutingHandlers()) {
-      if (auto rs = dynamic_cast<RocketRoutingHandler*>(rh.get())) {
-        rs->setDefaultCompression(CompressionAlgorithm::ZSTD);
-        break;
-      }
-    }
-    compatibilityTest_->startServer();
-  }
-
- protected:
-  std::unique_ptr<TransportCompatibilityTest> compatibilityTest_;
-};
-
-TEST_F(RocketCompatibilityTest2, RequestResponse_CompressResponse) {
-  compatibilityTest_->connectToServer([this](auto client) {
-    EXPECT_CALL(*compatibilityTest_->handler_.get(), echo_(testing::_));
-    auto* channel = dynamic_cast<RocketClientChannel*>(client->getChannel());
-    ASSERT_NE(nullptr, channel);
-
-    static const int kSize = 32 << 10;
-    std::string asString(kSize, 'a');
-    std::unique_ptr<folly::IOBuf> payload = folly::IOBuf::copyBuffer(asString);
-    auto result =
-        client->future_echo(RpcOptions().setEnableChecksum(true), *payload);
-    EXPECT_EQ(std::move(result).get(), asString);
-
-    auto sock = channel->getTransport()
-                    ->getUnderlyingTransport<TAsyncSocketIntercepted>();
-    ASSERT_NE(nullptr, sock);
-    int32_t numRead = sock->getTotalBytesRead();
-    // check that compression actually kicked in
-    EXPECT_LT(numRead, asString.size());
-  });
-}
-
 TEST_F(RSCompatibilityManuallyStartServerTest, TestCustomAsyncProcessor) {
   compatibilityTest_->TestCustomAsyncProcessor();
 }
