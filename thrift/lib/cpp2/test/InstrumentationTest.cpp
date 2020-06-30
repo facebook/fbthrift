@@ -32,7 +32,7 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DebugTestService.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/InstrumentationTestService.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 #include <algorithm>
 #include <atomic>
@@ -382,7 +382,7 @@ TEST_F(RequestInstrumentationTest, debugInterfaceTest) {
 
   // inject our setup frame handler for rocket connections
   for (const auto& rh : *thriftServer()->getRoutingHandlers()) {
-    auto rs = dynamic_cast<RSRoutingHandler*>(rh.get());
+    auto rs = dynamic_cast<RocketRoutingHandler*>(rh.get());
     if (rs != nullptr) {
       rs->addSetupFrameHandler(
           std::make_unique<DebuggingFrameHandler>(*thriftServer()));

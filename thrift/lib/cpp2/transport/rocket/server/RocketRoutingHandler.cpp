@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 
 #include <memory>
 #include <string>
@@ -31,17 +31,18 @@
 namespace apache {
 namespace thrift {
 
-RSRoutingHandler::RSRoutingHandler() {}
+RocketRoutingHandler::RocketRoutingHandler() {}
 
-RSRoutingHandler::~RSRoutingHandler() {
+RocketRoutingHandler::~RocketRoutingHandler() {
   stopListening();
 }
 
-void RSRoutingHandler::stopListening() {
+void RocketRoutingHandler::stopListening() {
   listening_ = false;
 }
 
-bool RSRoutingHandler::canAcceptConnection(const std::vector<uint8_t>& bytes) {
+bool RocketRoutingHandler::canAcceptConnection(
+    const std::vector<uint8_t>& bytes) {
   return listening_ &&
       /*
        * Sample start of an Rsocket frame (version 1.0) in Octal:
@@ -73,12 +74,12 @@ bool RSRoutingHandler::canAcceptConnection(const std::vector<uint8_t>& bytes) {
        && bytes[7] == 0x05);
 }
 
-bool RSRoutingHandler::canAcceptEncryptedConnection(
+bool RocketRoutingHandler::canAcceptEncryptedConnection(
     const std::string& protocolName) {
   return listening_ && protocolName == "rs";
 }
 
-void RSRoutingHandler::handleConnection(
+void RocketRoutingHandler::handleConnection(
     wangle::ConnectionManager* connectionManager,
     folly::AsyncTransport::UniquePtr sock,
     folly::SocketAddress const* address,
@@ -118,17 +119,18 @@ void RSRoutingHandler::handleConnection(
   }
 }
 
-void RSRoutingHandler::addSetupFrameHandler(
+void RocketRoutingHandler::addSetupFrameHandler(
     std::unique_ptr<rocket::SetupFrameHandler> handler) {
   setupFrameHandlers_.push_back(std::move(handler));
 }
 
-void RSRoutingHandler::setDefaultCompression(CompressionAlgorithm compression) {
+void RocketRoutingHandler::setDefaultCompression(
+    CompressionAlgorithm compression) {
   defaultCompression_ = compression;
 }
 
 const std::vector<std::unique_ptr<rocket::SetupFrameHandler>>&
-RSRoutingHandler::getSetupFrameHandlers() const {
+RocketRoutingHandler::getSetupFrameHandlers() const {
   return setupFrameHandlers_;
 }
 

@@ -131,13 +131,13 @@ add_library(
   transport/rocket/framing/Frames.cpp
   transport/rocket/framing/Serializer.cpp
   transport/rocket/framing/Util.cpp
+  transport/rocket/server/RocketRoutingHandler.cpp
   transport/rocket/server/RocketServerConnection.cpp
   transport/rocket/server/RocketServerFrameContext.cpp
   transport/rocket/server/RocketSinkClientCallback.cpp
   transport/rocket/server/RocketStreamClientCallback.cpp
   transport/rocket/server/RocketThriftRequests.cpp
   transport/rocket/server/ThriftRocketServerHandler.cpp
-  transport/rsocket/server/RSRoutingHandler.cpp
   util/Checksum.cpp
   util/ScopedServerInterfaceThread.cpp
   util/ScopedServerThread.cpp

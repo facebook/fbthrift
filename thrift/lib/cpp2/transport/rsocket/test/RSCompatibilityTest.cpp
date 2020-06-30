@@ -21,9 +21,9 @@
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/transport/core/testutil/MockCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TransportCompatibilityTest.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/ThriftRocketServerHandler.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestUtil.h>
 
 DECLARE_int32(num_client_connections);
@@ -55,7 +55,7 @@ class RSCompatibilityManuallyStartServerTest : public testing::Test {
 
     compatibilityTest_ = std::make_unique<TransportCompatibilityTest>();
     compatibilityTest_->addRoutingHandler(
-        std::make_unique<apache::thrift::RSRoutingHandler>());
+        std::make_unique<apache::thrift::RocketRoutingHandler>());
   }
 
  protected:
@@ -296,7 +296,7 @@ class RSCompatibilityTest2 : public testing::Test {
     compatibilityTest_ = std::make_unique<TransportCompatibilityTest>();
     auto server = compatibilityTest_->getServer();
     for (const auto& rh : *server->getRoutingHandlers()) {
-      if (auto rs = dynamic_cast<RSRoutingHandler*>(rh.get())) {
+      if (auto rs = dynamic_cast<RocketRoutingHandler*>(rh.get())) {
         rs->setDefaultCompression(CompressionAlgorithm::ZSTD);
         break;
       }

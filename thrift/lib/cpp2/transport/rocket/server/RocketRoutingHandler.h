@@ -25,12 +25,12 @@ namespace thrift {
 
 class Cpp2Worker;
 
-class RSRoutingHandler : public TransportRoutingHandler {
+class RocketRoutingHandler : public TransportRoutingHandler {
  public:
-  RSRoutingHandler();
-  ~RSRoutingHandler() override;
-  RSRoutingHandler(const RSRoutingHandler&) = delete;
-  RSRoutingHandler& operator=(const RSRoutingHandler&) = delete;
+  RocketRoutingHandler();
+  ~RocketRoutingHandler() override;
+  RocketRoutingHandler(const RocketRoutingHandler&) = delete;
+  RocketRoutingHandler& operator=(const RocketRoutingHandler&) = delete;
 
   void stopListening() override;
   bool canAcceptConnection(const std::vector<uint8_t>& bytes) override;

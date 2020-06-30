@@ -27,9 +27,9 @@
 #include <thrift/lib/cpp2/transport/core/testutil/FakeServerObserver.h>
 #include <thrift/lib/cpp2/transport/core/testutil/MockCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TAsyncSocketIntercepted.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/ThriftRocketServerHandler.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
 

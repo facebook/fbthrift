@@ -35,7 +35,7 @@
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/ServerInstrumentation.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 #include <wangle/acceptor/FizzConfigUtil.h>
 #include <wangle/acceptor/SharedSSLContextManager.h>
 
@@ -78,7 +78,7 @@ ThriftServer::ThriftServer()
       wShutdownSocketSet_(folly::tryGetShutdownSocketSet()),
       lastRequestTime_(
           std::chrono::steady_clock::now().time_since_epoch().count()) {
-  addRoutingHandler(std::make_unique<apache::thrift::RSRoutingHandler>());
+  addRoutingHandler(std::make_unique<apache::thrift::RocketRoutingHandler>());
   if (FLAGS_thrift_ssl_policy == "required") {
     sslPolicy_ = SSLPolicy::REQUIRED;
   } else if (FLAGS_thrift_ssl_policy == "permitted") {

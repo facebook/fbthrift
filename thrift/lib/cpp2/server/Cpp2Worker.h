@@ -281,7 +281,7 @@ class Cpp2Worker : public wangle::Acceptor,
 
   friend class Cpp2Connection;
   friend class ThriftServer;
-  friend class RSRoutingHandler;
+  friend class RocketRoutingHandler;
   friend class TestRoutingHandler;
 };
 
