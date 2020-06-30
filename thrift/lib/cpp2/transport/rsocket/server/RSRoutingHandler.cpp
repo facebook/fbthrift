@@ -97,7 +97,7 @@ void RSRoutingHandler::handleConnection(
       server->getStreamExpireTime(),
       server->getWriteBatchingInterval(),
       server->getWriteBatchingSize());
-  // set compression algorithm to be used on this connection
+  // set negotiated compression algorithm on this connection
   auto compression = static_cast<FizzPeeker*>(worker->getFizzPeeker())
                          ->getNegotiatedParameters()
                          .compression;
