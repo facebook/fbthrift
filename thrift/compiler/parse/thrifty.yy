@@ -725,15 +725,9 @@ ConstList:
     }
 
 ConstListContents:
-  ConstListContents CommaOrSemicolonOptional ConstValue
+  ConstListContents CommaOrSemicolon ConstValue
     {
-      driver.debug("ConstListContents => ConstListContents CommaOrSemicolonOptional ConstValue");
-      if (driver.mode == parsing_mode::PROGRAM &&
-          !$2 &&
-          !driver.params.disable_const_collections_comma_enforcement) {
-        driver.yyerror("Commas/semicolons between const list entries are mandatory "
-          "(pass --disable-const-collections-comma-enforcement option to temporarily ignore).");
-      }
+      driver.debug("ConstListContents => ConstListContents CommaOrSemicolon ConstValue");
       $$ = $1;
       $$->add_list(std::unique_ptr<t_const_value>($3));
     }
@@ -760,15 +754,9 @@ ConstMap:
     }
 
 ConstMapContents:
-  ConstMapContents CommaOrSemicolonOptional ConstValue ":" ConstValue
+  ConstMapContents CommaOrSemicolon ConstValue ":" ConstValue
     {
-      driver.debug("ConstMapContents => ConstMapContents CommaOrSemicolonOptional ConstValue : ConstValue");
-      if (driver.mode == parsing_mode::PROGRAM &&
-          !$2 &&
-          !driver.params.disable_const_collections_comma_enforcement) {
-        driver.yyerror("Commas/semicolons between const map entries are mandatory "
-          "(pass --disable-const-collections-comma-enforcement option to temporarily ignore).");
-      }
+      driver.debug("ConstMapContents => ConstMapContents CommaOrSemicolon ConstValue : ConstValue");
       $$ = $1;
       $$->add_map(std::unique_ptr<t_const_value>($3), std::unique_ptr<t_const_value>($5));
     }
@@ -1457,15 +1445,9 @@ TypeAnnotations:
     }
 
 TypeAnnotationList:
-  TypeAnnotationList CommaOrSemicolonOptional TypeAnnotation
+  TypeAnnotationList CommaOrSemicolon TypeAnnotation
     {
-      driver.debug("TypeAnnotationList => TypeAnnotationList CommaOrSemicolonOptional TypeAnnotation");
-      if (driver.mode == parsing_mode::PROGRAM &&
-          !$2 &&
-          !driver.params.disable_const_collections_comma_enforcement) {
-        driver.yyerror("Commas/semicolons between type annotations entries are mandatory "
-          "(pass --disable-const-collections-comma-enforcement option to temporarily ignore).");
-      }
+      driver.debug("TypeAnnotationList => TypeAnnotationList CommaOrSemicolon TypeAnnotation");
       $$ = $1;
       if ($3->object_val == nullptr) {
         $$->annotations_[$3->key] = $3->val;

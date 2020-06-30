@@ -98,9 +98,6 @@ static void usage() {
   fprintf(stderr, "                Many options will not require values.\n");
   fprintf(stderr, "  --record-genfiles FILE\n");
   fprintf(stderr, "              Save the list of generated files to FILE\n");
-  fprintf(
-      stderr,
-      "  --disable-const-collections-comma-enforcement  Do not print errors about missing commas in vector constants\n");
   fprintf(stderr, "\n");
   fprintf(stderr, "Available generators (and options):\n");
 
@@ -264,7 +261,6 @@ compile_result compile(std::vector<std::string> arguments) {
   bool allow_neg_enum_vals = false;
   bool allow_64bit_consts = false;
   bool enable_experimental_mixins = false;
-  bool disable_const_collections_comma_enforcement = false;
 
   // Hacky parameter handling... I didn't feel like using a library sorry!
   size_t i;
@@ -374,8 +370,6 @@ compile_result compile(std::vector<std::string> arguments) {
         return result;
       }
       continue;
-    } else if (arguments[i] == "-disable-const-collections-comma-enforcement") {
-      disable_const_collections_comma_enforcement = true;
     } else {
       fprintf(stderr, "!!! Unrecognized option: %s\n", arguments[i].c_str());
       usage();
@@ -415,8 +409,6 @@ compile_result compile(std::vector<std::string> arguments) {
   params.allow_64bit_consts = allow_64bit_consts;
   params.enable_experimental_mixins = enable_experimental_mixins;
   params.incl_searchpath = std::move(incl_searchpath);
-  params.disable_const_collections_comma_enforcement =
-      disable_const_collections_comma_enforcement;
 
   parsing_driver driver{input_file, std::move(params)};
   auto program = driver.parse(result.diagnostics);

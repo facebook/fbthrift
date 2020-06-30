@@ -131,12 +131,6 @@ struct parsing_params {
    * Search path for inclusions
    */
   std::vector<std::string> incl_searchpath;
-
-  /**
-   * Fall back to allowing no comma/semicolon between entries of const
-   * collections or annotations.
-   */
-  bool disable_const_collections_comma_enforcement = false;
 };
 
 // This elaborate dance is required to avoid triggering -Wformat-security in the
