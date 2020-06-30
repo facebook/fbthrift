@@ -16,8 +16,8 @@
 
 #include <gtest/gtest.h>
 
-#include <thrift/lib/cpp2/transport/rsocket/test/util/TestUtil.h>
-#include <thrift/lib/cpp2/transport/rsocket/test/util/VersionServicesMock.h>
+#include <thrift/lib/cpp2/transport/rocket/test/util/TestUtil.h>
+#include <thrift/lib/cpp2/transport/rocket/test/util/VersionServicesMock.h>
 
 namespace apache {
 namespace thrift {

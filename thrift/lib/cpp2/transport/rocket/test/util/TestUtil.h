@@ -30,7 +30,7 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/ThriftRocketServerHandler.h>
-#include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
+#include <thrift/lib/cpp2/transport/rocket/test/util/TestServiceMock.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
 
 namespace apache {

@@ -16,7 +16,7 @@
 
 namespace cpp2 testutil.testservice
 
-include "thrift/lib/cpp2/transport/rsocket/test/util/ThriftService.thrift"
+include "thrift/lib/cpp2/transport/rocket/test/util/ThriftService.thrift"
 
 service StreamServiceBuffered {
   // Echo input value

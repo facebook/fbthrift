@@ -24,7 +24,7 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/ThriftRocketServerHandler.h>
-#include <thrift/lib/cpp2/transport/rsocket/test/util/TestUtil.h>
+#include <thrift/lib/cpp2/transport/rocket/test/util/TestUtil.h>
 
 DECLARE_int32(num_client_connections);
 DECLARE_string(transport); // ConnectionManager depends on this flag.
@@ -35,9 +35,9 @@ namespace thrift {
 using namespace testutil::testservice;
 using namespace apache::thrift::transport;
 
-class RSCompatibilityTest : public testing::Test {
+class RocketCompatibilityTest : public testing::Test {
  public:
-  RSCompatibilityTest() {
+  RocketCompatibilityTest() {
     FLAGS_transport = "rocket";
 
     compatibilityTest_ = std::make_unique<TransportCompatibilityTest>();
@@ -62,36 +62,36 @@ class RSCompatibilityManuallyStartServerTest : public testing::Test {
   std::unique_ptr<TransportCompatibilityTest> compatibilityTest_;
 };
 
-TEST_F(RSCompatibilityTest, RequestResponse_Simple) {
+TEST_F(RocketCompatibilityTest, RequestResponse_Simple) {
   compatibilityTest_->TestRequestResponse_Simple();
 }
 
-TEST_F(RSCompatibilityTest, RequestResponse_Sync) {
+TEST_F(RocketCompatibilityTest, RequestResponse_Sync) {
   compatibilityTest_->TestRequestResponse_Sync();
 }
 
-TEST_F(RSCompatibilityTest, RequestResponse_Destruction) {
+TEST_F(RocketCompatibilityTest, RequestResponse_Destruction) {
   compatibilityTest_->TestRequestResponse_Destruction();
 }
 
-TEST_F(RSCompatibilityTest, RequestResponse_MultipleClients) {
+TEST_F(RocketCompatibilityTest, RequestResponse_MultipleClients) {
   compatibilityTest_->TestRequestResponse_MultipleClients();
 }
 
-TEST_F(RSCompatibilityTest, RequestResponse_ExpectedException) {
+TEST_F(RocketCompatibilityTest, RequestResponse_ExpectedException) {
   compatibilityTest_->TestRequestResponse_ExpectedException();
 }
 
-TEST_F(RSCompatibilityTest, RequestResponse_UnexpectedException) {
+TEST_F(RocketCompatibilityTest, RequestResponse_UnexpectedException) {
   compatibilityTest_->TestRequestResponse_UnexpectedException();
 }
 
 // Warning: This test may be flaky due to use of timeouts.
-TEST_F(RSCompatibilityTest, RequestResponse_Timeout) {
+TEST_F(RocketCompatibilityTest, RequestResponse_Timeout) {
   compatibilityTest_->TestRequestResponse_Timeout();
 }
 
-TEST_F(RSCompatibilityTest, DefaultTimeoutValueTest) {
+TEST_F(RocketCompatibilityTest, DefaultTimeoutValueTest) {
   compatibilityTest_->connectToServer([](auto client) {
     // Opts with no timeout value
     RpcOptions opts;
@@ -120,23 +120,23 @@ TEST_F(RSCompatibilityTest, DefaultTimeoutValueTest) {
   });
 }
 
-TEST_F(RSCompatibilityTest, RequestResponse_Header) {
+TEST_F(RocketCompatibilityTest, RequestResponse_Header) {
   compatibilityTest_->TestRequestResponse_Header();
 }
 
-TEST_F(RSCompatibilityTest, RequestResponse_Header_Load) {
+TEST_F(RocketCompatibilityTest, RequestResponse_Header_Load) {
   compatibilityTest_->TestRequestResponse_Header_Load();
 }
 
-TEST_F(RSCompatibilityTest, RequestResponse_Header_ExpectedException) {
+TEST_F(RocketCompatibilityTest, RequestResponse_Header_ExpectedException) {
   compatibilityTest_->TestRequestResponse_Header_ExpectedException();
 }
 
-TEST_F(RSCompatibilityTest, RequestResponse_Header_UnexpectedException) {
+TEST_F(RocketCompatibilityTest, RequestResponse_Header_UnexpectedException) {
   compatibilityTest_->TestRequestResponse_Header_UnexpectedException();
 }
 
-TEST_F(RSCompatibilityTest, RequestResponse_Saturation) {
+TEST_F(RocketCompatibilityTest, RequestResponse_Saturation) {
   compatibilityTest_->connectToServer([this](auto client) {
     EXPECT_CALL(*compatibilityTest_->handler_.get(), add_(3)).Times(2);
     // note that no EXPECT_CALL for add_(5)
@@ -155,29 +155,29 @@ TEST_F(RSCompatibilityTest, RequestResponse_Saturation) {
   });
 }
 
-TEST_F(RSCompatibilityTest, RequestResponse_IsOverloaded) {
+TEST_F(RocketCompatibilityTest, RequestResponse_IsOverloaded) {
   compatibilityTest_->TestRequestResponse_IsOverloaded();
 }
 
-TEST_F(RSCompatibilityTest, RequestResponse_Connection_CloseNow) {
+TEST_F(RocketCompatibilityTest, RequestResponse_Connection_CloseNow) {
   compatibilityTest_->TestRequestResponse_Connection_CloseNow();
 }
 
-TEST_F(RSCompatibilityTest, RequestResponse_ServerQueueTimeout) {
+TEST_F(RocketCompatibilityTest, RequestResponse_ServerQueueTimeout) {
   compatibilityTest_->TestRequestResponse_ServerQueueTimeout();
 }
 
-TEST_F(RSCompatibilityTest, RequestResponse_ResponseSizeTooBig) {
+TEST_F(RocketCompatibilityTest, RequestResponse_ResponseSizeTooBig) {
   compatibilityTest_->TestRequestResponse_ResponseSizeTooBig();
 }
 
-TEST_F(RSCompatibilityTest, RequestResponse_Checksumming) {
+TEST_F(RocketCompatibilityTest, RequestResponse_Checksumming) {
   compatibilityTest_->TestRequestResponse_Checksumming();
 }
 
 // Test that without compression, bytes received is greater than total
 // payload bytes
-TEST_F(RSCompatibilityTest, RequestResponse_NoCompression) {
+TEST_F(RocketCompatibilityTest, RequestResponse_NoCompression) {
   compatibilityTest_->connectToServer([this](auto client) {
     EXPECT_CALL(*compatibilityTest_->handler_.get(), echo_(testing::_));
     static const int kSize = 32 << 10;
@@ -198,15 +198,15 @@ TEST_F(RSCompatibilityTest, RequestResponse_NoCompression) {
   });
 }
 
-TEST_F(RSCompatibilityTest, Oneway_Simple) {
+TEST_F(RocketCompatibilityTest, Oneway_Simple) {
   compatibilityTest_->TestOneway_Simple();
 }
 
-TEST_F(RSCompatibilityTest, Oneway_WithDelay) {
+TEST_F(RocketCompatibilityTest, Oneway_WithDelay) {
   compatibilityTest_->TestOneway_WithDelay();
 }
 
-TEST_F(RSCompatibilityTest, Oneway_Saturation) {
+TEST_F(RocketCompatibilityTest, Oneway_Saturation) {
   compatibilityTest_->connectToServer([this](auto client) {
     EXPECT_CALL(*compatibilityTest_->handler_.get(), addAfterDelay_(100, 5));
     EXPECT_CALL(*compatibilityTest_->handler_.get(), addAfterDelay_(50, 5));
@@ -232,55 +232,55 @@ TEST_F(RSCompatibilityTest, Oneway_Saturation) {
   });
 }
 
-TEST_F(RSCompatibilityTest, Oneway_UnexpectedException) {
+TEST_F(RocketCompatibilityTest, Oneway_UnexpectedException) {
   compatibilityTest_->TestOneway_UnexpectedException();
 }
 
-TEST_F(RSCompatibilityTest, Oneway_Connection_CloseNow) {
+TEST_F(RocketCompatibilityTest, Oneway_Connection_CloseNow) {
   compatibilityTest_->TestOneway_Connection_CloseNow();
 }
 
-TEST_F(RSCompatibilityTest, Oneway_ServerQueueTimeout) {
+TEST_F(RocketCompatibilityTest, Oneway_ServerQueueTimeout) {
   compatibilityTest_->TestOneway_ServerQueueTimeout();
 }
 
-TEST_F(RSCompatibilityTest, Oneway_Checksumming) {
+TEST_F(RocketCompatibilityTest, Oneway_Checksumming) {
   compatibilityTest_->TestOneway_Checksumming();
 }
 
-TEST_F(RSCompatibilityTest, RequestContextIsPreserved) {
+TEST_F(RocketCompatibilityTest, RequestContextIsPreserved) {
   compatibilityTest_->TestRequestContextIsPreserved();
 }
 
-TEST_F(RSCompatibilityTest, BadPayload) {
+TEST_F(RocketCompatibilityTest, BadPayload) {
   compatibilityTest_->TestBadPayload();
 }
 
-TEST_F(RSCompatibilityTest, EvbSwitch) {
+TEST_F(RocketCompatibilityTest, EvbSwitch) {
   compatibilityTest_->TestEvbSwitch();
 }
 
-TEST_F(RSCompatibilityTest, EvbSwitch_Failure) {
+TEST_F(RocketCompatibilityTest, EvbSwitch_Failure) {
   compatibilityTest_->TestEvbSwitch_Failure();
 }
 
-TEST_F(RSCompatibilityTest, CloseCallback) {
+TEST_F(RocketCompatibilityTest, CloseCallback) {
   compatibilityTest_->TestCloseCallback();
 }
 
-TEST_F(RSCompatibilityTest, ConnectionStats) {
+TEST_F(RocketCompatibilityTest, ConnectionStats) {
   compatibilityTest_->TestConnectionStats();
 }
 
-TEST_F(RSCompatibilityTest, ObserverSendReceiveRequests) {
+TEST_F(RocketCompatibilityTest, ObserverSendReceiveRequests) {
   compatibilityTest_->TestObserverSendReceiveRequests();
 }
 
-TEST_F(RSCompatibilityTest, ConnectionContext) {
+TEST_F(RocketCompatibilityTest, ConnectionContext) {
   compatibilityTest_->TestConnectionContext();
 }
 
-TEST_F(RSCompatibilityTest, ClientIdentityHook) {
+TEST_F(RocketCompatibilityTest, ClientIdentityHook) {
   compatibilityTest_->TestClientIdentityHook();
 }
 
@@ -288,9 +288,9 @@ TEST_F(RSCompatibilityTest, ClientIdentityHook) {
  * This is a test class with customized RoutingHandler. The main purpose is to
  * set compression on the server-side and test the behavior.
  */
-class RSCompatibilityTest2 : public testing::Test {
+class RocketCompatibilityTest2 : public testing::Test {
  public:
-  RSCompatibilityTest2() {
+  RocketCompatibilityTest2() {
     FLAGS_transport = "rocket";
 
     compatibilityTest_ = std::make_unique<TransportCompatibilityTest>();
@@ -308,7 +308,7 @@ class RSCompatibilityTest2 : public testing::Test {
   std::unique_ptr<TransportCompatibilityTest> compatibilityTest_;
 };
 
-TEST_F(RSCompatibilityTest2, RequestResponse_CompressResponse) {
+TEST_F(RocketCompatibilityTest2, RequestResponse_CompressResponse) {
   compatibilityTest_->connectToServer([this](auto client) {
     EXPECT_CALL(*compatibilityTest_->handler_.get(), echo_(testing::_));
     auto* channel = dynamic_cast<RocketClientChannel*>(client->getChannel());

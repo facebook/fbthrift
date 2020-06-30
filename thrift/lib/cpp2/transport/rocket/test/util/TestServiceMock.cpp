@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
+#include <thrift/lib/cpp2/transport/rocket/test/util/TestServiceMock.h>
 #include <rsocket/Payload.h>
 
 namespace testutil {

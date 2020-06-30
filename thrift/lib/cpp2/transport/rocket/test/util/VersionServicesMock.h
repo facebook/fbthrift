@@ -19,8 +19,8 @@
 #include <folly/portability/GMock.h>
 
 #include <folly/io/async/ScopedEventBaseThread.h>
-#include <thrift/lib/cpp2/transport/rsocket/test/util/gen-cpp2/NewVersion.h>
-#include <thrift/lib/cpp2/transport/rsocket/test/util/gen-cpp2/OldVersion.h>
+#include <thrift/lib/cpp2/transport/rocket/test/util/gen-cpp2/NewVersion.h>
+#include <thrift/lib/cpp2/transport/rocket/test/util/gen-cpp2/OldVersion.h>
 
 namespace testutil {
 namespace testservice {

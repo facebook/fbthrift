@@ -29,8 +29,8 @@
 #include <thrift/lib/cpp2/async/ClientStreamBridge.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TAsyncSocketIntercepted.h>
-#include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
-#include <thrift/lib/cpp2/transport/rsocket/test/util/TestUtil.h>
+#include <thrift/lib/cpp2/transport/rocket/test/util/TestServiceMock.h>
+#include <thrift/lib/cpp2/transport/rocket/test/util/TestUtil.h>
 
 #include <folly/Portability.h>
 #include <thrift/lib/cpp2/gen/client_cpp.h>

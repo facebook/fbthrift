@@ -19,7 +19,7 @@
 #include <folly/portability/GMock.h>
 
 #include <folly/io/async/ScopedEventBaseThread.h>
-#include <thrift/lib/cpp2/transport/rsocket/test/util/gen-cpp2/StreamService.h>
+#include <thrift/lib/cpp2/transport/rocket/test/util/gen-cpp2/StreamService.h>
 
 namespace testutil {
 namespace testservice {
