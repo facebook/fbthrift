@@ -43,8 +43,6 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketSinkClientCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketThriftRequests.h>
-
-#include <thrift/lib/cpp2/transport/rsocket/gen-cpp2/Config_types.h>
 #include <thrift/lib/cpp2/util/Checksum.h>
 
 namespace apache {

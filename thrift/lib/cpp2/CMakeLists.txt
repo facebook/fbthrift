@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-add_subdirectory(transport/rsocket)
-
 # Set the cpp2 directory
 set(LIB_CPP2_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -29,7 +27,6 @@ set(LIB_CPP2_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 get_property(RpcMetadata-cpp2-SOURCES GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES)
 get_property(metadata-cpp2-SOURCES GLOBAL PROPERTY metadata-cpp2-SOURCES)
 get_property(frozen-cpp2-SOURCES GLOBAL PROPERTY frozen-cpp2-SOURCES)
-get_property(rsocket-cpp2-SOURCES GLOBAL PROPERTY rsocket-cpp2-SOURCES)
 
 bypass_source_check("${metadata-cpp2-SOURCES}")
 add_library(
@@ -84,7 +81,6 @@ target_link_libraries(
 )
 
 bypass_source_check("${RpcMetadata-cpp2-SOURCES}")
-bypass_source_check("${rsocket-cpp2-SOURCES}")
 
 add_library(
   thriftcpp2
@@ -146,11 +142,9 @@ add_library(
   util/ScopedServerInterfaceThread.cpp
   util/ScopedServerThread.cpp
   ${RpcMetadata-cpp2-SOURCES}
-  ${rsocket-cpp2-SOURCES}
 )
 add_dependencies(
   thriftcpp2
-  Config-cpp2-target
   RpcMetadata-cpp2-target
   thriftmetadata
 )
