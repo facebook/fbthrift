@@ -30,7 +30,6 @@
 #include <folly/String.h>
 #include <folly/executors/Codel.h>
 #include <folly/io/async/Request.h>
-#include <folly/tracing/StaticTracepoint.h>
 
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
@@ -528,19 +527,12 @@ void ThreadManager::ImplT<SemType>::reportTaskStats(
   auto waitTime = workBegin - queueBegin;
   auto runTime = workEnd - workBegin;
 
-  // Times in this USDT use granularity of std::chrono::steady_clock::duration,
-  // which is platform dependent. On Facebook servers, the granularity is
-  // nanoseconds. We explicitly do not perform any unit conversions to avoid
-  // unneccessary costs and leave it to consumers of this data to know what
-  // effective clock resolution is.
-  FOLLY_SDT(
-      thrift,
-      thread_manager_task_stats,
-      namePrefix_.c_str(),
+  traceTask(
+      namePrefix_,
       task.getContext() ? task.getContext()->getRootId() : 0,
-      queueBegin.time_since_epoch().count(),
-      waitTime.count(),
-      runTime.count());
+      queueBegin,
+      waitTime,
+      runTime);
 
   if (enableTaskStats_) {
     folly::MSLGuard g(statsLock_);

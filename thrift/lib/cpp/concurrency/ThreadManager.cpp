@@ -18,14 +18,17 @@
 
 #include <atomic>
 #include <cassert>
+#include <chrono>
 #include <memory>
 #include <queue>
 #include <set>
+#include <string>
 
 #include <glog/logging.h>
 
 #include <folly/Conv.h>
 #include <folly/portability/GFlags.h>
+#include <folly/tracing/StaticTracepoint.h>
 
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager-impl.h>
@@ -56,6 +59,28 @@ void ThreadManager::setObserver(
     observer_.swap(observer);
   }
 }
+
+void ThreadManager::traceTask(
+    const std::string& namePrefix,
+    intptr_t rootContextId,
+    std::chrono::steady_clock::time_point queueBegin,
+    std::chrono::steady_clock::duration waitTime,
+    std::chrono::steady_clock::duration runTime) {
+  // Times in this USDT use granularity of std::chrono::steady_clock::duration,
+  // which is platform dependent. On Facebook servers, the granularity is
+  // nanoseconds. We explicitly do not perform any unit conversions to avoid
+  // unneccessary costs and leave it to consumers of this data to know what
+  // effective clock resolution is.
+  FOLLY_SDT(
+      thrift,
+      thread_manager_task_stats,
+      namePrefix.c_str(),
+      rootContextId,
+      queueBegin.time_since_epoch().count(),
+      waitTime.count(),
+      runTime.count());
+}
+
 } // namespace concurrency
 } // namespace thrift
 } // namespace apache

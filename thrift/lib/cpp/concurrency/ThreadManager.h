@@ -20,8 +20,10 @@
 #include <sys/types.h>
 
 #include <array>
+#include <chrono>
 #include <functional>
 #include <memory>
+#include <string>
 
 #include <folly/Executor.h>
 #include <folly/SharedMutex.h>
@@ -275,6 +277,13 @@ class ThreadManager : public virtual folly::Executor {
  protected:
   static folly::SharedMutex observerLock_;
   static std::shared_ptr<Observer> observer_;
+
+  static void traceTask(
+      const std::string& namePrefix,
+      intptr_t rootContextId,
+      std::chrono::steady_clock::time_point queueBegin,
+      std::chrono::steady_clock::duration waitTime,
+      std::chrono::steady_clock::duration runTime);
 };
 
 /**
