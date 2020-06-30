@@ -105,7 +105,21 @@ pub mod consts {
     }
 
     lazy_static::lazy_static! {
+        pub static ref pod_s_0: crate::types::struct1 = crate::types::struct1 {
+            a: 1234567,
+            b: "<uninitialized>".to_owned(),
+        };
+    }
+
+    lazy_static::lazy_static! {
         pub static ref pod_1: crate::types::struct1 = crate::types::struct1 {
+            a: 10,
+            b: "foo".to_owned(),
+        };
+    }
+
+    lazy_static::lazy_static! {
+        pub static ref pod_s_1: crate::types::struct1 = crate::types::struct1 {
             a: 10,
             b: "foo".to_owned(),
         };
@@ -144,7 +158,43 @@ pub mod consts {
     }
 
     lazy_static::lazy_static! {
+        pub static ref pod_s_2: crate::types::struct2 = crate::types::struct2 {
+            a: 98,
+            b: "gaz".to_owned(),
+            c: crate::types::struct1 {
+                a: 12,
+                b: "bar".to_owned(),
+            },
+            d: vec![
+                11,
+                22,
+                33,
+            ],
+        };
+    }
+
+    lazy_static::lazy_static! {
         pub static ref pod_3: crate::types::struct3 = crate::types::struct3 {
+            a: "abc".to_owned(),
+            b: 456,
+            c: crate::types::struct2 {
+                a: 888,
+                b: ::std::default::Default::default(),
+                c: crate::types::struct1 {
+                    a: 1234567,
+                    b: "gaz".to_owned(),
+                },
+                d: vec![
+                    1,
+                    2,
+                    3,
+                ],
+            },
+        };
+    }
+
+    lazy_static::lazy_static! {
+        pub static ref pod_s_3: crate::types::struct3 = crate::types::struct3 {
             a: "abc".to_owned(),
             b: 456,
             c: crate::types::struct2 {

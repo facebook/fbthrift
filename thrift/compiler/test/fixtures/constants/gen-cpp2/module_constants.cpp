@@ -73,7 +73,17 @@ constexpr  ::cpp2::MyIntIdentifier const module_constants::bar_;
   return *instance;
 }
 
+ ::cpp2::struct1 const& module_constants::pod_s_0() {
+  static folly::Indestructible< ::cpp2::struct1> const instance;
+  return *instance;
+}
+
  ::cpp2::struct1 const& module_constants::pod_1() {
+  static folly::Indestructible< ::cpp2::struct1> const instance(::apache::thrift::detail::make_constant< ::cpp2::struct1>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(10), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(apache::thrift::StringTraits< std::string>::fromStringLiteral("foo"))));
+  return *instance;
+}
+
+ ::cpp2::struct1 const& module_constants::pod_s_1() {
   static folly::Indestructible< ::cpp2::struct1> const instance(::apache::thrift::detail::make_constant< ::cpp2::struct1>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(10), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(apache::thrift::StringTraits< std::string>::fromStringLiteral("foo"))));
   return *instance;
 }
@@ -92,7 +102,21 @@ constexpr  ::cpp2::MyIntIdentifier const module_constants::bar_;
   return *instance;
 }
 
+ ::cpp2::struct2 const& module_constants::pod_s_2() {
+  static folly::Indestructible< ::cpp2::struct2> const instance(::apache::thrift::detail::make_constant< ::cpp2::struct2>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(98), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(apache::thrift::StringTraits< std::string>::fromStringLiteral("gaz")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::c>(::apache::thrift::detail::make_constant< ::cpp2::struct1>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(12), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(apache::thrift::StringTraits< std::string>::fromStringLiteral("bar")))), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::d>(std::initializer_list<int32_t>{11,
+  22,
+  33})));
+  return *instance;
+}
+
  ::cpp2::struct3 const& module_constants::pod_3() {
+  static folly::Indestructible< ::cpp2::struct3> const instance(::apache::thrift::detail::make_constant< ::cpp2::struct3>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(apache::thrift::StringTraits< std::string>::fromStringLiteral("abc")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(456), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::c>(::apache::thrift::detail::make_constant< ::cpp2::struct2>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(888), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::c>(::apache::thrift::detail::make_constant< ::cpp2::struct1>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(apache::thrift::StringTraits< std::string>::fromStringLiteral("gaz")))), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::d>(std::initializer_list<int32_t>{1,
+  2,
+  3})))));
+  return *instance;
+}
+
+ ::cpp2::struct3 const& module_constants::pod_s_3() {
   static folly::Indestructible< ::cpp2::struct3> const instance(::apache::thrift::detail::make_constant< ::cpp2::struct3>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(apache::thrift::StringTraits< std::string>::fromStringLiteral("abc")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(456), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::c>(::apache::thrift::detail::make_constant< ::cpp2::struct2>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(888), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::c>(::apache::thrift::detail::make_constant< ::cpp2::struct1>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(apache::thrift::StringTraits< std::string>::fromStringLiteral("gaz")))), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::d>(std::initializer_list<int32_t>{1,
   2,
   3})))));

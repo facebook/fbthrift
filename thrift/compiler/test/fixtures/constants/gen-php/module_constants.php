@@ -184,6 +184,15 @@ class module_CONSTANTS {
     return self::$__pod_0;
   }
 
+  private static $__pod_s_0 = null;
+  public static function pod_s_0() {
+    if (self::$__pod_s_0 == null) {
+      self::$__pod_s_0 = new struct1(array(
+      ));
+    }
+    return self::$__pod_s_0;
+  }
+
   private static $__pod_1 = null;
   public static function pod_1() {
     if (self::$__pod_1 == null) {
@@ -193,6 +202,17 @@ class module_CONSTANTS {
       ));
     }
     return self::$__pod_1;
+  }
+
+  private static $__pod_s_1 = null;
+  public static function pod_s_1() {
+    if (self::$__pod_s_1 == null) {
+      self::$__pod_s_1 = new struct1(array(
+        "a" => 10,
+        "b" => "foo",
+      ));
+    }
+    return self::$__pod_s_1;
   }
 
   private static $__pod_2 = null;
@@ -235,6 +255,26 @@ class module_CONSTANTS {
     return self::$__pod_trailing_commas;
   }
 
+  private static $__pod_s_2 = null;
+  public static function pod_s_2() {
+    if (self::$__pod_s_2 == null) {
+      self::$__pod_s_2 = new struct2(array(
+        "a" => 98,
+        "b" => "gaz",
+        "c" => new struct1(array(
+          "a" => 12,
+          "b" => "bar",
+        )),
+        "d" => array(
+          11,
+          22,
+          33,
+        ),
+      ));
+    }
+    return self::$__pod_s_2;
+  }
+
   private static $__pod_3 = null;
   public static function pod_3() {
     if (self::$__pod_3 == null) {
@@ -255,6 +295,28 @@ class module_CONSTANTS {
       ));
     }
     return self::$__pod_3;
+  }
+
+  private static $__pod_s_3 = null;
+  public static function pod_s_3() {
+    if (self::$__pod_s_3 == null) {
+      self::$__pod_s_3 = new struct3(array(
+        "a" => "abc",
+        "b" => 456,
+        "c" => new struct2(array(
+          "a" => 888,
+          "c" => new struct1(array(
+            "b" => "gaz",
+          )),
+          "d" => array(
+            1,
+            2,
+            3,
+          ),
+        )),
+      ));
+    }
+    return self::$__pod_s_3;
   }
 
   private static $__pod_4 = null;
@@ -642,7 +704,13 @@ class module_CONSTANTS {
         ),
         "pod_0" => new struct1(array(
         )),
+        "pod_s_0" => new struct1(array(
+        )),
         "pod_1" => new struct1(array(
+          "a" => 10,
+          "b" => "foo",
+        )),
+        "pod_s_1" => new struct1(array(
           "a" => 10,
           "b" => "foo",
         )),
@@ -672,7 +740,35 @@ class module_CONSTANTS {
             33,
           ),
         )),
+        "pod_s_2" => new struct2(array(
+          "a" => 98,
+          "b" => "gaz",
+          "c" => new struct1(array(
+            "a" => 12,
+            "b" => "bar",
+          )),
+          "d" => array(
+            11,
+            22,
+            33,
+          ),
+        )),
         "pod_3" => new struct3(array(
+          "a" => "abc",
+          "b" => 456,
+          "c" => new struct2(array(
+            "a" => 888,
+            "c" => new struct1(array(
+              "b" => "gaz",
+            )),
+            "d" => array(
+              1,
+              2,
+              3,
+            ),
+          )),
+        )),
+        "pod_s_3" => new struct3(array(
           "a" => "abc",
           "b" => 456,
           "c" => new struct2(array(

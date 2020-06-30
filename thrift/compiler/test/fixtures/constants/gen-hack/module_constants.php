@@ -215,10 +215,36 @@ class module_CONSTANTS {
 
   /**
    * Original thrift constant:-
+   * struct module.struct1 pod_s_0
+   */
+  <<__Memoize>>
+  public static function pod_s_0(): struct1{
+    return struct1::fromShape(
+      shape(
+      )
+    );
+  }
+
+  /**
+   * Original thrift constant:-
    * struct module.struct1 pod_1
    */
   <<__Memoize>>
   public static function pod_1(): struct1{
+    return struct1::fromShape(
+      shape(
+        "a" => 10,
+        "b" => "foo",
+      )
+    );
+  }
+
+  /**
+   * Original thrift constant:-
+   * struct module.struct1 pod_s_1
+   */
+  <<__Memoize>>
+  public static function pod_s_1(): struct1{
     return struct1::fromShape(
       shape(
         "a" => 10,
@@ -279,10 +305,64 @@ class module_CONSTANTS {
 
   /**
    * Original thrift constant:-
+   * struct module.struct2 pod_s_2
+   */
+  <<__Memoize>>
+  public static function pod_s_2(): struct2{
+    return struct2::fromShape(
+      shape(
+        "a" => 98,
+        "b" => "gaz",
+        "c" => struct1::fromShape(
+          shape(
+            "a" => 12,
+            "b" => "bar",
+          )
+        ),
+        "d" => Vector {
+          11,
+          22,
+          33,
+        },
+      )
+    );
+  }
+
+  /**
+   * Original thrift constant:-
    * struct module.struct3 pod_3
    */
   <<__Memoize>>
   public static function pod_3(): struct3{
+    return struct3::fromShape(
+      shape(
+        "a" => "abc",
+        "b" => 456,
+        "c" => struct2::fromShape(
+          shape(
+            "a" => 888,
+            "c" => struct1::fromShape(
+              shape(
+                "b" => "gaz",
+              )
+            ),
+            "d" => Vector {
+              1,
+              2,
+              3,
+            },
+          )
+        ),
+      )
+    );
+  }
+
+  /**
+   * Original thrift constant:-
+   * struct module.struct3 pod_s_3
+   */
+  <<__Memoize>>
+  public static function pod_s_3(): struct3{
     return struct3::fromShape(
       shape(
         "a" => "abc",

@@ -89,7 +89,15 @@ internList = [
 pod_0 = struct1(**{
 })
 
+pod_s_0 = struct1(**{
+})
+
 pod_1 = struct1(**{
+  "a" : 10,
+  "b" : "foo",
+})
+
+pod_s_1 = struct1(**{
   "a" : 10,
   "b" : "foo",
 })
@@ -122,7 +130,37 @@ pod_trailing_commas = struct2(**{
   ],
 })
 
+pod_s_2 = struct2(**{
+  "a" : 98,
+  "b" : "gaz",
+  "c" : struct1(**{
+    "a" : 12,
+    "b" : "bar",
+  }),
+  "d" : [
+    11,
+    22,
+    33,
+  ],
+})
+
 pod_3 = struct3(**{
+  "a" : "abc",
+  "b" : 456,
+  "c" : struct2(**{
+    "a" : 888,
+    "c" : struct1(**{
+      "b" : "gaz",
+    }),
+    "d" : [
+      1,
+      2,
+      3,
+    ],
+  }),
+})
+
+pod_s_3 = struct3(**{
   "a" : "abc",
   "b" : 456,
   "c" : struct2(**{

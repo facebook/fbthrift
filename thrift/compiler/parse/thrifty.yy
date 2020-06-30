@@ -267,6 +267,9 @@ struct t_field_qualifiers {
 %type<t_const_value*>   ConstListContents
 %type<t_const_value*>   ConstMap
 %type<t_const_value*>   ConstMapContents
+%type<t_const_value*>   ConstStruct
+%type<t_type*>          ConstStructType
+%type<t_const_value*>   ConstStructContents
 
 %type<int64_t>          StructHead
 %type<t_struct*>        Struct
@@ -710,6 +713,11 @@ ConstValue:
       driver.debug("ConstValue => ConstMap");
       $$ = $1;
     }
+| ConstStruct
+    {
+      driver.debug("ConstValue => ConstStruct");
+      $$ = $1;
+    }
 
 ConstList:
   "[" ConstListContents CommaOrSemicolonOptional "]"
@@ -766,6 +774,62 @@ ConstMapContents:
       $$ = new t_const_value();
       $$->set_map();
       $$->add_map(std::unique_ptr<t_const_value>($1), std::unique_ptr<t_const_value>($3));
+    }
+
+ConstStruct:
+  ConstStructType "{" ConstStructContents CommaOrSemicolonOptional "}"
+    {
+      driver.debug("ConstStruct => ConstStructType { ConstStructContents CommaOrSemicolonOptional }");
+      $$ = $3;
+      $$->set_ttype($1);
+      if (driver.mode == parsing_mode::PROGRAM) {
+        driver.validate_const_rec($$->get_ttype()->get_name(), $$->get_ttype(), $$);
+      }
+    }
+| ConstStructType "{" "}"
+    {
+      driver.debug("ConstStruct => ConstStructType { }");
+      $$ = new t_const_value();
+      $$->set_map();
+      $$->set_ttype($1);
+      if (driver.mode == parsing_mode::PROGRAM) {
+        driver.validate_const_rec($$->get_ttype()->get_name(), $$->get_ttype(), $$);
+      }
+    }
+
+ConstStructType:
+  tok_identifier
+    {
+      driver.debug("ConstStructType -> tok_identifier");
+      if (driver.mode == parsing_mode::INCLUDES) {
+        // Ignore identifiers in include mode
+        $$ = nullptr;
+      } else {
+        // Lookup the identifier in the current scope
+        $$ = driver.scope_cache->get_type($1);
+        if ($$ == nullptr) {
+          $$ = driver.scope_cache->get_type(driver.program->get_name() + "." + $1);
+        }
+        if ($$ == nullptr) {
+          driver.failure("The type '%s' is either undefined or not resolved yet. Lazily resolved types like "
+            "forward declarations and recursive types are prohibited", $1.c_str());
+        }
+      }
+    }
+
+ConstStructContents:
+  ConstStructContents CommaOrSemicolon tok_identifier "=" ConstValue
+    {
+      driver.debug("ConstStructContents => ConstStructContents CommaOrSemicolon tok_identifier = ConstValue");
+      $$ = $1;
+      $$->add_map(std::make_unique<t_const_value>($3), std::unique_ptr<t_const_value>($5));
+    }
+| tok_identifier "=" ConstValue
+    {
+      driver.debug("ConstStructContents => tok_identifier = ConstValue");
+      $$ = new t_const_value();
+      $$->set_map();
+      $$->add_map(std::make_unique<t_const_value>($1), std::unique_ptr<t_const_value>($3));
     }
 
 StructHead:

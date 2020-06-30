@@ -96,13 +96,21 @@ struct module_constants {
 
   static  ::cpp2::struct1 const& pod_0();
 
+  static  ::cpp2::struct1 const& pod_s_0();
+
   static  ::cpp2::struct1 const& pod_1();
+
+  static  ::cpp2::struct1 const& pod_s_1();
 
   static  ::cpp2::struct2 const& pod_2();
 
   static  ::cpp2::struct2 const& pod_trailing_commas();
 
+  static  ::cpp2::struct2 const& pod_s_2();
+
   static  ::cpp2::struct3 const& pod_3();
+
+  static  ::cpp2::struct3 const& pod_s_3();
 
   static  ::cpp2::struct4 const& pod_4();
 
