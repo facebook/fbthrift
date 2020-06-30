@@ -41,7 +41,8 @@ void MyRootAsyncClient::do_root(apache::thrift::RpcOptions& rpcOptions, std::uni
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
-  do_rootImpl(rpcOptions, std::move(ctx), apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)));
+  auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
+  do_rootImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback));
 }
 
 void MyRootAsyncClient::do_rootImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
@@ -81,7 +82,8 @@ void MyRootAsyncClient::sync_do_root(apache::thrift::RpcOptions& rpcOptions) {
       this->handlers_,
       this->getServiceName(),
       "MyRoot.do_root");
-  do_rootImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
+  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
+  do_rootImpl(rpcOptions, ctx, std::move(wrappedCallback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
   _returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));

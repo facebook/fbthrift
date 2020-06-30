@@ -53,16 +53,7 @@ void SinkServiceAsyncClient::methodT(Protocol_* prot, apache::thrift::RpcOptions
   SinkService_method_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(
-    prot,
-    rpcOptions,
-    callback,
-    ctx->ctx,
-    std::move(header),
-    channel_.get(),
-    "method",
-    writer,
-    sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "method", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
@@ -72,16 +63,7 @@ void SinkServiceAsyncClient::methodAndReponseT(Protocol_* prot, apache::thrift::
   SinkService_methodAndReponse_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(
-    prot,
-    rpcOptions,
-    callback,
-    ctx->ctx,
-    std::move(header),
-    channel_.get(),
-    "methodAndReponse",
-    writer,
-    sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "methodAndReponse", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
@@ -91,16 +73,7 @@ void SinkServiceAsyncClient::methodThrowT(Protocol_* prot, apache::thrift::RpcOp
   SinkService_methodThrow_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(
-    prot,
-    rpcOptions,
-    callback,
-    ctx->ctx,
-    std::move(header),
-    channel_.get(),
-    "methodThrow",
-    writer,
-    sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "methodThrow", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
@@ -110,16 +83,7 @@ void SinkServiceAsyncClient::methodSinkThrowT(Protocol_* prot, apache::thrift::R
   SinkService_methodSinkThrow_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(
-    prot,
-    rpcOptions,
-    callback,
-    ctx->ctx,
-    std::move(header),
-    channel_.get(),
-    "methodSinkThrow",
-    writer,
-    sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "methodSinkThrow", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
@@ -129,16 +93,7 @@ void SinkServiceAsyncClient::methodFinalThrowT(Protocol_* prot, apache::thrift::
   SinkService_methodFinalThrow_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(
-    prot,
-    rpcOptions,
-    callback,
-    ctx->ctx,
-    std::move(header),
-    channel_.get(),
-    "methodFinalThrow",
-    writer,
-    sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "methodFinalThrow", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
@@ -148,16 +103,7 @@ void SinkServiceAsyncClient::methodBothThrowT(Protocol_* prot, apache::thrift::R
   SinkService_methodBothThrow_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(
-    prot,
-    rpcOptions,
-    callback,
-    ctx->ctx,
-    std::move(header),
-    channel_.get(),
-    "methodBothThrow",
-    writer,
-    sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "methodBothThrow", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 

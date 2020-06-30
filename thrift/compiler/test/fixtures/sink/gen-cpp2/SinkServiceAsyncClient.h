@@ -28,7 +28,7 @@ class SinkServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     return "SinkService";
   }
 
- private:
+ protected:
   void methodImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
  public:
 #if FOLLY_HAS_COROUTINES
@@ -44,7 +44,7 @@ folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::Fina
   template <typename Protocol_>
   void methodT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
  public:
- private:
+ protected:
   void methodAndReponseImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
  public:
 #if FOLLY_HAS_COROUTINES
@@ -60,7 +60,7 @@ folly::coro::Task<apache::thrift::ResponseAndClientSink< ::cpp2::InitialResponse
   template <typename Protocol_>
   void methodAndReponseT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
  public:
- private:
+ protected:
   void methodThrowImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
  public:
 #if FOLLY_HAS_COROUTINES
@@ -76,7 +76,7 @@ folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::Fina
   template <typename Protocol_>
   void methodThrowT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
  public:
- private:
+ protected:
   void methodSinkThrowImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
  public:
 #if FOLLY_HAS_COROUTINES
@@ -92,7 +92,7 @@ folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::Fina
   template <typename Protocol_>
   void methodSinkThrowT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
  public:
- private:
+ protected:
   void methodFinalThrowImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
  public:
 #if FOLLY_HAS_COROUTINES
@@ -108,7 +108,7 @@ folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::Fina
   template <typename Protocol_>
   void methodFinalThrowT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
  public:
- private:
+ protected:
   void methodBothThrowImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
  public:
 #if FOLLY_HAS_COROUTINES

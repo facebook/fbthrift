@@ -47,7 +47,14 @@ void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(apache::thrift::Rpc
       this->handlers_,
       this->getServiceName(),
       "<%service:name%>.<%function:name%>");
-  <%function:cpp_name%>Impl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback)<%function:comma%><% > service_common/param_list%>);
+<%^function:returns_stream?%>
+  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
+<%/function:returns_stream?%><%#function:returns_stream?%>
+  auto wrappedCallback = apache::thrift::createStreamClientCallback(
+    apache::thrift::RequestClientCallback::Ptr(&callback),
+    rpcOptions.getChunkBufferSize());
+<%/function:returns_stream?%>
+  <%function:cpp_name%>Impl(rpcOptions, ctx, std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>);
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
   _returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
@@ -90,8 +97,14 @@ folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>>
       this->handlers_,
       this->getServiceName(),
       "<%service:name%>.<%function:name%>");
-
-  <%function:cpp_name%>Impl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback)<%function:comma%> <% > service_common/param_list%>);
+<%^function:returns_stream?%>
+  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
+<%/function:returns_stream?%><%#function:returns_stream?%>
+  auto wrappedCallback = apache::thrift::createStreamClientCallback(
+    apache::thrift::RequestClientCallback::Ptr(&callback),
+    rpcOptions.getChunkBufferSize());
+<%/function:returns_stream?%>
+  <%function:cpp_name%>Impl(rpcOptions, ctx, std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>);
 
   callback.waitUntilDone(evb);
   returnState.resetProtocolId(protocolId);

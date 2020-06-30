@@ -30,7 +30,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
 
   virtual void query(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual void query(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
- private:
+ protected:
   void queryImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
  public:
   virtual void sync_query(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
@@ -64,7 +64,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
   virtual void has_arg_docs(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual void has_arg_docs(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
- private:
+ protected:
   void has_arg_docsImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
  public:
   virtual void sync_has_arg_docs(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);

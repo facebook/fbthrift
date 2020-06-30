@@ -28,7 +28,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
 
   virtual void ping(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void pingImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void sync_ping();
@@ -62,7 +62,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
   virtual void getRandomData(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void getRandomData(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void getRandomDataImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void sync_getRandomData(::std::string& _return);
@@ -96,7 +96,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
   virtual void hasDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id);
   virtual void hasDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id);
- private:
+ protected:
   void hasDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id);
  public:
   virtual bool sync_hasDataById(int64_t id);
@@ -130,7 +130,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
   virtual void getDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id);
   virtual void getDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id);
- private:
+ protected:
   void getDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id);
  public:
   virtual void sync_getDataById(::std::string& _return, int64_t id);
@@ -164,7 +164,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
   virtual void putDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data);
   virtual void putDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data);
- private:
+ protected:
   void putDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const ::std::string& data);
  public:
   virtual void sync_putDataById(int64_t id, const ::std::string& data);
@@ -198,7 +198,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
   virtual void lobDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data);
   virtual void lobDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data);
- private:
+ protected:
   void lobDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const ::std::string& data);
  public:
   virtual void sync_lobDataById(int64_t id, const ::std::string& data);
@@ -225,7 +225,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
   virtual void cppDoNothing(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void cppDoNothing(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void cppDoNothingImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void sync_cppDoNothing();

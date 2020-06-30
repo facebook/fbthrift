@@ -31,7 +31,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 
   virtual void get(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void get(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void getImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_get();
@@ -65,7 +65,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void getter(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void getter(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void getterImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_getter();
@@ -99,7 +99,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void lists(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void lists(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void listsImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_lists();
@@ -133,7 +133,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void maps(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void maps(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void mapsImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_maps();
@@ -167,7 +167,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void name(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void name(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void nameImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_name();
@@ -201,7 +201,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void name_to_value(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void name_to_value(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void name_to_valueImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_name_to_value();
@@ -235,7 +235,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void names(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void names(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void namesImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_names();
@@ -269,7 +269,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void prefix_tree(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void prefix_tree(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void prefix_treeImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_prefix_tree();
@@ -303,7 +303,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void sets(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void sets(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void setsImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_sets();
@@ -337,7 +337,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void setter(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void setter(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void setterImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_setter();
@@ -371,7 +371,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void str(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void str(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void strImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_str();
@@ -405,7 +405,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void strings(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void strings(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void stringsImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_strings();
@@ -439,7 +439,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void type(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void type(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void typeImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_type();
@@ -473,7 +473,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void value(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void value(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void valueImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_value();
@@ -507,7 +507,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void value_to_name(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void value_to_name(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void value_to_nameImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_value_to_name();
@@ -541,7 +541,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void values(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void values(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void valuesImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_values();
@@ -575,7 +575,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void id(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void id(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void idImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_id();
@@ -609,7 +609,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void ids(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void ids(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void idsImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_ids();
@@ -643,7 +643,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void descriptor(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void descriptor(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void descriptorImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_descriptor();
@@ -677,7 +677,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void descriptors(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void descriptors(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void descriptorsImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_descriptors();
@@ -711,7 +711,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void key(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void key(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void keyImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_key();
@@ -745,7 +745,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void keys(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void keys(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void keysImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_keys();
@@ -779,7 +779,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void annotation(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void annotation(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void annotationImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_annotation();
@@ -813,7 +813,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void annotations(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void annotations(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void annotationsImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_annotations();
@@ -847,7 +847,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void member(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void member(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void memberImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_member();
@@ -881,7 +881,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void members(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void members(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void membersImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_members();
@@ -915,7 +915,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void field(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void field(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void fieldImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_field();
@@ -949,7 +949,7 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
   virtual void fields(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void fields(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void fieldsImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual int32_t sync_fields();

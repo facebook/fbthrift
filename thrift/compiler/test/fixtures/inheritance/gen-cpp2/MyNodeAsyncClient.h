@@ -29,7 +29,7 @@ class MyNodeAsyncClient : public ::cpp2::MyRootAsyncClient {
 
   virtual void do_mid(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void do_mid(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void do_midImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void sync_do_mid();

@@ -33,7 +33,14 @@ void <%service:name%>AsyncClient::<%function:cpp_name%>(apache::thrift::RpcOptio
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
-  <%function:cpp_name%>Impl(rpcOptions, std::move(ctx), apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext))<%function:comma%><% > service_common/param_list%>);
+<%^function:returns_stream?%>
+  auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
+<%/function:returns_stream?%><%#function:returns_stream?%>
+  auto wrappedCallback = apache::thrift::createStreamClientCallback(
+    apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)),
+    rpcOptions.getChunkBufferSize());
+<%/function:returns_stream?%>
+  <%function:cpp_name%>Impl(rpcOptions, std::move(ctx), std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>);
 }
 
 <%/function:returns_sink?%>

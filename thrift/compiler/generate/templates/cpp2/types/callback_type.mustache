@@ -18,6 +18,10 @@
 %>apache::thrift::SinkClientCallback*<%!
 %><%/type:sink?%><%!
 
-%><%^type:sink?%><%!
+%><%#type:streamresponse?%><%!
+%>apache::thrift::StreamClientCallback*<%!
+%><%/type:streamresponse?%><%!
+
+%><%^type:sink?%><%^type:streamresponse?%><%!
 %>apache::thrift::RequestClientCallback::Ptr<%!
-%><%/type:sink?%><%/function:returnType%>
+%><%/type:streamresponse?%><%/type:sink?%><%/function:returnType%>

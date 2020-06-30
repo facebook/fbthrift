@@ -30,7 +30,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
 
   virtual void simple_function(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void simple_function(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void simple_functionImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual bool sync_simple_function();
@@ -64,7 +64,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
  public:
   virtual void throws_function(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void throws_function(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void throws_functionImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void sync_throws_function();
@@ -98,7 +98,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
  public:
   virtual void throws_function2(std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1);
   virtual void throws_function2(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1);
- private:
+ protected:
   void throws_function2Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, bool param1);
  public:
   virtual bool sync_throws_function2(bool param1);
@@ -132,7 +132,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
  public:
   virtual void throws_function3(std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1, const ::std::string& param2);
   virtual void throws_function3(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1, const ::std::string& param2);
- private:
+ protected:
   void throws_function3Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, bool param1, const ::std::string& param2);
  public:
   virtual void sync_throws_function3(::std::map<int32_t, ::std::string>& _return, bool param1, const ::std::string& param2);
@@ -166,7 +166,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
  public:
   virtual void oneway_void_ret(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void oneway_void_ret(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void oneway_void_retImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void sync_oneway_void_ret();
@@ -193,7 +193,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
  public:
   virtual void oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
   virtual void oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
- private:
+ protected:
   void oneway_void_ret_i32_i32_i32_i32_i32_paramImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
  public:
   virtual void sync_oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
@@ -220,7 +220,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
  public:
   virtual void oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2);
   virtual void oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2);
- private:
+ protected:
   void oneway_void_ret_map_setlist_paramImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2);
  public:
   virtual void sync_oneway_void_ret_map_setlist_param(const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2);
@@ -247,7 +247,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
  public:
   virtual void oneway_void_ret_struct_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& param1);
   virtual void oneway_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& param1);
- private:
+ protected:
   void oneway_void_ret_struct_paramImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::some::valid::ns::MyStruct& param1);
  public:
   virtual void sync_oneway_void_ret_struct_param(const  ::some::valid::ns::MyStruct& param1);
@@ -274,7 +274,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
  public:
   virtual void oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& param1);
   virtual void oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& param1);
- private:
+ protected:
   void oneway_void_ret_listunion_paramImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& param1);
  public:
   virtual void sync_oneway_void_ret_listunion_param(const ::std::vector< ::some::valid::ns::ComplexUnion>& param1);

@@ -93,7 +93,8 @@ void MyServiceAsyncClient::ping(apache::thrift::RpcOptions& rpcOptions, std::uni
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
-  pingImpl(rpcOptions, std::move(ctx), apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)));
+  auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
+  pingImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback));
 }
 
 void MyServiceAsyncClient::pingImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
@@ -133,7 +134,8 @@ void MyServiceAsyncClient::sync_ping(apache::thrift::RpcOptions& rpcOptions) {
       this->handlers_,
       this->getServiceName(),
       "MyService.ping");
-  pingImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
+  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
+  pingImpl(rpcOptions, ctx, std::move(wrappedCallback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
   _returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
@@ -259,7 +261,8 @@ void MyServiceAsyncClient::getRandomData(apache::thrift::RpcOptions& rpcOptions,
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
-  getRandomDataImpl(rpcOptions, std::move(ctx), apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)));
+  auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
+  getRandomDataImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback));
 }
 
 void MyServiceAsyncClient::getRandomDataImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
@@ -299,7 +302,8 @@ void MyServiceAsyncClient::sync_getRandomData(apache::thrift::RpcOptions& rpcOpt
       this->handlers_,
       this->getServiceName(),
       "MyService.getRandomData");
-  getRandomDataImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
+  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
+  getRandomDataImpl(rpcOptions, ctx, std::move(wrappedCallback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
   _returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
@@ -425,7 +429,8 @@ void MyServiceAsyncClient::hasDataById(apache::thrift::RpcOptions& rpcOptions, s
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
-  hasDataByIdImpl(rpcOptions, std::move(ctx), apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)), id);
+  auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
+  hasDataByIdImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), id);
 }
 
 void MyServiceAsyncClient::hasDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id) {
@@ -465,7 +470,8 @@ bool MyServiceAsyncClient::sync_hasDataById(apache::thrift::RpcOptions& rpcOptio
       this->handlers_,
       this->getServiceName(),
       "MyService.hasDataById");
-  hasDataByIdImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback), id);
+  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
+  hasDataByIdImpl(rpcOptions, ctx, std::move(wrappedCallback), id);
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
   _returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
@@ -593,7 +599,8 @@ void MyServiceAsyncClient::getDataById(apache::thrift::RpcOptions& rpcOptions, s
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
-  getDataByIdImpl(rpcOptions, std::move(ctx), apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)), id);
+  auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
+  getDataByIdImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), id);
 }
 
 void MyServiceAsyncClient::getDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id) {
@@ -633,7 +640,8 @@ void MyServiceAsyncClient::sync_getDataById(apache::thrift::RpcOptions& rpcOptio
       this->handlers_,
       this->getServiceName(),
       "MyService.getDataById");
-  getDataByIdImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback), id);
+  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
+  getDataByIdImpl(rpcOptions, ctx, std::move(wrappedCallback), id);
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
   _returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
@@ -759,7 +767,8 @@ void MyServiceAsyncClient::putDataById(apache::thrift::RpcOptions& rpcOptions, s
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
-  putDataByIdImpl(rpcOptions, std::move(ctx), apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)), id, data);
+  auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
+  putDataByIdImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), id, data);
 }
 
 void MyServiceAsyncClient::putDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const ::std::string& data) {
@@ -799,7 +808,8 @@ void MyServiceAsyncClient::sync_putDataById(apache::thrift::RpcOptions& rpcOptio
       this->handlers_,
       this->getServiceName(),
       "MyService.putDataById");
-  putDataByIdImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback), id, data);
+  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
+  putDataByIdImpl(rpcOptions, ctx, std::move(wrappedCallback), id, data);
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
   _returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));

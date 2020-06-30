@@ -28,7 +28,7 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
 
   virtual void doBland(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void doBland(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void doBlandImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void sync_doBland();
@@ -62,7 +62,7 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
   virtual void doRaise(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void doRaise(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void doRaiseImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void sync_doRaise();
@@ -96,7 +96,7 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
   virtual void get200(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void get200(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void get200Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void sync_get200(::std::string& _return);
@@ -130,7 +130,7 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
   virtual void get500(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void get500(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void get500Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void sync_get500(::std::string& _return);

@@ -28,7 +28,7 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
 
   virtual void ping(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void pingImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void sync_ping();
@@ -62,7 +62,7 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
  public:
   virtual void pong(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void pong(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
+ protected:
   void pongImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void sync_pong();
