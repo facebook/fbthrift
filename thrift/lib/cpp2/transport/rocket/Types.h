@@ -52,6 +52,10 @@ class StreamId {
     return streamId_;
   }
 
+  static constexpr StreamId maxClientStreamId() {
+    return StreamId{(1ul << 31) - 1};
+  }
+
  private:
   uint32_t streamId_{0};
 };

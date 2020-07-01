@@ -875,7 +875,8 @@ StreamId RocketClient::makeStreamId() {
     nextStreamId_ += 2;
   } while (hitMaxStreamId_ && streams_.contains(id));
 
-  if (UNLIKELY(id == StreamId(std::numeric_limits<uint32_t>::max()))) {
+  if (UNLIKELY(id == StreamId::maxClientStreamId())) {
+    nextStreamId_ = StreamId(1);
     hitMaxStreamId_ = true;
   }
   return id;
