@@ -33,6 +33,8 @@
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager-impl.h>
 
+#define UNUSED(x) ((void)(x))
+
 DEFINE_bool(codel_enabled, false, "Enable codel queue timeout algorithm");
 
 namespace apache {
@@ -66,6 +68,12 @@ void ThreadManager::traceTask(
     std::chrono::steady_clock::time_point queueBegin,
     std::chrono::steady_clock::duration waitTime,
     std::chrono::steady_clock::duration runTime) {
+  UNUSED(namePrefix);
+  UNUSED(rootContextId);
+  UNUSED(queueBegin);
+  UNUSED(waitTime);
+  UNUSED(runTime);
+
   // Times in this USDT use granularity of std::chrono::steady_clock::duration,
   // which is platform dependent. On Facebook servers, the granularity is
   // nanoseconds. We explicitly do not perform any unit conversions to avoid
