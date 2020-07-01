@@ -156,13 +156,6 @@ target_link_libraries(
     thriftfrozen2
     thriftprotocol
 )
-if(TARGET rsocket::ReactiveSocket)
-  target_link_libraries(
-    thriftcpp2
-    PUBLIC
-      rsocket::ReactiveSocket
-  )
-endif()
 
 # Install includes
 set(THRIFT2_HEADER_DIRS

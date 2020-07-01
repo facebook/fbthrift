@@ -15,7 +15,6 @@
  */
 
 #include <thrift/lib/cpp2/transport/rocket/test/util/TestServiceMock.h>
-#include <rsocket/Payload.h>
 
 namespace testutil {
 namespace testservice {

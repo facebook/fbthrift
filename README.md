@@ -3,7 +3,7 @@ Facebook Thrift [![Build Status](https://travis-ci.org/facebook/fbthrift.svg?bra
 
 Thrift is a serialization and RPC framework for service communication. Thrift enables these features in all major languages, and there is strong support for C++, Python, Hack, and Java. Most services at Facebook are written using Thrift for RPC, and some storage systems use Thrift for serializing records on disk.
 
-Facebook Thrift is not a distribution of [Apache Thrift](https://thrift.apache.org/). This is an evolved internal branch of Thrift that Facebook re-released to open source community in February 2014. Facebook Thrift was originally released closely tracking Apache Thrift but is now evolving in new directions. In particular, the compiler was rewritten from scratch and the new implementation features a fully asynchronous Thrift server. Read more about these improvements in the [ThriftServer documentation](https://github.com/facebook/fbthrift/blob/master/thrift/doc/Cpp2.md). 
+Facebook Thrift is not a distribution of [Apache Thrift](https://thrift.apache.org/). This is an evolved internal branch of Thrift that Facebook re-released to open source community in February 2014. Facebook Thrift was originally released closely tracking Apache Thrift but is now evolving in new directions. In particular, the compiler was rewritten from scratch and the new implementation features a fully asynchronous Thrift server. Read more about these improvements in the [ThriftServer documentation](https://github.com/facebook/fbthrift/blob/master/thrift/doc/Cpp2.md).
 
 You can also learn more about this project in the original Facebook Code [blog post](https://code.facebook.com/posts/1468950976659943/under-the-hood-building-and-open-sourcing-fbthrift/).
 
@@ -69,7 +69,6 @@ Please install the following dependencies before building Facebook Thrift:
 [{fmt}](https://github.com/fmtlib/fmt),
 [GFlags](https://github.com/gflags/gflags),
 [GLog](https://github.com/google/glog),
-[rsocket-cpp](https://github.com/rsocket/rsocket-cpp)
 
 **Facebook**:
 [Fizz](https://github.com/facebookincubator/fizz),
@@ -104,7 +103,7 @@ your project. This includes the following macro to help building Thrift files:
       #output_path
     )
 
-This generates a library called `file_name-<language>`. That is, for 
+This generates a library called `file_name-<language>`. That is, for
 `Test.thrift` compiled as cpp2, it will generate the library `Test-cpp2`.
  This should be added as a dependency to any source or header file that contains
 an include to generated code.

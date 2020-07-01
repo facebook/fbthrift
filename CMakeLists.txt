@@ -104,8 +104,6 @@ if(lib_only OR build_all)
   find_package(Gflags REQUIRED)
   find_package(Glog REQUIRED)
   find_package(folly CONFIG REQUIRED)
-  find_package(yarpl CONFIG REQUIRED) # transitive dep for rsocket
-  find_package(rsocket CONFIG)
   find_package(fizz CONFIG REQUIRED)
   find_package(fmt CONFIG REQUIRED)
   find_package(wangle CONFIG REQUIRED)

@@ -26,8 +26,6 @@
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 
-#include <rsocket/RSocketParameters.h>
-
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
