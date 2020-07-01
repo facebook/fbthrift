@@ -25,6 +25,8 @@
 #include <memory>
 #include <string>
 
+#include <folly/Portability.h>
+
 #include <folly/Executor.h>
 #include <folly/SharedMutex.h>
 #include <folly/executors/Codel.h>
@@ -278,7 +280,7 @@ class ThreadManager : public virtual folly::Executor {
   static folly::SharedMutex observerLock_;
   static std::shared_ptr<Observer> observer_;
 
-  static void traceTask(
+  static FOLLY_NOINLINE void traceTask(
       const std::string& namePrefix,
       intptr_t rootContextId,
       std::chrono::steady_clock::time_point queueBegin,
