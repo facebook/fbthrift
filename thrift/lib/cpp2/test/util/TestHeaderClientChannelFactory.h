@@ -27,8 +27,7 @@ struct TestHeaderClientChannelFactory : public TestClientChannelFactory {
 
   apache::thrift::ClientChannel::Ptr create(
       folly::AsyncTransport::UniquePtr socket) override {
-    std::shared_ptr<folly::AsyncTransport> sharedSocket(
-        std::move(socket));
+    std::shared_ptr<folly::AsyncTransport> sharedSocket(std::move(socket));
     auto channel = apache::thrift::HeaderClientChannel::Ptr(
         new apache::thrift::HeaderClientChannel(sharedSocket));
 

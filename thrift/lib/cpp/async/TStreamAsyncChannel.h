@@ -196,11 +196,10 @@ class TAsyncChannelWriteRequestBase {
  *     returned by the previous getReadBuffer() call.
  */
 template <typename WriteRequest_, typename ReadState_>
-class TStreamAsyncChannel
-    : public TAsyncEventChannel,
-      protected folly::AsyncTransport::ReadCallback,
-      protected folly::AsyncTransport::WriteCallback,
-      protected folly::AsyncTimeout {
+class TStreamAsyncChannel : public TAsyncEventChannel,
+                            protected folly::AsyncTransport::ReadCallback,
+                            protected folly::AsyncTransport::WriteCallback,
+                            protected folly::AsyncTimeout {
  public:
   explicit TStreamAsyncChannel(
       const std::shared_ptr<folly::AsyncTransport>& transport);

@@ -136,8 +136,7 @@ class HTTPClientChannel : public ClientChannel,
 
   folly::AsyncTransport* getTransport() override {
     if (httpSession_) {
-      return dynamic_cast<folly::AsyncTransport*>(
-          httpSession_->getTransport());
+      return dynamic_cast<folly::AsyncTransport*>(httpSession_->getTransport());
     } else {
       return nullptr;
     }

@@ -29,9 +29,8 @@ namespace apache {
 namespace thrift {
 
 // This Handler may only be used in a single Pipeline
-class TAsyncTransportHandler
-    : public wangle::BytesToBytesHandler,
-      public folly::AsyncTransport::ReadCallback {
+class TAsyncTransportHandler : public wangle::BytesToBytesHandler,
+                               public folly::AsyncTransport::ReadCallback {
  public:
   explicit TAsyncTransportHandler(
       std::shared_ptr<folly::AsyncTransport> transport)
@@ -45,8 +44,7 @@ class TAsyncTransportHandler
     }
   }
 
-  void setTransport(
-      const std::shared_ptr<folly::AsyncTransport>& transport) {
+  void setTransport(const std::shared_ptr<folly::AsyncTransport>& transport) {
     transport_ = transport;
   }
 

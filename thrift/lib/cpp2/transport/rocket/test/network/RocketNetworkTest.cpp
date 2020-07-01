@@ -1010,8 +1010,7 @@ TEST_F(RocketNetworkTest, CloseNowWithPendingWriteCallback) {
   };
 
   auto evb = std::make_unique<folly::EventBase>();
-  auto sock =
-      folly::AsyncTransport::UniquePtr(new FakeTransport(evb.get()));
+  auto sock = folly::AsyncTransport::UniquePtr(new FakeTransport(evb.get()));
   auto client = RocketClient::create(
       *evb,
       std::move(sock),

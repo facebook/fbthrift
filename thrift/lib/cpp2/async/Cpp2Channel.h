@@ -65,8 +65,7 @@ class Cpp2Channel
   }
   void closeNow();
 
-  void setTransport(
-      const std::shared_ptr<folly::AsyncTransport>& transport) {
+  void setTransport(const std::shared_ptr<folly::AsyncTransport>& transport) {
     transport_ = transport;
     transportHandler_->setTransport(transport);
   }
