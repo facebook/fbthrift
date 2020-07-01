@@ -602,25 +602,83 @@ TEST(fatal_struct, set_methods) {
 
   struct4 a;
   EXPECT_TRUE(req_field::is_set(a));
-  req_field::mark_set(a, true);
+  EXPECT_TRUE(req_field::mark_set(a, true));
   EXPECT_TRUE(req_field::is_set(a));
-  req_field::mark_set(a, false);
+  EXPECT_FALSE(req_field::mark_set(a, false));
+  EXPECT_TRUE(req_field::is_set(a));
 
-  EXPECT_FALSE(bool(opt_field::is_set(a)));
-  opt_field::mark_set(a, true);
-  EXPECT_TRUE(bool(opt_field::is_set(a)));
-  opt_field::mark_set(a, false);
-  EXPECT_FALSE(bool(opt_field::is_set(a)));
+  EXPECT_FALSE(opt_field::is_set(a));
+  EXPECT_TRUE(opt_field::mark_set(a, true));
+  EXPECT_TRUE(opt_field::is_set(a));
+  EXPECT_FALSE(opt_field::mark_set(a, false));
+  EXPECT_FALSE(opt_field::is_set(a));
 
-  EXPECT_FALSE(bool(def_field::is_set(a)));
-  def_field::mark_set(a, true);
-  EXPECT_TRUE(bool(def_field::is_set(a)));
-  def_field::mark_set(a, false);
-  EXPECT_FALSE(bool(def_field::is_set(a)));
+  EXPECT_FALSE(def_field::is_set(a));
+  EXPECT_TRUE(def_field::mark_set(a, true));
+  EXPECT_TRUE(def_field::is_set(a));
+  EXPECT_FALSE(def_field::mark_set(a, false));
+  EXPECT_FALSE(def_field::is_set(a));
 
   EXPECT_TRUE(ref_field::is_set(a));
-  ref_field::mark_set(a, true);
-  EXPECT_TRUE(req_field::is_set(a));
+  EXPECT_TRUE(ref_field::mark_set(a, true));
+}
+
+TEST(fatal_struct, field_ref_getter) {
+  using info = apache::thrift::reflect_struct<struct4>;
+  using req_field = fatal::
+      get<info::members, info::member::field0::name, fatal::get_type::name>;
+  using opt_field = fatal::
+      get<info::members, info::member::field1::name, fatal::get_type::name>;
+  using def_field = fatal::
+      get<info::members, info::member::field2::name, fatal::get_type::name>;
+
+  using ref_field = fatal::
+      get<info::members, info::member::field3::name, fatal::get_type::name>;
+
+  struct4 a;
+
+  req_field::field_ref_getter req;
+  EXPECT_TRUE(req(a).has_value());
+  req(a) = 1;
+  EXPECT_EQ(a.field0_ref(), 1);
+  a.field0_ref() = 2;
+  EXPECT_EQ(req(a), 2);
+  static_assert(
+      std::is_same<
+          apache::thrift::required_field_ref<std::int32_t&>,
+          decltype(req(a))>::value,
+      "");
+
+  opt_field::field_ref_getter opt;
+  EXPECT_FALSE(opt(a));
+  opt(a) = "1";
+  EXPECT_EQ(a.field1_ref(), "1");
+  a.field1_ref() = "2";
+  EXPECT_EQ(opt(a), "2");
+  static_assert(
+      std::is_same<
+          apache::thrift::optional_field_ref<std::string&>,
+          decltype(opt(a))>::value,
+      "");
+
+  def_field::field_ref_getter def;
+  EXPECT_FALSE(def(a).has_value());
+  def(a) = enum1::field1;
+  EXPECT_EQ(a.field2_ref(), enum1::field1);
+  a.field2_ref() = enum1::field2;
+  EXPECT_EQ(def(a), enum1::field2);
+  static_assert(
+      std::is_same<apache::thrift::field_ref<enum1&>, decltype(def(a))>::value,
+      "");
+
+  ref_field::field_ref_getter ref;
+  EXPECT_TRUE(ref(a));
+  ref(a)->a_ref() = 1;
+  EXPECT_EQ(a.field3_ref()->a_ref(), 1);
+  a.field3_ref()->a_ref() = 2;
+  EXPECT_EQ(ref(a)->a_ref(), 2);
+  static_assert(
+      std::is_same<std::unique_ptr<structA>&, decltype(ref(a))>::value, "");
 }
 
 } // namespace cpp_reflection
