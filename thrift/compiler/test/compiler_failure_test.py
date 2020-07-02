@@ -246,27 +246,13 @@ class CompilerFailureTest(unittest.TestCase):
             '[FAILURE:foo.thrift:4] Field `a` is not unique in struct `Foo`\n',
         )
 
-    def test_mixin_without_thrift_compiler_arg(self):
-        write_file("foo.thrift", textwrap.dedent("""\
-            struct A { 1: i32 i }
-            struct B { 1: mixin A a }
-        """))
-
-        ret, out, err = self.run_thrift("foo.thrift")
-
-        self.assertEqual(ret, 1)
-        self.assertEqual(
-            err,
-            '[FAILURE:foo.thrift:2] Mixin support is not enabled\n',
-        )
-
     def test_mixin_field_names_uniqueness(self):
         write_file("foo.thrift", textwrap.dedent("""\
             struct A { 1: i32 i }
             struct B { 2: i64 i }
             struct C {
-              1: mixin A a;
-              2: mixin B b;
+              1: A a (cpp.mixin);
+              2: B b (cpp.mixin);
             }
         """))
 
@@ -281,7 +267,7 @@ class CompilerFailureTest(unittest.TestCase):
         write_file("bar.thrift", textwrap.dedent("""\
             struct A { 1: i32 i }
             struct B {
-              1: mixin A a;
+              1: A a (cpp.mixin);
               2: i64 i;
             }
         """))
@@ -297,7 +283,7 @@ class CompilerFailureTest(unittest.TestCase):
     def test_mixin_nonstruct_members(self):
         write_file("foo.thrift", textwrap.dedent("""\
             struct A {
-              1: mixin i32 i;
+              1: i32 i (cpp.mixin);
             }
         """))
 
@@ -313,7 +299,7 @@ class CompilerFailureTest(unittest.TestCase):
         write_file("foo.thrift", textwrap.dedent("""\
             struct A { 1: i32 i }
             union B {
-              1: mixin A a;
+              1: A a (cpp.mixin);
             }
         """))
 
@@ -329,7 +315,7 @@ class CompilerFailureTest(unittest.TestCase):
         write_file("foo.thrift", textwrap.dedent("""\
             union A { 1: i32 i }
             struct B {
-              1: mixin A a;
+              1: A a (cpp.mixin);
             }
         """))
 
@@ -345,7 +331,7 @@ class CompilerFailureTest(unittest.TestCase):
         write_file("foo.thrift", textwrap.dedent("""\
             struct A { 1: i32 i }
             struct B {
-              1: mixin A a (cpp.ref = "true");
+              1: A a (cpp.ref = "true", cpp.mixin);
             }
         """))
 

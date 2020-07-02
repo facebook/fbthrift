@@ -184,7 +184,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "const"              { return apache::thrift::compiler::yy::parser::make_tok_const();                }
 "required"           { return apache::thrift::compiler::yy::parser::make_tok_required();             }
 "optional"           { return apache::thrift::compiler::yy::parser::make_tok_optional();             }
-"mixin"              { return apache::thrift::compiler::yy::parser::make_tok_mixin();                }
 
 {octconstant} {
   errno = 0;

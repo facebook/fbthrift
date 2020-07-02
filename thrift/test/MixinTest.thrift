@@ -19,7 +19,7 @@ struct Mixin1 {
 }
 
 struct Mixin2 {
-  1: mixin Mixin1 m1;
+  1: Mixin1 m1 (cpp.mixin);
   2: optional string field2;
 }
 
@@ -29,6 +29,6 @@ struct Mixin3 {
 
 struct Foo {
   1: string field4;
-  2: mixin Mixin2 m2;
+  2: Mixin2 m2 (cpp.mixin);
   3: Mixin3 m3 (cpp.mixin);
 }
