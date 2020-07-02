@@ -85,6 +85,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 containerStruct2::containerStruct2() :
       fieldA(0),
       req_fieldA(0),
+      opt_fieldA(0),
       fieldC(std::initializer_list<int32_t>{1,
   2,
   3,
@@ -93,8 +94,13 @@ containerStruct2::containerStruct2() :
   2,
   3,
   4}),
+      opt_fieldC(std::initializer_list<int32_t>{1,
+  2,
+  3,
+  4}),
       fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
-      req_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")) {}
+      req_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
+      opt_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -114,23 +120,36 @@ containerStruct2::containerStruct2(apache::thrift::FragileConstructor, bool fiel
     fieldD(std::move(fieldD__arg)),
     fieldE(std::move(fieldE__arg)),
     req_fieldE(std::move(req_fieldE__arg)),
-    opt_fieldE(std::move(opt_fieldE__arg)) {}
+    opt_fieldE(std::move(opt_fieldE__arg)) {
+  __isset.fieldA = true;
+  __isset.opt_fieldA = true;
+  __isset.fieldB = true;
+  __isset.opt_fieldB = true;
+  __isset.fieldC = true;
+  __isset.opt_fieldC = true;
+  __isset.fieldD = true;
+  __isset.fieldE = true;
+  __isset.opt_fieldE = true;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void containerStruct2::__clear() {
   // clear all fields
   fieldA = 0;
   req_fieldA = 0;
-  opt_fieldA.reset();
+  opt_fieldA = 0;
   fieldB.clear();
   req_fieldB.clear();
-  opt_fieldB.reset();
+  opt_fieldB.clear();
   fieldC.clear();
   req_fieldC.clear();
-  opt_fieldC.reset();
+  opt_fieldC.clear();
   fieldD = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
   req_fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
-  opt_fieldE.reset();
+  opt_fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool containerStruct2::operator==(const containerStruct2& rhs) const {
@@ -143,8 +162,13 @@ bool containerStruct2::operator==(const containerStruct2& rhs) const {
   if (!(lhs.req_fieldA == rhs.req_fieldA)) {
     return false;
   }
-  if (!(lhs.opt_fieldA == rhs.opt_fieldA)) {
+  if (lhs.opt_fieldA_ref().has_value() != rhs.opt_fieldA_ref().has_value()) {
     return false;
+  }
+  if (lhs.opt_fieldA_ref().has_value()) {
+    if (!(lhs.opt_fieldA == rhs.opt_fieldA)) {
+      return false;
+    }
   }
   if (!(lhs.fieldB == rhs.fieldB)) {
     return false;
@@ -152,8 +176,13 @@ bool containerStruct2::operator==(const containerStruct2& rhs) const {
   if (!(lhs.req_fieldB == rhs.req_fieldB)) {
     return false;
   }
-  if (!(lhs.opt_fieldB == rhs.opt_fieldB)) {
+  if (lhs.opt_fieldB_ref().has_value() != rhs.opt_fieldB_ref().has_value()) {
     return false;
+  }
+  if (lhs.opt_fieldB_ref().has_value()) {
+    if (!(lhs.opt_fieldB == rhs.opt_fieldB)) {
+      return false;
+    }
   }
   if (!(lhs.fieldC == rhs.fieldC)) {
     return false;
@@ -161,8 +190,13 @@ bool containerStruct2::operator==(const containerStruct2& rhs) const {
   if (!(lhs.req_fieldC == rhs.req_fieldC)) {
     return false;
   }
-  if (!(lhs.opt_fieldC == rhs.opt_fieldC)) {
+  if (lhs.opt_fieldC_ref().has_value() != rhs.opt_fieldC_ref().has_value()) {
     return false;
+  }
+  if (lhs.opt_fieldC_ref().has_value()) {
+    if (!(lhs.opt_fieldC == rhs.opt_fieldC)) {
+      return false;
+    }
   }
   if (!(lhs.fieldD == rhs.fieldD)) {
     return false;
@@ -173,8 +207,13 @@ bool containerStruct2::operator==(const containerStruct2& rhs) const {
   if (!(lhs.req_fieldE == rhs.req_fieldE)) {
     return false;
   }
-  if (!(lhs.opt_fieldE == rhs.opt_fieldE)) {
+  if (lhs.opt_fieldE_ref().has_value() != rhs.opt_fieldE_ref().has_value()) {
     return false;
+  }
+  if (lhs.opt_fieldE_ref().has_value()) {
+    if (!(lhs.opt_fieldE == rhs.opt_fieldE)) {
+      return false;
+    }
   }
   return true;
 }
@@ -189,8 +228,13 @@ bool containerStruct2::operator<(const containerStruct2& rhs) const {
   if (!(lhs.req_fieldA == rhs.req_fieldA)) {
     return lhs.req_fieldA < rhs.req_fieldA;
   }
-  if (!(lhs.opt_fieldA == rhs.opt_fieldA)) {
-    return lhs.opt_fieldA < rhs.opt_fieldA;
+  if (lhs.opt_fieldA_ref().has_value() != rhs.opt_fieldA_ref().has_value()) {
+    return lhs.opt_fieldA_ref().has_value() < rhs.opt_fieldA_ref().has_value();
+  }
+  if (lhs.opt_fieldA_ref().has_value()) {
+    if (!(lhs.opt_fieldA == rhs.opt_fieldA)) {
+      return lhs.opt_fieldA < rhs.opt_fieldA;
+    }
   }
   if (!(lhs.fieldB == rhs.fieldB)) {
     return lhs.fieldB < rhs.fieldB;
@@ -198,8 +242,13 @@ bool containerStruct2::operator<(const containerStruct2& rhs) const {
   if (!(lhs.req_fieldB == rhs.req_fieldB)) {
     return lhs.req_fieldB < rhs.req_fieldB;
   }
-  if (!(lhs.opt_fieldB == rhs.opt_fieldB)) {
-    return lhs.opt_fieldB < rhs.opt_fieldB;
+  if (lhs.opt_fieldB_ref().has_value() != rhs.opt_fieldB_ref().has_value()) {
+    return lhs.opt_fieldB_ref().has_value() < rhs.opt_fieldB_ref().has_value();
+  }
+  if (lhs.opt_fieldB_ref().has_value()) {
+    if (!(lhs.opt_fieldB == rhs.opt_fieldB)) {
+      return lhs.opt_fieldB < rhs.opt_fieldB;
+    }
   }
   if (!(lhs.fieldC == rhs.fieldC)) {
     return lhs.fieldC < rhs.fieldC;
@@ -207,8 +256,13 @@ bool containerStruct2::operator<(const containerStruct2& rhs) const {
   if (!(lhs.req_fieldC == rhs.req_fieldC)) {
     return lhs.req_fieldC < rhs.req_fieldC;
   }
-  if (!(lhs.opt_fieldC == rhs.opt_fieldC)) {
-    return lhs.opt_fieldC < rhs.opt_fieldC;
+  if (lhs.opt_fieldC_ref().has_value() != rhs.opt_fieldC_ref().has_value()) {
+    return lhs.opt_fieldC_ref().has_value() < rhs.opt_fieldC_ref().has_value();
+  }
+  if (lhs.opt_fieldC_ref().has_value()) {
+    if (!(lhs.opt_fieldC == rhs.opt_fieldC)) {
+      return lhs.opt_fieldC < rhs.opt_fieldC;
+    }
   }
   if (!(lhs.fieldD == rhs.fieldD)) {
     return lhs.fieldD < rhs.fieldD;
@@ -219,10 +273,63 @@ bool containerStruct2::operator<(const containerStruct2& rhs) const {
   if (!(lhs.req_fieldE == rhs.req_fieldE)) {
     return lhs.req_fieldE < rhs.req_fieldE;
   }
-  if (!(lhs.opt_fieldE == rhs.opt_fieldE)) {
-    return lhs.opt_fieldE < rhs.opt_fieldE;
+  if (lhs.opt_fieldE_ref().has_value() != rhs.opt_fieldE_ref().has_value()) {
+    return lhs.opt_fieldE_ref().has_value() < rhs.opt_fieldE_ref().has_value();
+  }
+  if (lhs.opt_fieldE_ref().has_value()) {
+    if (!(lhs.opt_fieldE == rhs.opt_fieldE)) {
+      return lhs.opt_fieldE < rhs.opt_fieldE;
+    }
   }
   return false;
+}
+
+const ::std::map<::std::string, bool>& containerStruct2::get_fieldB() const& {
+  return fieldB;
+}
+
+::std::map<::std::string, bool> containerStruct2::get_fieldB() && {
+  return std::move(fieldB);
+}
+
+const ::std::map<::std::string, bool>& containerStruct2::get_req_fieldB() const& {
+  return req_fieldB;
+}
+
+::std::map<::std::string, bool> containerStruct2::get_req_fieldB() && {
+  return std::move(req_fieldB);
+}
+
+const ::std::map<::std::string, bool>* containerStruct2::get_opt_fieldB() const& {
+  return opt_fieldB_ref().has_value() ? std::addressof(opt_fieldB) : nullptr;
+}
+
+::std::map<::std::string, bool>* containerStruct2::get_opt_fieldB() & {
+  return opt_fieldB_ref().has_value() ? std::addressof(opt_fieldB) : nullptr;
+}
+
+const ::std::set<int32_t>& containerStruct2::get_fieldC() const& {
+  return fieldC;
+}
+
+::std::set<int32_t> containerStruct2::get_fieldC() && {
+  return std::move(fieldC);
+}
+
+const ::std::set<int32_t>& containerStruct2::get_req_fieldC() const& {
+  return req_fieldC;
+}
+
+::std::set<int32_t> containerStruct2::get_req_fieldC() && {
+  return std::move(req_fieldC);
+}
+
+const ::std::set<int32_t>* containerStruct2::get_opt_fieldC() const& {
+  return opt_fieldC_ref().has_value() ? std::addressof(opt_fieldC) : nullptr;
+}
+
+::std::set<int32_t>* containerStruct2::get_opt_fieldC() & {
+  return opt_fieldC_ref().has_value() ? std::addressof(opt_fieldC) : nullptr;
 }
 
 
@@ -230,17 +337,20 @@ void swap(containerStruct2& a, containerStruct2& b) {
   using ::std::swap;
   swap(a.fieldA, b.fieldA);
   swap(a.req_fieldA, b.req_fieldA);
-  swap(a.opt_fieldA, b.opt_fieldA);
+  swap(a.opt_fieldA_ref().value_unchecked(), b.opt_fieldA_ref().value_unchecked());
   swap(a.fieldB, b.fieldB);
   swap(a.req_fieldB, b.req_fieldB);
-  swap(a.opt_fieldB, b.opt_fieldB);
+  swap(a.opt_fieldB_ref().value_unchecked(), b.opt_fieldB_ref().value_unchecked());
   swap(a.fieldC, b.fieldC);
   swap(a.req_fieldC, b.req_fieldC);
-  swap(a.opt_fieldC, b.opt_fieldC);
+  swap(a.opt_fieldC_ref().value_unchecked(), b.opt_fieldC_ref().value_unchecked());
   swap(a.fieldD, b.fieldD);
   swap(a.fieldE, b.fieldE);
   swap(a.req_fieldE, b.req_fieldE);
-  swap(a.opt_fieldE, b.opt_fieldE);
+  swap(a.opt_fieldE_ref().value_unchecked(), b.opt_fieldE_ref().value_unchecked());
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void containerStruct2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
