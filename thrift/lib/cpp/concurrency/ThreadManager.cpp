@@ -27,6 +27,7 @@
 #include <glog/logging.h>
 
 #include <folly/Conv.h>
+#include <folly/CppAttributes.h>
 #include <folly/portability/GFlags.h>
 #include <folly/tracing/StaticTracepoint.h>
 
@@ -63,17 +64,11 @@ void ThreadManager::setObserver(
 }
 
 void ThreadManager::traceTask(
-    const std::string& namePrefix,
-    intptr_t rootContextId,
-    std::chrono::steady_clock::time_point queueBegin,
-    std::chrono::steady_clock::duration waitTime,
-    std::chrono::steady_clock::duration runTime) {
-  UNUSED(namePrefix);
-  UNUSED(rootContextId);
-  UNUSED(queueBegin);
-  UNUSED(waitTime);
-  UNUSED(runTime);
-
+    FOLLY_MAYBE_UNUSED const std::string& namePrefix,
+    FOLLY_MAYBE_UNUSED intptr_t rootContextId,
+    FOLLY_MAYBE_UNUSED std::chrono::steady_clock::time_point queueBegin,
+    FOLLY_MAYBE_UNUSED std::chrono::steady_clock::duration waitTime,
+    FOLLY_MAYBE_UNUSED std::chrono::steady_clock::duration runTime) {
   // Times in this USDT use granularity of std::chrono::steady_clock::duration,
   // which is platform dependent. On Facebook servers, the granularity is
   // nanoseconds. We explicitly do not perform any unit conversions to avoid
