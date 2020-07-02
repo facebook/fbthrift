@@ -34,8 +34,6 @@
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager-impl.h>
 
-#define UNUSED(x) ((void)(x))
-
 DEFINE_bool(codel_enabled, false, "Enable codel queue timeout algorithm");
 
 namespace apache {
