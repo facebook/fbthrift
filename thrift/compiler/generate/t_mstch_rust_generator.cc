@@ -234,6 +234,7 @@ class t_mstch_rust_generator : public t_mstch_generator {
   }
 
   void generate_program() override;
+  void fill_validator_list(validator_list&) const override;
 
  private:
   void set_mstch_generators();
@@ -1467,6 +1468,32 @@ void t_mstch_rust_generator::load_crate_map(const std::string& path) {
       options_.cratemap[thrift_names[0]] = crate_name;
     }
   }
+}
+
+namespace {
+class annotation_validator : public validator {
+ public:
+  using validator::visit;
+  bool visit(t_struct* s) override;
+};
+
+bool annotation_validator::visit(t_struct* s) {
+  for (auto* member : s->get_members()) {
+    bool box = member->annotations_.count("rust.box") != 0;
+    bool arc = member->annotations_.count("rust.arc") != 0;
+    if (box && arc) {
+      add_error(
+          member->get_lineno(),
+          "Field `" + member->get_name() +
+              "` cannot be both Box'ed and Arc'ed");
+    }
+  }
+  return true;
+}
+} // namespace
+
+void t_mstch_rust_generator::fill_validator_list(validator_list& l) const {
+  l.add<annotation_validator>();
 }
 
 THRIFT_REGISTER_GENERATOR(mstch_rust, "Rust", "");
