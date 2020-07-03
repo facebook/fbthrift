@@ -201,6 +201,18 @@ std::string get_import_name(
   }
   return program_name;
 }
+
+enum class FieldKind { Box, Arc, Inline };
+
+FieldKind field_kind(const std::map<std::string, std::string>& annotations) {
+  if (annotations.count("rust.arc") != 0) {
+    return FieldKind::Arc;
+  }
+  if (annotations.count("rust.box") != 0) {
+    return FieldKind::Box;
+  }
+  return FieldKind::Inline;
+}
 } // namespace
 
 class t_mstch_rust_generator : public t_mstch_generator {
@@ -929,10 +941,10 @@ class mstch_rust_struct_field : public mstch_base {
         type, generators_, cache_, pos_, options_);
   }
   mstch::node is_boxed() {
-    return field_->annotations_.count("rust.box") != 0;
+    return field_kind(field_->annotations_) == FieldKind::Box;
   }
   mstch::node is_arc() {
-    return field_->annotations_.count("rust.arc") != 0;
+    return field_kind(field_->annotations_) == FieldKind::Arc;
   }
 
  private:
@@ -1088,10 +1100,10 @@ class mstch_rust_field : public mstch_field {
     return mstch::node();
   }
   mstch::node rust_is_boxed() {
-    return field_->annotations_.count("rust.box") != 0;
+    return field_kind(field_->annotations_) == FieldKind::Box;
   }
   mstch::node rust_is_arc() {
-    return field_->annotations_.count("rust.arc") != 0;
+    return field_kind(field_->annotations_) == FieldKind::Arc;
   }
 
  private:
