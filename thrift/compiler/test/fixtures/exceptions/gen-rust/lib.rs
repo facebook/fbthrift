@@ -1432,20 +1432,20 @@ pub mod server {
 ///     ) -> impl Future<Item = Out> {...}
 pub mod mock {
     pub struct Raiser<'mock> {
-        pub doBland: raiser::doBland<'mock>,
-        pub doRaise: raiser::doRaise<'mock>,
-        pub get200: raiser::get200<'mock>,
-        pub get500: raiser::get500<'mock>,
+        pub doBland: r#impl::raiser::doBland<'mock>,
+        pub doRaise: r#impl::raiser::doRaise<'mock>,
+        pub get200: r#impl::raiser::get200<'mock>,
+        pub get500: r#impl::raiser::get500<'mock>,
         _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
     impl dyn super::client::Raiser {
         pub fn mock<'mock>() -> Raiser<'mock> {
             Raiser {
-                doBland: raiser::doBland::unimplemented(),
-                doRaise: raiser::doRaise::unimplemented(),
-                get200: raiser::get200::unimplemented(),
-                get500: raiser::get500::unimplemented(),
+                doBland: r#impl::raiser::doBland::unimplemented(),
+                doRaise: r#impl::raiser::doRaise::unimplemented(),
+                get200: r#impl::raiser::get200::unimplemented(),
+                get500: r#impl::raiser::get500::unimplemented(),
                 _marker: ::std::marker::PhantomData,
             }
         }
@@ -1483,161 +1483,163 @@ pub mod mock {
         }
     }
 
-    mod raiser {
+    mod r#impl {
+        pub mod raiser {
 
-        pub struct doBland<'mock> {
-            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
-                dyn ::std::ops::FnMut() -> ::std::result::Result<
-                    (),
-                    crate::errors::raiser::DoBlandError,
-                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
-            >>,
-        }
+            pub struct doBland<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut() -> ::std::result::Result<
+                        (),
+                        crate::errors::raiser::DoBlandError,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
+            }
 
-        impl<'mock> doBland<'mock> {
-            pub fn unimplemented() -> Self {
-                doBland {
-                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
-                        "{}::{} is not mocked",
-                        "Raiser",
-                        "doBland",
-                    ))),
+            impl<'mock> doBland<'mock> {
+                pub fn unimplemented() -> Self {
+                    doBland {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
+                            "{}::{} is not mocked",
+                            "Raiser",
+                            "doBland",
+                        ))),
+                    }
+                }
+
+                pub fn ret(&self, value: ()) {
+                    self.mock(move || value.clone());
+                }
+
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
+                }
+
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::raiser::DoBlandError>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
                 }
             }
 
-            pub fn ret(&self, value: ()) {
-                self.mock(move || value.clone());
+            pub struct doRaise<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut() -> ::std::result::Result<
+                        (),
+                        crate::errors::raiser::DoRaiseError,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
             }
 
-            pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
-                let mut closure = self.closure.lock().unwrap();
-                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
-            }
+            impl<'mock> doRaise<'mock> {
+                pub fn unimplemented() -> Self {
+                    doRaise {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
+                            "{}::{} is not mocked",
+                            "Raiser",
+                            "doRaise",
+                        ))),
+                    }
+                }
 
-            pub fn throw<E>(&self, exception: E)
-            where
-                E: ::std::convert::Into<crate::errors::raiser::DoBlandError>,
-                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
-            {
-                let mut closure = self.closure.lock().unwrap();
-                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
-            }
-        }
+                pub fn ret(&self, value: ()) {
+                    self.mock(move || value.clone());
+                }
 
-        pub struct doRaise<'mock> {
-            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
-                dyn ::std::ops::FnMut() -> ::std::result::Result<
-                    (),
-                    crate::errors::raiser::DoRaiseError,
-                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
-            >>,
-        }
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
+                }
 
-        impl<'mock> doRaise<'mock> {
-            pub fn unimplemented() -> Self {
-                doRaise {
-                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
-                        "{}::{} is not mocked",
-                        "Raiser",
-                        "doRaise",
-                    ))),
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::raiser::DoRaiseError>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
                 }
             }
 
-            pub fn ret(&self, value: ()) {
-                self.mock(move || value.clone());
+            pub struct get200<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut() -> ::std::result::Result<
+                        ::std::string::String,
+                        crate::errors::raiser::Get200Error,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
             }
 
-            pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
-                let mut closure = self.closure.lock().unwrap();
-                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
-            }
+            impl<'mock> get200<'mock> {
+                pub fn unimplemented() -> Self {
+                    get200 {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
+                            "{}::{} is not mocked",
+                            "Raiser",
+                            "get200",
+                        ))),
+                    }
+                }
 
-            pub fn throw<E>(&self, exception: E)
-            where
-                E: ::std::convert::Into<crate::errors::raiser::DoRaiseError>,
-                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
-            {
-                let mut closure = self.closure.lock().unwrap();
-                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
-            }
-        }
+                pub fn ret(&self, value: ::std::string::String) {
+                    self.mock(move || value.clone());
+                }
 
-        pub struct get200<'mock> {
-            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
-                dyn ::std::ops::FnMut() -> ::std::result::Result<
-                    ::std::string::String,
-                    crate::errors::raiser::Get200Error,
-                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
-            >>,
-        }
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> ::std::string::String + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
+                }
 
-        impl<'mock> get200<'mock> {
-            pub fn unimplemented() -> Self {
-                get200 {
-                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
-                        "{}::{} is not mocked",
-                        "Raiser",
-                        "get200",
-                    ))),
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::raiser::Get200Error>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
                 }
             }
 
-            pub fn ret(&self, value: ::std::string::String) {
-                self.mock(move || value.clone());
+            pub struct get500<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut() -> ::std::result::Result<
+                        ::std::string::String,
+                        crate::errors::raiser::Get500Error,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
             }
 
-            pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> ::std::string::String + ::std::marker::Send + ::std::marker::Sync + 'mock) {
-                let mut closure = self.closure.lock().unwrap();
-                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
-            }
-
-            pub fn throw<E>(&self, exception: E)
-            where
-                E: ::std::convert::Into<crate::errors::raiser::Get200Error>,
-                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
-            {
-                let mut closure = self.closure.lock().unwrap();
-                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
-            }
-        }
-
-        pub struct get500<'mock> {
-            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
-                dyn ::std::ops::FnMut() -> ::std::result::Result<
-                    ::std::string::String,
-                    crate::errors::raiser::Get500Error,
-                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
-            >>,
-        }
-
-        impl<'mock> get500<'mock> {
-            pub fn unimplemented() -> Self {
-                get500 {
-                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
-                        "{}::{} is not mocked",
-                        "Raiser",
-                        "get500",
-                    ))),
+            impl<'mock> get500<'mock> {
+                pub fn unimplemented() -> Self {
+                    get500 {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
+                            "{}::{} is not mocked",
+                            "Raiser",
+                            "get500",
+                        ))),
+                    }
                 }
-            }
 
-            pub fn ret(&self, value: ::std::string::String) {
-                self.mock(move || value.clone());
-            }
+                pub fn ret(&self, value: ::std::string::String) {
+                    self.mock(move || value.clone());
+                }
 
-            pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> ::std::string::String + ::std::marker::Send + ::std::marker::Sync + 'mock) {
-                let mut closure = self.closure.lock().unwrap();
-                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
-            }
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> ::std::string::String + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
+                }
 
-            pub fn throw<E>(&self, exception: E)
-            where
-                E: ::std::convert::Into<crate::errors::raiser::Get500Error>,
-                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
-            {
-                let mut closure = self.closure.lock().unwrap();
-                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::raiser::Get500Error>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
+                }
             }
         }
     }

@@ -2628,16 +2628,16 @@ pub mod server {
 ///     ) -> impl Future<Item = Out> {...}
 pub mod mock {
     pub struct SomeService<'mock> {
-        pub bounce_map: some_service::bounce_map<'mock>,
-        pub binary_keyed_map: some_service::binary_keyed_map<'mock>,
+        pub bounce_map: r#impl::some_service::bounce_map<'mock>,
+        pub binary_keyed_map: r#impl::some_service::binary_keyed_map<'mock>,
         _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
     impl dyn super::client::SomeService {
         pub fn mock<'mock>() -> SomeService<'mock> {
             SomeService {
-                bounce_map: some_service::bounce_map::unimplemented(),
-                binary_keyed_map: some_service::binary_keyed_map::unimplemented(),
+                bounce_map: r#impl::some_service::bounce_map::unimplemented(),
+                binary_keyed_map: r#impl::some_service::binary_keyed_map::unimplemented(),
                 _marker: ::std::marker::PhantomData,
             }
         }
@@ -2663,83 +2663,85 @@ pub mod mock {
         }
     }
 
-    mod some_service {
+    mod r#impl {
+        pub mod some_service {
 
-        pub struct bounce_map<'mock> {
-            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
-                dyn ::std::ops::FnMut(include::types::SomeMap) -> ::std::result::Result<
-                    include::types::SomeMap,
-                    crate::errors::some_service::BounceMapError,
-                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
-            >>,
-        }
+            pub struct bounce_map<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut(include::types::SomeMap) -> ::std::result::Result<
+                        include::types::SomeMap,
+                        crate::errors::some_service::BounceMapError,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
+            }
 
-        impl<'mock> bounce_map<'mock> {
-            pub fn unimplemented() -> Self {
-                bounce_map {
-                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: include::types::SomeMap| panic!(
-                        "{}::{} is not mocked",
-                        "SomeService",
-                        "bounce_map",
-                    ))),
+            impl<'mock> bounce_map<'mock> {
+                pub fn unimplemented() -> Self {
+                    bounce_map {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: include::types::SomeMap| panic!(
+                            "{}::{} is not mocked",
+                            "SomeService",
+                            "bounce_map",
+                        ))),
+                    }
+                }
+
+                pub fn ret(&self, value: include::types::SomeMap) {
+                    self.mock(move |_: include::types::SomeMap| value.clone());
+                }
+
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(include::types::SomeMap) -> include::types::SomeMap + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |m| ::std::result::Result::Ok(mock(m)));
+                }
+
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::some_service::BounceMapError>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |_: include::types::SomeMap| ::std::result::Result::Err(exception.clone().into()));
                 }
             }
 
-            pub fn ret(&self, value: include::types::SomeMap) {
-                self.mock(move |_: include::types::SomeMap| value.clone());
+            pub struct binary_keyed_map<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut(::std::vec::Vec<::std::primitive::i64>) -> ::std::result::Result<
+                        ::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>,
+                        crate::errors::some_service::BinaryKeyedMapError,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
             }
 
-            pub fn mock(&self, mut mock: impl ::std::ops::FnMut(include::types::SomeMap) -> include::types::SomeMap + ::std::marker::Send + ::std::marker::Sync + 'mock) {
-                let mut closure = self.closure.lock().unwrap();
-                *closure = ::std::boxed::Box::new(move |m| ::std::result::Result::Ok(mock(m)));
-            }
-
-            pub fn throw<E>(&self, exception: E)
-            where
-                E: ::std::convert::Into<crate::errors::some_service::BounceMapError>,
-                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
-            {
-                let mut closure = self.closure.lock().unwrap();
-                *closure = ::std::boxed::Box::new(move |_: include::types::SomeMap| ::std::result::Result::Err(exception.clone().into()));
-            }
-        }
-
-        pub struct binary_keyed_map<'mock> {
-            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
-                dyn ::std::ops::FnMut(::std::vec::Vec<::std::primitive::i64>) -> ::std::result::Result<
-                    ::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>,
-                    crate::errors::some_service::BinaryKeyedMapError,
-                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
-            >>,
-        }
-
-        impl<'mock> binary_keyed_map<'mock> {
-            pub fn unimplemented() -> Self {
-                binary_keyed_map {
-                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::vec::Vec<::std::primitive::i64>| panic!(
-                        "{}::{} is not mocked",
-                        "SomeService",
-                        "binary_keyed_map",
-                    ))),
+            impl<'mock> binary_keyed_map<'mock> {
+                pub fn unimplemented() -> Self {
+                    binary_keyed_map {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::vec::Vec<::std::primitive::i64>| panic!(
+                            "{}::{} is not mocked",
+                            "SomeService",
+                            "binary_keyed_map",
+                        ))),
+                    }
                 }
-            }
 
-            pub fn ret(&self, value: ::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>) {
-                self.mock(move |_: ::std::vec::Vec<::std::primitive::i64>| value.clone());
-            }
+                pub fn ret(&self, value: ::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>) {
+                    self.mock(move |_: ::std::vec::Vec<::std::primitive::i64>| value.clone());
+                }
 
-            pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::vec::Vec<::std::primitive::i64>) -> ::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
-                let mut closure = self.closure.lock().unwrap();
-                *closure = ::std::boxed::Box::new(move |r| ::std::result::Result::Ok(mock(r)));
-            }
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::vec::Vec<::std::primitive::i64>) -> ::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |r| ::std::result::Result::Ok(mock(r)));
+                }
 
-            pub fn throw<E>(&self, exception: E)
-            where
-                E: ::std::convert::Into<crate::errors::some_service::BinaryKeyedMapError>,
-                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
-            {
-                let mut closure = self.closure.lock().unwrap();
-                *closure = ::std::boxed::Box::new(move |_: ::std::vec::Vec<::std::primitive::i64>| ::std::result::Result::Err(exception.clone().into()));
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::some_service::BinaryKeyedMapError>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |_: ::std::vec::Vec<::std::primitive::i64>| ::std::result::Result::Err(exception.clone().into()));
+                }
             }
         }
     }

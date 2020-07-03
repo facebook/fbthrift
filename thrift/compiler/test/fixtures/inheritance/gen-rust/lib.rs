@@ -1412,14 +1412,14 @@ pub mod server {
 ///     ) -> impl Future<Item = Out> {...}
 pub mod mock {
     pub struct MyRoot<'mock> {
-        pub do_root: my_root::do_root<'mock>,
+        pub do_root: r#impl::my_root::do_root<'mock>,
         _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
     impl dyn super::client::MyRoot {
         pub fn mock<'mock>() -> MyRoot<'mock> {
             MyRoot {
-                do_root: my_root::do_root::unimplemented(),
+                do_root: r#impl::my_root::do_root::unimplemented(),
                 _marker: ::std::marker::PhantomData,
             }
         }
@@ -1436,50 +1436,10 @@ pub mod mock {
         }
     }
 
-    mod my_root {
 
-        pub struct do_root<'mock> {
-            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
-                dyn ::std::ops::FnMut() -> ::std::result::Result<
-                    (),
-                    crate::errors::my_root::DoRootError,
-                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
-            >>,
-        }
-
-        impl<'mock> do_root<'mock> {
-            pub fn unimplemented() -> Self {
-                do_root {
-                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
-                        "{}::{} is not mocked",
-                        "MyRoot",
-                        "do_root",
-                    ))),
-                }
-            }
-
-            pub fn ret(&self, value: ()) {
-                self.mock(move || value.clone());
-            }
-
-            pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
-                let mut closure = self.closure.lock().unwrap();
-                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
-            }
-
-            pub fn throw<E>(&self, exception: E)
-            where
-                E: ::std::convert::Into<crate::errors::my_root::DoRootError>,
-                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
-            {
-                let mut closure = self.closure.lock().unwrap();
-                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
-            }
-        }
-    }
     pub struct MyNode<'mock> {
         pub parent: crate::mock::MyRoot<'mock>,
-        pub do_mid: my_node::do_mid<'mock>,
+        pub do_mid: r#impl::my_node::do_mid<'mock>,
         _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
@@ -1487,7 +1447,7 @@ pub mod mock {
         pub fn mock<'mock>() -> MyNode<'mock> {
             MyNode {
                 parent: crate::client::MyRoot::mock(),
-                do_mid: my_node::do_mid::unimplemented(),
+                do_mid: r#impl::my_node::do_mid::unimplemented(),
                 _marker: ::std::marker::PhantomData,
             }
         }
@@ -1512,50 +1472,10 @@ pub mod mock {
         }
     }
 
-    mod my_node {
 
-        pub struct do_mid<'mock> {
-            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
-                dyn ::std::ops::FnMut() -> ::std::result::Result<
-                    (),
-                    crate::errors::my_node::DoMidError,
-                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
-            >>,
-        }
-
-        impl<'mock> do_mid<'mock> {
-            pub fn unimplemented() -> Self {
-                do_mid {
-                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
-                        "{}::{} is not mocked",
-                        "MyNode",
-                        "do_mid",
-                    ))),
-                }
-            }
-
-            pub fn ret(&self, value: ()) {
-                self.mock(move || value.clone());
-            }
-
-            pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
-                let mut closure = self.closure.lock().unwrap();
-                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
-            }
-
-            pub fn throw<E>(&self, exception: E)
-            where
-                E: ::std::convert::Into<crate::errors::my_node::DoMidError>,
-                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
-            {
-                let mut closure = self.closure.lock().unwrap();
-                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
-            }
-        }
-    }
     pub struct MyLeaf<'mock> {
         pub parent: crate::mock::MyNode<'mock>,
-        pub do_leaf: my_leaf::do_leaf<'mock>,
+        pub do_leaf: r#impl::my_leaf::do_leaf<'mock>,
         _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
@@ -1563,7 +1483,7 @@ pub mod mock {
         pub fn mock<'mock>() -> MyLeaf<'mock> {
             MyLeaf {
                 parent: crate::client::MyNode::mock(),
-                do_leaf: my_leaf::do_leaf::unimplemented(),
+                do_leaf: r#impl::my_leaf::do_leaf::unimplemented(),
                 _marker: ::std::marker::PhantomData,
             }
         }
@@ -1596,44 +1516,128 @@ pub mod mock {
         }
     }
 
-    mod my_leaf {
+    mod r#impl {
+        pub mod my_root {
 
-        pub struct do_leaf<'mock> {
-            pub(super) closure: ::std::sync::Mutex<::std::boxed::Box<
-                dyn ::std::ops::FnMut() -> ::std::result::Result<
-                    (),
-                    crate::errors::my_leaf::DoLeafError,
-                > + ::std::marker::Send + ::std::marker::Sync + 'mock,
-            >>,
-        }
+            pub struct do_root<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut() -> ::std::result::Result<
+                        (),
+                        crate::errors::my_root::DoRootError,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
+            }
 
-        impl<'mock> do_leaf<'mock> {
-            pub fn unimplemented() -> Self {
-                do_leaf {
-                    closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
-                        "{}::{} is not mocked",
-                        "MyLeaf",
-                        "do_leaf",
-                    ))),
+            impl<'mock> do_root<'mock> {
+                pub fn unimplemented() -> Self {
+                    do_root {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
+                            "{}::{} is not mocked",
+                            "MyRoot",
+                            "do_root",
+                        ))),
+                    }
+                }
+
+                pub fn ret(&self, value: ()) {
+                    self.mock(move || value.clone());
+                }
+
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
+                }
+
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::my_root::DoRootError>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
                 }
             }
+        }
+        pub mod my_node {
 
-            pub fn ret(&self, value: ()) {
-                self.mock(move || value.clone());
+            pub struct do_mid<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut() -> ::std::result::Result<
+                        (),
+                        crate::errors::my_node::DoMidError,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
             }
 
-            pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
-                let mut closure = self.closure.lock().unwrap();
-                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
+            impl<'mock> do_mid<'mock> {
+                pub fn unimplemented() -> Self {
+                    do_mid {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
+                            "{}::{} is not mocked",
+                            "MyNode",
+                            "do_mid",
+                        ))),
+                    }
+                }
+
+                pub fn ret(&self, value: ()) {
+                    self.mock(move || value.clone());
+                }
+
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
+                }
+
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::my_node::DoMidError>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
+                }
+            }
+        }
+        pub mod my_leaf {
+
+            pub struct do_leaf<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut() -> ::std::result::Result<
+                        (),
+                        crate::errors::my_leaf::DoLeafError,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
             }
 
-            pub fn throw<E>(&self, exception: E)
-            where
-                E: ::std::convert::Into<crate::errors::my_leaf::DoLeafError>,
-                E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
-            {
-                let mut closure = self.closure.lock().unwrap();
-                *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
+            impl<'mock> do_leaf<'mock> {
+                pub fn unimplemented() -> Self {
+                    do_leaf {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
+                            "{}::{} is not mocked",
+                            "MyLeaf",
+                            "do_leaf",
+                        ))),
+                    }
+                }
+
+                pub fn ret(&self, value: ()) {
+                    self.mock(move || value.clone());
+                }
+
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
+                }
+
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::my_leaf::DoLeafError>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
+                }
             }
         }
     }
