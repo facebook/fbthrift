@@ -256,7 +256,7 @@ class CompilerFailureTest(unittest.TestCase):
             }
         """))
 
-        ret, out, err = self.run_thrift("--enable-experimental-mixins", "foo.thrift")
+        ret, out, err = self.run_thrift("foo.thrift")
 
         self.assertEqual(ret, 1)
         self.assertEqual(
@@ -272,7 +272,7 @@ class CompilerFailureTest(unittest.TestCase):
             }
         """))
 
-        ret, out, err = self.run_thrift("--enable-experimental-mixins", "bar.thrift")
+        ret, out, err = self.run_thrift("bar.thrift")
 
         self.assertEqual(ret, 1)
         self.assertEqual(
@@ -287,7 +287,7 @@ class CompilerFailureTest(unittest.TestCase):
             }
         """))
 
-        ret, out, err = self.run_thrift("--enable-experimental-mixins", "foo.thrift")
+        ret, out, err = self.run_thrift("foo.thrift")
 
         self.assertEqual(ret, 1)
         self.assertEqual(
@@ -303,7 +303,7 @@ class CompilerFailureTest(unittest.TestCase):
             }
         """))
 
-        ret, out, err = self.run_thrift("--enable-experimental-mixins", "foo.thrift")
+        ret, out, err = self.run_thrift("foo.thrift")
 
         self.assertEqual(ret, 1)
         self.assertEqual(
@@ -319,7 +319,7 @@ class CompilerFailureTest(unittest.TestCase):
             }
         """))
 
-        ret, out, err = self.run_thrift("--enable-experimental-mixins", "foo.thrift")
+        ret, out, err = self.run_thrift("foo.thrift")
 
         self.assertEqual(ret, 1)
         self.assertEqual(
@@ -335,7 +335,7 @@ class CompilerFailureTest(unittest.TestCase):
             }
         """))
 
-        ret, out, err = self.run_thrift("--enable-experimental-mixins", "foo.thrift")
+        ret, out, err = self.run_thrift("foo.thrift")
 
         self.assertEqual(ret, 1)
         self.assertEqual(

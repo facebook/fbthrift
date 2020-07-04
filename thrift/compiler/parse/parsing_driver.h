@@ -123,11 +123,6 @@ struct parsing_params {
   bool allow_64bit_consts = false;
 
   /**
-   * Whether or not to enable experimental mixins support in IDL
-   */
-  bool enable_experimental_mixins = false;
-
-  /**
    * Search path for inclusions
    */
   std::vector<std::string> incl_searchpath;

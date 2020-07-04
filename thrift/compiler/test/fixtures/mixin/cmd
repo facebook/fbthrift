@@ -1,1 +1,1 @@
-mstch_cpp2 --enable-experimental-mixins src/module.thrift
+mstch_cpp2 src/module.thrift
