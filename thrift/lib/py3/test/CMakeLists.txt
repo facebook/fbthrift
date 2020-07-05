@@ -75,7 +75,6 @@ endmacro()
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 thrift_py3_test("testing" "TestingService")
-thrift_py3_test("optional" "NullService")
 thrift_py3_test("iobuf" "IobufTestService")
 thrift_py3_test("stack_args" "StackService")
 thrift_py3_test("binary" "BinaryService")
@@ -94,7 +93,6 @@ foreach(_src
   iobuf.py
   lists.py
   maps.py
-  optional_mode.py
   serializer.py
   server.py
   sets.py
