@@ -479,12 +479,19 @@ void ThreadManager::Impl::reportTaskStats(
   auto waitTime = workBegin - queueBegin;
   auto runTime = workEnd - workBegin;
 
-  traceTask(
-      namePrefix_,
+  // Times in this USDT use granularity of std::chrono::steady_clock::duration,
+  // which is platform dependent. On Facebook servers, the granularity is
+  // nanoseconds. We explicitly do not perform any unit conversions to avoid
+  // unneccessary costs and leave it to consumers of this data to know what
+  // effective clock resolution is.
+  FOLLY_SDT(
+      thrift,
+      thread_manager_task_stats,
+      namePrefix_.c_str(),
       task.getContext() ? task.getContext()->getRootId() : 0,
-      queueBegin,
-      waitTime,
-      runTime);
+      queueBegin.time_since_epoch().count(),
+      waitTime.count(),
+      runTime.count());
 
   if (enableTaskStats_) {
     folly::MSLGuard g(statsLock_);
@@ -531,27 +538,6 @@ void ThreadManager::setObserver(
     folly::SharedMutex::WriteHolder g(observerLock_);
     observer_.swap(observer);
   }
-}
-
-void ThreadManager::traceTask(
-    FOLLY_MAYBE_UNUSED const std::string& namePrefix,
-    FOLLY_MAYBE_UNUSED intptr_t rootContextId,
-    FOLLY_MAYBE_UNUSED std::chrono::steady_clock::time_point queueBegin,
-    FOLLY_MAYBE_UNUSED std::chrono::steady_clock::duration waitTime,
-    FOLLY_MAYBE_UNUSED std::chrono::steady_clock::duration runTime) {
-  // Times in this USDT use granularity of std::chrono::steady_clock::duration,
-  // which is platform dependent. On Facebook servers, the granularity is
-  // nanoseconds. We explicitly do not perform any unit conversions to avoid
-  // unneccessary costs and leave it to consumers of this data to know what
-  // effective clock resolution is.
-  FOLLY_SDT(
-      thrift,
-      thread_manager_task_stats,
-      namePrefix.c_str(),
-      rootContextId,
-      queueBegin.time_since_epoch().count(),
-      waitTime.count(),
-      runTime.count());
 }
 
 std::shared_ptr<ThreadManager> ThreadManager::newSimpleThreadManager(
