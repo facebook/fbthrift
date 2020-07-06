@@ -840,11 +840,26 @@ bool RocketClientChannel::preSendValidation(
   metadata.seqId_ref().reset();
   DCHECK(metadata.kind_ref().has_value());
 
-  if (!rclient_ || !rclient_->isAlive()) {
+  if (!rclient_) {
+    // Channel destroyed by explicit closeNow() call.
     onResponseError(
         cb,
         folly::make_exception_wrapper<TTransportException>(
-            TTransportException::NOT_OPEN, "Connection is not open"));
+            TTransportException::NOT_OPEN,
+            "Connection not open: client destroyed due to closeNow."));
+    return false;
+  }
+
+  if (!rclient_->isAlive()) {
+    // Channel is not in connected state due to some pre-existing transport
+    // exception, pass it back for some breadcrumbs.
+    onResponseError(
+        cb,
+        folly::make_exception_wrapper<TTransportException>(
+            TTransportException::NOT_OPEN,
+            folly::sformat(
+                "Connection not open: {}",
+                rclient_->getLastTransportError().what())));
     return false;
   }
 

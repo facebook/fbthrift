@@ -153,6 +153,10 @@ class RocketClient : public folly::DelayedDestruction,
     return state_ == ConnectionState::CONNECTED;
   }
 
+  const transport::TTransportException& getLastTransportError() const {
+    return error_;
+  }
+
   size_t streams() const {
     return streams_.size();
   }
