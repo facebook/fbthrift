@@ -378,3 +378,20 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift_stack_arguments("foo.thrift")
 
         self.assertEqual(ret, 0)
+
+    def test_optional_mixin_field(self):
+        write_file("foo.thrift", textwrap.dedent("""\
+            struct A { 1: i32 i }
+            struct B {
+              1: optional A a (cpp.mixin);
+            }
+        """))
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err, textwrap.dedent(
+                '[FAILURE:foo.thrift:3] Mixin field `a` can not be optional\n'
+            )
+        )

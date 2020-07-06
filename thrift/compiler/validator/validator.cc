@@ -295,6 +295,14 @@ bool mixin_type_correctness_validator::visit(t_struct* s) {
             member->get_lineno(),
             "Mixin field `" + member->get_name() +
                 "` is not a struct but union");
+      } else if (member->get_req() == t_field::T_OPTIONAL) {
+        // Nothing technically stops us from marking optional field mixin.
+        // However, this will bring surprising behavior. e.g. `foo.bar_ref()`
+        // might throw `bad_field_access` if `bar` is inside optional mixin
+        // field.
+        add_error(
+            member->get_lineno(),
+            "Mixin field `" + member->get_name() + "` can not be optional");
       }
     }
   }
