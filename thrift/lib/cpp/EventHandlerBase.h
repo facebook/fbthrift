@@ -32,25 +32,14 @@ class EventHandlerBase {
  public:
   EventHandlerBase() = default;
 
-  void addEventHandler(const std::shared_ptr<TProcessorEventHandler>& handler) {
-    if (!handlers_) {
-      handlers_ = std::make_shared<
-          std::vector<std::shared_ptr<TProcessorEventHandler>>>();
-    }
-    handlers_->push_back(handler);
-  }
+  void addEventHandler(const std::shared_ptr<TProcessorEventHandler>& handler);
 
   void clearEventHandlers() {
     handlers_.reset();
   }
 
   folly::Range<std::shared_ptr<TProcessorEventHandler>*> getEventHandlers()
-      const {
-    if (!handlers_) {
-      return {};
-    }
-    return folly::range(*handlers_);
-  }
+      const;
 
  protected:
   std::unique_ptr<ContextStack> getContextStack(

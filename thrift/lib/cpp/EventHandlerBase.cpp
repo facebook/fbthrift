@@ -28,6 +28,23 @@ using WLock = RWMutex::WriteHolder;
 namespace apache {
 namespace thrift {
 
+void EventHandlerBase::addEventHandler(
+    const std::shared_ptr<TProcessorEventHandler>& handler) {
+  if (!handlers_) {
+    handlers_ = std::make_shared<
+        std::vector<std::shared_ptr<TProcessorEventHandler>>>();
+  }
+  handlers_->push_back(handler);
+}
+
+folly::Range<std::shared_ptr<TProcessorEventHandler>*>
+EventHandlerBase::getEventHandlers() const {
+  if (!handlers_) {
+    return {};
+  }
+  return folly::range(*handlers_);
+}
+
 TProcessorBase::TProcessorBase() {
   RLock lock{getRWMutex()};
   for (auto factory : getFactories()) {
