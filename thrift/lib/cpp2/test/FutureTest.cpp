@@ -329,7 +329,7 @@ TEST(ThriftServer, OnewayFutureClientTest) {
 }
 
 TEST(ThriftServer, FutureHeaderClientTest) {
-  ScopedServerInterfaceThread runner(make_shared<TestInterface>());
+  ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
   EventBase eb;
   auto client = runner.newClient<FutureServiceAsyncClient>(&eb);
 

@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-#ifndef _THRIFT_CONCURRENCY_THREADMANAGER_H_
-#define _THRIFT_CONCURRENCY_THREADMANAGER_H_ 1
+#pragma once
 
 #include <sys/types.h>
 
@@ -210,7 +209,6 @@ class ThreadManager : public virtual folly::Executor {
   /**
    * Creates a simple thread manager that uses count number of worker threads
    */
-  template <typename SemType = folly::LifoSem>
   static std::shared_ptr<ThreadManager> newSimpleThreadManager(
       size_t count = 4,
       bool enableTaskStats = false);
@@ -219,7 +217,6 @@ class ThreadManager : public virtual folly::Executor {
    * Creates a simple thread manager that uses count number of worker threads
    * and sets the name prefix
    */
-  template <typename SemType = folly::LifoSem>
   static std::shared_ptr<ThreadManager> newSimpleThreadManager(
       const std::string& name,
       size_t count = 4,
@@ -230,7 +227,6 @@ class ThreadManager : public virtual folly::Executor {
    * PriorityThreadManager, requests are still served from a single
    * thread pool.
    */
-  template <typename SemType = folly::LifoSem>
   static std::shared_ptr<ThreadManager> newPriorityQueueThreadManager(
       size_t numThreads,
       bool enableTaskStats = false);
@@ -271,10 +267,7 @@ class ThreadManager : public virtual folly::Executor {
 
   virtual folly::Codel* getCodel() = 0;
 
-  template <typename SemType>
-  class ImplT;
-
-  typedef ImplT<folly::LifoSem> Impl;
+  class Impl;
 
  protected:
   static folly::SharedMutex observerLock_;
@@ -342,7 +335,6 @@ class PriorityThreadManager : public ThreadManager {
    * At least NORMAL_PRIORITY_MINIMUM_THREADS threads are created for
    * priority NORMAL.
    */
-  template <typename SemType = folly::LifoSem>
   static std::shared_ptr<PriorityThreadManager> newPriorityThreadManager(
       const std::array<
           std::pair<std::shared_ptr<ThreadFactory>, size_t>,
@@ -353,7 +345,6 @@ class PriorityThreadManager : public ThreadManager {
    * Creates a priority-aware thread manager that uses counts[X]
    * worker threads for priority X.
    */
-  template <typename SemType = folly::LifoSem>
   static std::shared_ptr<PriorityThreadManager> newPriorityThreadManager(
       const std::array<size_t, N_PRIORITIES>& counts,
       bool enableTaskStats = false);
@@ -367,15 +358,11 @@ class PriorityThreadManager : public ThreadManager {
    * @param normalThreadsCount - number of threads of NORMAL priority, defaults
    *          to the number of CPUs on the system
    */
-  template <typename SemType = folly::LifoSem>
   static std::shared_ptr<PriorityThreadManager> newPriorityThreadManager(
       size_t normalThreadsCount = sysconf(_SC_NPROCESSORS_ONLN),
       bool enableTaskStats = false);
 
-  template <typename SemType>
-  class PriorityImplT;
-
-  typedef PriorityImplT<folly::LifoSem> PriorityImpl;
+  class PriorityImpl;
 };
 
 // Adapter class that converts a folly::Executor to a ThreadManager interface
@@ -454,5 +441,4 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
 } // namespace thrift
 } // namespace apache
 
-#include <thrift/lib/cpp/concurrency/ThreadManager-inl.h>
-#endif // #ifndef _THRIFT_CONCURRENCY_THREADMANAGER_H_
+#include <thrift/lib/cpp/concurrency/ThreadManager-impl.h>
