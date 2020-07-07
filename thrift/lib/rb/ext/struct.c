@@ -20,29 +20,26 @@
 
 #ifndef HAVE_STRLCPY
 
-static
-size_t
-strlcpy (char *dst, const char *src, size_t dst_sz)
-{
-    size_t n;
+static size_t strlcpy(char* dst, const char* src, size_t dst_sz) {
+  size_t n;
 
-    for (n = 0; n < dst_sz; n++) {
-      if ((*dst++ = *src++) == '\0')
-        break;
-    }
+  for (n = 0; n < dst_sz; n++) {
+    if ((*dst++ = *src++) == '\0')
+      break;
+  }
 
-    if (n < dst_sz)
-      return n;
-    if (n > 0)
-      *(dst - 1) = '\0';
-    return n + strlen (src);
+  if (n < dst_sz)
+    return n;
+  if (n > 0)
+    *(dst - 1) = '\0';
+  return n + strlen(src);
 }
 #else
 /*
    Ruby 1.9.x includes the OpenBSD implementation of strlcpy.
    See missing/strlcpy.c in Ruby 1.9 source
  */
-extern size_t strlcpy(char *, const char *, size_t);
+extern size_t strlcpy(char*, const char*, size_t);
 #endif
 
 VALUE thrift_union_class;
@@ -53,7 +50,8 @@ ID setvalue_id;
 ID to_s_method_id;
 ID name_to_id_method_id;
 
-#define IS_CONTAINER(ttype) ((ttype) == TTYPE_MAP || (ttype) == TTYPE_LIST || (ttype) == TTYPE_SET)
+#define IS_CONTAINER(ttype) \
+  ((ttype) == TTYPE_MAP || (ttype) == TTYPE_LIST || (ttype) == TTYPE_SET)
 #define STRUCT_FIELDS(obj) rb_const_get(CLASS_OF(obj), fields_const_id)
 
 //-------------------------------------------
@@ -117,7 +115,11 @@ VALUE default_write_set_end(VALUE protocol) {
   return Qnil;
 }
 
-VALUE default_write_map_begin(VALUE protocol, VALUE ktype, VALUE vtype, VALUE length) {
+VALUE default_write_map_begin(
+    VALUE protocol,
+    VALUE ktype,
+    VALUE vtype,
+    VALUE length) {
   rb_funcall(protocol, write_map_begin_method_id, 3, ktype, vtype, length);
   return Qnil;
 }
@@ -137,7 +139,11 @@ VALUE default_write_struct_end(VALUE protocol) {
   return Qnil;
 }
 
-VALUE default_write_field_begin(VALUE protocol, VALUE name, VALUE type, VALUE id) {
+VALUE default_write_field_begin(
+    VALUE protocol,
+    VALUE name,
+    VALUE type,
+    VALUE id) {
   rb_funcall(protocol, write_field_begin_method_id, 3, name, type, id);
   return Qnil;
 }
@@ -222,9 +228,10 @@ VALUE default_read_struct_end(VALUE protocol) {
 
 // end default protocol methods
 
-static VALUE rb_thrift_union_write (VALUE self, VALUE protocol);
+static VALUE rb_thrift_union_write(VALUE self, VALUE protocol);
 static VALUE rb_thrift_struct_write(VALUE self, VALUE protocol);
-static void write_anything(int ttype, VALUE value, VALUE protocol, VALUE field_info);
+static void
+write_anything(int ttype, VALUE value, VALUE protocol, VALUE field_info);
 
 VALUE get_field_value(VALUE obj, VALUE field_name) {
   char name_buf[RSTRING_LEN(field_name) + 1];
@@ -237,7 +244,8 @@ VALUE get_field_value(VALUE obj, VALUE field_name) {
   return value;
 }
 
-static void write_container(int ttype, VALUE field_info, VALUE value, VALUE protocol) {
+static void
+write_container(int ttype, VALUE field_info, VALUE value, VALUE protocol) {
   int sz, i;
 
   if (ttype == TTYPE_MAP) {
@@ -259,7 +267,8 @@ static void write_container(int ttype, VALUE field_info, VALUE value, VALUE prot
 
     sz = RARRAY_LEN(keys);
 
-    default_write_map_begin(protocol, keytype_value, valuetype_value, INT2FIX(sz));
+    default_write_map_begin(
+        protocol, keytype_value, valuetype_value, INT2FIX(sz));
 
     for (i = 0; i < sz; i++) {
       key = rb_ary_entry(keys, i);
@@ -303,7 +312,7 @@ static void write_container(int ttype, VALUE field_info, VALUE value, VALUE prot
 
     if (TYPE(value) == T_ARRAY) {
       items = value;
-    } else {        
+    } else {
       if (rb_cSet == CLASS_OF(value)) {
         items = rb_funcall(value, entries_method_id, 0);
       } else {
@@ -335,7 +344,8 @@ static void write_container(int ttype, VALUE field_info, VALUE value, VALUE prot
   }
 }
 
-static void write_anything(int ttype, VALUE value, VALUE protocol, VALUE field_info) {
+static void
+write_anything(int ttype, VALUE value, VALUE protocol, VALUE field_info) {
   if (ttype == TTYPE_BOOL) {
     default_write_bool(protocol, value);
   } else if (ttype == TTYPE_BYTE) {
@@ -373,11 +383,13 @@ static VALUE rb_thrift_struct_write(VALUE self, VALUE protocol) {
   // iterate through all the fields here
   VALUE struct_fields = STRUCT_FIELDS(self);
 
-  VALUE struct_field_ids_unordered = rb_funcall(struct_fields, keys_method_id, 0);
-  VALUE struct_field_ids_ordered = rb_funcall(struct_field_ids_unordered, sort_method_id, 0);
+  VALUE struct_field_ids_unordered =
+      rb_funcall(struct_fields, keys_method_id, 0);
+  VALUE struct_field_ids_ordered =
+      rb_funcall(struct_field_ids_unordered, sort_method_id, 0);
 
   int i = 0;
-  for (i=0; i < RARRAY_LEN(struct_field_ids_ordered); i++) {
+  for (i = 0; i < RARRAY_LEN(struct_field_ids_ordered); i++) {
     VALUE field_id = rb_ary_entry(struct_field_ids_ordered, i);
 
     VALUE field_info = rb_hash_aref(struct_fields, field_id);
@@ -479,7 +491,10 @@ static VALUE read_anything(VALUE protocol, int ttype, VALUE field_info) {
     result = rb_ary_new2(num_elements);
 
     for (i = 0; i < num_elements; ++i) {
-      rb_ary_push(result, read_anything(protocol, element_ttype, rb_hash_aref(field_info, element_sym)));
+      rb_ary_push(
+          result,
+          read_anything(
+              protocol, element_ttype, rb_hash_aref(field_info, element_sym)));
     }
 
     default_read_list_end(protocol);
@@ -493,14 +508,18 @@ static VALUE read_anything(VALUE protocol, int ttype, VALUE field_info) {
     items = rb_ary_new2(num_elements);
 
     for (i = 0; i < num_elements; ++i) {
-      rb_ary_push(items, read_anything(protocol, element_ttype, rb_hash_aref(field_info, element_sym)));
+      rb_ary_push(
+          items,
+          read_anything(
+              protocol, element_ttype, rb_hash_aref(field_info, element_sym)));
     }
 
     default_read_set_end(protocol);
 
     result = rb_class_new_instance(1, &items, rb_cSet);
   } else {
-    rb_raise(rb_eNotImpError, "read_anything not implemented for type %d!", ttype);
+    rb_raise(
+        rb_eNotImpError, "read_anything not implemented for type %d!", ttype);
   }
 
   return result;
@@ -523,14 +542,16 @@ static VALUE rb_thrift_struct_read(VALUE self, VALUE protocol) {
     }
 
     // make sure we got a type we expected
-    VALUE field_info = rb_hash_aref(struct_fields, rb_ary_entry(field_header, 2));
+    VALUE field_info =
+        rb_hash_aref(struct_fields, rb_ary_entry(field_header, 2));
 
     if (!NIL_P(field_info)) {
       int specified_type = FIX2INT(rb_hash_aref(field_info, type_sym));
       if (field_type == specified_type) {
         // read the value
         VALUE name = rb_hash_aref(field_info, name_sym);
-        set_field_value(self, name, read_anything(protocol, field_type, field_info));
+        set_field_value(
+            self, name, read_anything(protocol, field_type, field_info));
       } else {
         rb_funcall(protocol, skip_method_id, 1, field_type_value);
       }
@@ -550,7 +571,6 @@ static VALUE rb_thrift_struct_read(VALUE self, VALUE protocol) {
 
   return Qnil;
 }
-
 
 // --------------------------------
 // Union section
@@ -575,7 +595,8 @@ static VALUE rb_thrift_union_read(VALUE self, VALUE protocol) {
       // read the value
       VALUE name = rb_hash_aref(field_info, name_sym);
       rb_iv_set(self, "@setfield", ID2SYM(rb_intern(RSTRING_PTR(name))));
-      rb_iv_set(self, "@value", read_anything(protocol, field_type, field_info));
+      rb_iv_set(
+          self, "@value", read_anything(protocol, field_type, field_info));
     } else {
       rb_funcall(protocol, skip_method_id, 1, field_type_value);
     }
@@ -617,7 +638,8 @@ static VALUE rb_thrift_union_write(VALUE self, VALUE protocol) {
 
   VALUE setfield = rb_ivar_get(self, setfield_id);
   VALUE setvalue = rb_ivar_get(self, setvalue_id);
-  VALUE field_id = rb_funcall(self, name_to_id_method_id, 1, rb_funcall(setfield, to_s_method_id, 0));
+  VALUE field_id = rb_funcall(
+      self, name_to_id_method_id, 1, rb_funcall(setfield, to_s_method_id, 0));
 
   VALUE field_info = rb_hash_aref(struct_fields, field_id);
 

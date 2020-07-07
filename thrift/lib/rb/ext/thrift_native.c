@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#include <ruby.h>
-#include <struct.h>
 #include <binary_protocol_accelerated.h>
 #include <compact_protocol.h>
-#include <protocol.h>
 #include <memory_buffer.h>
+#include <protocol.h>
+#include <ruby.h>
+#include <struct.h>
 
 // cached classes/modules
 VALUE rb_cSet;
@@ -78,8 +78,8 @@ ID read_struct_end_method_id;
 ID read_field_begin_method_id;
 ID read_field_end_method_id;
 ID keys_method_id;
-ID entries_method_id; 
-ID name_method_id; 
+ID entries_method_id;
+ID name_method_id;
 ID sort_method_id;
 ID write_field_stop_method_id;
 ID skip_method_id;
@@ -107,7 +107,8 @@ void Init_thrift_native() {
   thrift_module = rb_const_get(rb_cObject, rb_intern("Thrift"));
   thrift_types_module = rb_const_get(thrift_module, rb_intern("Types"));
   rb_cSet = rb_const_get(rb_cObject, rb_intern("Set"));
-  protocol_exception_class = rb_const_get(thrift_module, rb_intern("ProtocolException"));
+  protocol_exception_class =
+      rb_const_get(thrift_module, rb_intern("ProtocolException"));
 
   // Init ttype constants
   TTYPE_BOOL = FIX2INT(rb_const_get(thrift_types_module, rb_intern("BOOL")));
@@ -115,12 +116,15 @@ void Init_thrift_native() {
   TTYPE_I16 = FIX2INT(rb_const_get(thrift_types_module, rb_intern("I16")));
   TTYPE_I32 = FIX2INT(rb_const_get(thrift_types_module, rb_intern("I32")));
   TTYPE_I64 = FIX2INT(rb_const_get(thrift_types_module, rb_intern("I64")));
-  TTYPE_DOUBLE = FIX2INT(rb_const_get(thrift_types_module, rb_intern("DOUBLE")));
-  TTYPE_STRING = FIX2INT(rb_const_get(thrift_types_module, rb_intern("STRING")));
+  TTYPE_DOUBLE =
+      FIX2INT(rb_const_get(thrift_types_module, rb_intern("DOUBLE")));
+  TTYPE_STRING =
+      FIX2INT(rb_const_get(thrift_types_module, rb_intern("STRING")));
   TTYPE_MAP = FIX2INT(rb_const_get(thrift_types_module, rb_intern("MAP")));
   TTYPE_SET = FIX2INT(rb_const_get(thrift_types_module, rb_intern("SET")));
   TTYPE_LIST = FIX2INT(rb_const_get(thrift_types_module, rb_intern("LIST")));
-  TTYPE_STRUCT = FIX2INT(rb_const_get(thrift_types_module, rb_intern("STRUCT")));
+  TTYPE_STRUCT =
+      FIX2INT(rb_const_get(thrift_types_module, rb_intern("STRUCT")));
 
   // method ids
   validate_method_id = rb_intern("validate");
@@ -150,7 +154,7 @@ void Init_thrift_native() {
   read_string_method_id = rb_intern("read_string");
   read_double_method_id = rb_intern("read_double");
   read_map_begin_method_id = rb_intern("read_map_begin");
-  read_map_end_method_id = rb_intern("read_map_end");  
+  read_map_end_method_id = rb_intern("read_map_end");
   read_list_begin_method_id = rb_intern("read_list_begin");
   read_list_end_method_id = rb_intern("read_list_end");
   read_set_begin_method_id = rb_intern("read_set_begin");
@@ -173,7 +177,7 @@ void Init_thrift_native() {
   fields_const_id = rb_intern("FIELDS");
   transport_ivar_id = rb_intern("@trans");
   strict_read_ivar_id = rb_intern("@strict_read");
-  strict_write_ivar_id = rb_intern("@strict_write");  
+  strict_write_ivar_id = rb_intern("@strict_write");
 
   // cached symbols
   type_sym = ID2SYM(rb_intern("type"));

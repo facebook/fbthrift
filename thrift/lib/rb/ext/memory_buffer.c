@@ -35,19 +35,27 @@ VALUE rb_thrift_memory_buffer_write(VALUE self, VALUE str) {
 
 VALUE rb_thrift_memory_buffer_read(VALUE self, VALUE length_value) {
   int length = FIX2INT(length_value);
-  
+
   VALUE index_value = rb_ivar_get(self, index_ivar_id);
   int index = FIX2INT(index_value);
-  
+
   VALUE buf = GET_BUF(self);
   VALUE data = rb_funcall(buf, slice_method_id, 2, index_value, length_value);
-  
+
   index += length;
   if (index > RSTRING_LEN(buf)) {
     index = RSTRING_LEN(buf);
   }
   if (index >= GARBAGE_BUFFER_SIZE) {
-    rb_ivar_set(self, buf_ivar_id, rb_funcall(buf, slice_method_id, 2, INT2FIX(index), INT2FIX(RSTRING_LEN(buf) - 1)));
+    rb_ivar_set(
+        self,
+        buf_ivar_id,
+        rb_funcall(
+            buf,
+            slice_method_id,
+            2,
+            INT2FIX(index),
+            INT2FIX(RSTRING_LEN(buf) - 1)));
     index = 0;
   }
 
@@ -60,14 +68,18 @@ VALUE rb_thrift_memory_buffer_read(VALUE self, VALUE length_value) {
 }
 
 void Init_memory_buffer() {
-  VALUE thrift_memory_buffer_class = rb_const_get(thrift_module, rb_intern("MemoryBufferTransport"));
-  rb_define_method(thrift_memory_buffer_class, "write", rb_thrift_memory_buffer_write, 1);
-  rb_define_method(thrift_memory_buffer_class, "read", rb_thrift_memory_buffer_read, 1);
-  
+  VALUE thrift_memory_buffer_class =
+      rb_const_get(thrift_module, rb_intern("MemoryBufferTransport"));
+  rb_define_method(
+      thrift_memory_buffer_class, "write", rb_thrift_memory_buffer_write, 1);
+  rb_define_method(
+      thrift_memory_buffer_class, "read", rb_thrift_memory_buffer_read, 1);
+
   buf_ivar_id = rb_intern("@buf");
   index_ivar_id = rb_intern("@index");
-  
+
   slice_method_id = rb_intern("slice");
-  
-  GARBAGE_BUFFER_SIZE = FIX2INT(rb_const_get(thrift_memory_buffer_class, rb_intern("GARBAGE_BUFFER_SIZE")));
+
+  GARBAGE_BUFFER_SIZE = FIX2INT(rb_const_get(
+      thrift_memory_buffer_class, rb_intern("GARBAGE_BUFFER_SIZE")));
 }

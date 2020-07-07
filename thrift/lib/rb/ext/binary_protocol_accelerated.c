@@ -25,8 +25,6 @@ VALUE rb_thrift_binary_proto_native_qmark(VALUE self) {
   return Qtrue;
 }
 
-
-
 static int VERSION_1;
 static int VERSION_MASK;
 static int TYPE_MASK;
@@ -38,7 +36,7 @@ static void write_byte_direct(VALUE trans, int8_t b) {
 
 static void write_i16_direct(VALUE trans, int16_t value) {
   char data[2];
-  
+
   data[1] = value;
   data[0] = (value >> 8);
 
@@ -55,7 +53,6 @@ static void write_i32_direct(VALUE trans, int32_t value) {
 
   WRITE(trans, data, 4);
 }
-
 
 static void write_i64_direct(VALUE trans, int64_t value) {
   char data[8];
@@ -74,7 +71,7 @@ static void write_i64_direct(VALUE trans, int64_t value) {
 
 static void write_string_direct(VALUE trans, VALUE str) {
   if (TYPE(str) != T_STRING) {
-    rb_raise(rb_eStandardError, "Value should be a string");    
+    rb_raise(rb_eStandardError, "Value should be a string");
   }
   write_i32_direct(trans, RSTRING_LEN(str));
   rb_funcall(trans, write_method_id, 1, str);
@@ -112,7 +109,11 @@ VALUE rb_thrift_binary_proto_write_set_end(VALUE self) {
   return Qnil;
 }
 
-VALUE rb_thrift_binary_proto_write_message_begin(VALUE self, VALUE name, VALUE type, VALUE seqid) {
+VALUE rb_thrift_binary_proto_write_message_begin(
+    VALUE self,
+    VALUE name,
+    VALUE type,
+    VALUE seqid) {
   VALUE trans = GET_TRANSPORT(self);
   VALUE strict_write = GET_STRICT_WRITE(self);
 
@@ -125,15 +126,19 @@ VALUE rb_thrift_binary_proto_write_message_begin(VALUE self, VALUE name, VALUE t
     write_byte_direct(trans, FIX2INT(type));
     write_i32_direct(trans, FIX2INT(seqid));
   }
-  
+
   return Qnil;
 }
 
-VALUE rb_thrift_binary_proto_write_field_begin(VALUE self, VALUE name, VALUE type, VALUE id) {
+VALUE rb_thrift_binary_proto_write_field_begin(
+    VALUE self,
+    VALUE name,
+    VALUE type,
+    VALUE id) {
   VALUE trans = GET_TRANSPORT(self);
   write_byte_direct(trans, FIX2INT(type));
   write_i16_direct(trans, FIX2INT(id));
-  
+
   return Qnil;
 }
 
@@ -142,24 +147,34 @@ VALUE rb_thrift_binary_proto_write_field_stop(VALUE self) {
   return Qnil;
 }
 
-VALUE rb_thrift_binary_proto_write_map_begin(VALUE self, VALUE ktype, VALUE vtype, VALUE size) {
+VALUE rb_thrift_binary_proto_write_map_begin(
+    VALUE self,
+    VALUE ktype,
+    VALUE vtype,
+    VALUE size) {
   VALUE trans = GET_TRANSPORT(self);
   write_byte_direct(trans, FIX2INT(ktype));
   write_byte_direct(trans, FIX2INT(vtype));
   write_i32_direct(trans, FIX2INT(size));
-  
+
   return Qnil;
 }
 
-VALUE rb_thrift_binary_proto_write_list_begin(VALUE self, VALUE etype, VALUE size) {
+VALUE rb_thrift_binary_proto_write_list_begin(
+    VALUE self,
+    VALUE etype,
+    VALUE size) {
   VALUE trans = GET_TRANSPORT(self);
   write_byte_direct(trans, FIX2INT(etype));
   write_i32_direct(trans, FIX2INT(size));
-  
+
   return Qnil;
 }
 
-VALUE rb_thrift_binary_proto_write_set_begin(VALUE self, VALUE etype, VALUE size) {
+VALUE rb_thrift_binary_proto_write_set_begin(
+    VALUE self,
+    VALUE etype,
+    VALUE size) {
   rb_thrift_binary_proto_write_list_begin(self, etype, size);
   return Qnil;
 }
@@ -229,15 +244,17 @@ static char read_byte_direct(VALUE self) {
 
 static int16_t read_i16_direct(VALUE self) {
   VALUE buf = READ(self, 2);
-  return (int16_t)(((uint8_t)(RSTRING_PTR(buf)[1])) | ((uint16_t)((RSTRING_PTR(buf)[0]) << 8)));
+  return (int16_t)(
+      ((uint8_t)(RSTRING_PTR(buf)[1])) |
+      ((uint16_t)((RSTRING_PTR(buf)[0]) << 8)));
 }
 
 static int32_t read_i32_direct(VALUE self) {
   VALUE buf = READ(self, 4);
-  return ((uint8_t)(RSTRING_PTR(buf)[3])) | 
-    (((uint8_t)(RSTRING_PTR(buf)[2])) << 8) | 
-    (((uint8_t)(RSTRING_PTR(buf)[1])) << 16) | 
-    (((uint8_t)(RSTRING_PTR(buf)[0])) << 24);
+  return ((uint8_t)(RSTRING_PTR(buf)[3])) |
+      (((uint8_t)(RSTRING_PTR(buf)[2])) << 8) |
+      (((uint8_t)(RSTRING_PTR(buf)[1])) << 16) |
+      (((uint8_t)(RSTRING_PTR(buf)[0])) << 24);
 }
 
 static int64_t read_i64_direct(VALUE self) {
@@ -285,25 +302,28 @@ VALUE rb_thrift_binary_proto_read_message_begin(VALUE self) {
   VALUE strict_read = GET_STRICT_READ(self);
   VALUE name, seqid;
   int type;
-  
+
   int version = read_i32_direct(self);
-  
+
   if (version < 0) {
     if ((version & VERSION_MASK) != VERSION_1) {
-      rb_exc_raise(get_protocol_exception(INT2FIX(BAD_VERSION), rb_str_new2("Missing version identifier")));
+      rb_exc_raise(get_protocol_exception(
+          INT2FIX(BAD_VERSION), rb_str_new2("Missing version identifier")));
     }
     type = version & TYPE_MASK;
     name = rb_thrift_binary_proto_read_string(self);
     seqid = rb_thrift_binary_proto_read_i32(self);
   } else {
     if (strict_read == Qtrue) {
-      rb_exc_raise(get_protocol_exception(INT2FIX(BAD_VERSION), rb_str_new2("No version identifier, old protocol client?")));
+      rb_exc_raise(get_protocol_exception(
+          INT2FIX(BAD_VERSION),
+          rb_str_new2("No version identifier, old protocol client?")));
     }
     name = READ(self, version);
     type = read_byte_direct(self);
     seqid = rb_thrift_binary_proto_read_i32(self);
   }
-  
+
   return rb_ary_new3(3, name, INT2FIX(type), seqid);
 }
 
@@ -370,56 +390,126 @@ VALUE rb_thrift_binary_proto_read_string(VALUE self) {
 }
 
 void Init_binary_protocol_accelerated() {
-  VALUE thrift_binary_protocol_class = rb_const_get(thrift_module, rb_intern("BinaryProtocol"));
+  VALUE thrift_binary_protocol_class =
+      rb_const_get(thrift_module, rb_intern("BinaryProtocol"));
 
-  VERSION_1 = rb_num2ll(rb_const_get(thrift_binary_protocol_class, rb_intern("VERSION_1")));
-  VERSION_MASK = rb_num2ll(rb_const_get(thrift_binary_protocol_class, rb_intern("VERSION_MASK")));
-  TYPE_MASK = rb_num2ll(rb_const_get(thrift_binary_protocol_class, rb_intern("TYPE_MASK")));
+  VERSION_1 = rb_num2ll(
+      rb_const_get(thrift_binary_protocol_class, rb_intern("VERSION_1")));
+  VERSION_MASK = rb_num2ll(
+      rb_const_get(thrift_binary_protocol_class, rb_intern("VERSION_MASK")));
+  TYPE_MASK = rb_num2ll(
+      rb_const_get(thrift_binary_protocol_class, rb_intern("TYPE_MASK")));
 
-  VALUE bpa_class = rb_define_class_under(thrift_module, "BinaryProtocolAccelerated", thrift_binary_protocol_class);
+  VALUE bpa_class = rb_define_class_under(
+      thrift_module, "BinaryProtocolAccelerated", thrift_binary_protocol_class);
 
-  rb_define_method(bpa_class, "native?", rb_thrift_binary_proto_native_qmark, 0);
+  rb_define_method(
+      bpa_class, "native?", rb_thrift_binary_proto_native_qmark, 0);
 
-  rb_define_method(bpa_class, "write_message_begin", rb_thrift_binary_proto_write_message_begin, 3);
-  rb_define_method(bpa_class, "write_field_begin",   rb_thrift_binary_proto_write_field_begin, 3);
-  rb_define_method(bpa_class, "write_field_stop",    rb_thrift_binary_proto_write_field_stop, 0);
-  rb_define_method(bpa_class, "write_map_begin",     rb_thrift_binary_proto_write_map_begin, 3);
-  rb_define_method(bpa_class, "write_list_begin",    rb_thrift_binary_proto_write_list_begin, 2);
-  rb_define_method(bpa_class, "write_set_begin",     rb_thrift_binary_proto_write_set_begin, 2);
-  rb_define_method(bpa_class, "write_byte",          rb_thrift_binary_proto_write_byte, 1);
-  rb_define_method(bpa_class, "write_bool",          rb_thrift_binary_proto_write_bool, 1);
-  rb_define_method(bpa_class, "write_i16",           rb_thrift_binary_proto_write_i16, 1);
-  rb_define_method(bpa_class, "write_i32",           rb_thrift_binary_proto_write_i32, 1);
-  rb_define_method(bpa_class, "write_i64",           rb_thrift_binary_proto_write_i64, 1);
-  rb_define_method(bpa_class, "write_double",        rb_thrift_binary_proto_write_double, 1);
-  rb_define_method(bpa_class, "write_string",        rb_thrift_binary_proto_write_string, 1);
+  rb_define_method(
+      bpa_class,
+      "write_message_begin",
+      rb_thrift_binary_proto_write_message_begin,
+      3);
+  rb_define_method(
+      bpa_class,
+      "write_field_begin",
+      rb_thrift_binary_proto_write_field_begin,
+      3);
+  rb_define_method(
+      bpa_class,
+      "write_field_stop",
+      rb_thrift_binary_proto_write_field_stop,
+      0);
+  rb_define_method(
+      bpa_class, "write_map_begin", rb_thrift_binary_proto_write_map_begin, 3);
+  rb_define_method(
+      bpa_class,
+      "write_list_begin",
+      rb_thrift_binary_proto_write_list_begin,
+      2);
+  rb_define_method(
+      bpa_class, "write_set_begin", rb_thrift_binary_proto_write_set_begin, 2);
+  rb_define_method(
+      bpa_class, "write_byte", rb_thrift_binary_proto_write_byte, 1);
+  rb_define_method(
+      bpa_class, "write_bool", rb_thrift_binary_proto_write_bool, 1);
+  rb_define_method(bpa_class, "write_i16", rb_thrift_binary_proto_write_i16, 1);
+  rb_define_method(bpa_class, "write_i32", rb_thrift_binary_proto_write_i32, 1);
+  rb_define_method(bpa_class, "write_i64", rb_thrift_binary_proto_write_i64, 1);
+  rb_define_method(
+      bpa_class, "write_double", rb_thrift_binary_proto_write_double, 1);
+  rb_define_method(
+      bpa_class, "write_string", rb_thrift_binary_proto_write_string, 1);
   // unused methods
-  rb_define_method(bpa_class, "write_message_end", rb_thrift_binary_proto_write_message_end, 0);
-  rb_define_method(bpa_class, "write_struct_begin", rb_thrift_binary_proto_write_struct_begin, 1);
-  rb_define_method(bpa_class, "write_struct_end", rb_thrift_binary_proto_write_struct_end, 0);
-  rb_define_method(bpa_class, "write_field_end", rb_thrift_binary_proto_write_field_end, 0);
-  rb_define_method(bpa_class, "write_map_end", rb_thrift_binary_proto_write_map_end, 0);
-  rb_define_method(bpa_class, "write_list_end", rb_thrift_binary_proto_write_list_end, 0);
-  rb_define_method(bpa_class, "write_set_end", rb_thrift_binary_proto_write_set_end, 0);
+  rb_define_method(
+      bpa_class,
+      "write_message_end",
+      rb_thrift_binary_proto_write_message_end,
+      0);
+  rb_define_method(
+      bpa_class,
+      "write_struct_begin",
+      rb_thrift_binary_proto_write_struct_begin,
+      1);
+  rb_define_method(
+      bpa_class,
+      "write_struct_end",
+      rb_thrift_binary_proto_write_struct_end,
+      0);
+  rb_define_method(
+      bpa_class, "write_field_end", rb_thrift_binary_proto_write_field_end, 0);
+  rb_define_method(
+      bpa_class, "write_map_end", rb_thrift_binary_proto_write_map_end, 0);
+  rb_define_method(
+      bpa_class, "write_list_end", rb_thrift_binary_proto_write_list_end, 0);
+  rb_define_method(
+      bpa_class, "write_set_end", rb_thrift_binary_proto_write_set_end, 0);
 
-  rb_define_method(bpa_class, "read_message_begin",  rb_thrift_binary_proto_read_message_begin, 0);
-  rb_define_method(bpa_class, "read_field_begin",    rb_thrift_binary_proto_read_field_begin, 0);
-  rb_define_method(bpa_class, "read_map_begin",      rb_thrift_binary_proto_read_map_begin, 0);
-  rb_define_method(bpa_class, "read_list_begin",     rb_thrift_binary_proto_read_list_begin, 0);
-  rb_define_method(bpa_class, "read_set_begin",      rb_thrift_binary_proto_read_set_begin, 0);
-  rb_define_method(bpa_class, "read_byte",           rb_thrift_binary_proto_read_byte, 0);
-  rb_define_method(bpa_class, "read_bool",           rb_thrift_binary_proto_read_bool, 0);
-  rb_define_method(bpa_class, "read_i16",            rb_thrift_binary_proto_read_i16, 0);
-  rb_define_method(bpa_class, "read_i32",            rb_thrift_binary_proto_read_i32, 0);
-  rb_define_method(bpa_class, "read_i64",            rb_thrift_binary_proto_read_i64, 0);
-  rb_define_method(bpa_class, "read_double",         rb_thrift_binary_proto_read_double, 0);
-  rb_define_method(bpa_class, "read_string",         rb_thrift_binary_proto_read_string, 0);
+  rb_define_method(
+      bpa_class,
+      "read_message_begin",
+      rb_thrift_binary_proto_read_message_begin,
+      0);
+  rb_define_method(
+      bpa_class,
+      "read_field_begin",
+      rb_thrift_binary_proto_read_field_begin,
+      0);
+  rb_define_method(
+      bpa_class, "read_map_begin", rb_thrift_binary_proto_read_map_begin, 0);
+  rb_define_method(
+      bpa_class, "read_list_begin", rb_thrift_binary_proto_read_list_begin, 0);
+  rb_define_method(
+      bpa_class, "read_set_begin", rb_thrift_binary_proto_read_set_begin, 0);
+  rb_define_method(bpa_class, "read_byte", rb_thrift_binary_proto_read_byte, 0);
+  rb_define_method(bpa_class, "read_bool", rb_thrift_binary_proto_read_bool, 0);
+  rb_define_method(bpa_class, "read_i16", rb_thrift_binary_proto_read_i16, 0);
+  rb_define_method(bpa_class, "read_i32", rb_thrift_binary_proto_read_i32, 0);
+  rb_define_method(bpa_class, "read_i64", rb_thrift_binary_proto_read_i64, 0);
+  rb_define_method(
+      bpa_class, "read_double", rb_thrift_binary_proto_read_double, 0);
+  rb_define_method(
+      bpa_class, "read_string", rb_thrift_binary_proto_read_string, 0);
   // unused methods
-  rb_define_method(bpa_class, "read_message_end", rb_thrift_binary_proto_read_message_end, 0);
-  rb_define_method(bpa_class, "read_struct_begin", rb_thift_binary_proto_read_struct_begin, 0);
-  rb_define_method(bpa_class, "read_struct_end", rb_thift_binary_proto_read_struct_end, 0);
-  rb_define_method(bpa_class, "read_field_end", rb_thift_binary_proto_read_field_end, 0);
-  rb_define_method(bpa_class, "read_map_end", rb_thift_binary_proto_read_map_end, 0);
-  rb_define_method(bpa_class, "read_list_end", rb_thift_binary_proto_read_list_end, 0);
-  rb_define_method(bpa_class, "read_set_end", rb_thift_binary_proto_read_set_end, 0);
+  rb_define_method(
+      bpa_class,
+      "read_message_end",
+      rb_thrift_binary_proto_read_message_end,
+      0);
+  rb_define_method(
+      bpa_class,
+      "read_struct_begin",
+      rb_thift_binary_proto_read_struct_begin,
+      0);
+  rb_define_method(
+      bpa_class, "read_struct_end", rb_thift_binary_proto_read_struct_end, 0);
+  rb_define_method(
+      bpa_class, "read_field_end", rb_thift_binary_proto_read_field_end, 0);
+  rb_define_method(
+      bpa_class, "read_map_end", rb_thift_binary_proto_read_map_end, 0);
+  rb_define_method(
+      bpa_class, "read_list_end", rb_thift_binary_proto_read_list_end, 0);
+  rb_define_method(
+      bpa_class, "read_set_end", rb_thift_binary_proto_read_set_end, 0);
 }
