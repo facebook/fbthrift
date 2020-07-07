@@ -550,7 +550,8 @@ public abstract class TJSONProtocolBase extends TProtocol {
 
   @Override
   public void writeBool(boolean b) throws TException {
-    writeJSONInteger(b ? (long) 1 : (long) 0);
+    context_.write();
+    trans_.write((b ? "true" : "false").getBytes(StandardCharsets.UTF_8));
   }
 
   @Override
@@ -816,27 +817,25 @@ public abstract class TJSONProtocolBase extends TProtocol {
   public boolean readBool() throws TException {
     // readBool is equivalent to readJSONInteger followed by check for its result being non-zero,
     // with a condition added to detect "false" and "true" JSON literals inside optional quotes.
-
     context_.read();
-    if (context_.escapeNum()) {
+
+    boolean literalResult = false;
+    byte[] literalValue = null;
+    byte ch = reader_.peek();
+    if (ch == VALUE_FALSE[0]) {
+      literalResult = false;
+      literalValue = VALUE_FALSE;
+    } else if (ch == VALUE_TRUE[0]) {
+      literalResult = true;
+      literalValue = VALUE_TRUE;
+    }
+
+    boolean isQuoted = context_.escapeNum() && literalValue == null;
+    if (isQuoted) {
       readJSONSyntaxChar(QUOTE);
     }
 
     // See if its "false" or "true"
-    boolean literalResult = false;
-    byte[] literalValue = null;
-
-    {
-      byte ch = reader_.peek();
-      if (ch == VALUE_FALSE[0]) {
-        literalResult = false;
-        literalValue = VALUE_FALSE;
-      } else if (ch == VALUE_TRUE[0]) {
-        literalResult = true;
-        literalValue = VALUE_TRUE;
-      }
-    }
-
     if (literalValue != null) {
       // "false" or "true" detected, read character by character
       for (byte expected : literalValue) {
@@ -845,7 +844,7 @@ public abstract class TJSONProtocolBase extends TProtocol {
         }
       }
 
-      if (context_.escapeNum()) {
+      if (isQuoted) {
         readJSONSyntaxChar(QUOTE);
       }
 
@@ -856,7 +855,7 @@ public abstract class TJSONProtocolBase extends TProtocol {
 
     String str = readJSONNumericChars();
 
-    if (context_.escapeNum()) {
+    if (isQuoted) {
       readJSONSyntaxChar(QUOTE);
     }
 

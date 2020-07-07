@@ -245,3 +245,11 @@ struct StructMutable {
   6: double myDouble = 42.42,
   7: set<string> mySet = ["foo", "bar", "baz"],
 } (java.swift.mutable = "true")
+
+struct StructWithMaps {
+  1: map<string, string> stringstrings,
+  2: map<bool, string> boolstrings,
+  3: map<string, bool> stringbools,
+  4: map<i32, string> intstrings,
+  5: map<string, i32> stringints,
+}
