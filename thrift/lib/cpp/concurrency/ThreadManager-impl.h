@@ -40,11 +40,6 @@ namespace apache {
 namespace thrift {
 namespace concurrency {
 
-using std::dynamic_pointer_cast;
-using std::make_shared;
-using std::shared_ptr;
-using std::unique_ptr;
-
 namespace {
 /* Translates from wangle priorities (normal at 0, higher is higher)
    to thrift priorities */
@@ -443,7 +438,7 @@ class PriorityQueueThreadManager : public ThreadManager::Impl {
   std::string statContexts_[N_PRIORITIES];
 };
 
-static inline shared_ptr<ThreadFactory> Factory(
+static inline std::shared_ptr<ThreadFactory> Factory(
     PosixThreadFactory::PRIORITY prio) {
   return std::make_shared<PosixThreadFactory>(PosixThreadFactory::OTHER, prio);
 }
