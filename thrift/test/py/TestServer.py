@@ -13,86 +13,86 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import glob
 import os.path
 import sys
 import time
-
-sys.path.insert(0, './gen-py')
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-lib_path = glob.glob('../../lib/py/build/lib.*')
-if lib_path:
-    sys.path.insert(0, lib_path[0])
 from optparse import OptionParser
 
-from ThriftTest import ThriftTest, SecondService
-from ThriftTest.ttypes import *
 from thrift import TMultiplexedProcessor
+from thrift.protocol import TBinaryProtocol, THeaderProtocol
+from thrift.server import TCppServer, TServer
 from thrift.Thrift import TProcessorEventHandler
-from thrift.transport import TTransport
-from thrift.transport import TSocket, TSSLSocket
+from thrift.transport import TSocket, TSSLSocket, TTransport
 from thrift.transport.THeaderTransport import CLIENT_TYPE
-from thrift.protocol import TBinaryProtocol
-from thrift.protocol import THeaderProtocol
-from thrift.server import TServer, TCppServer
+from ThriftTest import SecondService, ThriftTest
+from ThriftTest.ttypes import *
+
+
+sys.path.insert(0, "./gen-py")
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+lib_path = glob.glob("../../lib/py/build/lib.*")
+if lib_path:
+    sys.path.insert(0, lib_path[0])
+
 
 class SecondHandler(SecondService.Iface):
     def blahBlah(self):
-        print('blahBlah()')
+        print("blahBlah()")
+
 
 class SecondContextHandler(SecondService.ContextIface):
-    def __init__(self,):
+    def __init__(self):
         self.th = SecondHandler()
 
     def blahBlah(self, handler_ctx):
         self.th.blahBlah()
 
-class TestHandler(ThriftTest.Iface):
 
+class TestHandler(ThriftTest.Iface):
     def testVoid(self):
-        print('testVoid()')
+        print("testVoid()")
 
     def testString(self, str):
-        print('testString(%s)' % str)
+        print("testString(%s)" % str)
         return str
 
     def testByte(self, byte):
-        print('testByte(%d)' % byte)
+        print("testByte(%d)" % byte)
         return byte
 
     def testI16(self, i16):
-        print('testI16(%d)' % i16)
+        print("testI16(%d)" % i16)
         return i16
 
     def testI32(self, i32):
-        print('testI32(%d)' % i32)
+        print("testI32(%d)" % i32)
         return i32
 
     def testI64(self, i64):
-        print('testI64(%d)' % i64)
+        print("testI64(%d)" % i64)
         return i64
 
     def testDouble(self, dub):
-        print('testDouble(%f)' % dub)
+        print("testDouble(%f)" % dub)
         return dub
 
     def testFloat(self, flt):
-        print('testFloat(%f)' % flt)
+        print("testFloat(%f)" % flt)
         return flt
 
     def testStruct(self, thing):
-        print('testStruct({%s, %d, %d, %d})' % (thing.string_thing,
-            thing.byte_thing, thing.i32_thing, thing.i64_thing))
+        print(
+            "testStruct({%s, %d, %d, %d})"
+            % (thing.string_thing, thing.byte_thing, thing.i32_thing, thing.i64_thing)
+        )
         return thing
 
     def testException(self, str):
-        print('testException(%s)' % str)
-        if str == 'Xception':
+        print("testException(%s)" % str)
+        if str == "Xception":
             x = Xception()
             x.errorCode = 1001
             x.message = str
@@ -101,9 +101,9 @@ class TestHandler(ThriftTest.Iface):
             raise ValueError("foo")
 
     def testOneway(self, seconds):
-        print('testOneway(%d) => sleeping...' % seconds)
+        print("testOneway(%d) => sleeping..." % seconds)
         time.sleep(seconds)
-        print('done sleeping')
+        print("done sleeping")
 
     def testNest(self, thing):
         return thing
@@ -125,7 +125,6 @@ class TestHandler(ThriftTest.Iface):
 
 
 class TestContextHandler(ThriftTest.ContextIface):
-
     def __init__(self, server_port):
         self.th = TestHandler()
         self._server_port = server_port
@@ -135,11 +134,11 @@ class TestContextHandler(ThriftTest.ContextIface):
         # This is here so we can check that handler_ctx is getting set,
         # without modifying the service definition which would require
         # modifying all the languages.
-        if not (handler_ctx[0].endswith("127.0.0.1") or \
-            handler_ctx[0].endswith("::1")) or \
-                handler_ctx[1] == self._server_port:
-            raise ValueError("handler_ctx not set properly " +
-                    str(handler_ctx))
+        if (
+            not (handler_ctx[0].endswith("127.0.0.1") or handler_ctx[0].endswith("::1"))
+            or handler_ctx[1] == self._server_port
+        ):
+            raise ValueError("handler_ctx not set properly " + str(handler_ctx))
 
     def testString(self, handler_ctx, str):
         return self.th.testString(str)
@@ -195,19 +194,19 @@ class ContextEventHandler(TProcessorEventHandler):
         # this is a tuple ("hostname", port)
         return server_context.getPeerName()
 
+
 class HeaderEventHandler(ContextEventHandler):
     def getHandlerContext(self, fn_name, server_context):
         self.htrans = server_context.iprot.trans
-        return ContextEventHandler.getHandlerContext(self,
-                fn_name, server_context)
+        return ContextEventHandler.getHandlerContext(self, fn_name, server_context)
 
     def preWrite(self, handler_context, fn_name, result):
         for str_key, str_value in self.htrans.get_headers().items():
             # Just spit them back for testing.
             self.htrans.set_header(str_key, str_value)
 
-class TestServerEventHandler(TServer.TServerEventHandler):
 
+class TestServerEventHandler(TServer.TServerEventHandler):
     def __init__(self):
         self.num_pre_serve = 0
         self.request_count = 0
@@ -234,37 +233,33 @@ if __name__ == "__main__":
         action="store_true",
         dest="ssl",
         default=False,
-        help="use SSL for encrypted transport")
+        help="use SSL for encrypted transport",
+    )
     parser.add_option(
         "--multiple",
         action="store_true",
         dest="multiple",
         default=False,
-        help="use multiple service")
+        help="use multiple service",
+    )
     parser.add_option(
         "--header",
         action="store_true",
         dest="header",
         default=False,
-        help="use the Header protocol")
+        help="use the Header protocol",
+    )
     parser.add_option(
         "--context",
         action="store_true",
         dest="context",
         default=False,
-        help="Use the context-passing Handler")
+        help="Use the context-passing Handler",
+    )
+    parser.add_option("--port", action="store", type="int", dest="port", default=9090)
     parser.add_option(
-        "--port",
-        action="store",
-        type="int",
-        dest="port",
-        default=9090)
-    parser.add_option(
-        "--timeout",
-        action="store",
-        type="int",
-        dest="timeout",
-        default=60)
+        "--timeout", action="store", type="int", dest="timeout", default=60
+    )
     options, args = parser.parse_args()
 
     event_handler = TestServerEventHandler()
@@ -272,33 +267,38 @@ if __name__ == "__main__":
     if options.header:
         pfactory = THeaderProtocol.THeaderProtocolFactory(
             True,
-            [CLIENT_TYPE.HEADER,
-             CLIENT_TYPE.FRAMED_DEPRECATED,
-             CLIENT_TYPE.UNFRAMED_DEPRECATED,
-             CLIENT_TYPE.HTTP_SERVER]
+            [
+                CLIENT_TYPE.HEADER,
+                CLIENT_TYPE.FRAMED_DEPRECATED,
+                CLIENT_TYPE.UNFRAMED_DEPRECATED,
+                CLIENT_TYPE.HTTP_SERVER,
+            ],
         )
     else:
         pfactory = TBinaryProtocol.TBinaryProtocolFactory()
 
     if options.context:
-        processor = ThriftTest.ContextProcessor(TestContextHandler(
-                options.port))
+        processor = ThriftTest.ContextProcessor(TestContextHandler(options.port))
     else:
         processor = ThriftTest.Processor(TestHandler())
 
     if options.multiple:
         processor = TMultiplexedProcessor.TMultiplexedProcessor()
         if options.context:
-            processor.registerProcessor("ThriftTest",
-                    ThriftTest.ContextProcessor(TestContextHandler(
-                            options.port)))
-            processor.registerProcessor("SecondService",
-                    SecondService.ContextProcessor(SecondContextHandler()))
+            processor.registerProcessor(
+                "ThriftTest",
+                ThriftTest.ContextProcessor(TestContextHandler(options.port)),
+            )
+            processor.registerProcessor(
+                "SecondService", SecondService.ContextProcessor(SecondContextHandler())
+            )
         else:
-            processor.registerProcessor("ThriftTest",
-                    ThriftTest.Processor(TestHandler()))
-            processor.registerProcessor("SecondService",
-                    SecondService.Processor(SecondHandler()))
+            processor.registerProcessor(
+                "ThriftTest", ThriftTest.Processor(TestHandler())
+            )
+            processor.registerProcessor(
+                "SecondService", SecondService.Processor(SecondHandler())
+            )
 
     server = TCppServer.TCppServer(processor)
     server.setPort(options.port)
