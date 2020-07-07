@@ -24,7 +24,7 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, optional_field_ref
+from thrift.py3.types cimport bstring, move, field_ref, optional_field_ref
 from folly.optional cimport cOptional
 
 
@@ -87,9 +87,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cVehicle&)
         cColor color
         optional_field_ref[string] licensePlate_ref()
+        string licensePlate
         optional_field_ref[string] description_ref()
+        string description
         optional_field_ref[string] name_ref()
+        string name
         optional_field_ref[cbool] hasAC_ref()
+        cbool hasAC
         cVehicle__isset __isset
 
     cdef cppclass cPerson__isset "::cpp2::Person::__isset":
@@ -116,13 +120,21 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cint64_t id
         string name
         optional_field_ref[cint16_t] age_ref()
+        cint16_t age
         optional_field_ref[string] address_ref()
+        string address
         optional_field_ref[cColor] favoriteColor_ref()
+        cColor favoriteColor
         optional_field_ref[cset[cint64_t]] friends_ref()
+        cset[cint64_t] friends
         optional_field_ref[cint64_t] bestFriend_ref()
+        cint64_t bestFriend
         optional_field_ref[cmap[cAnimal,string]] petNames_ref()
+        cmap[cAnimal,string] petNames
         optional_field_ref[cAnimal] afraidOfAnimal_ref()
+        cAnimal afraidOfAnimal
         optional_field_ref[vector[cVehicle]] vehicles_ref()
+        vector[cVehicle] vehicles
         cPerson__isset __isset
 
     cdef shared_ptr[cColor] reference_shared_ptr_color "thrift::py3::reference_shared_ptr<::cpp2::Color>"(shared_ptr[cVehicle]&, cColor&)

@@ -24,7 +24,7 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, optional_field_ref
+from thrift.py3.types cimport bstring, move, field_ref, optional_field_ref
 from folly.optional cimport cOptional
 
 
@@ -94,6 +94,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cint32_t weeks
         string title
         optional_field_ref[cCompany] employer_ref()
+        cCompany employer
         cInternship__isset __isset
 
     cdef cppclass cRange__isset "::cpp2::Range::__isset":
@@ -186,7 +187,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cstruct4&)
         cint32_t a
         optional_field_ref[double] b_ref()
+        double b
         optional_field_ref[cint8_t] c_ref()
+        cint8_t c
         cstruct4__isset __isset
 
     cdef enum cunion1__type "::cpp2::union1::Type":

@@ -138,15 +138,26 @@ cdef inline uint32_t largest_flag(uint32_t v):
 
 
 cdef extern from "thrift/lib/cpp2/FieldRef.h" namespace "apache::thrift" nogil:
-    cdef cppclass optional_field_ref[T]:
+    cdef cppclass field_ref[T]:
         void assign "operator="(T)
-        T value_unchecked()
+        T value()
+        # Cython doesn't handle references very well, so use a different name
+        # for value in the contexts where references actually work.
+        T& ref "value" ()
         # Cython doesn't handle references very well, so use a different name
         # for value_unchecked in the contexts where references actually work.
         T& ref_unchecked "value_unchecked" ()
-
-cdef extern from "thrift/lib/cpp2/OptionalField.h" namespace "apache::thrift" nogil:
-    cdef cppclass DeprecatedOptionalField[T]:
-        void assign "operator="(T)
         bint has_value()
+
+    cdef cppclass optional_field_ref[T]:
+        void assign "operator="(T)
         T value()
+        T value_unchecked()
+        # Cython doesn't handle references very well, so use a different name
+        # for value in the contexts where references actually work.
+        T& ref "value" ()
+        # Cython doesn't handle references very well, so use a different name
+        # for value_unchecked in the contexts where references actually work.
+        T& ref_unchecked "value_unchecked" ()
+        void reset()
+        bint has_value()

@@ -24,7 +24,7 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, optional_field_ref
+from thrift.py3.types cimport bstring, move, field_ref, optional_field_ref
 from folly.optional cimport cOptional
 cimport include.types as _include_types
 
@@ -573,6 +573,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cForwardUsageRoot&)
         bint operator>=(cForwardUsageRoot&)
         optional_field_ref[cForwardUsageStruct] ForwardUsageStruct_ref()
+        cForwardUsageStruct ForwardUsageStruct
         unique_ptr[cForwardUsageByRef] ForwardUsageByRef
         cForwardUsageRoot__isset __isset
 
@@ -589,6 +590,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cForwardUsageStruct&)
         bint operator>=(cForwardUsageStruct&)
         optional_field_ref[cForwardUsageRoot] foo_ref()
+        cForwardUsageRoot foo
         cForwardUsageStruct__isset __isset
 
     cdef cppclass cForwardUsageByRef__isset "::apache::thrift::fixtures::types::ForwardUsageByRef::__isset":
@@ -604,6 +606,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cForwardUsageByRef&)
         bint operator>=(cForwardUsageByRef&)
         optional_field_ref[cForwardUsageRoot] foo_ref()
+        cForwardUsageRoot foo
         cForwardUsageByRef__isset __isset
 
     cdef cppclass cNoexceptMoveEmpty__isset "::apache::thrift::fixtures::types::NoexceptMoveEmpty::__isset":
@@ -661,6 +664,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         string MyStringField2
         string MyBinaryField
         optional_field_ref[string] MyBinaryField2_ref()
+        string MyBinaryField2
         string MyBinaryField3
         vector[string] MyBinaryListField4
         cmap[cMyEnumA,string] MyMapEnumAndInt
