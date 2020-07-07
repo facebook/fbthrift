@@ -92,6 +92,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cInternship&)
         bint operator>=(cInternship&)
         cint32_t weeks
+        field_ref[string] title_ref()
         string title
         optional_field_ref[cCompany] employer_ref()
         cCompany employer
@@ -127,7 +128,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cstruct1&)
         bint operator<=(cstruct1&)
         bint operator>=(cstruct1&)
+        field_ref[cint32_t] a_ref()
         cint32_t a
+        field_ref[string] b_ref()
         string b
         cstruct1__isset __isset
 
@@ -146,9 +149,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cstruct2&)
         bint operator<=(cstruct2&)
         bint operator>=(cstruct2&)
+        field_ref[cint32_t] a_ref()
         cint32_t a
+        field_ref[string] b_ref()
         string b
+        field_ref[cstruct1] c_ref()
         cstruct1 c
+        field_ref[vector[cint32_t]] d_ref()
         vector[cint32_t] d
         cstruct2__isset __isset
 
@@ -166,8 +173,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cstruct3&)
         bint operator<=(cstruct3&)
         bint operator>=(cstruct3&)
+        field_ref[string] a_ref()
         string a
+        field_ref[cint32_t] b_ref()
         cint32_t b
+        field_ref[cstruct2] c_ref()
         cstruct2 c
         cstruct3__isset __isset
 
@@ -185,6 +195,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cstruct4&)
         bint operator<=(cstruct4&)
         bint operator>=(cstruct4&)
+        field_ref[cint32_t] a_ref()
         cint32_t a
         optional_field_ref[double] b_ref()
         double b

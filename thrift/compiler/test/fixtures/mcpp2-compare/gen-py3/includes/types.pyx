@@ -204,12 +204,12 @@ cdef class AStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and FieldA is None:
-                deref(c_inst).FieldA = default_inst[cAStruct]().FieldA
+                deref(c_inst).FieldA_ref().assign(default_inst[cAStruct]().FieldA_ref().value())
                 deref(c_inst).__isset.FieldA = False
                 pass
 
         if FieldA is not None:
-            deref(c_inst).FieldA = FieldA
+            deref(c_inst).FieldA_ref().assign(FieldA)
             deref(c_inst).__isset.FieldA = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -230,7 +230,7 @@ cdef class AStruct(thrift.py3.types.Struct):
     @property
     def FieldA(self):
 
-        return deref(self._cpp_obj).FieldA
+        return deref(self._cpp_obj).FieldA_ref().value()
 
 
     def __hash__(AStruct self):

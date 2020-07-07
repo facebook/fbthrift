@@ -226,20 +226,20 @@ cdef class SmallStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and small_A is None:
-                deref(c_inst).small_A = default_inst[cSmallStruct]().small_A
+                deref(c_inst).small_A_ref().assign(default_inst[cSmallStruct]().small_A_ref().value())
                 deref(c_inst).__isset.small_A = False
                 pass
 
             if not __isNOTSET[1] and small_B is None:
-                deref(c_inst).small_B = default_inst[cSmallStruct]().small_B
+                deref(c_inst).small_B_ref().assign(default_inst[cSmallStruct]().small_B_ref().value())
                 deref(c_inst).__isset.small_B = False
                 pass
 
         if small_A is not None:
-            deref(c_inst).small_A = small_A
+            deref(c_inst).small_A_ref().assign(small_A)
             deref(c_inst).__isset.small_A = True
         if small_B is not None:
-            deref(c_inst).small_B = small_B
+            deref(c_inst).small_B_ref().assign(small_B)
             deref(c_inst).__isset.small_B = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -261,12 +261,12 @@ cdef class SmallStruct(thrift.py3.types.Struct):
     @property
     def small_A(self):
 
-        return <pbool> deref(self._cpp_obj).small_A
+        return <pbool> deref(self._cpp_obj).small_A_ref().value()
 
     @property
     def small_B(self):
 
-        return deref(self._cpp_obj).small_B
+        return deref(self._cpp_obj).small_B_ref().value()
 
 
     def __hash__(SmallStruct self):
@@ -700,87 +700,87 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and fieldA is None:
-                deref(c_inst).fieldA = default_inst[ccontainerStruct]().fieldA
+                deref(c_inst).fieldA_ref().assign(default_inst[ccontainerStruct]().fieldA_ref().value())
                 deref(c_inst).__isset.fieldA = False
                 pass
 
             if not __isNOTSET[1] and fieldB is None:
-                deref(c_inst).fieldB = default_inst[ccontainerStruct]().fieldB
+                deref(c_inst).fieldB_ref().assign(default_inst[ccontainerStruct]().fieldB_ref().value())
                 deref(c_inst).__isset.fieldB = False
                 pass
 
             if not __isNOTSET[2] and fieldC is None:
-                deref(c_inst).fieldC = default_inst[ccontainerStruct]().fieldC
+                deref(c_inst).fieldC_ref().assign(default_inst[ccontainerStruct]().fieldC_ref().value())
                 deref(c_inst).__isset.fieldC = False
                 pass
 
             if not __isNOTSET[3] and fieldD is None:
-                deref(c_inst).fieldD = default_inst[ccontainerStruct]().fieldD
+                deref(c_inst).fieldD_ref().assign(default_inst[ccontainerStruct]().fieldD_ref().value())
                 deref(c_inst).__isset.fieldD = False
                 pass
 
             if not __isNOTSET[4] and fieldE is None:
-                deref(c_inst).fieldE = default_inst[ccontainerStruct]().fieldE
+                deref(c_inst).fieldE_ref().assign(default_inst[ccontainerStruct]().fieldE_ref().value())
                 deref(c_inst).__isset.fieldE = False
                 pass
 
             if not __isNOTSET[5] and fieldF is None:
-                deref(c_inst).fieldF = default_inst[ccontainerStruct]().fieldF
+                deref(c_inst).fieldF_ref().assign(default_inst[ccontainerStruct]().fieldF_ref().value())
                 deref(c_inst).__isset.fieldF = False
                 pass
 
             if not __isNOTSET[6] and fieldG is None:
-                deref(c_inst).fieldG = default_inst[ccontainerStruct]().fieldG
+                deref(c_inst).fieldG_ref().assign(default_inst[ccontainerStruct]().fieldG_ref().value())
                 deref(c_inst).__isset.fieldG = False
                 pass
 
             if not __isNOTSET[7] and fieldH is None:
-                deref(c_inst).fieldH = default_inst[ccontainerStruct]().fieldH
+                deref(c_inst).fieldH_ref().assign(default_inst[ccontainerStruct]().fieldH_ref().value())
                 deref(c_inst).__isset.fieldH = False
                 pass
 
             if not __isNOTSET[8] and fieldI is None:
-                deref(c_inst).fieldI = default_inst[ccontainerStruct]().fieldI
+                deref(c_inst).fieldI_ref().assign(default_inst[ccontainerStruct]().fieldI_ref().value())
                 deref(c_inst).__isset.fieldI = False
                 pass
 
             if not __isNOTSET[9] and fieldJ is None:
-                deref(c_inst).fieldJ = default_inst[ccontainerStruct]().fieldJ
+                deref(c_inst).fieldJ_ref().assign(default_inst[ccontainerStruct]().fieldJ_ref().value())
                 deref(c_inst).__isset.fieldJ = False
                 pass
 
             if not __isNOTSET[10] and fieldK is None:
-                deref(c_inst).fieldK = default_inst[ccontainerStruct]().fieldK
+                deref(c_inst).fieldK_ref().assign(default_inst[ccontainerStruct]().fieldK_ref().value())
                 deref(c_inst).__isset.fieldK = False
                 pass
 
             if not __isNOTSET[11] and fieldL is None:
-                deref(c_inst).fieldL = default_inst[ccontainerStruct]().fieldL
+                deref(c_inst).fieldL_ref().assign(default_inst[ccontainerStruct]().fieldL_ref().value())
                 deref(c_inst).__isset.fieldL = False
                 pass
 
             if not __isNOTSET[12] and fieldM is None:
-                deref(c_inst).fieldM = default_inst[ccontainerStruct]().fieldM
+                deref(c_inst).fieldM_ref().assign(default_inst[ccontainerStruct]().fieldM_ref().value())
                 deref(c_inst).__isset.fieldM = False
                 pass
 
             if not __isNOTSET[13] and fieldN is None:
-                deref(c_inst).fieldN = default_inst[ccontainerStruct]().fieldN
+                deref(c_inst).fieldN_ref().assign(default_inst[ccontainerStruct]().fieldN_ref().value())
                 deref(c_inst).__isset.fieldN = False
                 pass
 
             if not __isNOTSET[14] and fieldO is None:
-                deref(c_inst).fieldO = default_inst[ccontainerStruct]().fieldO
+                deref(c_inst).fieldO_ref().assign(default_inst[ccontainerStruct]().fieldO_ref().value())
                 deref(c_inst).__isset.fieldO = False
                 pass
 
             if not __isNOTSET[15] and fieldP is None:
-                deref(c_inst).fieldP = default_inst[ccontainerStruct]().fieldP
+                deref(c_inst).fieldP_ref().assign(default_inst[ccontainerStruct]().fieldP_ref().value())
                 deref(c_inst).__isset.fieldP = False
                 pass
 
             if not __isNOTSET[16] and fieldQ is None:
-                deref(c_inst).fieldQ = default_inst[ccontainerStruct]().fieldQ
+                deref(c_inst).fieldQ_ref().assign(default_inst[ccontainerStruct]().fieldQ_ref().value())
                 deref(c_inst).__isset.fieldQ = False
                 pass
 
@@ -805,55 +805,55 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
         if fieldA is not None:
-            deref(c_inst).fieldA = fieldA
+            deref(c_inst).fieldA_ref().assign(fieldA)
             deref(c_inst).__isset.fieldA = True
         if fieldB is not None:
-            deref(c_inst).fieldB = deref(Map__string_bool(fieldB)._cpp_obj)
+            deref(c_inst).fieldB_ref().assign(deref(Map__string_bool(fieldB)._cpp_obj))
             deref(c_inst).__isset.fieldB = True
         if fieldC is not None:
-            deref(c_inst).fieldC = deref(Set__i32(fieldC)._cpp_obj)
+            deref(c_inst).fieldC_ref().assign(deref(Set__i32(fieldC)._cpp_obj))
             deref(c_inst).__isset.fieldC = True
         if fieldD is not None:
-            deref(c_inst).fieldD = thrift.py3.types.move(thrift.py3.types.bytes_to_string(fieldD.encode('utf-8')))
+            deref(c_inst).fieldD_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(fieldD.encode('utf-8'))))
             deref(c_inst).__isset.fieldD = True
         if fieldE is not None:
-            deref(c_inst).fieldE = thrift.py3.types.move(thrift.py3.types.bytes_to_string(fieldE.encode('utf-8')))
+            deref(c_inst).fieldE_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(fieldE.encode('utf-8'))))
             deref(c_inst).__isset.fieldE = True
         if fieldF is not None:
-            deref(c_inst).fieldF = deref(List__List__List__i32(fieldF)._cpp_obj)
+            deref(c_inst).fieldF_ref().assign(deref(List__List__List__i32(fieldF)._cpp_obj))
             deref(c_inst).__isset.fieldF = True
         if fieldG is not None:
-            deref(c_inst).fieldG = deref(Map__string_Map__string_Map__string_i32(fieldG)._cpp_obj)
+            deref(c_inst).fieldG_ref().assign(deref(Map__string_Map__string_Map__string_i32(fieldG)._cpp_obj))
             deref(c_inst).__isset.fieldG = True
         if fieldH is not None:
-            deref(c_inst).fieldH = deref(List__Set__i32(fieldH)._cpp_obj)
+            deref(c_inst).fieldH_ref().assign(deref(List__Set__i32(fieldH)._cpp_obj))
             deref(c_inst).__isset.fieldH = True
         if fieldI is not None:
-            deref(c_inst).fieldI = fieldI
+            deref(c_inst).fieldI_ref().assign(fieldI)
             deref(c_inst).__isset.fieldI = True
         if fieldJ is not None:
-            deref(c_inst).fieldJ = deref(Map__string_List__i32(fieldJ)._cpp_obj)
+            deref(c_inst).fieldJ_ref().assign(deref(Map__string_List__i32(fieldJ)._cpp_obj))
             deref(c_inst).__isset.fieldJ = True
         if fieldK is not None:
-            deref(c_inst).fieldK = deref(List__List__List__List__i32(fieldK)._cpp_obj)
+            deref(c_inst).fieldK_ref().assign(deref(List__List__List__List__i32(fieldK)._cpp_obj))
             deref(c_inst).__isset.fieldK = True
         if fieldL is not None:
-            deref(c_inst).fieldL = deref(Set__Set__Set__bool(fieldL)._cpp_obj)
+            deref(c_inst).fieldL_ref().assign(deref(Set__Set__Set__bool(fieldL)._cpp_obj))
             deref(c_inst).__isset.fieldL = True
         if fieldM is not None:
-            deref(c_inst).fieldM = deref(Map__Set__List__i32_Map__List__Set__string_string(fieldM)._cpp_obj)
+            deref(c_inst).fieldM_ref().assign(deref(Map__Set__List__i32_Map__List__Set__string_string(fieldM)._cpp_obj))
             deref(c_inst).__isset.fieldM = True
         if fieldN is not None:
-            deref(c_inst).fieldN = deref(List__Foo__i64(fieldN)._cpp_obj)
+            deref(c_inst).fieldN_ref().assign(deref(List__Foo__i64(fieldN)._cpp_obj))
             deref(c_inst).__isset.fieldN = True
         if fieldO is not None:
-            deref(c_inst).fieldO = deref(List__Bar__double(fieldO)._cpp_obj)
+            deref(c_inst).fieldO_ref().assign(deref(List__Bar__double(fieldO)._cpp_obj))
             deref(c_inst).__isset.fieldO = True
         if fieldP is not None:
-            deref(c_inst).fieldP = deref(List__Baz__i32(fieldP)._cpp_obj)
+            deref(c_inst).fieldP_ref().assign(deref(List__Baz__i32(fieldP)._cpp_obj))
             deref(c_inst).__isset.fieldP = True
         if fieldQ is not None:
-            deref(c_inst).fieldQ = MyEnumA_to_cpp(fieldQ)
+            deref(c_inst).fieldQ_ref().assign(MyEnumA_to_cpp(fieldQ))
             deref(c_inst).__isset.fieldQ = True
         if fieldR is not None:
             deref(c_inst).fieldR = make_unique[cmap[string,cbool]](deref(Map__string_bool(fieldR)._cpp_obj))
@@ -905,111 +905,111 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldA(self):
 
-        return <pbool> deref(self._cpp_obj).fieldA
+        return <pbool> deref(self._cpp_obj).fieldA_ref().value()
 
     @property
     def fieldB(self):
 
         if self.__field_fieldB is None:
-            self.__field_fieldB = Map__string_bool.create(reference_shared_ptr_fieldB(self._cpp_obj, deref(self._cpp_obj).fieldB))
+            self.__field_fieldB = Map__string_bool.create(reference_shared_ptr_fieldB(self._cpp_obj, deref(self._cpp_obj).fieldB_ref().value()))
         return self.__field_fieldB
 
     @property
     def fieldC(self):
 
         if self.__field_fieldC is None:
-            self.__field_fieldC = Set__i32.create(reference_shared_ptr_fieldC(self._cpp_obj, deref(self._cpp_obj).fieldC))
+            self.__field_fieldC = Set__i32.create(reference_shared_ptr_fieldC(self._cpp_obj, deref(self._cpp_obj).fieldC_ref().value()))
         return self.__field_fieldC
 
     @property
     def fieldD(self):
 
-        return (<bytes>deref(self._cpp_obj).fieldD).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).fieldD_ref().value()).decode('UTF-8')
 
     @property
     def fieldE(self):
 
-        return (<bytes>deref(self._cpp_obj).fieldE).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).fieldE_ref().value()).decode('UTF-8')
 
     @property
     def fieldF(self):
 
         if self.__field_fieldF is None:
-            self.__field_fieldF = List__List__List__i32.create(reference_shared_ptr_fieldF(self._cpp_obj, deref(self._cpp_obj).fieldF))
+            self.__field_fieldF = List__List__List__i32.create(reference_shared_ptr_fieldF(self._cpp_obj, deref(self._cpp_obj).fieldF_ref().value()))
         return self.__field_fieldF
 
     @property
     def fieldG(self):
 
         if self.__field_fieldG is None:
-            self.__field_fieldG = Map__string_Map__string_Map__string_i32.create(reference_shared_ptr_fieldG(self._cpp_obj, deref(self._cpp_obj).fieldG))
+            self.__field_fieldG = Map__string_Map__string_Map__string_i32.create(reference_shared_ptr_fieldG(self._cpp_obj, deref(self._cpp_obj).fieldG_ref().value()))
         return self.__field_fieldG
 
     @property
     def fieldH(self):
 
         if self.__field_fieldH is None:
-            self.__field_fieldH = List__Set__i32.create(reference_shared_ptr_fieldH(self._cpp_obj, deref(self._cpp_obj).fieldH))
+            self.__field_fieldH = List__Set__i32.create(reference_shared_ptr_fieldH(self._cpp_obj, deref(self._cpp_obj).fieldH_ref().value()))
         return self.__field_fieldH
 
     @property
     def fieldI(self):
 
-        return <pbool> deref(self._cpp_obj).fieldI
+        return <pbool> deref(self._cpp_obj).fieldI_ref().value()
 
     @property
     def fieldJ(self):
 
         if self.__field_fieldJ is None:
-            self.__field_fieldJ = Map__string_List__i32.create(reference_shared_ptr_fieldJ(self._cpp_obj, deref(self._cpp_obj).fieldJ))
+            self.__field_fieldJ = Map__string_List__i32.create(reference_shared_ptr_fieldJ(self._cpp_obj, deref(self._cpp_obj).fieldJ_ref().value()))
         return self.__field_fieldJ
 
     @property
     def fieldK(self):
 
         if self.__field_fieldK is None:
-            self.__field_fieldK = List__List__List__List__i32.create(reference_shared_ptr_fieldK(self._cpp_obj, deref(self._cpp_obj).fieldK))
+            self.__field_fieldK = List__List__List__List__i32.create(reference_shared_ptr_fieldK(self._cpp_obj, deref(self._cpp_obj).fieldK_ref().value()))
         return self.__field_fieldK
 
     @property
     def fieldL(self):
 
         if self.__field_fieldL is None:
-            self.__field_fieldL = Set__Set__Set__bool.create(reference_shared_ptr_fieldL(self._cpp_obj, deref(self._cpp_obj).fieldL))
+            self.__field_fieldL = Set__Set__Set__bool.create(reference_shared_ptr_fieldL(self._cpp_obj, deref(self._cpp_obj).fieldL_ref().value()))
         return self.__field_fieldL
 
     @property
     def fieldM(self):
 
         if self.__field_fieldM is None:
-            self.__field_fieldM = Map__Set__List__i32_Map__List__Set__string_string.create(reference_shared_ptr_fieldM(self._cpp_obj, deref(self._cpp_obj).fieldM))
+            self.__field_fieldM = Map__Set__List__i32_Map__List__Set__string_string.create(reference_shared_ptr_fieldM(self._cpp_obj, deref(self._cpp_obj).fieldM_ref().value()))
         return self.__field_fieldM
 
     @property
     def fieldN(self):
 
         if self.__field_fieldN is None:
-            self.__field_fieldN = List__Foo__i64.create(reference_shared_ptr_fieldN(self._cpp_obj, deref(self._cpp_obj).fieldN))
+            self.__field_fieldN = List__Foo__i64.create(reference_shared_ptr_fieldN(self._cpp_obj, deref(self._cpp_obj).fieldN_ref().value()))
         return self.__field_fieldN
 
     @property
     def fieldO(self):
 
         if self.__field_fieldO is None:
-            self.__field_fieldO = List__Bar__double.create(reference_shared_ptr_fieldO(self._cpp_obj, deref(self._cpp_obj).fieldO))
+            self.__field_fieldO = List__Bar__double.create(reference_shared_ptr_fieldO(self._cpp_obj, deref(self._cpp_obj).fieldO_ref().value()))
         return self.__field_fieldO
 
     @property
     def fieldP(self):
 
         if self.__field_fieldP is None:
-            self.__field_fieldP = List__Baz__i32.create(reference_shared_ptr_fieldP(self._cpp_obj, deref(self._cpp_obj).fieldP))
+            self.__field_fieldP = List__Baz__i32.create(reference_shared_ptr_fieldP(self._cpp_obj, deref(self._cpp_obj).fieldP_ref().value()))
         return self.__field_fieldP
 
     @property
     def fieldQ(self):
 
-        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldQ))
+        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldQ_ref().value()))
 
     @property
     def fieldR(self):

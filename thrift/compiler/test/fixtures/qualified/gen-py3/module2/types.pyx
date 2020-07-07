@@ -118,20 +118,20 @@ cdef class Struct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and first is None:
-                deref(c_inst).first = default_inst[cStruct]().first
+                deref(c_inst).first_ref().assign(default_inst[cStruct]().first_ref().value())
                 deref(c_inst).__isset.first = False
                 pass
 
             if not __isNOTSET[1] and second is None:
-                deref(c_inst).second = default_inst[cStruct]().second
+                deref(c_inst).second_ref().assign(default_inst[cStruct]().second_ref().value())
                 deref(c_inst).__isset.second = False
                 pass
 
         if first is not None:
-            deref(c_inst).first = deref((<_module0_types.Struct?> first)._cpp_obj)
+            deref(c_inst).first_ref().assign(deref((<_module0_types.Struct?> first)._cpp_obj))
             deref(c_inst).__isset.first = True
         if second is not None:
-            deref(c_inst).second = deref((<_module1_types.Struct?> second)._cpp_obj)
+            deref(c_inst).second_ref().assign(deref((<_module1_types.Struct?> second)._cpp_obj))
             deref(c_inst).__isset.second = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -154,14 +154,14 @@ cdef class Struct(thrift.py3.types.Struct):
     def first(self):
 
         if self.__field_first is None:
-            self.__field_first = _module0_types.Struct.create(reference_shared_ptr_first(self._cpp_obj, deref(self._cpp_obj).first))
+            self.__field_first = _module0_types.Struct.create(reference_shared_ptr_first(self._cpp_obj, deref(self._cpp_obj).first_ref().value()))
         return self.__field_first
 
     @property
     def second(self):
 
         if self.__field_second is None:
-            self.__field_second = _module1_types.Struct.create(reference_shared_ptr_second(self._cpp_obj, deref(self._cpp_obj).second))
+            self.__field_second = _module1_types.Struct.create(reference_shared_ptr_second(self._cpp_obj, deref(self._cpp_obj).second_ref().value()))
         return self.__field_second
 
 
@@ -334,20 +334,20 @@ cdef class BigStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and s is None:
-                deref(c_inst).s = default_inst[cBigStruct]().s
+                deref(c_inst).s_ref().assign(default_inst[cBigStruct]().s_ref().value())
                 deref(c_inst).__isset.s = False
                 pass
 
             if not __isNOTSET[1] and id is None:
-                deref(c_inst).id = default_inst[cBigStruct]().id
+                deref(c_inst).id_ref().assign(default_inst[cBigStruct]().id_ref().value())
                 deref(c_inst).__isset.id = False
                 pass
 
         if s is not None:
-            deref(c_inst).s = deref((<Struct?> s)._cpp_obj)
+            deref(c_inst).s_ref().assign(deref((<Struct?> s)._cpp_obj))
             deref(c_inst).__isset.s = True
         if id is not None:
-            deref(c_inst).id = id
+            deref(c_inst).id_ref().assign(id)
             deref(c_inst).__isset.id = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -370,13 +370,13 @@ cdef class BigStruct(thrift.py3.types.Struct):
     def s(self):
 
         if self.__field_s is None:
-            self.__field_s = Struct.create(reference_shared_ptr_s(self._cpp_obj, deref(self._cpp_obj).s))
+            self.__field_s = Struct.create(reference_shared_ptr_s(self._cpp_obj, deref(self._cpp_obj).s_ref().value()))
         return self.__field_s
 
     @property
     def id(self):
 
-        return deref(self._cpp_obj).id
+        return deref(self._cpp_obj).id_ref().value()
 
 
     def __hash__(BigStruct self):

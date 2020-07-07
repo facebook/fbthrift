@@ -226,20 +226,20 @@ cdef class Struct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and first is None:
-                deref(c_inst).first = default_inst[cStruct]().first
+                deref(c_inst).first_ref().assign(default_inst[cStruct]().first_ref().value())
                 deref(c_inst).__isset.first = False
                 pass
 
             if not __isNOTSET[1] and second is None:
-                deref(c_inst).second = default_inst[cStruct]().second
+                deref(c_inst).second_ref().assign(default_inst[cStruct]().second_ref().value())
                 deref(c_inst).__isset.second = False
                 pass
 
         if first is not None:
-            deref(c_inst).first = first
+            deref(c_inst).first_ref().assign(first)
             deref(c_inst).__isset.first = True
         if second is not None:
-            deref(c_inst).second = thrift.py3.types.move(thrift.py3.types.bytes_to_string(second.encode('utf-8')))
+            deref(c_inst).second_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(second.encode('utf-8'))))
             deref(c_inst).__isset.second = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -261,12 +261,12 @@ cdef class Struct(thrift.py3.types.Struct):
     @property
     def first(self):
 
-        return deref(self._cpp_obj).first
+        return deref(self._cpp_obj).first_ref().value()
 
     @property
     def second(self):
 
-        return (<bytes>deref(self._cpp_obj).second).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).second_ref().value()).decode('UTF-8')
 
 
     def __hash__(Struct self):

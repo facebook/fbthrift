@@ -505,20 +505,20 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and myEnum is None:
-                deref(c_inst).myEnum = default_inst[cMyStruct]().myEnum
+                deref(c_inst).myEnum_ref().assign(default_inst[cMyStruct]().myEnum_ref().value())
                 deref(c_inst).__isset.myEnum = False
                 pass
 
             if not __isNOTSET[1] and myBigEnum is None:
-                deref(c_inst).myBigEnum = default_inst[cMyStruct]().myBigEnum
+                deref(c_inst).myBigEnum_ref().assign(default_inst[cMyStruct]().myBigEnum_ref().value())
                 deref(c_inst).__isset.myBigEnum = False
                 pass
 
         if myEnum is not None:
-            deref(c_inst).myEnum = MyEnum_to_cpp(myEnum)
+            deref(c_inst).myEnum_ref().assign(MyEnum_to_cpp(myEnum))
             deref(c_inst).__isset.myEnum = True
         if myBigEnum is not None:
-            deref(c_inst).myBigEnum = MyBigEnum_to_cpp(myBigEnum)
+            deref(c_inst).myBigEnum_ref().assign(MyBigEnum_to_cpp(myBigEnum))
             deref(c_inst).__isset.myBigEnum = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -540,12 +540,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @property
     def myEnum(self):
 
-        return translate_cpp_enum_to_python(MyEnum, <int>(deref(self._cpp_obj).myEnum))
+        return translate_cpp_enum_to_python(MyEnum, <int>(deref(self._cpp_obj).myEnum_ref().value()))
 
     @property
     def myBigEnum(self):
 
-        return translate_cpp_enum_to_python(MyBigEnum, <int>(deref(self._cpp_obj).myBigEnum))
+        return translate_cpp_enum_to_python(MyBigEnum, <int>(deref(self._cpp_obj).myBigEnum_ref().value()))
 
 
     def __hash__(MyStruct self):

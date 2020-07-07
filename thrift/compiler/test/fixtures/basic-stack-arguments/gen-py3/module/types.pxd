@@ -60,7 +60,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
+        field_ref[cint64_t] MyIntField_ref()
         cint64_t MyIntField
+        field_ref[string] MyStringField_ref()
         string MyStringField
         cMyStruct__isset __isset
 

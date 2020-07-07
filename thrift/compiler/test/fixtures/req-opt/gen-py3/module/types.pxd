@@ -50,6 +50,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cint32_t myInteger
         optional_field_ref[string] myString_ref()
         string myString
+        field_ref[vector[cbool]] myBools_ref()
         vector[cbool] myBools
         vector[cint32_t] myNumbers
         cFoo__isset __isset

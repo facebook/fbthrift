@@ -104,12 +104,12 @@ cdef class Foo(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and MyInt is None:
-                deref(c_inst).MyInt = default_inst[cFoo]().MyInt
+                deref(c_inst).MyInt_ref().assign(default_inst[cFoo]().MyInt_ref().value())
                 deref(c_inst).__isset.MyInt = False
                 pass
 
         if MyInt is not None:
-            deref(c_inst).MyInt = MyInt
+            deref(c_inst).MyInt_ref().assign(MyInt)
             deref(c_inst).__isset.MyInt = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -130,7 +130,7 @@ cdef class Foo(thrift.py3.types.Struct):
     @property
     def MyInt(self):
 
-        return deref(self._cpp_obj).MyInt
+        return deref(self._cpp_obj).MyInt_ref().value()
 
 
     def __hash__(Foo self):

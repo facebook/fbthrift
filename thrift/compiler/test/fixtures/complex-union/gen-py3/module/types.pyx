@@ -1369,28 +1369,28 @@ cdef class Val(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and strVal is None:
-                deref(c_inst).strVal = default_inst[cVal]().strVal
+                deref(c_inst).strVal_ref().assign(default_inst[cVal]().strVal_ref().value())
                 deref(c_inst).__isset.strVal = False
                 pass
 
             if not __isNOTSET[1] and intVal is None:
-                deref(c_inst).intVal = default_inst[cVal]().intVal
+                deref(c_inst).intVal_ref().assign(default_inst[cVal]().intVal_ref().value())
                 deref(c_inst).__isset.intVal = False
                 pass
 
             if not __isNOTSET[2] and typedefValue is None:
-                deref(c_inst).typedefValue = default_inst[cVal]().typedefValue
+                deref(c_inst).typedefValue_ref().assign(default_inst[cVal]().typedefValue_ref().value())
                 deref(c_inst).__isset.typedefValue = False
                 pass
 
         if strVal is not None:
-            deref(c_inst).strVal = thrift.py3.types.move(thrift.py3.types.bytes_to_string(strVal.encode('utf-8')))
+            deref(c_inst).strVal_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(strVal.encode('utf-8'))))
             deref(c_inst).__isset.strVal = True
         if intVal is not None:
-            deref(c_inst).intVal = intVal
+            deref(c_inst).intVal_ref().assign(intVal)
             deref(c_inst).__isset.intVal = True
         if typedefValue is not None:
-            deref(c_inst).typedefValue = deref(Map__i16_string(typedefValue)._cpp_obj)
+            deref(c_inst).typedefValue_ref().assign(deref(Map__i16_string(typedefValue)._cpp_obj))
             deref(c_inst).__isset.typedefValue = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1413,18 +1413,18 @@ cdef class Val(thrift.py3.types.Struct):
     @property
     def strVal(self):
 
-        return (<bytes>deref(self._cpp_obj).strVal).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).strVal_ref().value()).decode('UTF-8')
 
     @property
     def intVal(self):
 
-        return deref(self._cpp_obj).intVal
+        return deref(self._cpp_obj).intVal_ref().value()
 
     @property
     def typedefValue(self):
 
         if self.__field_typedefValue is None:
-            self.__field_typedefValue = Map__i16_string.create(reference_shared_ptr_typedefValue(self._cpp_obj, deref(self._cpp_obj).typedefValue))
+            self.__field_typedefValue = Map__i16_string.create(reference_shared_ptr_typedefValue(self._cpp_obj, deref(self._cpp_obj).typedefValue_ref().value()))
         return self.__field_typedefValue
 
 
@@ -1936,12 +1936,12 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and num is None:
-                deref(c_inst).num = default_inst[cNonCopyableStruct]().num
+                deref(c_inst).num_ref().assign(default_inst[cNonCopyableStruct]().num_ref().value())
                 deref(c_inst).__isset.num = False
                 pass
 
         if num is not None:
-            deref(c_inst).num = num
+            deref(c_inst).num_ref().assign(num)
             deref(c_inst).__isset.num = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1962,7 +1962,7 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
     @property
     def num(self):
 
-        return deref(self._cpp_obj).num
+        return deref(self._cpp_obj).num_ref().value()
 
 
     def __hash__(NonCopyableStruct self):

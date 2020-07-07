@@ -44,6 +44,7 @@ cdef extern from "gen-cpp2/hsmodule_types_custom_protocol.h" namespace "::cpp2":
         bint operator>(cHsFoo&)
         bint operator<=(cHsFoo&)
         bint operator>=(cHsFoo&)
+        field_ref[cint64_t] MyInt_ref()
         cint64_t MyInt
         cHsFoo__isset __isset
 

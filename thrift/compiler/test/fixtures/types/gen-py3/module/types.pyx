@@ -624,12 +624,12 @@ cdef class decorated_struct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and field is None:
-                deref(c_inst).field = default_inst[cdecorated_struct]().field
+                deref(c_inst).field_ref().assign(default_inst[cdecorated_struct]().field_ref().value())
                 deref(c_inst).__isset.field = False
                 pass
 
         if field is not None:
-            deref(c_inst).field = thrift.py3.types.move(thrift.py3.types.bytes_to_string(field.encode('utf-8')))
+            deref(c_inst).field_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(field.encode('utf-8'))))
             deref(c_inst).__isset.field = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -650,7 +650,7 @@ cdef class decorated_struct(thrift.py3.types.Struct):
     @property
     def field(self):
 
-        return (<bytes>deref(self._cpp_obj).field).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).field_ref().value()).decode('UTF-8')
 
 
     def __hash__(decorated_struct self):
@@ -879,68 +879,68 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and fieldA is None:
-                deref(c_inst).fieldA = default_inst[cContainerStruct]().fieldA
+                deref(c_inst).fieldA_ref().assign(default_inst[cContainerStruct]().fieldA_ref().value())
                 deref(c_inst).__isset.fieldA = False
                 pass
 
             if not __isNOTSET[1] and fieldB is None:
-                deref(c_inst).fieldB = default_inst[cContainerStruct]().fieldB
+                deref(c_inst).fieldB_ref().assign(default_inst[cContainerStruct]().fieldB_ref().value())
                 deref(c_inst).__isset.fieldB = False
                 pass
 
             if not __isNOTSET[2] and fieldC is None:
-                deref(c_inst).fieldC = default_inst[cContainerStruct]().fieldC
+                deref(c_inst).fieldC_ref().assign(default_inst[cContainerStruct]().fieldC_ref().value())
                 deref(c_inst).__isset.fieldC = False
                 pass
 
             if not __isNOTSET[3] and fieldD is None:
-                deref(c_inst).fieldD = default_inst[cContainerStruct]().fieldD
+                deref(c_inst).fieldD_ref().assign(default_inst[cContainerStruct]().fieldD_ref().value())
                 deref(c_inst).__isset.fieldD = False
                 pass
 
             if not __isNOTSET[4] and fieldE is None:
-                deref(c_inst).fieldE = default_inst[cContainerStruct]().fieldE
+                deref(c_inst).fieldE_ref().assign(default_inst[cContainerStruct]().fieldE_ref().value())
                 deref(c_inst).__isset.fieldE = False
                 pass
 
             if not __isNOTSET[5] and fieldF is None:
-                deref(c_inst).fieldF = default_inst[cContainerStruct]().fieldF
+                deref(c_inst).fieldF_ref().assign(default_inst[cContainerStruct]().fieldF_ref().value())
                 deref(c_inst).__isset.fieldF = False
                 pass
 
             if not __isNOTSET[6] and fieldG is None:
-                deref(c_inst).fieldG = default_inst[cContainerStruct]().fieldG
+                deref(c_inst).fieldG_ref().assign(default_inst[cContainerStruct]().fieldG_ref().value())
                 deref(c_inst).__isset.fieldG = False
                 pass
 
             if not __isNOTSET[7] and fieldH is None:
-                deref(c_inst).fieldH = default_inst[cContainerStruct]().fieldH
+                deref(c_inst).fieldH_ref().assign(default_inst[cContainerStruct]().fieldH_ref().value())
                 deref(c_inst).__isset.fieldH = False
                 pass
 
         if fieldA is not None:
-            deref(c_inst).fieldA = deref(List__i32(fieldA)._cpp_obj)
+            deref(c_inst).fieldA_ref().assign(deref(List__i32(fieldA)._cpp_obj))
             deref(c_inst).__isset.fieldA = True
         if fieldB is not None:
-            deref(c_inst).fieldB = deref(std_list__List__i32(fieldB)._cpp_obj)
+            deref(c_inst).fieldB_ref().assign(deref(std_list__List__i32(fieldB)._cpp_obj))
             deref(c_inst).__isset.fieldB = True
         if fieldC is not None:
-            deref(c_inst).fieldC = deref(std_deque__List__i32(fieldC)._cpp_obj)
+            deref(c_inst).fieldC_ref().assign(deref(std_deque__List__i32(fieldC)._cpp_obj))
             deref(c_inst).__isset.fieldC = True
         if fieldD is not None:
-            deref(c_inst).fieldD = deref(folly_fbvector__List__i32(fieldD)._cpp_obj)
+            deref(c_inst).fieldD_ref().assign(deref(folly_fbvector__List__i32(fieldD)._cpp_obj))
             deref(c_inst).__isset.fieldD = True
         if fieldE is not None:
-            deref(c_inst).fieldE = deref(folly_small_vector__List__i32(fieldE)._cpp_obj)
+            deref(c_inst).fieldE_ref().assign(deref(folly_small_vector__List__i32(fieldE)._cpp_obj))
             deref(c_inst).__isset.fieldE = True
         if fieldF is not None:
-            deref(c_inst).fieldF = deref(folly_sorted_vector_set__Set__i32(fieldF)._cpp_obj)
+            deref(c_inst).fieldF_ref().assign(deref(folly_sorted_vector_set__Set__i32(fieldF)._cpp_obj))
             deref(c_inst).__isset.fieldF = True
         if fieldG is not None:
-            deref(c_inst).fieldG = deref(folly_sorted_vector_map__Map__i32_string(fieldG)._cpp_obj)
+            deref(c_inst).fieldG_ref().assign(deref(folly_sorted_vector_map__Map__i32_string(fieldG)._cpp_obj))
             deref(c_inst).__isset.fieldG = True
         if fieldH is not None:
-            deref(c_inst).fieldH = deref(std_unordered_map__Map__i32_string(fieldH)._cpp_obj)
+            deref(c_inst).fieldH_ref().assign(deref(std_unordered_map__Map__i32_string(fieldH)._cpp_obj))
             deref(c_inst).__isset.fieldH = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -969,56 +969,56 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
     def fieldA(self):
 
         if self.__field_fieldA is None:
-            self.__field_fieldA = List__i32.create(reference_shared_ptr_fieldA(self._cpp_obj, deref(self._cpp_obj).fieldA))
+            self.__field_fieldA = List__i32.create(reference_shared_ptr_fieldA(self._cpp_obj, deref(self._cpp_obj).fieldA_ref().value()))
         return self.__field_fieldA
 
     @property
     def fieldB(self):
 
         if self.__field_fieldB is None:
-            self.__field_fieldB = std_list__List__i32.create(reference_shared_ptr_fieldB(self._cpp_obj, deref(self._cpp_obj).fieldB))
+            self.__field_fieldB = std_list__List__i32.create(reference_shared_ptr_fieldB(self._cpp_obj, deref(self._cpp_obj).fieldB_ref().value()))
         return self.__field_fieldB
 
     @property
     def fieldC(self):
 
         if self.__field_fieldC is None:
-            self.__field_fieldC = std_deque__List__i32.create(reference_shared_ptr_fieldC(self._cpp_obj, deref(self._cpp_obj).fieldC))
+            self.__field_fieldC = std_deque__List__i32.create(reference_shared_ptr_fieldC(self._cpp_obj, deref(self._cpp_obj).fieldC_ref().value()))
         return self.__field_fieldC
 
     @property
     def fieldD(self):
 
         if self.__field_fieldD is None:
-            self.__field_fieldD = folly_fbvector__List__i32.create(reference_shared_ptr_fieldD(self._cpp_obj, deref(self._cpp_obj).fieldD))
+            self.__field_fieldD = folly_fbvector__List__i32.create(reference_shared_ptr_fieldD(self._cpp_obj, deref(self._cpp_obj).fieldD_ref().value()))
         return self.__field_fieldD
 
     @property
     def fieldE(self):
 
         if self.__field_fieldE is None:
-            self.__field_fieldE = folly_small_vector__List__i32.create(reference_shared_ptr_fieldE(self._cpp_obj, deref(self._cpp_obj).fieldE))
+            self.__field_fieldE = folly_small_vector__List__i32.create(reference_shared_ptr_fieldE(self._cpp_obj, deref(self._cpp_obj).fieldE_ref().value()))
         return self.__field_fieldE
 
     @property
     def fieldF(self):
 
         if self.__field_fieldF is None:
-            self.__field_fieldF = folly_sorted_vector_set__Set__i32.create(reference_shared_ptr_fieldF(self._cpp_obj, deref(self._cpp_obj).fieldF))
+            self.__field_fieldF = folly_sorted_vector_set__Set__i32.create(reference_shared_ptr_fieldF(self._cpp_obj, deref(self._cpp_obj).fieldF_ref().value()))
         return self.__field_fieldF
 
     @property
     def fieldG(self):
 
         if self.__field_fieldG is None:
-            self.__field_fieldG = folly_sorted_vector_map__Map__i32_string.create(reference_shared_ptr_fieldG(self._cpp_obj, deref(self._cpp_obj).fieldG))
+            self.__field_fieldG = folly_sorted_vector_map__Map__i32_string.create(reference_shared_ptr_fieldG(self._cpp_obj, deref(self._cpp_obj).fieldG_ref().value()))
         return self.__field_fieldG
 
     @property
     def fieldH(self):
 
         if self.__field_fieldH is None:
-            self.__field_fieldH = std_unordered_map__Map__i32_string.create(reference_shared_ptr_fieldH(self._cpp_obj, deref(self._cpp_obj).fieldH))
+            self.__field_fieldH = std_unordered_map__Map__i32_string.create(reference_shared_ptr_fieldH(self._cpp_obj, deref(self._cpp_obj).fieldH_ref().value()))
         return self.__field_fieldH
 
 
@@ -1163,12 +1163,12 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and fieldA is None:
-                deref(c_inst).fieldA = default_inst[cCppTypeStruct]().fieldA
+                deref(c_inst).fieldA_ref().assign(default_inst[cCppTypeStruct]().fieldA_ref().value())
                 deref(c_inst).__isset.fieldA = False
                 pass
 
         if fieldA is not None:
-            deref(c_inst).fieldA = deref(std_list_int32_t__List__i32(fieldA)._cpp_obj)
+            deref(c_inst).fieldA_ref().assign(deref(std_list_int32_t__List__i32(fieldA)._cpp_obj))
             deref(c_inst).__isset.fieldA = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1190,7 +1190,7 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
     def fieldA(self):
 
         if self.__field_fieldA is None:
-            self.__field_fieldA = std_list_int32_t__List__i32.create(reference_shared_ptr_fieldA(self._cpp_obj, deref(self._cpp_obj).fieldA))
+            self.__field_fieldA = std_list_int32_t__List__i32.create(reference_shared_ptr_fieldA(self._cpp_obj, deref(self._cpp_obj).fieldA_ref().value()))
         return self.__field_fieldA
 
 
@@ -1346,12 +1346,12 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and MyIntField is None:
-                deref(c_inst).MyIntField = default_inst[cVirtualStruct]().MyIntField
+                deref(c_inst).MyIntField_ref().assign(default_inst[cVirtualStruct]().MyIntField_ref().value())
                 deref(c_inst).__isset.MyIntField = False
                 pass
 
         if MyIntField is not None:
-            deref(c_inst).MyIntField = MyIntField
+            deref(c_inst).MyIntField_ref().assign(MyIntField)
             deref(c_inst).__isset.MyIntField = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1372,7 +1372,7 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
     @property
     def MyIntField(self):
 
-        return deref(self._cpp_obj).MyIntField
+        return deref(self._cpp_obj).MyIntField_ref().value()
 
 
     def __hash__(VirtualStruct self):
@@ -1537,20 +1537,20 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and a is None:
-                deref(c_inst).a = default_inst[cMyStructWithForwardRefEnum]().a
+                deref(c_inst).a_ref().assign(default_inst[cMyStructWithForwardRefEnum]().a_ref().value())
                 deref(c_inst).__isset.a = False
                 pass
 
             if not __isNOTSET[1] and b is None:
-                deref(c_inst).b = default_inst[cMyStructWithForwardRefEnum]().b
+                deref(c_inst).b_ref().assign(default_inst[cMyStructWithForwardRefEnum]().b_ref().value())
                 deref(c_inst).__isset.b = False
                 pass
 
         if a is not None:
-            deref(c_inst).a = MyForwardRefEnum_to_cpp(a)
+            deref(c_inst).a_ref().assign(MyForwardRefEnum_to_cpp(a))
             deref(c_inst).__isset.a = True
         if b is not None:
-            deref(c_inst).b = MyForwardRefEnum_to_cpp(b)
+            deref(c_inst).b_ref().assign(MyForwardRefEnum_to_cpp(b))
             deref(c_inst).__isset.b = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1572,12 +1572,12 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
     @property
     def a(self):
 
-        return translate_cpp_enum_to_python(MyForwardRefEnum, <int>(deref(self._cpp_obj).a))
+        return translate_cpp_enum_to_python(MyForwardRefEnum, <int>(deref(self._cpp_obj).a_ref().value()))
 
     @property
     def b(self):
 
-        return translate_cpp_enum_to_python(MyForwardRefEnum, <int>(deref(self._cpp_obj).b))
+        return translate_cpp_enum_to_python(MyForwardRefEnum, <int>(deref(self._cpp_obj).b_ref().value()))
 
 
     def __hash__(MyStructWithForwardRefEnum self):
@@ -1749,20 +1749,20 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and a is None:
-                deref(c_inst).a = default_inst[cTrivialNumeric]().a
+                deref(c_inst).a_ref().assign(default_inst[cTrivialNumeric]().a_ref().value())
                 deref(c_inst).__isset.a = False
                 pass
 
             if not __isNOTSET[1] and b is None:
-                deref(c_inst).b = default_inst[cTrivialNumeric]().b
+                deref(c_inst).b_ref().assign(default_inst[cTrivialNumeric]().b_ref().value())
                 deref(c_inst).__isset.b = False
                 pass
 
         if a is not None:
-            deref(c_inst).a = a
+            deref(c_inst).a_ref().assign(a)
             deref(c_inst).__isset.a = True
         if b is not None:
-            deref(c_inst).b = b
+            deref(c_inst).b_ref().assign(b)
             deref(c_inst).__isset.b = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1784,12 +1784,12 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
     @property
     def a(self):
 
-        return deref(self._cpp_obj).a
+        return deref(self._cpp_obj).a_ref().value()
 
     @property
     def b(self):
 
-        return <pbool> deref(self._cpp_obj).b
+        return <pbool> deref(self._cpp_obj).b_ref().value()
 
 
     def __hash__(TrivialNumeric self):
@@ -1961,20 +1961,20 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and z is None:
-                deref(c_inst).z = default_inst[cTrivialNestedWithDefault]().z
+                deref(c_inst).z_ref().assign(default_inst[cTrivialNestedWithDefault]().z_ref().value())
                 deref(c_inst).__isset.z = False
                 pass
 
             if not __isNOTSET[1] and n is None:
-                deref(c_inst).n = default_inst[cTrivialNestedWithDefault]().n
+                deref(c_inst).n_ref().assign(default_inst[cTrivialNestedWithDefault]().n_ref().value())
                 deref(c_inst).__isset.n = False
                 pass
 
         if z is not None:
-            deref(c_inst).z = z
+            deref(c_inst).z_ref().assign(z)
             deref(c_inst).__isset.z = True
         if n is not None:
-            deref(c_inst).n = deref((<TrivialNumeric?> n)._cpp_obj)
+            deref(c_inst).n_ref().assign(deref((<TrivialNumeric?> n)._cpp_obj))
             deref(c_inst).__isset.n = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1996,13 +1996,13 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
     @property
     def z(self):
 
-        return deref(self._cpp_obj).z
+        return deref(self._cpp_obj).z_ref().value()
 
     @property
     def n(self):
 
         if self.__field_n is None:
-            self.__field_n = TrivialNumeric.create(reference_shared_ptr_n(self._cpp_obj, deref(self._cpp_obj).n))
+            self.__field_n = TrivialNumeric.create(reference_shared_ptr_n(self._cpp_obj, deref(self._cpp_obj).n_ref().value()))
         return self.__field_n
 
 
@@ -2165,20 +2165,20 @@ cdef class ComplexString(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and a is None:
-                deref(c_inst).a = default_inst[cComplexString]().a
+                deref(c_inst).a_ref().assign(default_inst[cComplexString]().a_ref().value())
                 deref(c_inst).__isset.a = False
                 pass
 
             if not __isNOTSET[1] and b is None:
-                deref(c_inst).b = default_inst[cComplexString]().b
+                deref(c_inst).b_ref().assign(default_inst[cComplexString]().b_ref().value())
                 deref(c_inst).__isset.b = False
                 pass
 
         if a is not None:
-            deref(c_inst).a = thrift.py3.types.move(thrift.py3.types.bytes_to_string(a.encode('utf-8')))
+            deref(c_inst).a_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(a.encode('utf-8'))))
             deref(c_inst).__isset.a = True
         if b is not None:
-            deref(c_inst).b = deref(Map__string_i32(b)._cpp_obj)
+            deref(c_inst).b_ref().assign(deref(Map__string_i32(b)._cpp_obj))
             deref(c_inst).__isset.b = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -2200,13 +2200,13 @@ cdef class ComplexString(thrift.py3.types.Struct):
     @property
     def a(self):
 
-        return (<bytes>deref(self._cpp_obj).a).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).a_ref().value()).decode('UTF-8')
 
     @property
     def b(self):
 
         if self.__field_b is None:
-            self.__field_b = Map__string_i32.create(reference_shared_ptr_b(self._cpp_obj, deref(self._cpp_obj).b))
+            self.__field_b = Map__string_i32.create(reference_shared_ptr_b(self._cpp_obj, deref(self._cpp_obj).b_ref().value()))
         return self.__field_b
 
 
@@ -2373,20 +2373,20 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and z is None:
-                deref(c_inst).z = default_inst[cComplexNestedWithDefault]().z
+                deref(c_inst).z_ref().assign(default_inst[cComplexNestedWithDefault]().z_ref().value())
                 deref(c_inst).__isset.z = False
                 pass
 
             if not __isNOTSET[1] and n is None:
-                deref(c_inst).n = default_inst[cComplexNestedWithDefault]().n
+                deref(c_inst).n_ref().assign(default_inst[cComplexNestedWithDefault]().n_ref().value())
                 deref(c_inst).__isset.n = False
                 pass
 
         if z is not None:
-            deref(c_inst).z = thrift.py3.types.move(thrift.py3.types.bytes_to_string(z.encode('utf-8')))
+            deref(c_inst).z_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(z.encode('utf-8'))))
             deref(c_inst).__isset.z = True
         if n is not None:
-            deref(c_inst).n = deref((<ComplexString?> n)._cpp_obj)
+            deref(c_inst).n_ref().assign(deref((<ComplexString?> n)._cpp_obj))
             deref(c_inst).__isset.n = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -2408,13 +2408,13 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
     @property
     def z(self):
 
-        return (<bytes>deref(self._cpp_obj).z).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).z_ref().value()).decode('UTF-8')
 
     @property
     def n(self):
 
         if self.__field_n is None:
-            self.__field_n = ComplexString.create(reference_shared_ptr_n(self._cpp_obj, deref(self._cpp_obj).n))
+            self.__field_n = ComplexString.create(reference_shared_ptr_n(self._cpp_obj, deref(self._cpp_obj).n_ref().value()))
         return self.__field_n
 
 
@@ -2944,36 +2944,36 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and MyIntField is None:
-                deref(c_inst).MyIntField = default_inst[cMyStruct]().MyIntField
+                deref(c_inst).MyIntField_ref().assign(default_inst[cMyStruct]().MyIntField_ref().value())
                 deref(c_inst).__isset.MyIntField = False
                 pass
 
             if not __isNOTSET[1] and MyStringField is None:
-                deref(c_inst).MyStringField = default_inst[cMyStruct]().MyStringField
+                deref(c_inst).MyStringField_ref().assign(default_inst[cMyStruct]().MyStringField_ref().value())
                 deref(c_inst).__isset.MyStringField = False
                 pass
 
             if not __isNOTSET[2] and majorVer is None:
-                deref(c_inst).majorVer = default_inst[cMyStruct]().majorVer
+                deref(c_inst).majorVer_ref().assign(default_inst[cMyStruct]().majorVer_ref().value())
                 deref(c_inst).__isset.majorVer = False
                 pass
 
             if not __isNOTSET[3] and data is None:
-                deref(c_inst).data = default_inst[cMyStruct]().data
+                deref(c_inst).data_ref().assign(default_inst[cMyStruct]().data_ref().value())
                 deref(c_inst).__isset.data = False
                 pass
 
         if MyIntField is not None:
-            deref(c_inst).MyIntField = MyIntField
+            deref(c_inst).MyIntField_ref().assign(MyIntField)
             deref(c_inst).__isset.MyIntField = True
         if MyStringField is not None:
-            deref(c_inst).MyStringField = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyStringField.encode('utf-8')))
+            deref(c_inst).MyStringField_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyStringField.encode('utf-8'))))
             deref(c_inst).__isset.MyStringField = True
         if majorVer is not None:
-            deref(c_inst).majorVer = majorVer
+            deref(c_inst).majorVer_ref().assign(majorVer)
             deref(c_inst).__isset.majorVer = True
         if data is not None:
-            deref(c_inst).data = deref((<MyDataItem?> data)._cpp_obj)
+            deref(c_inst).data_ref().assign(deref((<MyDataItem?> data)._cpp_obj))
             deref(c_inst).__isset.data = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -2997,23 +2997,23 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @property
     def MyIntField(self):
 
-        return deref(self._cpp_obj).MyIntField
+        return deref(self._cpp_obj).MyIntField_ref().value()
 
     @property
     def MyStringField(self):
 
-        return (<bytes>deref(self._cpp_obj).MyStringField).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).MyStringField_ref().value()).decode('UTF-8')
 
     @property
     def majorVer(self):
 
-        return deref(self._cpp_obj).majorVer
+        return deref(self._cpp_obj).majorVer_ref().value()
 
     @property
     def data(self):
 
         if self.__field_data is None:
-            self.__field_data = MyDataItem.create(reference_shared_ptr_data(self._cpp_obj, deref(self._cpp_obj).data))
+            self.__field_data = MyDataItem.create(reference_shared_ptr_data(self._cpp_obj, deref(self._cpp_obj).data_ref().value()))
         return self.__field_data
 
 
@@ -3302,12 +3302,12 @@ cdef class Renaming(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and foo is None:
-                deref(c_inst).foo = default_inst[cRenaming]().foo
+                deref(c_inst).foo_ref().assign(default_inst[cRenaming]().foo_ref().value())
                 deref(c_inst).__isset.foo = False
                 pass
 
         if foo is not None:
-            deref(c_inst).foo = foo
+            deref(c_inst).foo_ref().assign(foo)
             deref(c_inst).__isset.foo = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -3328,7 +3328,7 @@ cdef class Renaming(thrift.py3.types.Struct):
     @property
     def foo(self):
 
-        return deref(self._cpp_obj).foo
+        return deref(self._cpp_obj).foo_ref().value()
 
 
     def __hash__(Renaming self):
@@ -3489,20 +3489,20 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and binary_field is None:
-                deref(c_inst).binary_field = default_inst[cAnnotatedTypes]().binary_field
+                deref(c_inst).binary_field_ref().assign(default_inst[cAnnotatedTypes]().binary_field_ref().value())
                 deref(c_inst).__isset.binary_field = False
                 pass
 
             if not __isNOTSET[1] and list_field is None:
-                deref(c_inst).list_field = default_inst[cAnnotatedTypes]().list_field
+                deref(c_inst).list_field_ref().assign(default_inst[cAnnotatedTypes]().list_field_ref().value())
                 deref(c_inst).__isset.list_field = False
                 pass
 
         if binary_field is not None:
-            deref(c_inst).binary_field = thrift.py3.types.move(thrift.py3.types.bytes_to_string(binary_field))
+            deref(c_inst).binary_field_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(binary_field)))
             deref(c_inst).__isset.binary_field = True
         if list_field is not None:
-            deref(c_inst).list_field = deref(List__std_unordered_map__Map__i32_string(list_field)._cpp_obj)
+            deref(c_inst).list_field_ref().assign(deref(List__std_unordered_map__Map__i32_string(list_field)._cpp_obj))
             deref(c_inst).__isset.list_field = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -3524,13 +3524,13 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
     @property
     def binary_field(self):
 
-        return deref(self._cpp_obj).binary_field
+        return deref(self._cpp_obj).binary_field_ref().value()
 
     @property
     def list_field(self):
 
         if self.__field_list_field is None:
-            self.__field_list_field = List__std_unordered_map__Map__i32_string.create(reference_shared_ptr_list_field(self._cpp_obj, deref(self._cpp_obj).list_field))
+            self.__field_list_field = List__std_unordered_map__Map__i32_string.create(reference_shared_ptr_list_field(self._cpp_obj, deref(self._cpp_obj).list_field_ref().value()))
         return self.__field_list_field
 
 
@@ -4380,12 +4380,12 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and boolField is None:
-                deref(c_inst).boolField = default_inst[cNoexceptMoveSimpleStruct]().boolField
+                deref(c_inst).boolField_ref().assign(default_inst[cNoexceptMoveSimpleStruct]().boolField_ref().value())
                 deref(c_inst).__isset.boolField = False
                 pass
 
         if boolField is not None:
-            deref(c_inst).boolField = boolField
+            deref(c_inst).boolField_ref().assign(boolField)
             deref(c_inst).__isset.boolField = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -4406,7 +4406,7 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
     @property
     def boolField(self):
 
-        return deref(self._cpp_obj).boolField
+        return deref(self._cpp_obj).boolField_ref().value()
 
 
     def __hash__(NoexceptMoveSimpleStruct self):
@@ -4681,27 +4681,27 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and MyBoolField is None:
-                deref(c_inst).MyBoolField = default_inst[cNoexceptMoveComplexStruct]().MyBoolField
+                deref(c_inst).MyBoolField_ref().assign(default_inst[cNoexceptMoveComplexStruct]().MyBoolField_ref().value())
                 deref(c_inst).__isset.MyBoolField = False
                 pass
 
             if not __isNOTSET[1] and MyIntField is None:
-                deref(c_inst).MyIntField = default_inst[cNoexceptMoveComplexStruct]().MyIntField
+                deref(c_inst).MyIntField_ref().assign(default_inst[cNoexceptMoveComplexStruct]().MyIntField_ref().value())
                 deref(c_inst).__isset.MyIntField = False
                 pass
 
             if not __isNOTSET[2] and MyStringField is None:
-                deref(c_inst).MyStringField = default_inst[cNoexceptMoveComplexStruct]().MyStringField
+                deref(c_inst).MyStringField_ref().assign(default_inst[cNoexceptMoveComplexStruct]().MyStringField_ref().value())
                 deref(c_inst).__isset.MyStringField = False
                 pass
 
             if not __isNOTSET[3] and MyStringField2 is None:
-                deref(c_inst).MyStringField2 = default_inst[cNoexceptMoveComplexStruct]().MyStringField2
+                deref(c_inst).MyStringField2_ref().assign(default_inst[cNoexceptMoveComplexStruct]().MyStringField2_ref().value())
                 deref(c_inst).__isset.MyStringField2 = False
                 pass
 
             if not __isNOTSET[4] and MyBinaryField is None:
-                deref(c_inst).MyBinaryField = default_inst[cNoexceptMoveComplexStruct]().MyBinaryField
+                deref(c_inst).MyBinaryField_ref().assign(default_inst[cNoexceptMoveComplexStruct]().MyBinaryField_ref().value())
                 deref(c_inst).__isset.MyBinaryField = False
                 pass
 
@@ -4714,29 +4714,29 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[7] and MyBinaryListField4 is None:
-                deref(c_inst).MyBinaryListField4 = default_inst[cNoexceptMoveComplexStruct]().MyBinaryListField4
+                deref(c_inst).MyBinaryListField4_ref().assign(default_inst[cNoexceptMoveComplexStruct]().MyBinaryListField4_ref().value())
                 deref(c_inst).__isset.MyBinaryListField4 = False
                 pass
 
             if not __isNOTSET[8] and MyMapEnumAndInt is None:
-                deref(c_inst).MyMapEnumAndInt = default_inst[cNoexceptMoveComplexStruct]().MyMapEnumAndInt
+                deref(c_inst).MyMapEnumAndInt_ref().assign(default_inst[cNoexceptMoveComplexStruct]().MyMapEnumAndInt_ref().value())
                 deref(c_inst).__isset.MyMapEnumAndInt = False
                 pass
 
         if MyBoolField is not None:
-            deref(c_inst).MyBoolField = MyBoolField
+            deref(c_inst).MyBoolField_ref().assign(MyBoolField)
             deref(c_inst).__isset.MyBoolField = True
         if MyIntField is not None:
-            deref(c_inst).MyIntField = MyIntField
+            deref(c_inst).MyIntField_ref().assign(MyIntField)
             deref(c_inst).__isset.MyIntField = True
         if MyStringField is not None:
-            deref(c_inst).MyStringField = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyStringField.encode('utf-8')))
+            deref(c_inst).MyStringField_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyStringField.encode('utf-8'))))
             deref(c_inst).__isset.MyStringField = True
         if MyStringField2 is not None:
-            deref(c_inst).MyStringField2 = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyStringField2.encode('utf-8')))
+            deref(c_inst).MyStringField2_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyStringField2.encode('utf-8'))))
             deref(c_inst).__isset.MyStringField2 = True
         if MyBinaryField is not None:
-            deref(c_inst).MyBinaryField = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField))
+            deref(c_inst).MyBinaryField_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField)))
             deref(c_inst).__isset.MyBinaryField = True
         if MyBinaryField2 is not None:
             deref(c_inst).MyBinaryField2_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField2)))
@@ -4744,10 +4744,10 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
         if MyBinaryField3 is not None:
             deref(c_inst).MyBinaryField3 = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField3))
         if MyBinaryListField4 is not None:
-            deref(c_inst).MyBinaryListField4 = deref(List__binary(MyBinaryListField4)._cpp_obj)
+            deref(c_inst).MyBinaryListField4_ref().assign(deref(List__binary(MyBinaryListField4)._cpp_obj))
             deref(c_inst).__isset.MyBinaryListField4 = True
         if MyMapEnumAndInt is not None:
-            deref(c_inst).MyMapEnumAndInt = deref(Map__MyEnumA_string(MyMapEnumAndInt)._cpp_obj)
+            deref(c_inst).MyMapEnumAndInt_ref().assign(deref(Map__MyEnumA_string(MyMapEnumAndInt)._cpp_obj))
             deref(c_inst).__isset.MyMapEnumAndInt = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -4776,27 +4776,27 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
     @property
     def MyBoolField(self):
 
-        return <pbool> deref(self._cpp_obj).MyBoolField
+        return <pbool> deref(self._cpp_obj).MyBoolField_ref().value()
 
     @property
     def MyIntField(self):
 
-        return deref(self._cpp_obj).MyIntField
+        return deref(self._cpp_obj).MyIntField_ref().value()
 
     @property
     def MyStringField(self):
 
-        return (<bytes>deref(self._cpp_obj).MyStringField).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).MyStringField_ref().value()).decode('UTF-8')
 
     @property
     def MyStringField2(self):
 
-        return (<bytes>deref(self._cpp_obj).MyStringField2).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).MyStringField2_ref().value()).decode('UTF-8')
 
     @property
     def MyBinaryField(self):
 
-        return deref(self._cpp_obj).MyBinaryField
+        return deref(self._cpp_obj).MyBinaryField_ref().value()
 
     @property
     def MyBinaryField2(self):
@@ -4814,14 +4814,14 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
     def MyBinaryListField4(self):
 
         if self.__field_MyBinaryListField4 is None:
-            self.__field_MyBinaryListField4 = List__binary.create(reference_shared_ptr_MyBinaryListField4(self._cpp_obj, deref(self._cpp_obj).MyBinaryListField4))
+            self.__field_MyBinaryListField4 = List__binary.create(reference_shared_ptr_MyBinaryListField4(self._cpp_obj, deref(self._cpp_obj).MyBinaryListField4_ref().value()))
         return self.__field_MyBinaryListField4
 
     @property
     def MyMapEnumAndInt(self):
 
         if self.__field_MyMapEnumAndInt is None:
-            self.__field_MyMapEnumAndInt = Map__MyEnumA_string.create(reference_shared_ptr_MyMapEnumAndInt(self._cpp_obj, deref(self._cpp_obj).MyMapEnumAndInt))
+            self.__field_MyMapEnumAndInt = Map__MyEnumA_string.create(reference_shared_ptr_MyMapEnumAndInt(self._cpp_obj, deref(self._cpp_obj).MyMapEnumAndInt_ref().value()))
         return self.__field_MyMapEnumAndInt
 
 

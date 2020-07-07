@@ -45,6 +45,7 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" na
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
+        field_ref[string] field_ref()
         string field
         cMyStruct__isset __isset
 
@@ -63,9 +64,13 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" na
         bint operator>(cCombo&)
         bint operator<=(cCombo&)
         bint operator>=(cCombo&)
+        field_ref[vector[vector[cMyStruct]]] listOfOurMyStructLists_ref()
         vector[vector[cMyStruct]] listOfOurMyStructLists
+        field_ref[vector[_module_types.cMyStruct]] theirMyStructList_ref()
         vector[_module_types.cMyStruct] theirMyStructList
+        field_ref[vector[cMyStruct]] ourMyStructList_ref()
         vector[cMyStruct] ourMyStructList
+        field_ref[vector[vector[_module_types.cMyStruct]]] listOfTheirMyStructList_ref()
         vector[vector[_module_types.cMyStruct]] listOfTheirMyStructList
         cCombo__isset __isset
 

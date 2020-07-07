@@ -61,6 +61,7 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::a::dif
         bint operator>(cAStruct&)
         bint operator<=(cAStruct&)
         bint operator>=(cAStruct&)
+        field_ref[cint32_t] FieldA_ref()
         cint32_t FieldA
         cAStruct__isset __isset
 

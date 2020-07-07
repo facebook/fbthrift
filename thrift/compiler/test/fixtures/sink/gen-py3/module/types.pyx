@@ -98,12 +98,12 @@ cdef class InitialResponse(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and content is None:
-                deref(c_inst).content = default_inst[cInitialResponse]().content
+                deref(c_inst).content_ref().assign(default_inst[cInitialResponse]().content_ref().value())
                 deref(c_inst).__isset.content = False
                 pass
 
         if content is not None:
-            deref(c_inst).content = thrift.py3.types.move(thrift.py3.types.bytes_to_string(content.encode('utf-8')))
+            deref(c_inst).content_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(content.encode('utf-8'))))
             deref(c_inst).__isset.content = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -124,7 +124,7 @@ cdef class InitialResponse(thrift.py3.types.Struct):
     @property
     def content(self):
 
-        return (<bytes>deref(self._cpp_obj).content).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).content_ref().value()).decode('UTF-8')
 
 
     def __hash__(InitialResponse self):
@@ -273,12 +273,12 @@ cdef class FinalResponse(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and content is None:
-                deref(c_inst).content = default_inst[cFinalResponse]().content
+                deref(c_inst).content_ref().assign(default_inst[cFinalResponse]().content_ref().value())
                 deref(c_inst).__isset.content = False
                 pass
 
         if content is not None:
-            deref(c_inst).content = thrift.py3.types.move(thrift.py3.types.bytes_to_string(content.encode('utf-8')))
+            deref(c_inst).content_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(content.encode('utf-8'))))
             deref(c_inst).__isset.content = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -299,7 +299,7 @@ cdef class FinalResponse(thrift.py3.types.Struct):
     @property
     def content(self):
 
-        return (<bytes>deref(self._cpp_obj).content).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).content_ref().value()).decode('UTF-8')
 
 
     def __hash__(FinalResponse self):
@@ -448,12 +448,12 @@ cdef class SinkPayload(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and content is None:
-                deref(c_inst).content = default_inst[cSinkPayload]().content
+                deref(c_inst).content_ref().assign(default_inst[cSinkPayload]().content_ref().value())
                 deref(c_inst).__isset.content = False
                 pass
 
         if content is not None:
-            deref(c_inst).content = thrift.py3.types.move(thrift.py3.types.bytes_to_string(content.encode('utf-8')))
+            deref(c_inst).content_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(content.encode('utf-8'))))
             deref(c_inst).__isset.content = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -474,7 +474,7 @@ cdef class SinkPayload(thrift.py3.types.Struct):
     @property
     def content(self):
 
-        return (<bytes>deref(self._cpp_obj).content).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).content_ref().value()).decode('UTF-8')
 
 
     def __hash__(SinkPayload self):
@@ -623,12 +623,12 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and sink is None:
-                deref(c_inst).sink = default_inst[cCompatibleWithKeywordSink]().sink
+                deref(c_inst).sink_ref().assign(default_inst[cCompatibleWithKeywordSink]().sink_ref().value())
                 deref(c_inst).__isset.sink = False
                 pass
 
         if sink is not None:
-            deref(c_inst).sink = thrift.py3.types.move(thrift.py3.types.bytes_to_string(sink.encode('utf-8')))
+            deref(c_inst).sink_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(sink.encode('utf-8'))))
             deref(c_inst).__isset.sink = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -649,7 +649,7 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
     @property
     def sink(self):
 
-        return (<bytes>deref(self._cpp_obj).sink).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).sink_ref().value()).decode('UTF-8')
 
 
     def __hash__(CompatibleWithKeywordSink self):
@@ -767,7 +767,7 @@ cdef class InitialException(thrift.py3.exceptions.Error):
             c_inst = make_unique[cInitialException]()
 
         if reason is not None:
-            deref(c_inst).reason = thrift.py3.types.move(thrift.py3.types.bytes_to_string(reason.encode('utf-8')))
+            deref(c_inst).reason_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(reason.encode('utf-8'))))
             deref(c_inst).__isset.reason = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -789,7 +789,7 @@ cdef class InitialException(thrift.py3.exceptions.Error):
     @property
     def reason(self):
 
-        return (<bytes>deref(self._cpp_obj).reason).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).reason_ref().value()).decode('UTF-8')
 
 
     def __hash__(InitialException self):
@@ -866,7 +866,7 @@ cdef class SinkException1(thrift.py3.exceptions.Error):
             c_inst = make_unique[cSinkException1]()
 
         if reason is not None:
-            deref(c_inst).reason = thrift.py3.types.move(thrift.py3.types.bytes_to_string(reason.encode('utf-8')))
+            deref(c_inst).reason_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(reason.encode('utf-8'))))
             deref(c_inst).__isset.reason = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -888,7 +888,7 @@ cdef class SinkException1(thrift.py3.exceptions.Error):
     @property
     def reason(self):
 
-        return (<bytes>deref(self._cpp_obj).reason).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).reason_ref().value()).decode('UTF-8')
 
 
     def __hash__(SinkException1 self):
@@ -970,7 +970,7 @@ cdef class SinkException2(thrift.py3.exceptions.Error):
             c_inst = make_unique[cSinkException2]()
 
         if reason is not None:
-            deref(c_inst).reason = reason
+            deref(c_inst).reason_ref().assign(reason)
             deref(c_inst).__isset.reason = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -992,7 +992,7 @@ cdef class SinkException2(thrift.py3.exceptions.Error):
     @property
     def reason(self):
 
-        return deref(self._cpp_obj).reason
+        return deref(self._cpp_obj).reason_ref().value()
 
 
     def __hash__(SinkException2 self):

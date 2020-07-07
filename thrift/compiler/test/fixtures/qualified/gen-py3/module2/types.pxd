@@ -47,7 +47,9 @@ cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "::mod
         bint operator>(cStruct&)
         bint operator<=(cStruct&)
         bint operator>=(cStruct&)
+        field_ref[_module0_types.cStruct] first_ref()
         _module0_types.cStruct first
+        field_ref[_module1_types.cStruct] second_ref()
         _module1_types.cStruct second
         cStruct__isset __isset
 
@@ -64,7 +66,9 @@ cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "::mod
         bint operator>(cBigStruct&)
         bint operator<=(cBigStruct&)
         bint operator>=(cBigStruct&)
+        field_ref[cStruct] s_ref()
         cStruct s
+        field_ref[cint32_t] id_ref()
         cint32_t id
         cBigStruct__isset __isset
 

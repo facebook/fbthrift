@@ -445,7 +445,7 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
             c_inst = make_unique[cSimpleException]()
 
         if err_code is not None:
-            deref(c_inst).err_code = err_code
+            deref(c_inst).err_code_ref().assign(err_code)
             deref(c_inst).__isset.err_code = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -467,7 +467,7 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
     @property
     def err_code(self):
 
-        return deref(self._cpp_obj).err_code
+        return deref(self._cpp_obj).err_code_ref().value()
 
 
     def __hash__(SimpleException self):
@@ -884,60 +884,60 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and is_on is None:
-                deref(c_inst).is_on = default_inst[cSimpleStruct]().is_on
+                deref(c_inst).is_on_ref().assign(default_inst[cSimpleStruct]().is_on_ref().value())
                 deref(c_inst).__isset.is_on = False
                 pass
 
             if not __isNOTSET[1] and tiny_int is None:
-                deref(c_inst).tiny_int = default_inst[cSimpleStruct]().tiny_int
+                deref(c_inst).tiny_int_ref().assign(default_inst[cSimpleStruct]().tiny_int_ref().value())
                 deref(c_inst).__isset.tiny_int = False
                 pass
 
             if not __isNOTSET[2] and small_int is None:
-                deref(c_inst).small_int = default_inst[cSimpleStruct]().small_int
+                deref(c_inst).small_int_ref().assign(default_inst[cSimpleStruct]().small_int_ref().value())
                 deref(c_inst).__isset.small_int = False
                 pass
 
             if not __isNOTSET[3] and nice_sized_int is None:
-                deref(c_inst).nice_sized_int = default_inst[cSimpleStruct]().nice_sized_int
+                deref(c_inst).nice_sized_int_ref().assign(default_inst[cSimpleStruct]().nice_sized_int_ref().value())
                 deref(c_inst).__isset.nice_sized_int = False
                 pass
 
             if not __isNOTSET[4] and big_int is None:
-                deref(c_inst).big_int = default_inst[cSimpleStruct]().big_int
+                deref(c_inst).big_int_ref().assign(default_inst[cSimpleStruct]().big_int_ref().value())
                 deref(c_inst).__isset.big_int = False
                 pass
 
             if not __isNOTSET[5] and real is None:
-                deref(c_inst).real = default_inst[cSimpleStruct]().real
+                deref(c_inst).real_ref().assign(default_inst[cSimpleStruct]().real_ref().value())
                 deref(c_inst).__isset.real = False
                 pass
 
             if not __isNOTSET[6] and smaller_real is None:
-                deref(c_inst).smaller_real = default_inst[cSimpleStruct]().smaller_real
+                deref(c_inst).smaller_real_ref().assign(default_inst[cSimpleStruct]().smaller_real_ref().value())
                 deref(c_inst).__isset.smaller_real = False
                 pass
 
         if is_on is not None:
-            deref(c_inst).is_on = is_on
+            deref(c_inst).is_on_ref().assign(is_on)
             deref(c_inst).__isset.is_on = True
         if tiny_int is not None:
-            deref(c_inst).tiny_int = tiny_int
+            deref(c_inst).tiny_int_ref().assign(tiny_int)
             deref(c_inst).__isset.tiny_int = True
         if small_int is not None:
-            deref(c_inst).small_int = small_int
+            deref(c_inst).small_int_ref().assign(small_int)
             deref(c_inst).__isset.small_int = True
         if nice_sized_int is not None:
-            deref(c_inst).nice_sized_int = nice_sized_int
+            deref(c_inst).nice_sized_int_ref().assign(nice_sized_int)
             deref(c_inst).__isset.nice_sized_int = True
         if big_int is not None:
-            deref(c_inst).big_int = big_int
+            deref(c_inst).big_int_ref().assign(big_int)
             deref(c_inst).__isset.big_int = True
         if real is not None:
-            deref(c_inst).real = real
+            deref(c_inst).real_ref().assign(real)
             deref(c_inst).__isset.real = True
         if smaller_real is not None:
-            deref(c_inst).smaller_real = smaller_real
+            deref(c_inst).smaller_real_ref().assign(smaller_real)
             deref(c_inst).__isset.smaller_real = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -964,37 +964,37 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
     @property
     def is_on(self):
 
-        return <pbool> deref(self._cpp_obj).is_on
+        return <pbool> deref(self._cpp_obj).is_on_ref().value()
 
     @property
     def tiny_int(self):
 
-        return deref(self._cpp_obj).tiny_int
+        return deref(self._cpp_obj).tiny_int_ref().value()
 
     @property
     def small_int(self):
 
-        return deref(self._cpp_obj).small_int
+        return deref(self._cpp_obj).small_int_ref().value()
 
     @property
     def nice_sized_int(self):
 
-        return deref(self._cpp_obj).nice_sized_int
+        return deref(self._cpp_obj).nice_sized_int_ref().value()
 
     @property
     def big_int(self):
 
-        return deref(self._cpp_obj).big_int
+        return deref(self._cpp_obj).big_int_ref().value()
 
     @property
     def real(self):
 
-        return deref(self._cpp_obj).real
+        return deref(self._cpp_obj).real_ref().value()
 
     @property
     def smaller_real(self):
 
-        return deref(self._cpp_obj).smaller_real
+        return deref(self._cpp_obj).smaller_real_ref().value()
 
 
     def __hash__(SimpleStruct self):
@@ -1283,76 +1283,76 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and structOne is None:
-                deref(c_inst).structOne = default_inst[cComplexStruct]().structOne
+                deref(c_inst).structOne_ref().assign(default_inst[cComplexStruct]().structOne_ref().value())
                 deref(c_inst).__isset.structOne = False
                 pass
 
             if not __isNOTSET[1] and structTwo is None:
-                deref(c_inst).structTwo = default_inst[cComplexStruct]().structTwo
+                deref(c_inst).structTwo_ref().assign(default_inst[cComplexStruct]().structTwo_ref().value())
                 deref(c_inst).__isset.structTwo = False
                 pass
 
             if not __isNOTSET[2] and an_integer is None:
-                deref(c_inst).an_integer = default_inst[cComplexStruct]().an_integer
+                deref(c_inst).an_integer_ref().assign(default_inst[cComplexStruct]().an_integer_ref().value())
                 deref(c_inst).__isset.an_integer = False
                 pass
 
             if not __isNOTSET[3] and name is None:
-                deref(c_inst).name = default_inst[cComplexStruct]().name
+                deref(c_inst).name_ref().assign(default_inst[cComplexStruct]().name_ref().value())
                 deref(c_inst).__isset.name = False
                 pass
 
             if not __isNOTSET[4] and an_enum is None:
-                deref(c_inst).an_enum = default_inst[cComplexStruct]().an_enum
+                deref(c_inst).an_enum_ref().assign(default_inst[cComplexStruct]().an_enum_ref().value())
                 deref(c_inst).__isset.an_enum = False
                 pass
 
             if not __isNOTSET[5] and some_bytes is None:
-                deref(c_inst).some_bytes = default_inst[cComplexStruct]().some_bytes
+                deref(c_inst).some_bytes_ref().assign(default_inst[cComplexStruct]().some_bytes_ref().value())
                 deref(c_inst).__isset.some_bytes = False
                 pass
 
             if not __isNOTSET[6] and sender is None:
-                deref(c_inst).sender = default_inst[cComplexStruct]().sender
+                deref(c_inst).sender_ref().assign(default_inst[cComplexStruct]().sender_ref().value())
                 deref(c_inst).__isset.sender = False
                 pass
 
             if not __isNOTSET[7] and cdef_ is None:
-                deref(c_inst).cdef_ = default_inst[cComplexStruct]().cdef_
+                deref(c_inst).cdef__ref().assign(default_inst[cComplexStruct]().cdef__ref().value())
                 deref(c_inst).__isset.cdef_ = False
                 pass
 
             if not __isNOTSET[8] and bytes_with_cpp_type is None:
-                deref(c_inst).bytes_with_cpp_type = default_inst[cComplexStruct]().bytes_with_cpp_type
+                deref(c_inst).bytes_with_cpp_type_ref().assign(default_inst[cComplexStruct]().bytes_with_cpp_type_ref().value())
                 deref(c_inst).__isset.bytes_with_cpp_type = False
                 pass
 
         if structOne is not None:
-            deref(c_inst).structOne = deref((<SimpleStruct?> structOne)._cpp_obj)
+            deref(c_inst).structOne_ref().assign(deref((<SimpleStruct?> structOne)._cpp_obj))
             deref(c_inst).__isset.structOne = True
         if structTwo is not None:
-            deref(c_inst).structTwo = deref((<SimpleStruct?> structTwo)._cpp_obj)
+            deref(c_inst).structTwo_ref().assign(deref((<SimpleStruct?> structTwo)._cpp_obj))
             deref(c_inst).__isset.structTwo = True
         if an_integer is not None:
-            deref(c_inst).an_integer = an_integer
+            deref(c_inst).an_integer_ref().assign(an_integer)
             deref(c_inst).__isset.an_integer = True
         if name is not None:
-            deref(c_inst).name = thrift.py3.types.move(thrift.py3.types.bytes_to_string(name.encode('utf-8')))
+            deref(c_inst).name_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(name.encode('utf-8'))))
             deref(c_inst).__isset.name = True
         if an_enum is not None:
-            deref(c_inst).an_enum = AnEnum_to_cpp(an_enum)
+            deref(c_inst).an_enum_ref().assign(AnEnum_to_cpp(an_enum))
             deref(c_inst).__isset.an_enum = True
         if some_bytes is not None:
-            deref(c_inst).some_bytes = thrift.py3.types.move(thrift.py3.types.bytes_to_string(some_bytes))
+            deref(c_inst).some_bytes_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(some_bytes)))
             deref(c_inst).__isset.some_bytes = True
         if sender is not None:
-            deref(c_inst).sender = thrift.py3.types.move(thrift.py3.types.bytes_to_string(sender.encode('utf-8')))
+            deref(c_inst).sender_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(sender.encode('utf-8'))))
             deref(c_inst).__isset.sender = True
         if cdef_ is not None:
-            deref(c_inst).cdef_ = thrift.py3.types.move(thrift.py3.types.bytes_to_string(cdef_.encode('utf-8')))
+            deref(c_inst).cdef__ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(cdef_.encode('utf-8'))))
             deref(c_inst).__isset.cdef_ = True
         if bytes_with_cpp_type is not None:
-            deref(c_inst).bytes_with_cpp_type = foo_Bar(move(<string>bytes_with_cpp_type))
+            deref(c_inst).bytes_with_cpp_type_ref().assign(foo_Bar(move(<string>bytes_with_cpp_type)))
             deref(c_inst).__isset.bytes_with_cpp_type = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1382,50 +1382,50 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
     def structOne(self):
 
         if self.__field_structOne is None:
-            self.__field_structOne = SimpleStruct.create(reference_shared_ptr_structOne(self._cpp_obj, deref(self._cpp_obj).structOne))
+            self.__field_structOne = SimpleStruct.create(reference_shared_ptr_structOne(self._cpp_obj, deref(self._cpp_obj).structOne_ref().value()))
         return self.__field_structOne
 
     @property
     def structTwo(self):
 
         if self.__field_structTwo is None:
-            self.__field_structTwo = SimpleStruct.create(reference_shared_ptr_structTwo(self._cpp_obj, deref(self._cpp_obj).structTwo))
+            self.__field_structTwo = SimpleStruct.create(reference_shared_ptr_structTwo(self._cpp_obj, deref(self._cpp_obj).structTwo_ref().value()))
         return self.__field_structTwo
 
     @property
     def an_integer(self):
 
-        return deref(self._cpp_obj).an_integer
+        return deref(self._cpp_obj).an_integer_ref().value()
 
     @property
     def name(self):
 
-        return (<bytes>deref(self._cpp_obj).name).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).name_ref().value()).decode('UTF-8')
 
     @property
     def an_enum(self):
 
-        return translate_cpp_enum_to_python(AnEnum, <int>(deref(self._cpp_obj).an_enum))
+        return translate_cpp_enum_to_python(AnEnum, <int>(deref(self._cpp_obj).an_enum_ref().value()))
 
     @property
     def some_bytes(self):
 
-        return deref(self._cpp_obj).some_bytes
+        return deref(self._cpp_obj).some_bytes_ref().value()
 
     @property
     def sender(self):
 
-        return (<bytes>deref(self._cpp_obj).sender).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).sender_ref().value()).decode('UTF-8')
 
     @property
     def cdef_(self):
 
-        return (<bytes>deref(self._cpp_obj).cdef_).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).cdef__ref().value()).decode('UTF-8')
 
     @property
     def bytes_with_cpp_type(self):
 
-        return (<const char*>deref(self._cpp_obj).bytes_with_cpp_type.data())[:deref(self._cpp_obj).bytes_with_cpp_type.size()]
+        return (<const char*>deref(self._cpp_obj).bytes_with_cpp_type_ref().value().data())[:deref(self._cpp_obj).bytes_with_cpp_type_ref().value().size()]
 
 
     def __hash__(ComplexStruct self):
@@ -1734,12 +1734,12 @@ cdef class BinaryUnionStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and u is None:
-                deref(c_inst).u = default_inst[cBinaryUnionStruct]().u
+                deref(c_inst).u_ref().assign(default_inst[cBinaryUnionStruct]().u_ref().value())
                 deref(c_inst).__isset.u = False
                 pass
 
         if u is not None:
-            deref(c_inst).u = deref((<BinaryUnion?> u)._cpp_obj)
+            deref(c_inst).u_ref().assign(deref((<BinaryUnion?> u)._cpp_obj))
             deref(c_inst).__isset.u = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1761,7 +1761,7 @@ cdef class BinaryUnionStruct(thrift.py3.types.Struct):
     def u(self):
 
         if self.__field_u is None:
-            self.__field_u = BinaryUnion.create(reference_shared_ptr_u(self._cpp_obj, deref(self._cpp_obj).u))
+            self.__field_u = BinaryUnion.create(reference_shared_ptr_u(self._cpp_obj, deref(self._cpp_obj).u_ref().value()))
         return self.__field_u
 
 

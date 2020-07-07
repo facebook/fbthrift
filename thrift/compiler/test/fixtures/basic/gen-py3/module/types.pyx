@@ -359,36 +359,36 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and MyIntField is None:
-                deref(c_inst).MyIntField = default_inst[cMyStruct]().MyIntField
+                deref(c_inst).MyIntField_ref().assign(default_inst[cMyStruct]().MyIntField_ref().value())
                 deref(c_inst).__isset.MyIntField = False
                 pass
 
             if not __isNOTSET[1] and MyStringField is None:
-                deref(c_inst).MyStringField = default_inst[cMyStruct]().MyStringField
+                deref(c_inst).MyStringField_ref().assign(default_inst[cMyStruct]().MyStringField_ref().value())
                 deref(c_inst).__isset.MyStringField = False
                 pass
 
             if not __isNOTSET[2] and MyDataField is None:
-                deref(c_inst).MyDataField = default_inst[cMyStruct]().MyDataField
+                deref(c_inst).MyDataField_ref().assign(default_inst[cMyStruct]().MyDataField_ref().value())
                 deref(c_inst).__isset.MyDataField = False
                 pass
 
             if not __isNOTSET[3] and myEnum is None:
-                deref(c_inst).myEnum = default_inst[cMyStruct]().myEnum
+                deref(c_inst).myEnum_ref().assign(default_inst[cMyStruct]().myEnum_ref().value())
                 deref(c_inst).__isset.myEnum = False
                 pass
 
         if MyIntField is not None:
-            deref(c_inst).MyIntField = MyIntField
+            deref(c_inst).MyIntField_ref().assign(MyIntField)
             deref(c_inst).__isset.MyIntField = True
         if MyStringField is not None:
-            deref(c_inst).MyStringField = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyStringField.encode('utf-8')))
+            deref(c_inst).MyStringField_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyStringField.encode('utf-8'))))
             deref(c_inst).__isset.MyStringField = True
         if MyDataField is not None:
-            deref(c_inst).MyDataField = deref((<MyDataItem?> MyDataField)._cpp_obj)
+            deref(c_inst).MyDataField_ref().assign(deref((<MyDataItem?> MyDataField)._cpp_obj))
             deref(c_inst).__isset.MyDataField = True
         if myEnum is not None:
-            deref(c_inst).myEnum = MyEnum_to_cpp(myEnum)
+            deref(c_inst).myEnum_ref().assign(MyEnum_to_cpp(myEnum))
             deref(c_inst).__isset.myEnum = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -412,24 +412,24 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @property
     def MyIntField(self):
 
-        return deref(self._cpp_obj).MyIntField
+        return deref(self._cpp_obj).MyIntField_ref().value()
 
     @property
     def MyStringField(self):
 
-        return (<bytes>deref(self._cpp_obj).MyStringField).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).MyStringField_ref().value()).decode('UTF-8')
 
     @property
     def MyDataField(self):
 
         if self.__field_MyDataField is None:
-            self.__field_MyDataField = MyDataItem.create(reference_shared_ptr_MyDataField(self._cpp_obj, deref(self._cpp_obj).MyDataField))
+            self.__field_MyDataField = MyDataItem.create(reference_shared_ptr_MyDataField(self._cpp_obj, deref(self._cpp_obj).MyDataField_ref().value()))
         return self.__field_MyDataField
 
     @property
     def myEnum(self):
 
-        return translate_cpp_enum_to_python(MyEnum, <int>(deref(self._cpp_obj).myEnum))
+        return translate_cpp_enum_to_python(MyEnum, <int>(deref(self._cpp_obj).myEnum_ref().value()))
 
 
     def __hash__(MyStruct self):

@@ -661,7 +661,7 @@ cdef class Internship(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[1] and title is None:
-                deref(c_inst).title = default_inst[cInternship]().title
+                deref(c_inst).title_ref().assign(default_inst[cInternship]().title_ref().value())
                 deref(c_inst).__isset.title = False
                 pass
 
@@ -672,7 +672,7 @@ cdef class Internship(thrift.py3.types.Struct):
         if weeks is not None:
             deref(c_inst).weeks = weeks
         if title is not None:
-            deref(c_inst).title = thrift.py3.types.move(thrift.py3.types.bytes_to_string(title.encode('utf-8')))
+            deref(c_inst).title_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(title.encode('utf-8'))))
             deref(c_inst).__isset.title = True
         if employer is not None:
             deref(c_inst).employer_ref().assign(Company_to_cpp(employer))
@@ -703,7 +703,7 @@ cdef class Internship(thrift.py3.types.Struct):
     @property
     def title(self):
 
-        return (<bytes>deref(self._cpp_obj).title).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).title_ref().value()).decode('UTF-8')
 
     @property
     def employer(self):
@@ -1097,20 +1097,20 @@ cdef class struct1(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and a is None:
-                deref(c_inst).a = default_inst[cstruct1]().a
+                deref(c_inst).a_ref().assign(default_inst[cstruct1]().a_ref().value())
                 deref(c_inst).__isset.a = False
                 pass
 
             if not __isNOTSET[1] and b is None:
-                deref(c_inst).b = default_inst[cstruct1]().b
+                deref(c_inst).b_ref().assign(default_inst[cstruct1]().b_ref().value())
                 deref(c_inst).__isset.b = False
                 pass
 
         if a is not None:
-            deref(c_inst).a = a
+            deref(c_inst).a_ref().assign(a)
             deref(c_inst).__isset.a = True
         if b is not None:
-            deref(c_inst).b = thrift.py3.types.move(thrift.py3.types.bytes_to_string(b.encode('utf-8')))
+            deref(c_inst).b_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(b.encode('utf-8'))))
             deref(c_inst).__isset.b = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1132,12 +1132,12 @@ cdef class struct1(thrift.py3.types.Struct):
     @property
     def a(self):
 
-        return deref(self._cpp_obj).a
+        return deref(self._cpp_obj).a_ref().value()
 
     @property
     def b(self):
 
-        return (<bytes>deref(self._cpp_obj).b).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).b_ref().value()).decode('UTF-8')
 
 
     def __hash__(struct1 self):
@@ -1337,36 +1337,36 @@ cdef class struct2(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and a is None:
-                deref(c_inst).a = default_inst[cstruct2]().a
+                deref(c_inst).a_ref().assign(default_inst[cstruct2]().a_ref().value())
                 deref(c_inst).__isset.a = False
                 pass
 
             if not __isNOTSET[1] and b is None:
-                deref(c_inst).b = default_inst[cstruct2]().b
+                deref(c_inst).b_ref().assign(default_inst[cstruct2]().b_ref().value())
                 deref(c_inst).__isset.b = False
                 pass
 
             if not __isNOTSET[2] and c is None:
-                deref(c_inst).c = default_inst[cstruct2]().c
+                deref(c_inst).c_ref().assign(default_inst[cstruct2]().c_ref().value())
                 deref(c_inst).__isset.c = False
                 pass
 
             if not __isNOTSET[3] and d is None:
-                deref(c_inst).d = default_inst[cstruct2]().d
+                deref(c_inst).d_ref().assign(default_inst[cstruct2]().d_ref().value())
                 deref(c_inst).__isset.d = False
                 pass
 
         if a is not None:
-            deref(c_inst).a = a
+            deref(c_inst).a_ref().assign(a)
             deref(c_inst).__isset.a = True
         if b is not None:
-            deref(c_inst).b = thrift.py3.types.move(thrift.py3.types.bytes_to_string(b.encode('utf-8')))
+            deref(c_inst).b_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(b.encode('utf-8'))))
             deref(c_inst).__isset.b = True
         if c is not None:
-            deref(c_inst).c = deref((<struct1?> c)._cpp_obj)
+            deref(c_inst).c_ref().assign(deref((<struct1?> c)._cpp_obj))
             deref(c_inst).__isset.c = True
         if d is not None:
-            deref(c_inst).d = deref(List__i32(d)._cpp_obj)
+            deref(c_inst).d_ref().assign(deref(List__i32(d)._cpp_obj))
             deref(c_inst).__isset.d = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1390,25 +1390,25 @@ cdef class struct2(thrift.py3.types.Struct):
     @property
     def a(self):
 
-        return deref(self._cpp_obj).a
+        return deref(self._cpp_obj).a_ref().value()
 
     @property
     def b(self):
 
-        return (<bytes>deref(self._cpp_obj).b).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).b_ref().value()).decode('UTF-8')
 
     @property
     def c(self):
 
         if self.__field_c is None:
-            self.__field_c = struct1.create(reference_shared_ptr_c(self._cpp_obj, deref(self._cpp_obj).c))
+            self.__field_c = struct1.create(reference_shared_ptr_c(self._cpp_obj, deref(self._cpp_obj).c_ref().value()))
         return self.__field_c
 
     @property
     def d(self):
 
         if self.__field_d is None:
-            self.__field_d = List__i32.create(reference_shared_ptr_d(self._cpp_obj, deref(self._cpp_obj).d))
+            self.__field_d = List__i32.create(reference_shared_ptr_d(self._cpp_obj, deref(self._cpp_obj).d_ref().value()))
         return self.__field_d
 
 
@@ -1599,28 +1599,28 @@ cdef class struct3(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and a is None:
-                deref(c_inst).a = default_inst[cstruct3]().a
+                deref(c_inst).a_ref().assign(default_inst[cstruct3]().a_ref().value())
                 deref(c_inst).__isset.a = False
                 pass
 
             if not __isNOTSET[1] and b is None:
-                deref(c_inst).b = default_inst[cstruct3]().b
+                deref(c_inst).b_ref().assign(default_inst[cstruct3]().b_ref().value())
                 deref(c_inst).__isset.b = False
                 pass
 
             if not __isNOTSET[2] and c is None:
-                deref(c_inst).c = default_inst[cstruct3]().c
+                deref(c_inst).c_ref().assign(default_inst[cstruct3]().c_ref().value())
                 deref(c_inst).__isset.c = False
                 pass
 
         if a is not None:
-            deref(c_inst).a = thrift.py3.types.move(thrift.py3.types.bytes_to_string(a.encode('utf-8')))
+            deref(c_inst).a_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(a.encode('utf-8'))))
             deref(c_inst).__isset.a = True
         if b is not None:
-            deref(c_inst).b = b
+            deref(c_inst).b_ref().assign(b)
             deref(c_inst).__isset.b = True
         if c is not None:
-            deref(c_inst).c = deref((<struct2?> c)._cpp_obj)
+            deref(c_inst).c_ref().assign(deref((<struct2?> c)._cpp_obj))
             deref(c_inst).__isset.c = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1643,18 +1643,18 @@ cdef class struct3(thrift.py3.types.Struct):
     @property
     def a(self):
 
-        return (<bytes>deref(self._cpp_obj).a).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).a_ref().value()).decode('UTF-8')
 
     @property
     def b(self):
 
-        return deref(self._cpp_obj).b
+        return deref(self._cpp_obj).b_ref().value()
 
     @property
     def c(self):
 
         if self.__field_c is None:
-            self.__field_c = struct2.create(reference_shared_ptr_c(self._cpp_obj, deref(self._cpp_obj).c))
+            self.__field_c = struct2.create(reference_shared_ptr_c(self._cpp_obj, deref(self._cpp_obj).c_ref().value()))
         return self.__field_c
 
 
@@ -1854,7 +1854,7 @@ cdef class struct4(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and a is None:
-                deref(c_inst).a = default_inst[cstruct4]().a
+                deref(c_inst).a_ref().assign(default_inst[cstruct4]().a_ref().value())
                 deref(c_inst).__isset.a = False
                 pass
 
@@ -1867,7 +1867,7 @@ cdef class struct4(thrift.py3.types.Struct):
                 pass
 
         if a is not None:
-            deref(c_inst).a = a
+            deref(c_inst).a_ref().assign(a)
             deref(c_inst).__isset.a = True
         if b is not None:
             deref(c_inst).b_ref().assign(b)
@@ -1896,7 +1896,7 @@ cdef class struct4(thrift.py3.types.Struct):
     @property
     def a(self):
 
-        return deref(self._cpp_obj).a
+        return deref(self._cpp_obj).a_ref().value()
 
     @property
     def b(self):

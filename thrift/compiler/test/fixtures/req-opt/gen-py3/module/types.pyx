@@ -152,7 +152,7 @@ cdef class Foo(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[2] and myBools is None:
-                deref(c_inst).myBools = default_inst[cFoo]().myBools
+                deref(c_inst).myBools_ref().assign(default_inst[cFoo]().myBools_ref().value())
                 deref(c_inst).__isset.myBools = False
                 pass
 
@@ -166,7 +166,7 @@ cdef class Foo(thrift.py3.types.Struct):
             deref(c_inst).myString_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(myString.encode('utf-8'))))
             deref(c_inst).__isset.myString = True
         if myBools is not None:
-            deref(c_inst).myBools = deref(List__bool(myBools)._cpp_obj)
+            deref(c_inst).myBools_ref().assign(deref(List__bool(myBools)._cpp_obj))
             deref(c_inst).__isset.myBools = True
         if myNumbers is not None:
             deref(c_inst).myNumbers = deref(List__i32(myNumbers)._cpp_obj)
@@ -205,7 +205,7 @@ cdef class Foo(thrift.py3.types.Struct):
     def myBools(self):
 
         if self.__field_myBools is None:
-            self.__field_myBools = List__bool.create(reference_shared_ptr_myBools(self._cpp_obj, deref(self._cpp_obj).myBools))
+            self.__field_myBools = List__bool.create(reference_shared_ptr_myBools(self._cpp_obj, deref(self._cpp_obj).myBools_ref().value()))
         return self.__field_myBools
 
     @property

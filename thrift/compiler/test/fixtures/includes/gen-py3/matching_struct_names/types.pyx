@@ -100,12 +100,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and field is None:
-                deref(c_inst).field = default_inst[cMyStruct]().field
+                deref(c_inst).field_ref().assign(default_inst[cMyStruct]().field_ref().value())
                 deref(c_inst).__isset.field = False
                 pass
 
         if field is not None:
-            deref(c_inst).field = thrift.py3.types.move(thrift.py3.types.bytes_to_string(field.encode('utf-8')))
+            deref(c_inst).field_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(field.encode('utf-8'))))
             deref(c_inst).__isset.field = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -126,7 +126,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @property
     def field(self):
 
-        return (<bytes>deref(self._cpp_obj).field).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).field_ref().value()).decode('UTF-8')
 
 
     def __hash__(MyStruct self):
@@ -307,36 +307,36 @@ cdef class Combo(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and listOfOurMyStructLists is None:
-                deref(c_inst).listOfOurMyStructLists = default_inst[cCombo]().listOfOurMyStructLists
+                deref(c_inst).listOfOurMyStructLists_ref().assign(default_inst[cCombo]().listOfOurMyStructLists_ref().value())
                 deref(c_inst).__isset.listOfOurMyStructLists = False
                 pass
 
             if not __isNOTSET[1] and theirMyStructList is None:
-                deref(c_inst).theirMyStructList = default_inst[cCombo]().theirMyStructList
+                deref(c_inst).theirMyStructList_ref().assign(default_inst[cCombo]().theirMyStructList_ref().value())
                 deref(c_inst).__isset.theirMyStructList = False
                 pass
 
             if not __isNOTSET[2] and ourMyStructList is None:
-                deref(c_inst).ourMyStructList = default_inst[cCombo]().ourMyStructList
+                deref(c_inst).ourMyStructList_ref().assign(default_inst[cCombo]().ourMyStructList_ref().value())
                 deref(c_inst).__isset.ourMyStructList = False
                 pass
 
             if not __isNOTSET[3] and listOfTheirMyStructList is None:
-                deref(c_inst).listOfTheirMyStructList = default_inst[cCombo]().listOfTheirMyStructList
+                deref(c_inst).listOfTheirMyStructList_ref().assign(default_inst[cCombo]().listOfTheirMyStructList_ref().value())
                 deref(c_inst).__isset.listOfTheirMyStructList = False
                 pass
 
         if listOfOurMyStructLists is not None:
-            deref(c_inst).listOfOurMyStructLists = deref(List__List__MyStruct(listOfOurMyStructLists)._cpp_obj)
+            deref(c_inst).listOfOurMyStructLists_ref().assign(deref(List__List__MyStruct(listOfOurMyStructLists)._cpp_obj))
             deref(c_inst).__isset.listOfOurMyStructLists = True
         if theirMyStructList is not None:
-            deref(c_inst).theirMyStructList = deref(List__module_MyStruct(theirMyStructList)._cpp_obj)
+            deref(c_inst).theirMyStructList_ref().assign(deref(List__module_MyStruct(theirMyStructList)._cpp_obj))
             deref(c_inst).__isset.theirMyStructList = True
         if ourMyStructList is not None:
-            deref(c_inst).ourMyStructList = deref(List__MyStruct(ourMyStructList)._cpp_obj)
+            deref(c_inst).ourMyStructList_ref().assign(deref(List__MyStruct(ourMyStructList)._cpp_obj))
             deref(c_inst).__isset.ourMyStructList = True
         if listOfTheirMyStructList is not None:
-            deref(c_inst).listOfTheirMyStructList = deref(List__List__module_MyStruct(listOfTheirMyStructList)._cpp_obj)
+            deref(c_inst).listOfTheirMyStructList_ref().assign(deref(List__List__module_MyStruct(listOfTheirMyStructList)._cpp_obj))
             deref(c_inst).__isset.listOfTheirMyStructList = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -361,28 +361,28 @@ cdef class Combo(thrift.py3.types.Struct):
     def listOfOurMyStructLists(self):
 
         if self.__field_listOfOurMyStructLists is None:
-            self.__field_listOfOurMyStructLists = List__List__MyStruct.create(reference_shared_ptr_listOfOurMyStructLists(self._cpp_obj, deref(self._cpp_obj).listOfOurMyStructLists))
+            self.__field_listOfOurMyStructLists = List__List__MyStruct.create(reference_shared_ptr_listOfOurMyStructLists(self._cpp_obj, deref(self._cpp_obj).listOfOurMyStructLists_ref().value()))
         return self.__field_listOfOurMyStructLists
 
     @property
     def theirMyStructList(self):
 
         if self.__field_theirMyStructList is None:
-            self.__field_theirMyStructList = List__module_MyStruct.create(reference_shared_ptr_theirMyStructList(self._cpp_obj, deref(self._cpp_obj).theirMyStructList))
+            self.__field_theirMyStructList = List__module_MyStruct.create(reference_shared_ptr_theirMyStructList(self._cpp_obj, deref(self._cpp_obj).theirMyStructList_ref().value()))
         return self.__field_theirMyStructList
 
     @property
     def ourMyStructList(self):
 
         if self.__field_ourMyStructList is None:
-            self.__field_ourMyStructList = List__MyStruct.create(reference_shared_ptr_ourMyStructList(self._cpp_obj, deref(self._cpp_obj).ourMyStructList))
+            self.__field_ourMyStructList = List__MyStruct.create(reference_shared_ptr_ourMyStructList(self._cpp_obj, deref(self._cpp_obj).ourMyStructList_ref().value()))
         return self.__field_ourMyStructList
 
     @property
     def listOfTheirMyStructList(self):
 
         if self.__field_listOfTheirMyStructList is None:
-            self.__field_listOfTheirMyStructList = List__List__module_MyStruct.create(reference_shared_ptr_listOfTheirMyStructList(self._cpp_obj, deref(self._cpp_obj).listOfTheirMyStructList))
+            self.__field_listOfTheirMyStructList = List__List__module_MyStruct.create(reference_shared_ptr_listOfTheirMyStructList(self._cpp_obj, deref(self._cpp_obj).listOfTheirMyStructList_ref().value()))
         return self.__field_listOfTheirMyStructList
 
 

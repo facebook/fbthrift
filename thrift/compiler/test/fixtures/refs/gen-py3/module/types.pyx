@@ -539,7 +539,7 @@ cdef class MyField(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[1] and value is None:
-                deref(c_inst).value = default_inst[cMyField]().value
+                deref(c_inst).value_ref().assign(default_inst[cMyField]().value_ref().value())
                 deref(c_inst).__isset.value = False
                 pass
 
@@ -551,7 +551,7 @@ cdef class MyField(thrift.py3.types.Struct):
             deref(c_inst).opt_value_ref().assign(opt_value)
             deref(c_inst).__isset.opt_value = True
         if value is not None:
-            deref(c_inst).value = value
+            deref(c_inst).value_ref().assign(value)
             deref(c_inst).__isset.value = True
         if req_value is not None:
             deref(c_inst).req_value = req_value
@@ -583,7 +583,7 @@ cdef class MyField(thrift.py3.types.Struct):
     @property
     def value(self):
 
-        return deref(self._cpp_obj).value
+        return deref(self._cpp_obj).value_ref().value()
 
     @property
     def req_value(self):
@@ -1022,22 +1022,22 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[1] and aDouble is None:
-                deref(c_inst).aDouble = default_inst[cStructWithUnion]().aDouble
+                deref(c_inst).aDouble_ref().assign(default_inst[cStructWithUnion]().aDouble_ref().value())
                 deref(c_inst).__isset.aDouble = False
                 pass
 
             if not __isNOTSET[2] and f is None:
-                deref(c_inst).f = default_inst[cStructWithUnion]().f
+                deref(c_inst).f_ref().assign(default_inst[cStructWithUnion]().f_ref().value())
                 deref(c_inst).__isset.f = False
                 pass
 
         if u is not None:
             deref(c_inst).u = make_unique[cMyUnion](deref((<MyUnion?>u)._cpp_obj))
         if aDouble is not None:
-            deref(c_inst).aDouble = aDouble
+            deref(c_inst).aDouble_ref().assign(aDouble)
             deref(c_inst).__isset.aDouble = True
         if f is not None:
-            deref(c_inst).f = deref((<MyField?> f)._cpp_obj)
+            deref(c_inst).f_ref().assign(deref((<MyField?> f)._cpp_obj))
             deref(c_inst).__isset.f = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1069,13 +1069,13 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
     @property
     def aDouble(self):
 
-        return deref(self._cpp_obj).aDouble
+        return deref(self._cpp_obj).aDouble_ref().value()
 
     @property
     def f(self):
 
         if self.__field_f is None:
-            self.__field_f = MyField.create(reference_shared_ptr_f(self._cpp_obj, deref(self._cpp_obj).f))
+            self.__field_f = MyField.create(reference_shared_ptr_f(self._cpp_obj, deref(self._cpp_obj).f_ref().value()))
         return self.__field_f
 
 

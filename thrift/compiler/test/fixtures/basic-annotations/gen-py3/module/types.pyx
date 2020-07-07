@@ -204,12 +204,12 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and name is None:
-                deref(c_inst).name = default_inst[cMyStructNestedAnnotation]().name
+                deref(c_inst).name_ref().assign(default_inst[cMyStructNestedAnnotation]().name_ref().value())
                 deref(c_inst).__isset.name = False
                 pass
 
         if name is not None:
-            deref(c_inst).name = thrift.py3.types.move(thrift.py3.types.bytes_to_string(name.encode('utf-8')))
+            deref(c_inst).name_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(name.encode('utf-8'))))
             deref(c_inst).__isset.name = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -230,7 +230,7 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
     @property
     def name(self):
 
-        return (<bytes>deref(self._cpp_obj).name).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).name_ref().value()).decode('UTF-8')
 
 
     def __hash__(MyStructNestedAnnotation self):
@@ -433,12 +433,12 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and count is None:
-                deref(c_inst).count = default_inst[cMyStructAnnotation]().count
+                deref(c_inst).count_ref().assign(default_inst[cMyStructAnnotation]().count_ref().value())
                 deref(c_inst).__isset.count = False
                 pass
 
             if not __isNOTSET[1] and name is None:
-                deref(c_inst).name = default_inst[cMyStructAnnotation]().name
+                deref(c_inst).name_ref().assign(default_inst[cMyStructAnnotation]().name_ref().value())
                 deref(c_inst).__isset.name = False
                 pass
 
@@ -447,21 +447,21 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[3] and nest is None:
-                deref(c_inst).nest = default_inst[cMyStructAnnotation]().nest
+                deref(c_inst).nest_ref().assign(default_inst[cMyStructAnnotation]().nest_ref().value())
                 deref(c_inst).__isset.nest = False
                 pass
 
         if count is not None:
-            deref(c_inst).count = count
+            deref(c_inst).count_ref().assign(count)
             deref(c_inst).__isset.count = True
         if name is not None:
-            deref(c_inst).name = thrift.py3.types.move(thrift.py3.types.bytes_to_string(name.encode('utf-8')))
+            deref(c_inst).name_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(name.encode('utf-8'))))
             deref(c_inst).__isset.name = True
         if extra is not None:
             deref(c_inst).extra_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(extra.encode('utf-8'))))
             deref(c_inst).__isset.extra = True
         if nest is not None:
-            deref(c_inst).nest = deref((<MyStructNestedAnnotation?> nest)._cpp_obj)
+            deref(c_inst).nest_ref().assign(deref((<MyStructNestedAnnotation?> nest)._cpp_obj))
             deref(c_inst).__isset.nest = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -485,12 +485,12 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
     @property
     def count(self):
 
-        return deref(self._cpp_obj).count
+        return deref(self._cpp_obj).count_ref().value()
 
     @property
     def name(self):
 
-        return (<bytes>deref(self._cpp_obj).name).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).name_ref().value()).decode('UTF-8')
 
     @property
     def extra(self):
@@ -503,7 +503,7 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
     def nest(self):
 
         if self.__field_nest is None:
-            self.__field_nest = MyStructNestedAnnotation.create(reference_shared_ptr_nest(self._cpp_obj, deref(self._cpp_obj).nest))
+            self.__field_nest = MyStructNestedAnnotation.create(reference_shared_ptr_nest(self._cpp_obj, deref(self._cpp_obj).nest_ref().value()))
         return self.__field_nest
 
 
@@ -742,52 +742,52 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and major is None:
-                deref(c_inst).major = default_inst[cMyStruct]().major
+                deref(c_inst).major_ref().assign(default_inst[cMyStruct]().major_ref().value())
                 deref(c_inst).__isset.major = False
                 pass
 
             if not __isNOTSET[1] and package is None:
-                deref(c_inst).package = default_inst[cMyStruct]().package
+                deref(c_inst).package_ref().assign(default_inst[cMyStruct]().package_ref().value())
                 deref(c_inst).__isset.package = False
                 pass
 
             if not __isNOTSET[2] and annotation_with_quote is None:
-                deref(c_inst).annotation_with_quote = default_inst[cMyStruct]().annotation_with_quote
+                deref(c_inst).annotation_with_quote_ref().assign(default_inst[cMyStruct]().annotation_with_quote_ref().value())
                 deref(c_inst).__isset.annotation_with_quote = False
                 pass
 
             if not __isNOTSET[3] and class_ is None:
-                deref(c_inst).class_ = default_inst[cMyStruct]().class_
+                deref(c_inst).class__ref().assign(default_inst[cMyStruct]().class__ref().value())
                 deref(c_inst).__isset.class_ = False
                 pass
 
             if not __isNOTSET[4] and annotation_with_trailing_comma is None:
-                deref(c_inst).annotation_with_trailing_comma = default_inst[cMyStruct]().annotation_with_trailing_comma
+                deref(c_inst).annotation_with_trailing_comma_ref().assign(default_inst[cMyStruct]().annotation_with_trailing_comma_ref().value())
                 deref(c_inst).__isset.annotation_with_trailing_comma = False
                 pass
 
             if not __isNOTSET[5] and empty_annotations is None:
-                deref(c_inst).empty_annotations = default_inst[cMyStruct]().empty_annotations
+                deref(c_inst).empty_annotations_ref().assign(default_inst[cMyStruct]().empty_annotations_ref().value())
                 deref(c_inst).__isset.empty_annotations = False
                 pass
 
         if major is not None:
-            deref(c_inst).major = major
+            deref(c_inst).major_ref().assign(major)
             deref(c_inst).__isset.major = True
         if package is not None:
-            deref(c_inst).package = thrift.py3.types.move(thrift.py3.types.bytes_to_string(package.encode('utf-8')))
+            deref(c_inst).package_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(package.encode('utf-8'))))
             deref(c_inst).__isset.package = True
         if annotation_with_quote is not None:
-            deref(c_inst).annotation_with_quote = thrift.py3.types.move(thrift.py3.types.bytes_to_string(annotation_with_quote.encode('utf-8')))
+            deref(c_inst).annotation_with_quote_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(annotation_with_quote.encode('utf-8'))))
             deref(c_inst).__isset.annotation_with_quote = True
         if class_ is not None:
-            deref(c_inst).class_ = thrift.py3.types.move(thrift.py3.types.bytes_to_string(class_.encode('utf-8')))
+            deref(c_inst).class__ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(class_.encode('utf-8'))))
             deref(c_inst).__isset.class_ = True
         if annotation_with_trailing_comma is not None:
-            deref(c_inst).annotation_with_trailing_comma = thrift.py3.types.move(thrift.py3.types.bytes_to_string(annotation_with_trailing_comma.encode('utf-8')))
+            deref(c_inst).annotation_with_trailing_comma_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(annotation_with_trailing_comma.encode('utf-8'))))
             deref(c_inst).__isset.annotation_with_trailing_comma = True
         if empty_annotations is not None:
-            deref(c_inst).empty_annotations = thrift.py3.types.move(thrift.py3.types.bytes_to_string(empty_annotations.encode('utf-8')))
+            deref(c_inst).empty_annotations_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(empty_annotations.encode('utf-8'))))
             deref(c_inst).__isset.empty_annotations = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -813,32 +813,32 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @property
     def major(self):
 
-        return deref(self._cpp_obj).major
+        return deref(self._cpp_obj).major_ref().value()
 
     @property
     def package(self):
 
-        return (<bytes>deref(self._cpp_obj).package).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).package_ref().value()).decode('UTF-8')
 
     @property
     def annotation_with_quote(self):
 
-        return (<bytes>deref(self._cpp_obj).annotation_with_quote).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).annotation_with_quote_ref().value()).decode('UTF-8')
 
     @property
     def class_(self):
 
-        return (<bytes>deref(self._cpp_obj).class_).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).class__ref().value()).decode('UTF-8')
 
     @property
     def annotation_with_trailing_comma(self):
 
-        return (<bytes>deref(self._cpp_obj).annotation_with_trailing_comma).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).annotation_with_trailing_comma_ref().value()).decode('UTF-8')
 
     @property
     def empty_annotations(self):
 
-        return (<bytes>deref(self._cpp_obj).empty_annotations).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).empty_annotations_ref().value()).decode('UTF-8')
 
 
     def __hash__(MyStruct self):
@@ -1014,20 +1014,20 @@ cdef class SecretStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and id is None:
-                deref(c_inst).id = default_inst[cSecretStruct]().id
+                deref(c_inst).id_ref().assign(default_inst[cSecretStruct]().id_ref().value())
                 deref(c_inst).__isset.id = False
                 pass
 
             if not __isNOTSET[1] and password is None:
-                deref(c_inst).password = default_inst[cSecretStruct]().password
+                deref(c_inst).password_ref().assign(default_inst[cSecretStruct]().password_ref().value())
                 deref(c_inst).__isset.password = False
                 pass
 
         if id is not None:
-            deref(c_inst).id = id
+            deref(c_inst).id_ref().assign(id)
             deref(c_inst).__isset.id = True
         if password is not None:
-            deref(c_inst).password = thrift.py3.types.move(thrift.py3.types.bytes_to_string(password.encode('utf-8')))
+            deref(c_inst).password_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(password.encode('utf-8'))))
             deref(c_inst).__isset.password = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1049,12 +1049,12 @@ cdef class SecretStruct(thrift.py3.types.Struct):
     @property
     def id(self):
 
-        return deref(self._cpp_obj).id
+        return deref(self._cpp_obj).id_ref().value()
 
     @property
     def password(self):
 
-        return (<bytes>deref(self._cpp_obj).password).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).password_ref().value()).decode('UTF-8')
 
 
     def __hash__(SecretStruct self):

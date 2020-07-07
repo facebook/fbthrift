@@ -268,36 +268,36 @@ cdef class Color(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and red is None:
-                deref(c_inst).red = default_inst[cColor]().red
+                deref(c_inst).red_ref().assign(default_inst[cColor]().red_ref().value())
                 deref(c_inst).__isset.red = False
                 pass
 
             if not __isNOTSET[1] and green is None:
-                deref(c_inst).green = default_inst[cColor]().green
+                deref(c_inst).green_ref().assign(default_inst[cColor]().green_ref().value())
                 deref(c_inst).__isset.green = False
                 pass
 
             if not __isNOTSET[2] and blue is None:
-                deref(c_inst).blue = default_inst[cColor]().blue
+                deref(c_inst).blue_ref().assign(default_inst[cColor]().blue_ref().value())
                 deref(c_inst).__isset.blue = False
                 pass
 
             if not __isNOTSET[3] and alpha is None:
-                deref(c_inst).alpha = default_inst[cColor]().alpha
+                deref(c_inst).alpha_ref().assign(default_inst[cColor]().alpha_ref().value())
                 deref(c_inst).__isset.alpha = False
                 pass
 
         if red is not None:
-            deref(c_inst).red = red
+            deref(c_inst).red_ref().assign(red)
             deref(c_inst).__isset.red = True
         if green is not None:
-            deref(c_inst).green = green
+            deref(c_inst).green_ref().assign(green)
             deref(c_inst).__isset.green = True
         if blue is not None:
-            deref(c_inst).blue = blue
+            deref(c_inst).blue_ref().assign(blue)
             deref(c_inst).__isset.blue = True
         if alpha is not None:
-            deref(c_inst).alpha = alpha
+            deref(c_inst).alpha_ref().assign(alpha)
             deref(c_inst).__isset.alpha = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -321,22 +321,22 @@ cdef class Color(thrift.py3.types.Struct):
     @property
     def red(self):
 
-        return deref(self._cpp_obj).red
+        return deref(self._cpp_obj).red_ref().value()
 
     @property
     def green(self):
 
-        return deref(self._cpp_obj).green
+        return deref(self._cpp_obj).green_ref().value()
 
     @property
     def blue(self):
 
-        return deref(self._cpp_obj).blue
+        return deref(self._cpp_obj).blue_ref().value()
 
     @property
     def alpha(self):
 
-        return deref(self._cpp_obj).alpha
+        return deref(self._cpp_obj).alpha_ref().value()
 
 
     def __hash__(Color self):
@@ -552,7 +552,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and color is None:
-                deref(c_inst).color = default_inst[cVehicle]().color
+                deref(c_inst).color_ref().assign(default_inst[cVehicle]().color_ref().value())
                 deref(c_inst).__isset.color = False
                 pass
 
@@ -574,7 +574,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
                 pass
 
         if color is not None:
-            deref(c_inst).color = deref((<Color?> color)._cpp_obj)
+            deref(c_inst).color_ref().assign(deref((<Color?> color)._cpp_obj))
             deref(c_inst).__isset.color = True
         if licensePlate is not None:
             deref(c_inst).licensePlate_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(licensePlate.encode('utf-8'))))
@@ -612,7 +612,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
     def color(self):
 
         if self.__field_color is None:
-            self.__field_color = Color.create(reference_shared_ptr_color(self._cpp_obj, deref(self._cpp_obj).color))
+            self.__field_color = Color.create(reference_shared_ptr_color(self._cpp_obj, deref(self._cpp_obj).color_ref().value()))
         return self.__field_color
 
     @property
@@ -942,12 +942,12 @@ cdef class Person(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and id is None:
-                deref(c_inst).id = default_inst[cPerson]().id
+                deref(c_inst).id_ref().assign(default_inst[cPerson]().id_ref().value())
                 deref(c_inst).__isset.id = False
                 pass
 
             if not __isNOTSET[1] and name is None:
-                deref(c_inst).name = default_inst[cPerson]().name
+                deref(c_inst).name_ref().assign(default_inst[cPerson]().name_ref().value())
                 deref(c_inst).__isset.name = False
                 pass
 
@@ -984,10 +984,10 @@ cdef class Person(thrift.py3.types.Struct):
                 pass
 
         if id is not None:
-            deref(c_inst).id = id
+            deref(c_inst).id_ref().assign(id)
             deref(c_inst).__isset.id = True
         if name is not None:
-            deref(c_inst).name = thrift.py3.types.move(thrift.py3.types.bytes_to_string(name.encode('utf-8')))
+            deref(c_inst).name_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(name.encode('utf-8'))))
             deref(c_inst).__isset.name = True
         if age is not None:
             deref(c_inst).age_ref().assign(age)
@@ -1041,12 +1041,12 @@ cdef class Person(thrift.py3.types.Struct):
     @property
     def id(self):
 
-        return deref(self._cpp_obj).id
+        return deref(self._cpp_obj).id_ref().value()
 
     @property
     def name(self):
 
-        return (<bytes>deref(self._cpp_obj).name).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).name_ref().value()).decode('UTF-8')
 
     @property
     def age(self):

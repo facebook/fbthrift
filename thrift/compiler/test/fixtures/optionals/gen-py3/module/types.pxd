@@ -63,9 +63,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cColor&)
         bint operator<=(cColor&)
         bint operator>=(cColor&)
+        field_ref[double] red_ref()
         double red
+        field_ref[double] green_ref()
         double green
+        field_ref[double] blue_ref()
         double blue
+        field_ref[double] alpha_ref()
         double alpha
         cColor__isset __isset
 
@@ -85,6 +89,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cVehicle&)
         bint operator<=(cVehicle&)
         bint operator>=(cVehicle&)
+        field_ref[cColor] color_ref()
         cColor color
         optional_field_ref[string] licensePlate_ref()
         string licensePlate
@@ -117,7 +122,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cPerson&)
         bint operator<=(cPerson&)
         bint operator>=(cPerson&)
+        field_ref[cint64_t] id_ref()
         cint64_t id
+        field_ref[string] name_ref()
         string name
         optional_field_ref[cint16_t] age_ref()
         cint16_t age

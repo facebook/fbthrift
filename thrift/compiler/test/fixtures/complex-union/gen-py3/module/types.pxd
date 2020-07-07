@@ -118,8 +118,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cVal&)
         bint operator<=(cVal&)
         bint operator>=(cVal&)
+        field_ref[string] strVal_ref()
         string strVal
+        field_ref[cint32_t] intVal_ref()
         cint32_t intVal
+        field_ref[cmap[cint16_t,string]] typedefValue_ref()
         cmap[cint16_t,string] typedefValue
         cVal__isset __isset
 
@@ -175,6 +178,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cNonCopyableStruct&)
         bint operator<=(cNonCopyableStruct&)
         bint operator>=(cNonCopyableStruct&)
+        field_ref[cint64_t] num_ref()
         cint64_t num
         cNonCopyableStruct__isset __isset
 

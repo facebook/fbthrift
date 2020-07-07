@@ -808,7 +808,7 @@ class mstch_py3_field : public mstch_field {
   }
 
   mstch::node hasRefAccessor() {
-    return is_optional() && !is_ref() && !is_folly_optional();
+    return hasOptionalsFlag_ ? false : !is_required() && !is_ref();
   }
 
   mstch::node hasDefaultValue() {

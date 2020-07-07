@@ -138,28 +138,28 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and MyIncludedField is None:
-                deref(c_inst).MyIncludedField = default_inst[cMyStruct]().MyIncludedField
+                deref(c_inst).MyIncludedField_ref().assign(default_inst[cMyStruct]().MyIncludedField_ref().value())
                 deref(c_inst).__isset.MyIncludedField = False
                 pass
 
             if not __isNOTSET[1] and MyOtherIncludedField is None:
-                deref(c_inst).MyOtherIncludedField = default_inst[cMyStruct]().MyOtherIncludedField
+                deref(c_inst).MyOtherIncludedField_ref().assign(default_inst[cMyStruct]().MyOtherIncludedField_ref().value())
                 deref(c_inst).__isset.MyOtherIncludedField = False
                 pass
 
             if not __isNOTSET[2] and MyIncludedInt is None:
-                deref(c_inst).MyIncludedInt = default_inst[cMyStruct]().MyIncludedInt
+                deref(c_inst).MyIncludedInt_ref().assign(default_inst[cMyStruct]().MyIncludedInt_ref().value())
                 deref(c_inst).__isset.MyIncludedInt = False
                 pass
 
         if MyIncludedField is not None:
-            deref(c_inst).MyIncludedField = deref((<_includes_types.Included?> MyIncludedField)._cpp_obj)
+            deref(c_inst).MyIncludedField_ref().assign(deref((<_includes_types.Included?> MyIncludedField)._cpp_obj))
             deref(c_inst).__isset.MyIncludedField = True
         if MyOtherIncludedField is not None:
-            deref(c_inst).MyOtherIncludedField = deref((<_includes_types.Included?> MyOtherIncludedField)._cpp_obj)
+            deref(c_inst).MyOtherIncludedField_ref().assign(deref((<_includes_types.Included?> MyOtherIncludedField)._cpp_obj))
             deref(c_inst).__isset.MyOtherIncludedField = True
         if MyIncludedInt is not None:
-            deref(c_inst).MyIncludedInt = MyIncludedInt
+            deref(c_inst).MyIncludedInt_ref().assign(MyIncludedInt)
             deref(c_inst).__isset.MyIncludedInt = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -183,20 +183,20 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def MyIncludedField(self):
 
         if self.__field_MyIncludedField is None:
-            self.__field_MyIncludedField = _includes_types.Included.create(reference_shared_ptr_MyIncludedField(self._cpp_obj, deref(self._cpp_obj).MyIncludedField))
+            self.__field_MyIncludedField = _includes_types.Included.create(reference_shared_ptr_MyIncludedField(self._cpp_obj, deref(self._cpp_obj).MyIncludedField_ref().value()))
         return self.__field_MyIncludedField
 
     @property
     def MyOtherIncludedField(self):
 
         if self.__field_MyOtherIncludedField is None:
-            self.__field_MyOtherIncludedField = _includes_types.Included.create(reference_shared_ptr_MyOtherIncludedField(self._cpp_obj, deref(self._cpp_obj).MyOtherIncludedField))
+            self.__field_MyOtherIncludedField = _includes_types.Included.create(reference_shared_ptr_MyOtherIncludedField(self._cpp_obj, deref(self._cpp_obj).MyOtherIncludedField_ref().value()))
         return self.__field_MyOtherIncludedField
 
     @property
     def MyIncludedInt(self):
 
-        return deref(self._cpp_obj).MyIncludedInt
+        return deref(self._cpp_obj).MyIncludedInt_ref().value()
 
 
     def __hash__(MyStruct self):

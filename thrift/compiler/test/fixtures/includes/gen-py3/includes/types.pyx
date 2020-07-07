@@ -122,20 +122,20 @@ cdef class Included(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and MyIntField is None:
-                deref(c_inst).MyIntField = default_inst[cIncluded]().MyIntField
+                deref(c_inst).MyIntField_ref().assign(default_inst[cIncluded]().MyIntField_ref().value())
                 deref(c_inst).__isset.MyIntField = False
                 pass
 
             if not __isNOTSET[1] and MyTransitiveField is None:
-                deref(c_inst).MyTransitiveField = default_inst[cIncluded]().MyTransitiveField
+                deref(c_inst).MyTransitiveField_ref().assign(default_inst[cIncluded]().MyTransitiveField_ref().value())
                 deref(c_inst).__isset.MyTransitiveField = False
                 pass
 
         if MyIntField is not None:
-            deref(c_inst).MyIntField = MyIntField
+            deref(c_inst).MyIntField_ref().assign(MyIntField)
             deref(c_inst).__isset.MyIntField = True
         if MyTransitiveField is not None:
-            deref(c_inst).MyTransitiveField = deref((<_transitive_types.Foo?> MyTransitiveField)._cpp_obj)
+            deref(c_inst).MyTransitiveField_ref().assign(deref((<_transitive_types.Foo?> MyTransitiveField)._cpp_obj))
             deref(c_inst).__isset.MyTransitiveField = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -157,13 +157,13 @@ cdef class Included(thrift.py3.types.Struct):
     @property
     def MyIntField(self):
 
-        return deref(self._cpp_obj).MyIntField
+        return deref(self._cpp_obj).MyIntField_ref().value()
 
     @property
     def MyTransitiveField(self):
 
         if self.__field_MyTransitiveField is None:
-            self.__field_MyTransitiveField = _transitive_types.Foo.create(reference_shared_ptr_MyTransitiveField(self._cpp_obj, deref(self._cpp_obj).MyTransitiveField))
+            self.__field_MyTransitiveField = _transitive_types.Foo.create(reference_shared_ptr_MyTransitiveField(self._cpp_obj, deref(self._cpp_obj).MyTransitiveField_ref().value()))
         return self.__field_MyTransitiveField
 
 
