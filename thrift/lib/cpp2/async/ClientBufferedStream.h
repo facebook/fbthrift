@@ -50,6 +50,7 @@ class ClientBufferedStream {
     auto streamBridge = std::move(streamBridge_);
 
     int32_t outstanding = bufferSize_;
+    int32_t payloadDataSize = 0;
 
     apache::thrift::detail::ClientStreamBridge::ClientQueue queue;
     class ReadyCallback : public apache::thrift::detail::ClientStreamConsumer {
@@ -90,6 +91,9 @@ class ClientBufferedStream {
           onNextTry(folly::Try<T>());
           break;
         }
+        if (payload.hasValue()) {
+          payloadDataSize += payload->payload->computeChainDataLength();
+        }
         auto value = decode_(std::move(payload));
         queue.pop();
         const auto hasException = value.hasException();
@@ -100,9 +104,13 @@ class ClientBufferedStream {
       }
 
       outstanding--;
-      if (outstanding <= bufferSize_ / 2) {
+      // we request credits only if bufferSize_ > 0.
+      // For bufferSize_ = 0, the loop requests 1 credit at a time.
+      if ((outstanding <= bufferSize_ / 2) ||
+          (payloadDataSize >= kRequestCreditPayloadSize)) {
         streamBridge->requestN(bufferSize_ - outstanding);
         outstanding = bufferSize_;
+        payloadDataSize = 0;
       }
     }
   }
@@ -133,6 +141,7 @@ class ClientBufferedStream {
       int32_t bufferSize,
       folly::Try<T> (*decode)(folly::Try<StreamPayload>&&)) {
     int32_t outstanding = bufferSize;
+    int32_t payloadDataSize = 0;
 
     apache::thrift::detail::ClientStreamBridge::ClientQueue queue;
     class ReadyCallback : public apache::thrift::detail::ClientStreamConsumer {
@@ -179,6 +188,9 @@ class ClientBufferedStream {
         if (!payload.hasValue() && !payload.hasException()) {
           break;
         }
+        if (payload.hasValue()) {
+          payloadDataSize += payload->payload->computeChainDataLength();
+        }
         auto value = decode(std::move(payload));
         queue.pop();
         // yield value or rethrow exception
@@ -186,9 +198,13 @@ class ClientBufferedStream {
       }
 
       outstanding--;
-      if (outstanding <= bufferSize / 2) {
+      // we request credits only if bufferSize_ > 0.
+      // For bufferSize_ = 0, the loop requests 1 credit at a time.
+      if ((outstanding <= bufferSize / 2) ||
+          (payloadDataSize >= kRequestCreditPayloadSize)) {
         streamBridge->requestN(bufferSize - outstanding);
         outstanding = bufferSize;
+        payloadDataSize = 0;
       }
     }
   }
@@ -315,6 +331,9 @@ class ClientBufferedStream {
             onNextTry_(folly::Try<T>());
             return;
           }
+          if (payload.hasValue()) {
+            payloadDataSize_ += payload->payload->computeChainDataLength();
+          }
           auto value = decode_(std::move(payload));
           queue.pop();
           const auto hasException = value.hasException();
@@ -325,9 +344,13 @@ class ClientBufferedStream {
         }
 
         outstanding_--;
-        if (outstanding_ <= bufferSize_ / 2) {
+        // we request credits only if bufferSize_ > 0.
+        // For bufferSize_ = 0, the loop requests 1 credit at a time.
+        if ((outstanding_ <= bufferSize_ / 2) ||
+            (payloadDataSize_ >= kRequestCreditPayloadSize)) {
           state_->streamBridge->requestN(bufferSize_ - outstanding_);
           outstanding_ = bufferSize_;
+          payloadDataSize_ = 0;
         }
       }
     }
@@ -338,6 +361,7 @@ class ClientBufferedStream {
     folly::Try<T> (*decode_)(folly::Try<StreamPayload>&&);
     int32_t bufferSize_;
     int32_t outstanding_;
+    int32_t payloadDataSize_{0};
     std::shared_ptr<SharedState> state_;
     friend class ClientBufferedStream;
   };
@@ -345,6 +369,7 @@ class ClientBufferedStream {
   detail::ClientStreamBridge::ClientPtr streamBridge_;
   folly::Try<T> (*decode_)(folly::Try<StreamPayload>&&) = nullptr;
   int32_t bufferSize_{0};
+  static constexpr int32_t kRequestCreditPayloadSize = 16384;
 
   friend class yarpl::flowable::ThriftStreamShim;
 }; // namespace thrift

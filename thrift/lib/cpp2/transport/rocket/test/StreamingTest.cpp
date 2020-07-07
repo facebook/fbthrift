@@ -156,6 +156,19 @@ TEST_F(StreamingTest, ClientStreamBridge) {
       EXPECT_EQ(10, expected);
     }
 
+    {
+      // exercises logic to request credits after 16kB of payload
+      auto gen = client->sync_buffers(17).toAsyncGenerator();
+      size_t expected = 0;
+      folly::coro::blockingWait([&]() mutable -> folly::coro::Task<void> {
+        while (auto next = co_await gen.next()) {
+          EXPECT_EQ(1024, next->size());
+          expected++;
+        }
+      }());
+      EXPECT_EQ(17, expected);
+    }
+
     // test cancellation
     {
       folly::CancellationSource cancelSource;
@@ -183,6 +196,38 @@ TEST_F(StreamingTest, ClientStreamBridge) {
           })));
     }
 #endif // FOLLY_HAS_COROUTINES
+
+    {
+      // exercises logic to request credits after 16kB of payload
+      auto bufferedStream = client->sync_buffers(17);
+
+      size_t expected = 0;
+      std::move(bufferedStream)
+          .subscribeInline([&expected](folly::Try<std::string>&& next) {
+            if (next.hasValue()) {
+              expected++;
+              EXPECT_EQ(1024, next->size());
+            }
+          });
+      EXPECT_EQ(17, expected);
+    }
+
+    {
+      // exercises logic to request credits after 16kB of payload
+      auto bufferedStream = client->sync_buffers(17);
+      std::atomic_size_t expected = 0;
+      std::move(bufferedStream)
+          .subscribeExTry(
+              &executor_,
+              [&expected](auto&& next) {
+                if (next.hasValue()) {
+                  EXPECT_EQ(1024, next->size());
+                  expected++;
+                }
+              })
+          .join();
+      EXPECT_EQ(17, expected);
+    }
 
     {
       auto bufferedStream = client->sync_range(0, 10);

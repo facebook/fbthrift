@@ -69,6 +69,15 @@ ServerStream<int32_t> TestStreamServiceMock::range(int32_t from, int32_t to) {
   return std::move(stream);
 }
 
+ServerStream<std::string> TestStreamServiceMock::buffers(int32_t count) {
+  auto [stream, publisher] = ServerStream<std::string>::createPublisher();
+  for (int i = 0; i < count; i++) {
+    publisher.next(std::string(1024, 'x'));
+  }
+  std::move(publisher).complete();
+  return std::move(stream);
+}
+
 ServerStream<int32_t>
 TestStreamServiceMock::slowRange(int32_t from, int32_t to, int32_t millis) {
   auto [stream, publisher] = ServerStream<int32_t>::createPublisher();
