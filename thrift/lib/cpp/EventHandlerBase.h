@@ -30,8 +30,6 @@ namespace thrift {
 
 class EventHandlerBase {
  public:
-  EventHandlerBase() = default;
-
   void addEventHandler(const std::shared_ptr<TProcessorEventHandler>& handler);
 
   void clearEventHandlers() {
@@ -42,6 +40,8 @@ class EventHandlerBase {
       const;
 
  protected:
+  ~EventHandlerBase() = default;
+
   std::unique_ptr<ContextStack> getContextStack(
       const char* service_name,
       const char* fn_name,
@@ -56,7 +56,7 @@ class EventHandlerBase {
 
 class TProcessorEventHandlerFactory {
  public:
-  virtual ~TProcessorEventHandlerFactory() {}
+  virtual ~TProcessorEventHandlerFactory() = default;
   virtual std::shared_ptr<TProcessorEventHandler> getEventHandler() = 0;
 };
 
@@ -74,6 +74,9 @@ class TProcessorBase : public EventHandlerBase {
   static void removeProcessorEventHandlerFactory(
       std::shared_ptr<TProcessorEventHandlerFactory> factory);
 
+ protected:
+  ~TProcessorBase() = default;
+
  private:
   static folly::SharedMutex& getRWMutex();
 
@@ -88,8 +91,7 @@ class TProcessorBase : public EventHandlerBase {
 class TClientBase : public EventHandlerBase {
  public:
   TClientBase();
-
-  virtual ~TClientBase() {}
+  virtual ~TClientBase() = default;
 
   static void addClientEventHandlerFactory(
       std::shared_ptr<TProcessorEventHandlerFactory> factory);
