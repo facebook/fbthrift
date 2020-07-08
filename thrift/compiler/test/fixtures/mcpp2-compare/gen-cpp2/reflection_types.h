@@ -41,8 +41,9 @@ class ReflectionStruct;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class ReflectionStruct final : private apache::thrift::detail::st::ComparisonOperators<ReflectionStruct> {
+class ReflectionStruct final  {
  public:
+  using __fbthrift_cpp2_type = ReflectionStruct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ReflectionStruct() :
@@ -69,7 +70,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool fieldA;
   } __isset = {};
   bool operator==(const ReflectionStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const ReflectionStruct& __x, const ReflectionStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const ReflectionStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const ReflectionStruct& __x, const ReflectionStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const ReflectionStruct& __x, const ReflectionStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const ReflectionStruct& __x, const ReflectionStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>

@@ -188,8 +188,9 @@ typedef int64_t PersonID;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class Color final : private apache::thrift::detail::st::ComparisonOperators<Color> {
+class Color final  {
  public:
+  using __fbthrift_cpp2_type = Color;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Color() :
@@ -228,7 +229,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool alpha;
   } __isset = {};
   bool operator==(const Color& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Color& __x, const Color& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Color& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Color& __x, const Color& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Color& __x, const Color& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Color& __x, const Color& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = double>
@@ -393,8 +410,9 @@ uint32_t Color::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class Vehicle final : private apache::thrift::detail::st::ComparisonOperators<Vehicle> {
+class Vehicle final  {
  public:
+  using __fbthrift_cpp2_type = Vehicle;
 
   Vehicle();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -436,7 +454,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool hasAC;
   } __isset = {};
   bool operator==(const Vehicle& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Vehicle& __x, const Vehicle& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Vehicle& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Vehicle& __x, const Vehicle& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Vehicle& __x, const Vehicle& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Vehicle& __x, const Vehicle& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::cpp2::Color>
@@ -641,8 +675,9 @@ uint32_t Vehicle::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class Person final : private apache::thrift::detail::st::ComparisonOperators<Person> {
+class Person final  {
  public:
+  using __fbthrift_cpp2_type = Person;
 
   Person();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -699,7 +734,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool vehicles;
   } __isset = {};
   bool operator==(const Person& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Person& __x, const Person& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Person& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Person& __x, const Person& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Person& __x, const Person& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Person& __x, const Person& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::cpp2::PersonID>

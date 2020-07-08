@@ -285,8 +285,9 @@ typedef ::std::map<::std::string, ::std::string> MyMapIdentifier;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class Internship final : private apache::thrift::detail::st::ComparisonOperators<Internship> {
+class Internship final  {
  public:
+  using __fbthrift_cpp2_type = Internship;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Internship() :
@@ -319,7 +320,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool employer;
   } __isset = {};
   bool operator==(const Internship& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Internship& __x, const Internship& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Internship& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Internship& __x, const Internship& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Internship& __x, const Internship& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Internship& __x, const Internship& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename..., typename T = int32_t>
   FOLLY_ERASE auto weeks_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->weeks};
@@ -450,8 +467,9 @@ uint32_t Internship::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class Range final : private apache::thrift::detail::st::ComparisonOperators<Range> {
+class Range final  {
  public:
+  using __fbthrift_cpp2_type = Range;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Range() :
@@ -477,7 +495,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
  public:
   bool operator==(const Range& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Range& __x, const Range& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Range& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Range& __x, const Range& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Range& __x, const Range& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Range& __x, const Range& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename..., typename T = int32_t>
   FOLLY_ERASE auto min_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->min};
@@ -562,8 +596,9 @@ uint32_t Range::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class struct1 final : private apache::thrift::detail::st::ComparisonOperators<struct1> {
+class struct1 final  {
  public:
+  using __fbthrift_cpp2_type = struct1;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct1() :
@@ -594,7 +629,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool b;
   } __isset = {};
   bool operator==(const struct1& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const struct1& __x, const struct1& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const struct1& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const struct1& __x, const struct1& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const struct1& __x, const struct1& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const struct1& __x, const struct1& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
@@ -696,8 +747,9 @@ uint32_t struct1::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class struct2 final : private apache::thrift::detail::st::ComparisonOperators<struct2> {
+class struct2 final  {
  public:
+  using __fbthrift_cpp2_type = struct2;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct2() :
@@ -733,7 +785,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool d;
   } __isset = {};
   bool operator==(const struct2& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const struct2& __x, const struct2& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const struct2& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const struct2& __x, const struct2& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const struct2& __x, const struct2& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const struct2& __x, const struct2& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
@@ -901,8 +969,9 @@ uint32_t struct2::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class struct3 final : private apache::thrift::detail::st::ComparisonOperators<struct3> {
+class struct3 final  {
  public:
+  using __fbthrift_cpp2_type = struct3;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct3() :
@@ -935,7 +1004,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool c;
   } __isset = {};
   bool operator==(const struct3& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const struct3& __x, const struct3& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const struct3& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const struct3& __x, const struct3& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const struct3& __x, const struct3& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const struct3& __x, const struct3& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
@@ -1070,8 +1155,9 @@ uint32_t struct3::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class struct4 final : private apache::thrift::detail::st::ComparisonOperators<struct4> {
+class struct4 final  {
  public:
+  using __fbthrift_cpp2_type = struct4;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct4() :
@@ -1106,7 +1192,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool c;
   } __isset = {};
   bool operator==(const struct4& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const struct4& __x, const struct4& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const struct4& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const struct4& __x, const struct4& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const struct4& __x, const struct4& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const struct4& __x, const struct4& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
@@ -1239,8 +1341,9 @@ uint32_t struct4::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class union1 final : private apache::thrift::detail::st::ComparisonOperators<union1> {
+class union1 final  {
  public:
+  using __fbthrift_cpp2_type = union1;
   enum Type : int {
     __EMPTY__ = 0,
     i = 1,
@@ -1358,7 +1461,23 @@ class union1 final : private apache::thrift::detail::st::ComparisonOperators<uni
     ~storage_type() {}
   } ;
   bool operator==(const union1& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const union1& __x, const union1& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const union1& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const union1& __x, const union1& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const union1& __x, const union1& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const union1& __x, const union1& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   int32_t& set_i(int32_t t = int32_t()) {
     __clear();
@@ -1441,8 +1560,9 @@ uint32_t union1::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class union2 final : private apache::thrift::detail::st::ComparisonOperators<union2> {
+class union2 final  {
  public:
+  using __fbthrift_cpp2_type = union2;
   enum Type : int {
     __EMPTY__ = 0,
     i = 1,
@@ -1604,7 +1724,23 @@ class union2 final : private apache::thrift::detail::st::ComparisonOperators<uni
     ~storage_type() {}
   } ;
   bool operator==(const union2& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const union2& __x, const union2& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const union2& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const union2& __x, const union2& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const union2& __x, const union2& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const union2& __x, const union2& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   int32_t& set_i(int32_t t = int32_t()) {
     __clear();

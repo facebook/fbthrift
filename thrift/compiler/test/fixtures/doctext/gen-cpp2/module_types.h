@@ -91,8 +91,9 @@ class A;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class A final : private apache::thrift::detail::st::ComparisonOperators<A> {
+class A final  {
  public:
+  using __fbthrift_cpp2_type = A;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   A() :
@@ -119,7 +120,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool useless_field;
   } __isset = {};
   bool operator==(const A& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const A& __x, const A& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const A& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const A& __x, const A& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const A& __x, const A& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const A& __x, const A& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>

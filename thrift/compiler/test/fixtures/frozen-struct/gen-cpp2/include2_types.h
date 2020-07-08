@@ -46,8 +46,9 @@ class IncludedB;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace some { namespace ns {
-class IncludedB final : private apache::thrift::detail::st::ComparisonOperators<IncludedB> {
+class IncludedB final  {
  public:
+  using __fbthrift_cpp2_type = IncludedB;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   IncludedB() :
@@ -77,7 +78,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool strField;
   } __isset = {};
   bool operator==(const IncludedB& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const IncludedB& __x, const IncludedB& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const IncludedB& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const IncludedB& __x, const IncludedB& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const IncludedB& __x, const IncludedB& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const IncludedB& __x, const IncludedB& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>

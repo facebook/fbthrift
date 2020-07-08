@@ -74,8 +74,9 @@ class Foo;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class Mixin1 final : private apache::thrift::detail::st::ComparisonOperators<Mixin1> {
+class Mixin1 final  {
  public:
+  using __fbthrift_cpp2_type = Mixin1;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Mixin1() {}
@@ -101,7 +102,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool field1;
   } __isset = {};
   bool operator==(const Mixin1& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Mixin1& __x, const Mixin1& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Mixin1& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Mixin1& __x, const Mixin1& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Mixin1& __x, const Mixin1& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Mixin1& __x, const Mixin1& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
@@ -169,8 +186,9 @@ uint32_t Mixin1::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class Mixin2 final : private apache::thrift::detail::st::ComparisonOperators<Mixin2> {
+class Mixin2 final  {
  public:
+  using __fbthrift_cpp2_type = Mixin2;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Mixin2() {}
@@ -199,7 +217,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool field2;
   } __isset = {};
   bool operator==(const Mixin2& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Mixin2& __x, const Mixin2& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Mixin2& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Mixin2& __x, const Mixin2& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Mixin2& __x, const Mixin2& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Mixin2& __x, const Mixin2& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::cpp2::Mixin1>
@@ -301,8 +335,9 @@ uint32_t Mixin2::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class Mixin3 final : private apache::thrift::detail::st::ComparisonOperators<Mixin3> {
+class Mixin3 final  {
  public:
+  using __fbthrift_cpp2_type = Mixin3;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Mixin3() {}
@@ -328,7 +363,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool field3;
   } __isset = {};
   bool operator==(const Mixin3& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Mixin3& __x, const Mixin3& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Mixin3& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Mixin3& __x, const Mixin3& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Mixin3& __x, const Mixin3& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Mixin3& __x, const Mixin3& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
@@ -396,8 +447,9 @@ uint32_t Mixin3::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
+class Foo final  {
  public:
+  using __fbthrift_cpp2_type = Foo;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Foo() {}
@@ -429,7 +481,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool m3;
   } __isset = {};
   bool operator==(const Foo& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Foo& __x, const Foo& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Foo& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Foo& __x, const Foo& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Foo& __x, const Foo& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Foo& __x, const Foo& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>

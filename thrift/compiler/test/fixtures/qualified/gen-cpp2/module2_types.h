@@ -59,8 +59,9 @@ class BigStruct;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace module2 {
-class Struct final : private apache::thrift::detail::st::ComparisonOperators<Struct> {
+class Struct final  {
  public:
+  using __fbthrift_cpp2_type = Struct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Struct() {}
@@ -89,7 +90,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool second;
   } __isset = {};
   bool operator==(const Struct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Struct& __x, const Struct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Struct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Struct& __x, const Struct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Struct& __x, const Struct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Struct& __x, const Struct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::module0::Struct>
@@ -184,8 +201,9 @@ uint32_t Struct::read(Protocol_* iprot) {
 
 } // module2
 namespace module2 {
-class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<BigStruct> {
+class BigStruct final  {
  public:
+  using __fbthrift_cpp2_type = BigStruct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   BigStruct() :
@@ -215,7 +233,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool id;
   } __isset = {};
   bool operator==(const BigStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const BigStruct& __x, const BigStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const BigStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const BigStruct& __x, const BigStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const BigStruct& __x, const BigStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const BigStruct& __x, const BigStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::module2::Struct>

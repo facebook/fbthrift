@@ -15,4 +15,11 @@
   limitations under the License.
 
 %><%!
-%>  bool operator==(const <%struct:name%>& rhs) const<% > common/semicolon_newline%>
+%>  bool operator==(const <%struct:name%>& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const <%struct:name%>& __x, const <%struct:name%>& __y) {
+    return !(__x == __y);
+  }
+#endif
+<%!
+%>

@@ -124,8 +124,9 @@ class MyUnion;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class MyDataItem final : private apache::thrift::detail::st::ComparisonOperators<MyDataItem> {
+class MyDataItem final  {
  public:
+  using __fbthrift_cpp2_type = MyDataItem;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyDataItem() {}
@@ -143,7 +144,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
   bool operator==(const MyDataItem& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const MyDataItem& __x, const MyDataItem& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const MyDataItem& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const MyDataItem& __x, const MyDataItem& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const MyDataItem& __x, const MyDataItem& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const MyDataItem& __x, const MyDataItem& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -172,8 +189,9 @@ uint32_t MyDataItem::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
+class MyStruct final  {
  public:
+  using __fbthrift_cpp2_type = MyStruct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct() :
@@ -210,7 +228,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool myEnum;
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const MyStruct& __x, const MyStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const MyStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const MyStruct& __x, const MyStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const MyStruct& __x, const MyStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const MyStruct& __x, const MyStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int64_t>
@@ -379,8 +413,9 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<MyUnion> {
+class MyUnion final  {
  public:
+  using __fbthrift_cpp2_type = MyUnion;
   enum Type : int {
     __EMPTY__ = 0,
     myEnum = 1,
@@ -520,7 +555,23 @@ class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<My
     ~storage_type() {}
   } ;
   bool operator==(const MyUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const MyUnion& __x, const MyUnion& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const MyUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const MyUnion& __x, const MyUnion& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const MyUnion& __x, const MyUnion& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const MyUnion& __x, const MyUnion& __y) {
+    return !(__x < __y);
+  }
+#endif
 
    ::cpp2::MyEnum& set_myEnum( ::cpp2::MyEnum t =  ::cpp2::MyEnum()) {
     __clear();

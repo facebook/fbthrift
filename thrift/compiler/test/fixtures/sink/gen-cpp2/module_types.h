@@ -77,8 +77,9 @@ class SinkException2;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class InitialResponse final : private apache::thrift::detail::st::ComparisonOperators<InitialResponse> {
+class InitialResponse final  {
  public:
+  using __fbthrift_cpp2_type = InitialResponse;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   InitialResponse() {}
@@ -104,7 +105,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool content;
   } __isset = {};
   bool operator==(const InitialResponse& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const InitialResponse& __x, const InitialResponse& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const InitialResponse& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const InitialResponse& __x, const InitialResponse& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const InitialResponse& __x, const InitialResponse& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const InitialResponse& __x, const InitialResponse& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
@@ -172,8 +189,9 @@ uint32_t InitialResponse::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class FinalResponse final : private apache::thrift::detail::st::ComparisonOperators<FinalResponse> {
+class FinalResponse final  {
  public:
+  using __fbthrift_cpp2_type = FinalResponse;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FinalResponse() {}
@@ -199,7 +217,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool content;
   } __isset = {};
   bool operator==(const FinalResponse& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const FinalResponse& __x, const FinalResponse& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const FinalResponse& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const FinalResponse& __x, const FinalResponse& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const FinalResponse& __x, const FinalResponse& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const FinalResponse& __x, const FinalResponse& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
@@ -267,8 +301,9 @@ uint32_t FinalResponse::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class SinkPayload final : private apache::thrift::detail::st::ComparisonOperators<SinkPayload> {
+class SinkPayload final  {
  public:
+  using __fbthrift_cpp2_type = SinkPayload;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkPayload() {}
@@ -294,7 +329,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool content;
   } __isset = {};
   bool operator==(const SinkPayload& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const SinkPayload& __x, const SinkPayload& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const SinkPayload& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const SinkPayload& __x, const SinkPayload& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const SinkPayload& __x, const SinkPayload& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const SinkPayload& __x, const SinkPayload& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
@@ -362,8 +413,9 @@ uint32_t SinkPayload::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class CompatibleWithKeywordSink final : private apache::thrift::detail::st::ComparisonOperators<CompatibleWithKeywordSink> {
+class CompatibleWithKeywordSink final  {
  public:
+  using __fbthrift_cpp2_type = CompatibleWithKeywordSink;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   CompatibleWithKeywordSink() {}
@@ -389,7 +441,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool sink;
   } __isset = {};
   bool operator==(const CompatibleWithKeywordSink& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const CompatibleWithKeywordSink& __x, const CompatibleWithKeywordSink& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const CompatibleWithKeywordSink& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const CompatibleWithKeywordSink& __x, const CompatibleWithKeywordSink& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const CompatibleWithKeywordSink& __x, const CompatibleWithKeywordSink& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const CompatibleWithKeywordSink& __x, const CompatibleWithKeywordSink& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
@@ -457,8 +525,9 @@ uint32_t CompatibleWithKeywordSink::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class InitialException final : private apache::thrift::detail::st::ComparisonOperators<InitialException>, public apache::thrift::TException {
+class InitialException final : public apache::thrift::TException {
  public:
+  using __fbthrift_cpp2_type = InitialException;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   InitialException() {}
@@ -484,7 +553,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool reason;
   } __isset = {};
   bool operator==(const InitialException& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const InitialException& __x, const InitialException& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const InitialException& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const InitialException& __x, const InitialException& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const InitialException& __x, const InitialException& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const InitialException& __x, const InitialException& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
@@ -556,8 +641,9 @@ uint32_t InitialException::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class SinkException1 final : private apache::thrift::detail::st::ComparisonOperators<SinkException1>, public apache::thrift::TException {
+class SinkException1 final : public apache::thrift::TException {
  public:
+  using __fbthrift_cpp2_type = SinkException1;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkException1() {}
@@ -583,7 +669,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool reason;
   } __isset = {};
   bool operator==(const SinkException1& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const SinkException1& __x, const SinkException1& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const SinkException1& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const SinkException1& __x, const SinkException1& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const SinkException1& __x, const SinkException1& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const SinkException1& __x, const SinkException1& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
@@ -655,8 +757,9 @@ uint32_t SinkException1::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class SinkException2 final : private apache::thrift::detail::st::ComparisonOperators<SinkException2>, public apache::thrift::TException {
+class SinkException2 final : public apache::thrift::TException {
  public:
+  using __fbthrift_cpp2_type = SinkException2;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkException2() :
@@ -683,7 +786,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool reason;
   } __isset = {};
   bool operator==(const SinkException2& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const SinkException2& __x, const SinkException2& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const SinkException2& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const SinkException2& __x, const SinkException2& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const SinkException2& __x, const SinkException2& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const SinkException2& __x, const SinkException2& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int64_t>

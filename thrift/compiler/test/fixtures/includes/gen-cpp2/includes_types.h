@@ -51,8 +51,9 @@ typedef  ::cpp2::Foo TransitiveFoo;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class Included final : private apache::thrift::detail::st::ComparisonOperators<Included> {
+class Included final  {
  public:
+  using __fbthrift_cpp2_type = Included;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Included() :
@@ -83,7 +84,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool MyTransitiveField;
   } __isset = {};
   bool operator==(const Included& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Included& __x, const Included& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Included& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Included& __x, const Included& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Included& __x, const Included& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Included& __x, const Included& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int64_t>

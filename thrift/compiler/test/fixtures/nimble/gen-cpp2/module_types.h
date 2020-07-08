@@ -56,8 +56,9 @@ class BasicTypes;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class BasicTypes final : private apache::thrift::detail::st::ComparisonOperators<BasicTypes> {
+class BasicTypes final  {
  public:
+  using __fbthrift_cpp2_type = BasicTypes;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   BasicTypes() :
@@ -95,7 +96,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool isTrue;
   } __isset = {};
   bool operator==(const BasicTypes& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const BasicTypes& __x, const BasicTypes& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const BasicTypes& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const BasicTypes& __x, const BasicTypes& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const BasicTypes& __x, const BasicTypes& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const BasicTypes& __x, const BasicTypes& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename..., typename T = int32_t>
   FOLLY_ERASE auto first_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->first};

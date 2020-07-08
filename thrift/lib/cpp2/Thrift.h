@@ -38,25 +38,12 @@ enum FragileConstructor {
 namespace detail {
 namespace st {
 
-/**
- *  Like boost::totally_ordered, but does not cause boost functions always to
- *  be included in overload resolution sets due to ADL.
- */
+template <typename T, typename = void>
+struct IsThriftClass : std::false_type {};
+
 template <typename T>
-struct ComparisonOperators {
-  friend bool operator!=(const T& x, const T& y) {
-    return !(x == y);
-  }
-  friend bool operator>(const T& x, const T& y) {
-    return y < x;
-  }
-  friend bool operator<=(const T& x, const T& y) {
-    return !(y < x);
-  }
-  friend bool operator>=(const T& x, const T& y) {
-    return !(x < y);
-  }
-};
+struct IsThriftClass<T, folly::void_t<typename T::__fbthrift_cpp2_type>>
+    : std::true_type {};
 
 } // namespace st
 } // namespace detail

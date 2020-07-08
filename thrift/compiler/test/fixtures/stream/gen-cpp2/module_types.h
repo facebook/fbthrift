@@ -36,8 +36,9 @@ class FooEx;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class FooEx final : private apache::thrift::detail::st::ComparisonOperators<FooEx>, public apache::thrift::TException {
+class FooEx final : public apache::thrift::TException {
  public:
+  using __fbthrift_cpp2_type = FooEx;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FooEx() {}
@@ -55,7 +56,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
   bool operator==(const FooEx& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const FooEx& __x, const FooEx& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const FooEx& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const FooEx& __x, const FooEx& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const FooEx& __x, const FooEx& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const FooEx& __x, const FooEx& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

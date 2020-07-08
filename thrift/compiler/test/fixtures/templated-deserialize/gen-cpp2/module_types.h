@@ -246,8 +246,9 @@ typedef Bar IndirectionB;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class SmallStruct final : private apache::thrift::detail::st::ComparisonOperators<SmallStruct> {
+class SmallStruct final  {
  public:
+  using __fbthrift_cpp2_type = SmallStruct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SmallStruct() :
@@ -278,7 +279,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool small_B;
   } __isset = {};
   bool operator==(const SmallStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const SmallStruct& __x, const SmallStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const SmallStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const SmallStruct& __x, const SmallStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const SmallStruct& __x, const SmallStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const SmallStruct& __x, const SmallStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = bool>
@@ -375,8 +392,9 @@ uint32_t SmallStruct::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class containerStruct final : private apache::thrift::detail::st::ComparisonOperators<containerStruct> {
+class containerStruct final  {
  public:
+  using __fbthrift_cpp2_type = containerStruct;
 
   containerStruct();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -462,7 +480,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool fieldQ;
   } __isset = {};
   bool operator==(const containerStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const containerStruct& __x, const containerStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const containerStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const containerStruct& __x, const containerStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const containerStruct& __x, const containerStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const containerStruct& __x, const containerStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = bool>

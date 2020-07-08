@@ -42,8 +42,9 @@ class MyStruct;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace matching_module_name {
-class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
+class MyStruct final  {
  public:
+  using __fbthrift_cpp2_type = MyStruct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct() {}
@@ -69,7 +70,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool OtherStructField;
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const MyStruct& __x, const MyStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const MyStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const MyStruct& __x, const MyStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const MyStruct& __x, const MyStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const MyStruct& __x, const MyStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::matching_module_name::OtherStruct>

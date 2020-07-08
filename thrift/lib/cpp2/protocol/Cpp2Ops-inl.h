@@ -717,10 +717,7 @@ class Cpp2Ops<std::unique_ptr<folly::IOBuf>> {
 };
 
 template <class T>
-class Cpp2Ops<
-    T,
-    std::enable_if_t<
-        std::is_base_of<detail::st::ComparisonOperators<T>, T>::value>> {
+class Cpp2Ops<T, folly::void_t<typename T::__fbthrift_cpp2_type>> {
  public:
   typedef T Type;
   static constexpr protocol::TType thriftType() {

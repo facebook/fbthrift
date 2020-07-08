@@ -102,8 +102,9 @@ class containerStruct2;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace extra { namespace svc {
-class containerStruct2 final : private apache::thrift::detail::st::ComparisonOperators<containerStruct2> {
+class containerStruct2 final  {
  public:
+  using __fbthrift_cpp2_type = containerStruct2;
 
   containerStruct2();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -165,7 +166,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool opt_fieldE;
   } __isset = {};
   bool operator==(const containerStruct2& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const containerStruct2& __x, const containerStruct2& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const containerStruct2& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const containerStruct2& __x, const containerStruct2& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const containerStruct2& __x, const containerStruct2& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const containerStruct2& __x, const containerStruct2& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = bool>

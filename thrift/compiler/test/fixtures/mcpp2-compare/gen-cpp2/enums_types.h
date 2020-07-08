@@ -228,8 +228,9 @@ class SomeStruct;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace facebook { namespace ns { namespace qwerty {
-class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators<SomeStruct> {
+class SomeStruct final  {
  public:
+  using __fbthrift_cpp2_type = SomeStruct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SomeStruct() :
@@ -256,7 +257,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool fieldA;
   } __isset = {};
   bool operator==(const SomeStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const SomeStruct& __x, const SomeStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const SomeStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const SomeStruct& __x, const SomeStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const SomeStruct& __x, const SomeStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const SomeStruct& __x, const SomeStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>

@@ -48,8 +48,9 @@ class Serious;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class Banal final : private apache::thrift::detail::st::ComparisonOperators<Banal>, public apache::thrift::TException {
+class Banal final : public apache::thrift::TException {
  public:
+  using __fbthrift_cpp2_type = Banal;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Banal() {}
@@ -67,7 +68,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
   bool operator==(const Banal& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Banal& __x, const Banal& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Banal& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Banal& __x, const Banal& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Banal& __x, const Banal& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Banal& __x, const Banal& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -100,8 +117,9 @@ uint32_t Banal::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fiery>, public apache::thrift::TException {
+class Fiery final : public apache::thrift::TException {
  public:
+  using __fbthrift_cpp2_type = Fiery;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Fiery() {}
@@ -129,7 +147,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
  public:
   bool operator==(const Fiery& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Fiery& __x, const Fiery& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Fiery& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Fiery& __x, const Fiery& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Fiery& __x, const Fiery& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Fiery& __x, const Fiery& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE auto message_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->message};
@@ -195,8 +229,9 @@ uint32_t Fiery::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class Serious final : private apache::thrift::detail::st::ComparisonOperators<Serious>, public apache::thrift::TException {
+class Serious final : public apache::thrift::TException {
  public:
+  using __fbthrift_cpp2_type = Serious;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Serious() {}
@@ -228,7 +263,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool sonnet;
   } __isset = {};
   bool operator==(const Serious& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Serious& __x, const Serious& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Serious& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Serious& __x, const Serious& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Serious& __x, const Serious& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Serious& __x, const Serious& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> sonnet_ref() const& {

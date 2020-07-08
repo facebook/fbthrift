@@ -141,8 +141,9 @@ typedef ::std::map<int16_t, ::std::string> containerTypedef;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperators<ComplexUnion> {
+class ComplexUnion final  {
  public:
+  using __fbthrift_cpp2_type = ComplexUnion;
   enum Type : int {
     __EMPTY__ = 0,
     intValue = 1,
@@ -348,7 +349,23 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     ~storage_type() {}
   } ;
   bool operator==(const ComplexUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const ComplexUnion& __x, const ComplexUnion& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const ComplexUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const ComplexUnion& __x, const ComplexUnion& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const ComplexUnion& __x, const ComplexUnion& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const ComplexUnion& __x, const ComplexUnion& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   int64_t& set_intValue(int64_t t = int64_t()) {
     __clear();
@@ -589,8 +606,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class ListUnion final : private apache::thrift::detail::st::ComparisonOperators<ListUnion> {
+class ListUnion final  {
  public:
+  using __fbthrift_cpp2_type = ListUnion;
   enum Type : int {
     __EMPTY__ = 0,
     intListValue = 2,
@@ -708,7 +726,23 @@ class ListUnion final : private apache::thrift::detail::st::ComparisonOperators<
     ~storage_type() {}
   } ;
   bool operator==(const ListUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const ListUnion& __x, const ListUnion& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const ListUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const ListUnion& __x, const ListUnion& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const ListUnion& __x, const ListUnion& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const ListUnion& __x, const ListUnion& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   ::std::vector<int64_t>& set_intListValue(::std::vector<int64_t> const &t) {
     __clear();
@@ -819,8 +853,9 @@ uint32_t ListUnion::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class DataUnion final : private apache::thrift::detail::st::ComparisonOperators<DataUnion> {
+class DataUnion final  {
  public:
+  using __fbthrift_cpp2_type = DataUnion;
   enum Type : int {
     __EMPTY__ = 0,
     binaryData = 1,
@@ -938,7 +973,23 @@ class DataUnion final : private apache::thrift::detail::st::ComparisonOperators<
     ~storage_type() {}
   } ;
   bool operator==(const DataUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const DataUnion& __x, const DataUnion& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const DataUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const DataUnion& __x, const DataUnion& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const DataUnion& __x, const DataUnion& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const DataUnion& __x, const DataUnion& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   ::std::string& set_binaryData(::std::string const &t) {
     __clear();
@@ -1049,8 +1100,9 @@ uint32_t DataUnion::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class Val final : private apache::thrift::detail::st::ComparisonOperators<Val> {
+class Val final  {
  public:
+  using __fbthrift_cpp2_type = Val;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Val() :
@@ -1083,7 +1135,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool typedefValue;
   } __isset = {};
   bool operator==(const Val& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Val& __x, const Val& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Val& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Val& __x, const Val& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Val& __x, const Val& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Val& __x, const Val& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
@@ -1218,8 +1286,9 @@ uint32_t Val::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class ValUnion final : private apache::thrift::detail::st::ComparisonOperators<ValUnion> {
+class ValUnion final  {
  public:
+  using __fbthrift_cpp2_type = ValUnion;
   enum Type : int {
     __EMPTY__ = 0,
     v1 = 1,
@@ -1337,7 +1406,23 @@ class ValUnion final : private apache::thrift::detail::st::ComparisonOperators<V
     ~storage_type() {}
   } ;
   bool operator==(const ValUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const ValUnion& __x, const ValUnion& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const ValUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const ValUnion& __x, const ValUnion& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const ValUnion& __x, const ValUnion& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const ValUnion& __x, const ValUnion& __y) {
+    return !(__x < __y);
+  }
+#endif
 
    ::cpp2::Val& set_v1( ::cpp2::Val const &t) {
     __clear();
@@ -1448,8 +1533,9 @@ uint32_t ValUnion::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperators<VirtualComplexUnion> {
+class VirtualComplexUnion  {
  public:
+  using __fbthrift_cpp2_type = VirtualComplexUnion;
   enum Type : int {
     __EMPTY__ = 0,
     thingOne = 1,
@@ -1568,7 +1654,23 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
     ~storage_type() {}
   } ;
   bool operator==(const VirtualComplexUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const VirtualComplexUnion& __x, const VirtualComplexUnion& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const VirtualComplexUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const VirtualComplexUnion& __x, const VirtualComplexUnion& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const VirtualComplexUnion& __x, const VirtualComplexUnion& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const VirtualComplexUnion& __x, const VirtualComplexUnion& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   ::std::string& set_thingOne(::std::string const &t) {
     __clear();
@@ -1679,8 +1781,9 @@ uint32_t VirtualComplexUnion::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class NonCopyableStruct final : private apache::thrift::detail::st::ComparisonOperators<NonCopyableStruct> {
+class NonCopyableStruct final  {
  public:
+  using __fbthrift_cpp2_type = NonCopyableStruct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   NonCopyableStruct() :
@@ -1702,7 +1805,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     bool num;
   } __isset = {};
   bool operator==(const NonCopyableStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const NonCopyableStruct& __x, const NonCopyableStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const NonCopyableStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const NonCopyableStruct& __x, const NonCopyableStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const NonCopyableStruct& __x, const NonCopyableStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const NonCopyableStruct& __x, const NonCopyableStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int64_t>
@@ -1765,8 +1884,9 @@ uint32_t NonCopyableStruct::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class NonCopyableUnion final : private apache::thrift::detail::st::ComparisonOperators<NonCopyableUnion> {
+class NonCopyableUnion final  {
  public:
+  using __fbthrift_cpp2_type = NonCopyableUnion;
   enum Type : int {
     __EMPTY__ = 0,
     s = 1,
@@ -1825,7 +1945,23 @@ class NonCopyableUnion final : private apache::thrift::detail::st::ComparisonOpe
     ~storage_type() {}
   } ;
   bool operator==(const NonCopyableUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const NonCopyableUnion& __x, const NonCopyableUnion& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const NonCopyableUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const NonCopyableUnion& __x, const NonCopyableUnion& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const NonCopyableUnion& __x, const NonCopyableUnion& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const NonCopyableUnion& __x, const NonCopyableUnion& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 
    ::cpp2::NonCopyableStruct& set_s( ::cpp2::NonCopyableStruct&& t) {

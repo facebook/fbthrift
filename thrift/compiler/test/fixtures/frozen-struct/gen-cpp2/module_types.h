@@ -129,8 +129,9 @@ class ModuleB;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace some { namespace ns {
-class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<ModuleA> {
+class ModuleA final  {
  public:
+  using __fbthrift_cpp2_type = ModuleA;
 
   ModuleA();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -175,7 +176,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool inclBField;
   } __isset = {};
   bool operator==(const ModuleA& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const ModuleA& __x, const ModuleA& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const ModuleA& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const ModuleA& __x, const ModuleA& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const ModuleA& __x, const ModuleA& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const ModuleA& __x, const ModuleA& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
@@ -409,8 +426,9 @@ uint32_t ModuleA::read(Protocol_* iprot) {
 
 }} // some::ns
 namespace some { namespace ns {
-class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<ModuleB> {
+class ModuleB final  {
  public:
+  using __fbthrift_cpp2_type = ModuleB;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ModuleB() :
@@ -441,7 +459,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool inclEnumB;
   } __isset = {};
   bool operator==(const ModuleB& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const ModuleB& __x, const ModuleB& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const ModuleB& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const ModuleB& __x, const ModuleB& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const ModuleB& __x, const ModuleB& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const ModuleB& __x, const ModuleB& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>

@@ -1080,8 +1080,9 @@ typedef CppHasAPhrase HasAPhrase;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace test_cpp2 { namespace cpp_reflection {
-class union1 final : private apache::thrift::detail::st::ComparisonOperators<union1> {
+class union1 final  {
  public:
+  using __fbthrift_cpp2_type = union1;
   enum Type : int {
     __EMPTY__ = 0,
     ui = 1,
@@ -1243,7 +1244,23 @@ class union1 final : private apache::thrift::detail::st::ComparisonOperators<uni
     ~storage_type() {}
   } ;
   bool operator==(const union1& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const union1& __x, const union1& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const union1& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const union1& __x, const union1& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const union1& __x, const union1& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const union1& __x, const union1& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   int32_t& set_ui(int32_t t = int32_t()) {
     __clear();
@@ -1384,8 +1401,9 @@ uint32_t union1::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class union2 final : private apache::thrift::detail::st::ComparisonOperators<union2> {
+class union2 final  {
  public:
+  using __fbthrift_cpp2_type = union2;
   enum Type : int {
     __EMPTY__ = 0,
     ui_2 = 1,
@@ -1547,7 +1565,23 @@ class union2 final : private apache::thrift::detail::st::ComparisonOperators<uni
     ~storage_type() {}
   } ;
   bool operator==(const union2& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const union2& __x, const union2& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const union2& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const union2& __x, const union2& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const union2& __x, const union2& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const union2& __x, const union2& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   int32_t& set_ui_2(int32_t t = int32_t()) {
     __clear();
@@ -1688,8 +1722,9 @@ uint32_t union2::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class union3 final : private apache::thrift::detail::st::ComparisonOperators<union3> {
+class union3 final  {
  public:
+  using __fbthrift_cpp2_type = union3;
   enum Type : int {
     __EMPTY__ = 0,
     ui_3 = 1,
@@ -1851,7 +1886,23 @@ class union3 final : private apache::thrift::detail::st::ComparisonOperators<uni
     ~storage_type() {}
   } ;
   bool operator==(const union3& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const union3& __x, const union3& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const union3& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const union3& __x, const union3& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const union3& __x, const union3& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const union3& __x, const union3& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   int32_t& set_ui_3(int32_t t = int32_t()) {
     __clear();
@@ -1992,8 +2043,9 @@ uint32_t union3::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class structA final : private apache::thrift::detail::st::ComparisonOperators<structA> {
+class structA final  {
  public:
+  using __fbthrift_cpp2_type = structA;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structA() :
@@ -2023,7 +2075,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool b;
   } __isset = {};
   bool operator==(const structA& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const structA& __x, const structA& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const structA& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const structA& __x, const structA& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const structA& __x, const structA& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const structA& __x, const structA& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
@@ -2125,8 +2193,9 @@ uint32_t structA::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class unionA final : private apache::thrift::detail::st::ComparisonOperators<unionA> {
+class unionA final  {
  public:
+  using __fbthrift_cpp2_type = unionA;
   enum Type : int {
     __EMPTY__ = 0,
     i = 1,
@@ -2310,7 +2379,23 @@ class unionA final : private apache::thrift::detail::st::ComparisonOperators<uni
     ~storage_type() {}
   } ;
   bool operator==(const unionA& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const unionA& __x, const unionA& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const unionA& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const unionA& __x, const unionA& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const unionA& __x, const unionA& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const unionA& __x, const unionA& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   int32_t& set_i(int32_t t = int32_t()) {
     __clear();
@@ -2487,8 +2572,9 @@ uint32_t unionA::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class structB final : private apache::thrift::detail::st::ComparisonOperators<structB> {
+class structB final  {
  public:
+  using __fbthrift_cpp2_type = structB;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structB() :
@@ -2519,7 +2605,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool d;
   } __isset = {};
   bool operator==(const structB& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const structB& __x, const structB& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const structB& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const structB& __x, const structB& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const structB& __x, const structB& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const structB& __x, const structB& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = double>
@@ -2616,8 +2718,9 @@ uint32_t structB::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class structC final : private apache::thrift::detail::st::ComparisonOperators<structC> {
+class structC final  {
  public:
+  using __fbthrift_cpp2_type = structC;
 
   structC();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -2734,7 +2837,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool o3;
   } __isset = {};
   bool operator==(const structC& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const structC& __x, const structC& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const structC& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const structC& __x, const structC& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const structC& __x, const structC& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const structC& __x, const structC& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
@@ -3764,8 +3883,9 @@ uint32_t structC::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class struct1 final : private apache::thrift::detail::st::ComparisonOperators<struct1> {
+class struct1 final  {
  public:
+  using __fbthrift_cpp2_type = struct1;
 
   struct1();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -3808,7 +3928,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool field5;
   } __isset = {};
   bool operator==(const struct1& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const struct1& __x, const struct1& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const struct1& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const struct1& __x, const struct1& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const struct1& __x, const struct1& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const struct1& __x, const struct1& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename..., typename T = int32_t>
   FOLLY_ERASE auto field0_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->field0};
@@ -4026,8 +4162,9 @@ uint32_t struct1::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class struct2 final : private apache::thrift::detail::st::ComparisonOperators<struct2> {
+class struct2 final  {
  public:
+  using __fbthrift_cpp2_type = struct2;
 
   struct2();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -4075,7 +4212,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool fieldG;
   } __isset = {};
   bool operator==(const struct2& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const struct2& __x, const struct2& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const struct2& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const struct2& __x, const struct2& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const struct2& __x, const struct2& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const struct2& __x, const struct2& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
@@ -4344,8 +4497,9 @@ uint32_t struct2::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class struct3 final : private apache::thrift::detail::st::ComparisonOperators<struct3> {
+class struct3 final  {
  public:
+  using __fbthrift_cpp2_type = struct3;
 
   struct3();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -4426,7 +4580,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool fieldR;
   } __isset = {};
   bool operator==(const struct3& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const struct3& __x, const struct3& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const struct3& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const struct3& __x, const struct3& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const struct3& __x, const struct3& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const struct3& __x, const struct3& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
@@ -5058,8 +5228,9 @@ uint32_t struct3::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class struct4 final : private apache::thrift::detail::st::ComparisonOperators<struct4> {
+class struct4 final  {
  public:
+  using __fbthrift_cpp2_type = struct4;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct4() :
@@ -5093,7 +5264,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool field2;
   } __isset = {};
   bool operator==(const struct4& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const struct4& __x, const struct4& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const struct4& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const struct4& __x, const struct4& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const struct4& __x, const struct4& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const struct4& __x, const struct4& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename..., typename T = int32_t>
   FOLLY_ERASE auto field0_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->field0};
@@ -5231,8 +5418,9 @@ uint32_t struct4::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class struct5 final : private apache::thrift::detail::st::ComparisonOperators<struct5> {
+class struct5 final  {
  public:
+  using __fbthrift_cpp2_type = struct5;
 
   struct5();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -5273,7 +5461,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool field4;
   } __isset = {};
   bool operator==(const struct5& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const struct5& __x, const struct5& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const struct5& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const struct5& __x, const struct5& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const struct5& __x, const struct5& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const struct5& __x, const struct5& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename..., typename T = int32_t>
   FOLLY_ERASE auto field0_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->field0};
@@ -5466,8 +5670,9 @@ uint32_t struct5::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class struct_binary final : private apache::thrift::detail::st::ComparisonOperators<struct_binary> {
+class struct_binary final  {
  public:
+  using __fbthrift_cpp2_type = struct_binary;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct_binary() {}
@@ -5493,7 +5698,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool bi;
   } __isset = {};
   bool operator==(const struct_binary& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const struct_binary& __x, const struct_binary& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const struct_binary& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const struct_binary& __x, const struct_binary& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const struct_binary& __x, const struct_binary& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const struct_binary& __x, const struct_binary& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
@@ -5561,8 +5782,9 @@ uint32_t struct_binary::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class dep_A_struct final : private apache::thrift::detail::st::ComparisonOperators<dep_A_struct> {
+class dep_A_struct final  {
  public:
+  using __fbthrift_cpp2_type = dep_A_struct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   dep_A_struct() :
@@ -5595,7 +5817,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool i_a;
   } __isset = {};
   bool operator==(const dep_A_struct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const dep_A_struct& __x, const dep_A_struct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const dep_A_struct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const dep_A_struct& __x, const dep_A_struct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const dep_A_struct& __x, const dep_A_struct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const dep_A_struct& __x, const dep_A_struct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::test_cpp2::cpp_reflection::dep_B_struct>
@@ -5724,8 +5962,9 @@ uint32_t dep_A_struct::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class dep_B_struct final : private apache::thrift::detail::st::ComparisonOperators<dep_B_struct> {
+class dep_B_struct final  {
  public:
+  using __fbthrift_cpp2_type = dep_B_struct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   dep_B_struct() :
@@ -5758,7 +5997,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool i_a;
   } __isset = {};
   bool operator==(const dep_B_struct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const dep_B_struct& __x, const dep_B_struct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const dep_B_struct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const dep_B_struct& __x, const dep_B_struct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const dep_B_struct& __x, const dep_B_struct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const dep_B_struct& __x, const dep_B_struct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::test_cpp2::cpp_reflection::dep_B_struct>
@@ -5887,8 +6142,9 @@ uint32_t dep_B_struct::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class annotated final : private apache::thrift::detail::st::ComparisonOperators<annotated> {
+class annotated final  {
  public:
+  using __fbthrift_cpp2_type = annotated;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   annotated() :
@@ -5915,7 +6171,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool a;
   } __isset = {};
   bool operator==(const annotated& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const annotated& __x, const annotated& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const annotated& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const annotated& __x, const annotated& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const annotated& __x, const annotated& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const annotated& __x, const annotated& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
@@ -5978,8 +6250,9 @@ uint32_t annotated::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class union_with_special_names final : private apache::thrift::detail::st::ComparisonOperators<union_with_special_names> {
+class union_with_special_names final  {
  public:
+  using __fbthrift_cpp2_type = union_with_special_names;
   enum Type : int {
     __EMPTY__ = 0,
     get = 1,
@@ -6669,7 +6942,23 @@ class union_with_special_names final : private apache::thrift::detail::st::Compa
     ~storage_type() {}
   } ;
   bool operator==(const union_with_special_names& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const union_with_special_names& __x, const union_with_special_names& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const union_with_special_names& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const union_with_special_names& __x, const union_with_special_names& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const union_with_special_names& __x, const union_with_special_names& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const union_with_special_names& __x, const union_with_special_names& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   int32_t& set_get(int32_t t = int32_t()) {
     __clear();
@@ -7324,8 +7613,9 @@ uint32_t union_with_special_names::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class struct_with_special_names final : private apache::thrift::detail::st::ComparisonOperators<struct_with_special_names> {
+class struct_with_special_names final  {
  public:
+  using __fbthrift_cpp2_type = struct_with_special_names;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct_with_special_names() :
@@ -7460,7 +7750,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool fields;
   } __isset = {};
   bool operator==(const struct_with_special_names& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const struct_with_special_names& __x, const struct_with_special_names& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const struct_with_special_names& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const struct_with_special_names& __x, const struct_with_special_names& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const struct_with_special_names& __x, const struct_with_special_names& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const struct_with_special_names& __x, const struct_with_special_names& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
@@ -8441,8 +8747,9 @@ uint32_t struct_with_special_names::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
-class struct_with_indirections final : private apache::thrift::detail::st::ComparisonOperators<struct_with_indirections> {
+class struct_with_indirections final  {
  public:
+  using __fbthrift_cpp2_type = struct_with_indirections;
 
   struct_with_indirections();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -8484,7 +8791,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool phrase;
   } __isset = {};
   bool operator==(const struct_with_indirections& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const struct_with_indirections& __x, const struct_with_indirections& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const struct_with_indirections& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const struct_with_indirections& __x, const struct_with_indirections& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const struct_with_indirections& __x, const struct_with_indirections& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const struct_with_indirections& __x, const struct_with_indirections& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>

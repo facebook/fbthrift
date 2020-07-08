@@ -156,8 +156,9 @@ class SecretStruct;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class MyStructNestedAnnotation final : private apache::thrift::detail::st::ComparisonOperators<MyStructNestedAnnotation> {
+class MyStructNestedAnnotation final  {
  public:
+  using __fbthrift_cpp2_type = MyStructNestedAnnotation;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructNestedAnnotation() {}
@@ -183,7 +184,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool name;
   } __isset = {};
   bool operator==(const MyStructNestedAnnotation& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const MyStructNestedAnnotation& __x, const MyStructNestedAnnotation& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const MyStructNestedAnnotation& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const MyStructNestedAnnotation& __x, const MyStructNestedAnnotation& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const MyStructNestedAnnotation& __x, const MyStructNestedAnnotation& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const MyStructNestedAnnotation& __x, const MyStructNestedAnnotation& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
@@ -251,8 +268,9 @@ uint32_t MyStructNestedAnnotation::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class MyStructAnnotation final : private apache::thrift::detail::st::ComparisonOperators<MyStructAnnotation> {
+class MyStructAnnotation final  {
  public:
+  using __fbthrift_cpp2_type = MyStructAnnotation;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructAnnotation() :
@@ -288,7 +306,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool nest;
   } __isset = {};
   bool operator==(const MyStructAnnotation& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const MyStructAnnotation& __x, const MyStructAnnotation& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const MyStructAnnotation& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const MyStructAnnotation& __x, const MyStructAnnotation& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const MyStructAnnotation& __x, const MyStructAnnotation& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const MyStructAnnotation& __x, const MyStructAnnotation& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int64_t>
@@ -459,8 +493,9 @@ uint32_t MyStructAnnotation::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
+class MyStruct final  {
  public:
+  using __fbthrift_cpp2_type = MyStruct;
 
   MyStruct();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -505,7 +540,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool empty_annotations;
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const MyStruct& __x, const MyStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const MyStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const MyStruct& __x, const MyStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const MyStruct& __x, const MyStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const MyStruct& __x, const MyStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int64_t>
@@ -763,8 +814,9 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class SecretStruct final : private apache::thrift::detail::st::ComparisonOperators<SecretStruct> {
+class SecretStruct final  {
  public:
+  using __fbthrift_cpp2_type = SecretStruct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SecretStruct() :
@@ -794,7 +846,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool password;
   } __isset = {};
   bool operator==(const SecretStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const SecretStruct& __x, const SecretStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const SecretStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const SecretStruct& __x, const SecretStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const SecretStruct& __x, const SecretStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const SecretStruct& __x, const SecretStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int64_t>

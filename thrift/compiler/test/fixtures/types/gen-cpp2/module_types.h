@@ -505,8 +505,9 @@ template<> struct equal_to<typename ::apache::thrift::fixtures::types::decorated
 } // std
 // END hash_and_equal_to
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class decorated_struct final : private apache::thrift::detail::st::ComparisonOperators<decorated_struct> {
+class decorated_struct final  {
  public:
+  using __fbthrift_cpp2_type = decorated_struct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   decorated_struct() {}
@@ -532,7 +533,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool field;
   } __isset = {};
   bool operator==(const decorated_struct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const decorated_struct& __x, const decorated_struct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const decorated_struct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const decorated_struct& __x, const decorated_struct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const decorated_struct& __x, const decorated_struct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const decorated_struct& __x, const decorated_struct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
@@ -600,8 +617,9 @@ uint32_t decorated_struct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class ContainerStruct final : private apache::thrift::detail::st::ComparisonOperators<ContainerStruct> {
+class ContainerStruct final  {
  public:
+  using __fbthrift_cpp2_type = ContainerStruct;
 
   ContainerStruct();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -652,7 +670,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool fieldH;
   } __isset = {};
   bool operator==(const ContainerStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const ContainerStruct& __x, const ContainerStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const ContainerStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const ContainerStruct& __x, const ContainerStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const ContainerStruct& __x, const ContainerStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const ContainerStruct& __x, const ContainerStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<int32_t>>
@@ -945,8 +979,9 @@ uint32_t ContainerStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class CppTypeStruct final : private apache::thrift::detail::st::ComparisonOperators<CppTypeStruct> {
+class CppTypeStruct final  {
  public:
+  using __fbthrift_cpp2_type = CppTypeStruct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   CppTypeStruct() {}
@@ -972,7 +1007,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool fieldA;
   } __isset = {};
   bool operator==(const CppTypeStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const CppTypeStruct& __x, const CppTypeStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const CppTypeStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const CppTypeStruct& __x, const CppTypeStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const CppTypeStruct& __x, const CppTypeStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const CppTypeStruct& __x, const CppTypeStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = std::list<int32_t>>
@@ -1034,8 +1085,9 @@ uint32_t CppTypeStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class VirtualStruct : private apache::thrift::detail::st::ComparisonOperators<VirtualStruct> {
+class VirtualStruct  {
  public:
+  using __fbthrift_cpp2_type = VirtualStruct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   VirtualStruct() :
@@ -1065,7 +1117,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool MyIntField;
   } __isset = {};
   bool operator==(const VirtualStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const VirtualStruct& __x, const VirtualStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const VirtualStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const VirtualStruct& __x, const VirtualStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const VirtualStruct& __x, const VirtualStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const VirtualStruct& __x, const VirtualStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int64_t>
@@ -1128,8 +1196,9 @@ uint32_t VirtualStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class MyStructWithForwardRefEnum final : private apache::thrift::detail::st::ComparisonOperators<MyStructWithForwardRefEnum> {
+class MyStructWithForwardRefEnum final  {
  public:
+  using __fbthrift_cpp2_type = MyStructWithForwardRefEnum;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructWithForwardRefEnum() :
@@ -1160,7 +1229,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool b;
   } __isset = {};
   bool operator==(const MyStructWithForwardRefEnum& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const MyStructWithForwardRefEnum& __x, const MyStructWithForwardRefEnum& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const MyStructWithForwardRefEnum& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const MyStructWithForwardRefEnum& __x, const MyStructWithForwardRefEnum& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const MyStructWithForwardRefEnum& __x, const MyStructWithForwardRefEnum& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const MyStructWithForwardRefEnum& __x, const MyStructWithForwardRefEnum& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::apache::thrift::fixtures::types::MyForwardRefEnum>
@@ -1257,8 +1342,9 @@ uint32_t MyStructWithForwardRefEnum::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class TrivialNumeric final : private apache::thrift::detail::st::ComparisonOperators<TrivialNumeric> {
+class TrivialNumeric final  {
  public:
+  using __fbthrift_cpp2_type = TrivialNumeric;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   TrivialNumeric() :
@@ -1289,7 +1375,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool b;
   } __isset = {};
   bool operator==(const TrivialNumeric& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const TrivialNumeric& __x, const TrivialNumeric& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const TrivialNumeric& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const TrivialNumeric& __x, const TrivialNumeric& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const TrivialNumeric& __x, const TrivialNumeric& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const TrivialNumeric& __x, const TrivialNumeric& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
@@ -1386,8 +1488,9 @@ uint32_t TrivialNumeric::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class TrivialNestedWithDefault final : private apache::thrift::detail::st::ComparisonOperators<TrivialNestedWithDefault> {
+class TrivialNestedWithDefault final  {
  public:
+  using __fbthrift_cpp2_type = TrivialNestedWithDefault;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   TrivialNestedWithDefault() :
@@ -1418,7 +1521,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool n;
   } __isset = {};
   bool operator==(const TrivialNestedWithDefault& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const TrivialNestedWithDefault& __x, const TrivialNestedWithDefault& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const TrivialNestedWithDefault& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const TrivialNestedWithDefault& __x, const TrivialNestedWithDefault& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const TrivialNestedWithDefault& __x, const TrivialNestedWithDefault& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const TrivialNestedWithDefault& __x, const TrivialNestedWithDefault& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
@@ -1514,8 +1633,9 @@ uint32_t TrivialNestedWithDefault::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class ComplexString final : private apache::thrift::detail::st::ComparisonOperators<ComplexString> {
+class ComplexString final  {
  public:
+  using __fbthrift_cpp2_type = ComplexString;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ComplexString() {}
@@ -1544,7 +1664,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool b;
   } __isset = {};
   bool operator==(const ComplexString& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const ComplexString& __x, const ComplexString& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const ComplexString& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const ComplexString& __x, const ComplexString& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const ComplexString& __x, const ComplexString& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const ComplexString& __x, const ComplexString& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
@@ -1645,8 +1781,9 @@ uint32_t ComplexString::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class ComplexNestedWithDefault final : private apache::thrift::detail::st::ComparisonOperators<ComplexNestedWithDefault> {
+class ComplexNestedWithDefault final  {
  public:
+  using __fbthrift_cpp2_type = ComplexNestedWithDefault;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ComplexNestedWithDefault() :
@@ -1677,7 +1814,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool n;
   } __isset = {};
   bool operator==(const ComplexNestedWithDefault& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const ComplexNestedWithDefault& __x, const ComplexNestedWithDefault& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const ComplexNestedWithDefault& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const ComplexNestedWithDefault& __x, const ComplexNestedWithDefault& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const ComplexNestedWithDefault& __x, const ComplexNestedWithDefault& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const ComplexNestedWithDefault& __x, const ComplexNestedWithDefault& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
@@ -1778,8 +1931,9 @@ uint32_t ComplexNestedWithDefault::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class MinPadding final : private apache::thrift::detail::st::ComparisonOperators<MinPadding> {
+class MinPadding final  {
  public:
+  using __fbthrift_cpp2_type = MinPadding;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MinPadding() :
@@ -1814,7 +1968,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
  public:
   bool operator==(const MinPadding& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const MinPadding& __x, const MinPadding& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const MinPadding& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const MinPadding& __x, const MinPadding& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const MinPadding& __x, const MinPadding& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const MinPadding& __x, const MinPadding& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename..., typename T = int8_t>
   FOLLY_ERASE auto small_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->small};
@@ -1983,8 +2153,9 @@ uint32_t MinPadding::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class MyDataItem final : private apache::thrift::detail::st::ComparisonOperators<MyDataItem> {
+class MyDataItem final  {
  public:
+  using __fbthrift_cpp2_type = MyDataItem;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyDataItem() {}
@@ -2029,8 +2200,9 @@ uint32_t MyDataItem::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
+class MyStruct final  {
  public:
+  using __fbthrift_cpp2_type = MyStruct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct() :
@@ -2234,8 +2406,9 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class Renaming final : private apache::thrift::detail::st::ComparisonOperators<Renaming> {
+class Renaming final  {
  public:
+  using __fbthrift_cpp2_type = Renaming;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Renaming() :
@@ -2262,7 +2435,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool bar;
   } __isset = {};
   bool operator==(const Renaming& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Renaming& __x, const Renaming& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Renaming& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Renaming& __x, const Renaming& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Renaming& __x, const Renaming& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Renaming& __x, const Renaming& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int64_t>
@@ -2325,8 +2514,9 @@ uint32_t Renaming::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class AnnotatedTypes final : private apache::thrift::detail::st::ComparisonOperators<AnnotatedTypes> {
+class AnnotatedTypes final  {
  public:
+  using __fbthrift_cpp2_type = AnnotatedTypes;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AnnotatedTypes() {}
@@ -2355,7 +2545,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool list_field;
   } __isset = {};
   bool operator==(const AnnotatedTypes& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const AnnotatedTypes& __x, const AnnotatedTypes& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const AnnotatedTypes& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const AnnotatedTypes& __x, const AnnotatedTypes& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const AnnotatedTypes& __x, const AnnotatedTypes& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const AnnotatedTypes& __x, const AnnotatedTypes& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T =  ::apache::thrift::fixtures::types::TBinary>
@@ -2456,8 +2662,9 @@ uint32_t AnnotatedTypes::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class ForwardUsageStruct final : private apache::thrift::detail::st::ComparisonOperators<ForwardUsageStruct> {
+class ForwardUsageStruct final  {
  public:
+  using __fbthrift_cpp2_type = ForwardUsageStruct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ForwardUsageStruct() {}
@@ -2483,7 +2690,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool foo;
   } __isset = {};
   bool operator==(const ForwardUsageStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const ForwardUsageStruct& __x, const ForwardUsageStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const ForwardUsageStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const ForwardUsageStruct& __x, const ForwardUsageStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const ForwardUsageStruct& __x, const ForwardUsageStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const ForwardUsageStruct& __x, const ForwardUsageStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageRoot&> foo_ref() const& {
@@ -2542,8 +2765,9 @@ uint32_t ForwardUsageStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class ForwardUsageRoot final : private apache::thrift::detail::st::ComparisonOperators<ForwardUsageRoot> {
+class ForwardUsageRoot final  {
  public:
+  using __fbthrift_cpp2_type = ForwardUsageRoot;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ForwardUsageRoot() {}
@@ -2569,7 +2793,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool ForwardUsageStruct;
   } __isset = {};
   bool operator==(const ForwardUsageRoot& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const ForwardUsageRoot& __x, const ForwardUsageRoot& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const ForwardUsageRoot& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const ForwardUsageRoot& __x, const ForwardUsageRoot& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const ForwardUsageRoot& __x, const ForwardUsageRoot& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const ForwardUsageRoot& __x, const ForwardUsageRoot& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageStruct&> ForwardUsageStruct_ref() const& {
@@ -2639,8 +2879,9 @@ uint32_t ForwardUsageRoot::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class ForwardUsageByRef final : private apache::thrift::detail::st::ComparisonOperators<ForwardUsageByRef> {
+class ForwardUsageByRef final  {
  public:
+  using __fbthrift_cpp2_type = ForwardUsageByRef;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ForwardUsageByRef() {}
@@ -2666,7 +2907,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool foo;
   } __isset = {};
   bool operator==(const ForwardUsageByRef& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const ForwardUsageByRef& __x, const ForwardUsageByRef& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const ForwardUsageByRef& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const ForwardUsageByRef& __x, const ForwardUsageByRef& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const ForwardUsageByRef& __x, const ForwardUsageByRef& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const ForwardUsageByRef& __x, const ForwardUsageByRef& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageRoot&> foo_ref() const& {
@@ -2725,8 +2982,9 @@ uint32_t ForwardUsageByRef::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class NoexceptMoveEmpty final : private apache::thrift::detail::st::ComparisonOperators<NoexceptMoveEmpty> {
+class NoexceptMoveEmpty final  {
  public:
+  using __fbthrift_cpp2_type = NoexceptMoveEmpty;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   NoexceptMoveEmpty() {}
@@ -2743,7 +3001,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
   bool operator==(const NoexceptMoveEmpty& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const NoexceptMoveEmpty& __x, const NoexceptMoveEmpty& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const NoexceptMoveEmpty& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const NoexceptMoveEmpty& __x, const NoexceptMoveEmpty& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const NoexceptMoveEmpty& __x, const NoexceptMoveEmpty& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const NoexceptMoveEmpty& __x, const NoexceptMoveEmpty& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -2772,8 +3046,9 @@ uint32_t NoexceptMoveEmpty::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class NoexceptMoveSimpleStruct final : private apache::thrift::detail::st::ComparisonOperators<NoexceptMoveSimpleStruct> {
+class NoexceptMoveSimpleStruct final  {
  public:
+  using __fbthrift_cpp2_type = NoexceptMoveSimpleStruct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   NoexceptMoveSimpleStruct() :
@@ -2802,7 +3077,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool boolField;
   } __isset = {};
   bool operator==(const NoexceptMoveSimpleStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const NoexceptMoveSimpleStruct& __x, const NoexceptMoveSimpleStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const NoexceptMoveSimpleStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const NoexceptMoveSimpleStruct& __x, const NoexceptMoveSimpleStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const NoexceptMoveSimpleStruct& __x, const NoexceptMoveSimpleStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const NoexceptMoveSimpleStruct& __x, const NoexceptMoveSimpleStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int64_t>
@@ -2865,8 +3156,9 @@ uint32_t NoexceptMoveSimpleStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class NoexceptMoveComplexStruct final : private apache::thrift::detail::st::ComparisonOperators<NoexceptMoveComplexStruct> {
+class NoexceptMoveComplexStruct final  {
  public:
+  using __fbthrift_cpp2_type = NoexceptMoveComplexStruct;
 
   NoexceptMoveComplexStruct();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -2918,7 +3210,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool MyMapEnumAndInt;
   } __isset = {};
   bool operator==(const NoexceptMoveComplexStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const NoexceptMoveComplexStruct& __x, const NoexceptMoveComplexStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const NoexceptMoveComplexStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const NoexceptMoveComplexStruct& __x, const NoexceptMoveComplexStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const NoexceptMoveComplexStruct& __x, const NoexceptMoveComplexStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const NoexceptMoveComplexStruct& __x, const NoexceptMoveComplexStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = bool>
@@ -3267,8 +3575,9 @@ uint32_t NoexceptMoveComplexStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class NoExceptMoveUnion final : private apache::thrift::detail::st::ComparisonOperators<NoExceptMoveUnion> {
+class NoExceptMoveUnion final  {
  public:
+  using __fbthrift_cpp2_type = NoExceptMoveUnion;
   enum Type : int {
     __EMPTY__ = 0,
     string_field = 1,
@@ -3386,7 +3695,23 @@ class NoExceptMoveUnion final : private apache::thrift::detail::st::ComparisonOp
     ~storage_type() {}
   } ;
   bool operator==(const NoExceptMoveUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const NoExceptMoveUnion& __x, const NoExceptMoveUnion& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const NoExceptMoveUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const NoExceptMoveUnion& __x, const NoExceptMoveUnion& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const NoExceptMoveUnion& __x, const NoExceptMoveUnion& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const NoExceptMoveUnion& __x, const NoExceptMoveUnion& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   ::std::string& set_string_field(::std::string const &t) {
     __clear();

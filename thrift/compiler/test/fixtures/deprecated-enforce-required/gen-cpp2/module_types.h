@@ -41,8 +41,9 @@ class Foo;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
+class Foo final  {
  public:
+  using __fbthrift_cpp2_type = Foo;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Foo() :
@@ -65,7 +66,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
  public:
   bool operator==(const Foo& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Foo& __x, const Foo& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Foo& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Foo& __x, const Foo& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Foo& __x, const Foo& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Foo& __x, const Foo& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename..., typename T = int32_t>
   FOLLY_ERASE auto bar_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->bar};

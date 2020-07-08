@@ -37,8 +37,9 @@ class Nada;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class Empty final : private apache::thrift::detail::st::ComparisonOperators<Empty> {
+class Empty final  {
  public:
+  using __fbthrift_cpp2_type = Empty;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Empty() {}
@@ -56,7 +57,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
   bool operator==(const Empty& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Empty& __x, const Empty& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Empty& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Empty& __x, const Empty& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Empty& __x, const Empty& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Empty& __x, const Empty& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -85,8 +102,9 @@ uint32_t Empty::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class Nada final : private apache::thrift::detail::st::ComparisonOperators<Nada> {
+class Nada final  {
  public:
+  using __fbthrift_cpp2_type = Nada;
   enum Type : int {
     __EMPTY__ = 0,
   } ;
@@ -160,7 +178,23 @@ class Nada final : private apache::thrift::detail::st::ComparisonOperators<Nada>
     ~storage_type() {}
   } ;
   bool operator==(const Nada& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Nada& __x, const Nada& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Nada& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Nada& __x, const Nada& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Nada& __x, const Nada& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Nada& __x, const Nada& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   Type getType() const { return type_; }
 

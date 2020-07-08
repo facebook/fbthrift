@@ -71,9 +71,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(<%field:cpp_name%>);
 <% > common/namespace_cpp2_begin%>
 
 class <%struct:name%> <%!
-%><%^struct:virtual%>final <%/struct:virtual%><%!
-%>: private apache::thrift::detail::st::ComparisonOperators<<%struct:name%>><%#struct:exception?%>, public apache::thrift::TException<%/struct:exception?%> {
+%><%^struct:virtual%>final <%/struct:virtual%><%#struct:exception?%><%!
+%>: public apache::thrift::TException<%/struct:exception?%> {
  public:
+  using __fbthrift_cpp2_type = <%struct:name%>;
 <%#struct:union?%>
 <% > module_types_h/union_enum%>
 

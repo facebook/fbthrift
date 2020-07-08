@@ -102,8 +102,9 @@ typedef int64_t IncludedInt64;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace a { namespace different { namespace ns {
-class AStruct final : private apache::thrift::detail::st::ComparisonOperators<AStruct> {
+class AStruct final  {
  public:
+  using __fbthrift_cpp2_type = AStruct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AStruct() :
@@ -130,7 +131,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool FieldA;
   } __isset = {};
   bool operator==(const AStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const AStruct& __x, const AStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const AStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const AStruct& __x, const AStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const AStruct& __x, const AStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const AStruct& __x, const AStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = int32_t>
@@ -193,8 +210,9 @@ uint32_t AStruct::read(Protocol_* iprot) {
 
 }}} // a::different::ns
 namespace a { namespace different { namespace ns {
-class AStructB final : private apache::thrift::detail::st::ComparisonOperators<AStructB> {
+class AStructB final  {
  public:
+  using __fbthrift_cpp2_type = AStructB;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AStructB() :
@@ -217,7 +235,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
  public:
   bool operator==(const AStructB& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const AStructB& __x, const AStructB& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const AStructB& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const AStructB& __x, const AStructB& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const AStructB& __x, const AStructB& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const AStructB& __x, const AStructB& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename ..., typename T = std::shared_ptr<const  ::a::different::ns::AStruct>>
   FOLLY_ERASE T& FieldA_ref() & { return FieldA; }
 

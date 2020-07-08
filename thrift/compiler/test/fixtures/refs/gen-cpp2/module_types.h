@@ -269,8 +269,9 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<MyUnion> {
+class MyUnion final  {
  public:
+  using __fbthrift_cpp2_type = MyUnion;
   enum Type : int {
     __EMPTY__ = 0,
     anInteger = 1,
@@ -388,7 +389,23 @@ class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<My
     ~storage_type() {}
   } ;
   bool operator==(const MyUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const MyUnion& __x, const MyUnion& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const MyUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const MyUnion& __x, const MyUnion& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const MyUnion& __x, const MyUnion& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const MyUnion& __x, const MyUnion& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   int32_t& set_anInteger(int32_t t = int32_t()) {
     __clear();
@@ -485,8 +502,9 @@ uint32_t MyUnion::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class MyField final : private apache::thrift::detail::st::ComparisonOperators<MyField> {
+class MyField final  {
  public:
+  using __fbthrift_cpp2_type = MyField;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyField() :
@@ -520,7 +538,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool value;
   } __isset = {};
   bool operator==(const MyField& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const MyField& __x, const MyField& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const MyField& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const MyField& __x, const MyField& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const MyField& __x, const MyField& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const MyField& __x, const MyField& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const int64_t&> opt_value_ref() const& {
@@ -646,8 +680,9 @@ uint32_t MyField::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
+class MyStruct final  {
  public:
+  using __fbthrift_cpp2_type = MyStruct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct() :
@@ -673,7 +708,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
  public:
   bool operator==(const MyStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const MyStruct& __x, const MyStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const MyStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const MyStruct& __x, const MyStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const MyStruct& __x, const MyStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const MyStruct& __x, const MyStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
   FOLLY_ERASE T& opt_ref_ref() & { return opt_ref; }
 
@@ -735,8 +786,9 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class StructWithUnion final : private apache::thrift::detail::st::ComparisonOperators<StructWithUnion> {
+class StructWithUnion final  {
  public:
+  using __fbthrift_cpp2_type = StructWithUnion;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithUnion() :
@@ -767,7 +819,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool f;
   } __isset = {};
   bool operator==(const StructWithUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const StructWithUnion& __x, const StructWithUnion& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const StructWithUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const StructWithUnion& __x, const StructWithUnion& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const StructWithUnion& __x, const StructWithUnion& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const StructWithUnion& __x, const StructWithUnion& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename ..., typename T = std::unique_ptr< ::cpp2::MyUnion>>
   FOLLY_ERASE T& u_ref() & { return u; }
 
@@ -874,8 +942,9 @@ uint32_t StructWithUnion::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class RecursiveStruct final : private apache::thrift::detail::st::ComparisonOperators<RecursiveStruct> {
+class RecursiveStruct final  {
  public:
+  using __fbthrift_cpp2_type = RecursiveStruct;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   RecursiveStruct() {}
@@ -901,7 +970,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool mes;
   } __isset = {};
   bool operator==(const RecursiveStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const RecursiveStruct& __x, const RecursiveStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const RecursiveStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const RecursiveStruct& __x, const RecursiveStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const RecursiveStruct& __x, const RecursiveStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const RecursiveStruct& __x, const RecursiveStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::vector< ::cpp2::RecursiveStruct>&> mes_ref() const& {
@@ -960,8 +1045,9 @@ uint32_t RecursiveStruct::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class StructWithContainers final : private apache::thrift::detail::st::ComparisonOperators<StructWithContainers> {
+class StructWithContainers final  {
  public:
+  using __fbthrift_cpp2_type = StructWithContainers;
 
   StructWithContainers();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -995,7 +1081,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
  public:
   bool operator==(const StructWithContainers& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const StructWithContainers& __x, const StructWithContainers& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const StructWithContainers& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const StructWithContainers& __x, const StructWithContainers& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const StructWithContainers& __x, const StructWithContainers& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const StructWithContainers& __x, const StructWithContainers& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename ..., typename T = std::unique_ptr<::std::vector<int32_t>>>
   FOLLY_ERASE T& list_ref_ref() & { return list_ref; }
 
@@ -1090,8 +1192,9 @@ uint32_t StructWithContainers::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class StructWithSharedConst final : private apache::thrift::detail::st::ComparisonOperators<StructWithSharedConst> {
+class StructWithSharedConst final  {
  public:
+  using __fbthrift_cpp2_type = StructWithSharedConst;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithSharedConst() :
@@ -1119,7 +1222,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
  public:
   bool operator==(const StructWithSharedConst& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const StructWithSharedConst& __x, const StructWithSharedConst& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const StructWithSharedConst& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const StructWithSharedConst& __x, const StructWithSharedConst& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const StructWithSharedConst& __x, const StructWithSharedConst& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const StructWithSharedConst& __x, const StructWithSharedConst& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
   FOLLY_ERASE T& opt_shared_const_ref() & { return opt_shared_const; }
 
@@ -1181,8 +1300,9 @@ uint32_t StructWithSharedConst::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class Empty final : private apache::thrift::detail::st::ComparisonOperators<Empty> {
+class Empty final  {
  public:
+  using __fbthrift_cpp2_type = Empty;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Empty() {}
@@ -1200,7 +1320,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
   bool operator==(const Empty& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Empty& __x, const Empty& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Empty& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Empty& __x, const Empty& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Empty& __x, const Empty& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Empty& __x, const Empty& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1229,8 +1365,9 @@ uint32_t Empty::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class StructWithRef final : private apache::thrift::detail::st::ComparisonOperators<StructWithRef> {
+class StructWithRef final  {
  public:
+  using __fbthrift_cpp2_type = StructWithRef;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRef() :
@@ -1256,7 +1393,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
  public:
   bool operator==(const StructWithRef& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const StructWithRef& __x, const StructWithRef& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const StructWithRef& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const StructWithRef& __x, const StructWithRef& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const StructWithRef& __x, const StructWithRef& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const StructWithRef& __x, const StructWithRef& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
   FOLLY_ERASE T& def_field_ref() & { return def_field; }
 
@@ -1318,8 +1471,9 @@ uint32_t StructWithRef::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class StructWithRefTypeUnique final : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeUnique> {
+class StructWithRefTypeUnique final  {
  public:
+  using __fbthrift_cpp2_type = StructWithRefTypeUnique;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefTypeUnique() :
@@ -1345,7 +1499,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
  public:
   bool operator==(const StructWithRefTypeUnique& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const StructWithRefTypeUnique& __x, const StructWithRefTypeUnique& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const StructWithRefTypeUnique& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const StructWithRefTypeUnique& __x, const StructWithRefTypeUnique& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const StructWithRefTypeUnique& __x, const StructWithRefTypeUnique& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const StructWithRefTypeUnique& __x, const StructWithRefTypeUnique& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
   FOLLY_ERASE T& def_field_ref() & { return def_field; }
 
@@ -1407,8 +1577,9 @@ uint32_t StructWithRefTypeUnique::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class StructWithRefTypeShared final : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeShared> {
+class StructWithRefTypeShared final  {
  public:
+  using __fbthrift_cpp2_type = StructWithRefTypeShared;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefTypeShared() :
@@ -1436,7 +1607,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
  public:
   bool operator==(const StructWithRefTypeShared& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const StructWithRefTypeShared& __x, const StructWithRefTypeShared& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const StructWithRefTypeShared& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const StructWithRefTypeShared& __x, const StructWithRefTypeShared& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const StructWithRefTypeShared& __x, const StructWithRefTypeShared& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const StructWithRefTypeShared& __x, const StructWithRefTypeShared& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
   FOLLY_ERASE T& def_field_ref() & { return def_field; }
 
@@ -1498,8 +1685,9 @@ uint32_t StructWithRefTypeShared::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class StructWithRefTypeSharedConst final : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeSharedConst> {
+class StructWithRefTypeSharedConst final  {
  public:
+  using __fbthrift_cpp2_type = StructWithRefTypeSharedConst;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefTypeSharedConst() :
@@ -1527,7 +1715,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
  public:
   bool operator==(const StructWithRefTypeSharedConst& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const StructWithRefTypeSharedConst& __x, const StructWithRefTypeSharedConst& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const StructWithRefTypeSharedConst& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const StructWithRefTypeSharedConst& __x, const StructWithRefTypeSharedConst& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const StructWithRefTypeSharedConst& __x, const StructWithRefTypeSharedConst& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const StructWithRefTypeSharedConst& __x, const StructWithRefTypeSharedConst& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
   FOLLY_ERASE T& def_field_ref() & { return def_field; }
 
@@ -1589,8 +1793,9 @@ uint32_t StructWithRefTypeSharedConst::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class StructWithRefAndAnnotCppNoexceptMoveCtor final : private apache::thrift::detail::st::ComparisonOperators<StructWithRefAndAnnotCppNoexceptMoveCtor> {
+class StructWithRefAndAnnotCppNoexceptMoveCtor final  {
  public:
+  using __fbthrift_cpp2_type = StructWithRefAndAnnotCppNoexceptMoveCtor;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefAndAnnotCppNoexceptMoveCtor() :
@@ -1613,7 +1818,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
  public:
   bool operator==(const StructWithRefAndAnnotCppNoexceptMoveCtor& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const StructWithRefAndAnnotCppNoexceptMoveCtor& __x, const StructWithRefAndAnnotCppNoexceptMoveCtor& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const StructWithRefAndAnnotCppNoexceptMoveCtor& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const StructWithRefAndAnnotCppNoexceptMoveCtor& __x, const StructWithRefAndAnnotCppNoexceptMoveCtor& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const StructWithRefAndAnnotCppNoexceptMoveCtor& __x, const StructWithRefAndAnnotCppNoexceptMoveCtor& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const StructWithRefAndAnnotCppNoexceptMoveCtor& __x, const StructWithRefAndAnnotCppNoexceptMoveCtor& __y) {
+    return !(__x < __y);
+  }
+#endif
   template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
   FOLLY_ERASE T& def_field_ref() & { return def_field; }
 
