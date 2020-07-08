@@ -24,7 +24,7 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref, optional_field_ref
+from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
 cimport module.types as _module_types
 
@@ -45,7 +45,7 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" na
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
-        field_ref[string] field_ref()
+        __FieldRef[string] field_ref()
         string field
         cMyStruct__isset __isset
 
@@ -64,13 +64,13 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" na
         bint operator>(cCombo&)
         bint operator<=(cCombo&)
         bint operator>=(cCombo&)
-        field_ref[vector[vector[cMyStruct]]] listOfOurMyStructLists_ref()
+        __FieldRef[vector[vector[cMyStruct]]] listOfOurMyStructLists_ref()
         vector[vector[cMyStruct]] listOfOurMyStructLists
-        field_ref[vector[_module_types.cMyStruct]] theirMyStructList_ref()
+        __FieldRef[vector[_module_types.cMyStruct]] theirMyStructList_ref()
         vector[_module_types.cMyStruct] theirMyStructList
-        field_ref[vector[cMyStruct]] ourMyStructList_ref()
+        __FieldRef[vector[cMyStruct]] ourMyStructList_ref()
         vector[cMyStruct] ourMyStructList
-        field_ref[vector[vector[_module_types.cMyStruct]]] listOfTheirMyStructList_ref()
+        __FieldRef[vector[vector[_module_types.cMyStruct]]] listOfTheirMyStructList_ref()
         vector[vector[_module_types.cMyStruct]] listOfTheirMyStructList
         cCombo__isset __isset
 

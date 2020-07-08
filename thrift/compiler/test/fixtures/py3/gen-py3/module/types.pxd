@@ -24,7 +24,7 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref, optional_field_ref
+from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
 
 cdef extern from *:
@@ -80,7 +80,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
         bint operator>(cSimpleException&)
         bint operator<=(cSimpleException&)
         bint operator>=(cSimpleException&)
-        field_ref[cint16_t] err_code_ref()
+        __FieldRef[cint16_t] err_code_ref()
         cint16_t err_code
         cSimpleException__isset __isset
 
@@ -117,19 +117,19 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
         bint operator>(cSimpleStruct&)
         bint operator<=(cSimpleStruct&)
         bint operator>=(cSimpleStruct&)
-        field_ref[cbool] is_on_ref()
+        __FieldRef[cbool] is_on_ref()
         cbool is_on
-        field_ref[cint8_t] tiny_int_ref()
+        __FieldRef[cint8_t] tiny_int_ref()
         cint8_t tiny_int
-        field_ref[cint16_t] small_int_ref()
+        __FieldRef[cint16_t] small_int_ref()
         cint16_t small_int
-        field_ref[cint32_t] nice_sized_int_ref()
+        __FieldRef[cint32_t] nice_sized_int_ref()
         cint32_t nice_sized_int
-        field_ref[cint64_t] big_int_ref()
+        __FieldRef[cint64_t] big_int_ref()
         cint64_t big_int
-        field_ref[double] real_ref()
+        __FieldRef[double] real_ref()
         double real
-        field_ref[float] smaller_real_ref()
+        __FieldRef[float] smaller_real_ref()
         float smaller_real
         cSimpleStruct__isset __isset
 
@@ -153,23 +153,23 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
         bint operator>(cComplexStruct&)
         bint operator<=(cComplexStruct&)
         bint operator>=(cComplexStruct&)
-        field_ref[cSimpleStruct] structOne_ref()
+        __FieldRef[cSimpleStruct] structOne_ref()
         cSimpleStruct structOne
-        field_ref[cSimpleStruct] structTwo_ref()
+        __FieldRef[cSimpleStruct] structTwo_ref()
         cSimpleStruct structTwo
-        field_ref[cint32_t] an_integer_ref()
+        __FieldRef[cint32_t] an_integer_ref()
         cint32_t an_integer
-        field_ref[string] name_ref()
+        __FieldRef[string] name_ref()
         string name
-        field_ref[cAnEnum] an_enum_ref()
+        __FieldRef[cAnEnum] an_enum_ref()
         cAnEnum an_enum
-        field_ref[string] some_bytes_ref()
+        __FieldRef[string] some_bytes_ref()
         string some_bytes
-        field_ref[string] sender_ref "from_ref"()
+        __FieldRef[string] sender_ref "from_ref"()
         string sender "from"
-        field_ref[string] cdef__ref "cdef_ref"()
+        __FieldRef[string] cdef__ref "cdef_ref"()
         string cdef_ "cdef"
-        field_ref[foo_Bar] bytes_with_cpp_type_ref()
+        __FieldRef[foo_Bar] bytes_with_cpp_type_ref()
         foo_Bar bytes_with_cpp_type
         cComplexStruct__isset __isset
 
@@ -190,7 +190,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
     cdef cppclass cBinaryUnionStruct "::py3::simple::BinaryUnionStruct":
         cBinaryUnionStruct() except +
         cBinaryUnionStruct(const cBinaryUnionStruct&) except +
-        field_ref[cBinaryUnion] u_ref()
+        __FieldRef[cBinaryUnion] u_ref()
         cBinaryUnion u
         cBinaryUnionStruct__isset __isset
 

@@ -24,7 +24,7 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref, optional_field_ref
+from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
 
 
@@ -104,9 +104,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
-        field_ref[cMyEnum] myEnum_ref()
+        __FieldRef[cMyEnum] myEnum_ref()
         cMyEnum myEnum
-        field_ref[cMyBigEnum] myBigEnum_ref()
+        __FieldRef[cMyBigEnum] myBigEnum_ref()
         cMyBigEnum myBigEnum
         cMyStruct__isset __isset
 

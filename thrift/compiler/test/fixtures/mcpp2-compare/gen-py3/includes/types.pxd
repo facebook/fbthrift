@@ -24,7 +24,7 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref, optional_field_ref
+from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
 
 cdef extern from "folly/sorted_vector_types.h":
@@ -61,7 +61,7 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::a::dif
         bint operator>(cAStruct&)
         bint operator<=(cAStruct&)
         bint operator>=(cAStruct&)
-        field_ref[cint32_t] FieldA_ref()
+        __FieldRef[cint32_t] FieldA_ref()
         cint32_t FieldA
         cAStruct__isset __isset
 

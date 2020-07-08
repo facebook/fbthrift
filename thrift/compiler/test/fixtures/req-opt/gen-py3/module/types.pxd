@@ -24,7 +24,7 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref, optional_field_ref
+from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
 
 
@@ -48,9 +48,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cFoo&)
         bint operator>=(cFoo&)
         cint32_t myInteger
-        optional_field_ref[string] myString_ref()
+        __OptionalFieldRef[string] myString_ref()
         string myString
-        field_ref[vector[cbool]] myBools_ref()
+        __FieldRef[vector[cbool]] myBools_ref()
         vector[cbool] myBools
         vector[cint32_t] myNumbers
         cFoo__isset __isset

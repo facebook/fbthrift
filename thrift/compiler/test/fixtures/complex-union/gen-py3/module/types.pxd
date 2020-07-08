@@ -24,7 +24,7 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref, optional_field_ref
+from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
 
 
@@ -118,11 +118,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cVal&)
         bint operator<=(cVal&)
         bint operator>=(cVal&)
-        field_ref[string] strVal_ref()
+        __FieldRef[string] strVal_ref()
         string strVal
-        field_ref[cint32_t] intVal_ref()
+        __FieldRef[cint32_t] intVal_ref()
         cint32_t intVal
-        field_ref[cmap[cint16_t,string]] typedefValue_ref()
+        __FieldRef[cmap[cint16_t,string]] typedefValue_ref()
         cmap[cint16_t,string] typedefValue
         cVal__isset __isset
 
@@ -178,7 +178,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cNonCopyableStruct&)
         bint operator<=(cNonCopyableStruct&)
         bint operator>=(cNonCopyableStruct&)
-        field_ref[cint64_t] num_ref()
+        __FieldRef[cint64_t] num_ref()
         cint64_t num
         cNonCopyableStruct__isset __isset
 

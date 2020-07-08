@@ -24,7 +24,7 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref, optional_field_ref
+from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
 
 
@@ -81,9 +81,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyField&)
         bint operator<=(cMyField&)
         bint operator>=(cMyField&)
-        optional_field_ref[cint64_t] opt_value_ref()
+        __OptionalFieldRef[cint64_t] opt_value_ref()
         cint64_t opt_value
-        field_ref[cint64_t] value_ref()
+        __FieldRef[cint64_t] value_ref()
         cint64_t value
         cint64_t req_value
         cMyField__isset __isset
@@ -122,9 +122,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cStructWithUnion&)
         bint operator>=(cStructWithUnion&)
         unique_ptr[cMyUnion] u
-        field_ref[double] aDouble_ref()
+        __FieldRef[double] aDouble_ref()
         double aDouble
-        field_ref[cMyField] f_ref()
+        __FieldRef[cMyField] f_ref()
         cMyField f
         cStructWithUnion__isset __isset
 
@@ -140,7 +140,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cRecursiveStruct&)
         bint operator<=(cRecursiveStruct&)
         bint operator>=(cRecursiveStruct&)
-        optional_field_ref[vector[cRecursiveStruct]] mes_ref()
+        __OptionalFieldRef[vector[cRecursiveStruct]] mes_ref()
         vector[cRecursiveStruct] mes
         cRecursiveStruct__isset __isset
 

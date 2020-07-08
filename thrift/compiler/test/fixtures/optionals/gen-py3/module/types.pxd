@@ -24,7 +24,7 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref, optional_field_ref
+from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
 
 
@@ -63,13 +63,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cColor&)
         bint operator<=(cColor&)
         bint operator>=(cColor&)
-        field_ref[double] red_ref()
+        __FieldRef[double] red_ref()
         double red
-        field_ref[double] green_ref()
+        __FieldRef[double] green_ref()
         double green
-        field_ref[double] blue_ref()
+        __FieldRef[double] blue_ref()
         double blue
-        field_ref[double] alpha_ref()
+        __FieldRef[double] alpha_ref()
         double alpha
         cColor__isset __isset
 
@@ -89,15 +89,15 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cVehicle&)
         bint operator<=(cVehicle&)
         bint operator>=(cVehicle&)
-        field_ref[cColor] color_ref()
+        __FieldRef[cColor] color_ref()
         cColor color
-        optional_field_ref[string] licensePlate_ref()
+        __OptionalFieldRef[string] licensePlate_ref()
         string licensePlate
-        optional_field_ref[string] description_ref()
+        __OptionalFieldRef[string] description_ref()
         string description
-        optional_field_ref[string] name_ref()
+        __OptionalFieldRef[string] name_ref()
         string name
-        optional_field_ref[cbool] hasAC_ref()
+        __OptionalFieldRef[cbool] hasAC_ref()
         cbool hasAC
         cVehicle__isset __isset
 
@@ -122,25 +122,25 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cPerson&)
         bint operator<=(cPerson&)
         bint operator>=(cPerson&)
-        field_ref[cint64_t] id_ref()
+        __FieldRef[cint64_t] id_ref()
         cint64_t id
-        field_ref[string] name_ref()
+        __FieldRef[string] name_ref()
         string name
-        optional_field_ref[cint16_t] age_ref()
+        __OptionalFieldRef[cint16_t] age_ref()
         cint16_t age
-        optional_field_ref[string] address_ref()
+        __OptionalFieldRef[string] address_ref()
         string address
-        optional_field_ref[cColor] favoriteColor_ref()
+        __OptionalFieldRef[cColor] favoriteColor_ref()
         cColor favoriteColor
-        optional_field_ref[cset[cint64_t]] friends_ref()
+        __OptionalFieldRef[cset[cint64_t]] friends_ref()
         cset[cint64_t] friends
-        optional_field_ref[cint64_t] bestFriend_ref()
+        __OptionalFieldRef[cint64_t] bestFriend_ref()
         cint64_t bestFriend
-        optional_field_ref[cmap[cAnimal,string]] petNames_ref()
+        __OptionalFieldRef[cmap[cAnimal,string]] petNames_ref()
         cmap[cAnimal,string] petNames
-        optional_field_ref[cAnimal] afraidOfAnimal_ref()
+        __OptionalFieldRef[cAnimal] afraidOfAnimal_ref()
         cAnimal afraidOfAnimal
-        optional_field_ref[vector[cVehicle]] vehicles_ref()
+        __OptionalFieldRef[vector[cVehicle]] vehicles_ref()
         vector[cVehicle] vehicles
         cPerson__isset __isset
 

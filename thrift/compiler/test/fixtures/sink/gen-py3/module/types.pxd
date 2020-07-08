@@ -24,7 +24,7 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref, optional_field_ref
+from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
 
 
@@ -44,7 +44,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cInitialResponse&)
         bint operator<=(cInitialResponse&)
         bint operator>=(cInitialResponse&)
-        field_ref[string] content_ref()
+        __FieldRef[string] content_ref()
         string content
         cInitialResponse__isset __isset
 
@@ -60,7 +60,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cFinalResponse&)
         bint operator<=(cFinalResponse&)
         bint operator>=(cFinalResponse&)
-        field_ref[string] content_ref()
+        __FieldRef[string] content_ref()
         string content
         cFinalResponse__isset __isset
 
@@ -76,7 +76,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cSinkPayload&)
         bint operator<=(cSinkPayload&)
         bint operator>=(cSinkPayload&)
-        field_ref[string] content_ref()
+        __FieldRef[string] content_ref()
         string content
         cSinkPayload__isset __isset
 
@@ -92,7 +92,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cCompatibleWithKeywordSink&)
         bint operator<=(cCompatibleWithKeywordSink&)
         bint operator>=(cCompatibleWithKeywordSink&)
-        field_ref[string] sink_ref()
+        __FieldRef[string] sink_ref()
         string sink
         cCompatibleWithKeywordSink__isset __isset
 
@@ -108,7 +108,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cInitialException&)
         bint operator<=(cInitialException&)
         bint operator>=(cInitialException&)
-        field_ref[string] reason_ref()
+        __FieldRef[string] reason_ref()
         string reason
         cInitialException__isset __isset
 
@@ -124,7 +124,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cSinkException1&)
         bint operator<=(cSinkException1&)
         bint operator>=(cSinkException1&)
-        field_ref[string] reason_ref()
+        __FieldRef[string] reason_ref()
         string reason
         cSinkException1__isset __isset
 
@@ -140,7 +140,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cSinkException2&)
         bint operator<=(cSinkException2&)
         bint operator>=(cSinkException2&)
-        field_ref[cint64_t] reason_ref()
+        __FieldRef[cint64_t] reason_ref()
         cint64_t reason
         cSinkException2__isset __isset
 
