@@ -120,7 +120,6 @@ class PooledRequestChannel : public RequestChannel {
 
   folly::Executor* callbackExecutor_{nullptr};
   std::weak_ptr<folly::IOExecutor> executor_;
-  std::atomic<size_t> nextEvbId_{0};
 
   folly::EventBaseLocal<Impl> impl_;
 
