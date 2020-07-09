@@ -217,7 +217,7 @@ class SimpleJSONToThriftTest(unittest.TestCase):
         gen.readFromJson(self._serialize(self.collectionStruct2))
         self.assertTrue(math.isnan(gen.l[0]))
         self.assertTrue(math.isnan(list(gen.s)[0]))
-        self.assertTrue(math.isnan(gen.m.values()[0]))
+        self.assertTrue(math.isnan(list(gen.m.values())[0]))
         self.assertTrue(math.isnan(gen.ll[0].d))
 
 
