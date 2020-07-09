@@ -35,7 +35,7 @@ class TSocketTest(unittest.TestCase):
         Asserts that both TSocket and TServerSocket can be used with `with` and
         that their resources are disposed of at the close of the `with`.
         """
-        text = "hi"  # sample text to send over the wire
+        text = b"hi"  # sample text to send over the wire
         with TSocket.TServerSocket(port=0, family=socket.AF_INET6) as server:
             addr = server.getSocketNames()[0]
             with TSocket.TSocket(host=addr[0], port=addr[1]) as conn:
@@ -111,7 +111,7 @@ class TSocketTest(unittest.TestCase):
         # Make sure that the deprecated form of the `port` parameter is
         # accepted in TServerSocket and TSocket.
         port = "0"
-        text = "hi"  # sample text to send over the wire
+        text = b"hi"  # sample text to send over the wire
         # NB: unfortunately unittest.TestCase.assertWarns isn't available until
         # py3.
         with TSocket.TServerSocket(port=port, family=socket.AF_INET6) as server:
@@ -133,7 +133,7 @@ class TSocketTest(unittest.TestCase):
                 pass
 
     def test_unix_socket(self):
-        text = "hi"  # sample text to send over the wire
+        text = b"hi"  # sample text to send over the wire
         with tempfile.NamedTemporaryFile(delete=True) as fh:
             unix_socket = fh.name
             with TSocket.TServerSocket(unix_socket=unix_socket) as server:
