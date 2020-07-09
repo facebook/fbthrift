@@ -66,7 +66,7 @@ def make_unknown_function_exception(name):
     )
 
 
-def process_main(twisted=False, asyncio=False):
+def process_main(asyncio=False):
     """Decorator for process method."""
     if asyncio and six.PY3:
         from asyncio import Future
@@ -79,16 +79,13 @@ def process_main(twisted=False, asyncio=False):
             name, seqid = self.readMessageBegin(iprot)
             if self.doesKnowFunction(name):
                 ret = self.callFunction(name, seqid, iprot, oprot, server_ctx)
-                if twisted or asyncio:
+                if asyncio:
                     return ret   # a Deferred/Future
 
                 return True
             self.skipMessageStruct(iprot)
             exc = make_unknown_function_exception(name)
             self.writeException(oprot, name, seqid, exc)
-            if twisted:
-                from twisted.internet import defer  # @manual
-                return defer.succeed(None)
             if asyncio:
                 fut = Future(loop=self._loop)
                 fut.set_result(None)
@@ -135,7 +132,7 @@ def reset_request_context(processor):
         processor._handler.setRequestContext(None)
 
 
-def process_method(argtype, oneway=False, twisted=False, asyncio=False):
+def process_method(argtype, oneway=False, asyncio=False):
     """Decorator for process_xxx methods."""
     def _decorator(func):
         def nested(self, seqid, iprot, oprot, server_ctx):
@@ -159,7 +156,7 @@ def process_method(argtype, oneway=False, twisted=False, asyncio=False):
                 if not oneway:
                     self.writeException(oprot, fn_name, seqid, result)
             else:
-                if asyncio or twisted:
+                if asyncio:
                     return func(self, args, handler_ctx, seqid, oprot, fn_name)
 
                 result = func(self, args, handler_ctx)
@@ -330,28 +327,6 @@ def write_results_after_future(
 
     write_result(result, reply_type, seqid,
                  event_handler, handler_ctx, fn_name, oprot)
-
-
-def write_results_success_callback(func):
-    """Decorator for twisted write_results_success_xxx methods.
-       No need to call func so it can be empty.
-    """
-    def nested(self, success, result, seqid, oprot, handler_ctx):
-        fn_name = func.__name__.split('_', 3)[-1]
-        result.success = success
-        self.writeReply(oprot, handler_ctx, fn_name, seqid, result)
-
-    return nested
-
-
-def write_results_exception_callback(func):
-    """Decorator for twisted write_results_exception_xxx methods."""
-    def nested(self, error, result, seqid, oprot, handler_ctx):
-        fn_name = func.__name__.split('_', 3)[-1]
-        _, result = func(self, error, result, handler_ctx)
-        self.writeReply(oprot, handler_ctx, fn_name, seqid, result)
-
-    return nested
 
 
 @contextlib.contextmanager

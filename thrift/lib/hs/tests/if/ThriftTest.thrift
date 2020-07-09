@@ -23,7 +23,6 @@ namespace csharp Thrift.Test
 namespace js ThriftTest
 namespace st ThriftTest
 namespace py ThriftTest
-namespace py.twisted ThriftTest
 namespace go thrifttest
 namespace php ThriftTest
 namespace delphi Thrift.Test
