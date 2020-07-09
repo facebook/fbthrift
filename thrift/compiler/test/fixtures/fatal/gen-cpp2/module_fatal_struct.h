@@ -4142,11 +4142,8 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
         thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::number
       >
     >,
-    ::apache::thrift::detail::reflection_impl::chained_data_member_accessor<
-      ::apache::thrift::detail::invoke_reffer<
-        ::apache::thrift::tag::number
-      >,
-      thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::number
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::number
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_number,
@@ -4166,11 +4163,8 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
         thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::result
       >
     >,
-    ::apache::thrift::detail::reflection_impl::chained_data_member_accessor<
-      ::apache::thrift::detail::invoke_reffer<
-        ::apache::thrift::tag::result
-      >,
-      thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::result
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::result
     >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_result,
@@ -4190,11 +4184,8 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
         thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::phrase
       >
     >,
-    ::apache::thrift::detail::reflection_impl::chained_data_member_accessor<
-      ::apache::thrift::detail::invoke_reffer<
-        ::apache::thrift::tag::phrase
-      >,
-      thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::phrase
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::phrase
     >,
     ::apache::thrift::type_class::string,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_phrase,

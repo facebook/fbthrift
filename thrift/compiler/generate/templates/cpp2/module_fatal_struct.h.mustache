@@ -162,11 +162,8 @@ struct <%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_member_info_list
         thrift_fatal_impl_detail::<%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_indirections_list::<%field:cpp_name%>
       >
     >,
-    ::apache::thrift::detail::reflection_impl::chained_data_member_accessor<
-      ::apache::thrift::detail::invoke_reffer<
-        ::apache::thrift::tag::<%field:cpp_name%>
-      >,
-      thrift_fatal_impl_detail::<%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_indirections_list::<%field:cpp_name%>
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::<%field:cpp_name%>
     >,
     <%/type:cpp_indirection%><%/field:type%>
     <%#field:type%><%^type:cpp_indirection%>

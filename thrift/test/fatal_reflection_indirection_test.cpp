@@ -51,6 +51,10 @@ TEST_F(FatalReflectionIndirectionTest, sanity_check_no_indirection) {
   EXPECT_TRUE(member::is_set(obj));
   member::mark_set(obj, false);
   EXPECT_FALSE(member::is_set(obj));
+
+  member::field_ref_getter{}(obj) = 13;
+  EXPECT_EQ(13, member::getter::ref(obj));
+  EXPECT_TRUE(member::is_set(obj));
 }
 
 TEST_F(FatalReflectionIndirectionTest, simple_alias_no_indirection) {
@@ -75,6 +79,10 @@ TEST_F(FatalReflectionIndirectionTest, simple_alias_no_indirection) {
   EXPECT_TRUE(member::is_set(obj));
   member::mark_set(obj, false);
   EXPECT_FALSE(member::is_set(obj));
+
+  member::field_ref_getter{}(obj) = 16;
+  EXPECT_EQ(16, member::getter::ref(obj));
+  EXPECT_TRUE(member::is_set(obj));
 }
 
 TEST_F(FatalReflectionIndirectionTest, indirection_via_single_member_field) {
@@ -99,6 +107,10 @@ TEST_F(FatalReflectionIndirectionTest, indirection_via_single_member_field) {
   EXPECT_TRUE(member::is_set(obj));
   member::mark_set(obj, false);
   EXPECT_FALSE(member::is_set(obj));
+
+  member::field_ref_getter{}(obj) = reflection_indirection::HasANumber(-42);
+  EXPECT_EQ(-42, member::getter::ref(obj));
+  EXPECT_TRUE(member::is_set(obj));
 }
 
 TEST_F(FatalReflectionIndirectionTest, indirection_via_chained_member_funcs) {
@@ -123,6 +135,10 @@ TEST_F(FatalReflectionIndirectionTest, indirection_via_chained_member_funcs) {
   EXPECT_TRUE(member::is_set(obj));
   member::mark_set(obj, false);
   EXPECT_FALSE(member::is_set(obj));
+
+  member::field_ref_getter{}(obj) = reflection_indirection::HasAResult(-1);
+  EXPECT_EQ(-1, member::getter::ref(obj));
+  EXPECT_TRUE(member::is_set(obj));
 }
 
 TEST_F(FatalReflectionIndirectionTest, indirection_string_field) {
@@ -147,4 +163,8 @@ TEST_F(FatalReflectionIndirectionTest, indirection_string_field) {
   EXPECT_TRUE(member::is_set(obj));
   member::mark_set(obj, false);
   EXPECT_FALSE(member::is_set(obj));
+
+  member::field_ref_getter{}(obj) = reflection_indirection::HasAPhrase("world");
+  EXPECT_EQ("world", member::getter::ref(obj));
+  EXPECT_TRUE(member::is_set(obj));
 }
