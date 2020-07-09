@@ -285,15 +285,15 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen(ThriftMetadata& metada
   for (auto& function_gen : functions) {
     function_gen(metadata, extra_services_ExtraService);
   }
-  extra_services_ExtraService.set_parent("module.ParamService");
+  extra_services_ExtraService.parent_ref() = "module.ParamService";
   ThriftServiceContext module_ParamService_parent_context;
   ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen(metadata, module_ParamService_parent_context);
   auto module_ParamService_parent_name = module_ParamService_parent_context.get_service_info().get_name();
   metadata.services.emplace(std::move(module_ParamService_parent_name), std::move(module_ParamService_parent_context.service_info));
-  context.set_service_info(std::move(extra_services_ExtraService));
+  context.service_info_ref() = std::move(extra_services_ExtraService);
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.set_name("extra_services");
-  context.set_module(std::move(module));
+  module.name_ref() = "extra_services";
+  context.module_ref() = std::move(module);
 }
 } // namespace md
 } // namespace detail

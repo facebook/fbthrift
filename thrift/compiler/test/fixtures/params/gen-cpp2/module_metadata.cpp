@@ -115,10 +115,10 @@ void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen(ThriftMetadata& metadata
   for (auto& function_gen : functions) {
     function_gen(metadata, module_NestedContainers);
   }
-  context.set_service_info(std::move(module_NestedContainers));
+  context.service_info_ref() = std::move(module_NestedContainers);
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.set_name("module");
-  context.set_module(std::move(module));
+  module.name_ref() = "module";
+  context.module_ref() = std::move(module);
 }
 } // namespace md
 } // namespace detail

@@ -200,10 +200,10 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen(ThriftMetadata& metadata, Thrif
   for (auto& function_gen : functions) {
     function_gen(metadata, module_MyService);
   }
-  context.set_service_info(std::move(module_MyService));
+  context.service_info_ref() = std::move(module_MyService);
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.set_name("module");
-  context.set_module(std::move(module));
+  module.name_ref() = "module";
+  context.module_ref() = std::move(module);
 }
 } // namespace md
 } // namespace detail

@@ -305,10 +305,10 @@ void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen(ThriftMetadata& metadata, Thr
   for (auto& function_gen : functions) {
     function_gen(metadata, module_SinkService);
   }
-  context.set_service_info(std::move(module_SinkService));
+  context.service_info_ref() = std::move(module_SinkService);
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.set_name("module");
-  context.set_module(std::move(module));
+  module.name_ref() = "module";
+  context.module_ref() = std::move(module);
 }
 } // namespace md
 } // namespace detail

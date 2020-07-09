@@ -247,10 +247,10 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen(ThriftMetadata& metadata, Thrif
   for (auto& function_gen : functions) {
     function_gen(metadata, module_MyService);
   }
-  context.set_service_info(std::move(module_MyService));
+  context.service_info_ref() = std::move(module_MyService);
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.set_name("module");
-  context.set_module(std::move(module));
+  module.name_ref() = "module";
+  context.module_ref() = std::move(module);
 }
 void ServiceMetadata<::cpp2::MyServicePrioParentSvIf>::gen_ping(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
@@ -282,10 +282,10 @@ void ServiceMetadata<::cpp2::MyServicePrioParentSvIf>::gen(ThriftMetadata& metad
   for (auto& function_gen : functions) {
     function_gen(metadata, module_MyServicePrioParent);
   }
-  context.set_service_info(std::move(module_MyServicePrioParent));
+  context.service_info_ref() = std::move(module_MyServicePrioParent);
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.set_name("module");
-  context.set_module(std::move(module));
+  module.name_ref() = "module";
+  context.module_ref() = std::move(module);
 }
 void ServiceMetadata<::cpp2::MyServicePrioChildSvIf>::gen_pang(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
@@ -307,15 +307,15 @@ void ServiceMetadata<::cpp2::MyServicePrioChildSvIf>::gen(ThriftMetadata& metada
   for (auto& function_gen : functions) {
     function_gen(metadata, module_MyServicePrioChild);
   }
-  module_MyServicePrioChild.set_parent("module.MyServicePrioParent");
+  module_MyServicePrioChild.parent_ref() = "module.MyServicePrioParent";
   ThriftServiceContext module_MyServicePrioParent_parent_context;
   ServiceMetadata<::cpp2::MyServicePrioParentSvIf>::gen(metadata, module_MyServicePrioParent_parent_context);
   auto module_MyServicePrioParent_parent_name = module_MyServicePrioParent_parent_context.get_service_info().get_name();
   metadata.services.emplace(std::move(module_MyServicePrioParent_parent_name), std::move(module_MyServicePrioParent_parent_context.service_info));
-  context.set_service_info(std::move(module_MyServicePrioChild));
+  context.service_info_ref() = std::move(module_MyServicePrioChild);
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.set_name("module");
-  context.set_module(std::move(module));
+  module.name_ref() = "module";
+  context.module_ref() = std::move(module);
 }
 } // namespace md
 } // namespace detail

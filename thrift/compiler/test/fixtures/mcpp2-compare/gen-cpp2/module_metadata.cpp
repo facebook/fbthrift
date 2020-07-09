@@ -573,10 +573,10 @@ void ServiceMetadata<::some::valid::ns::EmptyServiceSvIf>::gen(ThriftMetadata& m
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_EmptyService;
   module_EmptyService.name = "module.EmptyService";
-  context.set_service_info(std::move(module_EmptyService));
+  context.service_info_ref() = std::move(module_EmptyService);
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.set_name("module");
-  context.set_module(std::move(module));
+  module.name_ref() = "module";
+  context.module_ref() = std::move(module);
 }
 void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_noReturn(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
@@ -812,10 +812,10 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen(ThriftMetadata& 
   for (auto& function_gen : functions) {
     function_gen(metadata, module_ReturnService);
   }
-  context.set_service_info(std::move(module_ReturnService));
+  context.service_info_ref() = std::move(module_ReturnService);
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.set_name("module");
-  context.set_module(std::move(module));
+  module.name_ref() = "module";
+  context.module_ref() = std::move(module);
 }
 void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_i16_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
@@ -1404,10 +1404,10 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen(ThriftMetadata& m
   for (auto& function_gen : functions) {
     function_gen(metadata, module_ParamService);
   }
-  context.set_service_info(std::move(module_ParamService));
+  context.service_info_ref() = std::move(module_ParamService);
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.set_name("module");
-  context.set_module(std::move(module));
+  module.name_ref() = "module";
+  context.module_ref() = std::move(module);
 }
 } // namespace md
 } // namespace detail

@@ -40,10 +40,10 @@ void ServiceMetadata<::cpp2::MyRootSvIf>::gen(ThriftMetadata& metadata, ThriftSe
   for (auto& function_gen : functions) {
     function_gen(metadata, module_MyRoot);
   }
-  context.set_service_info(std::move(module_MyRoot));
+  context.service_info_ref() = std::move(module_MyRoot);
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.set_name("module");
-  context.set_module(std::move(module));
+  module.name_ref() = "module";
+  context.module_ref() = std::move(module);
 }
 void ServiceMetadata<::cpp2::MyNodeSvIf>::gen_do_mid(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
@@ -65,15 +65,15 @@ void ServiceMetadata<::cpp2::MyNodeSvIf>::gen(ThriftMetadata& metadata, ThriftSe
   for (auto& function_gen : functions) {
     function_gen(metadata, module_MyNode);
   }
-  module_MyNode.set_parent("module.MyRoot");
+  module_MyNode.parent_ref() = "module.MyRoot";
   ThriftServiceContext module_MyRoot_parent_context;
   ServiceMetadata<::cpp2::MyRootSvIf>::gen(metadata, module_MyRoot_parent_context);
   auto module_MyRoot_parent_name = module_MyRoot_parent_context.get_service_info().get_name();
   metadata.services.emplace(std::move(module_MyRoot_parent_name), std::move(module_MyRoot_parent_context.service_info));
-  context.set_service_info(std::move(module_MyNode));
+  context.service_info_ref() = std::move(module_MyNode);
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.set_name("module");
-  context.set_module(std::move(module));
+  module.name_ref() = "module";
+  context.module_ref() = std::move(module);
 }
 void ServiceMetadata<::cpp2::MyLeafSvIf>::gen_do_leaf(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
@@ -95,15 +95,15 @@ void ServiceMetadata<::cpp2::MyLeafSvIf>::gen(ThriftMetadata& metadata, ThriftSe
   for (auto& function_gen : functions) {
     function_gen(metadata, module_MyLeaf);
   }
-  module_MyLeaf.set_parent("module.MyNode");
+  module_MyLeaf.parent_ref() = "module.MyNode";
   ThriftServiceContext module_MyNode_parent_context;
   ServiceMetadata<::cpp2::MyNodeSvIf>::gen(metadata, module_MyNode_parent_context);
   auto module_MyNode_parent_name = module_MyNode_parent_context.get_service_info().get_name();
   metadata.services.emplace(std::move(module_MyNode_parent_name), std::move(module_MyNode_parent_context.service_info));
-  context.set_service_info(std::move(module_MyLeaf));
+  context.service_info_ref() = std::move(module_MyLeaf);
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.set_name("module");
-  context.set_module(std::move(module));
+  module.name_ref() = "module";
+  context.module_ref() = std::move(module);
 }
 } // namespace md
 } // namespace detail

@@ -741,10 +741,10 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen(ThriftMetad
   for (auto& function_gen : functions) {
     function_gen(metadata, module_service1);
   }
-  context.set_service_info(std::move(module_service1));
+  context.service_info_ref() = std::move(module_service1);
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.set_name("module");
-  context.set_module(std::move(module));
+  module.name_ref() = "module";
+  context.module_ref() = std::move(module);
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodA(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
@@ -879,10 +879,10 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen(ThriftMetad
   for (auto& function_gen : functions) {
     function_gen(metadata, module_service2);
   }
-  context.set_service_info(std::move(module_service2));
+  context.service_info_ref() = std::move(module_service2);
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.set_name("module");
-  context.set_module(std::move(module));
+  module.name_ref() = "module";
+  context.module_ref() = std::move(module);
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodA(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
@@ -1017,10 +1017,10 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen(ThriftMetad
   for (auto& function_gen : functions) {
     function_gen(metadata, module_service3);
   }
-  context.set_service_info(std::move(module_service3));
+  context.service_info_ref() = std::move(module_service3);
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.set_name("module");
-  context.set_module(std::move(module));
+  module.name_ref() = "module";
+  context.module_ref() = std::move(module);
 }
 void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_get(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
@@ -1312,10 +1312,10 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   for (auto& function_gen : functions) {
     function_gen(metadata, module_service_with_special_names);
   }
-  context.set_service_info(std::move(module_service_with_special_names));
+  context.service_info_ref() = std::move(module_service_with_special_names);
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.set_name("module");
-  context.set_module(std::move(module));
+  module.name_ref() = "module";
+  context.module_ref() = std::move(module);
 }
 } // namespace md
 } // namespace detail
