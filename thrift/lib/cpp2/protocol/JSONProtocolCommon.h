@@ -19,7 +19,6 @@
 #include <array>
 #include <limits>
 #include <list>
-#include <typeinfo>
 
 #include <folly/Conv.h>
 #include <folly/Range.h>
@@ -295,7 +294,7 @@ class JSONProtocolReaderCommon {
   [[noreturn]] static void throwUnrecognizableAsBoolean(std::string const& s);
   [[noreturn]] static void throwUnrecognizableAsIntegral(
       folly::StringPiece s,
-      std::type_info const& type);
+      folly::StringPiece typeName);
   [[noreturn]] static void throwUnrecognizableAsFloatingPoint(
       std::string const& s);
   [[noreturn]] static void throwUnrecognizableAsString(

@@ -122,10 +122,10 @@ static inline folly::StringPiece sp(char const& ch) {
 
 [[noreturn]] void JSONProtocolReaderCommon::throwUnrecognizableAsIntegral(
     folly::StringPiece s,
-    std::type_info const& type) {
+    folly::StringPiece typeName) {
   throw TProtocolException(
       TProtocolException::INVALID_DATA,
-      folly::to<std::string>(s, " is not a valid ", type.name()));
+      folly::to<std::string>(s, " is not a valid ", typeName));
 }
 
 [[noreturn]] void JSONProtocolReaderCommon::throwUnrecognizableAsFloatingPoint(

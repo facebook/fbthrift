@@ -576,7 +576,7 @@ T JSONProtocolReaderCommon::castIntegral(folly::StringPiece val) {
   try {
     return folly::to<T>(val);
   } catch (const std::exception&) {
-    throwUnrecognizableAsIntegral(val, typeid(T));
+    throwUnrecognizableAsIntegral(val, folly::pretty_name<T>());
   }
 }
 
