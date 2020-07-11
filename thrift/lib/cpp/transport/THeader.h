@@ -172,7 +172,7 @@ class THeader {
   /**
    * Clone a new THeader. Metadata is copied, but not headers.
    */
-  std::unique_ptr<THeader> clone();
+  std::unique_ptr<THeader> cloneMetadata();
 
   static uint16_t getNumTransforms(const std::vector<uint16_t>& transforms) {
     return folly::to_narrow(transforms.size());
@@ -226,6 +226,15 @@ class THeader {
   StringToStringMap releaseWriteHeaders() {
     return std::move(writeHeaders_);
   }
+
+  StringToStringMap extractAllWriteHeaders() {
+    auto headers = std::move(writeHeaders_);
+    if (extraWriteHeaders_ != nullptr) {
+      headers.insert(extraWriteHeaders_->begin(), extraWriteHeaders_->end());
+    }
+    return headers;
+  }
+
   const StringToStringMap& getWriteHeaders() const {
     return writeHeaders_;
   }

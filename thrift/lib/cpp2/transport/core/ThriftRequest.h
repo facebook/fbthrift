@@ -179,7 +179,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       folly::Optional<uint32_t> crc32c) override final {
     if (active_.exchange(false)) {
       cancelTimeout();
-      auto metadata = makeResponseRpcMetadata();
+      auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
       if (crc32c) {
         metadata.crc32c_ref() = *crc32c;
       }
@@ -200,7 +200,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       folly::Optional<uint32_t> crc32c) override final {
     if (active_.exchange(false)) {
       cancelTimeout();
-      auto metadata = makeResponseRpcMetadata();
+      auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
       if (crc32c) {
         metadata.crc32c_ref() = *crc32c;
       }
@@ -219,7 +219,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       folly::Optional<uint32_t> crc32c) override final {
     if (active_.exchange(false)) {
       cancelTimeout();
-      auto metadata = makeResponseRpcMetadata();
+      auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
       if (crc32c) {
         metadata.crc32c_ref() = *crc32c;
       }
@@ -236,7 +236,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
   void sendErrorWrapped(folly::exception_wrapper ew, std::string exCode) final {
     if (active_.exchange(false)) {
       cancelTimeout();
-      sendErrorWrappedInternal(std::move(ew), exCode);
+      sendErrorWrappedInternal(
+          std::move(ew), exCode, header_.extractAllWriteHeaders());
     }
   }
 
@@ -354,10 +355,12 @@ class ThriftRequestCore : public ResponseChannelRequest {
         folly::make_exception_wrapper<TApplicationException>(
             TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
             "Response size too big"),
-        kResponseTooBigErrorCode);
+        kResponseTooBigErrorCode,
+        header_.extractAllWriteHeaders());
   }
 
-  ResponseRpcMetadata makeResponseRpcMetadata() {
+  ResponseRpcMetadata makeResponseRpcMetadata(
+      transport::THeader::StringToStringMap&& writeHeaders) {
     ResponseRpcMetadata metadata;
 
     if ((requestFlags_ &
@@ -367,10 +370,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
           loadMetric_.value_or(transport::THeader::QUERY_LOAD_HEADER));
     }
 
-    auto writeHeaders = header_.releaseWriteHeaders();
-    if (auto* eh = header_.getExtraWriteHeaders()) {
-      writeHeaders.insert(eh->begin(), eh->end());
-    }
     if (!writeHeaders.empty()) {
       metadata.otherMetadata_ref() = std::move(writeHeaders);
     }
@@ -380,12 +379,13 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
   void sendErrorWrappedInternal(
       folly::exception_wrapper ew,
-      const std::string& exCode) {
+      const std::string& exCode,
+      transport::THeader::StringToStringMap&& writeHeaders) {
     DCHECK(ew.is_compatible_with<TApplicationException>());
-    header_.setHeader("ex", exCode);
+    writeHeaders["ex"] = exCode;
     ew.with_exception([&](TApplicationException& tae) {
       std::unique_ptr<folly::IOBuf> exbuf;
-      auto proto = header_.getProtocolId();
+      auto proto = getProtoId();
       try {
         exbuf = serializeError(proto, tae, getMethodName(), 0);
       } catch (const protocol::TProtocolException& pe) {
@@ -402,7 +402,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
         return;
       }
 
-      sendSerializedError(makeResponseRpcMetadata(), std::move(exbuf));
+      sendSerializedError(
+          makeResponseRpcMetadata(std::move(writeHeaders)), std::move(exbuf));
     });
   }
 
@@ -432,7 +433,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
             TApplicationException(
                 TApplicationException::TApplicationExceptionType::TIMEOUT,
                 "Queue Timeout"),
-            kServerQueueTimeoutErrorCode);
+            kServerQueueTimeoutErrorCode,
+            {});
       }
     }
     friend class ThriftRequestCore;
@@ -451,7 +453,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
             TApplicationException(
                 TApplicationException::TApplicationExceptionType::TIMEOUT,
                 "Task expired"),
-            kTaskExpiredErrorCode);
+            kTaskExpiredErrorCode,
+            {});
       }
     }
     friend class ThriftRequestCore;

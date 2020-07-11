@@ -624,7 +624,7 @@ unique_ptr<IOBuf> THeader::transform(
   return buf;
 }
 
-std::unique_ptr<THeader> THeader::clone() {
+std::unique_ptr<THeader> THeader::cloneMetadata() {
   auto clone = std::make_unique<THeader>();
   clone->setProtocolId(protoId_);
   clone->setTransforms(writeTrans_);

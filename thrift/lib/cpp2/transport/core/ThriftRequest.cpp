@@ -110,7 +110,7 @@ void ThriftRequestCore::sendReply(
       timestamps.processEnd = std::chrono::steady_clock::now();
     }
     if (!isOneway()) {
-      auto metadata = makeResponseRpcMetadata();
+      auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
       if (crc32c) {
         metadata.crc32c_ref() = *crc32c;
       }
