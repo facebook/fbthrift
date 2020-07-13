@@ -36,7 +36,10 @@ NOTSET = __NotSet()
 class Struct:
     def __copy__(self: _T) -> _T: ...
 
-class Union(Struct): ...
+class Union(Struct):
+    type: Any
+    value: Any
+
 class Container: ...
 
 class EnumMeta(type):
