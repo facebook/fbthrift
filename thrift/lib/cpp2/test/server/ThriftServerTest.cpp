@@ -1360,7 +1360,8 @@ TEST(ThriftServer, ClientIdentityHook) {
 
   folly::EventBase base;
   auto socket = folly::AsyncSocket::newSocket(&base, *st.getAddress());
-  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+  TestServiceAsyncClient client(
+      HeaderClientChannel::newChannel(std::move(socket)));
   std::string response;
   client.sync_sendResponse(response, 64);
   EXPECT_TRUE(flag);

@@ -47,7 +47,7 @@ Client::Client(const std::string& addr, int port) {
       [this, &addr, port]() {
         auto eventBase = this->scopedEventBaseThread_.getEventBase();
         auto socket = folly::AsyncSocket::newSocket(eventBase, addr, port);
-        auto channel = HeaderClientChannel::newChannel(socket);
+        auto channel = HeaderClientChannel::newChannel(std::move(socket));
         this->client_ =
             std::make_unique<BackendServiceAsyncClient>(std::move(channel));
       });

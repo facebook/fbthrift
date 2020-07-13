@@ -94,7 +94,8 @@ IOBufPtrTest::IOBufPtrTest() : serverEventBase_(nullptr) {
   auto socket =
       folly::AsyncSocket::newSocket(getEventBase(), getServerAddress());
 
-  auto channel = apache::thrift::HeaderClientChannel::newChannel(socket);
+  auto channel =
+      apache::thrift::HeaderClientChannel::newChannel(std::move(socket));
   client_ =
       std::make_unique<IOBufPtrTestServiceAsyncClient>(std::move(channel));
 }

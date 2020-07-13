@@ -63,7 +63,8 @@ int32_t call_return42(std::function<void(MyArgs2&)> isset_cb) {
   folly::EventBase base;
   auto socket(folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
 
-  SampleService2AsyncClient client(HeaderClientChannel::newChannel(socket));
+  SampleService2AsyncClient client(
+      HeaderClientChannel::newChannel(std::move(socket)));
 
   Inner2 inner;
   inner.i_ref() = 7;
@@ -161,7 +162,8 @@ TEST(ProcessorExceptionTest, throw_if_method_missing) {
   ScopedServerThread sst(factory.create());
   folly::EventBase base;
   auto socket(folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
-  SampleService3AsyncClient client(HeaderClientChannel::newChannel(socket));
+  SampleService3AsyncClient client(
+      HeaderClientChannel::newChannel(std::move(socket)));
 
   try {
     // call a method that doesn't exist on the server but exists on the client

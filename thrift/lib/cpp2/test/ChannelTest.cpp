@@ -1222,7 +1222,7 @@ TEST(Channel, SetKeepRegisteredForClose) {
   folly::EventBase base;
   auto transport = folly::AsyncSocket::newSocket(
       &base, "127.0.0.1", folly::Endian::big(addr.sin_port));
-  auto channel = createChannel<HeaderClientChannel>(transport);
+  auto channel = createChannel<HeaderClientChannel>(std::move(transport));
   NullCloseCallback ncc;
   channel->setCloseCallback(&ncc);
   channel->setKeepRegisteredForClose(false);
