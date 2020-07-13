@@ -282,20 +282,24 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> sonnet_ref() const& {
-    return {sonnet, __isset.sonnet};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> sonnet_ref() const& {
+    return {this->sonnet, __isset.sonnet};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&&> sonnet_ref() const&& {
-    return {std::move(sonnet), __isset.sonnet};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> sonnet_ref() const&& {
+    return {std::move(this->sonnet), __isset.sonnet};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&> sonnet_ref() & {
-    return {sonnet, __isset.sonnet};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> sonnet_ref() & {
+    return {this->sonnet, __isset.sonnet};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&&> sonnet_ref() && {
-    return {std::move(sonnet), __isset.sonnet};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> sonnet_ref() && {
+    return {std::move(this->sonnet), __isset.sonnet};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

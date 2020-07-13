@@ -258,20 +258,24 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> field2_ref() const& {
-    return {field2, __isset.field2};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> field2_ref() const& {
+    return {this->field2, __isset.field2};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&&> field2_ref() const&& {
-    return {std::move(field2), __isset.field2};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field2_ref() const&& {
+    return {std::move(this->field2), __isset.field2};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&> field2_ref() & {
-    return {field2, __isset.field2};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field2_ref() & {
+    return {this->field2, __isset.field2};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&&> field2_ref() && {
-    return {std::move(field2), __isset.field2};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field2_ref() && {
+    return {std::move(this->field2), __isset.field2};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   FOLLY_ERASE auto field1_ref() &       { return m1.field1_ref();            }

@@ -2709,20 +2709,24 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageRoot&> foo_ref() const& {
-    return {foo, __isset.foo};
+  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> foo_ref() const& {
+    return {this->foo, __isset.foo};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageRoot&&> foo_ref() const&& {
-    return {std::move(foo), __isset.foo};
+  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> foo_ref() const&& {
+    return {std::move(this->foo), __isset.foo};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageRoot&> foo_ref() & {
-    return {foo, __isset.foo};
+  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> foo_ref() & {
+    return {this->foo, __isset.foo};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageRoot&&> foo_ref() && {
-    return {std::move(foo), __isset.foo};
+  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> foo_ref() && {
+    return {std::move(this->foo), __isset.foo};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   const  ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() const&;
@@ -2812,20 +2816,24 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageStruct&> ForwardUsageStruct_ref() const& {
-    return {ForwardUsageStruct, __isset.ForwardUsageStruct};
+  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageStruct>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> ForwardUsageStruct_ref() const& {
+    return {this->ForwardUsageStruct, __isset.ForwardUsageStruct};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageStruct&&> ForwardUsageStruct_ref() const&& {
-    return {std::move(ForwardUsageStruct), __isset.ForwardUsageStruct};
+  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageStruct>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> ForwardUsageStruct_ref() const&& {
+    return {std::move(this->ForwardUsageStruct), __isset.ForwardUsageStruct};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageStruct&> ForwardUsageStruct_ref() & {
-    return {ForwardUsageStruct, __isset.ForwardUsageStruct};
+  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageStruct>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> ForwardUsageStruct_ref() & {
+    return {this->ForwardUsageStruct, __isset.ForwardUsageStruct};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageStruct&&> ForwardUsageStruct_ref() && {
-    return {std::move(ForwardUsageStruct), __isset.ForwardUsageStruct};
+  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageStruct>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> ForwardUsageStruct_ref() && {
+    return {std::move(this->ForwardUsageStruct), __isset.ForwardUsageStruct};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename ..., typename T = std::unique_ptr< ::apache::thrift::fixtures::types::ForwardUsageByRef>>
@@ -2926,20 +2934,24 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageRoot&> foo_ref() const& {
-    return {foo, __isset.foo};
+  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> foo_ref() const& {
+    return {this->foo, __isset.foo};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageRoot&&> foo_ref() const&& {
-    return {std::move(foo), __isset.foo};
+  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> foo_ref() const&& {
+    return {std::move(this->foo), __isset.foo};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageRoot&> foo_ref() & {
-    return {foo, __isset.foo};
+  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> foo_ref() & {
+    return {this->foo, __isset.foo};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageRoot&&> foo_ref() && {
-    return {std::move(foo), __isset.foo};
+  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> foo_ref() && {
+    return {std::move(this->foo), __isset.foo};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   const  ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() const&;
@@ -3339,20 +3351,24 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> MyBinaryField2_ref() const& {
-    return {MyBinaryField2, __isset.MyBinaryField2};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> MyBinaryField2_ref() const& {
+    return {this->MyBinaryField2, __isset.MyBinaryField2};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&&> MyBinaryField2_ref() const&& {
-    return {std::move(MyBinaryField2), __isset.MyBinaryField2};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> MyBinaryField2_ref() const&& {
+    return {std::move(this->MyBinaryField2), __isset.MyBinaryField2};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&> MyBinaryField2_ref() & {
-    return {MyBinaryField2, __isset.MyBinaryField2};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> MyBinaryField2_ref() & {
+    return {this->MyBinaryField2, __isset.MyBinaryField2};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&&> MyBinaryField2_ref() && {
-    return {std::move(MyBinaryField2), __isset.MyBinaryField2};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> MyBinaryField2_ref() && {
+    return {std::move(this->MyBinaryField2), __isset.MyBinaryField2};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename..., typename T = ::std::string>

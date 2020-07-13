@@ -557,20 +557,24 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const int64_t&> opt_value_ref() const& {
-    return {opt_value, __isset.opt_value};
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> opt_value_ref() const& {
+    return {this->opt_value, __isset.opt_value};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const int64_t&&> opt_value_ref() const&& {
-    return {std::move(opt_value), __isset.opt_value};
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_value_ref() const&& {
+    return {std::move(this->opt_value), __isset.opt_value};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<int64_t&> opt_value_ref() & {
-    return {opt_value, __isset.opt_value};
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> opt_value_ref() & {
+    return {this->opt_value, __isset.opt_value};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<int64_t&&> opt_value_ref() && {
-    return {std::move(opt_value), __isset.opt_value};
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_value_ref() && {
+    return {std::move(this->opt_value), __isset.opt_value};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -989,20 +993,24 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::vector< ::cpp2::RecursiveStruct>&> mes_ref() const& {
-    return {mes, __isset.mes};
+  template <typename..., typename T = ::std::vector< ::cpp2::RecursiveStruct>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> mes_ref() const& {
+    return {this->mes, __isset.mes};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::vector< ::cpp2::RecursiveStruct>&&> mes_ref() const&& {
-    return {std::move(mes), __isset.mes};
+  template <typename..., typename T = ::std::vector< ::cpp2::RecursiveStruct>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> mes_ref() const&& {
+    return {std::move(this->mes), __isset.mes};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::vector< ::cpp2::RecursiveStruct>&> mes_ref() & {
-    return {mes, __isset.mes};
+  template <typename..., typename T = ::std::vector< ::cpp2::RecursiveStruct>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> mes_ref() & {
+    return {this->mes, __isset.mes};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::vector< ::cpp2::RecursiveStruct>&&> mes_ref() && {
-    return {std::move(mes), __isset.mes};
+  template <typename..., typename T = ::std::vector< ::cpp2::RecursiveStruct>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> mes_ref() && {
+    return {std::move(this->mes), __isset.mes};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   const ::std::vector< ::cpp2::RecursiveStruct>* get_mes() const&;

@@ -32,20 +32,24 @@
 <%#field:optional?%>
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const <% > types/type%>&> <%field:cpp_name%>_ref() const& {
-    return {<%field:cpp_name%>, __isset.<%field:cpp_name%>};
+  template <typename..., typename T = <% > types/type%>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> <%field:cpp_name%>_ref() const& {
+    return {this-><%field:cpp_name%>, __isset.<%field:cpp_name%>};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const <% > types/type%>&&> <%field:cpp_name%>_ref() const&& {
-    return {std::move(<%field:cpp_name%>), __isset.<%field:cpp_name%>};
+  template <typename..., typename T = <% > types/type%>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> <%field:cpp_name%>_ref() const&& {
+    return {std::move(this-><%field:cpp_name%>), __isset.<%field:cpp_name%>};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<<% > types/type%>&> <%field:cpp_name%>_ref() & {
-    return {<%field:cpp_name%>, __isset.<%field:cpp_name%>};
+  template <typename..., typename T = <% > types/type%>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> <%field:cpp_name%>_ref() & {
+    return {this-><%field:cpp_name%>, __isset.<%field:cpp_name%>};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<<% > types/type%>&&> <%field:cpp_name%>_ref() && {
-    return {std::move(<%field:cpp_name%>), __isset.<%field:cpp_name%>};
+  template <typename..., typename T = <% > types/type%>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> <%field:cpp_name%>_ref() && {
+    return {std::move(this-><%field:cpp_name%>), __isset.<%field:cpp_name%>};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/field:optional?%>

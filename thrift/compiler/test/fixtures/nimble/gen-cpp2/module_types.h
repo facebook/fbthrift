@@ -134,38 +134,46 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const int32_t&> second_ref() const& {
-    return {second, __isset.second};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> second_ref() const& {
+    return {this->second, __isset.second};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const int32_t&&> second_ref() const&& {
-    return {std::move(second), __isset.second};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> second_ref() const&& {
+    return {std::move(this->second), __isset.second};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<int32_t&> second_ref() & {
-    return {second, __isset.second};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> second_ref() & {
+    return {this->second, __isset.second};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<int32_t&&> second_ref() && {
-    return {std::move(second), __isset.second};
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> second_ref() && {
+    return {std::move(this->second), __isset.second};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const int64_t&> third_ref() const& {
-    return {third, __isset.third};
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> third_ref() const& {
+    return {this->third, __isset.third};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const int64_t&&> third_ref() const&& {
-    return {std::move(third), __isset.third};
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> third_ref() const&& {
+    return {std::move(this->third), __isset.third};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<int64_t&> third_ref() & {
-    return {third, __isset.third};
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> third_ref() & {
+    return {this->third, __isset.third};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<int64_t&&> third_ref() && {
-    return {std::move(third), __isset.third};
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> third_ref() && {
+    return {std::move(this->third), __isset.third};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

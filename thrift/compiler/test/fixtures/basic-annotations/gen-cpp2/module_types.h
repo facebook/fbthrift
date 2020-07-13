@@ -369,20 +369,24 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> extra_ref() const& {
-    return {extra, __isset.extra};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> extra_ref() const& {
+    return {this->extra, __isset.extra};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&&> extra_ref() const&& {
-    return {std::move(extra), __isset.extra};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> extra_ref() const&& {
+    return {std::move(this->extra), __isset.extra};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&> extra_ref() & {
-    return {extra, __isset.extra};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> extra_ref() & {
+    return {this->extra, __isset.extra};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&&> extra_ref() && {
-    return {std::move(extra), __isset.extra};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> extra_ref() && {
+    return {std::move(this->extra), __isset.extra};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

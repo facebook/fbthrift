@@ -495,74 +495,90 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> licensePlate_ref() const& {
-    return {licensePlate, __isset.licensePlate};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> licensePlate_ref() const& {
+    return {this->licensePlate, __isset.licensePlate};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&&> licensePlate_ref() const&& {
-    return {std::move(licensePlate), __isset.licensePlate};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> licensePlate_ref() const&& {
+    return {std::move(this->licensePlate), __isset.licensePlate};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&> licensePlate_ref() & {
-    return {licensePlate, __isset.licensePlate};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> licensePlate_ref() & {
+    return {this->licensePlate, __isset.licensePlate};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&&> licensePlate_ref() && {
-    return {std::move(licensePlate), __isset.licensePlate};
-  }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> description_ref() const& {
-    return {description, __isset.description};
-  }
-
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&&> description_ref() const&& {
-    return {std::move(description), __isset.description};
-  }
-
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&> description_ref() & {
-    return {description, __isset.description};
-  }
-
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&&> description_ref() && {
-    return {std::move(description), __isset.description};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> licensePlate_ref() && {
+    return {std::move(this->licensePlate), __isset.licensePlate};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> name_ref() const& {
-    return {name, __isset.name};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> description_ref() const& {
+    return {this->description, __isset.description};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&&> name_ref() const&& {
-    return {std::move(name), __isset.name};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> description_ref() const&& {
+    return {std::move(this->description), __isset.description};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&> name_ref() & {
-    return {name, __isset.name};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> description_ref() & {
+    return {this->description, __isset.description};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&&> name_ref() && {
-    return {std::move(name), __isset.name};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> description_ref() && {
+    return {std::move(this->description), __isset.description};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const bool&> hasAC_ref() const& {
-    return {hasAC, __isset.hasAC};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> name_ref() const& {
+    return {this->name, __isset.name};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const bool&&> hasAC_ref() const&& {
-    return {std::move(hasAC), __isset.hasAC};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> name_ref() const&& {
+    return {std::move(this->name), __isset.name};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<bool&> hasAC_ref() & {
-    return {hasAC, __isset.hasAC};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> name_ref() & {
+    return {this->name, __isset.name};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<bool&&> hasAC_ref() && {
-    return {std::move(hasAC), __isset.hasAC};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> name_ref() && {
+    return {std::move(this->name), __isset.name};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> hasAC_ref() const& {
+    return {this->hasAC, __isset.hasAC};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> hasAC_ref() const&& {
+    return {std::move(this->hasAC), __isset.hasAC};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> hasAC_ref() & {
+    return {this->hasAC, __isset.hasAC};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> hasAC_ref() && {
+    return {std::move(this->hasAC), __isset.hasAC};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   const  ::cpp2::Color& get_color() const&;
@@ -797,146 +813,178 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const int16_t&> age_ref() const& {
-    return {age, __isset.age};
+  template <typename..., typename T = int16_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> age_ref() const& {
+    return {this->age, __isset.age};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const int16_t&&> age_ref() const&& {
-    return {std::move(age), __isset.age};
+  template <typename..., typename T = int16_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> age_ref() const&& {
+    return {std::move(this->age), __isset.age};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<int16_t&> age_ref() & {
-    return {age, __isset.age};
+  template <typename..., typename T = int16_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> age_ref() & {
+    return {this->age, __isset.age};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<int16_t&&> age_ref() && {
-    return {std::move(age), __isset.age};
-  }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> address_ref() const& {
-    return {address, __isset.address};
-  }
-
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&&> address_ref() const&& {
-    return {std::move(address), __isset.address};
-  }
-
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&> address_ref() & {
-    return {address, __isset.address};
-  }
-
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&&> address_ref() && {
-    return {std::move(address), __isset.address};
+  template <typename..., typename T = int16_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> age_ref() && {
+    return {std::move(this->age), __isset.age};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::cpp2::Color&> favoriteColor_ref() const& {
-    return {favoriteColor, __isset.favoriteColor};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> address_ref() const& {
+    return {this->address, __isset.address};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::cpp2::Color&&> favoriteColor_ref() const&& {
-    return {std::move(favoriteColor), __isset.favoriteColor};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> address_ref() const&& {
+    return {std::move(this->address), __isset.address};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::cpp2::Color&> favoriteColor_ref() & {
-    return {favoriteColor, __isset.favoriteColor};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> address_ref() & {
+    return {this->address, __isset.address};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::cpp2::Color&&> favoriteColor_ref() && {
-    return {std::move(favoriteColor), __isset.favoriteColor};
-  }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::set< ::cpp2::PersonID>&> friends_ref() const& {
-    return {friends, __isset.friends};
-  }
-
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::set< ::cpp2::PersonID>&&> friends_ref() const&& {
-    return {std::move(friends), __isset.friends};
-  }
-
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::set< ::cpp2::PersonID>&> friends_ref() & {
-    return {friends, __isset.friends};
-  }
-
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::set< ::cpp2::PersonID>&&> friends_ref() && {
-    return {std::move(friends), __isset.friends};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> address_ref() && {
+    return {std::move(this->address), __isset.address};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::cpp2::PersonID&> bestFriend_ref() const& {
-    return {bestFriend, __isset.bestFriend};
+  template <typename..., typename T =  ::cpp2::Color>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> favoriteColor_ref() const& {
+    return {this->favoriteColor, __isset.favoriteColor};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::cpp2::PersonID&&> bestFriend_ref() const&& {
-    return {std::move(bestFriend), __isset.bestFriend};
+  template <typename..., typename T =  ::cpp2::Color>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> favoriteColor_ref() const&& {
+    return {std::move(this->favoriteColor), __isset.favoriteColor};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::cpp2::PersonID&> bestFriend_ref() & {
-    return {bestFriend, __isset.bestFriend};
+  template <typename..., typename T =  ::cpp2::Color>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> favoriteColor_ref() & {
+    return {this->favoriteColor, __isset.favoriteColor};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::cpp2::PersonID&&> bestFriend_ref() && {
-    return {std::move(bestFriend), __isset.bestFriend};
-  }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::map< ::cpp2::Animal, ::std::string>&> petNames_ref() const& {
-    return {petNames, __isset.petNames};
-  }
-
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::map< ::cpp2::Animal, ::std::string>&&> petNames_ref() const&& {
-    return {std::move(petNames), __isset.petNames};
-  }
-
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::map< ::cpp2::Animal, ::std::string>&> petNames_ref() & {
-    return {petNames, __isset.petNames};
-  }
-
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::map< ::cpp2::Animal, ::std::string>&&> petNames_ref() && {
-    return {std::move(petNames), __isset.petNames};
+  template <typename..., typename T =  ::cpp2::Color>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> favoriteColor_ref() && {
+    return {std::move(this->favoriteColor), __isset.favoriteColor};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::cpp2::Animal&> afraidOfAnimal_ref() const& {
-    return {afraidOfAnimal, __isset.afraidOfAnimal};
+  template <typename..., typename T = ::std::set< ::cpp2::PersonID>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> friends_ref() const& {
+    return {this->friends, __isset.friends};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::cpp2::Animal&&> afraidOfAnimal_ref() const&& {
-    return {std::move(afraidOfAnimal), __isset.afraidOfAnimal};
+  template <typename..., typename T = ::std::set< ::cpp2::PersonID>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> friends_ref() const&& {
+    return {std::move(this->friends), __isset.friends};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::cpp2::Animal&> afraidOfAnimal_ref() & {
-    return {afraidOfAnimal, __isset.afraidOfAnimal};
+  template <typename..., typename T = ::std::set< ::cpp2::PersonID>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> friends_ref() & {
+    return {this->friends, __isset.friends};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::cpp2::Animal&&> afraidOfAnimal_ref() && {
-    return {std::move(afraidOfAnimal), __isset.afraidOfAnimal};
+  template <typename..., typename T = ::std::set< ::cpp2::PersonID>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> friends_ref() && {
+    return {std::move(this->friends), __isset.friends};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::vector< ::cpp2::Vehicle>&> vehicles_ref() const& {
-    return {vehicles, __isset.vehicles};
+  template <typename..., typename T =  ::cpp2::PersonID>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> bestFriend_ref() const& {
+    return {this->bestFriend, __isset.bestFriend};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::vector< ::cpp2::Vehicle>&&> vehicles_ref() const&& {
-    return {std::move(vehicles), __isset.vehicles};
+  template <typename..., typename T =  ::cpp2::PersonID>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> bestFriend_ref() const&& {
+    return {std::move(this->bestFriend), __isset.bestFriend};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::vector< ::cpp2::Vehicle>&> vehicles_ref() & {
-    return {vehicles, __isset.vehicles};
+  template <typename..., typename T =  ::cpp2::PersonID>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> bestFriend_ref() & {
+    return {this->bestFriend, __isset.bestFriend};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::vector< ::cpp2::Vehicle>&&> vehicles_ref() && {
-    return {std::move(vehicles), __isset.vehicles};
+  template <typename..., typename T =  ::cpp2::PersonID>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> bestFriend_ref() && {
+    return {std::move(this->bestFriend), __isset.bestFriend};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = ::std::map< ::cpp2::Animal, ::std::string>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> petNames_ref() const& {
+    return {this->petNames, __isset.petNames};
+  }
+
+  template <typename..., typename T = ::std::map< ::cpp2::Animal, ::std::string>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> petNames_ref() const&& {
+    return {std::move(this->petNames), __isset.petNames};
+  }
+
+  template <typename..., typename T = ::std::map< ::cpp2::Animal, ::std::string>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> petNames_ref() & {
+    return {this->petNames, __isset.petNames};
+  }
+
+  template <typename..., typename T = ::std::map< ::cpp2::Animal, ::std::string>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> petNames_ref() && {
+    return {std::move(this->petNames), __isset.petNames};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T =  ::cpp2::Animal>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> afraidOfAnimal_ref() const& {
+    return {this->afraidOfAnimal, __isset.afraidOfAnimal};
+  }
+
+  template <typename..., typename T =  ::cpp2::Animal>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> afraidOfAnimal_ref() const&& {
+    return {std::move(this->afraidOfAnimal), __isset.afraidOfAnimal};
+  }
+
+  template <typename..., typename T =  ::cpp2::Animal>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> afraidOfAnimal_ref() & {
+    return {this->afraidOfAnimal, __isset.afraidOfAnimal};
+  }
+
+  template <typename..., typename T =  ::cpp2::Animal>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> afraidOfAnimal_ref() && {
+    return {std::move(this->afraidOfAnimal), __isset.afraidOfAnimal};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = ::std::vector< ::cpp2::Vehicle>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> vehicles_ref() const& {
+    return {this->vehicles, __isset.vehicles};
+  }
+
+  template <typename..., typename T = ::std::vector< ::cpp2::Vehicle>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> vehicles_ref() const&& {
+    return {std::move(this->vehicles), __isset.vehicles};
+  }
+
+  template <typename..., typename T = ::std::vector< ::cpp2::Vehicle>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> vehicles_ref() & {
+    return {this->vehicles, __isset.vehicles};
+  }
+
+  template <typename..., typename T = ::std::vector< ::cpp2::Vehicle>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> vehicles_ref() && {
+    return {std::move(this->vehicles), __isset.vehicles};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

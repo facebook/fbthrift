@@ -226,20 +226,24 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const bool&> opt_fieldA_ref() const& {
-    return {opt_fieldA, __isset.opt_fieldA};
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> opt_fieldA_ref() const& {
+    return {this->opt_fieldA, __isset.opt_fieldA};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const bool&&> opt_fieldA_ref() const&& {
-    return {std::move(opt_fieldA), __isset.opt_fieldA};
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldA_ref() const&& {
+    return {std::move(this->opt_fieldA), __isset.opt_fieldA};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<bool&> opt_fieldA_ref() & {
-    return {opt_fieldA, __isset.opt_fieldA};
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> opt_fieldA_ref() & {
+    return {this->opt_fieldA, __isset.opt_fieldA};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<bool&&> opt_fieldA_ref() && {
-    return {std::move(opt_fieldA), __isset.opt_fieldA};
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldA_ref() && {
+    return {std::move(this->opt_fieldA), __isset.opt_fieldA};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -285,20 +289,24 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::map<::std::string, bool>&> opt_fieldB_ref() const& {
-    return {opt_fieldB, __isset.opt_fieldB};
+  template <typename..., typename T = ::std::map<::std::string, bool>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> opt_fieldB_ref() const& {
+    return {this->opt_fieldB, __isset.opt_fieldB};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::map<::std::string, bool>&&> opt_fieldB_ref() const&& {
-    return {std::move(opt_fieldB), __isset.opt_fieldB};
+  template <typename..., typename T = ::std::map<::std::string, bool>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldB_ref() const&& {
+    return {std::move(this->opt_fieldB), __isset.opt_fieldB};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::map<::std::string, bool>&> opt_fieldB_ref() & {
-    return {opt_fieldB, __isset.opt_fieldB};
+  template <typename..., typename T = ::std::map<::std::string, bool>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> opt_fieldB_ref() & {
+    return {this->opt_fieldB, __isset.opt_fieldB};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::map<::std::string, bool>&&> opt_fieldB_ref() && {
-    return {std::move(opt_fieldB), __isset.opt_fieldB};
+  template <typename..., typename T = ::std::map<::std::string, bool>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldB_ref() && {
+    return {std::move(this->opt_fieldB), __isset.opt_fieldB};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -344,20 +352,24 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::set<int32_t>&> opt_fieldC_ref() const& {
-    return {opt_fieldC, __isset.opt_fieldC};
+  template <typename..., typename T = ::std::set<int32_t>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> opt_fieldC_ref() const& {
+    return {this->opt_fieldC, __isset.opt_fieldC};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::set<int32_t>&&> opt_fieldC_ref() const&& {
-    return {std::move(opt_fieldC), __isset.opt_fieldC};
+  template <typename..., typename T = ::std::set<int32_t>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldC_ref() const&& {
+    return {std::move(this->opt_fieldC), __isset.opt_fieldC};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::set<int32_t>&> opt_fieldC_ref() & {
-    return {opt_fieldC, __isset.opt_fieldC};
+  template <typename..., typename T = ::std::set<int32_t>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> opt_fieldC_ref() & {
+    return {this->opt_fieldC, __isset.opt_fieldC};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::set<int32_t>&&> opt_fieldC_ref() && {
-    return {std::move(opt_fieldC), __isset.opt_fieldC};
+  template <typename..., typename T = ::std::set<int32_t>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldC_ref() && {
+    return {std::move(this->opt_fieldC), __isset.opt_fieldC};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -425,20 +437,24 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> opt_fieldE_ref() const& {
-    return {opt_fieldE, __isset.opt_fieldE};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> opt_fieldE_ref() const& {
+    return {this->opt_fieldE, __isset.opt_fieldE};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&&> opt_fieldE_ref() const&& {
-    return {std::move(opt_fieldE), __isset.opt_fieldE};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldE_ref() const&& {
+    return {std::move(this->opt_fieldE), __isset.opt_fieldE};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&> opt_fieldE_ref() & {
-    return {opt_fieldE, __isset.opt_fieldE};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> opt_fieldE_ref() & {
+    return {this->opt_fieldE, __isset.opt_fieldE};
   }
 
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&&> opt_fieldE_ref() && {
-    return {std::move(opt_fieldE), __isset.opt_fieldE};
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldE_ref() && {
+    return {std::move(this->opt_fieldE), __isset.opt_fieldE};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
