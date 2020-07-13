@@ -47,6 +47,8 @@ public final class {{struct:javaCapitalName}} {
 
     {{> struct/StructBuilder}}
 
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("{{struct:name}}");
     {{#struct:fields}}{{!
 
@@ -66,9 +68,16 @@ public final class {{struct:javaCapitalName}} {
     }}{{^field:isSupportedApacheType?}}null;{{/field:isSupportedApacheType?}}
     {{/struct:asBean?}}{{!
 
-    }}{{/struct:fields}}
+    }}{{/struct:fields}}{{!
 
-    {{#struct:fields}}
+    }}static {
+      {{#struct:fields}}
+      NAMES_TO_IDS.put("{{field:javaName}}", {{field:key}});
+      FIELD_METADATA.put({{field:key}}, {{field:javaTFieldName}});
+      {{/struct:fields}}
+    }{{!
+
+    }}{{#struct:fields}}
     {{> struct/FieldGetter}}{{!
     }}{{#struct:asBean?}}
 

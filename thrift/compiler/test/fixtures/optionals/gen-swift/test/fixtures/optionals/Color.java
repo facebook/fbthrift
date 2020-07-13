@@ -104,30 +104,44 @@ public final class Color {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Color");
     private final double red;
     public static final int _RED = 1;
     private static final TField RED_FIELD_DESC = new TField("red", TType.DOUBLE, (short)1);
-    private final double green;
+        private final double green;
     public static final int _GREEN = 2;
     private static final TField GREEN_FIELD_DESC = new TField("green", TType.DOUBLE, (short)2);
-    private final double blue;
+        private final double blue;
     public static final int _BLUE = 3;
     private static final TField BLUE_FIELD_DESC = new TField("blue", TType.DOUBLE, (short)3);
-    private final double alpha;
+        private final double alpha;
     public static final int _ALPHA = 4;
     private static final TField ALPHA_FIELD_DESC = new TField("alpha", TType.DOUBLE, (short)4);
-
+    static {
+      NAMES_TO_IDS.put("red", 1);
+      FIELD_METADATA.put(1, RED_FIELD_DESC);
+      NAMES_TO_IDS.put("green", 2);
+      FIELD_METADATA.put(2, GREEN_FIELD_DESC);
+      NAMES_TO_IDS.put("blue", 3);
+      FIELD_METADATA.put(3, BLUE_FIELD_DESC);
+      NAMES_TO_IDS.put("alpha", 4);
+      FIELD_METADATA.put(4, ALPHA_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="red", requiredness=Requiredness.NONE)
     public double getRed() { return red; }
-        
+    
+    
     @ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
     public double getGreen() { return green; }
-        
+    
+    
     @ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
     public double getBlue() { return blue; }
-        
+    
+    
     @ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)
     public double getAlpha() { return alpha; }
     

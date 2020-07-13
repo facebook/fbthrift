@@ -62,11 +62,16 @@ public final class RecursiveStruct {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("RecursiveStruct");
     private final List<test.fixtures.refs.RecursiveStruct> mes;
     public static final int _MES = 1;
     private static final TField MES_FIELD_DESC = new TField("mes", TType.LIST, (short)1);
-
+    static {
+      NAMES_TO_IDS.put("mes", 1);
+      FIELD_METADATA.put(1, MES_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, isRecursive=Recursiveness.TRUE)
     public List<test.fixtures.refs.RecursiveStruct> getMes() { return mes; }

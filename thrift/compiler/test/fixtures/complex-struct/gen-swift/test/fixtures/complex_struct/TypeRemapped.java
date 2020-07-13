@@ -104,30 +104,44 @@ public final class TypeRemapped {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("TypeRemapped");
     private final it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap;
     public static final int _LSMAP = 1;
     private static final TField LS_MAP_FIELD_DESC = new TField("lsMap", TType.MAP, (short)1);
-    private final it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap;
+        private final it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap;
     public static final int _IOMAP = 2;
     private static final TField IO_MAP_FIELD_DESC = new TField("ioMap", TType.MAP, (short)2);
-    private final java.math.BigInteger bigInteger;
+        private final java.math.BigInteger bigInteger;
     public static final int _BIGINTEGER = 3;
     private static final TField BIG_INTEGER_FIELD_DESC = new TField("bigInteger", TType.I32, (short)3);
-    private final java.nio.ByteBuffer binaryTestBuffer;
+        private final java.nio.ByteBuffer binaryTestBuffer;
     public static final int _BINARYTESTBUFFER = 4;
     private static final TField BINARY_TEST_BUFFER_FIELD_DESC = new TField("binaryTestBuffer", TType.STRING, (short)4);
-
+    static {
+      NAMES_TO_IDS.put("lsMap", 1);
+      FIELD_METADATA.put(1, LS_MAP_FIELD_DESC);
+      NAMES_TO_IDS.put("ioMap", 2);
+      FIELD_METADATA.put(2, IO_MAP_FIELD_DESC);
+      NAMES_TO_IDS.put("bigInteger", 3);
+      FIELD_METADATA.put(3, BIG_INTEGER_FIELD_DESC);
+      NAMES_TO_IDS.put("binaryTestBuffer", 4);
+      FIELD_METADATA.put(4, BINARY_TEST_BUFFER_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
-        
+    
+    
     @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> getIoMap() { return ioMap; }
-        
+    
+    
     @ThriftField(value=3, name="BigInteger", requiredness=Requiredness.NONE)
     public java.math.BigInteger getBigInteger() { return bigInteger; }
-        
+    
+    
     @ThriftField(value=4, name="binaryTestBuffer", requiredness=Requiredness.NONE)
     public java.nio.ByteBuffer getBinaryTestBuffer() { return binaryTestBuffer; }
     

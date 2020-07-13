@@ -76,18 +76,26 @@ public final class SecretStruct {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("SecretStruct");
     private final long id;
     public static final int _ID = 1;
     private static final TField ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
-    private final String password;
+        private final String password;
     public static final int _PASSWORD = 2;
     private static final TField PASSWORD_FIELD_DESC = new TField("password", TType.STRING, (short)2);
-
+    static {
+      NAMES_TO_IDS.put("id", 1);
+      FIELD_METADATA.put(1, ID_FIELD_DESC);
+      NAMES_TO_IDS.put("password", 2);
+      FIELD_METADATA.put(2, PASSWORD_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
     public long getId() { return id; }
-        
+    
+    
     @ThriftField(value=2, name="password", requiredness=Requiredness.NONE)
     public String getPassword() { return password; }
     

@@ -67,6 +67,8 @@ public final class MyDataItem {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyDataItem");
     private int field1;
     public static final int _FIELD1 = 1;
@@ -74,7 +76,12 @@ public final class MyDataItem {
     private int field2;
     public static final int _FIELD2 = 2;
     private static final TField FIELD2_FIELD_DESC = new TField("field2", TType.I32, (short)2);
-
+static {
+      NAMES_TO_IDS.put("field1", 1);
+      FIELD_METADATA.put(1, FIELD1_FIELD_DESC);
+      NAMES_TO_IDS.put("field2", 2);
+      FIELD_METADATA.put(2, FIELD2_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)
     public int getField1() { return field1; }
@@ -84,7 +91,8 @@ public final class MyDataItem {
         this.field1 = field1;
         return this;
     }
-        
+    
+    
     @ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)
     public int getField2() { return field2; }
     

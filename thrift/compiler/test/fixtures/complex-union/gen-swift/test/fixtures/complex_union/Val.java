@@ -90,24 +90,35 @@ public final class Val {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Val");
     private final String strVal;
     public static final int _STRVAL = 1;
     private static final TField STR_VAL_FIELD_DESC = new TField("strVal", TType.STRING, (short)1);
-    private final int intVal;
+        private final int intVal;
     public static final int _INTVAL = 2;
     private static final TField INT_VAL_FIELD_DESC = new TField("intVal", TType.I32, (short)2);
-    private final Map<Short, String> typedefValue;
+        private final Map<Short, String> typedefValue;
     public static final int _TYPEDEFVALUE = 9;
     private static final TField TYPEDEF_VALUE_FIELD_DESC = new TField("typedefValue", TType.MAP, (short)9);
-
+    static {
+      NAMES_TO_IDS.put("strVal", 1);
+      FIELD_METADATA.put(1, STR_VAL_FIELD_DESC);
+      NAMES_TO_IDS.put("intVal", 2);
+      FIELD_METADATA.put(2, INT_VAL_FIELD_DESC);
+      NAMES_TO_IDS.put("typedefValue", 9);
+      FIELD_METADATA.put(9, TYPEDEF_VALUE_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="strVal", requiredness=Requiredness.NONE)
     public String getStrVal() { return strVal; }
-        
+    
+    
     @ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE)
     public int getIntVal() { return intVal; }
-        
+    
+    
     @ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE)
     public Map<Short, String> getTypedefValue() { return typedefValue; }
     

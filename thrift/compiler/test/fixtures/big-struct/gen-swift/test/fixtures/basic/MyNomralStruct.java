@@ -468,186 +468,278 @@ public final class MyNomralStruct {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyNomralStruct");
     private final String msg1;
     public static final int _MSG1 = 1;
     private static final TField MSG1_FIELD_DESC = new TField("msg1", TType.STRING, (short)1);
-    private final String msg2;
+        private final String msg2;
     public static final int _MSG2 = 2;
     private static final TField MSG2_FIELD_DESC = new TField("msg2", TType.STRING, (short)2);
-    private final String msg3;
+        private final String msg3;
     public static final int _MSG3 = 3;
     private static final TField MSG3_FIELD_DESC = new TField("msg3", TType.STRING, (short)3);
-    private final String msg4;
+        private final String msg4;
     public static final int _MSG4 = 4;
     private static final TField MSG4_FIELD_DESC = new TField("msg4", TType.STRING, (short)4);
-    private final String msg5;
+        private final String msg5;
     public static final int _MSG5 = 5;
     private static final TField MSG5_FIELD_DESC = new TField("msg5", TType.STRING, (short)5);
-    private final String msg6;
+        private final String msg6;
     public static final int _MSG6 = 6;
     private static final TField MSG6_FIELD_DESC = new TField("msg6", TType.STRING, (short)6);
-    private final String msg7;
+        private final String msg7;
     public static final int _MSG7 = 7;
     private static final TField MSG7_FIELD_DESC = new TField("msg7", TType.STRING, (short)7);
-    private final String msg8;
+        private final String msg8;
     public static final int _MSG8 = 8;
     private static final TField MSG8_FIELD_DESC = new TField("msg8", TType.STRING, (short)8);
-    private final String msg9;
+        private final String msg9;
     public static final int _MSG9 = 9;
     private static final TField MSG9_FIELD_DESC = new TField("msg9", TType.STRING, (short)9);
-    private final int myIntField10;
+        private final int myIntField10;
     public static final int _MYINTFIELD10 = 10;
     private static final TField MY_INT_FIELD10_FIELD_DESC = new TField("myIntField10", TType.I32, (short)10);
-    private final int myIntField11;
+        private final int myIntField11;
     public static final int _MYINTFIELD11 = 11;
     private static final TField MY_INT_FIELD11_FIELD_DESC = new TField("myIntField11", TType.I32, (short)11);
-    private final int myIntField12;
+        private final int myIntField12;
     public static final int _MYINTFIELD12 = 12;
     private static final TField MY_INT_FIELD12_FIELD_DESC = new TField("myIntField12", TType.I32, (short)12);
-    private final int myIntField13;
+        private final int myIntField13;
     public static final int _MYINTFIELD13 = 13;
     private static final TField MY_INT_FIELD13_FIELD_DESC = new TField("myIntField13", TType.I32, (short)13);
-    private final int myIntField14;
+        private final int myIntField14;
     public static final int _MYINTFIELD14 = 14;
     private static final TField MY_INT_FIELD14_FIELD_DESC = new TField("myIntField14", TType.I32, (short)14);
-    private final int myIntField15;
+        private final int myIntField15;
     public static final int _MYINTFIELD15 = 15;
     private static final TField MY_INT_FIELD15_FIELD_DESC = new TField("myIntField15", TType.I32, (short)15);
-    private final int myIntField16;
+        private final int myIntField16;
     public static final int _MYINTFIELD16 = 16;
     private static final TField MY_INT_FIELD16_FIELD_DESC = new TField("myIntField16", TType.I32, (short)16);
-    private final int myIntField17;
+        private final int myIntField17;
     public static final int _MYINTFIELD17 = 17;
     private static final TField MY_INT_FIELD17_FIELD_DESC = new TField("myIntField17", TType.I32, (short)17);
-    private final int myIntField18;
+        private final int myIntField18;
     public static final int _MYINTFIELD18 = 18;
     private static final TField MY_INT_FIELD18_FIELD_DESC = new TField("myIntField18", TType.I32, (short)18);
-    private final int myIntField19;
+        private final int myIntField19;
     public static final int _MYINTFIELD19 = 19;
     private static final TField MY_INT_FIELD19_FIELD_DESC = new TField("myIntField19", TType.I32, (short)19);
-    private final int myIntField20;
+        private final int myIntField20;
     public static final int _MYINTFIELD20 = 20;
     private static final TField MY_INT_FIELD20_FIELD_DESC = new TField("myIntField20", TType.I32, (short)20);
-    private final double myDoubleField21;
+        private final double myDoubleField21;
     public static final int _MYDOUBLEFIELD21 = 21;
     private static final TField MY_DOUBLE_FIELD21_FIELD_DESC = new TField("myDoubleField21", TType.DOUBLE, (short)21);
-    private final double myDoubleField22;
+        private final double myDoubleField22;
     public static final int _MYDOUBLEFIELD22 = 22;
     private static final TField MY_DOUBLE_FIELD22_FIELD_DESC = new TField("myDoubleField22", TType.DOUBLE, (short)22);
-    private final double myDoubleField23;
+        private final double myDoubleField23;
     public static final int _MYDOUBLEFIELD23 = 23;
     private static final TField MY_DOUBLE_FIELD23_FIELD_DESC = new TField("myDoubleField23", TType.DOUBLE, (short)23);
-    private final double myDoubleField24;
+        private final double myDoubleField24;
     public static final int _MYDOUBLEFIELD24 = 24;
     private static final TField MY_DOUBLE_FIELD24_FIELD_DESC = new TField("myDoubleField24", TType.DOUBLE, (short)24);
-    private final double myDoubleField25;
+        private final double myDoubleField25;
     public static final int _MYDOUBLEFIELD25 = 25;
     private static final TField MY_DOUBLE_FIELD25_FIELD_DESC = new TField("myDoubleField25", TType.DOUBLE, (short)25);
-    private final double myDoubleField26;
+        private final double myDoubleField26;
     public static final int _MYDOUBLEFIELD26 = 26;
     private static final TField MY_DOUBLE_FIELD26_FIELD_DESC = new TField("myDoubleField26", TType.DOUBLE, (short)26);
-    private final double myDoubleField27;
+        private final double myDoubleField27;
     public static final int _MYDOUBLEFIELD27 = 27;
     private static final TField MY_DOUBLE_FIELD27_FIELD_DESC = new TField("myDoubleField27", TType.DOUBLE, (short)27);
-    private final double myDoubleField28;
+        private final double myDoubleField28;
     public static final int _MYDOUBLEFIELD28 = 28;
     private static final TField MY_DOUBLE_FIELD28_FIELD_DESC = new TField("myDoubleField28", TType.DOUBLE, (short)28);
-    private final double myDoubleField29;
+        private final double myDoubleField29;
     public static final int _MYDOUBLEFIELD29 = 29;
     private static final TField MY_DOUBLE_FIELD29_FIELD_DESC = new TField("myDoubleField29", TType.DOUBLE, (short)29);
-    private final double myDoubleField30;
+        private final double myDoubleField30;
     public static final int _MYDOUBLEFIELD30 = 30;
     private static final TField MY_DOUBLE_FIELD30_FIELD_DESC = new TField("myDoubleField30", TType.DOUBLE, (short)30);
-
+    static {
+      NAMES_TO_IDS.put("msg1", 1);
+      FIELD_METADATA.put(1, MSG1_FIELD_DESC);
+      NAMES_TO_IDS.put("msg2", 2);
+      FIELD_METADATA.put(2, MSG2_FIELD_DESC);
+      NAMES_TO_IDS.put("msg3", 3);
+      FIELD_METADATA.put(3, MSG3_FIELD_DESC);
+      NAMES_TO_IDS.put("msg4", 4);
+      FIELD_METADATA.put(4, MSG4_FIELD_DESC);
+      NAMES_TO_IDS.put("msg5", 5);
+      FIELD_METADATA.put(5, MSG5_FIELD_DESC);
+      NAMES_TO_IDS.put("msg6", 6);
+      FIELD_METADATA.put(6, MSG6_FIELD_DESC);
+      NAMES_TO_IDS.put("msg7", 7);
+      FIELD_METADATA.put(7, MSG7_FIELD_DESC);
+      NAMES_TO_IDS.put("msg8", 8);
+      FIELD_METADATA.put(8, MSG8_FIELD_DESC);
+      NAMES_TO_IDS.put("msg9", 9);
+      FIELD_METADATA.put(9, MSG9_FIELD_DESC);
+      NAMES_TO_IDS.put("myIntField10", 10);
+      FIELD_METADATA.put(10, MY_INT_FIELD10_FIELD_DESC);
+      NAMES_TO_IDS.put("myIntField11", 11);
+      FIELD_METADATA.put(11, MY_INT_FIELD11_FIELD_DESC);
+      NAMES_TO_IDS.put("myIntField12", 12);
+      FIELD_METADATA.put(12, MY_INT_FIELD12_FIELD_DESC);
+      NAMES_TO_IDS.put("myIntField13", 13);
+      FIELD_METADATA.put(13, MY_INT_FIELD13_FIELD_DESC);
+      NAMES_TO_IDS.put("myIntField14", 14);
+      FIELD_METADATA.put(14, MY_INT_FIELD14_FIELD_DESC);
+      NAMES_TO_IDS.put("myIntField15", 15);
+      FIELD_METADATA.put(15, MY_INT_FIELD15_FIELD_DESC);
+      NAMES_TO_IDS.put("myIntField16", 16);
+      FIELD_METADATA.put(16, MY_INT_FIELD16_FIELD_DESC);
+      NAMES_TO_IDS.put("myIntField17", 17);
+      FIELD_METADATA.put(17, MY_INT_FIELD17_FIELD_DESC);
+      NAMES_TO_IDS.put("myIntField18", 18);
+      FIELD_METADATA.put(18, MY_INT_FIELD18_FIELD_DESC);
+      NAMES_TO_IDS.put("myIntField19", 19);
+      FIELD_METADATA.put(19, MY_INT_FIELD19_FIELD_DESC);
+      NAMES_TO_IDS.put("myIntField20", 20);
+      FIELD_METADATA.put(20, MY_INT_FIELD20_FIELD_DESC);
+      NAMES_TO_IDS.put("myDoubleField21", 21);
+      FIELD_METADATA.put(21, MY_DOUBLE_FIELD21_FIELD_DESC);
+      NAMES_TO_IDS.put("myDoubleField22", 22);
+      FIELD_METADATA.put(22, MY_DOUBLE_FIELD22_FIELD_DESC);
+      NAMES_TO_IDS.put("myDoubleField23", 23);
+      FIELD_METADATA.put(23, MY_DOUBLE_FIELD23_FIELD_DESC);
+      NAMES_TO_IDS.put("myDoubleField24", 24);
+      FIELD_METADATA.put(24, MY_DOUBLE_FIELD24_FIELD_DESC);
+      NAMES_TO_IDS.put("myDoubleField25", 25);
+      FIELD_METADATA.put(25, MY_DOUBLE_FIELD25_FIELD_DESC);
+      NAMES_TO_IDS.put("myDoubleField26", 26);
+      FIELD_METADATA.put(26, MY_DOUBLE_FIELD26_FIELD_DESC);
+      NAMES_TO_IDS.put("myDoubleField27", 27);
+      FIELD_METADATA.put(27, MY_DOUBLE_FIELD27_FIELD_DESC);
+      NAMES_TO_IDS.put("myDoubleField28", 28);
+      FIELD_METADATA.put(28, MY_DOUBLE_FIELD28_FIELD_DESC);
+      NAMES_TO_IDS.put("myDoubleField29", 29);
+      FIELD_METADATA.put(29, MY_DOUBLE_FIELD29_FIELD_DESC);
+      NAMES_TO_IDS.put("myDoubleField30", 30);
+      FIELD_METADATA.put(30, MY_DOUBLE_FIELD30_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="msg1", requiredness=Requiredness.NONE)
     public String getMsg1() { return msg1; }
-        
+    
+    
     @ThriftField(value=2, name="msg2", requiredness=Requiredness.NONE)
     public String getMsg2() { return msg2; }
-        
+    
+    
     @ThriftField(value=3, name="msg3", requiredness=Requiredness.NONE)
     public String getMsg3() { return msg3; }
-        
+    
+    
     @ThriftField(value=4, name="msg4", requiredness=Requiredness.NONE)
     public String getMsg4() { return msg4; }
-        
+    
+    
     @ThriftField(value=5, name="msg5", requiredness=Requiredness.NONE)
     public String getMsg5() { return msg5; }
-        
+    
+    
     @ThriftField(value=6, name="msg6", requiredness=Requiredness.NONE)
     public String getMsg6() { return msg6; }
-        
+    
+    
     @ThriftField(value=7, name="msg7", requiredness=Requiredness.NONE)
     public String getMsg7() { return msg7; }
-        
+    
+    
     @ThriftField(value=8, name="msg8", requiredness=Requiredness.NONE)
     public String getMsg8() { return msg8; }
-        
+    
+    
     @ThriftField(value=9, name="msg9", requiredness=Requiredness.NONE)
     public String getMsg9() { return msg9; }
-        
+    
+    
     @ThriftField(value=10, name="myIntField10", requiredness=Requiredness.NONE)
     public int getMyIntField10() { return myIntField10; }
-        
+    
+    
     @ThriftField(value=11, name="myIntField11", requiredness=Requiredness.NONE)
     public int getMyIntField11() { return myIntField11; }
-        
+    
+    
     @ThriftField(value=12, name="myIntField12", requiredness=Requiredness.NONE)
     public int getMyIntField12() { return myIntField12; }
-        
+    
+    
     @ThriftField(value=13, name="myIntField13", requiredness=Requiredness.NONE)
     public int getMyIntField13() { return myIntField13; }
-        
+    
+    
     @ThriftField(value=14, name="myIntField14", requiredness=Requiredness.NONE)
     public int getMyIntField14() { return myIntField14; }
-        
+    
+    
     @ThriftField(value=15, name="myIntField15", requiredness=Requiredness.NONE)
     public int getMyIntField15() { return myIntField15; }
-        
+    
+    
     @ThriftField(value=16, name="myIntField16", requiredness=Requiredness.NONE)
     public int getMyIntField16() { return myIntField16; }
-        
+    
+    
     @ThriftField(value=17, name="myIntField17", requiredness=Requiredness.NONE)
     public int getMyIntField17() { return myIntField17; }
-        
+    
+    
     @ThriftField(value=18, name="myIntField18", requiredness=Requiredness.NONE)
     public int getMyIntField18() { return myIntField18; }
-        
+    
+    
     @ThriftField(value=19, name="myIntField19", requiredness=Requiredness.NONE)
     public int getMyIntField19() { return myIntField19; }
-        
+    
+    
     @ThriftField(value=20, name="myIntField20", requiredness=Requiredness.NONE)
     public int getMyIntField20() { return myIntField20; }
-        
+    
+    
     @ThriftField(value=21, name="myDoubleField21", requiredness=Requiredness.NONE)
     public double getMyDoubleField21() { return myDoubleField21; }
-        
+    
+    
     @ThriftField(value=22, name="myDoubleField22", requiredness=Requiredness.NONE)
     public double getMyDoubleField22() { return myDoubleField22; }
-        
+    
+    
     @ThriftField(value=23, name="myDoubleField23", requiredness=Requiredness.NONE)
     public double getMyDoubleField23() { return myDoubleField23; }
-        
+    
+    
     @ThriftField(value=24, name="myDoubleField24", requiredness=Requiredness.NONE)
     public double getMyDoubleField24() { return myDoubleField24; }
-        
+    
+    
     @ThriftField(value=25, name="myDoubleField25", requiredness=Requiredness.NONE)
     public double getMyDoubleField25() { return myDoubleField25; }
-        
+    
+    
     @ThriftField(value=26, name="myDoubleField26", requiredness=Requiredness.NONE)
     public double getMyDoubleField26() { return myDoubleField26; }
-        
+    
+    
     @ThriftField(value=27, name="myDoubleField27", requiredness=Requiredness.NONE)
     public double getMyDoubleField27() { return myDoubleField27; }
-        
+    
+    
     @ThriftField(value=28, name="myDoubleField28", requiredness=Requiredness.NONE)
     public double getMyDoubleField28() { return myDoubleField28; }
-        
+    
+    
     @ThriftField(value=29, name="myDoubleField29", requiredness=Requiredness.NONE)
     public double getMyDoubleField29() { return myDoubleField29; }
-        
+    
+    
     @ThriftField(value=30, name="myDoubleField30", requiredness=Requiredness.NONE)
     public double getMyDoubleField30() { return myDoubleField30; }
     

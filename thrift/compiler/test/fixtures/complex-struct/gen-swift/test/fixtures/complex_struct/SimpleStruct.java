@@ -76,18 +76,26 @@ public final class SimpleStruct {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("SimpleStruct");
     private final long age;
     public static final int _AGE = 1;
     private static final TField AGE_FIELD_DESC = new TField("age", TType.I64, (short)1);
-    private final String name;
+        private final String name;
     public static final int _NAME = 2;
     private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)2);
-
+    static {
+      NAMES_TO_IDS.put("age", 1);
+      FIELD_METADATA.put(1, AGE_FIELD_DESC);
+      NAMES_TO_IDS.put("name", 2);
+      FIELD_METADATA.put(2, NAME_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="age", requiredness=Requiredness.NONE)
     public long getAge() { return age; }
-        
+    
+    
     @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
     

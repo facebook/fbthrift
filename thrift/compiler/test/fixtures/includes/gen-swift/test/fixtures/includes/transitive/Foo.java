@@ -62,11 +62,16 @@ public final class Foo {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Foo");
     private final long a;
     public static final int _A = 1;
     private static final TField A_FIELD_DESC = new TField("a", TType.I64, (short)1);
-
+    static {
+      NAMES_TO_IDS.put("a", 1);
+      FIELD_METADATA.put(1, A_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public long getA() { return a; }

@@ -46,9 +46,11 @@ public final class MyDataItem {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyDataItem");
-
-
+static {
+    }
     @Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);

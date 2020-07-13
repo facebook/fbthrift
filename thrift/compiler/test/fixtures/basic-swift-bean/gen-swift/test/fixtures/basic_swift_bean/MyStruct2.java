@@ -67,6 +67,8 @@ public final class MyStruct2 {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct2");
     private test.fixtures.basic_swift_bean.MyStruct1 myStruct1;
     public static final int _MYSTRUCT1 = 1;
@@ -74,7 +76,12 @@ public final class MyStruct2 {
     private String myString;
     public static final int _MYSTRING = 2;
     private static final TField MY_STRING_FIELD_DESC = new TField("myString", TType.STRING, (short)2);
-
+static {
+      NAMES_TO_IDS.put("myStruct1", 1);
+      FIELD_METADATA.put(1, MY_STRUCT1_FIELD_DESC);
+      NAMES_TO_IDS.put("myString", 2);
+      FIELD_METADATA.put(2, MY_STRING_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="myStruct1", requiredness=Requiredness.NONE)
     public test.fixtures.basic_swift_bean.MyStruct1 getMyStruct1() { return myStruct1; }
@@ -84,7 +91,8 @@ public final class MyStruct2 {
         this.myStruct1 = myStruct1;
         return this;
     }
-        
+    
+    
     @ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)
     public String getMyString() { return myString; }
     

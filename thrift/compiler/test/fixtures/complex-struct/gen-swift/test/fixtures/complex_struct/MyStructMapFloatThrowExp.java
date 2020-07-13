@@ -76,18 +76,26 @@ public final class MyStructMapFloatThrowExp {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStructMapFloatThrowExp");
     private final long myLongField;
     public static final int _MYLONGFIELD = 1;
     private static final TField MY_LONG_FIELD_FIELD_DESC = new TField("myLongField", TType.I64, (short)1);
-    private final Map<Integer, List<List<Float>>> mapListOfFloats;
+        private final Map<Integer, List<List<Float>>> mapListOfFloats;
     public static final int _MAPLISTOFFLOATS = 2;
     private static final TField MAP_LIST_OF_FLOATS_FIELD_DESC = new TField("mapListOfFloats", TType.MAP, (short)2);
-
+    static {
+      NAMES_TO_IDS.put("myLongField", 1);
+      FIELD_METADATA.put(1, MY_LONG_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("mapListOfFloats", 2);
+      FIELD_METADATA.put(2, MAP_LIST_OF_FLOATS_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
-        
+    
+    
     @ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE)
     public Map<Integer, List<List<Float>>> getMapListOfFloats() { return mapListOfFloats; }
     

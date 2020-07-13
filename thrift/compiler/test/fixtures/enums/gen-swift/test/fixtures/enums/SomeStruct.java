@@ -105,30 +105,44 @@ public final class SomeStruct {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("SomeStruct");
     private final test.fixtures.enums.Metasyntactic reasonable;
     public static final int _REASONABLE = 1;
     private static final TField REASONABLE_FIELD_DESC = new TField("reasonable", TType.I32, (short)1);
-    private final test.fixtures.enums.Metasyntactic fine;
+        private final test.fixtures.enums.Metasyntactic fine;
     public static final int _FINE = 2;
     private static final TField FINE_FIELD_DESC = new TField("fine", TType.I32, (short)2);
-    private final test.fixtures.enums.Metasyntactic questionable;
+        private final test.fixtures.enums.Metasyntactic questionable;
     public static final int _QUESTIONABLE = 3;
     private static final TField QUESTIONABLE_FIELD_DESC = new TField("questionable", TType.I32, (short)3);
-    private final Set<Integer> tags;
+        private final Set<Integer> tags;
     public static final int _TAGS = 4;
     private static final TField TAGS_FIELD_DESC = new TField("tags", TType.SET, (short)4);
-
+    static {
+      NAMES_TO_IDS.put("reasonable", 1);
+      FIELD_METADATA.put(1, REASONABLE_FIELD_DESC);
+      NAMES_TO_IDS.put("fine", 2);
+      FIELD_METADATA.put(2, FINE_FIELD_DESC);
+      NAMES_TO_IDS.put("questionable", 3);
+      FIELD_METADATA.put(3, QUESTIONABLE_FIELD_DESC);
+      NAMES_TO_IDS.put("tags", 4);
+      FIELD_METADATA.put(4, TAGS_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="reasonable", requiredness=Requiredness.NONE)
     public test.fixtures.enums.Metasyntactic getReasonable() { return reasonable; }
-        
+    
+    
     @ThriftField(value=2, name="fine", requiredness=Requiredness.NONE)
     public test.fixtures.enums.Metasyntactic getFine() { return fine; }
-        
+    
+    
     @ThriftField(value=3, name="questionable", requiredness=Requiredness.NONE)
     public test.fixtures.enums.Metasyntactic getQuestionable() { return questionable; }
-        
+    
+    
     @ThriftField(value=4, name="tags", requiredness=Requiredness.NONE)
     public Set<Integer> getTags() { return tags; }
     

@@ -440,174 +440,260 @@ public final class MyStruct {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final long myIntField;
     public static final int _MYINTFIELD = 1;
     private static final TField MY_INT_FIELD_FIELD_DESC = new TField("myIntField", TType.I64, (short)1);
-    private final String myStringField;
+        private final String myStringField;
     public static final int _MYSTRINGFIELD = 2;
     private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("myStringField", TType.STRING, (short)2);
-    private final test.fixtures.complex_struct.MyDataItem myDataField;
+        private final test.fixtures.complex_struct.MyDataItem myDataField;
     public static final int _MYDATAFIELD = 3;
     private static final TField MY_DATA_FIELD_FIELD_DESC = new TField("myDataField", TType.STRUCT, (short)3);
-    private final test.fixtures.complex_struct.MyEnum myEnum;
+        private final test.fixtures.complex_struct.MyEnum myEnum;
     public static final int _MYENUM = 4;
     private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)4);
-    private final boolean myBoolField;
+        private final boolean myBoolField;
     public static final int _MYBOOLFIELD = 5;
     private static final TField MY_BOOL_FIELD_FIELD_DESC = new TField("myBoolField", TType.BOOL, (short)5);
-    private final byte myByteField;
+        private final byte myByteField;
     public static final int _MYBYTEFIELD = 6;
     private static final TField MY_BYTE_FIELD_FIELD_DESC = new TField("myByteField", TType.BYTE, (short)6);
-    private final short myShortField;
+        private final short myShortField;
     public static final int _MYSHORTFIELD = 7;
     private static final TField MY_SHORT_FIELD_FIELD_DESC = new TField("myShortField", TType.I16, (short)7);
-    private final long myLongField;
+        private final long myLongField;
     public static final int _MYLONGFIELD = 8;
     private static final TField MY_LONG_FIELD_FIELD_DESC = new TField("myLongField", TType.I64, (short)8);
-    private final double myDoubleField;
+        private final double myDoubleField;
     public static final int _MYDOUBLEFIELD = 9;
     private static final TField MY_DOUBLE_FIELD_FIELD_DESC = new TField("myDoubleField", TType.DOUBLE, (short)9);
-    private final List<Double> lDouble;
+        private final List<Double> lDouble;
     public static final int _LDOUBLE = 10;
     private static final TField L_DOUBLE_FIELD_DESC = new TField("lDouble", TType.LIST, (short)10);
-    private final List<Short> lShort;
+        private final List<Short> lShort;
     public static final int _LSHORT = 11;
     private static final TField L_SHORT_FIELD_DESC = new TField("lShort", TType.LIST, (short)11);
-    private final List<Integer> lInteger;
+        private final List<Integer> lInteger;
     public static final int _LINTEGER = 12;
     private static final TField L_INTEGER_FIELD_DESC = new TField("lInteger", TType.LIST, (short)12);
-    private final List<Long> lLong;
+        private final List<Long> lLong;
     public static final int _LLONG = 13;
     private static final TField L_LONG_FIELD_DESC = new TField("lLong", TType.LIST, (short)13);
-    private final List<String> lString;
+        private final List<String> lString;
     public static final int _LSTRING = 14;
     private static final TField L_STRING_FIELD_DESC = new TField("lString", TType.LIST, (short)14);
-    private final List<Boolean> lBool;
+        private final List<Boolean> lBool;
     public static final int _LBOOL = 15;
     private static final TField L_BOOL_FIELD_DESC = new TField("lBool", TType.LIST, (short)15);
-    private final List<Byte> lByte;
+        private final List<Byte> lByte;
     public static final int _LBYTE = 16;
     private static final TField L_BYTE_FIELD_DESC = new TField("lByte", TType.LIST, (short)16);
-    private final Map<Short, String> mShortString;
+        private final Map<Short, String> mShortString;
     public static final int _MSHORTSTRING = 17;
     private static final TField M_SHORT_STRING_FIELD_DESC = new TField("mShortString", TType.MAP, (short)17);
-    private final Map<Integer, String> mIntegerString;
+        private final Map<Integer, String> mIntegerString;
     public static final int _MINTEGERSTRING = 18;
     private static final TField M_INTEGER_STRING_FIELD_DESC = new TField("mIntegerString", TType.MAP, (short)18);
-    private final Map<String, test.fixtures.complex_struct.MyStruct> mStringMyStruct;
+        private final Map<String, test.fixtures.complex_struct.MyStruct> mStringMyStruct;
     public static final int _MSTRINGMYSTRUCT = 19;
     private static final TField M_STRING_MY_STRUCT_FIELD_DESC = new TField("mStringMyStruct", TType.MAP, (short)19);
-    private final Map<String, Boolean> mStringBool;
+        private final Map<String, Boolean> mStringBool;
     public static final int _MSTRINGBOOL = 20;
     private static final TField M_STRING_BOOL_FIELD_DESC = new TField("mStringBool", TType.MAP, (short)20);
-    private final Map<Integer, Integer> mIntegerInteger;
+        private final Map<Integer, Integer> mIntegerInteger;
     public static final int _MINTEGERINTEGER = 21;
     private static final TField M_INTEGER_INTEGER_FIELD_DESC = new TField("mIntegerInteger", TType.MAP, (short)21);
-    private final Map<Integer, Boolean> mIntegerBool;
+        private final Map<Integer, Boolean> mIntegerBool;
     public static final int _MINTEGERBOOL = 22;
     private static final TField M_INTEGER_BOOL_FIELD_DESC = new TField("mIntegerBool", TType.MAP, (short)22);
-    private final Set<Short> sShort;
+        private final Set<Short> sShort;
     public static final int _SSHORT = 23;
     private static final TField S_SHORT_FIELD_DESC = new TField("sShort", TType.SET, (short)23);
-    private final Set<test.fixtures.complex_struct.MyStruct> sMyStruct;
+        private final Set<test.fixtures.complex_struct.MyStruct> sMyStruct;
     public static final int _SMYSTRUCT = 24;
     private static final TField S_MY_STRUCT_FIELD_DESC = new TField("sMyStruct", TType.SET, (short)24);
-    private final Set<Long> sLong;
+        private final Set<Long> sLong;
     public static final int _SLONG = 25;
     private static final TField S_LONG_FIELD_DESC = new TField("sLong", TType.SET, (short)25);
-    private final Set<String> sString;
+        private final Set<String> sString;
     public static final int _SSTRING = 26;
     private static final TField S_STRING_FIELD_DESC = new TField("sString", TType.SET, (short)26);
-    private final Set<Byte> sByte;
+        private final Set<Byte> sByte;
     public static final int _SBYTE = 27;
     private static final TField S_BYTE_FIELD_DESC = new TField("sByte", TType.SET, (short)27);
-    private final Map<List<Integer>, List<Integer>> mListList;
+        private final Map<List<Integer>, List<Integer>> mListList;
     public static final int _MLISTLIST = 28;
     private static final TField M_LIST_LIST_FIELD_DESC = new TField("mListList", TType.MAP, (short)28);
-
+    static {
+      NAMES_TO_IDS.put("myIntField", 1);
+      FIELD_METADATA.put(1, MY_INT_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("myStringField", 2);
+      FIELD_METADATA.put(2, MY_STRING_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("myDataField", 3);
+      FIELD_METADATA.put(3, MY_DATA_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("myEnum", 4);
+      FIELD_METADATA.put(4, MY_ENUM_FIELD_DESC);
+      NAMES_TO_IDS.put("myBoolField", 5);
+      FIELD_METADATA.put(5, MY_BOOL_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("myByteField", 6);
+      FIELD_METADATA.put(6, MY_BYTE_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("myShortField", 7);
+      FIELD_METADATA.put(7, MY_SHORT_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("myLongField", 8);
+      FIELD_METADATA.put(8, MY_LONG_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("myDoubleField", 9);
+      FIELD_METADATA.put(9, MY_DOUBLE_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("lDouble", 10);
+      FIELD_METADATA.put(10, L_DOUBLE_FIELD_DESC);
+      NAMES_TO_IDS.put("lShort", 11);
+      FIELD_METADATA.put(11, L_SHORT_FIELD_DESC);
+      NAMES_TO_IDS.put("lInteger", 12);
+      FIELD_METADATA.put(12, L_INTEGER_FIELD_DESC);
+      NAMES_TO_IDS.put("lLong", 13);
+      FIELD_METADATA.put(13, L_LONG_FIELD_DESC);
+      NAMES_TO_IDS.put("lString", 14);
+      FIELD_METADATA.put(14, L_STRING_FIELD_DESC);
+      NAMES_TO_IDS.put("lBool", 15);
+      FIELD_METADATA.put(15, L_BOOL_FIELD_DESC);
+      NAMES_TO_IDS.put("lByte", 16);
+      FIELD_METADATA.put(16, L_BYTE_FIELD_DESC);
+      NAMES_TO_IDS.put("mShortString", 17);
+      FIELD_METADATA.put(17, M_SHORT_STRING_FIELD_DESC);
+      NAMES_TO_IDS.put("mIntegerString", 18);
+      FIELD_METADATA.put(18, M_INTEGER_STRING_FIELD_DESC);
+      NAMES_TO_IDS.put("mStringMyStruct", 19);
+      FIELD_METADATA.put(19, M_STRING_MY_STRUCT_FIELD_DESC);
+      NAMES_TO_IDS.put("mStringBool", 20);
+      FIELD_METADATA.put(20, M_STRING_BOOL_FIELD_DESC);
+      NAMES_TO_IDS.put("mIntegerInteger", 21);
+      FIELD_METADATA.put(21, M_INTEGER_INTEGER_FIELD_DESC);
+      NAMES_TO_IDS.put("mIntegerBool", 22);
+      FIELD_METADATA.put(22, M_INTEGER_BOOL_FIELD_DESC);
+      NAMES_TO_IDS.put("sShort", 23);
+      FIELD_METADATA.put(23, S_SHORT_FIELD_DESC);
+      NAMES_TO_IDS.put("sMyStruct", 24);
+      FIELD_METADATA.put(24, S_MY_STRUCT_FIELD_DESC);
+      NAMES_TO_IDS.put("sLong", 25);
+      FIELD_METADATA.put(25, S_LONG_FIELD_DESC);
+      NAMES_TO_IDS.put("sString", 26);
+      FIELD_METADATA.put(26, S_STRING_FIELD_DESC);
+      NAMES_TO_IDS.put("sByte", 27);
+      FIELD_METADATA.put(27, S_BYTE_FIELD_DESC);
+      NAMES_TO_IDS.put("mListList", 28);
+      FIELD_METADATA.put(28, M_LIST_LIST_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
-        
+    
+    
     @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
-        
+    
+    
     @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyDataItem getMyDataField() { return myDataField; }
-        
+    
+    
     @ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyEnum getMyEnum() { return myEnum; }
-        
+    
+    
     @ThriftField(value=5, name="MyBoolField", requiredness=Requiredness.NONE)
     public boolean isMyBoolField() { return myBoolField; }
-        
+    
+    
     @ThriftField(value=6, name="MyByteField", requiredness=Requiredness.NONE)
     public byte getMyByteField() { return myByteField; }
-        
+    
+    
     @ThriftField(value=7, name="MyShortField", requiredness=Requiredness.NONE)
     public short getMyShortField() { return myShortField; }
-        
+    
+    
     @ThriftField(value=8, name="MyLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
-        
+    
+    
     @ThriftField(value=9, name="MyDoubleField", requiredness=Requiredness.NONE)
     public double getMyDoubleField() { return myDoubleField; }
-        
+    
+    
     @ThriftField(value=10, name="lDouble", requiredness=Requiredness.NONE)
     public List<Double> getLDouble() { return lDouble; }
-        
+    
+    
     @ThriftField(value=11, name="lShort", requiredness=Requiredness.NONE)
     public List<Short> getLShort() { return lShort; }
-        
+    
+    
     @ThriftField(value=12, name="lInteger", requiredness=Requiredness.NONE)
     public List<Integer> getLInteger() { return lInteger; }
-        
+    
+    
     @ThriftField(value=13, name="lLong", requiredness=Requiredness.NONE)
     public List<Long> getLLong() { return lLong; }
-        
+    
+    
     @ThriftField(value=14, name="lString", requiredness=Requiredness.NONE)
     public List<String> getLString() { return lString; }
-        
+    
+    
     @ThriftField(value=15, name="lBool", requiredness=Requiredness.NONE)
     public List<Boolean> getLBool() { return lBool; }
-        
+    
+    
     @ThriftField(value=16, name="lByte", requiredness=Requiredness.NONE)
     public List<Byte> getLByte() { return lByte; }
-        
+    
+    
     @ThriftField(value=17, name="mShortString", requiredness=Requiredness.NONE)
     public Map<Short, String> getMShortString() { return mShortString; }
-        
+    
+    
     @ThriftField(value=18, name="mIntegerString", requiredness=Requiredness.NONE)
     public Map<Integer, String> getMIntegerString() { return mIntegerString; }
-        
+    
+    
     @ThriftField(value=19, name="mStringMyStruct", requiredness=Requiredness.NONE)
     public Map<String, test.fixtures.complex_struct.MyStruct> getMStringMyStruct() { return mStringMyStruct; }
-        
+    
+    
     @ThriftField(value=20, name="mStringBool", requiredness=Requiredness.NONE)
     public Map<String, Boolean> getMStringBool() { return mStringBool; }
-        
+    
+    
     @ThriftField(value=21, name="mIntegerInteger", requiredness=Requiredness.NONE)
     public Map<Integer, Integer> getMIntegerInteger() { return mIntegerInteger; }
-        
+    
+    
     @ThriftField(value=22, name="mIntegerBool", requiredness=Requiredness.NONE)
     public Map<Integer, Boolean> getMIntegerBool() { return mIntegerBool; }
-        
+    
+    
     @ThriftField(value=23, name="sShort", requiredness=Requiredness.NONE)
     public Set<Short> getSShort() { return sShort; }
-        
+    
+    
     @ThriftField(value=24, name="sMyStruct", requiredness=Requiredness.NONE)
     public Set<test.fixtures.complex_struct.MyStruct> getSMyStruct() { return sMyStruct; }
-        
+    
+    
     @ThriftField(value=25, name="sLong", requiredness=Requiredness.NONE)
     public Set<Long> getSLong() { return sLong; }
-        
+    
+    
     @ThriftField(value=26, name="sString", requiredness=Requiredness.NONE)
     public Set<String> getSString() { return sString; }
-        
+    
+    
     @ThriftField(value=27, name="sByte", requiredness=Requiredness.NONE)
     public Set<Byte> getSByte() { return sByte; }
-        
+    
+    
     @ThriftField(value=28, name="mListList", requiredness=Requiredness.NONE)
     public Map<List<Integer>, List<Integer>> getMListList() { return mListList; }
     

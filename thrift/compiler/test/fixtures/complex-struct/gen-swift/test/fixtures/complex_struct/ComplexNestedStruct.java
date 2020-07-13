@@ -300,114 +300,170 @@ public final class ComplexNestedStruct {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("ComplexNestedStruct");
     private final Set<Set<Integer>> setOfSetOfInt;
     public static final int _SETOFSETOFINT = 1;
     private static final TField SET_OF_SET_OF_INT_FIELD_DESC = new TField("setOfSetOfInt", TType.SET, (short)1);
-    private final List<List<List<List<test.fixtures.complex_struct.MyEnum>>>> listofListOfListOfListOfEnum;
+        private final List<List<List<List<test.fixtures.complex_struct.MyEnum>>>> listofListOfListOfListOfEnum;
     public static final int _LISTOFLISTOFLISTOFLISTOFENUM = 2;
     private static final TField LISTOF_LIST_OF_LIST_OF_LIST_OF_ENUM_FIELD_DESC = new TField("listofListOfListOfListOfEnum", TType.LIST, (short)2);
-    private final List<List<test.fixtures.complex_struct.MyStruct>> listOfListOfMyStruct;
+        private final List<List<test.fixtures.complex_struct.MyStruct>> listOfListOfMyStruct;
     public static final int _LISTOFLISTOFMYSTRUCT = 3;
     private static final TField LIST_OF_LIST_OF_MY_STRUCT_FIELD_DESC = new TField("listOfListOfMyStruct", TType.LIST, (short)3);
-    private final Set<List<List<Long>>> setOfListOfListOfLong;
+        private final Set<List<List<Long>>> setOfListOfListOfLong;
     public static final int _SETOFLISTOFLISTOFLONG = 4;
     private static final TField SET_OF_LIST_OF_LIST_OF_LONG_FIELD_DESC = new TField("setOfListOfListOfLong", TType.SET, (short)4);
-    private final Set<Set<Set<Long>>> setOfSetOfsetOfLong;
+        private final Set<Set<Set<Long>>> setOfSetOfsetOfLong;
     public static final int _SETOFSETOFSETOFLONG = 5;
     private static final TField SET_OF_SET_OFSET_OF_LONG_FIELD_DESC = new TField("setOfSetOfsetOfLong", TType.SET, (short)5);
-    private final Map<Integer, List<List<test.fixtures.complex_struct.MyStruct>>> mapStructListOfListOfLong;
+        private final Map<Integer, List<List<test.fixtures.complex_struct.MyStruct>>> mapStructListOfListOfLong;
     public static final int _MAPSTRUCTLISTOFLISTOFLONG = 6;
     private static final TField MAP_STRUCT_LIST_OF_LIST_OF_LONG_FIELD_DESC = new TField("mapStructListOfListOfLong", TType.MAP, (short)6);
-    private final Map<test.fixtures.complex_struct.MyStruct, Integer> mKeyStructValInt;
+        private final Map<test.fixtures.complex_struct.MyStruct, Integer> mKeyStructValInt;
     public static final int _MKEYSTRUCTVALINT = 7;
     private static final TField M_KEY_STRUCT_VAL_INT_FIELD_DESC = new TField("mKeyStructValInt", TType.MAP, (short)7);
-    private final List<Map<Integer, Integer>> listOfMapKeyIntValInt;
+        private final List<Map<Integer, Integer>> listOfMapKeyIntValInt;
     public static final int _LISTOFMAPKEYINTVALINT = 8;
     private static final TField LIST_OF_MAP_KEY_INT_VAL_INT_FIELD_DESC = new TField("listOfMapKeyIntValInt", TType.LIST, (short)8);
-    private final List<Map<String, List<test.fixtures.complex_struct.MyStruct>>> listOfMapKeyStrValList;
+        private final List<Map<String, List<test.fixtures.complex_struct.MyStruct>>> listOfMapKeyStrValList;
     public static final int _LISTOFMAPKEYSTRVALLIST = 9;
     private static final TField LIST_OF_MAP_KEY_STR_VAL_LIST_FIELD_DESC = new TField("listOfMapKeyStrValList", TType.LIST, (short)9);
-    private final Map<Set<Integer>, Long> mapKeySetValLong;
+        private final Map<Set<Integer>, Long> mapKeySetValLong;
     public static final int _MAPKEYSETVALLONG = 10;
     private static final TField MAP_KEY_SET_VAL_LONG_FIELD_DESC = new TField("mapKeySetValLong", TType.MAP, (short)10);
-    private final Map<List<String>, Integer> mapKeyListValLong;
+        private final Map<List<String>, Integer> mapKeyListValLong;
     public static final int _MAPKEYLISTVALLONG = 11;
     private static final TField MAP_KEY_LIST_VAL_LONG_FIELD_DESC = new TField("mapKeyListValLong", TType.MAP, (short)11);
-    private final Map<Map<Integer, String>, Map<Integer, String>> mapKeyMapValMap;
+        private final Map<Map<Integer, String>, Map<Integer, String>> mapKeyMapValMap;
     public static final int _MAPKEYMAPVALMAP = 12;
     private static final TField MAP_KEY_MAP_VAL_MAP_FIELD_DESC = new TField("mapKeyMapValMap", TType.MAP, (short)12);
-    private final Map<Set<List<Integer>>, Map<List<Set<String>>, String>> mapKeySetValMap;
+        private final Map<Set<List<Integer>>, Map<List<Set<String>>, String>> mapKeySetValMap;
     public static final int _MAPKEYSETVALMAP = 13;
     private static final TField MAP_KEY_SET_VAL_MAP_FIELD_DESC = new TField("mapKeySetValMap", TType.MAP, (short)13);
-    private final Map<Map<Map<Integer, String>, String>, Map<Integer, String>> nestedMaps;
+        private final Map<Map<Map<Integer, String>, String>, Map<Integer, String>> nestedMaps;
     public static final int _NESTEDMAPS = 14;
     private static final TField NESTED_MAPS_FIELD_DESC = new TField("nestedMaps", TType.MAP, (short)14);
-    private final Map<Integer, List<test.fixtures.complex_struct.MyStruct>> mapKeyIntValList;
+        private final Map<Integer, List<test.fixtures.complex_struct.MyStruct>> mapKeyIntValList;
     public static final int _MAPKEYINTVALLIST = 15;
     private static final TField MAP_KEY_INT_VAL_LIST_FIELD_DESC = new TField("mapKeyIntValList", TType.MAP, (short)15);
-    private final Map<Integer, Set<Boolean>> mapKeyIntValSet;
+        private final Map<Integer, Set<Boolean>> mapKeyIntValSet;
     public static final int _MAPKEYINTVALSET = 16;
     private static final TField MAP_KEY_INT_VAL_SET_FIELD_DESC = new TField("mapKeyIntValSet", TType.MAP, (short)16);
-    private final Map<Set<Boolean>, test.fixtures.complex_struct.MyEnum> mapKeySetValInt;
+        private final Map<Set<Boolean>, test.fixtures.complex_struct.MyEnum> mapKeySetValInt;
     public static final int _MAPKEYSETVALINT = 17;
     private static final TField MAP_KEY_SET_VAL_INT_FIELD_DESC = new TField("mapKeySetValInt", TType.MAP, (short)17);
-    private final Map<List<Integer>, Set<Map<Double, String>>> mapKeyListValSet;
+        private final Map<List<Integer>, Set<Map<Double, String>>> mapKeyListValSet;
     public static final int _MAPKEYLISTVALSET = 18;
     private static final TField MAP_KEY_LIST_VAL_SET_FIELD_DESC = new TField("mapKeyListValSet", TType.MAP, (short)18);
-
+    static {
+      NAMES_TO_IDS.put("setOfSetOfInt", 1);
+      FIELD_METADATA.put(1, SET_OF_SET_OF_INT_FIELD_DESC);
+      NAMES_TO_IDS.put("listofListOfListOfListOfEnum", 2);
+      FIELD_METADATA.put(2, LISTOF_LIST_OF_LIST_OF_LIST_OF_ENUM_FIELD_DESC);
+      NAMES_TO_IDS.put("listOfListOfMyStruct", 3);
+      FIELD_METADATA.put(3, LIST_OF_LIST_OF_MY_STRUCT_FIELD_DESC);
+      NAMES_TO_IDS.put("setOfListOfListOfLong", 4);
+      FIELD_METADATA.put(4, SET_OF_LIST_OF_LIST_OF_LONG_FIELD_DESC);
+      NAMES_TO_IDS.put("setOfSetOfsetOfLong", 5);
+      FIELD_METADATA.put(5, SET_OF_SET_OFSET_OF_LONG_FIELD_DESC);
+      NAMES_TO_IDS.put("mapStructListOfListOfLong", 6);
+      FIELD_METADATA.put(6, MAP_STRUCT_LIST_OF_LIST_OF_LONG_FIELD_DESC);
+      NAMES_TO_IDS.put("mKeyStructValInt", 7);
+      FIELD_METADATA.put(7, M_KEY_STRUCT_VAL_INT_FIELD_DESC);
+      NAMES_TO_IDS.put("listOfMapKeyIntValInt", 8);
+      FIELD_METADATA.put(8, LIST_OF_MAP_KEY_INT_VAL_INT_FIELD_DESC);
+      NAMES_TO_IDS.put("listOfMapKeyStrValList", 9);
+      FIELD_METADATA.put(9, LIST_OF_MAP_KEY_STR_VAL_LIST_FIELD_DESC);
+      NAMES_TO_IDS.put("mapKeySetValLong", 10);
+      FIELD_METADATA.put(10, MAP_KEY_SET_VAL_LONG_FIELD_DESC);
+      NAMES_TO_IDS.put("mapKeyListValLong", 11);
+      FIELD_METADATA.put(11, MAP_KEY_LIST_VAL_LONG_FIELD_DESC);
+      NAMES_TO_IDS.put("mapKeyMapValMap", 12);
+      FIELD_METADATA.put(12, MAP_KEY_MAP_VAL_MAP_FIELD_DESC);
+      NAMES_TO_IDS.put("mapKeySetValMap", 13);
+      FIELD_METADATA.put(13, MAP_KEY_SET_VAL_MAP_FIELD_DESC);
+      NAMES_TO_IDS.put("nestedMaps", 14);
+      FIELD_METADATA.put(14, NESTED_MAPS_FIELD_DESC);
+      NAMES_TO_IDS.put("mapKeyIntValList", 15);
+      FIELD_METADATA.put(15, MAP_KEY_INT_VAL_LIST_FIELD_DESC);
+      NAMES_TO_IDS.put("mapKeyIntValSet", 16);
+      FIELD_METADATA.put(16, MAP_KEY_INT_VAL_SET_FIELD_DESC);
+      NAMES_TO_IDS.put("mapKeySetValInt", 17);
+      FIELD_METADATA.put(17, MAP_KEY_SET_VAL_INT_FIELD_DESC);
+      NAMES_TO_IDS.put("mapKeyListValSet", 18);
+      FIELD_METADATA.put(18, MAP_KEY_LIST_VAL_SET_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="setOfSetOfInt", requiredness=Requiredness.NONE)
     public Set<Set<Integer>> getSetOfSetOfInt() { return setOfSetOfInt; }
-        
+    
+    
     @ThriftField(value=2, name="listofListOfListOfListOfEnum", requiredness=Requiredness.NONE)
     public List<List<List<List<test.fixtures.complex_struct.MyEnum>>>> getListofListOfListOfListOfEnum() { return listofListOfListOfListOfEnum; }
-        
+    
+    
     @ThriftField(value=3, name="listOfListOfMyStruct", requiredness=Requiredness.NONE)
     public List<List<test.fixtures.complex_struct.MyStruct>> getListOfListOfMyStruct() { return listOfListOfMyStruct; }
-        
+    
+    
     @ThriftField(value=4, name="setOfListOfListOfLong", requiredness=Requiredness.NONE)
     public Set<List<List<Long>>> getSetOfListOfListOfLong() { return setOfListOfListOfLong; }
-        
+    
+    
     @ThriftField(value=5, name="setOfSetOfsetOfLong", requiredness=Requiredness.NONE)
     public Set<Set<Set<Long>>> getSetOfSetOfsetOfLong() { return setOfSetOfsetOfLong; }
-        
+    
+    
     @ThriftField(value=6, name="mapStructListOfListOfLong", requiredness=Requiredness.NONE)
     public Map<Integer, List<List<test.fixtures.complex_struct.MyStruct>>> getMapStructListOfListOfLong() { return mapStructListOfListOfLong; }
-        
+    
+    
     @ThriftField(value=7, name="mKeyStructValInt", requiredness=Requiredness.NONE)
     public Map<test.fixtures.complex_struct.MyStruct, Integer> getMKeyStructValInt() { return mKeyStructValInt; }
-        
+    
+    
     @ThriftField(value=8, name="listOfMapKeyIntValInt", requiredness=Requiredness.NONE)
     public List<Map<Integer, Integer>> getListOfMapKeyIntValInt() { return listOfMapKeyIntValInt; }
-        
+    
+    
     @ThriftField(value=9, name="listOfMapKeyStrValList", requiredness=Requiredness.NONE)
     public List<Map<String, List<test.fixtures.complex_struct.MyStruct>>> getListOfMapKeyStrValList() { return listOfMapKeyStrValList; }
-        
+    
+    
     @ThriftField(value=10, name="mapKeySetValLong", requiredness=Requiredness.NONE)
     public Map<Set<Integer>, Long> getMapKeySetValLong() { return mapKeySetValLong; }
-        
+    
+    
     @ThriftField(value=11, name="mapKeyListValLong", requiredness=Requiredness.NONE)
     public Map<List<String>, Integer> getMapKeyListValLong() { return mapKeyListValLong; }
-        
+    
+    
     @ThriftField(value=12, name="mapKeyMapValMap", requiredness=Requiredness.NONE)
     public Map<Map<Integer, String>, Map<Integer, String>> getMapKeyMapValMap() { return mapKeyMapValMap; }
-        
+    
+    
     @ThriftField(value=13, name="mapKeySetValMap", requiredness=Requiredness.NONE)
     public Map<Set<List<Integer>>, Map<List<Set<String>>, String>> getMapKeySetValMap() { return mapKeySetValMap; }
-        
+    
+    
     @ThriftField(value=14, name="NestedMaps", requiredness=Requiredness.NONE)
     public Map<Map<Map<Integer, String>, String>, Map<Integer, String>> getNestedMaps() { return nestedMaps; }
-        
+    
+    
     @ThriftField(value=15, name="mapKeyIntValList", requiredness=Requiredness.NONE)
     public Map<Integer, List<test.fixtures.complex_struct.MyStruct>> getMapKeyIntValList() { return mapKeyIntValList; }
-        
+    
+    
     @ThriftField(value=16, name="mapKeyIntValSet", requiredness=Requiredness.NONE)
     public Map<Integer, Set<Boolean>> getMapKeyIntValSet() { return mapKeyIntValSet; }
-        
+    
+    
     @ThriftField(value=17, name="mapKeySetValInt", requiredness=Requiredness.NONE)
     public Map<Set<Boolean>, test.fixtures.complex_struct.MyEnum> getMapKeySetValInt() { return mapKeySetValInt; }
-        
+    
+    
     @ThriftField(value=18, name="mapKeyListValSet", requiredness=Requiredness.NONE)
     public Map<List<Integer>, Set<Map<Double, String>>> getMapKeyListValSet() { return mapKeyListValSet; }
     

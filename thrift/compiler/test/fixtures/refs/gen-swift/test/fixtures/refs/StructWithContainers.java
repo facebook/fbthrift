@@ -132,42 +132,62 @@ public final class StructWithContainers {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("StructWithContainers");
     private final List<Integer> listRef;
     public static final int _LIST_REF = 1;
     private static final TField LIST_REF_FIELD_DESC = new TField("listRef", TType.LIST, (short)1);
-    private final Set<Integer> setRef;
+        private final Set<Integer> setRef;
     public static final int _SET_REF = 2;
     private static final TField SET_REF_FIELD_DESC = new TField("setRef", TType.SET, (short)2);
-    private final Map<Integer, Integer> mapRef;
+        private final Map<Integer, Integer> mapRef;
     public static final int _MAP_REF = 3;
     private static final TField MAP_REF_FIELD_DESC = new TField("mapRef", TType.MAP, (short)3);
-    private final List<Integer> listRefUnique;
+        private final List<Integer> listRefUnique;
     public static final int _LIST_REF_UNIQUE = 4;
     private static final TField LIST_REF_UNIQUE_FIELD_DESC = new TField("listRefUnique", TType.LIST, (short)4);
-    private final Set<Integer> setRefShared;
+        private final Set<Integer> setRefShared;
     public static final int _SET_REF_SHARED = 5;
     private static final TField SET_REF_SHARED_FIELD_DESC = new TField("setRefShared", TType.SET, (short)5);
-    private final List<Integer> listRefSharedConst;
+        private final List<Integer> listRefSharedConst;
     public static final int _LIST_REF_SHARED_CONST = 6;
     private static final TField LIST_REF_SHARED_CONST_FIELD_DESC = new TField("listRefSharedConst", TType.LIST, (short)6);
-
+    static {
+      NAMES_TO_IDS.put("listRef", 1);
+      FIELD_METADATA.put(1, LIST_REF_FIELD_DESC);
+      NAMES_TO_IDS.put("setRef", 2);
+      FIELD_METADATA.put(2, SET_REF_FIELD_DESC);
+      NAMES_TO_IDS.put("mapRef", 3);
+      FIELD_METADATA.put(3, MAP_REF_FIELD_DESC);
+      NAMES_TO_IDS.put("listRefUnique", 4);
+      FIELD_METADATA.put(4, LIST_REF_UNIQUE_FIELD_DESC);
+      NAMES_TO_IDS.put("setRefShared", 5);
+      FIELD_METADATA.put(5, SET_REF_SHARED_FIELD_DESC);
+      NAMES_TO_IDS.put("listRefSharedConst", 6);
+      FIELD_METADATA.put(6, LIST_REF_SHARED_CONST_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="list_ref", requiredness=Requiredness.NONE)
     public List<Integer> getListRef() { return listRef; }
-        
+    
+    
     @ThriftField(value=2, name="set_ref", requiredness=Requiredness.NONE)
     public Set<Integer> getSetRef() { return setRef; }
-        
+    
+    
     @ThriftField(value=3, name="map_ref", requiredness=Requiredness.NONE)
     public Map<Integer, Integer> getMapRef() { return mapRef; }
-        
+    
+    
     @ThriftField(value=4, name="list_ref_unique", requiredness=Requiredness.NONE)
     public List<Integer> getListRefUnique() { return listRefUnique; }
-        
+    
+    
     @ThriftField(value=5, name="set_ref_shared", requiredness=Requiredness.NONE)
     public Set<Integer> getSetRefShared() { return setRefShared; }
-        
+    
+    
     @ThriftField(value=6, name="list_ref_shared_const", requiredness=Requiredness.NONE)
     public List<Integer> getListRefSharedConst() { return listRefSharedConst; }
     

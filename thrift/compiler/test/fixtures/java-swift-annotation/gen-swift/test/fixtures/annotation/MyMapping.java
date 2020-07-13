@@ -76,18 +76,26 @@ public final class MyMapping {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyMapping");
     private final com.foo.FastLongStringMap lsMap;
     public static final int _LSMAP = 1;
     private static final TField LS_MAP_FIELD_DESC = new TField("lsMap", TType.MAP, (short)1);
-    private final com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap;
+        private final com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap;
     public static final int _IOMAP = 2;
     private static final TField IO_MAP_FIELD_DESC = new TField("ioMap", TType.MAP, (short)2);
-
+    static {
+      NAMES_TO_IDS.put("lsMap", 1);
+      FIELD_METADATA.put(1, LS_MAP_FIELD_DESC);
+      NAMES_TO_IDS.put("ioMap", 2);
+      FIELD_METADATA.put(2, IO_MAP_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
     public com.foo.FastLongStringMap getLsMap() { return lsMap; }
-        
+    
+    
     @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
     public com.foo.FastIntObjectMap<com.foo.FastIntLongMap> getIoMap() { return ioMap; }
     

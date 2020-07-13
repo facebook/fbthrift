@@ -76,18 +76,26 @@ public final class Included {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Included");
     private final long myIntField;
     public static final int _MYINTFIELD = 1;
     private static final TField MY_INT_FIELD_FIELD_DESC = new TField("myIntField", TType.I64, (short)1);
-    private final test.fixtures.includes.transitive.Foo myTransitiveField;
+        private final test.fixtures.includes.transitive.Foo myTransitiveField;
     public static final int _MYTRANSITIVEFIELD = 2;
     private static final TField MY_TRANSITIVE_FIELD_FIELD_DESC = new TField("myTransitiveField", TType.STRUCT, (short)2);
-
+    static {
+      NAMES_TO_IDS.put("myIntField", 1);
+      FIELD_METADATA.put(1, MY_INT_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("myTransitiveField", 2);
+      FIELD_METADATA.put(2, MY_TRANSITIVE_FIELD_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
-        
+    
+    
     @ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)
     public test.fixtures.includes.transitive.Foo getMyTransitiveField() { return myTransitiveField; }
     

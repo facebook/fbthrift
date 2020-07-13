@@ -104,30 +104,44 @@ public final class MyStructAnnotation {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStructAnnotation");
     private final long count;
     public static final int _COUNT = 1;
     private static final TField COUNT_FIELD_DESC = new TField("count", TType.I64, (short)1);
-    private final String name;
+        private final String name;
     public static final int _NAME = 2;
     private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)2);
-    private final String extra;
+        private final String extra;
     public static final int _EXTRA = 3;
     private static final TField EXTRA_FIELD_DESC = new TField("extra", TType.STRING, (short)3);
-    private final test.fixtures.basicannotations.MyStructNestedAnnotation nest;
+        private final test.fixtures.basicannotations.MyStructNestedAnnotation nest;
     public static final int _NEST = 4;
     private static final TField NEST_FIELD_DESC = new TField("nest", TType.STRUCT, (short)4);
-
+    static {
+      NAMES_TO_IDS.put("count", 1);
+      FIELD_METADATA.put(1, COUNT_FIELD_DESC);
+      NAMES_TO_IDS.put("name", 2);
+      FIELD_METADATA.put(2, NAME_FIELD_DESC);
+      NAMES_TO_IDS.put("extra", 3);
+      FIELD_METADATA.put(3, EXTRA_FIELD_DESC);
+      NAMES_TO_IDS.put("nest", 4);
+      FIELD_METADATA.put(4, NEST_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="count", requiredness=Requiredness.NONE)
     public long getCount() { return count; }
-        
+    
+    
     @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
-        
+    
+    
     @ThriftField(value=3, name="extra", requiredness=Requiredness.OPTIONAL)
     public String getExtra() { return extra; }
-        
+    
+    
     @ThriftField(value=4, name="nest", requiredness=Requiredness.NONE)
     public test.fixtures.basicannotations.MyStructNestedAnnotation getNest() { return nest; }
     

@@ -76,18 +76,26 @@ public final class Struct1 {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("struct1");
     private final int a;
     public static final int _A = 1;
     private static final TField A_FIELD_DESC = new TField("a", TType.I32, (short)1);
-    private final String b;
+        private final String b;
     public static final int _B = 2;
     private static final TField B_FIELD_DESC = new TField("b", TType.STRING, (short)2);
-
+    static {
+      NAMES_TO_IDS.put("a", 1);
+      FIELD_METADATA.put(1, A_FIELD_DESC);
+      NAMES_TO_IDS.put("b", 2);
+      FIELD_METADATA.put(2, B_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public int getA() { return a; }
-        
+    
+    
     @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
     public String getB() { return b; }
     

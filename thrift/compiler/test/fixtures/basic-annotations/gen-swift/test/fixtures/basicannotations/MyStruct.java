@@ -132,42 +132,62 @@ public final class MyStruct {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final long major;
     public static final int _MAJOR = 1;
     private static final TField MAJOR_FIELD_DESC = new TField("major", TType.I64, (short)1);
-    private final String _package;
+        private final String _package;
     public static final int _PACKAGE = 2;
     private static final TField PACKAGE_FIELD_DESC = new TField("_package", TType.STRING, (short)2);
-    private final String annotationWithQuote;
+        private final String annotationWithQuote;
     public static final int _ANNOTATION_WITH_QUOTE = 3;
     private static final TField ANNOTATION_WITH_QUOTE_FIELD_DESC = new TField("annotationWithQuote", TType.STRING, (short)3);
-    private final String class_;
+        private final String class_;
     public static final int _CLASS_ = 4;
     private static final TField CLASS__FIELD_DESC = new TField("class_", TType.STRING, (short)4);
-    private final String annotationWithTrailingComma;
+        private final String annotationWithTrailingComma;
     public static final int _ANNOTATION_WITH_TRAILING_COMMA = 5;
     private static final TField ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC = new TField("annotationWithTrailingComma", TType.STRING, (short)5);
-    private final String emptyAnnotations;
+        private final String emptyAnnotations;
     public static final int _EMPTY_ANNOTATIONS = 6;
     private static final TField EMPTY_ANNOTATIONS_FIELD_DESC = new TField("emptyAnnotations", TType.STRING, (short)6);
-
+    static {
+      NAMES_TO_IDS.put("major", 1);
+      FIELD_METADATA.put(1, MAJOR_FIELD_DESC);
+      NAMES_TO_IDS.put("_package", 2);
+      FIELD_METADATA.put(2, PACKAGE_FIELD_DESC);
+      NAMES_TO_IDS.put("annotationWithQuote", 3);
+      FIELD_METADATA.put(3, ANNOTATION_WITH_QUOTE_FIELD_DESC);
+      NAMES_TO_IDS.put("class_", 4);
+      FIELD_METADATA.put(4, CLASS__FIELD_DESC);
+      NAMES_TO_IDS.put("annotationWithTrailingComma", 5);
+      FIELD_METADATA.put(5, ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC);
+      NAMES_TO_IDS.put("emptyAnnotations", 6);
+      FIELD_METADATA.put(6, EMPTY_ANNOTATIONS_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="major", requiredness=Requiredness.NONE)
     public long getMajor() { return major; }
-        
+    
+    
     @ThriftField(value=2, name="package", requiredness=Requiredness.NONE)
     public String getPackage() { return _package; }
-        
+    
+    
     @ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE)
     public String getAnnotationWithQuote() { return annotationWithQuote; }
-        
+    
+    
     @ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)
     public String getClass_() { return class_; }
-        
+    
+    
     @ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE)
     public String getAnnotationWithTrailingComma() { return annotationWithTrailingComma; }
-        
+    
+    
     @ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE)
     public String getEmptyAnnotations() { return emptyAnnotations; }
     

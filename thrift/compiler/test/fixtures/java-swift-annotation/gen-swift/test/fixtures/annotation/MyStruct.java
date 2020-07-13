@@ -118,36 +118,53 @@ public final class MyStruct {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final long intField;
     public static final int _INTFIELD = 1;
     private static final TField INT_FIELD_FIELD_DESC = new TField("intField", TType.I64, (short)1);
-    @com.foo.Bar("BAZ") private final String stringField;
+        @com.foo.Bar("BAZ") private final String stringField;
     public static final int _STRINGFIELD = 2;
     private static final TField STRING_FIELD_FIELD_DESC = new TField("stringField", TType.STRING, (short)2);
-    @com.foo.Ignored private final String detailField;
+        @com.foo.Ignored private final String detailField;
     public static final int _DETAILFIELD = 3;
     private static final TField DETAIL_FIELD_FIELD_DESC = new TField("detailField", TType.STRING, (short)3);
-    @com.foo.Ignored private final com.foo.FastIntLongMap detailMap;
+        @com.foo.Ignored private final com.foo.FastIntLongMap detailMap;
     public static final int _DETAILMAP = 4;
     private static final TField DETAIL_MAP_FIELD_DESC = new TField("detailMap", TType.MAP, (short)4);
-    private final String toto;
+        private final String toto;
     public static final int _TITI = 5;
     private static final TField TITI_FIELD_DESC = new TField("toto", TType.STRING, (short)5);
-
+    static {
+      NAMES_TO_IDS.put("intField", 1);
+      FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("stringField", 2);
+      FIELD_METADATA.put(2, STRING_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("detailField", 3);
+      FIELD_METADATA.put(3, DETAIL_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("detailMap", 4);
+      FIELD_METADATA.put(4, DETAIL_MAP_FIELD_DESC);
+      NAMES_TO_IDS.put("toto", 5);
+      FIELD_METADATA.put(5, TITI_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public long getIntField() { return intField; }
-        
+    
+    
     @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
-        
+    
+    
     @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)
     public String getDetailField() { return detailField; }
-        
+    
+    
     @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
     public com.foo.FastIntLongMap getDetailMap() { return detailMap; }
-        
+    
+    
     @ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)
     public String getToto() { return toto; }
     

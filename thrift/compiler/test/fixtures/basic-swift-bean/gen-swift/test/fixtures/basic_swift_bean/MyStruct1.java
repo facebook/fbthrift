@@ -104,30 +104,44 @@ public final class MyStruct1 {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct1");
     private final long myIntField;
     public static final int _MYINTFIELD = 1;
     private static final TField MY_INT_FIELD_FIELD_DESC = new TField("myIntField", TType.I64, (short)1);
-    private final String myStringField;
+        private final String myStringField;
     public static final int _MYSTRINGFIELD = 2;
     private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("myStringField", TType.STRING, (short)2);
-    private final test.fixtures.basic_swift_bean.MyDataItem myDataField;
+        private final test.fixtures.basic_swift_bean.MyDataItem myDataField;
     public static final int _MYDATAFIELD = 3;
     private static final TField MY_DATA_FIELD_FIELD_DESC = new TField("myDataField", TType.STRUCT, (short)3);
-    private final long major;
+        private final long major;
     public static final int _MAJOR = 4;
     private static final TField MAJOR_FIELD_DESC = new TField("major", TType.I64, (short)4);
-
+    static {
+      NAMES_TO_IDS.put("myIntField", 1);
+      FIELD_METADATA.put(1, MY_INT_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("myStringField", 2);
+      FIELD_METADATA.put(2, MY_STRING_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("myDataField", 3);
+      FIELD_METADATA.put(3, MY_DATA_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("major", 4);
+      FIELD_METADATA.put(4, MAJOR_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
-        
+    
+    
     @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
-        
+    
+    
     @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
     public test.fixtures.basic_swift_bean.MyDataItem getMyDataField() { return myDataField; }
-        
+    
+    
     @ThriftField(value=4, name="major", requiredness=Requiredness.NONE)
     public long getMajor() { return major; }
     

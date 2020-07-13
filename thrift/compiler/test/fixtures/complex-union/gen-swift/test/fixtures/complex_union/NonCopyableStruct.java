@@ -62,11 +62,16 @@ public final class NonCopyableStruct {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("NonCopyableStruct");
     private final long num;
     public static final int _NUM = 1;
     private static final TField NUM_FIELD_DESC = new TField("num", TType.I64, (short)1);
-
+    static {
+      NAMES_TO_IDS.put("num", 1);
+      FIELD_METADATA.put(1, NUM_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="num", requiredness=Requiredness.NONE)
     public long getNum() { return num; }

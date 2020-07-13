@@ -90,24 +90,35 @@ public final class Internship {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Internship");
     private final int weeks;
     public static final int _WEEKS = 1;
     private static final TField WEEKS_FIELD_DESC = new TField("weeks", TType.I32, (short)1);
-    private final String title;
+        private final String title;
     public static final int _TITLE = 2;
     private static final TField TITLE_FIELD_DESC = new TField("title", TType.STRING, (short)2);
-    private final test.fixtures.lazy_constants.Company employer;
+        private final test.fixtures.lazy_constants.Company employer;
     public static final int _EMPLOYER = 3;
     private static final TField EMPLOYER_FIELD_DESC = new TField("employer", TType.I32, (short)3);
-
+    static {
+      NAMES_TO_IDS.put("weeks", 1);
+      FIELD_METADATA.put(1, WEEKS_FIELD_DESC);
+      NAMES_TO_IDS.put("title", 2);
+      FIELD_METADATA.put(2, TITLE_FIELD_DESC);
+      NAMES_TO_IDS.put("employer", 3);
+      FIELD_METADATA.put(3, EMPLOYER_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
     public int getWeeks() { return weeks; }
-        
+    
+    
     @ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
     public String getTitle() { return title; }
-        
+    
+    
     @ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.lazy_constants.Company getEmployer() { return employer; }
     

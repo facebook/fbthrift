@@ -62,11 +62,16 @@ public final class FinalResponse {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("FinalResponse");
     private final String content;
     public static final int _CONTENT = 1;
     private static final TField CONTENT_FIELD_DESC = new TField("content", TType.STRING, (short)1);
-
+    static {
+      NAMES_TO_IDS.put("content", 1);
+      FIELD_METADATA.put(1, CONTENT_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
     public String getContent() { return content; }

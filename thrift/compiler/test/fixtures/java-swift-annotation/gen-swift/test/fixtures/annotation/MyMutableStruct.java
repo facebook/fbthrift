@@ -67,6 +67,8 @@ public final class MyMutableStruct {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyMutableStruct");
     private long intField;
     public static final int _INTFIELD = 1;
@@ -74,7 +76,12 @@ public final class MyMutableStruct {
     private String stringField;
     public static final int _STRINGFIELD = 2;
     private static final TField STRING_FIELD_FIELD_DESC = new TField("stringField", TType.STRING, (short)2);
-
+static {
+      NAMES_TO_IDS.put("intField", 1);
+      FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("stringField", 2);
+      FIELD_METADATA.put(2, STRING_FIELD_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public long getIntField() { return intField; }
@@ -84,7 +91,8 @@ public final class MyMutableStruct {
         this.intField = intField;
         return this;
     }
-        
+    
+    
     @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
     

@@ -76,18 +76,26 @@ public final class BigStruct {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("BigStruct");
     private final test.fixtures.module2.Struct s;
     public static final int _S = 1;
     private static final TField S_FIELD_DESC = new TField("s", TType.STRUCT, (short)1);
-    private final int id;
+        private final int id;
     public static final int _ID = 2;
     private static final TField ID_FIELD_DESC = new TField("id", TType.I32, (short)2);
-
+    static {
+      NAMES_TO_IDS.put("s", 1);
+      FIELD_METADATA.put(1, S_FIELD_DESC);
+      NAMES_TO_IDS.put("id", 2);
+      FIELD_METADATA.put(2, ID_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="s", requiredness=Requiredness.NONE)
     public test.fixtures.module2.Struct getS() { return s; }
-        
+    
+    
     @ThriftField(value=2, name="id", requiredness=Requiredness.NONE)
     public int getId() { return id; }
     

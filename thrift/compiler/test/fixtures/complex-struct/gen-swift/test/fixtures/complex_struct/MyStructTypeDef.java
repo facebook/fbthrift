@@ -174,60 +174,89 @@ public final class MyStructTypeDef {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStructTypeDef");
     private final long myLongField;
     public static final int _MYLONGFIELD = 1;
     private static final TField MY_LONG_FIELD_FIELD_DESC = new TField("myLongField", TType.I64, (short)1);
-    private final long myLongTypeDef;
+        private final long myLongTypeDef;
     public static final int _MYLONGTYPEDEF = 2;
     private static final TField MY_LONG_TYPE_DEF_FIELD_DESC = new TField("myLongTypeDef", TType.I64, (short)2);
-    private final String myStringField;
+        private final String myStringField;
     public static final int _MYSTRINGFIELD = 3;
     private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("myStringField", TType.STRING, (short)3);
-    private final String myStringTypedef;
+        private final String myStringTypedef;
     public static final int _MYSTRINGTYPEDEF = 4;
     private static final TField MY_STRING_TYPEDEF_FIELD_DESC = new TField("myStringTypedef", TType.STRING, (short)4);
-    private final Map<Short, String> myMapField;
+        private final Map<Short, String> myMapField;
     public static final int _MYMAPFIELD = 5;
     private static final TField MY_MAP_FIELD_FIELD_DESC = new TField("myMapField", TType.MAP, (short)5);
-    private final Map<Short, String> myMapTypedef;
+        private final Map<Short, String> myMapTypedef;
     public static final int _MYMAPTYPEDEF = 6;
     private static final TField MY_MAP_TYPEDEF_FIELD_DESC = new TField("myMapTypedef", TType.MAP, (short)6);
-    private final List<Double> myListField;
+        private final List<Double> myListField;
     public static final int _MYLISTFIELD = 7;
     private static final TField MY_LIST_FIELD_FIELD_DESC = new TField("myListField", TType.LIST, (short)7);
-    private final List<Double> myListTypedef;
+        private final List<Double> myListTypedef;
     public static final int _MYLISTTYPEDEF = 8;
     private static final TField MY_LIST_TYPEDEF_FIELD_DESC = new TField("myListTypedef", TType.LIST, (short)8);
-    private final Map<Short, List<List<Double>>> myMapListOfTypeDef;
+        private final Map<Short, List<List<Double>>> myMapListOfTypeDef;
     public static final int _MYMAPLISTOFTYPEDEF = 9;
     private static final TField MY_MAP_LIST_OF_TYPE_DEF_FIELD_DESC = new TField("myMapListOfTypeDef", TType.MAP, (short)9);
-
+    static {
+      NAMES_TO_IDS.put("myLongField", 1);
+      FIELD_METADATA.put(1, MY_LONG_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("myLongTypeDef", 2);
+      FIELD_METADATA.put(2, MY_LONG_TYPE_DEF_FIELD_DESC);
+      NAMES_TO_IDS.put("myStringField", 3);
+      FIELD_METADATA.put(3, MY_STRING_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("myStringTypedef", 4);
+      FIELD_METADATA.put(4, MY_STRING_TYPEDEF_FIELD_DESC);
+      NAMES_TO_IDS.put("myMapField", 5);
+      FIELD_METADATA.put(5, MY_MAP_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("myMapTypedef", 6);
+      FIELD_METADATA.put(6, MY_MAP_TYPEDEF_FIELD_DESC);
+      NAMES_TO_IDS.put("myListField", 7);
+      FIELD_METADATA.put(7, MY_LIST_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("myListTypedef", 8);
+      FIELD_METADATA.put(8, MY_LIST_TYPEDEF_FIELD_DESC);
+      NAMES_TO_IDS.put("myMapListOfTypeDef", 9);
+      FIELD_METADATA.put(9, MY_MAP_LIST_OF_TYPE_DEF_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
-        
+    
+    
     @ThriftField(value=2, name="myLongTypeDef", requiredness=Requiredness.NONE)
     public long getMyLongTypeDef() { return myLongTypeDef; }
-        
+    
+    
     @ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
-        
+    
+    
     @ThriftField(value=4, name="myStringTypedef", requiredness=Requiredness.NONE)
     public String getMyStringTypedef() { return myStringTypedef; }
-        
+    
+    
     @ThriftField(value=5, name="myMapField", requiredness=Requiredness.NONE)
     public Map<Short, String> getMyMapField() { return myMapField; }
-        
+    
+    
     @ThriftField(value=6, name="myMapTypedef", requiredness=Requiredness.NONE)
     public Map<Short, String> getMyMapTypedef() { return myMapTypedef; }
-        
+    
+    
     @ThriftField(value=7, name="myListField", requiredness=Requiredness.NONE)
     public List<Double> getMyListField() { return myListField; }
-        
+    
+    
     @ThriftField(value=8, name="myListTypedef", requiredness=Requiredness.NONE)
     public List<Double> getMyListTypedef() { return myListTypedef; }
-        
+    
+    
     @ThriftField(value=9, name="myMapListOfTypeDef", requiredness=Requiredness.NONE)
     public Map<Short, List<List<Double>>> getMyMapListOfTypeDef() { return myMapListOfTypeDef; }
     

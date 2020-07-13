@@ -90,24 +90,35 @@ public final class MyField {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyField");
     private final Long optValue;
     public static final int _OPT_VALUE = 1;
     private static final TField OPT_VALUE_FIELD_DESC = new TField("optValue", TType.I64, (short)1);
-    private final long value;
+        private final long value;
     public static final int _VALUE = 2;
     private static final TField VALUE_FIELD_DESC = new TField("value", TType.I64, (short)2);
-    private final long reqValue;
+        private final long reqValue;
     public static final int _REQ_VALUE = 3;
     private static final TField REQ_VALUE_FIELD_DESC = new TField("reqValue", TType.I64, (short)3);
-
+    static {
+      NAMES_TO_IDS.put("optValue", 1);
+      FIELD_METADATA.put(1, OPT_VALUE_FIELD_DESC);
+      NAMES_TO_IDS.put("value", 2);
+      FIELD_METADATA.put(2, VALUE_FIELD_DESC);
+      NAMES_TO_IDS.put("reqValue", 3);
+      FIELD_METADATA.put(3, REQ_VALUE_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="opt_value", requiredness=Requiredness.OPTIONAL)
     public Long getOptValue() { return optValue; }
-        
+    
+    
     @ThriftField(value=2, name="value", requiredness=Requiredness.NONE)
     public long getValue() { return value; }
-        
+    
+    
     @ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED)
     public long getReqValue() { return reqValue; }
     

@@ -104,30 +104,44 @@ public final class Foo {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Foo");
     private final int myInteger;
     public static final int _MYINTEGER = 1;
     private static final TField MY_INTEGER_FIELD_DESC = new TField("myInteger", TType.I32, (short)1);
-    private final String myString;
+        private final String myString;
     public static final int _MYSTRING = 2;
     private static final TField MY_STRING_FIELD_DESC = new TField("myString", TType.STRING, (short)2);
-    private final List<Boolean> myBools;
+        private final List<Boolean> myBools;
     public static final int _MYBOOLS = 3;
     private static final TField MY_BOOLS_FIELD_DESC = new TField("myBools", TType.LIST, (short)3);
-    private final List<Integer> myNumbers;
+        private final List<Integer> myNumbers;
     public static final int _MYNUMBERS = 4;
     private static final TField MY_NUMBERS_FIELD_DESC = new TField("myNumbers", TType.LIST, (short)4);
-
+    static {
+      NAMES_TO_IDS.put("myInteger", 1);
+      FIELD_METADATA.put(1, MY_INTEGER_FIELD_DESC);
+      NAMES_TO_IDS.put("myString", 2);
+      FIELD_METADATA.put(2, MY_STRING_FIELD_DESC);
+      NAMES_TO_IDS.put("myBools", 3);
+      FIELD_METADATA.put(3, MY_BOOLS_FIELD_DESC);
+      NAMES_TO_IDS.put("myNumbers", 4);
+      FIELD_METADATA.put(4, MY_NUMBERS_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED)
     public int getMyInteger() { return myInteger; }
-        
+    
+    
     @ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)
     public String getMyString() { return myString; }
-        
+    
+    
     @ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)
     public List<Boolean> getMyBools() { return myBools; }
-        
+    
+    
     @ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)
     public List<Integer> getMyNumbers() { return myNumbers; }
     

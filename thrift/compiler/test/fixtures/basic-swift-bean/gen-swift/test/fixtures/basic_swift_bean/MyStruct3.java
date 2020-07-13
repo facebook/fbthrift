@@ -195,6 +195,8 @@ public final class MyStruct3 {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct3");
     private short myInt16;
     public static final int _MYINT16 = 1;
@@ -226,7 +228,28 @@ public final class MyStruct3 {
     private Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myMapList;
     public static final int _MYMAPLIST = 10;
     private static final TField MY_MAP_LIST_FIELD_DESC = new TField("myMapList", TType.MAP, (short)10);
-
+static {
+      NAMES_TO_IDS.put("myInt16", 1);
+      FIELD_METADATA.put(1, MY_INT16_FIELD_DESC);
+      NAMES_TO_IDS.put("myInt32", 2);
+      FIELD_METADATA.put(2, MY_INT32_FIELD_DESC);
+      NAMES_TO_IDS.put("myInt64", 3);
+      FIELD_METADATA.put(3, MY_INT64_FIELD_DESC);
+      NAMES_TO_IDS.put("myString", 4);
+      FIELD_METADATA.put(4, MY_STRING_FIELD_DESC);
+      NAMES_TO_IDS.put("myBool", 5);
+      FIELD_METADATA.put(5, MY_BOOL_FIELD_DESC);
+      NAMES_TO_IDS.put("myDouble", 6);
+      FIELD_METADATA.put(6, MY_DOUBLE_FIELD_DESC);
+      NAMES_TO_IDS.put("mySet", 7);
+      FIELD_METADATA.put(7, MY_SET_FIELD_DESC);
+      NAMES_TO_IDS.put("myDataItem", 8);
+      FIELD_METADATA.put(8, MY_DATA_ITEM_FIELD_DESC);
+      NAMES_TO_IDS.put("myList", 9);
+      FIELD_METADATA.put(9, MY_LIST_FIELD_DESC);
+      NAMES_TO_IDS.put("myMapList", 10);
+      FIELD_METADATA.put(10, MY_MAP_LIST_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="myInt16", requiredness=Requiredness.NONE)
     public short getMyInt16() { return myInt16; }
@@ -236,7 +259,8 @@ public final class MyStruct3 {
         this.myInt16 = myInt16;
         return this;
     }
-        
+    
+    
     @ThriftField(value=2, name="myInt32", requiredness=Requiredness.NONE)
     public int getMyInt32() { return myInt32; }
     
@@ -245,7 +269,8 @@ public final class MyStruct3 {
         this.myInt32 = myInt32;
         return this;
     }
-        
+    
+    
     @ThriftField(value=3, name="myInt64", requiredness=Requiredness.NONE)
     public long getMyInt64() { return myInt64; }
     
@@ -254,7 +279,8 @@ public final class MyStruct3 {
         this.myInt64 = myInt64;
         return this;
     }
-        
+    
+    
     @ThriftField(value=4, name="myString", requiredness=Requiredness.NONE)
     public String getMyString() { return myString; }
     
@@ -263,7 +289,8 @@ public final class MyStruct3 {
         this.myString = myString;
         return this;
     }
-        
+    
+    
     @ThriftField(value=5, name="myBool", requiredness=Requiredness.NONE)
     public boolean isMyBool() { return myBool; }
     
@@ -272,7 +299,8 @@ public final class MyStruct3 {
         this.myBool = myBool;
         return this;
     }
-        
+    
+    
     @ThriftField(value=6, name="myDouble", requiredness=Requiredness.NONE)
     public double getMyDouble() { return myDouble; }
     
@@ -281,7 +309,8 @@ public final class MyStruct3 {
         this.myDouble = myDouble;
         return this;
     }
-        
+    
+    
     @ThriftField(value=7, name="mySet", requiredness=Requiredness.NONE)
     public Set<String> getMySet() { return mySet; }
     
@@ -290,7 +319,8 @@ public final class MyStruct3 {
         this.mySet = mySet;
         return this;
     }
-        
+    
+    
     @ThriftField(value=8, name="MyDataItem", requiredness=Requiredness.NONE)
     public test.fixtures.basic_swift_bean.MyDataItem getMyDataItem() { return myDataItem; }
     
@@ -299,7 +329,8 @@ public final class MyStruct3 {
         this.myDataItem = myDataItem;
         return this;
     }
-        
+    
+    
     @ThriftField(value=9, name="myList", requiredness=Requiredness.NONE)
     public List<test.fixtures.basic_swift_bean.MyDataItem> getMyList() { return myList; }
     
@@ -308,7 +339,8 @@ public final class MyStruct3 {
         this.myList = myList;
         return this;
     }
-        
+    
+    
     @ThriftField(value=10, name="myMapList", requiredness=Requiredness.NONE)
     public Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> getMyMapList() { return myMapList; }
     

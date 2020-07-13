@@ -62,11 +62,16 @@ public final class CompatibleWithKeywordSink {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("CompatibleWithKeywordSink");
     private final String sink;
     public static final int _SINK = 1;
     private static final TField SINK_FIELD_DESC = new TField("sink", TType.STRING, (short)1);
-
+    static {
+      NAMES_TO_IDS.put("sink", 1);
+      FIELD_METADATA.put(1, SINK_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="sink", requiredness=Requiredness.NONE)
     public String getSink() { return sink; }

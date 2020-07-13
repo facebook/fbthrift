@@ -67,6 +67,8 @@ public final class LegacyStruct {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("LegacyStruct");
     private int normal;
     public static final int _NORMAL = 1;
@@ -74,7 +76,12 @@ public final class LegacyStruct {
     private int bad;
     public static final int _BAD = -1;
     private static final TField BAD_FIELD_DESC = new TField("bad", TType.I32, (short)-1);
-
+static {
+      NAMES_TO_IDS.put("normal", 1);
+      FIELD_METADATA.put(1, NORMAL_FIELD_DESC);
+      NAMES_TO_IDS.put("bad", -1);
+      FIELD_METADATA.put(-1, BAD_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="normal", requiredness=Requiredness.NONE)
     public int getNormal() { return normal; }
@@ -84,7 +91,8 @@ public final class LegacyStruct {
         this.normal = normal;
         return this;
     }
-        
+    
+    
     @ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE)
     public int getBad() { return bad; }
     

@@ -62,11 +62,16 @@ public final class MyStructNestedAnnotation {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStructNestedAnnotation");
     private final String name;
     public static final int _NAME = 1;
     private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)1);
-
+    static {
+      NAMES_TO_IDS.put("name", 1);
+      FIELD_METADATA.put(1, NAME_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }

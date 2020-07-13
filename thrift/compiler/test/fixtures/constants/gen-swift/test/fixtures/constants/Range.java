@@ -76,18 +76,26 @@ public final class Range {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Range");
     private final int min;
     public static final int _MIN = 1;
     private static final TField MIN_FIELD_DESC = new TField("min", TType.I32, (short)1);
-    private final int max;
+        private final int max;
     public static final int _MAX = 2;
     private static final TField MAX_FIELD_DESC = new TField("max", TType.I32, (short)2);
-
+    static {
+      NAMES_TO_IDS.put("min", 1);
+      FIELD_METADATA.put(1, MIN_FIELD_DESC);
+      NAMES_TO_IDS.put("max", 2);
+      FIELD_METADATA.put(2, MAX_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED)
     public int getMin() { return min; }
-        
+    
+    
     @ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)
     public int getMax() { return max; }
     

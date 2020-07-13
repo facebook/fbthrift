@@ -90,24 +90,35 @@ public final class Struct3 {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("struct3");
     private final String a;
     public static final int _A = 1;
     private static final TField A_FIELD_DESC = new TField("a", TType.STRING, (short)1);
-    private final int b;
+        private final int b;
     public static final int _B = 2;
     private static final TField B_FIELD_DESC = new TField("b", TType.I32, (short)2);
-    private final test.fixtures.constants.Struct2 c;
+        private final test.fixtures.constants.Struct2 c;
     public static final int _C = 3;
     private static final TField C_FIELD_DESC = new TField("c", TType.STRUCT, (short)3);
-
+    static {
+      NAMES_TO_IDS.put("a", 1);
+      FIELD_METADATA.put(1, A_FIELD_DESC);
+      NAMES_TO_IDS.put("b", 2);
+      FIELD_METADATA.put(2, B_FIELD_DESC);
+      NAMES_TO_IDS.put("c", 3);
+      FIELD_METADATA.put(3, C_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public String getA() { return a; }
-        
+    
+    
     @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
     public int getB() { return b; }
-        
+    
+    
     @ThriftField(value=3, name="c", requiredness=Requiredness.NONE)
     public test.fixtures.constants.Struct2 getC() { return c; }
     

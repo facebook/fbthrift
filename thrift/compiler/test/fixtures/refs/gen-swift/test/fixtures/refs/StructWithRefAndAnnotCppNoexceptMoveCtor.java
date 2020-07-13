@@ -62,11 +62,16 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("StructWithRefAndAnnotCppNoexceptMoveCtor");
     private final test.fixtures.refs.Empty defField;
     public static final int _DEF_FIELD = 1;
     private static final TField DEF_FIELD_FIELD_DESC = new TField("defField", TType.STRUCT, (short)1);
-
+    static {
+      NAMES_TO_IDS.put("defField", 1);
+      FIELD_METADATA.put(1, DEF_FIELD_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
     public test.fixtures.refs.Empty getDefField() { return defField; }

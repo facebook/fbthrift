@@ -404,138 +404,206 @@ public final class DefaultStruct {
         }
     }
     
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("defaultStruct");
     private final long myLongDFset;
     public static final int _MYLONGDFSET = 1;
     private static final TField MY_LONG_DFSET_FIELD_DESC = new TField("myLongDFset", TType.I64, (short)1);
-    private final long myLongDF;
+        private final long myLongDF;
     public static final int _MYLONGDF = 2;
     private static final TField MY_LONG_DF_FIELD_DESC = new TField("myLongDF", TType.I64, (short)2);
-    private final int portDFset;
+        private final int portDFset;
     public static final int _PORTDFSET = 3;
     private static final TField PORT_DFSET_FIELD_DESC = new TField("portDFset", TType.I32, (short)3);
-    private final int portNum;
+        private final int portNum;
     public static final int _PORTNUM = 4;
     private static final TField PORT_NUM_FIELD_DESC = new TField("portNum", TType.I32, (short)4);
-    private final byte[] myBinaryDFset;
+        private final byte[] myBinaryDFset;
     public static final int _MYBINARYDFSET = 5;
     private static final TField MY_BINARY_DFSET_FIELD_DESC = new TField("myBinaryDFset", TType.STRING, (short)5);
-    private final byte[] myBinary;
+        private final byte[] myBinary;
     public static final int _MYBINARY = 6;
     private static final TField MY_BINARY_FIELD_DESC = new TField("myBinary", TType.STRING, (short)6);
-    private final byte myByteDFSet;
+        private final byte myByteDFSet;
     public static final int _MYBYTEDFSET = 7;
     private static final TField MY_BYTE_DFSET_FIELD_DESC = new TField("myByteDFSet", TType.BYTE, (short)7);
-    private final byte myByte;
+        private final byte myByte;
     public static final int _MYBYTE = 8;
     private static final TField MY_BYTE_FIELD_DESC = new TField("myByte", TType.BYTE, (short)8);
-    private final double myDoubleDFset;
+        private final double myDoubleDFset;
     public static final int _MYDOUBLEDFSET = 9;
     private static final TField MY_DOUBLE_DFSET_FIELD_DESC = new TField("myDoubleDFset", TType.DOUBLE, (short)9);
-    private final double myDoubleDFZero;
+        private final double myDoubleDFZero;
     public static final int _MYDOUBLEDFZERO = 10;
     private static final TField MY_DOUBLE_DFZERO_FIELD_DESC = new TField("myDoubleDFZero", TType.DOUBLE, (short)10);
-    private final double myDouble;
+        private final double myDouble;
     public static final int _MYDOUBLE = 12;
     private static final TField MY_DOUBLE_FIELD_DESC = new TField("myDouble", TType.DOUBLE, (short)12);
-    private final Map<Integer, String> field3;
+        private final Map<Integer, String> field3;
     public static final int _FIELD3 = 13;
     private static final TField FIELD3_FIELD_DESC = new TField("field3", TType.MAP, (short)13);
-    private final List<test.fixtures.complex_struct.MyEnum> myList;
+        private final List<test.fixtures.complex_struct.MyEnum> myList;
     public static final int _MYLIST = 14;
     private static final TField MY_LIST_FIELD_DESC = new TField("myList", TType.LIST, (short)14);
-    private final Set<String> mySet;
+        private final Set<String> mySet;
     public static final int _MYSET = 15;
     private static final TField MY_SET_FIELD_DESC = new TField("mySet", TType.SET, (short)15);
-    private final test.fixtures.complex_struct.SimpleStruct simpleStruct;
+        private final test.fixtures.complex_struct.SimpleStruct simpleStruct;
     public static final int _SIMPLESTRUCT = 16;
     private static final TField SIMPLE_STRUCT_FIELD_DESC = new TField("simpleStruct", TType.STRUCT, (short)16);
-    private final List<test.fixtures.complex_struct.SimpleStruct> listStructDFset;
+        private final List<test.fixtures.complex_struct.SimpleStruct> listStructDFset;
     public static final int _LISTSTRUCTDFSET = 17;
     private static final TField LIST_STRUCT_DFSET_FIELD_DESC = new TField("listStructDFset", TType.LIST, (short)17);
-    private final test.fixtures.complex_struct.MyUnion myUnion;
+        private final test.fixtures.complex_struct.MyUnion myUnion;
     public static final int _MYUNION = 18;
     private static final TField MY_UNION_FIELD_DESC = new TField("myUnion", TType.STRUCT, (short)18);
-    private final List<test.fixtures.complex_struct.MyUnion> listUnionDFset;
+        private final List<test.fixtures.complex_struct.MyUnion> listUnionDFset;
     public static final int _LISTUNIONDFSET = 19;
     private static final TField LIST_UNION_DFSET_FIELD_DESC = new TField("listUnionDFset", TType.LIST, (short)19);
-    private final Map<Integer, List<test.fixtures.complex_struct.SimpleStruct>> mapNestlistStructDfSet;
+        private final Map<Integer, List<test.fixtures.complex_struct.SimpleStruct>> mapNestlistStructDfSet;
     public static final int _MAPNESTLISTSTRUCTDFSET = 20;
     private static final TField MAP_NESTLIST_STRUCT_DF_SET_FIELD_DESC = new TField("mapNestlistStructDfSet", TType.MAP, (short)20);
-    private final it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> mapJavaTypeDFset;
+        private final it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> mapJavaTypeDFset;
     public static final int _MAPJAVATYPEDFSET = 21;
     private static final TField MAP_JAVA_TYPE_DFSET_FIELD_DESC = new TField("mapJavaTypeDFset", TType.MAP, (short)21);
-    private final Map<Long, Integer> emptyMap;
+        private final Map<Long, Integer> emptyMap;
     public static final int _EMPTYMAP = 22;
     private static final TField EMPTY_MAP_FIELD_DESC = new TField("emptyMap", TType.MAP, (short)22);
-    private final Map<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> enumMapDFset;
+        private final Map<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> enumMapDFset;
     public static final int _ENUMMAPDFSET = 23;
     private static final TField ENUM_MAP_DFSET_FIELD_DESC = new TField("enumMapDFset", TType.MAP, (short)23);
-
+    static {
+      NAMES_TO_IDS.put("myLongDFset", 1);
+      FIELD_METADATA.put(1, MY_LONG_DFSET_FIELD_DESC);
+      NAMES_TO_IDS.put("myLongDF", 2);
+      FIELD_METADATA.put(2, MY_LONG_DF_FIELD_DESC);
+      NAMES_TO_IDS.put("portDFset", 3);
+      FIELD_METADATA.put(3, PORT_DFSET_FIELD_DESC);
+      NAMES_TO_IDS.put("portNum", 4);
+      FIELD_METADATA.put(4, PORT_NUM_FIELD_DESC);
+      NAMES_TO_IDS.put("myBinaryDFset", 5);
+      FIELD_METADATA.put(5, MY_BINARY_DFSET_FIELD_DESC);
+      NAMES_TO_IDS.put("myBinary", 6);
+      FIELD_METADATA.put(6, MY_BINARY_FIELD_DESC);
+      NAMES_TO_IDS.put("myByteDFSet", 7);
+      FIELD_METADATA.put(7, MY_BYTE_DFSET_FIELD_DESC);
+      NAMES_TO_IDS.put("myByte", 8);
+      FIELD_METADATA.put(8, MY_BYTE_FIELD_DESC);
+      NAMES_TO_IDS.put("myDoubleDFset", 9);
+      FIELD_METADATA.put(9, MY_DOUBLE_DFSET_FIELD_DESC);
+      NAMES_TO_IDS.put("myDoubleDFZero", 10);
+      FIELD_METADATA.put(10, MY_DOUBLE_DFZERO_FIELD_DESC);
+      NAMES_TO_IDS.put("myDouble", 12);
+      FIELD_METADATA.put(12, MY_DOUBLE_FIELD_DESC);
+      NAMES_TO_IDS.put("field3", 13);
+      FIELD_METADATA.put(13, FIELD3_FIELD_DESC);
+      NAMES_TO_IDS.put("myList", 14);
+      FIELD_METADATA.put(14, MY_LIST_FIELD_DESC);
+      NAMES_TO_IDS.put("mySet", 15);
+      FIELD_METADATA.put(15, MY_SET_FIELD_DESC);
+      NAMES_TO_IDS.put("simpleStruct", 16);
+      FIELD_METADATA.put(16, SIMPLE_STRUCT_FIELD_DESC);
+      NAMES_TO_IDS.put("listStructDFset", 17);
+      FIELD_METADATA.put(17, LIST_STRUCT_DFSET_FIELD_DESC);
+      NAMES_TO_IDS.put("myUnion", 18);
+      FIELD_METADATA.put(18, MY_UNION_FIELD_DESC);
+      NAMES_TO_IDS.put("listUnionDFset", 19);
+      FIELD_METADATA.put(19, LIST_UNION_DFSET_FIELD_DESC);
+      NAMES_TO_IDS.put("mapNestlistStructDfSet", 20);
+      FIELD_METADATA.put(20, MAP_NESTLIST_STRUCT_DF_SET_FIELD_DESC);
+      NAMES_TO_IDS.put("mapJavaTypeDFset", 21);
+      FIELD_METADATA.put(21, MAP_JAVA_TYPE_DFSET_FIELD_DESC);
+      NAMES_TO_IDS.put("emptyMap", 22);
+      FIELD_METADATA.put(22, EMPTY_MAP_FIELD_DESC);
+      NAMES_TO_IDS.put("enumMapDFset", 23);
+      FIELD_METADATA.put(23, ENUM_MAP_DFSET_FIELD_DESC);
+    }
     
     @ThriftField(value=1, name="myLongDFset", requiredness=Requiredness.NONE)
     public long getMyLongDFset() { return myLongDFset; }
-        
+    
+    
     @ThriftField(value=2, name="myLongDF", requiredness=Requiredness.NONE)
     public long getMyLongDF() { return myLongDF; }
-        
+    
+    
     @ThriftField(value=3, name="portDFset", requiredness=Requiredness.NONE)
     public int getPortDFset() { return portDFset; }
-        
+    
+    
     @ThriftField(value=4, name="portNum", requiredness=Requiredness.NONE)
     public int getPortNum() { return portNum; }
-        
+    
+    
     @ThriftField(value=5, name="myBinaryDFset", requiredness=Requiredness.NONE)
     public byte[] getMyBinaryDFset() { return myBinaryDFset; }
-        
+    
+    
     @ThriftField(value=6, name="myBinary", requiredness=Requiredness.NONE)
     public byte[] getMyBinary() { return myBinary; }
-        
+    
+    
     @ThriftField(value=7, name="myByteDFSet", requiredness=Requiredness.NONE)
     public byte getMyByteDFSet() { return myByteDFSet; }
-        
+    
+    
     @ThriftField(value=8, name="myByte", requiredness=Requiredness.NONE)
     public byte getMyByte() { return myByte; }
-        
+    
+    
     @ThriftField(value=9, name="myDoubleDFset", requiredness=Requiredness.NONE)
     public double getMyDoubleDFset() { return myDoubleDFset; }
-        
+    
+    
     @ThriftField(value=10, name="myDoubleDFZero", requiredness=Requiredness.NONE)
     public double getMyDoubleDFZero() { return myDoubleDFZero; }
-        
+    
+    
     @ThriftField(value=12, name="myDouble", requiredness=Requiredness.NONE)
     public double getMyDouble() { return myDouble; }
-        
+    
+    
     @ThriftField(value=13, name="field3", requiredness=Requiredness.NONE)
     public Map<Integer, String> getField3() { return field3; }
-        
+    
+    
     @ThriftField(value=14, name="myList", requiredness=Requiredness.NONE)
     public List<test.fixtures.complex_struct.MyEnum> getMyList() { return myList; }
-        
+    
+    
     @ThriftField(value=15, name="mySet", requiredness=Requiredness.NONE)
     public Set<String> getMySet() { return mySet; }
-        
+    
+    
     @ThriftField(value=16, name="simpleStruct", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.SimpleStruct getSimpleStruct() { return simpleStruct; }
-        
+    
+    
     @ThriftField(value=17, name="listStructDFset", requiredness=Requiredness.NONE)
     public List<test.fixtures.complex_struct.SimpleStruct> getListStructDFset() { return listStructDFset; }
-        
+    
+    
     @ThriftField(value=18, name="myUnion", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyUnion getMyUnion() { return myUnion; }
-        
+    
+    
     @ThriftField(value=19, name="listUnionDFset", requiredness=Requiredness.NONE)
     public List<test.fixtures.complex_struct.MyUnion> getListUnionDFset() { return listUnionDFset; }
-        
+    
+    
     @ThriftField(value=20, name="mapNestlistStructDfSet", requiredness=Requiredness.NONE)
     public Map<Integer, List<test.fixtures.complex_struct.SimpleStruct>> getMapNestlistStructDfSet() { return mapNestlistStructDfSet; }
-        
+    
+    
     @ThriftField(value=21, name="mapJavaTypeDFset", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getMapJavaTypeDFset() { return mapJavaTypeDFset; }
-        
+    
+    
     @ThriftField(value=22, name="emptyMap", requiredness=Requiredness.NONE)
     public Map<Long, Integer> getEmptyMap() { return emptyMap; }
-        
+    
+    
     @ThriftField(value=23, name="enumMapDFset", requiredness=Requiredness.NONE)
     public Map<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> getEnumMapDFset() { return enumMapDFset; }
     
