@@ -49,7 +49,7 @@ TEST_F(ThriftClientTest, FutureCapturesChannel) {
   auto fut = client->future_sendResponse(12);
   // To prove that even if the client is gone, the channel is captured:
   client = nullptr;
-  auto ret = fut.waitVia(&eb).getTry();
+  auto ret = fut.waitVia(&eb).result();
 
   EXPECT_TRUE(ret.hasValue());
   EXPECT_EQ("12", ret.value());
@@ -87,7 +87,7 @@ TEST_F(ThriftClientTest, FutureCapturesChannelOneway) {
   auto fut = client->future_noResponse(12);
   // To prove that even if the client is gone, the channel is captured:
   client = nullptr;
-  auto ret = fut.waitVia(&eb).getTry();
+  auto ret = fut.waitVia(&eb).result();
 
   EXPECT_TRUE(ret.hasValue());
 }
@@ -306,7 +306,7 @@ TEST_F(ThriftClientTest, FutureCallRequestResponse) {
         eb.drive();
       }
     }
-    auto r = f.wait().getTry();
+    auto r = f.wait().result();
     ASSERT_TRUE(r.hasValue());
     res = r.value();
     EXPECT_EQ(res, "123");
@@ -385,7 +385,7 @@ TEST_F(ThriftClientTest, FutureCallOneWay) {
         eb.drive();
       }
     }
-    auto r = std::move(f).wait().getTry();
+    auto r = std::move(f).wait().result();
     EXPECT_TRUE(r.hasValue());
   };
 
