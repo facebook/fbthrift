@@ -47,8 +47,9 @@ public class TCompactJSONTest extends junit.framework.TestCase {
     read0.read(iproto);
     assertEquals(struct, read0);
 
-    // Test backward compatibility (i.e. boolean serialized as 0/1)
-    String oldJson = json.replaceAll("true", "1");
+    // Test SimpleJSON compatibility (i.e. boolean serialized as true/false)
+    String oldJson = json.replaceAll("\"bb\":1", "\"bb\":true");
+
     in = new TMemoryInputTransport(oldJson.getBytes(StandardCharsets.UTF_8));
     iproto = new TCompactJSONProtocol(in);
 
@@ -106,9 +107,9 @@ public class TCompactJSONTest extends junit.framework.TestCase {
     read0.read(iproto);
     assertEquals(struct, read0);
 
-    // Test backward compatibility (i.e. boolean serialized as 0/1)
-    json = json.replaceAll("true", "\"1\""); // true is a map key here and was generated with quotes
-    json = json.replaceAll("false", "0");
+    // Test TSimpleJSON compatibility (i.e. boolean serialized as 0/1)
+    json = json.replace("\"boolstrings\":{\"1\":\"VRAI\"}", "\"boolstrings\":{true:\"VRAI\"}");
+    json = json.replace("\"stringbools\":{\"FAUX\":0}", "\"stringbools\":{\"FAUX\":false}");
     in = new TMemoryInputTransport(json.getBytes(StandardCharsets.UTF_8));
     iproto = new TCompactJSONProtocol(in);
 

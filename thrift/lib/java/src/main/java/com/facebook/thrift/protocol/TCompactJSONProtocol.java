@@ -94,6 +94,11 @@ public class TCompactJSONProtocol extends TJSONProtocolBase {
     writeJSONArrayEnd();
   }
 
+  @Override
+  public void writeBool(boolean b) throws TException {
+    writeJSONInteger(b ? 1 : 0);
+  }
+
   /** Reading methods. */
 
   // Stack of nested structs that we may be in

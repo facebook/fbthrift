@@ -350,11 +350,11 @@ public class TCompactJSONProtocolTest {
 
   private static BoolTestCase boolTestCases[] =
       new BoolTestCase[] {
-        new BoolTestCase("{\"a\":1}", true, "{\"a\":true}"),
-        new BoolTestCase("{\"a\":0}", false, "{\"a\":false}"),
-        new BoolTestCase("{\"a\":true}", true, "{\"a\":true}"),
-        new BoolTestCase("{\"a\":false}", false, "{\"a\":false}"),
-        new BoolTestCase("{\"a\":123}", true, "{\"a\":true}")
+        new BoolTestCase("{\"a\":1}", true, "{\"a\":1}"),
+        new BoolTestCase("{\"a\":0}", false, "{\"a\":0}"),
+        new BoolTestCase("{\"a\":true}", true, "{\"a\":1}"),
+        new BoolTestCase("{\"a\":false}", false, "{\"a\":0}"),
+        new BoolTestCase("{\"a\":123}", true, "{\"a\":1}")
       };
 
   @Test
