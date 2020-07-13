@@ -50,6 +50,10 @@ struct StringAssignable {
   std::string value;
 };
 
+struct Nested {
+  int value = 0;
+};
+
 class TestStruct {
  public:
   field_ref<std::string&> name() {
@@ -116,6 +120,10 @@ class TestStruct {
     return {vec_, __isset.vec};
   }
 
+  optional_field_ref<Nested&> opt_nested() & {
+    return {nested_, __isset.nested};
+  }
+
  private:
   std::string name_ = "default";
   IntAssignable int_assign_;
@@ -123,6 +131,7 @@ class TestStruct {
   int int_val_;
   std::unique_ptr<int> uptr_;
   std::vector<bool> vec_;
+  Nested nested_;
 
   struct __isset {
     bool name;
@@ -131,6 +140,7 @@ class TestStruct {
     bool int_val;
     bool uptr;
     bool vec;
+    bool nested;
   } __isset = {};
 };
 
@@ -575,6 +585,21 @@ TEST(optional_field_ref_test, ensure_isset_unsafe) {
   s.opt_name().value_unchecked() = "foo";
   apache::thrift::ensure_isset_unsafe(s.opt_name());
   EXPECT_EQ(s.opt_name().value(), "foo");
+}
+
+TEST(optional_field_ref_test, alias) {
+  TestStruct s;
+  auto ref = s.opt_nested();
+  auto aliased = apache::thrift::alias_isset(
+      ref, [](auto& ref) -> auto& { return ref.value; });
+  EXPECT_FALSE(aliased.has_value());
+  EXPECT_FALSE(ref.has_value());
+  aliased = 5;
+  EXPECT_EQ(*aliased, 5);
+  EXPECT_EQ(ref->value, 5);
+  aliased.reset();
+  EXPECT_FALSE(aliased.has_value());
+  EXPECT_FALSE(ref.has_value());
 }
 
 #ifdef THRIFT_HAS_OPTIONAL

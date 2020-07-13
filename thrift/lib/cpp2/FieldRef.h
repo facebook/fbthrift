@@ -41,6 +41,7 @@ using is_set_t = std::conditional_t<std::is_const<T>::value, const bool, bool>;
 
 struct ensure_isset_unsafe_fn;
 struct unset_unsafe_fn;
+struct alias_isset_fn;
 
 } // namespace detail
 
@@ -253,6 +254,7 @@ class optional_field_ref {
   template <typename U>
   friend class optional_field_ref;
   friend struct detail::ensure_isset_unsafe_fn;
+  friend struct detail::alias_isset_fn;
 
  public:
   using value_type = std::remove_reference_t<T>;
@@ -575,6 +577,15 @@ struct unset_unsafe_fn {
   }
 };
 
+struct alias_isset_fn {
+  template <typename T, typename F>
+  auto operator()(optional_field_ref<T> ref, F functor) const noexcept {
+    auto&& result = functor(ref.value_);
+    return optional_field_ref<decltype(result)>(
+        static_cast<decltype(result)>(result), ref.is_set_);
+  }
+};
+
 constexpr unset_unsafe_fn unset_unsafe;
 
 } // namespace detail
@@ -593,6 +604,9 @@ constexpr detail::can_throw_fn can_throw;
 
 [[deprecated("Use `emplace` or `operator=` to set Thrift fields.")]] //
 constexpr detail::ensure_isset_unsafe_fn ensure_isset_unsafe;
+
+[[deprecated]] //
+constexpr detail::alias_isset_fn alias_isset;
 
 // A reference to an required field of the possibly const-qualified type
 // std::remove_reference_t<T> in a Thrift-generated struct.
