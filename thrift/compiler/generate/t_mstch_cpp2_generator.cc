@@ -766,7 +766,6 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:message", &mstch_cpp2_struct::message},
             {"struct:isset_fields?", &mstch_cpp2_struct::has_isset_fields},
             {"struct:isset_fields", &mstch_cpp2_struct::isset_fields},
-            {"struct:optionals?", &mstch_cpp2_struct::optionals},
             {"struct:is_large?", &mstch_cpp2_struct::is_large},
             {"struct:no_getters_setters?",
              &mstch_cpp2_struct::no_getters_setters},
@@ -909,9 +908,6 @@ class mstch_cpp2_struct : public mstch_struct {
     }
     return generate_elements(
         fields, generators_->field_generator_.get(), generators_, cache_);
-  }
-  mstch::node optionals() {
-    return cache_->parsed_options_.count("optionals") != 0;
   }
   mstch::node is_large() {
     // Outline constructors and destructors if the struct has
