@@ -731,7 +731,6 @@ class mstch_cpp2_field : public mstch_field {
   }
   mstch::node visibility() {
     bool isPrivate = field_->get_req() == t_field::e_req::T_OPTIONAL &&
-        cache_->parsed_options_.count("optionals") == 0 &&
         cache_->parsed_options_.count("deprecated_public_fields") == 0 &&
         !cpp2::is_cpp_ref(field_);
     return std::string(isPrivate ? "private" : "public");
@@ -798,13 +797,8 @@ class mstch_cpp2_struct : public mstch_struct {
     // Get all non empty containers
     // Get all enums
     // Get all containers with references
-    // Remove all optional fields when optionals flag is enabled
     std::vector<t_field const*> filtered_fields;
     for (auto const* field : get_members_in_layout_order()) {
-      if (field->get_req() == t_field::e_req::T_OPTIONAL &&
-          cache_->parsed_options_.count("optionals")) {
-        continue;
-      }
       const t_type* type = field->get_type()->get_true_type();
       if ((type->is_base_type() && !type->is_string_or_binary()) ||
           (type->is_string_or_binary() && field->get_value() != nullptr) ||
@@ -897,9 +891,6 @@ class mstch_cpp2_struct : public mstch_struct {
     return std::string();
   }
   mstch::node has_isset_fields() {
-    if (cache_->parsed_options_.count("optionals") != 0) {
-      return false;
-    }
     for (const auto* field : strct_->get_members()) {
       if (field->get_req() != t_field::e_req::T_REQUIRED &&
           !field->annotations_.count("cpp.ref") &&
@@ -1275,7 +1266,6 @@ class mstch_cpp2_program : public mstch_program {
             {"program:frozen_packed?", &mstch_cpp2_program::frozen_packed},
             {"program:indirection?", &mstch_cpp2_program::has_indirection},
             {"program:json?", &mstch_cpp2_program::json},
-            {"program:optionals?", &mstch_cpp2_program::optionals},
             {"program:nimble?", &mstch_cpp2_program::nimble},
             {"program:fatal_languages", &mstch_cpp2_program::fatal_languages},
             {"program:fatal_enums", &mstch_cpp2_program::fatal_enums},
@@ -1440,9 +1430,6 @@ class mstch_cpp2_program : public mstch_program {
   }
   mstch::node json() {
     return cache_->parsed_options_.count("json") != 0;
-  }
-  mstch::node optionals() {
-    return cache_->parsed_options_.count("optionals") != 0;
   }
   mstch::node nimble() {
     return cache_->parsed_options_.count("nimble") != 0;
