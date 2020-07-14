@@ -92,32 +92,12 @@ struct invoke_reffer_thru {
 };
 
 template <typename Tag>
-struct access_deprecated_optional_field {
-  template <
-      typename... A,
-      typename std::enable_if_t<
-          folly::detail::is_instantiation_of_v<
-              DeprecatedOptionalField,
-              folly::remove_cvref_t<
-                  folly::invoke_result_t<access_field<Tag>, A...>>>,
-          int> = 0>
-  FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(
-      noexcept(access_field<Tag>{}(static_cast<A&&>(a)...)))
-      -> decltype(access_field<Tag>{}(static_cast<A&&>(a)...)) {
-    return access_field<Tag>{}(static_cast<A&&>(a)...);
-  }
-};
-
-template <typename Tag>
 struct invoke_reffer_thru_or_access_field {
   template <typename... A>
   using impl = folly::conditional_t<
-      folly::is_invocable_v<access_deprecated_optional_field<Tag>, A...>,
-      access_deprecated_optional_field<Tag>,
-      folly::conditional_t<
-          folly::is_invocable_v<invoke_reffer_thru<Tag>, A...>,
-          invoke_reffer_thru<Tag>,
-          access_field<Tag>>>;
+      folly::is_invocable_v<invoke_reffer_thru<Tag>, A...>,
+      invoke_reffer_thru<Tag>,
+      access_field<Tag>>;
   template <typename... A>
   FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(
       noexcept(impl<A...>{}(static_cast<A&&>(a)...)))

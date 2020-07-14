@@ -47,16 +47,9 @@ struct isset {
   struct kind {};
 
   template <typename T>
-  using kind_of = std::conditional_t<
-      is_optional<folly::remove_cvref_t<decltype(
-          Getter::ref(std::declval<T const&>()))>>::value,
-      kind<0>,
-      std::conditional_t<has_isset_field<T, Getter>::value, kind<1>, kind<2>>>;
+  using kind_of =
+      std::conditional_t<has_isset_field<T, Getter>::value, kind<1>, kind<2>>;
 
-  template <typename T>
-  static constexpr bool check(kind<0>, T const& owner) {
-    return Getter::ref(owner).has_value();
-  }
   template <typename T>
   static constexpr bool check(kind<1>, T const& owner) {
     return Getter::copy(owner.__isset);
@@ -70,16 +63,6 @@ struct isset {
     return check(kind_of<T>{}, owner);
   }
 
-  template <typename T>
-  static constexpr bool mark(kind<0>, T& owner, bool set) {
-    auto& field = Getter::ref(owner);
-    if (set && !field.has_value()) {
-      field.emplace();
-    } else if (!set && field.has_value()) {
-      field.reset();
-    }
-    return set;
-  }
   template <typename T>
   static constexpr bool mark(kind<1>, T& owner, bool set) {
     return Getter::ref(owner.__isset) = set;
