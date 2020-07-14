@@ -170,9 +170,9 @@ class THeader {
       size_t minCompressBytes);
 
   /**
-   * Clone a new THeader. Metadata is copied, but not headers.
+   * Copy metadata, but not headers.
    */
-  std::unique_ptr<THeader> cloneMetadata();
+  void copyMetadataFrom(const THeader& src);
 
   static uint16_t getNumTransforms(const std::vector<uint16_t>& transforms) {
     return folly::to_narrow(transforms.size());

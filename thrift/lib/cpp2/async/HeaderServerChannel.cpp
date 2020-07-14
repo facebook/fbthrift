@@ -331,7 +331,8 @@ void HeaderServerChannel::HeaderRequest::sendTimeoutResponse(
   // touches the per-request THeader at any time. This builds a new THeader
   // and only reads certain fields from header_. To avoid race condition,
   // DO NOT read any header from the per-request THeader.
-  timeoutHeader_ = header_->cloneMetadata();
+  timeoutHeader_ = std::make_unique<THeader>();
+  timeoutHeader_->copyMetadataFrom(*header_);
   auto errorCode = responseType == TimeoutResponseType::QUEUE
       ? kServerQueueTimeoutErrorCode
       : kTaskExpiredErrorCode;

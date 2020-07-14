@@ -624,17 +624,14 @@ unique_ptr<IOBuf> THeader::transform(
   return buf;
 }
 
-std::unique_ptr<THeader> THeader::cloneMetadata() {
-  auto clone = std::make_unique<THeader>();
-  clone->setProtocolId(protoId_);
-  clone->setTransforms(writeTrans_);
-  clone->setMinCompressBytes(minCompressBytes_);
-  clone->setSequenceNumber(seqId_);
-  clone->setClientType(clientType_);
-  clone->setFlags(flags_);
-  clone->forceClientType(forceClientType_);
-
-  return clone;
+void THeader::copyMetadataFrom(const THeader& src) {
+  setProtocolId(src.protoId_);
+  setTransforms(src.writeTrans_);
+  setMinCompressBytes(src.minCompressBytes_);
+  setSequenceNumber(src.seqId_);
+  setClientType(src.clientType_);
+  setFlags(src.flags_);
+  forceClientType(src.forceClientType_);
 }
 
 void THeader::resetProtocol() {
