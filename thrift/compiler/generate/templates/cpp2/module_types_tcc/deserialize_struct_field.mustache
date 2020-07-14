@@ -18,24 +18,8 @@
 %><%#type:resolves_to_container_or_struct?%><%!
 %>_readState.beforeSubobject(iprot);
 <%/type:resolves_to_container_or_struct?%><%!
-
-%><%#field:optionals?%><%!
-%>this-><%field:cpp_name%> = <% > types/type%>();<%!
-%><%#type:resolves_to_fixed_size?%><%!
-%>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, this-><%field:cpp_name%>.value(), _readState);<%
-%><%/type:resolves_to_fixed_size?%><%!
-%><%#type:string_or_binary?%>
-iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:cpp_name%>.value()<%type:cpp_indirection%>);<%!
-%><%/type:string_or_binary?%><%!
-%><%#type:resolves_to_container?%>
-::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:cpp_name%>.value());<%!
-%><%/type:resolves_to_container?%><%!
-%><%#type:struct?%>
-::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, &this-><%field:cpp_name%>.value());<%!
-%><%/type:struct?%><%!
-%><%/field:optionals?%><%!
-
 %><%#field:cpp_ref?%>
+
 std::unique_ptr<<% > types/type%>> ptr = std::make_unique<<% > types/type%>>();<%!
 %><%#type:resolves_to_fixed_size?%><%!
 %>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, *ptr, _readState);<%!
@@ -52,7 +36,7 @@ iprot->read<% > module_types_tcc/struct_field_type%>((*this-><%field:cpp_name%><
 this-><%field:cpp_name%> = std::move(ptr);<%!
 %><%/field:cpp_ref?%><%!
 
-%><%^field:cpp_ref?%><%^field:optionals?%><%!
+%><%^field:cpp_ref?%><%!
 %><%#type:resolves_to_fixed_size?%><%!
 %>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, this-><%field:cpp_name%>, _readState);<%!
 %><%/type:resolves_to_fixed_size?%><%!
@@ -66,7 +50,7 @@ this-><%field:cpp_name%> = <% > types/type%>();
 %><%#type:struct?%><%!
 %>::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, &this-><%field:cpp_name%>);<%!
 %><%/type:struct?%><%!
-%><%/field:optionals?%><%/field:cpp_ref?%><%!
+%><%/field:cpp_ref?%><%!
 
 %><%#program:enforce_required?%><%#field:required?%>
 isset_<%field:cpp_name%> = true;<%!

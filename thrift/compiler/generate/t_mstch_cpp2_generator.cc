@@ -625,7 +625,6 @@ class mstch_cpp2_field : public mstch_field {
              &mstch_cpp2_field::cpp_ref_shared_const},
             {"field:cpp_noncopyable?", &mstch_cpp2_field::cpp_noncopyable},
             {"field:enum_has_value", &mstch_cpp2_field::enum_has_value},
-            {"field:optionals?", &mstch_cpp2_field::optionals},
             {"field:terse_writes?", &mstch_cpp2_field::terse_writes},
             {"field:fatal_annotations?",
              &mstch_cpp2_field::has_fatal_annotations},
@@ -692,10 +691,6 @@ class mstch_cpp2_field : public mstch_field {
         ? generators_->type_generator_->generate(
               field_->get_next()->get_type(), generators_, cache_, pos_)
         : mstch::node("");
-  }
-  mstch::node optionals() {
-    return field_->get_req() == t_field::e_req::T_OPTIONAL &&
-        cache_->parsed_options_.count("optionals");
   }
   mstch::node terse_writes() {
     // Add terse writes for unqualified fields when comparison is cheap:

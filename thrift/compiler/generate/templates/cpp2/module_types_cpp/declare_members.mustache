@@ -33,10 +33,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void <%struct:name%>::__clear() {
   // clear all fields
 <%#struct:fields%><%#field:type%>
-<%#field:optionals?%>
-  <%field:cpp_name%>.reset();
-<%/field:optionals?%>
-<%^field:optionals?%>
 <%#type:resolves_to_base_or_enum?%>
 <%#field:value%>
 <%^type:enum?%>
@@ -100,7 +96,6 @@ void <%struct:name%>::__clear() {
 <%/field:optional?%>
 <%/field:cpp_ref_shared_const?%>
 <%/type:non_empty_struct?%>
-<%/field:optionals?%>
 <%/field:type%><%/struct:fields%>
 <%#struct:isset_fields?%>
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
