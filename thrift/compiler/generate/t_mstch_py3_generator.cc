@@ -398,7 +398,6 @@ class mstch_py3_program : public mstch_program {
              &mstch_py3_program::hasServiceFunctions},
             {"program:includeNamespaces",
              &mstch_py3_program::includeNamespaces},
-            {"program:optionals?", &mstch_py3_program::hasOptionals},
             {"program:stack_arguments?", &mstch_py3_program::isStackArguments},
             {"program:cppIncludes", &mstch_py3_program::getCppIncludes},
             {"program:containerTypes", &mstch_py3_program::getContainerTypes},
@@ -424,10 +423,6 @@ class mstch_py3_program : public mstch_program {
   mstch::node getContainerTypes() {
     type_py3_generator<true> generator{program_};
     return generate_elements(containers_, &generator, generators_, cache_);
-  }
-
-  mstch::node hasOptionals() {
-    return containsInParsedOptions(cache_.get(), "optionals");
   }
 
   mstch::node isStackArguments() {

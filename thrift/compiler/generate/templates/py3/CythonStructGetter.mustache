@@ -36,9 +36,7 @@ return self.__field_{{field:py_name}}{{!
 }}{{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
   }}return (<const char*>deref(self._cpp_obj).{{> CythonFieldValueRef}}{{!
-    }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
     }}.data())[:deref(self._cpp_obj).{{> CythonFieldValueRef}}{{!
-    }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
     }}.size()]{{!
 }}{{/type:flexibleBinary?}}{{!
 }}{{^type:hasCustomTypeBehavior?}}{{!
@@ -58,7 +56,6 @@ return self.__field_{{field:py_name}}{{!
     }}{{#type:bool?}}<pbool> {{/type:bool?}}{{!
     }}{{#type:string?}}(<bytes>{{/type:string?}}{{!
     }}deref(self._cpp_obj).{{> CythonFieldValueRef}}{{!
-    }}{{#field:optional?}}{{#program:optionals?}}.value(){{/program:optionals?}}{{/field:optional?}}{{!
     }}{{#type:string?}}).decode('UTF-8'){{/type:string?}}{{!
 }}{{/type:base?}}{{!
 }}{{^type:base?}}{{!
@@ -67,7 +64,6 @@ return self.__field_{{field:py_name}}{{!
     }}{{> types/CythonPythonType}}, {{!
     }}<int>({{!
     }}deref(self._cpp_obj).{{> CythonFieldValueRef}}{{!
-    }}{{#field:optional?}}{{#program:optionals?}}.value(){{/program:optionals?}}{{/field:optional?}}{{!
     }})){{!
 }}{{/type:enum?}}{{!
 }}{{^type:enum?}}{{!  Structs and Containers
@@ -75,7 +71,6 @@ return self.__field_{{field:py_name}}{{!
     self.__field_{{field:py_name}} = {{> types/CythonPythonType}}.create(reference_shared_ptr_{{field:py_name}}({{!
       }}self._cpp_obj, {{!
       }}deref(self._cpp_obj).{{> CythonFieldValueRef}}{{!
-        }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
       }}))
 return self.__field_{{field:py_name}}{{!
 }}{{/type:enum?}}{{!
