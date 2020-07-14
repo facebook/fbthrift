@@ -452,7 +452,6 @@ class mstch_cpp2_type : public mstch_type {
             {"type:cpp_declare_hash", &mstch_cpp2_type::cpp_declare_hash},
             {"type:cpp_declare_equal_to",
              &mstch_cpp2_type::cpp_declare_equal_to},
-            {"type:optionals?", &mstch_cpp2_type::optionals},
             {"type:no_getters_setters?", &mstch_cpp2_type::no_getters_setters},
             {"type:fatal_type_class", &mstch_cpp2_type::fatal_type_class},
             {"type:program_name", &mstch_cpp2_type::program_name},
@@ -534,9 +533,6 @@ class mstch_cpp2_type : public mstch_type {
   }
   mstch::node sync_methods_return_try() {
     return cache_->parsed_options_.count("sync_methods_return_try") != 0;
-  }
-  mstch::node optionals() {
-    return cache_->parsed_options_.count("optionals") != 0;
   }
   mstch::node no_getters_setters() {
     return cache_->parsed_options_.count("no_getters_setters") != 0;

@@ -23,13 +23,13 @@
   if (srcObj.<%field:cpp_name%>) <%#field:cpp_ref_unique?%><%!
     %><%field:cpp_name%>.reset(new <% > types/type%>(*srcObj.<%field:cpp_name%>));
 <%/field:cpp_ref_unique?%><%^field:cpp_ref_unique?%><%!
-    %><%field:cpp_name%> = srcObj.<%field:cpp_name%><%#type:optionals?%>.value()<%/type:optionals?%>->clone();
+    %><%field:cpp_name%> = srcObj.<%field:cpp_name%>->clone();
 <%/field:cpp_ref_unique?%>
 <%/field:cpp_ref_unique_either?%>
-<%^type:optionals?%><%^field:cpp_ref?%><%^field:required?%>
+<%^field:cpp_ref?%><%^field:required?%>
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.<%field:cpp_name%> = srcObj.__isset.<%field:cpp_name%>;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-<%/field:required?%><%/field:cpp_ref?%><%/type:optionals?%>
+<%/field:required?%><%/field:cpp_ref?%>
 <%/field:type%><%/struct:fields%>
 }

@@ -15,7 +15,7 @@
   limitations under the License.
 
 %><%#struct:fields?%><%#struct:fields%><%#field:type%><%#type:resolves_to_container_or_struct?%>
-<%^type:optionals?%><%^type:no_getters_setters?%>
+<%^type:no_getters_setters?%>
 <%#field:optional?%><%^field:cpp_ref?%>
 const <% > types/type%>* <%struct:name%>::get_<%field:cpp_name%>() const& {
   return <%field:cpp_name%>_ref().has_value() ? std::addressof(<%field:cpp_name%>) : nullptr;
@@ -36,5 +36,5 @@ const <% > types/type%>& <%struct:name%>::get_<%field:cpp_name%>() const& {
 }
 
 <%/field:cpp_ref?%><%/field:optional?%>
-<%/type:no_getters_setters?%><%/type:optionals?%>
+<%/type:no_getters_setters?%>
 <%/type:resolves_to_container_or_struct?%><%/field:type%><%/struct:fields%><%/struct:fields?%>
