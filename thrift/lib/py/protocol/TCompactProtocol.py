@@ -64,7 +64,10 @@ def getVarint(n):
         else:
             out.append((n & 0xff) | 0x80)
             n = n >> 7
-    return bytes(out)
+    if sys.version_info[0] >= 3:
+        return bytes(out)
+    else:
+        return b''.join(map(chr, out))
 
 def writeVarint(trans, n):
     trans.write(getVarint(n))
