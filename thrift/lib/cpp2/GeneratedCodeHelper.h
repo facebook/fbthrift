@@ -521,7 +521,9 @@ folly::exception_wrapper recv_wrapped_helper(
     ctx->onReadData(smsg);
     detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
-    ctx->postRead(state.header(), folly::to_narrow(state.buf()->length()));
+    ctx->postRead(
+        state.header(),
+        folly::to_narrow(state.buf()->computeChainDataLength()));
     return folly::exception_wrapper();
   } catch (std::exception const& e) {
     return folly::exception_wrapper(std::current_exception(), e);
