@@ -71,6 +71,13 @@ class ReconnectingRequestChannel : public RequestChannel {
       std::shared_ptr<transport::THeader>,
       RequestClientCallback::Ptr) override;
 
+  void sendRequestStream(
+      const RpcOptions&,
+      folly::StringPiece methodName,
+      SerializedRequest&& request,
+      std::shared_ptr<transport::THeader>,
+      StreamClientCallback*) override;
+
   void setCloseCallback(CloseCallback*) override {
     LOG(FATAL) << "Not supported";
   }

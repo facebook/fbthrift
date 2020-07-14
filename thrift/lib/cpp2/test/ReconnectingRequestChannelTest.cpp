@@ -36,6 +36,7 @@ class TestServiceServerMock : public TestServiceSvIf {
  public:
   MOCK_METHOD1(echoInt, int32_t(int32_t));
   MOCK_METHOD1(noResponse, void(int64_t));
+  MOCK_METHOD2(range, apache::thrift::ServerStream<int32_t>(int32_t, int32_t));
 };
 
 class ReconnectingRequestChannelTest : public Test {
@@ -51,7 +52,7 @@ class ReconnectingRequestChannelTest : public Test {
   folly::SocketAddress dn_addr{bound.getAddress()};
   uint32_t connection_count_ = 0;
 
-  void runReconnect(TestServiceAsyncClient& client);
+  void runReconnect(TestServiceAsyncClient& client, bool testStreaming);
 };
 
 TEST_F(ReconnectingRequestChannelTest, ReconnectHeader) {
@@ -62,7 +63,7 @@ TEST_F(ReconnectingRequestChannelTest, ReconnectHeader) {
             AsyncSocket::newSocket(&eb, up_addr));
       });
   TestServiceAsyncClient client(std::move(channel));
-  runReconnect(client);
+  runReconnect(client, false);
 }
 
 TEST_F(ReconnectingRequestChannelTest, ReconnectRocket) {
@@ -73,11 +74,12 @@ TEST_F(ReconnectingRequestChannelTest, ReconnectRocket) {
             new folly::AsyncSocket(&eb, up_addr)));
       });
   TestServiceAsyncClient client(std::move(channel));
-  runReconnect(client);
+  runReconnect(client, true);
 }
 
 void ReconnectingRequestChannelTest::runReconnect(
-    TestServiceAsyncClient& client) {
+    TestServiceAsyncClient& client,
+    bool testStreaming) {
   EXPECT_CALL(*handler, echoInt(_))
       .WillOnce(Return(1))
       .WillOnce(Return(3))
@@ -89,6 +91,34 @@ void ReconnectingRequestChannelTest::runReconnect(
   client.sync_noResponse(0);
   EXPECT_EQ(connection_count_, 1);
 
+  auto checkStream = [](auto&& stream, int from, int to) {
+    std::move(stream).subscribeInline([idx = from, to](auto nextTry) mutable {
+      DCHECK(!nextTry.hasException());
+      if (!nextTry.hasValue()) {
+        EXPECT_EQ(to, idx);
+      } else {
+        EXPECT_EQ(idx++, *nextTry);
+      }
+    });
+  };
+
+  if (testStreaming) {
+    EXPECT_CALL(*handler, range(_, _))
+        .WillRepeatedly(Invoke(
+            [](int32_t from,
+               int32_t to) -> apache::thrift::ServerStream<int32_t> {
+              auto [serverStream, publisher] =
+                  apache::thrift::ServerStream<int32_t>::createPublisher();
+              for (auto idx = from; idx < to; ++idx) {
+                publisher.next(idx);
+              }
+              std::move(publisher).complete();
+              return std::move(serverStream);
+            }));
+    checkStream(client.sync_range(0, 1), 0, 1);
+    EXPECT_EQ(connection_count_, 1);
+  }
+
   // bounce the server
   runner =
       std::make_unique<apache::thrift::ScopedServerInterfaceThread>(handler);
@@ -99,4 +129,11 @@ void ReconnectingRequestChannelTest::runReconnect(
   EXPECT_EQ(connection_count_, 2);
   EXPECT_EQ(client.sync_echoInt(4), 4);
   EXPECT_EQ(connection_count_, 2);
+
+  if (testStreaming) {
+    checkStream(client.sync_range(0, 2), 0, 2);
+    EXPECT_EQ(connection_count_, 2);
+    checkStream(client.sync_range(4, 42), 4, 42);
+    EXPECT_EQ(connection_count_, 2);
+  }
 }

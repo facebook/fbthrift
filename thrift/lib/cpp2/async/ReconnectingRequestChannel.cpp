@@ -57,6 +57,49 @@ class ChannelKeepAlive : public RequestClientCallback {
   RequestClientCallback::Ptr cob_;
   const bool oneWay_;
 };
+
+class ChannelKeepAliveStream : public StreamClientCallback {
+ public:
+  ChannelKeepAliveStream(
+      ReconnectingRequestChannel::ImplPtr impl,
+      StreamClientCallback& clientCallback)
+      : keepAlive_(std::move(impl)), clientCallback_(clientCallback) {}
+
+  bool onFirstResponse(
+      FirstResponsePayload&& firstResponsePayload,
+      folly::EventBase* evb,
+      StreamServerCallback* serverCallback) override {
+    SCOPE_EXIT {
+      delete this;
+    };
+    serverCallback->resetClientCallback(clientCallback_);
+    return clientCallback_.onFirstResponse(
+        std::move(firstResponsePayload), evb, serverCallback);
+  }
+  void onFirstResponseError(folly::exception_wrapper ew) override {
+    SCOPE_EXIT {
+      delete this;
+    };
+    return clientCallback_.onFirstResponseError(std::move(ew));
+  }
+
+  virtual bool onStreamNext(StreamPayload&&) override {
+    std::terminate();
+  }
+  virtual void onStreamError(folly::exception_wrapper) override {
+    std::terminate();
+  }
+  virtual void onStreamComplete() override {
+    std::terminate();
+  }
+  void resetServerCallback(StreamServerCallback&) override {
+    std::terminate();
+  }
+
+ private:
+  ReconnectingRequestChannel::ImplPtr keepAlive_;
+  StreamClientCallback& clientCallback_;
+};
 } // namespace
 
 void ReconnectingRequestChannel::sendRequestResponse(
@@ -93,6 +136,19 @@ void ReconnectingRequestChannel::sendRequestNoResponse(
       std::move(request),
       std::move(header),
       std::move(cob));
+}
+
+void ReconnectingRequestChannel::sendRequestStream(
+    const RpcOptions& options,
+    folly::StringPiece methodName,
+    SerializedRequest&& request,
+    std::shared_ptr<transport::THeader> header,
+    StreamClientCallback* cob) {
+  reconnectIfNeeded();
+  cob = new ChannelKeepAliveStream(impl_, *cob);
+
+  return impl_->sendRequestStream(
+      options, methodName, std::move(request), std::move(header), cob);
 }
 
 void ReconnectingRequestChannel::reconnectIfNeeded() {

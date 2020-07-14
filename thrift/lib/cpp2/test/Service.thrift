@@ -75,4 +75,5 @@ service TestService {
   oneway void noResponseIOBuf(1: IOBuf buf)
   stream<byte> echoIOBufAsByteStream(1: IOBuf buf, 2: i32 delayMs)
   void throwsHandlerException();
+  stream<i32> range(1: i32 from, 2: i32 to)
 }
