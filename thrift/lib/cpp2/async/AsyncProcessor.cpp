@@ -129,16 +129,16 @@ void ServerInterface::BlockingThreadManager::add(folly::Func f) {
   }
 }
 
-bool ServerInterface::BlockingThreadManager::keepAliveAcquire() {
+bool ServerInterface::BlockingThreadManager::keepAliveAcquire() noexcept {
   auto keepAliveCount = keepAliveCount_.fetch_add(1, std::memory_order_relaxed);
   // We should never increment from 0
   DCHECK(keepAliveCount > 0);
   return true;
 }
 
-void ServerInterface::BlockingThreadManager::keepAliveRelease() {
+void ServerInterface::BlockingThreadManager::keepAliveRelease() noexcept {
   auto keepAliveCount = keepAliveCount_.fetch_sub(1, std::memory_order_acq_rel);
-  assert(keepAliveCount >= 1);
+  DCHECK(keepAliveCount >= 1);
   if (keepAliveCount == 1) {
     delete this;
   }

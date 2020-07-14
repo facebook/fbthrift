@@ -266,8 +266,8 @@ class ServerInterface : public AsyncProcessorFactory {
     explicit BlockingThreadManager(concurrency::ThreadManager* executor)
         : executor_(folly::getKeepAliveToken(executor)) {}
 
-    bool keepAliveAcquire() override;
-    void keepAliveRelease() override;
+    bool keepAliveAcquire() noexcept override;
+    void keepAliveRelease() noexcept override;
 
     static constexpr std::chrono::seconds kTimeout{30};
     std::atomic<size_t> keepAliveCount_{1};
