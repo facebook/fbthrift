@@ -224,9 +224,7 @@ void HandlerCallbackBase::transform(folly::IOBufQueue& queue) {
   // Do any compression or other transforms in this thread, the same thread
   // that serialization happens on.
   queue.append(transport::THeader::transform(
-      queue.move(),
-      reqCtx_->getHeader()->getWriteTransforms(),
-      reqCtx_->getHeader()->getMinCompressBytes()));
+      queue.move(), reqCtx_->getHeader()->getWriteTransforms()));
 }
 
 void HandlerCallbackBase::doExceptionWrapped(folly::exception_wrapper ew) {

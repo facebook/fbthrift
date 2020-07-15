@@ -51,14 +51,6 @@ class HeaderChannelTrait {
   }
   void updateClientType(CLIENT_TYPE ct);
 
-  void setMinCompressBytes(uint32_t bytes) {
-    minCompressBytes_ = bytes;
-  }
-
-  uint32_t getMinCompressBytes() {
-    return minCompressBytes_;
-  }
-
   uint16_t getFlags() const {
     return flags_;
   }

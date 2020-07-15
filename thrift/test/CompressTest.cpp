@@ -195,17 +195,6 @@ TEST(sdf, sdfsd) {
   folly::io::Cursor cursor(compressed.get());
   cursor.skip(15);
   EXPECT_EQ(cursor.read<uint8_t>(), 1);
-
-  header.setMinCompressBytes(uncompressedSize);
-  compressed = header.addHeader(serialized->clone(), strMap);
-  compressedSize = compressed->computeChainDataLength();
-
-  // We shouldn't compress anything due to setMinCompressBytes limit above.
-  EXPECT_EQ(compressedSize, uncompressedSize);
-  // Verify there were no transforms.
-  cursor.reset(compressed.get());
-  cursor.skip(15);
-  EXPECT_EQ(cursor.read<uint8_t>(), 0);
 }
 
 int main(int argc, char** argv) {

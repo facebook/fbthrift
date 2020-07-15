@@ -164,7 +164,6 @@ TEST(ThriftServer, CompressionClientTest) {
   auto channel =
       boost::polymorphic_downcast<HeaderClientChannel*>(client.getChannel());
   channel->setTransform(apache::thrift::transport::THeader::ZLIB_TRANSFORM);
-  channel->setMinCompressBytes(1);
 
   std::string response;
   client.sync_sendResponse(response, 64);
@@ -222,31 +221,6 @@ TEST(ThriftServer, SSLClientOnPlaintextServerTest) {
   EXPECT_NE(nullptr, strstr(msg, "unexpected message"));
 }
 
-TEST(ThriftServer, CompressionServerTest) {
-  /* This tests the boundary condition of uncompressed value being larger
-     than minCompressBytes and compressed value being smaller. We want to ensure
-     this case does not cause corruption */
-  TestThriftServerFactory<TestInterface> factory;
-  factory.minCompressBytes(100);
-  ScopedServerThread sst(factory.create());
-  folly::EventBase base;
-  std::shared_ptr<folly::AsyncSocket> socket(
-      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
-
-  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
-
-  auto channel =
-      boost::polymorphic_downcast<HeaderClientChannel*>(client.getChannel());
-  channel->setTransform(apache::thrift::transport::THeader::ZLIB_TRANSFORM);
-
-  std::string request(55, 'a');
-  std::string response;
-  // The response is slightly more than 100 bytes before compression
-  // and less than 100 bytes after compression
-  client.sync_echoRequest(response, request);
-  EXPECT_EQ(response.size(), 100);
-}
-
 TEST(ThriftServer, DefaultCompressionTest) {
   /* Tests the functionality of default transforms, ensuring the server properly
      applies them even if the client does not apply any transforms. */
@@ -278,22 +252,15 @@ TEST(ThriftServer, DefaultCompressionTest) {
   };
 
   TestThriftServerFactory<TestInterface> factory;
-  factory.minCompressBytes(1);
-  factory.defaultWriteTransform(
-      apache::thrift::transport::THeader::ZLIB_TRANSFORM);
   auto server = std::static_pointer_cast<ThriftServer>(factory.create());
   ScopedServerThread sst(server);
   folly::EventBase base;
 
-  // First, with minCompressBytes set low, ensure we compress even though the
-  // client did not compress
+  // no compression if client does not compress/send preference
   std::shared_ptr<folly::AsyncSocket> socket(
       folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
-  client.sendResponse(
-      std::make_unique<Callback>(
-          true, apache::thrift::transport::THeader::ZLIB_TRANSFORM),
-      64);
+  client.sendResponse(std::make_unique<Callback>(false, 0), 64);
   base.loop();
 
   // Ensure that client transforms take precedence
@@ -304,15 +271,6 @@ TEST(ThriftServer, DefaultCompressionTest) {
       std::make_unique<Callback>(
           true, apache::thrift::transport::THeader::SNAPPY_TRANSFORM),
       64);
-  base.loop();
-
-  // Ensure that minCompressBytes still works with default transforms. We
-  // Do not expect compression
-  server->setMinCompressBytes(1000);
-  std::shared_ptr<folly::AsyncSocket> socket2(
-      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
-  TestServiceAsyncClient client2(HeaderClientChannel::newChannel(socket2));
-  client2.sendResponse(std::make_unique<Callback>(false, 0), 64);
   base.loop();
 }
 
@@ -595,10 +553,6 @@ class OverloadTest : public ::testing::TestWithParam<
       return runner.newClient<TestServiceAsyncClient>(
           evb, [&](auto socket) mutable {
             auto channel = RocketClientChannel::newChannel(std::move(socket));
-            if (compression == Compression::Enabled) {
-              channel->setNegotiatedCompressionAlgorithm(
-                  CompressionAlgorithm::ZSTD);
-            }
             return channel;
           });
     }
@@ -684,10 +638,6 @@ TEST_P(OverloadTest, Test) {
     }
     return {};
   });
-
-  // avoid compressing loadshedding errors even if compression is enabled
-  static_cast<ThriftServer*>(&runner.getThriftServer())
-      ->setMinCompressBytes(100);
 
   // force overloaded
   folly::Function<void()> onExit = [] {};

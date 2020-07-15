@@ -167,7 +167,7 @@ class THeader {
   static std::unique_ptr<folly::IOBuf> transform(
       std::unique_ptr<folly::IOBuf>,
       std::vector<uint16_t>& writeTrans,
-      size_t minCompressBytes);
+      size_t minCompressBytes = 0);
 
   /**
    * Copy metadata, but not headers.
@@ -319,14 +319,6 @@ class THeader {
       size_t& needed,
       StringToStringMap& persistentReadHeaders);
 
-  void setMinCompressBytes(uint32_t bytes) {
-    minCompressBytes_ = bytes;
-  }
-
-  uint32_t getMinCompressBytes() {
-    return minCompressBytes_;
-  }
-
   void setDesiredCompressionConfig(CompressionConfig compressionConfig) {
     compressionConfig_ = compressionConfig;
   }
@@ -441,7 +433,6 @@ class THeader {
   static const std::string ID_VERSION_HEADER;
   static const std::string ID_VERSION;
 
-  uint32_t minCompressBytes_;
   bool allowBigFrames_;
   folly::Optional<CompressionConfig> compressionConfig_;
 

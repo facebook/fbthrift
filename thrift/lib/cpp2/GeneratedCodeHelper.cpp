@@ -78,8 +78,7 @@ void helper<ProtocolReader, ProtocolWriter>::process_exn(
     auto payload = THeader::transform(
         helper_w<ProtocolWriter>::write_exn(
             func, &oprot, protoSeqId, nullptr, x),
-        ctx->getHeader()->getWriteTransforms(),
-        ctx->getHeader()->getMinCompressBytes());
+        ctx->getHeader()->getWriteTransforms());
     eb->runInEventBaseThread(
         [payload = move(payload), request = move(req)]() mutable {
           if (request->isStream()) {

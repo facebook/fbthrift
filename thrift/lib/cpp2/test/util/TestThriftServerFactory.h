@@ -58,11 +58,6 @@ struct TestThriftServerFactory : public TestServerFactory {
       server->setServerEventHandler(serverEventHandler_);
     }
 
-    server->setMinCompressBytes(minCompressBytes_);
-    if (transId_) {
-      std::vector<uint16_t> transforms{transId_};
-      server->setDefaultWriteTransforms(transforms);
-    }
     server->setInterface(std::unique_ptr<Interface>(new Interface));
     return server;
   }
@@ -89,23 +84,11 @@ struct TestThriftServerFactory : public TestServerFactory {
     return *this;
   }
 
-  TestThriftServerFactory& minCompressBytes(uint32_t minCompressBytes) {
-    minCompressBytes_ = minCompressBytes;
-    return *this;
-  }
-
-  TestThriftServerFactory& defaultWriteTransform(uint16_t transId) {
-    transId_ = transId;
-    return *this;
-  }
-
  private:
   bool useSimpleThreadManager_{true};
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> exe_{nullptr};
   uint32_t idleTimeoutMs_{0};
   bool duplex_{false};
-  uint32_t minCompressBytes_{0};
-  uint16_t transId_{0};
 };
 
 } // namespace thrift

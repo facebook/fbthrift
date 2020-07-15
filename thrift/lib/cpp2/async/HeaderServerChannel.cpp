@@ -152,11 +152,6 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
                << getTHeaderPayloadString(buf.get());
   }
 
-  header->setMinCompressBytes(channel_.getMinCompressBytes());
-  // Only set default transforms if client has not set any
-  if (header->getWriteTransforms().empty()) {
-    header->setTransforms(channel_.getDefaultWriteTransforms());
-  }
   return make_tuple(std::move(buf), 0, std::move(header));
 }
 
@@ -267,10 +262,7 @@ void HeaderServerChannel::HeaderRequest::serializeAndSendError(
     channel_->closeNow();
     return;
   }
-  exbuf = THeader::transform(
-      std::move(exbuf),
-      header.getWriteTransforms(),
-      header.getMinCompressBytes());
+  exbuf = THeader::transform(std::move(exbuf), header.getWriteTransforms());
   sendReply(std::move(exbuf), cb);
 }
 
@@ -297,10 +289,7 @@ void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
       channel_->closeNow();
       return;
     }
-    exbuf = THeader::transform(
-        std::move(exbuf),
-        header_->getWriteTransforms(),
-        header_->getMinCompressBytes());
+    exbuf = THeader::transform(std::move(exbuf), header_->getWriteTransforms());
     sendReply(std::move(exbuf), nullptr);
   });
 }

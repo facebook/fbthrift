@@ -78,7 +78,6 @@ THeader::THeader(int options)
       forceClientType_(false),
       seqId_(0),
       flags_(0),
-      minCompressBytes_(0),
       allowBigFrames_(options & ALLOW_BIG_FRAMES) {}
 
 THeader::~THeader() {}
@@ -627,7 +626,6 @@ unique_ptr<IOBuf> THeader::transform(
 void THeader::copyMetadataFrom(const THeader& src) {
   setProtocolId(src.protoId_);
   setTransforms(src.writeTrans_);
-  setMinCompressBytes(src.minCompressBytes_);
   setSequenceNumber(src.seqId_);
   setClientType(src.clientType_);
   setFlags(src.flags_);
@@ -757,7 +755,7 @@ unique_ptr<IOBuf> THeader::addHeader(
 
   if (clientType_ == THRIFT_HEADER_CLIENT_TYPE) {
     if (transform) {
-      buf = THeader::transform(std::move(buf), writeTrans, minCompressBytes_);
+      buf = THeader::transform(std::move(buf), writeTrans);
     }
   }
   size_t chainSize = buf->computeChainDataLength();

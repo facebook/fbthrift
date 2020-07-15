@@ -240,17 +240,17 @@ void <%service:name%>AsyncProcessor::throw_wrapped_<%function:cpp_name%>(apache:
   ProtocolOut_ prot;
   <%^function:returns_stream?%><%^function:returns_sink?%>
   auto queue = serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result);
-  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms()));
   return req->sendReply(queue.move());
   <%/function:returns_sink?%><%/function:returns_stream?%>
   <%#function:returns_stream?%>
   auto queue = serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result.fields);
-  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms()));
   std::ignore = req->sendStreamReply(queue.move(), apache::thrift::StreamServerCallbackPtr(nullptr));
   <%/function:returns_stream?%>
   <%#function:returns_sink?%>
   auto queue = serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result.fields);
-  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms()));
   req->sendSinkReply(queue.move(), {});
   <%/function:returns_sink?%>
 <%/function:exceptions?%>

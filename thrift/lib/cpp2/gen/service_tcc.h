@@ -59,9 +59,7 @@ std::unique_ptr<folly::IOBuf> process_serialize_xform_app_exn(
   x.write(&prot);
   prot.writeMessageEnd();
   queue.append(transport::THeader::transform(
-      queue.move(),
-      ctx->getHeader()->getWriteTransforms(),
-      ctx->getHeader()->getMinCompressBytes()));
+      queue.move(), ctx->getHeader()->getWriteTransforms()));
   return queue.move();
 }
 

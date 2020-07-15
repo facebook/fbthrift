@@ -105,7 +105,6 @@ void RocketRoutingHandler::handleConnection(
   if (compression != CompressionAlgorithm::NONE) {
     connection->setNegotiatedCompressionAlgorithm(compression);
   }
-  connection->setMinCompressBytes(server->getMinCompressBytes());
   connectionManager->addConnection(connection);
 
   if (auto* observer = server->getObserver()) {

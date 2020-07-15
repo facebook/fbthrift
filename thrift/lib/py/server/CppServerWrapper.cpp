@@ -404,8 +404,7 @@ class PythonAsyncProcessor : public AsyncProcessor {
                     }
                     auto q = THeader::transform(
                         std::move(outbuf),
-                        context->getHeader()->getWriteTransforms(),
-                        context->getHeader()->getMinCompressBytes());
+                        context->getHeader()->getWriteTransforms());
                     eb->runInEventBaseThread([req_up = std::move(req_up),
                                               q = std::move(q)]() mutable {
                       req_up->sendReply(std::move(q));

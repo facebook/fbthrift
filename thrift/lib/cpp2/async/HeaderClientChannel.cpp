@@ -224,7 +224,6 @@ HeaderClientChannel::ClientFramingHandler::removeFrame(IOBufQueue* q) {
     return make_tuple(std::unique_ptr<folly::IOBuf>(), remaining, nullptr);
   }
   channel_.checkSupportedClient(header->getClientType());
-  header->setMinCompressBytes(channel_.getMinCompressBytes());
   return make_tuple(std::move(buf), 0, std::move(header));
 }
 
