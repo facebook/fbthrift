@@ -697,16 +697,15 @@ INSTANTIATE_TEST_CASE_P(
             ErrorType::Server)));
 
 TEST(ThriftServer, LatencyHeader_ClientTimeout) {
-  ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
-  folly::EventBase base;
-  auto client = runner.newClient<TestServiceAsyncClient>(&base);
-
-  runner.getThriftServer().setUseClientTimeout(
-      LatencyHeaderStatus::NOT_EXPECTED);
+  ScopedServerInterfaceThread runner(
+      std::make_shared<TestInterface>(), "::1", 0, [](auto& server) {
+        server.setUseClientTimeout(false);
+      });
+  auto client = runner.newClient<TestServiceAsyncClient>();
 
   RpcOptions rpcOptions;
   // Setup client timeout
-  rpcOptions.setTimeout(std::chrono::milliseconds(5));
+  rpcOptions.setTimeout(std::chrono::milliseconds(1));
   rpcOptions.setWriteHeader(kClientLoggingHeader.str(), "");
   std::string response;
   EXPECT_ANY_THROW(client->sync_sendResponse(rpcOptions, response, 20000));
@@ -764,13 +763,13 @@ TEST(ThriftServer, LatencyHeader_TaskExpiry) {
 TEST(ThriftServer, LatencyHeader_QueueTimeout) {
   ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
   folly::EventBase base;
-  auto client = runner.newClient<TestServiceAsyncClient>(&base);
+  auto client = runner.newStickyClient<TestServiceAsyncClient>();
 
   // setup timeout
   runner.getThriftServer().setQueueTimeout(std::chrono::milliseconds(5));
 
   // Run a long request.
-  auto slowRequestFuture = client->future_sendResponse(20000);
+  auto slowRequestFuture = client->semifuture_sendResponse(20000);
 
   RpcOptions rpcOptions;
   rpcOptions.setWriteHeader(kClientLoggingHeader.str(), "");
@@ -781,7 +780,7 @@ TEST(ThriftServer, LatencyHeader_QueueTimeout) {
   validateLatencyHeaders(
       rpcOptions.getReadHeaders(), LatencyHeaderStatus::EXPECTED);
 
-  std::move(slowRequestFuture).getVia(&base);
+  std::move(slowRequestFuture).via(&base).getVia(&base);
 }
 
 TEST(ThriftServer, ClientTimeoutTest) {

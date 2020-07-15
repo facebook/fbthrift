@@ -22,12 +22,12 @@ namespace apache {
 namespace thrift {
 
 template <class AsyncClientT>
-std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newStickyClient()
-    const {
+std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newStickyClient(
+    folly::Executor* callbackExecutor) const {
   auto io = folly::getIOExecutor();
   auto sp = std::shared_ptr<folly::EventBase>(io, io->getEventBase());
   return std::make_unique<AsyncClientT>(PooledRequestChannel::newChannel(
-      nullptr,
+      callbackExecutor,
       std::move(sp),
       [address = getAddress()](folly::EventBase& eb) mutable {
         return HeaderClientChannel::newChannel(
@@ -47,13 +47,6 @@ std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newClient(
         return makeChannel(folly::AsyncSocket::UniquePtr(
             new folly::AsyncSocket(&eb, address)));
       }));
-}
-
-template <class AsyncClientT>
-std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newClient(
-    folly::EventBase* eb) const {
-  return std::make_unique<AsyncClientT>(HeaderClientChannel::newChannel(
-      folly::AsyncSocket::newSocket(eb, getAddress())));
 }
 
 } // namespace thrift

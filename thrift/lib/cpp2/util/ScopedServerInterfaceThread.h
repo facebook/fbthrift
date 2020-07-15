@@ -63,7 +63,8 @@ class ScopedServerInterfaceThread {
   uint16_t getPort() const;
 
   template <class AsyncClientT>
-  std::unique_ptr<AsyncClientT> newStickyClient() const;
+  std::unique_ptr<AsyncClientT> newStickyClient(
+      folly::Executor* callbackExecutor = nullptr) const;
 
   template <class AsyncClientT>
   std::unique_ptr<AsyncClientT> newClient(
@@ -71,14 +72,6 @@ class ScopedServerInterfaceThread {
       MakeChannelFunc channelFunc = [](auto socket) mutable {
         return HeaderClientChannel::newChannel(std::move(socket));
       }) const;
-
-  /**
-   * DEPRECATED
-   *
-   * Client returned by this method doesn't support semifuture_ APIs.
-   */
-  template <class AsyncClientT>
-  std::unique_ptr<AsyncClientT> newClient(folly::EventBase* eb) const;
 
  private:
   std::shared_ptr<BaseThriftServer> ts_;
