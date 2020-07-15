@@ -1232,10 +1232,9 @@ template <class F>
 void async_tm(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
   async_tm_prep(si, callback.get());
   folly::makeFutureWith(std::forward<F>(f))
-      .thenTry(
-          [cb = std::move(callback)](folly::Try<fut_ret<F>>&& _ret) mutable {
-            Callback<F>::completeInThread(std::move(cb), std::move(_ret));
-          });
+      .thenTry([cb = std::move(callback)](folly::Try<fut_ret<F>>&& _ret) {
+        cb->complete(std::move(_ret));
+      });
 }
 
 #if FOLLY_HAS_COROUTINES
@@ -1257,12 +1256,10 @@ void async_tm_coro_start(
     std::unique_ptr<apache::thrift::HandlerCallback<T>>&& callback) {
   std::move(task)
       .scheduleOn(std::move(executor))
-      .startInlineUnsafe(
-          [callback = std::move(callback)](
-              folly::Try<folly::lift_unit_t<T>>&& tryResult) mutable {
-            apache::thrift::HandlerCallback<T>::completeInThread(
-                std::move(callback), std::move(tryResult));
-          });
+      .startInlineUnsafe([callback = std::move(callback)](
+                             folly::Try<folly::lift_unit_t<T>>&& tryResult) {
+        callback->complete(std::move(tryResult));
+      });
 }
 
 inline folly::coro::Task<void> future_to_task(folly::Future<folly::Unit> f) {

@@ -87,8 +87,8 @@ class NotCalledBackHandler {
     // Invoke the thrift callback once the request has canceled.
     // Even after the request has been canceled handlers still should eventually
     // invoke the request callback.
-    HandlerCallback<void>::exceptionInThread(
-        std::move(thriftCallback_), std::runtime_error("request cancelled"));
+    std::exchange(thriftCallback_, nullptr)
+        ->exception(std::runtime_error("request cancelled"));
     cancelBaton.post();
   }
 

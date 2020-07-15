@@ -127,8 +127,7 @@ void AsyncLoadHandler2::async_eb_throwError(
     int32_t code) {
   LoadError error;
   error.code = code;
-  decltype(callback)::element_type::exceptionInThread(
-      std::move(callback), error);
+  callback->exception(error);
 }
 
 void AsyncLoadHandler2::async_eb_throwUnexpected(
@@ -146,8 +145,7 @@ void AsyncLoadHandler2::async_eb_onewayThrow(
     int32_t code) {
   LoadError error;
   error.code = code;
-  decltype(callback)::element_type::exceptionInThread(
-      std::move(callback), error);
+  callback->exception(error);
 }
 
 void AsyncLoadHandler2::async_eb_send(
@@ -164,8 +162,7 @@ void AsyncLoadHandler2::async_eb_recv(
     std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,
     int64_t bytes) {
   std::unique_ptr<std::string> ret(new std::string(bytes, 'a'));
-  decltype(callback)::element_type::resultInThread(
-      std::move(callback), std::move(ret));
+  callback->result(std::move(ret));
 }
 
 void AsyncLoadHandler2::async_eb_sendrecv(
@@ -173,8 +170,7 @@ void AsyncLoadHandler2::async_eb_sendrecv(
     std::unique_ptr<std::string> /* data */,
     int64_t recvBytes) {
   std::unique_ptr<std::string> ret(new std::string(recvBytes, 'a'));
-  decltype(callback)::element_type::resultInThread(
-      std::move(callback), std::move(ret));
+  callback->result(std::move(ret));
 }
 
 void AsyncLoadHandler2::sync_echo(
@@ -225,7 +221,7 @@ void AsyncLoadHandler2::async_eb_add(
     std::unique_ptr<HandlerCallback<int64_t>> callback,
     int64_t a,
     int64_t b) {
-  decltype(callback)::element_type::resultInThread(std::move(callback), a + b);
+  callback->result(a + b);
 }
 
 } // namespace thrift

@@ -59,7 +59,7 @@ TEST_F(HandlerTest, async_eb_result_in_thread_nullptr) {
   struct Handler : HandlerGenericSvIf {
     void async_eb_get_string_eb(
         unique_ptr<HandlerCallback<unique_ptr<string>>> callback) override {
-      callback.release()->resultInThread(unique_ptr<string>(nullptr));
+      callback->result(unique_ptr<string>(nullptr));
     }
   };
   ScopedServerInterfaceThread runner{make_shared<Handler>()};
@@ -83,7 +83,7 @@ TEST_F(HandlerTest, async_tm_result_in_thread_nullptr) {
   struct Handler : HandlerGenericSvIf {
     void async_tm_get_string(
         unique_ptr<HandlerCallback<unique_ptr<string>>> callback) override {
-      callback.release()->resultInThread(unique_ptr<string>(nullptr));
+      callback->result(unique_ptr<string>(nullptr));
     }
   };
   ScopedServerInterfaceThread runner{make_shared<Handler>()};

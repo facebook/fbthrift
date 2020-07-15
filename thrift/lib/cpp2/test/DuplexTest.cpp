@@ -51,11 +51,10 @@ class DuplexClientInterface : public DuplexClientSvIf {
   void async_tm_update(
       unique_ptr<HandlerCallback<int32_t>> callback,
       int32_t currentIndex) override {
-    auto callbackp = callback.release();
     EXPECT_EQ(currentIndex, expectIndex_);
     expectIndex_++;
-    EventBase* eb = callbackp->getEventBase();
-    callbackp->resultInThread(currentIndex);
+    EventBase* eb = callback->getEventBase();
+    callback->result(currentIndex);
     if (expectIndex_ == lastIndex_) {
       success_ = true;
       eb->runInEventBaseThread([eb] { eb->terminateLoopSoon(); });
@@ -114,23 +113,22 @@ class DuplexServiceInterface : public DuplexServiceSvIf {
       int32_t startIndex,
       int32_t numUpdates,
       int32_t interval) override {
-    auto callbackp = callback.release();
-    auto ctx = callbackp->getConnectionContext()->getConnectionContext();
+    auto ctx = callback->getConnectionContext()->getConnectionContext();
     CHECK(ctx != nullptr);
     auto client = ctx->getDuplexClient<DuplexClientAsyncClient>();
-    auto eb = callbackp->getEventBase();
+    auto eb = callback->getEventBase();
     CHECK(eb != nullptr);
     if (numUpdates > 0) {
       Updater updater(client, eb, startIndex, numUpdates, interval);
       eb->runInEventBaseThread([updater]() mutable { updater.update(); });
     };
-    callbackp->resultInThread(true);
+    callback->result(true);
   }
 
   void async_tm_regularMethod(
       unique_ptr<HandlerCallback<int32_t>> callback,
       int32_t val) override {
-    callback.release()->resultInThread(val * 2);
+    callback->result(val * 2);
   }
 };
 

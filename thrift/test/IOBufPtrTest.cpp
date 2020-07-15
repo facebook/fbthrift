@@ -53,7 +53,7 @@ void IOBufPtrTestService::async_tm_combine(
   queue.append(")+(");
   queue.append(req->three.clone());
   queue.append(")");
-  callback.release()->resultInThread(std::make_unique<IOBufPtr>(queue.move()));
+  callback->result(std::make_unique<IOBufPtr>(queue.move()));
 }
 
 class IOBufPtrTest : public ::testing::Test {
