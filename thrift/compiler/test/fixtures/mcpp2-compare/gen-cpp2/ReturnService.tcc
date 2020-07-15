@@ -119,7 +119,6 @@ void ReturnServiceAsyncProcessor::process_boolReturn(apache::thrift::ResponseCha
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_boolReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_boolReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_boolReturn(std::move(callback));
@@ -170,7 +169,6 @@ void ReturnServiceAsyncProcessor::process_i16Return(apache::thrift::ResponseChan
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<int16_t>>(std::move(req), std::move(ctxStack), return_i16Return<ProtocolIn_,ProtocolOut_>, throw_wrapped_i16Return<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_i16Return(std::move(callback));
@@ -221,7 +219,6 @@ void ReturnServiceAsyncProcessor::process_i32Return(apache::thrift::ResponseChan
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_i32Return<ProtocolIn_,ProtocolOut_>, throw_wrapped_i32Return<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_i32Return(std::move(callback));
@@ -272,7 +269,6 @@ void ReturnServiceAsyncProcessor::process_i64Return(apache::thrift::ResponseChan
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<int64_t>>(std::move(req), std::move(ctxStack), return_i64Return<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64Return<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_i64Return(std::move(callback));
@@ -323,7 +319,6 @@ void ReturnServiceAsyncProcessor::process_floatReturn(apache::thrift::ResponseCh
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<float>>(std::move(req), std::move(ctxStack), return_floatReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_floatReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_floatReturn(std::move(callback));
@@ -374,7 +369,6 @@ void ReturnServiceAsyncProcessor::process_doubleReturn(apache::thrift::ResponseC
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<double>>(std::move(req), std::move(ctxStack), return_doubleReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_doubleReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_doubleReturn(std::move(callback));
@@ -470,7 +464,6 @@ void ReturnServiceAsyncProcessor::process_binaryReturn(apache::thrift::ResponseC
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_binaryReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_binaryReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_binaryReturn(std::move(callback));
@@ -521,7 +514,6 @@ void ReturnServiceAsyncProcessor::process_mapReturn(apache::thrift::ResponseChan
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, int64_t>>>>(std::move(req), std::move(ctxStack), return_mapReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_mapReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_mapReturn(std::move(callback));
@@ -572,7 +564,6 @@ void ReturnServiceAsyncProcessor::process_simpleTypedefReturn(apache::thrift::Re
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback< ::some::valid::ns::simpleTypeDef>>(std::move(req), std::move(ctxStack), return_simpleTypedefReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_simpleTypedefReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_simpleTypedefReturn(std::move(callback));
@@ -623,7 +614,6 @@ void ReturnServiceAsyncProcessor::process_complexTypedefReturn(apache::thrift::R
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::complexStructTypeDef>>>(std::move(req), std::move(ctxStack), return_complexTypedefReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_complexTypedefReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_complexTypedefReturn(std::move(callback));
@@ -674,7 +664,6 @@ void ReturnServiceAsyncProcessor::process_list_mostComplexTypedefReturn(apache::
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::mostComplexTypeDef>>>>(std::move(req), std::move(ctxStack), return_list_mostComplexTypedefReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_mostComplexTypedefReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_list_mostComplexTypedefReturn(std::move(callback));
@@ -815,7 +804,6 @@ void ReturnServiceAsyncProcessor::process_structReturn(apache::thrift::ResponseC
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>>(std::move(req), std::move(ctxStack), return_structReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_structReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_structReturn(std::move(callback));
@@ -866,7 +854,6 @@ void ReturnServiceAsyncProcessor::process_set_StructReturn(apache::thrift::Respo
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>>>(std::move(req), std::move(ctxStack), return_set_StructReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_set_StructReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_set_StructReturn(std::move(callback));
@@ -962,7 +949,6 @@ void ReturnServiceAsyncProcessor::process_list_UnionReturn(apache::thrift::Respo
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>>>(std::move(req), std::move(ctxStack), return_list_UnionReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_UnionReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_list_UnionReturn(std::move(callback));
@@ -1062,7 +1048,6 @@ void ReturnServiceAsyncProcessor::process_readData(apache::thrift::ResponseChann
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBufPtr>>>(std::move(req), std::move(ctxStack), return_readData<ProtocolIn_,ProtocolOut_>, throw_wrapped_readData<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_readData(std::move(callback), args.get<0>().ref());

@@ -58,7 +58,6 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstream(apache::thrift::
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>>(std::move(req), std::move(ctxStack), return_returnstream<ProtocolIn_,ProtocolOut_>, throw_wrapped_returnstream<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_returnstream(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
@@ -114,7 +113,6 @@ void PubSubStreamingServiceAsyncProcessor::process_streamthrows(apache::thrift::
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>>(std::move(req), std::move(ctxStack), return_streamthrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_streamthrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_streamthrows(std::move(callback), args.get<0>().ref());
@@ -180,7 +178,6 @@ void PubSubStreamingServiceAsyncProcessor::process_boththrows(apache::thrift::Re
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>>(std::move(req), std::move(ctxStack), return_boththrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_boththrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_boththrows(std::move(callback), args.get<0>().ref());
@@ -257,7 +254,6 @@ void PubSubStreamingServiceAsyncProcessor::process_responseandstreamthrows(apach
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>>(std::move(req), std::move(ctxStack), return_responseandstreamthrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_responseandstreamthrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_responseandstreamthrows(std::move(callback), args.get<0>().ref());

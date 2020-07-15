@@ -47,7 +47,6 @@ void ExtraServiceAsyncProcessor::process_simple_function(apache::thrift::Respons
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_simple_function<ProtocolIn_,ProtocolOut_>, throw_wrapped_simple_function<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_simple_function(std::move(callback));
@@ -160,7 +159,6 @@ void ExtraServiceAsyncProcessor::process_throws_function2(apache::thrift::Respon
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_throws_function2<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function2<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_throws_function2(std::move(callback), args.get<0>().ref());
@@ -232,7 +230,6 @@ void ExtraServiceAsyncProcessor::process_throws_function3(apache::thrift::Respon
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::map<int32_t, ::std::string>>>(std::move(req), std::move(ctxStack), return_throws_function3<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function3<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_throws_function3(std::move(callback), args.get<0>().ref(), args.get<1>().ref());

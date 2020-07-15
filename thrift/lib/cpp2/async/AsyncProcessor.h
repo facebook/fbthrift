@@ -353,10 +353,6 @@ class HandlerCallbackBase {
     exception(folly::make_exception_wrapper<Exception>(ex));
   }
 
-  void deleteInThread() {
-    getEventBase()->runInEventBaseThread([=]() { delete this; });
-  }
-
   void exceptionInThread(std::exception_ptr ex);
   void exceptionInThread(folly::exception_wrapper ew);
 

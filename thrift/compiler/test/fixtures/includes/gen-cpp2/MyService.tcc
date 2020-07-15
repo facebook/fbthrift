@@ -42,7 +42,6 @@ void MyServiceAsyncProcessor::process_query(apache::thrift::ResponseChannelReque
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_query<ProtocolIn_,ProtocolOut_>, throw_wrapped_query<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_query(std::move(callback), std::move(uarg_s), std::move(uarg_i));
@@ -95,7 +94,6 @@ void MyServiceAsyncProcessor::process_has_arg_docs(apache::thrift::ResponseChann
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_has_arg_docs<ProtocolIn_,ProtocolOut_>, throw_wrapped_has_arg_docs<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_has_arg_docs(std::move(callback), std::move(uarg_s), std::move(uarg_i));

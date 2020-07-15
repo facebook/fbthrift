@@ -38,7 +38,6 @@ void MyServicePrioParentAsyncProcessor::process_ping(apache::thrift::ResponseCha
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_ping<ProtocolIn_,ProtocolOut_>, throw_wrapped_ping<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_ping(std::move(callback));
@@ -87,7 +86,6 @@ void MyServicePrioParentAsyncProcessor::process_pong(apache::thrift::ResponseCha
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_pong<ProtocolIn_,ProtocolOut_>, throw_wrapped_pong<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_pong(std::move(callback));

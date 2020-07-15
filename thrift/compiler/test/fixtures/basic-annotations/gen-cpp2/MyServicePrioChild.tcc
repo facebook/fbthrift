@@ -36,7 +36,6 @@ void MyServicePrioChildAsyncProcessor::process_pang(apache::thrift::ResponseChan
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_pang<ProtocolIn_,ProtocolOut_>, throw_wrapped_pang<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_pang(std::move(callback));

@@ -43,7 +43,6 @@ void MyServiceAsyncProcessor::process_hasDataById(apache::thrift::ResponseChanne
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_hasDataById<ProtocolIn_,ProtocolOut_>, throw_wrapped_hasDataById<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_hasDataById(std::move(callback), args.get<0>().ref());
@@ -96,7 +95,6 @@ void MyServiceAsyncProcessor::process_getDataById(apache::thrift::ResponseChanne
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::string>>(std::move(req), std::move(ctxStack), return_getDataById<ProtocolIn_,ProtocolOut_>, throw_wrapped_getDataById<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_getDataById(std::move(callback), args.get<0>().ref());
@@ -151,7 +149,6 @@ void MyServiceAsyncProcessor::process_putDataById(apache::thrift::ResponseChanne
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_putDataById<ProtocolIn_,ProtocolOut_>, throw_wrapped_putDataById<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_putDataById(std::move(callback), args.get<0>().ref(), args.get<1>().ref());

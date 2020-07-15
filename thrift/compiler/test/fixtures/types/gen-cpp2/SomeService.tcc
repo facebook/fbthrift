@@ -40,7 +40,6 @@ void SomeServiceAsyncProcessor::process_bounce_map(apache::thrift::ResponseChann
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>>>(std::move(req), std::move(ctxStack), return_bounce_map<ProtocolIn_,ProtocolOut_>, throw_wrapped_bounce_map<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_bounce_map(std::move(callback), std::move(uarg_m));
@@ -93,7 +92,6 @@ void SomeServiceAsyncProcessor::process_binary_keyed_map(apache::thrift::Respons
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>>>(std::move(req), std::move(ctxStack), return_binary_keyed_map<ProtocolIn_,ProtocolOut_>, throw_wrapped_binary_keyed_map<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_binary_keyed_map(std::move(callback), std::move(uarg_r));

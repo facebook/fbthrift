@@ -36,7 +36,6 @@ void MyNodeAsyncProcessor::process_do_mid(apache::thrift::ResponseChannelRequest
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_do_mid<ProtocolIn_,ProtocolOut_>, throw_wrapped_do_mid<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_do_mid(std::move(callback));

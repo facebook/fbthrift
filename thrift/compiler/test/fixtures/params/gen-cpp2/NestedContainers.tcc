@@ -46,7 +46,6 @@ void NestedContainersAsyncProcessor::process_mapList(apache::thrift::ResponseCha
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_mapList<ProtocolIn_,ProtocolOut_>, throw_wrapped_mapList<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_mapList(std::move(callback), std::move(uarg_foo));
@@ -97,7 +96,6 @@ void NestedContainersAsyncProcessor::process_mapSet(apache::thrift::ResponseChan
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_mapSet<ProtocolIn_,ProtocolOut_>, throw_wrapped_mapSet<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_mapSet(std::move(callback), std::move(uarg_foo));
@@ -148,7 +146,6 @@ void NestedContainersAsyncProcessor::process_listMap(apache::thrift::ResponseCha
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_listMap<ProtocolIn_,ProtocolOut_>, throw_wrapped_listMap<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_listMap(std::move(callback), std::move(uarg_foo));
@@ -199,7 +196,6 @@ void NestedContainersAsyncProcessor::process_listSet(apache::thrift::ResponseCha
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_listSet<ProtocolIn_,ProtocolOut_>, throw_wrapped_listSet<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_listSet(std::move(callback), std::move(uarg_foo));
@@ -250,7 +246,6 @@ void NestedContainersAsyncProcessor::process_turtles(apache::thrift::ResponseCha
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_turtles<ProtocolIn_,ProtocolOut_>, throw_wrapped_turtles<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_turtles(std::move(callback), std::move(uarg_foo));

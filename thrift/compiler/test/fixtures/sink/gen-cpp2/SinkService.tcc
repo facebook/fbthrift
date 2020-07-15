@@ -70,7 +70,6 @@ void SinkServiceAsyncProcessor::process_method(apache::thrift::ResponseChannelRe
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_method<ProtocolIn_,ProtocolOut_>, throw_wrapped_method<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_method(std::move(callback));
@@ -133,7 +132,6 @@ void SinkServiceAsyncProcessor::process_methodAndReponse(apache::thrift::Respons
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodAndReponse<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodAndReponse<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_methodAndReponse(std::move(callback));
@@ -198,7 +196,6 @@ void SinkServiceAsyncProcessor::process_methodThrow(apache::thrift::ResponseChan
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodThrow<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodThrow<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_methodThrow(std::move(callback));
@@ -272,7 +269,6 @@ void SinkServiceAsyncProcessor::process_methodSinkThrow(apache::thrift::Response
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodSinkThrow<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodSinkThrow<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_methodSinkThrow(std::move(callback));
@@ -335,7 +331,6 @@ void SinkServiceAsyncProcessor::process_methodFinalThrow(apache::thrift::Respons
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodFinalThrow<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodFinalThrow<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_methodFinalThrow(std::move(callback));
@@ -408,7 +403,6 @@ void SinkServiceAsyncProcessor::process_methodBothThrow(apache::thrift::Response
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodBothThrow<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodBothThrow<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_methodBothThrow(std::move(callback));

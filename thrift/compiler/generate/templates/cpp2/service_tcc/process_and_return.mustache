@@ -74,7 +74,6 @@ void <%service:name%>AsyncProcessor::process_<%function:cpp_name%>(apache::thrif
   auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>>(std::move(req), std::move(ctxStack), return_<%function:cpp_name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%function:cpp_name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
 <%^function:eb%>
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
 <%/function:eb%>

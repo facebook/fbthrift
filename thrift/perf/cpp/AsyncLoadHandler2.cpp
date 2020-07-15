@@ -36,9 +36,7 @@ void AsyncLoadHandler2::async_eb_noop(
 }
 
 void AsyncLoadHandler2::async_eb_onewayNoop(
-    std::unique_ptr<HandlerCallbackBase> callback) {
-  callback.release()->deleteInThread();
-}
+    std::unique_ptr<HandlerCallbackBase> /* callback */) {}
 
 void AsyncLoadHandler2::async_eb_asyncNoop(
     std::unique_ptr<HandlerCallback<void>> callback) {
@@ -159,10 +157,8 @@ void AsyncLoadHandler2::async_eb_send(
 }
 
 void AsyncLoadHandler2::async_eb_onewaySend(
-    std::unique_ptr<HandlerCallbackBase> callback,
-    std::unique_ptr<std::string> /* data */) {
-  callback.release()->deleteInThread();
-}
+    std::unique_ptr<HandlerCallbackBase> /* callback */,
+    std::unique_ptr<std::string> /* data */) {}
 
 void AsyncLoadHandler2::async_eb_recv(
     std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,

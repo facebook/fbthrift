@@ -141,7 +141,6 @@ void ParamServiceAsyncProcessor::process_void_ret_byte_i16_param(apache::thrift:
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_void_ret_byte_i16_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_byte_i16_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_void_ret_byte_i16_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
@@ -192,7 +191,6 @@ void ParamServiceAsyncProcessor::process_void_ret_map_param(apache::thrift::Resp
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_void_ret_map_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_map_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_void_ret_map_param(std::move(callback), std::move(uarg_param1));
@@ -245,7 +243,6 @@ void ParamServiceAsyncProcessor::process_void_ret_map_setlist_param(apache::thri
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_void_ret_map_setlist_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_map_setlist_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_void_ret_map_setlist_param(std::move(callback), std::move(uarg_param1), std::move(uarg_param2));
@@ -296,7 +293,6 @@ void ParamServiceAsyncProcessor::process_void_ret_map_typedef_param(apache::thri
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_void_ret_map_typedef_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_map_typedef_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_void_ret_map_typedef_param(std::move(callback), args.get<0>().ref());
@@ -347,7 +343,6 @@ void ParamServiceAsyncProcessor::process_void_ret_enum_param(apache::thrift::Res
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_void_ret_enum_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_enum_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_void_ret_enum_param(std::move(callback), args.get<0>().ref());
@@ -398,7 +393,6 @@ void ParamServiceAsyncProcessor::process_void_ret_struct_param(apache::thrift::R
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_void_ret_struct_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_struct_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_void_ret_struct_param(std::move(callback), std::move(uarg_param1));
@@ -449,7 +443,6 @@ void ParamServiceAsyncProcessor::process_void_ret_listunion_param(apache::thrift
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_void_ret_listunion_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_listunion_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_void_ret_listunion_param(std::move(callback), std::move(uarg_param1));
@@ -502,7 +495,6 @@ void ParamServiceAsyncProcessor::process_bool_ret_i32_i64_param(apache::thrift::
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_bool_ret_i32_i64_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_bool_ret_i32_i64_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_bool_ret_i32_i64_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
@@ -555,7 +547,6 @@ void ParamServiceAsyncProcessor::process_bool_ret_map_param(apache::thrift::Resp
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_bool_ret_map_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_bool_ret_map_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_bool_ret_map_param(std::move(callback), std::move(uarg_param1));
@@ -608,7 +599,6 @@ void ParamServiceAsyncProcessor::process_bool_ret_union_param(apache::thrift::Re
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_bool_ret_union_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_bool_ret_union_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_bool_ret_union_param(std::move(callback), std::move(uarg_param1));
@@ -663,7 +653,6 @@ void ParamServiceAsyncProcessor::process_i64_ret_float_double_param(apache::thri
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<int64_t>>(std::move(req), std::move(ctxStack), return_i64_ret_float_double_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64_ret_float_double_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_i64_ret_float_double_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
@@ -718,7 +707,6 @@ void ParamServiceAsyncProcessor::process_i64_ret_string_typedef_param(apache::th
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<int64_t>>(std::move(req), std::move(ctxStack), return_i64_ret_string_typedef_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64_ret_string_typedef_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_i64_ret_string_typedef_param(std::move(callback), std::move(uarg_param1), std::move(uarg_param2));
@@ -826,7 +814,6 @@ void ParamServiceAsyncProcessor::process_double_ret_setstruct_param(apache::thri
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<double>>(std::move(req), std::move(ctxStack), return_double_ret_setstruct_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_double_ret_setstruct_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_double_ret_setstruct_param(std::move(callback), std::move(uarg_param1));
@@ -879,7 +866,6 @@ void ParamServiceAsyncProcessor::process_string_ret_string_param(apache::thrift:
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_string_ret_string_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_string_ret_string_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_string_ret_string_param(std::move(callback), std::move(uarg_param1));
@@ -932,7 +918,6 @@ void ParamServiceAsyncProcessor::process_binary_ret_binary_param(apache::thrift:
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_binary_ret_binary_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_binary_ret_binary_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_binary_ret_binary_param(std::move(callback), std::move(uarg_param1));
@@ -985,7 +970,6 @@ void ParamServiceAsyncProcessor::process_map_ret_bool_param(apache::thrift::Resp
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, int64_t>>>>(std::move(req), std::move(ctxStack), return_map_ret_bool_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_map_ret_bool_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_map_ret_bool_param(std::move(callback), args.get<0>().ref());
@@ -1040,7 +1024,6 @@ void ParamServiceAsyncProcessor::process_list_ret_map_setlist_param(apache::thri
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<bool>>>>(std::move(req), std::move(ctxStack), return_list_ret_map_setlist_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_ret_map_setlist_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_list_ret_map_setlist_param(std::move(callback), std::move(uarg_param1), std::move(uarg_param2));
@@ -1093,7 +1076,6 @@ void ParamServiceAsyncProcessor::process_mapsetlistmapliststring_ret_listlistlis
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>>>(std::move(req), std::move(ctxStack), return_mapsetlistmapliststring_ret_listlistlist_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_mapsetlistmapliststring_ret_listlistlist_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_mapsetlistmapliststring_ret_listlistlist_param(std::move(callback), std::move(uarg_param1));
@@ -1146,7 +1128,6 @@ void ParamServiceAsyncProcessor::process_typedef_ret_i32_param(apache::thrift::R
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback< ::some::valid::ns::simpleTypeDef>>(std::move(req), std::move(ctxStack), return_typedef_ret_i32_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_typedef_ret_i32_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_typedef_ret_i32_param(std::move(callback), args.get<0>().ref());
@@ -1246,7 +1227,6 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_param(apache::thrift::R
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>>(std::move(req), std::move(ctxStack), return_enum_ret_double_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_enum_ret_double_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_enum_ret_double_param(std::move(callback), args.get<0>().ref());
@@ -1301,7 +1281,6 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_enum_param(apache::thri
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>>(std::move(req), std::move(ctxStack), return_enum_ret_double_enum_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_enum_ret_double_enum_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_enum_ret_double_enum_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
@@ -1354,7 +1333,6 @@ void ParamServiceAsyncProcessor::process_listenum_ret_map_param(apache::thrift::
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>>>(std::move(req), std::move(ctxStack), return_listenum_ret_map_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_listenum_ret_map_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_listenum_ret_map_param(std::move(callback), std::move(uarg_param1));
@@ -1454,7 +1432,6 @@ void ParamServiceAsyncProcessor::process_setstruct_ret_set_param(apache::thrift:
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>>>(std::move(req), std::move(ctxStack), return_setstruct_ret_set_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_setstruct_ret_set_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_setstruct_ret_set_param(std::move(callback), std::move(uarg_param1));
@@ -1509,7 +1486,6 @@ void ParamServiceAsyncProcessor::process_union_ret_i32_i32_param(apache::thrift:
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>>(std::move(req), std::move(ctxStack), return_union_ret_i32_i32_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_union_ret_i32_i32_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_union_ret_i32_i32_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
@@ -1562,7 +1538,6 @@ void ParamServiceAsyncProcessor::process_listunion_string_param(apache::thrift::
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>>>(std::move(req), std::move(ctxStack), return_listunion_string_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_listunion_string_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
     return;
   }
   iface_->async_tm_listunion_string_param(std::move(callback), std::move(uarg_param1));
