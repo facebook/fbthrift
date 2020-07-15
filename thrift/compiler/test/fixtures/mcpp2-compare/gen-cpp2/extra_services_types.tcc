@@ -198,7 +198,7 @@ _readField_opt_fieldC:
 _readField_fieldD:
   {
     
-    iprot->readString(this->fieldD);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->fieldD);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldD = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -214,7 +214,7 @@ _readField_fieldD:
 _readField_fieldE:
   {
     
-    iprot->readString(this->fieldE);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->fieldE);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldE = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -230,7 +230,7 @@ _readField_fieldE:
 _readField_req_fieldE:
   {
     
-    iprot->readString(this->req_fieldE);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->req_fieldE);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -243,7 +243,7 @@ _readField_req_fieldE:
 _readField_opt_fieldE:
   {
     
-    iprot->readString(this->opt_fieldE);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->opt_fieldE);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.opt_fieldE = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -416,14 +416,14 @@ uint32_t containerStruct2::serializedSize(Protocol_ const* prot_) const {
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::serializedSize<false>(*prot_, this->opt_fieldC);
   }
   xfer += prot_->serializedFieldSize("fieldD", apache::thrift::protocol::T_STRING, 4);
-  xfer += prot_->serializedSizeString(this->fieldD);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->fieldD);
   xfer += prot_->serializedFieldSize("fieldE", apache::thrift::protocol::T_STRING, 5);
-  xfer += prot_->serializedSizeString(this->fieldE);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->fieldE);
   xfer += prot_->serializedFieldSize("req_fieldE", apache::thrift::protocol::T_STRING, 105);
-  xfer += prot_->serializedSizeString(this->req_fieldE);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->req_fieldE);
   if (this->opt_fieldE_ref().has_value()) {
     xfer += prot_->serializedFieldSize("opt_fieldE", apache::thrift::protocol::T_STRING, 205);
-    xfer += prot_->serializedSizeString(this->opt_fieldE);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->opt_fieldE);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -458,14 +458,14 @@ uint32_t containerStruct2::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::serializedSize<false>(*prot_, this->opt_fieldC);
   }
   xfer += prot_->serializedFieldSize("fieldD", apache::thrift::protocol::T_STRING, 4);
-  xfer += prot_->serializedSizeString(this->fieldD);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->fieldD);
   xfer += prot_->serializedFieldSize("fieldE", apache::thrift::protocol::T_STRING, 5);
-  xfer += prot_->serializedSizeString(this->fieldE);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->fieldE);
   xfer += prot_->serializedFieldSize("req_fieldE", apache::thrift::protocol::T_STRING, 105);
-  xfer += prot_->serializedSizeString(this->req_fieldE);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->req_fieldE);
   if (this->opt_fieldE_ref().has_value()) {
     xfer += prot_->serializedFieldSize("opt_fieldE", apache::thrift::protocol::T_STRING, 205);
-    xfer += prot_->serializedSizeString(this->opt_fieldE);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->opt_fieldE);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -509,17 +509,17 @@ uint32_t containerStruct2::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldBegin("fieldD", apache::thrift::protocol::T_STRING, 4);
-  xfer += prot_->writeString(this->fieldD);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->fieldD);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldE", apache::thrift::protocol::T_STRING, 5);
-  xfer += prot_->writeString(this->fieldE);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->fieldE);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("req_fieldE", apache::thrift::protocol::T_STRING, 105);
-  xfer += prot_->writeString(this->req_fieldE);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->req_fieldE);
   xfer += prot_->writeFieldEnd();
   if (this->opt_fieldE_ref().has_value()) {
     xfer += prot_->writeFieldBegin("opt_fieldE", apache::thrift::protocol::T_STRING, 205);
-    xfer += prot_->writeString(this->opt_fieldE);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->opt_fieldE);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();

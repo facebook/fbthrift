@@ -630,7 +630,7 @@ void Val::readNoXfer(Protocol_* iprot) {
 _readField_strVal:
   {
     
-    iprot->readString(this->strVal);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->strVal);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.strVal = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -733,7 +733,7 @@ uint32_t Val::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Val");
   xfer += prot_->serializedFieldSize("strVal", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->serializedSizeString(this->strVal);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->strVal);
   xfer += prot_->serializedFieldSize("intVal", apache::thrift::protocol::T_I32, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->intVal);
   xfer += prot_->serializedFieldSize("typedefValue", apache::thrift::protocol::T_MAP, 9);
@@ -747,7 +747,7 @@ uint32_t Val::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Val");
   xfer += prot_->serializedFieldSize("strVal", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->serializedSizeString(this->strVal);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->strVal);
   xfer += prot_->serializedFieldSize("intVal", apache::thrift::protocol::T_I32, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->intVal);
   xfer += prot_->serializedFieldSize("typedefValue", apache::thrift::protocol::T_MAP, 9);
@@ -761,7 +761,7 @@ uint32_t Val::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Val");
   xfer += prot_->writeFieldBegin("strVal", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->writeString(this->strVal);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->strVal);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("intVal", apache::thrift::protocol::T_I32, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->intVal);

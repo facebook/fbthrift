@@ -46,13 +46,16 @@ struct BasicRefsAnnotCppNoexceptMoveCtor {
   1: HasInt def_field (cpp.ref),
 } (cpp.noexcept_move_ctor)
 
+typedef binary (cpp.type = "WrappedType<folly::IOBuf>",
+             cpp.indirection = ".raw") t_foo
+typedef binary (cpp.type = "WrappedType<std::string>",
+            cpp.indirection = ".raw") t_bar
+typedef binary (cpp.type = "WrappedType<folly::IOBuf>",
+            cpp.indirection = ".rawAccessor()") t_baz
 struct IOBufIndirection {
-  1: binary (cpp.type = "WrappedType<folly::IOBuf>",
-             cpp.indirection = ".raw") foo
-  2: binary (cpp.type = "WrappedType<std::string>",
-             cpp.indirection = ".raw") bar
-  3: binary (cpp.type = "WrappedType<folly::IOBuf>",
-             cpp.indirection = ".rawAccessor()") baz
+  1: t_foo foo
+  2: t_bar bar
+  3: t_baz baz
 }
 
 struct HasSmallSortedVector {

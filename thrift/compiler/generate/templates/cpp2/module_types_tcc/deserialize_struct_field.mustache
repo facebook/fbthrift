@@ -24,8 +24,8 @@ std::unique_ptr<<% > types/type%>> ptr = std::make_unique<<% > types/type%>>();<
 %><%#type:resolves_to_fixed_size?%><%!
 %>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, *ptr, _readState);<%!
 %><%/type:resolves_to_fixed_size?%><%!
-%><%#type:string_or_binary?%>
-iprot->read<% > module_types_tcc/struct_field_type%>((*this-><%field:cpp_name%><%type:cpp_indirection%>));<%!
+%><%#type:string_or_binary?%><%!
+%>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, *ptr);<%!
 %><%/type:string_or_binary?%><%!
 %><%#type:resolves_to_container?%>
 ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, *ptr);<%!
@@ -41,7 +41,7 @@ this-><%field:cpp_name%> = std::move(ptr);<%!
 %>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, this-><%field:cpp_name%>, _readState);<%!
 %><%/type:resolves_to_fixed_size?%><%!
 %><%#type:string_or_binary?%>
-iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:cpp_name%><%type:cpp_indirection%>);<%!
+::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:cpp_name%>);<%!
 %><%/type:string_or_binary?%><%!
 %><%#type:resolves_to_container?%>
 this-><%field:cpp_name%> = <% > types/type%>();

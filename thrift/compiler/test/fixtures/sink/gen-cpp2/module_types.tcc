@@ -90,7 +90,7 @@ void InitialResponse::readNoXfer(Protocol_* iprot) {
 _readField_content:
   {
     
-    iprot->readString(this->content);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->content);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.content = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -143,7 +143,7 @@ uint32_t InitialResponse::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("InitialResponse");
   xfer += prot_->serializedFieldSize("content", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->serializedSizeString(this->content);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->content);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -153,7 +153,7 @@ uint32_t InitialResponse::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("InitialResponse");
   xfer += prot_->serializedFieldSize("content", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->serializedSizeString(this->content);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->content);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -163,7 +163,7 @@ uint32_t InitialResponse::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("InitialResponse");
   xfer += prot_->writeFieldBegin("content", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->writeString(this->content);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->content);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
@@ -201,7 +201,7 @@ void FinalResponse::readNoXfer(Protocol_* iprot) {
 _readField_content:
   {
     
-    iprot->readString(this->content);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->content);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.content = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -254,7 +254,7 @@ uint32_t FinalResponse::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("FinalResponse");
   xfer += prot_->serializedFieldSize("content", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->serializedSizeString(this->content);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->content);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -264,7 +264,7 @@ uint32_t FinalResponse::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("FinalResponse");
   xfer += prot_->serializedFieldSize("content", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->serializedSizeString(this->content);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->content);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -274,7 +274,7 @@ uint32_t FinalResponse::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("FinalResponse");
   xfer += prot_->writeFieldBegin("content", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->writeString(this->content);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->content);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
@@ -312,7 +312,7 @@ void SinkPayload::readNoXfer(Protocol_* iprot) {
 _readField_content:
   {
     
-    iprot->readString(this->content);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->content);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.content = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -365,7 +365,7 @@ uint32_t SinkPayload::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("SinkPayload");
   xfer += prot_->serializedFieldSize("content", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->serializedSizeString(this->content);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->content);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -375,7 +375,7 @@ uint32_t SinkPayload::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("SinkPayload");
   xfer += prot_->serializedFieldSize("content", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->serializedSizeString(this->content);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->content);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -385,7 +385,7 @@ uint32_t SinkPayload::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("SinkPayload");
   xfer += prot_->writeFieldBegin("content", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->writeString(this->content);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->content);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
@@ -423,7 +423,7 @@ void CompatibleWithKeywordSink::readNoXfer(Protocol_* iprot) {
 _readField_sink:
   {
     
-    iprot->readString(this->sink);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->sink);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.sink = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -476,7 +476,7 @@ uint32_t CompatibleWithKeywordSink::serializedSize(Protocol_ const* prot_) const
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("CompatibleWithKeywordSink");
   xfer += prot_->serializedFieldSize("sink", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->serializedSizeString(this->sink);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->sink);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -486,7 +486,7 @@ uint32_t CompatibleWithKeywordSink::serializedSizeZC(Protocol_ const* prot_) con
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("CompatibleWithKeywordSink");
   xfer += prot_->serializedFieldSize("sink", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->serializedSizeString(this->sink);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->sink);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -496,7 +496,7 @@ uint32_t CompatibleWithKeywordSink::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("CompatibleWithKeywordSink");
   xfer += prot_->writeFieldBegin("sink", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->writeString(this->sink);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->sink);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
@@ -534,7 +534,7 @@ void InitialException::readNoXfer(Protocol_* iprot) {
 _readField_reason:
   {
     
-    iprot->readString(this->reason);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->reason);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.reason = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -587,7 +587,7 @@ uint32_t InitialException::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("InitialException");
   xfer += prot_->serializedFieldSize("reason", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->serializedSizeString(this->reason);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->reason);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -597,7 +597,7 @@ uint32_t InitialException::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("InitialException");
   xfer += prot_->serializedFieldSize("reason", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->serializedSizeString(this->reason);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->reason);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -607,7 +607,7 @@ uint32_t InitialException::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("InitialException");
   xfer += prot_->writeFieldBegin("reason", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->writeString(this->reason);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->reason);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
@@ -645,7 +645,7 @@ void SinkException1::readNoXfer(Protocol_* iprot) {
 _readField_reason:
   {
     
-    iprot->readString(this->reason);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->reason);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.reason = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -698,7 +698,7 @@ uint32_t SinkException1::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("SinkException1");
   xfer += prot_->serializedFieldSize("reason", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->serializedSizeString(this->reason);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->reason);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -708,7 +708,7 @@ uint32_t SinkException1::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("SinkException1");
   xfer += prot_->serializedFieldSize("reason", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->serializedSizeString(this->reason);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->reason);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -718,7 +718,7 @@ uint32_t SinkException1::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("SinkException1");
   xfer += prot_->writeFieldBegin("reason", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->writeString(this->reason);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->reason);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

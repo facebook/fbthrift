@@ -63,7 +63,7 @@ _readField_i32Field:
 _readField_strField:
   {
     
-    iprot->readString(this->strField);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->strField);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.strField = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -126,7 +126,7 @@ uint32_t IncludedB::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("i32Field", apache::thrift::protocol::T_I32, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->i32Field);
   xfer += prot_->serializedFieldSize("strField", apache::thrift::protocol::T_STRING, 2);
-  xfer += prot_->serializedSizeString(this->strField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->strField);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -138,7 +138,7 @@ uint32_t IncludedB::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("i32Field", apache::thrift::protocol::T_I32, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->i32Field);
   xfer += prot_->serializedFieldSize("strField", apache::thrift::protocol::T_STRING, 2);
-  xfer += prot_->serializedSizeString(this->strField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->strField);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -151,7 +151,7 @@ uint32_t IncludedB::write(Protocol_* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->i32Field);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("strField", apache::thrift::protocol::T_STRING, 2);
-  xfer += prot_->writeString(this->strField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->strField);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

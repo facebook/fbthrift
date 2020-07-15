@@ -141,7 +141,7 @@ void Fiery::readNoXfer(Protocol_* iprot) {
 _readField_message:
   {
     
-    iprot->readString(this->message);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->message);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -191,7 +191,7 @@ uint32_t Fiery::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Fiery");
   xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->serializedSizeString(this->message);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->message);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -201,7 +201,7 @@ uint32_t Fiery::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Fiery");
   xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->serializedSizeString(this->message);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->message);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -211,7 +211,7 @@ uint32_t Fiery::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Fiery");
   xfer += prot_->writeFieldBegin("message", apache::thrift::protocol::T_STRING, 1);
-  xfer += prot_->writeString(this->message);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->message);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
@@ -249,7 +249,7 @@ void Serious::readNoXfer(Protocol_* iprot) {
 _readField_sonnet:
   {
     
-    iprot->readString(this->sonnet);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->sonnet);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.sonnet = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -303,7 +303,7 @@ uint32_t Serious::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("Serious");
   if (this->sonnet_ref().has_value()) {
     xfer += prot_->serializedFieldSize("sonnet", apache::thrift::protocol::T_STRING, 1);
-    xfer += prot_->serializedSizeString(this->sonnet);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->sonnet);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -315,7 +315,7 @@ uint32_t Serious::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("Serious");
   if (this->sonnet_ref().has_value()) {
     xfer += prot_->serializedFieldSize("sonnet", apache::thrift::protocol::T_STRING, 1);
-    xfer += prot_->serializedSizeString(this->sonnet);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->sonnet);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -327,7 +327,7 @@ uint32_t Serious::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("Serious");
   if (this->sonnet_ref().has_value()) {
     xfer += prot_->writeFieldBegin("sonnet", apache::thrift::protocol::T_STRING, 1);
-    xfer += prot_->writeString(this->sonnet);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->sonnet);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();

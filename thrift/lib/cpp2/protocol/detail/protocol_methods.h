@@ -410,51 +410,32 @@ THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(
     Float,
     T_FLOAT);
 
-// TODO: might not need to specialize on std::string, but rather
-// just the string typeclass
-THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(
-    string,
-    std::string,
-    String,
-    T_STRING);
-THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(
-    string,
-    folly::fbstring,
-    String,
-    T_STRING);
-
 #undef THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD
 
-#define THRIFT_PROTOCOL_METHODS_REGISTER_ZC(Class, Type, Method, TTypeValue) \
-  template <>                                                                \
-  struct protocol_methods<type_class::Class, Type> {                         \
-    THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON(                              \
-        Class,                                                               \
-        Type,                                                                \
-        Method,                                                              \
-        TTypeValue)                                                          \
-    template <bool ZeroCopy, typename Protocol>                              \
-    static typename std::enable_if<ZeroCopy, std::size_t>::type              \
-    serializedSize(Protocol& protocol, Type const& in) {                     \
-      return protocol.serializedSizeZC##Method(in);                          \
-    }                                                                        \
-    template <bool ZeroCopy, typename Protocol>                              \
-    static typename std::enable_if<!ZeroCopy, std::size_t>::type             \
-    serializedSize(Protocol& protocol, Type const& in) {                     \
-      return protocol.serializedSize##Method(in);                            \
-    }                                                                        \
-  }
+template <typename Type>
+struct protocol_methods<type_class::string, Type> {
+  THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON(string, Type, String, T_STRING)
+  THRIFT_PROTOCOL_METHODS_REGISTER_SS_COMMON(string, Type, String, T_STRING)
+};
 
-THRIFT_PROTOCOL_METHODS_REGISTER_ZC(binary, std::string, Binary, T_STRING);
-THRIFT_PROTOCOL_METHODS_REGISTER_ZC(binary, folly::IOBuf, Binary, T_STRING);
-THRIFT_PROTOCOL_METHODS_REGISTER_ZC(
-    binary,
-    std::unique_ptr<folly::IOBuf>,
-    Binary,
-    T_STRING);
-THRIFT_PROTOCOL_METHODS_REGISTER_ZC(binary, folly::fbstring, Binary, T_STRING);
-#undef THRIFT_PROTOCOL_METHODS_REGISTER_ZC // this naming sure isn't confusing,
-                                           // no sir
+template <typename Type>
+struct protocol_methods<type_class::binary, Type> {
+  THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON(binary, Type, Binary, T_STRING)
+
+  template <bool ZeroCopy, typename Protocol>
+  static typename std::enable_if<ZeroCopy, std::size_t>::type serializedSize(
+      Protocol& protocol,
+      Type const& in) {
+    return protocol.serializedSizeZCBinary(in);
+  }
+  template <bool ZeroCopy, typename Protocol>
+  static typename std::enable_if<!ZeroCopy, std::size_t>::type serializedSize(
+      Protocol& protocol,
+      Type const& in) {
+    return protocol.serializedSizeBinary(in);
+  }
+};
+
 #undef THRIFT_PROTOCOL_METHODS_REGISTER_SS_COMMON
 #undef THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON
 #undef THRIFT_PROTOCOL_METHODS_IF_THEN_ELSE_CONSTEXPR

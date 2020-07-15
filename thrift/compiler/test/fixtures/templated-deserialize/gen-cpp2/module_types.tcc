@@ -255,7 +255,7 @@ _readField_fieldC:
 _readField_fieldD:
   {
     
-    iprot->readString(this->fieldD);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->fieldD);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldD = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -271,7 +271,7 @@ _readField_fieldD:
 _readField_fieldE:
   {
     
-    iprot->readString(this->fieldE);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->fieldE);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldE = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -803,9 +803,9 @@ uint32_t containerStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("fieldC", apache::thrift::protocol::T_SET, 3);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::serializedSize<false>(*prot_, this->fieldC);
   xfer += prot_->serializedFieldSize("fieldD", apache::thrift::protocol::T_STRING, 4);
-  xfer += prot_->serializedSizeString(this->fieldD);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->fieldD);
   xfer += prot_->serializedFieldSize("fieldE", apache::thrift::protocol::T_STRING, 5);
-  xfer += prot_->serializedSizeString(this->fieldE);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->fieldE);
   xfer += prot_->serializedFieldSize("fieldF", apache::thrift::protocol::T_LIST, 6);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>>, ::std::vector<::std::vector<::std::vector<int32_t>>>>::serializedSize<false>(*prot_, this->fieldF);
   xfer += prot_->serializedFieldSize("fieldG", apache::thrift::protocol::T_MAP, 7);
@@ -885,9 +885,9 @@ uint32_t containerStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("fieldC", apache::thrift::protocol::T_SET, 3);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::serializedSize<false>(*prot_, this->fieldC);
   xfer += prot_->serializedFieldSize("fieldD", apache::thrift::protocol::T_STRING, 4);
-  xfer += prot_->serializedSizeString(this->fieldD);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->fieldD);
   xfer += prot_->serializedFieldSize("fieldE", apache::thrift::protocol::T_STRING, 5);
-  xfer += prot_->serializedSizeString(this->fieldE);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->fieldE);
   xfer += prot_->serializedFieldSize("fieldF", apache::thrift::protocol::T_LIST, 6);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>>, ::std::vector<::std::vector<::std::vector<int32_t>>>>::serializedSize<false>(*prot_, this->fieldF);
   xfer += prot_->serializedFieldSize("fieldG", apache::thrift::protocol::T_MAP, 7);
@@ -970,10 +970,10 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::write(*prot_, this->fieldC);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldD", apache::thrift::protocol::T_STRING, 4);
-  xfer += prot_->writeString(this->fieldD);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->fieldD);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldE", apache::thrift::protocol::T_STRING, 5);
-  xfer += prot_->writeString(this->fieldE);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->fieldE);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldF", apache::thrift::protocol::T_LIST, 6);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>>, ::std::vector<::std::vector<::std::vector<int32_t>>>>::write(*prot_, this->fieldF);
