@@ -40,7 +40,7 @@ cimport module.types_reflection as _types_reflection
 
 
 @__cython.auto_pickle(False)
-cdef class Banal(thrift.py3.exceptions.Error):
+cdef class Banal(thrift.py3.exceptions.GeneratedError):
 
     def __init__(
         Banal self
@@ -66,6 +66,11 @@ cdef class Banal(thrift.py3.exceptions.Error):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("Banal", {
+        })
 
     def __iter__(self):
         return iter(())
@@ -128,7 +133,7 @@ cdef class Banal(thrift.py3.exceptions.Error):
 
 
 @__cython.auto_pickle(False)
-cdef class Fiery(thrift.py3.exceptions.Error):
+cdef class Fiery(thrift.py3.exceptions.GeneratedError):
 
     def __init__(
         Fiery self,
@@ -159,6 +164,11 @@ cdef class Fiery(thrift.py3.exceptions.Error):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("Fiery", {
+        })
 
     def __iter__(self):
         yield 'message', self.message
@@ -232,7 +242,7 @@ cdef class Fiery(thrift.py3.exceptions.Error):
 
 
 @__cython.auto_pickle(False)
-cdef class Serious(thrift.py3.exceptions.Error):
+cdef class Serious(thrift.py3.exceptions.GeneratedError):
 
     def __init__(
         Serious self,
@@ -264,6 +274,12 @@ cdef class Serious(thrift.py3.exceptions.Error):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("Serious", {
+          "sonnet": cpp_obj.sonnet_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'sonnet', self.sonnet

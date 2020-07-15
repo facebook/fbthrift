@@ -20,6 +20,10 @@ __property__ = property
 
 
 class HsFoo(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        MyInt: bool
+        pass
+
     MyInt: Final[int] = ...
 
     def __init__(

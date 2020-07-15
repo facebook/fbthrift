@@ -22,6 +22,11 @@ __property__ = property
 
 
 class Struct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        first: bool
+        second: bool
+        pass
+
     first: Final[_module0_types.Struct] = ...
 
     second: Final[_module1_types.Struct] = ...
@@ -50,6 +55,11 @@ class Struct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing
 
 
 class BigStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        s: bool
+        id: bool
+        pass
+
     s: Final['Struct'] = ...
 
     id: Final[int] = ...

@@ -303,6 +303,15 @@ cdef class Color(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("Color", {
+          "red": cpp_obj.red_ref().has_value(),
+          "green": cpp_obj.green_ref().has_value(),
+          "blue": cpp_obj.blue_ref().has_value(),
+          "alpha": cpp_obj.alpha_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'red', self.red
         yield 'green', self.green
@@ -591,6 +600,16 @@ cdef class Vehicle(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("Vehicle", {
+          "color": cpp_obj.color_ref().has_value(),
+          "licensePlate": cpp_obj.licensePlate_ref().has_value(),
+          "description": cpp_obj.description_ref().has_value(),
+          "name": cpp_obj.name_ref().has_value(),
+          "hasAC": cpp_obj.hasAC_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'color', self.color
@@ -1016,6 +1035,21 @@ cdef class Person(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("Person", {
+          "id": cpp_obj.id_ref().has_value(),
+          "name": cpp_obj.name_ref().has_value(),
+          "age": cpp_obj.age_ref().has_value(),
+          "address": cpp_obj.address_ref().has_value(),
+          "favoriteColor": cpp_obj.favoriteColor_ref().has_value(),
+          "friends": cpp_obj.friends_ref().has_value(),
+          "bestFriend": cpp_obj.bestFriend_ref().has_value(),
+          "petNames": cpp_obj.petNames_ref().has_value(),
+          "afraidOfAnimal": cpp_obj.afraidOfAnimal_ref().has_value(),
+          "vehicles": cpp_obj.vehicles_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'id', self.id

@@ -38,6 +38,11 @@ class Company(thrift.py3.types.Enum):
 
 
 class Internship(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        title: bool
+        employer: bool
+        pass
+
     weeks: Final[int] = ...
 
     title: Final[str] = ...
@@ -70,6 +75,9 @@ class Internship(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_ty
 
 
 class Range(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        pass
+
     min: Final[int] = ...
 
     max: Final[int] = ...
@@ -98,6 +106,11 @@ class Range(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.
 
 
 class struct1(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        a: bool
+        b: bool
+        pass
+
     a: Final[int] = ...
 
     b: Final[str] = ...
@@ -126,6 +139,13 @@ class struct1(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typin
 
 
 class struct2(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        a: bool
+        b: bool
+        c: bool
+        d: bool
+        pass
+
     a: Final[int] = ...
 
     b: Final[str] = ...
@@ -162,6 +182,12 @@ class struct2(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typin
 
 
 class struct3(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        a: bool
+        b: bool
+        c: bool
+        pass
+
     a: Final[str] = ...
 
     b: Final[int] = ...
@@ -194,6 +220,12 @@ class struct3(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typin
 
 
 class struct4(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        a: bool
+        b: bool
+        c: bool
+        pass
+
     a: Final[int] = ...
 
     b: Final[_typing.Optional[float]] = ...
@@ -226,6 +258,11 @@ class struct4(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typin
 
 
 class union1(thrift.py3.types.Union, _typing.Hashable):
+    class __fbthrift_IsSet:
+        i: bool
+        d: bool
+        pass
+
     i: Final[int] = ...
 
     d: Final[float] = ...
@@ -259,6 +296,13 @@ class union1(thrift.py3.types.Union, _typing.Hashable):
 
 
 class union2(thrift.py3.types.Union, _typing.Hashable):
+    class __fbthrift_IsSet:
+        i: bool
+        d: bool
+        s: bool
+        u: bool
+        pass
+
     i: Final[int] = ...
 
     d: Final[float] = ...

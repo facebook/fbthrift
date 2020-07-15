@@ -20,6 +20,14 @@ __property__ = property
 
 
 class ComplexUnion(thrift.py3.types.Union, _typing.Hashable):
+    class __fbthrift_IsSet:
+        intValue: bool
+        stringValue: bool
+        intListValue: bool
+        stringListValue: bool
+        typedefValue: bool
+        pass
+
     intValue: Final[int] = ...
 
     stringValue: Final[str] = ...
@@ -69,6 +77,11 @@ class ComplexUnion(thrift.py3.types.Union, _typing.Hashable):
 
 
 class ListUnion(thrift.py3.types.Union, _typing.Hashable):
+    class __fbthrift_IsSet:
+        intListValue: bool
+        stringListValue: bool
+        pass
+
     intListValue: Final[_typing.Sequence[int]] = ...
 
     stringListValue: Final[_typing.Sequence[str]] = ...
@@ -102,6 +115,11 @@ class ListUnion(thrift.py3.types.Union, _typing.Hashable):
 
 
 class DataUnion(thrift.py3.types.Union, _typing.Hashable):
+    class __fbthrift_IsSet:
+        binaryData: bool
+        stringData: bool
+        pass
+
     binaryData: Final[bytes] = ...
 
     stringData: Final[str] = ...
@@ -135,6 +153,12 @@ class DataUnion(thrift.py3.types.Union, _typing.Hashable):
 
 
 class Val(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        strVal: bool
+        intVal: bool
+        typedefValue: bool
+        pass
+
     strVal: Final[str] = ...
 
     intVal: Final[int] = ...
@@ -167,6 +191,11 @@ class Val(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tu
 
 
 class ValUnion(thrift.py3.types.Union, _typing.Hashable):
+    class __fbthrift_IsSet:
+        v1: bool
+        v2: bool
+        pass
+
     v1: Final['Val'] = ...
 
     v2: Final['Val'] = ...
@@ -200,6 +229,11 @@ class ValUnion(thrift.py3.types.Union, _typing.Hashable):
 
 
 class VirtualComplexUnion(thrift.py3.types.Union, _typing.Hashable):
+    class __fbthrift_IsSet:
+        thingOne: bool
+        thingTwo: bool
+        pass
+
     thingOne: Final[str] = ...
 
     thingTwo: Final[str] = ...
@@ -233,6 +267,10 @@ class VirtualComplexUnion(thrift.py3.types.Union, _typing.Hashable):
 
 
 class NonCopyableStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        num: bool
+        pass
+
     num: Final[int] = ...
 
     def __init__(
@@ -257,6 +295,10 @@ class NonCopyableStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Itera
 
 
 class NonCopyableUnion(thrift.py3.types.Union, _typing.Hashable):
+    class __fbthrift_IsSet:
+        s: bool
+        pass
+
     s: Final['NonCopyableStruct'] = ...
 
     def __init__(

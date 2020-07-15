@@ -239,6 +239,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("MyStruct", {
+          "MyIntField": cpp_obj.MyIntField_ref().has_value(),
+          "MyStringField": cpp_obj.MyStringField_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'MyIntField', self.MyIntField
         yield 'MyStringField', self.MyStringField

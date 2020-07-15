@@ -45,6 +45,10 @@ class MyEnumA(thrift.py3.types.Enum):
 
 
 class decorated_struct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        field: bool
+        pass
+
     field: Final[str] = ...
 
     def __init__(
@@ -69,6 +73,17 @@ class decorated_struct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterab
 
 
 class ContainerStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        fieldA: bool
+        fieldB: bool
+        fieldC: bool
+        fieldD: bool
+        fieldE: bool
+        fieldF: bool
+        fieldG: bool
+        fieldH: bool
+        pass
+
     fieldA: Final[_typing.Sequence[int]] = ...
 
     fieldB: Final[_typing.Sequence[int]] = ...
@@ -117,6 +132,10 @@ class ContainerStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
 
 
 class CppTypeStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        fieldA: bool
+        pass
+
     fieldA: Final[_typing.Sequence[int]] = ...
 
     def __init__(
@@ -141,6 +160,10 @@ class CppTypeStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[
 
 
 class VirtualStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        MyIntField: bool
+        pass
+
     MyIntField: Final[int] = ...
 
     def __init__(
@@ -165,6 +188,11 @@ class VirtualStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[
 
 
 class MyStructWithForwardRefEnum(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        a: bool
+        b: bool
+        pass
+
     a: Final[MyForwardRefEnum] = ...
 
     b: Final[MyForwardRefEnum] = ...
@@ -193,6 +221,11 @@ class MyStructWithForwardRefEnum(thrift.py3.types.Struct, _typing.Hashable, _typ
 
 
 class TrivialNumeric(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        a: bool
+        b: bool
+        pass
+
     a: Final[int] = ...
 
     b: Final[bool] = ...
@@ -221,6 +254,11 @@ class TrivialNumeric(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable
 
 
 class TrivialNestedWithDefault(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        z: bool
+        n: bool
+        pass
+
     z: Final[int] = ...
 
     n: Final['TrivialNumeric'] = ...
@@ -249,6 +287,11 @@ class TrivialNestedWithDefault(thrift.py3.types.Struct, _typing.Hashable, _typin
 
 
 class ComplexString(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        a: bool
+        b: bool
+        pass
+
     a: Final[str] = ...
 
     b: Final[_typing.Mapping[str, int]] = ...
@@ -277,6 +320,11 @@ class ComplexString(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[
 
 
 class ComplexNestedWithDefault(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        z: bool
+        n: bool
+        pass
+
     z: Final[str] = ...
 
     n: Final['ComplexString'] = ...
@@ -305,6 +353,9 @@ class ComplexNestedWithDefault(thrift.py3.types.Struct, _typing.Hashable, _typin
 
 
 class MinPadding(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        pass
+
     small: Final[int] = ...
 
     big: Final[int] = ...
@@ -345,6 +396,13 @@ class MinPadding(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_ty
 
 
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        MyIntField: bool
+        MyStringField: bool
+        majorVer: bool
+        data: bool
+        pass
+
     MyIntField: Final[int] = ...
 
     MyStringField: Final[str] = ...
@@ -381,6 +439,9 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
 
 
 class MyDataItem(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        pass
+
     def __init__(
         self, 
     ) -> None: ...
@@ -401,6 +462,10 @@ class MyDataItem(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_ty
 
 
 class Renaming(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        foo: bool
+        pass
+
     foo: Final[int] = ...
 
     def __init__(
@@ -425,6 +490,11 @@ class Renaming(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
 
 
 class AnnotatedTypes(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        binary_field: bool
+        list_field: bool
+        pass
+
     binary_field: Final[bytes] = ...
 
     list_field: Final[_typing.Sequence[_typing.Mapping[int, str]]] = ...
@@ -449,6 +519,10 @@ class AnnotatedTypes(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable
 
 
 class ForwardUsageRoot(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        ForwardUsageStruct: bool
+        pass
+
     ForwardUsageStruct: Final[_typing.Optional['ForwardUsageStruct']] = ...
 
     ForwardUsageByRef: Final[_typing.Optional['ForwardUsageByRef']] = ...
@@ -477,6 +551,10 @@ class ForwardUsageRoot(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterab
 
 
 class ForwardUsageStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        foo: bool
+        pass
+
     foo: Final[_typing.Optional['ForwardUsageRoot']] = ...
 
     def __init__(
@@ -501,6 +579,10 @@ class ForwardUsageStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iter
 
 
 class ForwardUsageByRef(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        foo: bool
+        pass
+
     foo: Final[_typing.Optional['ForwardUsageRoot']] = ...
 
     def __init__(
@@ -525,6 +607,9 @@ class ForwardUsageByRef(thrift.py3.types.Struct, _typing.Hashable, _typing.Itera
 
 
 class NoexceptMoveEmpty(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        pass
+
     def __init__(
         self, 
     ) -> None: ...
@@ -545,6 +630,10 @@ class NoexceptMoveEmpty(thrift.py3.types.Struct, _typing.Hashable, _typing.Itera
 
 
 class NoexceptMoveSimpleStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        boolField: bool
+        pass
+
     boolField: Final[int] = ...
 
     def __init__(
@@ -569,6 +658,17 @@ class NoexceptMoveSimpleStruct(thrift.py3.types.Struct, _typing.Hashable, _typin
 
 
 class NoexceptMoveComplexStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        MyBoolField: bool
+        MyIntField: bool
+        MyStringField: bool
+        MyStringField2: bool
+        MyBinaryField: bool
+        MyBinaryField2: bool
+        MyBinaryListField4: bool
+        MyMapEnumAndInt: bool
+        pass
+
     MyBoolField: Final[bool] = ...
 
     MyIntField: Final[int] = ...
@@ -625,6 +725,11 @@ class NoexceptMoveComplexStruct(thrift.py3.types.Struct, _typing.Hashable, _typi
 
 
 class NoExceptMoveUnion(thrift.py3.types.Union, _typing.Hashable):
+    class __fbthrift_IsSet:
+        string_field: bool
+        i32_field: bool
+        pass
+
     string_field: Final[str] = ...
 
     i32_field: Final[int] = ...

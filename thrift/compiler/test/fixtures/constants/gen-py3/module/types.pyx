@@ -681,6 +681,13 @@ cdef class Internship(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("Internship", {
+          "title": cpp_obj.title_ref().has_value(),
+          "employer": cpp_obj.employer_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'weeks', self.weeks
         yield 'title', self.title
@@ -904,6 +911,11 @@ cdef class Range(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("Range", {
+        })
+
     def __iter__(self):
         yield 'min', self.min
         yield 'max', self.max
@@ -1115,6 +1127,13 @@ cdef class struct1(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("struct1", {
+          "a": cpp_obj.a_ref().has_value(),
+          "b": cpp_obj.b_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'a', self.a
@@ -1372,6 +1391,15 @@ cdef class struct2(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("struct2", {
+          "a": cpp_obj.a_ref().has_value(),
+          "b": cpp_obj.b_ref().has_value(),
+          "c": cpp_obj.c_ref().has_value(),
+          "d": cpp_obj.d_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'a', self.a
         yield 'b', self.b
@@ -1626,6 +1654,14 @@ cdef class struct3(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("struct3", {
+          "a": cpp_obj.a_ref().has_value(),
+          "b": cpp_obj.b_ref().has_value(),
+          "c": cpp_obj.c_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'a', self.a
         yield 'b', self.b
@@ -1878,6 +1914,14 @@ cdef class struct4(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("struct4", {
+          "a": cpp_obj.a_ref().has_value(),
+          "b": cpp_obj.b_ref().has_value(),
+          "c": cpp_obj.c_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'a', self.a

@@ -21,6 +21,10 @@ __property__ = property
 
 
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        field: bool
+        pass
+
     field: Final[str] = ...
 
     def __init__(
@@ -45,6 +49,13 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
 
 
 class Combo(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        listOfOurMyStructLists: bool
+        theirMyStructList: bool
+        ourMyStructList: bool
+        listOfTheirMyStructList: bool
+        pass
+
     listOfOurMyStructLists: Final[_typing.Sequence[_typing.Sequence['MyStruct']]] = ...
 
     theirMyStructList: Final[_typing.Sequence[_module_types.MyStruct]] = ...

@@ -20,6 +20,9 @@ __property__ = property
 
 
 class Empty(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        pass
+
     def __init__(
         self, 
     ) -> None: ...
@@ -40,6 +43,9 @@ class Empty(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.
 
 
 class Nada(thrift.py3.types.Union, _typing.Hashable):
+    class __fbthrift_IsSet:
+        pass
+
     def __init__(
         self, 
     ) -> None: ...

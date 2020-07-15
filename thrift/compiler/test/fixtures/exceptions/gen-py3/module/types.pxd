@@ -96,7 +96,7 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 
-cdef class Banal(thrift.py3.exceptions.Error):
+cdef class Banal(thrift.py3.exceptions.GeneratedError):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cBanal] _cpp_obj
@@ -112,7 +112,7 @@ cdef class Banal(thrift.py3.exceptions.Error):
 
 
 
-cdef class Fiery(thrift.py3.exceptions.Error):
+cdef class Fiery(thrift.py3.exceptions.GeneratedError):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cFiery] _cpp_obj
@@ -129,7 +129,7 @@ cdef class Fiery(thrift.py3.exceptions.Error):
 
 
 
-cdef class Serious(thrift.py3.exceptions.Error):
+cdef class Serious(thrift.py3.exceptions.GeneratedError):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cSerious] _cpp_obj

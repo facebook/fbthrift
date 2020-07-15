@@ -1278,7 +1278,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 
 
 
-cdef class AnException(thrift.py3.exceptions.Error):
+cdef class AnException(thrift.py3.exceptions.GeneratedError):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cAnException] _cpp_obj
@@ -1319,7 +1319,7 @@ cdef class AnException(thrift.py3.exceptions.Error):
 
 
 
-cdef class AnotherException(thrift.py3.exceptions.Error):
+cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cAnotherException] _cpp_obj

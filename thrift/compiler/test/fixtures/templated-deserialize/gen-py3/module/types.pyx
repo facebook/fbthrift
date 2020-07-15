@@ -245,6 +245,13 @@ cdef class SmallStruct(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("SmallStruct", {
+          "small_A": cpp_obj.small_A_ref().has_value(),
+          "small_B": cpp_obj.small_B_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'small_A', self.small_A
         yield 'small_B', self.small_B
@@ -868,6 +875,28 @@ cdef class containerStruct(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("containerStruct", {
+          "fieldA": cpp_obj.fieldA_ref().has_value(),
+          "fieldB": cpp_obj.fieldB_ref().has_value(),
+          "fieldC": cpp_obj.fieldC_ref().has_value(),
+          "fieldD": cpp_obj.fieldD_ref().has_value(),
+          "fieldE": cpp_obj.fieldE_ref().has_value(),
+          "fieldF": cpp_obj.fieldF_ref().has_value(),
+          "fieldG": cpp_obj.fieldG_ref().has_value(),
+          "fieldH": cpp_obj.fieldH_ref().has_value(),
+          "fieldI": cpp_obj.fieldI_ref().has_value(),
+          "fieldJ": cpp_obj.fieldJ_ref().has_value(),
+          "fieldK": cpp_obj.fieldK_ref().has_value(),
+          "fieldL": cpp_obj.fieldL_ref().has_value(),
+          "fieldM": cpp_obj.fieldM_ref().has_value(),
+          "fieldN": cpp_obj.fieldN_ref().has_value(),
+          "fieldO": cpp_obj.fieldO_ref().has_value(),
+          "fieldP": cpp_obj.fieldP_ref().has_value(),
+          "fieldQ": cpp_obj.fieldQ_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'fieldA', self.fieldA

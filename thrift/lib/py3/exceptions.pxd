@@ -135,3 +135,6 @@ cdef class ApplicationError(Error):
 
 cdef class TransportError(LibraryError):
     pass
+
+cdef class GeneratedError(Error):
+    cdef object __fbthrift_isset(self)

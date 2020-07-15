@@ -559,6 +559,13 @@ cdef class MyField(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("MyField", {
+          "opt_value": cpp_obj.opt_value_ref().has_value(),
+          "value": cpp_obj.value_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'opt_value', self.opt_value
         yield 'value', self.value
@@ -791,6 +798,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("MyStruct", {
+        })
 
     def __iter__(self):
         yield 'opt_ref', self.opt_ref
@@ -1043,6 +1055,13 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("StructWithUnion", {
+          "aDouble": cpp_obj.aDouble_ref().has_value(),
+          "f": cpp_obj.f_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'u', self.u
         yield 'aDouble', self.aDouble
@@ -1232,6 +1251,12 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("RecursiveStruct", {
+          "mes": cpp_obj.mes_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'mes', self.mes
@@ -1495,6 +1520,11 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("StructWithContainers", {
+        })
 
     def __iter__(self):
         yield 'list_ref', self.list_ref
@@ -1772,6 +1802,11 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("StructWithSharedConst", {
+        })
+
     def __iter__(self):
         yield 'opt_shared_const', self.opt_shared_const
         yield 'shared_const', self.shared_const
@@ -1936,6 +1971,11 @@ cdef class Empty(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("Empty", {
+        })
 
     def __iter__(self):
         return iter(())
@@ -2148,6 +2188,11 @@ cdef class StructWithRef(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("StructWithRef", {
+        })
 
     def __iter__(self):
         yield 'def_field', self.def_field
@@ -2392,6 +2437,11 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("StructWithRefTypeUnique", {
+        })
+
     def __iter__(self):
         yield 'def_field', self.def_field
         yield 'opt_field', self.opt_field
@@ -2634,6 +2684,11 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("StructWithRefTypeShared", {
+        })
 
     def __iter__(self):
         yield 'def_field', self.def_field
@@ -2878,6 +2933,11 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("StructWithRefTypeSharedConst", {
+        })
+
     def __iter__(self):
         yield 'def_field', self.def_field
         yield 'opt_field', self.opt_field
@@ -3076,6 +3136,11 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("StructWithRefAndAnnotCppNoexceptMoveCtor", {
+        })
 
     def __iter__(self):
         yield 'def_field', self.def_field

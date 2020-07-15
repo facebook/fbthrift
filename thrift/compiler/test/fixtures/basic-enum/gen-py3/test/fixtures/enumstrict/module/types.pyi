@@ -52,6 +52,11 @@ class MyBigEnum(thrift.py3.types.Enum):
 
 
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        myEnum: bool
+        myBigEnum: bool
+        pass
+
     myEnum: Final[MyEnum] = ...
 
     myBigEnum: Final[MyBigEnum] = ...

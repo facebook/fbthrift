@@ -21,6 +21,11 @@ __property__ = property
 
 
 class Included(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        MyIntField: bool
+        MyTransitiveField: bool
+        pass
+
     MyIntField: Final[int] = ...
 
     MyTransitiveField: Final[_transitive_types.Foo] = ...

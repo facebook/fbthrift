@@ -19,7 +19,10 @@ import itertools
 __property__ = property
 
 
-class Banal(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+class Banal(thrift.py3.exceptions.GeneratedError, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        pass
+
     def __init__(
         self, 
     ) -> None: ...
@@ -34,7 +37,10 @@ class Banal(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typ
     def __ge__(self, other: 'Banal') -> bool: ...
 
 
-class Fiery(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+class Fiery(thrift.py3.exceptions.GeneratedError, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        pass
+
     message: Final[str] = ...
 
     def __init__(
@@ -52,7 +58,11 @@ class Fiery(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typ
     def __ge__(self, other: 'Fiery') -> bool: ...
 
 
-class Serious(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+class Serious(thrift.py3.exceptions.GeneratedError, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        sonnet: bool
+        pass
+
     sonnet: Final[_typing.Optional[str]] = ...
 
     def __init__(

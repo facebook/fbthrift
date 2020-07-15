@@ -26,6 +26,10 @@ class MyEnum(thrift.py3.types.Enum):
 
 
 class MyStructNestedAnnotation(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        name: bool
+        pass
+
     name: Final[str] = ...
 
     def __init__(
@@ -50,6 +54,13 @@ class MyStructNestedAnnotation(thrift.py3.types.Struct, _typing.Hashable, _typin
 
 
 class MyStructAnnotation(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        count: bool
+        name: bool
+        extra: bool
+        nest: bool
+        pass
+
     count: Final[int] = ...
 
     name: Final[str] = ...
@@ -86,6 +97,15 @@ class MyStructAnnotation(thrift.py3.types.Struct, _typing.Hashable, _typing.Iter
 
 
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        major: bool
+        package: bool
+        annotation_with_quote: bool
+        class_: bool
+        annotation_with_trailing_comma: bool
+        empty_annotations: bool
+        pass
+
     major: Final[int] = ...
 
     package: Final[str] = ...
@@ -130,6 +150,11 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
 
 
 class SecretStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        id: bool
+        password: bool
+        pass
+
     id: Final[int] = ...
 
     password: Final[str] = ...

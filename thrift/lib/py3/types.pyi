@@ -18,12 +18,15 @@ from typing import (
     Iterator,
     Mapping,
     Optional,
+    Protocol,
     SupportsInt,
     Tuple,
     Type,
     TypeVar,
     Union as tUnion,
 )
+
+from thrift.py3.exceptions import GeneratedError
 
 _T = TypeVar("_T")
 eT = TypeVar("eT", bound=Enum)
@@ -33,7 +36,15 @@ class __NotSet:
 
 NOTSET = __NotSet()
 
-class Struct:
+class HasIsSet(Protocol[_T]):
+    __fbthrift_IsSet: Type[_T]
+
+class StructMeta(type):
+    @staticmethod
+    def isset(struct: HasIsSet[_T]) -> _T:
+        return struct.__fbthrift_IsSet()
+
+class Struct(metaclass=StructMeta):
     def __copy__(self: _T) -> _T: ...
 
 class Union(Struct):

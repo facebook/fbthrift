@@ -215,6 +215,12 @@ cdef class AStruct(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("AStruct", {
+          "FieldA": cpp_obj.FieldA_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'FieldA', self.FieldA
 
@@ -387,6 +393,11 @@ cdef class AStructB(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("AStructB", {
+        })
 
     def __iter__(self):
         yield 'FieldA', self.FieldA

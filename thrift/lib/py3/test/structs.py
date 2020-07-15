@@ -19,19 +19,61 @@ import unittest
 
 from testing.types import (
     Color,
+    File,
     Integers,
+    Kind,
     Optionals,
     Reserved,
     Runtime,
     SlowCompare,
+    UnusedError,
     easy,
     hard,
     mixed,
     numerical,
 )
+from thrift.py3 import Protocol, Struct, deserialize
 
 
 class StructTests(unittest.TestCase):
+    def test_isset_Struct(self) -> None:
+        serialized = b'{"name":"/dev/null","type":8}'
+        file = deserialize(File, serialized, protocol=Protocol.JSON)
+        self.assertTrue(Struct.isset(file).type)
+        self.assertFalse(Struct.isset(file).permissions)
+        # required fields are always set
+        with self.assertRaises(AttributeError):
+            getattr(Struct.isset(file), "name")
+
+        serialized = b'{"name":"/dev/null"}'
+        file = deserialize(File, serialized, protocol=Protocol.JSON)
+        self.assertEqual(file.type, Kind.REGULAR)
+        self.assertFalse(Struct.isset(file).type)
+
+    def test_isset_repr(self) -> None:
+        serialized = b'{"name":"/dev/null","type":8}'
+        file = deserialize(File, serialized, protocol=Protocol.JSON)
+        self.assertEqual(
+            "Struct.isset(<File>, permissions=False, type=True)",
+            repr(Struct.isset(file)),
+        )
+        self.assertEqual(
+            "Struct.isset(<File>, permissions=False, type=True)",
+            str(Struct.isset(file)),
+        )
+
+    def test_isset_Union(self) -> None:
+        i = Integers(large=2)
+        with self.assertRaises(TypeError):
+            Struct.isset(i).large
+
+    def test_isset_Error(self) -> None:
+        e = UnusedError()
+        self.assertFalse(Struct.isset(e).message)
+
+        e = UnusedError(message="ACK")
+        self.assertTrue(Struct.isset(e).message)
+
     def test_copy(self) -> None:
         x = easy(val=1, an_int=Integers(small=300), name="foo", val_list=[1, 2, 3, 4])
         dif_list = copy.copy(x.val_list)
@@ -54,10 +96,7 @@ class StructTests(unittest.TestCase):
     def test_required_fields_not_enforced(self) -> None:
         # None is not acceptable as a string
         hard(  # type: ignore
-            val=1,
-            val_list=[1, 2],
-            name=None,
-            an_int=Integers(small=1),
+            val=1, val_list=[1, 2], name=None, an_int=Integers(small=1)
         )
 
         hard(val=1, val_list=[1, 2])  # type: ignore

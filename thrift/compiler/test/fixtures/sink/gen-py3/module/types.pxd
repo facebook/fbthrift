@@ -247,7 +247,7 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
 
 
 
-cdef class InitialException(thrift.py3.exceptions.Error):
+cdef class InitialException(thrift.py3.exceptions.GeneratedError):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cInitialException] _cpp_obj
@@ -264,7 +264,7 @@ cdef class InitialException(thrift.py3.exceptions.Error):
 
 
 
-cdef class SinkException1(thrift.py3.exceptions.Error):
+cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cSinkException1] _cpp_obj
@@ -281,7 +281,7 @@ cdef class SinkException1(thrift.py3.exceptions.Error):
 
 
 
-cdef class SinkException2(thrift.py3.exceptions.Error):
+cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cSinkException2] _cpp_obj

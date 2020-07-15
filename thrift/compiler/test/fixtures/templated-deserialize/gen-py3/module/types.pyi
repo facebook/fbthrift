@@ -26,6 +26,11 @@ class MyEnumA(thrift.py3.types.Enum):
 
 
 class SmallStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        small_A: bool
+        small_B: bool
+        pass
+
     small_A: Final[bool] = ...
 
     small_B: Final[int] = ...
@@ -54,6 +59,26 @@ class SmallStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_t
 
 
 class containerStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        fieldA: bool
+        fieldB: bool
+        fieldC: bool
+        fieldD: bool
+        fieldE: bool
+        fieldF: bool
+        fieldG: bool
+        fieldH: bool
+        fieldI: bool
+        fieldJ: bool
+        fieldK: bool
+        fieldL: bool
+        fieldM: bool
+        fieldN: bool
+        fieldO: bool
+        fieldP: bool
+        fieldQ: bool
+        pass
+
     fieldA: Final[bool] = ...
 
     fieldB: Final[_typing.Mapping[str, bool]] = ...

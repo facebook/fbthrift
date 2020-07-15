@@ -109,6 +109,12 @@ cdef class InitialResponse(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("InitialResponse", {
+          "content": cpp_obj.content_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'content', self.content
 
@@ -283,6 +289,12 @@ cdef class FinalResponse(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("FinalResponse", {
+          "content": cpp_obj.content_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'content', self.content
@@ -459,6 +471,12 @@ cdef class SinkPayload(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("SinkPayload", {
+          "content": cpp_obj.content_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'content', self.content
 
@@ -634,6 +652,12 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("CompatibleWithKeywordSink", {
+          "sink": cpp_obj.sink_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'sink', self.sink
 
@@ -740,7 +764,7 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
 
 
 @__cython.auto_pickle(False)
-cdef class InitialException(thrift.py3.exceptions.Error):
+cdef class InitialException(thrift.py3.exceptions.GeneratedError):
 
     def __init__(
         InitialException self,
@@ -772,6 +796,12 @@ cdef class InitialException(thrift.py3.exceptions.Error):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("InitialException", {
+          "reason": cpp_obj.reason_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'reason', self.reason
@@ -839,7 +869,7 @@ cdef class InitialException(thrift.py3.exceptions.Error):
 
 
 @__cython.auto_pickle(False)
-cdef class SinkException1(thrift.py3.exceptions.Error):
+cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
 
     def __init__(
         SinkException1 self,
@@ -871,6 +901,12 @@ cdef class SinkException1(thrift.py3.exceptions.Error):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("SinkException1", {
+          "reason": cpp_obj.reason_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'reason', self.reason
@@ -938,7 +974,7 @@ cdef class SinkException1(thrift.py3.exceptions.Error):
 
 
 @__cython.auto_pickle(False)
-cdef class SinkException2(thrift.py3.exceptions.Error):
+cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
 
     def __init__(
         SinkException2 self,
@@ -975,6 +1011,12 @@ cdef class SinkException2(thrift.py3.exceptions.Error):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("SinkException2", {
+          "reason": cpp_obj.reason_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'reason', self.reason

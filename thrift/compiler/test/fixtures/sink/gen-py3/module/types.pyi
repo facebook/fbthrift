@@ -20,6 +20,10 @@ __property__ = property
 
 
 class InitialResponse(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        content: bool
+        pass
+
     content: Final[str] = ...
 
     def __init__(
@@ -44,6 +48,10 @@ class InitialResponse(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
 
 
 class FinalResponse(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        content: bool
+        pass
+
     content: Final[str] = ...
 
     def __init__(
@@ -68,6 +76,10 @@ class FinalResponse(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[
 
 
 class SinkPayload(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        content: bool
+        pass
+
     content: Final[str] = ...
 
     def __init__(
@@ -92,6 +104,10 @@ class SinkPayload(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_t
 
 
 class CompatibleWithKeywordSink(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        sink: bool
+        pass
+
     sink: Final[str] = ...
 
     def __init__(
@@ -115,7 +131,11 @@ class CompatibleWithKeywordSink(thrift.py3.types.Struct, _typing.Hashable, _typi
     def __ge__(self, other: 'CompatibleWithKeywordSink') -> bool: ...
 
 
-class InitialException(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+class InitialException(thrift.py3.exceptions.GeneratedError, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        reason: bool
+        pass
+
     reason: Final[str] = ...
 
     def __init__(
@@ -133,7 +153,11 @@ class InitialException(thrift.py3.exceptions.Error, _typing.Hashable, _typing.It
     def __ge__(self, other: 'InitialException') -> bool: ...
 
 
-class SinkException1(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+class SinkException1(thrift.py3.exceptions.GeneratedError, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        reason: bool
+        pass
+
     reason: Final[str] = ...
 
     def __init__(
@@ -151,7 +175,11 @@ class SinkException1(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iter
     def __ge__(self, other: 'SinkException1') -> bool: ...
 
 
-class SinkException2(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+class SinkException2(thrift.py3.exceptions.GeneratedError, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        reason: bool
+        pass
+
     reason: Final[int] = ...
 
     def __init__(

@@ -34,7 +34,11 @@ class Flags(thrift.py3.types.Flag):
     flag_D: Flags = ...
 
 
-class SimpleException(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+class SimpleException(thrift.py3.exceptions.GeneratedError, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        err_code: bool
+        pass
+
     err_code: Final[int] = ...
 
     def __init__(
@@ -53,6 +57,9 @@ class SimpleException(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Ite
 
 
 class OptionalRefStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        pass
+
     optional_blob: Final[_typing.Optional[__iobuf.IOBuf]] = ...
 
     def __init__(
@@ -77,6 +84,16 @@ class OptionalRefStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Itera
 
 
 class SimpleStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        is_on: bool
+        tiny_int: bool
+        small_int: bool
+        nice_sized_int: bool
+        big_int: bool
+        real: bool
+        smaller_real: bool
+        pass
+
     is_on: Final[bool] = ...
 
     tiny_int: Final[int] = ...
@@ -125,6 +142,18 @@ class SimpleStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_
 
 
 class ComplexStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        structOne: bool
+        structTwo: bool
+        an_integer: bool
+        name: bool
+        an_enum: bool
+        some_bytes: bool
+        sender: bool
+        cdef_: bool
+        bytes_with_cpp_type: bool
+        pass
+
     structOne: Final['SimpleStruct'] = ...
 
     structTwo: Final['SimpleStruct'] = ...
@@ -181,6 +210,10 @@ class ComplexStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[
 
 
 class BinaryUnion(thrift.py3.types.Union, _typing.Hashable):
+    class __fbthrift_IsSet:
+        iobuf_val: bool
+        pass
+
     iobuf_val: Final[__iobuf.IOBuf] = ...
 
     def __init__(
@@ -210,6 +243,10 @@ class BinaryUnion(thrift.py3.types.Union, _typing.Hashable):
 
 
 class BinaryUnionStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        u: bool
+        pass
+
     u: Final['BinaryUnion'] = ...
 
     def __init__(

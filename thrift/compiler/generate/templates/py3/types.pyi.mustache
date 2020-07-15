@@ -56,6 +56,14 @@ class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum
 {{/program:enums}}
 {{#program:structs}}
 class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable{{^struct:union?}}, _typing.Iterable[_typing.Tuple[str, _typing.Any]]{{/struct:union?}}):
+    class __fbthrift_IsSet:
+    {{#struct:fields}}
+        {{#field:has_ref_accessor?}}
+        {{field:py_name}}: bool
+        {{/field:has_ref_accessor?}}
+    {{/struct:fields}}
+        pass
+
     {{#struct:fields}}
     {{field:py_name}}: Final[{{#field:PEP484Optional?}}_typing.Optional[{{/field:PEP484Optional?}}{{!
             }}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{!

@@ -524,6 +524,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("MyStruct", {
+          "myEnum": cpp_obj.myEnum_ref().has_value(),
+          "myBigEnum": cpp_obj.myBigEnum_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'myEnum', self.myEnum
         yield 'myBigEnum', self.myBigEnum

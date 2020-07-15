@@ -82,6 +82,12 @@ cdef create_Error(shared_ptr[cTException] ex):
     return inst
 
 
+cdef class GeneratedError(Error):
+    """This is the base class for all Generated Thrift Exceptions"""
+    cdef object __fbthrift_isset(self):
+        raise TypeError(f"{type(self)} does not have concept of isset")
+
+
 cdef class ApplicationError(Error):
     """All Application Level Errors (TApplicationException)"""
 

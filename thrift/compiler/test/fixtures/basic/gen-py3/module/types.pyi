@@ -25,6 +25,13 @@ class MyEnum(thrift.py3.types.Enum):
 
 
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        MyIntField: bool
+        MyStringField: bool
+        MyDataField: bool
+        myEnum: bool
+        pass
+
     MyIntField: Final[int] = ...
 
     MyStringField: Final[str] = ...
@@ -61,6 +68,9 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
 
 
 class MyDataItem(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        pass
+
     def __init__(
         self, 
     ) -> None: ...
@@ -81,6 +91,12 @@ class MyDataItem(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_ty
 
 
 class MyUnion(thrift.py3.types.Union, _typing.Hashable):
+    class __fbthrift_IsSet:
+        myEnum: bool
+        myStruct: bool
+        myDataItem: bool
+        pass
+
     myEnum: Final[MyEnum] = ...
 
     myStruct: Final['MyStruct'] = ...

@@ -17,11 +17,38 @@ cimport cython
 from folly.iobuf import IOBuf
 from types import MappingProxyType
 
-__all__ = ['Struct', 'BadEnum', 'Union', 'Enum', 'Flag']
+from thrift.py3.exceptions cimport GeneratedError
+
+__all__ = ['Struct', 'BadEnum', 'NOTSET', 'Union', 'Enum', 'Flag']
 
 
 cdef __NotSet NOTSET = __NotSet.__new__(__NotSet)
 
+# This isn't exposed to the module dict
+Object = cython.fused_type(Struct, GeneratedError)
+
+
+@cython.internal
+@cython.auto_pickle(False)
+cdef class StructMeta(type):
+    """
+    We set helper functions here since they can't possibly confict with field names
+    """
+    @staticmethod
+    def isset(Object struct):
+        return struct.__fbthrift_isset()
+
+
+class _IsSet:
+    __slots__ = ['__dict__', '__name__']
+
+    def __init__(self, n, d):
+        self.__name__ = n
+        self.__dict__ = d
+
+    def __repr__(self):
+        args = ''.join(f', {name}={value}' for name, value in self.__dict__.items())
+        return f'Struct.isset(<{self.__name__}>{args})'
 
 cdef class Struct:
     """
@@ -32,6 +59,12 @@ cdef class Struct:
 
     cdef uint32_t _deserialize(self, const cIOBuf* buf, Protocol proto) except? 0:
         return 0
+
+    cdef object __fbthrift_isset(self):
+        raise TypeError(f"{type(self)} does not have concept of isset")
+
+
+SetMetaClass(<PyTypeObject*> Struct, <PyTypeObject*> StructMeta)
 
 
 cdef class Union(Struct):

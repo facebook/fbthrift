@@ -111,6 +111,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("MyStruct", {
+          "field": cpp_obj.field_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'field', self.field
 
@@ -341,6 +347,15 @@ cdef class Combo(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("Combo", {
+          "listOfOurMyStructLists": cpp_obj.listOfOurMyStructLists_ref().has_value(),
+          "theirMyStructList": cpp_obj.theirMyStructList_ref().has_value(),
+          "ourMyStructList": cpp_obj.ourMyStructList_ref().has_value(),
+          "listOfTheirMyStructList": cpp_obj.listOfTheirMyStructList_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'listOfOurMyStructLists', self.listOfOurMyStructLists

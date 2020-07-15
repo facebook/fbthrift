@@ -174,6 +174,13 @@ cdef class Foo(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("Foo", {
+          "myString": cpp_obj.myString_ref().has_value(),
+          "myBools": cpp_obj.myBools_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'myInteger', self.myInteger
         yield 'myString', self.myString

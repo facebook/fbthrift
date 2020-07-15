@@ -137,6 +137,13 @@ cdef class Struct(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("Struct", {
+          "first": cpp_obj.first_ref().has_value(),
+          "second": cpp_obj.second_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'first', self.first
         yield 'second', self.second
@@ -352,6 +359,13 @@ cdef class BigStruct(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("BigStruct", {
+          "s": cpp_obj.s_ref().has_value(),
+          "id": cpp_obj.id_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 's', self.s

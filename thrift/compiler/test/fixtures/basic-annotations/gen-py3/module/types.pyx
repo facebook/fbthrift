@@ -215,6 +215,12 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("MyStructNestedAnnotation", {
+          "name": cpp_obj.name_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'name', self.name
 
@@ -466,6 +472,15 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("MyStructAnnotation", {
+          "count": cpp_obj.count_ref().has_value(),
+          "name": cpp_obj.name_ref().has_value(),
+          "extra": cpp_obj.extra_ref().has_value(),
+          "nest": cpp_obj.nest_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'count', self.count
@@ -793,6 +808,17 @@ cdef class MyStruct(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("MyStruct", {
+          "major": cpp_obj.major_ref().has_value(),
+          "package": cpp_obj.package_ref().has_value(),
+          "annotation_with_quote": cpp_obj.annotation_with_quote_ref().has_value(),
+          "class_": cpp_obj.class__ref().has_value(),
+          "annotation_with_trailing_comma": cpp_obj.annotation_with_trailing_comma_ref().has_value(),
+          "empty_annotations": cpp_obj.empty_annotations_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'major', self.major
         yield 'package', self.package
@@ -1032,6 +1058,13 @@ cdef class SecretStruct(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("SecretStruct", {
+          "id": cpp_obj.id_ref().has_value(),
+          "password": cpp_obj.password_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'id', self.id

@@ -42,7 +42,7 @@ cimport module.types_reflection as _types_reflection
 
 
 @__cython.auto_pickle(False)
-cdef class FooEx(thrift.py3.exceptions.Error):
+cdef class FooEx(thrift.py3.exceptions.GeneratedError):
 
     def __init__(
         FooEx self
@@ -68,6 +68,11 @@ cdef class FooEx(thrift.py3.exceptions.Error):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("FooEx", {
+        })
 
     def __iter__(self):
         return iter(())

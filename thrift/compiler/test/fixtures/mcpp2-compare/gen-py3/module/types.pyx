@@ -962,6 +962,11 @@ cdef class Empty(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("Empty", {
+        })
+
     def __iter__(self):
         return iter(())
 
@@ -1138,6 +1143,12 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("ASimpleStruct", {
+          "boolField": cpp_obj.boolField_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'boolField', self.boolField
 
@@ -1310,6 +1321,12 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("ASimpleStructNoexcept", {
+          "boolField": cpp_obj.boolField_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'boolField', self.boolField
@@ -1672,6 +1689,19 @@ cdef class MyStruct(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("MyStruct", {
+          "MyBoolField": cpp_obj.MyBoolField_ref().has_value(),
+          "MyIntField": cpp_obj.MyIntField_ref().has_value(),
+          "MyStringField": cpp_obj.MyStringField_ref().has_value(),
+          "MyStringField2": cpp_obj.MyStringField2_ref().has_value(),
+          "MyBinaryField": cpp_obj.MyBinaryField_ref().has_value(),
+          "MyBinaryField2": cpp_obj.MyBinaryField2_ref().has_value(),
+          "MyBinaryListField4": cpp_obj.MyBinaryListField4_ref().has_value(),
+          "MyMapEnumAndInt": cpp_obj.MyMapEnumAndInt_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'MyBoolField', self.MyBoolField
@@ -2715,7 +2745,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 
 
 @__cython.auto_pickle(False)
-cdef class AnException(thrift.py3.exceptions.Error):
+cdef class AnException(thrift.py3.exceptions.GeneratedError):
 
     def __init__(
         AnException self,
@@ -2838,6 +2868,23 @@ cdef class AnException(thrift.py3.exceptions.Error):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("AnException", {
+          "code": cpp_obj.code_ref().has_value(),
+          "message2": cpp_obj.message2_ref().has_value(),
+          "exception_list": cpp_obj.exception_list_ref().has_value(),
+          "exception_set": cpp_obj.exception_set_ref().has_value(),
+          "exception_map": cpp_obj.exception_map_ref().has_value(),
+          "enum_field": cpp_obj.enum_field_ref().has_value(),
+          "enum_container": cpp_obj.enum_container_ref().has_value(),
+          "a_struct": cpp_obj.a_struct_ref().has_value(),
+          "a_set_struct": cpp_obj.a_set_struct_ref().has_value(),
+          "a_union_list": cpp_obj.a_union_list_ref().has_value(),
+          "union_typedef": cpp_obj.union_typedef_ref().has_value(),
+          "a_union_typedef_list": cpp_obj.a_union_typedef_list_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'code', self.code
@@ -3015,7 +3062,7 @@ cdef class AnException(thrift.py3.exceptions.Error):
 
 
 @__cython.auto_pickle(False)
-cdef class AnotherException(thrift.py3.exceptions.Error):
+cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
 
     def __init__(
         AnotherException self,
@@ -3068,6 +3115,13 @@ cdef class AnotherException(thrift.py3.exceptions.Error):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("AnotherException", {
+          "code": cpp_obj.code_ref().has_value(),
+          "message": cpp_obj.message_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'code', self.code
@@ -4192,6 +4246,50 @@ cdef class containerStruct(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("containerStruct", {
+          "fieldA": cpp_obj.fieldA_ref().has_value(),
+          "opt_fieldA": cpp_obj.opt_fieldA_ref().has_value(),
+          "fieldB": cpp_obj.fieldB_ref().has_value(),
+          "opt_fieldB": cpp_obj.opt_fieldB_ref().has_value(),
+          "fieldC": cpp_obj.fieldC_ref().has_value(),
+          "opt_fieldC": cpp_obj.opt_fieldC_ref().has_value(),
+          "fieldD": cpp_obj.fieldD_ref().has_value(),
+          "fieldE": cpp_obj.fieldE_ref().has_value(),
+          "opt_fieldE": cpp_obj.opt_fieldE_ref().has_value(),
+          "fieldF": cpp_obj.fieldF_ref().has_value(),
+          "fieldG": cpp_obj.fieldG_ref().has_value(),
+          "fieldH": cpp_obj.fieldH_ref().has_value(),
+          "fieldI": cpp_obj.fieldI_ref().has_value(),
+          "fieldJ": cpp_obj.fieldJ_ref().has_value(),
+          "fieldK": cpp_obj.fieldK_ref().has_value(),
+          "fieldL": cpp_obj.fieldL_ref().has_value(),
+          "fieldM": cpp_obj.fieldM_ref().has_value(),
+          "fieldN": cpp_obj.fieldN_ref().has_value(),
+          "fieldO": cpp_obj.fieldO_ref().has_value(),
+          "fieldP": cpp_obj.fieldP_ref().has_value(),
+          "fieldQ": cpp_obj.fieldQ_ref().has_value(),
+          "fieldR": cpp_obj.fieldR_ref().has_value(),
+          "opt_fieldR": cpp_obj.opt_fieldR_ref().has_value(),
+          "fieldS": cpp_obj.fieldS_ref().has_value(),
+          "fieldT": cpp_obj.fieldT_ref().has_value(),
+          "fieldU": cpp_obj.fieldU_ref().has_value(),
+          "fieldV": cpp_obj.fieldV_ref().has_value(),
+          "opt_fieldV": cpp_obj.opt_fieldV_ref().has_value(),
+          "fieldW": cpp_obj.fieldW_ref().has_value(),
+          "fieldX": cpp_obj.fieldX_ref().has_value(),
+          "opt_fieldX": cpp_obj.opt_fieldX_ref().has_value(),
+          "fieldY": cpp_obj.fieldY_ref().has_value(),
+          "fieldZ": cpp_obj.fieldZ_ref().has_value(),
+          "fieldAA": cpp_obj.fieldAA_ref().has_value(),
+          "fieldAB": cpp_obj.fieldAB_ref().has_value(),
+          "fieldAC": cpp_obj.fieldAC_ref().has_value(),
+          "fieldAD": cpp_obj.fieldAD_ref().has_value(),
+          "fieldAE": cpp_obj.fieldAE_ref().has_value(),
+          "fieldSD": cpp_obj.fieldSD_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'fieldA', self.fieldA
         yield 'req_fieldA', self.req_fieldA
@@ -4821,6 +4919,13 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("MyIncludedStruct", {
+          "MyIncludedInt": cpp_obj.MyIncludedInt_ref().has_value(),
+          "MyIncludedStruct": cpp_obj.MyIncludedStruct_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'MyIncludedInt', self.MyIncludedInt
@@ -5858,6 +5963,31 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("AnnotatedStruct", {
+          "no_annotation": cpp_obj.no_annotation_ref().has_value(),
+          "base_type": cpp_obj.base_type_ref().has_value(),
+          "list_type": cpp_obj.list_type_ref().has_value(),
+          "set_type": cpp_obj.set_type_ref().has_value(),
+          "map_type": cpp_obj.map_type_ref().has_value(),
+          "map_struct_type": cpp_obj.map_struct_type_ref().has_value(),
+          "iobuf_type": cpp_obj.iobuf_type_ref().has_value(),
+          "list_i32_template": cpp_obj.list_i32_template_ref().has_value(),
+          "list_string_template": cpp_obj.list_string_template_ref().has_value(),
+          "set_template": cpp_obj.set_template_ref().has_value(),
+          "map_template": cpp_obj.map_template_ref().has_value(),
+          "typedef_list_template": cpp_obj.typedef_list_template_ref().has_value(),
+          "typedef_deque_template": cpp_obj.typedef_deque_template_ref().has_value(),
+          "typedef_set_template": cpp_obj.typedef_set_template_ref().has_value(),
+          "typedef_map_template": cpp_obj.typedef_map_template_ref().has_value(),
+          "indirection_a": cpp_obj.indirection_a_ref().has_value(),
+          "indirection_b": cpp_obj.indirection_b_ref().has_value(),
+          "indirection_c": cpp_obj.indirection_c_ref().has_value(),
+          "iobuf_type_val": cpp_obj.iobuf_type_val_ref().has_value(),
+          "struct_struct": cpp_obj.struct_struct_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'no_annotation', self.no_annotation
         yield 'cpp_unique_ref', self.cpp_unique_ref
@@ -6430,6 +6560,13 @@ cdef class ComplexContainerStruct(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("ComplexContainerStruct", {
+          "map_of_iobufs": cpp_obj.map_of_iobufs_ref().has_value(),
+          "map_of_iobuf_ptrs": cpp_obj.map_of_iobuf_ptrs_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'map_of_iobufs', self.map_of_iobufs
         yield 'map_of_iobuf_ptrs', self.map_of_iobuf_ptrs
@@ -6647,6 +6784,13 @@ cdef class FloatStruct(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("FloatStruct", {
+          "floatField": cpp_obj.floatField_ref().has_value(),
+          "doubleField": cpp_obj.doubleField_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'floatField', self.floatField
@@ -7040,6 +7184,11 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("AllRequiredNoExceptMoveCtrStruct", {
+        })
 
     def __iter__(self):
         yield 'intField', self.intField

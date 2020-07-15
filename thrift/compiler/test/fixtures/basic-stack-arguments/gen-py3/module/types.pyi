@@ -25,6 +25,11 @@ class MyEnum(thrift.py3.types.Enum):
 
 
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        MyIntField: bool
+        MyStringField: bool
+        pass
+
     MyIntField: Final[int] = ...
 
     MyStringField: Final[str] = ...

@@ -413,7 +413,7 @@ __BinaryUnion_Union_TypeEnumMembers = set(__BinaryUnionType)
 
 
 @__cython.auto_pickle(False)
-cdef class SimpleException(thrift.py3.exceptions.Error):
+cdef class SimpleException(thrift.py3.exceptions.GeneratedError):
 
     def __init__(
         SimpleException self,
@@ -450,6 +450,12 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("SimpleException", {
+          "err_code": cpp_obj.err_code_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'err_code', self.err_code
@@ -585,6 +591,11 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("OptionalRefStruct", {
+        })
 
     def __iter__(self):
         yield 'optional_blob', self.optional_blob
@@ -942,6 +953,18 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("SimpleStruct", {
+          "is_on": cpp_obj.is_on_ref().has_value(),
+          "tiny_int": cpp_obj.tiny_int_ref().has_value(),
+          "small_int": cpp_obj.small_int_ref().has_value(),
+          "nice_sized_int": cpp_obj.nice_sized_int_ref().has_value(),
+          "big_int": cpp_obj.big_int_ref().has_value(),
+          "real": cpp_obj.real_ref().has_value(),
+          "smaller_real": cpp_obj.smaller_real_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'is_on', self.is_on
@@ -1358,6 +1381,20 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("ComplexStruct", {
+          "structOne": cpp_obj.structOne_ref().has_value(),
+          "structTwo": cpp_obj.structTwo_ref().has_value(),
+          "an_integer": cpp_obj.an_integer_ref().has_value(),
+          "name": cpp_obj.name_ref().has_value(),
+          "an_enum": cpp_obj.an_enum_ref().has_value(),
+          "some_bytes": cpp_obj.some_bytes_ref().has_value(),
+          "sender": cpp_obj.sender_ref().has_value(),
+          "cdef_": cpp_obj.cdef__ref().has_value(),
+          "bytes_with_cpp_type": cpp_obj.bytes_with_cpp_type_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'structOne', self.structOne
         yield 'structTwo', self.structTwo
@@ -1744,6 +1781,12 @@ cdef class BinaryUnionStruct(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("BinaryUnionStruct", {
+          "u": cpp_obj.u_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'u', self.u

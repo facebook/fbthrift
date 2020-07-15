@@ -25,6 +25,10 @@ class AnEnum(thrift.py3.types.Enum):
 
 
 class AStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        FieldA: bool
+        pass
+
     FieldA: Final[int] = ...
 
     def __init__(
@@ -49,6 +53,9 @@ class AStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typin
 
 
 class AStructB(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    class __fbthrift_IsSet:
+        pass
+
     FieldA: Final[_typing.Optional['AStruct']] = ...
 
     def __init__(

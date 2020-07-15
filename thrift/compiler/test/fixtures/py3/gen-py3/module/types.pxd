@@ -230,7 +230,7 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 
-cdef class SimpleException(thrift.py3.exceptions.Error):
+cdef class SimpleException(thrift.py3.exceptions.GeneratedError):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cSimpleException] _cpp_obj

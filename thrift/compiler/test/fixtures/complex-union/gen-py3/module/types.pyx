@@ -1396,6 +1396,14 @@ cdef class Val(thrift.py3.types.Struct):
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
 
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("Val", {
+          "strVal": cpp_obj.strVal_ref().has_value(),
+          "intVal": cpp_obj.intVal_ref().has_value(),
+          "typedefValue": cpp_obj.typedefValue_ref().has_value(),
+        })
+
     def __iter__(self):
         yield 'strVal', self.strVal
         yield 'intVal', self.intVal
@@ -1946,6 +1954,12 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("NonCopyableStruct", {
+          "num": cpp_obj.num_ref().has_value(),
+        })
 
     def __iter__(self):
         yield 'num', self.num
