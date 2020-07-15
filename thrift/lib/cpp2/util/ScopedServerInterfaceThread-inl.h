@@ -23,15 +23,17 @@ namespace thrift {
 
 template <class AsyncClientT>
 std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newStickyClient(
-    folly::Executor* callbackExecutor) const {
+    folly::Executor* callbackExecutor,
+    ScopedServerInterfaceThread::MakeChannelFunc makeChannel) const {
   auto io = folly::getIOExecutor();
   auto sp = std::shared_ptr<folly::EventBase>(io, io->getEventBase());
   return std::make_unique<AsyncClientT>(PooledRequestChannel::newChannel(
       callbackExecutor,
       std::move(sp),
-      [address = getAddress()](folly::EventBase& eb) mutable {
-        return HeaderClientChannel::newChannel(
-            folly::AsyncSocket::newSocket(&eb, address));
+      [makeChannel = std::move(makeChannel), address = getAddress()](
+          folly::EventBase& eb) mutable -> ClientChannel::Ptr {
+        return makeChannel(folly::AsyncSocket::UniquePtr(
+            new folly::AsyncSocket(&eb, address)));
       }));
 }
 

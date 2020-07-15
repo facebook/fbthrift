@@ -19,12 +19,13 @@
 #include <memory>
 
 #include <folly/Function.h>
+#include <folly/Random.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncSocket.h>
-#include <folly/io/async/EventBase.h>
 
 #include <thrift/lib/cpp2/async/ClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/util/ScopedServerThread.h>
 
 namespace apache {
@@ -64,18 +65,25 @@ class ScopedServerInterfaceThread {
 
   template <class AsyncClientT>
   std::unique_ptr<AsyncClientT> newStickyClient(
-      folly::Executor* callbackExecutor = nullptr) const;
+      folly::Executor* callbackExecutor = nullptr,
+      MakeChannelFunc channelFunc = makeRocketOrHeaderChannel) const;
 
   template <class AsyncClientT>
   std::unique_ptr<AsyncClientT> newClient(
       folly::Executor* callbackExecutor = nullptr,
-      MakeChannelFunc channelFunc = [](auto socket) mutable {
-        return HeaderClientChannel::newChannel(std::move(socket));
-      }) const;
+      MakeChannelFunc channelFunc = makeRocketOrHeaderChannel) const;
 
  private:
   std::shared_ptr<BaseThriftServer> ts_;
   util::ScopedServerThread sst_;
+
+  static ClientChannel::Ptr makeRocketOrHeaderChannel(
+      folly::AsyncSocket::UniquePtr socket) {
+    if (folly::Random::oneIn(2)) {
+      return RocketClientChannel::newChannel(std::move(socket));
+    }
+    return HeaderClientChannel::newChannel(std::move(socket));
+  }
 };
 
 } // namespace thrift

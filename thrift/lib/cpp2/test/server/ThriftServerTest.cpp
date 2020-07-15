@@ -306,7 +306,9 @@ void doLoadHeaderTest(bool isRocket) {
   auto makeClient = [=](auto& runner) {
     if (!isRocket) {
       return runner.template newClient<TestServiceAsyncClient>(
-          (folly::Executor*)nullptr);
+          nullptr /* executor */, [](auto socket) mutable {
+            return HeaderClientChannel::newChannel(std::move(socket));
+          });
     } else {
       return runner.template newClient<TestServiceAsyncClient>(
           nullptr /* executor */, [](auto socket) mutable {
@@ -701,7 +703,10 @@ TEST(ThriftServer, LatencyHeader_ClientTimeout) {
       std::make_shared<TestInterface>(), "::1", 0, [](auto& server) {
         server.setUseClientTimeout(false);
       });
-  auto client = runner.newClient<TestServiceAsyncClient>();
+  auto client =
+      runner.newClient<TestServiceAsyncClient>(nullptr, [](auto socket) {
+        return HeaderClientChannel::newChannel(std::move(socket));
+      });
 
   RpcOptions rpcOptions;
   // Setup client timeout
@@ -717,8 +722,10 @@ TEST(ThriftServer, LatencyHeader_ClientTimeout) {
 
 TEST(ThriftServer, LatencyHeader_RequestSuccess) {
   ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
-  folly::EventBase base;
-  auto client = runner.newClient<TestServiceAsyncClient>(&base);
+  auto client =
+      runner.newClient<TestServiceAsyncClient>(nullptr, [](auto socket) {
+        return HeaderClientChannel::newChannel(std::move(socket));
+      });
 
   RpcOptions rpcOptions;
   rpcOptions.setWriteHeader(kClientLoggingHeader.str(), "");
@@ -729,8 +736,10 @@ TEST(ThriftServer, LatencyHeader_RequestSuccess) {
 
 TEST(ThriftServer, LatencyHeader_RequestFailed) {
   ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
-  folly::EventBase base;
-  auto client = runner.newClient<TestServiceAsyncClient>(&base);
+  auto client =
+      runner.newClient<TestServiceAsyncClient>(nullptr, [](auto socket) {
+        return HeaderClientChannel::newChannel(std::move(socket));
+      });
 
   RpcOptions rpcOptions;
   rpcOptions.setWriteHeader(kClientLoggingHeader.str(), "");
@@ -743,8 +752,10 @@ TEST(ThriftServer, LatencyHeader_RequestFailed) {
 
 TEST(ThriftServer, LatencyHeader_TaskExpiry) {
   ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
-  folly::EventBase base;
-  auto client = runner.newClient<TestServiceAsyncClient>(&base);
+  auto client =
+      runner.newClient<TestServiceAsyncClient>(nullptr, [](auto socket) {
+        return HeaderClientChannel::newChannel(std::move(socket));
+      });
 
   // setup task expire timeout.
   runner.getThriftServer().setTaskExpireTime(std::chrono::milliseconds(10));
@@ -762,8 +773,10 @@ TEST(ThriftServer, LatencyHeader_TaskExpiry) {
 
 TEST(ThriftServer, LatencyHeader_QueueTimeout) {
   ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
-  folly::EventBase base;
-  auto client = runner.newStickyClient<TestServiceAsyncClient>();
+  auto client =
+      runner.newStickyClient<TestServiceAsyncClient>(nullptr, [](auto socket) {
+        return HeaderClientChannel::newChannel(std::move(socket));
+      });
 
   // setup timeout
   runner.getThriftServer().setQueueTimeout(std::chrono::milliseconds(5));
@@ -780,6 +793,7 @@ TEST(ThriftServer, LatencyHeader_QueueTimeout) {
   validateLatencyHeaders(
       rpcOptions.getReadHeaders(), LatencyHeaderStatus::EXPECTED);
 
+  folly::EventBase base;
   std::move(slowRequestFuture).via(&base).getVia(&base);
 }
 
