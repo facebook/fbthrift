@@ -973,6 +973,6 @@ void RocketClientChannel::unsetOnDetachable() {
   }
 }
 
-constexpr std::chrono::milliseconds RocketClientChannel::kDefaultRpcTimeout;
+constexpr std::chrono::seconds RocketClientChannel::kDefaultRpcTimeout;
 } // namespace thrift
 } // namespace apache

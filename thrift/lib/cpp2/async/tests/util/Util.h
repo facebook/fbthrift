@@ -67,9 +67,11 @@ class AsyncTestSetup : public TestSetup {
       folly::Executor* executor = co_await folly::coro::co_current_executor;
       auto channel = PooledRequestChannel::newChannel(
           executor, ioThread_, [&](folly::EventBase& evb) {
-            return apache::thrift::RocketClientChannel::newChannel(
+            auto channel = apache::thrift::RocketClientChannel::newChannel(
                 folly::AsyncSocket::UniquePtr(
                     new folly::AsyncSocket(&evb, "::1", serverPort_)));
+            channel->setTimeout(500 /* ms */);
+            return channel;
           });
       Client client(std::move(channel));
       co_await callMe(client);

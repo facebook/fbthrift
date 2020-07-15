@@ -145,7 +145,7 @@ class RocketClientChannel final : public ClientChannel {
   void setAutoCompressSizeLimit(int32_t size);
 
  private:
-  static constexpr std::chrono::milliseconds kDefaultRpcTimeout{500};
+  static constexpr std::chrono::seconds kDefaultRpcTimeout{60};
 
   folly::EventBase* evb_{nullptr};
   std::unique_ptr<rocket::RocketClient, folly::DelayedDestruction::Destructor>
