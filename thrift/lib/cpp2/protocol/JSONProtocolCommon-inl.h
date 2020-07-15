@@ -573,11 +573,11 @@ void JSONProtocolReaderCommon::endContext() {
 
 template <typename T>
 T JSONProtocolReaderCommon::castIntegral(folly::StringPiece val) {
-  try {
-    return folly::to<T>(val);
-  } catch (const std::exception&) {
-    throwUnrecognizableAsIntegral(val, folly::pretty_name<T>());
-  }
+  return folly::tryTo<T>(val).thenOrThrow(
+      [](auto x) { return x; },
+      [&](folly::ConversionCode) {
+        throwUnrecognizableAsIntegral(val, folly::pretty_name<T>());
+      });
 }
 
 template <typename T>
