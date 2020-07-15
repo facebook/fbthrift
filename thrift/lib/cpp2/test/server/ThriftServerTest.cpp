@@ -146,9 +146,8 @@ TEST(ThriftServer, OnewayDeferredHandlerTest) {
   auto handler = std::make_shared<OnewayTestInterface>();
   ScopedServerInterfaceThread runner(handler);
 
-  folly::EventBase eb;
   handler->done.reset();
-  auto client = runner.newClient<TestServiceAsyncClient>(eb);
+  auto client = runner.newClient<TestServiceAsyncClient>();
   client->sync_noResponse(100);
   ASSERT_TRUE(handler->done.try_wait_for(std::chrono::seconds(1)));
 }
@@ -181,8 +180,7 @@ TEST(ThriftServer, CompressionClientTest) {
 TEST(ThriftServer, ResponseTooBigTest) {
   ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
   runner.getThriftServer().setMaxResponseSize(4096);
-  folly::EventBase eb;
-  auto client = runner.newClient<TestServiceAsyncClient>(eb);
+  auto client = runner.newClient<TestServiceAsyncClient>();
 
   std::string request(4096, 'a');
   std::string response;

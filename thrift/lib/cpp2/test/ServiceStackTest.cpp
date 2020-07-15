@@ -34,7 +34,6 @@ class ServiceStackHandler : public TestServiceStackSvIf {
 TEST(ServiceStackTest, example) {
   auto handler = make_shared<ServiceStackHandler>();
   ScopedServerInterfaceThread ssit(handler);
-  auto client = ssit.newClient<TestServiceStackAsyncClient>(
-      *EventBaseManager::get()->getEventBase());
+  auto client = ssit.newClient<TestServiceStackAsyncClient>();
   client->sync_noResponse(/* size = */ 77);
 }

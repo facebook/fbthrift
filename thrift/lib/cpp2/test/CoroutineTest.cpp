@@ -27,7 +27,6 @@ using apache::thrift::RequestParams;
 using apache::thrift::ScopedServerInterfaceThread;
 using apache::thrift::concurrency::ThreadManager;
 using folly::EventBase;
-using folly::EventBaseManager;
 
 using apache::thrift::test::CoroutineAsyncClient;
 using apache::thrift::test::CoroutineSvIf;
@@ -214,8 +213,7 @@ class CoroutineTest : public testing::Test {
   CoroutineTest()
       : handler_(std::make_shared<Handler>()),
         ssit_(handler_),
-        client_(ssit_.newClient<CoroutineAsyncClient>(
-            *EventBaseManager::get()->getEventBase())) {}
+        client_(ssit_.newClient<CoroutineAsyncClient>()) {}
 
  protected:
   template <typename Func>
@@ -438,8 +436,7 @@ class CoroutineNullTest : public testing::Test {
  public:
   CoroutineNullTest()
       : ssit_(std::make_shared<CoroutineSvNull>()),
-        client_(ssit_.newClient<CoroutineAsyncClient>(
-            *EventBaseManager::get()->getEventBase())) {}
+        client_(ssit_.newClient<CoroutineAsyncClient>()) {}
   ScopedServerInterfaceThread ssit_;
   std::unique_ptr<CoroutineAsyncClient> client_;
 };
@@ -471,7 +468,7 @@ class CoroutineClientTest : public testing::Test {
  protected:
   CoroutineClientTest()
       : ssit_(std::make_shared<CoroutineServiceHandlerCoro>()),
-        client_(ssit_.newClient<CoroutineAsyncClient>(eventBase_)) {}
+        client_(ssit_.newClient<CoroutineAsyncClient>()) {}
 
   ScopedServerInterfaceThread ssit_;
   EventBase eventBase_;

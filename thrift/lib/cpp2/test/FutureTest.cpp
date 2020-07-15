@@ -221,9 +221,8 @@ TEST(ThriftServer, SemiFutureClientTest) {
 
   EventBase base;
   ManualExecutor executor;
-  auto client = runner.newClient<FutureServiceAsyncClient>(base);
+  auto client = runner.newClient<FutureServiceAsyncClient>();
   auto future = client->semifuture_sendResponse(1).via(&executor);
-  base.loop();
   EXPECT_FALSE(future.isReady());
   future.waitVia(&executor);
   EXPECT_TRUE(future.isReady());
@@ -346,15 +345,12 @@ TEST(ThriftServer, SemiFutureServerTest) {
   auto handler = std::make_shared<TestInterface>();
   apache::thrift::ScopedServerInterfaceThread runner(handler);
 
-  EventBase base;
-  ManualExecutor executor;
-  auto client = runner.newClient<FutureServiceAsyncClient>(base);
+  auto client = runner.newClient<FutureServiceAsyncClient>();
 
   auto startTime = std::chrono::steady_clock::now();
 
   auto request = "request";
-  auto response =
-      client->semifuture_echoRequestSlow(request, 100).via(&base).getVia(&base);
+  auto response = client->semifuture_echoRequestSlow(request, 100).get();
   EXPECT_EQ(request, response);
   EXPECT_GE(
       std::chrono::steady_clock::now() - startTime,

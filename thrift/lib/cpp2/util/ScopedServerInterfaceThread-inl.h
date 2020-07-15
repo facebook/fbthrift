@@ -56,11 +56,5 @@ std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newClient(
       folly::AsyncSocket::newSocket(eb, getAddress())));
 }
 
-template <class AsyncClientT>
-std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newClient(
-    folly::EventBase& eb) const {
-  return newClient<AsyncClientT>(&eb);
-}
-
 } // namespace thrift
 } // namespace apache
