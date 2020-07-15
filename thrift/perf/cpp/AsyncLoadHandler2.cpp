@@ -32,7 +32,7 @@ void AsyncLoadHandler2::async_eb_noop(
   // Note that we could have done this with a sync function,
   // but an inline async op is faster, and we want to maintain
   // parity with the old loadgen for comparison testing
-  decltype(callback)::element_type::doneInThread(std::move(callback));
+  callback->done();
 }
 
 void AsyncLoadHandler2::async_eb_onewayNoop(
@@ -40,7 +40,7 @@ void AsyncLoadHandler2::async_eb_onewayNoop(
 
 void AsyncLoadHandler2::async_eb_asyncNoop(
     std::unique_ptr<HandlerCallback<void>> callback) {
-  decltype(callback)::element_type::doneInThread(std::move(callback));
+  callback->done();
 }
 
 void AsyncLoadHandler2::async_eb_sleep(
@@ -138,7 +138,7 @@ void AsyncLoadHandler2::async_eb_throwUnexpected(
   //
   // Actually throwing an exception from the handler is bad, and EventBase
   // should probably be changed to fatal the entire program if that happens.
-  decltype(callback)::element_type::doneInThread(std::move(callback));
+  callback->done();
 }
 
 void AsyncLoadHandler2::async_eb_onewayThrow(
@@ -153,7 +153,7 @@ void AsyncLoadHandler2::async_eb_onewayThrow(
 void AsyncLoadHandler2::async_eb_send(
     std::unique_ptr<HandlerCallback<void>> callback,
     std::unique_ptr<std::string> /* data */) {
-  decltype(callback)::element_type::doneInThread(std::move(callback));
+  callback->done();
 }
 
 void AsyncLoadHandler2::async_eb_onewaySend(

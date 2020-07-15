@@ -312,17 +312,6 @@ HandlerCallback<void>::HandlerCallback(
   this->protoSeqId_ = protoSeqId;
 }
 
-void HandlerCallback<void>::doneInThread() {
-  done();
-  delete this;
-}
-
-void HandlerCallback<void>::doneInThread(
-    std::unique_ptr<HandlerCallback> thisPtr) {
-  assert(thisPtr != nullptr);
-  thisPtr.release()->doneInThread();
-}
-
 void HandlerCallback<void>::complete(folly::Try<folly::Unit>&& r) {
   if (r.hasException()) {
     exception(std::move(r.exception()));
@@ -335,7 +324,8 @@ void HandlerCallback<void>::completeInThread(folly::Try<folly::Unit>&& r) {
   if (r.hasException()) {
     exceptionInThread(std::move(r.exception()));
   } else {
-    doneInThread();
+    done();
+    delete this;
   }
 }
 

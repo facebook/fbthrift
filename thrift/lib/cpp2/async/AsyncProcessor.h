@@ -512,8 +512,6 @@ class HandlerCallback<void> : public HandlerCallbackBase {
   void done() {
     doDone();
   }
-  void doneInThread();
-  static void doneInThread(std::unique_ptr<HandlerCallback> thisPtr);
 
   void complete(folly::Try<folly::Unit>&& r);
   void completeInThread(folly::Try<folly::Unit>&& r);
