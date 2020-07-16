@@ -23,25 +23,4 @@ public interface SinkService extends java.io.Closeable {
 
     }
     @Override void close();
-
-    @ThriftMethod(value = "method")
-     method() throws org.apache.thrift.TException;
-
-    @ThriftMethod(value = "methodAndReponse")
-     methodAndReponse() throws org.apache.thrift.TException;
-
-    @ThriftMethod(value = "methodThrow",
-                  exception = { 
-                      @ThriftException(type=test.fixtures.sink.InitialException.class, id=1)
-                  })
-     methodThrow() throws test.fixtures.sink.InitialException, org.apache.thrift.TException;
-
-    @ThriftMethod(value = "methodSinkThrow")
-     methodSinkThrow() throws org.apache.thrift.TException;
-
-    @ThriftMethod(value = "methodFinalThrow")
-     methodFinalThrow() throws org.apache.thrift.TException;
-
-    @ThriftMethod(value = "methodBothThrow")
-     methodBothThrow() throws org.apache.thrift.TException;
 }

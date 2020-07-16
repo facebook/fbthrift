@@ -50,7 +50,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
     }
     @Override void close();
     {{#service:functions}}
-    {{^function:any_streams?}}
+    {{^function:any_streams?}}{{^function:returns_sink?}}
 
     @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
                   oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
@@ -61,6 +61,6 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         @ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
           Exceptions
         }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException;
-    {{/function:any_streams?}}
+    {{/function:returns_sink?}}{{/function:any_streams?}}
     {{/service:functions}}
 }
