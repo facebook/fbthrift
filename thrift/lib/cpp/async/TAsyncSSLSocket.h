@@ -38,6 +38,11 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket {
 
   TAsyncSSLSocket(
       const std::shared_ptr<folly::SSLContext>& ctx,
+      AsyncSocket* oldAsyncSocket)
+      : folly::AsyncSSLSocket(ctx, oldAsyncSocket) {}
+
+  TAsyncSSLSocket(
+      const std::shared_ptr<folly::SSLContext>& ctx,
       folly::EventBase* evb,
       folly::NetworkSocket fd,
       bool server = true,

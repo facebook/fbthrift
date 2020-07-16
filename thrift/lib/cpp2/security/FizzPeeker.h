@@ -90,11 +90,13 @@ class ThriftFizzAcceptorHandshakeHelper
 
   folly::AsyncSSLSocket::UniquePtr createSSLSocket(
       const std::shared_ptr<folly::SSLContext>& sslContext,
-      folly::EventBase* evb,
-      int fd) override {
-    return folly::AsyncSSLSocket::UniquePtr(
+      folly::AsyncTransport::UniquePtr transport) override {
+    auto socket = transport->getUnderlyingTransport<folly::AsyncSocket>();
+    auto sslSocket = folly::AsyncSSLSocket::UniquePtr(
         new apache::thrift::async::TAsyncSSLSocket(
-            sslContext, evb, folly::NetworkSocket::fromFd(fd)));
+            sslContext, CHECK_NOTNULL(socket)));
+    transport.reset();
+    return sslSocket;
   }
 
   // AsyncFizzServer::HandshakeCallback API
