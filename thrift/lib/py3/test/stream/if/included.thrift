@@ -23,6 +23,6 @@ typedef i64 IncludedInt64
 const i64 IncludedConstant = 42
 
 struct Included {
-  1: IncludedInt64 from;
+  1: IncludedInt64 from (py3.name = "from_");
   2: IncludedInt64 to = IncludedConstant;
 }

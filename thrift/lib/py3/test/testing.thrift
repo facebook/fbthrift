@@ -79,8 +79,8 @@ enum Kind {
 }
 
 enum BadMembers {
-    name = 1,
-    value = 2,
+    name = 1 (py3.name = "name_"),
+    value = 2 (py3.name = "value_"),
 }
 
 enum EmptyEnum {
@@ -216,15 +216,15 @@ struct customized {
 }
 
 struct Reserved {
-  1: string from,  // named with a python keyword (which is not a C++ keyword)
-  2: i32 nonlocal, // ditto
-  3: string ok,    // not a keyword
+  1: string from (py3.name = "from_"),  // named with a python keyword (which is not a C++ keyword)
+  2: i32 nonlocal (py3.name = "nonlocal_"), // ditto
+  3: string ok ,    // not a keyword
   4: bool cpdef (py3.name = 'is_cpdef'),
 }
 
 union ReservedUnion {
-  1: string from,
-  2: i32 nonlocal,
+  1: string from (py3.name = "from_"),
+  2: i32 nonlocal (py3.name = "nonlocal_"),
   3: string ok,
 }
 
