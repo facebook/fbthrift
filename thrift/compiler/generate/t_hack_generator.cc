@@ -1724,7 +1724,11 @@ void t_hack_generator::generate_shape_from_hack_array_lambda(
   indent_up();
   indent(out) << "$$,\n";
   string tmp = namer("_val");
-  indent(out) << "$" << tmp << " ==> $" << tmp;
+  indent(out);
+  if (arrprov_skip_frames_) {
+    out << "<<__ProvenanceSkipFrame>> ";
+  }
+  out << "($" << tmp << ") ==> $" << tmp;
 
   t_type* val_type;
   if (t->is_map()) {

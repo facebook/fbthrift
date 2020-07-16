@@ -17,9 +17,10 @@ interface BarAsyncIf extends \IThriftAsyncIf {
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b,
    *       3: Foo d,
-   *       4: i64 e);
+   *       4: i64 e,
+   *       5: list<Foo> f);
    */
-  public function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e): Awaitable<string>;
+  public function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<string>;
 }
 
 /**
@@ -33,9 +34,10 @@ interface BarIf extends \IThriftSyncIf {
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b,
    *       3: Foo d,
-   *       4: i64 e);
+   *       4: i64 e,
+   *       5: list<Foo> f);
    */
-  public function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e): string;
+  public function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): string;
 }
 
 /**
@@ -49,9 +51,10 @@ interface BarClientIf extends \IThriftSyncIf {
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b,
    *       3: Foo d,
-   *       4: i64 e);
+   *       4: i64 e,
+   *       5: list<Foo> f);
    */
-  public function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e): Awaitable<string>;
+  public function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<string>;
 }
 
 /**
@@ -65,9 +68,10 @@ interface BarAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b,
    *       3: Foo d,
-   *       4: i64 e);
+   *       4: i64 e,
+   *       5: list<Foo> f);
    */
-  public function baz(\RpcOptions $rpc_options, keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e): Awaitable<string>;
+  public function baz(\RpcOptions $rpc_options, keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<string>;
 }
 
 /**
@@ -77,7 +81,7 @@ interface BarAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
 trait BarClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e): int {
+  protected function sendImpl_baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): int {
     $currentseqid = $this->getNextSequenceID();
     $args = new Bar_baz_args(
       $a,
@@ -86,6 +90,7 @@ trait BarClientBase {
       ),
       $d,
       $e,
+      vec($f),
     );
     try {
       $this->eventHandler_->preSend('baz', $args, $currentseqid);
@@ -194,11 +199,12 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b,
    *       3: Foo d,
-   *       4: i64 e);
+   *       4: i64 e,
+   *       5: list<Foo> f);
    */
-  public async function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e): Awaitable<string> {
+  public async function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<string> {
     await $this->asyncHandler_->genBefore("Bar", "baz");
-    $currentseqid = $this->sendImpl_baz($a, $b, $d, $e);
+    $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -225,11 +231,12 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b,
    *       3: Foo d,
-   *       4: i64 e);
+   *       4: i64 e,
+   *       5: list<Foo> f);
    */
-  public async function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e): Awaitable<string> {
+  public async function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<string> {
     await $this->asyncHandler_->genBefore("Bar", "baz");
-    $currentseqid = $this->sendImpl_baz($a, $b, $d, $e);
+    $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -246,8 +253,8 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
   }
 
   /* send and recv functions */
-  public function send_baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e): int {
-    return $this->sendImpl_baz($a, $b, $d, $e);
+  public function send_baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): int {
+    return $this->sendImpl_baz($a, $b, $d, $e, $f);
   }
   public function recv_baz(?int $expectedsequenceid = null): string {
     return $this->recvImpl_baz($expectedsequenceid);
@@ -263,11 +270,12 @@ class BarAsyncRpcOptionsClient extends \ThriftClientBase implements BarAsyncRpcO
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b,
    *       3: Foo d,
-   *       4: i64 e);
+   *       4: i64 e,
+   *       5: list<Foo> f);
    */
-  public async function baz(\RpcOptions $rpc_options, keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e): Awaitable<string> {
+  public async function baz(\RpcOptions $rpc_options, keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<string> {
     await $this->asyncHandler_->genBefore("Bar", "baz");
-    $currentseqid = $this->sendImpl_baz($a, $b, $d, $e);
+    $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -332,12 +340,23 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
       'var' => 'e',
       'type' => \TType::I64,
     ),
+    5 => shape(
+      'var' => 'f',
+      'type' => \TType::LST,
+      'etype' => \TType::STRUCT,
+      'elem' => shape(
+        'type' => \TType::STRUCT,
+        'class' => Foo::class,
+      ),
+      'format' => 'harray',
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'a' => 1,
     'b' => 2,
     'd' => 3,
     'e' => 4,
+    'f' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -345,6 +364,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
     ?'b' => vec<dict<int, keyset<string>>>,
     ?'d' => ?Foo,
     ?'e' => int,
+    ?'f' => vec<Foo>,
   );
 
   const type TShape = shape(
@@ -352,19 +372,22 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
     'b' => vec<dict<int, keyset<string>>>,
     ?'d' => ?Foo::TShape,
     'e' => int,
+    'f' => vec<Foo::TShape>,
   );
-  const int STRUCTURAL_ID = 943524499189860425;
+  const int STRUCTURAL_ID = 1612873710359158656;
   public keyset<int> $a;
   public vec<dict<int, keyset<string>>> $b;
   public ?Foo $d;
   public int $e;
+  public vec<Foo> $f;
 
   <<__Rx>>
-  public function __construct(?keyset<int> $a = null, ?vec<dict<int, keyset<string>>> $b = null, ?Foo $d = null, ?int $e = null  ) {
+  public function __construct(?keyset<int> $a = null, ?vec<dict<int, keyset<string>>> $b = null, ?Foo $d = null, ?int $e = null, ?vec<Foo> $f = null  ) {
     $this->a = $a ?? keyset[];
     $this->b = $b ?? vec[];
     $this->d = $d;
     $this->e = $e ?? 4;
+    $this->f = $f ?? vec[];
   }
 
   <<__Rx>>
@@ -374,6 +397,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
       Shapes::idx($shape, 'b'),
       Shapes::idx($shape, 'd'),
       Shapes::idx($shape, 'e'),
+      Shapes::idx($shape, 'f'),
     );
   }
 
@@ -393,6 +417,12 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
       $me->d = Foo::__fromShape($shape['d']);
     }
     $me->e = $shape['e'];
+    $me->f = $shape['f']
+      |> Vec\map(
+        $$,
+        $_val0 ==> $_val0
+          |> Foo::__fromShape($$),
+      );
     return $me;
   }
 
@@ -403,6 +433,11 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
       'b' => $this->b,
       'd' => $this->d?->__toShape(),
       'e' => $this->e,
+      'f' => $this->f
+        |> Vec\map(
+          $$,
+          <<__ProvenanceSkipFrame>> ($_val0) ==> $_val0->__toShape(),
+        ),
     );
   }
 }

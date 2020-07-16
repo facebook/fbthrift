@@ -27,6 +27,7 @@ service Bar {
     2: list<map<i32, set<string>>> b,
     3: Foo d,
     4: i64 e = 4,
+    5: list<Foo> f,
   );
 }
 

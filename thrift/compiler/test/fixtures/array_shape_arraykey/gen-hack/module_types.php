@@ -698,30 +698,30 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'map_of_string_to_A' => $this->map_of_string_to_A
         |> Dict\map(
           $$,
-          $_val0 ==> $_val0->__toShape(),
+          ($_val0) ==> $_val0->__toShape(),
         ),
       'map_of_string_to_self' => $this->map_of_string_to_self
         |> Dict\map(
           $$,
-          $_val0 ==> $_val0->__toShape(),
+          ($_val0) ==> $_val0->__toShape(),
         ),
       'map_of_string_to_list_of_A' => $this->map_of_string_to_list_of_A
         |> Dict\map(
           $$,
-          $_val0 ==> $_val0
+          ($_val0) ==> $_val0
             |> Vec\map(
               $$,
-              $_val1 ==> $_val1->__toShape(),
+              ($_val1) ==> $_val1->__toShape(),
             ),
         ),
       'map_of_string_to_map_of_string_to_i32' => $this->map_of_string_to_map_of_string_to_i32,
       'map_of_string_to_map_of_string_to_A' => $this->map_of_string_to_map_of_string_to_A
         |> Dict\map(
           $$,
-          $_val0 ==> $_val0
+          ($_val0) ==> $_val0
             |> Dict\map(
               $$,
-              $_val1 ==> $_val1->__toShape(),
+              ($_val1) ==> $_val1->__toShape(),
             ),
         ),
       'map_of_string_to_list_of_i32' => $this->map_of_string_to_list_of_i32,
@@ -731,38 +731,38 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'list_of_self' => $this->list_of_self
         |> Vec\map(
           $$,
-          $_val0 ==> $_val0->__toShape(),
+          ($_val0) ==> $_val0->__toShape(),
         ),
       'list_of_list_of_self' => $this->list_of_list_of_self
         |> Vec\map(
           $$,
-          $_val0 ==> $_val0
+          ($_val0) ==> $_val0
             |> Vec\map(
               $$,
-              $_val1 ==> $_val1->__toShape(),
+              ($_val1) ==> $_val1->__toShape(),
             ),
         ),
       'list_of_set_of_i32' => $this->list_of_set_of_i32,
       'list_of_map_of_string_to_list_of_A' => $this->list_of_map_of_string_to_list_of_A
         |> Vec\map(
           $$,
-          $_val0 ==> $_val0
+          ($_val0) ==> $_val0
             |> Dict\map(
               $$,
-              $_val1 ==> $_val1
+              ($_val1) ==> $_val1
                 |> Vec\map(
                   $$,
-                  $_val2 ==> $_val2->__toShape(),
+                  ($_val2) ==> $_val2->__toShape(),
                 ),
             ),
         ),
       'list_of_map_of_string_to_A' => $this->list_of_map_of_string_to_A
         |> Vec\map(
           $$,
-          $_val0 ==> $_val0
+          ($_val0) ==> $_val0
             |> Dict\map(
               $$,
-              $_val1 ==> $_val1->__toShape(),
+              ($_val1) ==> $_val1->__toShape(),
             ),
         ),
       'set_of_i32' => $this->set_of_i32,
@@ -1462,24 +1462,24 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
           ? null 
           : Dict\map(
             $$,
-            $_val0 ==> $_val0->__toShape(),
+            ($_val0) ==> $_val0->__toShape(),
           ),
       'map_of_string_to_self' => $this->map_of_string_to_self
         |> $$ === null 
           ? null 
           : Dict\map(
             $$,
-            $_val0 ==> $_val0->__toShape(),
+            ($_val0) ==> $_val0->__toShape(),
           ),
       'map_of_string_to_list_of_A' => $this->map_of_string_to_list_of_A
         |> $$ === null 
           ? null 
           : Dict\map(
             $$,
-            $_val0 ==> $_val0
+            ($_val0) ==> $_val0
               |> Vec\map(
                 $$,
-                $_val1 ==> $_val1->__toShape(),
+                ($_val1) ==> $_val1->__toShape(),
               ),
           ),
       'map_of_string_to_map_of_string_to_i32' => $this->map_of_string_to_map_of_string_to_i32,
@@ -1488,10 +1488,10 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
           ? null 
           : Dict\map(
             $$,
-            $_val0 ==> $_val0
+            ($_val0) ==> $_val0
               |> Dict\map(
                 $$,
-                $_val1 ==> $_val1->__toShape(),
+                ($_val1) ==> $_val1->__toShape(),
               ),
           ),
       'map_of_string_to_list_of_i32' => $this->map_of_string_to_list_of_i32,
@@ -1502,10 +1502,10 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
           ? null 
           : Vec\map(
             $$,
-            $_val0 ==> $_val0
+            ($_val0) ==> $_val0
               |> Dict\map(
                 $$,
-                $_val1 ==> $_val1->__toShape(),
+                ($_val1) ==> $_val1->__toShape(),
               ),
           ),
       'list_of_self' => $this->list_of_self
@@ -1513,17 +1513,17 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
           ? null 
           : Vec\map(
             $$,
-            $_val0 ==> $_val0->__toShape(),
+            ($_val0) ==> $_val0->__toShape(),
           ),
       'list_of_list_of_self' => $this->list_of_list_of_self
         |> $$ === null 
           ? null 
           : Vec\map(
             $$,
-            $_val0 ==> $_val0
+            ($_val0) ==> $_val0
               |> Vec\map(
                 $$,
-                $_val1 ==> $_val1->__toShape(),
+                ($_val1) ==> $_val1->__toShape(),
               ),
           ),
       'list_of_map_of_string_to_list_of_A' => $this->list_of_map_of_string_to_list_of_A
@@ -1531,13 +1531,13 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
           ? null 
           : Vec\map(
             $$,
-            $_val0 ==> $_val0
+            ($_val0) ==> $_val0
               |> Dict\map(
                 $$,
-                $_val1 ==> $_val1
+                ($_val1) ==> $_val1
                   |> Vec\map(
                     $$,
-                    $_val2 ==> $_val2->__toShape(),
+                    ($_val2) ==> $_val2->__toShape(),
                   ),
               ),
           ),

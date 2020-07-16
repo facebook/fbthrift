@@ -667,21 +667,21 @@ class TestStruct implements \IThriftStruct, \IThriftShapishStruct {
         |> (
           Vec\map(
             $$,
-            $_val0 ==> $_val0->__toShape(),
+            ($_val0) ==> $_val0->__toShape(),
           ) |> varray($$)
         ),
       'map_of_string_to_struct_foo' => $this->map_of_string_to_struct_foo
         |> (
           Dict\map(
             $$,
-            $_val0 ==> $_val0->__toShape(),
+            ($_val0) ==> $_val0->__toShape(),
           ) |> darray($$)
         ),
       'list_of_struct_self' => $this->list_of_struct_self
         |> (
           Vec\map(
             $$,
-            $_val0 ==> $_val0->__toShape(),
+            ($_val0) ==> $_val0->__toShape(),
           ) |> varray($$)
         ),
     );
