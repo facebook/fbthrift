@@ -23,17 +23,7 @@ constexpr std::chrono::seconds ServerInterface::BlockingThreadManager::kTimeout;
 thread_local RequestParams ServerInterface::requestParams_;
 
 EventTask::~EventTask() {
-  // req_ needs to be destructed on base_ eventBase thread
-  if (!base_->isInEventBaseThread()) {
-    expired();
-    return;
-  }
-  if (!oneway_ && req_) {
-    req_->sendErrorWrapped(
-        folly::make_exception_wrapper<TApplicationException>(
-            "Failed to add task to queue, too full"),
-        kQueueOverloadedErrorCode);
-  }
+  expired();
 }
 
 void EventTask::run() {
@@ -48,20 +38,24 @@ void EventTask::run() {
 }
 
 void EventTask::expired() {
-  if (oneway_) {
-    if (req_ != nullptr) {
-      // del on eventbase thread
-      base_->runInEventBaseThread([req = std::move(req_)]() mutable {});
+  // only expire req_ once
+  if (!req_) {
+    return;
+  }
+
+  auto cleanUp = [oneway = oneway_, req = std::move(req_)] {
+    // if oneway, skip sending back anything
+    if (oneway) {
+      return;
     }
+    TApplicationException ex{"Failed to add task to queue, too full"};
+    req->sendErrorWrapped(std::move(ex), kQueueOverloadedErrorCode);
+  };
+
+  if (base_->isInEventBaseThread()) {
+    cleanUp();
   } else {
-    if (req_ != nullptr) {
-      base_->runInEventBaseThread([req = std::move(req_)]() {
-        req->sendErrorWrapped(
-            folly::make_exception_wrapper<TApplicationException>(
-                "Failed to add task to queue, too full"),
-            kQueueOverloadedErrorCode);
-      });
-    }
+    base_->runInEventBaseThread(std::move(cleanUp));
   }
 }
 
