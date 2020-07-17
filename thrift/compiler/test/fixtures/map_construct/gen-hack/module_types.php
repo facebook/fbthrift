@@ -109,8 +109,8 @@ class Foo implements \IThriftStruct {
       /* HH_FIXME[4110] previously hidden by unsafe */
       $this->b = idx($vals, 'b', Map {});
     }
-    $this->c = idx($vals, 'c', 7) as int;
-    $this->d = idx($vals, 'd', false) as bool;
+    $this->c = (int)idx($vals, 'c', 7);
+    $this->d = (bool)idx($vals, 'd', false);
   }
 
   <<__Rx>>
@@ -215,11 +215,11 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     $this->_type = TestUnionEnum::_EMPTY_;
     if (C\contains_key($vals, 'string_field')) {
-      $this->string_field = $vals['string_field'] as string;
+      $this->string_field = (string)$vals['string_field'];
       $this->_type = TestUnionEnum::string_field;
     }
     if (C\contains_key($vals, 'int_field')) {
-      $this->int_field = $vals['int_field'] as int;
+      $this->int_field = (int)$vals['int_field'];
       $this->_type = TestUnionEnum::int_field;
     }
     if (C\contains_key($vals, 'enum_field')) {
@@ -390,12 +390,12 @@ class Baz extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     parent::__construct();
-    $this->message = idx($vals, 'message', '') as string;
+    $this->message = (string)idx($vals, 'message', '');
     /* HH_FIXME[4110] previously hidden by unsafe */
     $this->some_field = idx($vals, 'some_field');
     /* HH_FIXME[4110] previously hidden by unsafe */
     $this->some_container = idx($vals, 'some_container', Set {});
-    $this->code = idx($vals, 'code', 0) as int;
+    $this->code = (int)idx($vals, 'code', 0);
   }
 
   <<__Rx>>
@@ -451,7 +451,7 @@ class OptBaz extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     parent::__construct();
-    $this->message = idx($vals, 'message', '') as string;
+    $this->message = (string)idx($vals, 'message', '');
   }
 
   <<__Rx>>

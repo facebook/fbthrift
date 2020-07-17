@@ -47,8 +47,8 @@ class Foo implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(<<__Soft>> KeyedContainer<string, mixed> $vals = dict[]) {
-    $this->a = idx($vals, 'a', 0) as int;
-    $this->b = idx($vals, 'b', '') as string;
+    $this->a = (int)idx($vals, 'a', 0);
+    $this->b = (string)idx($vals, 'b', '');
   }
 
   <<__Rx>>

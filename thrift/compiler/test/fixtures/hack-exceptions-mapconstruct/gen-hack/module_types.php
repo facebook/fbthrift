@@ -67,7 +67,7 @@ class MyException1 extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     parent::__construct();
-    $this->message = idx($vals, 'message', '') as string;
+    $this->message = (string)idx($vals, 'message', '');
     /* HH_FIXME[4110] exposed by decl fixme scope refinement */
     $this->code = idx($vals, 'code', MyEnum::MyValue1);
   }
@@ -144,7 +144,7 @@ class MyException2 extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     parent::__construct();
-    $this->message = idx($vals, 'message', '') as string;
+    $this->message = (string)idx($vals, 'message', '');
     /* HH_FIXME[4110] exposed by decl fixme scope refinement */
     $this->code = idx($vals, 'code', MyEnum::MyValue1);
   }
@@ -221,7 +221,7 @@ class MyException3 extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     parent::__construct();
-    $this->message = idx($vals, 'message', '') as string;
+    $this->message = (string)idx($vals, 'message', '');
     /* HH_FIXME[4110] exposed by decl fixme scope refinement */
     $this->code = idx($vals, 'code', MyEnum::MyValue1);
   }
@@ -298,7 +298,7 @@ class MyException4 extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     parent::__construct();
-    $this->message = idx($vals, 'message', '') as string;
+    $this->message = (string)idx($vals, 'message', '');
     /* HH_FIXME[4110] exposed by decl fixme scope refinement */
     $this->code = idx($vals, 'code', MyEnum::MyValue2);
   }
@@ -365,8 +365,8 @@ class MyException5 extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     parent::__construct();
-    $this->message = idx($vals, 'message', '') as string;
-    $this->code = idx($vals, 'code', 0) as int;
+    $this->message = (string)idx($vals, 'message', '');
+    $this->code = (int)idx($vals, 'code', 0);
   }
 
   <<__Rx>>

@@ -2653,9 +2653,9 @@ void t_hack_generator::_generate_php_struct_definition(
           out << indent()
               << "/* HH_FIXME[4110] mixed vs default conflict previously hidden by unsafe */\n";
         }
-        out << indent() << "$this->" << (*m_iter)->get_name() << " = "
-            << (cast != "" ? "(" + cast + ")" : "") << "($vals->get('"
-            << (*m_iter)->get_name() << "') ?: " << dval << ");\n";
+        out << indent() << "$this->" << (*m_iter)->get_name() << " = " << cast
+            << "($vals->get('" << (*m_iter)->get_name() << "') ?: " << dval
+            << ");\n";
       } else {
         bool needs_optional_check = tstruct->is_union() ||
             ((*m_iter)->get_req() == t_field::T_OPTIONAL &&
@@ -2675,14 +2675,14 @@ void t_hack_generator::_generate_php_struct_definition(
           out << indent()
               << "/* HH_FIXME[4110] previously hidden by unsafe */\n";
         }
-        out << indent() << "$this->" << (*m_iter)->get_name() << " = "
+        out << indent() << "$this->" << (*m_iter)->get_name() << " = " << cast
             << (needs_optional_check && dval == "null" ? "$vals['"
                                                        : "idx($vals, '")
             << (*m_iter)->get_name() << "'"
             << (needs_optional_check && dval == "null"
                     ? "]"
                     : (dval != "null" ? ", " + dval : "") + ")")
-            << (cast != "" ? " as " + cast : "") << ";\n";
+            << ";\n";
         if (tstruct->is_union()) {
           out << indent()
               << "$this->_type = " << union_field_to_enum(tstruct, *m_iter)
@@ -2883,9 +2883,9 @@ void t_hack_generator::generate_php_struct_from_map(
       } else if (cast == "") {
         out << indent() << "/* HH_FIXME[4110] previously hidden by unsafe */\n";
       }
-      out << indent() << "idx($map, '" << name << "'"
+      out << indent() << cast << "idx($map, '" << name << "'"
           << (dval != "null" && cast != "" ? ", " + dval : "") << ")"
-          << (cast != "" ? " as " + cast : "") << ",\n";
+          << ",\n";
     }
   }
   indent_down();
@@ -4918,18 +4918,18 @@ string t_hack_generator::type_to_cast(t_type* type) {
     t_base_type* btype = (t_base_type*)type;
     switch (btype->get_base()) {
       case t_base_type::TYPE_BOOL:
-        return "bool";
+        return "(bool)";
       case t_base_type::TYPE_BYTE:
       case t_base_type::TYPE_I16:
       case t_base_type::TYPE_I32:
       case t_base_type::TYPE_I64:
-        return "int";
+        return "(int)";
       case t_base_type::TYPE_DOUBLE:
       case t_base_type::TYPE_FLOAT:
-        return "float";
+        return "(float)";
       case t_base_type::TYPE_STRING:
       case t_base_type::TYPE_BINARY:
-        return "string";
+        return "(string)";
       default:
         return "";
     }

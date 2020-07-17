@@ -220,12 +220,12 @@ class Baz extends \TException implements \IThriftStruct {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
     return new static(
-      idx($map, 'message', '') as string,
+      (string)idx($map, 'message', ''),
       /* HH_FIXME[4110] previously hidden by unsafe */
       idx($map, 'some_field'),
       /* HH_FIXME[4110] previously hidden by unsafe */
       idx($map, 'some_container'),
-      idx($map, 'code', 0) as int,
+      (int)idx($map, 'code', 0),
     );
   }
 
@@ -282,7 +282,7 @@ class OptBaz extends \TException implements \IThriftStruct {
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
     return new static(
-      idx($map, 'message', '') as string,
+      (string)idx($map, 'message', ''),
     );
   }
 
