@@ -629,7 +629,7 @@ void HandlerCallbackBase::exceptionInThread(
     std::unique_ptr<HandlerCallbackBase> thisPtr,
     const Exception& ex) {
   assert(thisPtr != nullptr);
-  thisPtr.release()->exceptionInThread(ex);
+  thisPtr->exception(ex);
 }
 
 template <class F>
@@ -722,7 +722,7 @@ void HandlerCallback<T>::resultInThread(
     std::unique_ptr<HandlerCallback> thisPtr,
     InputType r) {
   assert(thisPtr != nullptr);
-  thisPtr.release()->resultInThread(std::forward<InputType>(r));
+  thisPtr->result(std::forward<InputType>(r));
 }
 
 template <typename T>
@@ -730,7 +730,7 @@ void HandlerCallback<T>::resultInThread(
     std::unique_ptr<HandlerCallback> thisPtr,
     std::unique_ptr<ResultType> r) {
   assert(thisPtr != nullptr);
-  thisPtr.release()->resultInThread(std::move(r));
+  thisPtr->result(std::move(r));
 }
 
 template <typename T>
@@ -756,7 +756,7 @@ void HandlerCallback<T>::completeInThread(
     std::unique_ptr<HandlerCallback> thisPtr,
     folly::Try<T>&& r) {
   assert(thisPtr != nullptr);
-  thisPtr.release()->completeInThread(std::move(r));
+  thisPtr->complete(std::move(r));
 }
 
 template <typename T>

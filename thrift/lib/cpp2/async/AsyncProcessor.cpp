@@ -175,14 +175,14 @@ void HandlerCallbackBase::exceptionInThread(
     std::unique_ptr<HandlerCallbackBase> thisPtr,
     std::exception_ptr ex) {
   assert(thisPtr != nullptr);
-  thisPtr.release()->exceptionInThread(std::move(ex));
+  thisPtr->exception(std::move(ex));
 }
 
 void HandlerCallbackBase::exceptionInThread(
     std::unique_ptr<HandlerCallbackBase> thisPtr,
     folly::exception_wrapper ew) {
   assert(thisPtr != nullptr);
-  thisPtr.release()->exceptionInThread(std::move(ew));
+  thisPtr->exception(std::move(ew));
 }
 
 folly::EventBase* HandlerCallbackBase::getEventBase() {
@@ -327,7 +327,7 @@ void HandlerCallback<void>::completeInThread(
     std::unique_ptr<HandlerCallback> thisPtr,
     folly::Try<folly::Unit>&& r) {
   assert(thisPtr != nullptr);
-  thisPtr.release()->completeInThread(std::move(r));
+  thisPtr->complete(std::move(r));
 }
 
 void HandlerCallback<void>::doDone() {
