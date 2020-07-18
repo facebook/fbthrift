@@ -1622,7 +1622,11 @@ void t_hack_generator::generate_php_struct_shape_collection_value_lambda(
     t_name_generator& namer,
     t_type* t) {
   string tmp = namer("_val");
-  indent(out) << "$" << tmp << " ==> ";
+  indent(out);
+  if (arrprov_skip_frames_) {
+    out << "<<__ProvenanceSkipFrame>> ";
+  }
+  out << "($" << tmp << ") ==> ";
   if (t->is_struct()) {
     out << "$" << tmp << "->__toShape(),\n";
   } else if (t->is_set()) {

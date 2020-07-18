@@ -1583,7 +1583,7 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
-        $_val0 ==> vec($_val0),
+        ($_val0) ==> vec($_val0),
       )
         |> dict($$),
     );
@@ -1693,7 +1693,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
-        $_val0 ==> ThriftUtil::toDArray(Dict\fill_keys($_val0, true)),
+        ($_val0) ==> ThriftUtil::toDArray(Dict\fill_keys($_val0, true)),
       )
         |> dict($$),
     );
@@ -1803,7 +1803,7 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
-        $_val0 ==> dict($_val0),
+        ($_val0) ==> dict($_val0),
       )
         |> vec($$),
     );
@@ -1909,7 +1909,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
-        $_val0 ==> ThriftUtil::toDArray(Dict\fill_keys($_val0, true)),
+        ($_val0) ==> ThriftUtil::toDArray(Dict\fill_keys($_val0, true)),
       )
         |> vec($$),
     );
@@ -2044,10 +2044,10 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
-        $_val0 ==> $_val0->map(
-          $_val1 ==> $_val1->map(
-            $_val2 ==> $_val2->map(
-              $_val3 ==> ThriftUtil::toDArray(Dict\fill_keys($_val3, true)),
+        ($_val0) ==> $_val0->map(
+          ($_val1) ==> $_val1->map(
+            ($_val2) ==> $_val2->map(
+              ($_val3) ==> ThriftUtil::toDArray(Dict\fill_keys($_val3, true)),
             )
               |> dict($$),
           )

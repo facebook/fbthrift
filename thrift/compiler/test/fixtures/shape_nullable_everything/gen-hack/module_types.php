@@ -534,27 +534,27 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'map_of_string_to_i32' => $this->map_of_string_to_i32
         |> $$ === null ? null : dict($$),
       'map_of_string_to_A' => $this->map_of_string_to_A?->map(
-        $_val0 ==> $_val0->__toShape(),
+        ($_val0) ==> $_val0->__toShape(),
       )
         |> $$ === null ? null : dict($$),
       'map_of_string_to_self' => $this->map_of_string_to_self?->map(
-        $_val0 ==> $_val0->__toShape(),
+        ($_val0) ==> $_val0->__toShape(),
       )
         |> $$ === null ? null : dict($$),
       'map_of_string_to_list_of_A' => $this->map_of_string_to_list_of_A?->map(
-        $_val0 ==> $_val0->map(
-          $_val1 ==> $_val1->__toShape(),
+        ($_val0) ==> $_val0->map(
+          ($_val1) ==> $_val1->__toShape(),
         )
           |> vec($$),
       )
         |> $$ === null ? null : dict($$),
       'map_of_string_to_map_of_string_to_i32' => $this->map_of_string_to_map_of_string_to_i32?->map(
-        $_val0 ==> dict($_val0),
+        ($_val0) ==> dict($_val0),
       )
         |> $$ === null ? null : dict($$),
       'map_of_string_to_map_of_string_to_A' => $this->map_of_string_to_map_of_string_to_A?->map(
-        $_val0 ==> $_val0->map(
-          $_val1 ==> $_val1->__toShape(),
+        ($_val0) ==> $_val0->map(
+          ($_val1) ==> $_val1->__toShape(),
         )
           |> dict($$),
       )
@@ -562,27 +562,27 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'list_of_string' => $this->list_of_string
         |> $$ === null ? null : vec($$),
       'list_of_map_of_string_to_A' => $this->list_of_map_of_string_to_A?->map(
-        $_val0 ==> $_val0->map(
-          $_val1 ==> $_val1->__toShape(),
+        ($_val0) ==> $_val0->map(
+          ($_val1) ==> $_val1->__toShape(),
         )
           |> dict($$),
       )
         |> $$ === null ? null : vec($$),
       'list_of_self' => $this->list_of_self?->map(
-        $_val0 ==> $_val0->__toShape(),
+        ($_val0) ==> $_val0->__toShape(),
       )
         |> $$ === null ? null : vec($$),
       'list_of_list_of_self' => $this->list_of_list_of_self?->map(
-        $_val0 ==> $_val0->map(
-          $_val1 ==> $_val1->__toShape(),
+        ($_val0) ==> $_val0->map(
+          ($_val1) ==> $_val1->__toShape(),
         )
           |> vec($$),
       )
         |> $$ === null ? null : vec($$),
       'list_of_map_of_string_to_list_of_A' => $this->list_of_map_of_string_to_list_of_A?->map(
-        $_val0 ==> $_val0->map(
-          $_val1 ==> $_val1->map(
-            $_val2 ==> $_val2->__toShape(),
+        ($_val0) ==> $_val0->map(
+          ($_val1) ==> $_val1->map(
+            ($_val2) ==> $_val2->__toShape(),
           )
             |> vec($$),
         )
@@ -1025,27 +1025,27 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       'map_of_string_to_i32' => $this->map_of_string_to_i32
         |> $$ === null ? null : dict($$),
       'map_of_string_to_A' => $this->map_of_string_to_A?->map(
-        $_val0 ==> $_val0->__toShape(),
+        ($_val0) ==> $_val0->__toShape(),
       )
         |> $$ === null ? null : dict($$),
       'map_of_string_to_self' => $this->map_of_string_to_self?->map(
-        $_val0 ==> $_val0->__toShape(),
+        ($_val0) ==> $_val0->__toShape(),
       )
         |> $$ === null ? null : dict($$),
       'map_of_string_to_list_of_A' => $this->map_of_string_to_list_of_A?->map(
-        $_val0 ==> $_val0->map(
-          $_val1 ==> $_val1->__toShape(),
+        ($_val0) ==> $_val0->map(
+          ($_val1) ==> $_val1->__toShape(),
         )
           |> vec($$),
       )
         |> $$ === null ? null : dict($$),
       'map_of_string_to_map_of_string_to_i32' => $this->map_of_string_to_map_of_string_to_i32?->map(
-        $_val0 ==> dict($_val0),
+        ($_val0) ==> dict($_val0),
       )
         |> $$ === null ? null : dict($$),
       'map_of_string_to_map_of_string_to_A' => $this->map_of_string_to_map_of_string_to_A?->map(
-        $_val0 ==> $_val0->map(
-          $_val1 ==> $_val1->__toShape(),
+        ($_val0) ==> $_val0->map(
+          ($_val1) ==> $_val1->__toShape(),
         )
           |> dict($$),
       )
@@ -1053,27 +1053,27 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       'list_of_string' => $this->list_of_string
         |> $$ === null ? null : vec($$),
       'list_of_map_of_string_to_A' => $this->list_of_map_of_string_to_A?->map(
-        $_val0 ==> $_val0->map(
-          $_val1 ==> $_val1->__toShape(),
+        ($_val0) ==> $_val0->map(
+          ($_val1) ==> $_val1->__toShape(),
         )
           |> dict($$),
       )
         |> $$ === null ? null : vec($$),
       'list_of_self' => $this->list_of_self?->map(
-        $_val0 ==> $_val0->__toShape(),
+        ($_val0) ==> $_val0->__toShape(),
       )
         |> $$ === null ? null : vec($$),
       'list_of_list_of_self' => $this->list_of_list_of_self?->map(
-        $_val0 ==> $_val0->map(
-          $_val1 ==> $_val1->__toShape(),
+        ($_val0) ==> $_val0->map(
+          ($_val1) ==> $_val1->__toShape(),
         )
           |> vec($$),
       )
         |> $$ === null ? null : vec($$),
       'list_of_map_of_string_to_list_of_A' => $this->list_of_map_of_string_to_list_of_A?->map(
-        $_val0 ==> $_val0->map(
-          $_val1 ==> $_val1->map(
-            $_val2 ==> $_val2->__toShape(),
+        ($_val0) ==> $_val0->map(
+          ($_val1) ==> $_val1->map(
+            ($_val2) ==> $_val2->__toShape(),
           )
             |> vec($$),
         )

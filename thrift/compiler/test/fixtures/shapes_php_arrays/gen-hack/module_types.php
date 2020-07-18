@@ -258,20 +258,20 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
       'list_of_strings' => varray($this->list_of_strings),
       'set_of_ints' => $this->set_of_ints,
       'map_of_list_of_strings' => $this->map_of_list_of_strings->map(
-        $_val0 ==> varray($_val0),
+        ($_val0) ==> varray($_val0),
       )
         |> ThriftUtil::toDArray($$),
       'map_of_set_of_strings' => $this->map_of_set_of_strings->map(
-        $_val0 ==> darray($_val0),
+        ($_val0) ==> darray($_val0),
       )
         |> ThriftUtil::toDArray($$),
       'map_of_strings_to_map_of_string_ints' => $this->map_of_strings_to_map_of_string_ints->map(
-        $_val0 ==> ThriftUtil::toDArray($_val0),
+        ($_val0) ==> ThriftUtil::toDArray($_val0),
       )
         |> ThriftUtil::toDArray($$),
       'optional_map_of_map_of_sets' => $this->optional_map_of_map_of_sets?->map(
-        $_val0 ==> $_val0->map(
-          $_val1 ==> darray($_val1),
+        ($_val0) ==> $_val0->map(
+          ($_val1) ==> darray($_val1),
         )
           |> ThriftUtil::toDArray($$),
       )
