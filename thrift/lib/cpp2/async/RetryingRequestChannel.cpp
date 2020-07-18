@@ -21,8 +21,47 @@
 namespace apache {
 namespace thrift {
 
+class RetryingRequestChannel::RequestCallbackBase {
+ protected:
+  RequestCallbackBase(
+      folly::Executor::KeepAlive<> ka,
+      RetryingRequestChannel::ImplPtr impl,
+      int retries,
+      const apache::thrift::RpcOptions& options,
+      folly::StringPiece methodName,
+      SerializedRequest&& request,
+      std::shared_ptr<apache::thrift::transport::THeader> header)
+      : impl_(std::move(impl)),
+        retriesLeft_(retries),
+        options_(options),
+        methodName_(methodName.str()),
+        request_(std::move(request)),
+        header_(std::move(header)) {
+    if (retriesLeft_) {
+      ka_ = std::move(ka);
+    }
+  }
+
+  bool shouldRetry(folly::exception_wrapper& ex) {
+    if (!ex.is_compatible_with<
+            apache::thrift::transport::TTransportException>()) {
+      return false;
+    }
+    return retriesLeft_ > 0;
+  }
+
+  folly::Executor::KeepAlive<> ka_;
+  RetryingRequestChannel::ImplPtr impl_;
+  int retriesLeft_;
+  apache::thrift::RpcOptions options_;
+  std::string methodName_;
+  SerializedRequest request_;
+  std::shared_ptr<apache::thrift::transport::THeader> header_;
+};
+
 class RetryingRequestChannel::RequestCallback
-    : public apache::thrift::RequestClientCallback {
+    : public RetryingRequestChannel::RequestCallbackBase,
+      public apache::thrift::RequestClientCallback {
  public:
   RequestCallback(
       folly::Executor::KeepAlive<> ka,
@@ -33,17 +72,15 @@ class RetryingRequestChannel::RequestCallback
       folly::StringPiece methodName,
       SerializedRequest&& request,
       std::shared_ptr<apache::thrift::transport::THeader> header)
-      : impl_(std::move(impl)),
-        retriesLeft_(retries),
-        options_(options),
-        cob_(std::move(cob)),
-        methodName_(methodName.str()),
-        request_(std::move(request)),
-        header_(std::move(header)) {
-    if (retriesLeft_) {
-      ka_ = std::move(ka);
-    }
-  }
+      : RequestCallbackBase(
+            std::move(ka),
+            std::move(impl),
+            retries,
+            options,
+            std::move(methodName),
+            std::move(request),
+            header),
+        cob_(std::move(cob)) {}
 
   void onRequestSent() noexcept override {}
 
@@ -63,15 +100,6 @@ class RetryingRequestChannel::RequestCallback
     }
   }
 
- private:
-  bool shouldRetry(folly::exception_wrapper& ex) {
-    if (!ex.is_compatible_with<
-            apache::thrift::transport::TTransportException>()) {
-      return false;
-    }
-    return retriesLeft_ > 0;
-  }
-
   void retry() {
     if (!--retriesLeft_) {
       ka_.reset();
@@ -85,15 +113,114 @@ class RetryingRequestChannel::RequestCallback
         RequestClientCallback::Ptr(this));
   }
 
-  folly::Executor::KeepAlive<> ka_;
-  RetryingRequestChannel::ImplPtr impl_;
-  int retriesLeft_;
-  apache::thrift::RpcOptions options_;
+ private:
   RequestClientCallback::Ptr cob_;
-  std::string methodName_;
-  SerializedRequest request_;
-  std::shared_ptr<apache::thrift::transport::THeader> header_;
 };
+
+class RetryingRequestChannel::StreamCallback
+    : public RetryingRequestChannel::RequestCallbackBase,
+      public apache::thrift::StreamClientCallback {
+ public:
+  StreamCallback(
+      folly::Executor::KeepAlive<> ka,
+      RetryingRequestChannel::ImplPtr impl,
+      int retries,
+      const apache::thrift::RpcOptions& options,
+      apache::thrift::StreamClientCallback& clientCallback,
+      folly::StringPiece methodName,
+      SerializedRequest&& request,
+      std::shared_ptr<apache::thrift::transport::THeader> header)
+      : RequestCallbackBase(
+            std::move(ka),
+            std::move(impl),
+            retries,
+            options,
+            methodName,
+            std::move(request),
+            header),
+        clientCallback_(clientCallback) {}
+
+  bool onFirstResponse(
+      FirstResponsePayload&& pload,
+      folly::EventBase* evb,
+      StreamServerCallback* serverCallback_) noexcept override {
+    SCOPE_EXIT {
+      delete this;
+    };
+    serverCallback_->resetClientCallback(clientCallback_);
+    return clientCallback_.onFirstResponse(
+        std::move(pload), evb, serverCallback_);
+  }
+
+  void onFirstResponseError(folly::exception_wrapper ex) noexcept override {
+    if (shouldRetry(ex)) {
+      retry();
+    } else {
+      clientCallback_.onFirstResponseError(std::move(ex));
+      delete this;
+    }
+  }
+
+  bool onStreamNext(StreamPayload&&) override {
+    std::terminate();
+  }
+
+  void onStreamError(folly::exception_wrapper) override {
+    std::terminate();
+  }
+
+  void onStreamComplete() override {
+    std::terminate();
+  }
+
+  bool onStreamHeaders(HeadersPayload&&) override {
+    std::terminate();
+  }
+
+  void resetServerCallback(StreamServerCallback&) override {
+    std::terminate();
+  }
+
+ private:
+  void retry() {
+    if (!--retriesLeft_) {
+      ka_.reset();
+    }
+
+    impl_->sendRequestStream(
+        options_,
+        methodName_,
+        SerializedRequest(request_.buffer->clone()),
+        header_,
+        this);
+  }
+
+  StreamClientCallback& clientCallback_;
+};
+
+void RetryingRequestChannel::sendRequestStream(
+    const apache::thrift::RpcOptions& rpcOptions,
+    folly::StringPiece methodName,
+    apache::thrift::SerializedRequest&& request,
+    std::shared_ptr<apache::thrift::transport::THeader> header,
+    apache::thrift::StreamClientCallback* clientCallback) {
+  apache::thrift::StreamClientCallback* streamCallback = new StreamCallback(
+      folly::getKeepAliveToken(evb_),
+      impl_,
+      numRetries_,
+      rpcOptions,
+      *clientCallback,
+      methodName,
+      SerializedRequest(request.buffer->clone()),
+      header);
+
+  return impl_->sendRequestStream(
+      rpcOptions,
+      methodName,
+      std::move(request),
+      std::move(header),
+      streamCallback);
+}
 
 void RetryingRequestChannel::sendRequestResponse(
     const apache::thrift::RpcOptions& options,

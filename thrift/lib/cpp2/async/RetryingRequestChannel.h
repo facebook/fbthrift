@@ -37,6 +37,13 @@ class RetryingRequestChannel : public apache::thrift::RequestChannel {
     return {new RetryingRequestChannel(evb, numRetries, std::move(impl)), {}};
   }
 
+  void sendRequestStream(
+      const apache::thrift::RpcOptions& rpcOptions,
+      folly::StringPiece methodName,
+      apache::thrift::SerializedRequest&& request,
+      std::shared_ptr<apache::thrift::transport::THeader> header,
+      apache::thrift::StreamClientCallback* clientCallback) override;
+
   void sendRequestResponse(
       const apache::thrift::RpcOptions& options,
       folly::StringPiece methodName,
@@ -71,7 +78,9 @@ class RetryingRequestChannel : public apache::thrift::RequestChannel {
   RetryingRequestChannel(folly::EventBase& evb, int numRetries, ImplPtr impl)
       : impl_(std::move(impl)), numRetries_(numRetries), evb_(evb) {}
 
+  class RequestCallbackBase;
   class RequestCallback;
+  class StreamCallback;
 
   ImplPtr impl_;
   int numRetries_;
