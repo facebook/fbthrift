@@ -546,7 +546,7 @@ void TransportCompatibilityTest::
       rpcOptions.setWriteHeader("expected_exception", "1");
       auto future = client->header_future_headers(rpcOptions);
       auto& waited = future.wait();
-      auto& ftry = waited.getTry();
+      auto& ftry = waited.result();
       EXPECT_TRUE(ftry.hasException());
       EXPECT_THAT(
           ftry.tryGetExceptionObject()->what(),
@@ -681,7 +681,7 @@ void TransportCompatibilityTest::TestRequestResponse_ServerQueueTimeout() {
     int successCount = 0;
     for (auto& future : futures) {
       auto& waitedFuture = future.wait();
-      auto& triedFuture = waitedFuture.getTry();
+      auto& triedFuture = waitedFuture.result();
       if (triedFuture.withException([](TApplicationException& ex) {
             EXPECT_EQ(
                 TApplicationException::TApplicationExceptionType::TIMEOUT,
@@ -706,7 +706,7 @@ void TransportCompatibilityTest::TestRequestResponse_ServerQueueTimeout() {
     taskTimeoutCount = 0;
     for (auto& future : futures) {
       auto& waitedFuture = future.wait();
-      auto& triedFuture = waitedFuture.getTry();
+      auto& triedFuture = waitedFuture.result();
       if (triedFuture.withException([](TApplicationException& ex) {
             EXPECT_EQ(
                 TApplicationException::TApplicationExceptionType::TIMEOUT,

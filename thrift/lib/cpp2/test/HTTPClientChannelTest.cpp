@@ -261,7 +261,7 @@ TEST(HTTPClientChannelTest, NoBodyResponse) {
   auto channel = HTTPClientChannel::newHTTP1xChannel(
       std::move(socket), "127.0.0.1", "/foobar");
   TestServiceAsyncClient client(std::move(channel));
-  auto result = client.future_sendResponse(99999).waitVia(&eb).getTry();
+  auto result = client.future_sendResponse(99999).waitVia(&eb).result();
   ASSERT_TRUE(result.hasException());
   folly::exception_wrapper ex = std::move(result.exception());
   EXPECT_TRUE(ex.is_compatible_with<TTransportException>());

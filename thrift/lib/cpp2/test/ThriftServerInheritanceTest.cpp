@@ -51,7 +51,7 @@ TEST_F(ThriftServerInheritanceTest, example) {
   EventBase eb;
   auto client = runner.newClient<MyLeafAsyncClient>(&eb);
 
-  EXPECT_EQ("root", client->future_doRoot().waitVia(&eb).getTry().value());
-  EXPECT_EQ("node", client->future_doNode().waitVia(&eb).getTry().value());
-  EXPECT_EQ("leaf", client->future_doLeaf().waitVia(&eb).getTry().value());
+  EXPECT_EQ("root", client->future_doRoot().waitVia(&eb).result().value());
+  EXPECT_EQ("node", client->future_doNode().waitVia(&eb).result().value());
+  EXPECT_EQ("leaf", client->future_doLeaf().waitVia(&eb).result().value());
 }
