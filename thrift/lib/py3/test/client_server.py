@@ -113,6 +113,8 @@ class ClientServerTests(unittest.TestCase):
     These are tests where a client and server talk to each other
     """
 
+    # pyre-fixme[56]: Argument `sys.version_info[slice(None, 2, None)] < (3, 7)` to
+    #  decorator factory `unittest.skipIf` could not be resolved in a global scope.
     @unittest.skipIf(sys.version_info[:2] < (3, 7), "Requires py3.7")
     def test_get_context(self) -> None:
         loop = asyncio.get_event_loop()

@@ -99,6 +99,8 @@ class ServicesTests(unittest.TestCase):
             # You can't set attributes on builtin/extension types
             TestingServiceInterface.annotations = {}
 
+    # pyre-fixme[56]: Argument `sys.version_info[slice(None, 2, None)] >= (3, 7)` to
+    #  decorator factory `unittest.skipIf` could not be resolved in a global scope.
     @unittest.skipIf(
         sys.version_info[:2] >= (3, 7), "py3.7 will use get_context() instead"
     )
