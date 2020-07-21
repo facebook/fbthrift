@@ -19,6 +19,7 @@ from testing.clients import TestingService
 from testing.services import TestingServiceInterface
 from testing.types import (
     Color,
+    HardError,
     I32List,
     Integers,
     List__i32,
@@ -278,6 +279,21 @@ class ReflectionTests(unittest.TestCase):
                 result=None,
                 result_kind=NumberType.NOT_A_NUMBER,
                 exceptions=[],
+                annotations={},
+            ),
+            MethodSpec(
+                name="hard_error",
+                arguments=[
+                    ArgumentSpec(
+                        name="valid",
+                        type=bool,
+                        kind=NumberType.NOT_A_NUMBER,
+                        annotations={},
+                    )
+                ],
+                result=None,
+                result_kind=NumberType.NOT_A_NUMBER,
+                exceptions=[HardError],
                 annotations={},
             ),
         )

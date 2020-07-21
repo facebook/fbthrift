@@ -59,6 +59,9 @@ class Handler(TestingServiceInterface):
     async def int_sizes(self, one: int, two: int, three: int, four: int) -> None:
         pass
 
+    async def hard_error(self, valid: bool) -> None:
+        pass
+
 
 class ServicesTests(unittest.TestCase):
     def test_handler_acontext(self) -> None:

@@ -30,7 +30,7 @@ from stack_args.services import StackServiceInterface
 from stack_args.types import simple
 from testing.clients import TestingService
 from testing.services import TestingServiceInterface
-from testing.types import Color, easy
+from testing.types import Color, HardError, easy
 from thrift.py3 import (
     Protocol,
     RequestContext,
@@ -41,6 +41,7 @@ from thrift.py3 import (
     get_context,
 )
 from thrift.py3.client import ClientType
+from thrift.py3.test.cpp_handler import CppHandler
 
 
 class Handler(TestingServiceInterface):
@@ -74,6 +75,9 @@ class Handler(TestingServiceInterface):
         pass
 
     async def int_sizes(self, one: int, two: int, three: int, four: int) -> None:
+        pass
+
+    async def hard_error(self, valid: bool) -> None:
         pass
 
 
@@ -342,6 +346,21 @@ class ClientServerTests(unittest.TestCase):
                     self.assertEqual(
                         await client.derived_pick_a_color(Color.red), Color.red
                     )
+
+        loop.run_until_complete(inner_test())
+
+    def test_non_utf8_exception_message(self) -> None:
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer(handler=CppHandler()) as sa:
+                ip, port = sa.ip, sa.port
+                assert ip and port
+                async with get_client(TestingService, host=ip, port=port) as client:
+                    with self.assertRaises(HardError):
+                        await client.hard_error(True)
+                    with self.assertRaises(UnicodeDecodeError):
+                        await client.hard_error(False)
 
         loop.run_until_complete(inner_test())
 

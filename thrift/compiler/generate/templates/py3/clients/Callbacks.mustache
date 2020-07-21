@@ -34,10 +34,15 @@ cdef void {{service:name}}_{{function:name}}_callback(
     client, pyfuture, options = <object> userdata  {{! so client lives on until we exit }}
     if {{#function:exceptions}}{{!
     }}result.hasException[{{#field:type}}{{> types/CythonCppType}}{{/field:type}}]():
-        {{#field:type}}pyfuture.set_exception({{!
-        }}{{> types/CythonPythonType}}.create({{!
-        }}try_make_shared_exception[{{> types/CythonCppType}}](result.exception()){{!
-        }})){{/field:type}}
+        {{#field:type}}
+        try:
+            exc = {{> types/CythonPythonType}}.create(try_make_shared_exception[{{> types/CythonCppType}}](result.exception()))
+        except Exception as ex:
+            {{! This is probably a UnicodeDecodeError }}
+            pyfuture.set_exception(ex.with_traceback(None))
+        else:
+            pyfuture.set_exception(exc)
+        {{/field:type}}
     elif {{/function:exceptions}}{{!
     }}result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
