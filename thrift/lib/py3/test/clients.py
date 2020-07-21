@@ -14,7 +14,11 @@
 # limitations under the License.
 
 import asyncio
+import errno
+import os
+import socket
 import sys
+import tempfile
 import traceback
 import types
 import unittest
@@ -81,6 +85,23 @@ class ClientTests(unittest.TestCase):
         with self.assertRaises(TypeError):
             # None is not an int
             client.take_it_easy(None, easy())  # type: ignore
+
+    def test_bad_unix_domain_socket_raises_TransportError_on_connection(self) -> None:
+        with tempfile.TemporaryDirectory() as tempdir, socket.socket(
+            socket.AF_UNIX, socket.SOCK_STREAM
+        ) as s:
+            socket_path: str = os.path.join(tempdir, "socket")
+            s.bind(socket_path)
+
+            async def connect_to_unlistened_socket() -> None:
+                async with get_client(TestingService, path=socket_path):
+                    pass
+
+            loop = asyncio.get_event_loop()
+            with self.assertRaises(TransportError) as cm:
+                loop.run_until_complete(connect_to_unlistened_socket())
+            ex = cm.exception
+            self.assertEqual(ex.errno, errno.ECONNREFUSED)
 
     def test_TransportError(self) -> None:
         """
