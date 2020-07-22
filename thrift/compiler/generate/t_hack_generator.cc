@@ -4146,7 +4146,6 @@ void t_hack_generator::_generate_service_client_children(
       string(async ? "Async" : "Client") + (rpc_options ? "RpcOptions" : "");
   string extends = "\\ThriftClientBase";
   bool root = tservice->get_extends() == nullptr;
-  bool first = true;
   if (!root) {
     extends = php_servicename_mangle(mangle, tservice->get_extends(), true) +
         class_suffix + "Client";
@@ -4195,7 +4194,7 @@ void t_hack_generator::_generate_service_client_children(
                 << "\", \"" << funname << "\");\n";
     indent(out) << "$currentseqid = $this->sendImpl_" << funname << "(";
 
-    first = true;
+    bool first = true;
     for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
       if (first) {
         first = false;
@@ -4259,7 +4258,7 @@ void t_hack_generator::_generate_service_client_children(
       out << indent() << "public function send_"
           << function_signature(*f_iter, "", "", "int") << " {\n"
           << indent() << "  return $this->sendImpl_" << funname << "(";
-      first = true;
+      bool first = true;
       for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
         if (first) {
           first = false;

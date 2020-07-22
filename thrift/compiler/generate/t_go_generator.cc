@@ -993,11 +993,10 @@ void t_go_generator::generate_enum(t_enum* tenum) {
 
   vector<t_enum_value*> constants = tenum->get_enum_values();
   vector<t_enum_value*>::iterator c_iter;
-  int value = -1;
   set<int> seen;
 
   for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
-    value = (*c_iter)->get_value();
+    int value = (*c_iter)->get_value();
 
     string iter_std_name(escape_string((*c_iter)->get_name()));
     string iter_name((*c_iter)->get_name());
@@ -1656,7 +1655,6 @@ void t_go_generator::generate_go_struct_reader(
 
   string thriftFieldTypeId;
   // Generate deserialization code for known cases
-  int32_t field_id = -1;
   set<int32_t> seen;
 
   // Switch statement on the field we are reading, false if no fields present
@@ -1667,7 +1665,7 @@ void t_go_generator::generate_go_struct_reader(
 
   // All the fields we know
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    field_id = (*f_iter)->get_key();
+    int32_t field_id = (*f_iter)->get_key();
 
     // if negative id, ensure we generate a valid method name
     string field_method_prefix("ReadField");
@@ -1755,7 +1753,7 @@ void t_go_generator::generate_go_struct_reader(
     string field_type_name(publicize((*f_iter)->get_type()->get_name()));
     string field_name(publicize((*f_iter)->get_name()));
     string field_method_prefix("ReadField");
-    field_id = (*f_iter)->get_key();
+    int32_t field_id = (*f_iter)->get_key();
 
     if (field_id < 0) {
       field_method_prefix += "_";
@@ -1802,17 +1800,11 @@ void t_go_generator::generate_go_struct_writer(
          "\"%T write struct begin error: \", p), err) }"
       << endl;
 
-  string field_name;
-  string escape_field_name;
-  // t_const_value* field_default_value;
-  t_field::e_req field_required;
-  int32_t field_id = -1;
-
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     string field_method_prefix("writeField");
-    field_name = (*f_iter)->get_name();
-    escape_field_name = escape_string(field_name);
-    field_id = (*f_iter)->get_key();
+    int32_t field_id = (*f_iter)->get_key();
+    const string& field_name = (*f_iter)->get_name();
+    string escape_field_name = escape_string(field_name);
 
     if (field_id < 0) {
       field_method_prefix += "_";
@@ -1838,11 +1830,10 @@ void t_go_generator::generate_go_struct_writer(
 
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     string field_method_prefix("writeField");
-    field_id = (*f_iter)->get_key();
-    field_name = (*f_iter)->get_name();
-    escape_field_name = escape_string(field_name);
-    // field_default_value = (*f_iter)->get_value();
-    field_required = (*f_iter)->get_req();
+    int32_t field_id = (*f_iter)->get_key();
+    const string& field_name = (*f_iter)->get_name();
+    string escape_field_name = escape_string(field_name);
+    t_field::e_req field_required = (*f_iter)->get_req();
 
     if (field_id < 0) {
       field_method_prefix += "_";

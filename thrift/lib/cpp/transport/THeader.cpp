@@ -299,7 +299,7 @@ unique_ptr<IOBuf> THeader::removeHeader(
     return THeader::removeNonHeader(queue, needed, *clientT, sz32);
   }
 
-  size_t sz = sz32;
+  size_t sz;
   if (sz32 > MAX_FRAME_SIZE) {
     if (sz32 == BIG_FRAME_MAGIC) {
       if (!allowBigFrames_) {
@@ -354,7 +354,6 @@ unique_ptr<IOBuf> THeader::removeHeader(
 
   // Could be header format or framed. Check next uint32
   uint32_t magic = c.readBE<uint32_t>();
-  remaining -= 4;
   clientType_ = analyzeSecond32bit(magic);
   unique_ptr<IOBuf> buf =
       THeader::removeNonHeader(queue, needed, clientType_, sz);
