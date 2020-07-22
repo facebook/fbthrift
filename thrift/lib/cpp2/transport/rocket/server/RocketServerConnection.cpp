@@ -296,9 +296,21 @@ void RocketServerConnection::handleUntrackedFrame(
     case FrameType::REQUEST_N:
       FOLLY_FALLTHROUGH;
     case FrameType::ERROR:
-      FOLLY_FALLTHROUGH;
-    case FrameType::EXT:
       return;
+
+    case FrameType::EXT: {
+      ExtFrame extFrame(streamId, flags, cursor, std::move(frame));
+      switch (extFrame.extFrameType()) {
+        case ExtFrameType::INTERACTION_TERMINATE: {
+          InteractionTerminate term;
+          unpackCompact(term, extFrame.payload().buffer());
+          frameHandler_->terminateInteraction(term.get_interactionId());
+          return;
+        }
+        default:
+          return;
+      }
+    }
 
     default:
       close(folly::make_exception_wrapper<RocketException>(
@@ -359,6 +371,7 @@ void RocketServerConnection::handleStreamFrame(
           return;
         }
         case ExtFrameType::ALIGNED_PAGE:
+        case ExtFrameType::INTERACTION_TERMINATE:
         case ExtFrameType::UNKNOWN:
           if (extFrame.hasIgnore()) {
             return;

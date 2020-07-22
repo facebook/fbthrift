@@ -1137,6 +1137,27 @@ void RocketClient::OnEventBaseDestructionCallback::
   client_.closeNow(transport::TTransportException("Destroying EventBase"));
 }
 
+void RocketClient::terminateInteraction(
+    int64_t id,
+    std::unique_ptr<RequestFnfCallback> guard) {
+  auto g = makeRequestCountGuard();
+  InteractionTerminate term;
+  term.set_interactionId(id);
+  std::ignore = sendFrame(
+      ExtFrame(
+          StreamId(),
+          Payload::makeFromData(packCompact(std::move(term))),
+          Flags::none(),
+          ExtFrameType::INTERACTION_TERMINATE),
+      [dg = DestructorGuard(this),
+       g = std::move(g),
+       guard = std::move(guard),
+       ka = folly::getKeepAliveToken(evb_)](transport::TTransportException ex) {
+        FB_LOG_EVERY_MS(DFATAL, 1000)
+            << "terminateInteraction failed: " << ex.what();
+      });
+}
+
 } // namespace rocket
 } // namespace thrift
 } // namespace apache

@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <cstdint>
 
 namespace apache {
 namespace thrift {
@@ -57,6 +58,8 @@ class RocketServerHandler {
       RocketSinkClientCallback*) = 0;
 
   virtual void requestComplete() {}
+
+  virtual void terminateInteraction(int64_t /*id*/) {}
 };
 
 } // namespace rocket

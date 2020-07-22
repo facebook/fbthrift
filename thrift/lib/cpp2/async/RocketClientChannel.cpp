@@ -973,6 +973,13 @@ void RocketClientChannel::unsetOnDetachable() {
   }
 }
 
+void RocketClientChannel::terminateInteraction(int64_t id) {
+  // guard needed for onDetachable callback implementation
+  auto guard = std::make_unique<SingleRequestNoResponseCallback>(
+      nullptr, inflightGuard());
+  rclient_->terminateInteraction(id, std::move(guard));
+}
+
 constexpr std::chrono::seconds RocketClientChannel::kDefaultRpcTimeout;
 } // namespace thrift
 } // namespace apache

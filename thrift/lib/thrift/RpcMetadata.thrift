@@ -96,6 +96,9 @@ struct InteractionCreate {
   1: i64 interactionId;
   2: string interactionName;
 }
+struct InteractionTerminate {
+  1: i64 interactionId;
+}
 
 // RPC metadata sent from the client to the server.  The lifetime of
 // objects of this type starts at the call to the generated client

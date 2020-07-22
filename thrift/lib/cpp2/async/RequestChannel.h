@@ -157,6 +157,8 @@ class RequestChannel : virtual public folly::DelayedDestruction {
   virtual folly::EventBase* getEventBase() const = 0;
 
   virtual uint16_t getProtocolId() = 0;
+
+  virtual void terminateInteraction(int64_t id);
 };
 
 template <>

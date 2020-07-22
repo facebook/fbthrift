@@ -144,6 +144,8 @@ class RocketClientChannel final : public ClientChannel {
 
   void setAutoCompressSizeLimit(int32_t size);
 
+  void terminateInteraction(int64_t id) override;
+
  private:
   static constexpr std::chrono::seconds kDefaultRpcTimeout{60};
 

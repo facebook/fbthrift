@@ -187,5 +187,9 @@ void RequestChannel::sendRequestSink(
           "This channel doesn't support sink RPC"));
 }
 
+void RequestChannel::terminateInteraction(int64_t) {
+  LOG(FATAL) << "This channel does not support interactions";
+}
+
 } // namespace thrift
 } // namespace apache

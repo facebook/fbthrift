@@ -79,3 +79,21 @@ TEST(InteractionTest, CreatePropagated) {
   client->sync_get_string(rpcOpts, out);
   EXPECT_EQ(out, "42Transaction");
 }
+
+TEST(InteractionTest, Terminate) {
+  ScopedServerInterfaceThread runner{std::make_shared<Handler>()};
+  folly::EventBase eb;
+  HandlerGenericAsyncClient client(
+      RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
+          new folly::AsyncSocket(&eb, runner.getAddress()))));
+
+  RpcOptions rpcOpts;
+  rpcOpts.setNewInteraction("Transaction", 42);
+  std::string out;
+  client.sync_get_string(rpcOpts, out);
+
+  eb.runInEventBaseThread(
+      [channel = client.getChannelShared(), ka = folly::getKeepAliveToken(eb)] {
+        channel->terminateInteraction(42);
+      });
+}

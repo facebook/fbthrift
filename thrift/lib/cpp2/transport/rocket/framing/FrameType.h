@@ -47,6 +47,7 @@ enum class ExtFrameType : uint32_t {
   UNKNOWN = 0x00, // Never transmitted over the wire.
   HEADERS_PUSH = 0xFB0,
   ALIGNED_PAGE = 0xFB1,
+  INTERACTION_TERMINATE = 0xFB2,
 };
 
 } // namespace rocket

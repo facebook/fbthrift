@@ -479,6 +479,10 @@ void ThriftRocketServerHandler::handleServerShutdown(
 void ThriftRocketServerHandler::requestComplete() {
   serverConfigs_->decActiveRequests();
 }
+
+void ThriftRocketServerHandler::terminateInteraction(int64_t) {
+  LOG(ERROR) << "Not implemented";
+}
 } // namespace rocket
 } // namespace thrift
 } // namespace apache

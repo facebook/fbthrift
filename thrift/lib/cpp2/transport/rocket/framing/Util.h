@@ -83,8 +83,8 @@ inline ExtFrameType readExtFrameType(folly::io::Cursor& cursor) {
   const auto extFrameType = cursor.readBE<uint32_t>();
   switch (static_cast<ExtFrameType>(extFrameType)) {
     case ExtFrameType::HEADERS_PUSH:
-      return static_cast<ExtFrameType>(extFrameType);
     case ExtFrameType::ALIGNED_PAGE:
+    case ExtFrameType::INTERACTION_TERMINATE:
       return static_cast<ExtFrameType>(extFrameType);
     default:
       return ExtFrameType::UNKNOWN;

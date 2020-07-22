@@ -235,6 +235,10 @@ class RocketClient : public folly::DelayedDestruction,
     autoCompressSizeLimit_ = size;
   }
 
+  void terminateInteraction(
+      int64_t id,
+      std::unique_ptr<RequestFnfCallback> guard);
+
  private:
   folly::EventBase* evb_;
   folly::AsyncTransport::UniquePtr socket_;
