@@ -980,6 +980,10 @@ void RocketClientChannel::terminateInteraction(int64_t id) {
   rclient_->terminateInteraction(id, std::move(guard));
 }
 
+int64_t RocketClientChannel::getNextInteractionId() {
+  return 0;
+}
+
 constexpr std::chrono::seconds RocketClientChannel::kDefaultRpcTimeout;
 } // namespace thrift
 } // namespace apache

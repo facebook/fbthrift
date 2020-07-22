@@ -41,42 +41,42 @@ struct Handler : HandlerGenericSvIf {
 
 TEST(InteractionTest, NoIDPropagated) {
   ScopedServerInterfaceThread runner{std::make_shared<Handler>()};
-  auto client =
-      runner.newClient<HandlerGenericAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  folly::EventBase eb;
+  HandlerGenericAsyncClient client(
+      RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
+          new folly::AsyncSocket(&eb, runner.getAddress()))));
 
   RpcOptions rpcOpts;
   std::string out;
-  client->sync_get_string(rpcOpts, out);
+  client.sync_get_string(rpcOpts, out);
   EXPECT_EQ(out, "");
 }
 
 TEST(InteractionTest, IDPropagated) {
   ScopedServerInterfaceThread runner{std::make_shared<Handler>()};
-  auto client =
-      runner.newClient<HandlerGenericAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  folly::EventBase eb;
+  HandlerGenericAsyncClient client(
+      RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
+          new folly::AsyncSocket(&eb, runner.getAddress()))));
 
   RpcOptions rpcOpts;
   rpcOpts.setExistingInteraction(42);
   std::string out;
-  client->sync_get_string(rpcOpts, out);
+  client.sync_get_string(rpcOpts, out);
   EXPECT_EQ(out, "42");
 }
 
 TEST(InteractionTest, CreatePropagated) {
   ScopedServerInterfaceThread runner{std::make_shared<Handler>()};
-  auto client =
-      runner.newClient<HandlerGenericAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  folly::EventBase eb;
+  HandlerGenericAsyncClient client(
+      RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
+          new folly::AsyncSocket(&eb, runner.getAddress()))));
 
   RpcOptions rpcOpts;
   rpcOpts.setNewInteraction("Transaction", 42);
   std::string out;
-  client->sync_get_string(rpcOpts, out);
+  client.sync_get_string(rpcOpts, out);
   EXPECT_EQ(out, "42Transaction");
 }
 
@@ -96,4 +96,21 @@ TEST(InteractionTest, Terminate) {
       [channel = client.getChannelShared(), ka = folly::getKeepAliveToken(eb)] {
         channel->terminateInteraction(42);
       });
+}
+
+TEST(InteractionTest, TerminatePRC) {
+  ScopedServerInterfaceThread runner{std::make_shared<Handler>()};
+  auto client =
+      runner.newClient<HandlerGenericAsyncClient>(nullptr, [](auto socket) {
+        return RocketClientChannel::newChannel(std::move(socket));
+      });
+
+  RpcOptions rpcOpts;
+  auto id = client->getChannel()->getNextInteractionId();
+  rpcOpts.setExistingInteraction(id);
+  std::string out;
+  client->sync_get_string(rpcOpts, out);
+  EXPECT_EQ(out, std::to_string(id));
+
+  client->getChannel()->terminateInteraction(id);
 }

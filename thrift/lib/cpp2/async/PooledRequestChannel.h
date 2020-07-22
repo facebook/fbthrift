@@ -99,11 +99,15 @@ class PooledRequestChannel : public RequestChannel {
 
   uint16_t getProtocolId() override;
 
- protected:
-  ~PooledRequestChannel() override = default;
+  // caller MUST call terminateInteraction on the returned value
+  int64_t getNextInteractionId() override;
 
+  // this channel is opinionated - id MUST come from getNextInteractionId
+  void terminateInteraction(int64_t id) override;
+
+ protected:
   template <typename SendFunc>
-  void sendRequestImpl(SendFunc&& sendFunc);
+  void sendRequestImpl(SendFunc&& sendFunc, folly::EventBase& eb);
 
  private:
   PooledRequestChannel(
@@ -112,16 +116,19 @@ class PooledRequestChannel : public RequestChannel {
       ImplCreator implCreator)
       : implCreator_(std::move(implCreator)),
         callbackExecutor_(callbackExecutor),
-        executor_(std::move(executor)) {}
+        executor_(std::move(executor)),
+        impl_(std::make_shared<folly::EventBaseLocal<Impl>>()) {}
 
   Impl& impl(folly::EventBase& evb);
+
+  folly::EventBase& getEvb(const RpcOptions& options);
 
   ImplCreator implCreator_;
 
   folly::Executor* callbackExecutor_{nullptr};
   std::weak_ptr<folly::IOExecutor> executor_;
 
-  folly::EventBaseLocal<Impl> impl_;
+  std::shared_ptr<folly::EventBaseLocal<Impl>> impl_;
 
   folly::once_flag protocolIdInitFlag_;
   uint16_t protocolId_;

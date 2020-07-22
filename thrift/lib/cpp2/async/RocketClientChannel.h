@@ -144,7 +144,11 @@ class RocketClientChannel final : public ClientChannel {
 
   void setAutoCompressSizeLimit(int32_t size);
 
+  // channel is not opinionated - id is caller-provided
   void terminateInteraction(int64_t id) override;
+
+  // caller must choose their own id - this returns 0
+  int64_t getNextInteractionId() override;
 
  private:
   static constexpr std::chrono::seconds kDefaultRpcTimeout{60};

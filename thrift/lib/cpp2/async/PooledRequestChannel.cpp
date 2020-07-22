@@ -22,30 +22,44 @@
 
 namespace apache {
 namespace thrift {
+namespace {
+struct InteractionState {
+  folly::Executor::KeepAlive<folly::EventBase> keepAlive;
+};
+} // namespace
+
+folly::EventBase& PooledRequestChannel::getEvb(const RpcOptions& options) {
+  InteractionState* state;
+  if (options.getInteractionId()) {
+    state = reinterpret_cast<InteractionState*>(options.getInteractionId());
+  } else if (options.getInteractionCreate()) {
+    state = reinterpret_cast<InteractionState*>(
+        options.getInteractionCreate()->get_interactionId());
+  } else {
+    auto executor = executor_.lock();
+    if (!executor) {
+      throw std::logic_error("IO executor already destroyed.");
+    }
+    return *executor->getEventBase();
+  }
+  return *state->keepAlive.get();
+}
 
 uint16_t PooledRequestChannel::getProtocolId() {
-  auto executor = executor_.lock();
-  if (!executor) {
-    throw std::logic_error("IO executor already destroyed.");
-  }
   folly::call_once(protocolIdInitFlag_, [&] {
-    auto evb = executor->getEventBase();
-    evb->runImmediatelyOrRunInEventBaseThreadAndWait(
-        [&] { protocolId_ = impl(*evb).getProtocolId(); });
+    auto& evb = getEvb({});
+    evb.runImmediatelyOrRunInEventBaseThreadAndWait(
+        [&] { protocolId_ = impl(evb).getProtocolId(); });
   });
 
   return protocolId_;
 }
 
 template <typename SendFunc>
-void PooledRequestChannel::sendRequestImpl(SendFunc&& sendFunc) {
-  auto executor = executor_.lock();
-  if (!executor) {
-    throw std::logic_error("IO executor already destroyed.");
-  }
-  auto evb = executor->getEventBase();
-
-  evb->runInEventBaseThread(
+void PooledRequestChannel::sendRequestImpl(
+    SendFunc&& sendFunc,
+    folly::EventBase& evb) {
+  evb.runInEventBaseThread(
       [this,
        keepAlive = getKeepAliveToken(evb),
        sendFunc = std::forward<SendFunc>(sendFunc)]() mutable {
@@ -113,18 +127,20 @@ void PooledRequestChannel::sendRequestResponse(
     cob = RequestClientCallback::Ptr(new ExecutorRequestCallback<false>(
         std::move(cob), getKeepAliveToken(callbackExecutor_)));
   }
-  sendRequestImpl([options,
-                   methodNameStr = methodName.str(),
-                   request = std::move(request),
-                   header = std::move(header),
-                   cob = std::move(cob)](Impl& channel) mutable {
-    channel.sendRequestResponse(
-        options,
-        methodNameStr,
-        std::move(request),
-        std::move(header),
-        std::move(cob));
-  });
+  sendRequestImpl(
+      [options,
+       methodNameStr = methodName.str(),
+       request = std::move(request),
+       header = std::move(header),
+       cob = std::move(cob)](Impl& channel) mutable {
+        channel.sendRequestResponse(
+            options,
+            methodNameStr,
+            std::move(request),
+            std::move(header),
+            std::move(cob));
+      },
+      getEvb(options));
 }
 
 void PooledRequestChannel::sendRequestNoResponse(
@@ -137,18 +153,20 @@ void PooledRequestChannel::sendRequestNoResponse(
     cob = RequestClientCallback::Ptr(new ExecutorRequestCallback<true>(
         std::move(cob), getKeepAliveToken(callbackExecutor_)));
   }
-  sendRequestImpl([options,
-                   methodNameStr = methodName.str(),
-                   request = std::move(request),
-                   header = std::move(header),
-                   cob = std::move(cob)](Impl& channel) mutable {
-    channel.sendRequestNoResponse(
-        options,
-        methodNameStr,
-        std::move(request),
-        std::move(header),
-        std::move(cob));
-  });
+  sendRequestImpl(
+      [options,
+       methodNameStr = methodName.str(),
+       request = std::move(request),
+       header = std::move(header),
+       cob = std::move(cob)](Impl& channel) mutable {
+        channel.sendRequestNoResponse(
+            options,
+            methodNameStr,
+            std::move(request),
+            std::move(header),
+            std::move(cob));
+      },
+      getEvb(options));
 }
 
 void PooledRequestChannel::sendRequestStream(
@@ -157,14 +175,16 @@ void PooledRequestChannel::sendRequestStream(
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     StreamClientCallback* cob) {
-  sendRequestImpl([options,
-                   methodNameStr = methodName.str(),
-                   request = std::move(request),
-                   header = std::move(header),
-                   cob](Impl& channel) mutable {
-    channel.sendRequestStream(
-        options, methodNameStr, std::move(request), std::move(header), cob);
-  });
+  sendRequestImpl(
+      [options,
+       methodNameStr = methodName.str(),
+       request = std::move(request),
+       header = std::move(header),
+       cob](Impl& channel) mutable {
+        channel.sendRequestStream(
+            options, methodNameStr, std::move(request), std::move(header), cob);
+      },
+      getEvb(options));
 }
 
 void PooledRequestChannel::sendRequestSink(
@@ -173,20 +193,51 @@ void PooledRequestChannel::sendRequestSink(
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     SinkClientCallback* cob) {
-  sendRequestImpl([options,
-                   methodNameStr = methodName.str(),
-                   request = std::move(request),
-                   header = std::move(header),
-                   cob](Impl& channel) mutable {
-    channel.sendRequestSink(
-        options, methodNameStr, std::move(request), std::move(header), cob);
+  sendRequestImpl(
+      [options,
+       methodNameStr = methodName.str(),
+       request = std::move(request),
+       header = std::move(header),
+       cob](Impl& channel) mutable {
+        channel.sendRequestSink(
+            options, methodNameStr, std::move(request), std::move(header), cob);
+      },
+      getEvb(options));
+}
+
+int64_t PooledRequestChannel::getNextInteractionId() {
+  auto& evb = getEvb({});
+
+  if (folly::kIsDebug) {
+    sendRequestImpl(
+        [](Impl& channel) mutable {
+          CHECK_EQ(channel.getNextInteractionId(), 0)
+              << "Cannot nest multiple channels opinionated about interaction id";
+        },
+        evb);
+  }
+
+  return reinterpret_cast<int64_t>(
+      new InteractionState{getKeepAliveToken(evb)});
+}
+
+void PooledRequestChannel::terminateInteraction(int64_t id) {
+  std::unique_ptr<InteractionState> state(
+      reinterpret_cast<InteractionState*>(id));
+  std::move(state->keepAlive).add([id, implPtr = impl_](auto&& keepAlive) {
+    auto* channel = implPtr->get(*keepAlive);
+    if (channel) {
+      channel->terminateInteraction(id);
+    }
+    // channel is only null if nothing was ever sent on that evb,
+    // in which case server doesn't know about this interaction
   });
 }
 
 PooledRequestChannel::Impl& PooledRequestChannel::impl(folly::EventBase& evb) {
   DCHECK(evb.inRunningEventBaseThread());
 
-  return impl_.getOrCreateFn(evb, [this, &evb] { return implCreator_(evb); });
+  return impl_->getOrCreateFn(evb, [this, &evb] { return implCreator_(evb); });
 }
 } // namespace thrift
 } // namespace apache

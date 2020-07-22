@@ -159,6 +159,9 @@ class RequestChannel : virtual public folly::DelayedDestruction {
   virtual uint16_t getProtocolId() = 0;
 
   virtual void terminateInteraction(int64_t id);
+
+  // returns 0 if the channel doesn't care
+  virtual int64_t getNextInteractionId();
 };
 
 template <>
