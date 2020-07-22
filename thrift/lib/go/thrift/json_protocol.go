@@ -25,14 +25,25 @@ const (
 	THRIFT_JSON_PROTOCOL_VERSION = 1
 )
 
-// for references to _ParseContext see tsimplejson_protocol.go
+// for references to _ParseContext see simple_json_protocol.go
 
-// JSON protocol implementation for thrift.
+// JSONProtocol is the Compact JSON protocol implementation for thrift.
 //
-// This protocol produces/consumes a simple output format
-// suitable for parsing by scripting languages.  It should not be
-// confused with the full-featured JSONProtocol.
+// This protocol produces/consumes a compact JSON output with field numbers as
+// object keys and field values lightly encoded.
 //
+// Example: With the Message definition
+//
+//   struct Message {
+//     1: bool aBool
+//     2: map<string, bool> aBoolStringMap
+//   },
+//
+//   Message(aBool=True, aBoolStringMap={"key1": True, "key2": False})
+//
+// will be encoded as:
+//
+//   {"1":{"tf":1},"2":{"map":["str","tf",2,{"key1": 1,"key2":0}]}}'
 type JSONProtocol struct {
 	*SimpleJSONProtocol
 }
