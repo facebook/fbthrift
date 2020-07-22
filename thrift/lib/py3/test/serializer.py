@@ -18,7 +18,16 @@ import pickle
 import unittest
 from typing import AbstractSet, Any, Mapping, Sequence, Union
 
-from testing.types import Digits, I32List, Integers, SetI32, StrStrMap, easy, hard
+from testing.types import (
+    Digits,
+    I32List,
+    Integers,
+    SetI32,
+    StringBucket,
+    StrStrMap,
+    easy,
+    hard,
+)
 from thrift.py3 import Error, Protocol, Struct, deserialize, serialize
 from thrift.py3.serializer import (
     Transform,
@@ -109,8 +118,9 @@ class SerializerTests(unittest.TestCase):
             self.assertEqual((proto, encoded), (proto, fixtures.get(proto)))
 
     def pickle_round_robin(
+        self,
         # pyre-fixme[2]: Parameter annotation cannot contain `Any`.
-        self, control: Union[Struct, Mapping[Any, Any], Sequence[Any], AbstractSet[Any]]
+        control: Union[Struct, Mapping[Any, Any], Sequence[Any], AbstractSet[Any]],
     ) -> None:
         encoded = pickle.dumps(control, protocol=pickle.HIGHEST_PROTOCOL)
         decoded = pickle.loads(encoded)
@@ -201,3 +211,14 @@ class SerializerTests(unittest.TestCase):
             self.assertIsInstance(decoded, type(control))
             self.assertEqual(decoded, control)
             self.assertEqual(length, len(encoded))
+
+    def test_string_with_non_utf8_data(self) -> None:
+        encoded = b"\x0b\x00\x01\x00\x00\x00\x03foo\x00"
+        sb = deserialize(StringBucket, encoded, protocol=Protocol.BINARY)
+        self.assertEqual("foo", sb.one)
+
+        encoded = b"\x0b\x00\x01\x00\x00\x00\x03\xfa\xf0\xef\x00"
+        sb = deserialize(StringBucket, encoded, protocol=Protocol.BINARY)
+        with self.assertRaises(UnicodeDecodeError):
+            # Accessing the property is when the string is decoded as UTF-8.
+            sb.one
