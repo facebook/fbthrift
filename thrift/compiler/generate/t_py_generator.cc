@@ -300,6 +300,7 @@ class t_py_generator : public t_concat_generator {
   std::string get_priority(
       const t_annotated* obj,
       std::string const& def = "NORMAL");
+  const std::vector<t_function*>& get_functions(t_service* tservice);
 
  private:
   /**
@@ -2055,12 +2056,11 @@ void t_py_generator::generate_service(t_service* tservice) {
  * @param tservice The service to generate a header definition for
  */
 void t_py_generator::generate_service_helpers(t_service* tservice) {
-  vector<t_function*> functions = tservice->get_functions();
-  vector<t_function*>::iterator f_iter;
+  const auto& functions = get_functions(tservice);
 
   f_service_ << "# HELPER FUNCTIONS AND STRUCTURES" << endl << endl;
 
-  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+  for (auto f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     t_struct* ts = (*f_iter)->get_arglist();
     generate_py_struct_definition(f_service_, ts, false);
     generate_py_thrift_spec(f_service_, ts, false);
@@ -2122,12 +2122,11 @@ void t_py_generator::generate_service_interface(
     f_service_ << indent() << "}" << endl << endl;
   }
   std::string service_priority = get_priority(tservice);
-  vector<t_function*> functions = tservice->get_functions();
+  const auto& functions = get_functions(tservice);
   if (functions.empty()) {
     f_service_ << indent() << "pass" << endl;
   } else {
-    vector<t_function*>::iterator f_iter;
-    for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+    for (auto f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
       f_service_ << indent() << "def "
                  << function_signature_if(*f_iter, with_context) << ":" << endl;
       indent_up();
@@ -2229,7 +2228,7 @@ void t_py_generator::generate_service_client(t_service* tservice) {
   }
 
   // Generate client method implementations
-  vector<t_function*> functions = tservice->get_functions();
+  const auto& functions = get_functions(tservice);
   vector<t_function*>::const_iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     t_struct* arg_struct = (*f_iter)->get_arglist();
@@ -2468,7 +2467,7 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
   for (t_service* cur_service = tservice; cur_service != nullptr;
        cur_service = cur_service->get_extends()) {
     const string& svc_name = cur_service->get_name();
-    const vector<t_function*>& functions = cur_service->get_functions();
+    const auto& functions = get_functions(cur_service);
     for (vector<t_function*>::const_iterator it = functions.begin();
          it != functions.end();
          ++it) {
@@ -2577,8 +2576,7 @@ void t_py_generator::generate_service_server(
   string class_prefix = with_context ? "Context" : "";
 
   // Generate the dispatch methods
-  vector<t_function*> functions = tservice->get_functions();
-  vector<t_function*>::iterator f_iter;
+  const auto& functions = get_functions(tservice);
 
   string extends = "";
   string extends_processor = "";
@@ -2594,7 +2592,7 @@ void t_py_generator::generate_service_server(
   indent_up();
 
   f_service_ << indent() << "_onewayMethods = (";
-  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+  for (auto f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     if ((*f_iter)->is_oneway()) {
       f_service_ << "\"" << (*f_iter)->get_name() << "\",";
     }
@@ -2634,7 +2632,7 @@ void t_py_generator::generate_service_server(
     }
   }
   auto service_priority = get_priority(tservice);
-  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+  for (auto f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     auto function_prio = get_priority(*f_iter, service_priority);
     f_service_ << indent() << "self._processMap["
                << render_string((*f_iter)->get_name()) << "] = " << class_prefix
@@ -2671,7 +2669,7 @@ void t_py_generator::generate_service_server(
   indent(f_service_) << "def process(self,): pass" << endl << endl;
 
   // Generate the process subfunctions
-  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+  for (auto f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     if (gen_future_) {
       generate_process_function(tservice, *f_iter, false, true);
     } else {
@@ -3551,6 +3549,28 @@ std::string t_py_generator::get_priority(
     return obj->annotations_.at("priority");
   }
   return def;
+}
+
+/**
+ * Returns the functions that are supported, leaving unsupported functions
+ * (e.g. stream and sink functions).
+ */
+const std::vector<t_function*>& t_py_generator::get_functions(
+    t_service* tservice) {
+  static std::map<std::string, const std::vector<t_function*>> func_map;
+  auto name = tservice->get_full_name();
+  auto found = func_map.find(name);
+  if (found != func_map.end()) {
+    return found->second;
+  }
+  std::vector<t_function*> funcs;
+  for (auto func : tservice->get_functions()) {
+    if (!func->any_streams() && !func->returns_sink()) {
+      funcs.push_back(func);
+    }
+  }
+  auto inserted = func_map.emplace(name, std::move(funcs));
+  return inserted.first->second;
 }
 
 THRIFT_REGISTER_GENERATOR(
