@@ -22,7 +22,7 @@ struct Foo {
 }
 
 service Bar {
-  string baz(
+  list<Foo> baz(
     1: set<i32> a,
     2: list<map<i32, set<string>>> b,
     3: Foo d,

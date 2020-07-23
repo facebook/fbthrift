@@ -1,1 +1,1 @@
-hack:shapes=1,arrprov_skip_frames=1,arrays=1 src/module.thrift
+hack:shapes=1,arrprov_skip_frames=1,no_use_hack_collections=1,arraysets=1,array_migration=1 src/module.thrift

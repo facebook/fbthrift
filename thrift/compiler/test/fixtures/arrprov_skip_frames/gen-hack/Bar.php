@@ -13,14 +13,14 @@
 interface BarAsyncIf extends \IThriftAsyncIf {
   /**
    * Original thrift definition:-
-   * string
+   * list<Foo>
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b,
    *       3: Foo d,
    *       4: i64 e,
    *       5: list<Foo> f);
    */
-  public function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<string>;
+  public function baz(darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>>;
 }
 
 /**
@@ -30,14 +30,14 @@ interface BarAsyncIf extends \IThriftAsyncIf {
 interface BarIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
-   * string
+   * list<Foo>
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b,
    *       3: Foo d,
    *       4: i64 e,
    *       5: list<Foo> f);
    */
-  public function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): string;
+  public function baz(darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): varray<Foo>;
 }
 
 /**
@@ -47,14 +47,14 @@ interface BarIf extends \IThriftSyncIf {
 interface BarClientIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
-   * string
+   * list<Foo>
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b,
    *       3: Foo d,
    *       4: i64 e,
    *       5: list<Foo> f);
    */
-  public function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<string>;
+  public function baz(darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>>;
 }
 
 /**
@@ -64,14 +64,14 @@ interface BarClientIf extends \IThriftSyncIf {
 interface BarAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
   /**
    * Original thrift definition:-
-   * string
+   * list<Foo>
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b,
    *       3: Foo d,
    *       4: i64 e,
    *       5: list<Foo> f);
    */
-  public function baz(\RpcOptions $rpc_options, keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<string>;
+  public function baz(\RpcOptions $rpc_options, darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>>;
 }
 
 /**
@@ -81,16 +81,16 @@ interface BarAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
 trait BarClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): int {
+  protected function sendImpl_baz(darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): int {
     $currentseqid = $this->getNextSequenceID();
     $args = new Bar_baz_args(
       $a,
-      Vec\map($b, 
-        $_val0 ==> dict($_val0)
-      ),
+      varray(Vec\map($b, 
+        $_val0 ==> darray($_val0)
+      )),
       $d,
       $e,
-      vec($f),
+      varray($f),
     );
     try {
       $this->eventHandler_->preSend('baz', $args, $currentseqid);
@@ -128,7 +128,8 @@ trait BarClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_baz(?int $expectedsequenceid = null): string {
+  <<__ProvenanceSkipFrame>>
+  protected function recvImpl_baz(?int $expectedsequenceid = null): varray<Foo> {
     try {
       $this->eventHandler_->preRecv('baz', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
@@ -195,14 +196,15 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
 
   /**
    * Original thrift definition:-
-   * string
+   * list<Foo>
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b,
    *       3: Foo d,
    *       4: i64 e,
    *       5: list<Foo> f);
    */
-  public async function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<string> {
+  <<__ProvenanceSkipFrame>>
+  public async function baz(darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>> {
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
@@ -227,14 +229,15 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
 
   /**
    * Original thrift definition:-
-   * string
+   * list<Foo>
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b,
    *       3: Foo d,
    *       4: i64 e,
    *       5: list<Foo> f);
    */
-  public async function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<string> {
+  <<__ProvenanceSkipFrame>>
+  public async function baz(darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>> {
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
@@ -253,10 +256,11 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
   }
 
   /* send and recv functions */
-  public function send_baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): int {
+  public function send_baz(darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): int {
     return $this->sendImpl_baz($a, $b, $d, $e, $f);
   }
-  public function recv_baz(?int $expectedsequenceid = null): string {
+  <<__ProvenanceSkipFrame>>
+  public function recv_baz(?int $expectedsequenceid = null): varray<Foo> {
     return $this->recvImpl_baz($expectedsequenceid);
   }
 }
@@ -266,14 +270,15 @@ class BarAsyncRpcOptionsClient extends \ThriftClientBase implements BarAsyncRpcO
 
   /**
    * Original thrift definition:-
-   * string
+   * list<Foo>
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b,
    *       3: Foo d,
    *       4: i64 e,
    *       5: list<Foo> f);
    */
-  public async function baz(\RpcOptions $rpc_options, keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<string> {
+  <<__ProvenanceSkipFrame>>
+  public async function baz(\RpcOptions $rpc_options, darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>> {
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
@@ -306,7 +311,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
       'elem' => shape(
         'type' => \TType::I32,
       ),
-      'format' => 'harray',
+      'format' => 'array',
     ),
     2 => shape(
       'var' => 'b',
@@ -325,11 +330,11 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
           'elem' => shape(
             'type' => \TType::STRING,
           ),
-          'format' => 'harray',
+          'format' => 'array',
         ),
-        'format' => 'harray',
+        'format' => 'array',
       ),
-      'format' => 'harray',
+      'format' => 'array',
     ),
     3 => shape(
       'var' => 'd',
@@ -348,7 +353,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::STRUCT,
         'class' => Foo::class,
       ),
-      'format' => 'harray',
+      'format' => 'array',
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -360,34 +365,34 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => keyset<int>,
-    ?'b' => vec<dict<int, keyset<string>>>,
+    ?'a' => darray<int, bool>,
+    ?'b' => varray<darray<int, darray<string, bool>>>,
     ?'d' => ?Foo,
     ?'e' => int,
-    ?'f' => vec<Foo>,
+    ?'f' => varray<Foo>,
   );
 
   const type TShape = shape(
-    'a' => keyset<int>,
-    'b' => vec<dict<int, keyset<string>>>,
+    'a' => darray<int, bool>,
+    'b' => varray<darray<int, darray<string, bool>>>,
     ?'d' => ?Foo::TShape,
     'e' => int,
-    'f' => vec<Foo::TShape>,
+    'f' => varray<Foo::TShape>,
   );
   const int STRUCTURAL_ID = 1612873710359158656;
-  public keyset<int> $a;
-  public vec<dict<int, keyset<string>>> $b;
+  public darray<int, bool> $a;
+  public varray<darray<int, darray<string, bool>>> $b;
   public ?Foo $d;
   public int $e;
-  public vec<Foo> $f;
+  public varray<Foo> $f;
 
   <<__Rx>>
-  public function __construct(?keyset<int> $a = null, ?vec<dict<int, keyset<string>>> $b = null, ?Foo $d = null, ?int $e = null, ?vec<Foo> $f = null  ) {
-    $this->a = $a ?? keyset[];
-    $this->b = $b ?? vec[];
+  public function __construct(?darray<int, bool> $a = null, ?varray<darray<int, darray<string, bool>>> $b = null, ?Foo $d = null, ?int $e = null, ?varray<Foo> $f = null  ) {
+    $this->a = $a ?? darray[];
+    $this->b = $b ?? varray[];
     $this->d = $d;
     $this->e = $e ?? 4;
-    $this->f = $f ?? vec[];
+    $this->f = $f ?? varray[];
   }
 
   <<__Rx>>
@@ -422,7 +427,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
         $$,
         $_val0 ==> $_val0
           |> Foo::__fromShape($$),
-      );
+      ) |> varray($$);
     return $me;
   }
 
@@ -434,9 +439,11 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
       'd' => $this->d?->__toShape(),
       'e' => $this->e,
       'f' => $this->f
-        |> Vec\map(
-          $$,
-          <<__ProvenanceSkipFrame>> ($_val0) ==> $_val0->__toShape(),
+        |> (
+          Vec\map(
+            $$,
+            <<__ProvenanceSkipFrame>> ($_val0) ==> $_val0->__toShape(),
+          ) |> varray($$)
         ),
     );
   }
@@ -448,7 +455,13 @@ class Bar_baz_result implements \IThriftStruct {
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
       'var' => 'success',
-      'type' => \TType::STRING,
+      'type' => \TType::LST,
+      'etype' => \TType::STRUCT,
+      'elem' => shape(
+        'type' => \TType::STRUCT,
+        'class' => Foo::class,
+      ),
+      'format' => 'array',
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -456,14 +469,14 @@ class Bar_baz_result implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => string,
+    ?'success' => varray<Foo>,
   );
 
-  const int STRUCTURAL_ID = 1365128170602685579;
-  public ?string $success;
+  const int STRUCTURAL_ID = 5594803499509360192;
+  public ?varray<Foo> $success;
 
   <<__Rx>>
-  public function __construct(?string $success = null  ) {
+  public function __construct(?varray<Foo> $success = null  ) {
   }
 
   <<__Rx>>

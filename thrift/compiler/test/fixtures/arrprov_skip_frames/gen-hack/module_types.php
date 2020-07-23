@@ -21,7 +21,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
       'elem' => shape(
         'type' => \TType::STRING,
       ),
-      'format' => 'harray',
+      'format' => 'array',
     ),
     2 => shape(
       'var' => 'b',
@@ -40,11 +40,11 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
           'elem' => shape(
             'type' => \TType::I32,
           ),
-          'format' => 'harray',
+          'format' => 'array',
         ),
-        'format' => 'harray',
+        'format' => 'array',
       ),
-      'format' => 'harray',
+      'format' => 'array',
     ),
     3 => shape(
       'var' => 'c',
@@ -63,15 +63,15 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => vec<string>,
-    ?'b' => ?dict<string, vec<keyset<int>>>,
+    ?'a' => varray<string>,
+    ?'b' => ?darray<string, varray<darray<int, bool>>>,
     ?'c' => int,
     ?'d' => ?bool,
   );
 
   const type TShape = shape(
-    'a' => vec<string>,
-    ?'b' => ?dict<string, vec<keyset<int>>>,
+    'a' => varray<string>,
+    ?'b' => ?darray<string, varray<darray<int, bool>>>,
     'c' => int,
     ?'d' => ?bool,
   );
@@ -80,12 +80,12 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
    * Original thrift field:-
    * 1: list<string> a
    */
-  public vec<string> $a;
+  public varray<string> $a;
   /**
    * Original thrift field:-
    * 2: map<string, list<set<i32>>> b
    */
-  public ?dict<string, vec<keyset<int>>> $b;
+  public ?darray<string, varray<darray<int, bool>>> $b;
   /**
    * Original thrift field:-
    * 3: i64 c
@@ -98,8 +98,8 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   public ?bool $d;
 
   <<__Rx>>
-  public function __construct(?vec<string> $a = null, ?dict<string, vec<keyset<int>>> $b = null, ?int $c = null, ?bool $d = null  ) {
-    $this->a = $a ?? vec[];
+  public function __construct(?varray<string> $a = null, ?darray<string, varray<darray<int, bool>>> $b = null, ?int $c = null, ?bool $d = null  ) {
+    $this->a = $a ?? varray[];
     $this->b = $b;
     $this->c = $c ?? 7;
     $this->d = $d;
@@ -171,7 +171,7 @@ class Baz extends \TException implements \IThriftStruct {
       'elem' => shape(
         'type' => \TType::STRING,
       ),
-      'format' => 'harray',
+      'format' => 'array',
     ),
     4 => shape(
       'var' => 'code',
@@ -188,7 +188,7 @@ class Baz extends \TException implements \IThriftStruct {
   const type TConstructorShape = shape(
     ?'message' => string,
     ?'some_field' => ?Foo,
-    ?'some_container' => keyset<string>,
+    ?'some_container' => darray<string, bool>,
     ?'code' => int,
   );
 
@@ -207,7 +207,7 @@ class Baz extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 3: set<string> some_container
    */
-  public keyset<string> $some_container;
+  public darray<string, bool> $some_container;
   /**
    * Original thrift field:-
    * 4: i32 code
@@ -215,11 +215,11 @@ class Baz extends \TException implements \IThriftStruct {
   public int $code;
 
   <<__Rx>>
-  public function __construct(?string $message = null, ?Foo $some_field = null, ?keyset<string> $some_container = null, ?int $code = null  ) {
+  public function __construct(?string $message = null, ?Foo $some_field = null, ?darray<string, bool> $some_container = null, ?int $code = null  ) {
     parent::__construct();
     $this->message = $message ?? '';
     $this->some_field = $some_field;
-    $this->some_container = $some_container ?? keyset[];
+    $this->some_container = $some_container ?? darray[];
     $this->code = $code ?? 0;
   }
 

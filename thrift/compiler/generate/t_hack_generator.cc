@@ -3877,8 +3877,11 @@ void t_hack_generator::_generate_service_client(
           std::make_unique<t_struct>(program_));
       string return_typehint = type_to_typehint((*f_iter)->get_returntype());
       // Open function
-      out << "\n"
-          << indent() << "protected function "
+      out << "\n";
+      if (arrprov_skip_frames_) {
+        indent(f_service_) << "<<__ProvenanceSkipFrame>>\n";
+      }
+      out << indent() << "protected function "
           << function_signature(
                  &recv_function,
                  "",
@@ -4173,6 +4176,9 @@ void t_hack_generator::_generate_service_client_children(
         rpc_options ? "$rpc_options" : "new \\RpcOptions()";
 
     generate_php_docstring(out, *f_iter);
+    if (arrprov_skip_frames_) {
+      indent(out) << "<<__ProvenanceSkipFrame>>\n";
+    }
     if (nullable_everything_) {
       indent(out)
           << "public async function " << funname << "("
@@ -4274,6 +4280,9 @@ void t_hack_generator::_generate_service_client_children(
             string("recv_") + (*f_iter)->get_name(),
             std::make_unique<t_struct>(program_));
         // Open function
+        if (arrprov_skip_frames_) {
+          indent(out) << "<<__ProvenanceSkipFrame>>\n";
+        }
         bool is_void = (*f_iter)->get_returntype()->is_void();
         out << indent() << "public function "
             << function_signature(
