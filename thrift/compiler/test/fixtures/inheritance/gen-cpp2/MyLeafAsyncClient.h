@@ -44,11 +44,23 @@ class MyLeafAsyncClient : public ::cpp2::MyNodeAsyncClient {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_do_leaf() {
-    co_await semifuture_do_leaf();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_await folly::coro::detachOnCancel(semifuture_do_leaf());
+    } else {
+      co_await semifuture_do_leaf();
+    }
   }
   template <int = 0>
   folly::coro::Task<void> co_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
-    co_await semifuture_do_leaf(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_await folly::coro::detachOnCancel(semifuture_do_leaf(rpcOptions));
+    } else {
+      co_await semifuture_do_leaf(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void do_leaf(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);

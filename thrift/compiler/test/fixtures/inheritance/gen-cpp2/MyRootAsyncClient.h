@@ -43,11 +43,23 @@ class MyRootAsyncClient : public apache::thrift::GeneratedAsyncClient {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_do_root() {
-    co_await semifuture_do_root();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_await folly::coro::detachOnCancel(semifuture_do_root());
+    } else {
+      co_await semifuture_do_root();
+    }
   }
   template <int = 0>
   folly::coro::Task<void> co_do_root(apache::thrift::RpcOptions& rpcOptions) {
-    co_await semifuture_do_root(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_await folly::coro::detachOnCancel(semifuture_do_root(rpcOptions));
+    } else {
+      co_await semifuture_do_root(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void do_root(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);

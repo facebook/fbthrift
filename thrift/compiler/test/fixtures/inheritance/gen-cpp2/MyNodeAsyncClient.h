@@ -44,11 +44,23 @@ class MyNodeAsyncClient : public ::cpp2::MyRootAsyncClient {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_do_mid() {
-    co_await semifuture_do_mid();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_await folly::coro::detachOnCancel(semifuture_do_mid());
+    } else {
+      co_await semifuture_do_mid();
+    }
   }
   template <int = 0>
   folly::coro::Task<void> co_do_mid(apache::thrift::RpcOptions& rpcOptions) {
-    co_await semifuture_do_mid(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_await folly::coro::detachOnCancel(semifuture_do_mid(rpcOptions));
+    } else {
+      co_await semifuture_do_mid(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void do_mid(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);

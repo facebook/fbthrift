@@ -44,11 +44,23 @@ class MyServicePrioChildAsyncClient : public ::cpp2::MyServicePrioParentAsyncCli
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_pang() {
-    co_await semifuture_pang();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_await folly::coro::detachOnCancel(semifuture_pang());
+    } else {
+      co_await semifuture_pang();
+    }
   }
   template <int = 0>
   folly::coro::Task<void> co_pang(apache::thrift::RpcOptions& rpcOptions) {
-    co_await semifuture_pang(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_await folly::coro::detachOnCancel(semifuture_pang(rpcOptions));
+    } else {
+      co_await semifuture_pang(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void pang(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);

@@ -23,6 +23,7 @@
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 
 #if FOLLY_HAS_COROUTINES
+#include <folly/experimental/coro/DetachOnCancel.h>
 #include <folly/experimental/coro/Task.h>
 #endif
 

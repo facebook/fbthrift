@@ -43,11 +43,23 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_ping() {
-    co_await semifuture_ping();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_await folly::coro::detachOnCancel(semifuture_ping());
+    } else {
+      co_await semifuture_ping();
+    }
   }
   template <int = 0>
   folly::coro::Task<void> co_ping(apache::thrift::RpcOptions& rpcOptions) {
-    co_await semifuture_ping(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_await folly::coro::detachOnCancel(semifuture_ping(rpcOptions));
+    } else {
+      co_await semifuture_ping(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void ping(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -77,11 +89,23 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_pong() {
-    co_await semifuture_pong();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_await folly::coro::detachOnCancel(semifuture_pong());
+    } else {
+      co_await semifuture_pong();
+    }
   }
   template <int = 0>
   folly::coro::Task<void> co_pong(apache::thrift::RpcOptions& rpcOptions) {
-    co_await semifuture_pong(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_await folly::coro::detachOnCancel(semifuture_pong(rpcOptions));
+    } else {
+      co_await semifuture_pong(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void pong(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);

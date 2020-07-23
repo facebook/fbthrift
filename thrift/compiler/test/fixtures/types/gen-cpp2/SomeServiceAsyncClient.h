@@ -44,11 +44,23 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task< ::apache::thrift::fixtures::types::SomeMap> co_bounce_map(const  ::apache::thrift::fixtures::types::SomeMap& m) {
-    co_return co_await semifuture_bounce_map(m);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_bounce_map(m));
+    } else {
+      co_return co_await semifuture_bounce_map(m);
+    }
   }
   template <int = 0>
   folly::coro::Task< ::apache::thrift::fixtures::types::SomeMap> co_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m) {
-    co_return co_await semifuture_bounce_map(rpcOptions, m);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_bounce_map(rpcOptions, m));
+    } else {
+      co_return co_await semifuture_bounce_map(rpcOptions, m);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void bounce_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::apache::thrift::fixtures::types::SomeMap& m);
@@ -78,11 +90,23 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> co_binary_keyed_map(const ::std::vector<int64_t>& r) {
-    co_return co_await semifuture_binary_keyed_map(r);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_binary_keyed_map(r));
+    } else {
+      co_return co_await semifuture_binary_keyed_map(r);
+    }
   }
   template <int = 0>
   folly::coro::Task<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> co_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<int64_t>& r) {
-    co_return co_await semifuture_binary_keyed_map(rpcOptions, r);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_binary_keyed_map(rpcOptions, r));
+    } else {
+      co_return co_await semifuture_binary_keyed_map(rpcOptions, r);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void binary_keyed_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<int64_t>& r);

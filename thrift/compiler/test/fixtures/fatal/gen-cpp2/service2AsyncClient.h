@@ -46,11 +46,23 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_methodA() {
-    co_await semifuture_methodA();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_await folly::coro::detachOnCancel(semifuture_methodA());
+    } else {
+      co_await semifuture_methodA();
+    }
   }
   template <int = 0>
   folly::coro::Task<void> co_methodA(apache::thrift::RpcOptions& rpcOptions) {
-    co_await semifuture_methodA(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_await folly::coro::detachOnCancel(semifuture_methodA(rpcOptions));
+    } else {
+      co_await semifuture_methodA(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void methodA(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -80,11 +92,23 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_methodB(int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
-    co_await semifuture_methodB(x, y, z);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_await folly::coro::detachOnCancel(semifuture_methodB(x, y, z));
+    } else {
+      co_await semifuture_methodB(x, y, z);
+    }
   }
   template <int = 0>
   folly::coro::Task<void> co_methodB(apache::thrift::RpcOptions& rpcOptions, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
-    co_await semifuture_methodB(rpcOptions, x, y, z);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_await folly::coro::detachOnCancel(semifuture_methodB(rpcOptions, x, y, z));
+    } else {
+      co_await semifuture_methodB(rpcOptions, x, y, z);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void methodB(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z);
@@ -114,11 +138,23 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_methodC() {
-    co_return co_await semifuture_methodC();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_methodC());
+    } else {
+      co_return co_await semifuture_methodC();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_methodC(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_methodC(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_methodC(rpcOptions));
+    } else {
+      co_return co_await semifuture_methodC(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void methodC(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -148,11 +184,23 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_methodD(int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
-    co_return co_await semifuture_methodD(i, j, k);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_methodD(i, j, k));
+    } else {
+      co_return co_await semifuture_methodD(i, j, k);
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_methodD(apache::thrift::RpcOptions& rpcOptions, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
-    co_return co_await semifuture_methodD(rpcOptions, i, j, k);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_methodD(rpcOptions, i, j, k));
+    } else {
+      co_return co_await semifuture_methodD(rpcOptions, i, j, k);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void methodD(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k);
@@ -182,11 +230,23 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task< ::test_cpp2::cpp_reflection::struct2> co_methodE() {
-    co_return co_await semifuture_methodE();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_methodE());
+    } else {
+      co_return co_await semifuture_methodE();
+    }
   }
   template <int = 0>
   folly::coro::Task< ::test_cpp2::cpp_reflection::struct2> co_methodE(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_methodE(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_methodE(rpcOptions));
+    } else {
+      co_return co_await semifuture_methodE(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void methodE(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -216,11 +276,23 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task< ::test_cpp2::cpp_reflection::struct2> co_methodF(int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {
-    co_return co_await semifuture_methodF(l, m, n);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_methodF(l, m, n));
+    } else {
+      co_return co_await semifuture_methodF(l, m, n);
+    }
   }
   template <int = 0>
   folly::coro::Task< ::test_cpp2::cpp_reflection::struct2> co_methodF(apache::thrift::RpcOptions& rpcOptions, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {
-    co_return co_await semifuture_methodF(rpcOptions, l, m, n);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_methodF(rpcOptions, l, m, n));
+    } else {
+      co_return co_await semifuture_methodF(rpcOptions, l, m, n);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void methodF(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n);

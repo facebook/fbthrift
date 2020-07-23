@@ -43,11 +43,23 @@ class CAsyncClient : public apache::thrift::GeneratedAsyncClient {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_f() {
-    co_await semifuture_f();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_await folly::coro::detachOnCancel(semifuture_f());
+    } else {
+      co_await semifuture_f();
+    }
   }
   template <int = 0>
   folly::coro::Task<void> co_f(apache::thrift::RpcOptions& rpcOptions) {
-    co_await semifuture_f(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_await folly::coro::detachOnCancel(semifuture_f(rpcOptions));
+    } else {
+      co_await semifuture_f(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void f(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);

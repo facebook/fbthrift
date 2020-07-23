@@ -46,11 +46,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_get() {
-    co_return co_await semifuture_get();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_get());
+    } else {
+      co_return co_await semifuture_get();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_get(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_get(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_get(rpcOptions));
+    } else {
+      co_return co_await semifuture_get(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void get(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -80,11 +92,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_getter() {
-    co_return co_await semifuture_getter();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_getter());
+    } else {
+      co_return co_await semifuture_getter();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_getter(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_getter(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_getter(rpcOptions));
+    } else {
+      co_return co_await semifuture_getter(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void getter(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -114,11 +138,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_lists() {
-    co_return co_await semifuture_lists();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_lists());
+    } else {
+      co_return co_await semifuture_lists();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_lists(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_lists(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_lists(rpcOptions));
+    } else {
+      co_return co_await semifuture_lists(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void lists(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -148,11 +184,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_maps() {
-    co_return co_await semifuture_maps();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_maps());
+    } else {
+      co_return co_await semifuture_maps();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_maps(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_maps(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_maps(rpcOptions));
+    } else {
+      co_return co_await semifuture_maps(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void maps(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -182,11 +230,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_name() {
-    co_return co_await semifuture_name();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_name());
+    } else {
+      co_return co_await semifuture_name();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_name(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_name(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_name(rpcOptions));
+    } else {
+      co_return co_await semifuture_name(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void name(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -216,11 +276,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_name_to_value() {
-    co_return co_await semifuture_name_to_value();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_name_to_value());
+    } else {
+      co_return co_await semifuture_name_to_value();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_name_to_value(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_name_to_value(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_name_to_value(rpcOptions));
+    } else {
+      co_return co_await semifuture_name_to_value(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void name_to_value(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -250,11 +322,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_names() {
-    co_return co_await semifuture_names();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_names());
+    } else {
+      co_return co_await semifuture_names();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_names(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_names(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_names(rpcOptions));
+    } else {
+      co_return co_await semifuture_names(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void names(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -284,11 +368,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_prefix_tree() {
-    co_return co_await semifuture_prefix_tree();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_prefix_tree());
+    } else {
+      co_return co_await semifuture_prefix_tree();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_prefix_tree(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_prefix_tree(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_prefix_tree(rpcOptions));
+    } else {
+      co_return co_await semifuture_prefix_tree(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void prefix_tree(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -318,11 +414,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_sets() {
-    co_return co_await semifuture_sets();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_sets());
+    } else {
+      co_return co_await semifuture_sets();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_sets(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_sets(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_sets(rpcOptions));
+    } else {
+      co_return co_await semifuture_sets(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void sets(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -352,11 +460,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_setter() {
-    co_return co_await semifuture_setter();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_setter());
+    } else {
+      co_return co_await semifuture_setter();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_setter(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_setter(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_setter(rpcOptions));
+    } else {
+      co_return co_await semifuture_setter(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void setter(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -386,11 +506,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_str() {
-    co_return co_await semifuture_str();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_str());
+    } else {
+      co_return co_await semifuture_str();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_str(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_str(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_str(rpcOptions));
+    } else {
+      co_return co_await semifuture_str(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void str(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -420,11 +552,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_strings() {
-    co_return co_await semifuture_strings();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_strings());
+    } else {
+      co_return co_await semifuture_strings();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_strings(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_strings(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_strings(rpcOptions));
+    } else {
+      co_return co_await semifuture_strings(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void strings(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -454,11 +598,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_type() {
-    co_return co_await semifuture_type();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_type());
+    } else {
+      co_return co_await semifuture_type();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_type(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_type(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_type(rpcOptions));
+    } else {
+      co_return co_await semifuture_type(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void type(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -488,11 +644,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_value() {
-    co_return co_await semifuture_value();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_value());
+    } else {
+      co_return co_await semifuture_value();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_value(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_value(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_value(rpcOptions));
+    } else {
+      co_return co_await semifuture_value(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void value(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -522,11 +690,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_value_to_name() {
-    co_return co_await semifuture_value_to_name();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_value_to_name());
+    } else {
+      co_return co_await semifuture_value_to_name();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_value_to_name(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_value_to_name(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_value_to_name(rpcOptions));
+    } else {
+      co_return co_await semifuture_value_to_name(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void value_to_name(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -556,11 +736,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_values() {
-    co_return co_await semifuture_values();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_values());
+    } else {
+      co_return co_await semifuture_values();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_values(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_values(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_values(rpcOptions));
+    } else {
+      co_return co_await semifuture_values(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void values(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -590,11 +782,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_id() {
-    co_return co_await semifuture_id();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_id());
+    } else {
+      co_return co_await semifuture_id();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_id(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_id(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_id(rpcOptions));
+    } else {
+      co_return co_await semifuture_id(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void id(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -624,11 +828,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_ids() {
-    co_return co_await semifuture_ids();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_ids());
+    } else {
+      co_return co_await semifuture_ids();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_ids(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_ids(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_ids(rpcOptions));
+    } else {
+      co_return co_await semifuture_ids(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void ids(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -658,11 +874,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_descriptor() {
-    co_return co_await semifuture_descriptor();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_descriptor());
+    } else {
+      co_return co_await semifuture_descriptor();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_descriptor(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_descriptor(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_descriptor(rpcOptions));
+    } else {
+      co_return co_await semifuture_descriptor(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void descriptor(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -692,11 +920,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_descriptors() {
-    co_return co_await semifuture_descriptors();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_descriptors());
+    } else {
+      co_return co_await semifuture_descriptors();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_descriptors(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_descriptors(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_descriptors(rpcOptions));
+    } else {
+      co_return co_await semifuture_descriptors(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void descriptors(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -726,11 +966,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_key() {
-    co_return co_await semifuture_key();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_key());
+    } else {
+      co_return co_await semifuture_key();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_key(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_key(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_key(rpcOptions));
+    } else {
+      co_return co_await semifuture_key(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void key(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -760,11 +1012,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_keys() {
-    co_return co_await semifuture_keys();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_keys());
+    } else {
+      co_return co_await semifuture_keys();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_keys(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_keys(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_keys(rpcOptions));
+    } else {
+      co_return co_await semifuture_keys(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void keys(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -794,11 +1058,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_annotation() {
-    co_return co_await semifuture_annotation();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_annotation());
+    } else {
+      co_return co_await semifuture_annotation();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_annotation(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_annotation(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_annotation(rpcOptions));
+    } else {
+      co_return co_await semifuture_annotation(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void annotation(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -828,11 +1104,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_annotations() {
-    co_return co_await semifuture_annotations();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_annotations());
+    } else {
+      co_return co_await semifuture_annotations();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_annotations(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_annotations(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_annotations(rpcOptions));
+    } else {
+      co_return co_await semifuture_annotations(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void annotations(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -862,11 +1150,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_member() {
-    co_return co_await semifuture_member();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_member());
+    } else {
+      co_return co_await semifuture_member();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_member(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_member(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_member(rpcOptions));
+    } else {
+      co_return co_await semifuture_member(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void member(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -896,11 +1196,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_members() {
-    co_return co_await semifuture_members();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_members());
+    } else {
+      co_return co_await semifuture_members();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_members(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_members(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_members(rpcOptions));
+    } else {
+      co_return co_await semifuture_members(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void members(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -930,11 +1242,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_field() {
-    co_return co_await semifuture_field();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_field());
+    } else {
+      co_return co_await semifuture_field();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_field(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_field(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_field(rpcOptions));
+    } else {
+      co_return co_await semifuture_field(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void field(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -964,11 +1288,23 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_fields() {
-    co_return co_await semifuture_fields();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_fields());
+    } else {
+      co_return co_await semifuture_fields();
+    }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_fields(apache::thrift::RpcOptions& rpcOptions) {
-    co_return co_await semifuture_fields(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_return co_await folly::coro::detachOnCancel(semifuture_fields(rpcOptions));
+    } else {
+      co_return co_await semifuture_fields(rpcOptions);
+    }
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void fields(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
