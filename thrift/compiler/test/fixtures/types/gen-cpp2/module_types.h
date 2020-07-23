@@ -3823,3 +3823,20 @@ uint32_t NoExceptMoveUnion::read(Protocol_* iprot) {
 }
 
 }}}} // apache::thrift::fixtures::types
+
+namespace apache { namespace thrift {
+
+template <> struct TEnumDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>;
+
+template <> struct TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type> {
+  using type = ::apache::thrift::fixtures::types::NoExceptMoveUnion::Type;
+
+  static constexpr std::size_t const size = 2;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+}} // apache::thrift

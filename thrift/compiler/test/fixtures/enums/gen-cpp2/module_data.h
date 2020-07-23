@@ -15,13 +15,13 @@ namespace apache { namespace thrift {
 template <> struct TEnumDataStorage<::cpp2::Metasyntactic> {
   using type = ::cpp2::Metasyntactic;
   static constexpr const std::size_t size = 4;
-  static constexpr const std::array<type, 4> values = {{
+  static constexpr const std::array<type, size> values = {{
     type::FOO,
     type::BAR,
     type::BAZ,
     type::BAX,
   }};
-  static constexpr const std::array<folly::StringPiece, 4> names = {{
+  static constexpr const std::array<folly::StringPiece, size> names = {{
     "FOO",
     "BAR",
     "BAZ",

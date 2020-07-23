@@ -1143,6 +1143,7 @@ class mstch_program : public mstch_base {
             {"program:constants", &mstch_program::constants},
             {"program:enums?", &mstch_program::has_enums},
             {"program:structs?", &mstch_program::has_structs},
+            {"program:unions?", &mstch_program::has_unions},
             {"program:services?", &mstch_program::has_services},
             {"program:typedefs?", &mstch_program::has_typedefs},
             {"program:constants?", &mstch_program::has_constants},
@@ -1174,6 +1175,11 @@ class mstch_program : public mstch_base {
   }
   mstch::node has_constants() {
     return !program_->get_consts().empty();
+  }
+  mstch::node has_unions() {
+    auto& structs = program_->get_structs();
+    return std::any_of(
+        structs.cbegin(), structs.cend(), std::mem_fn(&t_struct::is_union));
   }
 
   mstch::node structs();

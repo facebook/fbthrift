@@ -13,4 +13,88 @@
 namespace apache { namespace thrift {
 
 
+template <> struct TEnumDataStorage<::cpp2::ComplexUnion::Type> {
+  using type = ::cpp2::ComplexUnion::Type;
+  static constexpr const std::size_t size = 6;
+  static constexpr const std::array<type, size> values = {{
+    type::intValue,
+    type::stringValue,
+    type::intListValue,
+    type::stringListValue,
+    type::typedefValue,
+    type::stringRef,
+  }};
+  static constexpr const std::array<folly::StringPiece, size> names = {{
+    "intValue",
+    "stringValue",
+    "intListValue",
+    "stringListValue",
+    "typedefValue",
+    "stringRef",
+  }};
+};
+
+template <> struct TEnumDataStorage<::cpp2::ListUnion::Type> {
+  using type = ::cpp2::ListUnion::Type;
+  static constexpr const std::size_t size = 2;
+  static constexpr const std::array<type, size> values = {{
+    type::intListValue,
+    type::stringListValue,
+  }};
+  static constexpr const std::array<folly::StringPiece, size> names = {{
+    "intListValue",
+    "stringListValue",
+  }};
+};
+
+template <> struct TEnumDataStorage<::cpp2::DataUnion::Type> {
+  using type = ::cpp2::DataUnion::Type;
+  static constexpr const std::size_t size = 2;
+  static constexpr const std::array<type, size> values = {{
+    type::binaryData,
+    type::stringData,
+  }};
+  static constexpr const std::array<folly::StringPiece, size> names = {{
+    "binaryData",
+    "stringData",
+  }};
+};
+
+template <> struct TEnumDataStorage<::cpp2::ValUnion::Type> {
+  using type = ::cpp2::ValUnion::Type;
+  static constexpr const std::size_t size = 2;
+  static constexpr const std::array<type, size> values = {{
+    type::v1,
+    type::v2,
+  }};
+  static constexpr const std::array<folly::StringPiece, size> names = {{
+    "v1",
+    "v2",
+  }};
+};
+
+template <> struct TEnumDataStorage<::cpp2::VirtualComplexUnion::Type> {
+  using type = ::cpp2::VirtualComplexUnion::Type;
+  static constexpr const std::size_t size = 2;
+  static constexpr const std::array<type, size> values = {{
+    type::thingOne,
+    type::thingTwo,
+  }};
+  static constexpr const std::array<folly::StringPiece, size> names = {{
+    "thingOne",
+    "thingTwo",
+  }};
+};
+
+template <> struct TEnumDataStorage<::cpp2::NonCopyableUnion::Type> {
+  using type = ::cpp2::NonCopyableUnion::Type;
+  static constexpr const std::size_t size = 1;
+  static constexpr const std::array<type, size> values = {{
+    type::s,
+  }};
+  static constexpr const std::array<folly::StringPiece, size> names = {{
+    "s",
+  }};
+};
+
 }} // apache::thrift

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp/util/EnumUtils.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/test/gen-cpp2/UnionTest2_types.h>
 #include <thrift/test/gen-cpp2/UnionTest3_types.h>
@@ -22,7 +23,10 @@
 
 using namespace thrift::test::debug::cpp2;
 using namespace apache::thrift;
+using namespace apache::thrift::util;
 using namespace testing;
+
+using apache::thrift::TEnumTraits;
 
 template <class UnionType>
 UnionType serializeDeserialize(const UnionType& val) {
@@ -124,6 +128,28 @@ TEST_F(UnionTestFixture, SerdeTest) {
 
   u.set_struct_list(std::vector<RandomStuff>());
   serializeDeserialize(u);
+}
+
+TEST_F(UnionTestFixture, TypeEnumTest) {
+  TestUnion u;
+  EXPECT_EQ(TEnumTraits<TestUnion::Type>::size, 6);
+  EXPECT_EQ(
+      enumName(TestUnion::Type::string_field), std::string{"string_field"});
+  EXPECT_EQ(
+      enumName(TestUnion::Type::struct_field), std::string{"struct_field"});
+  EXPECT_EQ(enumName(TestUnion::Type::struct_list), std::string{"struct_list"});
+  EXPECT_EQ(enumName(TestUnion::Type::ref_field), std::string{"ref_field"});
+  EXPECT_EQ(enumName(TestUnion::Type::__EMPTY__), (const char*)nullptr);
+  EXPECT_EQ(enumName(static_cast<TestUnion::Type>(-10)), (const char*)nullptr);
+  TestUnion::Type t;
+  EXPECT_TRUE(tryParseEnum("string_field", &t));
+  EXPECT_EQ((int)t, 1);
+  EXPECT_TRUE(tryParseEnum("other_i32_field", &t));
+  EXPECT_EQ((int)t, 5);
+
+  EXPECT_FALSE(tryParseEnum("__EMPTY__", &t));
+  EXPECT_FALSE(tryParseEnum("foo_field", &t));
+  EXPECT_FALSE(tryParseEnum("bar_field", &t));
 }
 
 TEST_F(TerseUnionTestFixture, SerializeDeserializeTest) {

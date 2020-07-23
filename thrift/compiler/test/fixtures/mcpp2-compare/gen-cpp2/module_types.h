@@ -8110,3 +8110,48 @@ uint32_t AllRequiredNoExceptMoveCtrStruct::read(Protocol_* iprot) {
 }
 
 }}} // some::valid::ns
+
+namespace apache { namespace thrift {
+
+template <> struct TEnumDataStorage<::some::valid::ns::SimpleUnion::Type>;
+
+template <> struct TEnumTraits<::some::valid::ns::SimpleUnion::Type> {
+  using type = ::some::valid::ns::SimpleUnion::Type;
+
+  static constexpr std::size_t const size = 2;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+
+template <> struct TEnumDataStorage<::some::valid::ns::ComplexUnion::Type>;
+
+template <> struct TEnumTraits<::some::valid::ns::ComplexUnion::Type> {
+  using type = ::some::valid::ns::ComplexUnion::Type;
+
+  static constexpr std::size_t const size = 27;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+
+template <> struct TEnumDataStorage<::some::valid::ns::FloatUnion::Type>;
+
+template <> struct TEnumTraits<::some::valid::ns::FloatUnion::Type> {
+  using type = ::some::valid::ns::FloatUnion::Type;
+
+  static constexpr std::size_t const size = 2;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+}} // apache::thrift

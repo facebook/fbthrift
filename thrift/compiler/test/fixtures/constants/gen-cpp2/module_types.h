@@ -1906,3 +1906,34 @@ uint32_t union2::read(Protocol_* iprot) {
 }
 
 } // cpp2
+
+namespace apache { namespace thrift {
+
+template <> struct TEnumDataStorage<::cpp2::union1::Type>;
+
+template <> struct TEnumTraits<::cpp2::union1::Type> {
+  using type = ::cpp2::union1::Type;
+
+  static constexpr std::size_t const size = 2;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+
+template <> struct TEnumDataStorage<::cpp2::union2::Type>;
+
+template <> struct TEnumTraits<::cpp2::union2::Type> {
+  using type = ::cpp2::union2::Type;
+
+  static constexpr std::size_t const size = 4;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+}} // apache::thrift

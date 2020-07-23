@@ -18,5 +18,10 @@ constexpr const std::array<::cpp2::MyEnum, 2> TEnumDataStorage<::cpp2::MyEnum>::
 constexpr const std::array<folly::StringPiece, 2> TEnumDataStorage<::cpp2::MyEnum>::names;
 
 
+constexpr const std::size_t TEnumDataStorage<::cpp2::MyUnion::Type>::size;
+constexpr const std::array<::cpp2::MyUnion::Type, 3> TEnumDataStorage<::cpp2::MyUnion::Type>::values;
+constexpr const std::array<folly::StringPiece, 3> TEnumDataStorage<::cpp2::MyUnion::Type>::names;
+
+
 } // namespace thrift
 } // namespace apache

@@ -30,6 +30,15 @@ constexpr const std::array<<% > common/namespace_cpp2%><%enum:name%>, <%enum:siz
 constexpr const std::array<folly::StringPiece, <%enum:size%>> TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>::names;
 
 <%/program:enums%>
+<%#program:structs%>
+<%#struct:union?%>
+
+constexpr const std::size_t TEnumDataStorage<<% > common/namespace_cpp2%><%struct:name%>::Type>::size;
+constexpr const std::array<<% > common/namespace_cpp2%><%struct:name%>::Type, <%struct:num_union_members%>> TEnumDataStorage<<% > common/namespace_cpp2%><%struct:name%>::Type>::values;
+constexpr const std::array<folly::StringPiece, <%struct:num_union_members%>> TEnumDataStorage<<% > common/namespace_cpp2%><%struct:name%>::Type>::names;
+
+<%/struct:union?%>
+<%/program:structs%>
 
 } // namespace thrift
 } // namespace apache

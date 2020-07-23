@@ -144,6 +144,29 @@ FOLLY_POP_WARNING
 
 }}}} // apache::thrift::fixtures::types
 
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::size;
+folly::Range<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type const*> const TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::values = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::names = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::names);
+
+char const* TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+}} // apache::thrift
+
 namespace apache {
 namespace thrift {
 namespace detail {

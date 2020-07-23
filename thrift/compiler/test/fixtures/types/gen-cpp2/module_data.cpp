@@ -33,5 +33,10 @@ constexpr const std::array<::apache::thrift::fixtures::types::MyEnumA, 3> TEnumD
 constexpr const std::array<folly::StringPiece, 3> TEnumDataStorage<::apache::thrift::fixtures::types::MyEnumA>::names;
 
 
+constexpr const std::size_t TEnumDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::size;
+constexpr const std::array<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type, 2> TEnumDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::values;
+constexpr const std::array<folly::StringPiece, 2> TEnumDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::names;
+
+
 } // namespace thrift
 } // namespace apache

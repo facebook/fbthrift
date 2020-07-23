@@ -9026,3 +9026,76 @@ uint32_t struct_with_indirections::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
+
+namespace apache { namespace thrift {
+
+template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::union1::Type>;
+
+template <> struct TEnumTraits<::test_cpp2::cpp_reflection::union1::Type> {
+  using type = ::test_cpp2::cpp_reflection::union1::Type;
+
+  static constexpr std::size_t const size = 4;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+
+template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::union2::Type>;
+
+template <> struct TEnumTraits<::test_cpp2::cpp_reflection::union2::Type> {
+  using type = ::test_cpp2::cpp_reflection::union2::Type;
+
+  static constexpr std::size_t const size = 4;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+
+template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::union3::Type>;
+
+template <> struct TEnumTraits<::test_cpp2::cpp_reflection::union3::Type> {
+  using type = ::test_cpp2::cpp_reflection::union3::Type;
+
+  static constexpr std::size_t const size = 4;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+
+template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::unionA::Type>;
+
+template <> struct TEnumTraits<::test_cpp2::cpp_reflection::unionA::Type> {
+  using type = ::test_cpp2::cpp_reflection::unionA::Type;
+
+  static constexpr std::size_t const size = 5;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+
+template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::union_with_special_names::Type>;
+
+template <> struct TEnumTraits<::test_cpp2::cpp_reflection::union_with_special_names::Type> {
+  using type = ::test_cpp2::cpp_reflection::union_with_special_names::Type;
+
+  static constexpr std::size_t const size = 28;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+}} // apache::thrift

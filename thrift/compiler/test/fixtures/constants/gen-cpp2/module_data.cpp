@@ -28,5 +28,15 @@ constexpr const std::array<::cpp2::Company, 4> TEnumDataStorage<::cpp2::Company>
 constexpr const std::array<folly::StringPiece, 4> TEnumDataStorage<::cpp2::Company>::names;
 
 
+constexpr const std::size_t TEnumDataStorage<::cpp2::union1::Type>::size;
+constexpr const std::array<::cpp2::union1::Type, 2> TEnumDataStorage<::cpp2::union1::Type>::values;
+constexpr const std::array<folly::StringPiece, 2> TEnumDataStorage<::cpp2::union1::Type>::names;
+
+
+constexpr const std::size_t TEnumDataStorage<::cpp2::union2::Type>::size;
+constexpr const std::array<::cpp2::union2::Type, 4> TEnumDataStorage<::cpp2::union2::Type>::values;
+constexpr const std::array<folly::StringPiece, 4> TEnumDataStorage<::cpp2::union2::Type>::names;
+
+
 } // namespace thrift
 } // namespace apache

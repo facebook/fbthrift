@@ -775,6 +775,8 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:legacy_type_id", &mstch_cpp2_struct::get_legacy_type_id},
             {"struct:metadata_name", &mstch_cpp2_struct::metadata_name},
             {"struct:mixin_fields", &mstch_cpp2_struct::mixin_fields},
+            {"struct:num_union_members",
+             &mstch_cpp2_struct::get_num_union_members},
         });
   }
   mstch::node filtered_fields() {
@@ -945,6 +947,13 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node metadata_name() {
     return strct_->get_program()->get_name() + "_" + strct_->get_name();
+  }
+
+  mstch::node get_num_union_members() {
+    if (!strct_->is_union()) {
+      throw runtime_error("not a union struct");
+    }
+    return std::to_string(strct_->get_members().size());
   }
 
  protected:

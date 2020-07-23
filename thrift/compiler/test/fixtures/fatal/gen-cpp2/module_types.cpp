@@ -144,6 +144,109 @@ FOLLY_POP_WARNING
 
 }} // test_cpp2::cpp_reflection
 
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::test_cpp2::cpp_reflection::union1::Type>::size;
+folly::Range<::test_cpp2::cpp_reflection::union1::Type const*> const TEnumTraits<::test_cpp2::cpp_reflection::union1::Type>::values = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::union1::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test_cpp2::cpp_reflection::union1::Type>::names = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::union1::Type>::names);
+
+char const* TEnumTraits<::test_cpp2::cpp_reflection::union1::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::test_cpp2::cpp_reflection::union1::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::test_cpp2::cpp_reflection::union1::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::test_cpp2::cpp_reflection::union1::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+
+constexpr std::size_t const TEnumTraits<::test_cpp2::cpp_reflection::union2::Type>::size;
+folly::Range<::test_cpp2::cpp_reflection::union2::Type const*> const TEnumTraits<::test_cpp2::cpp_reflection::union2::Type>::values = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::union2::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test_cpp2::cpp_reflection::union2::Type>::names = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::union2::Type>::names);
+
+char const* TEnumTraits<::test_cpp2::cpp_reflection::union2::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::test_cpp2::cpp_reflection::union2::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::test_cpp2::cpp_reflection::union2::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::test_cpp2::cpp_reflection::union2::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+
+constexpr std::size_t const TEnumTraits<::test_cpp2::cpp_reflection::union3::Type>::size;
+folly::Range<::test_cpp2::cpp_reflection::union3::Type const*> const TEnumTraits<::test_cpp2::cpp_reflection::union3::Type>::values = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::union3::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test_cpp2::cpp_reflection::union3::Type>::names = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::union3::Type>::names);
+
+char const* TEnumTraits<::test_cpp2::cpp_reflection::union3::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::test_cpp2::cpp_reflection::union3::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::test_cpp2::cpp_reflection::union3::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::test_cpp2::cpp_reflection::union3::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+
+constexpr std::size_t const TEnumTraits<::test_cpp2::cpp_reflection::unionA::Type>::size;
+folly::Range<::test_cpp2::cpp_reflection::unionA::Type const*> const TEnumTraits<::test_cpp2::cpp_reflection::unionA::Type>::values = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::unionA::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test_cpp2::cpp_reflection::unionA::Type>::names = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::unionA::Type>::names);
+
+char const* TEnumTraits<::test_cpp2::cpp_reflection::unionA::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::test_cpp2::cpp_reflection::unionA::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::test_cpp2::cpp_reflection::unionA::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::test_cpp2::cpp_reflection::unionA::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+
+constexpr std::size_t const TEnumTraits<::test_cpp2::cpp_reflection::union_with_special_names::Type>::size;
+folly::Range<::test_cpp2::cpp_reflection::union_with_special_names::Type const*> const TEnumTraits<::test_cpp2::cpp_reflection::union_with_special_names::Type>::values = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::union_with_special_names::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test_cpp2::cpp_reflection::union_with_special_names::Type>::names = folly::range(TEnumDataStorage<::test_cpp2::cpp_reflection::union_with_special_names::Type>::names);
+
+char const* TEnumTraits<::test_cpp2::cpp_reflection::union_with_special_names::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::test_cpp2::cpp_reflection::union_with_special_names::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::test_cpp2::cpp_reflection::union_with_special_names::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::test_cpp2::cpp_reflection::union_with_special_names::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+}} // apache::thrift
+
 namespace apache {
 namespace thrift {
 namespace detail {

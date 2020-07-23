@@ -232,3 +232,20 @@ uint32_t Nada::read(Protocol_* iprot) {
 }
 
 } // cpp2
+
+namespace apache { namespace thrift {
+
+template <> struct TEnumDataStorage<::cpp2::Nada::Type>;
+
+template <> struct TEnumTraits<::cpp2::Nada::Type> {
+  using type = ::cpp2::Nada::Type;
+
+  static constexpr std::size_t const size = 0;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+}} // apache::thrift

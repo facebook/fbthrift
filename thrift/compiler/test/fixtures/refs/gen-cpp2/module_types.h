@@ -1881,3 +1881,20 @@ uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::read(Protocol_* iprot) {
 }
 
 } // cpp2
+
+namespace apache { namespace thrift {
+
+template <> struct TEnumDataStorage<::cpp2::MyUnion::Type>;
+
+template <> struct TEnumTraits<::cpp2::MyUnion::Type> {
+  using type = ::cpp2::MyUnion::Type;
+
+  static constexpr std::size_t const size = 2;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+}} // apache::thrift

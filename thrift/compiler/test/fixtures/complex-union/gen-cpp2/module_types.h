@@ -2029,3 +2029,90 @@ uint32_t NonCopyableUnion::read(Protocol_* iprot) {
 }
 
 } // cpp2
+
+namespace apache { namespace thrift {
+
+template <> struct TEnumDataStorage<::cpp2::ComplexUnion::Type>;
+
+template <> struct TEnumTraits<::cpp2::ComplexUnion::Type> {
+  using type = ::cpp2::ComplexUnion::Type;
+
+  static constexpr std::size_t const size = 6;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+
+template <> struct TEnumDataStorage<::cpp2::ListUnion::Type>;
+
+template <> struct TEnumTraits<::cpp2::ListUnion::Type> {
+  using type = ::cpp2::ListUnion::Type;
+
+  static constexpr std::size_t const size = 2;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+
+template <> struct TEnumDataStorage<::cpp2::DataUnion::Type>;
+
+template <> struct TEnumTraits<::cpp2::DataUnion::Type> {
+  using type = ::cpp2::DataUnion::Type;
+
+  static constexpr std::size_t const size = 2;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+
+template <> struct TEnumDataStorage<::cpp2::ValUnion::Type>;
+
+template <> struct TEnumTraits<::cpp2::ValUnion::Type> {
+  using type = ::cpp2::ValUnion::Type;
+
+  static constexpr std::size_t const size = 2;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+
+template <> struct TEnumDataStorage<::cpp2::VirtualComplexUnion::Type>;
+
+template <> struct TEnumTraits<::cpp2::VirtualComplexUnion::Type> {
+  using type = ::cpp2::VirtualComplexUnion::Type;
+
+  static constexpr std::size_t const size = 2;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+
+template <> struct TEnumDataStorage<::cpp2::NonCopyableUnion::Type>;
+
+template <> struct TEnumTraits<::cpp2::NonCopyableUnion::Type> {
+  using type = ::cpp2::NonCopyableUnion::Type;
+
+  static constexpr std::size_t const size = 1;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+}} // apache::thrift

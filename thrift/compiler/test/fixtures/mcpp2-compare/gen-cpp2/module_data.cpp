@@ -33,5 +33,20 @@ constexpr const std::array<::some::valid::ns::MyEnumB, 1> TEnumDataStorage<::som
 constexpr const std::array<folly::StringPiece, 1> TEnumDataStorage<::some::valid::ns::MyEnumB>::names;
 
 
+constexpr const std::size_t TEnumDataStorage<::some::valid::ns::SimpleUnion::Type>::size;
+constexpr const std::array<::some::valid::ns::SimpleUnion::Type, 2> TEnumDataStorage<::some::valid::ns::SimpleUnion::Type>::values;
+constexpr const std::array<folly::StringPiece, 2> TEnumDataStorage<::some::valid::ns::SimpleUnion::Type>::names;
+
+
+constexpr const std::size_t TEnumDataStorage<::some::valid::ns::ComplexUnion::Type>::size;
+constexpr const std::array<::some::valid::ns::ComplexUnion::Type, 27> TEnumDataStorage<::some::valid::ns::ComplexUnion::Type>::values;
+constexpr const std::array<folly::StringPiece, 27> TEnumDataStorage<::some::valid::ns::ComplexUnion::Type>::names;
+
+
+constexpr const std::size_t TEnumDataStorage<::some::valid::ns::FloatUnion::Type>::size;
+constexpr const std::array<::some::valid::ns::FloatUnion::Type, 2> TEnumDataStorage<::some::valid::ns::FloatUnion::Type>::values;
+constexpr const std::array<folly::StringPiece, 2> TEnumDataStorage<::some::valid::ns::FloatUnion::Type>::names;
+
+
 } // namespace thrift
 } // namespace apache
