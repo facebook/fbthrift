@@ -503,6 +503,9 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsStress) {
   serviceImpl.reset();
 
   constexpr size_t kRequestsPerLoop = 20;
+  constexpr size_t kMaxInflightSpamRequests = 1000;
+
+  size_t inflightSpamRequests = 0;
 
   // Make sure that there're enough in-flight writes so that we see a write
   // error before seeing an EOF.
@@ -512,47 +515,58 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsStress) {
         return;
       }
       for (size_t i = 0; i < kRequestsPerLoop; ++i) {
+        if (inflightSpamRequests >= kMaxInflightSpamRequests) {
+          break;
+        }
         apache::thrift::RpcOptions rpcOptions;
-        cli->header_future_add(rpcOptions, 2000, 0).thenTry([](auto&& t) {
-          if (t.hasValue()) {
-            auto& header = *t->second;
-            const auto& readHeaders = header.getHeaders();
-            if (auto exHeader = folly::get_ptr(readHeaders, "ex")) {
-              if (*exHeader != kOverloadedErrorCode &&
-                  *exHeader != kQueueOverloadedErrorCode) {
-                FAIL() << "Non-retriable server error: " << *exHeader;
+        ++inflightSpamRequests;
+        cli->header_future_add(rpcOptions, 2000, 0)
+            .thenTry([&inflightSpamRequests,
+                      ka = folly::getKeepAliveToken(evb)](auto&& t) {
+              --inflightSpamRequests;
+              if (t.hasValue()) {
+                auto& header = *t->second;
+                const auto& readHeaders = header.getHeaders();
+                if (auto exHeader = folly::get_ptr(readHeaders, "ex")) {
+                  if (*exHeader != kOverloadedErrorCode &&
+                      *exHeader != kQueueOverloadedErrorCode) {
+                    FAIL() << "Non-retriable server error: " << *exHeader;
+                  }
+                }
+                EXPECT_EQ(2000, t->first);
+                return;
               }
-            }
-            EXPECT_EQ(2000, t->first);
-            return;
-          }
-          DCHECK(t.hasException());
-          if (!t.exception()
-                   .template with_exception<
-                       apache::thrift::transport::
-                           TTransportException>([](auto&& ex) {
-                     if (ex.getType() !=
-                         apache::thrift::transport::TTransportException::
-                             NOT_OPEN) {
-                       FAIL()
-                           << "Non-retriable TTransportException exception: "
-                           << ex.what() << ". Exception type: " << ex.getType();
-                     }
-                   }) &&
-              !t.exception()
-                   .template with_exception<
-                       apache::thrift::TApplicationException>([](auto&& ex) {
-                     if (ex.getType() !=
-                         apache::thrift::TApplicationException::LOADSHEDDING) {
-                       FAIL()
-                           << "Non-retriable TApplicationException exception: "
-                           << ex.what() << ". Exception type: " << ex.getType();
-                     }
-                   })) {
-            FAIL() << "Unexpected exception: "
-                   << folly::exceptionStr(t.exception());
-          }
-        });
+              DCHECK(t.hasException());
+              if (!t.exception()
+                       .template with_exception<
+                           apache::thrift::transport::
+                               TTransportException>([](auto&& ex) {
+                         if (ex.getType() !=
+                             apache::thrift::transport::TTransportException::
+                                 NOT_OPEN) {
+                           FAIL()
+                               << "Non-retriable TTransportException exception: "
+                               << ex.what()
+                               << ". Exception type: " << ex.getType();
+                         }
+                       }) &&
+                  !t.exception()
+                       .template with_exception<
+                           apache::thrift::TApplicationException>([](auto&&
+                                                                         ex) {
+                         if (ex.getType() !=
+                             apache::thrift::TApplicationException::
+                                 LOADSHEDDING) {
+                           FAIL()
+                               << "Non-retriable TApplicationException exception: "
+                               << ex.what()
+                               << ". Exception type: " << ex.getType();
+                         }
+                       })) {
+                FAIL() << "Unexpected exception: "
+                       << folly::exceptionStr(t.exception());
+              }
+            });
       }
       spamServer();
     });
