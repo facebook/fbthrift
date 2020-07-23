@@ -74,11 +74,26 @@ class TestFlagsBackend : public apache::thrift::detail::FlagsBackend {
       int64Observables_;
 };
 
-TestFlagsBackend testBackend;
-void* usedBackend = &testBackend;
+TestFlagsBackend* testBackendPtr;
+bool useDummyBackend{false};
 
-extern "C" void* thrift_flagsBackendCreator() {
-  return usedBackend;
+namespace apache {
+namespace thrift {
+namespace detail {
+std::unique_ptr<detail::FlagsBackend> createFlagsBackend() {
+  if (useDummyBackend) {
+    return {};
+  }
+  auto testBackend = std::make_unique<TestFlagsBackend>();
+  testBackendPtr = testBackend.get();
+  return testBackend;
+}
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+extern "C" void* apache_thrift_detail_createFlagsBackend_get_ptr() {
+  return reinterpret_cast<void*>(&apache::thrift::detail::createFlagsBackend);
 }
 
 TEST(Flags, Get) {
@@ -87,10 +102,11 @@ TEST(Flags, Get) {
   EXPECT_EQ(true, THRIFT_FLAG(test_flag_bool_external));
   EXPECT_EQ(42, THRIFT_FLAG(test_flag_int_external));
 
-  testBackend.getFlagObservableBool("test_flag_bool").setValue(false);
-  testBackend.getFlagObservableInt64("test_flag_int").setValue(41);
-  testBackend.getFlagObservableBool("test_flag_bool_external").setValue(false);
-  testBackend.getFlagObservableInt64("test_flag_int_external").setValue(41);
+  testBackendPtr->getFlagObservableBool("test_flag_bool").setValue(false);
+  testBackendPtr->getFlagObservableInt64("test_flag_int").setValue(41);
+  testBackendPtr->getFlagObservableBool("test_flag_bool_external")
+      .setValue(false);
+  testBackendPtr->getFlagObservableInt64("test_flag_int_external").setValue(41);
 
   folly::observer_detail::ObserverManager::waitForAllUpdates();
 
@@ -112,10 +128,11 @@ TEST(Flags, Observe) {
   EXPECT_EQ(true, **test_flag_bool_external_observer);
   EXPECT_EQ(42, **test_flag_int_extenal_observer);
 
-  testBackend.getFlagObservableBool("test_flag_bool").setValue(false);
-  testBackend.getFlagObservableInt64("test_flag_int").setValue(41);
-  testBackend.getFlagObservableBool("test_flag_bool_external").setValue(false);
-  testBackend.getFlagObservableInt64("test_flag_int_external").setValue(41);
+  testBackendPtr->getFlagObservableBool("test_flag_bool").setValue(false);
+  testBackendPtr->getFlagObservableInt64("test_flag_int").setValue(41);
+  testBackendPtr->getFlagObservableBool("test_flag_bool_external")
+      .setValue(false);
+  testBackendPtr->getFlagObservableInt64("test_flag_int_external").setValue(41);
 
   folly::observer_detail::ObserverManager::waitForAllUpdates();
 
@@ -126,7 +143,7 @@ TEST(Flags, Observe) {
 }
 
 TEST(Flags, NoBackend) {
-  usedBackend = nullptr;
+  useDummyBackend = true;
 
   EXPECT_EQ(true, THRIFT_FLAG(test_flag_bool));
   EXPECT_EQ(42, THRIFT_FLAG(test_flag_int));
