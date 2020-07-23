@@ -1128,13 +1128,6 @@ template<> struct hash<typename ::some::valid::ns::AnnotatedStruct> {
 template<> struct equal_to<typename ::some::valid::ns::AnnotatedStruct> {
   bool operator()(const ::some::valid::ns::AnnotatedStruct&,const ::some::valid::ns::AnnotatedStruct&) const;
 };
-
-template<> struct hash<typename ::some::valid::ns::HashedTypedef> {
-  size_t operator()(const ::some::valid::ns::HashedTypedef&) const;
-};
-template<> struct equal_to<typename ::some::valid::ns::HashedTypedef> {
-  bool operator()(const ::some::valid::ns::HashedTypedef&,const ::some::valid::ns::HashedTypedef&) const;
-};
 } // std
 // END hash_and_equal_to
 namespace some { namespace valid { namespace ns {
