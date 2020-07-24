@@ -27,6 +27,7 @@
 #include <folly/MPMCQueue.h>
 #include <folly/ThreadLocal.h>
 #include <folly/concurrency/PriorityUnboundedQueueSet.h>
+#include <folly/concurrency/QueueObserver.h>
 #include <folly/executors/Codel.h>
 #include <folly/io/async/Request.h>
 #include <folly/synchronization/LifoSem.h>
@@ -63,23 +64,18 @@ constexpr size_t NORMAL_PRIORITY_MINIMUM_THREADS = 1;
 
 class ThreadManager::Task {
  public:
-  enum STATE {
-    WAITING,
-    EXECUTING,
-    CANCELLED,
-    COMPLETE,
-  };
-
   Task(
       std::shared_ptr<Runnable> runnable,
-      const std::chrono::milliseconds& expiration)
+      const std::chrono::milliseconds& expiration,
+      size_t qpriority)
       : runnable_(std::move(runnable)),
         queueBeginTime_(std::chrono::steady_clock::now()),
         expireTime_(
             expiration > std::chrono::milliseconds::zero()
                 ? queueBeginTime_ + expiration
                 : std::chrono::steady_clock::time_point()),
-        context_(folly::RequestContext::saveContext()) {}
+        context_(folly::RequestContext::saveContext()),
+        qpriority_(qpriority) {}
 
   ~Task() {}
 
@@ -108,11 +104,21 @@ class ThreadManager::Task {
     return context_;
   }
 
+  intptr_t& queueObserverPayload() {
+    return queueObserverPayload_;
+  }
+
+  size_t queuePriority() const {
+    return qpriority_;
+  }
+
  private:
   std::shared_ptr<Runnable> runnable_;
   std::chrono::steady_clock::time_point queueBeginTime_;
   std::chrono::steady_clock::time_point expireTime_;
   std::shared_ptr<folly::RequestContext> context_;
+  size_t qpriority_;
+  intptr_t queueObserverPayload_;
 };
 
 class ThreadManager::Impl : public ThreadManager,
@@ -271,6 +277,7 @@ class ThreadManager::Impl : public ThreadManager,
       size_t value,
       bool afterTasks = false);
   bool shouldStop();
+  void setupQueueObservers();
 
   size_t workerCount_;
   // intendedWorkerCount_ tracks the number of worker threads that we currently
@@ -316,6 +323,9 @@ class ThreadManager::Impl : public ThreadManager,
   uint32_t namePrefixCounter_;
 
   bool codelEnabled_;
+
+  folly::Optional<std::vector<std::unique_ptr<folly::QueueObserver>>>
+      queueObservers_;
 };
 
 class SimpleThreadManager : public ThreadManager::Impl {

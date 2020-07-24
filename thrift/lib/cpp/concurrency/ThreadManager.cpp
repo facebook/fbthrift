@@ -79,6 +79,11 @@ class ThreadManager::Impl::Worker : public Runnable {
         return;
       }
 
+      if (manager_->queueObservers_) {
+        manager_->queueObservers_->at(task->queuePriority())
+            ->onDequeued(task->queueObserverPayload());
+      }
+
       auto startTime = std::chrono::steady_clock::now();
 
       // Codel auto-expire time algorithm
@@ -203,6 +208,7 @@ void ThreadManager::Impl::start() {
       throw InvalidArgumentException();
     }
     state_ = ThreadManager::STARTED;
+    setupQueueObservers();
     cond_.notify_all();
   }
 }
@@ -328,10 +334,13 @@ void ThreadManager::Impl::add(
     return;
   }
 
-  auto task = std::make_unique<Task>(
-      std::move(value), std::chrono::milliseconds{expiration});
   priority = 2 * priority + (upstream ? 1 : 0);
   auto const qpriority = std::min(tasks_.priorities() - 1, priority);
+  auto task = std::make_unique<Task>(
+      std::move(value), std::chrono::milliseconds{expiration}, qpriority);
+  if (queueObservers_) {
+    task->queueObserverPayload() = queueObservers_->at(qpriority)->onEnqueued();
+  }
   tasks_.at_priority(qpriority).enqueue(std::move(task));
 
   ++totalTaskCount_;
@@ -526,6 +535,15 @@ void ThreadManager::Impl::enableCodel(bool enabled) {
 
 folly::Codel* ThreadManager::Impl::getCodel() {
   return &codel_;
+}
+
+void ThreadManager::Impl::setupQueueObservers() {
+  if (auto factory = folly::QueueObserverFactory::make()) {
+    queueObservers_.emplace(tasks_.priorities());
+    for (size_t pri = 0; pri < tasks_.priorities(); ++pri) {
+      queueObservers_->at(pri) = factory->create();
+    }
+  }
 }
 
 std::shared_ptr<ThreadManager> ThreadManager::newThreadManager() {

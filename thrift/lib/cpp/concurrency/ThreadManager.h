@@ -26,6 +26,7 @@
 
 #include <folly/Executor.h>
 #include <folly/SharedMutex.h>
+#include <folly/concurrency/QueueObserver.h>
 #include <folly/executors/Codel.h>
 #include <folly/io/async/Request.h>
 #include <folly/portability/GFlags.h>
