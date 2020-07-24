@@ -38,36 +38,22 @@ class FlagsBackendDummy : public detail::FlagsBackend {
 };
 } // namespace
 
-FOLLY_ATTR_WEAK std::unique_ptr<detail::FlagsBackend> createFlagsBackend() {
-  using CreateFlagsBackendPtr = std::unique_ptr<detail::FlagsBackend> (*)();
-  static auto createFlagsBackendPtr =
-      []() -> std::unique_ptr<detail::FlagsBackend> (*)() {
-    CreateFlagsBackendPtr (*createFlagsBackendGetPtr)() =
-#ifdef FOLLY_HAVE_LINUX_VDSO
-        reinterpret_cast<CreateFlagsBackendPtr (*)()>(dlsym(
-            RTLD_DEFAULT, "apache_thrift_detail_createFlagsBackend_get_ptr"));
-#else
-        nullptr;
-#endif
-    if (createFlagsBackendGetPtr) {
-      return createFlagsBackendGetPtr();
-    }
-    return nullptr;
-  }();
-  if (createFlagsBackendPtr) {
-    return createFlagsBackendPtr();
+namespace {
+std::unique_ptr<FlagsBackend> getFlagsBackendImpl() {
+  std::unique_ptr<FlagsBackend> ret;
+  if (createFlagsBackend) {
+    ret = createFlagsBackend();
   }
-  return {};
+  if (!ret) {
+    ret = std::make_unique<FlagsBackendDummy>();
+  }
+  return ret;
 }
+} // namespace
 
 detail::FlagsBackend& getFlagsBackend() {
-  static auto& flagsBackend = []() -> FlagsBackend& {
-    if (auto flagsBackendPtr = createFlagsBackend()) {
-      return *flagsBackendPtr.release();
-    }
-    return *(new FlagsBackendDummy);
-  }();
-  return flagsBackend;
+  static auto& obj = *getFlagsBackendImpl().release();
+  return obj;
 }
 } // namespace detail
 } // namespace thrift

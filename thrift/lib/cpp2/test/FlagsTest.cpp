@@ -16,6 +16,7 @@
 
 #include <exception>
 
+#include <folly/CPortability.h>
 #include <folly/MapUtil.h>
 #include <folly/portability/GTest.h>
 
@@ -80,6 +81,8 @@ bool useDummyBackend{false};
 namespace apache {
 namespace thrift {
 namespace detail {
+
+#if FOLLY_HAVE_WEAK_SYMBOLS
 std::unique_ptr<detail::FlagsBackend> createFlagsBackend() {
   if (useDummyBackend) {
     return {};
@@ -88,13 +91,12 @@ std::unique_ptr<detail::FlagsBackend> createFlagsBackend() {
   testBackendPtr = testBackend.get();
   return testBackend;
 }
+#else
+#endif
+
 } // namespace detail
 } // namespace thrift
 } // namespace apache
-
-extern "C" void* apache_thrift_detail_createFlagsBackend_get_ptr() {
-  return reinterpret_cast<void*>(&apache::thrift::detail::createFlagsBackend);
-}
 
 TEST(Flags, Get) {
   EXPECT_EQ(true, THRIFT_FLAG(test_flag_bool));

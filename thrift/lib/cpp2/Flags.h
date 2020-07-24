@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/CPortability.h>
 #include <folly/Indestructible.h>
 #include <folly/Optional.h>
 #include <folly/experimental/observer/Observer.h>
@@ -34,6 +35,12 @@ class FlagsBackend {
   virtual folly::observer::Observer<folly::Optional<int64_t>>
   getFlagObserverInt64(folly::StringPiece name) = 0;
 };
+
+#if FOLLY_HAVE_WEAK_SYMBOLS
+FOLLY_ATTR_WEAK std::unique_ptr<FlagsBackend> createFlagsBackend();
+#else
+constexpr std::unique_ptr<FlagsBackend> (*createFlagsBackend)() = nullptr;
+#endif
 
 FlagsBackend& getFlagsBackend();
 
