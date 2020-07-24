@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyStructFloatFieldThrowExp", builder=MyStructFloatFieldThrowExp.Builder.class)
 public final class MyStructFloatFieldThrowExp {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public MyStructFloatFieldThrowExp(
         @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE) final long myLongField,
@@ -48,6 +50,8 @@ public final class MyStructFloatFieldThrowExp {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private long myLongField = 0L;
         private byte myByteField = 0;
         private String myStringField = null;
@@ -58,7 +62,7 @@ public final class MyStructFloatFieldThrowExp {
             this.myLongField = myLongField;
             return this;
         }
-        
+    
         public long getMyLongField() { return myLongField; }
     
             @ThriftField(value=2, name="MyByteField", requiredness=Requiredness.NONE)
@@ -66,7 +70,7 @@ public final class MyStructFloatFieldThrowExp {
             this.myByteField = myByteField;
             return this;
         }
-        
+    
         public byte getMyByteField() { return myByteField; }
     
             @ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)
@@ -74,7 +78,7 @@ public final class MyStructFloatFieldThrowExp {
             this.myStringField = myStringField;
             return this;
         }
-        
+    
         public String getMyStringField() { return myStringField; }
     
             @ThriftField(value=4, name="myFloatField", requiredness=Requiredness.NONE)
@@ -82,7 +86,7 @@ public final class MyStructFloatFieldThrowExp {
             this.myFloatField = myFloatField;
             return this;
         }
-        
+    
         public float getMyFloatField() { return myFloatField; }
     
         public Builder() { }
@@ -95,12 +99,14 @@ public final class MyStructFloatFieldThrowExp {
     
         @ThriftConstructor
         public MyStructFloatFieldThrowExp build() {
-            return new MyStructFloatFieldThrowExp (
+            MyStructFloatFieldThrowExp result = new MyStructFloatFieldThrowExp (
                 this.myLongField,
                 this.myByteField,
                 this.myStringField,
                 this.myFloatField
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -132,18 +138,42 @@ public final class MyStructFloatFieldThrowExp {
     
     @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyLongField() {
+        return __isset_bit_vector.get(_MYLONGFIELD);
+    }
     
     
     @ThriftField(value=2, name="MyByteField", requiredness=Requiredness.NONE)
     public byte getMyByteField() { return myByteField; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyByteField() {
+        return __isset_bit_vector.get(_MYBYTEFIELD);
+    }
     
     
     @ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyStringField() {
+        return this.myStringField != null;
+    }
     
     
     @ThriftField(value=4, name="myFloatField", requiredness=Requiredness.NONE)
     public float getMyFloatField() { return myFloatField; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyFloatField() {
+        return __isset_bit_vector.get(_MYFLOATFIELD);
+    }
     
     @Override
     public String toString() {

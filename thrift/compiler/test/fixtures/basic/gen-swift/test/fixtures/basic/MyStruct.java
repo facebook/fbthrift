@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
 public final class MyStruct {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public MyStruct(
         @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
@@ -48,6 +50,8 @@ public final class MyStruct {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private long myIntField = 0L;
         private String myStringField = null;
         private test.fixtures.basic.MyDataItem myDataField = null;
@@ -58,7 +62,7 @@ public final class MyStruct {
             this.myIntField = myIntField;
             return this;
         }
-        
+    
         public long getMyIntField() { return myIntField; }
     
             @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
@@ -66,7 +70,7 @@ public final class MyStruct {
             this.myStringField = myStringField;
             return this;
         }
-        
+    
         public String getMyStringField() { return myStringField; }
     
             @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
@@ -74,7 +78,7 @@ public final class MyStruct {
             this.myDataField = myDataField;
             return this;
         }
-        
+    
         public test.fixtures.basic.MyDataItem getMyDataField() { return myDataField; }
     
             @ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
@@ -82,7 +86,7 @@ public final class MyStruct {
             this.myEnum = myEnum;
             return this;
         }
-        
+    
         public test.fixtures.basic.MyEnum getMyEnum() { return myEnum; }
     
         public Builder() { }
@@ -95,12 +99,14 @@ public final class MyStruct {
     
         @ThriftConstructor
         public MyStruct build() {
-            return new MyStruct (
+            MyStruct result = new MyStruct (
                 this.myIntField,
                 this.myStringField,
                 this.myDataField,
                 this.myEnum
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -132,18 +138,42 @@ public final class MyStruct {
     
     @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField() {
+        return __isset_bit_vector.get(_MYINTFIELD);
+    }
     
     
     @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyStringField() {
+        return this.myStringField != null;
+    }
     
     
     @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyDataItem getMyDataField() { return myDataField; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDataField() {
+        return this.myDataField != null;
+    }
     
     
     @ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyEnum getMyEnum() { return myEnum; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyEnum() {
+        return this.myEnum != null;
+    }
     
     @Override
     public String toString() {

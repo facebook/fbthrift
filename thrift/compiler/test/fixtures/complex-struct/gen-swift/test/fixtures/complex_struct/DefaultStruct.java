@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="defaultStruct", builder=DefaultStruct.Builder.class)
 public final class DefaultStruct {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public DefaultStruct(
         @ThriftField(value=1, name="myLongDFset", requiredness=Requiredness.NONE) final long myLongDFset,
@@ -102,6 +104,8 @@ public final class DefaultStruct {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private long myLongDFset = 10L;
         private long myLongDF = 0L;
         private int portDFset = 3456;
@@ -178,7 +182,7 @@ public final class DefaultStruct {
             this.myLongDFset = myLongDFset;
             return this;
         }
-        
+    
         public long getMyLongDFset() { return myLongDFset; }
     
             @ThriftField(value=2, name="myLongDF", requiredness=Requiredness.NONE)
@@ -186,7 +190,7 @@ public final class DefaultStruct {
             this.myLongDF = myLongDF;
             return this;
         }
-        
+    
         public long getMyLongDF() { return myLongDF; }
     
             @ThriftField(value=3, name="portDFset", requiredness=Requiredness.NONE)
@@ -194,7 +198,7 @@ public final class DefaultStruct {
             this.portDFset = portDFset;
             return this;
         }
-        
+    
         public int getPortDFset() { return portDFset; }
     
             @ThriftField(value=4, name="portNum", requiredness=Requiredness.NONE)
@@ -202,7 +206,7 @@ public final class DefaultStruct {
             this.portNum = portNum;
             return this;
         }
-        
+    
         public int getPortNum() { return portNum; }
     
             @ThriftField(value=5, name="myBinaryDFset", requiredness=Requiredness.NONE)
@@ -210,7 +214,7 @@ public final class DefaultStruct {
             this.myBinaryDFset = myBinaryDFset;
             return this;
         }
-        
+    
         public byte[] getMyBinaryDFset() { return myBinaryDFset; }
     
             @ThriftField(value=6, name="myBinary", requiredness=Requiredness.NONE)
@@ -218,7 +222,7 @@ public final class DefaultStruct {
             this.myBinary = myBinary;
             return this;
         }
-        
+    
         public byte[] getMyBinary() { return myBinary; }
     
             @ThriftField(value=7, name="myByteDFSet", requiredness=Requiredness.NONE)
@@ -226,7 +230,7 @@ public final class DefaultStruct {
             this.myByteDFSet = myByteDFSet;
             return this;
         }
-        
+    
         public byte getMyByteDFSet() { return myByteDFSet; }
     
             @ThriftField(value=8, name="myByte", requiredness=Requiredness.NONE)
@@ -234,7 +238,7 @@ public final class DefaultStruct {
             this.myByte = myByte;
             return this;
         }
-        
+    
         public byte getMyByte() { return myByte; }
     
             @ThriftField(value=9, name="myDoubleDFset", requiredness=Requiredness.NONE)
@@ -242,7 +246,7 @@ public final class DefaultStruct {
             this.myDoubleDFset = myDoubleDFset;
             return this;
         }
-        
+    
         public double getMyDoubleDFset() { return myDoubleDFset; }
     
             @ThriftField(value=10, name="myDoubleDFZero", requiredness=Requiredness.NONE)
@@ -250,7 +254,7 @@ public final class DefaultStruct {
             this.myDoubleDFZero = myDoubleDFZero;
             return this;
         }
-        
+    
         public double getMyDoubleDFZero() { return myDoubleDFZero; }
     
             @ThriftField(value=12, name="myDouble", requiredness=Requiredness.NONE)
@@ -258,7 +262,7 @@ public final class DefaultStruct {
             this.myDouble = myDouble;
             return this;
         }
-        
+    
         public double getMyDouble() { return myDouble; }
     
             @ThriftField(value=13, name="field3", requiredness=Requiredness.NONE)
@@ -266,7 +270,7 @@ public final class DefaultStruct {
             this.field3 = field3;
             return this;
         }
-        
+    
         public Map<Integer, String> getField3() { return field3; }
     
             @ThriftField(value=14, name="myList", requiredness=Requiredness.NONE)
@@ -274,7 +278,7 @@ public final class DefaultStruct {
             this.myList = myList;
             return this;
         }
-        
+    
         public List<test.fixtures.complex_struct.MyEnum> getMyList() { return myList; }
     
             @ThriftField(value=15, name="mySet", requiredness=Requiredness.NONE)
@@ -282,7 +286,7 @@ public final class DefaultStruct {
             this.mySet = mySet;
             return this;
         }
-        
+    
         public Set<String> getMySet() { return mySet; }
     
             @ThriftField(value=16, name="simpleStruct", requiredness=Requiredness.NONE)
@@ -290,7 +294,7 @@ public final class DefaultStruct {
             this.simpleStruct = simpleStruct;
             return this;
         }
-        
+    
         public test.fixtures.complex_struct.SimpleStruct getSimpleStruct() { return simpleStruct; }
     
             @ThriftField(value=17, name="listStructDFset", requiredness=Requiredness.NONE)
@@ -298,7 +302,7 @@ public final class DefaultStruct {
             this.listStructDFset = listStructDFset;
             return this;
         }
-        
+    
         public List<test.fixtures.complex_struct.SimpleStruct> getListStructDFset() { return listStructDFset; }
     
             @ThriftField(value=18, name="myUnion", requiredness=Requiredness.NONE)
@@ -306,7 +310,7 @@ public final class DefaultStruct {
             this.myUnion = myUnion;
             return this;
         }
-        
+    
         public test.fixtures.complex_struct.MyUnion getMyUnion() { return myUnion; }
     
             @ThriftField(value=19, name="listUnionDFset", requiredness=Requiredness.NONE)
@@ -314,7 +318,7 @@ public final class DefaultStruct {
             this.listUnionDFset = listUnionDFset;
             return this;
         }
-        
+    
         public List<test.fixtures.complex_struct.MyUnion> getListUnionDFset() { return listUnionDFset; }
     
             @ThriftField(value=20, name="mapNestlistStructDfSet", requiredness=Requiredness.NONE)
@@ -322,7 +326,7 @@ public final class DefaultStruct {
             this.mapNestlistStructDfSet = mapNestlistStructDfSet;
             return this;
         }
-        
+    
         public Map<Integer, List<test.fixtures.complex_struct.SimpleStruct>> getMapNestlistStructDfSet() { return mapNestlistStructDfSet; }
     
             @ThriftField(value=21, name="mapJavaTypeDFset", requiredness=Requiredness.NONE)
@@ -330,7 +334,7 @@ public final class DefaultStruct {
             this.mapJavaTypeDFset = mapJavaTypeDFset;
             return this;
         }
-        
+    
         public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getMapJavaTypeDFset() { return mapJavaTypeDFset; }
     
             @ThriftField(value=22, name="emptyMap", requiredness=Requiredness.NONE)
@@ -338,7 +342,7 @@ public final class DefaultStruct {
             this.emptyMap = emptyMap;
             return this;
         }
-        
+    
         public Map<Long, Integer> getEmptyMap() { return emptyMap; }
     
             @ThriftField(value=23, name="enumMapDFset", requiredness=Requiredness.NONE)
@@ -346,7 +350,7 @@ public final class DefaultStruct {
             this.enumMapDFset = enumMapDFset;
             return this;
         }
-        
+    
         public Map<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> getEnumMapDFset() { return enumMapDFset; }
     
         public Builder() { }
@@ -377,7 +381,7 @@ public final class DefaultStruct {
     
         @ThriftConstructor
         public DefaultStruct build() {
-            return new DefaultStruct (
+            DefaultStruct result = new DefaultStruct (
                 this.myLongDFset,
                 this.myLongDF,
                 this.portDFset,
@@ -401,6 +405,8 @@ public final class DefaultStruct {
                 this.emptyMap,
                 this.enumMapDFset
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -522,90 +528,222 @@ public final class DefaultStruct {
     
     @ThriftField(value=1, name="myLongDFset", requiredness=Requiredness.NONE)
     public long getMyLongDFset() { return myLongDFset; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyLongDFset() {
+        return __isset_bit_vector.get(_MYLONGDFSET);
+    }
     
     
     @ThriftField(value=2, name="myLongDF", requiredness=Requiredness.NONE)
     public long getMyLongDF() { return myLongDF; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyLongDF() {
+        return __isset_bit_vector.get(_MYLONGDF);
+    }
     
     
     @ThriftField(value=3, name="portDFset", requiredness=Requiredness.NONE)
     public int getPortDFset() { return portDFset; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetPortDFset() {
+        return __isset_bit_vector.get(_PORTDFSET);
+    }
     
     
     @ThriftField(value=4, name="portNum", requiredness=Requiredness.NONE)
     public int getPortNum() { return portNum; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetPortNum() {
+        return __isset_bit_vector.get(_PORTNUM);
+    }
     
     
     @ThriftField(value=5, name="myBinaryDFset", requiredness=Requiredness.NONE)
     public byte[] getMyBinaryDFset() { return myBinaryDFset; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyBinaryDFset() {
+        return this.myBinaryDFset != null;
+    }
     
     
     @ThriftField(value=6, name="myBinary", requiredness=Requiredness.NONE)
     public byte[] getMyBinary() { return myBinary; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyBinary() {
+        return this.myBinary != null;
+    }
     
     
     @ThriftField(value=7, name="myByteDFSet", requiredness=Requiredness.NONE)
     public byte getMyByteDFSet() { return myByteDFSet; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyByteDFSet() {
+        return __isset_bit_vector.get(_MYBYTEDFSET);
+    }
     
     
     @ThriftField(value=8, name="myByte", requiredness=Requiredness.NONE)
     public byte getMyByte() { return myByte; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyByte() {
+        return __isset_bit_vector.get(_MYBYTE);
+    }
     
     
     @ThriftField(value=9, name="myDoubleDFset", requiredness=Requiredness.NONE)
     public double getMyDoubleDFset() { return myDoubleDFset; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleDFset() {
+        return __isset_bit_vector.get(_MYDOUBLEDFSET);
+    }
     
     
     @ThriftField(value=10, name="myDoubleDFZero", requiredness=Requiredness.NONE)
     public double getMyDoubleDFZero() { return myDoubleDFZero; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleDFZero() {
+        return __isset_bit_vector.get(_MYDOUBLEDFZERO);
+    }
     
     
     @ThriftField(value=12, name="myDouble", requiredness=Requiredness.NONE)
     public double getMyDouble() { return myDouble; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDouble() {
+        return __isset_bit_vector.get(_MYDOUBLE);
+    }
     
     
     @ThriftField(value=13, name="field3", requiredness=Requiredness.NONE)
     public Map<Integer, String> getField3() { return field3; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetField3() {
+        return this.field3 != null;
+    }
     
     
     @ThriftField(value=14, name="myList", requiredness=Requiredness.NONE)
     public List<test.fixtures.complex_struct.MyEnum> getMyList() { return myList; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyList() {
+        return this.myList != null;
+    }
     
     
     @ThriftField(value=15, name="mySet", requiredness=Requiredness.NONE)
     public Set<String> getMySet() { return mySet; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMySet() {
+        return this.mySet != null;
+    }
     
     
     @ThriftField(value=16, name="simpleStruct", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.SimpleStruct getSimpleStruct() { return simpleStruct; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetSimpleStruct() {
+        return this.simpleStruct != null;
+    }
     
     
     @ThriftField(value=17, name="listStructDFset", requiredness=Requiredness.NONE)
     public List<test.fixtures.complex_struct.SimpleStruct> getListStructDFset() { return listStructDFset; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetListStructDFset() {
+        return this.listStructDFset != null;
+    }
     
     
     @ThriftField(value=18, name="myUnion", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyUnion getMyUnion() { return myUnion; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyUnion() {
+        return this.myUnion != null;
+    }
     
     
     @ThriftField(value=19, name="listUnionDFset", requiredness=Requiredness.NONE)
     public List<test.fixtures.complex_struct.MyUnion> getListUnionDFset() { return listUnionDFset; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetListUnionDFset() {
+        return this.listUnionDFset != null;
+    }
     
     
     @ThriftField(value=20, name="mapNestlistStructDfSet", requiredness=Requiredness.NONE)
     public Map<Integer, List<test.fixtures.complex_struct.SimpleStruct>> getMapNestlistStructDfSet() { return mapNestlistStructDfSet; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapNestlistStructDfSet() {
+        return this.mapNestlistStructDfSet != null;
+    }
     
     
     @ThriftField(value=21, name="mapJavaTypeDFset", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getMapJavaTypeDFset() { return mapJavaTypeDFset; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapJavaTypeDFset() {
+        return this.mapJavaTypeDFset != null;
+    }
     
     
     @ThriftField(value=22, name="emptyMap", requiredness=Requiredness.NONE)
     public Map<Long, Integer> getEmptyMap() { return emptyMap; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetEmptyMap() {
+        return this.emptyMap != null;
+    }
     
     
     @ThriftField(value=23, name="enumMapDFset", requiredness=Requiredness.NONE)
     public Map<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> getEnumMapDFset() { return enumMapDFset; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetEnumMapDFset() {
+        return this.enumMapDFset != null;
+    }
     
     @Override
     public String toString() {

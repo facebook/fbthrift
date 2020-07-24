@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="TypeRemapped", builder=TypeRemapped.Builder.class)
 public final class TypeRemapped {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public TypeRemapped(
         @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE) final it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap,
@@ -48,6 +50,8 @@ public final class TypeRemapped {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap = null;
         private it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap = null;
         private java.math.BigInteger bigInteger = 0;
@@ -58,7 +62,7 @@ public final class TypeRemapped {
             this.lsMap = lsMap;
             return this;
         }
-        
+    
         public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
     
             @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
@@ -66,7 +70,7 @@ public final class TypeRemapped {
             this.ioMap = ioMap;
             return this;
         }
-        
+    
         public it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> getIoMap() { return ioMap; }
     
             @ThriftField(value=3, name="BigInteger", requiredness=Requiredness.NONE)
@@ -74,7 +78,7 @@ public final class TypeRemapped {
             this.bigInteger = bigInteger;
             return this;
         }
-        
+    
         public java.math.BigInteger getBigInteger() { return bigInteger; }
     
             @ThriftField(value=4, name="binaryTestBuffer", requiredness=Requiredness.NONE)
@@ -82,7 +86,7 @@ public final class TypeRemapped {
             this.binaryTestBuffer = binaryTestBuffer;
             return this;
         }
-        
+    
         public java.nio.ByteBuffer getBinaryTestBuffer() { return binaryTestBuffer; }
     
         public Builder() { }
@@ -95,12 +99,14 @@ public final class TypeRemapped {
     
         @ThriftConstructor
         public TypeRemapped build() {
-            return new TypeRemapped (
+            TypeRemapped result = new TypeRemapped (
                 this.lsMap,
                 this.ioMap,
                 this.bigInteger,
                 this.binaryTestBuffer
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -132,18 +138,42 @@ public final class TypeRemapped {
     
     @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetLsMap() {
+        return this.lsMap != null;
+    }
     
     
     @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> getIoMap() { return ioMap; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetIoMap() {
+        return this.ioMap != null;
+    }
     
     
     @ThriftField(value=3, name="BigInteger", requiredness=Requiredness.NONE)
     public java.math.BigInteger getBigInteger() { return bigInteger; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetBigInteger() {
+        return __isset_bit_vector.get(_BIGINTEGER);
+    }
     
     
     @ThriftField(value=4, name="binaryTestBuffer", requiredness=Requiredness.NONE)
     public java.nio.ByteBuffer getBinaryTestBuffer() { return binaryTestBuffer; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetBinaryTestBuffer() {
+        return this.binaryTestBuffer != null;
+    }
     
     @Override
     public String toString() {

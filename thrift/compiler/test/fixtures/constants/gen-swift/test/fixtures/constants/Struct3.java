@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="struct3", builder=Struct3.Builder.class)
 public final class Struct3 {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public Struct3(
         @ThriftField(value=1, name="a", requiredness=Requiredness.NONE) final String a,
@@ -45,6 +47,8 @@ public final class Struct3 {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private String a = null;
         private int b = 0;
         private test.fixtures.constants.Struct2 c = null;
@@ -54,7 +58,7 @@ public final class Struct3 {
             this.a = a;
             return this;
         }
-        
+    
         public String getA() { return a; }
     
             @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
@@ -62,7 +66,7 @@ public final class Struct3 {
             this.b = b;
             return this;
         }
-        
+    
         public int getB() { return b; }
     
             @ThriftField(value=3, name="c", requiredness=Requiredness.NONE)
@@ -70,7 +74,7 @@ public final class Struct3 {
             this.c = c;
             return this;
         }
-        
+    
         public test.fixtures.constants.Struct2 getC() { return c; }
     
         public Builder() { }
@@ -82,11 +86,13 @@ public final class Struct3 {
     
         @ThriftConstructor
         public Struct3 build() {
-            return new Struct3 (
+            Struct3 result = new Struct3 (
                 this.a,
                 this.b,
                 this.c
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -113,14 +119,32 @@ public final class Struct3 {
     
     @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public String getA() { return a; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetA() {
+        return this.a != null;
+    }
     
     
     @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
     public int getB() { return b; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetB() {
+        return __isset_bit_vector.get(_B);
+    }
     
     
     @ThriftField(value=3, name="c", requiredness=Requiredness.NONE)
     public test.fixtures.constants.Struct2 getC() { return c; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetC() {
+        return this.c != null;
+    }
     
     @Override
     public String toString() {

@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
 public final class MyStruct {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public MyStruct(
         @ThriftField(value=1, name="major", requiredness=Requiredness.NONE) final long major,
@@ -54,6 +56,8 @@ public final class MyStruct {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private long major = 0L;
         private String _package = null;
         private String annotationWithQuote = null;
@@ -66,7 +70,7 @@ public final class MyStruct {
             this.major = major;
             return this;
         }
-        
+    
         public long getMajor() { return major; }
     
             @ThriftField(value=2, name="package", requiredness=Requiredness.NONE)
@@ -74,7 +78,7 @@ public final class MyStruct {
             this._package = _package;
             return this;
         }
-        
+    
         public String getPackage() { return _package; }
     
             @ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE)
@@ -82,7 +86,7 @@ public final class MyStruct {
             this.annotationWithQuote = annotationWithQuote;
             return this;
         }
-        
+    
         public String getAnnotationWithQuote() { return annotationWithQuote; }
     
             @ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)
@@ -90,7 +94,7 @@ public final class MyStruct {
             this.class_ = class_;
             return this;
         }
-        
+    
         public String getClass_() { return class_; }
     
             @ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE)
@@ -98,7 +102,7 @@ public final class MyStruct {
             this.annotationWithTrailingComma = annotationWithTrailingComma;
             return this;
         }
-        
+    
         public String getAnnotationWithTrailingComma() { return annotationWithTrailingComma; }
     
             @ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE)
@@ -106,7 +110,7 @@ public final class MyStruct {
             this.emptyAnnotations = emptyAnnotations;
             return this;
         }
-        
+    
         public String getEmptyAnnotations() { return emptyAnnotations; }
     
         public Builder() { }
@@ -121,7 +125,7 @@ public final class MyStruct {
     
         @ThriftConstructor
         public MyStruct build() {
-            return new MyStruct (
+            MyStruct result = new MyStruct (
                 this.major,
                 this._package,
                 this.annotationWithQuote,
@@ -129,6 +133,8 @@ public final class MyStruct {
                 this.annotationWithTrailingComma,
                 this.emptyAnnotations
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -170,26 +176,62 @@ public final class MyStruct {
     
     @ThriftField(value=1, name="major", requiredness=Requiredness.NONE)
     public long getMajor() { return major; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMajor() {
+        return __isset_bit_vector.get(_MAJOR);
+    }
     
     
     @ThriftField(value=2, name="package", requiredness=Requiredness.NONE)
     public String getPackage() { return _package; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetPackage() {
+        return this._package != null;
+    }
     
     
     @ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE)
     public String getAnnotationWithQuote() { return annotationWithQuote; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetAnnotationWithQuote() {
+        return this.annotationWithQuote != null;
+    }
     
     
     @ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)
     public String getClass_() { return class_; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetClass_() {
+        return this.class_ != null;
+    }
     
     
     @ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE)
     public String getAnnotationWithTrailingComma() { return annotationWithTrailingComma; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetAnnotationWithTrailingComma() {
+        return this.annotationWithTrailingComma != null;
+    }
     
     
     @ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE)
     public String getEmptyAnnotations() { return emptyAnnotations; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetEmptyAnnotations() {
+        return this.emptyAnnotations != null;
+    }
     
     @Override
     public String toString() {

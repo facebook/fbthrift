@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="struct4", builder=Struct4.Builder.class)
 public final class Struct4 {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public Struct4(
         @ThriftField(value=1, name="a", requiredness=Requiredness.NONE) final int a,
@@ -45,6 +47,8 @@ public final class Struct4 {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private int a = 0;
         private Double b = null;
         private Byte c = null;
@@ -54,7 +58,7 @@ public final class Struct4 {
             this.a = a;
             return this;
         }
-        
+    
         public int getA() { return a; }
     
             @ThriftField(value=2, name="b", requiredness=Requiredness.OPTIONAL)
@@ -62,7 +66,7 @@ public final class Struct4 {
             this.b = b;
             return this;
         }
-        
+    
         public Double getB() { return b; }
     
             @ThriftField(value=3, name="c", requiredness=Requiredness.OPTIONAL)
@@ -70,7 +74,7 @@ public final class Struct4 {
             this.c = c;
             return this;
         }
-        
+    
         public Byte getC() { return c; }
     
         public Builder() { }
@@ -82,11 +86,13 @@ public final class Struct4 {
     
         @ThriftConstructor
         public Struct4 build() {
-            return new Struct4 (
+            Struct4 result = new Struct4 (
                 this.a,
                 this.b,
                 this.c
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -113,14 +119,32 @@ public final class Struct4 {
     
     @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public int getA() { return a; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetA() {
+        return __isset_bit_vector.get(_A);
+    }
     
     
     @ThriftField(value=2, name="b", requiredness=Requiredness.OPTIONAL)
     public Double getB() { return b; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetB() {
+        return this.b != null;
+    }
     
     
     @ThriftField(value=3, name="c", requiredness=Requiredness.OPTIONAL)
     public Byte getC() { return c; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetC() {
+        return this.c != null;
+    }
     
     @Override
     public String toString() {

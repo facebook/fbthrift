@@ -25,6 +25,8 @@ import org.apache.thrift.meta_data.FieldValueMetaData;
 public final class ReqXcep extends java.lang.Exception {
     private static final long serialVersionUID = 1L;
 
+    private BitSet __isset_bit_vector = new BitSet();
+
     private static final TStruct STRUCT_DESC = new TStruct("reqXcep");
     private final String message;
     public static final int _MESSAGE = 1;
@@ -49,6 +51,8 @@ public final class ReqXcep extends java.lang.Exception {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private String message = null;
         private int errorCode = 0;
     
@@ -57,7 +61,7 @@ public final class ReqXcep extends java.lang.Exception {
             this.message = message;
             return this;
         }
-        
+    
         public String getMessage() { return message; }
     
             @ThriftField(value=2, name="errorCode", requiredness=Requiredness.REQUIRED)
@@ -65,7 +69,7 @@ public final class ReqXcep extends java.lang.Exception {
             this.errorCode = errorCode;
             return this;
         }
-        
+    
         public int getErrorCode() { return errorCode; }
     
         public Builder() { }
@@ -76,10 +80,12 @@ public final class ReqXcep extends java.lang.Exception {
     
         @ThriftConstructor
         public ReqXcep build() {
-            return new ReqXcep (
+            ReqXcep result = new ReqXcep (
                 this.message,
                 this.errorCode
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     

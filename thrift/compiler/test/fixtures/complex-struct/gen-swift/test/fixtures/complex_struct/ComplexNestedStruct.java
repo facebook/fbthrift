@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="ComplexNestedStruct", builder=ComplexNestedStruct.Builder.class)
 public final class ComplexNestedStruct {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public ComplexNestedStruct(
         @ThriftField(value=1, name="setOfSetOfInt", requiredness=Requiredness.NONE) final Set<Set<Integer>> setOfSetOfInt,
@@ -90,6 +92,8 @@ public final class ComplexNestedStruct {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private Set<Set<Integer>> setOfSetOfInt = null;
         private List<List<List<List<test.fixtures.complex_struct.MyEnum>>>> listofListOfListOfListOfEnum = null;
         private List<List<test.fixtures.complex_struct.MyStruct>> listOfListOfMyStruct = null;
@@ -114,7 +118,7 @@ public final class ComplexNestedStruct {
             this.setOfSetOfInt = setOfSetOfInt;
             return this;
         }
-        
+    
         public Set<Set<Integer>> getSetOfSetOfInt() { return setOfSetOfInt; }
     
             @ThriftField(value=2, name="listofListOfListOfListOfEnum", requiredness=Requiredness.NONE)
@@ -122,7 +126,7 @@ public final class ComplexNestedStruct {
             this.listofListOfListOfListOfEnum = listofListOfListOfListOfEnum;
             return this;
         }
-        
+    
         public List<List<List<List<test.fixtures.complex_struct.MyEnum>>>> getListofListOfListOfListOfEnum() { return listofListOfListOfListOfEnum; }
     
             @ThriftField(value=3, name="listOfListOfMyStruct", requiredness=Requiredness.NONE)
@@ -130,7 +134,7 @@ public final class ComplexNestedStruct {
             this.listOfListOfMyStruct = listOfListOfMyStruct;
             return this;
         }
-        
+    
         public List<List<test.fixtures.complex_struct.MyStruct>> getListOfListOfMyStruct() { return listOfListOfMyStruct; }
     
             @ThriftField(value=4, name="setOfListOfListOfLong", requiredness=Requiredness.NONE)
@@ -138,7 +142,7 @@ public final class ComplexNestedStruct {
             this.setOfListOfListOfLong = setOfListOfListOfLong;
             return this;
         }
-        
+    
         public Set<List<List<Long>>> getSetOfListOfListOfLong() { return setOfListOfListOfLong; }
     
             @ThriftField(value=5, name="setOfSetOfsetOfLong", requiredness=Requiredness.NONE)
@@ -146,7 +150,7 @@ public final class ComplexNestedStruct {
             this.setOfSetOfsetOfLong = setOfSetOfsetOfLong;
             return this;
         }
-        
+    
         public Set<Set<Set<Long>>> getSetOfSetOfsetOfLong() { return setOfSetOfsetOfLong; }
     
             @ThriftField(value=6, name="mapStructListOfListOfLong", requiredness=Requiredness.NONE)
@@ -154,7 +158,7 @@ public final class ComplexNestedStruct {
             this.mapStructListOfListOfLong = mapStructListOfListOfLong;
             return this;
         }
-        
+    
         public Map<Integer, List<List<test.fixtures.complex_struct.MyStruct>>> getMapStructListOfListOfLong() { return mapStructListOfListOfLong; }
     
             @ThriftField(value=7, name="mKeyStructValInt", requiredness=Requiredness.NONE)
@@ -162,7 +166,7 @@ public final class ComplexNestedStruct {
             this.mKeyStructValInt = mKeyStructValInt;
             return this;
         }
-        
+    
         public Map<test.fixtures.complex_struct.MyStruct, Integer> getMKeyStructValInt() { return mKeyStructValInt; }
     
             @ThriftField(value=8, name="listOfMapKeyIntValInt", requiredness=Requiredness.NONE)
@@ -170,7 +174,7 @@ public final class ComplexNestedStruct {
             this.listOfMapKeyIntValInt = listOfMapKeyIntValInt;
             return this;
         }
-        
+    
         public List<Map<Integer, Integer>> getListOfMapKeyIntValInt() { return listOfMapKeyIntValInt; }
     
             @ThriftField(value=9, name="listOfMapKeyStrValList", requiredness=Requiredness.NONE)
@@ -178,7 +182,7 @@ public final class ComplexNestedStruct {
             this.listOfMapKeyStrValList = listOfMapKeyStrValList;
             return this;
         }
-        
+    
         public List<Map<String, List<test.fixtures.complex_struct.MyStruct>>> getListOfMapKeyStrValList() { return listOfMapKeyStrValList; }
     
             @ThriftField(value=10, name="mapKeySetValLong", requiredness=Requiredness.NONE)
@@ -186,7 +190,7 @@ public final class ComplexNestedStruct {
             this.mapKeySetValLong = mapKeySetValLong;
             return this;
         }
-        
+    
         public Map<Set<Integer>, Long> getMapKeySetValLong() { return mapKeySetValLong; }
     
             @ThriftField(value=11, name="mapKeyListValLong", requiredness=Requiredness.NONE)
@@ -194,7 +198,7 @@ public final class ComplexNestedStruct {
             this.mapKeyListValLong = mapKeyListValLong;
             return this;
         }
-        
+    
         public Map<List<String>, Integer> getMapKeyListValLong() { return mapKeyListValLong; }
     
             @ThriftField(value=12, name="mapKeyMapValMap", requiredness=Requiredness.NONE)
@@ -202,7 +206,7 @@ public final class ComplexNestedStruct {
             this.mapKeyMapValMap = mapKeyMapValMap;
             return this;
         }
-        
+    
         public Map<Map<Integer, String>, Map<Integer, String>> getMapKeyMapValMap() { return mapKeyMapValMap; }
     
             @ThriftField(value=13, name="mapKeySetValMap", requiredness=Requiredness.NONE)
@@ -210,7 +214,7 @@ public final class ComplexNestedStruct {
             this.mapKeySetValMap = mapKeySetValMap;
             return this;
         }
-        
+    
         public Map<Set<List<Integer>>, Map<List<Set<String>>, String>> getMapKeySetValMap() { return mapKeySetValMap; }
     
             @ThriftField(value=14, name="NestedMaps", requiredness=Requiredness.NONE)
@@ -218,7 +222,7 @@ public final class ComplexNestedStruct {
             this.nestedMaps = nestedMaps;
             return this;
         }
-        
+    
         public Map<Map<Map<Integer, String>, String>, Map<Integer, String>> getNestedMaps() { return nestedMaps; }
     
             @ThriftField(value=15, name="mapKeyIntValList", requiredness=Requiredness.NONE)
@@ -226,7 +230,7 @@ public final class ComplexNestedStruct {
             this.mapKeyIntValList = mapKeyIntValList;
             return this;
         }
-        
+    
         public Map<Integer, List<test.fixtures.complex_struct.MyStruct>> getMapKeyIntValList() { return mapKeyIntValList; }
     
             @ThriftField(value=16, name="mapKeyIntValSet", requiredness=Requiredness.NONE)
@@ -234,7 +238,7 @@ public final class ComplexNestedStruct {
             this.mapKeyIntValSet = mapKeyIntValSet;
             return this;
         }
-        
+    
         public Map<Integer, Set<Boolean>> getMapKeyIntValSet() { return mapKeyIntValSet; }
     
             @ThriftField(value=17, name="mapKeySetValInt", requiredness=Requiredness.NONE)
@@ -242,7 +246,7 @@ public final class ComplexNestedStruct {
             this.mapKeySetValInt = mapKeySetValInt;
             return this;
         }
-        
+    
         public Map<Set<Boolean>, test.fixtures.complex_struct.MyEnum> getMapKeySetValInt() { return mapKeySetValInt; }
     
             @ThriftField(value=18, name="mapKeyListValSet", requiredness=Requiredness.NONE)
@@ -250,7 +254,7 @@ public final class ComplexNestedStruct {
             this.mapKeyListValSet = mapKeyListValSet;
             return this;
         }
-        
+    
         public Map<List<Integer>, Set<Map<Double, String>>> getMapKeyListValSet() { return mapKeyListValSet; }
     
         public Builder() { }
@@ -277,7 +281,7 @@ public final class ComplexNestedStruct {
     
         @ThriftConstructor
         public ComplexNestedStruct build() {
-            return new ComplexNestedStruct (
+            ComplexNestedStruct result = new ComplexNestedStruct (
                 this.setOfSetOfInt,
                 this.listofListOfListOfListOfEnum,
                 this.listOfListOfMyStruct,
@@ -297,6 +301,8 @@ public final class ComplexNestedStruct {
                 this.mapKeySetValInt,
                 this.mapKeyListValSet
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -398,74 +404,182 @@ public final class ComplexNestedStruct {
     
     @ThriftField(value=1, name="setOfSetOfInt", requiredness=Requiredness.NONE)
     public Set<Set<Integer>> getSetOfSetOfInt() { return setOfSetOfInt; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetSetOfSetOfInt() {
+        return this.setOfSetOfInt != null;
+    }
     
     
     @ThriftField(value=2, name="listofListOfListOfListOfEnum", requiredness=Requiredness.NONE)
     public List<List<List<List<test.fixtures.complex_struct.MyEnum>>>> getListofListOfListOfListOfEnum() { return listofListOfListOfListOfEnum; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetListofListOfListOfListOfEnum() {
+        return this.listofListOfListOfListOfEnum != null;
+    }
     
     
     @ThriftField(value=3, name="listOfListOfMyStruct", requiredness=Requiredness.NONE)
     public List<List<test.fixtures.complex_struct.MyStruct>> getListOfListOfMyStruct() { return listOfListOfMyStruct; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetListOfListOfMyStruct() {
+        return this.listOfListOfMyStruct != null;
+    }
     
     
     @ThriftField(value=4, name="setOfListOfListOfLong", requiredness=Requiredness.NONE)
     public Set<List<List<Long>>> getSetOfListOfListOfLong() { return setOfListOfListOfLong; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetSetOfListOfListOfLong() {
+        return this.setOfListOfListOfLong != null;
+    }
     
     
     @ThriftField(value=5, name="setOfSetOfsetOfLong", requiredness=Requiredness.NONE)
     public Set<Set<Set<Long>>> getSetOfSetOfsetOfLong() { return setOfSetOfsetOfLong; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetSetOfSetOfsetOfLong() {
+        return this.setOfSetOfsetOfLong != null;
+    }
     
     
     @ThriftField(value=6, name="mapStructListOfListOfLong", requiredness=Requiredness.NONE)
     public Map<Integer, List<List<test.fixtures.complex_struct.MyStruct>>> getMapStructListOfListOfLong() { return mapStructListOfListOfLong; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapStructListOfListOfLong() {
+        return this.mapStructListOfListOfLong != null;
+    }
     
     
     @ThriftField(value=7, name="mKeyStructValInt", requiredness=Requiredness.NONE)
     public Map<test.fixtures.complex_struct.MyStruct, Integer> getMKeyStructValInt() { return mKeyStructValInt; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMKeyStructValInt() {
+        return this.mKeyStructValInt != null;
+    }
     
     
     @ThriftField(value=8, name="listOfMapKeyIntValInt", requiredness=Requiredness.NONE)
     public List<Map<Integer, Integer>> getListOfMapKeyIntValInt() { return listOfMapKeyIntValInt; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetListOfMapKeyIntValInt() {
+        return this.listOfMapKeyIntValInt != null;
+    }
     
     
     @ThriftField(value=9, name="listOfMapKeyStrValList", requiredness=Requiredness.NONE)
     public List<Map<String, List<test.fixtures.complex_struct.MyStruct>>> getListOfMapKeyStrValList() { return listOfMapKeyStrValList; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetListOfMapKeyStrValList() {
+        return this.listOfMapKeyStrValList != null;
+    }
     
     
     @ThriftField(value=10, name="mapKeySetValLong", requiredness=Requiredness.NONE)
     public Map<Set<Integer>, Long> getMapKeySetValLong() { return mapKeySetValLong; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapKeySetValLong() {
+        return this.mapKeySetValLong != null;
+    }
     
     
     @ThriftField(value=11, name="mapKeyListValLong", requiredness=Requiredness.NONE)
     public Map<List<String>, Integer> getMapKeyListValLong() { return mapKeyListValLong; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapKeyListValLong() {
+        return this.mapKeyListValLong != null;
+    }
     
     
     @ThriftField(value=12, name="mapKeyMapValMap", requiredness=Requiredness.NONE)
     public Map<Map<Integer, String>, Map<Integer, String>> getMapKeyMapValMap() { return mapKeyMapValMap; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapKeyMapValMap() {
+        return this.mapKeyMapValMap != null;
+    }
     
     
     @ThriftField(value=13, name="mapKeySetValMap", requiredness=Requiredness.NONE)
     public Map<Set<List<Integer>>, Map<List<Set<String>>, String>> getMapKeySetValMap() { return mapKeySetValMap; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapKeySetValMap() {
+        return this.mapKeySetValMap != null;
+    }
     
     
     @ThriftField(value=14, name="NestedMaps", requiredness=Requiredness.NONE)
     public Map<Map<Map<Integer, String>, String>, Map<Integer, String>> getNestedMaps() { return nestedMaps; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetNestedMaps() {
+        return this.nestedMaps != null;
+    }
     
     
     @ThriftField(value=15, name="mapKeyIntValList", requiredness=Requiredness.NONE)
     public Map<Integer, List<test.fixtures.complex_struct.MyStruct>> getMapKeyIntValList() { return mapKeyIntValList; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapKeyIntValList() {
+        return this.mapKeyIntValList != null;
+    }
     
     
     @ThriftField(value=16, name="mapKeyIntValSet", requiredness=Requiredness.NONE)
     public Map<Integer, Set<Boolean>> getMapKeyIntValSet() { return mapKeyIntValSet; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapKeyIntValSet() {
+        return this.mapKeyIntValSet != null;
+    }
     
     
     @ThriftField(value=17, name="mapKeySetValInt", requiredness=Requiredness.NONE)
     public Map<Set<Boolean>, test.fixtures.complex_struct.MyEnum> getMapKeySetValInt() { return mapKeySetValInt; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapKeySetValInt() {
+        return this.mapKeySetValInt != null;
+    }
     
     
     @ThriftField(value=18, name="mapKeyListValSet", requiredness=Requiredness.NONE)
     public Map<List<Integer>, Set<Map<Double, String>>> getMapKeyListValSet() { return mapKeyListValSet; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapKeyListValSet() {
+        return this.mapKeyListValSet != null;
+    }
     
     @Override
     public String toString() {

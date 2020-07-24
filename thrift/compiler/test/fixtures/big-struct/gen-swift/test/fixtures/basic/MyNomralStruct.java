@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyNomralStruct", builder=MyNomralStruct.Builder.class)
 public final class MyNomralStruct {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public MyNomralStruct(
         @ThriftField(value=1, name="msg1", requiredness=Requiredness.NONE) final String msg1,
@@ -126,6 +128,8 @@ public final class MyNomralStruct {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private String msg1 = null;
         private String msg2 = null;
         private String msg3 = null;
@@ -162,7 +166,7 @@ public final class MyNomralStruct {
             this.msg1 = msg1;
             return this;
         }
-        
+    
         public String getMsg1() { return msg1; }
     
             @ThriftField(value=2, name="msg2", requiredness=Requiredness.NONE)
@@ -170,7 +174,7 @@ public final class MyNomralStruct {
             this.msg2 = msg2;
             return this;
         }
-        
+    
         public String getMsg2() { return msg2; }
     
             @ThriftField(value=3, name="msg3", requiredness=Requiredness.NONE)
@@ -178,7 +182,7 @@ public final class MyNomralStruct {
             this.msg3 = msg3;
             return this;
         }
-        
+    
         public String getMsg3() { return msg3; }
     
             @ThriftField(value=4, name="msg4", requiredness=Requiredness.NONE)
@@ -186,7 +190,7 @@ public final class MyNomralStruct {
             this.msg4 = msg4;
             return this;
         }
-        
+    
         public String getMsg4() { return msg4; }
     
             @ThriftField(value=5, name="msg5", requiredness=Requiredness.NONE)
@@ -194,7 +198,7 @@ public final class MyNomralStruct {
             this.msg5 = msg5;
             return this;
         }
-        
+    
         public String getMsg5() { return msg5; }
     
             @ThriftField(value=6, name="msg6", requiredness=Requiredness.NONE)
@@ -202,7 +206,7 @@ public final class MyNomralStruct {
             this.msg6 = msg6;
             return this;
         }
-        
+    
         public String getMsg6() { return msg6; }
     
             @ThriftField(value=7, name="msg7", requiredness=Requiredness.NONE)
@@ -210,7 +214,7 @@ public final class MyNomralStruct {
             this.msg7 = msg7;
             return this;
         }
-        
+    
         public String getMsg7() { return msg7; }
     
             @ThriftField(value=8, name="msg8", requiredness=Requiredness.NONE)
@@ -218,7 +222,7 @@ public final class MyNomralStruct {
             this.msg8 = msg8;
             return this;
         }
-        
+    
         public String getMsg8() { return msg8; }
     
             @ThriftField(value=9, name="msg9", requiredness=Requiredness.NONE)
@@ -226,7 +230,7 @@ public final class MyNomralStruct {
             this.msg9 = msg9;
             return this;
         }
-        
+    
         public String getMsg9() { return msg9; }
     
             @ThriftField(value=10, name="myIntField10", requiredness=Requiredness.NONE)
@@ -234,7 +238,7 @@ public final class MyNomralStruct {
             this.myIntField10 = myIntField10;
             return this;
         }
-        
+    
         public int getMyIntField10() { return myIntField10; }
     
             @ThriftField(value=11, name="myIntField11", requiredness=Requiredness.NONE)
@@ -242,7 +246,7 @@ public final class MyNomralStruct {
             this.myIntField11 = myIntField11;
             return this;
         }
-        
+    
         public int getMyIntField11() { return myIntField11; }
     
             @ThriftField(value=12, name="myIntField12", requiredness=Requiredness.NONE)
@@ -250,7 +254,7 @@ public final class MyNomralStruct {
             this.myIntField12 = myIntField12;
             return this;
         }
-        
+    
         public int getMyIntField12() { return myIntField12; }
     
             @ThriftField(value=13, name="myIntField13", requiredness=Requiredness.NONE)
@@ -258,7 +262,7 @@ public final class MyNomralStruct {
             this.myIntField13 = myIntField13;
             return this;
         }
-        
+    
         public int getMyIntField13() { return myIntField13; }
     
             @ThriftField(value=14, name="myIntField14", requiredness=Requiredness.NONE)
@@ -266,7 +270,7 @@ public final class MyNomralStruct {
             this.myIntField14 = myIntField14;
             return this;
         }
-        
+    
         public int getMyIntField14() { return myIntField14; }
     
             @ThriftField(value=15, name="myIntField15", requiredness=Requiredness.NONE)
@@ -274,7 +278,7 @@ public final class MyNomralStruct {
             this.myIntField15 = myIntField15;
             return this;
         }
-        
+    
         public int getMyIntField15() { return myIntField15; }
     
             @ThriftField(value=16, name="myIntField16", requiredness=Requiredness.NONE)
@@ -282,7 +286,7 @@ public final class MyNomralStruct {
             this.myIntField16 = myIntField16;
             return this;
         }
-        
+    
         public int getMyIntField16() { return myIntField16; }
     
             @ThriftField(value=17, name="myIntField17", requiredness=Requiredness.NONE)
@@ -290,7 +294,7 @@ public final class MyNomralStruct {
             this.myIntField17 = myIntField17;
             return this;
         }
-        
+    
         public int getMyIntField17() { return myIntField17; }
     
             @ThriftField(value=18, name="myIntField18", requiredness=Requiredness.NONE)
@@ -298,7 +302,7 @@ public final class MyNomralStruct {
             this.myIntField18 = myIntField18;
             return this;
         }
-        
+    
         public int getMyIntField18() { return myIntField18; }
     
             @ThriftField(value=19, name="myIntField19", requiredness=Requiredness.NONE)
@@ -306,7 +310,7 @@ public final class MyNomralStruct {
             this.myIntField19 = myIntField19;
             return this;
         }
-        
+    
         public int getMyIntField19() { return myIntField19; }
     
             @ThriftField(value=20, name="myIntField20", requiredness=Requiredness.NONE)
@@ -314,7 +318,7 @@ public final class MyNomralStruct {
             this.myIntField20 = myIntField20;
             return this;
         }
-        
+    
         public int getMyIntField20() { return myIntField20; }
     
             @ThriftField(value=21, name="myDoubleField21", requiredness=Requiredness.NONE)
@@ -322,7 +326,7 @@ public final class MyNomralStruct {
             this.myDoubleField21 = myDoubleField21;
             return this;
         }
-        
+    
         public double getMyDoubleField21() { return myDoubleField21; }
     
             @ThriftField(value=22, name="myDoubleField22", requiredness=Requiredness.NONE)
@@ -330,7 +334,7 @@ public final class MyNomralStruct {
             this.myDoubleField22 = myDoubleField22;
             return this;
         }
-        
+    
         public double getMyDoubleField22() { return myDoubleField22; }
     
             @ThriftField(value=23, name="myDoubleField23", requiredness=Requiredness.NONE)
@@ -338,7 +342,7 @@ public final class MyNomralStruct {
             this.myDoubleField23 = myDoubleField23;
             return this;
         }
-        
+    
         public double getMyDoubleField23() { return myDoubleField23; }
     
             @ThriftField(value=24, name="myDoubleField24", requiredness=Requiredness.NONE)
@@ -346,7 +350,7 @@ public final class MyNomralStruct {
             this.myDoubleField24 = myDoubleField24;
             return this;
         }
-        
+    
         public double getMyDoubleField24() { return myDoubleField24; }
     
             @ThriftField(value=25, name="myDoubleField25", requiredness=Requiredness.NONE)
@@ -354,7 +358,7 @@ public final class MyNomralStruct {
             this.myDoubleField25 = myDoubleField25;
             return this;
         }
-        
+    
         public double getMyDoubleField25() { return myDoubleField25; }
     
             @ThriftField(value=26, name="myDoubleField26", requiredness=Requiredness.NONE)
@@ -362,7 +366,7 @@ public final class MyNomralStruct {
             this.myDoubleField26 = myDoubleField26;
             return this;
         }
-        
+    
         public double getMyDoubleField26() { return myDoubleField26; }
     
             @ThriftField(value=27, name="myDoubleField27", requiredness=Requiredness.NONE)
@@ -370,7 +374,7 @@ public final class MyNomralStruct {
             this.myDoubleField27 = myDoubleField27;
             return this;
         }
-        
+    
         public double getMyDoubleField27() { return myDoubleField27; }
     
             @ThriftField(value=28, name="myDoubleField28", requiredness=Requiredness.NONE)
@@ -378,7 +382,7 @@ public final class MyNomralStruct {
             this.myDoubleField28 = myDoubleField28;
             return this;
         }
-        
+    
         public double getMyDoubleField28() { return myDoubleField28; }
     
             @ThriftField(value=29, name="myDoubleField29", requiredness=Requiredness.NONE)
@@ -386,7 +390,7 @@ public final class MyNomralStruct {
             this.myDoubleField29 = myDoubleField29;
             return this;
         }
-        
+    
         public double getMyDoubleField29() { return myDoubleField29; }
     
             @ThriftField(value=30, name="myDoubleField30", requiredness=Requiredness.NONE)
@@ -394,7 +398,7 @@ public final class MyNomralStruct {
             this.myDoubleField30 = myDoubleField30;
             return this;
         }
-        
+    
         public double getMyDoubleField30() { return myDoubleField30; }
     
         public Builder() { }
@@ -433,7 +437,7 @@ public final class MyNomralStruct {
     
         @ThriftConstructor
         public MyNomralStruct build() {
-            return new MyNomralStruct (
+            MyNomralStruct result = new MyNomralStruct (
                 this.msg1,
                 this.msg2,
                 this.msg3,
@@ -465,6 +469,8 @@ public final class MyNomralStruct {
                 this.myDoubleField29,
                 this.myDoubleField30
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -626,122 +632,302 @@ public final class MyNomralStruct {
     
     @ThriftField(value=1, name="msg1", requiredness=Requiredness.NONE)
     public String getMsg1() { return msg1; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg1() {
+        return this.msg1 != null;
+    }
     
     
     @ThriftField(value=2, name="msg2", requiredness=Requiredness.NONE)
     public String getMsg2() { return msg2; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg2() {
+        return this.msg2 != null;
+    }
     
     
     @ThriftField(value=3, name="msg3", requiredness=Requiredness.NONE)
     public String getMsg3() { return msg3; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg3() {
+        return this.msg3 != null;
+    }
     
     
     @ThriftField(value=4, name="msg4", requiredness=Requiredness.NONE)
     public String getMsg4() { return msg4; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg4() {
+        return this.msg4 != null;
+    }
     
     
     @ThriftField(value=5, name="msg5", requiredness=Requiredness.NONE)
     public String getMsg5() { return msg5; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg5() {
+        return this.msg5 != null;
+    }
     
     
     @ThriftField(value=6, name="msg6", requiredness=Requiredness.NONE)
     public String getMsg6() { return msg6; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg6() {
+        return this.msg6 != null;
+    }
     
     
     @ThriftField(value=7, name="msg7", requiredness=Requiredness.NONE)
     public String getMsg7() { return msg7; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg7() {
+        return this.msg7 != null;
+    }
     
     
     @ThriftField(value=8, name="msg8", requiredness=Requiredness.NONE)
     public String getMsg8() { return msg8; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg8() {
+        return this.msg8 != null;
+    }
     
     
     @ThriftField(value=9, name="msg9", requiredness=Requiredness.NONE)
     public String getMsg9() { return msg9; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg9() {
+        return this.msg9 != null;
+    }
     
     
     @ThriftField(value=10, name="myIntField10", requiredness=Requiredness.NONE)
     public int getMyIntField10() { return myIntField10; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField10() {
+        return __isset_bit_vector.get(_MYINTFIELD10);
+    }
     
     
     @ThriftField(value=11, name="myIntField11", requiredness=Requiredness.NONE)
     public int getMyIntField11() { return myIntField11; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField11() {
+        return __isset_bit_vector.get(_MYINTFIELD11);
+    }
     
     
     @ThriftField(value=12, name="myIntField12", requiredness=Requiredness.NONE)
     public int getMyIntField12() { return myIntField12; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField12() {
+        return __isset_bit_vector.get(_MYINTFIELD12);
+    }
     
     
     @ThriftField(value=13, name="myIntField13", requiredness=Requiredness.NONE)
     public int getMyIntField13() { return myIntField13; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField13() {
+        return __isset_bit_vector.get(_MYINTFIELD13);
+    }
     
     
     @ThriftField(value=14, name="myIntField14", requiredness=Requiredness.NONE)
     public int getMyIntField14() { return myIntField14; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField14() {
+        return __isset_bit_vector.get(_MYINTFIELD14);
+    }
     
     
     @ThriftField(value=15, name="myIntField15", requiredness=Requiredness.NONE)
     public int getMyIntField15() { return myIntField15; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField15() {
+        return __isset_bit_vector.get(_MYINTFIELD15);
+    }
     
     
     @ThriftField(value=16, name="myIntField16", requiredness=Requiredness.NONE)
     public int getMyIntField16() { return myIntField16; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField16() {
+        return __isset_bit_vector.get(_MYINTFIELD16);
+    }
     
     
     @ThriftField(value=17, name="myIntField17", requiredness=Requiredness.NONE)
     public int getMyIntField17() { return myIntField17; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField17() {
+        return __isset_bit_vector.get(_MYINTFIELD17);
+    }
     
     
     @ThriftField(value=18, name="myIntField18", requiredness=Requiredness.NONE)
     public int getMyIntField18() { return myIntField18; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField18() {
+        return __isset_bit_vector.get(_MYINTFIELD18);
+    }
     
     
     @ThriftField(value=19, name="myIntField19", requiredness=Requiredness.NONE)
     public int getMyIntField19() { return myIntField19; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField19() {
+        return __isset_bit_vector.get(_MYINTFIELD19);
+    }
     
     
     @ThriftField(value=20, name="myIntField20", requiredness=Requiredness.NONE)
     public int getMyIntField20() { return myIntField20; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField20() {
+        return __isset_bit_vector.get(_MYINTFIELD20);
+    }
     
     
     @ThriftField(value=21, name="myDoubleField21", requiredness=Requiredness.NONE)
     public double getMyDoubleField21() { return myDoubleField21; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField21() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD21);
+    }
     
     
     @ThriftField(value=22, name="myDoubleField22", requiredness=Requiredness.NONE)
     public double getMyDoubleField22() { return myDoubleField22; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField22() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD22);
+    }
     
     
     @ThriftField(value=23, name="myDoubleField23", requiredness=Requiredness.NONE)
     public double getMyDoubleField23() { return myDoubleField23; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField23() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD23);
+    }
     
     
     @ThriftField(value=24, name="myDoubleField24", requiredness=Requiredness.NONE)
     public double getMyDoubleField24() { return myDoubleField24; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField24() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD24);
+    }
     
     
     @ThriftField(value=25, name="myDoubleField25", requiredness=Requiredness.NONE)
     public double getMyDoubleField25() { return myDoubleField25; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField25() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD25);
+    }
     
     
     @ThriftField(value=26, name="myDoubleField26", requiredness=Requiredness.NONE)
     public double getMyDoubleField26() { return myDoubleField26; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField26() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD26);
+    }
     
     
     @ThriftField(value=27, name="myDoubleField27", requiredness=Requiredness.NONE)
     public double getMyDoubleField27() { return myDoubleField27; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField27() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD27);
+    }
     
     
     @ThriftField(value=28, name="myDoubleField28", requiredness=Requiredness.NONE)
     public double getMyDoubleField28() { return myDoubleField28; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField28() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD28);
+    }
     
     
     @ThriftField(value=29, name="myDoubleField29", requiredness=Requiredness.NONE)
     public double getMyDoubleField29() { return myDoubleField29; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField29() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD29);
+    }
     
     
     @ThriftField(value=30, name="myDoubleField30", requiredness=Requiredness.NONE)
     public double getMyDoubleField30() { return myDoubleField30; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField30() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD30);
+    }
     
     @Override
     public String toString() {

@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="NonCopyableStruct", builder=NonCopyableStruct.Builder.class)
 public final class NonCopyableStruct {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public NonCopyableStruct(
         @ThriftField(value=1, name="num", requiredness=Requiredness.NONE) final long num
@@ -39,6 +41,8 @@ public final class NonCopyableStruct {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private long num = 0L;
     
         @ThriftField(value=1, name="num", requiredness=Requiredness.NONE)
@@ -46,7 +50,7 @@ public final class NonCopyableStruct {
             this.num = num;
             return this;
         }
-        
+    
         public long getNum() { return num; }
     
         public Builder() { }
@@ -56,9 +60,11 @@ public final class NonCopyableStruct {
     
         @ThriftConstructor
         public NonCopyableStruct build() {
-            return new NonCopyableStruct (
+            NonCopyableStruct result = new NonCopyableStruct (
                 this.num
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -75,6 +81,12 @@ public final class NonCopyableStruct {
     
     @ThriftField(value=1, name="num", requiredness=Requiredness.NONE)
     public long getNum() { return num; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetNum() {
+        return __isset_bit_vector.get(_NUM);
+    }
     
     @Override
     public String toString() {

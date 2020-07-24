@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyField", builder=MyField.Builder.class)
 public final class MyField {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public MyField(
         @ThriftField(value=1, name="opt_value", requiredness=Requiredness.OPTIONAL) final Long optValue,
@@ -45,6 +47,8 @@ public final class MyField {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private Long optValue = null;
         private long value = 0L;
         private long reqValue = 0L;
@@ -54,7 +58,7 @@ public final class MyField {
             this.optValue = optValue;
             return this;
         }
-        
+    
         public Long getOptValue() { return optValue; }
     
             @ThriftField(value=2, name="value", requiredness=Requiredness.NONE)
@@ -62,7 +66,7 @@ public final class MyField {
             this.value = value;
             return this;
         }
-        
+    
         public long getValue() { return value; }
     
             @ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED)
@@ -70,7 +74,7 @@ public final class MyField {
             this.reqValue = reqValue;
             return this;
         }
-        
+    
         public long getReqValue() { return reqValue; }
     
         public Builder() { }
@@ -82,11 +86,13 @@ public final class MyField {
     
         @ThriftConstructor
         public MyField build() {
-            return new MyField (
+            MyField result = new MyField (
                 this.optValue,
                 this.value,
                 this.reqValue
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -113,14 +119,32 @@ public final class MyField {
     
     @ThriftField(value=1, name="opt_value", requiredness=Requiredness.OPTIONAL)
     public Long getOptValue() { return optValue; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetOptValue() {
+        return this.optValue != null;
+    }
     
     
     @ThriftField(value=2, name="value", requiredness=Requiredness.NONE)
     public long getValue() { return value; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetValue() {
+        return __isset_bit_vector.get(_VALUE);
+    }
     
     
     @ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED)
     public long getReqValue() { return reqValue; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetReqValue() {
+        return __isset_bit_vector.get(_REQ_VALUE);
+    }
     
     @Override
     public String toString() {

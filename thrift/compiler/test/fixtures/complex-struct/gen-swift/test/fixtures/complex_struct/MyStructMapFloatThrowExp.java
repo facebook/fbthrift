@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyStructMapFloatThrowExp", builder=MyStructMapFloatThrowExp.Builder.class)
 public final class MyStructMapFloatThrowExp {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public MyStructMapFloatThrowExp(
         @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE) final long myLongField,
@@ -42,6 +44,8 @@ public final class MyStructMapFloatThrowExp {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private long myLongField = 0L;
         private Map<Integer, List<List<Float>>> mapListOfFloats = null;
     
@@ -50,7 +54,7 @@ public final class MyStructMapFloatThrowExp {
             this.myLongField = myLongField;
             return this;
         }
-        
+    
         public long getMyLongField() { return myLongField; }
     
             @ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE)
@@ -58,7 +62,7 @@ public final class MyStructMapFloatThrowExp {
             this.mapListOfFloats = mapListOfFloats;
             return this;
         }
-        
+    
         public Map<Integer, List<List<Float>>> getMapListOfFloats() { return mapListOfFloats; }
     
         public Builder() { }
@@ -69,10 +73,12 @@ public final class MyStructMapFloatThrowExp {
     
         @ThriftConstructor
         public MyStructMapFloatThrowExp build() {
-            return new MyStructMapFloatThrowExp (
+            MyStructMapFloatThrowExp result = new MyStructMapFloatThrowExp (
                 this.myLongField,
                 this.mapListOfFloats
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -94,10 +100,22 @@ public final class MyStructMapFloatThrowExp {
     
     @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyLongField() {
+        return __isset_bit_vector.get(_MYLONGFIELD);
+    }
     
     
     @ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE)
     public Map<Integer, List<List<Float>>> getMapListOfFloats() { return mapListOfFloats; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapListOfFloats() {
+        return this.mapListOfFloats != null;
+    }
     
     @Override
     public String toString() {

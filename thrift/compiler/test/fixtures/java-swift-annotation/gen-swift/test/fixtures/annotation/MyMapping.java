@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyMapping", builder=MyMapping.Builder.class)
 public final class MyMapping {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public MyMapping(
         @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE) final com.foo.FastLongStringMap lsMap,
@@ -42,6 +44,8 @@ public final class MyMapping {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private com.foo.FastLongStringMap lsMap = null;
         private com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap = null;
     
@@ -50,7 +54,7 @@ public final class MyMapping {
             this.lsMap = lsMap;
             return this;
         }
-        
+    
         public com.foo.FastLongStringMap getLsMap() { return lsMap; }
     
             @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
@@ -58,7 +62,7 @@ public final class MyMapping {
             this.ioMap = ioMap;
             return this;
         }
-        
+    
         public com.foo.FastIntObjectMap<com.foo.FastIntLongMap> getIoMap() { return ioMap; }
     
         public Builder() { }
@@ -69,10 +73,12 @@ public final class MyMapping {
     
         @ThriftConstructor
         public MyMapping build() {
-            return new MyMapping (
+            MyMapping result = new MyMapping (
                 this.lsMap,
                 this.ioMap
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -94,10 +100,22 @@ public final class MyMapping {
     
     @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
     public com.foo.FastLongStringMap getLsMap() { return lsMap; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetLsMap() {
+        return this.lsMap != null;
+    }
     
     
     @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
     public com.foo.FastIntObjectMap<com.foo.FastIntLongMap> getIoMap() { return ioMap; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetIoMap() {
+        return this.ioMap != null;
+    }
     
     @Override
     public String toString() {

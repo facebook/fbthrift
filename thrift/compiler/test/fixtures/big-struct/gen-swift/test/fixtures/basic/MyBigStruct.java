@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyBigStruct", builder=MyBigStruct.Builder.class)
 public final class MyBigStruct {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     protected MyBigStruct() {
       this.msg1 = null;
@@ -288,6 +290,8 @@ public final class MyBigStruct {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private String msg1 = null;
         private String msg2 = null;
         private String msg3 = null;
@@ -551,7 +555,7 @@ public final class MyBigStruct {
             this.msg1 = msg1;
             return this;
         }
-        
+    
         public String getMsg1() { return msg1; }
     
             @ThriftField(value=2, name="msg2", requiredness=Requiredness.NONE)
@@ -559,7 +563,7 @@ public final class MyBigStruct {
             this.msg2 = msg2;
             return this;
         }
-        
+    
         public String getMsg2() { return msg2; }
     
             @ThriftField(value=3, name="msg3", requiredness=Requiredness.NONE)
@@ -567,7 +571,7 @@ public final class MyBigStruct {
             this.msg3 = msg3;
             return this;
         }
-        
+    
         public String getMsg3() { return msg3; }
     
             @ThriftField(value=4, name="msg4", requiredness=Requiredness.NONE)
@@ -575,7 +579,7 @@ public final class MyBigStruct {
             this.msg4 = msg4;
             return this;
         }
-        
+    
         public String getMsg4() { return msg4; }
     
             @ThriftField(value=5, name="msg5", requiredness=Requiredness.NONE)
@@ -583,7 +587,7 @@ public final class MyBigStruct {
             this.msg5 = msg5;
             return this;
         }
-        
+    
         public String getMsg5() { return msg5; }
     
             @ThriftField(value=6, name="msg6", requiredness=Requiredness.NONE)
@@ -591,7 +595,7 @@ public final class MyBigStruct {
             this.msg6 = msg6;
             return this;
         }
-        
+    
         public String getMsg6() { return msg6; }
     
             @ThriftField(value=7, name="msg7", requiredness=Requiredness.NONE)
@@ -599,7 +603,7 @@ public final class MyBigStruct {
             this.msg7 = msg7;
             return this;
         }
-        
+    
         public String getMsg7() { return msg7; }
     
             @ThriftField(value=8, name="msg8", requiredness=Requiredness.NONE)
@@ -607,7 +611,7 @@ public final class MyBigStruct {
             this.msg8 = msg8;
             return this;
         }
-        
+    
         public String getMsg8() { return msg8; }
     
             @ThriftField(value=9, name="msg9", requiredness=Requiredness.NONE)
@@ -615,7 +619,7 @@ public final class MyBigStruct {
             this.msg9 = msg9;
             return this;
         }
-        
+    
         public String getMsg9() { return msg9; }
     
             @ThriftField(value=10, name="myIntField10", requiredness=Requiredness.NONE)
@@ -623,7 +627,7 @@ public final class MyBigStruct {
             this.myIntField10 = myIntField10;
             return this;
         }
-        
+    
         public int getMyIntField10() { return myIntField10; }
     
             @ThriftField(value=11, name="myIntField11", requiredness=Requiredness.NONE)
@@ -631,7 +635,7 @@ public final class MyBigStruct {
             this.myIntField11 = myIntField11;
             return this;
         }
-        
+    
         public int getMyIntField11() { return myIntField11; }
     
             @ThriftField(value=12, name="myIntField12", requiredness=Requiredness.NONE)
@@ -639,7 +643,7 @@ public final class MyBigStruct {
             this.myIntField12 = myIntField12;
             return this;
         }
-        
+    
         public int getMyIntField12() { return myIntField12; }
     
             @ThriftField(value=13, name="myIntField13", requiredness=Requiredness.NONE)
@@ -647,7 +651,7 @@ public final class MyBigStruct {
             this.myIntField13 = myIntField13;
             return this;
         }
-        
+    
         public int getMyIntField13() { return myIntField13; }
     
             @ThriftField(value=14, name="myIntField14", requiredness=Requiredness.NONE)
@@ -655,7 +659,7 @@ public final class MyBigStruct {
             this.myIntField14 = myIntField14;
             return this;
         }
-        
+    
         public int getMyIntField14() { return myIntField14; }
     
             @ThriftField(value=15, name="myIntField15", requiredness=Requiredness.NONE)
@@ -663,7 +667,7 @@ public final class MyBigStruct {
             this.myIntField15 = myIntField15;
             return this;
         }
-        
+    
         public int getMyIntField15() { return myIntField15; }
     
             @ThriftField(value=16, name="myIntField16", requiredness=Requiredness.NONE)
@@ -671,7 +675,7 @@ public final class MyBigStruct {
             this.myIntField16 = myIntField16;
             return this;
         }
-        
+    
         public int getMyIntField16() { return myIntField16; }
     
             @ThriftField(value=17, name="myIntField17", requiredness=Requiredness.NONE)
@@ -679,7 +683,7 @@ public final class MyBigStruct {
             this.myIntField17 = myIntField17;
             return this;
         }
-        
+    
         public int getMyIntField17() { return myIntField17; }
     
             @ThriftField(value=18, name="myIntField18", requiredness=Requiredness.NONE)
@@ -687,7 +691,7 @@ public final class MyBigStruct {
             this.myIntField18 = myIntField18;
             return this;
         }
-        
+    
         public int getMyIntField18() { return myIntField18; }
     
             @ThriftField(value=19, name="myIntField19", requiredness=Requiredness.NONE)
@@ -695,7 +699,7 @@ public final class MyBigStruct {
             this.myIntField19 = myIntField19;
             return this;
         }
-        
+    
         public int getMyIntField19() { return myIntField19; }
     
             @ThriftField(value=20, name="myIntField20", requiredness=Requiredness.NONE)
@@ -703,7 +707,7 @@ public final class MyBigStruct {
             this.myIntField20 = myIntField20;
             return this;
         }
-        
+    
         public int getMyIntField20() { return myIntField20; }
     
             @ThriftField(value=21, name="myDoubleField21", requiredness=Requiredness.NONE)
@@ -711,7 +715,7 @@ public final class MyBigStruct {
             this.myDoubleField21 = myDoubleField21;
             return this;
         }
-        
+    
         public double getMyDoubleField21() { return myDoubleField21; }
     
             @ThriftField(value=22, name="myDoubleField22", requiredness=Requiredness.NONE)
@@ -719,7 +723,7 @@ public final class MyBigStruct {
             this.myDoubleField22 = myDoubleField22;
             return this;
         }
-        
+    
         public double getMyDoubleField22() { return myDoubleField22; }
     
             @ThriftField(value=23, name="myDoubleField23", requiredness=Requiredness.NONE)
@@ -727,7 +731,7 @@ public final class MyBigStruct {
             this.myDoubleField23 = myDoubleField23;
             return this;
         }
-        
+    
         public double getMyDoubleField23() { return myDoubleField23; }
     
             @ThriftField(value=24, name="myDoubleField24", requiredness=Requiredness.NONE)
@@ -735,7 +739,7 @@ public final class MyBigStruct {
             this.myDoubleField24 = myDoubleField24;
             return this;
         }
-        
+    
         public double getMyDoubleField24() { return myDoubleField24; }
     
             @ThriftField(value=25, name="myDoubleField25", requiredness=Requiredness.NONE)
@@ -743,7 +747,7 @@ public final class MyBigStruct {
             this.myDoubleField25 = myDoubleField25;
             return this;
         }
-        
+    
         public double getMyDoubleField25() { return myDoubleField25; }
     
             @ThriftField(value=26, name="myDoubleField26", requiredness=Requiredness.NONE)
@@ -751,7 +755,7 @@ public final class MyBigStruct {
             this.myDoubleField26 = myDoubleField26;
             return this;
         }
-        
+    
         public double getMyDoubleField26() { return myDoubleField26; }
     
             @ThriftField(value=27, name="myDoubleField27", requiredness=Requiredness.NONE)
@@ -759,7 +763,7 @@ public final class MyBigStruct {
             this.myDoubleField27 = myDoubleField27;
             return this;
         }
-        
+    
         public double getMyDoubleField27() { return myDoubleField27; }
     
             @ThriftField(value=28, name="myDoubleField28", requiredness=Requiredness.NONE)
@@ -767,7 +771,7 @@ public final class MyBigStruct {
             this.myDoubleField28 = myDoubleField28;
             return this;
         }
-        
+    
         public double getMyDoubleField28() { return myDoubleField28; }
     
             @ThriftField(value=29, name="myDoubleField29", requiredness=Requiredness.NONE)
@@ -775,7 +779,7 @@ public final class MyBigStruct {
             this.myDoubleField29 = myDoubleField29;
             return this;
         }
-        
+    
         public double getMyDoubleField29() { return myDoubleField29; }
     
             @ThriftField(value=30, name="myDoubleField30", requiredness=Requiredness.NONE)
@@ -783,7 +787,7 @@ public final class MyBigStruct {
             this.myDoubleField30 = myDoubleField30;
             return this;
         }
-        
+    
         public double getMyDoubleField30() { return myDoubleField30; }
     
             @ThriftField(value=31, name="msg31", requiredness=Requiredness.NONE)
@@ -791,7 +795,7 @@ public final class MyBigStruct {
             this.msg31 = msg31;
             return this;
         }
-        
+    
         public String getMsg31() { return msg31; }
     
             @ThriftField(value=32, name="msg32", requiredness=Requiredness.NONE)
@@ -799,7 +803,7 @@ public final class MyBigStruct {
             this.msg32 = msg32;
             return this;
         }
-        
+    
         public String getMsg32() { return msg32; }
     
             @ThriftField(value=33, name="msg33", requiredness=Requiredness.NONE)
@@ -807,7 +811,7 @@ public final class MyBigStruct {
             this.msg33 = msg33;
             return this;
         }
-        
+    
         public String getMsg33() { return msg33; }
     
             @ThriftField(value=34, name="msg34", requiredness=Requiredness.NONE)
@@ -815,7 +819,7 @@ public final class MyBigStruct {
             this.msg34 = msg34;
             return this;
         }
-        
+    
         public String getMsg34() { return msg34; }
     
             @ThriftField(value=35, name="msg35", requiredness=Requiredness.NONE)
@@ -823,7 +827,7 @@ public final class MyBigStruct {
             this.msg35 = msg35;
             return this;
         }
-        
+    
         public String getMsg35() { return msg35; }
     
             @ThriftField(value=36, name="msg36", requiredness=Requiredness.NONE)
@@ -831,7 +835,7 @@ public final class MyBigStruct {
             this.msg36 = msg36;
             return this;
         }
-        
+    
         public String getMsg36() { return msg36; }
     
             @ThriftField(value=37, name="msg37", requiredness=Requiredness.NONE)
@@ -839,7 +843,7 @@ public final class MyBigStruct {
             this.msg37 = msg37;
             return this;
         }
-        
+    
         public String getMsg37() { return msg37; }
     
             @ThriftField(value=38, name="msg38", requiredness=Requiredness.NONE)
@@ -847,7 +851,7 @@ public final class MyBigStruct {
             this.msg38 = msg38;
             return this;
         }
-        
+    
         public String getMsg38() { return msg38; }
     
             @ThriftField(value=39, name="msg39", requiredness=Requiredness.NONE)
@@ -855,7 +859,7 @@ public final class MyBigStruct {
             this.msg39 = msg39;
             return this;
         }
-        
+    
         public String getMsg39() { return msg39; }
     
             @ThriftField(value=40, name="msg40", requiredness=Requiredness.NONE)
@@ -863,7 +867,7 @@ public final class MyBigStruct {
             this.msg40 = msg40;
             return this;
         }
-        
+    
         public String getMsg40() { return msg40; }
     
             @ThriftField(value=41, name="msg41", requiredness=Requiredness.NONE)
@@ -871,7 +875,7 @@ public final class MyBigStruct {
             this.msg41 = msg41;
             return this;
         }
-        
+    
         public String getMsg41() { return msg41; }
     
             @ThriftField(value=42, name="msg42", requiredness=Requiredness.NONE)
@@ -879,7 +883,7 @@ public final class MyBigStruct {
             this.msg42 = msg42;
             return this;
         }
-        
+    
         public String getMsg42() { return msg42; }
     
             @ThriftField(value=43, name="msg43", requiredness=Requiredness.NONE)
@@ -887,7 +891,7 @@ public final class MyBigStruct {
             this.msg43 = msg43;
             return this;
         }
-        
+    
         public String getMsg43() { return msg43; }
     
             @ThriftField(value=44, name="msg44", requiredness=Requiredness.NONE)
@@ -895,7 +899,7 @@ public final class MyBigStruct {
             this.msg44 = msg44;
             return this;
         }
-        
+    
         public String getMsg44() { return msg44; }
     
             @ThriftField(value=45, name="msg45", requiredness=Requiredness.NONE)
@@ -903,7 +907,7 @@ public final class MyBigStruct {
             this.msg45 = msg45;
             return this;
         }
-        
+    
         public String getMsg45() { return msg45; }
     
             @ThriftField(value=46, name="msg46", requiredness=Requiredness.NONE)
@@ -911,7 +915,7 @@ public final class MyBigStruct {
             this.msg46 = msg46;
             return this;
         }
-        
+    
         public String getMsg46() { return msg46; }
     
             @ThriftField(value=47, name="msg47", requiredness=Requiredness.NONE)
@@ -919,7 +923,7 @@ public final class MyBigStruct {
             this.msg47 = msg47;
             return this;
         }
-        
+    
         public String getMsg47() { return msg47; }
     
             @ThriftField(value=48, name="msg48", requiredness=Requiredness.NONE)
@@ -927,7 +931,7 @@ public final class MyBigStruct {
             this.msg48 = msg48;
             return this;
         }
-        
+    
         public String getMsg48() { return msg48; }
     
             @ThriftField(value=49, name="msg49", requiredness=Requiredness.NONE)
@@ -935,7 +939,7 @@ public final class MyBigStruct {
             this.msg49 = msg49;
             return this;
         }
-        
+    
         public String getMsg49() { return msg49; }
     
             @ThriftField(value=50, name="msg50", requiredness=Requiredness.NONE)
@@ -943,7 +947,7 @@ public final class MyBigStruct {
             this.msg50 = msg50;
             return this;
         }
-        
+    
         public String getMsg50() { return msg50; }
     
             @ThriftField(value=51, name="msg51", requiredness=Requiredness.NONE)
@@ -951,7 +955,7 @@ public final class MyBigStruct {
             this.msg51 = msg51;
             return this;
         }
-        
+    
         public String getMsg51() { return msg51; }
     
             @ThriftField(value=52, name="msg52", requiredness=Requiredness.NONE)
@@ -959,7 +963,7 @@ public final class MyBigStruct {
             this.msg52 = msg52;
             return this;
         }
-        
+    
         public String getMsg52() { return msg52; }
     
             @ThriftField(value=53, name="msg53", requiredness=Requiredness.NONE)
@@ -967,7 +971,7 @@ public final class MyBigStruct {
             this.msg53 = msg53;
             return this;
         }
-        
+    
         public String getMsg53() { return msg53; }
     
             @ThriftField(value=54, name="msg54", requiredness=Requiredness.NONE)
@@ -975,7 +979,7 @@ public final class MyBigStruct {
             this.msg54 = msg54;
             return this;
         }
-        
+    
         public String getMsg54() { return msg54; }
     
             @ThriftField(value=55, name="msg55", requiredness=Requiredness.NONE)
@@ -983,7 +987,7 @@ public final class MyBigStruct {
             this.msg55 = msg55;
             return this;
         }
-        
+    
         public String getMsg55() { return msg55; }
     
             @ThriftField(value=56, name="msg56", requiredness=Requiredness.NONE)
@@ -991,7 +995,7 @@ public final class MyBigStruct {
             this.msg56 = msg56;
             return this;
         }
-        
+    
         public String getMsg56() { return msg56; }
     
             @ThriftField(value=57, name="msg57", requiredness=Requiredness.NONE)
@@ -999,7 +1003,7 @@ public final class MyBigStruct {
             this.msg57 = msg57;
             return this;
         }
-        
+    
         public String getMsg57() { return msg57; }
     
             @ThriftField(value=58, name="msg58", requiredness=Requiredness.NONE)
@@ -1007,7 +1011,7 @@ public final class MyBigStruct {
             this.msg58 = msg58;
             return this;
         }
-        
+    
         public String getMsg58() { return msg58; }
     
             @ThriftField(value=59, name="msg59", requiredness=Requiredness.NONE)
@@ -1015,7 +1019,7 @@ public final class MyBigStruct {
             this.msg59 = msg59;
             return this;
         }
-        
+    
         public String getMsg59() { return msg59; }
     
             @ThriftField(value=60, name="msg60", requiredness=Requiredness.NONE)
@@ -1023,7 +1027,7 @@ public final class MyBigStruct {
             this.msg60 = msg60;
             return this;
         }
-        
+    
         public String getMsg60() { return msg60; }
     
             @ThriftField(value=61, name="msg61", requiredness=Requiredness.NONE)
@@ -1031,7 +1035,7 @@ public final class MyBigStruct {
             this.msg61 = msg61;
             return this;
         }
-        
+    
         public String getMsg61() { return msg61; }
     
             @ThriftField(value=62, name="msg62", requiredness=Requiredness.NONE)
@@ -1039,7 +1043,7 @@ public final class MyBigStruct {
             this.msg62 = msg62;
             return this;
         }
-        
+    
         public String getMsg62() { return msg62; }
     
             @ThriftField(value=63, name="msg63", requiredness=Requiredness.NONE)
@@ -1047,7 +1051,7 @@ public final class MyBigStruct {
             this.msg63 = msg63;
             return this;
         }
-        
+    
         public String getMsg63() { return msg63; }
     
             @ThriftField(value=64, name="msg64", requiredness=Requiredness.NONE)
@@ -1055,7 +1059,7 @@ public final class MyBigStruct {
             this.msg64 = msg64;
             return this;
         }
-        
+    
         public String getMsg64() { return msg64; }
     
             @ThriftField(value=65, name="msg65", requiredness=Requiredness.NONE)
@@ -1063,7 +1067,7 @@ public final class MyBigStruct {
             this.msg65 = msg65;
             return this;
         }
-        
+    
         public String getMsg65() { return msg65; }
     
             @ThriftField(value=66, name="msg66", requiredness=Requiredness.NONE)
@@ -1071,7 +1075,7 @@ public final class MyBigStruct {
             this.msg66 = msg66;
             return this;
         }
-        
+    
         public String getMsg66() { return msg66; }
     
             @ThriftField(value=67, name="msg67", requiredness=Requiredness.NONE)
@@ -1079,7 +1083,7 @@ public final class MyBigStruct {
             this.msg67 = msg67;
             return this;
         }
-        
+    
         public String getMsg67() { return msg67; }
     
             @ThriftField(value=68, name="msg68", requiredness=Requiredness.NONE)
@@ -1087,7 +1091,7 @@ public final class MyBigStruct {
             this.msg68 = msg68;
             return this;
         }
-        
+    
         public String getMsg68() { return msg68; }
     
             @ThriftField(value=69, name="msg69", requiredness=Requiredness.NONE)
@@ -1095,7 +1099,7 @@ public final class MyBigStruct {
             this.msg69 = msg69;
             return this;
         }
-        
+    
         public String getMsg69() { return msg69; }
     
             @ThriftField(value=70, name="msg70", requiredness=Requiredness.NONE)
@@ -1103,7 +1107,7 @@ public final class MyBigStruct {
             this.msg70 = msg70;
             return this;
         }
-        
+    
         public String getMsg70() { return msg70; }
     
             @ThriftField(value=71, name="msg71", requiredness=Requiredness.NONE)
@@ -1111,7 +1115,7 @@ public final class MyBigStruct {
             this.msg71 = msg71;
             return this;
         }
-        
+    
         public String getMsg71() { return msg71; }
     
             @ThriftField(value=72, name="msg72", requiredness=Requiredness.NONE)
@@ -1119,7 +1123,7 @@ public final class MyBigStruct {
             this.msg72 = msg72;
             return this;
         }
-        
+    
         public String getMsg72() { return msg72; }
     
             @ThriftField(value=73, name="msg73", requiredness=Requiredness.NONE)
@@ -1127,7 +1131,7 @@ public final class MyBigStruct {
             this.msg73 = msg73;
             return this;
         }
-        
+    
         public String getMsg73() { return msg73; }
     
             @ThriftField(value=74, name="msg74", requiredness=Requiredness.NONE)
@@ -1135,7 +1139,7 @@ public final class MyBigStruct {
             this.msg74 = msg74;
             return this;
         }
-        
+    
         public String getMsg74() { return msg74; }
     
             @ThriftField(value=75, name="msg75", requiredness=Requiredness.NONE)
@@ -1143,7 +1147,7 @@ public final class MyBigStruct {
             this.msg75 = msg75;
             return this;
         }
-        
+    
         public String getMsg75() { return msg75; }
     
             @ThriftField(value=76, name="msg76", requiredness=Requiredness.NONE)
@@ -1151,7 +1155,7 @@ public final class MyBigStruct {
             this.msg76 = msg76;
             return this;
         }
-        
+    
         public String getMsg76() { return msg76; }
     
             @ThriftField(value=77, name="msg77", requiredness=Requiredness.NONE)
@@ -1159,7 +1163,7 @@ public final class MyBigStruct {
             this.msg77 = msg77;
             return this;
         }
-        
+    
         public String getMsg77() { return msg77; }
     
             @ThriftField(value=78, name="msg78", requiredness=Requiredness.NONE)
@@ -1167,7 +1171,7 @@ public final class MyBigStruct {
             this.msg78 = msg78;
             return this;
         }
-        
+    
         public String getMsg78() { return msg78; }
     
             @ThriftField(value=79, name="msg79", requiredness=Requiredness.NONE)
@@ -1175,7 +1179,7 @@ public final class MyBigStruct {
             this.msg79 = msg79;
             return this;
         }
-        
+    
         public String getMsg79() { return msg79; }
     
             @ThriftField(value=80, name="msg80", requiredness=Requiredness.NONE)
@@ -1183,7 +1187,7 @@ public final class MyBigStruct {
             this.msg80 = msg80;
             return this;
         }
-        
+    
         public String getMsg80() { return msg80; }
     
             @ThriftField(value=81, name="msg81", requiredness=Requiredness.NONE)
@@ -1191,7 +1195,7 @@ public final class MyBigStruct {
             this.msg81 = msg81;
             return this;
         }
-        
+    
         public String getMsg81() { return msg81; }
     
             @ThriftField(value=82, name="msg82", requiredness=Requiredness.NONE)
@@ -1199,7 +1203,7 @@ public final class MyBigStruct {
             this.msg82 = msg82;
             return this;
         }
-        
+    
         public String getMsg82() { return msg82; }
     
             @ThriftField(value=83, name="msg83", requiredness=Requiredness.NONE)
@@ -1207,7 +1211,7 @@ public final class MyBigStruct {
             this.msg83 = msg83;
             return this;
         }
-        
+    
         public String getMsg83() { return msg83; }
     
             @ThriftField(value=84, name="msg84", requiredness=Requiredness.NONE)
@@ -1215,7 +1219,7 @@ public final class MyBigStruct {
             this.msg84 = msg84;
             return this;
         }
-        
+    
         public String getMsg84() { return msg84; }
     
             @ThriftField(value=85, name="msg85", requiredness=Requiredness.NONE)
@@ -1223,7 +1227,7 @@ public final class MyBigStruct {
             this.msg85 = msg85;
             return this;
         }
-        
+    
         public String getMsg85() { return msg85; }
     
             @ThriftField(value=86, name="msg86", requiredness=Requiredness.NONE)
@@ -1231,7 +1235,7 @@ public final class MyBigStruct {
             this.msg86 = msg86;
             return this;
         }
-        
+    
         public String getMsg86() { return msg86; }
     
             @ThriftField(value=87, name="msg87", requiredness=Requiredness.NONE)
@@ -1239,7 +1243,7 @@ public final class MyBigStruct {
             this.msg87 = msg87;
             return this;
         }
-        
+    
         public String getMsg87() { return msg87; }
     
             @ThriftField(value=88, name="msg88", requiredness=Requiredness.NONE)
@@ -1247,7 +1251,7 @@ public final class MyBigStruct {
             this.msg88 = msg88;
             return this;
         }
-        
+    
         public String getMsg88() { return msg88; }
     
             @ThriftField(value=89, name="msg89", requiredness=Requiredness.NONE)
@@ -1255,7 +1259,7 @@ public final class MyBigStruct {
             this.msg89 = msg89;
             return this;
         }
-        
+    
         public String getMsg89() { return msg89; }
     
             @ThriftField(value=90, name="msg90", requiredness=Requiredness.NONE)
@@ -1263,7 +1267,7 @@ public final class MyBigStruct {
             this.msg90 = msg90;
             return this;
         }
-        
+    
         public String getMsg90() { return msg90; }
     
             @ThriftField(value=91, name="msg91", requiredness=Requiredness.NONE)
@@ -1271,7 +1275,7 @@ public final class MyBigStruct {
             this.msg91 = msg91;
             return this;
         }
-        
+    
         public String getMsg91() { return msg91; }
     
             @ThriftField(value=92, name="msg92", requiredness=Requiredness.NONE)
@@ -1279,7 +1283,7 @@ public final class MyBigStruct {
             this.msg92 = msg92;
             return this;
         }
-        
+    
         public String getMsg92() { return msg92; }
     
             @ThriftField(value=93, name="msg93", requiredness=Requiredness.NONE)
@@ -1287,7 +1291,7 @@ public final class MyBigStruct {
             this.msg93 = msg93;
             return this;
         }
-        
+    
         public String getMsg93() { return msg93; }
     
             @ThriftField(value=94, name="msg94", requiredness=Requiredness.NONE)
@@ -1295,7 +1299,7 @@ public final class MyBigStruct {
             this.msg94 = msg94;
             return this;
         }
-        
+    
         public String getMsg94() { return msg94; }
     
             @ThriftField(value=95, name="msg95", requiredness=Requiredness.NONE)
@@ -1303,7 +1307,7 @@ public final class MyBigStruct {
             this.msg95 = msg95;
             return this;
         }
-        
+    
         public String getMsg95() { return msg95; }
     
             @ThriftField(value=96, name="msg96", requiredness=Requiredness.NONE)
@@ -1311,7 +1315,7 @@ public final class MyBigStruct {
             this.msg96 = msg96;
             return this;
         }
-        
+    
         public String getMsg96() { return msg96; }
     
             @ThriftField(value=97, name="msg97", requiredness=Requiredness.NONE)
@@ -1319,7 +1323,7 @@ public final class MyBigStruct {
             this.msg97 = msg97;
             return this;
         }
-        
+    
         public String getMsg97() { return msg97; }
     
             @ThriftField(value=98, name="msg98", requiredness=Requiredness.NONE)
@@ -1327,7 +1331,7 @@ public final class MyBigStruct {
             this.msg98 = msg98;
             return this;
         }
-        
+    
         public String getMsg98() { return msg98; }
     
             @ThriftField(value=99, name="msg99", requiredness=Requiredness.NONE)
@@ -1335,7 +1339,7 @@ public final class MyBigStruct {
             this.msg99 = msg99;
             return this;
         }
-        
+    
         public String getMsg99() { return msg99; }
     
             @ThriftField(value=100, name="msg100", requiredness=Requiredness.NONE)
@@ -1343,7 +1347,7 @@ public final class MyBigStruct {
             this.msg100 = msg100;
             return this;
         }
-        
+    
         public String getMsg100() { return msg100; }
     
             @ThriftField(value=101, name="msg101", requiredness=Requiredness.NONE)
@@ -1351,7 +1355,7 @@ public final class MyBigStruct {
             this.msg101 = msg101;
             return this;
         }
-        
+    
         public String getMsg101() { return msg101; }
     
             @ThriftField(value=102, name="msg102", requiredness=Requiredness.NONE)
@@ -1359,7 +1363,7 @@ public final class MyBigStruct {
             this.msg102 = msg102;
             return this;
         }
-        
+    
         public String getMsg102() { return msg102; }
     
             @ThriftField(value=103, name="msg103", requiredness=Requiredness.NONE)
@@ -1367,7 +1371,7 @@ public final class MyBigStruct {
             this.msg103 = msg103;
             return this;
         }
-        
+    
         public String getMsg103() { return msg103; }
     
             @ThriftField(value=104, name="msg104", requiredness=Requiredness.NONE)
@@ -1375,7 +1379,7 @@ public final class MyBigStruct {
             this.msg104 = msg104;
             return this;
         }
-        
+    
         public String getMsg104() { return msg104; }
     
             @ThriftField(value=105, name="msg105", requiredness=Requiredness.NONE)
@@ -1383,7 +1387,7 @@ public final class MyBigStruct {
             this.msg105 = msg105;
             return this;
         }
-        
+    
         public String getMsg105() { return msg105; }
     
             @ThriftField(value=106, name="msg106", requiredness=Requiredness.NONE)
@@ -1391,7 +1395,7 @@ public final class MyBigStruct {
             this.msg106 = msg106;
             return this;
         }
-        
+    
         public String getMsg106() { return msg106; }
     
             @ThriftField(value=107, name="msg107", requiredness=Requiredness.NONE)
@@ -1399,7 +1403,7 @@ public final class MyBigStruct {
             this.msg107 = msg107;
             return this;
         }
-        
+    
         public String getMsg107() { return msg107; }
     
             @ThriftField(value=108, name="msg108", requiredness=Requiredness.NONE)
@@ -1407,7 +1411,7 @@ public final class MyBigStruct {
             this.msg108 = msg108;
             return this;
         }
-        
+    
         public String getMsg108() { return msg108; }
     
             @ThriftField(value=109, name="msg109", requiredness=Requiredness.NONE)
@@ -1415,7 +1419,7 @@ public final class MyBigStruct {
             this.msg109 = msg109;
             return this;
         }
-        
+    
         public String getMsg109() { return msg109; }
     
             @ThriftField(value=110, name="msg110", requiredness=Requiredness.NONE)
@@ -1423,7 +1427,7 @@ public final class MyBigStruct {
             this.msg110 = msg110;
             return this;
         }
-        
+    
         public String getMsg110() { return msg110; }
     
             @ThriftField(value=111, name="msg111", requiredness=Requiredness.NONE)
@@ -1431,7 +1435,7 @@ public final class MyBigStruct {
             this.msg111 = msg111;
             return this;
         }
-        
+    
         public String getMsg111() { return msg111; }
     
             @ThriftField(value=112, name="msg112", requiredness=Requiredness.NONE)
@@ -1439,7 +1443,7 @@ public final class MyBigStruct {
             this.msg112 = msg112;
             return this;
         }
-        
+    
         public String getMsg112() { return msg112; }
     
             @ThriftField(value=113, name="msg113", requiredness=Requiredness.NONE)
@@ -1447,7 +1451,7 @@ public final class MyBigStruct {
             this.msg113 = msg113;
             return this;
         }
-        
+    
         public String getMsg113() { return msg113; }
     
             @ThriftField(value=114, name="msg114", requiredness=Requiredness.NONE)
@@ -1455,7 +1459,7 @@ public final class MyBigStruct {
             this.msg114 = msg114;
             return this;
         }
-        
+    
         public String getMsg114() { return msg114; }
     
             @ThriftField(value=115, name="msg115", requiredness=Requiredness.NONE)
@@ -1463,7 +1467,7 @@ public final class MyBigStruct {
             this.msg115 = msg115;
             return this;
         }
-        
+    
         public String getMsg115() { return msg115; }
     
             @ThriftField(value=116, name="msg116", requiredness=Requiredness.NONE)
@@ -1471,7 +1475,7 @@ public final class MyBigStruct {
             this.msg116 = msg116;
             return this;
         }
-        
+    
         public String getMsg116() { return msg116; }
     
             @ThriftField(value=117, name="msg117", requiredness=Requiredness.NONE)
@@ -1479,7 +1483,7 @@ public final class MyBigStruct {
             this.msg117 = msg117;
             return this;
         }
-        
+    
         public String getMsg117() { return msg117; }
     
             @ThriftField(value=118, name="msg118", requiredness=Requiredness.NONE)
@@ -1487,7 +1491,7 @@ public final class MyBigStruct {
             this.msg118 = msg118;
             return this;
         }
-        
+    
         public String getMsg118() { return msg118; }
     
             @ThriftField(value=119, name="msg119", requiredness=Requiredness.NONE)
@@ -1495,7 +1499,7 @@ public final class MyBigStruct {
             this.msg119 = msg119;
             return this;
         }
-        
+    
         public String getMsg119() { return msg119; }
     
             @ThriftField(value=120, name="msg120", requiredness=Requiredness.NONE)
@@ -1503,7 +1507,7 @@ public final class MyBigStruct {
             this.msg120 = msg120;
             return this;
         }
-        
+    
         public String getMsg120() { return msg120; }
     
             @ThriftField(value=121, name="msg121", requiredness=Requiredness.NONE)
@@ -1511,7 +1515,7 @@ public final class MyBigStruct {
             this.msg121 = msg121;
             return this;
         }
-        
+    
         public String getMsg121() { return msg121; }
     
             @ThriftField(value=122, name="msg122", requiredness=Requiredness.NONE)
@@ -1519,7 +1523,7 @@ public final class MyBigStruct {
             this.msg122 = msg122;
             return this;
         }
-        
+    
         public String getMsg122() { return msg122; }
     
             @ThriftField(value=123, name="msg123", requiredness=Requiredness.NONE)
@@ -1527,7 +1531,7 @@ public final class MyBigStruct {
             this.msg123 = msg123;
             return this;
         }
-        
+    
         public String getMsg123() { return msg123; }
     
             @ThriftField(value=124, name="msg124", requiredness=Requiredness.NONE)
@@ -1535,7 +1539,7 @@ public final class MyBigStruct {
             this.msg124 = msg124;
             return this;
         }
-        
+    
         public String getMsg124() { return msg124; }
     
             @ThriftField(value=125, name="msg125", requiredness=Requiredness.NONE)
@@ -1543,7 +1547,7 @@ public final class MyBigStruct {
             this.msg125 = msg125;
             return this;
         }
-        
+    
         public String getMsg125() { return msg125; }
     
             @ThriftField(value=126, name="msg126", requiredness=Requiredness.NONE)
@@ -1551,7 +1555,7 @@ public final class MyBigStruct {
             this.msg126 = msg126;
             return this;
         }
-        
+    
         public String getMsg126() { return msg126; }
     
             @ThriftField(value=127, name="msg127", requiredness=Requiredness.NONE)
@@ -1559,7 +1563,7 @@ public final class MyBigStruct {
             this.msg127 = msg127;
             return this;
         }
-        
+    
         public String getMsg127() { return msg127; }
     
             @ThriftField(value=128, name="msg128", requiredness=Requiredness.NONE)
@@ -1567,7 +1571,7 @@ public final class MyBigStruct {
             this.msg128 = msg128;
             return this;
         }
-        
+    
         public String getMsg128() { return msg128; }
     
             @ThriftField(value=129, name="msg129", requiredness=Requiredness.NONE)
@@ -1575,7 +1579,7 @@ public final class MyBigStruct {
             this.msg129 = msg129;
             return this;
         }
-        
+    
         public String getMsg129() { return msg129; }
     
             @ThriftField(value=130, name="msg130", requiredness=Requiredness.NONE)
@@ -1583,7 +1587,7 @@ public final class MyBigStruct {
             this.msg130 = msg130;
             return this;
         }
-        
+    
         public String getMsg130() { return msg130; }
     
             @ThriftField(value=131, name="msg131", requiredness=Requiredness.NONE)
@@ -1591,7 +1595,7 @@ public final class MyBigStruct {
             this.msg131 = msg131;
             return this;
         }
-        
+    
         public String getMsg131() { return msg131; }
     
             @ThriftField(value=132, name="msg132", requiredness=Requiredness.NONE)
@@ -1599,7 +1603,7 @@ public final class MyBigStruct {
             this.msg132 = msg132;
             return this;
         }
-        
+    
         public String getMsg132() { return msg132; }
     
             @ThriftField(value=133, name="msg133", requiredness=Requiredness.NONE)
@@ -1607,7 +1611,7 @@ public final class MyBigStruct {
             this.msg133 = msg133;
             return this;
         }
-        
+    
         public String getMsg133() { return msg133; }
     
             @ThriftField(value=134, name="msg134", requiredness=Requiredness.NONE)
@@ -1615,7 +1619,7 @@ public final class MyBigStruct {
             this.msg134 = msg134;
             return this;
         }
-        
+    
         public String getMsg134() { return msg134; }
     
             @ThriftField(value=135, name="msg135", requiredness=Requiredness.NONE)
@@ -1623,7 +1627,7 @@ public final class MyBigStruct {
             this.msg135 = msg135;
             return this;
         }
-        
+    
         public String getMsg135() { return msg135; }
     
             @ThriftField(value=136, name="msg136", requiredness=Requiredness.NONE)
@@ -1631,7 +1635,7 @@ public final class MyBigStruct {
             this.msg136 = msg136;
             return this;
         }
-        
+    
         public String getMsg136() { return msg136; }
     
             @ThriftField(value=137, name="msg137", requiredness=Requiredness.NONE)
@@ -1639,7 +1643,7 @@ public final class MyBigStruct {
             this.msg137 = msg137;
             return this;
         }
-        
+    
         public String getMsg137() { return msg137; }
     
             @ThriftField(value=138, name="msg138", requiredness=Requiredness.NONE)
@@ -1647,7 +1651,7 @@ public final class MyBigStruct {
             this.msg138 = msg138;
             return this;
         }
-        
+    
         public String getMsg138() { return msg138; }
     
             @ThriftField(value=139, name="msg139", requiredness=Requiredness.NONE)
@@ -1655,7 +1659,7 @@ public final class MyBigStruct {
             this.msg139 = msg139;
             return this;
         }
-        
+    
         public String getMsg139() { return msg139; }
     
             @ThriftField(value=140, name="msg140", requiredness=Requiredness.NONE)
@@ -1663,7 +1667,7 @@ public final class MyBigStruct {
             this.msg140 = msg140;
             return this;
         }
-        
+    
         public String getMsg140() { return msg140; }
     
             @ThriftField(value=141, name="msg141", requiredness=Requiredness.NONE)
@@ -1671,7 +1675,7 @@ public final class MyBigStruct {
             this.msg141 = msg141;
             return this;
         }
-        
+    
         public String getMsg141() { return msg141; }
     
             @ThriftField(value=142, name="msg142", requiredness=Requiredness.NONE)
@@ -1679,7 +1683,7 @@ public final class MyBigStruct {
             this.msg142 = msg142;
             return this;
         }
-        
+    
         public String getMsg142() { return msg142; }
     
             @ThriftField(value=143, name="msg143", requiredness=Requiredness.NONE)
@@ -1687,7 +1691,7 @@ public final class MyBigStruct {
             this.msg143 = msg143;
             return this;
         }
-        
+    
         public String getMsg143() { return msg143; }
     
             @ThriftField(value=144, name="msg144", requiredness=Requiredness.NONE)
@@ -1695,7 +1699,7 @@ public final class MyBigStruct {
             this.msg144 = msg144;
             return this;
         }
-        
+    
         public String getMsg144() { return msg144; }
     
             @ThriftField(value=145, name="msg145", requiredness=Requiredness.NONE)
@@ -1703,7 +1707,7 @@ public final class MyBigStruct {
             this.msg145 = msg145;
             return this;
         }
-        
+    
         public String getMsg145() { return msg145; }
     
             @ThriftField(value=146, name="msg146", requiredness=Requiredness.NONE)
@@ -1711,7 +1715,7 @@ public final class MyBigStruct {
             this.msg146 = msg146;
             return this;
         }
-        
+    
         public String getMsg146() { return msg146; }
     
             @ThriftField(value=147, name="msg147", requiredness=Requiredness.NONE)
@@ -1719,7 +1723,7 @@ public final class MyBigStruct {
             this.msg147 = msg147;
             return this;
         }
-        
+    
         public String getMsg147() { return msg147; }
     
             @ThriftField(value=148, name="msg148", requiredness=Requiredness.NONE)
@@ -1727,7 +1731,7 @@ public final class MyBigStruct {
             this.msg148 = msg148;
             return this;
         }
-        
+    
         public String getMsg148() { return msg148; }
     
             @ThriftField(value=149, name="msg149", requiredness=Requiredness.NONE)
@@ -1735,7 +1739,7 @@ public final class MyBigStruct {
             this.msg149 = msg149;
             return this;
         }
-        
+    
         public String getMsg149() { return msg149; }
     
             @ThriftField(value=150, name="msg150", requiredness=Requiredness.NONE)
@@ -1743,7 +1747,7 @@ public final class MyBigStruct {
             this.msg150 = msg150;
             return this;
         }
-        
+    
         public String getMsg150() { return msg150; }
     
             @ThriftField(value=151, name="msg151", requiredness=Requiredness.NONE)
@@ -1751,7 +1755,7 @@ public final class MyBigStruct {
             this.msg151 = msg151;
             return this;
         }
-        
+    
         public String getMsg151() { return msg151; }
     
             @ThriftField(value=152, name="msg152", requiredness=Requiredness.NONE)
@@ -1759,7 +1763,7 @@ public final class MyBigStruct {
             this.msg152 = msg152;
             return this;
         }
-        
+    
         public String getMsg152() { return msg152; }
     
             @ThriftField(value=153, name="msg153", requiredness=Requiredness.NONE)
@@ -1767,7 +1771,7 @@ public final class MyBigStruct {
             this.msg153 = msg153;
             return this;
         }
-        
+    
         public String getMsg153() { return msg153; }
     
             @ThriftField(value=154, name="msg154", requiredness=Requiredness.NONE)
@@ -1775,7 +1779,7 @@ public final class MyBigStruct {
             this.msg154 = msg154;
             return this;
         }
-        
+    
         public String getMsg154() { return msg154; }
     
             @ThriftField(value=155, name="msg155", requiredness=Requiredness.NONE)
@@ -1783,7 +1787,7 @@ public final class MyBigStruct {
             this.msg155 = msg155;
             return this;
         }
-        
+    
         public String getMsg155() { return msg155; }
     
             @ThriftField(value=156, name="msg156", requiredness=Requiredness.NONE)
@@ -1791,7 +1795,7 @@ public final class MyBigStruct {
             this.msg156 = msg156;
             return this;
         }
-        
+    
         public String getMsg156() { return msg156; }
     
             @ThriftField(value=157, name="msg157", requiredness=Requiredness.NONE)
@@ -1799,7 +1803,7 @@ public final class MyBigStruct {
             this.msg157 = msg157;
             return this;
         }
-        
+    
         public String getMsg157() { return msg157; }
     
             @ThriftField(value=158, name="msg158", requiredness=Requiredness.NONE)
@@ -1807,7 +1811,7 @@ public final class MyBigStruct {
             this.msg158 = msg158;
             return this;
         }
-        
+    
         public String getMsg158() { return msg158; }
     
             @ThriftField(value=159, name="msg159", requiredness=Requiredness.NONE)
@@ -1815,7 +1819,7 @@ public final class MyBigStruct {
             this.msg159 = msg159;
             return this;
         }
-        
+    
         public String getMsg159() { return msg159; }
     
             @ThriftField(value=160, name="msg160", requiredness=Requiredness.NONE)
@@ -1823,7 +1827,7 @@ public final class MyBigStruct {
             this.msg160 = msg160;
             return this;
         }
-        
+    
         public String getMsg160() { return msg160; }
     
             @ThriftField(value=161, name="msg161", requiredness=Requiredness.NONE)
@@ -1831,7 +1835,7 @@ public final class MyBigStruct {
             this.msg161 = msg161;
             return this;
         }
-        
+    
         public String getMsg161() { return msg161; }
     
             @ThriftField(value=162, name="msg162", requiredness=Requiredness.NONE)
@@ -1839,7 +1843,7 @@ public final class MyBigStruct {
             this.msg162 = msg162;
             return this;
         }
-        
+    
         public String getMsg162() { return msg162; }
     
             @ThriftField(value=163, name="msg163", requiredness=Requiredness.NONE)
@@ -1847,7 +1851,7 @@ public final class MyBigStruct {
             this.msg163 = msg163;
             return this;
         }
-        
+    
         public String getMsg163() { return msg163; }
     
             @ThriftField(value=164, name="msg164", requiredness=Requiredness.NONE)
@@ -1855,7 +1859,7 @@ public final class MyBigStruct {
             this.msg164 = msg164;
             return this;
         }
-        
+    
         public String getMsg164() { return msg164; }
     
             @ThriftField(value=165, name="msg165", requiredness=Requiredness.NONE)
@@ -1863,7 +1867,7 @@ public final class MyBigStruct {
             this.msg165 = msg165;
             return this;
         }
-        
+    
         public String getMsg165() { return msg165; }
     
             @ThriftField(value=166, name="msg166", requiredness=Requiredness.NONE)
@@ -1871,7 +1875,7 @@ public final class MyBigStruct {
             this.msg166 = msg166;
             return this;
         }
-        
+    
         public String getMsg166() { return msg166; }
     
             @ThriftField(value=167, name="msg167", requiredness=Requiredness.NONE)
@@ -1879,7 +1883,7 @@ public final class MyBigStruct {
             this.msg167 = msg167;
             return this;
         }
-        
+    
         public String getMsg167() { return msg167; }
     
             @ThriftField(value=168, name="msg168", requiredness=Requiredness.NONE)
@@ -1887,7 +1891,7 @@ public final class MyBigStruct {
             this.msg168 = msg168;
             return this;
         }
-        
+    
         public String getMsg168() { return msg168; }
     
             @ThriftField(value=169, name="msg169", requiredness=Requiredness.NONE)
@@ -1895,7 +1899,7 @@ public final class MyBigStruct {
             this.msg169 = msg169;
             return this;
         }
-        
+    
         public String getMsg169() { return msg169; }
     
             @ThriftField(value=170, name="msg170", requiredness=Requiredness.NONE)
@@ -1903,7 +1907,7 @@ public final class MyBigStruct {
             this.msg170 = msg170;
             return this;
         }
-        
+    
         public String getMsg170() { return msg170; }
     
             @ThriftField(value=171, name="msg171", requiredness=Requiredness.NONE)
@@ -1911,7 +1915,7 @@ public final class MyBigStruct {
             this.msg171 = msg171;
             return this;
         }
-        
+    
         public String getMsg171() { return msg171; }
     
             @ThriftField(value=172, name="msg172", requiredness=Requiredness.NONE)
@@ -1919,7 +1923,7 @@ public final class MyBigStruct {
             this.msg172 = msg172;
             return this;
         }
-        
+    
         public String getMsg172() { return msg172; }
     
             @ThriftField(value=173, name="msg173", requiredness=Requiredness.NONE)
@@ -1927,7 +1931,7 @@ public final class MyBigStruct {
             this.msg173 = msg173;
             return this;
         }
-        
+    
         public String getMsg173() { return msg173; }
     
             @ThriftField(value=174, name="msg174", requiredness=Requiredness.NONE)
@@ -1935,7 +1939,7 @@ public final class MyBigStruct {
             this.msg174 = msg174;
             return this;
         }
-        
+    
         public String getMsg174() { return msg174; }
     
             @ThriftField(value=175, name="msg175", requiredness=Requiredness.NONE)
@@ -1943,7 +1947,7 @@ public final class MyBigStruct {
             this.msg175 = msg175;
             return this;
         }
-        
+    
         public String getMsg175() { return msg175; }
     
             @ThriftField(value=176, name="msg176", requiredness=Requiredness.NONE)
@@ -1951,7 +1955,7 @@ public final class MyBigStruct {
             this.msg176 = msg176;
             return this;
         }
-        
+    
         public String getMsg176() { return msg176; }
     
             @ThriftField(value=177, name="msg177", requiredness=Requiredness.NONE)
@@ -1959,7 +1963,7 @@ public final class MyBigStruct {
             this.msg177 = msg177;
             return this;
         }
-        
+    
         public String getMsg177() { return msg177; }
     
             @ThriftField(value=178, name="msg178", requiredness=Requiredness.NONE)
@@ -1967,7 +1971,7 @@ public final class MyBigStruct {
             this.msg178 = msg178;
             return this;
         }
-        
+    
         public String getMsg178() { return msg178; }
     
             @ThriftField(value=179, name="msg179", requiredness=Requiredness.NONE)
@@ -1975,7 +1979,7 @@ public final class MyBigStruct {
             this.msg179 = msg179;
             return this;
         }
-        
+    
         public String getMsg179() { return msg179; }
     
             @ThriftField(value=180, name="msg180", requiredness=Requiredness.NONE)
@@ -1983,7 +1987,7 @@ public final class MyBigStruct {
             this.msg180 = msg180;
             return this;
         }
-        
+    
         public String getMsg180() { return msg180; }
     
             @ThriftField(value=181, name="msg181", requiredness=Requiredness.NONE)
@@ -1991,7 +1995,7 @@ public final class MyBigStruct {
             this.msg181 = msg181;
             return this;
         }
-        
+    
         public String getMsg181() { return msg181; }
     
             @ThriftField(value=182, name="msg182", requiredness=Requiredness.NONE)
@@ -1999,7 +2003,7 @@ public final class MyBigStruct {
             this.msg182 = msg182;
             return this;
         }
-        
+    
         public String getMsg182() { return msg182; }
     
             @ThriftField(value=183, name="msg183", requiredness=Requiredness.NONE)
@@ -2007,7 +2011,7 @@ public final class MyBigStruct {
             this.msg183 = msg183;
             return this;
         }
-        
+    
         public String getMsg183() { return msg183; }
     
             @ThriftField(value=184, name="msg184", requiredness=Requiredness.NONE)
@@ -2015,7 +2019,7 @@ public final class MyBigStruct {
             this.msg184 = msg184;
             return this;
         }
-        
+    
         public String getMsg184() { return msg184; }
     
             @ThriftField(value=185, name="msg185", requiredness=Requiredness.NONE)
@@ -2023,7 +2027,7 @@ public final class MyBigStruct {
             this.msg185 = msg185;
             return this;
         }
-        
+    
         public String getMsg185() { return msg185; }
     
             @ThriftField(value=186, name="msg186", requiredness=Requiredness.NONE)
@@ -2031,7 +2035,7 @@ public final class MyBigStruct {
             this.msg186 = msg186;
             return this;
         }
-        
+    
         public String getMsg186() { return msg186; }
     
             @ThriftField(value=187, name="msg187", requiredness=Requiredness.NONE)
@@ -2039,7 +2043,7 @@ public final class MyBigStruct {
             this.msg187 = msg187;
             return this;
         }
-        
+    
         public String getMsg187() { return msg187; }
     
             @ThriftField(value=188, name="msg188", requiredness=Requiredness.NONE)
@@ -2047,7 +2051,7 @@ public final class MyBigStruct {
             this.msg188 = msg188;
             return this;
         }
-        
+    
         public String getMsg188() { return msg188; }
     
             @ThriftField(value=189, name="msg189", requiredness=Requiredness.NONE)
@@ -2055,7 +2059,7 @@ public final class MyBigStruct {
             this.msg189 = msg189;
             return this;
         }
-        
+    
         public String getMsg189() { return msg189; }
     
             @ThriftField(value=190, name="msg190", requiredness=Requiredness.NONE)
@@ -2063,7 +2067,7 @@ public final class MyBigStruct {
             this.msg190 = msg190;
             return this;
         }
-        
+    
         public String getMsg190() { return msg190; }
     
             @ThriftField(value=191, name="msg191", requiredness=Requiredness.NONE)
@@ -2071,7 +2075,7 @@ public final class MyBigStruct {
             this.msg191 = msg191;
             return this;
         }
-        
+    
         public String getMsg191() { return msg191; }
     
             @ThriftField(value=192, name="msg192", requiredness=Requiredness.NONE)
@@ -2079,7 +2083,7 @@ public final class MyBigStruct {
             this.msg192 = msg192;
             return this;
         }
-        
+    
         public String getMsg192() { return msg192; }
     
             @ThriftField(value=193, name="msg193", requiredness=Requiredness.NONE)
@@ -2087,7 +2091,7 @@ public final class MyBigStruct {
             this.msg193 = msg193;
             return this;
         }
-        
+    
         public String getMsg193() { return msg193; }
     
             @ThriftField(value=194, name="msg194", requiredness=Requiredness.NONE)
@@ -2095,7 +2099,7 @@ public final class MyBigStruct {
             this.msg194 = msg194;
             return this;
         }
-        
+    
         public String getMsg194() { return msg194; }
     
             @ThriftField(value=195, name="msg195", requiredness=Requiredness.NONE)
@@ -2103,7 +2107,7 @@ public final class MyBigStruct {
             this.msg195 = msg195;
             return this;
         }
-        
+    
         public String getMsg195() { return msg195; }
     
             @ThriftField(value=196, name="msg196", requiredness=Requiredness.NONE)
@@ -2111,7 +2115,7 @@ public final class MyBigStruct {
             this.msg196 = msg196;
             return this;
         }
-        
+    
         public String getMsg196() { return msg196; }
     
             @ThriftField(value=197, name="msg197", requiredness=Requiredness.NONE)
@@ -2119,7 +2123,7 @@ public final class MyBigStruct {
             this.msg197 = msg197;
             return this;
         }
-        
+    
         public String getMsg197() { return msg197; }
     
             @ThriftField(value=198, name="msg198", requiredness=Requiredness.NONE)
@@ -2127,7 +2131,7 @@ public final class MyBigStruct {
             this.msg198 = msg198;
             return this;
         }
-        
+    
         public String getMsg198() { return msg198; }
     
             @ThriftField(value=199, name="msg199", requiredness=Requiredness.NONE)
@@ -2135,7 +2139,7 @@ public final class MyBigStruct {
             this.msg199 = msg199;
             return this;
         }
-        
+    
         public String getMsg199() { return msg199; }
     
             @ThriftField(value=200, name="msg200", requiredness=Requiredness.NONE)
@@ -2143,7 +2147,7 @@ public final class MyBigStruct {
             this.msg200 = msg200;
             return this;
         }
-        
+    
         public String getMsg200() { return msg200; }
     
             @ThriftField(value=201, name="msg201", requiredness=Requiredness.NONE)
@@ -2151,7 +2155,7 @@ public final class MyBigStruct {
             this.msg201 = msg201;
             return this;
         }
-        
+    
         public String getMsg201() { return msg201; }
     
             @ThriftField(value=202, name="msg202", requiredness=Requiredness.NONE)
@@ -2159,7 +2163,7 @@ public final class MyBigStruct {
             this.msg202 = msg202;
             return this;
         }
-        
+    
         public String getMsg202() { return msg202; }
     
             @ThriftField(value=203, name="msg203", requiredness=Requiredness.NONE)
@@ -2167,7 +2171,7 @@ public final class MyBigStruct {
             this.msg203 = msg203;
             return this;
         }
-        
+    
         public String getMsg203() { return msg203; }
     
             @ThriftField(value=204, name="msg204", requiredness=Requiredness.NONE)
@@ -2175,7 +2179,7 @@ public final class MyBigStruct {
             this.msg204 = msg204;
             return this;
         }
-        
+    
         public String getMsg204() { return msg204; }
     
             @ThriftField(value=205, name="msg205", requiredness=Requiredness.NONE)
@@ -2183,7 +2187,7 @@ public final class MyBigStruct {
             this.msg205 = msg205;
             return this;
         }
-        
+    
         public String getMsg205() { return msg205; }
     
             @ThriftField(value=206, name="msg206", requiredness=Requiredness.NONE)
@@ -2191,7 +2195,7 @@ public final class MyBigStruct {
             this.msg206 = msg206;
             return this;
         }
-        
+    
         public String getMsg206() { return msg206; }
     
             @ThriftField(value=207, name="msg207", requiredness=Requiredness.NONE)
@@ -2199,7 +2203,7 @@ public final class MyBigStruct {
             this.msg207 = msg207;
             return this;
         }
-        
+    
         public String getMsg207() { return msg207; }
     
             @ThriftField(value=208, name="msg208", requiredness=Requiredness.NONE)
@@ -2207,7 +2211,7 @@ public final class MyBigStruct {
             this.msg208 = msg208;
             return this;
         }
-        
+    
         public String getMsg208() { return msg208; }
     
             @ThriftField(value=209, name="msg209", requiredness=Requiredness.NONE)
@@ -2215,7 +2219,7 @@ public final class MyBigStruct {
             this.msg209 = msg209;
             return this;
         }
-        
+    
         public String getMsg209() { return msg209; }
     
             @ThriftField(value=210, name="msg210", requiredness=Requiredness.NONE)
@@ -2223,7 +2227,7 @@ public final class MyBigStruct {
             this.msg210 = msg210;
             return this;
         }
-        
+    
         public String getMsg210() { return msg210; }
     
             @ThriftField(value=211, name="msg211", requiredness=Requiredness.NONE)
@@ -2231,7 +2235,7 @@ public final class MyBigStruct {
             this.msg211 = msg211;
             return this;
         }
-        
+    
         public String getMsg211() { return msg211; }
     
             @ThriftField(value=212, name="msg212", requiredness=Requiredness.NONE)
@@ -2239,7 +2243,7 @@ public final class MyBigStruct {
             this.msg212 = msg212;
             return this;
         }
-        
+    
         public String getMsg212() { return msg212; }
     
             @ThriftField(value=213, name="msg213", requiredness=Requiredness.NONE)
@@ -2247,7 +2251,7 @@ public final class MyBigStruct {
             this.msg213 = msg213;
             return this;
         }
-        
+    
         public String getMsg213() { return msg213; }
     
             @ThriftField(value=214, name="msg214", requiredness=Requiredness.NONE)
@@ -2255,7 +2259,7 @@ public final class MyBigStruct {
             this.msg214 = msg214;
             return this;
         }
-        
+    
         public String getMsg214() { return msg214; }
     
             @ThriftField(value=215, name="msg215", requiredness=Requiredness.NONE)
@@ -2263,7 +2267,7 @@ public final class MyBigStruct {
             this.msg215 = msg215;
             return this;
         }
-        
+    
         public String getMsg215() { return msg215; }
     
             @ThriftField(value=216, name="msg216", requiredness=Requiredness.NONE)
@@ -2271,7 +2275,7 @@ public final class MyBigStruct {
             this.msg216 = msg216;
             return this;
         }
-        
+    
         public String getMsg216() { return msg216; }
     
             @ThriftField(value=217, name="msg217", requiredness=Requiredness.NONE)
@@ -2279,7 +2283,7 @@ public final class MyBigStruct {
             this.msg217 = msg217;
             return this;
         }
-        
+    
         public String getMsg217() { return msg217; }
     
             @ThriftField(value=218, name="msg218", requiredness=Requiredness.NONE)
@@ -2287,7 +2291,7 @@ public final class MyBigStruct {
             this.msg218 = msg218;
             return this;
         }
-        
+    
         public String getMsg218() { return msg218; }
     
             @ThriftField(value=219, name="msg219", requiredness=Requiredness.NONE)
@@ -2295,7 +2299,7 @@ public final class MyBigStruct {
             this.msg219 = msg219;
             return this;
         }
-        
+    
         public String getMsg219() { return msg219; }
     
             @ThriftField(value=220, name="msg220", requiredness=Requiredness.NONE)
@@ -2303,7 +2307,7 @@ public final class MyBigStruct {
             this.msg220 = msg220;
             return this;
         }
-        
+    
         public String getMsg220() { return msg220; }
     
             @ThriftField(value=221, name="msg221", requiredness=Requiredness.NONE)
@@ -2311,7 +2315,7 @@ public final class MyBigStruct {
             this.msg221 = msg221;
             return this;
         }
-        
+    
         public String getMsg221() { return msg221; }
     
             @ThriftField(value=222, name="msg222", requiredness=Requiredness.NONE)
@@ -2319,7 +2323,7 @@ public final class MyBigStruct {
             this.msg222 = msg222;
             return this;
         }
-        
+    
         public String getMsg222() { return msg222; }
     
             @ThriftField(value=223, name="msg223", requiredness=Requiredness.NONE)
@@ -2327,7 +2331,7 @@ public final class MyBigStruct {
             this.msg223 = msg223;
             return this;
         }
-        
+    
         public String getMsg223() { return msg223; }
     
             @ThriftField(value=224, name="msg224", requiredness=Requiredness.NONE)
@@ -2335,7 +2339,7 @@ public final class MyBigStruct {
             this.msg224 = msg224;
             return this;
         }
-        
+    
         public String getMsg224() { return msg224; }
     
             @ThriftField(value=225, name="msg225", requiredness=Requiredness.NONE)
@@ -2343,7 +2347,7 @@ public final class MyBigStruct {
             this.msg225 = msg225;
             return this;
         }
-        
+    
         public String getMsg225() { return msg225; }
     
             @ThriftField(value=226, name="msg226", requiredness=Requiredness.NONE)
@@ -2351,7 +2355,7 @@ public final class MyBigStruct {
             this.msg226 = msg226;
             return this;
         }
-        
+    
         public String getMsg226() { return msg226; }
     
             @ThriftField(value=227, name="msg227", requiredness=Requiredness.NONE)
@@ -2359,7 +2363,7 @@ public final class MyBigStruct {
             this.msg227 = msg227;
             return this;
         }
-        
+    
         public String getMsg227() { return msg227; }
     
             @ThriftField(value=228, name="msg228", requiredness=Requiredness.NONE)
@@ -2367,7 +2371,7 @@ public final class MyBigStruct {
             this.msg228 = msg228;
             return this;
         }
-        
+    
         public String getMsg228() { return msg228; }
     
             @ThriftField(value=229, name="msg229", requiredness=Requiredness.NONE)
@@ -2375,7 +2379,7 @@ public final class MyBigStruct {
             this.msg229 = msg229;
             return this;
         }
-        
+    
         public String getMsg229() { return msg229; }
     
             @ThriftField(value=230, name="msg230", requiredness=Requiredness.NONE)
@@ -2383,7 +2387,7 @@ public final class MyBigStruct {
             this.msg230 = msg230;
             return this;
         }
-        
+    
         public String getMsg230() { return msg230; }
     
             @ThriftField(value=231, name="msg231", requiredness=Requiredness.NONE)
@@ -2391,7 +2395,7 @@ public final class MyBigStruct {
             this.msg231 = msg231;
             return this;
         }
-        
+    
         public String getMsg231() { return msg231; }
     
             @ThriftField(value=232, name="msg232", requiredness=Requiredness.NONE)
@@ -2399,7 +2403,7 @@ public final class MyBigStruct {
             this.msg232 = msg232;
             return this;
         }
-        
+    
         public String getMsg232() { return msg232; }
     
             @ThriftField(value=233, name="msg233", requiredness=Requiredness.NONE)
@@ -2407,7 +2411,7 @@ public final class MyBigStruct {
             this.msg233 = msg233;
             return this;
         }
-        
+    
         public String getMsg233() { return msg233; }
     
             @ThriftField(value=234, name="msg234", requiredness=Requiredness.NONE)
@@ -2415,7 +2419,7 @@ public final class MyBigStruct {
             this.msg234 = msg234;
             return this;
         }
-        
+    
         public String getMsg234() { return msg234; }
     
             @ThriftField(value=235, name="msg235", requiredness=Requiredness.NONE)
@@ -2423,7 +2427,7 @@ public final class MyBigStruct {
             this.msg235 = msg235;
             return this;
         }
-        
+    
         public String getMsg235() { return msg235; }
     
             @ThriftField(value=236, name="msg236", requiredness=Requiredness.NONE)
@@ -2431,7 +2435,7 @@ public final class MyBigStruct {
             this.msg236 = msg236;
             return this;
         }
-        
+    
         public String getMsg236() { return msg236; }
     
             @ThriftField(value=237, name="msg237", requiredness=Requiredness.NONE)
@@ -2439,7 +2443,7 @@ public final class MyBigStruct {
             this.msg237 = msg237;
             return this;
         }
-        
+    
         public String getMsg237() { return msg237; }
     
             @ThriftField(value=238, name="msg238", requiredness=Requiredness.NONE)
@@ -2447,7 +2451,7 @@ public final class MyBigStruct {
             this.msg238 = msg238;
             return this;
         }
-        
+    
         public String getMsg238() { return msg238; }
     
             @ThriftField(value=239, name="msg239", requiredness=Requiredness.NONE)
@@ -2455,7 +2459,7 @@ public final class MyBigStruct {
             this.msg239 = msg239;
             return this;
         }
-        
+    
         public String getMsg239() { return msg239; }
     
             @ThriftField(value=240, name="msg240", requiredness=Requiredness.NONE)
@@ -2463,7 +2467,7 @@ public final class MyBigStruct {
             this.msg240 = msg240;
             return this;
         }
-        
+    
         public String getMsg240() { return msg240; }
     
             @ThriftField(value=241, name="msg241", requiredness=Requiredness.NONE)
@@ -2471,7 +2475,7 @@ public final class MyBigStruct {
             this.msg241 = msg241;
             return this;
         }
-        
+    
         public String getMsg241() { return msg241; }
     
             @ThriftField(value=242, name="msg242", requiredness=Requiredness.NONE)
@@ -2479,7 +2483,7 @@ public final class MyBigStruct {
             this.msg242 = msg242;
             return this;
         }
-        
+    
         public String getMsg242() { return msg242; }
     
             @ThriftField(value=243, name="msg243", requiredness=Requiredness.NONE)
@@ -2487,7 +2491,7 @@ public final class MyBigStruct {
             this.msg243 = msg243;
             return this;
         }
-        
+    
         public String getMsg243() { return msg243; }
     
             @ThriftField(value=244, name="msg244", requiredness=Requiredness.NONE)
@@ -2495,7 +2499,7 @@ public final class MyBigStruct {
             this.msg244 = msg244;
             return this;
         }
-        
+    
         public String getMsg244() { return msg244; }
     
             @ThriftField(value=245, name="msg245", requiredness=Requiredness.NONE)
@@ -2503,7 +2507,7 @@ public final class MyBigStruct {
             this.msg245 = msg245;
             return this;
         }
-        
+    
         public String getMsg245() { return msg245; }
     
             @ThriftField(value=246, name="msg246", requiredness=Requiredness.NONE)
@@ -2511,7 +2515,7 @@ public final class MyBigStruct {
             this.msg246 = msg246;
             return this;
         }
-        
+    
         public String getMsg246() { return msg246; }
     
             @ThriftField(value=247, name="msg247", requiredness=Requiredness.NONE)
@@ -2519,7 +2523,7 @@ public final class MyBigStruct {
             this.msg247 = msg247;
             return this;
         }
-        
+    
         public String getMsg247() { return msg247; }
     
             @ThriftField(value=248, name="msg248", requiredness=Requiredness.NONE)
@@ -2527,7 +2531,7 @@ public final class MyBigStruct {
             this.msg248 = msg248;
             return this;
         }
-        
+    
         public String getMsg248() { return msg248; }
     
             @ThriftField(value=249, name="msg249", requiredness=Requiredness.NONE)
@@ -2535,7 +2539,7 @@ public final class MyBigStruct {
             this.msg249 = msg249;
             return this;
         }
-        
+    
         public String getMsg249() { return msg249; }
     
             @ThriftField(value=250, name="msg250", requiredness=Requiredness.NONE)
@@ -2543,7 +2547,7 @@ public final class MyBigStruct {
             this.msg250 = msg250;
             return this;
         }
-        
+    
         public String getMsg250() { return msg250; }
     
             @ThriftField(value=251, name="msg251", requiredness=Requiredness.NONE)
@@ -2551,7 +2555,7 @@ public final class MyBigStruct {
             this.msg251 = msg251;
             return this;
         }
-        
+    
         public String getMsg251() { return msg251; }
     
             @ThriftField(value=252, name="msg252", requiredness=Requiredness.NONE)
@@ -2559,7 +2563,7 @@ public final class MyBigStruct {
             this.msg252 = msg252;
             return this;
         }
-        
+    
         public String getMsg252() { return msg252; }
     
             @ThriftField(value=253, name="msg253", requiredness=Requiredness.NONE)
@@ -2567,7 +2571,7 @@ public final class MyBigStruct {
             this.msg253 = msg253;
             return this;
         }
-        
+    
         public String getMsg253() { return msg253; }
     
             @ThriftField(value=254, name="msg254", requiredness=Requiredness.NONE)
@@ -2575,7 +2579,7 @@ public final class MyBigStruct {
             this.msg254 = msg254;
             return this;
         }
-        
+    
         public String getMsg254() { return msg254; }
     
             @ThriftField(value=255, name="msg255", requiredness=Requiredness.NONE)
@@ -2583,7 +2587,7 @@ public final class MyBigStruct {
             this.msg255 = msg255;
             return this;
         }
-        
+    
         public String getMsg255() { return msg255; }
     
             @ThriftField(value=256, name="msg256", requiredness=Requiredness.NONE)
@@ -2591,7 +2595,7 @@ public final class MyBigStruct {
             this.msg256 = msg256;
             return this;
         }
-        
+    
         public String getMsg256() { return msg256; }
     
             @ThriftField(value=257, name="msg257", requiredness=Requiredness.NONE)
@@ -2599,7 +2603,7 @@ public final class MyBigStruct {
             this.msg257 = msg257;
             return this;
         }
-        
+    
         public String getMsg257() { return msg257; }
     
         public Builder() { }
@@ -3123,6 +3127,7 @@ public final class MyBigStruct {
             oMyBigStruct.msg255 = this.msg255;
             oMyBigStruct.msg256 = this.msg256;
             oMyBigStruct.msg257 = this.msg257;
+            oMyBigStruct.__isset_bit_vector.or(__optional_isset);
             return oMyBigStruct;
         }
     }
@@ -4420,1030 +4425,2572 @@ public final class MyBigStruct {
     
     @ThriftField(value=1, name="msg1", requiredness=Requiredness.NONE)
     public String getMsg1() { return msg1; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg1() {
+        return this.msg1 != null;
+    }
     
     
     @ThriftField(value=2, name="msg2", requiredness=Requiredness.NONE)
     public String getMsg2() { return msg2; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg2() {
+        return this.msg2 != null;
+    }
     
     
     @ThriftField(value=3, name="msg3", requiredness=Requiredness.NONE)
     public String getMsg3() { return msg3; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg3() {
+        return this.msg3 != null;
+    }
     
     
     @ThriftField(value=4, name="msg4", requiredness=Requiredness.NONE)
     public String getMsg4() { return msg4; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg4() {
+        return this.msg4 != null;
+    }
     
     
     @ThriftField(value=5, name="msg5", requiredness=Requiredness.NONE)
     public String getMsg5() { return msg5; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg5() {
+        return this.msg5 != null;
+    }
     
     
     @ThriftField(value=6, name="msg6", requiredness=Requiredness.NONE)
     public String getMsg6() { return msg6; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg6() {
+        return this.msg6 != null;
+    }
     
     
     @ThriftField(value=7, name="msg7", requiredness=Requiredness.NONE)
     public String getMsg7() { return msg7; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg7() {
+        return this.msg7 != null;
+    }
     
     
     @ThriftField(value=8, name="msg8", requiredness=Requiredness.NONE)
     public String getMsg8() { return msg8; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg8() {
+        return this.msg8 != null;
+    }
     
     
     @ThriftField(value=9, name="msg9", requiredness=Requiredness.NONE)
     public String getMsg9() { return msg9; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg9() {
+        return this.msg9 != null;
+    }
     
     
     @ThriftField(value=10, name="myIntField10", requiredness=Requiredness.NONE)
     public int getMyIntField10() { return myIntField10; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField10() {
+        return __isset_bit_vector.get(_MYINTFIELD10);
+    }
     
     
     @ThriftField(value=11, name="myIntField11", requiredness=Requiredness.NONE)
     public int getMyIntField11() { return myIntField11; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField11() {
+        return __isset_bit_vector.get(_MYINTFIELD11);
+    }
     
     
     @ThriftField(value=12, name="myIntField12", requiredness=Requiredness.NONE)
     public int getMyIntField12() { return myIntField12; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField12() {
+        return __isset_bit_vector.get(_MYINTFIELD12);
+    }
     
     
     @ThriftField(value=13, name="myIntField13", requiredness=Requiredness.NONE)
     public int getMyIntField13() { return myIntField13; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField13() {
+        return __isset_bit_vector.get(_MYINTFIELD13);
+    }
     
     
     @ThriftField(value=14, name="myIntField14", requiredness=Requiredness.NONE)
     public int getMyIntField14() { return myIntField14; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField14() {
+        return __isset_bit_vector.get(_MYINTFIELD14);
+    }
     
     
     @ThriftField(value=15, name="myIntField15", requiredness=Requiredness.NONE)
     public int getMyIntField15() { return myIntField15; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField15() {
+        return __isset_bit_vector.get(_MYINTFIELD15);
+    }
     
     
     @ThriftField(value=16, name="myIntField16", requiredness=Requiredness.NONE)
     public int getMyIntField16() { return myIntField16; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField16() {
+        return __isset_bit_vector.get(_MYINTFIELD16);
+    }
     
     
     @ThriftField(value=17, name="myIntField17", requiredness=Requiredness.NONE)
     public int getMyIntField17() { return myIntField17; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField17() {
+        return __isset_bit_vector.get(_MYINTFIELD17);
+    }
     
     
     @ThriftField(value=18, name="myIntField18", requiredness=Requiredness.NONE)
     public int getMyIntField18() { return myIntField18; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField18() {
+        return __isset_bit_vector.get(_MYINTFIELD18);
+    }
     
     
     @ThriftField(value=19, name="myIntField19", requiredness=Requiredness.NONE)
     public int getMyIntField19() { return myIntField19; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField19() {
+        return __isset_bit_vector.get(_MYINTFIELD19);
+    }
     
     
     @ThriftField(value=20, name="myIntField20", requiredness=Requiredness.NONE)
     public int getMyIntField20() { return myIntField20; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField20() {
+        return __isset_bit_vector.get(_MYINTFIELD20);
+    }
     
     
     @ThriftField(value=21, name="myDoubleField21", requiredness=Requiredness.NONE)
     public double getMyDoubleField21() { return myDoubleField21; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField21() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD21);
+    }
     
     
     @ThriftField(value=22, name="myDoubleField22", requiredness=Requiredness.NONE)
     public double getMyDoubleField22() { return myDoubleField22; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField22() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD22);
+    }
     
     
     @ThriftField(value=23, name="myDoubleField23", requiredness=Requiredness.NONE)
     public double getMyDoubleField23() { return myDoubleField23; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField23() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD23);
+    }
     
     
     @ThriftField(value=24, name="myDoubleField24", requiredness=Requiredness.NONE)
     public double getMyDoubleField24() { return myDoubleField24; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField24() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD24);
+    }
     
     
     @ThriftField(value=25, name="myDoubleField25", requiredness=Requiredness.NONE)
     public double getMyDoubleField25() { return myDoubleField25; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField25() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD25);
+    }
     
     
     @ThriftField(value=26, name="myDoubleField26", requiredness=Requiredness.NONE)
     public double getMyDoubleField26() { return myDoubleField26; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField26() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD26);
+    }
     
     
     @ThriftField(value=27, name="myDoubleField27", requiredness=Requiredness.NONE)
     public double getMyDoubleField27() { return myDoubleField27; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField27() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD27);
+    }
     
     
     @ThriftField(value=28, name="myDoubleField28", requiredness=Requiredness.NONE)
     public double getMyDoubleField28() { return myDoubleField28; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField28() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD28);
+    }
     
     
     @ThriftField(value=29, name="myDoubleField29", requiredness=Requiredness.NONE)
     public double getMyDoubleField29() { return myDoubleField29; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField29() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD29);
+    }
     
     
     @ThriftField(value=30, name="myDoubleField30", requiredness=Requiredness.NONE)
     public double getMyDoubleField30() { return myDoubleField30; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDoubleField30() {
+        return __isset_bit_vector.get(_MYDOUBLEFIELD30);
+    }
     
     
     @ThriftField(value=31, name="msg31", requiredness=Requiredness.NONE)
     public String getMsg31() { return msg31; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg31() {
+        return this.msg31 != null;
+    }
     
     
     @ThriftField(value=32, name="msg32", requiredness=Requiredness.NONE)
     public String getMsg32() { return msg32; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg32() {
+        return this.msg32 != null;
+    }
     
     
     @ThriftField(value=33, name="msg33", requiredness=Requiredness.NONE)
     public String getMsg33() { return msg33; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg33() {
+        return this.msg33 != null;
+    }
     
     
     @ThriftField(value=34, name="msg34", requiredness=Requiredness.NONE)
     public String getMsg34() { return msg34; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg34() {
+        return this.msg34 != null;
+    }
     
     
     @ThriftField(value=35, name="msg35", requiredness=Requiredness.NONE)
     public String getMsg35() { return msg35; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg35() {
+        return this.msg35 != null;
+    }
     
     
     @ThriftField(value=36, name="msg36", requiredness=Requiredness.NONE)
     public String getMsg36() { return msg36; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg36() {
+        return this.msg36 != null;
+    }
     
     
     @ThriftField(value=37, name="msg37", requiredness=Requiredness.NONE)
     public String getMsg37() { return msg37; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg37() {
+        return this.msg37 != null;
+    }
     
     
     @ThriftField(value=38, name="msg38", requiredness=Requiredness.NONE)
     public String getMsg38() { return msg38; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg38() {
+        return this.msg38 != null;
+    }
     
     
     @ThriftField(value=39, name="msg39", requiredness=Requiredness.NONE)
     public String getMsg39() { return msg39; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg39() {
+        return this.msg39 != null;
+    }
     
     
     @ThriftField(value=40, name="msg40", requiredness=Requiredness.NONE)
     public String getMsg40() { return msg40; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg40() {
+        return this.msg40 != null;
+    }
     
     
     @ThriftField(value=41, name="msg41", requiredness=Requiredness.NONE)
     public String getMsg41() { return msg41; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg41() {
+        return this.msg41 != null;
+    }
     
     
     @ThriftField(value=42, name="msg42", requiredness=Requiredness.NONE)
     public String getMsg42() { return msg42; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg42() {
+        return this.msg42 != null;
+    }
     
     
     @ThriftField(value=43, name="msg43", requiredness=Requiredness.NONE)
     public String getMsg43() { return msg43; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg43() {
+        return this.msg43 != null;
+    }
     
     
     @ThriftField(value=44, name="msg44", requiredness=Requiredness.NONE)
     public String getMsg44() { return msg44; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg44() {
+        return this.msg44 != null;
+    }
     
     
     @ThriftField(value=45, name="msg45", requiredness=Requiredness.NONE)
     public String getMsg45() { return msg45; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg45() {
+        return this.msg45 != null;
+    }
     
     
     @ThriftField(value=46, name="msg46", requiredness=Requiredness.NONE)
     public String getMsg46() { return msg46; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg46() {
+        return this.msg46 != null;
+    }
     
     
     @ThriftField(value=47, name="msg47", requiredness=Requiredness.NONE)
     public String getMsg47() { return msg47; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg47() {
+        return this.msg47 != null;
+    }
     
     
     @ThriftField(value=48, name="msg48", requiredness=Requiredness.NONE)
     public String getMsg48() { return msg48; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg48() {
+        return this.msg48 != null;
+    }
     
     
     @ThriftField(value=49, name="msg49", requiredness=Requiredness.NONE)
     public String getMsg49() { return msg49; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg49() {
+        return this.msg49 != null;
+    }
     
     
     @ThriftField(value=50, name="msg50", requiredness=Requiredness.NONE)
     public String getMsg50() { return msg50; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg50() {
+        return this.msg50 != null;
+    }
     
     
     @ThriftField(value=51, name="msg51", requiredness=Requiredness.NONE)
     public String getMsg51() { return msg51; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg51() {
+        return this.msg51 != null;
+    }
     
     
     @ThriftField(value=52, name="msg52", requiredness=Requiredness.NONE)
     public String getMsg52() { return msg52; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg52() {
+        return this.msg52 != null;
+    }
     
     
     @ThriftField(value=53, name="msg53", requiredness=Requiredness.NONE)
     public String getMsg53() { return msg53; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg53() {
+        return this.msg53 != null;
+    }
     
     
     @ThriftField(value=54, name="msg54", requiredness=Requiredness.NONE)
     public String getMsg54() { return msg54; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg54() {
+        return this.msg54 != null;
+    }
     
     
     @ThriftField(value=55, name="msg55", requiredness=Requiredness.NONE)
     public String getMsg55() { return msg55; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg55() {
+        return this.msg55 != null;
+    }
     
     
     @ThriftField(value=56, name="msg56", requiredness=Requiredness.NONE)
     public String getMsg56() { return msg56; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg56() {
+        return this.msg56 != null;
+    }
     
     
     @ThriftField(value=57, name="msg57", requiredness=Requiredness.NONE)
     public String getMsg57() { return msg57; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg57() {
+        return this.msg57 != null;
+    }
     
     
     @ThriftField(value=58, name="msg58", requiredness=Requiredness.NONE)
     public String getMsg58() { return msg58; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg58() {
+        return this.msg58 != null;
+    }
     
     
     @ThriftField(value=59, name="msg59", requiredness=Requiredness.NONE)
     public String getMsg59() { return msg59; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg59() {
+        return this.msg59 != null;
+    }
     
     
     @ThriftField(value=60, name="msg60", requiredness=Requiredness.NONE)
     public String getMsg60() { return msg60; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg60() {
+        return this.msg60 != null;
+    }
     
     
     @ThriftField(value=61, name="msg61", requiredness=Requiredness.NONE)
     public String getMsg61() { return msg61; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg61() {
+        return this.msg61 != null;
+    }
     
     
     @ThriftField(value=62, name="msg62", requiredness=Requiredness.NONE)
     public String getMsg62() { return msg62; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg62() {
+        return this.msg62 != null;
+    }
     
     
     @ThriftField(value=63, name="msg63", requiredness=Requiredness.NONE)
     public String getMsg63() { return msg63; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg63() {
+        return this.msg63 != null;
+    }
     
     
     @ThriftField(value=64, name="msg64", requiredness=Requiredness.NONE)
     public String getMsg64() { return msg64; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg64() {
+        return this.msg64 != null;
+    }
     
     
     @ThriftField(value=65, name="msg65", requiredness=Requiredness.NONE)
     public String getMsg65() { return msg65; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg65() {
+        return this.msg65 != null;
+    }
     
     
     @ThriftField(value=66, name="msg66", requiredness=Requiredness.NONE)
     public String getMsg66() { return msg66; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg66() {
+        return this.msg66 != null;
+    }
     
     
     @ThriftField(value=67, name="msg67", requiredness=Requiredness.NONE)
     public String getMsg67() { return msg67; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg67() {
+        return this.msg67 != null;
+    }
     
     
     @ThriftField(value=68, name="msg68", requiredness=Requiredness.NONE)
     public String getMsg68() { return msg68; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg68() {
+        return this.msg68 != null;
+    }
     
     
     @ThriftField(value=69, name="msg69", requiredness=Requiredness.NONE)
     public String getMsg69() { return msg69; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg69() {
+        return this.msg69 != null;
+    }
     
     
     @ThriftField(value=70, name="msg70", requiredness=Requiredness.NONE)
     public String getMsg70() { return msg70; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg70() {
+        return this.msg70 != null;
+    }
     
     
     @ThriftField(value=71, name="msg71", requiredness=Requiredness.NONE)
     public String getMsg71() { return msg71; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg71() {
+        return this.msg71 != null;
+    }
     
     
     @ThriftField(value=72, name="msg72", requiredness=Requiredness.NONE)
     public String getMsg72() { return msg72; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg72() {
+        return this.msg72 != null;
+    }
     
     
     @ThriftField(value=73, name="msg73", requiredness=Requiredness.NONE)
     public String getMsg73() { return msg73; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg73() {
+        return this.msg73 != null;
+    }
     
     
     @ThriftField(value=74, name="msg74", requiredness=Requiredness.NONE)
     public String getMsg74() { return msg74; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg74() {
+        return this.msg74 != null;
+    }
     
     
     @ThriftField(value=75, name="msg75", requiredness=Requiredness.NONE)
     public String getMsg75() { return msg75; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg75() {
+        return this.msg75 != null;
+    }
     
     
     @ThriftField(value=76, name="msg76", requiredness=Requiredness.NONE)
     public String getMsg76() { return msg76; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg76() {
+        return this.msg76 != null;
+    }
     
     
     @ThriftField(value=77, name="msg77", requiredness=Requiredness.NONE)
     public String getMsg77() { return msg77; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg77() {
+        return this.msg77 != null;
+    }
     
     
     @ThriftField(value=78, name="msg78", requiredness=Requiredness.NONE)
     public String getMsg78() { return msg78; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg78() {
+        return this.msg78 != null;
+    }
     
     
     @ThriftField(value=79, name="msg79", requiredness=Requiredness.NONE)
     public String getMsg79() { return msg79; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg79() {
+        return this.msg79 != null;
+    }
     
     
     @ThriftField(value=80, name="msg80", requiredness=Requiredness.NONE)
     public String getMsg80() { return msg80; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg80() {
+        return this.msg80 != null;
+    }
     
     
     @ThriftField(value=81, name="msg81", requiredness=Requiredness.NONE)
     public String getMsg81() { return msg81; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg81() {
+        return this.msg81 != null;
+    }
     
     
     @ThriftField(value=82, name="msg82", requiredness=Requiredness.NONE)
     public String getMsg82() { return msg82; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg82() {
+        return this.msg82 != null;
+    }
     
     
     @ThriftField(value=83, name="msg83", requiredness=Requiredness.NONE)
     public String getMsg83() { return msg83; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg83() {
+        return this.msg83 != null;
+    }
     
     
     @ThriftField(value=84, name="msg84", requiredness=Requiredness.NONE)
     public String getMsg84() { return msg84; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg84() {
+        return this.msg84 != null;
+    }
     
     
     @ThriftField(value=85, name="msg85", requiredness=Requiredness.NONE)
     public String getMsg85() { return msg85; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg85() {
+        return this.msg85 != null;
+    }
     
     
     @ThriftField(value=86, name="msg86", requiredness=Requiredness.NONE)
     public String getMsg86() { return msg86; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg86() {
+        return this.msg86 != null;
+    }
     
     
     @ThriftField(value=87, name="msg87", requiredness=Requiredness.NONE)
     public String getMsg87() { return msg87; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg87() {
+        return this.msg87 != null;
+    }
     
     
     @ThriftField(value=88, name="msg88", requiredness=Requiredness.NONE)
     public String getMsg88() { return msg88; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg88() {
+        return this.msg88 != null;
+    }
     
     
     @ThriftField(value=89, name="msg89", requiredness=Requiredness.NONE)
     public String getMsg89() { return msg89; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg89() {
+        return this.msg89 != null;
+    }
     
     
     @ThriftField(value=90, name="msg90", requiredness=Requiredness.NONE)
     public String getMsg90() { return msg90; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg90() {
+        return this.msg90 != null;
+    }
     
     
     @ThriftField(value=91, name="msg91", requiredness=Requiredness.NONE)
     public String getMsg91() { return msg91; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg91() {
+        return this.msg91 != null;
+    }
     
     
     @ThriftField(value=92, name="msg92", requiredness=Requiredness.NONE)
     public String getMsg92() { return msg92; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg92() {
+        return this.msg92 != null;
+    }
     
     
     @ThriftField(value=93, name="msg93", requiredness=Requiredness.NONE)
     public String getMsg93() { return msg93; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg93() {
+        return this.msg93 != null;
+    }
     
     
     @ThriftField(value=94, name="msg94", requiredness=Requiredness.NONE)
     public String getMsg94() { return msg94; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg94() {
+        return this.msg94 != null;
+    }
     
     
     @ThriftField(value=95, name="msg95", requiredness=Requiredness.NONE)
     public String getMsg95() { return msg95; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg95() {
+        return this.msg95 != null;
+    }
     
     
     @ThriftField(value=96, name="msg96", requiredness=Requiredness.NONE)
     public String getMsg96() { return msg96; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg96() {
+        return this.msg96 != null;
+    }
     
     
     @ThriftField(value=97, name="msg97", requiredness=Requiredness.NONE)
     public String getMsg97() { return msg97; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg97() {
+        return this.msg97 != null;
+    }
     
     
     @ThriftField(value=98, name="msg98", requiredness=Requiredness.NONE)
     public String getMsg98() { return msg98; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg98() {
+        return this.msg98 != null;
+    }
     
     
     @ThriftField(value=99, name="msg99", requiredness=Requiredness.NONE)
     public String getMsg99() { return msg99; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg99() {
+        return this.msg99 != null;
+    }
     
     
     @ThriftField(value=100, name="msg100", requiredness=Requiredness.NONE)
     public String getMsg100() { return msg100; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg100() {
+        return this.msg100 != null;
+    }
     
     
     @ThriftField(value=101, name="msg101", requiredness=Requiredness.NONE)
     public String getMsg101() { return msg101; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg101() {
+        return this.msg101 != null;
+    }
     
     
     @ThriftField(value=102, name="msg102", requiredness=Requiredness.NONE)
     public String getMsg102() { return msg102; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg102() {
+        return this.msg102 != null;
+    }
     
     
     @ThriftField(value=103, name="msg103", requiredness=Requiredness.NONE)
     public String getMsg103() { return msg103; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg103() {
+        return this.msg103 != null;
+    }
     
     
     @ThriftField(value=104, name="msg104", requiredness=Requiredness.NONE)
     public String getMsg104() { return msg104; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg104() {
+        return this.msg104 != null;
+    }
     
     
     @ThriftField(value=105, name="msg105", requiredness=Requiredness.NONE)
     public String getMsg105() { return msg105; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg105() {
+        return this.msg105 != null;
+    }
     
     
     @ThriftField(value=106, name="msg106", requiredness=Requiredness.NONE)
     public String getMsg106() { return msg106; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg106() {
+        return this.msg106 != null;
+    }
     
     
     @ThriftField(value=107, name="msg107", requiredness=Requiredness.NONE)
     public String getMsg107() { return msg107; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg107() {
+        return this.msg107 != null;
+    }
     
     
     @ThriftField(value=108, name="msg108", requiredness=Requiredness.NONE)
     public String getMsg108() { return msg108; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg108() {
+        return this.msg108 != null;
+    }
     
     
     @ThriftField(value=109, name="msg109", requiredness=Requiredness.NONE)
     public String getMsg109() { return msg109; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg109() {
+        return this.msg109 != null;
+    }
     
     
     @ThriftField(value=110, name="msg110", requiredness=Requiredness.NONE)
     public String getMsg110() { return msg110; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg110() {
+        return this.msg110 != null;
+    }
     
     
     @ThriftField(value=111, name="msg111", requiredness=Requiredness.NONE)
     public String getMsg111() { return msg111; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg111() {
+        return this.msg111 != null;
+    }
     
     
     @ThriftField(value=112, name="msg112", requiredness=Requiredness.NONE)
     public String getMsg112() { return msg112; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg112() {
+        return this.msg112 != null;
+    }
     
     
     @ThriftField(value=113, name="msg113", requiredness=Requiredness.NONE)
     public String getMsg113() { return msg113; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg113() {
+        return this.msg113 != null;
+    }
     
     
     @ThriftField(value=114, name="msg114", requiredness=Requiredness.NONE)
     public String getMsg114() { return msg114; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg114() {
+        return this.msg114 != null;
+    }
     
     
     @ThriftField(value=115, name="msg115", requiredness=Requiredness.NONE)
     public String getMsg115() { return msg115; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg115() {
+        return this.msg115 != null;
+    }
     
     
     @ThriftField(value=116, name="msg116", requiredness=Requiredness.NONE)
     public String getMsg116() { return msg116; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg116() {
+        return this.msg116 != null;
+    }
     
     
     @ThriftField(value=117, name="msg117", requiredness=Requiredness.NONE)
     public String getMsg117() { return msg117; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg117() {
+        return this.msg117 != null;
+    }
     
     
     @ThriftField(value=118, name="msg118", requiredness=Requiredness.NONE)
     public String getMsg118() { return msg118; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg118() {
+        return this.msg118 != null;
+    }
     
     
     @ThriftField(value=119, name="msg119", requiredness=Requiredness.NONE)
     public String getMsg119() { return msg119; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg119() {
+        return this.msg119 != null;
+    }
     
     
     @ThriftField(value=120, name="msg120", requiredness=Requiredness.NONE)
     public String getMsg120() { return msg120; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg120() {
+        return this.msg120 != null;
+    }
     
     
     @ThriftField(value=121, name="msg121", requiredness=Requiredness.NONE)
     public String getMsg121() { return msg121; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg121() {
+        return this.msg121 != null;
+    }
     
     
     @ThriftField(value=122, name="msg122", requiredness=Requiredness.NONE)
     public String getMsg122() { return msg122; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg122() {
+        return this.msg122 != null;
+    }
     
     
     @ThriftField(value=123, name="msg123", requiredness=Requiredness.NONE)
     public String getMsg123() { return msg123; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg123() {
+        return this.msg123 != null;
+    }
     
     
     @ThriftField(value=124, name="msg124", requiredness=Requiredness.NONE)
     public String getMsg124() { return msg124; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg124() {
+        return this.msg124 != null;
+    }
     
     
     @ThriftField(value=125, name="msg125", requiredness=Requiredness.NONE)
     public String getMsg125() { return msg125; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg125() {
+        return this.msg125 != null;
+    }
     
     
     @ThriftField(value=126, name="msg126", requiredness=Requiredness.NONE)
     public String getMsg126() { return msg126; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg126() {
+        return this.msg126 != null;
+    }
     
     
     @ThriftField(value=127, name="msg127", requiredness=Requiredness.NONE)
     public String getMsg127() { return msg127; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg127() {
+        return this.msg127 != null;
+    }
     
     
     @ThriftField(value=128, name="msg128", requiredness=Requiredness.NONE)
     public String getMsg128() { return msg128; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg128() {
+        return this.msg128 != null;
+    }
     
     
     @ThriftField(value=129, name="msg129", requiredness=Requiredness.NONE)
     public String getMsg129() { return msg129; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg129() {
+        return this.msg129 != null;
+    }
     
     
     @ThriftField(value=130, name="msg130", requiredness=Requiredness.NONE)
     public String getMsg130() { return msg130; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg130() {
+        return this.msg130 != null;
+    }
     
     
     @ThriftField(value=131, name="msg131", requiredness=Requiredness.NONE)
     public String getMsg131() { return msg131; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg131() {
+        return this.msg131 != null;
+    }
     
     
     @ThriftField(value=132, name="msg132", requiredness=Requiredness.NONE)
     public String getMsg132() { return msg132; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg132() {
+        return this.msg132 != null;
+    }
     
     
     @ThriftField(value=133, name="msg133", requiredness=Requiredness.NONE)
     public String getMsg133() { return msg133; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg133() {
+        return this.msg133 != null;
+    }
     
     
     @ThriftField(value=134, name="msg134", requiredness=Requiredness.NONE)
     public String getMsg134() { return msg134; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg134() {
+        return this.msg134 != null;
+    }
     
     
     @ThriftField(value=135, name="msg135", requiredness=Requiredness.NONE)
     public String getMsg135() { return msg135; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg135() {
+        return this.msg135 != null;
+    }
     
     
     @ThriftField(value=136, name="msg136", requiredness=Requiredness.NONE)
     public String getMsg136() { return msg136; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg136() {
+        return this.msg136 != null;
+    }
     
     
     @ThriftField(value=137, name="msg137", requiredness=Requiredness.NONE)
     public String getMsg137() { return msg137; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg137() {
+        return this.msg137 != null;
+    }
     
     
     @ThriftField(value=138, name="msg138", requiredness=Requiredness.NONE)
     public String getMsg138() { return msg138; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg138() {
+        return this.msg138 != null;
+    }
     
     
     @ThriftField(value=139, name="msg139", requiredness=Requiredness.NONE)
     public String getMsg139() { return msg139; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg139() {
+        return this.msg139 != null;
+    }
     
     
     @ThriftField(value=140, name="msg140", requiredness=Requiredness.NONE)
     public String getMsg140() { return msg140; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg140() {
+        return this.msg140 != null;
+    }
     
     
     @ThriftField(value=141, name="msg141", requiredness=Requiredness.NONE)
     public String getMsg141() { return msg141; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg141() {
+        return this.msg141 != null;
+    }
     
     
     @ThriftField(value=142, name="msg142", requiredness=Requiredness.NONE)
     public String getMsg142() { return msg142; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg142() {
+        return this.msg142 != null;
+    }
     
     
     @ThriftField(value=143, name="msg143", requiredness=Requiredness.NONE)
     public String getMsg143() { return msg143; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg143() {
+        return this.msg143 != null;
+    }
     
     
     @ThriftField(value=144, name="msg144", requiredness=Requiredness.NONE)
     public String getMsg144() { return msg144; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg144() {
+        return this.msg144 != null;
+    }
     
     
     @ThriftField(value=145, name="msg145", requiredness=Requiredness.NONE)
     public String getMsg145() { return msg145; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg145() {
+        return this.msg145 != null;
+    }
     
     
     @ThriftField(value=146, name="msg146", requiredness=Requiredness.NONE)
     public String getMsg146() { return msg146; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg146() {
+        return this.msg146 != null;
+    }
     
     
     @ThriftField(value=147, name="msg147", requiredness=Requiredness.NONE)
     public String getMsg147() { return msg147; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg147() {
+        return this.msg147 != null;
+    }
     
     
     @ThriftField(value=148, name="msg148", requiredness=Requiredness.NONE)
     public String getMsg148() { return msg148; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg148() {
+        return this.msg148 != null;
+    }
     
     
     @ThriftField(value=149, name="msg149", requiredness=Requiredness.NONE)
     public String getMsg149() { return msg149; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg149() {
+        return this.msg149 != null;
+    }
     
     
     @ThriftField(value=150, name="msg150", requiredness=Requiredness.NONE)
     public String getMsg150() { return msg150; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg150() {
+        return this.msg150 != null;
+    }
     
     
     @ThriftField(value=151, name="msg151", requiredness=Requiredness.NONE)
     public String getMsg151() { return msg151; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg151() {
+        return this.msg151 != null;
+    }
     
     
     @ThriftField(value=152, name="msg152", requiredness=Requiredness.NONE)
     public String getMsg152() { return msg152; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg152() {
+        return this.msg152 != null;
+    }
     
     
     @ThriftField(value=153, name="msg153", requiredness=Requiredness.NONE)
     public String getMsg153() { return msg153; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg153() {
+        return this.msg153 != null;
+    }
     
     
     @ThriftField(value=154, name="msg154", requiredness=Requiredness.NONE)
     public String getMsg154() { return msg154; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg154() {
+        return this.msg154 != null;
+    }
     
     
     @ThriftField(value=155, name="msg155", requiredness=Requiredness.NONE)
     public String getMsg155() { return msg155; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg155() {
+        return this.msg155 != null;
+    }
     
     
     @ThriftField(value=156, name="msg156", requiredness=Requiredness.NONE)
     public String getMsg156() { return msg156; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg156() {
+        return this.msg156 != null;
+    }
     
     
     @ThriftField(value=157, name="msg157", requiredness=Requiredness.NONE)
     public String getMsg157() { return msg157; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg157() {
+        return this.msg157 != null;
+    }
     
     
     @ThriftField(value=158, name="msg158", requiredness=Requiredness.NONE)
     public String getMsg158() { return msg158; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg158() {
+        return this.msg158 != null;
+    }
     
     
     @ThriftField(value=159, name="msg159", requiredness=Requiredness.NONE)
     public String getMsg159() { return msg159; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg159() {
+        return this.msg159 != null;
+    }
     
     
     @ThriftField(value=160, name="msg160", requiredness=Requiredness.NONE)
     public String getMsg160() { return msg160; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg160() {
+        return this.msg160 != null;
+    }
     
     
     @ThriftField(value=161, name="msg161", requiredness=Requiredness.NONE)
     public String getMsg161() { return msg161; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg161() {
+        return this.msg161 != null;
+    }
     
     
     @ThriftField(value=162, name="msg162", requiredness=Requiredness.NONE)
     public String getMsg162() { return msg162; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg162() {
+        return this.msg162 != null;
+    }
     
     
     @ThriftField(value=163, name="msg163", requiredness=Requiredness.NONE)
     public String getMsg163() { return msg163; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg163() {
+        return this.msg163 != null;
+    }
     
     
     @ThriftField(value=164, name="msg164", requiredness=Requiredness.NONE)
     public String getMsg164() { return msg164; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg164() {
+        return this.msg164 != null;
+    }
     
     
     @ThriftField(value=165, name="msg165", requiredness=Requiredness.NONE)
     public String getMsg165() { return msg165; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg165() {
+        return this.msg165 != null;
+    }
     
     
     @ThriftField(value=166, name="msg166", requiredness=Requiredness.NONE)
     public String getMsg166() { return msg166; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg166() {
+        return this.msg166 != null;
+    }
     
     
     @ThriftField(value=167, name="msg167", requiredness=Requiredness.NONE)
     public String getMsg167() { return msg167; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg167() {
+        return this.msg167 != null;
+    }
     
     
     @ThriftField(value=168, name="msg168", requiredness=Requiredness.NONE)
     public String getMsg168() { return msg168; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg168() {
+        return this.msg168 != null;
+    }
     
     
     @ThriftField(value=169, name="msg169", requiredness=Requiredness.NONE)
     public String getMsg169() { return msg169; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg169() {
+        return this.msg169 != null;
+    }
     
     
     @ThriftField(value=170, name="msg170", requiredness=Requiredness.NONE)
     public String getMsg170() { return msg170; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg170() {
+        return this.msg170 != null;
+    }
     
     
     @ThriftField(value=171, name="msg171", requiredness=Requiredness.NONE)
     public String getMsg171() { return msg171; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg171() {
+        return this.msg171 != null;
+    }
     
     
     @ThriftField(value=172, name="msg172", requiredness=Requiredness.NONE)
     public String getMsg172() { return msg172; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg172() {
+        return this.msg172 != null;
+    }
     
     
     @ThriftField(value=173, name="msg173", requiredness=Requiredness.NONE)
     public String getMsg173() { return msg173; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg173() {
+        return this.msg173 != null;
+    }
     
     
     @ThriftField(value=174, name="msg174", requiredness=Requiredness.NONE)
     public String getMsg174() { return msg174; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg174() {
+        return this.msg174 != null;
+    }
     
     
     @ThriftField(value=175, name="msg175", requiredness=Requiredness.NONE)
     public String getMsg175() { return msg175; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg175() {
+        return this.msg175 != null;
+    }
     
     
     @ThriftField(value=176, name="msg176", requiredness=Requiredness.NONE)
     public String getMsg176() { return msg176; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg176() {
+        return this.msg176 != null;
+    }
     
     
     @ThriftField(value=177, name="msg177", requiredness=Requiredness.NONE)
     public String getMsg177() { return msg177; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg177() {
+        return this.msg177 != null;
+    }
     
     
     @ThriftField(value=178, name="msg178", requiredness=Requiredness.NONE)
     public String getMsg178() { return msg178; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg178() {
+        return this.msg178 != null;
+    }
     
     
     @ThriftField(value=179, name="msg179", requiredness=Requiredness.NONE)
     public String getMsg179() { return msg179; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg179() {
+        return this.msg179 != null;
+    }
     
     
     @ThriftField(value=180, name="msg180", requiredness=Requiredness.NONE)
     public String getMsg180() { return msg180; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg180() {
+        return this.msg180 != null;
+    }
     
     
     @ThriftField(value=181, name="msg181", requiredness=Requiredness.NONE)
     public String getMsg181() { return msg181; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg181() {
+        return this.msg181 != null;
+    }
     
     
     @ThriftField(value=182, name="msg182", requiredness=Requiredness.NONE)
     public String getMsg182() { return msg182; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg182() {
+        return this.msg182 != null;
+    }
     
     
     @ThriftField(value=183, name="msg183", requiredness=Requiredness.NONE)
     public String getMsg183() { return msg183; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg183() {
+        return this.msg183 != null;
+    }
     
     
     @ThriftField(value=184, name="msg184", requiredness=Requiredness.NONE)
     public String getMsg184() { return msg184; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg184() {
+        return this.msg184 != null;
+    }
     
     
     @ThriftField(value=185, name="msg185", requiredness=Requiredness.NONE)
     public String getMsg185() { return msg185; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg185() {
+        return this.msg185 != null;
+    }
     
     
     @ThriftField(value=186, name="msg186", requiredness=Requiredness.NONE)
     public String getMsg186() { return msg186; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg186() {
+        return this.msg186 != null;
+    }
     
     
     @ThriftField(value=187, name="msg187", requiredness=Requiredness.NONE)
     public String getMsg187() { return msg187; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg187() {
+        return this.msg187 != null;
+    }
     
     
     @ThriftField(value=188, name="msg188", requiredness=Requiredness.NONE)
     public String getMsg188() { return msg188; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg188() {
+        return this.msg188 != null;
+    }
     
     
     @ThriftField(value=189, name="msg189", requiredness=Requiredness.NONE)
     public String getMsg189() { return msg189; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg189() {
+        return this.msg189 != null;
+    }
     
     
     @ThriftField(value=190, name="msg190", requiredness=Requiredness.NONE)
     public String getMsg190() { return msg190; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg190() {
+        return this.msg190 != null;
+    }
     
     
     @ThriftField(value=191, name="msg191", requiredness=Requiredness.NONE)
     public String getMsg191() { return msg191; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg191() {
+        return this.msg191 != null;
+    }
     
     
     @ThriftField(value=192, name="msg192", requiredness=Requiredness.NONE)
     public String getMsg192() { return msg192; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg192() {
+        return this.msg192 != null;
+    }
     
     
     @ThriftField(value=193, name="msg193", requiredness=Requiredness.NONE)
     public String getMsg193() { return msg193; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg193() {
+        return this.msg193 != null;
+    }
     
     
     @ThriftField(value=194, name="msg194", requiredness=Requiredness.NONE)
     public String getMsg194() { return msg194; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg194() {
+        return this.msg194 != null;
+    }
     
     
     @ThriftField(value=195, name="msg195", requiredness=Requiredness.NONE)
     public String getMsg195() { return msg195; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg195() {
+        return this.msg195 != null;
+    }
     
     
     @ThriftField(value=196, name="msg196", requiredness=Requiredness.NONE)
     public String getMsg196() { return msg196; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg196() {
+        return this.msg196 != null;
+    }
     
     
     @ThriftField(value=197, name="msg197", requiredness=Requiredness.NONE)
     public String getMsg197() { return msg197; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg197() {
+        return this.msg197 != null;
+    }
     
     
     @ThriftField(value=198, name="msg198", requiredness=Requiredness.NONE)
     public String getMsg198() { return msg198; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg198() {
+        return this.msg198 != null;
+    }
     
     
     @ThriftField(value=199, name="msg199", requiredness=Requiredness.NONE)
     public String getMsg199() { return msg199; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg199() {
+        return this.msg199 != null;
+    }
     
     
     @ThriftField(value=200, name="msg200", requiredness=Requiredness.NONE)
     public String getMsg200() { return msg200; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg200() {
+        return this.msg200 != null;
+    }
     
     
     @ThriftField(value=201, name="msg201", requiredness=Requiredness.NONE)
     public String getMsg201() { return msg201; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg201() {
+        return this.msg201 != null;
+    }
     
     
     @ThriftField(value=202, name="msg202", requiredness=Requiredness.NONE)
     public String getMsg202() { return msg202; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg202() {
+        return this.msg202 != null;
+    }
     
     
     @ThriftField(value=203, name="msg203", requiredness=Requiredness.NONE)
     public String getMsg203() { return msg203; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg203() {
+        return this.msg203 != null;
+    }
     
     
     @ThriftField(value=204, name="msg204", requiredness=Requiredness.NONE)
     public String getMsg204() { return msg204; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg204() {
+        return this.msg204 != null;
+    }
     
     
     @ThriftField(value=205, name="msg205", requiredness=Requiredness.NONE)
     public String getMsg205() { return msg205; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg205() {
+        return this.msg205 != null;
+    }
     
     
     @ThriftField(value=206, name="msg206", requiredness=Requiredness.NONE)
     public String getMsg206() { return msg206; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg206() {
+        return this.msg206 != null;
+    }
     
     
     @ThriftField(value=207, name="msg207", requiredness=Requiredness.NONE)
     public String getMsg207() { return msg207; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg207() {
+        return this.msg207 != null;
+    }
     
     
     @ThriftField(value=208, name="msg208", requiredness=Requiredness.NONE)
     public String getMsg208() { return msg208; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg208() {
+        return this.msg208 != null;
+    }
     
     
     @ThriftField(value=209, name="msg209", requiredness=Requiredness.NONE)
     public String getMsg209() { return msg209; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg209() {
+        return this.msg209 != null;
+    }
     
     
     @ThriftField(value=210, name="msg210", requiredness=Requiredness.NONE)
     public String getMsg210() { return msg210; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg210() {
+        return this.msg210 != null;
+    }
     
     
     @ThriftField(value=211, name="msg211", requiredness=Requiredness.NONE)
     public String getMsg211() { return msg211; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg211() {
+        return this.msg211 != null;
+    }
     
     
     @ThriftField(value=212, name="msg212", requiredness=Requiredness.NONE)
     public String getMsg212() { return msg212; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg212() {
+        return this.msg212 != null;
+    }
     
     
     @ThriftField(value=213, name="msg213", requiredness=Requiredness.NONE)
     public String getMsg213() { return msg213; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg213() {
+        return this.msg213 != null;
+    }
     
     
     @ThriftField(value=214, name="msg214", requiredness=Requiredness.NONE)
     public String getMsg214() { return msg214; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg214() {
+        return this.msg214 != null;
+    }
     
     
     @ThriftField(value=215, name="msg215", requiredness=Requiredness.NONE)
     public String getMsg215() { return msg215; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg215() {
+        return this.msg215 != null;
+    }
     
     
     @ThriftField(value=216, name="msg216", requiredness=Requiredness.NONE)
     public String getMsg216() { return msg216; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg216() {
+        return this.msg216 != null;
+    }
     
     
     @ThriftField(value=217, name="msg217", requiredness=Requiredness.NONE)
     public String getMsg217() { return msg217; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg217() {
+        return this.msg217 != null;
+    }
     
     
     @ThriftField(value=218, name="msg218", requiredness=Requiredness.NONE)
     public String getMsg218() { return msg218; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg218() {
+        return this.msg218 != null;
+    }
     
     
     @ThriftField(value=219, name="msg219", requiredness=Requiredness.NONE)
     public String getMsg219() { return msg219; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg219() {
+        return this.msg219 != null;
+    }
     
     
     @ThriftField(value=220, name="msg220", requiredness=Requiredness.NONE)
     public String getMsg220() { return msg220; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg220() {
+        return this.msg220 != null;
+    }
     
     
     @ThriftField(value=221, name="msg221", requiredness=Requiredness.NONE)
     public String getMsg221() { return msg221; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg221() {
+        return this.msg221 != null;
+    }
     
     
     @ThriftField(value=222, name="msg222", requiredness=Requiredness.NONE)
     public String getMsg222() { return msg222; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg222() {
+        return this.msg222 != null;
+    }
     
     
     @ThriftField(value=223, name="msg223", requiredness=Requiredness.NONE)
     public String getMsg223() { return msg223; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg223() {
+        return this.msg223 != null;
+    }
     
     
     @ThriftField(value=224, name="msg224", requiredness=Requiredness.NONE)
     public String getMsg224() { return msg224; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg224() {
+        return this.msg224 != null;
+    }
     
     
     @ThriftField(value=225, name="msg225", requiredness=Requiredness.NONE)
     public String getMsg225() { return msg225; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg225() {
+        return this.msg225 != null;
+    }
     
     
     @ThriftField(value=226, name="msg226", requiredness=Requiredness.NONE)
     public String getMsg226() { return msg226; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg226() {
+        return this.msg226 != null;
+    }
     
     
     @ThriftField(value=227, name="msg227", requiredness=Requiredness.NONE)
     public String getMsg227() { return msg227; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg227() {
+        return this.msg227 != null;
+    }
     
     
     @ThriftField(value=228, name="msg228", requiredness=Requiredness.NONE)
     public String getMsg228() { return msg228; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg228() {
+        return this.msg228 != null;
+    }
     
     
     @ThriftField(value=229, name="msg229", requiredness=Requiredness.NONE)
     public String getMsg229() { return msg229; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg229() {
+        return this.msg229 != null;
+    }
     
     
     @ThriftField(value=230, name="msg230", requiredness=Requiredness.NONE)
     public String getMsg230() { return msg230; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg230() {
+        return this.msg230 != null;
+    }
     
     
     @ThriftField(value=231, name="msg231", requiredness=Requiredness.NONE)
     public String getMsg231() { return msg231; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg231() {
+        return this.msg231 != null;
+    }
     
     
     @ThriftField(value=232, name="msg232", requiredness=Requiredness.NONE)
     public String getMsg232() { return msg232; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg232() {
+        return this.msg232 != null;
+    }
     
     
     @ThriftField(value=233, name="msg233", requiredness=Requiredness.NONE)
     public String getMsg233() { return msg233; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg233() {
+        return this.msg233 != null;
+    }
     
     
     @ThriftField(value=234, name="msg234", requiredness=Requiredness.NONE)
     public String getMsg234() { return msg234; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg234() {
+        return this.msg234 != null;
+    }
     
     
     @ThriftField(value=235, name="msg235", requiredness=Requiredness.NONE)
     public String getMsg235() { return msg235; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg235() {
+        return this.msg235 != null;
+    }
     
     
     @ThriftField(value=236, name="msg236", requiredness=Requiredness.NONE)
     public String getMsg236() { return msg236; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg236() {
+        return this.msg236 != null;
+    }
     
     
     @ThriftField(value=237, name="msg237", requiredness=Requiredness.NONE)
     public String getMsg237() { return msg237; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg237() {
+        return this.msg237 != null;
+    }
     
     
     @ThriftField(value=238, name="msg238", requiredness=Requiredness.NONE)
     public String getMsg238() { return msg238; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg238() {
+        return this.msg238 != null;
+    }
     
     
     @ThriftField(value=239, name="msg239", requiredness=Requiredness.NONE)
     public String getMsg239() { return msg239; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg239() {
+        return this.msg239 != null;
+    }
     
     
     @ThriftField(value=240, name="msg240", requiredness=Requiredness.NONE)
     public String getMsg240() { return msg240; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg240() {
+        return this.msg240 != null;
+    }
     
     
     @ThriftField(value=241, name="msg241", requiredness=Requiredness.NONE)
     public String getMsg241() { return msg241; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg241() {
+        return this.msg241 != null;
+    }
     
     
     @ThriftField(value=242, name="msg242", requiredness=Requiredness.NONE)
     public String getMsg242() { return msg242; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg242() {
+        return this.msg242 != null;
+    }
     
     
     @ThriftField(value=243, name="msg243", requiredness=Requiredness.NONE)
     public String getMsg243() { return msg243; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg243() {
+        return this.msg243 != null;
+    }
     
     
     @ThriftField(value=244, name="msg244", requiredness=Requiredness.NONE)
     public String getMsg244() { return msg244; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg244() {
+        return this.msg244 != null;
+    }
     
     
     @ThriftField(value=245, name="msg245", requiredness=Requiredness.NONE)
     public String getMsg245() { return msg245; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg245() {
+        return this.msg245 != null;
+    }
     
     
     @ThriftField(value=246, name="msg246", requiredness=Requiredness.NONE)
     public String getMsg246() { return msg246; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg246() {
+        return this.msg246 != null;
+    }
     
     
     @ThriftField(value=247, name="msg247", requiredness=Requiredness.NONE)
     public String getMsg247() { return msg247; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg247() {
+        return this.msg247 != null;
+    }
     
     
     @ThriftField(value=248, name="msg248", requiredness=Requiredness.NONE)
     public String getMsg248() { return msg248; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg248() {
+        return this.msg248 != null;
+    }
     
     
     @ThriftField(value=249, name="msg249", requiredness=Requiredness.NONE)
     public String getMsg249() { return msg249; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg249() {
+        return this.msg249 != null;
+    }
     
     
     @ThriftField(value=250, name="msg250", requiredness=Requiredness.NONE)
     public String getMsg250() { return msg250; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg250() {
+        return this.msg250 != null;
+    }
     
     
     @ThriftField(value=251, name="msg251", requiredness=Requiredness.NONE)
     public String getMsg251() { return msg251; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg251() {
+        return this.msg251 != null;
+    }
     
     
     @ThriftField(value=252, name="msg252", requiredness=Requiredness.NONE)
     public String getMsg252() { return msg252; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg252() {
+        return this.msg252 != null;
+    }
     
     
     @ThriftField(value=253, name="msg253", requiredness=Requiredness.NONE)
     public String getMsg253() { return msg253; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg253() {
+        return this.msg253 != null;
+    }
     
     
     @ThriftField(value=254, name="msg254", requiredness=Requiredness.NONE)
     public String getMsg254() { return msg254; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg254() {
+        return this.msg254 != null;
+    }
     
     
     @ThriftField(value=255, name="msg255", requiredness=Requiredness.NONE)
     public String getMsg255() { return msg255; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg255() {
+        return this.msg255 != null;
+    }
     
     
     @ThriftField(value=256, name="msg256", requiredness=Requiredness.NONE)
     public String getMsg256() { return msg256; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg256() {
+        return this.msg256 != null;
+    }
     
     
     @ThriftField(value=257, name="msg257", requiredness=Requiredness.NONE)
     public String getMsg257() { return msg257; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMsg257() {
+        return this.msg257 != null;
+    }
     
     @Override
     public String toString() {

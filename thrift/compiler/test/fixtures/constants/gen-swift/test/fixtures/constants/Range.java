@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="Range", builder=Range.Builder.class)
 public final class Range {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public Range(
         @ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED) final int min,
@@ -42,6 +44,8 @@ public final class Range {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private int min = 0;
         private int max = 0;
     
@@ -50,7 +54,7 @@ public final class Range {
             this.min = min;
             return this;
         }
-        
+    
         public int getMin() { return min; }
     
             @ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)
@@ -58,7 +62,7 @@ public final class Range {
             this.max = max;
             return this;
         }
-        
+    
         public int getMax() { return max; }
     
         public Builder() { }
@@ -69,10 +73,12 @@ public final class Range {
     
         @ThriftConstructor
         public Range build() {
-            return new Range (
+            Range result = new Range (
                 this.min,
                 this.max
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -94,10 +100,22 @@ public final class Range {
     
     @ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED)
     public int getMin() { return min; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMin() {
+        return __isset_bit_vector.get(_MIN);
+    }
     
     
     @ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)
     public int getMax() { return max; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMax() {
+        return __isset_bit_vector.get(_MAX);
+    }
     
     @Override
     public String toString() {

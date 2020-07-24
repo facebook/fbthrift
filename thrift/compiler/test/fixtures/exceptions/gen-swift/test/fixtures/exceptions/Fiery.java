@@ -25,6 +25,8 @@ import org.apache.thrift.meta_data.FieldValueMetaData;
 public final class Fiery extends java.lang.RuntimeException {
     private static final long serialVersionUID = 1L;
 
+    private BitSet __isset_bit_vector = new BitSet();
+
     private static final TStruct STRUCT_DESC = new TStruct("Fiery");
     private final String message;
     public static final int _MESSAGE = 1;
@@ -43,6 +45,8 @@ public final class Fiery extends java.lang.RuntimeException {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private String message = null;
     
         @ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
@@ -50,7 +54,7 @@ public final class Fiery extends java.lang.RuntimeException {
             this.message = message;
             return this;
         }
-        
+    
         public String getMessage() { return message; }
     
         public Builder() { }
@@ -60,9 +64,11 @@ public final class Fiery extends java.lang.RuntimeException {
     
         @ThriftConstructor
         public Fiery build() {
-            return new Fiery (
+            Fiery result = new Fiery (
                 this.message
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     

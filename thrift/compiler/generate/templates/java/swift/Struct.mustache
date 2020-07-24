@@ -43,6 +43,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="{{struct:name}}", builder={{struct:javaCapitalName}}.Builder.class){{> common/ObjectCustomAnnotation}}
 {{/struct:asBean?}}
 public final class {{struct:javaCapitalName}} {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     {{> struct/ThriftConstructor}}
 
     {{> struct/StructBuilder}}
@@ -83,6 +85,8 @@ public final class {{struct:javaCapitalName}} {
 
     {{> struct/FieldSetter}}
     {{/struct:asBean?}}{{!
+    }}
+    {{> struct/FieldIsSet}}{{!
     }}{{/struct:fields}}
 
     {{> struct/StructToString}}

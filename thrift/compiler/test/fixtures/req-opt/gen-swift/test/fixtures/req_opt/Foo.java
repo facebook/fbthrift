@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="Foo", builder=Foo.Builder.class)
 public final class Foo {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public Foo(
         @ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED) final int myInteger,
@@ -48,6 +50,8 @@ public final class Foo {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private int myInteger = 0;
         private String myString = null;
         private List<Boolean> myBools = null;
@@ -58,7 +62,7 @@ public final class Foo {
             this.myInteger = myInteger;
             return this;
         }
-        
+    
         public int getMyInteger() { return myInteger; }
     
             @ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)
@@ -66,7 +70,7 @@ public final class Foo {
             this.myString = myString;
             return this;
         }
-        
+    
         public String getMyString() { return myString; }
     
             @ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)
@@ -74,7 +78,7 @@ public final class Foo {
             this.myBools = myBools;
             return this;
         }
-        
+    
         public List<Boolean> getMyBools() { return myBools; }
     
             @ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)
@@ -82,7 +86,7 @@ public final class Foo {
             this.myNumbers = myNumbers;
             return this;
         }
-        
+    
         public List<Integer> getMyNumbers() { return myNumbers; }
     
         public Builder() { }
@@ -95,12 +99,14 @@ public final class Foo {
     
         @ThriftConstructor
         public Foo build() {
-            return new Foo (
+            Foo result = new Foo (
                 this.myInteger,
                 this.myString,
                 this.myBools,
                 this.myNumbers
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -132,18 +138,42 @@ public final class Foo {
     
     @ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED)
     public int getMyInteger() { return myInteger; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyInteger() {
+        return __isset_bit_vector.get(_MYINTEGER);
+    }
     
     
     @ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)
     public String getMyString() { return myString; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyString() {
+        return this.myString != null;
+    }
     
     
     @ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)
     public List<Boolean> getMyBools() { return myBools; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyBools() {
+        return this.myBools != null;
+    }
     
     
     @ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)
     public List<Integer> getMyNumbers() { return myNumbers; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyNumbers() {
+        return this.myNumbers != null;
+    }
     
     @Override
     public String toString() {

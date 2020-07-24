@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="Struct", builder=Struct.Builder.class)
 public final class Struct {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public Struct(
         @ThriftField(value=1, name="first", requiredness=Requiredness.NONE) final test.fixtures.module0.Struct first,
@@ -42,6 +44,8 @@ public final class Struct {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private test.fixtures.module0.Struct first = null;
         private test.fixtures.module1.Struct second = null;
     
@@ -50,7 +54,7 @@ public final class Struct {
             this.first = first;
             return this;
         }
-        
+    
         public test.fixtures.module0.Struct getFirst() { return first; }
     
             @ThriftField(value=2, name="second", requiredness=Requiredness.NONE)
@@ -58,7 +62,7 @@ public final class Struct {
             this.second = second;
             return this;
         }
-        
+    
         public test.fixtures.module1.Struct getSecond() { return second; }
     
         public Builder() { }
@@ -69,10 +73,12 @@ public final class Struct {
     
         @ThriftConstructor
         public Struct build() {
-            return new Struct (
+            Struct result = new Struct (
                 this.first,
                 this.second
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -94,10 +100,22 @@ public final class Struct {
     
     @ThriftField(value=1, name="first", requiredness=Requiredness.NONE)
     public test.fixtures.module0.Struct getFirst() { return first; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetFirst() {
+        return this.first != null;
+    }
     
     
     @ThriftField(value=2, name="second", requiredness=Requiredness.NONE)
     public test.fixtures.module1.Struct getSecond() { return second; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetSecond() {
+        return this.second != null;
+    }
     
     @Override
     public String toString() {

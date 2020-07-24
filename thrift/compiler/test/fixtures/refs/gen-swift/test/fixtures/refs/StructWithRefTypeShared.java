@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="StructWithRefTypeShared", builder=StructWithRefTypeShared.Builder.class)
 public final class StructWithRefTypeShared {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public StructWithRefTypeShared(
         @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE) final test.fixtures.refs.Empty defField,
@@ -45,6 +47,8 @@ public final class StructWithRefTypeShared {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private test.fixtures.refs.Empty defField = null;
         private test.fixtures.refs.Empty optField = null;
         private test.fixtures.refs.Empty reqField = null;
@@ -54,7 +58,7 @@ public final class StructWithRefTypeShared {
             this.defField = defField;
             return this;
         }
-        
+    
         public test.fixtures.refs.Empty getDefField() { return defField; }
     
             @ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL)
@@ -62,7 +66,7 @@ public final class StructWithRefTypeShared {
             this.optField = optField;
             return this;
         }
-        
+    
         public test.fixtures.refs.Empty getOptField() { return optField; }
     
             @ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED)
@@ -70,7 +74,7 @@ public final class StructWithRefTypeShared {
             this.reqField = reqField;
             return this;
         }
-        
+    
         public test.fixtures.refs.Empty getReqField() { return reqField; }
     
         public Builder() { }
@@ -82,11 +86,13 @@ public final class StructWithRefTypeShared {
     
         @ThriftConstructor
         public StructWithRefTypeShared build() {
-            return new StructWithRefTypeShared (
+            StructWithRefTypeShared result = new StructWithRefTypeShared (
                 this.defField,
                 this.optField,
                 this.reqField
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -113,14 +119,32 @@ public final class StructWithRefTypeShared {
     
     @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
     public test.fixtures.refs.Empty getDefField() { return defField; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetDefField() {
+        return this.defField != null;
+    }
     
     
     @ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.refs.Empty getOptField() { return optField; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetOptField() {
+        return this.optField != null;
+    }
     
     
     @ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED)
     public test.fixtures.refs.Empty getReqField() { return reqField; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetReqField() {
+        return this.reqField != null;
+    }
     
     @Override
     public String toString() {

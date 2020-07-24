@@ -25,6 +25,8 @@ import org.apache.thrift.meta_data.FieldValueMetaData;
 public final class SinkException2 extends java.lang.Exception {
     private static final long serialVersionUID = 1L;
 
+    private BitSet __isset_bit_vector = new BitSet();
+
     private static final TStruct STRUCT_DESC = new TStruct("SinkException2");
     private final long reason;
     public static final int _REASON = 1;
@@ -43,6 +45,8 @@ public final class SinkException2 extends java.lang.Exception {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private long reason = 0L;
     
         @ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
@@ -50,7 +54,7 @@ public final class SinkException2 extends java.lang.Exception {
             this.reason = reason;
             return this;
         }
-        
+    
         public long getReason() { return reason; }
     
         public Builder() { }
@@ -60,9 +64,11 @@ public final class SinkException2 extends java.lang.Exception {
     
         @ThriftConstructor
         public SinkException2 build() {
-            return new SinkException2 (
+            SinkException2 result = new SinkException2 (
                 this.reason
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     

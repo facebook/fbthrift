@@ -348,6 +348,7 @@ class mstch_swift_field : public mstch_field {
             {"field:typeFieldName", &mstch_swift_field::type_field_name},
             {"field:isSensitive?", &mstch_swift_field::is_sensitive},
             {"field:hasInitialValue?", &mstch_swift_field::has_initial_value},
+            {"field:isPrimitive?", &mstch_swift_field::is_primitive},
         });
   }
 
@@ -384,6 +385,12 @@ class mstch_swift_field : public mstch_field {
   mstch::node decrement_nested_depth() {
     nestedDepth--;
     return mstch::node();
+  }
+  mstch::node is_primitive() {
+    auto type = field_->get_type()->get_true_type();
+    return type->is_void() || type->is_bool() || type->is_byte() ||
+        type->is_i16() || type->is_i32() || type->is_i64() ||
+        type->is_double() || type->is_float();
   }
   mstch::node is_nullable_or_optional_not_enum() {
     if (field_->get_req() == t_field::e_req::T_OPTIONAL) {

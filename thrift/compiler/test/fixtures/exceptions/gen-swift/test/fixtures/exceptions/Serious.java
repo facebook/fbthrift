@@ -25,6 +25,8 @@ import org.apache.thrift.meta_data.FieldValueMetaData;
 public final class Serious extends java.lang.RuntimeException {
     private static final long serialVersionUID = 1L;
 
+    private BitSet __isset_bit_vector = new BitSet();
+
     private static final TStruct STRUCT_DESC = new TStruct("Serious");
     private final String sonnet;
     public static final int _SONNET = 1;
@@ -43,6 +45,8 @@ public final class Serious extends java.lang.RuntimeException {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private String sonnet = null;
     
         @ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL)
@@ -50,7 +54,7 @@ public final class Serious extends java.lang.RuntimeException {
             this.sonnet = sonnet;
             return this;
         }
-        
+    
         public String getSonnet() { return sonnet; }
     
         public Builder() { }
@@ -60,9 +64,11 @@ public final class Serious extends java.lang.RuntimeException {
     
         @ThriftConstructor
         public Serious build() {
-            return new Serious (
+            Serious result = new Serious (
                 this.sonnet
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     

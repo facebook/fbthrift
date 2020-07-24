@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct("MyStruct2")
 public final class MyStruct2 {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public MyStruct2() {
       this.myStruct1 = null;
@@ -33,6 +35,8 @@ public final class MyStruct2 {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private test.fixtures.basic_swift_bean.MyStruct1 myStruct1 = null;
         private String myString = null;
     
@@ -41,7 +45,7 @@ public final class MyStruct2 {
             this.myStruct1 = myStruct1;
             return this;
         }
-        
+    
         public test.fixtures.basic_swift_bean.MyStruct1 getMyStruct1() { return myStruct1; }
     
             @ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)
@@ -49,7 +53,7 @@ public final class MyStruct2 {
             this.myString = myString;
             return this;
         }
-        
+    
         public String getMyString() { return myString; }
     
         public Builder() { }
@@ -63,6 +67,7 @@ public final class MyStruct2 {
             MyStruct2 result = new MyStruct2();
             result.myStruct1 = this.myStruct1;
             result.myString = this.myString;
+            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -91,7 +96,17 @@ static {
         this.myStruct1 = myStruct1;
         return this;
     }
-    
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyStruct1() {
+        return this.myStruct1 != null;
+    }
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public void unsetMyStruct1() {
+        this.myStruct1 = null;
+    }
     
     @ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)
     public String getMyString() { return myString; }
@@ -101,7 +116,17 @@ static {
         this.myString = myString;
         return this;
     }
-    
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyString() {
+        return this.myString != null;
+    }
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public void unsetMyString() {
+        this.myString = null;
+    }
     @Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);

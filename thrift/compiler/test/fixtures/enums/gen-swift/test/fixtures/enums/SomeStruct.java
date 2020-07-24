@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="SomeStruct", builder=SomeStruct.Builder.class)
 public final class SomeStruct {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public SomeStruct(
         @ThriftField(value=1, name="reasonable", requiredness=Requiredness.NONE) final test.fixtures.enums.Metasyntactic reasonable,
@@ -48,6 +50,8 @@ public final class SomeStruct {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private test.fixtures.enums.Metasyntactic reasonable = test.fixtures.enums.Metasyntactic.FOO;
         private test.fixtures.enums.Metasyntactic fine = test.fixtures.enums.Metasyntactic.BAR;
         private test.fixtures.enums.Metasyntactic questionable = test.fixtures.enums.Metasyntactic.fromInteger(-1);
@@ -59,7 +63,7 @@ public final class SomeStruct {
             this.reasonable = reasonable;
             return this;
         }
-        
+    
         public test.fixtures.enums.Metasyntactic getReasonable() { return reasonable; }
     
             @ThriftField(value=2, name="fine", requiredness=Requiredness.NONE)
@@ -67,7 +71,7 @@ public final class SomeStruct {
             this.fine = fine;
             return this;
         }
-        
+    
         public test.fixtures.enums.Metasyntactic getFine() { return fine; }
     
             @ThriftField(value=3, name="questionable", requiredness=Requiredness.NONE)
@@ -75,7 +79,7 @@ public final class SomeStruct {
             this.questionable = questionable;
             return this;
         }
-        
+    
         public test.fixtures.enums.Metasyntactic getQuestionable() { return questionable; }
     
             @ThriftField(value=4, name="tags", requiredness=Requiredness.NONE)
@@ -83,7 +87,7 @@ public final class SomeStruct {
             this.tags = tags;
             return this;
         }
-        
+    
         public Set<Integer> getTags() { return tags; }
     
         public Builder() { }
@@ -96,12 +100,14 @@ public final class SomeStruct {
     
         @ThriftConstructor
         public SomeStruct build() {
-            return new SomeStruct (
+            SomeStruct result = new SomeStruct (
                 this.reasonable,
                 this.fine,
                 this.questionable,
                 this.tags
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -133,18 +139,42 @@ public final class SomeStruct {
     
     @ThriftField(value=1, name="reasonable", requiredness=Requiredness.NONE)
     public test.fixtures.enums.Metasyntactic getReasonable() { return reasonable; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetReasonable() {
+        return this.reasonable != null;
+    }
     
     
     @ThriftField(value=2, name="fine", requiredness=Requiredness.NONE)
     public test.fixtures.enums.Metasyntactic getFine() { return fine; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetFine() {
+        return this.fine != null;
+    }
     
     
     @ThriftField(value=3, name="questionable", requiredness=Requiredness.NONE)
     public test.fixtures.enums.Metasyntactic getQuestionable() { return questionable; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetQuestionable() {
+        return this.questionable != null;
+    }
     
     
     @ThriftField(value=4, name="tags", requiredness=Requiredness.NONE)
     public Set<Integer> getTags() { return tags; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetTags() {
+        return this.tags != null;
+    }
     
     @Override
     public String toString() {

@@ -25,6 +25,8 @@ import org.apache.thrift.meta_data.FieldValueMetaData;
 public final class EmptyXcep extends java.lang.Exception {
     private static final long serialVersionUID = 1L;
 
+    private BitSet __isset_bit_vector = new BitSet();
+
     private static final TStruct STRUCT_DESC = new TStruct("emptyXcep");
 
     @ThriftConstructor
@@ -35,6 +37,8 @@ public final class EmptyXcep extends java.lang.Exception {
     
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
     
     public Builder() { }
         public Builder(EmptyXcep other) {
@@ -42,8 +46,10 @@ public final class EmptyXcep extends java.lang.Exception {
     
         @ThriftConstructor
         public EmptyXcep build() {
-            return new EmptyXcep (
+            EmptyXcep result = new EmptyXcep (
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     

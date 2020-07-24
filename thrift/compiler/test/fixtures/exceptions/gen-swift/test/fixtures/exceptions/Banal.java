@@ -25,6 +25,8 @@ import org.apache.thrift.meta_data.FieldValueMetaData;
 public final class Banal extends java.lang.RuntimeException {
     private static final long serialVersionUID = 1L;
 
+    private BitSet __isset_bit_vector = new BitSet();
+
     private static final TStruct STRUCT_DESC = new TStruct("Banal");
 
     @ThriftConstructor
@@ -35,6 +37,8 @@ public final class Banal extends java.lang.RuntimeException {
     
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
     
     public Builder() { }
         public Builder(Banal other) {
@@ -42,8 +46,10 @@ public final class Banal extends java.lang.RuntimeException {
     
         @ThriftConstructor
         public Banal build() {
-            return new Banal (
+            Banal result = new Banal (
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     

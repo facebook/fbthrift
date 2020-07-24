@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyStructNestedAnnotation", builder=MyStructNestedAnnotation.Builder.class)
 public final class MyStructNestedAnnotation {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public MyStructNestedAnnotation(
         @ThriftField(value=1, name="name", requiredness=Requiredness.NONE) final String name
@@ -39,6 +41,8 @@ public final class MyStructNestedAnnotation {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private String name = null;
     
         @ThriftField(value=1, name="name", requiredness=Requiredness.NONE)
@@ -46,7 +50,7 @@ public final class MyStructNestedAnnotation {
             this.name = name;
             return this;
         }
-        
+    
         public String getName() { return name; }
     
         public Builder() { }
@@ -56,9 +60,11 @@ public final class MyStructNestedAnnotation {
     
         @ThriftConstructor
         public MyStructNestedAnnotation build() {
-            return new MyStructNestedAnnotation (
+            MyStructNestedAnnotation result = new MyStructNestedAnnotation (
                 this.name
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -75,6 +81,12 @@ public final class MyStructNestedAnnotation {
     
     @ThriftField(value=1, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetName() {
+        return this.name != null;
+    }
     
     @Override
     public String toString() {

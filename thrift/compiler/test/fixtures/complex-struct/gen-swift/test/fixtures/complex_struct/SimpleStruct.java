@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="SimpleStruct", builder=SimpleStruct.Builder.class)
 public final class SimpleStruct {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public SimpleStruct(
         @ThriftField(value=1, name="age", requiredness=Requiredness.NONE) final long age,
@@ -42,6 +44,8 @@ public final class SimpleStruct {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private long age = 60L;
         private String name = "Batman";
     
@@ -50,7 +54,7 @@ public final class SimpleStruct {
             this.age = age;
             return this;
         }
-        
+    
         public long getAge() { return age; }
     
             @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
@@ -58,7 +62,7 @@ public final class SimpleStruct {
             this.name = name;
             return this;
         }
-        
+    
         public String getName() { return name; }
     
         public Builder() { }
@@ -69,10 +73,12 @@ public final class SimpleStruct {
     
         @ThriftConstructor
         public SimpleStruct build() {
-            return new SimpleStruct (
+            SimpleStruct result = new SimpleStruct (
                 this.age,
                 this.name
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -94,10 +100,22 @@ public final class SimpleStruct {
     
     @ThriftField(value=1, name="age", requiredness=Requiredness.NONE)
     public long getAge() { return age; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetAge() {
+        return __isset_bit_vector.get(_AGE);
+    }
     
     
     @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetName() {
+        return this.name != null;
+    }
     
     @Override
     public String toString() {

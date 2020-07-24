@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="InitialResponse", builder=InitialResponse.Builder.class)
 public final class InitialResponse {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public InitialResponse(
         @ThriftField(value=1, name="content", requiredness=Requiredness.NONE) final String content
@@ -39,6 +41,8 @@ public final class InitialResponse {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private String content = null;
     
         @ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
@@ -46,7 +50,7 @@ public final class InitialResponse {
             this.content = content;
             return this;
         }
-        
+    
         public String getContent() { return content; }
     
         public Builder() { }
@@ -56,9 +60,11 @@ public final class InitialResponse {
     
         @ThriftConstructor
         public InitialResponse build() {
-            return new InitialResponse (
+            InitialResponse result = new InitialResponse (
                 this.content
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -75,6 +81,12 @@ public final class InitialResponse {
     
     @ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
     public String getContent() { return content; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetContent() {
+        return this.content != null;
+    }
     
     @Override
     public String toString() {

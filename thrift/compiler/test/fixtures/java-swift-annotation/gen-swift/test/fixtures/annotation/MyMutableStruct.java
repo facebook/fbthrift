@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct("MyMutableStruct") @com.foo.Enabled 
 public final class MyMutableStruct {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public MyMutableStruct() {
       this.intField = 0L;
@@ -33,6 +35,8 @@ public final class MyMutableStruct {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private long intField = 0L;
         private String stringField = null;
     
@@ -41,7 +45,7 @@ public final class MyMutableStruct {
             this.intField = intField;
             return this;
         }
-        
+    
         public long getIntField() { return intField; }
     
             @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
@@ -49,7 +53,7 @@ public final class MyMutableStruct {
             this.stringField = stringField;
             return this;
         }
-        
+    
         public String getStringField() { return stringField; }
     
         public Builder() { }
@@ -63,6 +67,7 @@ public final class MyMutableStruct {
             MyMutableStruct result = new MyMutableStruct();
             result.intField = this.intField;
             result.stringField = this.stringField;
+            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -91,7 +96,17 @@ static {
         this.intField = intField;
         return this;
     }
-    
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetIntField() {
+        return __isset_bit_vector.get(_INTFIELD);
+    }
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public void unsetIntField() {
+        __isset_bit_vector.clear(_INTFIELD);
+    }
     
     @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
@@ -101,7 +116,17 @@ static {
         this.stringField = stringField;
         return this;
     }
-    
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetStringField() {
+        return this.stringField != null;
+    }
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public void unsetStringField() {
+        this.stringField = null;
+    }
     @Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);

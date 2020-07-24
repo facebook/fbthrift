@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyStructAnnotation", builder=MyStructAnnotation.Builder.class)
 public final class MyStructAnnotation {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public MyStructAnnotation(
         @ThriftField(value=1, name="count", requiredness=Requiredness.NONE) final long count,
@@ -48,6 +50,8 @@ public final class MyStructAnnotation {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private long count = 0L;
         private String name = null;
         private String extra = null;
@@ -58,7 +62,7 @@ public final class MyStructAnnotation {
             this.count = count;
             return this;
         }
-        
+    
         public long getCount() { return count; }
     
             @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
@@ -66,7 +70,7 @@ public final class MyStructAnnotation {
             this.name = name;
             return this;
         }
-        
+    
         public String getName() { return name; }
     
             @ThriftField(value=3, name="extra", requiredness=Requiredness.OPTIONAL)
@@ -74,7 +78,7 @@ public final class MyStructAnnotation {
             this.extra = extra;
             return this;
         }
-        
+    
         public String getExtra() { return extra; }
     
             @ThriftField(value=4, name="nest", requiredness=Requiredness.NONE)
@@ -82,7 +86,7 @@ public final class MyStructAnnotation {
             this.nest = nest;
             return this;
         }
-        
+    
         public test.fixtures.basicannotations.MyStructNestedAnnotation getNest() { return nest; }
     
         public Builder() { }
@@ -95,12 +99,14 @@ public final class MyStructAnnotation {
     
         @ThriftConstructor
         public MyStructAnnotation build() {
-            return new MyStructAnnotation (
+            MyStructAnnotation result = new MyStructAnnotation (
                 this.count,
                 this.name,
                 this.extra,
                 this.nest
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -132,18 +138,42 @@ public final class MyStructAnnotation {
     
     @ThriftField(value=1, name="count", requiredness=Requiredness.NONE)
     public long getCount() { return count; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetCount() {
+        return __isset_bit_vector.get(_COUNT);
+    }
     
     
     @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetName() {
+        return this.name != null;
+    }
     
     
     @ThriftField(value=3, name="extra", requiredness=Requiredness.OPTIONAL)
     public String getExtra() { return extra; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetExtra() {
+        return this.extra != null;
+    }
     
     
     @ThriftField(value=4, name="nest", requiredness=Requiredness.NONE)
     public test.fixtures.basicannotations.MyStructNestedAnnotation getNest() { return nest; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetNest() {
+        return this.nest != null;
+    }
     
     @Override
     public String toString() {

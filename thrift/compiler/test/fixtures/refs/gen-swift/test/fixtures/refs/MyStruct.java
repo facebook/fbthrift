@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
 public final class MyStruct {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public MyStruct(
         @ThriftField(value=1, name="opt_ref", requiredness=Requiredness.OPTIONAL) final test.fixtures.refs.MyField optRef,
@@ -45,6 +47,8 @@ public final class MyStruct {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private test.fixtures.refs.MyField optRef = null;
         private test.fixtures.refs.MyField ref = null;
         private test.fixtures.refs.MyField reqRef = null;
@@ -54,7 +58,7 @@ public final class MyStruct {
             this.optRef = optRef;
             return this;
         }
-        
+    
         public test.fixtures.refs.MyField getOptRef() { return optRef; }
     
             @ThriftField(value=2, name="ref", requiredness=Requiredness.NONE)
@@ -62,7 +66,7 @@ public final class MyStruct {
             this.ref = ref;
             return this;
         }
-        
+    
         public test.fixtures.refs.MyField getRef() { return ref; }
     
             @ThriftField(value=3, name="req_ref", requiredness=Requiredness.REQUIRED)
@@ -70,7 +74,7 @@ public final class MyStruct {
             this.reqRef = reqRef;
             return this;
         }
-        
+    
         public test.fixtures.refs.MyField getReqRef() { return reqRef; }
     
         public Builder() { }
@@ -82,11 +86,13 @@ public final class MyStruct {
     
         @ThriftConstructor
         public MyStruct build() {
-            return new MyStruct (
+            MyStruct result = new MyStruct (
                 this.optRef,
                 this.ref,
                 this.reqRef
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -113,14 +119,32 @@ public final class MyStruct {
     
     @ThriftField(value=1, name="opt_ref", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.refs.MyField getOptRef() { return optRef; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetOptRef() {
+        return this.optRef != null;
+    }
     
     
     @ThriftField(value=2, name="ref", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyField getRef() { return ref; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetRef() {
+        return this.ref != null;
+    }
     
     
     @ThriftField(value=3, name="req_ref", requiredness=Requiredness.REQUIRED)
     public test.fixtures.refs.MyField getReqRef() { return reqRef; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetReqRef() {
+        return this.reqRef != null;
+    }
     
     @Override
     public String toString() {

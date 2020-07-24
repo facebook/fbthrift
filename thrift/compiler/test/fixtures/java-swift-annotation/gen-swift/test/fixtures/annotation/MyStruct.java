@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class) @com.foo.Enabled @com.bar.AnotherAnnotation(val = 1) 
 public final class MyStruct {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public MyStruct(
         @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE) final long intField,
@@ -51,6 +53,8 @@ public final class MyStruct {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private long intField = 0L;
         private String stringField = null;
         private String detailField = null;
@@ -62,7 +66,7 @@ public final class MyStruct {
             this.intField = intField;
             return this;
         }
-        
+    
         public long getIntField() { return intField; }
     
             @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
@@ -70,7 +74,7 @@ public final class MyStruct {
             this.stringField = stringField;
             return this;
         }
-        
+    
         public String getStringField() { return stringField; }
     
             @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)
@@ -78,7 +82,7 @@ public final class MyStruct {
             this.detailField = detailField;
             return this;
         }
-        
+    
         public String getDetailField() { return detailField; }
     
             @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
@@ -86,7 +90,7 @@ public final class MyStruct {
             this.detailMap = detailMap;
             return this;
         }
-        
+    
         public com.foo.FastIntLongMap getDetailMap() { return detailMap; }
     
             @ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)
@@ -94,7 +98,7 @@ public final class MyStruct {
             this.toto = toto;
             return this;
         }
-        
+    
         public String getToto() { return toto; }
     
         public Builder() { }
@@ -108,13 +112,15 @@ public final class MyStruct {
     
         @ThriftConstructor
         public MyStruct build() {
-            return new MyStruct (
+            MyStruct result = new MyStruct (
                 this.intField,
                 this.stringField,
                 this.detailField,
                 this.detailMap,
                 this.toto
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -151,22 +157,52 @@ public final class MyStruct {
     
     @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public long getIntField() { return intField; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetIntField() {
+        return __isset_bit_vector.get(_INTFIELD);
+    }
     
     
     @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetStringField() {
+        return this.stringField != null;
+    }
     
     
     @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)
     public String getDetailField() { return detailField; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetDetailField() {
+        return this.detailField != null;
+    }
     
     
     @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
     public com.foo.FastIntLongMap getDetailMap() { return detailMap; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetDetailMap() {
+        return this.detailMap != null;
+    }
     
     
     @ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)
     public String getToto() { return toto; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetToto() {
+        return this.toto != null;
+    }
     
     @Override
     public String toString() {

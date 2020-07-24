@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct("MyStruct3")
 public final class MyStruct3 {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public MyStruct3() {
       this.myInt16 = (short)42;
@@ -57,6 +59,8 @@ public final class MyStruct3 {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private short myInt16 = (short)42;
         private int myInt32 = 422;
         private long myInt64 = 422222222L;
@@ -89,7 +93,7 @@ public final class MyStruct3 {
             this.myInt16 = myInt16;
             return this;
         }
-        
+    
         public short getMyInt16() { return myInt16; }
     
             @ThriftField(value=2, name="myInt32", requiredness=Requiredness.NONE)
@@ -97,7 +101,7 @@ public final class MyStruct3 {
             this.myInt32 = myInt32;
             return this;
         }
-        
+    
         public int getMyInt32() { return myInt32; }
     
             @ThriftField(value=3, name="myInt64", requiredness=Requiredness.NONE)
@@ -105,7 +109,7 @@ public final class MyStruct3 {
             this.myInt64 = myInt64;
             return this;
         }
-        
+    
         public long getMyInt64() { return myInt64; }
     
             @ThriftField(value=4, name="myString", requiredness=Requiredness.NONE)
@@ -113,7 +117,7 @@ public final class MyStruct3 {
             this.myString = myString;
             return this;
         }
-        
+    
         public String getMyString() { return myString; }
     
             @ThriftField(value=5, name="myBool", requiredness=Requiredness.NONE)
@@ -121,7 +125,7 @@ public final class MyStruct3 {
             this.myBool = myBool;
             return this;
         }
-        
+    
         public boolean isMyBool() { return myBool; }
     
             @ThriftField(value=6, name="myDouble", requiredness=Requiredness.NONE)
@@ -129,7 +133,7 @@ public final class MyStruct3 {
             this.myDouble = myDouble;
             return this;
         }
-        
+    
         public double getMyDouble() { return myDouble; }
     
             @ThriftField(value=7, name="mySet", requiredness=Requiredness.NONE)
@@ -137,7 +141,7 @@ public final class MyStruct3 {
             this.mySet = mySet;
             return this;
         }
-        
+    
         public Set<String> getMySet() { return mySet; }
     
             @ThriftField(value=8, name="MyDataItem", requiredness=Requiredness.NONE)
@@ -145,7 +149,7 @@ public final class MyStruct3 {
             this.myDataItem = myDataItem;
             return this;
         }
-        
+    
         public test.fixtures.basic_swift_bean.MyDataItem getMyDataItem() { return myDataItem; }
     
             @ThriftField(value=9, name="myList", requiredness=Requiredness.NONE)
@@ -153,7 +157,7 @@ public final class MyStruct3 {
             this.myList = myList;
             return this;
         }
-        
+    
         public List<test.fixtures.basic_swift_bean.MyDataItem> getMyList() { return myList; }
     
             @ThriftField(value=10, name="myMapList", requiredness=Requiredness.NONE)
@@ -161,7 +165,7 @@ public final class MyStruct3 {
             this.myMapList = myMapList;
             return this;
         }
-        
+    
         public Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> getMyMapList() { return myMapList; }
     
         public Builder() { }
@@ -191,6 +195,7 @@ public final class MyStruct3 {
             result.myDataItem = this.myDataItem;
             result.myList = this.myList;
             result.myMapList = this.myMapList;
+            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -259,7 +264,17 @@ static {
         this.myInt16 = myInt16;
         return this;
     }
-    
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyInt16() {
+        return __isset_bit_vector.get(_MYINT16);
+    }
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public void unsetMyInt16() {
+        __isset_bit_vector.clear(_MYINT16);
+    }
     
     @ThriftField(value=2, name="myInt32", requiredness=Requiredness.NONE)
     public int getMyInt32() { return myInt32; }
@@ -269,7 +284,17 @@ static {
         this.myInt32 = myInt32;
         return this;
     }
-    
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyInt32() {
+        return __isset_bit_vector.get(_MYINT32);
+    }
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public void unsetMyInt32() {
+        __isset_bit_vector.clear(_MYINT32);
+    }
     
     @ThriftField(value=3, name="myInt64", requiredness=Requiredness.NONE)
     public long getMyInt64() { return myInt64; }
@@ -279,7 +304,17 @@ static {
         this.myInt64 = myInt64;
         return this;
     }
-    
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyInt64() {
+        return __isset_bit_vector.get(_MYINT64);
+    }
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public void unsetMyInt64() {
+        __isset_bit_vector.clear(_MYINT64);
+    }
     
     @ThriftField(value=4, name="myString", requiredness=Requiredness.NONE)
     public String getMyString() { return myString; }
@@ -289,7 +324,17 @@ static {
         this.myString = myString;
         return this;
     }
-    
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyString() {
+        return this.myString != null;
+    }
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public void unsetMyString() {
+        this.myString = null;
+    }
     
     @ThriftField(value=5, name="myBool", requiredness=Requiredness.NONE)
     public boolean isMyBool() { return myBool; }
@@ -299,7 +344,17 @@ static {
         this.myBool = myBool;
         return this;
     }
-    
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyBool() {
+        return __isset_bit_vector.get(_MYBOOL);
+    }
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public void unsetMyBool() {
+        __isset_bit_vector.clear(_MYBOOL);
+    }
     
     @ThriftField(value=6, name="myDouble", requiredness=Requiredness.NONE)
     public double getMyDouble() { return myDouble; }
@@ -309,7 +364,17 @@ static {
         this.myDouble = myDouble;
         return this;
     }
-    
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDouble() {
+        return __isset_bit_vector.get(_MYDOUBLE);
+    }
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public void unsetMyDouble() {
+        __isset_bit_vector.clear(_MYDOUBLE);
+    }
     
     @ThriftField(value=7, name="mySet", requiredness=Requiredness.NONE)
     public Set<String> getMySet() { return mySet; }
@@ -319,7 +384,17 @@ static {
         this.mySet = mySet;
         return this;
     }
-    
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMySet() {
+        return this.mySet != null;
+    }
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public void unsetMySet() {
+        this.mySet = null;
+    }
     
     @ThriftField(value=8, name="MyDataItem", requiredness=Requiredness.NONE)
     public test.fixtures.basic_swift_bean.MyDataItem getMyDataItem() { return myDataItem; }
@@ -329,7 +404,17 @@ static {
         this.myDataItem = myDataItem;
         return this;
     }
-    
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDataItem() {
+        return this.myDataItem != null;
+    }
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public void unsetMyDataItem() {
+        this.myDataItem = null;
+    }
     
     @ThriftField(value=9, name="myList", requiredness=Requiredness.NONE)
     public List<test.fixtures.basic_swift_bean.MyDataItem> getMyList() { return myList; }
@@ -339,7 +424,17 @@ static {
         this.myList = myList;
         return this;
     }
-    
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyList() {
+        return this.myList != null;
+    }
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public void unsetMyList() {
+        this.myList = null;
+    }
     
     @ThriftField(value=10, name="myMapList", requiredness=Requiredness.NONE)
     public Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> getMyMapList() { return myMapList; }
@@ -349,7 +444,17 @@ static {
         this.myMapList = myMapList;
         return this;
     }
-    
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyMapList() {
+        return this.myMapList != null;
+    }
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public void unsetMyMapList() {
+        this.myMapList = null;
+    }
     @Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);

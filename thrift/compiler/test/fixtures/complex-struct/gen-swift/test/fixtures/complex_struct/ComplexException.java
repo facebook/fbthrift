@@ -25,6 +25,8 @@ import org.apache.thrift.meta_data.FieldValueMetaData;
 public final class ComplexException extends java.lang.Exception {
     private static final long serialVersionUID = 1L;
 
+    private BitSet __isset_bit_vector = new BitSet();
+
     private static final TStruct STRUCT_DESC = new TStruct("complexException");
     private final String message;
     public static final int _MESSAGE = 1;
@@ -73,6 +75,8 @@ public final class ComplexException extends java.lang.Exception {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private String message = null;
         private List<String> listStrings = null;
         private test.fixtures.complex_struct.MyEnum errorEnum = null;
@@ -85,7 +89,7 @@ public final class ComplexException extends java.lang.Exception {
             this.message = message;
             return this;
         }
-        
+    
         public String getMessage() { return message; }
     
             @ThriftField(value=2, name="listStrings", requiredness=Requiredness.NONE)
@@ -93,7 +97,7 @@ public final class ComplexException extends java.lang.Exception {
             this.listStrings = listStrings;
             return this;
         }
-        
+    
         public List<String> getListStrings() { return listStrings; }
     
             @ThriftField(value=3, name="errorEnum", requiredness=Requiredness.NONE)
@@ -101,7 +105,7 @@ public final class ComplexException extends java.lang.Exception {
             this.errorEnum = errorEnum;
             return this;
         }
-        
+    
         public test.fixtures.complex_struct.MyEnum getErrorEnum() { return errorEnum; }
     
             @ThriftField(value=4, name="unionError", requiredness=Requiredness.OPTIONAL)
@@ -109,7 +113,7 @@ public final class ComplexException extends java.lang.Exception {
             this.unionError = unionError;
             return this;
         }
-        
+    
         public test.fixtures.complex_struct.MyUnion getUnionError() { return unionError; }
     
             @ThriftField(value=5, name="structError", requiredness=Requiredness.NONE)
@@ -117,7 +121,7 @@ public final class ComplexException extends java.lang.Exception {
             this.structError = structError;
             return this;
         }
-        
+    
         public test.fixtures.complex_struct.MyStruct getStructError() { return structError; }
     
             @ThriftField(value=6, name="lsMap", requiredness=Requiredness.NONE)
@@ -125,7 +129,7 @@ public final class ComplexException extends java.lang.Exception {
             this.lsMap = lsMap;
             return this;
         }
-        
+    
         public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
     
         public Builder() { }
@@ -140,7 +144,7 @@ public final class ComplexException extends java.lang.Exception {
     
         @ThriftConstructor
         public ComplexException build() {
-            return new ComplexException (
+            ComplexException result = new ComplexException (
                 this.message,
                 this.listStrings,
                 this.errorEnum,
@@ -148,6 +152,8 @@ public final class ComplexException extends java.lang.Exception {
                 this.structError,
                 this.lsMap
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     

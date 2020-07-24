@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="struct2", builder=Struct2.Builder.class)
 public final class Struct2 {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public Struct2(
         @ThriftField(value=1, name="a", requiredness=Requiredness.NONE) final int a,
@@ -48,6 +50,8 @@ public final class Struct2 {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private int a = 0;
         private String b = null;
         private test.fixtures.constants.Struct1 c = null;
@@ -58,7 +62,7 @@ public final class Struct2 {
             this.a = a;
             return this;
         }
-        
+    
         public int getA() { return a; }
     
             @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
@@ -66,7 +70,7 @@ public final class Struct2 {
             this.b = b;
             return this;
         }
-        
+    
         public String getB() { return b; }
     
             @ThriftField(value=3, name="c", requiredness=Requiredness.NONE)
@@ -74,7 +78,7 @@ public final class Struct2 {
             this.c = c;
             return this;
         }
-        
+    
         public test.fixtures.constants.Struct1 getC() { return c; }
     
             @ThriftField(value=4, name="d", requiredness=Requiredness.NONE)
@@ -82,7 +86,7 @@ public final class Struct2 {
             this.d = d;
             return this;
         }
-        
+    
         public List<Integer> getD() { return d; }
     
         public Builder() { }
@@ -95,12 +99,14 @@ public final class Struct2 {
     
         @ThriftConstructor
         public Struct2 build() {
-            return new Struct2 (
+            Struct2 result = new Struct2 (
                 this.a,
                 this.b,
                 this.c,
                 this.d
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -132,18 +138,42 @@ public final class Struct2 {
     
     @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public int getA() { return a; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetA() {
+        return __isset_bit_vector.get(_A);
+    }
     
     
     @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
     public String getB() { return b; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetB() {
+        return this.b != null;
+    }
     
     
     @ThriftField(value=3, name="c", requiredness=Requiredness.NONE)
     public test.fixtures.constants.Struct1 getC() { return c; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetC() {
+        return this.c != null;
+    }
     
     
     @ThriftField(value=4, name="d", requiredness=Requiredness.NONE)
     public List<Integer> getD() { return d; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetD() {
+        return this.d != null;
+    }
     
     @Override
     public String toString() {

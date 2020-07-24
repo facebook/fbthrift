@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="StructWithRefAndAnnotCppNoexceptMoveCtor", builder=StructWithRefAndAnnotCppNoexceptMoveCtor.Builder.class)
 public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public StructWithRefAndAnnotCppNoexceptMoveCtor(
         @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE) final test.fixtures.refs.Empty defField
@@ -39,6 +41,8 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private test.fixtures.refs.Empty defField = null;
     
         @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
@@ -46,7 +50,7 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
             this.defField = defField;
             return this;
         }
-        
+    
         public test.fixtures.refs.Empty getDefField() { return defField; }
     
         public Builder() { }
@@ -56,9 +60,11 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
     
         @ThriftConstructor
         public StructWithRefAndAnnotCppNoexceptMoveCtor build() {
-            return new StructWithRefAndAnnotCppNoexceptMoveCtor (
+            StructWithRefAndAnnotCppNoexceptMoveCtor result = new StructWithRefAndAnnotCppNoexceptMoveCtor (
                 this.defField
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -75,6 +81,12 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
     
     @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
     public test.fixtures.refs.Empty getDefField() { return defField; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetDefField() {
+        return this.defField != null;
+    }
     
     @Override
     public String toString() {

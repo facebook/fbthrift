@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="B", builder=B.Builder.class)
 public final class B {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public B(
         @ThriftField(value=1, name="just_an_A", requiredness=Requiredness.NONE) final test.fixtures.shapes.A justAnA,
@@ -150,6 +152,8 @@ public final class B {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private test.fixtures.shapes.A justAnA = null;
         private Set<Integer> setOfI32 = null;
         private List<Integer> listOfI32 = null;
@@ -215,7 +219,7 @@ public final class B {
             this.justAnA = justAnA;
             return this;
         }
-        
+    
         public test.fixtures.shapes.A getJustAnA() { return justAnA; }
     
             @ThriftField(value=2, name="set_of_i32", requiredness=Requiredness.NONE)
@@ -223,7 +227,7 @@ public final class B {
             this.setOfI32 = setOfI32;
             return this;
         }
-        
+    
         public Set<Integer> getSetOfI32() { return setOfI32; }
     
             @ThriftField(value=3, name="list_of_i32", requiredness=Requiredness.NONE)
@@ -231,7 +235,7 @@ public final class B {
             this.listOfI32 = listOfI32;
             return this;
         }
-        
+    
         public List<Integer> getListOfI32() { return listOfI32; }
     
             @ThriftField(value=4, name="list_of_string", requiredness=Requiredness.NONE)
@@ -239,7 +243,7 @@ public final class B {
             this.listOfString = listOfString;
             return this;
         }
-        
+    
         public List<String> getListOfString() { return listOfString; }
     
             @ThriftField(value=5, name="map_of_string_to_i32", requiredness=Requiredness.NONE)
@@ -247,7 +251,7 @@ public final class B {
             this.mapOfStringToI32 = mapOfStringToI32;
             return this;
         }
-        
+    
         public Map<String, Integer> getMapOfStringToI32() { return mapOfStringToI32; }
     
             @ThriftField(value=6, name="map_of_string_to_A", requiredness=Requiredness.NONE)
@@ -255,7 +259,7 @@ public final class B {
             this.mapOfStringToA = mapOfStringToA;
             return this;
         }
-        
+    
         public Map<String, test.fixtures.shapes.A> getMapOfStringToA() { return mapOfStringToA; }
     
             @ThriftField(value=7, name="map_of_string_to_list_of_i32", requiredness=Requiredness.NONE)
@@ -263,7 +267,7 @@ public final class B {
             this.mapOfStringToListOfI32 = mapOfStringToListOfI32;
             return this;
         }
-        
+    
         public Map<String, List<Integer>> getMapOfStringToListOfI32() { return mapOfStringToListOfI32; }
     
             @ThriftField(value=8, name="map_of_string_to_list_of_A", requiredness=Requiredness.NONE)
@@ -271,7 +275,7 @@ public final class B {
             this.mapOfStringToListOfA = mapOfStringToListOfA;
             return this;
         }
-        
+    
         public Map<String, List<test.fixtures.shapes.A>> getMapOfStringToListOfA() { return mapOfStringToListOfA; }
     
             @ThriftField(value=9, name="map_of_string_to_set_of_i32", requiredness=Requiredness.NONE)
@@ -279,7 +283,7 @@ public final class B {
             this.mapOfStringToSetOfI32 = mapOfStringToSetOfI32;
             return this;
         }
-        
+    
         public Map<String, Set<Integer>> getMapOfStringToSetOfI32() { return mapOfStringToSetOfI32; }
     
             @ThriftField(value=10, name="map_of_string_to_map_of_string_to_i32", requiredness=Requiredness.NONE)
@@ -287,7 +291,7 @@ public final class B {
             this.mapOfStringToMapOfStringToI32 = mapOfStringToMapOfStringToI32;
             return this;
         }
-        
+    
         public Map<String, Map<String, Integer>> getMapOfStringToMapOfStringToI32() { return mapOfStringToMapOfStringToI32; }
     
             @ThriftField(value=11, name="map_of_string_to_map_of_string_to_A", requiredness=Requiredness.NONE)
@@ -295,7 +299,7 @@ public final class B {
             this.mapOfStringToMapOfStringToA = mapOfStringToMapOfStringToA;
             return this;
         }
-        
+    
         public Map<String, Map<String, test.fixtures.shapes.A>> getMapOfStringToMapOfStringToA() { return mapOfStringToMapOfStringToA; }
     
             @ThriftField(value=12, name="list_of_set_of_i32", requiredness=Requiredness.NONE)
@@ -303,7 +307,7 @@ public final class B {
             this.listOfSetOfI32 = listOfSetOfI32;
             return this;
         }
-        
+    
         public List<Set<Integer>> getListOfSetOfI32() { return listOfSetOfI32; }
     
             @ThriftField(value=13, name="list_of_map_of_string_to_list_of_A", requiredness=Requiredness.NONE)
@@ -311,7 +315,7 @@ public final class B {
             this.listOfMapOfStringToListOfA = listOfMapOfStringToListOfA;
             return this;
         }
-        
+    
         public List<Map<String, List<test.fixtures.shapes.A>>> getListOfMapOfStringToListOfA() { return listOfMapOfStringToListOfA; }
     
             @ThriftField(value=14, name="list_of_map_of_string_to_A", requiredness=Requiredness.NONE)
@@ -319,7 +323,7 @@ public final class B {
             this.listOfMapOfStringToA = listOfMapOfStringToA;
             return this;
         }
-        
+    
         public List<Map<String, test.fixtures.shapes.A>> getListOfMapOfStringToA() { return listOfMapOfStringToA; }
     
             @ThriftField(value=15, name="list_of_self", requiredness=Requiredness.NONE)
@@ -327,7 +331,7 @@ public final class B {
             this.listOfSelf = listOfSelf;
             return this;
         }
-        
+    
         public List<test.fixtures.shapes.B> getListOfSelf() { return listOfSelf; }
     
             @ThriftField(value=16, name="map_of_string_to_self", requiredness=Requiredness.NONE)
@@ -335,7 +339,7 @@ public final class B {
             this.mapOfStringToSelf = mapOfStringToSelf;
             return this;
         }
-        
+    
         public Map<String, test.fixtures.shapes.B> getMapOfStringToSelf() { return mapOfStringToSelf; }
     
             @ThriftField(value=17, name="just_an_enum", requiredness=Requiredness.NONE)
@@ -343,7 +347,7 @@ public final class B {
             this.justAnEnum = justAnEnum;
             return this;
         }
-        
+    
         public test.fixtures.shapes.Enum getJustAnEnum() { return justAnEnum; }
     
             @ThriftField(value=18, name="just_a_union", requiredness=Requiredness.NONE)
@@ -351,7 +355,7 @@ public final class B {
             this.justAUnion = justAUnion;
             return this;
         }
-        
+    
         public test.fixtures.shapes.Union getJustAUnion() { return justAUnion; }
     
             @ThriftField(value=51, name="optional_just_an_A", requiredness=Requiredness.OPTIONAL)
@@ -359,7 +363,7 @@ public final class B {
             this.optionalJustAnA = optionalJustAnA;
             return this;
         }
-        
+    
         public test.fixtures.shapes.A getOptionalJustAnA() { return optionalJustAnA; }
     
             @ThriftField(value=52, name="optional_set_of_i32", requiredness=Requiredness.OPTIONAL)
@@ -367,7 +371,7 @@ public final class B {
             this.optionalSetOfI32 = optionalSetOfI32;
             return this;
         }
-        
+    
         public Set<Integer> getOptionalSetOfI32() { return optionalSetOfI32; }
     
             @ThriftField(value=53, name="optional_list_of_i32", requiredness=Requiredness.OPTIONAL)
@@ -375,7 +379,7 @@ public final class B {
             this.optionalListOfI32 = optionalListOfI32;
             return this;
         }
-        
+    
         public List<Integer> getOptionalListOfI32() { return optionalListOfI32; }
     
             @ThriftField(value=54, name="optional_list_of_string", requiredness=Requiredness.OPTIONAL)
@@ -383,7 +387,7 @@ public final class B {
             this.optionalListOfString = optionalListOfString;
             return this;
         }
-        
+    
         public List<String> getOptionalListOfString() { return optionalListOfString; }
     
             @ThriftField(value=55, name="optional_map_of_string_to_i32", requiredness=Requiredness.OPTIONAL)
@@ -391,7 +395,7 @@ public final class B {
             this.optionalMapOfStringToI32 = optionalMapOfStringToI32;
             return this;
         }
-        
+    
         public Map<String, Integer> getOptionalMapOfStringToI32() { return optionalMapOfStringToI32; }
     
             @ThriftField(value=56, name="optional_map_of_string_to_A", requiredness=Requiredness.OPTIONAL)
@@ -399,7 +403,7 @@ public final class B {
             this.optionalMapOfStringToA = optionalMapOfStringToA;
             return this;
         }
-        
+    
         public Map<String, test.fixtures.shapes.A> getOptionalMapOfStringToA() { return optionalMapOfStringToA; }
     
             @ThriftField(value=57, name="optional_map_of_string_to_list_of_i32", requiredness=Requiredness.OPTIONAL)
@@ -407,7 +411,7 @@ public final class B {
             this.optionalMapOfStringToListOfI32 = optionalMapOfStringToListOfI32;
             return this;
         }
-        
+    
         public Map<String, List<Integer>> getOptionalMapOfStringToListOfI32() { return optionalMapOfStringToListOfI32; }
     
             @ThriftField(value=58, name="optional_map_of_string_to_list_of_A", requiredness=Requiredness.OPTIONAL)
@@ -415,7 +419,7 @@ public final class B {
             this.optionalMapOfStringToListOfA = optionalMapOfStringToListOfA;
             return this;
         }
-        
+    
         public Map<String, List<test.fixtures.shapes.A>> getOptionalMapOfStringToListOfA() { return optionalMapOfStringToListOfA; }
     
             @ThriftField(value=59, name="optional_map_of_string_to_set_of_i32", requiredness=Requiredness.OPTIONAL)
@@ -423,7 +427,7 @@ public final class B {
             this.optionalMapOfStringToSetOfI32 = optionalMapOfStringToSetOfI32;
             return this;
         }
-        
+    
         public Map<String, Set<Integer>> getOptionalMapOfStringToSetOfI32() { return optionalMapOfStringToSetOfI32; }
     
             @ThriftField(value=60, name="optional_enum", requiredness=Requiredness.OPTIONAL)
@@ -431,7 +435,7 @@ public final class B {
             this.optionalEnum = optionalEnum;
             return this;
         }
-        
+    
         public test.fixtures.shapes.Enum getOptionalEnum() { return optionalEnum; }
     
             @ThriftField(value=70, name="required_enum_with_default", requiredness=Requiredness.REQUIRED)
@@ -439,7 +443,7 @@ public final class B {
             this.requiredEnumWithDefault = requiredEnumWithDefault;
             return this;
         }
-        
+    
         public test.fixtures.shapes.Enum getRequiredEnumWithDefault() { return requiredEnumWithDefault; }
     
             @ThriftField(value=80, name="string_with_default_value", requiredness=Requiredness.NONE)
@@ -447,7 +451,7 @@ public final class B {
             this.stringWithDefaultValue = stringWithDefaultValue;
             return this;
         }
-        
+    
         public String getStringWithDefaultValue() { return stringWithDefaultValue; }
     
             @ThriftField(value=81, name="i32_with_default_value", requiredness=Requiredness.NONE)
@@ -455,7 +459,7 @@ public final class B {
             this.i32WithDefaultValue = i32WithDefaultValue;
             return this;
         }
-        
+    
         public int getI32WithDefaultValue() { return i32WithDefaultValue; }
     
             @ThriftField(value=82, name="double_with_default_value", requiredness=Requiredness.NONE)
@@ -463,7 +467,7 @@ public final class B {
             this.doubleWithDefaultValue = doubleWithDefaultValue;
             return this;
         }
-        
+    
         public double getDoubleWithDefaultValue() { return doubleWithDefaultValue; }
     
             @ThriftField(value=83, name="enum_with_default_value", requiredness=Requiredness.NONE)
@@ -471,7 +475,7 @@ public final class B {
             this.enumWithDefaultValue = enumWithDefaultValue;
             return this;
         }
-        
+    
         public test.fixtures.shapes.Enum getEnumWithDefaultValue() { return enumWithDefaultValue; }
     
             @ThriftField(value=84, name="A_with_default_value", requiredness=Requiredness.NONE)
@@ -479,7 +483,7 @@ public final class B {
             this.aWithDefaultValue = aWithDefaultValue;
             return this;
         }
-        
+    
         public test.fixtures.shapes.A getAWithDefaultValue() { return aWithDefaultValue; }
     
             @ThriftField(value=85, name="set_of_i32_with_default_value", requiredness=Requiredness.NONE)
@@ -487,7 +491,7 @@ public final class B {
             this.setOfI32WithDefaultValue = setOfI32WithDefaultValue;
             return this;
         }
-        
+    
         public Set<Integer> getSetOfI32WithDefaultValue() { return setOfI32WithDefaultValue; }
     
             @ThriftField(value=86, name="map_of_i32_to_string_with_default_value", requiredness=Requiredness.NONE)
@@ -495,7 +499,7 @@ public final class B {
             this.mapOfI32ToStringWithDefaultValue = mapOfI32ToStringWithDefaultValue;
             return this;
         }
-        
+    
         public Map<Integer, String> getMapOfI32ToStringWithDefaultValue() { return mapOfI32ToStringWithDefaultValue; }
     
             @ThriftField(value=87, name="list_of_string_with_default_value", requiredness=Requiredness.NONE)
@@ -503,7 +507,7 @@ public final class B {
             this.listOfStringWithDefaultValue = listOfStringWithDefaultValue;
             return this;
         }
-        
+    
         public List<String> getListOfStringWithDefaultValue() { return listOfStringWithDefaultValue; }
     
             @ThriftField(value=88, name="map_of_string_to_list_of_i32_with_default_value", requiredness=Requiredness.NONE)
@@ -511,7 +515,7 @@ public final class B {
             this.mapOfStringToListOfI32WithDefaultValue = mapOfStringToListOfI32WithDefaultValue;
             return this;
         }
-        
+    
         public Map<String, List<Integer>> getMapOfStringToListOfI32WithDefaultValue() { return mapOfStringToListOfI32WithDefaultValue; }
     
         public Builder() { }
@@ -558,7 +562,7 @@ public final class B {
     
         @ThriftConstructor
         public B build() {
-            return new B (
+            B result = new B (
                 this.justAnA,
                 this.setOfI32,
                 this.listOfI32,
@@ -598,6 +602,8 @@ public final class B {
                 this.listOfStringWithDefaultValue,
                 this.mapOfStringToListOfI32WithDefaultValue
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -799,154 +805,382 @@ public final class B {
     
     @ThriftField(value=1, name="just_an_A", requiredness=Requiredness.NONE)
     public test.fixtures.shapes.A getJustAnA() { return justAnA; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetJustAnA() {
+        return this.justAnA != null;
+    }
     
     
     @ThriftField(value=2, name="set_of_i32", requiredness=Requiredness.NONE)
     public Set<Integer> getSetOfI32() { return setOfI32; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetSetOfI32() {
+        return this.setOfI32 != null;
+    }
     
     
     @ThriftField(value=3, name="list_of_i32", requiredness=Requiredness.NONE)
     public List<Integer> getListOfI32() { return listOfI32; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetListOfI32() {
+        return this.listOfI32 != null;
+    }
     
     
     @ThriftField(value=4, name="list_of_string", requiredness=Requiredness.NONE)
     public List<String> getListOfString() { return listOfString; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetListOfString() {
+        return this.listOfString != null;
+    }
     
     
     @ThriftField(value=5, name="map_of_string_to_i32", requiredness=Requiredness.NONE)
     public Map<String, Integer> getMapOfStringToI32() { return mapOfStringToI32; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapOfStringToI32() {
+        return this.mapOfStringToI32 != null;
+    }
     
     
     @ThriftField(value=6, name="map_of_string_to_A", requiredness=Requiredness.NONE)
     public Map<String, test.fixtures.shapes.A> getMapOfStringToA() { return mapOfStringToA; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapOfStringToA() {
+        return this.mapOfStringToA != null;
+    }
     
     
     @ThriftField(value=7, name="map_of_string_to_list_of_i32", requiredness=Requiredness.NONE)
     public Map<String, List<Integer>> getMapOfStringToListOfI32() { return mapOfStringToListOfI32; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapOfStringToListOfI32() {
+        return this.mapOfStringToListOfI32 != null;
+    }
     
     
     @ThriftField(value=8, name="map_of_string_to_list_of_A", requiredness=Requiredness.NONE)
     public Map<String, List<test.fixtures.shapes.A>> getMapOfStringToListOfA() { return mapOfStringToListOfA; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapOfStringToListOfA() {
+        return this.mapOfStringToListOfA != null;
+    }
     
     
     @ThriftField(value=9, name="map_of_string_to_set_of_i32", requiredness=Requiredness.NONE)
     public Map<String, Set<Integer>> getMapOfStringToSetOfI32() { return mapOfStringToSetOfI32; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapOfStringToSetOfI32() {
+        return this.mapOfStringToSetOfI32 != null;
+    }
     
     
     @ThriftField(value=10, name="map_of_string_to_map_of_string_to_i32", requiredness=Requiredness.NONE)
     public Map<String, Map<String, Integer>> getMapOfStringToMapOfStringToI32() { return mapOfStringToMapOfStringToI32; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapOfStringToMapOfStringToI32() {
+        return this.mapOfStringToMapOfStringToI32 != null;
+    }
     
     
     @ThriftField(value=11, name="map_of_string_to_map_of_string_to_A", requiredness=Requiredness.NONE)
     public Map<String, Map<String, test.fixtures.shapes.A>> getMapOfStringToMapOfStringToA() { return mapOfStringToMapOfStringToA; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapOfStringToMapOfStringToA() {
+        return this.mapOfStringToMapOfStringToA != null;
+    }
     
     
     @ThriftField(value=12, name="list_of_set_of_i32", requiredness=Requiredness.NONE)
     public List<Set<Integer>> getListOfSetOfI32() { return listOfSetOfI32; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetListOfSetOfI32() {
+        return this.listOfSetOfI32 != null;
+    }
     
     
     @ThriftField(value=13, name="list_of_map_of_string_to_list_of_A", requiredness=Requiredness.NONE)
     public List<Map<String, List<test.fixtures.shapes.A>>> getListOfMapOfStringToListOfA() { return listOfMapOfStringToListOfA; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetListOfMapOfStringToListOfA() {
+        return this.listOfMapOfStringToListOfA != null;
+    }
     
     
     @ThriftField(value=14, name="list_of_map_of_string_to_A", requiredness=Requiredness.NONE)
     public List<Map<String, test.fixtures.shapes.A>> getListOfMapOfStringToA() { return listOfMapOfStringToA; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetListOfMapOfStringToA() {
+        return this.listOfMapOfStringToA != null;
+    }
     
     
     @ThriftField(value=15, name="list_of_self", requiredness=Requiredness.NONE)
     public List<test.fixtures.shapes.B> getListOfSelf() { return listOfSelf; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetListOfSelf() {
+        return this.listOfSelf != null;
+    }
     
     
     @ThriftField(value=16, name="map_of_string_to_self", requiredness=Requiredness.NONE)
     public Map<String, test.fixtures.shapes.B> getMapOfStringToSelf() { return mapOfStringToSelf; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapOfStringToSelf() {
+        return this.mapOfStringToSelf != null;
+    }
     
     
     @ThriftField(value=17, name="just_an_enum", requiredness=Requiredness.NONE)
     public test.fixtures.shapes.Enum getJustAnEnum() { return justAnEnum; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetJustAnEnum() {
+        return this.justAnEnum != null;
+    }
     
     
     @ThriftField(value=18, name="just_a_union", requiredness=Requiredness.NONE)
     public test.fixtures.shapes.Union getJustAUnion() { return justAUnion; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetJustAUnion() {
+        return this.justAUnion != null;
+    }
     
     
     @ThriftField(value=51, name="optional_just_an_A", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.shapes.A getOptionalJustAnA() { return optionalJustAnA; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetOptionalJustAnA() {
+        return this.optionalJustAnA != null;
+    }
     
     
     @ThriftField(value=52, name="optional_set_of_i32", requiredness=Requiredness.OPTIONAL)
     public Set<Integer> getOptionalSetOfI32() { return optionalSetOfI32; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetOptionalSetOfI32() {
+        return this.optionalSetOfI32 != null;
+    }
     
     
     @ThriftField(value=53, name="optional_list_of_i32", requiredness=Requiredness.OPTIONAL)
     public List<Integer> getOptionalListOfI32() { return optionalListOfI32; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetOptionalListOfI32() {
+        return this.optionalListOfI32 != null;
+    }
     
     
     @ThriftField(value=54, name="optional_list_of_string", requiredness=Requiredness.OPTIONAL)
     public List<String> getOptionalListOfString() { return optionalListOfString; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetOptionalListOfString() {
+        return this.optionalListOfString != null;
+    }
     
     
     @ThriftField(value=55, name="optional_map_of_string_to_i32", requiredness=Requiredness.OPTIONAL)
     public Map<String, Integer> getOptionalMapOfStringToI32() { return optionalMapOfStringToI32; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetOptionalMapOfStringToI32() {
+        return this.optionalMapOfStringToI32 != null;
+    }
     
     
     @ThriftField(value=56, name="optional_map_of_string_to_A", requiredness=Requiredness.OPTIONAL)
     public Map<String, test.fixtures.shapes.A> getOptionalMapOfStringToA() { return optionalMapOfStringToA; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetOptionalMapOfStringToA() {
+        return this.optionalMapOfStringToA != null;
+    }
     
     
     @ThriftField(value=57, name="optional_map_of_string_to_list_of_i32", requiredness=Requiredness.OPTIONAL)
     public Map<String, List<Integer>> getOptionalMapOfStringToListOfI32() { return optionalMapOfStringToListOfI32; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetOptionalMapOfStringToListOfI32() {
+        return this.optionalMapOfStringToListOfI32 != null;
+    }
     
     
     @ThriftField(value=58, name="optional_map_of_string_to_list_of_A", requiredness=Requiredness.OPTIONAL)
     public Map<String, List<test.fixtures.shapes.A>> getOptionalMapOfStringToListOfA() { return optionalMapOfStringToListOfA; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetOptionalMapOfStringToListOfA() {
+        return this.optionalMapOfStringToListOfA != null;
+    }
     
     
     @ThriftField(value=59, name="optional_map_of_string_to_set_of_i32", requiredness=Requiredness.OPTIONAL)
     public Map<String, Set<Integer>> getOptionalMapOfStringToSetOfI32() { return optionalMapOfStringToSetOfI32; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetOptionalMapOfStringToSetOfI32() {
+        return this.optionalMapOfStringToSetOfI32 != null;
+    }
     
     
     @ThriftField(value=60, name="optional_enum", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.shapes.Enum getOptionalEnum() { return optionalEnum; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetOptionalEnum() {
+        return this.optionalEnum != null;
+    }
     
     
     @ThriftField(value=70, name="required_enum_with_default", requiredness=Requiredness.REQUIRED)
     public test.fixtures.shapes.Enum getRequiredEnumWithDefault() { return requiredEnumWithDefault; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetRequiredEnumWithDefault() {
+        return this.requiredEnumWithDefault != null;
+    }
     
     
     @ThriftField(value=80, name="string_with_default_value", requiredness=Requiredness.NONE)
     public String getStringWithDefaultValue() { return stringWithDefaultValue; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetStringWithDefaultValue() {
+        return this.stringWithDefaultValue != null;
+    }
     
     
     @ThriftField(value=81, name="i32_with_default_value", requiredness=Requiredness.NONE)
     public int getI32WithDefaultValue() { return i32WithDefaultValue; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetI32WithDefaultValue() {
+        return __isset_bit_vector.get(_I32_WITH_DEFAULT_VALUE);
+    }
     
     
     @ThriftField(value=82, name="double_with_default_value", requiredness=Requiredness.NONE)
     public double getDoubleWithDefaultValue() { return doubleWithDefaultValue; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetDoubleWithDefaultValue() {
+        return __isset_bit_vector.get(_DOUBLE_WITH_DEFAULT_VALUE);
+    }
     
     
     @ThriftField(value=83, name="enum_with_default_value", requiredness=Requiredness.NONE)
     public test.fixtures.shapes.Enum getEnumWithDefaultValue() { return enumWithDefaultValue; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetEnumWithDefaultValue() {
+        return this.enumWithDefaultValue != null;
+    }
     
     
     @ThriftField(value=84, name="A_with_default_value", requiredness=Requiredness.NONE)
     public test.fixtures.shapes.A getAWithDefaultValue() { return aWithDefaultValue; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetAWithDefaultValue() {
+        return this.aWithDefaultValue != null;
+    }
     
     
     @ThriftField(value=85, name="set_of_i32_with_default_value", requiredness=Requiredness.NONE)
     public Set<Integer> getSetOfI32WithDefaultValue() { return setOfI32WithDefaultValue; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetSetOfI32WithDefaultValue() {
+        return this.setOfI32WithDefaultValue != null;
+    }
     
     
     @ThriftField(value=86, name="map_of_i32_to_string_with_default_value", requiredness=Requiredness.NONE)
     public Map<Integer, String> getMapOfI32ToStringWithDefaultValue() { return mapOfI32ToStringWithDefaultValue; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapOfI32ToStringWithDefaultValue() {
+        return this.mapOfI32ToStringWithDefaultValue != null;
+    }
     
     
     @ThriftField(value=87, name="list_of_string_with_default_value", requiredness=Requiredness.NONE)
     public List<String> getListOfStringWithDefaultValue() { return listOfStringWithDefaultValue; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetListOfStringWithDefaultValue() {
+        return this.listOfStringWithDefaultValue != null;
+    }
     
     
     @ThriftField(value=88, name="map_of_string_to_list_of_i32_with_default_value", requiredness=Requiredness.NONE)
     public Map<String, List<Integer>> getMapOfStringToListOfI32WithDefaultValue() { return mapOfStringToListOfI32WithDefaultValue; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMapOfStringToListOfI32WithDefaultValue() {
+        return this.mapOfStringToListOfI32WithDefaultValue != null;
+    }
     
     @Override
     public String toString() {

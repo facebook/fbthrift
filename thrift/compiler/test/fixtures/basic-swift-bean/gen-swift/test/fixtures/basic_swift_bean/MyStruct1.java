@@ -26,6 +26,8 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyStruct1", builder=MyStruct1.Builder.class)
 public final class MyStruct1 {
+    private BitSet __isset_bit_vector = new BitSet();
+    
     @ThriftConstructor
     public MyStruct1(
         @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
@@ -48,6 +50,8 @@ public final class MyStruct1 {
     }
     
     public static class Builder {
+        private final BitSet __optional_isset = new BitSet();
+    
         private long myIntField = 0L;
         private String myStringField = null;
         private test.fixtures.basic_swift_bean.MyDataItem myDataField = null;
@@ -58,7 +62,7 @@ public final class MyStruct1 {
             this.myIntField = myIntField;
             return this;
         }
-        
+    
         public long getMyIntField() { return myIntField; }
     
             @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
@@ -66,7 +70,7 @@ public final class MyStruct1 {
             this.myStringField = myStringField;
             return this;
         }
-        
+    
         public String getMyStringField() { return myStringField; }
     
             @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
@@ -74,7 +78,7 @@ public final class MyStruct1 {
             this.myDataField = myDataField;
             return this;
         }
-        
+    
         public test.fixtures.basic_swift_bean.MyDataItem getMyDataField() { return myDataField; }
     
             @ThriftField(value=4, name="major", requiredness=Requiredness.NONE)
@@ -82,7 +86,7 @@ public final class MyStruct1 {
             this.major = major;
             return this;
         }
-        
+    
         public long getMajor() { return major; }
     
         public Builder() { }
@@ -95,12 +99,14 @@ public final class MyStruct1 {
     
         @ThriftConstructor
         public MyStruct1 build() {
-            return new MyStruct1 (
+            MyStruct1 result = new MyStruct1 (
                 this.myIntField,
                 this.myStringField,
                 this.myDataField,
                 this.major
             );
+            result.__isset_bit_vector.or(__optional_isset);
+            return result;
         }
     }
     
@@ -132,18 +138,42 @@ public final class MyStruct1 {
     
     @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyIntField() {
+        return __isset_bit_vector.get(_MYINTFIELD);
+    }
     
     
     @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyStringField() {
+        return this.myStringField != null;
+    }
     
     
     @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
     public test.fixtures.basic_swift_bean.MyDataItem getMyDataField() { return myDataField; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMyDataField() {
+        return this.myDataField != null;
+    }
     
     
     @ThriftField(value=4, name="major", requiredness=Requiredness.NONE)
     public long getMajor() { return major; }
+        
+    /** don't use this method for new code, it's here to make migrating to swift easier */
+    @Deprecated
+    public boolean fieldIsSetMajor() {
+        return __isset_bit_vector.get(_MAJOR);
+    }
     
     @Override
     public String toString() {
