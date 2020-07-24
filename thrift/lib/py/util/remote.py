@@ -49,7 +49,6 @@ from six import string_types
 from thrift import Thrift
 from thrift.transport import TTransport, TSocket, TSSLSocket, THttpClient
 from thrift.transport.THeaderTransport import THeaderTransport
-from thrift.transport.TFuzzyHeaderTransport import TFuzzyHeaderTransport
 from thrift.protocol import TBinaryProtocol, TCompactProtocol, \
     TJSONProtocol, THeaderProtocol, TSimpleJSONProtocol
 
@@ -506,26 +505,21 @@ class RemoteTransportClient(RemoteClient):
 
         elif socket is not None:
             # If json, compact, framed, and unframed are not specified,
-            # THeaderProtocol is the default. Create a protocol using either
-            # fuzzy or non-fuzzy transport depending on if options.fuzz is set.
-            if options.fuzz is not None:
-                transport = TFuzzyHeaderTransport(
-                    socket, fuzz_fields=options.fuzz, verbose=True)
-            else:
-                transport = THeaderTransport(socket)
-                if options.headers is not None:
-                    try:
-                        parsed_headers = eval(options.headers)
-                    except Exception:
-                        self._exit(
-                            error_message='Request headers (--headers) argument'
-                                          ' failed eval')
-                    if not isinstance(parsed_headers, dict):
-                        self._exit(
-                            error_message='Request headers (--headers) argument'
-                                          ' must evaluate to a dict')
-                    for header_name, header_value in parsed_headers.items():
-                        transport.set_header(header_name, header_value)
+            # THeaderProtocol is the default.
+            transport = THeaderTransport(socket)
+            if options.headers is not None:
+                try:
+                    parsed_headers = eval(options.headers)
+                except Exception:
+                    self._exit(
+                        error_message='Request headers (--headers) argument'
+                                      ' failed eval')
+                if not isinstance(parsed_headers, dict):
+                    self._exit(
+                        error_message='Request headers (--headers) argument'
+                                      ' must evaluate to a dict')
+                for header_name, header_value in parsed_headers.items():
+                    transport.set_header(header_name, header_value)
             protocol = THeaderProtocol.THeaderProtocol(transport)
         else:
             self._exit(error_message=('No valid protocol '
@@ -568,28 +562,7 @@ class RemoteHostClient(RemoteTransportClient):
             'metavar': 'HOST[:PORT]',
             'help': 'The host and port to connect to'
         }
-    ), (
-        ('-F', '--fuzz'),
-        {
-            'type': str,
-            'nargs': '*',
-            'default': None,
-            'help': ('Use TFuzzyHeaderTransport to send a fuzzed message for '
-                     'testing thrift transport. Optionally include a list of '
-                     'message field names to fuzz after this flag. Fields: ' +
-                     ', '.join(TFuzzyHeaderTransport.fuzzable_fields))
-        }
     )]
-
-    def _validate_options(self, options):
-        super(RemoteHostClient, self)._validate_options(options)
-        if (options.fuzz is not None and
-            any([options.framed, options.unframed,
-                 options.json, options.compact])):
-            self._exit(error_message=('Transport fuzzing only supported for '
-                                      'THeaderTransport (no framed, unframed, '
-                                      'json, or compact.)'),
-                       status=os.EX_USAGE)
 
     def _get_client(self, options):
         host, port = self._parse_host_port(options.host, self.default_port)
