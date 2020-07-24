@@ -357,7 +357,7 @@ class RocketClient : public folly::DelayedDestruction,
   };
   struct StreamMapHasher : private folly::f14::DefaultHasher<StreamId> {
     template <typename K>
-    auto operator()(const K& key) const {
+    size_t operator()(const K& key) const {
       return folly::f14::DefaultHasher<StreamId>::operator()(
           streamIdResolver_(key));
     }
