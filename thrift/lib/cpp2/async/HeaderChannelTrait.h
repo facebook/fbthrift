@@ -76,7 +76,6 @@ class HeaderChannelTrait {
   }
 
  private:
-  uint32_t minCompressBytes_{0};
   uint16_t flags_;
 
   CLIENT_TYPE clientType_{THRIFT_HEADER_CLIENT_TYPE};
