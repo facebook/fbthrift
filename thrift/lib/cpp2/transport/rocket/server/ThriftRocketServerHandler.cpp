@@ -70,9 +70,16 @@ ThriftRocketServerHandler::ThriftRocketServerHandler(
           nullptr, /* duplexChannel */
           nullptr, /* x509PeerCert */
           worker_->getServer()->getClientIdentityHook()),
-      setupFrameHandlers_(handlers) {}
+      setupFrameHandlers_(handlers) {
+  if (auto* handler = worker_->getServer()->getEventHandlerUnsafe()) {
+    handler->newConnection(&connContext_);
+  }
+}
 
 ThriftRocketServerHandler::~ThriftRocketServerHandler() {
+  if (auto* handler = worker_->getServer()->getEventHandlerUnsafe()) {
+    handler->connectionDestroyed(&connContext_);
+  }
   // Ensure each connAccepted() call has a matching connClosed()
   if (auto* observer = worker_->getServer()->getObserver()) {
     observer->connClosed();
@@ -292,6 +299,11 @@ void ThriftRocketServerHandler::handleRequestCommon(
   auto reqCtx = baseReqCtx
       ? folly::RequestContext::copyAsRoot(*baseReqCtx, rootid)
       : std::make_shared<folly::RequestContext>(rootid);
+
+  if (auto* handler = worker_->getServer()->getEventHandlerUnsafe()) {
+    handler->connectionNewRequest(&connContext_, reqCtx.get());
+  }
+
   folly::RequestContextScopeGuard rctx(reqCtx);
 
   auto requestPayloadTry = unpack<RequestPayload>(std::move(payload));
