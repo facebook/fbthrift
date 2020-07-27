@@ -300,10 +300,6 @@ void ThriftRocketServerHandler::handleRequestCommon(
       ? folly::RequestContext::copyAsRoot(*baseReqCtx, rootid)
       : std::make_shared<folly::RequestContext>(rootid);
 
-  if (auto* handler = worker_->getServer()->getEventHandlerUnsafe()) {
-    handler->connectionNewRequest(&connContext_, reqCtx.get());
-  }
-
   folly::RequestContextScopeGuard rctx(reqCtx);
 
   auto requestPayloadTry = unpack<RequestPayload>(std::move(payload));

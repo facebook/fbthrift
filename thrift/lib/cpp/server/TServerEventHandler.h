@@ -73,22 +73,6 @@ class TServerEventHandler {
   }
 
   /**
-   * Called when a connection started processing a new request.
-   *
-   * @param connCtx A pointer to the connection context. The context will remain
-   *                valid until the corresponding connectionDestroyed() call.
-   * @param reqCtx  A pointer to folly::RequestContext specific to this request.
-   *                The context will remain valid until everything started by
-   *                this request stopped running.
-   */
-  virtual void connectionNewRequest(
-      TConnectionContext* connCtx,
-      folly::RequestContext* reqCtx) {
-    (void)connCtx;
-    (void)reqCtx;
-  }
-
-  /**
    * Called when a client has finished request-handling to delete server
    * context.
    *

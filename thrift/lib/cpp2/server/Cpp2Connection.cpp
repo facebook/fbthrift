@@ -234,10 +234,7 @@ void Cpp2Connection::requestReceived(
   auto reqCtx = baseReqCtx
       ? folly::RequestContext::copyAsRoot(*baseReqCtx, rootid)
       : std::make_shared<folly::RequestContext>(rootid);
-  auto handler = worker_->getServer()->getEventHandlerUnsafe();
-  if (handler) {
-    handler->connectionNewRequest(&context_, reqCtx.get());
-  }
+
   folly::RequestContextScopeGuard rctx(reqCtx);
 
   auto server = worker_->getServer();
