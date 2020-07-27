@@ -250,7 +250,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
             name="opt_intValue",
             type=int,
             kind=__NumberType.I64,
-            qualifier=__Qualifier.OPTIONAL,
+            qualifier=__Qualifier.UNQUALIFIED,
             default=None,
             annotations={
             },
@@ -272,7 +272,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
             name="opt_stringValue",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
-            qualifier=__Qualifier.OPTIONAL,
+            qualifier=__Qualifier.UNQUALIFIED,
             default=None,
             annotations={
             },
@@ -360,7 +360,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
             name="opt_union_map",
             type=_module_types.Map__string_i32,
             kind=__NumberType.NOT_A_NUMBER,
-            qualifier=__Qualifier.OPTIONAL,
+            qualifier=__Qualifier.UNQUALIFIED,
             default=None,
             annotations={
             },
@@ -426,7 +426,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
             name="opt_a_union",
             type=_module_types.SimpleUnion,
             kind=__NumberType.NOT_A_NUMBER,
-            qualifier=__Qualifier.OPTIONAL,
+            qualifier=__Qualifier.UNQUALIFIED,
             default=None,
             annotations={
             },
@@ -481,7 +481,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
             name="MyBinaryField2",
             type=bytes,
             kind=__NumberType.NOT_A_NUMBER,
-            qualifier=__Qualifier.OPTIONAL,
+            qualifier=__Qualifier.UNQUALIFIED,
             default=None,
             annotations={
             },

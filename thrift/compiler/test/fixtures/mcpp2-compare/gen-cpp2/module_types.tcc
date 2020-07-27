@@ -1385,9 +1385,11 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->get_intValue());
       break;
     }
-    if (this->opt_intValue_ref().has_value()) {
+    case ComplexUnion::Type::opt_intValue:
+    {
       xfer += prot_->serializedFieldSize("opt_intValue", apache::thrift::protocol::T_I64, 201);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->get_opt_intValue());
+      break;
     }
     case ComplexUnion::Type::stringValue:
     {
@@ -1395,9 +1397,11 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
       xfer += prot_->serializedSizeString(this->get_stringValue());
       break;
     }
-    if (this->opt_stringValue_ref().has_value()) {
+    case ComplexUnion::Type::opt_stringValue:
+    {
       xfer += prot_->serializedFieldSize("opt_stringValue", apache::thrift::protocol::T_STRING, 203);
       xfer += prot_->serializedSizeString(this->get_opt_stringValue());
+      break;
     }
     case ComplexUnion::Type::intValue2:
     {
@@ -1441,9 +1445,11 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::serializedSize<false>(*prot_, this->get_union_map());
       break;
     }
-    if (this->opt_union_map_ref().has_value()) {
+    case ComplexUnion::Type::opt_union_map:
+    {
       xfer += prot_->serializedFieldSize("opt_union_map", apache::thrift::protocol::T_MAP, 211);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::serializedSize<false>(*prot_, this->get_opt_union_map());
+      break;
     }
     case ComplexUnion::Type::enum_field:
     {
@@ -1475,9 +1481,11 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::serializedSize(prot_, &this->get_a_union());
       break;
     }
-    if (this->opt_a_union_ref().has_value()) {
+    case ComplexUnion::Type::opt_a_union:
+    {
       xfer += prot_->serializedFieldSize("opt_a_union", apache::thrift::protocol::T_STRUCT, 216);
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::serializedSize(prot_, &this->get_opt_a_union());
+      break;
     }
     case ComplexUnion::Type::a_union_list:
     {
@@ -1503,9 +1511,11 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
       xfer += prot_->serializedSizeBinary(this->get_MyBinaryField());
       break;
     }
-    if (this->MyBinaryField2_ref().has_value()) {
+    case ComplexUnion::Type::MyBinaryField2:
+    {
       xfer += prot_->serializedFieldSize("MyBinaryField2", apache::thrift::protocol::T_STRING, 21);
       xfer += prot_->serializedSizeBinary(this->get_MyBinaryField2());
+      break;
     }
     case ComplexUnion::Type::MyBinaryListField4:
     {
@@ -1560,9 +1570,11 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->get_intValue());
       break;
     }
-    if (this->opt_intValue_ref().has_value()) {
+    case ComplexUnion::Type::opt_intValue:
+    {
       xfer += prot_->serializedFieldSize("opt_intValue", apache::thrift::protocol::T_I64, 201);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->get_opt_intValue());
+      break;
     }
     case ComplexUnion::Type::stringValue:
     {
@@ -1570,9 +1582,11 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
       xfer += prot_->serializedSizeString(this->get_stringValue());
       break;
     }
-    if (this->opt_stringValue_ref().has_value()) {
+    case ComplexUnion::Type::opt_stringValue:
+    {
       xfer += prot_->serializedFieldSize("opt_stringValue", apache::thrift::protocol::T_STRING, 203);
       xfer += prot_->serializedSizeString(this->get_opt_stringValue());
+      break;
     }
     case ComplexUnion::Type::intValue2:
     {
@@ -1616,9 +1630,11 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::serializedSize<false>(*prot_, this->get_union_map());
       break;
     }
-    if (this->opt_union_map_ref().has_value()) {
+    case ComplexUnion::Type::opt_union_map:
+    {
       xfer += prot_->serializedFieldSize("opt_union_map", apache::thrift::protocol::T_MAP, 211);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::serializedSize<false>(*prot_, this->get_opt_union_map());
+      break;
     }
     case ComplexUnion::Type::enum_field:
     {
@@ -1650,9 +1666,11 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::serializedSizeZC(prot_, &this->get_a_union());
       break;
     }
-    if (this->opt_a_union_ref().has_value()) {
+    case ComplexUnion::Type::opt_a_union:
+    {
       xfer += prot_->serializedFieldSize("opt_a_union", apache::thrift::protocol::T_STRUCT, 216);
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::serializedSizeZC(prot_, &this->get_opt_a_union());
+      break;
     }
     case ComplexUnion::Type::a_union_list:
     {
@@ -1678,9 +1696,11 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
       xfer += prot_->serializedSizeZCBinary(this->get_MyBinaryField());
       break;
     }
-    if (this->MyBinaryField2_ref().has_value()) {
+    case ComplexUnion::Type::MyBinaryField2:
+    {
       xfer += prot_->serializedFieldSize("MyBinaryField2", apache::thrift::protocol::T_STRING, 21);
       xfer += prot_->serializedSizeZCBinary(this->get_MyBinaryField2());
+      break;
     }
     case ComplexUnion::Type::MyBinaryListField4:
     {
@@ -1736,10 +1756,12 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
       xfer += prot_->writeFieldEnd();
       break;
     }
-    if (this->opt_intValue_ref().has_value()) {
+    case ComplexUnion::Type::opt_intValue:
+    {
       xfer += prot_->writeFieldBegin("opt_intValue", apache::thrift::protocol::T_I64, 201);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->get_opt_intValue());
       xfer += prot_->writeFieldEnd();
+      break;
     }
     case ComplexUnion::Type::stringValue:
     {
@@ -1748,10 +1770,12 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
       xfer += prot_->writeFieldEnd();
       break;
     }
-    if (this->opt_stringValue_ref().has_value()) {
+    case ComplexUnion::Type::opt_stringValue:
+    {
       xfer += prot_->writeFieldBegin("opt_stringValue", apache::thrift::protocol::T_STRING, 203);
       xfer += prot_->writeString(this->get_opt_stringValue());
       xfer += prot_->writeFieldEnd();
+      break;
     }
     case ComplexUnion::Type::intValue2:
     {
@@ -1802,10 +1826,12 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
       xfer += prot_->writeFieldEnd();
       break;
     }
-    if (this->opt_union_map_ref().has_value()) {
+    case ComplexUnion::Type::opt_union_map:
+    {
       xfer += prot_->writeFieldBegin("opt_union_map", apache::thrift::protocol::T_MAP, 211);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::write(*prot_, this->get_opt_union_map());
       xfer += prot_->writeFieldEnd();
+      break;
     }
     case ComplexUnion::Type::enum_field:
     {
@@ -1842,10 +1868,12 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
       xfer += prot_->writeFieldEnd();
       break;
     }
-    if (this->opt_a_union_ref().has_value()) {
+    case ComplexUnion::Type::opt_a_union:
+    {
       xfer += prot_->writeFieldBegin("opt_a_union", apache::thrift::protocol::T_STRUCT, 216);
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::write(prot_, &this->get_opt_a_union());
       xfer += prot_->writeFieldEnd();
+      break;
     }
     case ComplexUnion::Type::a_union_list:
     {
@@ -1875,10 +1903,12 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
       xfer += prot_->writeFieldEnd();
       break;
     }
-    if (this->MyBinaryField2_ref().has_value()) {
+    case ComplexUnion::Type::MyBinaryField2:
+    {
       xfer += prot_->writeFieldBegin("MyBinaryField2", apache::thrift::protocol::T_STRING, 21);
       xfer += prot_->writeBinary(this->get_MyBinaryField2());
       xfer += prot_->writeFieldEnd();
+      break;
     }
     case ComplexUnion::Type::MyBinaryListField4:
     {

@@ -133,7 +133,7 @@ static void fill_validators(validator_list& vs) {
   vs.add<enum_values_uniqueness_validator>();
   vs.add<enum_values_set_validator>();
   vs.add<exception_list_is_all_exceptions_validator>();
-  vs.add<union_no_required_fields_validator>();
+  vs.add<union_no_qualified_fields_validator>();
   vs.add<mixin_type_correctness_validator>();
   vs.add<field_names_uniqueness_validator>();
   vs.add<struct_names_uniqueness_validator>();
@@ -262,16 +262,17 @@ bool exception_list_is_all_exceptions_validator::visit(t_service* service) {
   return true;
 }
 
-bool union_no_required_fields_validator::visit(t_struct* s) {
+bool union_no_qualified_fields_validator::visit(t_struct* s) {
   if (!s->is_union()) {
     return true;
   }
 
   for (const auto* field : s->get_members()) {
-    if (field->get_req() == t_field::T_REQUIRED) {
+    if (field->get_req() != t_field::T_OPT_IN_REQ_OUT) {
       std::ostringstream ss;
-      ss << "Unions cannot contain fields with required qualifier. Remove "
-         << "required qualifier from field '" << field->get_name() << "'";
+      ss << "Unions cannot contain qualified fields. Remove "
+         << (field->get_req() == t_field::T_REQUIRED ? "required" : "optional")
+         << " qualifier from field '" << field->get_name() << "'";
       add_error(field->get_lineno(), ss.str());
     }
   }

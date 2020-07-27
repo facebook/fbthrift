@@ -203,7 +203,7 @@ TEST_F(ValidatorTest, UnsetEnumValues) {
       errors.at(1).str());
 }
 
-TEST_F(ValidatorTest, RequiredInUnion) {
+TEST_F(ValidatorTest, QualifiedInUnion) {
   t_program program("/path/to/file.thrift");
   t_base_type i64type("i64", t_base_type::TYPE_I64);
 
@@ -215,14 +215,28 @@ TEST_F(ValidatorTest, RequiredInUnion) {
   struct_union->set_union(true);
 
   struct_union->append(std::move(field));
+
+  field = std::make_unique<t_field>(&i64type, "baz", 1);
+  field->set_lineno(6);
+  field->set_req(t_field::T_OPTIONAL);
+  struct_union->append(std::move(field));
+
+  field = std::make_unique<t_field>(&i64type, "qux", 1);
+  field->set_lineno(7);
+  struct_union->append(std::move(field));
+
   program.add_struct(std::move(struct_union));
 
-  auto errors = run_validator<union_no_required_fields_validator>(&program);
-  EXPECT_EQ(1, errors.size());
+  auto errors = run_validator<union_no_qualified_fields_validator>(&program);
+  EXPECT_EQ(2, errors.size());
   EXPECT_EQ(
-      "[FAILURE:/path/to/file.thrift:5] Unions cannot contain fields with "
-      "required qualifier. Remove required qualifier from field 'foo'",
+      "[FAILURE:/path/to/file.thrift:5] Unions cannot contain qualified fields. "
+      "Remove required qualifier from field 'foo'",
       errors.front().str());
+  EXPECT_EQ(
+      "[FAILURE:/path/to/file.thrift:6] Unions cannot contain qualified fields. "
+      "Remove optional qualifier from field 'baz'",
+      errors.at(1).str());
 }
 
 TEST_F(ValidatorTest, DuplicatedStructNames) {

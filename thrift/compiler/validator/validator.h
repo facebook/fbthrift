@@ -175,12 +175,12 @@ class exception_list_is_all_exceptions_validator : virtual public validator {
   static bool validate_throws(t_struct* throws);
 };
 
-class union_no_required_fields_validator : virtual public validator {
+class union_no_qualified_fields_validator : virtual public validator {
  public:
   using validator::visit;
 
   /**
-   * Enforces that there are no required fields in a union.
+   * Enforces that there are no qualified fields in a union.
    */
   bool visit(t_struct* s) override;
 };
