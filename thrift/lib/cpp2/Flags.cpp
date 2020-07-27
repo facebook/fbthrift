@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-#include <dlfcn.h>
-
 #include <thrift/lib/cpp2/Flags.h>
 
 namespace apache {
