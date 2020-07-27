@@ -87,8 +87,14 @@ folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sink(
       break;
     }
 
-    while (credit > 0 && !sinkComplete) {
-      auto item = co_await generator.next();
+    while (credit > 0 && !sinkComplete &&
+           !cancelSource_.isCancellationRequested()) {
+
+      auto item = co_await folly::coro::co_withCancellation(
+          cancelSource_.getToken(), generator.next());
+      if (cancelSource_.isCancellationRequested()) {
+        break;
+      }
 
       if (item.has_value()) {
         if ((*item).hasValue()) {
@@ -139,6 +145,7 @@ void ClientSinkBridge::onFirstResponseError(folly::exception_wrapper ew) {
 
 void ClientSinkBridge::onFinalResponse(StreamPayload&& payload) {
   serverPush(folly::Try<StreamPayload>(std::move(payload)));
+  cancelSource_.requestCancellation();
   close();
 }
 
@@ -152,6 +159,7 @@ void ClientSinkBridge::onFinalResponseError(folly::exception_wrapper ew) {
   } else {
     serverPush(folly::Try<StreamPayload>(std::move(ew)));
   }
+  cancelSource_.requestCancellation();
   close();
 }
 

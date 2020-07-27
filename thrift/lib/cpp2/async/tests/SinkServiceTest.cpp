@@ -223,5 +223,29 @@ TEST_F(SinkServiceTest, AlignedSink) {
       });
 }
 
+folly::coro::Task<void> neverStream() {
+  folly::coro::Baton baton;
+  folly::CancellationCallback cb{
+      co_await folly::coro::co_current_cancellation_token,
+      [&] { baton.post(); }};
+  co_await baton;
+}
+
+TEST_F(SinkServiceTest, SinkEarlyFinalResponseWithLongWait) {
+  connectToServer(
+      [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
+        // return final response once received two numbers
+        auto sink = co_await client.co_rangeEarlyResponse(0, 5, 2);
+        int finalResponse =
+            co_await sink.sink([]() -> folly::coro::AsyncGenerator<int&&> {
+              co_yield 0;
+              co_yield 1;
+              // this long wait should get cancelled by final response
+              co_await neverStream();
+            }());
+        EXPECT_EQ(2, finalResponse);
+      });
+}
+
 } // namespace thrift
 } // namespace apache

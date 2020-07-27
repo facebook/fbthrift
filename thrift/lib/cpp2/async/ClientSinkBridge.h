@@ -98,6 +98,7 @@ class ClientSinkBridge : public TwoWayBridge<
 
   SinkServerCallback* serverCallback_{nullptr};
   folly::Executor::KeepAlive<folly::EventBase> evb_;
+  folly::CancellationSource cancelSource_;
 };
 #else
 class ClientSinkBridge {
