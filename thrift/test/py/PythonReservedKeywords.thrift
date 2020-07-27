@@ -21,18 +21,18 @@ enum from
   from = 1
 }
 
-typedef i64 from
+typedef i64 and
 
-struct from
+struct except
 {
-  1: string from
+  1: string except
 }
 
-exception from {
-  1: string from
+exception pass {
+  1: string pass
 }
 
-service from
+service return
 {
-  list<from> from(1: list<from> thing, 2:from from)
+  list<from> return(1: list<from> thing, 2:except except)
 }

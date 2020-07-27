@@ -136,6 +136,7 @@ static void fill_validators(validator_list& vs) {
   vs.add<union_no_required_fields_validator>();
   vs.add<mixin_type_correctness_validator>();
   vs.add<field_names_uniqueness_validator>();
+  vs.add<struct_names_uniqueness_validator>();
 
   // add more validators here ...
 }
@@ -336,6 +337,19 @@ bool field_names_uniqueness_validator::visit(t_struct* s) {
           "Field `" + res.first->second + "." + i.member->get_name() +
               "` and `" + i.mixin->get_name() + "." + i.member->get_name() +
               "` can not have same name in struct `" + s->get_name() + '`');
+    }
+  }
+  return true;
+}
+
+bool struct_names_uniqueness_validator::visit(t_program* p) {
+  set_program(p);
+  std::set<std::string> seen;
+  for (auto* object : p->get_objects()) {
+    if (!seen.emplace(object->get_name()).second) {
+      add_error(
+          object->get_lineno(),
+          "Redefinition of type `" + object->get_name() + "`");
     }
   }
   return true;

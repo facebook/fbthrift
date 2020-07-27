@@ -35,6 +35,7 @@ class validator : virtual public visitor {
 
   using visitor::visit;
 
+  // must call set_program if overriding this overload
   bool visit(t_program* program) override;
 
   void set_program(t_program* const program);
@@ -203,6 +204,16 @@ class field_names_uniqueness_validator : virtual public validator {
    * struct or between this struct and any of its mixins.
    */
   bool visit(t_struct* s) override;
+};
+
+class struct_names_uniqueness_validator : virtual public validator {
+ public:
+  using validator::visit;
+
+  /**
+   * Enforces that there are no duplicate names between structs and exceptions
+   */
+  bool visit(t_program* s) override;
 };
 
 } // namespace compiler

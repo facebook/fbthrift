@@ -224,3 +224,20 @@ TEST_F(ValidatorTest, RequiredInUnion) {
       "required qualifier. Remove required qualifier from field 'foo'",
       errors.front().str());
 }
+
+TEST_F(ValidatorTest, DuplicatedStructNames) {
+  t_program program("/path/to/file.thrift");
+
+  program.add_struct(std::make_unique<t_struct>(&program, "Foo"));
+  program.add_struct(std::make_unique<t_struct>(&program, "Bar"));
+  auto ex = std::make_unique<t_struct>(&program, "Foo");
+  ex->set_xception(true);
+  ex->set_lineno(42);
+  program.add_xception(std::move(ex));
+
+  auto errors = run_validator<struct_names_uniqueness_validator>(&program);
+  EXPECT_EQ(1, errors.size());
+  EXPECT_EQ(
+      "[FAILURE:/path/to/file.thrift:42] Redefinition of type `Foo`",
+      errors.front().str());
+}
