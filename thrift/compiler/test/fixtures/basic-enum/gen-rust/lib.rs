@@ -24,6 +24,11 @@ pub mod types {
     pub struct EmptyEnum(pub ::std::primitive::i32);
 
     impl EmptyEnum {
+
+        pub fn variants() -> &'static [&'static str] {
+            &[
+            ]
+        }
     }
 
     impl ::std::default::Default for EmptyEnum {
@@ -105,6 +110,13 @@ pub mod types {
     impl MyEnum {
         pub const ONE: Self = MyEnum(1i32);
         pub const TWO: Self = MyEnum(2i32);
+
+        pub fn variants() -> &'static [&'static str] {
+            &[
+                "ONE",
+                "TWO",
+            ]
+        }
     }
 
     impl ::std::default::Default for MyEnum {
@@ -211,6 +223,31 @@ pub mod types {
         pub const SEVENTEEN: Self = MyBigEnum(17i32);
         pub const EIGHTEEN: Self = MyBigEnum(18i32);
         pub const NINETEEN: Self = MyBigEnum(19i32);
+
+        pub fn variants() -> &'static [&'static str] {
+            &[
+                "UNKNOWN",
+                "ONE",
+                "TWO",
+                "THREE",
+                "FOUR",
+                "FIVE",
+                "SIX",
+                "SEVEN",
+                "EIGHT",
+                "NINE",
+                "TEN",
+                "ELEVEN",
+                "TWELVE",
+                "THIRTEEN",
+                "FOURTEEN",
+                "FIFTEEN",
+                "SIXTEEN",
+                "SEVENTEEN",
+                "EIGHTEEN",
+                "NINETEEN",
+            ]
+        }
     }
 
     impl ::std::default::Default for MyBigEnum {

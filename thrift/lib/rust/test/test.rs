@@ -16,7 +16,7 @@
 
 use fbthrift::{serialize, CompactProtocol, Deserialize, Protocol, Serialize};
 use indexmap::{IndexMap, IndexSet};
-use interface::NonstandardCollectionTypes;
+use interface::{NonstandardCollectionTypes, TestEnum, TestEnumEmpty};
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 use std::fmt::Debug;
 use std::io::Cursor;
@@ -87,4 +87,12 @@ where
     let mut deserializer = <CompactProtocol>::deserializer(Cursor::new(bytes));
     let back = Deserialize::read(&mut deserializer).unwrap();
     assert_eq!(value, back);
+}
+
+#[test]
+fn test_variants_fn_enum() {
+    let expected: &'static [&'static str] = &["FOO", "BAR", "BAZ"];
+    assert_eq!(TestEnum::variants(), expected);
+    let expected_empty: &'static [&'static str] = &[];
+    assert_eq!(TestEnumEmpty::variants(), expected_empty);
 }

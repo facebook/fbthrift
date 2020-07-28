@@ -26,6 +26,14 @@
         pub const {{enumValue:rust_name}}: Self = {{!
             }}{{enum:rust_name}}({{enumValue:value}}i32);{{!
         }}{{/enum:values}}
+
+        pub fn variants() -> &'static [&'static str] {
+            &[
+                {{#enum:values}}
+                "{{enumValue:name}}",
+                {{/enum:values}}
+            ]
+        }
     }
 
     impl ::std::default::Default for {{enum:rust_name}} {

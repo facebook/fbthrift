@@ -45,6 +45,14 @@ pub mod types {
         pub const MyValue1: Self = MyEnum(0i32);
         pub const MyValue2: Self = MyEnum(1i32);
         pub const DOMAIN: Self = MyEnum(2i32);
+
+        pub fn variants() -> &'static [&'static str] {
+            &[
+                "MyValue1",
+                "MyValue2",
+                "DOMAIN",
+            ]
+        }
     }
 
     impl ::std::default::Default for MyEnum {

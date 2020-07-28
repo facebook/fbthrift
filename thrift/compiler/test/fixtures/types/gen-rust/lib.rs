@@ -154,6 +154,16 @@ pub mod types {
         pub const one: Self = has_bitwise_ops(2i32);
         pub const two: Self = has_bitwise_ops(4i32);
         pub const three: Self = has_bitwise_ops(8i32);
+
+        pub fn variants() -> &'static [&'static str] {
+            &[
+                "none",
+                "zero",
+                "one",
+                "two",
+                "three",
+            ]
+        }
     }
 
     impl ::std::default::Default for has_bitwise_ops {
@@ -248,6 +258,13 @@ pub mod types {
     impl is_unscoped {
         pub const hello: Self = is_unscoped(0i32);
         pub const world: Self = is_unscoped(1i32);
+
+        pub fn variants() -> &'static [&'static str] {
+            &[
+                "hello",
+                "world",
+            ]
+        }
     }
 
     impl ::std::default::Default for is_unscoped {
@@ -336,6 +353,13 @@ pub mod types {
     impl MyForwardRefEnum {
         pub const ZERO: Self = MyForwardRefEnum(0i32);
         pub const NONZERO: Self = MyForwardRefEnum(12i32);
+
+        pub fn variants() -> &'static [&'static str] {
+            &[
+                "ZERO",
+                "NONZERO",
+            ]
+        }
     }
 
     impl ::std::default::Default for MyForwardRefEnum {
@@ -425,6 +449,14 @@ pub mod types {
         pub const fieldA: Self = MyEnumA(1i32);
         pub const fieldB: Self = MyEnumA(2i32);
         pub const fieldC: Self = MyEnumA(4i32);
+
+        pub fn variants() -> &'static [&'static str] {
+            &[
+                "fieldA",
+                "fieldB",
+                "fieldC",
+            ]
+        }
     }
 
     impl ::std::default::Default for MyEnumA {

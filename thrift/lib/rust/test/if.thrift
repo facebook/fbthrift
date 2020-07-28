@@ -29,3 +29,12 @@ struct NonstandardCollectionTypes {
   24: map<string, string> (rust.type = "indexmap::IndexMap") indexmap_b;
   25: map<string, i64> (rust.type = "indexmap::IndexMap") indexmap_c;
 }
+
+enum TestEnum {
+  FOO = 1
+  BAR = 2
+  BAZ = 3
+}
+
+enum TestEnumEmpty {
+}

@@ -424,6 +424,11 @@ pub mod types {
     pub struct EmptyEnum(pub ::std::primitive::i32);
 
     impl EmptyEnum {
+
+        pub fn variants() -> &'static [&'static str] {
+            &[
+            ]
+        }
     }
 
     impl ::std::default::Default for EmptyEnum {
@@ -507,6 +512,15 @@ pub mod types {
         pub const MPK: Self = City(1i32);
         pub const SEA: Self = City(2i32);
         pub const LON: Self = City(3i32);
+
+        pub fn variants() -> &'static [&'static str] {
+            &[
+                "NYC",
+                "MPK",
+                "SEA",
+                "LON",
+            ]
+        }
     }
 
     impl ::std::default::Default for City {
@@ -601,6 +615,15 @@ pub mod types {
         pub const WHATSAPP: Self = Company(1i32);
         pub const OCULUS: Self = Company(2i32);
         pub const INSTAGRAM: Self = Company(3i32);
+
+        pub fn variants() -> &'static [&'static str] {
+            &[
+                "FACEBOOK",
+                "WHATSAPP",
+                "OCULUS",
+                "INSTAGRAM",
+            ]
+        }
     }
 
     impl ::std::default::Default for Company {

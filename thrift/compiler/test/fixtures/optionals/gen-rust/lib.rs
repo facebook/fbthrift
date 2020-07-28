@@ -49,6 +49,14 @@ pub mod types {
         pub const DOG: Self = Animal(1i32);
         pub const CAT: Self = Animal(2i32);
         pub const TARANTULA: Self = Animal(3i32);
+
+        pub fn variants() -> &'static [&'static str] {
+            &[
+                "DOG",
+                "CAT",
+                "TARANTULA",
+            ]
+        }
     }
 
     impl ::std::default::Default for Animal {

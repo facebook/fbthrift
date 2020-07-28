@@ -149,6 +149,13 @@ pub mod types {
     impl TypedEnum {
         pub const VAL1: Self = TypedEnum(0i32);
         pub const VAL2: Self = TypedEnum(1i32);
+
+        pub fn variants() -> &'static [&'static str] {
+            &[
+                "VAL1",
+                "VAL2",
+            ]
+        }
     }
 
     impl ::std::default::Default for TypedEnum {
