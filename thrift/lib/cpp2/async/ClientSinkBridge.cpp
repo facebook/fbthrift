@@ -89,7 +89,6 @@ folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sink(
 
     while (credit > 0 && !sinkComplete &&
            !cancelSource_.isCancellationRequested()) {
-
       auto item = co_await folly::coro::co_withCancellation(
           cancelSource_.getToken(), generator.next());
       if (cancelSource_.isCancellationRequested()) {
