@@ -358,6 +358,8 @@ class t_py_generator : public t_concat_generator {
 
   std::string package_dir_;
 
+  std::map<std::string, const std::vector<t_function*>> func_map_;
+
   void generate_json_reader_fn_signature(ofstream& out);
 };
 
@@ -3557,10 +3559,9 @@ std::string t_py_generator::get_priority(
  */
 const std::vector<t_function*>& t_py_generator::get_functions(
     t_service* tservice) {
-  static std::map<std::string, const std::vector<t_function*>> func_map;
   auto name = tservice->get_full_name();
-  auto found = func_map.find(name);
-  if (found != func_map.end()) {
+  auto found = func_map_.find(name);
+  if (found != func_map_.end()) {
     return found->second;
   }
   std::vector<t_function*> funcs;
@@ -3569,7 +3570,7 @@ const std::vector<t_function*>& t_py_generator::get_functions(
       funcs.push_back(func);
     }
   }
-  auto inserted = func_map.emplace(name, std::move(funcs));
+  auto inserted = func_map_.emplace(name, std::move(funcs));
   return inserted.first->second;
 }
 
