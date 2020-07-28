@@ -538,10 +538,12 @@ folly::Codel* ThreadManager::Impl::getCodel() {
 }
 
 void ThreadManager::Impl::setupQueueObservers() {
-  if (auto factory = folly::QueueObserverFactory::make()) {
+  if (auto factory = folly::QueueObserverFactory::make(
+          "tm." + (namePrefix_.empty() ? "unk" : namePrefix_),
+          tasks_.priorities())) {
     queueObservers_.emplace(tasks_.priorities());
     for (size_t pri = 0; pri < tasks_.priorities(); ++pri) {
-      queueObservers_->at(pri) = factory->create();
+      queueObservers_->at(pri) = factory->create(pri);
     }
   }
 }
