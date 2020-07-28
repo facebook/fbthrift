@@ -23,8 +23,8 @@ pub mod types {
         pub fieldC: ::std::vec::Vec<::std::primitive::i32>,
         pub fieldD: ::std::vec::Vec<::std::primitive::i32>,
         pub fieldE: ::std::vec::Vec<::std::primitive::i32>,
-        pub fieldF: ::std::collections::BTreeSet<::std::primitive::i32>,
-        pub fieldG: ::std::collections::BTreeMap<::std::primitive::i32, ::std::string::String>,
+        pub fieldF: ::sorted_vector_map::SortedVectorSet<::std::primitive::i32>,
+        pub fieldG: ::sorted_vector_map::SortedVectorMap<::std::primitive::i32, ::std::string::String>,
         pub fieldH: include::types::SomeMap,
     }
 
@@ -607,10 +607,10 @@ pub mod types {
             ::fbthrift::Serialize::write(&self.fieldE, p);
             p.write_field_end();
             p.write_field_begin("fieldF", ::fbthrift::TType::Set, 6);
-            ::fbthrift::Serialize::write(&self.fieldF, p);
+            crate::r#impl::write(&self.fieldF, p);
             p.write_field_end();
             p.write_field_begin("fieldG", ::fbthrift::TType::Map, 7);
-            ::fbthrift::Serialize::write(&self.fieldG, p);
+            crate::r#impl::write(&self.fieldG, p);
             p.write_field_end();
             p.write_field_begin("fieldH", ::fbthrift::TType::Map, 8);
             ::fbthrift::Serialize::write(&self.fieldH, p);
@@ -643,8 +643,8 @@ pub mod types {
                     (::fbthrift::TType::List, 3) => field_fieldC = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::List, 4) => field_fieldD = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::List, 5) => field_fieldE = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Set, 6) => field_fieldF = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Map, 7) => field_fieldG = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Set, 6) => field_fieldF = ::std::option::Option::Some(crate::r#impl::read(p)?),
+                    (::fbthrift::TType::Map, 7) => field_fieldG = ::std::option::Option::Some(crate::r#impl::read(p)?),
                     (::fbthrift::TType::Map, 8) => field_fieldH = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
@@ -2756,4 +2756,100 @@ pub mod errors {
 
     }
 
+}
+
+mod r#impl {
+    use ref_cast::RefCast;
+
+    #[derive(RefCast)]
+    #[repr(transparent)]
+    pub(crate) struct LocalImpl<T>(T);
+
+    pub(crate) fn write<T, P>(value: &T, p: &mut P)
+    where
+        LocalImpl<T>: ::fbthrift::Serialize<P>,
+        P: ::fbthrift::ProtocolWriter,
+    {
+        ::fbthrift::Serialize::write(LocalImpl::ref_cast(value), p);
+    }
+
+    pub(crate) fn read<T, P>(p: &mut P) -> ::anyhow::Result<T>
+    where
+        LocalImpl<T>: ::fbthrift::Deserialize<P>,
+        P: ::fbthrift::ProtocolReader,
+    {
+        let value: LocalImpl<T> = ::fbthrift::Deserialize::read(p)?;
+        Ok(value.0)
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<::sorted_vector_map::SortedVectorMap<::std::primitive::i32, ::std::string::String>>
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_map_begin(
+                <::std::primitive::i32 as ::fbthrift::GetTType>::TTYPE,
+                <::std::string::String as ::fbthrift::GetTType>::TTYPE,
+                self.0.len(),
+            );
+            for (k, v) in &self.0 {
+                p.write_map_key_begin();
+                ::fbthrift::Serialize::write(k, p);
+                p.write_map_value_begin();
+                ::fbthrift::Serialize::write(v, p);
+            }
+            p.write_map_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<::sorted_vector_map::SortedVectorMap<::std::primitive::i32, ::std::string::String>>
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            let (_key_ty, _val_ty, len) = p.read_map_begin()?;
+            let mut map = <::sorted_vector_map::SortedVectorMap<::std::primitive::i32, ::std::string::String>>::with_capacity(len);
+            for _ in 0..len {
+                p.read_map_key_begin()?;
+                let k: ::std::primitive::i32 = ::fbthrift::Deserialize::read(p)?;
+                p.read_map_value_begin()?;
+                let v: ::std::string::String = ::fbthrift::Deserialize::read(p)?;
+                map.insert(k, v);
+            }
+            Ok(LocalImpl(map))
+        }
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<::sorted_vector_map::SortedVectorSet<::std::primitive::i32>>
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_set_begin(
+                <::std::primitive::i32 as ::fbthrift::GetTType>::TTYPE,
+                self.0.len(),
+            );
+            for v in &self.0 {
+                p.write_set_value_begin();
+                ::fbthrift::Serialize::write(v, p);
+            }
+            p.write_set_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<::sorted_vector_map::SortedVectorSet<::std::primitive::i32>>
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            let (_elem_ty, len) = p.read_set_begin()?;
+            let mut set = <::sorted_vector_map::SortedVectorSet<::std::primitive::i32>>::with_capacity(len);
+            for _ in 0..len {
+                p.read_set_value_begin()?;
+                let v: ::std::primitive::i32 = ::fbthrift::Deserialize::read(p)?;
+                set.insert(v);
+            }
+            Ok(LocalImpl(set))
+        }
+    }
 }

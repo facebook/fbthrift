@@ -123,4 +123,9 @@ pub mod server {{>lib/block}}{{>lib/mod.server}}}
 pub mod mock {{>lib/block}}{{>lib/mod.mock}}}{{!
 }}{{/program:services?}}
 
-pub mod errors {{>lib/block}}{{>lib/mod.errors}}}
+pub mod errors {{>lib/block}}{{>lib/mod.errors}}}{{!
+
+}}{{#program:nonstandardCollections?}}
+
+mod r#impl {{>lib/block}}{{>lib/mod.impl}}}{{!
+}}{{/program:nonstandardCollections?}}

@@ -15,6 +15,7 @@
  */
 
 #include <cctype>
+#include <set>
 #include <string>
 #include <unordered_set>
 
@@ -213,6 +214,17 @@ FieldKind field_kind(const std::map<std::string, std::string>& annotations) {
   }
   return FieldKind::Inline;
 }
+
+// For example `set<Value> (rust.type = "indexmap::IndexSet")` or `map<string,
+// Value> (rust.type = "indexmap::IndexMap")`. Unlike for standard library
+// collections, serialization impls for these types are not provided in the
+// fbthrift Rust runtime library and instead that logic will need to be emitted
+// into the generated crate.
+bool has_nonstandard_type_annotation(const t_type* type) {
+  auto rust_type = type->annotations_.find("rust.type");
+  return rust_type != type->annotations_.end() &&
+      rust_type->second.find("::") != string::npos;
+}
 } // namespace
 
 class t_mstch_rust_generator : public t_mstch_generator {
@@ -276,6 +288,10 @@ class mstch_rust_program : public mstch_program {
             {"program:includes", &mstch_rust_program::rust_includes},
             {"program:anyServiceWithoutParent?",
              &mstch_rust_program::rust_any_service_without_parent},
+            {"program:nonstandardCollections?",
+             &mstch_rust_program::rust_has_nonstandard_collections},
+            {"program:nonstandardCollections",
+             &mstch_rust_program::rust_nonstandard_collections},
         });
   }
   mstch::node rust_has_types() {
@@ -316,6 +332,54 @@ class mstch_rust_program : public mstch_program {
       }
     }
     return false;
+  }
+  template <typename F>
+  void foreach_type(F&& f) const {
+    for (auto strct : program_->get_structs()) {
+      for (auto field : strct->get_members()) {
+        f(field->get_type());
+      }
+    }
+    for (auto service : program_->get_services()) {
+      for (auto function : service->get_functions()) {
+        for (auto arg : function->get_arglist()->get_members()) {
+          f(arg->get_type());
+        }
+        f(function->get_returntype());
+      }
+    }
+  }
+  mstch::node rust_has_nonstandard_collections() {
+    bool has_nonstandard_collection = false;
+    foreach_type([&](t_type* type) {
+      if (has_nonstandard_type_annotation(type)) {
+        has_nonstandard_collection = true;
+      }
+    });
+    return has_nonstandard_collection;
+  }
+  mstch::node rust_nonstandard_collections() {
+    // Sort/deduplicate by value of `rust.type` annotation.
+    struct rust_type_less {
+      bool operator()(const t_type* lhs, const t_type* rhs) const {
+        auto& lhs_annotation = lhs->annotations_.at("rust.type");
+        auto& rhs_annotation = rhs->annotations_.at("rust.type");
+        if (lhs_annotation != rhs_annotation) {
+          return lhs_annotation < rhs_annotation;
+        }
+        return lhs->get_full_name() < rhs->get_full_name();
+      }
+    };
+    std::set<const t_type*, rust_type_less> nonstandard_collections;
+    foreach_type([&](t_type* type) {
+      if (has_nonstandard_type_annotation(type)) {
+        nonstandard_collections.insert(type);
+      }
+    });
+    std::vector<const t_type*> elements(
+        nonstandard_collections.begin(), nonstandard_collections.end());
+    return generate_elements(
+        elements, generators_->type_generator_.get(), generators_, cache_);
   }
 
  private:
@@ -571,6 +635,8 @@ class mstch_rust_type : public mstch_type {
             {"type:rust_name", &mstch_rust_type::rust_name},
             {"type:package", &mstch_rust_type::rust_package},
             {"type:rust", &mstch_rust_type::rust_type},
+            {"type:nonstandardCollection?",
+             &mstch_rust_type::rust_nonstandard_collection},
         });
   }
   mstch::node rust_name() {
@@ -582,9 +648,16 @@ class mstch_rust_type : public mstch_type {
   mstch::node rust_type() {
     auto rust_type = type_->annotations_.find("rust.type");
     if (rust_type != type_->annotations_.end()) {
-      return rust_type->second;
+      if (rust_type->second.find("::") == std::string::npos) {
+        return "std::collections::" + rust_type->second;
+      } else {
+        return rust_type->second;
+      }
     }
     return nullptr;
+  }
+  mstch::node rust_nonstandard_collection() {
+    return has_nonstandard_type_annotation(type_);
   }
 
  private:

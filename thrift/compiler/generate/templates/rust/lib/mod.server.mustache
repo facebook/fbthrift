@@ -111,7 +111,7 @@
                     (::fbthrift::TType::Stop, _) => break,{{!
                     }}{{#function:args}}
                     ({{#field:type}}{{>lib/ttype}}{{/field:type}}, {{field:key}}) => {{!
-                        }}field_{{field:name}} = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),{{!
+                        }}field_{{field:name}} = ::std::option::Option::Some({{#field:type}}{{>lib/read}}{{/field:type}}(p)?),{{!
                     }}{{/function:args}}
                     (fty, _) => p.skip(fty)?,
                 }

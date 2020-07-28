@@ -130,7 +130,7 @@
                         }}{{#field:type}}{{>lib/ttype}}{{/field:type}}, {{!
                         }}{{field:key}}i16{{!
                     }});
-                    ::fbthrift::Serialize::write(&arg_{{field:name}}, p);
+                    {{#field:type}}{{>lib/write}}{{/field:type}}(&arg_{{field:name}}, p);
                     p.write_field_end();{{!
                     }}{{/function:args}}
                     p.write_field_stop();

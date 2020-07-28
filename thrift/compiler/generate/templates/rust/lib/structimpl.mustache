@@ -64,7 +64,7 @@
                     }}{{#field:type}}{{>lib/ttype}}{{/field:type}}, {{!
                     }}{{field:key}}{{!
                 }});
-                ::fbthrift::Serialize::write(some, p);
+                {{#field:type}}{{>lib/write}}{{/field:type}}(some, p);
                 p.write_field_end();
             }{{!
             }}{{/field:optional?}}{{!
@@ -74,7 +74,7 @@
                 }}{{#field:type}}{{>lib/ttype}}{{/field:type}}, {{!
                 }}{{field:key}}{{!
             }});
-            ::fbthrift::Serialize::write(&self.{{field:rust_name}}, p);
+            {{#field:type}}{{>lib/write}}{{/field:type}}(&self.{{field:rust_name}}, p);
             p.write_field_end();{{!
             }}{{/field:optional?}}{{!
             }}{{/struct:fields}}
@@ -98,7 +98,7 @@
                     (::fbthrift::TType::Stop, _) => break,{{!
                     }}{{#struct:fields}}
                     ({{#field:type}}{{>lib/ttype}}{{/field:type}}, {{field:key}}) => {{!
-                        }}field_{{field:name}} = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),{{!
+                        }}field_{{field:name}} = ::std::option::Option::Some({{#field:type}}{{>lib/read}}{{/field:type}}(p)?),{{!
                     }}{{/struct:fields}}
                     (fty, _) => p.skip(fty)?,
                 }

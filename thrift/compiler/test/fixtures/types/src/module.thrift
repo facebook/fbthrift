@@ -31,8 +31,14 @@ struct ContainerStruct {
   3: list<i32> (cpp.template = "std::deque") fieldC
   4: list<i32> (cpp.template = "folly::fbvector") fieldD
   5: list<i32> (cpp.template = "folly::small_vector") fieldE
-  6: set<i32> (cpp.template = "folly::sorted_vector_set") fieldF
-  7: map<i32, string> (cpp.template = "folly::sorted_vector_map") fieldG
+  6: set<i32>
+      (cpp.template = "folly::sorted_vector_set",
+       rust.type = "sorted_vector_map::SortedVectorSet")
+      fieldF
+  7: map<i32, string>
+      (cpp.template = "folly::sorted_vector_map",
+       rust.type = "sorted_vector_map::SortedVectorMap")
+      fieldG
   8: include.SomeMap fieldH
 }
 
