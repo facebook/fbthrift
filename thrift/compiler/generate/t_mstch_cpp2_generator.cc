@@ -722,7 +722,6 @@ class mstch_cpp2_field : public mstch_field {
   }
   mstch::node visibility() {
     bool isPrivate = field_->get_req() == t_field::e_req::T_OPTIONAL &&
-        cache_->parsed_options_.count("deprecated_public_fields") == 0 &&
         !cpp2::is_cpp_ref(field_);
     return std::string(isPrivate ? "private" : "public");
   }

@@ -61,7 +61,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Foo& operator=(const Foo&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int32_t bar;
 
  public:
