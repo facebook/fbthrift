@@ -611,18 +611,11 @@ TEST(RegistryTests, RootId) {
   auto rootid = registry.genRootId();
   auto rootid2 = registry.genRootId();
   EXPECT_NE(rootid, rootid2);
-  EXPECT_EQ(
-      RequestsRegistry::getRequestId(rootid).getLocalId() + 1,
-      RequestsRegistry::getRequestId(rootid2).getLocalId());
-  EXPECT_EQ(
-      RequestsRegistry::getRequestId(rootid).getRegistryId(),
-      RequestsRegistry::getRequestId(rootid2).getRegistryId());
 
   RequestsRegistry registry2(0, 0, 0);
   auto rootid3 = registry2.genRootId();
-  EXPECT_EQ(
-      RequestsRegistry::getRequestId(rootid).getRegistryId() + 1,
-      RequestsRegistry::getRequestId(rootid3).getRegistryId());
+  EXPECT_NE(rootid3, rootid);
+  EXPECT_NE(rootid3, rootid2);
 }
 
 TEST(RegistryTests, ManyRegistries) {
@@ -633,7 +626,6 @@ TEST(RegistryTests, ManyRegistries) {
       auto registry = std::make_unique<RequestsRegistry>(0, 0, 0);
       auto rootid = registry->genRootId();
       auto reqid = RequestsRegistry::getRequestId(rootid);
-      EXPECT_EQ(reqid.getRegistryId(), j);
       registries.push_back(std::move(registry));
     }
     // destruction orders deal reusing request ids correctly

@@ -16,12 +16,12 @@
 
 #pragma once
 
+#include <fmt/core.h>
 #include <folly/IntrusiveList.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/Request.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
-#include <thrift/lib/cpp2/server/RequestId.h>
 #include <chrono>
 
 namespace apache {
@@ -239,7 +239,7 @@ class RequestsRegistry {
   }
 
   intptr_t genRootId();
-  static RequestId getRequestId(intptr_t rootid);
+  static std::string getRequestId(intptr_t rootid);
 
   using ActiveRequestDebugStubList =
       folly::IntrusiveList<DebugStub, &DebugStub::activeRequestsRegistryHook_>;

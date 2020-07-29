@@ -15,8 +15,9 @@
  */
 
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
+
+#include <fmt/format.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
-#include <thrift/lib/cpp2/server/RequestId.h>
 #include <atomic>
 
 namespace apache {
@@ -29,7 +30,6 @@ namespace {
 // for ~12 years, assuming the QPS is ~10 million.
 const size_t kLsbBits = 52;
 const uintptr_t kLsbMask = (1ull << kLsbBits) - 1;
-const uintptr_t kMsbMask = ~kLsbMask;
 
 struct RegistryIdManager {
  public:
@@ -91,8 +91,8 @@ RequestsRegistry::~RequestsRegistry() {
   registryIdManager().wlock()->returnId(registryId_);
 }
 
-/* static */ RequestId RequestsRegistry::getRequestId(intptr_t rootid) {
-  return RequestId((rootid & kMsbMask) >> kLsbBits, (rootid & kLsbMask) >> 1);
+/* static */ std::string RequestsRegistry::getRequestId(intptr_t rootid) {
+  return fmt::format("{:016x}", static_cast<uintptr_t>(rootid));
 }
 
 intptr_t RequestsRegistry::genRootId() {

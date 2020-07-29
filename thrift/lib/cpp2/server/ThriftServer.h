@@ -797,8 +797,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
           payload_(std::move(*stub.clonePayload())),
           peerAddress_(*stub.getPeerAddress()),
           rootRequestContextId_(stub.getRootRequestContextId()),
-          reqId_(
-              RequestsRegistry::getRequestId(rootRequestContextId_).toString()),
+          reqId_(RequestsRegistry::getRequestId(rootRequestContextId_)),
           reqDebugLog_(collectRequestDebugLog(stub)) {}
 
     const std::string& getMethodName() const {
