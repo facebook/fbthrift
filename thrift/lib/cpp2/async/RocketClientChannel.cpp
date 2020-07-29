@@ -67,7 +67,8 @@ folly::Try<FirstResponsePayload> decodeResponseError(
     default:
       return folly::Try<FirstResponsePayload>(
           folly::make_exception_wrapper<TApplicationException>(fmt::format(
-              "Unexpected error frame type: {}", ex.getErrorCode())));
+              "Unexpected error frame type: {}",
+              static_cast<uint32_t>(ex.getErrorCode()))));
   }
 
   ResponseRpcError responseError;
