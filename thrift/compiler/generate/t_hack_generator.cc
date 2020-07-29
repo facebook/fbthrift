@@ -2579,7 +2579,11 @@ void t_hack_generator::_generate_php_struct_definition(
 
   out << "\n";
 
-  out << indent() << "<<__Rx>>\n";
+  out << indent() << "<<__Rx";
+  if (arrprov_skip_frames_) {
+    out << ", __ProvenanceSkipFrame";
+  }
+  out << ">>\n";
   out << indent() << "public function __construct(";
   if (map_construct_ && !from_map_construct_) {
     if (strict_types_) {

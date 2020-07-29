@@ -386,7 +386,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
   public int $e;
   public varray<Foo> $f;
 
-  <<__Rx>>
+  <<__Rx, __ProvenanceSkipFrame>>
   public function __construct(?darray<int, bool> $a = null, ?varray<darray<int, darray<string, bool>>> $b = null, ?Foo $d = null, ?int $e = null, ?varray<Foo> $f = null  ) {
     $this->a = $a ?? darray[];
     $this->b = $b ?? varray[];
@@ -475,7 +475,7 @@ class Bar_baz_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 5594803499509360192;
   public ?varray<Foo> $success;
 
-  <<__Rx>>
+  <<__Rx, __ProvenanceSkipFrame>>
   public function __construct(?varray<Foo> $success = null  ) {
   }
 

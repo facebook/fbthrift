@@ -97,7 +97,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
    */
   public ?bool $d;
 
-  <<__Rx>>
+  <<__Rx, __ProvenanceSkipFrame>>
   public function __construct(?varray<string> $a = null, ?darray<string, varray<darray<int, bool>>> $b = null, ?int $c = null, ?bool $d = null  ) {
     $this->a = $a ?? varray[];
     $this->b = $b;
@@ -214,7 +214,7 @@ class Baz extends \TException implements \IThriftStruct {
    */
   public int $code;
 
-  <<__Rx>>
+  <<__Rx, __ProvenanceSkipFrame>>
   public function __construct(?string $message = null, ?Foo $some_field = null, ?darray<string, bool> $some_container = null, ?int $code = null  ) {
     parent::__construct();
     $this->message = $message ?? '';
@@ -271,7 +271,7 @@ class OptBaz extends \TException implements \IThriftStruct {
    */
   public string $message;
 
-  <<__Rx>>
+  <<__Rx, __ProvenanceSkipFrame>>
   public function __construct(?string $message = null  ) {
     parent::__construct();
     $this->message = $message ?? '';
