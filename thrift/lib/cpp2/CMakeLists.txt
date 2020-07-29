@@ -60,6 +60,19 @@ target_link_libraries(
     ${LIBGFLAGS_LIBRARY}
 )
 
+bypass_source_check("${RpcMetadata-cpp2-SOURCES}")
+add_library(
+  rpcmetadata
+
+  ${RpcMetadata-cpp2-SOURCES}
+)
+add_dependencies(rpcmetadata RpcMetadata-cpp2-target)
+target_link_libraries(
+  rpcmetadata
+  PUBLIC
+    Folly::folly
+)
+
 add_library(
   thriftprotocol
 
@@ -79,8 +92,6 @@ target_link_libraries(
     Folly::folly
     wangle::wangle
 )
-
-bypass_source_check("${RpcMetadata-cpp2-SOURCES}")
 
 add_library(
   thriftcpp2
@@ -141,17 +152,17 @@ add_library(
   util/Checksum.cpp
   util/ScopedServerInterfaceThread.cpp
   util/ScopedServerThread.cpp
-  ${RpcMetadata-cpp2-SOURCES}
 )
 add_dependencies(
   thriftcpp2
-  RpcMetadata-cpp2-target
+  rpcmetadata
   thriftmetadata
 )
 target_link_libraries(
   thriftcpp2
   PUBLIC
     thrift
+    rpcmetadata
     thriftmetadata
     thriftfrozen2
     thriftprotocol
@@ -174,6 +185,7 @@ install(
 
 install(
   TARGETS
+    rpcmetadata
     thriftmetadata
     thriftfrozen2
     thriftprotocol
