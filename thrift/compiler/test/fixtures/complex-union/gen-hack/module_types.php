@@ -272,7 +272,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     $this->_type = ComplexUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -450,7 +450,7 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
     $this->_type = ListUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -595,7 +595,7 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
     $this->_type = DataUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -697,7 +697,7 @@ class Val implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -843,7 +843,7 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
     $this->_type = ValUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -981,7 +981,7 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
     $this->_type = VirtualComplexUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -1049,7 +1049,7 @@ class NonCopyableStruct implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -1144,7 +1144,7 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
     $this->_type = NonCopyableUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 

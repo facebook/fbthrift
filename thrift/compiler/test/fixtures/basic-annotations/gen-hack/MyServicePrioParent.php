@@ -690,7 +690,7 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -732,7 +732,7 @@ class MyServicePrioParent_ping_result implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -787,7 +787,7 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -829,7 +829,7 @@ class MyServicePrioParent_pong_result implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 

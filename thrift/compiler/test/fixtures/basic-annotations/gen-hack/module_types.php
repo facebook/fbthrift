@@ -83,7 +83,7 @@ class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct 
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -214,7 +214,7 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -396,7 +396,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -505,7 +505,7 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 

@@ -1757,7 +1757,7 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -1799,7 +1799,7 @@ class MyService_ping_result implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -1854,7 +1854,7 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -1904,7 +1904,7 @@ class MyService_getRandomData_result implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -1974,7 +1974,7 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -2027,7 +2027,7 @@ class MyService_hasDataById_result implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -2097,7 +2097,7 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -2150,7 +2150,7 @@ class MyService_getDataById_result implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -2232,7 +2232,7 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -2280,7 +2280,7 @@ class MyService_putDataById_result implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -2359,7 +2359,7 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 

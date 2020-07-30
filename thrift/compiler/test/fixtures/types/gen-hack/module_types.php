@@ -99,7 +99,7 @@ class decorated_struct implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -300,7 +300,7 @@ class ContainerStruct implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -474,7 +474,7 @@ class CppTypeStruct implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -549,7 +549,7 @@ class VirtualStruct implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -626,7 +626,7 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -702,7 +702,7 @@ class TrivialNumeric implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -786,7 +786,7 @@ class TrivialNestedWithDefault implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -881,7 +881,7 @@ class ComplexString implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -972,7 +972,7 @@ class ComplexNestedWithDefault implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -1093,7 +1093,7 @@ class MinPadding implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -1238,7 +1238,7 @@ class MyStruct implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -1300,7 +1300,7 @@ class MyDataItem implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -1359,7 +1359,7 @@ class Renaming implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -1448,7 +1448,7 @@ class AnnotatedTypes implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -1542,7 +1542,7 @@ class ForwardUsageRoot implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -1614,7 +1614,7 @@ class ForwardUsageStruct implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -1680,7 +1680,7 @@ class ForwardUsageByRef implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -1733,7 +1733,7 @@ class NoexceptMoveEmpty implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -1793,7 +1793,7 @@ class NoexceptMoveSimpleStruct implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -1978,7 +1978,7 @@ class NoexceptMoveComplexStruct implements \IThriftStruct {
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
@@ -2145,7 +2145,7 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
     $this->_type = NoExceptMoveUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
 
-    if ($parsed === null || !is_array($parsed)) {
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 

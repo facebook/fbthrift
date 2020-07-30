@@ -915,7 +915,8 @@ void t_hack_generator::generate_json_reader(ofstream& out, t_struct* tstruct) {
   }
   indent(out) << "$parsed = json_decode($jsonText, true);\n\n";
 
-  indent(out) << "if ($parsed === null || !is_array($parsed)) {\n";
+  indent(out)
+      << "if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {\n";
   indent_up();
   indent(out) << "throw new \\TProtocolException(\"Cannot parse the given json"
               << " string.\");\n";
@@ -1886,7 +1887,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
       indent(out) << "if (!is_null(" << shape_data << ")) {\n";
       indent_up();
     }
-    indent(out) << "if (!is_array(" << shape_data << ")) {\n";
+    indent(out) << "if (!(" << shape_data << " is KeyedContainer<_, _>)) {\n";
     indent(out) << "  return null;\n";
     indent(out) << "}\n";
     t_type* val_type = ((t_set*)t)->get_elem_type()->get_true_type();
@@ -1918,7 +1919,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
       indent(out) << "if (!is_null(" << shape_data << ")) {\n";
       indent_up();
     }
-    indent(out) << "if (!is_array(" << shape_data << ")) {\n";
+    indent(out) << "if (!(" << shape_data << " is KeyedContainer<_, _>)) {\n";
     indent(out) << "  return null;\n";
     indent(out) << "}\n";
     indent(out) << "foreach (/* HH_IGNORE_ERROR[4110] */" << shape_data
@@ -1946,7 +1947,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
       indent(out) << "if (!is_null(" << shape_data << ")) {\n";
       indent_up();
     }
-    indent(out) << "if (!is_array(" << shape_data << ")) {\n";
+    indent(out) << "if (!(" << shape_data << " is KeyedContainer<_, _>)) {\n";
     indent(out) << "  return null;\n";
     indent(out) << "}\n";
     indent(out) << "foreach (/* HH_IGNORE_ERROR[4110] */" << shape_data
