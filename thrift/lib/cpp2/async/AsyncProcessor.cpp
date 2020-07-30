@@ -68,7 +68,7 @@ bool GeneratedAsyncProcessor::validateRpcKind(
         case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
           return true;
         case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
-          req->sendReply(folly::IOBuf::create(0));
+          req->sendReply(std::unique_ptr<folly::IOBuf>());
           return true;
         default:
           break;

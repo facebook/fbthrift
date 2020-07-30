@@ -225,8 +225,6 @@ void HeaderServerChannel::HeaderRequest::sendReply(
     }
   } else {
     if (!buf) {
-      // oneway calls are OK do this, but is a bug for twoway.
-      DCHECK(isOneway());
       if (cb) {
         cb->messageSent();
       }
