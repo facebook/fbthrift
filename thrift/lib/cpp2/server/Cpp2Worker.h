@@ -179,7 +179,9 @@ class Cpp2Worker : public wangle::Acceptor,
     }
 
     if (observer) {
-      eventBase->setObserver(observer);
+      eventBase->add([eventBase, observer = std::move(observer)] {
+        eventBase->setObserver(observer);
+      });
     }
   }
 
