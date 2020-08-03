@@ -92,6 +92,15 @@ func (p *ComplexUnion) CountSetFieldsComplexUnion() int {
   if (p.IsSetStringValue()) {
     count++
   }
+  if (p.IsSetIntListValue()) {
+    count++
+  }
+  if (p.IsSetStringListValue()) {
+    count++
+  }
+  if (p.IsSetTypedefValue()) {
+    count++
+  }
   if (p.IsSetStringRef()) {
     count++
   }
@@ -619,6 +628,9 @@ return *p.StringData
 }
 func (p *DataUnion) CountSetFieldsDataUnion() int {
   count := 0
+  if (p.IsSetBinaryData()) {
+    count++
+  }
   if (p.IsSetStringData()) {
     count++
   }

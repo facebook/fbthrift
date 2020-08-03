@@ -1584,11 +1584,10 @@ void t_go_generator::generate_countsetfields_helper(
   indent_up();
   out << indent() << "count := 0" << endl;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    if ((*f_iter)->get_req() == t_field::T_REQUIRED)
+    if ((*f_iter)->get_req() != t_field::T_OPTIONAL &&
+        !is_pointer_field(*f_iter)) {
       continue;
-
-    if (!is_pointer_field(*f_iter))
-      continue;
+    }
 
     const string field_name(publicize(escape_string((*f_iter)->get_name())));
 
