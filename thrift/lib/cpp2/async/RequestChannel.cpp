@@ -188,10 +188,12 @@ void RequestChannel::sendRequestSink(
 }
 
 void RequestChannel::terminateInteraction(int64_t) {
-  LOG(FATAL) << "This channel does not support interactions";
+  folly::terminate_with<std::runtime_error>(
+      "This channel does not support interactions");
 }
 int64_t RequestChannel::getNextInteractionId() {
-  LOG(FATAL) << "This channel does not support interactions";
+  folly::terminate_with<std::runtime_error>(
+      "This channel does not support interactions");
 }
 
 } // namespace thrift
