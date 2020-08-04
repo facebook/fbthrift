@@ -110,7 +110,7 @@ folly::Future<folly::Unit> MyNodeAsyncClient::future_do_mid() {
 
 folly::SemiFuture<folly::Unit> MyNodeAsyncClient::semifuture_do_mid() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_do_mid(rpcOptions);
+  return semifuture_impl_do_mid(rpcOptions);
 }
 
 folly::Future<folly::Unit> MyNodeAsyncClient::future_do_mid(apache::thrift::RpcOptions& rpcOptions) {
@@ -122,6 +122,10 @@ folly::Future<folly::Unit> MyNodeAsyncClient::future_do_mid(apache::thrift::RpcO
 }
 
 folly::SemiFuture<folly::Unit> MyNodeAsyncClient::semifuture_do_mid(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_do_mid(rpcOptions);
+}
+
+folly::SemiFuture<folly::Unit> MyNodeAsyncClient::semifuture_impl_do_mid(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_do_mid, channel_);
   auto callback = std::move(callbackAndFuture.first);
   do_mid(rpcOptions, std::move(callback));

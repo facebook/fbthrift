@@ -163,7 +163,7 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapList(const ::s
 
 folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_mapList(const ::std::map<int32_t, ::std::vector<int32_t>>& foo) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_mapList(rpcOptions, foo);
+  return semifuture_impl_mapList(rpcOptions, foo);
 }
 
 folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::vector<int32_t>>& foo) {
@@ -175,6 +175,10 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapList(apache::t
 }
 
 folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::vector<int32_t>>& foo) {
+  return semifuture_impl_mapList(rpcOptions, foo);
+}
+
+folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_impl_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::vector<int32_t>>& foo) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_mapList, channel_);
   auto callback = std::move(callbackAndFuture.first);
   mapList(rpcOptions, std::move(callback), foo);
@@ -331,7 +335,7 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapSet(const ::st
 
 folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_mapSet(const ::std::map<int32_t, ::std::set<int32_t>>& foo) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_mapSet(rpcOptions, foo);
+  return semifuture_impl_mapSet(rpcOptions, foo);
 }
 
 folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::set<int32_t>>& foo) {
@@ -343,6 +347,10 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapSet(apache::th
 }
 
 folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::set<int32_t>>& foo) {
+  return semifuture_impl_mapSet(rpcOptions, foo);
+}
+
+folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_impl_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::set<int32_t>>& foo) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_mapSet, channel_);
   auto callback = std::move(callbackAndFuture.first);
   mapSet(rpcOptions, std::move(callback), foo);
@@ -499,7 +507,7 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_listMap(const ::s
 
 folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_listMap(const ::std::vector<::std::map<int32_t, int32_t>>& foo) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_listMap(rpcOptions, foo);
+  return semifuture_impl_listMap(rpcOptions, foo);
 }
 
 folly::Future<folly::Unit> NestedContainersAsyncClient::future_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<int32_t, int32_t>>& foo) {
@@ -511,6 +519,10 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_listMap(apache::t
 }
 
 folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<int32_t, int32_t>>& foo) {
+  return semifuture_impl_listMap(rpcOptions, foo);
+}
+
+folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_impl_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<int32_t, int32_t>>& foo) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_listMap, channel_);
   auto callback = std::move(callbackAndFuture.first);
   listMap(rpcOptions, std::move(callback), foo);
@@ -667,7 +679,7 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_listSet(const ::s
 
 folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_listSet(const ::std::vector<::std::set<int32_t>>& foo) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_listSet(rpcOptions, foo);
+  return semifuture_impl_listSet(rpcOptions, foo);
 }
 
 folly::Future<folly::Unit> NestedContainersAsyncClient::future_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<int32_t>>& foo) {
@@ -679,6 +691,10 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_listSet(apache::t
 }
 
 folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<int32_t>>& foo) {
+  return semifuture_impl_listSet(rpcOptions, foo);
+}
+
+folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_impl_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<int32_t>>& foo) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_listSet, channel_);
   auto callback = std::move(callbackAndFuture.first);
   listSet(rpcOptions, std::move(callback), foo);
@@ -835,7 +851,7 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_turtles(const ::s
 
 folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_turtles(const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& foo) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_turtles(rpcOptions, foo);
+  return semifuture_impl_turtles(rpcOptions, foo);
 }
 
 folly::Future<folly::Unit> NestedContainersAsyncClient::future_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& foo) {
@@ -847,6 +863,10 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_turtles(apache::t
 }
 
 folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& foo) {
+  return semifuture_impl_turtles(rpcOptions, foo);
+}
+
+folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_impl_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& foo) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_turtles, channel_);
   auto callback = std::move(callbackAndFuture.first);
   turtles(rpcOptions, std::move(callback), foo);

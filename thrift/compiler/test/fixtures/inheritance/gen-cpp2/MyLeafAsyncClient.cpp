@@ -110,7 +110,7 @@ folly::Future<folly::Unit> MyLeafAsyncClient::future_do_leaf() {
 
 folly::SemiFuture<folly::Unit> MyLeafAsyncClient::semifuture_do_leaf() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_do_leaf(rpcOptions);
+  return semifuture_impl_do_leaf(rpcOptions);
 }
 
 folly::Future<folly::Unit> MyLeafAsyncClient::future_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
@@ -122,6 +122,10 @@ folly::Future<folly::Unit> MyLeafAsyncClient::future_do_leaf(apache::thrift::Rpc
 }
 
 folly::SemiFuture<folly::Unit> MyLeafAsyncClient::semifuture_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_do_leaf(rpcOptions);
+}
+
+folly::SemiFuture<folly::Unit> MyLeafAsyncClient::semifuture_impl_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_do_leaf, channel_);
   auto callback = std::move(callbackAndFuture.first);
   do_leaf(rpcOptions, std::move(callback));

@@ -163,11 +163,15 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
 
 folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_returnstream(int32_t i32_from, int32_t i32_to) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_returnstream(rpcOptions, i32_from, i32_to);
+  return semifuture_impl_returnstream(rpcOptions, i32_from, i32_to);
 }
 
 
 folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t i32_from, int32_t i32_to) {
+  return semifuture_impl_returnstream(rpcOptions, i32_from, i32_to);
+}
+
+folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_impl_returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t i32_from, int32_t i32_to) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_returnstream, channel_);
   auto callback = std::move(callbackAndFuture.first);
   returnstream(rpcOptions, std::move(callback), i32_from, i32_to);
@@ -316,11 +320,15 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
 
 folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_streamthrows(int32_t foo) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_streamthrows(rpcOptions, foo);
+  return semifuture_impl_streamthrows(rpcOptions, foo);
 }
 
 
 folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo) {
+  return semifuture_impl_streamthrows(rpcOptions, foo);
+}
+
+folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_impl_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_streamthrows, channel_);
   auto callback = std::move(callbackAndFuture.first);
   streamthrows(rpcOptions, std::move(callback), foo);
@@ -469,11 +477,15 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
 
 folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_boththrows(int32_t foo) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_boththrows(rpcOptions, foo);
+  return semifuture_impl_boththrows(rpcOptions, foo);
 }
 
 
 folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo) {
+  return semifuture_impl_boththrows(rpcOptions, foo);
+}
+
+folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_impl_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_boththrows, channel_);
   auto callback = std::move(callbackAndFuture.first);
   boththrows(rpcOptions, std::move(callback), foo);
@@ -622,11 +634,15 @@ apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t> PubSubStreaming
 
 folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> PubSubStreamingServiceAsyncClient::semifuture_responseandstreamthrows(int32_t foo) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_responseandstreamthrows(rpcOptions, foo);
+  return semifuture_impl_responseandstreamthrows(rpcOptions, foo);
 }
 
 
 folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> PubSubStreamingServiceAsyncClient::semifuture_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo) {
+  return semifuture_impl_responseandstreamthrows(rpcOptions, foo);
+}
+
+folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> PubSubStreamingServiceAsyncClient::semifuture_impl_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_responseandstreamthrows, channel_);
   auto callback = std::move(callbackAndFuture.first);
   responseandstreamthrows(rpcOptions, std::move(callback), foo);

@@ -434,7 +434,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_get() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_get() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_get(rpcOptions);
+  return semifuture_impl_get(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_get(apache::thrift::RpcOptions& rpcOptions) {
@@ -446,6 +446,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_get(apache:
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_get(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_get(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_get(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_get, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get(rpcOptions, std::move(callback));
@@ -604,7 +608,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_getter() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_getter() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_getter(rpcOptions);
+  return semifuture_impl_getter(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_getter(apache::thrift::RpcOptions& rpcOptions) {
@@ -616,6 +620,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_getter(apac
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_getter(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_getter(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_getter(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_getter, channel_);
   auto callback = std::move(callbackAndFuture.first);
   getter(rpcOptions, std::move(callback));
@@ -774,7 +782,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_lists() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_lists() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_lists(rpcOptions);
+  return semifuture_impl_lists(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_lists(apache::thrift::RpcOptions& rpcOptions) {
@@ -786,6 +794,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_lists(apach
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_lists(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_lists(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_lists(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_lists, channel_);
   auto callback = std::move(callbackAndFuture.first);
   lists(rpcOptions, std::move(callback));
@@ -944,7 +956,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_maps() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_maps() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_maps(rpcOptions);
+  return semifuture_impl_maps(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_maps(apache::thrift::RpcOptions& rpcOptions) {
@@ -956,6 +968,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_maps(apache
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_maps(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_maps(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_maps(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_maps, channel_);
   auto callback = std::move(callbackAndFuture.first);
   maps(rpcOptions, std::move(callback));
@@ -1114,7 +1130,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_name() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_name() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_name(rpcOptions);
+  return semifuture_impl_name(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_name(apache::thrift::RpcOptions& rpcOptions) {
@@ -1126,6 +1142,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_name(apache
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_name(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_name(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_name(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_name, channel_);
   auto callback = std::move(callbackAndFuture.first);
   name(rpcOptions, std::move(callback));
@@ -1284,7 +1304,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_name_to_val
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_name_to_value() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_name_to_value(rpcOptions);
+  return semifuture_impl_name_to_value(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_name_to_value(apache::thrift::RpcOptions& rpcOptions) {
@@ -1296,6 +1316,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_name_to_val
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_name_to_value(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_name_to_value(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_name_to_value(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_name_to_value, channel_);
   auto callback = std::move(callbackAndFuture.first);
   name_to_value(rpcOptions, std::move(callback));
@@ -1454,7 +1478,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_names() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_names() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_names(rpcOptions);
+  return semifuture_impl_names(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_names(apache::thrift::RpcOptions& rpcOptions) {
@@ -1466,6 +1490,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_names(apach
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_names(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_names(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_names(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_names, channel_);
   auto callback = std::move(callbackAndFuture.first);
   names(rpcOptions, std::move(callback));
@@ -1624,7 +1652,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_prefix_tree
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_prefix_tree() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_prefix_tree(rpcOptions);
+  return semifuture_impl_prefix_tree(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_prefix_tree(apache::thrift::RpcOptions& rpcOptions) {
@@ -1636,6 +1664,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_prefix_tree
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_prefix_tree(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_prefix_tree(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_prefix_tree(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_prefix_tree, channel_);
   auto callback = std::move(callbackAndFuture.first);
   prefix_tree(rpcOptions, std::move(callback));
@@ -1794,7 +1826,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_sets() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_sets() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_sets(rpcOptions);
+  return semifuture_impl_sets(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_sets(apache::thrift::RpcOptions& rpcOptions) {
@@ -1806,6 +1838,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_sets(apache
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_sets(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_sets(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_sets(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_sets, channel_);
   auto callback = std::move(callbackAndFuture.first);
   sets(rpcOptions, std::move(callback));
@@ -1964,7 +2000,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_setter() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_setter() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_setter(rpcOptions);
+  return semifuture_impl_setter(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_setter(apache::thrift::RpcOptions& rpcOptions) {
@@ -1976,6 +2012,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_setter(apac
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_setter(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_setter(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_setter(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_setter, channel_);
   auto callback = std::move(callbackAndFuture.first);
   setter(rpcOptions, std::move(callback));
@@ -2134,7 +2174,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_str() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_str() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_str(rpcOptions);
+  return semifuture_impl_str(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_str(apache::thrift::RpcOptions& rpcOptions) {
@@ -2146,6 +2186,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_str(apache:
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_str(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_str(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_str(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_str, channel_);
   auto callback = std::move(callbackAndFuture.first);
   str(rpcOptions, std::move(callback));
@@ -2304,7 +2348,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_strings() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_strings() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_strings(rpcOptions);
+  return semifuture_impl_strings(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_strings(apache::thrift::RpcOptions& rpcOptions) {
@@ -2316,6 +2360,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_strings(apa
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_strings(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_strings(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_strings(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_strings, channel_);
   auto callback = std::move(callbackAndFuture.first);
   strings(rpcOptions, std::move(callback));
@@ -2474,7 +2522,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_type() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_type() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_type(rpcOptions);
+  return semifuture_impl_type(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_type(apache::thrift::RpcOptions& rpcOptions) {
@@ -2486,6 +2534,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_type(apache
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_type(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_type(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_type(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_type, channel_);
   auto callback = std::move(callbackAndFuture.first);
   type(rpcOptions, std::move(callback));
@@ -2644,7 +2696,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_value() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_value() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_value(rpcOptions);
+  return semifuture_impl_value(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_value(apache::thrift::RpcOptions& rpcOptions) {
@@ -2656,6 +2708,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_value(apach
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_value(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_value(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_value(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_value, channel_);
   auto callback = std::move(callbackAndFuture.first);
   value(rpcOptions, std::move(callback));
@@ -2814,7 +2870,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_value_to_na
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_value_to_name() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_value_to_name(rpcOptions);
+  return semifuture_impl_value_to_name(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_value_to_name(apache::thrift::RpcOptions& rpcOptions) {
@@ -2826,6 +2882,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_value_to_na
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_value_to_name(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_value_to_name(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_value_to_name(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_value_to_name, channel_);
   auto callback = std::move(callbackAndFuture.first);
   value_to_name(rpcOptions, std::move(callback));
@@ -2984,7 +3044,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_values() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_values() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_values(rpcOptions);
+  return semifuture_impl_values(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_values(apache::thrift::RpcOptions& rpcOptions) {
@@ -2996,6 +3056,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_values(apac
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_values(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_values(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_values(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_values, channel_);
   auto callback = std::move(callbackAndFuture.first);
   values(rpcOptions, std::move(callback));
@@ -3154,7 +3218,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_id() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_id() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_id(rpcOptions);
+  return semifuture_impl_id(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_id(apache::thrift::RpcOptions& rpcOptions) {
@@ -3166,6 +3230,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_id(apache::
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_id(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_id(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_id(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_id, channel_);
   auto callback = std::move(callbackAndFuture.first);
   id(rpcOptions, std::move(callback));
@@ -3324,7 +3392,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_ids() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_ids() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_ids(rpcOptions);
+  return semifuture_impl_ids(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_ids(apache::thrift::RpcOptions& rpcOptions) {
@@ -3336,6 +3404,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_ids(apache:
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_ids(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_ids(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_ids(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_ids, channel_);
   auto callback = std::move(callbackAndFuture.first);
   ids(rpcOptions, std::move(callback));
@@ -3494,7 +3566,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_descriptor(
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_descriptor() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_descriptor(rpcOptions);
+  return semifuture_impl_descriptor(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_descriptor(apache::thrift::RpcOptions& rpcOptions) {
@@ -3506,6 +3578,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_descriptor(
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_descriptor(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_descriptor(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_descriptor(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_descriptor, channel_);
   auto callback = std::move(callbackAndFuture.first);
   descriptor(rpcOptions, std::move(callback));
@@ -3664,7 +3740,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_descriptors
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_descriptors() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_descriptors(rpcOptions);
+  return semifuture_impl_descriptors(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_descriptors(apache::thrift::RpcOptions& rpcOptions) {
@@ -3676,6 +3752,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_descriptors
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_descriptors(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_descriptors(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_descriptors(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_descriptors, channel_);
   auto callback = std::move(callbackAndFuture.first);
   descriptors(rpcOptions, std::move(callback));
@@ -3834,7 +3914,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_key() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_key() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_key(rpcOptions);
+  return semifuture_impl_key(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_key(apache::thrift::RpcOptions& rpcOptions) {
@@ -3846,6 +3926,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_key(apache:
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_key(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_key(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_key(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_key, channel_);
   auto callback = std::move(callbackAndFuture.first);
   key(rpcOptions, std::move(callback));
@@ -4004,7 +4088,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_keys() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_keys() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_keys(rpcOptions);
+  return semifuture_impl_keys(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_keys(apache::thrift::RpcOptions& rpcOptions) {
@@ -4016,6 +4100,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_keys(apache
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_keys(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_keys(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_keys(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_keys, channel_);
   auto callback = std::move(callbackAndFuture.first);
   keys(rpcOptions, std::move(callback));
@@ -4174,7 +4262,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_annotation(
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_annotation() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_annotation(rpcOptions);
+  return semifuture_impl_annotation(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_annotation(apache::thrift::RpcOptions& rpcOptions) {
@@ -4186,6 +4274,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_annotation(
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_annotation(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_annotation(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_annotation(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_annotation, channel_);
   auto callback = std::move(callbackAndFuture.first);
   annotation(rpcOptions, std::move(callback));
@@ -4344,7 +4436,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_annotations
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_annotations() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_annotations(rpcOptions);
+  return semifuture_impl_annotations(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_annotations(apache::thrift::RpcOptions& rpcOptions) {
@@ -4356,6 +4448,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_annotations
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_annotations(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_annotations(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_annotations(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_annotations, channel_);
   auto callback = std::move(callbackAndFuture.first);
   annotations(rpcOptions, std::move(callback));
@@ -4514,7 +4610,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_member() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_member() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_member(rpcOptions);
+  return semifuture_impl_member(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_member(apache::thrift::RpcOptions& rpcOptions) {
@@ -4526,6 +4622,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_member(apac
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_member(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_member(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_member(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_member, channel_);
   auto callback = std::move(callbackAndFuture.first);
   member(rpcOptions, std::move(callback));
@@ -4684,7 +4784,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_members() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_members() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_members(rpcOptions);
+  return semifuture_impl_members(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_members(apache::thrift::RpcOptions& rpcOptions) {
@@ -4696,6 +4796,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_members(apa
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_members(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_members(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_members(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_members, channel_);
   auto callback = std::move(callbackAndFuture.first);
   members(rpcOptions, std::move(callback));
@@ -4854,7 +4958,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_field() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_field() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_field(rpcOptions);
+  return semifuture_impl_field(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_field(apache::thrift::RpcOptions& rpcOptions) {
@@ -4866,6 +4970,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_field(apach
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_field(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_field(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_field(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_field, channel_);
   auto callback = std::move(callbackAndFuture.first);
   field(rpcOptions, std::move(callback));
@@ -5024,7 +5132,7 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_fields() {
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_fields() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_fields(rpcOptions);
+  return semifuture_impl_fields(rpcOptions);
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_fields(apache::thrift::RpcOptions& rpcOptions) {
@@ -5036,6 +5144,10 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_fields(apac
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_fields(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_fields(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_impl_fields(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_fields, channel_);
   auto callback = std::move(callbackAndFuture.first);
   fields(rpcOptions, std::move(callback));

@@ -110,7 +110,7 @@ folly::Future<folly::Unit> MyServicePrioChildAsyncClient::future_pang() {
 
 folly::SemiFuture<folly::Unit> MyServicePrioChildAsyncClient::semifuture_pang() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_pang(rpcOptions);
+  return semifuture_impl_pang(rpcOptions);
 }
 
 folly::Future<folly::Unit> MyServicePrioChildAsyncClient::future_pang(apache::thrift::RpcOptions& rpcOptions) {
@@ -122,6 +122,10 @@ folly::Future<folly::Unit> MyServicePrioChildAsyncClient::future_pang(apache::th
 }
 
 folly::SemiFuture<folly::Unit> MyServicePrioChildAsyncClient::semifuture_pang(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_pang(rpcOptions);
+}
+
+folly::SemiFuture<folly::Unit> MyServicePrioChildAsyncClient::semifuture_impl_pang(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_pang, channel_);
   auto callback = std::move(callbackAndFuture.first);
   pang(rpcOptions, std::move(callback));

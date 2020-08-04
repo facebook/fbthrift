@@ -46,6 +46,9 @@
   virtual folly::Future<<% > types/service_type_semi%>> future_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
 <%/type:streamresponse?%>
   virtual folly::SemiFuture<<% > types/service_type_semi%>> semifuture_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
+private:
+  folly::SemiFuture<<% > types/service_type_semi%>> semifuture_impl_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
+public:
 <%^function:oneway?%>
 <%^type:streamresponse?%>
   virtual folly::Future<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
@@ -60,21 +63,22 @@
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<<% > types/service_type_coro%>> co_<%function:cpp_name%>(<% > service_common/function_param_list_const%>) {
+    ::apache::thrift::RpcOptions rpcOptions;
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
       <%#type:void?%>
-      co_await folly::coro::detachOnCancel(semifuture_<%function:cpp_name%>(<% > service_common/param_list%>));
+      co_await folly::coro::detachOnCancel(semifuture_impl_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>));
       <%/type:void?%>
       <%^type:void?%>
-      co_return co_await folly::coro::detachOnCancel(semifuture_<%function:cpp_name%>(<% > service_common/param_list%>));
+      co_return co_await folly::coro::detachOnCancel(semifuture_impl_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>));
       <%/type:void?%>
     } else {
       <%#type:void?%>
-      co_await semifuture_<%function:cpp_name%>(<% > service_common/param_list%>);
+      co_await semifuture_impl_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
       <%/type:void?%>
       <%^type:void?%>
-      co_return co_await semifuture_<%function:cpp_name%>(<% > service_common/param_list%>);
+      co_return co_await semifuture_impl_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
       <%/type:void?%>
     }
   }
@@ -84,17 +88,17 @@
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
       <%#type:void?%>
-      co_await folly::coro::detachOnCancel(semifuture_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>));
+      co_await folly::coro::detachOnCancel(semifuture_impl_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>));
       <%/type:void?%>
       <%^type:void?%>
-      co_return co_await folly::coro::detachOnCancel(semifuture_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>));
+      co_return co_await folly::coro::detachOnCancel(semifuture_impl_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>));
       <%/type:void?%>
     } else {
       <%#type:void?%>
-      co_await semifuture_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
+      co_await semifuture_impl_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
       <%/type:void?%>
       <%^type:void?%>
-      co_return co_await semifuture_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
+      co_return co_await semifuture_impl_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
       <%/type:void?%>
     }
   }

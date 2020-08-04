@@ -179,7 +179,7 @@ folly::Future<folly::Unit> service1AsyncClient::future_method1() {
 
 folly::SemiFuture<folly::Unit> service1AsyncClient::semifuture_method1() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_method1(rpcOptions);
+  return semifuture_impl_method1(rpcOptions);
 }
 
 folly::Future<folly::Unit> service1AsyncClient::future_method1(apache::thrift::RpcOptions& rpcOptions) {
@@ -191,6 +191,10 @@ folly::Future<folly::Unit> service1AsyncClient::future_method1(apache::thrift::R
 }
 
 folly::SemiFuture<folly::Unit> service1AsyncClient::semifuture_method1(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_method1(rpcOptions);
+}
+
+folly::SemiFuture<folly::Unit> service1AsyncClient::semifuture_impl_method1(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_method1, channel_);
   auto callback = std::move(callbackAndFuture.first);
   method1(rpcOptions, std::move(callback));
@@ -347,7 +351,7 @@ folly::Future<folly::Unit> service1AsyncClient::future_method2(int32_t x, const 
 
 folly::SemiFuture<folly::Unit> service1AsyncClient::semifuture_method2(int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_method2(rpcOptions, x, y, z);
+  return semifuture_impl_method2(rpcOptions, x, y, z);
 }
 
 folly::Future<folly::Unit> service1AsyncClient::future_method2(apache::thrift::RpcOptions& rpcOptions, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
@@ -359,6 +363,10 @@ folly::Future<folly::Unit> service1AsyncClient::future_method2(apache::thrift::R
 }
 
 folly::SemiFuture<folly::Unit> service1AsyncClient::semifuture_method2(apache::thrift::RpcOptions& rpcOptions, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
+  return semifuture_impl_method2(rpcOptions, x, y, z);
+}
+
+folly::SemiFuture<folly::Unit> service1AsyncClient::semifuture_impl_method2(apache::thrift::RpcOptions& rpcOptions, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_method2, channel_);
   auto callback = std::move(callbackAndFuture.first);
   method2(rpcOptions, std::move(callback), x, y, z);
@@ -515,7 +523,7 @@ folly::Future<int32_t> service1AsyncClient::future_method3() {
 
 folly::SemiFuture<int32_t> service1AsyncClient::semifuture_method3() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_method3(rpcOptions);
+  return semifuture_impl_method3(rpcOptions);
 }
 
 folly::Future<int32_t> service1AsyncClient::future_method3(apache::thrift::RpcOptions& rpcOptions) {
@@ -527,6 +535,10 @@ folly::Future<int32_t> service1AsyncClient::future_method3(apache::thrift::RpcOp
 }
 
 folly::SemiFuture<int32_t> service1AsyncClient::semifuture_method3(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_method3(rpcOptions);
+}
+
+folly::SemiFuture<int32_t> service1AsyncClient::semifuture_impl_method3(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_method3, channel_);
   auto callback = std::move(callbackAndFuture.first);
   method3(rpcOptions, std::move(callback));
@@ -685,7 +697,7 @@ folly::Future<int32_t> service1AsyncClient::future_method4(int32_t i, const  ::t
 
 folly::SemiFuture<int32_t> service1AsyncClient::semifuture_method4(int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_method4(rpcOptions, i, j, k);
+  return semifuture_impl_method4(rpcOptions, i, j, k);
 }
 
 folly::Future<int32_t> service1AsyncClient::future_method4(apache::thrift::RpcOptions& rpcOptions, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
@@ -697,6 +709,10 @@ folly::Future<int32_t> service1AsyncClient::future_method4(apache::thrift::RpcOp
 }
 
 folly::SemiFuture<int32_t> service1AsyncClient::semifuture_method4(apache::thrift::RpcOptions& rpcOptions, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
+  return semifuture_impl_method4(rpcOptions, i, j, k);
+}
+
+folly::SemiFuture<int32_t> service1AsyncClient::semifuture_impl_method4(apache::thrift::RpcOptions& rpcOptions, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_method4, channel_);
   auto callback = std::move(callbackAndFuture.first);
   method4(rpcOptions, std::move(callback), i, j, k);
@@ -855,7 +871,7 @@ folly::Future< ::test_cpp2::cpp_reflection::struct2> service1AsyncClient::future
 
 folly::SemiFuture< ::test_cpp2::cpp_reflection::struct2> service1AsyncClient::semifuture_method5() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_method5(rpcOptions);
+  return semifuture_impl_method5(rpcOptions);
 }
 
 folly::Future< ::test_cpp2::cpp_reflection::struct2> service1AsyncClient::future_method5(apache::thrift::RpcOptions& rpcOptions) {
@@ -867,6 +883,10 @@ folly::Future< ::test_cpp2::cpp_reflection::struct2> service1AsyncClient::future
 }
 
 folly::SemiFuture< ::test_cpp2::cpp_reflection::struct2> service1AsyncClient::semifuture_method5(apache::thrift::RpcOptions& rpcOptions) {
+  return semifuture_impl_method5(rpcOptions);
+}
+
+folly::SemiFuture< ::test_cpp2::cpp_reflection::struct2> service1AsyncClient::semifuture_impl_method5(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_method5, channel_);
   auto callback = std::move(callbackAndFuture.first);
   method5(rpcOptions, std::move(callback));
@@ -1023,7 +1043,7 @@ folly::Future< ::test_cpp2::cpp_reflection::struct2> service1AsyncClient::future
 
 folly::SemiFuture< ::test_cpp2::cpp_reflection::struct2> service1AsyncClient::semifuture_method6(int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_method6(rpcOptions, l, m, n);
+  return semifuture_impl_method6(rpcOptions, l, m, n);
 }
 
 folly::Future< ::test_cpp2::cpp_reflection::struct2> service1AsyncClient::future_method6(apache::thrift::RpcOptions& rpcOptions, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {
@@ -1035,6 +1055,10 @@ folly::Future< ::test_cpp2::cpp_reflection::struct2> service1AsyncClient::future
 }
 
 folly::SemiFuture< ::test_cpp2::cpp_reflection::struct2> service1AsyncClient::semifuture_method6(apache::thrift::RpcOptions& rpcOptions, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {
+  return semifuture_impl_method6(rpcOptions, l, m, n);
+}
+
+folly::SemiFuture< ::test_cpp2::cpp_reflection::struct2> service1AsyncClient::semifuture_impl_method6(apache::thrift::RpcOptions& rpcOptions, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_method6, channel_);
   auto callback = std::move(callbackAndFuture.first);
   method6(rpcOptions, std::move(callback), l, m, n);
