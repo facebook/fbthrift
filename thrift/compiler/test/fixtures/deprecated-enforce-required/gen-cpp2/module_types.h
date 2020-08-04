@@ -56,6 +56,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   Foo(const Foo&) = default;
 
+
   Foo& operator=(Foo&&) = default;
 
   Foo& operator=(const Foo&) = default;

@@ -237,6 +237,36 @@ struct apache_thrift_fixtures_types_module__struct_unique_member_pod_list {
     T_apache_thrift_fixtures_types_module_struct_member_pod MyMapEnumAndInt;
   };
 
+  template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
+
+  struct apache_thrift_fixtures_types_module_struct_member_pod_aa_list {
+    T_apache_thrift_fixtures_types_module_struct_member_pod aa_list;
+  };
+
+  template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
+
+  struct apache_thrift_fixtures_types_module_struct_member_pod_aa_set {
+    T_apache_thrift_fixtures_types_module_struct_member_pod aa_set;
+  };
+
+  template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
+
+  struct apache_thrift_fixtures_types_module_struct_member_pod_aa_map {
+    T_apache_thrift_fixtures_types_module_struct_member_pod aa_map;
+  };
+
+  template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
+
+  struct apache_thrift_fixtures_types_module_struct_member_pod_aa_string {
+    T_apache_thrift_fixtures_types_module_struct_member_pod aa_string;
+  };
+
+  template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
+
+  struct apache_thrift_fixtures_types_module_struct_member_pod_not_a_container {
+    T_apache_thrift_fixtures_types_module_struct_member_pod not_a_container;
+  };
+
 };
 
 class decorated_struct_apache_thrift_fixtures_types_module__struct_unique_annotations {
@@ -2058,6 +2088,176 @@ struct NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_uni
   >;
 };
 
+class AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations {
+  class AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations_members {
+    class AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations_members_aa_list {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    class AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations_members_aa_set {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    class AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations_members_aa_map {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    class AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations_members_aa_string {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    class AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations_members_not_a_container {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    public:
+    using aa_list = ::apache::thrift::reflected_annotations<AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations_members_aa_list>;
+    using aa_set = ::apache::thrift::reflected_annotations<AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations_members_aa_set>;
+    using aa_map = ::apache::thrift::reflected_annotations<AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations_members_aa_map>;
+    using aa_string = ::apache::thrift::reflected_annotations<AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations_members_aa_string>;
+    using not_a_container = ::apache::thrift::reflected_annotations<AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations_members_not_a_container>;
+  };
+
+  class annotations {
+    struct annotations__unique_annotations_keys {
+      using cpp_allocator = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::cpp_allocator;
+    };
+
+    struct annotations__unique_annotations_values {
+      using cpp_allocator = ::fatal::sequence<char, 's', 'o', 'm', 'e', '_', 'a', 'l', 'l', 'o', 'c', 'a', 't', 'o', 'r'>;
+    };
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::list<
+      ::apache::thrift::annotation<
+        keys::cpp_allocator,
+        values::cpp_allocator
+      >
+    >;
+  };
+
+  public:
+  using keys = annotations::keys;
+  using values = annotations::values;
+  using map = annotations::map;
+  using members = AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations_members;
+};
+
+struct AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_member_info_list {
+  using aa_list = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::aa_list,
+    ::std::vector<int32_t>,
+    1,
+    ::apache::thrift::optionality::required_of_writer,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::tag::aa_list
+      >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::aa_list
+    >,
+    ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_aa_list,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations::members::aa_list>,
+    AllocatorAware
+  >;
+  using aa_set = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::aa_set,
+    ::std::set<int32_t>,
+    2,
+    ::apache::thrift::optionality::required_of_writer,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::tag::aa_set
+      >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::aa_set
+    >,
+    ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_aa_set,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations::members::aa_set>,
+    AllocatorAware
+  >;
+  using aa_map = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::aa_map,
+    ::std::map<int32_t, int32_t>,
+    3,
+    ::apache::thrift::optionality::required_of_writer,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::tag::aa_map
+      >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::aa_map
+    >,
+    ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_aa_map,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations::members::aa_map>,
+    AllocatorAware
+  >;
+  using aa_string = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::aa_string,
+    ::std::string,
+    4,
+    ::apache::thrift::optionality::required_of_writer,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::tag::aa_string
+      >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::aa_string
+    >,
+    ::apache::thrift::type_class::string,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_aa_string,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations::members::aa_string>,
+    AllocatorAware
+  >;
+  using not_a_container = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::not_a_container,
+    int32_t,
+    5,
+    ::apache::thrift::optionality::required_of_writer,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::tag::not_a_container
+      >
+    >,
+    ::apache::thrift::detail::invoke_reffer<
+      ::apache::thrift::tag::not_a_container
+    >,
+    ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_not_a_container,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations::members::not_a_container>,
+    AllocatorAware
+  >;
+};
+
 
 
 } // thrift_fatal_impl_detail
@@ -2366,6 +2566,24 @@ THRIFT_REGISTER_STRUCT_TRAITS(
     module_tags::module,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(4890647338471635948ull)
+  >
+);
+THRIFT_REGISTER_STRUCT_TRAITS(
+  AllocatorAware,
+  thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::AllocatorAware,
+  thrift_fatal_impl_detail::AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_member_info_list,
+  ::fatal::list<
+      thrift_fatal_impl_detail::AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_member_info_list::aa_list,
+      thrift_fatal_impl_detail::AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_member_info_list::aa_set,
+      thrift_fatal_impl_detail::AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_member_info_list::aa_map,
+      thrift_fatal_impl_detail::AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_member_info_list::aa_string,
+      thrift_fatal_impl_detail::AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_member_info_list::not_a_container
+  >,
+  thrift_fatal_impl_detail::AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations::members,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(5560513471192516556ull)
   >
 );
 

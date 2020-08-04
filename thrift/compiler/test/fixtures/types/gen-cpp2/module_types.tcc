@@ -190,6 +190,13 @@ struct TccStructTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion> {
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
+template <>
+struct TccStructTraits<::apache::thrift::fixtures::types::AllocatorAware> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
 
 } // namespace detail
 } // namespace thrift
@@ -3442,5 +3449,248 @@ extern template void NoExceptMoveUnion::readNoXfer<>(apache::thrift::CompactProt
 extern template uint32_t NoExceptMoveUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t NoExceptMoveUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t NoExceptMoveUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+template <class Protocol_>
+void AllocatorAware::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_LIST))) {
+    goto _loop;
+  }
+_readField_aa_list:
+  {
+    _readState.beforeSubobject(iprot);
+    
+    this->aa_list = ::std::vector<int32_t>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, this->aa_list);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    this->__isset.aa_list = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
+    _readState.afterSubobject(iprot);
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          2,
+          apache::thrift::protocol::T_SET))) {
+    goto _loop;
+  }
+_readField_aa_set:
+  {
+    _readState.beforeSubobject(iprot);
+    
+    this->aa_set = ::std::set<int32_t>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::read(*iprot, this->aa_set);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    this->__isset.aa_set = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
+    _readState.afterSubobject(iprot);
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          2,
+          3,
+          apache::thrift::protocol::T_MAP))) {
+    goto _loop;
+  }
+_readField_aa_map:
+  {
+    _readState.beforeSubobject(iprot);
+    
+    this->aa_map = ::std::map<int32_t, int32_t>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::map<int32_t, int32_t>>::read(*iprot, this->aa_map);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    this->__isset.aa_map = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
+    _readState.afterSubobject(iprot);
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          3,
+          4,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_aa_string:
+  {
+    
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->aa_string);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    this->__isset.aa_string = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          4,
+          5,
+          apache::thrift::protocol::T_I32))) {
+    goto _loop;
+  }
+_readField_not_a_container:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->not_a_container, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    this->__isset.not_a_container = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          5,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  _readState.afterAdvanceFailure(iprot);
+  if (_readState.atStop()) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<AllocatorAware>>();
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_LIST))) {
+        goto _readField_aa_list;
+      } else {
+        goto _skip;
+      }
+    }
+    case 2:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_SET))) {
+        goto _readField_aa_set;
+      } else {
+        goto _skip;
+      }
+    }
+    case 3:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_MAP))) {
+        goto _readField_aa_map;
+      } else {
+        goto _skip;
+      }
+    }
+    case 4:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
+        goto _readField_aa_string;
+      } else {
+        goto _skip;
+      }
+    }
+    case 5:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
+        goto _readField_not_a_container;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      _readState.skip(iprot);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t AllocatorAware::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("AllocatorAware");
+  xfer += prot_->serializedFieldSize("aa_list", apache::thrift::protocol::T_LIST, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::serializedSize<false>(*prot_, this->aa_list);
+  xfer += prot_->serializedFieldSize("aa_set", apache::thrift::protocol::T_SET, 2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::serializedSize<false>(*prot_, this->aa_set);
+  xfer += prot_->serializedFieldSize("aa_map", apache::thrift::protocol::T_MAP, 3);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::map<int32_t, int32_t>>::serializedSize<false>(*prot_, this->aa_map);
+  xfer += prot_->serializedFieldSize("aa_string", apache::thrift::protocol::T_STRING, 4);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->aa_string);
+  xfer += prot_->serializedFieldSize("not_a_container", apache::thrift::protocol::T_I32, 5);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->not_a_container);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t AllocatorAware::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("AllocatorAware");
+  xfer += prot_->serializedFieldSize("aa_list", apache::thrift::protocol::T_LIST, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::serializedSize<false>(*prot_, this->aa_list);
+  xfer += prot_->serializedFieldSize("aa_set", apache::thrift::protocol::T_SET, 2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::serializedSize<false>(*prot_, this->aa_set);
+  xfer += prot_->serializedFieldSize("aa_map", apache::thrift::protocol::T_MAP, 3);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::map<int32_t, int32_t>>::serializedSize<false>(*prot_, this->aa_map);
+  xfer += prot_->serializedFieldSize("aa_string", apache::thrift::protocol::T_STRING, 4);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->aa_string);
+  xfer += prot_->serializedFieldSize("not_a_container", apache::thrift::protocol::T_I32, 5);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->not_a_container);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t AllocatorAware::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("AllocatorAware");
+  xfer += prot_->writeFieldBegin("aa_list", apache::thrift::protocol::T_LIST, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::write(*prot_, this->aa_list);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("aa_set", apache::thrift::protocol::T_SET, 2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::write(*prot_, this->aa_set);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("aa_map", apache::thrift::protocol::T_MAP, 3);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::map<int32_t, int32_t>>::write(*prot_, this->aa_map);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("aa_string", apache::thrift::protocol::T_STRING, 4);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->aa_string);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("not_a_container", apache::thrift::protocol::T_I32, 5);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->not_a_container);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+extern template void AllocatorAware::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t AllocatorAware::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t AllocatorAware::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t AllocatorAware::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void AllocatorAware::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t AllocatorAware::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t AllocatorAware::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t AllocatorAware::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}}} // apache::thrift::fixtures::types

@@ -144,6 +144,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   ModuleA(const ModuleA&) = default;
 
+
   ModuleA& operator=(ModuleA&&) = default;
 
   ModuleA& operator=(const ModuleA&) = default;
@@ -441,6 +442,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ModuleB(ModuleB&&) = default;
 
   ModuleB(const ModuleB&) = default;
+
 
   ModuleB& operator=(ModuleB&&) = default;
 

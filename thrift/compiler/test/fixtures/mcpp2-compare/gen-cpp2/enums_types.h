@@ -243,6 +243,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   SomeStruct(const SomeStruct&) = default;
 
+
   SomeStruct& operator=(SomeStruct&&) = default;
 
   SomeStruct& operator=(const SomeStruct&) = default;

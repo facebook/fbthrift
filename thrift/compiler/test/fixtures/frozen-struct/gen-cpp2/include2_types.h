@@ -61,6 +61,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   IncludedB(const IncludedB&) = default;
 
+
   IncludedB& operator=(IncludedB&&) = default;
 
   IncludedB& operator=(const IncludedB&) = default;

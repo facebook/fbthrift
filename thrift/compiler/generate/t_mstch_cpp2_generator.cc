@@ -455,6 +455,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:no_getters_setters?", &mstch_cpp2_type::no_getters_setters},
             {"type:fatal_type_class", &mstch_cpp2_type::fatal_type_class},
             {"type:program_name", &mstch_cpp2_type::program_name},
+            {"type:cpp_use_allocator?", &mstch_cpp2_type::cpp_use_allocator},
         });
   }
   std::string get_type_namespace(t_program const* program) override {
@@ -517,6 +518,9 @@ class mstch_cpp2_type : public mstch_type {
   mstch::node cpp_declare_equal_to() {
     return resolved_type_->annotations_.count("cpp.declare_equal_to") ||
         resolved_type_->annotations_.count("cpp2.declare_equal_to");
+  }
+  mstch::node cpp_use_allocator() {
+    return type_->annotations_.count("cpp.use_allocator") != 0;
   }
   mstch::node is_non_empty_struct() {
     if (resolved_type_->is_struct() || resolved_type_->is_xception()) {
@@ -776,6 +780,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:mixin_fields", &mstch_cpp2_struct::mixin_fields},
             {"struct:num_union_members",
              &mstch_cpp2_struct::get_num_union_members},
+            {"struct:cpp_allocator", &mstch_cpp2_struct::cpp_allocator},
         });
   }
   mstch::node filtered_fields() {
@@ -878,6 +883,12 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node message() {
     if (strct_->annotations_.count("message")) {
       return strct_->annotations_.at("message");
+    }
+    return std::string();
+  }
+  mstch::node cpp_allocator() {
+    if (strct_->annotations_.count("cpp.allocator")) {
+      return strct_->annotations_.at("cpp.allocator");
     }
     return std::string();
   }

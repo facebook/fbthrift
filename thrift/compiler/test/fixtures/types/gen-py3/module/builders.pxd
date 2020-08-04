@@ -129,3 +129,11 @@ cdef class NoExceptMoveUnion_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint i32_field
 
 
+cdef class AllocatorAware_Builder(thrift.py3.builder.StructBuilder):
+    cdef public list aa_list
+    cdef public set aa_set
+    cdef public dict aa_map
+    cdef public str aa_string
+    cdef public pint not_a_container
+
+

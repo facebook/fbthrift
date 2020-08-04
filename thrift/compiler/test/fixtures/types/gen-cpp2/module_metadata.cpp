@@ -514,6 +514,31 @@ void StructMetadata<::apache::thrift::fixtures::types::NoExceptMoveUnion>::gen(T
     module_NoExceptMoveUnion.fields.push_back(std::move(field));
   }
 }
+void StructMetadata<::apache::thrift::fixtures::types::AllocatorAware>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.AllocatorAware", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_AllocatorAware = res.first->second;
+  module_AllocatorAware.name = "module.AllocatorAware";
+  module_AllocatorAware.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_AllocatorAware_fields[] = {
+    std::make_tuple(1, "aa_list", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))),
+    std::make_tuple(2, "aa_set", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))),
+    std::make_tuple(3, "aa_map", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))),
+    std::make_tuple(4, "aa_string", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(5, "not_a_container", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
+  };
+  for (const auto& f : module_AllocatorAware_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
+    module_AllocatorAware.fields.push_back(std::move(field));
+  }
+}
 
 void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_bounce_map(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;

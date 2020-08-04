@@ -117,6 +117,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   containerStruct2(const containerStruct2&) = default;
 
+
   containerStruct2& operator=(containerStruct2&&) = default;
 
   containerStruct2& operator=(const containerStruct2&) = default;

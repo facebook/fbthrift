@@ -88,6 +88,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   Mixin1(const Mixin1&) = default;
 
+
   Mixin1& operator=(Mixin1&&) = default;
 
   Mixin1& operator=(const Mixin1&) = default;
@@ -199,6 +200,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Mixin2(Mixin2&&) = default;
 
   Mixin2(const Mixin2&) = default;
+
 
   Mixin2& operator=(Mixin2&&) = default;
 
@@ -353,6 +355,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   Mixin3(const Mixin3&) = default;
 
+
   Mixin3& operator=(Mixin3&&) = default;
 
   Mixin3& operator=(const Mixin3&) = default;
@@ -464,6 +467,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Foo(Foo&&) = default;
 
   Foo(const Foo&) = default;
+
 
   Foo& operator=(Foo&&) = default;
 

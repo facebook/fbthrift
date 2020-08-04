@@ -62,6 +62,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   Banal(const Banal&) = default;
 
+
   Banal& operator=(Banal&&) = default;
 
   Banal& operator=(const Banal&) = default;
@@ -136,6 +137,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Fiery(Fiery&&) = default;
 
   Fiery(const Fiery&) = default;
+
 
   Fiery& operator=(Fiery&&) = default;
 
@@ -248,6 +250,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Serious(Serious&&) = default;
 
   Serious(const Serious&) = default;
+
 
   Serious& operator=(Serious&&) = default;
 

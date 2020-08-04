@@ -18,6 +18,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 namespace thrift_fatal_impl_detail {
 
 struct apache_thrift_fixtures_types_module__unique_strings_list {
+  using AllocatorAware = ::fatal::sequence<char, 'A', 'l', 'l', 'o', 'c', 'a', 't', 'o', 'r', 'A', 'w', 'a', 'r', 'e'>;
   using AnnotatedTypes = ::fatal::sequence<char, 'A', 'n', 'n', 'o', 't', 'a', 't', 'e', 'd', 'T', 'y', 'p', 'e', 's'>;
   using ComplexNestedWithDefault = ::fatal::sequence<char, 'C', 'o', 'm', 'p', 'l', 'e', 'x', 'N', 'e', 's', 't', 'e', 'd', 'W', 'i', 't', 'h', 'D', 'e', 'f', 'a', 'u', 'l', 't'>;
   using ComplexString = ::fatal::sequence<char, 'C', 'o', 'm', 'p', 'l', 'e', 'x', 'S', 't', 'r', 'i', 'n', 'g'>;
@@ -54,6 +55,10 @@ struct apache_thrift_fixtures_types_module__unique_strings_list {
   using VirtualStruct = ::fatal::sequence<char, 'V', 'i', 'r', 't', 'u', 'a', 'l', 'S', 't', 'r', 'u', 'c', 't'>;
   using ZERO = ::fatal::sequence<char, 'Z', 'E', 'R', 'O'>;
   using a = ::fatal::sequence<char, 'a'>;
+  using aa_list = ::fatal::sequence<char, 'a', 'a', '_', 'l', 'i', 's', 't'>;
+  using aa_map = ::fatal::sequence<char, 'a', 'a', '_', 'm', 'a', 'p'>;
+  using aa_set = ::fatal::sequence<char, 'a', 'a', '_', 's', 'e', 't'>;
+  using aa_string = ::fatal::sequence<char, 'a', 'a', '_', 's', 't', 'r', 'i', 'n', 'g'>;
   using apache__thrift__fixtures__types = ::fatal::sequence<char, 'a', 'p', 'a', 'c', 'h', 'e', ':', ':', 't', 'h', 'r', 'i', 'f', 't', ':', ':', 'f', 'i', 'x', 't', 'u', 'r', 'e', 's', ':', ':', 't', 'y', 'p', 'e', 's'>;
   using b = ::fatal::sequence<char, 'b'>;
   using bar = ::fatal::sequence<char, 'b', 'a', 'r'>;
@@ -66,6 +71,7 @@ struct apache_thrift_fixtures_types_module__unique_strings_list {
   using cpp = ::fatal::sequence<char, 'c', 'p', 'p'>;
   using cpp2 = ::fatal::sequence<char, 'c', 'p', 'p', '2'>;
   using cpp2_noncomparable = ::fatal::sequence<char, 'c', 'p', 'p', '2', '.', 'n', 'o', 'n', 'c', 'o', 'm', 'p', 'a', 'r', 'a', 'b', 'l', 'e'>;
+  using cpp_allocator = ::fatal::sequence<char, 'c', 'p', 'p', '.', 'a', 'l', 'l', 'o', 'c', 'a', 't', 'o', 'r'>;
   using cpp_declare_bitwise_ops = ::fatal::sequence<char, 'c', 'p', 'p', '.', 'd', 'e', 'c', 'l', 'a', 'r', 'e', '_', 'b', 'i', 't', 'w', 'i', 's', 'e', '_', 'o', 'p', 's'>;
   using cpp_declare_equal_to = ::fatal::sequence<char, 'c', 'p', 'p', '.', 'd', 'e', 'c', 'l', 'a', 'r', 'e', '_', 'e', 'q', 'u', 'a', 'l', '_', 't', 'o'>;
   using cpp_declare_hash = ::fatal::sequence<char, 'c', 'p', 'p', '.', 'd', 'e', 'c', 'l', 'a', 'r', 'e', '_', 'h', 'a', 's', 'h'>;
@@ -96,6 +102,7 @@ struct apache_thrift_fixtures_types_module__unique_strings_list {
   using module = ::fatal::sequence<char, 'm', 'o', 'd', 'u', 'l', 'e'>;
   using n = ::fatal::sequence<char, 'n'>;
   using none = ::fatal::sequence<char, 'n', 'o', 'n', 'e'>;
+  using not_a_container = ::fatal::sequence<char, 'n', 'o', 't', '_', 'a', '_', 'c', 'o', 'n', 't', 'a', 'i', 'n', 'e', 'r'>;
   using one = ::fatal::sequence<char, 'o', 'n', 'e'>;
   using r = ::fatal::sequence<char, 'r'>;
   using small = ::fatal::sequence<char, 's', 'm', 'a', 'l', 'l'>;
@@ -147,6 +154,7 @@ class module_tags {
     using NoexceptMoveEmpty = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveEmpty;
     using NoexceptMoveSimpleStruct = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveSimpleStruct;
     using NoexceptMoveComplexStruct = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveComplexStruct;
+    using AllocatorAware = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::AllocatorAware;
   };
 
   struct apache_thrift_fixtures_types_module__unique_constants_list {
@@ -209,7 +217,8 @@ THRIFT_REGISTER_REFLECTION_METADATA(
     ::fatal::pair<ForwardUsageByRef, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::ForwardUsageByRef>,
     ::fatal::pair<NoexceptMoveEmpty, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveEmpty>,
     ::fatal::pair<NoexceptMoveSimpleStruct, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveSimpleStruct>,
-    ::fatal::pair<NoexceptMoveComplexStruct, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveComplexStruct>
+    ::fatal::pair<NoexceptMoveComplexStruct, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveComplexStruct>,
+    ::fatal::pair<AllocatorAware, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::AllocatorAware>
   >,
   // constants
   ::fatal::list<

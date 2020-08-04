@@ -301,6 +301,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   Internship(const Internship&) = default;
 
+
   Internship& operator=(Internship&&) = default;
 
   Internship& operator=(const Internship&) = default;
@@ -487,6 +488,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   Range(const Range&) = default;
 
+
   Range& operator=(Range&&) = default;
 
   Range& operator=(const Range&) = default;
@@ -615,6 +617,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct1(struct1&&) = default;
 
   struct1(const struct1&) = default;
+
 
   struct1& operator=(struct1&&) = default;
 
@@ -765,6 +768,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct2(struct2&&) = default;
 
   struct2(const struct2&) = default;
+
 
   struct2& operator=(struct2&&) = default;
 
@@ -988,6 +992,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   struct3(const struct3&) = default;
 
+
   struct3& operator=(struct3&&) = default;
 
   struct3& operator=(const struct3&) = default;
@@ -1175,6 +1180,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct4(struct4&&) = default;
 
   struct4(const struct4&) = default;
+
 
   struct4& operator=(struct4&&) = default;
 

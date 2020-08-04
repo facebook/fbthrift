@@ -145,6 +145,15 @@ pub mod types {
         UnknownField(::std::primitive::i32),
     }
 
+    #[derive(Clone, Debug, PartialEq)]
+    pub struct AllocatorAware {
+        pub aa_list: ::std::vec::Vec<::std::primitive::i32>,
+        pub aa_set: ::std::collections::BTreeSet<::std::primitive::i32>,
+        pub aa_map: ::std::collections::BTreeMap<::std::primitive::i32, ::std::primitive::i32>,
+        pub aa_string: ::std::string::String,
+        pub not_a_container: ::std::primitive::i32,
+    }
+
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
     pub struct has_bitwise_ops(pub ::std::primitive::i32);
 
@@ -1907,6 +1916,87 @@ pub mod types {
             ::std::result::Result::Ok(alt.unwrap_or_default())
         }
     }
+
+    impl ::std::default::Default for self::AllocatorAware {
+        fn default() -> Self {
+            Self {
+                aa_list: ::std::default::Default::default(),
+                aa_set: ::std::default::Default::default(),
+                aa_map: ::std::default::Default::default(),
+                aa_string: ::std::default::Default::default(),
+                not_a_container: ::std::default::Default::default(),
+            }
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::AllocatorAware {}
+    unsafe impl ::std::marker::Sync for self::AllocatorAware {}
+
+    impl ::fbthrift::GetTType for self::AllocatorAware {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::AllocatorAware
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("AllocatorAware");
+            p.write_field_begin("aa_list", ::fbthrift::TType::List, 1);
+            ::fbthrift::Serialize::write(&self.aa_list, p);
+            p.write_field_end();
+            p.write_field_begin("aa_set", ::fbthrift::TType::Set, 2);
+            ::fbthrift::Serialize::write(&self.aa_set, p);
+            p.write_field_end();
+            p.write_field_begin("aa_map", ::fbthrift::TType::Map, 3);
+            ::fbthrift::Serialize::write(&self.aa_map, p);
+            p.write_field_end();
+            p.write_field_begin("aa_string", ::fbthrift::TType::String, 4);
+            ::fbthrift::Serialize::write(&self.aa_string, p);
+            p.write_field_end();
+            p.write_field_begin("not_a_container", ::fbthrift::TType::I32, 5);
+            ::fbthrift::Serialize::write(&self.not_a_container, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::AllocatorAware
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            let mut field_aa_list = ::std::option::Option::None;
+            let mut field_aa_set = ::std::option::Option::None;
+            let mut field_aa_map = ::std::option::Option::None;
+            let mut field_aa_string = ::std::option::Option::None;
+            let mut field_not_a_container = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| ())?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::List, 1) => field_aa_list = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Set, 2) => field_aa_set = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Map, 3) => field_aa_map = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 4) => field_aa_string = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 5) => field_not_a_container = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                aa_list: field_aa_list.unwrap_or_default(),
+                aa_set: field_aa_set.unwrap_or_default(),
+                aa_map: field_aa_map.unwrap_or_default(),
+                aa_string: field_aa_string.unwrap_or_default(),
+                not_a_container: field_not_a_container.unwrap_or_default(),
+            })
+        }
+    }
+
 }
 
 pub mod dependencies {

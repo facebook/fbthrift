@@ -106,6 +106,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   A(const A&) = default;
 
+
   A& operator=(A&&) = default;
 
   A& operator=(const A&) = default;

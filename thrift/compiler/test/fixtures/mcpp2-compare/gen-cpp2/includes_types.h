@@ -117,6 +117,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   AStruct(const AStruct&) = default;
 
+
   AStruct& operator=(AStruct&&) = default;
 
   AStruct& operator=(const AStruct&) = default;
@@ -224,6 +225,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AStructB(AStructB&&) = default;
 
   AStructB(const AStructB&) = default;
+
 
   AStructB& operator=(AStructB&&) = default;
 

@@ -174,3 +174,11 @@ union NoExceptMoveUnion {
   1: string string_field,
   2: i32 i32_field,
 } (cpp.noexcept_move)
+
+struct AllocatorAware {
+  1: list<i32> (cpp.use_allocator) aa_list;
+  2: set<i32> (cpp.use_allocator) aa_set;
+  3: map<i32, i32> (cpp.use_allocator) aa_map;
+  4: string (cpp.use_allocator) aa_string;
+  5: i32 not_a_container;
+} (cpp.allocator="some_allocator")

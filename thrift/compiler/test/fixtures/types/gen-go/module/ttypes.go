@@ -3362,3 +3362,290 @@ func (p *NoExceptMoveUnion) String() string {
   return fmt.Sprintf("NoExceptMoveUnion({StringField:%s I32Field:%s})", stringFieldVal, i32FieldVal)
 }
 
+// Attributes:
+//  - AaList
+//  - AaSet
+//  - AaMap
+//  - AaString
+//  - NotAContainer
+type AllocatorAware struct {
+  AaList []int32 `thrift:"aa_list,1" db:"aa_list" json:"aa_list"`
+  AaSet []int32 `thrift:"aa_set,2" db:"aa_set" json:"aa_set"`
+  AaMap map[int32]int32 `thrift:"aa_map,3" db:"aa_map" json:"aa_map"`
+  AaString string `thrift:"aa_string,4" db:"aa_string" json:"aa_string"`
+  NotAContainer int32 `thrift:"not_a_container,5" db:"not_a_container" json:"not_a_container"`
+}
+
+func NewAllocatorAware() *AllocatorAware {
+  return &AllocatorAware{}
+}
+
+
+func (p *AllocatorAware) GetAaList() []int32 {
+  return p.AaList
+}
+
+func (p *AllocatorAware) GetAaSet() []int32 {
+  return p.AaSet
+}
+
+func (p *AllocatorAware) GetAaMap() map[int32]int32 {
+  return p.AaMap
+}
+
+func (p *AllocatorAware) GetAaString() string {
+  return p.AaString
+}
+
+func (p *AllocatorAware) GetNotAContainer() int32 {
+  return p.NotAContainer
+}
+func (p *AllocatorAware) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    case 3:
+      if err := p.ReadField3(iprot); err != nil {
+        return err
+      }
+    case 4:
+      if err := p.ReadField4(iprot); err != nil {
+        return err
+      }
+    case 5:
+      if err := p.ReadField5(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *AllocatorAware)  ReadField1(iprot thrift.Protocol) error {
+  _, size, err := iprot.ReadListBegin()
+  if err != nil {
+    return thrift.PrependError("error reading list begin: ", err)
+  }
+  tSlice := make([]int32, 0, size)
+  p.AaList =  tSlice
+  for i := 0; i < size; i ++ {
+var _elem20 int32
+    if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 0: ", err)
+} else {
+    _elem20 = v
+}
+    p.AaList = append(p.AaList, _elem20)
+  }
+  if err := iprot.ReadListEnd(); err != nil {
+    return thrift.PrependError("error reading list end: ", err)
+  }
+  return nil
+}
+
+func (p *AllocatorAware)  ReadField2(iprot thrift.Protocol) error {
+  _, size, err := iprot.ReadSetBegin()
+  if err != nil {
+    return thrift.PrependError("error reading set begin: ", err)
+  }
+  tSet := make([]int32, 0, size)
+  p.AaSet =  tSet
+  for i := 0; i < size; i ++ {
+var _elem21 int32
+    if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 0: ", err)
+} else {
+    _elem21 = v
+}
+    p.AaSet = append(p.AaSet, _elem21)
+  }
+  if err := iprot.ReadSetEnd(); err != nil {
+    return thrift.PrependError("error reading set end: ", err)
+  }
+  return nil
+}
+
+func (p *AllocatorAware)  ReadField3(iprot thrift.Protocol) error {
+  _, _, size, err := iprot.ReadMapBegin()
+  if err != nil {
+    return thrift.PrependError("error reading map begin: ", err)
+  }
+  tMap := make(map[int32]int32, size)
+  p.AaMap =  tMap
+  for i := 0; i < size; i ++ {
+var _key22 int32
+    if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 0: ", err)
+} else {
+    _key22 = v
+}
+var _val23 int32
+    if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 0: ", err)
+} else {
+    _val23 = v
+}
+    p.AaMap[_key22] = _val23
+  }
+  if err := iprot.ReadMapEnd(); err != nil {
+    return thrift.PrependError("error reading map end: ", err)
+  }
+  return nil
+}
+
+func (p *AllocatorAware)  ReadField4(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 4: ", err)
+} else {
+  p.AaString = v
+}
+  return nil
+}
+
+func (p *AllocatorAware)  ReadField5(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 5: ", err)
+} else {
+  p.NotAContainer = v
+}
+  return nil
+}
+
+func (p *AllocatorAware) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("AllocatorAware"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField3(oprot); err != nil { return err }
+  if err := p.writeField4(oprot); err != nil { return err }
+  if err := p.writeField5(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *AllocatorAware) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("aa_list", thrift.LIST, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:aa_list: ", p), err) }
+  if err := oprot.WriteListBegin(thrift.I32, len(p.AaList)); err != nil {
+    return thrift.PrependError("error writing list begin: ", err)
+  }
+  for _, v := range p.AaList {
+    if err := oprot.WriteI32(int32(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteListEnd(); err != nil {
+    return thrift.PrependError("error writing list end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:aa_list: ", p), err) }
+  return err
+}
+
+func (p *AllocatorAware) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("aa_set", thrift.SET, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:aa_set: ", p), err) }
+  if err := oprot.WriteSetBegin(thrift.I32, len(p.AaSet)); err != nil {
+    return thrift.PrependError("error writing set begin: ", err)
+  }
+  set := make(map[int32]bool, len(p.AaSet))
+  for _, v := range p.AaSet {
+    if ok := set[v]; ok {
+      return thrift.PrependError("", fmt.Errorf("%T error writing set field: slice is not unique", v))
+    }
+    set[v] = true
+  }
+  for _, v := range p.AaSet {
+    if err := oprot.WriteI32(int32(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteSetEnd(); err != nil {
+    return thrift.PrependError("error writing set end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:aa_set: ", p), err) }
+  return err
+}
+
+func (p *AllocatorAware) writeField3(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("aa_map", thrift.MAP, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:aa_map: ", p), err) }
+  if err := oprot.WriteMapBegin(thrift.I32, thrift.I32, len(p.AaMap)); err != nil {
+    return thrift.PrependError("error writing map begin: ", err)
+  }
+  for k, v := range p.AaMap {
+    if err := oprot.WriteI32(int32(k)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+    if err := oprot.WriteI32(int32(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteMapEnd(); err != nil {
+    return thrift.PrependError("error writing map end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:aa_map: ", p), err) }
+  return err
+}
+
+func (p *AllocatorAware) writeField4(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("aa_string", thrift.STRING, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:aa_string: ", p), err) }
+  if err := oprot.WriteString(string(p.AaString)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.aa_string (4) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:aa_string: ", p), err) }
+  return err
+}
+
+func (p *AllocatorAware) writeField5(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("not_a_container", thrift.I32, 5); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:not_a_container: ", p), err) }
+  if err := oprot.WriteI32(int32(p.NotAContainer)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.not_a_container (5) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:not_a_container: ", p), err) }
+  return err
+}
+
+func (p *AllocatorAware) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  aaListVal := fmt.Sprintf("%v", p.AaList)
+  aaSetVal := fmt.Sprintf("%v", p.AaSet)
+  aaMapVal := fmt.Sprintf("%v", p.AaMap)
+  aaStringVal := fmt.Sprintf("%v", p.AaString)
+  notAContainerVal := fmt.Sprintf("%v", p.NotAContainer)
+  return fmt.Sprintf("AllocatorAware({AaList:%s AaSet:%s AaMap:%s AaString:%s NotAContainer:%s})", aaListVal, aaSetVal, aaMapVal, aaStringVal, notAContainerVal)
+}
+

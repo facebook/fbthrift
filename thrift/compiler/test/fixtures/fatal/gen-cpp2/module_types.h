@@ -2058,6 +2058,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   structA(const structA&) = default;
 
+
   structA& operator=(structA&&) = default;
 
   structA& operator=(const structA&) = default;
@@ -2588,6 +2589,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   structB(const structB&) = default;
 
+
   structB& operator=(structB&&) = default;
 
   structB& operator=(const structB&) = default;
@@ -2732,6 +2734,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structC(structC&&) = default;
 
   structC(const structC&) = default;
+
 
   structC& operator=(structC&&) = default;
 
@@ -3898,6 +3901,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   struct1(const struct1&) = default;
 
+
   struct1& operator=(struct1&&) = default;
 
   struct1& operator=(const struct1&) = default;
@@ -4184,6 +4188,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct2(struct2&&) = default;
 
   struct2(const struct2&) = default;
+
 
   struct2& operator=(struct2&&) = default;
 
@@ -4519,6 +4524,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct3(struct3&&) = default;
 
   struct3(const struct3&) = default;
+
 
   struct3& operator=(struct3&&) = default;
 
@@ -5252,6 +5258,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct4(struct4&&) = default;
   struct4(const struct4& src);
 
+
   struct4& operator=(struct4&&) = default;
   struct4& operator=(const struct4& src);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -5444,6 +5451,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct5(struct5&&) = default;
 
   struct5(const struct5&) = default;
+
 
   struct5& operator=(struct5&&) = default;
 
@@ -5700,6 +5708,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   struct_binary(const struct_binary&) = default;
 
+
   struct_binary& operator=(struct_binary&&) = default;
 
   struct_binary& operator=(const struct_binary&) = default;
@@ -5812,6 +5821,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   dep_A_struct(dep_A_struct&&) = default;
 
   dep_A_struct(const dep_A_struct&) = default;
+
 
   dep_A_struct& operator=(dep_A_struct&&) = default;
 
@@ -5993,6 +6003,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   dep_B_struct(const dep_B_struct&) = default;
 
+
   dep_B_struct& operator=(dep_B_struct&&) = default;
 
   dep_B_struct& operator=(const dep_B_struct&) = default;
@@ -6172,6 +6183,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   annotated(annotated&&) = default;
 
   annotated(const annotated&) = default;
+
 
   annotated& operator=(annotated&&) = default;
 
@@ -7671,6 +7683,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   struct_with_special_names(const struct_with_special_names&) = default;
 
+
   struct_with_special_names& operator=(struct_with_special_names&&) = default;
 
   struct_with_special_names& operator=(const struct_with_special_names&) = default;
@@ -8777,6 +8790,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct_with_indirections(struct_with_indirections&&) = default;
 
   struct_with_indirections(const struct_with_indirections&) = default;
+
 
   struct_with_indirections& operator=(struct_with_indirections&&) = default;
 

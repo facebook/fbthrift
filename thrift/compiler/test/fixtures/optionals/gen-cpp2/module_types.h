@@ -206,6 +206,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   Color(const Color&) = default;
 
+
   Color& operator=(Color&&) = default;
 
   Color& operator=(const Color&) = default;
@@ -424,6 +425,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Vehicle(Vehicle&&) = default;
 
   Vehicle(const Vehicle&) = default;
+
 
   Vehicle& operator=(Vehicle&&) = default;
 
@@ -705,6 +707,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Person(Person&&) = default;
 
   Person(const Person&) = default;
+
 
   Person& operator=(Person&&) = default;
 

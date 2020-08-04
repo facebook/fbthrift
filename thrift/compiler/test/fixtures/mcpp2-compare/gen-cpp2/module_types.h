@@ -1144,6 +1144,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   Empty(const Empty&) = default;
 
+
   Empty& operator=(Empty&&) = default;
 
   Empty& operator=(const Empty&) = default;
@@ -1209,6 +1210,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ASimpleStruct(ASimpleStruct&&) = default;
 
   ASimpleStruct(const ASimpleStruct&) = default;
+
 
   ASimpleStruct& operator=(ASimpleStruct&&) = default;
 
@@ -1320,6 +1322,7 @@ ASimpleStructNoexcept(ASimpleStructNoexcept&& other) noexcept :
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   ASimpleStructNoexcept(const ASimpleStructNoexcept&) = default;
 
+
   ASimpleStructNoexcept& operator=(ASimpleStructNoexcept&&) = default;
 
   ASimpleStructNoexcept& operator=(const ASimpleStructNoexcept&) = default;
@@ -1426,6 +1429,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct(MyStruct&& other) noexcept;
 
   MyStruct(const MyStruct&) = default;
+
 
   MyStruct& operator=(MyStruct&&) = default;
 
@@ -3670,6 +3674,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   AnException(const AnException&) = default;
 
+
   AnException& operator=(AnException&&) = default;
 
   AnException& operator=(const AnException&) = default;
@@ -4283,6 +4288,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   AnotherException(const AnotherException&) = default;
 
+
   AnotherException& operator=(AnotherException&&) = default;
 
   AnotherException& operator=(const AnotherException&) = default;
@@ -4467,6 +4473,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::map<::std::string, bool> req_fieldB__arg, ::std::map<::std::string, bool> opt_fieldB__arg, ::std::set<int32_t> fieldC__arg, ::std::set<int32_t> req_fieldC__arg, ::std::set<int32_t> opt_fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::string req_fieldE__arg, ::std::string opt_fieldE__arg, ::std::vector<::std::vector<int32_t>> fieldF__arg, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> fieldG__arg, ::std::vector<::std::set<int32_t>> fieldH__arg, bool fieldI__arg, ::std::map<::std::string, ::std::vector<int32_t>> fieldJ__arg, ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> fieldK__arg, ::std::set<::std::set<::std::set<bool>>> fieldL__arg, ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, ::std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA req_fieldR__arg,  ::some::valid::ns::MyEnumA opt_fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, ::std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, ::std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg,  ::some::valid::ns::MyStruct req_fieldV__arg,  ::some::valid::ns::MyStruct opt_fieldV__arg, ::std::set< ::some::valid::ns::MyStruct> fieldW__arg,  ::some::valid::ns::ComplexUnion fieldX__arg,  ::some::valid::ns::ComplexUnion req_fieldX__arg,  ::some::valid::ns::ComplexUnion opt_fieldX__arg, ::std::vector< ::some::valid::ns::ComplexUnion> fieldY__arg,  ::some::valid::ns::unionTypeDef fieldZ__arg, ::std::vector< ::some::valid::ns::unionTypeDef> fieldAA__arg, ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB__arg,  ::some::valid::ns::MyEnumB fieldAC__arg,  ::a::different::ns::AnEnum fieldAD__arg, ::std::map<::std::string, int32_t> fieldAE__arg,  ::some::valid::ns::IndirectionD fieldSD__arg);
 
   containerStruct(containerStruct&&) = default;
+
 
   containerStruct& operator=(containerStruct&&) = default;
   void __clear();
@@ -6205,6 +6212,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyIncludedStruct(MyIncludedStruct&&) = default;
   MyIncludedStruct(const MyIncludedStruct& src);
 
+
   MyIncludedStruct& operator=(MyIncludedStruct&&) = default;
   MyIncludedStruct& operator=(const MyIncludedStruct& src);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -6386,6 +6394,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   [[deprecated("This constructor is deprecated")]]
   AnnotatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<::std::vector<::std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<::std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const ::std::map<int32_t, ::std::vector<::std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<::std::set<int32_t>> opt_ref_type_shared__arg,  ::some::valid::ns::CppFakeI32 base_type__arg,  ::some::valid::ns::FollySmallVectorI64 list_type__arg,  ::some::valid::ns::SortedVectorSetString set_type__arg,  ::some::valid::ns::FakeMap map_type__arg,  ::some::valid::ns::UnorderedMapStruct map_struct_type__arg,  ::some::valid::ns::IOBuf iobuf_type__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<int32_t> list_i32_template__arg, std::deque<::std::string> list_string_template__arg, folly::sorted_vector_set<::std::string> set_template__arg, folly::sorted_vector_map<int64_t, ::std::string> map_template__arg,  ::some::valid::ns::std_list typedef_list_template__arg,  ::some::valid::ns::std_deque typedef_deque_template__arg,  ::some::valid::ns::folly_set typedef_set_template__arg,  ::some::valid::ns::folly_map typedef_map_template__arg,  ::some::valid::ns::IndirectionA indirection_a__arg, ::std::vector< ::some::valid::ns::IndirectionB> indirection_b__arg, ::std::set< ::some::valid::ns::IndirectionC> indirection_c__arg,  ::some::valid::ns::IOBuf iobuf_type_val__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg,  ::some::valid::ns::containerStruct struct_struct__arg);
   AnnotatedStruct(AnnotatedStruct&& other) noexcept;
+
 
   AnnotatedStruct& operator=(AnnotatedStruct&&) = default;
   void __clear();
@@ -7511,6 +7520,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   ComplexContainerStruct(const ComplexContainerStruct&) = default;
 
+
   ComplexContainerStruct& operator=(ComplexContainerStruct&&) = default;
 
   ComplexContainerStruct& operator=(const ComplexContainerStruct&) = default;
@@ -7654,6 +7664,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FloatStruct(FloatStruct&&) = default;
 
   FloatStruct(const FloatStruct&) = default;
+
 
   FloatStruct& operator=(FloatStruct&&) = default;
 
@@ -8020,6 +8031,7 @@ AllRequiredNoExceptMoveCtrStruct(AllRequiredNoExceptMoveCtrStruct&& other) noexc
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   AllRequiredNoExceptMoveCtrStruct(const AllRequiredNoExceptMoveCtrStruct&) = default;
+
 
   AllRequiredNoExceptMoveCtrStruct& operator=(AllRequiredNoExceptMoveCtrStruct&&) = default;
 

@@ -138,6 +138,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   MyDataItem(const MyDataItem&) = default;
 
+
   MyDataItem& operator=(MyDataItem&&) = default;
 
   MyDataItem& operator=(const MyDataItem&) = default;
@@ -204,6 +205,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct(MyStruct&&) = default;
 
   MyStruct(const MyStruct&) = default;
+
 
   MyStruct& operator=(MyStruct&&) = default;
 

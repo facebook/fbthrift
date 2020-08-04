@@ -56,6 +56,8 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct()
 
 cdef __StructSpec get_reflection__NoExceptMoveUnion()
 
+cdef __StructSpec get_reflection__AllocatorAware()
+
 cdef __MapSpec get_reflection__std_unordered_map__Map__i32_string()
 
 cdef __ListSpec get_reflection__List__i64()
@@ -85,3 +87,7 @@ cdef __ListSpec get_reflection__List__std_unordered_map__Map__i32_string()
 cdef __ListSpec get_reflection__List__binary()
 
 cdef __MapSpec get_reflection__Map__MyEnumA_string()
+
+cdef __SetSpec get_reflection__Set__i32()
+
+cdef __MapSpec get_reflection__Map__i32_i32()

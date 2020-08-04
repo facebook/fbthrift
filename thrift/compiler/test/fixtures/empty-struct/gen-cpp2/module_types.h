@@ -51,6 +51,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   Empty(const Empty&) = default;
 
+
   Empty& operator=(Empty&&) = default;
 
   Empty& operator=(const Empty&) = default;

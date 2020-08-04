@@ -151,6 +151,11 @@ class StructMetadata<::apache::thrift::fixtures::types::NoExceptMoveUnion> {
   static void gen(ThriftMetadata& metadata);
 };
 template <>
+class StructMetadata<::apache::thrift::fixtures::types::AllocatorAware> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
 class ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf> {
  public:
   static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);

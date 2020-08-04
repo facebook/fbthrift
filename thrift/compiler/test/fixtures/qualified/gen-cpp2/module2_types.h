@@ -73,6 +73,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   Struct(const Struct&) = default;
 
+
   Struct& operator=(Struct&&) = default;
 
   Struct& operator=(const Struct&) = default;
@@ -215,6 +216,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   BigStruct(BigStruct&&) = default;
 
   BigStruct(const BigStruct&) = default;
+
 
   BigStruct& operator=(BigStruct&&) = default;
 

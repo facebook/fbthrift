@@ -160,3 +160,13 @@ cdef class NoExceptMoveUnion_Builder(thrift.py3.builder.StructBuilder):
         yield "string_field", self.string_field
         yield "i32_field", self.i32_field
 
+cdef class AllocatorAware_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.AllocatorAware
+
+    def __iter__(self):
+        yield "aa_list", self.aa_list
+        yield "aa_set", self.aa_set
+        yield "aa_map", self.aa_map
+        yield "aa_string", self.aa_string
+        yield "not_a_container", self.not_a_container
+

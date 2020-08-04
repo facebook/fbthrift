@@ -2166,3 +2166,190 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
 
 }
 
+/**
+ * Original thrift struct:-
+ * AllocatorAware
+ */
+class AllocatorAware implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'aa_list',
+      'type' => \TType::LST,
+      'etype' => \TType::I32,
+      'elem' => shape(
+        'type' => \TType::I32,
+      ),
+      'format' => 'collection',
+    ),
+    2 => shape(
+      'var' => 'aa_set',
+      'type' => \TType::SET,
+      'etype' => \TType::I32,
+      'elem' => shape(
+        'type' => \TType::I32,
+      ),
+      'format' => 'collection',
+    ),
+    3 => shape(
+      'var' => 'aa_map',
+      'type' => \TType::MAP,
+      'ktype' => \TType::I32,
+      'vtype' => \TType::I32,
+      'key' => shape(
+        'type' => \TType::I32,
+      ),
+      'val' => shape(
+        'type' => \TType::I32,
+      ),
+      'format' => 'collection',
+    ),
+    4 => shape(
+      'var' => 'aa_string',
+      'type' => \TType::STRING,
+    ),
+    5 => shape(
+      'var' => 'not_a_container',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'aa_list' => 1,
+    'aa_set' => 2,
+    'aa_map' => 3,
+    'aa_string' => 4,
+    'not_a_container' => 5,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'aa_list' => Vector<int>,
+    ?'aa_set' => Set<int>,
+    ?'aa_map' => Map<int, int>,
+    ?'aa_string' => string,
+    ?'not_a_container' => int,
+  );
+
+  const int STRUCTURAL_ID = 5875128050373741032;
+  /**
+   * Original thrift field:-
+   * 1: list<i32> aa_list
+   */
+  public Vector<int> $aa_list;
+  /**
+   * Original thrift field:-
+   * 2: set<i32> aa_set
+   */
+  public Set<int> $aa_set;
+  /**
+   * Original thrift field:-
+   * 3: map<i32, i32> aa_map
+   */
+  public Map<int, int> $aa_map;
+  /**
+   * Original thrift field:-
+   * 4: string aa_string
+   */
+  public string $aa_string;
+  /**
+   * Original thrift field:-
+   * 5: i32 not_a_container
+   */
+  public int $not_a_container;
+
+  <<__Rx>>
+  public function __construct(?Vector<int> $aa_list = null, ?Set<int> $aa_set = null, ?Map<int, int> $aa_map = null, ?string $aa_string = null, ?int $not_a_container = null  ) {
+    $this->aa_list = $aa_list ?? Vector {};
+    $this->aa_set = $aa_set ?? Set {};
+    $this->aa_map = $aa_map ?? Map {};
+    $this->aa_string = $aa_string ?? '';
+    $this->not_a_container = $not_a_container ?? 0;
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'aa_list'),
+      Shapes::idx($shape, 'aa_set'),
+      Shapes::idx($shape, 'aa_map'),
+      Shapes::idx($shape, 'aa_string'),
+      Shapes::idx($shape, 'not_a_container'),
+    );
+  }
+
+  public function getName(): string {
+    return 'AllocatorAware';
+  }
+
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'cpp.allocator' => "some_allocator",
+    ];
+  }
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'aa_list') !== null) {
+      $_json3 = /* HH_FIXME[4110] */ $parsed['aa_list'];
+      $_container4 = Vector {};
+      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
+        $_elem5 = 0;
+        $_tmp6 = (int)$_value2;
+        if ($_tmp6 > 0x7fffffff) {
+          throw new \TProtocolException("number exceeds limit in field");
+        } else {
+          $_elem5 = (int)$_tmp6;
+        }
+        $_container4 []= $_elem5;
+      }
+      $this->aa_list = $_container4;
+    }    
+    if (idx($parsed, 'aa_set') !== null) {
+      $_json10 = /* HH_FIXME[4110] */ $parsed['aa_set'];
+      $_container11 = Set {};
+      foreach(/* HH_FIXME[4110] */ $_json10 as $_key8 => $_value9) {
+        $_elem12 = 0;
+        $_tmp13 = (int)$_value9;
+        if ($_tmp13 > 0x7fffffff) {
+          throw new \TProtocolException("number exceeds limit in field");
+        } else {
+          $_elem12 = (int)$_tmp13;
+        }
+        $_container11->add($_elem12);
+      }
+      $this->aa_set = $_container11;
+    }    
+    if (idx($parsed, 'aa_map') !== null) {
+      $_json17 = /* HH_FIXME[4110] */ $parsed['aa_map'];
+      $_container18 = Map {};
+      foreach(/* HH_FIXME[4110] */ $_json17 as $_key15 => $_value16) {
+        $_value19 = 0;
+        $_tmp20 = (int)$_value16;
+        if ($_tmp20 > 0x7fffffff) {
+          throw new \TProtocolException("number exceeds limit in field");
+        } else {
+          $_value19 = (int)$_tmp20;
+        }
+        $_container18[$_key15] = $_value19;
+      }
+      $this->aa_map = $_container18;
+    }    
+    if (idx($parsed, 'aa_string') !== null) {
+      $this->aa_string = /* HH_FIXME[4110] */ $parsed['aa_string'];
+    }    
+    if (idx($parsed, 'not_a_container') !== null) {
+      $_tmp21 = (int)/* HH_FIXME[4110] */ $parsed['not_a_container'];
+      if ($_tmp21 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->not_a_container = (int)$_tmp21;
+      }
+    }    
+  }
+
+}
+

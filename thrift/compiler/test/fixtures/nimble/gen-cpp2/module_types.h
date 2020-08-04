@@ -74,6 +74,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   BasicTypes(const BasicTypes&) = default;
 
+
   BasicTypes& operator=(BasicTypes&&) = default;
 
   BasicTypes& operator=(const BasicTypes&) = default;

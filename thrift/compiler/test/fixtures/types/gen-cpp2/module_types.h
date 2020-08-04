@@ -63,6 +63,11 @@ struct MyBinaryListField4;
 struct MyMapEnumAndInt;
 struct string_field;
 struct i32_field;
+struct aa_list;
+struct aa_set;
+struct aa_map;
+struct aa_string;
+struct not_a_container;
 } // namespace tag
 namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_field
@@ -260,6 +265,26 @@ APACHE_THRIFT_DEFINE_ACCESSOR(string_field);
 #ifndef APACHE_THRIFT_ACCESSOR_i32_field
 #define APACHE_THRIFT_ACCESSOR_i32_field
 APACHE_THRIFT_DEFINE_ACCESSOR(i32_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_aa_list
+#define APACHE_THRIFT_ACCESSOR_aa_list
+APACHE_THRIFT_DEFINE_ACCESSOR(aa_list);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_aa_set
+#define APACHE_THRIFT_ACCESSOR_aa_set
+APACHE_THRIFT_DEFINE_ACCESSOR(aa_set);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_aa_map
+#define APACHE_THRIFT_ACCESSOR_aa_map
+APACHE_THRIFT_DEFINE_ACCESSOR(aa_map);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_aa_string
+#define APACHE_THRIFT_ACCESSOR_aa_string
+APACHE_THRIFT_DEFINE_ACCESSOR(aa_string);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_not_a_container
+#define APACHE_THRIFT_ACCESSOR_not_a_container
+APACHE_THRIFT_DEFINE_ACCESSOR(not_a_container);
 #endif
 } // namespace detail
 } // namespace thrift
@@ -485,6 +510,7 @@ class NoexceptMoveEmpty;
 class NoexceptMoveSimpleStruct;
 class NoexceptMoveComplexStruct;
 class NoExceptMoveUnion;
+class AllocatorAware;
 }}}} // apache::thrift::fixtures::types
 // END forward_declare
 // BEGIN typedefs
@@ -518,6 +544,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   decorated_struct(decorated_struct&&) = default;
 
   decorated_struct(const decorated_struct&) = default;
+
 
   decorated_struct& operator=(decorated_struct&&) = default;
 
@@ -631,6 +658,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ContainerStruct(ContainerStruct&&) = default;
 
   ContainerStruct(const ContainerStruct&) = default;
+
 
   ContainerStruct& operator=(ContainerStruct&&) = default;
 
@@ -993,6 +1021,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   CppTypeStruct(const CppTypeStruct&) = default;
 
+
   CppTypeStruct& operator=(CppTypeStruct&&) = default;
 
   CppTypeStruct& operator=(const CppTypeStruct&) = default;
@@ -1099,6 +1128,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   VirtualStruct(VirtualStruct&&) = default;
 
   VirtualStruct(const VirtualStruct&) = default;
+
 
   VirtualStruct& operator=(VirtualStruct&&) = default;
 
@@ -1211,6 +1241,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructWithForwardRefEnum(MyStructWithForwardRefEnum&&) = default;
 
   MyStructWithForwardRefEnum(const MyStructWithForwardRefEnum&) = default;
+
 
   MyStructWithForwardRefEnum& operator=(MyStructWithForwardRefEnum&&) = default;
 
@@ -1358,6 +1389,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   TrivialNumeric(const TrivialNumeric&) = default;
 
+
   TrivialNumeric& operator=(TrivialNumeric&&) = default;
 
   TrivialNumeric& operator=(const TrivialNumeric&) = default;
@@ -1504,6 +1536,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   TrivialNestedWithDefault(const TrivialNestedWithDefault&) = default;
 
+
   TrivialNestedWithDefault& operator=(TrivialNestedWithDefault&&) = default;
 
   TrivialNestedWithDefault& operator=(const TrivialNestedWithDefault&) = default;
@@ -1646,6 +1679,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ComplexString(ComplexString&&) = default;
 
   ComplexString(const ComplexString&) = default;
+
 
   ComplexString& operator=(ComplexString&&) = default;
 
@@ -1796,6 +1830,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ComplexNestedWithDefault(ComplexNestedWithDefault&&) = default;
 
   ComplexNestedWithDefault(const ComplexNestedWithDefault&) = default;
+
 
   ComplexNestedWithDefault& operator=(ComplexNestedWithDefault&&) = default;
 
@@ -1949,6 +1984,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MinPadding(MinPadding&&) = default;
 
   MinPadding(const MinPadding&) = default;
+
 
   MinPadding& operator=(MinPadding&&) = default;
 
@@ -2167,6 +2203,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   MyDataItem(const MyDataItem&) = default;
 
+
   MyDataItem& operator=(MyDataItem&&) = default;
 
   MyDataItem& operator=(const MyDataItem&) = default;
@@ -2215,6 +2252,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct(MyStruct&&) = default;
 
   MyStruct(const MyStruct&) = default;
+
 
   MyStruct& operator=(MyStruct&&) = default;
 
@@ -2421,6 +2459,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   Renaming(const Renaming&) = default;
 
+
   Renaming& operator=(Renaming&&) = default;
 
   Renaming& operator=(const Renaming&) = default;
@@ -2527,6 +2566,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AnnotatedTypes(AnnotatedTypes&&) = default;
 
   AnnotatedTypes(const AnnotatedTypes&) = default;
+
 
   AnnotatedTypes& operator=(AnnotatedTypes&&) = default;
 
@@ -2676,6 +2716,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   ForwardUsageStruct(const ForwardUsageStruct&) = default;
 
+
   ForwardUsageStruct& operator=(ForwardUsageStruct&&) = default;
 
   ForwardUsageStruct& operator=(const ForwardUsageStruct&) = default;
@@ -2781,6 +2822,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   ForwardUsageRoot(ForwardUsageRoot&&) = default;
   ForwardUsageRoot(const ForwardUsageRoot& src);
+
 
   ForwardUsageRoot& operator=(ForwardUsageRoot&&) = default;
   ForwardUsageRoot& operator=(const ForwardUsageRoot& src);
@@ -2901,6 +2943,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   ForwardUsageByRef(const ForwardUsageByRef&) = default;
 
+
   ForwardUsageByRef& operator=(ForwardUsageByRef&&) = default;
 
   ForwardUsageByRef& operator=(const ForwardUsageByRef&) = default;
@@ -3007,6 +3050,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   NoexceptMoveEmpty(const NoexceptMoveEmpty&) = default;
 
+
   NoexceptMoveEmpty& operator=(NoexceptMoveEmpty&&) noexcept = default;
 
   NoexceptMoveEmpty& operator=(const NoexceptMoveEmpty&) = default;
@@ -3074,6 +3118,7 @@ NoexceptMoveSimpleStruct(NoexceptMoveSimpleStruct&& other) noexcept :
       __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   NoexceptMoveSimpleStruct(const NoexceptMoveSimpleStruct&) = default;
+
 
   NoexceptMoveSimpleStruct& operator=(NoexceptMoveSimpleStruct&&) noexcept = default;
 
@@ -3181,6 +3226,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&& other) noexcept;
 
   NoexceptMoveComplexStruct(const NoexceptMoveComplexStruct&) = default;
+
 
   NoexceptMoveComplexStruct& operator=(NoexceptMoveComplexStruct&&) noexcept = default;
 
@@ -3817,6 +3863,292 @@ void swap(NoExceptMoveUnion& a, NoExceptMoveUnion& b);
 
 template <class Protocol_>
 uint32_t NoExceptMoveUnion::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+class AllocatorAware final  {
+ public:
+  using __fbthrift_cpp2_type = AllocatorAware;
+
+  AllocatorAware();
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  AllocatorAware(apache::thrift::FragileConstructor, ::std::vector<int32_t> aa_list__arg, ::std::set<int32_t> aa_set__arg, ::std::map<int32_t, int32_t> aa_map__arg, ::std::string aa_string__arg, int32_t not_a_container__arg);
+
+  AllocatorAware(AllocatorAware&&) = default;
+
+  AllocatorAware(const AllocatorAware&) = default;
+
+  using allocator_type = some_allocator;
+
+  AllocatorAware(allocator_type alloc) :
+    aa_list(alloc),
+    aa_set(alloc),
+    aa_map(alloc),
+    aa_string(alloc),
+    not_a_container() {}
+
+  AllocatorAware(const AllocatorAware& other, allocator_type alloc) :
+    aa_list(other.aa_list, alloc),
+    aa_set(other.aa_set, alloc),
+    aa_map(other.aa_map, alloc),
+    aa_string(other.aa_string, alloc),
+    not_a_container(other.not_a_container),
+    __isset(other.__isset) {}
+
+  AllocatorAware(AllocatorAware&& other, allocator_type alloc) :
+    aa_list(std::move(other.aa_list), alloc),
+    aa_set(std::move(other.aa_set), alloc),
+    aa_map(std::move(other.aa_map), alloc),
+    aa_string(std::move(other.aa_string), alloc),
+    not_a_container(std::move(other.not_a_container)),
+    __isset(other.__isset) {}
+
+  AllocatorAware& operator=(AllocatorAware&&) = default;
+
+  AllocatorAware& operator=(const AllocatorAware&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  void __clear();
+
+  ~AllocatorAware();
+
+ public:
+  ::std::vector<int32_t> aa_list;
+ public:
+  ::std::set<int32_t> aa_set;
+ public:
+  ::std::map<int32_t, int32_t> aa_map;
+ public:
+  ::std::string aa_string;
+ public:
+  int32_t not_a_container;
+
+ public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
+  struct __isset {
+    bool aa_list;
+    bool aa_set;
+    bool aa_map;
+    bool aa_string;
+    bool not_a_container;
+  } __isset = {};
+  bool operator==(const AllocatorAware& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const AllocatorAware& __x, const AllocatorAware& __y) {
+    return !(__x == __y);
+  }
+#endif
+  bool operator<(const AllocatorAware& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const AllocatorAware& __x, const AllocatorAware& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const AllocatorAware& __x, const AllocatorAware& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const AllocatorAware& __x, const AllocatorAware& __y) {
+    return !(__x < __y);
+  }
+#endif
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = ::std::vector<int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> aa_list_ref() const& {
+    return {this->aa_list, __isset.aa_list};
+  }
+
+  template <typename..., typename T = ::std::vector<int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> aa_list_ref() const&& {
+    return {std::move(this->aa_list), __isset.aa_list};
+  }
+
+  template <typename..., typename T = ::std::vector<int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> aa_list_ref() & {
+    return {this->aa_list, __isset.aa_list};
+  }
+
+  template <typename..., typename T = ::std::vector<int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> aa_list_ref() && {
+    return {std::move(this->aa_list), __isset.aa_list};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = ::std::set<int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> aa_set_ref() const& {
+    return {this->aa_set, __isset.aa_set};
+  }
+
+  template <typename..., typename T = ::std::set<int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> aa_set_ref() const&& {
+    return {std::move(this->aa_set), __isset.aa_set};
+  }
+
+  template <typename..., typename T = ::std::set<int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> aa_set_ref() & {
+    return {this->aa_set, __isset.aa_set};
+  }
+
+  template <typename..., typename T = ::std::set<int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> aa_set_ref() && {
+    return {std::move(this->aa_set), __isset.aa_set};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = ::std::map<int32_t, int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> aa_map_ref() const& {
+    return {this->aa_map, __isset.aa_map};
+  }
+
+  template <typename..., typename T = ::std::map<int32_t, int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> aa_map_ref() const&& {
+    return {std::move(this->aa_map), __isset.aa_map};
+  }
+
+  template <typename..., typename T = ::std::map<int32_t, int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> aa_map_ref() & {
+    return {this->aa_map, __isset.aa_map};
+  }
+
+  template <typename..., typename T = ::std::map<int32_t, int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> aa_map_ref() && {
+    return {std::move(this->aa_map), __isset.aa_map};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> aa_string_ref() const& {
+    return {this->aa_string, __isset.aa_string};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> aa_string_ref() const&& {
+    return {std::move(this->aa_string), __isset.aa_string};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> aa_string_ref() & {
+    return {this->aa_string, __isset.aa_string};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> aa_string_ref() && {
+    return {std::move(this->aa_string), __isset.aa_string};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> not_a_container_ref() const& {
+    return {this->not_a_container, __isset.not_a_container};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> not_a_container_ref() const&& {
+    return {std::move(this->not_a_container), __isset.not_a_container};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> not_a_container_ref() & {
+    return {this->not_a_container, __isset.not_a_container};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> not_a_container_ref() && {
+    return {std::move(this->not_a_container), __isset.not_a_container};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  const ::std::vector<int32_t>& get_aa_list() const&;
+  ::std::vector<int32_t> get_aa_list() &&;
+
+  template <typename T_AllocatorAware_aa_list_struct_setter = ::std::vector<int32_t>>
+  ::std::vector<int32_t>& set_aa_list(T_AllocatorAware_aa_list_struct_setter&& aa_list_) {
+    aa_list = std::forward<T_AllocatorAware_aa_list_struct_setter>(aa_list_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.aa_list = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return aa_list;
+  }
+  const ::std::set<int32_t>& get_aa_set() const&;
+  ::std::set<int32_t> get_aa_set() &&;
+
+  template <typename T_AllocatorAware_aa_set_struct_setter = ::std::set<int32_t>>
+  ::std::set<int32_t>& set_aa_set(T_AllocatorAware_aa_set_struct_setter&& aa_set_) {
+    aa_set = std::forward<T_AllocatorAware_aa_set_struct_setter>(aa_set_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.aa_set = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return aa_set;
+  }
+  const ::std::map<int32_t, int32_t>& get_aa_map() const&;
+  ::std::map<int32_t, int32_t> get_aa_map() &&;
+
+  template <typename T_AllocatorAware_aa_map_struct_setter = ::std::map<int32_t, int32_t>>
+  ::std::map<int32_t, int32_t>& set_aa_map(T_AllocatorAware_aa_map_struct_setter&& aa_map_) {
+    aa_map = std::forward<T_AllocatorAware_aa_map_struct_setter>(aa_map_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.aa_map = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return aa_map;
+  }
+
+  const ::std::string& get_aa_string() const& {
+    return aa_string;
+  }
+
+  ::std::string get_aa_string() && {
+    return std::move(aa_string);
+  }
+
+  template <typename T_AllocatorAware_aa_string_struct_setter = ::std::string>
+  ::std::string& set_aa_string(T_AllocatorAware_aa_string_struct_setter&& aa_string_) {
+    aa_string = std::forward<T_AllocatorAware_aa_string_struct_setter>(aa_string_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.aa_string = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return aa_string;
+  }
+
+  int32_t get_not_a_container() const {
+    return not_a_container;
+  }
+
+  int32_t& set_not_a_container(int32_t not_a_container_) {
+    not_a_container = not_a_container_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.not_a_container = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return not_a_container;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< AllocatorAware >;
+};
+
+void swap(AllocatorAware& a, AllocatorAware& b);
+
+template <class Protocol_>
+uint32_t AllocatorAware::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

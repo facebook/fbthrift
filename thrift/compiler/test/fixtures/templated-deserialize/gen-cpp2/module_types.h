@@ -262,6 +262,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   SmallStruct(const SmallStruct&) = default;
 
+
   SmallStruct& operator=(SmallStruct&&) = default;
 
   SmallStruct& operator=(const SmallStruct&) = default;
@@ -405,6 +406,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   containerStruct(containerStruct&&) = default;
   containerStruct(const containerStruct& src);
+
 
   containerStruct& operator=(containerStruct&&) = default;
   containerStruct& operator=(const containerStruct& src);

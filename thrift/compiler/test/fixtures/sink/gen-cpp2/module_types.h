@@ -91,6 +91,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   InitialResponse(const InitialResponse&) = default;
 
+
   InitialResponse& operator=(InitialResponse&&) = default;
 
   InitialResponse& operator=(const InitialResponse&) = default;
@@ -202,6 +203,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FinalResponse(FinalResponse&&) = default;
 
   FinalResponse(const FinalResponse&) = default;
+
 
   FinalResponse& operator=(FinalResponse&&) = default;
 
@@ -315,6 +317,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   SinkPayload(const SinkPayload&) = default;
 
+
   SinkPayload& operator=(SinkPayload&&) = default;
 
   SinkPayload& operator=(const SinkPayload&) = default;
@@ -427,6 +430,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   CompatibleWithKeywordSink(const CompatibleWithKeywordSink&) = default;
 
+
   CompatibleWithKeywordSink& operator=(CompatibleWithKeywordSink&&) = default;
 
   CompatibleWithKeywordSink& operator=(const CompatibleWithKeywordSink&) = default;
@@ -538,6 +542,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   InitialException(InitialException&&) = default;
 
   InitialException(const InitialException&) = default;
+
 
   InitialException& operator=(InitialException&&) = default;
 
@@ -655,6 +660,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   SinkException1(const SinkException1&) = default;
 
+
   SinkException1& operator=(SinkException1&&) = default;
 
   SinkException1& operator=(const SinkException1&) = default;
@@ -771,6 +777,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkException2(SinkException2&&) = default;
 
   SinkException2(const SinkException2&) = default;
+
 
   SinkException2& operator=(SinkException2&&) = default;
 

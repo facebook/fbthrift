@@ -170,6 +170,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   MyStructNestedAnnotation(const MyStructNestedAnnotation&) = default;
 
+
   MyStructNestedAnnotation& operator=(MyStructNestedAnnotation&&) = default;
 
   MyStructNestedAnnotation& operator=(const MyStructNestedAnnotation&) = default;
@@ -282,6 +283,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructAnnotation(MyStructAnnotation&&) = default;
 
   MyStructAnnotation(const MyStructAnnotation&) = default;
+
 
   MyStructAnnotation& operator=(MyStructAnnotation&&) = default;
 
@@ -511,6 +513,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct(MyStruct&&) = default;
 
   MyStruct(const MyStruct&) = default;
+
 
   MyStruct& operator=(MyStruct&&) = default;
 
@@ -832,6 +835,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SecretStruct(SecretStruct&&) = default;
 
   SecretStruct(const SecretStruct&) = default;
+
 
   SecretStruct& operator=(SecretStruct&&) = default;
 

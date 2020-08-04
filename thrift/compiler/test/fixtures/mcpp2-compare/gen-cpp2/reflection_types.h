@@ -56,6 +56,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   ReflectionStruct(const ReflectionStruct&) = default;
 
+
   ReflectionStruct& operator=(ReflectionStruct&&) = default;
 
   ReflectionStruct& operator=(const ReflectionStruct&) = default;

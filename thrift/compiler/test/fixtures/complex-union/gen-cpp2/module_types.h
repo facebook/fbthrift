@@ -1115,6 +1115,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   Val(const Val&) = default;
 
+
   Val& operator=(Val&&) = default;
 
   Val& operator=(const Val&) = default;
@@ -1793,6 +1794,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   NonCopyableStruct(apache::thrift::FragileConstructor, int64_t num__arg);
 
   NonCopyableStruct(NonCopyableStruct&&) = default;
+
 
   NonCopyableStruct& operator=(NonCopyableStruct&&) = default;
   void __clear();

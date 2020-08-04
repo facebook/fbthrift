@@ -519,6 +519,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   MyField(const MyField&) = default;
 
+
   MyField& operator=(MyField&&) = default;
 
   MyField& operator=(const MyField&) = default;
@@ -699,6 +700,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct(MyStruct&&) = default;
   MyStruct(const MyStruct& src);
 
+
   MyStruct& operator=(MyStruct&&) = default;
   MyStruct& operator=(const MyStruct& src);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -804,6 +806,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   StructWithUnion(StructWithUnion&&) = default;
   StructWithUnion(const StructWithUnion& src);
+
 
   StructWithUnion& operator=(StructWithUnion&&) = default;
   StructWithUnion& operator=(const StructWithUnion& src);
@@ -960,6 +963,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   RecursiveStruct(const RecursiveStruct&) = default;
 
+
   RecursiveStruct& operator=(RecursiveStruct&&) = default;
 
   RecursiveStruct& operator=(const RecursiveStruct&) = default;
@@ -1066,6 +1070,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   StructWithContainers(StructWithContainers&&) = default;
   StructWithContainers(const StructWithContainers& src);
+
 
   StructWithContainers& operator=(StructWithContainers&&) = default;
   StructWithContainers& operator=(const StructWithContainers& src);
@@ -1216,6 +1221,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   StructWithSharedConst(const StructWithSharedConst&) = default;
 
+
   StructWithSharedConst& operator=(StructWithSharedConst&&) = default;
 
   StructWithSharedConst& operator=(const StructWithSharedConst&) = default;
@@ -1322,6 +1328,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   Empty(const Empty&) = default;
 
+
   Empty& operator=(Empty&&) = default;
 
   Empty& operator=(const Empty&) = default;
@@ -1387,6 +1394,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   StructWithRef(StructWithRef&&) = default;
   StructWithRef(const StructWithRef& src);
+
 
   StructWithRef& operator=(StructWithRef&&) = default;
   StructWithRef& operator=(const StructWithRef& src);
@@ -1494,6 +1502,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefTypeUnique(StructWithRefTypeUnique&&) = default;
   StructWithRefTypeUnique(const StructWithRefTypeUnique& src);
 
+
   StructWithRefTypeUnique& operator=(StructWithRefTypeUnique&&) = default;
   StructWithRefTypeUnique& operator=(const StructWithRefTypeUnique& src);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1600,6 +1609,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefTypeShared(StructWithRefTypeShared&&) = default;
 
   StructWithRefTypeShared(const StructWithRefTypeShared&) = default;
+
 
   StructWithRefTypeShared& operator=(StructWithRefTypeShared&&) = default;
 
@@ -1709,6 +1719,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   StructWithRefTypeSharedConst(const StructWithRefTypeSharedConst&) = default;
 
+
   StructWithRefTypeSharedConst& operator=(StructWithRefTypeSharedConst&&) = default;
 
   StructWithRefTypeSharedConst& operator=(const StructWithRefTypeSharedConst&) = default;
@@ -1816,6 +1827,7 @@ StructWithRefAndAnnotCppNoexceptMoveCtor(StructWithRefAndAnnotCppNoexceptMoveCto
       def_field(std::move(other.def_field)) {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END  StructWithRefAndAnnotCppNoexceptMoveCtor(const StructWithRefAndAnnotCppNoexceptMoveCtor& src);
+
 
   StructWithRefAndAnnotCppNoexceptMoveCtor& operator=(StructWithRefAndAnnotCppNoexceptMoveCtor&&) = default;
   StructWithRefAndAnnotCppNoexceptMoveCtor& operator=(const StructWithRefAndAnnotCppNoexceptMoveCtor& src);

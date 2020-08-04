@@ -831,6 +831,74 @@ cdef __StructSpec get_reflection__NoExceptMoveUnion():
         ),
     )
     return spec
+cdef __StructSpec get_reflection__AllocatorAware():
+    cdef _module_types.AllocatorAware defaults = _module_types.AllocatorAware.create(
+        constant_shared_ptr[_module_types.cAllocatorAware](
+            default_inst[_module_types.cAllocatorAware]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec.create(
+        name="AllocatorAware",
+        kind=__StructType.STRUCT,
+        annotations={
+            """cpp.allocator""": """some_allocator""",        },
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="aa_list",
+            type=_module_types.List__i32,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="aa_set",
+            type=_module_types.Set__i32,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="aa_map",
+            type=_module_types.Map__i32_i32,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="aa_string",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="not_a_container",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __MapSpec get_reflection__std_unordered_map__Map__i32_string():
     return __MapSpec.create(
         key=int,
@@ -929,5 +997,19 @@ cdef __MapSpec get_reflection__Map__MyEnumA_string():
         key_kind=__NumberType.NOT_A_NUMBER,
         value=str,
         value_kind=__NumberType.NOT_A_NUMBER,
+    )
+
+cdef __SetSpec get_reflection__Set__i32():
+    return __SetSpec.create(
+        value=int,
+        kind=__NumberType.I32,
+     )
+
+cdef __MapSpec get_reflection__Map__i32_i32():
+    return __MapSpec.create(
+        key=int,
+        key_kind=__NumberType.I32,
+        value=int,
+        value_kind=__NumberType.I32,
     )
 

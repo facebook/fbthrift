@@ -726,6 +726,34 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         const cint32_t& get_i32_field() const
         cint32_t& set_i32_field(const cint32_t&)
 
+    cdef cppclass cAllocatorAware__isset "::apache::thrift::fixtures::types::AllocatorAware::__isset":
+        bint aa_list
+        bint aa_set
+        bint aa_map
+        bint aa_string
+        bint not_a_container
+
+    cdef cppclass cAllocatorAware "::apache::thrift::fixtures::types::AllocatorAware":
+        cAllocatorAware() except +
+        cAllocatorAware(const cAllocatorAware&) except +
+        bint operator==(cAllocatorAware&)
+        bint operator!=(cAllocatorAware&)
+        bint operator<(cAllocatorAware&)
+        bint operator>(cAllocatorAware&)
+        bint operator<=(cAllocatorAware&)
+        bint operator>=(cAllocatorAware&)
+        __FieldRef[vector[cint32_t]] aa_list_ref()
+        vector[cint32_t] aa_list
+        __FieldRef[cset[cint32_t]] aa_set_ref()
+        cset[cint32_t] aa_set
+        __FieldRef[cmap[cint32_t,cint32_t]] aa_map_ref()
+        cmap[cint32_t,cint32_t] aa_map
+        __FieldRef[string] aa_string_ref()
+        string aa_string
+        __FieldRef[cint32_t] not_a_container_ref()
+        cint32_t not_a_container
+        cAllocatorAware__isset __isset
+
     cdef shared_ptr[vector[cint32_t]] reference_shared_ptr_fieldA "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cContainerStruct]&, vector[cint32_t]&)
     cdef shared_ptr[std_list[cint32_t]] reference_shared_ptr_fieldB "thrift::py3::reference_shared_ptr<std::list<int32_t>>"(shared_ptr[cContainerStruct]&, std_list[cint32_t]&)
     cdef shared_ptr[std_deque[cint32_t]] reference_shared_ptr_fieldC "thrift::py3::reference_shared_ptr<std::deque<int32_t>>"(shared_ptr[cContainerStruct]&, std_deque[cint32_t]&)
@@ -746,6 +774,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
     cdef shared_ptr[cForwardUsageRoot] reference_shared_ptr_foo "thrift::py3::reference_shared_ptr<::apache::thrift::fixtures::types::ForwardUsageRoot>"(shared_ptr[cForwardUsageByRef]&, cForwardUsageRoot&)
     cdef shared_ptr[vector[string]] reference_shared_ptr_MyBinaryListField4 "thrift::py3::reference_shared_ptr<std::vector<std::string>>"(shared_ptr[cNoexceptMoveComplexStruct]&, vector[string]&)
     cdef shared_ptr[cmap[cMyEnumA,string]] reference_shared_ptr_MyMapEnumAndInt "thrift::py3::reference_shared_ptr<std::map<::apache::thrift::fixtures::types::MyEnumA,std::string>>"(shared_ptr[cNoexceptMoveComplexStruct]&, cmap[cMyEnumA,string]&)
+    cdef shared_ptr[vector[cint32_t]] reference_shared_ptr_aa_list "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cAllocatorAware]&, vector[cint32_t]&)
+    cdef shared_ptr[cset[cint32_t]] reference_shared_ptr_aa_set "thrift::py3::reference_shared_ptr<std::set<int32_t>>"(shared_ptr[cAllocatorAware]&, cset[cint32_t]&)
+    cdef shared_ptr[cmap[cint32_t,cint32_t]] reference_shared_ptr_aa_map "thrift::py3::reference_shared_ptr<std::map<int32_t,int32_t>>"(shared_ptr[cAllocatorAware]&, cmap[cint32_t,cint32_t]&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cdecorated_struct] move(unique_ptr[cdecorated_struct])
@@ -811,6 +842,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cNoExceptMoveUnion] move(unique_ptr[cNoExceptMoveUnion])
     cdef shared_ptr[cNoExceptMoveUnion] move_shared "std::move"(shared_ptr[cNoExceptMoveUnion])
     cdef unique_ptr[cNoExceptMoveUnion] move_unique "std::move"(unique_ptr[cNoExceptMoveUnion])
+    cdef shared_ptr[cAllocatorAware] move(unique_ptr[cAllocatorAware])
+    cdef shared_ptr[cAllocatorAware] move_shared "std::move"(shared_ptr[cAllocatorAware])
+    cdef unique_ptr[cAllocatorAware] move_unique "std::move"(unique_ptr[cAllocatorAware])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cdecorated_struct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::decorated_struct>"(shared_ptr[cdecorated_struct])
@@ -834,6 +868,7 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cNoexceptMoveSimpleStruct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>"(shared_ptr[cNoexceptMoveSimpleStruct])
     cdef shared_ptr[const cNoexceptMoveComplexStruct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>"(shared_ptr[cNoexceptMoveComplexStruct])
     cdef shared_ptr[const cNoExceptMoveUnion] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::NoExceptMoveUnion>"(shared_ptr[cNoExceptMoveUnion])
+    cdef shared_ptr[const cAllocatorAware] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::AllocatorAware>"(shared_ptr[cAllocatorAware])
 
 
 
@@ -1249,6 +1284,30 @@ cdef class NoExceptMoveUnion(thrift.py3.types.Union):
     cdef create(shared_ptr[cNoExceptMoveUnion])
 
 
+
+cdef class AllocatorAware(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cAllocatorAware] _cpp_obj
+    cdef List__i32 __field_aa_list
+    cdef Set__i32 __field_aa_set
+    cdef Map__i32_i32 __field_aa_map
+
+    @staticmethod
+    cdef unique_ptr[cAllocatorAware] _make_instance(
+        cAllocatorAware* base_instance,
+        bint* __isNOTSET,
+        object aa_list,
+        object aa_set,
+        object aa_map,
+        str aa_string,
+        object not_a_container
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cAllocatorAware])
+
+
 cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
     cdef shared_ptr[std_unordered_map[cint32_t,string]] _cpp_obj
     @staticmethod
@@ -1354,6 +1413,20 @@ cdef class Map__MyEnumA_string(thrift.py3.types.Container):
     @staticmethod
     cdef shared_ptr[cmap[cMyEnumA,string]] _make_instance(object items) except *
 
+cdef class Set__i32(thrift.py3.types.Container):
+    cdef shared_ptr[cset[cint32_t]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[cset[cint32_t]])
+    @staticmethod
+    cdef shared_ptr[cset[cint32_t]] _make_instance(object items) except *
+
+cdef class Map__i32_i32(thrift.py3.types.Container):
+    cdef shared_ptr[cmap[cint32_t,cint32_t]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[cmap[cint32_t,cint32_t]])
+    @staticmethod
+    cdef shared_ptr[cmap[cint32_t,cint32_t]] _make_instance(object items) except *
+
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[cint32_t]] move "std::move"(unique_ptr[vector[cint32_t]])
     cdef shared_ptr[vector[cint32_t]] move_shared "std::move"(shared_ptr[vector[cint32_t]])
@@ -1365,10 +1438,14 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[string]] move_shared "std::move"(shared_ptr[vector[string]])
     cdef shared_ptr[cmap[cMyEnumA,string]] move "std::move"(unique_ptr[cmap[cMyEnumA,string]])
     cdef shared_ptr[cmap[cMyEnumA,string]] move_shared "std::move"(shared_ptr[cmap[cMyEnumA,string]])
+    cdef shared_ptr[cmap[cint32_t,cint32_t]] move "std::move"(unique_ptr[cmap[cint32_t,cint32_t]])
+    cdef shared_ptr[cmap[cint32_t,cint32_t]] move_shared "std::move"(shared_ptr[cmap[cint32_t,cint32_t]])
     cdef shared_ptr[cmap[string,cint32_t]] move "std::move"(unique_ptr[cmap[string,cint32_t]])
     cdef shared_ptr[cmap[string,cint32_t]] move_shared "std::move"(shared_ptr[cmap[string,cint32_t]])
     cdef shared_ptr[cmap[string,cint64_t]] move "std::move"(unique_ptr[cmap[string,cint64_t]])
     cdef shared_ptr[cmap[string,cint64_t]] move_shared "std::move"(shared_ptr[cmap[string,cint64_t]])
+    cdef shared_ptr[cset[cint32_t]] move "std::move"(unique_ptr[cset[cint32_t]])
+    cdef shared_ptr[cset[cint32_t]] move_shared "std::move"(shared_ptr[cset[cint32_t]])
     cdef shared_ptr[folly_fbvector[cint32_t]] move "std::move"(unique_ptr[folly_fbvector[cint32_t]])
     cdef shared_ptr[folly_fbvector[cint32_t]] move_shared "std::move"(shared_ptr[folly_fbvector[cint32_t]])
     cdef shared_ptr[folly_small_vector[cint32_t]] move "std::move"(unique_ptr[folly_small_vector[cint32_t]])
@@ -1394,8 +1471,10 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[std_unordered_map[cint32_t,string]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::unordered_map<int32_t,std::string>>>"(shared_ptr[vector[std_unordered_map[cint32_t,string]]])
     cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::string>>"(shared_ptr[vector[string]])
     cdef shared_ptr[const cmap[cMyEnumA,string]] const_pointer_cast "std::const_pointer_cast<const std::map<::apache::thrift::fixtures::types::MyEnumA,std::string>>"(shared_ptr[cmap[cMyEnumA,string]])
+    cdef shared_ptr[const cmap[cint32_t,cint32_t]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,int32_t>>"(shared_ptr[cmap[cint32_t,cint32_t]])
     cdef shared_ptr[const cmap[string,cint32_t]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,int32_t>>"(shared_ptr[cmap[string,cint32_t]])
     cdef shared_ptr[const cmap[string,cint64_t]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,int64_t>>"(shared_ptr[cmap[string,cint64_t]])
+    cdef shared_ptr[const cset[cint32_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int32_t>>"(shared_ptr[cset[cint32_t]])
     cdef shared_ptr[const folly_fbvector[cint32_t]] const_pointer_cast "std::const_pointer_cast<const folly::fbvector<int32_t>>"(shared_ptr[folly_fbvector[cint32_t]])
     cdef shared_ptr[const folly_small_vector[cint32_t]] const_pointer_cast "std::const_pointer_cast<const folly::small_vector<int32_t>>"(shared_ptr[folly_small_vector[cint32_t]])
     cdef shared_ptr[const folly_sorted_vector_map[cint32_t,string]] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_map<int32_t,std::string>>"(shared_ptr[folly_sorted_vector_map[cint32_t,string]])

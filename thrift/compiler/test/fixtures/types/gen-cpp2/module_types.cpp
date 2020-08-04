@@ -493,6 +493,32 @@ void TccStructTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion>::tran
     _ftype = apache::thrift::protocol::T_I32;
   }
 }
+void TccStructTraits<::apache::thrift::fixtures::types::AllocatorAware>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "aa_list") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "aa_set") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "aa_map") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "aa_string") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "not_a_container") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
 
 } // namespace detail
 } // namespace thrift
@@ -2072,5 +2098,132 @@ template void NoExceptMoveUnion::readNoXfer<>(apache::thrift::CompactProtocolRea
 template uint32_t NoExceptMoveUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t NoExceptMoveUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t NoExceptMoveUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AllocatorAware::AllocatorAware() :
+      not_a_container(0) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+AllocatorAware::~AllocatorAware() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AllocatorAware::AllocatorAware(apache::thrift::FragileConstructor, ::std::vector<int32_t> aa_list__arg, ::std::set<int32_t> aa_set__arg, ::std::map<int32_t, int32_t> aa_map__arg, ::std::string aa_string__arg, int32_t not_a_container__arg) :
+    aa_list(std::move(aa_list__arg)),
+    aa_set(std::move(aa_set__arg)),
+    aa_map(std::move(aa_map__arg)),
+    aa_string(std::move(aa_string__arg)),
+    not_a_container(std::move(not_a_container__arg)) {
+  __isset.aa_list = true;
+  __isset.aa_set = true;
+  __isset.aa_map = true;
+  __isset.aa_string = true;
+  __isset.not_a_container = true;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+void AllocatorAware::__clear() {
+  // clear all fields
+  aa_list.clear();
+  aa_set.clear();
+  aa_map.clear();
+  aa_string = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  not_a_container = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+bool AllocatorAware::operator==(const AllocatorAware& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.aa_list == rhs.aa_list)) {
+    return false;
+  }
+  if (!(lhs.aa_set == rhs.aa_set)) {
+    return false;
+  }
+  if (!(lhs.aa_map == rhs.aa_map)) {
+    return false;
+  }
+  if (!(lhs.aa_string == rhs.aa_string)) {
+    return false;
+  }
+  if (!(lhs.not_a_container == rhs.not_a_container)) {
+    return false;
+  }
+  return true;
+}
+
+bool AllocatorAware::operator<(const AllocatorAware& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.aa_list == rhs.aa_list)) {
+    return lhs.aa_list < rhs.aa_list;
+  }
+  if (!(lhs.aa_set == rhs.aa_set)) {
+    return lhs.aa_set < rhs.aa_set;
+  }
+  if (!(lhs.aa_map == rhs.aa_map)) {
+    return lhs.aa_map < rhs.aa_map;
+  }
+  if (!(lhs.aa_string == rhs.aa_string)) {
+    return lhs.aa_string < rhs.aa_string;
+  }
+  if (!(lhs.not_a_container == rhs.not_a_container)) {
+    return lhs.not_a_container < rhs.not_a_container;
+  }
+  return false;
+}
+
+const ::std::vector<int32_t>& AllocatorAware::get_aa_list() const& {
+  return aa_list;
+}
+
+::std::vector<int32_t> AllocatorAware::get_aa_list() && {
+  return std::move(aa_list);
+}
+
+const ::std::set<int32_t>& AllocatorAware::get_aa_set() const& {
+  return aa_set;
+}
+
+::std::set<int32_t> AllocatorAware::get_aa_set() && {
+  return std::move(aa_set);
+}
+
+const ::std::map<int32_t, int32_t>& AllocatorAware::get_aa_map() const& {
+  return aa_map;
+}
+
+::std::map<int32_t, int32_t> AllocatorAware::get_aa_map() && {
+  return std::move(aa_map);
+}
+
+
+void swap(AllocatorAware& a, AllocatorAware& b) {
+  using ::std::swap;
+  swap(a.aa_list, b.aa_list);
+  swap(a.aa_set, b.aa_set);
+  swap(a.aa_map, b.aa_map);
+  swap(a.aa_string, b.aa_string);
+  swap(a.not_a_container, b.not_a_container);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+template void AllocatorAware::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t AllocatorAware::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t AllocatorAware::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t AllocatorAware::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void AllocatorAware::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t AllocatorAware::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t AllocatorAware::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t AllocatorAware::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}}} // apache::thrift::fixtures::types

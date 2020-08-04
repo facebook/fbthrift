@@ -68,6 +68,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   MyStruct(const MyStruct&) = default;
 
+
   MyStruct& operator=(MyStruct&&) = default;
 
   MyStruct& operator=(const MyStruct&) = default;
