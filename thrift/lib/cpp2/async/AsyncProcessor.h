@@ -34,9 +34,7 @@
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/async/RpcTypes.h>
 #include <thrift/lib/cpp2/async/ServerStream.h>
-#if FOLLY_HAS_COROUTINES
 #include <thrift/lib/cpp2/async/Sink.h>
-#endif
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/util/Checksum.h>
@@ -423,10 +421,14 @@ class HandlerCallbackBase {
 
   void sendReply(folly::IOBufQueue queue);
   void sendReply(ResponseAndServerStreamFactory&& responseAndStream);
-#if FOLLY_HAS_COROUTINES
-  void sendReply(std::pair<folly::IOBufQueue, detail::SinkConsumerImpl>&&
-                     responseAndSinkConsumer);
+
+#if !FOLLY_HAS_COROUTINES
+  [[noreturn]]
 #endif
+  void
+  sendReply(FOLLY_MAYBE_UNUSED
+                std::pair<folly::IOBufQueue, detail::SinkConsumerImpl>&&
+                    responseAndSinkConsumer);
 
   // Required for this call
   ResponseChannelRequest::UniquePtr req_;
@@ -831,7 +833,6 @@ template <typename StreamItem>
 struct HandlerCallbackHelper<ServerStream<StreamItem>>
     : public HandlerCallbackHelperServerStream<ServerStream<StreamItem>> {};
 
-#if FOLLY_HAS_COROUTINES
 template <typename SinkInputType>
 struct HandlerCallbackHelperSink {
   using InputType = SinkInputType;
@@ -860,7 +861,6 @@ template <typename SinkElement, typename FinalResponse>
 struct HandlerCallbackHelper<SinkConsumer<SinkElement, FinalResponse>>
     : public HandlerCallbackHelperSink<
           SinkConsumer<SinkElement, FinalResponse>> {};
-#endif
 
 } // namespace detail
 

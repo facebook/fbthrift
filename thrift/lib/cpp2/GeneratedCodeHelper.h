@@ -1076,7 +1076,6 @@ apache::thrift::ClientBufferedStream<T> decode_client_buffered_stream(
       bufferSize);
 }
 
-#if FOLLY_HAS_COROUTINES
 template <
     typename ProtocolReader,
     typename ProtocolWriter,
@@ -1086,8 +1085,9 @@ template <
     typename SinkType,
     typename FinalResponseType>
 apache::thrift::detail::SinkConsumerImpl toSinkConsumerImpl(
-    SinkConsumer<SinkType, FinalResponseType>&& sinkConsumer,
-    folly::Executor::KeepAlive<> executor) {
+    FOLLY_MAYBE_UNUSED SinkConsumer<SinkType, FinalResponseType>&& sinkConsumer,
+    FOLLY_MAYBE_UNUSED folly::Executor::KeepAlive<> executor) {
+#if FOLLY_HAS_COROUTINES
   auto consumer =
       [innerConsumer = std::move(sinkConsumer.consumer)](
           folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> gen) mutable
@@ -1136,8 +1136,10 @@ apache::thrift::detail::SinkConsumerImpl toSinkConsumerImpl(
       sinkConsumer.bufferSize,
       sinkConsumer.sinkOptions.chunkTimeout,
       std::move(executor)};
-}
+#else
+  std::terminate();
 #endif
+}
 
 } // namespace ap
 } // namespace detail

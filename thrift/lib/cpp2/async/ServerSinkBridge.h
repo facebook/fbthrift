@@ -20,14 +20,15 @@
 
 #include <folly/Portability.h>
 
-#if FOLLY_HAS_COROUTINES
 #include <folly/Function.h>
 #include <folly/Overload.h>
+#if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/AsyncGenerator.h>
 #include <folly/experimental/coro/Baton.h>
 #include <folly/experimental/coro/Task.h>
 
 #include <thrift/lib/cpp2/async/SinkBridgeUtil.h>
+#endif
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/async/TwoWayBridge.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
@@ -37,6 +38,7 @@ namespace thrift {
 namespace detail {
 
 struct SinkConsumerImpl {
+#if FOLLY_HAS_COROUTINES
   using Consumer = folly::Function<folly::coro::Task<folly::Try<StreamPayload>>(
       folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&>)>;
   Consumer consumer;
@@ -47,8 +49,10 @@ struct SinkConsumerImpl {
   explicit operator bool() const {
     return (bool)consumer;
   }
+#endif
 };
 
+#if FOLLY_HAS_COROUTINES
 class ServerSinkBridge;
 
 // This template explicitly instantiated in ServerSinkBridge.cpp
@@ -113,8 +117,8 @@ class ServerSinkBridge : public TwoWayBridge<
   // only access in evb_ thread
   bool sinkComplete_{false};
 };
+#endif
 
 } // namespace detail
 } // namespace thrift
 } // namespace apache
-#endif

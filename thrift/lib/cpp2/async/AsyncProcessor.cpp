@@ -268,10 +268,10 @@ void HandlerCallbackBase::sendReply(
   }
 }
 
-#if FOLLY_HAS_COROUTINES
 void HandlerCallbackBase::sendReply(
-    std::pair<folly::IOBufQueue, detail::SinkConsumerImpl>&&
+    FOLLY_MAYBE_UNUSED std::pair<folly::IOBufQueue, detail::SinkConsumerImpl>&&
         responseAndSinkConsumer) {
+#if FOLLY_HAS_COROUTINES
   auto& queue = responseAndSinkConsumer.first;
   auto& sinkConsumer = responseAndSinkConsumer.second;
   folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
@@ -289,8 +289,10 @@ void HandlerCallbackBase::sendReply(
           req->sendSinkReply(queue.move(), std::move(sinkConsumer), crc32c);
         });
   }
-}
+#else
+  std::terminate();
 #endif
+}
 
 HandlerCallback<void>::HandlerCallback(
     ResponseChannelRequest::UniquePtr req,
