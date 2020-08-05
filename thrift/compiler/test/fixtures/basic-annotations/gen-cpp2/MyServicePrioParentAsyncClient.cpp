@@ -122,7 +122,7 @@ folly::Future<folly::Unit> MyServicePrioParentAsyncClient::future_ping() {
 
 folly::SemiFuture<folly::Unit> MyServicePrioParentAsyncClient::semifuture_ping() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_impl_ping(rpcOptions);
+  return semifuture_ping(rpcOptions);
 }
 
 folly::Future<folly::Unit> MyServicePrioParentAsyncClient::future_ping(apache::thrift::RpcOptions& rpcOptions) {
@@ -134,10 +134,6 @@ folly::Future<folly::Unit> MyServicePrioParentAsyncClient::future_ping(apache::t
 }
 
 folly::SemiFuture<folly::Unit> MyServicePrioParentAsyncClient::semifuture_ping(apache::thrift::RpcOptions& rpcOptions) {
-  return semifuture_impl_ping(rpcOptions);
-}
-
-folly::SemiFuture<folly::Unit> MyServicePrioParentAsyncClient::semifuture_impl_ping(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_ping, channel_);
   auto callback = std::move(callbackAndFuture.first);
   ping(rpcOptions, std::move(callback));
@@ -294,7 +290,7 @@ folly::Future<folly::Unit> MyServicePrioParentAsyncClient::future_pong() {
 
 folly::SemiFuture<folly::Unit> MyServicePrioParentAsyncClient::semifuture_pong() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_impl_pong(rpcOptions);
+  return semifuture_pong(rpcOptions);
 }
 
 folly::Future<folly::Unit> MyServicePrioParentAsyncClient::future_pong(apache::thrift::RpcOptions& rpcOptions) {
@@ -306,10 +302,6 @@ folly::Future<folly::Unit> MyServicePrioParentAsyncClient::future_pong(apache::t
 }
 
 folly::SemiFuture<folly::Unit> MyServicePrioParentAsyncClient::semifuture_pong(apache::thrift::RpcOptions& rpcOptions) {
-  return semifuture_impl_pong(rpcOptions);
-}
-
-folly::SemiFuture<folly::Unit> MyServicePrioParentAsyncClient::semifuture_impl_pong(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_pong, channel_);
   auto callback = std::move(callbackAndFuture.first);
   pong(rpcOptions, std::move(callback));

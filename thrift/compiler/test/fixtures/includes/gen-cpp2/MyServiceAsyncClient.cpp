@@ -126,7 +126,7 @@ folly::Future<folly::Unit> MyServiceAsyncClient::future_query(const  ::cpp2::MyS
 
 folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_query(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_impl_query(rpcOptions, s, i);
+  return semifuture_query(rpcOptions, s, i);
 }
 
 folly::Future<folly::Unit> MyServiceAsyncClient::future_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
@@ -138,10 +138,6 @@ folly::Future<folly::Unit> MyServiceAsyncClient::future_query(apache::thrift::Rp
 }
 
 folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
-  return semifuture_impl_query(rpcOptions, s, i);
-}
-
-folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_impl_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_query, channel_);
   auto callback = std::move(callbackAndFuture.first);
   query(rpcOptions, std::move(callback), s, i);
@@ -298,7 +294,7 @@ folly::Future<folly::Unit> MyServiceAsyncClient::future_has_arg_docs(const  ::cp
 
 folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_has_arg_docs(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_impl_has_arg_docs(rpcOptions, s, i);
+  return semifuture_has_arg_docs(rpcOptions, s, i);
 }
 
 folly::Future<folly::Unit> MyServiceAsyncClient::future_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
@@ -310,10 +306,6 @@ folly::Future<folly::Unit> MyServiceAsyncClient::future_has_arg_docs(apache::thr
 }
 
 folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
-  return semifuture_impl_has_arg_docs(rpcOptions, s, i);
-}
-
-folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_impl_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_has_arg_docs, channel_);
   auto callback = std::move(callbackAndFuture.first);
   has_arg_docs(rpcOptions, std::move(callback), s, i);

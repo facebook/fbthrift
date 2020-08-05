@@ -37,22 +37,18 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
   virtual folly::SemiFuture<folly::Unit> semifuture_mapList(const ::std::map<int32_t, ::std::vector<int32_t>>& foo);
   virtual folly::Future<folly::Unit> future_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::vector<int32_t>>& foo);
   virtual folly::SemiFuture<folly::Unit> semifuture_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::vector<int32_t>>& foo);
-private:
-  folly::SemiFuture<folly::Unit> semifuture_impl_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::vector<int32_t>>& foo);
-public:
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::vector<int32_t>>& foo);
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::vector<int32_t>>& foo);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_mapList(const ::std::map<int32_t, ::std::vector<int32_t>>& foo) {
-    ::apache::thrift::RpcOptions rpcOptions;
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_await folly::coro::detachOnCancel(semifuture_impl_mapList(rpcOptions, foo));
+      co_await folly::coro::detachOnCancel(semifuture_mapList(foo));
     } else {
-      co_await semifuture_impl_mapList(rpcOptions, foo);
+      co_await semifuture_mapList(foo);
     }
   }
   template <int = 0>
@@ -60,9 +56,9 @@ public:
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_await folly::coro::detachOnCancel(semifuture_impl_mapList(rpcOptions, foo));
+      co_await folly::coro::detachOnCancel(semifuture_mapList(rpcOptions, foo));
     } else {
-      co_await semifuture_impl_mapList(rpcOptions, foo);
+      co_await semifuture_mapList(rpcOptions, foo);
     }
   }
 #endif // FOLLY_HAS_COROUTINES
@@ -87,22 +83,18 @@ public:
   virtual folly::SemiFuture<folly::Unit> semifuture_mapSet(const ::std::map<int32_t, ::std::set<int32_t>>& foo);
   virtual folly::Future<folly::Unit> future_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::set<int32_t>>& foo);
   virtual folly::SemiFuture<folly::Unit> semifuture_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::set<int32_t>>& foo);
-private:
-  folly::SemiFuture<folly::Unit> semifuture_impl_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::set<int32_t>>& foo);
-public:
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::set<int32_t>>& foo);
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::set<int32_t>>& foo);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_mapSet(const ::std::map<int32_t, ::std::set<int32_t>>& foo) {
-    ::apache::thrift::RpcOptions rpcOptions;
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_await folly::coro::detachOnCancel(semifuture_impl_mapSet(rpcOptions, foo));
+      co_await folly::coro::detachOnCancel(semifuture_mapSet(foo));
     } else {
-      co_await semifuture_impl_mapSet(rpcOptions, foo);
+      co_await semifuture_mapSet(foo);
     }
   }
   template <int = 0>
@@ -110,9 +102,9 @@ public:
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_await folly::coro::detachOnCancel(semifuture_impl_mapSet(rpcOptions, foo));
+      co_await folly::coro::detachOnCancel(semifuture_mapSet(rpcOptions, foo));
     } else {
-      co_await semifuture_impl_mapSet(rpcOptions, foo);
+      co_await semifuture_mapSet(rpcOptions, foo);
     }
   }
 #endif // FOLLY_HAS_COROUTINES
@@ -137,22 +129,18 @@ public:
   virtual folly::SemiFuture<folly::Unit> semifuture_listMap(const ::std::vector<::std::map<int32_t, int32_t>>& foo);
   virtual folly::Future<folly::Unit> future_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<int32_t, int32_t>>& foo);
   virtual folly::SemiFuture<folly::Unit> semifuture_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<int32_t, int32_t>>& foo);
-private:
-  folly::SemiFuture<folly::Unit> semifuture_impl_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<int32_t, int32_t>>& foo);
-public:
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<int32_t, int32_t>>& foo);
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<int32_t, int32_t>>& foo);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_listMap(const ::std::vector<::std::map<int32_t, int32_t>>& foo) {
-    ::apache::thrift::RpcOptions rpcOptions;
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_await folly::coro::detachOnCancel(semifuture_impl_listMap(rpcOptions, foo));
+      co_await folly::coro::detachOnCancel(semifuture_listMap(foo));
     } else {
-      co_await semifuture_impl_listMap(rpcOptions, foo);
+      co_await semifuture_listMap(foo);
     }
   }
   template <int = 0>
@@ -160,9 +148,9 @@ public:
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_await folly::coro::detachOnCancel(semifuture_impl_listMap(rpcOptions, foo));
+      co_await folly::coro::detachOnCancel(semifuture_listMap(rpcOptions, foo));
     } else {
-      co_await semifuture_impl_listMap(rpcOptions, foo);
+      co_await semifuture_listMap(rpcOptions, foo);
     }
   }
 #endif // FOLLY_HAS_COROUTINES
@@ -187,22 +175,18 @@ public:
   virtual folly::SemiFuture<folly::Unit> semifuture_listSet(const ::std::vector<::std::set<int32_t>>& foo);
   virtual folly::Future<folly::Unit> future_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<int32_t>>& foo);
   virtual folly::SemiFuture<folly::Unit> semifuture_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<int32_t>>& foo);
-private:
-  folly::SemiFuture<folly::Unit> semifuture_impl_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<int32_t>>& foo);
-public:
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<int32_t>>& foo);
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<int32_t>>& foo);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_listSet(const ::std::vector<::std::set<int32_t>>& foo) {
-    ::apache::thrift::RpcOptions rpcOptions;
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_await folly::coro::detachOnCancel(semifuture_impl_listSet(rpcOptions, foo));
+      co_await folly::coro::detachOnCancel(semifuture_listSet(foo));
     } else {
-      co_await semifuture_impl_listSet(rpcOptions, foo);
+      co_await semifuture_listSet(foo);
     }
   }
   template <int = 0>
@@ -210,9 +194,9 @@ public:
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_await folly::coro::detachOnCancel(semifuture_impl_listSet(rpcOptions, foo));
+      co_await folly::coro::detachOnCancel(semifuture_listSet(rpcOptions, foo));
     } else {
-      co_await semifuture_impl_listSet(rpcOptions, foo);
+      co_await semifuture_listSet(rpcOptions, foo);
     }
   }
 #endif // FOLLY_HAS_COROUTINES
@@ -237,22 +221,18 @@ public:
   virtual folly::SemiFuture<folly::Unit> semifuture_turtles(const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& foo);
   virtual folly::Future<folly::Unit> future_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& foo);
   virtual folly::SemiFuture<folly::Unit> semifuture_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& foo);
-private:
-  folly::SemiFuture<folly::Unit> semifuture_impl_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& foo);
-public:
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& foo);
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& foo);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_turtles(const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& foo) {
-    ::apache::thrift::RpcOptions rpcOptions;
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_await folly::coro::detachOnCancel(semifuture_impl_turtles(rpcOptions, foo));
+      co_await folly::coro::detachOnCancel(semifuture_turtles(foo));
     } else {
-      co_await semifuture_impl_turtles(rpcOptions, foo);
+      co_await semifuture_turtles(foo);
     }
   }
   template <int = 0>
@@ -260,9 +240,9 @@ public:
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_await folly::coro::detachOnCancel(semifuture_impl_turtles(rpcOptions, foo));
+      co_await folly::coro::detachOnCancel(semifuture_turtles(rpcOptions, foo));
     } else {
-      co_await semifuture_impl_turtles(rpcOptions, foo);
+      co_await semifuture_turtles(rpcOptions, foo);
     }
   }
 #endif // FOLLY_HAS_COROUTINES

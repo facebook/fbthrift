@@ -110,7 +110,7 @@ folly::Future<folly::Unit> CAsyncClient::future_f() {
 
 folly::SemiFuture<folly::Unit> CAsyncClient::semifuture_f() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_impl_f(rpcOptions);
+  return semifuture_f(rpcOptions);
 }
 
 folly::Future<folly::Unit> CAsyncClient::future_f(apache::thrift::RpcOptions& rpcOptions) {
@@ -122,10 +122,6 @@ folly::Future<folly::Unit> CAsyncClient::future_f(apache::thrift::RpcOptions& rp
 }
 
 folly::SemiFuture<folly::Unit> CAsyncClient::semifuture_f(apache::thrift::RpcOptions& rpcOptions) {
-  return semifuture_impl_f(rpcOptions);
-}
-
-folly::SemiFuture<folly::Unit> CAsyncClient::semifuture_impl_f(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_f, channel_);
   auto callback = std::move(callbackAndFuture.first);
   f(rpcOptions, std::move(callback));

@@ -124,7 +124,7 @@ folly::Future< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClien
 
 folly::SemiFuture< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::semifuture_bounce_map(const  ::apache::thrift::fixtures::types::SomeMap& m) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_impl_bounce_map(rpcOptions, m);
+  return semifuture_bounce_map(rpcOptions, m);
 }
 
 folly::Future< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::future_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m) {
@@ -136,10 +136,6 @@ folly::Future< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClien
 }
 
 folly::SemiFuture< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::semifuture_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m) {
-  return semifuture_impl_bounce_map(rpcOptions, m);
-}
-
-folly::SemiFuture< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::semifuture_impl_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_bounce_map, channel_);
   auto callback = std::move(callbackAndFuture.first);
   bounce_map(rpcOptions, std::move(callback), m);
@@ -296,7 +292,7 @@ folly::Future<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> 
 
 folly::SemiFuture<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> SomeServiceAsyncClient::semifuture_binary_keyed_map(const ::std::vector<int64_t>& r) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_impl_binary_keyed_map(rpcOptions, r);
+  return semifuture_binary_keyed_map(rpcOptions, r);
 }
 
 folly::Future<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> SomeServiceAsyncClient::future_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<int64_t>& r) {
@@ -308,10 +304,6 @@ folly::Future<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> 
 }
 
 folly::SemiFuture<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> SomeServiceAsyncClient::semifuture_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<int64_t>& r) {
-  return semifuture_impl_binary_keyed_map(rpcOptions, r);
-}
-
-folly::SemiFuture<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> SomeServiceAsyncClient::semifuture_impl_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<int64_t>& r) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_binary_keyed_map, channel_);
   auto callback = std::move(callbackAndFuture.first);
   binary_keyed_map(rpcOptions, std::move(callback), r);

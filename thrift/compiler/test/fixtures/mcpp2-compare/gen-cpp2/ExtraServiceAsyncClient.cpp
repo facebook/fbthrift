@@ -213,7 +213,7 @@ folly::Future<bool> ExtraServiceAsyncClient::future_simple_function() {
 
 folly::SemiFuture<bool> ExtraServiceAsyncClient::semifuture_simple_function() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_impl_simple_function(rpcOptions);
+  return semifuture_simple_function(rpcOptions);
 }
 
 folly::Future<bool> ExtraServiceAsyncClient::future_simple_function(apache::thrift::RpcOptions& rpcOptions) {
@@ -225,10 +225,6 @@ folly::Future<bool> ExtraServiceAsyncClient::future_simple_function(apache::thri
 }
 
 folly::SemiFuture<bool> ExtraServiceAsyncClient::semifuture_simple_function(apache::thrift::RpcOptions& rpcOptions) {
-  return semifuture_impl_simple_function(rpcOptions);
-}
-
-folly::SemiFuture<bool> ExtraServiceAsyncClient::semifuture_impl_simple_function(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_simple_function, channel_);
   auto callback = std::move(callbackAndFuture.first);
   simple_function(rpcOptions, std::move(callback));
@@ -387,7 +383,7 @@ folly::Future<folly::Unit> ExtraServiceAsyncClient::future_throws_function() {
 
 folly::SemiFuture<folly::Unit> ExtraServiceAsyncClient::semifuture_throws_function() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_impl_throws_function(rpcOptions);
+  return semifuture_throws_function(rpcOptions);
 }
 
 folly::Future<folly::Unit> ExtraServiceAsyncClient::future_throws_function(apache::thrift::RpcOptions& rpcOptions) {
@@ -399,10 +395,6 @@ folly::Future<folly::Unit> ExtraServiceAsyncClient::future_throws_function(apach
 }
 
 folly::SemiFuture<folly::Unit> ExtraServiceAsyncClient::semifuture_throws_function(apache::thrift::RpcOptions& rpcOptions) {
-  return semifuture_impl_throws_function(rpcOptions);
-}
-
-folly::SemiFuture<folly::Unit> ExtraServiceAsyncClient::semifuture_impl_throws_function(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_throws_function, channel_);
   auto callback = std::move(callbackAndFuture.first);
   throws_function(rpcOptions, std::move(callback));
@@ -559,7 +551,7 @@ folly::Future<bool> ExtraServiceAsyncClient::future_throws_function2(bool param1
 
 folly::SemiFuture<bool> ExtraServiceAsyncClient::semifuture_throws_function2(bool param1) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_impl_throws_function2(rpcOptions, param1);
+  return semifuture_throws_function2(rpcOptions, param1);
 }
 
 folly::Future<bool> ExtraServiceAsyncClient::future_throws_function2(apache::thrift::RpcOptions& rpcOptions, bool param1) {
@@ -571,10 +563,6 @@ folly::Future<bool> ExtraServiceAsyncClient::future_throws_function2(apache::thr
 }
 
 folly::SemiFuture<bool> ExtraServiceAsyncClient::semifuture_throws_function2(apache::thrift::RpcOptions& rpcOptions, bool param1) {
-  return semifuture_impl_throws_function2(rpcOptions, param1);
-}
-
-folly::SemiFuture<bool> ExtraServiceAsyncClient::semifuture_impl_throws_function2(apache::thrift::RpcOptions& rpcOptions, bool param1) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_throws_function2, channel_);
   auto callback = std::move(callbackAndFuture.first);
   throws_function2(rpcOptions, std::move(callback), param1);
@@ -733,7 +721,7 @@ folly::Future<::std::map<int32_t, ::std::string>> ExtraServiceAsyncClient::futur
 
 folly::SemiFuture<::std::map<int32_t, ::std::string>> ExtraServiceAsyncClient::semifuture_throws_function3(bool param1, const ::std::string& param2) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_impl_throws_function3(rpcOptions, param1, param2);
+  return semifuture_throws_function3(rpcOptions, param1, param2);
 }
 
 folly::Future<::std::map<int32_t, ::std::string>> ExtraServiceAsyncClient::future_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool param1, const ::std::string& param2) {
@@ -745,10 +733,6 @@ folly::Future<::std::map<int32_t, ::std::string>> ExtraServiceAsyncClient::futur
 }
 
 folly::SemiFuture<::std::map<int32_t, ::std::string>> ExtraServiceAsyncClient::semifuture_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool param1, const ::std::string& param2) {
-  return semifuture_impl_throws_function3(rpcOptions, param1, param2);
-}
-
-folly::SemiFuture<::std::map<int32_t, ::std::string>> ExtraServiceAsyncClient::semifuture_impl_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool param1, const ::std::string& param2) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_throws_function3, channel_);
   auto callback = std::move(callbackAndFuture.first);
   throws_function3(rpcOptions, std::move(callback), param1, param2);
