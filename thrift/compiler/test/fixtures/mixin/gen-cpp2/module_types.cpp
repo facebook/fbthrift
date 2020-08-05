@@ -40,7 +40,7 @@ void TccStructTraits<::cpp2::Mixin2>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
-void TccStructTraits<::cpp2::Mixin3>::translateFieldName(
+void TccStructTraits<::cpp2::Mixin3Base>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -214,12 +214,12 @@ template uint32_t Mixin2::serializedSizeZC<>(apache::thrift::CompactProtocolWrit
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Mixin3::Mixin3(apache::thrift::FragileConstructor, ::std::string field3__arg) :
+Mixin3Base::Mixin3Base(apache::thrift::FragileConstructor, ::std::string field3__arg) :
     field3(std::move(field3__arg)) {
   __isset.field3 = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-void Mixin3::__clear() {
+void Mixin3Base::__clear() {
   // clear all fields
   field3 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -227,7 +227,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
-bool Mixin3::operator==(const Mixin3& rhs) const {
+bool Mixin3Base::operator==(const Mixin3Base& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
@@ -237,7 +237,7 @@ bool Mixin3::operator==(const Mixin3& rhs) const {
   return true;
 }
 
-bool Mixin3::operator<(const Mixin3& rhs) const {
+bool Mixin3Base::operator<(const Mixin3Base& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
@@ -248,7 +248,7 @@ bool Mixin3::operator<(const Mixin3& rhs) const {
 }
 
 
-void swap(Mixin3& a, Mixin3& b) {
+void swap(Mixin3Base& a, Mixin3Base& b) {
   using ::std::swap;
   swap(a.field3, b.field3);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -256,14 +256,14 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
-template void Mixin3::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t Mixin3::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t Mixin3::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Mixin3::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void Mixin3::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t Mixin3::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t Mixin3::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t Mixin3::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template void Mixin3Base::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t Mixin3Base::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t Mixin3Base::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Mixin3Base::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void Mixin3Base::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t Mixin3Base::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t Mixin3Base::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t Mixin3Base::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {

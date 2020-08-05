@@ -287,12 +287,12 @@ bool mixin_type_correctness_validator::visit(t_struct* s) {
             s->get_lineno(),
             "Union `" + s->get_name() + "` can not have mixin field `" +
                 member->get_name() + '`');
-      } else if (!member->get_type()->is_struct()) {
+      } else if (!member->get_type()->get_true_type()->is_struct()) {
         add_error(
             member->get_lineno(),
             "Mixin field `" + member->get_name() + "` is not a struct but " +
                 member->get_type()->get_name());
-      } else if (member->get_type()->is_union()) {
+      } else if (member->get_type()->get_true_type()->is_union()) {
         add_error(
             member->get_lineno(),
             "Mixin field `" + member->get_name() +
@@ -314,7 +314,8 @@ bool mixin_type_correctness_validator::visit(t_struct* s) {
 bool field_names_uniqueness_validator::visit(t_struct* s) {
   // If member is not struct, we couldn't extract field from mixin
   for (auto* member : s->get_members()) {
-    if (member->is_mixin() && !member->get_type()->is_struct()) {
+    if (member->is_mixin() &&
+        !member->get_type()->get_true_type()->is_struct()) {
       return true;
     }
   }

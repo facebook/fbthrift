@@ -23,9 +23,11 @@ struct Mixin2 {
   2: optional string field2;
 }
 
-struct Mixin3 {
+struct Mixin3Base {
   1: string field3;
 }
+
+typedef Mixin3Base Mixin3
 
 struct Foo {
   1: string field4;

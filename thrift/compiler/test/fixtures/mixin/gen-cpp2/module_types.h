@@ -64,12 +64,15 @@ APACHE_THRIFT_DEFINE_ACCESSOR(m3);
 namespace cpp2 {
 class Mixin1;
 class Mixin2;
-class Mixin3;
+class Mixin3Base;
 class Foo;
 } // cpp2
 // END forward_declare
 // BEGIN typedefs
+namespace cpp2 {
+typedef  ::cpp2::Mixin3Base Mixin3;
 
+} // cpp2
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
@@ -341,24 +344,24 @@ uint32_t Mixin2::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class Mixin3 final  {
+class Mixin3Base final  {
  public:
-  using __fbthrift_cpp2_type = Mixin3;
+  using __fbthrift_cpp2_type = Mixin3Base;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  Mixin3() {}
+  Mixin3Base() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Mixin3(apache::thrift::FragileConstructor, ::std::string field3__arg);
+  Mixin3Base(apache::thrift::FragileConstructor, ::std::string field3__arg);
 
-  Mixin3(Mixin3&&) = default;
+  Mixin3Base(Mixin3Base&&) = default;
 
-  Mixin3(const Mixin3&) = default;
+  Mixin3Base(const Mixin3Base&) = default;
 
 
-  Mixin3& operator=(Mixin3&&) = default;
+  Mixin3Base& operator=(Mixin3Base&&) = default;
 
-  Mixin3& operator=(const Mixin3&) = default;
+  Mixin3Base& operator=(const Mixin3Base&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
@@ -369,21 +372,21 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   struct __isset {
     bool field3;
   } __isset = {};
-  bool operator==(const Mixin3& rhs) const;
+  bool operator==(const Mixin3Base& rhs) const;
 #ifndef SWIG
-  friend bool operator!=(const Mixin3& __x, const Mixin3& __y) {
+  friend bool operator!=(const Mixin3Base& __x, const Mixin3Base& __y) {
     return !(__x == __y);
   }
 #endif
-  bool operator<(const Mixin3& rhs) const;
+  bool operator<(const Mixin3Base& rhs) const;
 #ifndef SWIG
-  friend bool operator>(const Mixin3& __x, const Mixin3& __y) {
+  friend bool operator>(const Mixin3Base& __x, const Mixin3Base& __y) {
     return __y < __x;
   }
-  friend bool operator<=(const Mixin3& __x, const Mixin3& __y) {
+  friend bool operator<=(const Mixin3Base& __x, const Mixin3Base& __y) {
     return !(__y < __x);
   }
-  friend bool operator>=(const Mixin3& __x, const Mixin3& __y) {
+  friend bool operator>=(const Mixin3Base& __x, const Mixin3Base& __y) {
     return !(__x < __y);
   }
 #endif
@@ -418,9 +421,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return std::move(field3);
   }
 
-  template <typename T_Mixin3_field3_struct_setter = ::std::string>
-  ::std::string& set_field3(T_Mixin3_field3_struct_setter&& field3_) {
-    field3 = std::forward<T_Mixin3_field3_struct_setter>(field3_);
+  template <typename T_Mixin3Base_field3_struct_setter = ::std::string>
+  ::std::string& set_field3(T_Mixin3Base_field3_struct_setter&& field3_) {
+    field3 = std::forward<T_Mixin3Base_field3_struct_setter>(field3_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.field3 = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -440,13 +443,13 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< Mixin3 >;
+  friend class ::apache::thrift::Cpp2Ops< Mixin3Base >;
 };
 
-void swap(Mixin3& a, Mixin3& b);
+void swap(Mixin3Base& a, Mixin3Base& b);
 
 template <class Protocol_>
-uint32_t Mixin3::read(Protocol_* iprot) {
+uint32_t Mixin3Base::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

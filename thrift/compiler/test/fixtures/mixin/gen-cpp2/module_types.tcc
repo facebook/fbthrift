@@ -30,7 +30,7 @@ struct TccStructTraits<::cpp2::Mixin2> {
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits<::cpp2::Mixin3> {
+struct TccStructTraits<::cpp2::Mixin3Base> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
@@ -311,7 +311,7 @@ extern template uint32_t Mixin2::serializedSizeZC<>(apache::thrift::CompactProto
 namespace cpp2 {
 
 template <class Protocol_>
-void Mixin3::readNoXfer(Protocol_* iprot) {
+void Mixin3Base::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -354,7 +354,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<Mixin3>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<Mixin3Base>>();
   }
 
   switch (_readState.fieldId) {
@@ -378,9 +378,9 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t Mixin3::serializedSize(Protocol_ const* prot_) const {
+uint32_t Mixin3Base::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("Mixin3");
+  xfer += prot_->serializedStructSize("Mixin3Base");
   xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_STRING, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field3);
   xfer += prot_->serializedSizeStop();
@@ -388,9 +388,9 @@ uint32_t Mixin3::serializedSize(Protocol_ const* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t Mixin3::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t Mixin3Base::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("Mixin3");
+  xfer += prot_->serializedStructSize("Mixin3Base");
   xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_STRING, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field3);
   xfer += prot_->serializedSizeStop();
@@ -398,9 +398,9 @@ uint32_t Mixin3::serializedSizeZC(Protocol_ const* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t Mixin3::write(Protocol_* prot_) const {
+uint32_t Mixin3Base::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("Mixin3");
+  xfer += prot_->writeStructBegin("Mixin3Base");
   xfer += prot_->writeFieldBegin("field3", apache::thrift::protocol::T_STRING, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->field3);
   xfer += prot_->writeFieldEnd();
@@ -409,14 +409,14 @@ uint32_t Mixin3::write(Protocol_* prot_) const {
   return xfer;
 }
 
-extern template void Mixin3::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t Mixin3::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t Mixin3::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t Mixin3::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void Mixin3::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t Mixin3::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t Mixin3::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t Mixin3::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void Mixin3Base::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t Mixin3Base::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t Mixin3Base::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Mixin3Base::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void Mixin3Base::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t Mixin3Base::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t Mixin3Base::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t Mixin3Base::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {

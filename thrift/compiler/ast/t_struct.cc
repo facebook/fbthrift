@@ -31,8 +31,9 @@ void t_struct::get_mixins_and_members_impl(
     std::vector<mixin_member>& out) const {
   for (auto* member : get_members()) {
     if (member->is_mixin()) {
-      assert(member->get_type()->is_struct());
-      auto mixin_struct = static_cast<const t_struct*>(member->get_type());
+      assert(member->get_type()->get_true_type()->is_struct());
+      auto mixin_struct =
+          static_cast<const t_struct*>(member->get_type()->get_true_type());
       auto mixin = top_level_mixin ? top_level_mixin : member;
 
       // import members from mixin field

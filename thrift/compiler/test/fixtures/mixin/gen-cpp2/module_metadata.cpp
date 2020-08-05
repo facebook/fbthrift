@@ -62,25 +62,25 @@ void StructMetadata<::cpp2::Mixin2>::gen(ThriftMetadata& metadata) {
     module_Mixin2.fields.push_back(std::move(field));
   }
 }
-void StructMetadata<::cpp2::Mixin3>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.Mixin3", ::apache::thrift::metadata::ThriftStruct{});
+void StructMetadata<::cpp2::Mixin3Base>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.Mixin3Base", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return;
   }
-  ::apache::thrift::metadata::ThriftStruct& module_Mixin3 = res.first->second;
-  module_Mixin3.name = "module.Mixin3";
-  module_Mixin3.is_union = false;
+  ::apache::thrift::metadata::ThriftStruct& module_Mixin3Base = res.first->second;
+  module_Mixin3Base.name = "module.Mixin3Base";
+  module_Mixin3Base.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
-  module_Mixin3_fields[] = {
+  module_Mixin3Base_fields[] = {
     std::make_tuple(1, "field3", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
   };
-  for (const auto& f : module_Mixin3_fields) {
+  for (const auto& f : module_Mixin3Base_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_Mixin3.fields.push_back(std::move(field));
+    module_Mixin3Base.fields.push_back(std::move(field));
   }
 }
 void StructMetadata<::cpp2::Foo>::gen(ThriftMetadata& metadata) {
@@ -95,7 +95,7 @@ void StructMetadata<::cpp2::Foo>::gen(ThriftMetadata& metadata) {
   module_Foo_fields[] = {
     std::make_tuple(1, "field4", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
     std::make_tuple(2, "m2", false, std::make_unique<Struct< ::cpp2::Mixin2>>("module.Mixin2")),
-    std::make_tuple(3, "m3", false, std::make_unique<Struct< ::cpp2::Mixin3>>("module.Mixin3")),
+    std::make_tuple(3, "m3", false, std::make_unique<Typedef>("module.Mixin3", std::make_unique<Struct< ::cpp2::Mixin3Base>>("module.Mixin3Base"))),
   };
   for (const auto& f : module_Foo_fields) {
     ::apache::thrift::metadata::ThriftField field;

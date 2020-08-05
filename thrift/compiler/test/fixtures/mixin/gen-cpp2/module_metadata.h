@@ -29,7 +29,7 @@ class StructMetadata<::cpp2::Mixin2> {
   static void gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::Mixin3> {
+class StructMetadata<::cpp2::Mixin3Base> {
  public:
   static void gen(ThriftMetadata& metadata);
 };
