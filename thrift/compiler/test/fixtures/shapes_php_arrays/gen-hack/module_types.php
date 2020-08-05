@@ -227,10 +227,47 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     return 'Foo';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'just_int' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_strings' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'set_of_ints' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_list_of_strings' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_set_of_strings' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_strings_to_map_of_string_ints' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'optional_map_of_map_of_sets' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->just_int = $shape['just_int'];

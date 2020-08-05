@@ -77,10 +77,27 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     return 'A';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'a' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_string' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->a = $shape['a'];
@@ -446,10 +463,67 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     return 'B';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'map_of_string_to_string' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_i32' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_self' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_list_of_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_map_of_string_to_i32' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_map_of_string_to_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_string' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_map_of_string_to_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_self' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_list_of_self' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_map_of_string_to_list_of_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->map_of_string_to_string = $shape['map_of_string_to_string'];
@@ -955,10 +1029,67 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     return 'C';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'map_of_string_to_string' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_i32' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_self' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_list_of_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_map_of_string_to_i32' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_map_of_string_to_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_string' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_map_of_string_to_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_self' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_list_of_self' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_map_of_string_to_list_of_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     if (Shapes::idx($shape, 'map_of_string_to_string') !== null) {

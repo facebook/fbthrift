@@ -60,6 +60,7 @@ YY_DECL;
  * assigned starting from -1 and working their way down.
  */
 int y_field_val = -1;
+
 /**
  * This global variable is used for automatic numbering of enum values.
  * y_enum_val is the last value assigned; the next auto-assigned value will be
@@ -84,6 +85,7 @@ enum class LineType {
   kField,
   kXception,
 };
+
 // The LinenoStack class is used for keeping track of line number and automatic
 // type checking
 class LinenoStack {
@@ -103,6 +105,30 @@ class LinenoStack {
   std::stack<std::pair<LineType, int>> stack_;
 };
 LinenoStack lineno_stack;
+
+namespace apache {
+namespace thrift {
+namespace compiler {
+
+t_annotation* const_struct_to_annotation(
+    parsing_driver& driver,
+    std::unique_ptr<t_const_value> const_struct) {
+  auto result = new t_annotation;
+  result->object_val = std::make_shared<t_const>(
+    driver.program,
+    const_struct->get_ttype(),
+    "",
+    std::move(const_struct));
+  result->object_val->set_lineno(driver.scanner->get_lineno());
+  if (driver.mode == parsing_mode::PROGRAM) {
+    driver.validate_const_type(result->object_val.get());
+  }
+  return result;
+}
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache
 
 %}
 
@@ -160,6 +186,7 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 %token tok_char_bracket_round_r     ")"
 %token tok_char_bracket_angle_l     "<"
 %token tok_char_bracket_angle_r     ">"
+%token tok_char_at_sign             "@"
 
 /**
  * Header keywords
@@ -231,11 +258,14 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 
 %type<t_typedef*>       Typedef
 
-%type<t_type*>          TypeAnnotations
-%type<t_type*>          TypeAnnotationList
+%type<t_annotated*>     TypeAnnotations
+%type<t_annotated*>     TypeAnnotationList
 %type<t_annotation*>    TypeAnnotation
 %type<std::string>      TypeAnnotationValue
-%type<t_type*>          FunctionAnnotations
+%type<t_annotated*>     FunctionAnnotations
+%type<t_annotated*>     StructuredAnnotations
+%type<t_annotated*>     NonEmptyStructuredAnnotationList
+%type<t_annotation*>    StructuredAnnotation
 
 %type<t_field*>         Field
 %type<t_field_id>       FieldIdentifier
@@ -305,7 +335,7 @@ Program:
       driver.debug("Program -> Headers DefinitionList");
       /*
       TODO(dreiss): Decide whether full-program doctext is worth the trouble.
-      if ($1 != NULL) {
+      if ($1) {
         driver.program->set_doc($1);
       }
       */
@@ -398,7 +428,7 @@ DefinitionList:
   DefinitionList CaptureDocText Definition
     {
       driver.debug("DefinitionList -> DefinitionList Definition");
-      if (($3 != NULL) && $2) {
+      if ($2 && $3) {
         $3->set_doc(std::string{*$2});
       }
     }
@@ -481,20 +511,25 @@ TypeDefinition:
     }
 
 Typedef:
-  tok_typedef
+  StructuredAnnotations tok_typedef
     {
       lineno_stack.push(LineType::kTypedef, driver.scanner->get_lineno());
     }
   FieldType tok_identifier TypeAnnotations
     {
-      driver.debug("TypeDef -> tok_typedef FieldType tok_identifier");
-      t_typedef *td = new t_typedef(driver.program, $3, $4, driver.scope_cache);
+      driver.debug("TypeDef => StructuredAnnotations tok_typedef FieldType "
+        "tok_identifier TypeAnnotations");
+      t_typedef *td = new t_typedef(driver.program, $4, $5, driver.scope_cache);
       $$ = td;
       $$->set_lineno(lineno_stack.pop(LineType::kTypedef));
-      if ($5 != NULL) {
-        $$->annotations_ = $5->annotations_;
-        $$->annotation_objects_ = $5->annotation_objects_;
-        delete $5;
+      if ($6) {
+        $$->annotations_ = std::move($6->annotations_);
+        $$->annotation_objects_ = std::move($6->annotation_objects_);
+        delete $6;
+      }
+      if ($1) {
+        $$->structured_annotations_ = std::move($1->structured_annotations_);
+        delete $1;
       }
     }
 
@@ -515,25 +550,29 @@ CommaOrSemicolonOptional:
     }
 
 Enum:
-  tok_enum
+  StructuredAnnotations tok_enum
     {
       lineno_stack.push(LineType::kEnum, driver.scanner->get_lineno());
     }
   tok_identifier
     {
-      assert(y_enum_name == nullptr);
-      y_enum_name = $3.c_str();
+      assert(!y_enum_name);
+      y_enum_name = $4.c_str();
     }
   "{" EnumDefList "}" TypeAnnotations
     {
-      driver.debug("Enum -> tok_enum tok_identifier { EnumDefList }");
-      $$ = $6;
-      $$->set_name($3);
+      driver.debug("Enum => StructuredAnnotations tok_enum tok_identifier { EnumDefList } TypeAnnotations");
+      $$ = $7;
+      $$->set_name($4);
       $$->set_lineno(lineno_stack.pop(LineType::kEnum));
-      if ($8 != NULL) {
-        $$->annotations_ = $8->annotations_;
-        $$->annotation_objects_ = $8->annotation_objects_;
-        delete $8;
+      if ($9) {
+        $$->annotations_ = std::move($9->annotations_);
+        $$->annotation_objects_ = std::move($9->annotation_objects_);
+        delete $9;
+      }
+      if ($1) {
+        $$->structured_annotations_ = std::move($1->structured_annotations_);
+        delete $1;
       }
       y_enum_name = nullptr;
     }
@@ -574,17 +613,22 @@ EnumDefList:
     }
 
 EnumDef:
-  CaptureDocText EnumValue TypeAnnotations CommaOrSemicolonOptional
+  CaptureDocText StructuredAnnotations EnumValue TypeAnnotations CommaOrSemicolonOptional
     {
-      driver.debug("EnumDef -> EnumValue");
-      $$ = $2;
+      driver.debug("EnumDef => CaptureDocText StructuredAnnotations EnumValue "
+        "TypeAnnotations CommaOrSemicolonOptional");
+      $$ = $3;
       if ($1) {
         $$->set_doc(std::string{*$1});
       }
-      if ($3 != NULL) {
-        $$->annotations_ = $3->annotations_;
-        $$->annotation_objects_ = $3->annotation_objects_;
-        delete $3;
+      if ($4) {
+        $$->annotations_ = std::move($4->annotations_);
+        $$->annotation_objects_ = std::move($4->annotation_objects_);
+        delete $4;
+      }
+      if ($2) {
+        $$->structured_annotations_ = std::move($2->structured_annotations_);
+        delete $2;
       }
     }
 
@@ -636,7 +680,7 @@ Const:
         driver.scope_cache->add_constant(driver.program->get_name() + "." + $4, $$);
       } else {
         delete $6;
-        $$ = NULL;
+        $$ = nullptr;
       }
     }
 
@@ -801,12 +845,12 @@ ConstStructType:
       } else {
         // Lookup the identifier in the current scope
         $$ = driver.scope_cache->get_type($1);
-        if ($$ == nullptr) {
+        if (!$$) {
           $$ = driver.scope_cache->get_type(driver.program->get_name() + "." + $1);
         }
-        if ($$ == nullptr) {
-          driver.failure("The type '%s' is either undefined or not resolved yet. Lazily resolved types like "
-            "forward declarations and recursive types are prohibited", $1.c_str());
+        if (!$$) {
+          driver.failure("The type '%s' is not defined yet. Types must be "
+            "defined before the usage in constant values.", $1.c_str());
         }
       }
     }
@@ -837,41 +881,51 @@ StructHead:
     }
 
 Struct:
-  StructHead
+  StructuredAnnotations StructHead
     {
-        lineno_stack.push(LineType::kStruct, driver.scanner->get_lineno());
+      lineno_stack.push(LineType::kStruct, driver.scanner->get_lineno());
     }
   tok_identifier "{" FieldList "}" TypeAnnotations
     {
-      driver.debug("Struct -> tok_struct tok_identifier { FieldList }");
-      $5->set_union($1 == struct_is_union);
-      $$ = $5;
-      $$->set_name($3);
+      driver.debug("Struct => StructuredAnnotations StructHead tok_identifier "
+        "{ FieldList } TypeAnnotations");
+      $$ = $6;
+      $$->set_union($2 == struct_is_union);
+      $$->set_name($4);
       $$->set_lineno(lineno_stack.pop(LineType::kStruct));
-      if ($7 != NULL) {
-        $$->annotations_ = $7->annotations_;
-        $$->annotation_objects_ = $7->annotation_objects_;
-        delete $7;
+      if ($8) {
+        $$->annotations_ = std::move($8->annotations_);
+        $$->annotation_objects_ = std::move($8->annotation_objects_);
+        delete $8;
+      }
+      if ($1) {
+        $$->structured_annotations_ = std::move($1->structured_annotations_);
+        delete $1;
       }
       y_field_val = -1;
     }
 
 Xception:
-  tok_xception
+  StructuredAnnotations tok_xception
     {
       lineno_stack.push(LineType::kXception, driver.scanner->get_lineno());
     }
   tok_identifier "{" FieldList "}" TypeAnnotations
     {
-      driver.debug("Xception -> tok_xception tok_identifier { FieldList }");
-      $5->set_name($3);
-      $5->set_xception(true);
-      $$ = $5;
+      driver.debug("Xception => StructuredAnnotations tok_xception "
+        "tok_identifier { FieldList } TypeAnnotations");
+      $$ = $6;
+      $$->set_name($4);
+      $$->set_xception(true);
       $$->set_lineno(lineno_stack.pop(LineType::kXception));
-      if ($7 != NULL) {
-        $$->annotations_ = $7->annotations_;
-        $$->annotation_objects_ = $7->annotation_objects_;
-        delete $7;
+      if ($8) {
+        $$->annotations_ = std::move($8->annotations_);
+        $$->annotation_objects_ = std::move($8->annotation_objects_);
+        delete $8;
+      }
+      if ($1) {
+        $$->structured_annotations_ = std::move($1->structured_annotations_);
+        delete $1;
       }
 
       const char* annotations[] = {"message", "code"};
@@ -880,7 +934,7 @@ Xception:
             && $$->has_field_named(annotation)
             && $$->annotations_.find(annotation) != $$->annotations_.end()
             && strcmp(annotation, $$->annotations_.find(annotation)->second.c_str()) != 0) {
-          driver.warning(1, "Some generators (eg. PHP) will ignore annotation '%s' "
+          driver.warning(1, "Some generators (e.g. PHP) will ignore annotation '%s' "
                          "as it is also used as field", annotation);
         }
       }
@@ -894,13 +948,13 @@ Xception:
 
         if (!$$->has_field_named(v.c_str())) {
           driver.failure("member specified as exception 'message' should be a valid"
-                         " struct member, '%s' in '%s' is not", v.c_str(), $3.c_str());
+                         " struct member, '%s' in '%s' is not", v.c_str(), $4.c_str());
         }
 
         auto field = $$->get_field_named(v.c_str());
         if (!field->get_type()->is_string_or_binary()) {
           driver.failure("member specified as exception 'message' should be of type "
-                         "STRING, '%s' in '%s' is not", v.c_str(), $3.c_str());
+                         "STRING, '%s' in '%s' is not", v.c_str(), $4.c_str());
         }
       }
 
@@ -908,21 +962,27 @@ Xception:
     }
 
 Service:
-  tok_service
+  StructuredAnnotations tok_service
     {
       lineno_stack.push(LineType::kService, driver.scanner->get_lineno());
     }
   tok_identifier Extends "{" FlagArgs FunctionList UnflagArgs "}" FunctionAnnotations
     {
-      driver.debug("Service -> tok_service tok_identifier { FunctionList }");
-      $$ = $7;
-      $$->set_name($3);
-      $$->set_extends($4);
+      driver.debug("Service => StructuredAnnotations tok_service "
+        "tok_identifier Extends { FlagArgs FunctionList UnflagArgs } "
+        "FunctionAnnotations");
+      $$ = $8;
+      $$->set_name($4);
+      $$->set_extends($5);
       $$->set_lineno(lineno_stack.pop(LineType::kService));
-      if ($10) {
-        $$->annotations_ = $10->annotations_;
-        $$->annotation_objects_ = $10->annotation_objects_;
-        delete $10;
+      if ($11) {
+        $$->annotations_ = std::move($11->annotations_);
+        $$->annotation_objects_ = std::move($11->annotation_objects_);
+        delete $11;
+      }
+      if ($1) {
+        $$->structured_annotations_ = std::move($1->structured_annotations_);
+        delete $1;
       }
     }
 
@@ -940,20 +1000,20 @@ Extends:
   tok_extends tok_identifier
     {
       driver.debug("Extends -> tok_extends tok_identifier");
-      $$ = NULL;
+      $$ = nullptr;
       if (driver.mode == parsing_mode::PROGRAM) {
         $$ = driver.scope_cache->get_service($2);
         if (!$$) {
           $$ = driver.scope_cache->get_service(driver.program->get_name() + "." + $2);
         }
-        if ($$ == NULL) {
+        if (!$$) {
           driver.failure("Service \"%s\" has not been defined.", $2.c_str());
         }
       }
     }
 |
     {
-      $$ = NULL;
+      $$ = nullptr;
     }
 
 FunctionList:
@@ -970,37 +1030,43 @@ FunctionList:
     }
 
 Function:
-  CaptureDocText Oneway FunctionType tok_identifier "(" ParamList ")" MaybeThrows FunctionAnnotations CommaOrSemicolonOptional
+  CaptureDocText StructuredAnnotations Oneway FunctionType tok_identifier "(" ParamList ")" MaybeThrows FunctionAnnotations CommaOrSemicolonOptional
     {
-      $6->set_name(std::string($4) + "_args");
-      auto* rettype = $3;
-      auto* arglist = $6;
+      driver.debug("Function => CaptureDocText StructuredAnnotations Oneway "
+        "FunctionType tok_identifier ( ParamList ) MaybeThrows "
+        "FunctionAnnotations CommaOrSemicolonOptional");
+      $7->set_name(std::string($5) + "_args");
+      auto* rettype = $4;
+      auto* arglist = $7;
       t_struct* streamthrows = rettype && rettype->is_streamresponse() ? static_cast<t_stream_response*>(rettype)->get_throws_struct() : nullptr;
       t_function* func;
       if (rettype && rettype->is_sink()) {
         func = new t_function(
           static_cast<t_sink*>(rettype),
-          $4,
+          $5,
           std::unique_ptr<t_struct>(arglist),
-          std::unique_ptr<t_struct>($8)
+          std::unique_ptr<t_struct>($9)
         );
       } else {
         func = new t_function(
           rettype,
-          $4,
+          $5,
           std::unique_ptr<t_struct>(arglist),
-          std::unique_ptr<t_struct>($8),
+          std::unique_ptr<t_struct>($9),
           std::unique_ptr<t_struct>(streamthrows),
-          $2
+          $3
         );
       }
-      if ($9) {
-        func->annotations_ = std::move($9->annotations_);
-        func->annotation_objects_ = std::move($9->annotation_objects_);
+      if ($10) {
+        func->annotations_ = std::move($10->annotations_);
+        func->annotation_objects_ = std::move($10->annotation_objects_);
+        delete $10;
       }
-      delete $9;
+      if ($2) {
+        func->structured_annotations_ = std::move($2->structured_annotations_);
+        delete $2;
+      }
       $$ = func;
-
       if ($1) {
         $$->set_doc(std::string{*$1});
       }
@@ -1081,30 +1147,33 @@ FieldList:
     }
 
 Field:
-  CaptureDocText FieldIdentifier FieldRequiredness FieldType tok_identifier FieldValue TypeAnnotations CommaOrSemicolonOptional
+  CaptureDocText StructuredAnnotations FieldIdentifier FieldRequiredness FieldType tok_identifier FieldValue TypeAnnotations CommaOrSemicolonOptional
     {
-      driver.debug("tok_int_constant : Field -> FieldType tok_identifier");
-      if ($2.auto_assigned) {
-        driver.warning(1, "No field key specified for %s, resulting protocol may have conflicts or not be backwards compatible!", $5.c_str());
+      driver.debug("Field => CaptureDocText FieldIdentifier FieldRequiredness "
+        "FieldType tok_identifier FieldValue TypeAnnotations "
+        "StructuredAnnotations CommaOrSemicolonOptional");
+      if ($3.auto_assigned) {
+        driver.warning(1, "No field key specified for %s, resulting protocol may have conflicts "
+          "or not be backwards compatible!", $6.c_str());
         if (driver.params.strict >= 192) {
           driver.failure("Implicit field keys are deprecated and not allowed with -strict");
         }
       }
 
-      $$ = new t_field($4, $5, $2.value);
-      $$->set_req($3);
+      $$ = new t_field($5, $6, $3.value);
+      $$->set_req($4);
       $$->set_lineno(lineno_stack.pop(LineType::kField));
-      if ($6 != NULL) {
-        driver.validate_field_value($$, $6);
-        $$->set_value(std::unique_ptr<t_const_value>($6));
+      if ($7) {
+        driver.validate_field_value($$, $7);
+        $$->set_value(std::unique_ptr<t_const_value>($7));
       }
       if ($1) {
         $$->set_doc(std::string{*$1});
       }
-      if ($7 != NULL) {
-        for (const auto& it : $7->annotations_) {
+      if ($8) {
+        for (const auto& it : $8->annotations_) {
           if (it.first == "cpp.ref" || it.first == "cpp2.ref") {
-            if ($3 != t_field::T_OPTIONAL) {
+            if ($4 != t_field::T_OPTIONAL) {
               driver.warning(1, "cpp.ref field must be optional if it is recursive");
             }
             break;
@@ -1113,9 +1182,13 @@ Field:
             $$->mark_as_mixin();
           }
         }
-        $$->annotations_ = $7->annotations_;
-        $$->annotation_objects_ = $7->annotation_objects_;
-        delete $7;
+        $$->annotations_ = std::move($8->annotations_);
+        $$->annotation_objects_ = std::move($8->annotation_objects_);
+        delete $8;
+      }
+      if ($2) {
+        $$->structured_annotations_ = std::move($2->structured_annotations_);
+        delete $2;
       }
     }
 
@@ -1198,12 +1271,12 @@ FieldValue:
         $$ = $2;
       } else {
         delete $2;
-        $$ = NULL;
+        $$ = nullptr;
       }
     }
 |
     {
-      $$ = NULL;
+      $$ = nullptr;
     }
 
 FunctionType:
@@ -1303,10 +1376,10 @@ SinkFieldType:
 FieldType:
   tok_identifier TypeAnnotations
     {
-      driver.debug("FieldType -> tok_identifier");
+      driver.debug("FieldType => tok_identifier TypeAnnotations");
       if (driver.mode == parsing_mode::INCLUDES) {
         // Ignore identifiers in include mode
-        $$ = NULL;
+        $$ = nullptr;
         delete $2;
       } else {
         // Lookup the identifier in the current scope
@@ -1315,16 +1388,16 @@ FieldType:
           $$ = driver.scope_cache->get_type(driver.program->get_name() + "." + $1);
         }
         // Create typedef in case we have annotations on the type.
-        if ($$ != nullptr && $2 != nullptr) {
+        if ($$ && $2) {
           auto td = new t_typedef(
               const_cast<t_program*>($$->get_program()), $$, $$->get_name(), driver.scope_cache);
-          td->annotations_ = $2->annotations_;
-          td->annotation_objects_ = $2->annotation_objects_;
+          td->annotations_ = std::move($2->annotations_);
+          td->annotation_objects_ = std::move($2->annotation_objects_);
+          delete $2;
           $$ = td;
           driver.program->add_unnamed_typedef(std::unique_ptr<t_typedef>{td});
-          delete $2;
         }
-        if ($$ == nullptr) {
+        if (!$$) {
           /*
            * Either this type isn't yet declared, or it's never
              declared.  Either way allow it and we'll figure it out
@@ -1333,9 +1406,9 @@ FieldType:
           auto td = new t_typedef(driver.program, $1, driver.scope_cache);
           $$ = td;
           driver.program->add_placeholder_typedef(std::unique_ptr<t_typedef>{td});
-          if ($2 != NULL) {
-            $$->annotations_ = $2->annotations_;
-            $$->annotation_objects_ = $2->annotation_objects_;
+          if ($2) {
+            $$->annotations_ = std::move($2->annotations_);
+            $$->annotation_objects_ = std::move($2->annotation_objects_);
             delete $2;
           }
         }
@@ -1349,9 +1422,7 @@ FieldType:
 | ContainerType
     {
       driver.debug("FieldType -> ContainerType");
-
       $$ = $1;
-
       if (driver.mode == parsing_mode::INCLUDES) {
         driver.delete_at_the_end($$);
       } else {
@@ -1361,13 +1432,12 @@ FieldType:
 
 BaseType: SimpleBaseType TypeAnnotations
     {
-      driver.debug("BaseType -> SimpleBaseType TypeAnnotations");
-      if ($2 != NULL) {
+      driver.debug("BaseType => SimpleBaseType TypeAnnotations");
+      if ($2) {
         $$ = new t_base_type(*static_cast<t_base_type*>($1));
-        $$->annotations_ = $2->annotations_;
-        $$->annotation_objects_ = $2->annotation_objects_;
+        $$->annotations_ = std::move($2->annotations_);
+        $$->annotation_objects_ = std::move($2->annotation_objects_);
         delete $2;
-
         if (driver.mode == parsing_mode::INCLUDES) {
           driver.delete_at_the_end($$);
         } else {
@@ -1427,11 +1497,11 @@ SimpleBaseType:
 
 ContainerType: SimpleContainerType TypeAnnotations
     {
-      driver.debug("ContainerType -> SimpleContainerType TypeAnnotations");
+      driver.debug("ContainerType => SimpleContainerType TypeAnnotations");
       $$ = $1;
-      if ($2 != NULL) {
-        $$->annotations_ = $2->annotations_;
-        $$->annotation_objects_ = $2->annotation_objects_;
+      if ($2) {
+        $$->annotations_ = std::move($2->annotations_);
+        $$->annotation_objects_ = std::move($2->annotation_objects_);
         delete $2;
       }
     }
@@ -1483,12 +1553,12 @@ TypeAnnotations:
 | "(" ")"
     {
       driver.debug("TypeAnnotations => ( )");
-      $$ = NULL;
+      $$ = nullptr;
     }
 |
     {
       driver.debug("TypeAnnotations =>");
-      $$ = NULL;
+      $$ = nullptr;
     }
 
 TypeAnnotationList:
@@ -1496,7 +1566,7 @@ TypeAnnotationList:
     {
       driver.debug("TypeAnnotationList => TypeAnnotationList CommaOrSemicolon TypeAnnotation");
       $$ = $1;
-      if ($3->object_val == nullptr) {
+      if (!$3->object_val) {
         $$->annotations_[$3->key] = $3->val;
       } else {
         $$->annotation_objects_[$3->key] = $3->object_val;
@@ -1507,8 +1577,8 @@ TypeAnnotationList:
     {
       driver.debug("TypeAnnotationList => TypeAnnotation");
       /* Just use a dummy structure to hold the annotations. */
-      $$ = new t_struct(driver.program);
-      if ($1->object_val == nullptr) {
+      $$ = new t_annotated();
+      if (!$1->object_val) {
         $$->annotations_[$1->key] = $1->val;
       } else {
         $$->annotation_objects_[$1->key] = $1->object_val;
@@ -1532,8 +1602,7 @@ TypeAnnotation:
         driver.validate_const_type($$->object_val.get());
       }
     }
-|
-  tok_identifier TypeAnnotationValue
+| tok_identifier TypeAnnotationValue
     {
       driver.debug("TypeAnnotation TypeAnnotationValue");
       $$ = new t_annotation;
@@ -1553,17 +1622,62 @@ TypeAnnotationValue:
       $$ = "1";
     }
 
+StructuredAnnotations:
+  NonEmptyStructuredAnnotationList
+    {
+      driver.debug("StructuredAnnotations => NonEmptyStructuredAnnotationList");
+      $$ = $1;
+    }
+|
+    {
+      driver.debug("StructuredAnnotations =>");
+      $$ = nullptr;
+    }
+
+NonEmptyStructuredAnnotationList:
+  NonEmptyStructuredAnnotationList StructuredAnnotation
+    {
+      driver.debug("NonEmptyStructuredAnnotationList => NonEmptyStructuredAnnotationList StructuredAnnotation");
+      $$ = $1;
+      $$->structured_annotations_.push_back($2->object_val);
+      delete $2;
+    }
+| StructuredAnnotation
+    {
+      driver.debug("NonEmptyStructuredAnnotationList =>");
+      $$ = new t_annotated();
+      $$->structured_annotations_.push_back($1->object_val);
+      delete $1;
+    }
+
+StructuredAnnotation:
+  "@" ConstStruct
+    {
+      driver.debug("StructuredAnnotation => @ConstStruct");
+      $$ = const_struct_to_annotation(
+          driver, std::unique_ptr<t_const_value>($2));
+    }
+| "@" ConstStructType
+    {
+      driver.debug("StructuredAnnotation => @ConstStructType");
+      auto value = std::make_unique<t_const_value>();
+      value->set_map();
+      value->set_ttype($2);
+      $$ = const_struct_to_annotation(driver, std::move(value));
+    }
+
 FunctionAnnotations:
   TypeAnnotations
     {
-      driver.debug("FunctionAnnotations -> TypeAnnotations");
-      $$ = $1;
-      if ($$ == nullptr) {
+      driver.debug("FunctionAnnotations => TypeAnnotations");
+      if (!$1) {
+        $$ = nullptr;
         break;
       }
+      $$ = $1;
       auto prio_iter = $$->annotations_.find("priority");
       if (prio_iter == $$->annotations_.end()) {
-       break;
+        break;
       }
       const std::string& prio = prio_iter->second;
       const std::string prio_list[] = {"HIGH_IMPORTANT", "HIGH", "IMPORTANT",

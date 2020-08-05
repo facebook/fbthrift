@@ -269,10 +269,43 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
     return $this->struct_foo as nonnull;
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'int_value' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'str_value' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'double_value' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_strings' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_ints' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'struct_foo' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 /**
@@ -395,10 +428,39 @@ class Foo implements \IThriftStruct {
     return 'Foo';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'a' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'b' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'c' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'd' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'str_value' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 /**
@@ -535,10 +597,43 @@ class TestStruct implements \IThriftStruct {
     return 'TestStruct';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'foo_struct' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'union_value' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'struct_of_self' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_struct_foo' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_struct_foo' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_struct_self' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 /**
@@ -631,10 +726,35 @@ class Baz extends \TException implements \IThriftStruct {
     return 'Baz';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'message' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'some_field' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'some_container' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'code' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 /**
@@ -682,9 +802,22 @@ class OptBaz extends \TException implements \IThriftStruct {
     return 'OptBaz';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'message' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 

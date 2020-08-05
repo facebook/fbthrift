@@ -64,10 +64,23 @@ class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct 
     return 'MyStructNestedAnnotation';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'name' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->name = $shape['name'];
@@ -185,10 +198,35 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
     return 'MyStructAnnotation';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'count' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'name' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'extra' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'nest' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->count = $shape['count'];
@@ -355,6 +393,38 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     return 'MyStruct';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'major' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'package' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'annotation_with_quote' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'class_' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'annotation_with_trailing_comma' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'empty_annotations' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
       'android.generate_builder' => "1",
@@ -371,6 +441,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       ),
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->major = $shape['major'];
@@ -484,10 +555,27 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
     return 'SecretStruct';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'id' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'password' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->id = $shape['id'];

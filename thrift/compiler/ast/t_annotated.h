@@ -37,7 +37,10 @@ class t_annotated : public t_doc {
   virtual ~t_annotated() {}
 
   std::map<std::string, std::string> annotations_;
+  // TODO (partisan): Try to use t_const without a pointer and rewrite the code
+  // relying on copies.
   std::map<std::string, std::shared_ptr<t_const>> annotation_objects_;
+  std::vector<std::shared_ptr<t_const>> structured_annotations_;
 };
 
 /**
@@ -49,6 +52,8 @@ struct t_annotation {
       : key(key_), val(val_) {}
   std::string key;
   std::string val;
+  // TODO (partisan): Try to use unique_ptr and rewrite the code relying on
+  // copies.
   std::shared_ptr<t_const> object_val;
 };
 

@@ -216,6 +216,29 @@ class struct_names_uniqueness_validator : virtual public validator {
   bool visit(t_program* s) override;
 };
 
+class structured_annotations_validator : virtual public validator {
+ public:
+  using validator::visit;
+
+  bool visit(t_service* service) override;
+  bool visit(t_enum* tenum) override;
+  bool visit(t_struct* tstruct) override;
+  bool visit(t_field* tfield) override;
+
+ protected:
+  virtual void validate_annotations(
+      t_annotated* tannotated,
+      const std::string& tannotated_name) = 0;
+};
+
+class structured_annotations_uniqueness_validator
+    : virtual public structured_annotations_validator {
+ protected:
+  void validate_annotations(
+      t_annotated* tannotated,
+      const std::string& tannotated_name) override;
+};
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

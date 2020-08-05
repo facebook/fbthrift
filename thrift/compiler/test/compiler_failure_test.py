@@ -395,3 +395,46 @@ class CompilerFailureTest(unittest.TestCase):
                 '[FAILURE:foo.thrift:3] Mixin field `a` can not be optional\n'
             )
         )
+
+    def test_structured_annotations_uniqueness(self):
+        write_file("foo.thrift", textwrap.dedent("""\
+            struct Foo {
+                1: i32 count;
+            }
+
+            @Foo{count=1}
+            @Foo{count=2}
+            struct Annotated {
+                1: string name;
+            }
+        """))
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(err, "[FAILURE:foo.thrift:6] Duplicate structured "
+            "annotation `struct foo.Foo` in the `struct foo.Annotated`.\n")
+
+    def test_structured_annotations_type_resolved(self):
+        write_file("foo.thrift", textwrap.dedent("""\
+            struct Annotation {
+                1: i32 count;
+                2: TooForward forward;
+            }
+
+            @Annotation{count=1, forward=TooForward{name="abc"}}
+            struct Annotated {
+                1: string name;
+            }
+
+            struct TooForward {
+                1: string name;
+            }
+        """))
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(err, "[FAILURE:foo.thrift:6] The type 'TooForward' "
+            "is not defined yet. Types must be defined before the usage in "
+            "constant values.\n")

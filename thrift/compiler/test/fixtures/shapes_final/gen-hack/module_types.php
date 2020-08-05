@@ -127,10 +127,27 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     return $this->stringValue as nonnull;
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'intValue' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'stringValue' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->_type = \test\fixtures\UnionEnum::_EMPTY_;
@@ -201,10 +218,23 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     return 'A';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'a' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->a = $shape['a'];
@@ -1098,10 +1128,171 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     return 'B';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'just_an_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'set_of_i32' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_i32' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_string' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_i32' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_list_of_i32' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_list_of_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_set_of_i32' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_map_of_string_to_i32' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_map_of_string_to_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_set_of_i32' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_map_of_string_to_list_of_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_map_of_string_to_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_self' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_self' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'just_an_enum' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'just_a_union' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'optional_just_an_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'optional_set_of_i32' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'optional_list_of_i32' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'optional_list_of_string' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'optional_map_of_string_to_i32' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'optional_map_of_string_to_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'optional_map_of_string_to_list_of_i32' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'optional_map_of_string_to_list_of_A' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'optional_map_of_string_to_set_of_i32' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'optional_enum' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'required_enum_with_default' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'string_with_default_value' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'i32_with_default_value' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'double_with_default_value' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'enum_with_default_value' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'A_with_default_value' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'set_of_i32_with_default_value' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_i32_to_string_with_default_value' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_of_string_with_default_value' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'map_of_string_to_list_of_i32_with_default_value' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     if (Shapes::idx($shape, 'just_an_A') !== null) {

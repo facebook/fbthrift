@@ -191,7 +191,7 @@ class t_hack_generator : public t_oop_generator {
    */
 
   void generate_service(t_service* tservice, bool mangle);
-  void generate_service_helpers(t_service* tservice);
+  void generate_service_helpers(t_service* tservice, bool mangle);
   void generate_service_interface(
       t_service* tservice,
       bool mangle,
@@ -504,6 +504,9 @@ class t_hack_generator : public t_oop_generator {
       const std::string& value_type);
 
   bool is_base_exception_property(const t_field*);
+
+  std::string render_structured_annotations(
+      const std::vector<std::shared_ptr<t_const>>& annotations);
 
  private:
   /**
@@ -2429,6 +2432,26 @@ bool t_hack_generator::is_base_exception_property(const t_field* field) {
       kBaseExceptionProperties.end();
 }
 
+std::string t_hack_generator::render_structured_annotations(
+    const std::vector<std::shared_ptr<t_const>>& annotations) {
+  std::ostringstream out;
+  out << "dict[";
+  if (!annotations.empty()) {
+    out << "\n";
+    indent_up();
+    for (const auto& annotation : annotations) {
+      indent(out) << "'" << hack_name(annotation->get_type()) << "' => "
+                  << render_const_value(
+                         annotation->get_type(), annotation->get_value())
+                  << ",\n";
+    }
+    indent_down();
+    indent(out);
+  }
+  out << "]";
+  return out.str();
+}
+
 /**
  * Generates a struct definition for a thrift data type. This is nothing in PHP
  * where the objects are all just associative arrays (unless of course we
@@ -2764,6 +2787,38 @@ void t_hack_generator::_generate_php_struct_definition(
     }
   }
 
+  // Structured annotations
+  indent(out) << "public static function getAllStructuredAnnotations(): "
+                 "\\TStructAnnotations {\n";
+  indent_up();
+  indent(out) << "return shape(\n";
+  indent_up();
+  indent(out) << "'struct' => "
+              << render_structured_annotations(tstruct->structured_annotations_)
+              << ",\n";
+  indent(out) << "'fields' => dict[\n";
+  indent_up();
+  for (const auto& field : tstruct->get_members()) {
+    indent(out) << "'" << field->get_name() << "' => shape(\n";
+    indent_up();
+    indent(out) << "'field' => "
+                << render_structured_annotations(field->structured_annotations_)
+                << ",\n";
+    indent(out) << "'type' => "
+                << render_structured_annotations(
+                       field->get_type()->structured_annotations_)
+                << ",\n";
+    indent_down();
+    indent(out) << "),\n";
+  }
+  indent_down();
+  indent(out) << "],\n";
+  indent_down();
+  indent(out) << ");\n";
+  indent_down();
+  indent(out) << "}\n\n";
+
+  // Regular annotations
   out << indent()
       << "public static function getAnnotations(): darray<string, mixed> {\n";
   indent_up();
@@ -2781,7 +2836,7 @@ void t_hack_generator::_generate_php_struct_definition(
   indent_down();
   out << indent() << "];\n";
   indent_down();
-  out << indent() << "}\n";
+  out << indent() << "}\n\n";
 
   if (gen_shapes) {
     generate_php_struct_shape_methods(out, tstruct);
@@ -2967,7 +3022,7 @@ void t_hack_generator::generate_service(t_service* tservice, bool mangle) {
     generate_service_processor(tservice, mangle, /*async*/ false);
   }
   // Generate the structures passed around and helper functions
-  generate_service_helpers(tservice);
+  generate_service_helpers(tservice, mangle);
 
   // Close service file
   f_service_.close();
@@ -3223,7 +3278,9 @@ void t_hack_generator::generate_process_function(
  *
  * @param tservice The service to generate a header definition for
  */
-void t_hack_generator::generate_service_helpers(t_service* tservice) {
+void t_hack_generator::generate_service_helpers(
+    t_service* tservice,
+    bool mangle) {
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
 
@@ -3237,6 +3294,37 @@ void t_hack_generator::generate_service_helpers(t_service* tservice) {
     generate_php_function_helpers(*f_iter);
     ts->set_name(name);
   }
+
+  f_service_ << indent() << "class " << php_servicename_mangle(mangle, tservice)
+             << "StaticMetadata {\n";
+  indent_up();
+  // Structured annotations
+  f_service_ << indent()
+             << "public static function getAllStructuredAnnotations(): "
+                "\\TServiceAnnotations {\n";
+  indent_up();
+  f_service_ << indent() << "return shape(\n";
+  indent_up();
+  f_service_ << indent() << "'service' => "
+             << render_structured_annotations(tservice->structured_annotations_)
+             << ",\n";
+  f_service_ << indent() << "'functions' => dict[\n";
+  indent_up();
+  for (const auto& function : functions) {
+    f_service_ << indent() << "'" << function->get_name() << "' => "
+               << render_structured_annotations(
+                      function->structured_annotations_)
+               << ",\n";
+  }
+  indent_down();
+  f_service_ << indent() << "],\n";
+  indent_down();
+  f_service_ << indent() << ");\n";
+  indent_down();
+  f_service_ << indent() << "}\n";
+
+  indent_down();
+  f_service_ << indent() << "}\n\n";
 }
 
 /**

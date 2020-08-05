@@ -81,7 +81,7 @@ multicomm     ("/*"[^*]"/"*([^*/]|[^*]"/"|"*"[^/])*"*"*"*/")
 doctext       ("/**"([^*/]|[^*]"/"|"*"[^/])*"*"*"*/")
 comment       ("//"[^\n]*)
 unixcomment   ("#"[^\n]*)
-symbol        ([:;\,\{\}\(\)\=<>\[\]])
+symbol        ([:;\,\{\}\(\)\=<>\[\]@])
 dliteral      ("\""[^"]*"\"")
 sliteral      ("'"[^']*"'")
 st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
@@ -136,6 +136,8 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
     return apache::thrift::compiler::yy::parser::make_tok_char_bracket_angle_l();
   case '>':
     return apache::thrift::compiler::yy::parser::make_tok_char_bracket_angle_r();
+  case '@':
+    return apache::thrift::compiler::yy::parser::make_tok_char_at_sign();
   }
 
   driver.failure("Invalid symbol encountered.");

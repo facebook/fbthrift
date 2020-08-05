@@ -94,10 +94,27 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
     return 'BarStruct';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'e' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        's' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->e = (new Map($shape['e']));

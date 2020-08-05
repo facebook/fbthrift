@@ -99,10 +99,31 @@ class Internship implements \IThriftStruct {
     return 'Internship';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'weeks' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'title' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'employer' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 /**
@@ -162,9 +183,26 @@ class Range implements \IThriftStruct {
     return 'Range';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'min' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'max' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 

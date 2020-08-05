@@ -99,10 +99,35 @@ class Color implements \IThriftStruct {
     return 'Color';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'red' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'green' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'blue' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'alpha' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 /**
@@ -202,10 +227,39 @@ class Vehicle implements \IThriftStruct {
     return 'Vehicle';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'color' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'licensePlate' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'description' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'name' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'hasAC' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 /**
@@ -392,9 +446,58 @@ class Person implements \IThriftStruct {
     return 'Person';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'id' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'name' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'age' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'address' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'favoriteColor' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'friends' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'bestFriend' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'petNames' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'afraidOfAnimal' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'vehicles' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 

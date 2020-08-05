@@ -22,7 +22,6 @@
  */
 <<__ConsistentConstruct>>
 interface IThriftStruct {
-
   const type TFieldSpec = shape(
     'var' => string,
     'type' => TType,
@@ -36,6 +35,8 @@ interface IThriftStruct {
     ?'format' => string,
     ?'class' => string,
     ?'enum' => string,
+    ?'type_annotations' => varray<IThriftStruct>,
+    ?'field_annotations' => varray<IThriftStruct>,
   );
   const type TElemSpec = shape(
     'type' => TType,
@@ -67,6 +68,7 @@ interface IThriftStruct {
 
   abstract const dict<int, this::TFieldSpec> SPEC;
   abstract const dict<string, int> FIELDMAP;
+  abstract const varray<IThriftStruct> ANNOTATIONS;
   abstract const int STRUCTURAL_ID;
 
   <<__Rx>>

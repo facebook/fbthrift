@@ -88,9 +88,30 @@ class FBStruct implements \IThriftStruct {
     return 'FBStruct';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'str_value' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'enum_value' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'struct_value' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 

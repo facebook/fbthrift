@@ -107,10 +107,35 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     return 'MyStruct';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'MyIntField' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'MyStringField' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'MyDataField' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'myEnum' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->MyIntField = $shape['MyIntField'];
@@ -192,10 +217,19 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
     return 'MyDataItem';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     return $me;
@@ -366,10 +400,31 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     return $this->myDataItem as nonnull;
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'myEnum' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'myStruct' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'myDataItem' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->_type = MyUnionEnum::_EMPTY_;

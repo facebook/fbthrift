@@ -1740,10 +1740,19 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
     return 'MyService_ping_args';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     return $me;
@@ -1792,10 +1801,19 @@ class MyService_ping_result implements \IThriftStruct {
     return 'MyService_ping_result';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1837,10 +1855,19 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
     return 'MyService_getRandomData_args';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     return $me;
@@ -1897,10 +1924,23 @@ class MyService_getRandomData_result implements \IThriftStruct {
     return 'MyService_getRandomData_result';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'success' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1955,10 +1995,23 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return 'MyService_hasDataById_args';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'id' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->id = $shape['id'];
@@ -2020,10 +2073,23 @@ class MyService_hasDataById_result implements \IThriftStruct {
     return 'MyService_hasDataById_result';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'success' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -2078,10 +2144,23 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return 'MyService_getDataById_args';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'id' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->id = $shape['id'];
@@ -2143,10 +2222,23 @@ class MyService_getDataById_result implements \IThriftStruct {
     return 'MyService_getDataById_result';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'success' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -2211,10 +2303,27 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return 'MyService_putDataById_args';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'id' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'data' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->id = $shape['id'];
@@ -2273,10 +2382,19 @@ class MyService_putDataById_result implements \IThriftStruct {
     return 'MyService_putDataById_result';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -2338,10 +2456,27 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return 'MyService_lobDataById_args';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'id' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'data' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->id = $shape['id'];
@@ -2371,5 +2506,21 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
     }    
   }
 
+}
+
+class MyServiceStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TServiceAnnotations {
+    return shape(
+      'service' => dict[],
+      'functions' => dict[
+        'ping' => dict[],
+        'getRandomData' => dict[],
+        'hasDataById' => dict[],
+        'getDataById' => dict[],
+        'putDataById' => dict[],
+        'lobDataById' => dict[],
+      ],
+    );
+  }
 }
 

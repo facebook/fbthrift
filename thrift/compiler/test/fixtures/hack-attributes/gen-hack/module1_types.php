@@ -91,11 +91,32 @@ class MyThriftStruct implements \IThriftStruct {
     return 'MyThriftStruct';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'foo' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'bar' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'baz' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
       'hack.attributes' => "ClassAttribute",
     ];
   }
+
 }
 
 /**
@@ -170,10 +191,31 @@ class MySecondThriftStruct implements \IThriftStruct {
     return 'MySecondThriftStruct';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'foo' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'bar' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'baz' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 <<EnumAttributes>>
@@ -284,10 +326,27 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
     return $this->bar as nonnull;
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'foo' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'bar' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
       'hack.union_enum_attributes' => "EnumAttributes",
     ];
   }
+
 }
 

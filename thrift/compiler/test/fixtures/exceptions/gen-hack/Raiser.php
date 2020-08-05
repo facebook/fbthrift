@@ -956,10 +956,19 @@ class Raiser_doBland_args implements \IThriftStruct {
     return 'Raiser_doBland_args';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 class Raiser_doBland_result implements \IThriftStruct {
@@ -989,10 +998,19 @@ class Raiser_doBland_result implements \IThriftStruct {
     return 'Raiser_doBland_result';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 class Raiser_doRaise_args implements \IThriftStruct {
@@ -1022,10 +1040,19 @@ class Raiser_doRaise_args implements \IThriftStruct {
     return 'Raiser_doRaise_args';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 class Raiser_doRaise_result implements \IThriftStruct {
@@ -1082,10 +1109,31 @@ class Raiser_doRaise_result implements \IThriftStruct {
     return 'Raiser_doRaise_result';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'b' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'f' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        's' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 class Raiser_get200_args implements \IThriftStruct {
@@ -1115,10 +1163,19 @@ class Raiser_get200_args implements \IThriftStruct {
     return 'Raiser_get200_args';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 class Raiser_get200_result implements \IThriftStruct {
@@ -1156,10 +1213,23 @@ class Raiser_get200_result implements \IThriftStruct {
     return 'Raiser_get200_result';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'success' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 class Raiser_get500_args implements \IThriftStruct {
@@ -1189,10 +1259,19 @@ class Raiser_get500_args implements \IThriftStruct {
     return 'Raiser_get500_args';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 class Raiser_get500_result implements \IThriftStruct {
@@ -1257,9 +1336,48 @@ class Raiser_get500_result implements \IThriftStruct {
     return 'Raiser_get500_result';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'success' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'f' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'b' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        's' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
+  }
+
+}
+
+class RaiserStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TServiceAnnotations {
+    return shape(
+      'service' => dict[],
+      'functions' => dict[
+        'doBland' => dict[],
+        'doRaise' => dict[],
+        'get200' => dict[],
+        'get500' => dict[],
+      ],
+    );
   }
 }
 

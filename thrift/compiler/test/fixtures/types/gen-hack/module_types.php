@@ -90,12 +90,25 @@ class decorated_struct implements \IThriftStruct {
     return 'decorated_struct';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'field' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
       'cpp.declare_equal_to' => "1",
       'cpp.declare_hash' => "1",
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -293,10 +306,51 @@ class ContainerStruct implements \IThriftStruct {
     return 'ContainerStruct';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'fieldA' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'fieldB' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'fieldC' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'fieldD' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'fieldE' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'fieldF' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'fieldG' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'fieldH' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -467,10 +521,23 @@ class CppTypeStruct implements \IThriftStruct {
     return 'CppTypeStruct';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'fieldA' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -541,11 +608,24 @@ class VirtualStruct implements \IThriftStruct {
     return 'VirtualStruct';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'MyIntField' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
       'cpp.virtual' => "1",
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -619,10 +699,27 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
     return 'MyStructWithForwardRefEnum';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'a' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'b' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -695,10 +792,27 @@ class TrivialNumeric implements \IThriftStruct {
     return 'TrivialNumeric';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'a' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'b' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -779,10 +893,27 @@ class TrivialNestedWithDefault implements \IThriftStruct {
     return 'TrivialNestedWithDefault';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'z' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'n' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -874,10 +1005,27 @@ class ComplexString implements \IThriftStruct {
     return 'ComplexString';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'a' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'b' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -965,10 +1113,27 @@ class ComplexNestedWithDefault implements \IThriftStruct {
     return 'ComplexNestedWithDefault';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'z' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'n' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1085,11 +1250,40 @@ class MinPadding implements \IThriftStruct {
     return 'MinPadding';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'small' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'big' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'medium' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'biggish' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'tiny' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
       'cpp.minimize_padding' => "1",
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1230,11 +1424,36 @@ class MyStruct implements \IThriftStruct {
     return 'MyStruct';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'MyIntField' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'MyStringField' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'majorVer' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'data' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
       'cpp2.noncomparable' => "1",
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1292,11 +1511,20 @@ class MyDataItem implements \IThriftStruct {
     return 'MyDataItem';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
       'cpp2.noncomparable' => "1",
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1352,10 +1580,23 @@ class Renaming implements \IThriftStruct {
     return 'Renaming';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'foo' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1441,10 +1682,27 @@ class AnnotatedTypes implements \IThriftStruct {
     return 'AnnotatedTypes';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'binary_field' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'list_field' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1535,10 +1793,27 @@ class ForwardUsageRoot implements \IThriftStruct {
     return 'ForwardUsageRoot';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'ForwardUsageStruct' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'ForwardUsageByRef' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1607,10 +1882,23 @@ class ForwardUsageStruct implements \IThriftStruct {
     return 'ForwardUsageStruct';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'foo' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1673,10 +1961,23 @@ class ForwardUsageByRef implements \IThriftStruct {
     return 'ForwardUsageByRef';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'foo' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1725,11 +2026,20 @@ class NoexceptMoveEmpty implements \IThriftStruct {
     return 'NoexceptMoveEmpty';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
       'cpp.noexcept_move' => "1",
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1785,11 +2095,24 @@ class NoexceptMoveSimpleStruct implements \IThriftStruct {
     return 'NoexceptMoveSimpleStruct';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'boolField' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
       'cpp.noexcept_move' => "1",
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1970,11 +2293,56 @@ class NoexceptMoveComplexStruct implements \IThriftStruct {
     return 'NoexceptMoveComplexStruct';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'MyBoolField' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'MyIntField' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'MyStringField' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'MyStringField2' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'MyBinaryField' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'MyBinaryField2' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'MyBinaryField3' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'MyBinaryListField4' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'MyMapEnumAndInt' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
       'cpp.noexcept_move' => "1",
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -2136,11 +2504,28 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
     return $this->i32_field as nonnull;
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'string_field' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'i32_field' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
       'cpp.noexcept_move' => "1",
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $this->_type = NoExceptMoveUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
@@ -2281,11 +2666,40 @@ class AllocatorAware implements \IThriftStruct {
     return 'AllocatorAware';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'aa_list' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'aa_set' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'aa_map' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'aa_string' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'not_a_container' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
       'cpp.allocator' => "some_allocator",
     ];
   }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 

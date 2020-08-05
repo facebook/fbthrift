@@ -1567,10 +1567,23 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
     return 'NestedContainers_mapList_args';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'foo' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->foo = (new Map($shape['foo']))->map(
@@ -1617,10 +1630,19 @@ class NestedContainers_mapList_result implements \IThriftStruct {
     return 'NestedContainers_mapList_result';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStruct {
@@ -1677,10 +1699,23 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
     return 'NestedContainers_mapSet_args';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'foo' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->foo = (new Map($shape['foo']))->map(
@@ -1727,10 +1762,19 @@ class NestedContainers_mapSet_result implements \IThriftStruct {
     return 'NestedContainers_mapSet_result';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishStruct {
@@ -1787,10 +1831,23 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
     return 'NestedContainers_listMap_args';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'foo' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->foo = (new Vector($shape['foo']))->map(
@@ -1837,10 +1894,19 @@ class NestedContainers_listMap_result implements \IThriftStruct {
     return 'NestedContainers_listMap_result';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishStruct {
@@ -1893,10 +1959,23 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
     return 'NestedContainers_listSet_args';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'foo' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->foo = (new Vector($shape['foo']))->map(
@@ -1943,10 +2022,19 @@ class NestedContainers_listSet_result implements \IThriftStruct {
     return 'NestedContainers_listSet_result';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
 }
 
 class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishStruct {
@@ -2022,10 +2110,23 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
     return 'NestedContainers_turtles_args';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'foo' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
   }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->foo = (new Vector($shape['foo']))->map(
@@ -2087,9 +2188,33 @@ class NestedContainers_turtles_result implements \IThriftStruct {
     return 'NestedContainers_turtles_result';
   }
 
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
   public static function getAnnotations(): darray<string, mixed> {
     return darray[
     ];
+  }
+
+}
+
+class NestedContainersStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TServiceAnnotations {
+    return shape(
+      'service' => dict[],
+      'functions' => dict[
+        'mapList' => dict[],
+        'mapSet' => dict[],
+        'listMap' => dict[],
+        'listSet' => dict[],
+        'turtles' => dict[],
+      ],
+    );
   }
 }
 

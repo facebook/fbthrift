@@ -137,6 +137,7 @@ static void fill_validators(validator_list& vs) {
   vs.add<mixin_type_correctness_validator>();
   vs.add<field_names_uniqueness_validator>();
   vs.add<struct_names_uniqueness_validator>();
+  vs.add<structured_annotations_uniqueness_validator>();
 
   // add more validators here ...
 }
@@ -356,6 +357,47 @@ bool struct_names_uniqueness_validator::visit(t_program* p) {
   }
   return true;
 }
+
+bool structured_annotations_validator::visit(t_service* service) {
+  validate_annotations(service, service->get_full_name());
+  return true;
+}
+
+bool structured_annotations_validator::visit(t_enum* tenum) {
+  validate_annotations(tenum, tenum->get_full_name());
+  return true;
+}
+
+bool structured_annotations_validator::visit(t_struct* tstruct) {
+  validate_annotations(tstruct, tstruct->get_full_name());
+  return true;
+}
+
+bool structured_annotations_validator::visit(t_field* tfield) {
+  validate_annotations(tfield, "field " + tfield->get_name());
+  validate_annotations(
+      tfield->get_type(), "type of the field " + tfield->get_name());
+  return true;
+}
+
+void structured_annotations_uniqueness_validator::validate_annotations(
+    t_annotated* tannotated,
+    const std::string& tannotated_name) {
+  std::unordered_set<std::string> full_names;
+  std::string name;
+  for (const auto& it : tannotated->structured_annotations_) {
+    name = it->get_type()->get_full_name();
+    if (full_names.count(name) != 0) {
+      add_error(
+          it->get_lineno(),
+          "Duplicate structured annotation `" + name + "` in the `" +
+              tannotated_name + "`.");
+    } else {
+      full_names.insert(name);
+    }
+  }
+}
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
