@@ -19,13 +19,15 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
-#include <thrift/compiler/ast/t_const.h>
 #include <thrift/compiler/ast/t_doc.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
+
+class t_const;
 
 /**
  * class t_type

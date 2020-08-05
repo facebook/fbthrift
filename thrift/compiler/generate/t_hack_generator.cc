@@ -1029,6 +1029,23 @@ void t_hack_generator::close_generator() {
 
       string rendered_value = oss.str();
     }
+    // write structured annotations
+    f_consts_ << indent()
+              << "public static function getAllStructuredAnnotations(): "
+                 "dict<string, dict<string, \\IThriftStruct>> {\n";
+    indent_up();
+    f_consts_ << indent() << "return dict[\n";
+    indent_up();
+    for (const auto& tconst : program_->get_consts()) {
+      f_consts_ << indent() << "'" << tconst->get_name() << "' => "
+                << render_structured_annotations(
+                       tconst->structured_annotations_)
+                << ",\n";
+    }
+    indent_down();
+    f_consts_ << indent() << "];\n";
+    indent_down();
+    f_consts_ << indent() << "}\n";
     indent_down();
     // close constants class
     f_consts_ << "}\n\n";

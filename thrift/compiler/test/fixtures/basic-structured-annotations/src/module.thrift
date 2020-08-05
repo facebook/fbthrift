@@ -109,3 +109,9 @@ enum MyEnum {
   @structured_annotation_with_default{name='one'}
   ONE = 1,
 }
+
+@structured_annotation_inline{name='MyHackEnum'}
+const map<string, string> MyConst = {
+  'ENUMERATOR': 'enum',
+  'CONST': 'const',
+}

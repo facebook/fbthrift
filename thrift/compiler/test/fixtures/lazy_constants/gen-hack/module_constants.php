@@ -191,5 +191,24 @@ class module_CONSTANTS {
   }
 
 
+  public static function getAllStructuredAnnotations(): dict<string, dict<string, \IThriftStruct>> {
+    return dict[
+      'myInt' => dict[],
+      'name' => dict[],
+      'states' => dict[],
+      'x' => dict[],
+      'y' => dict[],
+      'z' => dict[],
+      'instagram' => dict[],
+      'kRanges' => dict[],
+      'internList' => dict[],
+      'apostrophe' => dict[],
+      'tripleApostrophe' => dict[],
+      'quotationMark' => dict[],
+      'backslash' => dict[],
+      'escaped_a' => dict[],
+      'char2ascii' => dict[],
+    ];
+  }
 }
 

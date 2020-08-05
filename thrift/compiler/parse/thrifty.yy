@@ -666,20 +666,31 @@ EnumValue:
     }
 
 Const:
-  tok_const
+  StructuredAnnotations tok_const
     {
       lineno_stack.push(LineType::kConst, driver.scanner->get_lineno());
     }
-  FieldType tok_identifier "=" ConstValue CommaOrSemicolonOptional
+  FieldType tok_identifier "=" ConstValue TypeAnnotations CommaOrSemicolonOptional
     {
-      driver.debug("Const -> tok_const FieldType tok_identifier = ConstValue");
+      driver.debug("StructuredAnnotations Const => tok_const FieldType tok_identifier = ConstValue");
       if (driver.mode == parsing_mode::PROGRAM) {
-        $$ = new t_const(driver.program, $3, $4, std::unique_ptr<t_const_value>($6));
+        $$ = new t_const(driver.program, $4, $5, std::unique_ptr<t_const_value>($7));
         $$->set_lineno(lineno_stack.pop(LineType::kConst));
+        if ($8) {
+          $$->annotations_ = $8->annotations_;
+          $$->annotation_objects_ = $8->annotation_objects_;
+          delete $8;
+        }
+        if ($1) {
+          $$->structured_annotations_ = $1->structured_annotations_;
+          delete $1;
+        }
         driver.validate_const_type($$);
-        driver.scope_cache->add_constant(driver.program->get_name() + "." + $4, $$);
+        driver.scope_cache->add_constant(driver.program->get_name() + "." + $5, $$);
       } else {
-        delete $6;
+        delete $1;
+        delete $7;
+        delete $8;
         $$ = nullptr;
       }
     }

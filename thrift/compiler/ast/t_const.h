@@ -18,6 +18,7 @@
 
 #include <memory>
 
+#include <thrift/compiler/ast/t_annotated.h>
 #include <thrift/compiler/ast/t_const_value.h>
 
 namespace apache {
@@ -35,7 +36,7 @@ class t_program;
  * whole thing out.
  *
  */
-class t_const : public t_doc {
+class t_const : public t_annotated {
  public:
   /**
    * Constructor for t_const
