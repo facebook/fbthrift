@@ -18,8 +18,8 @@ namespace cpp2 apache.thrift.conformance
 
 include "thrift/conformance/if/conformance.thrift"
 
-// A collection of test cases.
-struct TestSuit {
+// A Collection of tests.
+struct TestSuite {
   // The name of the suite.
   1: string name;
 
@@ -27,7 +27,19 @@ struct TestSuit {
   2: optional string description;
 
   // The test cases included in the suite.
-  3: list<TestCase> tests;
+  3: list<Test> tests;
+}
+
+// A collection of test cases.
+struct Test {
+  // The name of the test.
+  1: string name;
+
+  // A description of the test, if useful.
+  2: optional string description;
+
+  // The test cases included in the test.
+  3: list<TestCase> testCases;
 }
 
 // A single test case.
@@ -49,6 +61,8 @@ union TestCaseUnion {
 
 // Tests if a value round trips correctly.
 struct RoundTripTestCase {
+  // The request for the test.
   1: conformance.RoundTripRequest request;
-  2: conformance.RoundTripResponse expectedResponse;
+  // The expected output of the test, if different from the input.
+  2: optional conformance.RoundTripResponse expectedResponse;
 }

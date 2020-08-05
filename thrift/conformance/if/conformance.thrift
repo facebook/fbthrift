@@ -24,7 +24,8 @@ struct RoundTripRequest {
   1: any.Any value;
 
   // The protocol to use to return the value.
-  2: protocol.Protocol targetProtocol;
+  // If not specified, `value.protocol` is used.
+  2: optional protocol.Protocol targetProtocol;
 }
 
 struct RoundTripResponse {
