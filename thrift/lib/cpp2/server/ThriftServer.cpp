@@ -113,6 +113,9 @@ ThriftServer::~ThriftServer() {
   }
   // If the flag is false, neither i/o nor CPU workers are stopped at this
   // point. Stop them now.
+  if (!joinRequestsWhenServerStops_) {
+    stopAcceptingAndJoinOutstandingRequests();
+  }
   stopCPUWorkers();
   stopWorkers();
 }
@@ -444,6 +447,8 @@ void ThriftServer::cleanUp() {
   if (stopWorkersOnStopListening_) {
     // Wait on the i/o worker threads to actually stop
     stopWorkers();
+  } else if (joinRequestsWhenServerStops_) {
+    stopAcceptingAndJoinOutstandingRequests();
   }
 
   // Now clear all the handlers
@@ -488,6 +493,7 @@ void ThriftServer::stopListening() {
   }
 
   if (stopWorkersOnStopListening_) {
+    stopAcceptingAndJoinOutstandingRequests();
     stopCPUWorkers();
   }
 }
@@ -503,7 +509,7 @@ void ThriftServer::stopWorkers() {
   configMutable_ = true;
 }
 
-void ThriftServer::stopCPUWorkers() {
+void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
   forEachWorker([&](wangle::Acceptor* acceptor) {
     if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {
       worker->requestStop();
@@ -542,6 +548,9 @@ void ThriftServer::stopCPUWorkers() {
       }
     }
   });
+}
+
+void ThriftServer::stopCPUWorkers() {
   // Wait for any tasks currently running on the task queue workers to
   // finish, then stop the task queue workers. Have to do this now, so
   // there aren't tasks completing and trying to write to i/o thread

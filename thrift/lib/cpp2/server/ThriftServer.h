@@ -161,6 +161,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   bool queueSends_ = true;
 
   bool stopWorkersOnStopListening_ = true;
+  bool joinRequestsWhenServerStops_{true};
   std::chrono::seconds workersJoinTimeout_{30};
 
   folly::AsyncWriter::ZeroCopyEnableFunc zeroCopyEnableFunc_;
@@ -187,6 +188,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   void stopWorkers();
   void stopCPUWorkers();
+  void stopAcceptingAndJoinOutstandingRequests();
 
   std::unique_ptr<wangle::TLSCredProcessor> tlsCredProcessor_;
 
@@ -641,6 +643,16 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    */
   bool getStopWorkersOnStopListening() const {
     return stopWorkersOnStopListening_;
+  }
+
+  /**
+   * If stopWorkersOnStopListening is disabled, then enabling
+   * leakOutstandingRequestsWhenServerStops permits thriftServer->serve() to
+   * return before all outstanding requests are joined.
+   */
+  void leakOutstandingRequestsWhenServerStops(bool leak) {
+    CHECK(configMutable());
+    joinRequestsWhenServerStops_ = !leak;
   }
 
   /**
