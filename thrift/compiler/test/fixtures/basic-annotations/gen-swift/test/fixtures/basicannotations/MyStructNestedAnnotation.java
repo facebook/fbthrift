@@ -119,11 +119,9 @@ public final class MyStructNestedAnnotation {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static MyStructNestedAnnotation read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(MyStructNestedAnnotation.NAMES_TO_IDS, MyStructNestedAnnotation.FIELD_METADATA);
       MyStructNestedAnnotation.Builder builder = new MyStructNestedAnnotation.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

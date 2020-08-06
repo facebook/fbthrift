@@ -151,11 +151,9 @@ public final class MyMapping {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static MyMapping read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(MyMapping.NAMES_TO_IDS, MyMapping.FIELD_METADATA);
       MyMapping.Builder builder = new MyMapping.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

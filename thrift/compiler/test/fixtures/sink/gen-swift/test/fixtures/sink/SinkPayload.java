@@ -119,11 +119,9 @@ public final class SinkPayload {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static SinkPayload read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(SinkPayload.NAMES_TO_IDS, SinkPayload.FIELD_METADATA);
       SinkPayload.Builder builder = new SinkPayload.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

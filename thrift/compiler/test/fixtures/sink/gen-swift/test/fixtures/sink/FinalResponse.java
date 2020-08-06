@@ -119,11 +119,9 @@ public final class FinalResponse {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static FinalResponse read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(FinalResponse.NAMES_TO_IDS, FinalResponse.FIELD_METADATA);
       FinalResponse.Builder builder = new FinalResponse.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

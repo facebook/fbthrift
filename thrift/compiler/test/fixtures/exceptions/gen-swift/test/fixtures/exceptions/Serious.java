@@ -27,6 +27,9 @@ public final class Serious extends java.lang.RuntimeException {
 
     private BitSet __isset_bit_vector = new BitSet();
 
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
     private static final TStruct STRUCT_DESC = new TStruct("Serious");
     private final String sonnet;
     public static final int _SONNET = 1;
@@ -77,11 +80,9 @@ public final class Serious extends java.lang.RuntimeException {
     public String getSonnet() { return sonnet; }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static Serious read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(Serious.NAMES_TO_IDS, Serious.FIELD_METADATA);
       Serious.Builder builder = new Serious.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

@@ -247,11 +247,9 @@ public final class Vehicle {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static Vehicle read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(Vehicle.NAMES_TO_IDS, Vehicle.FIELD_METADATA);
       Vehicle.Builder builder = new Vehicle.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

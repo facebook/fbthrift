@@ -27,6 +27,9 @@ public final class OptXcep extends java.lang.Exception {
 
     private BitSet __isset_bit_vector = new BitSet();
 
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
     private static final TStruct STRUCT_DESC = new TStruct("optXcep");
     private final String message;
     public static final int _MESSAGE = 1;
@@ -97,11 +100,9 @@ public final class OptXcep extends java.lang.Exception {
     public Integer getErrorCode() { return errorCode; }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static OptXcep read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(OptXcep.NAMES_TO_IDS, OptXcep.FIELD_METADATA);
       OptXcep.Builder builder = new OptXcep.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

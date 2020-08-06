@@ -215,11 +215,9 @@ public final class Struct2 {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static Struct2 read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(Struct2.NAMES_TO_IDS, Struct2.FIELD_METADATA);
       Struct2.Builder builder = new Struct2.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

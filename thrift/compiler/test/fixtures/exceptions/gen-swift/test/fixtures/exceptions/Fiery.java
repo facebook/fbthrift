@@ -27,6 +27,9 @@ public final class Fiery extends java.lang.RuntimeException {
 
     private BitSet __isset_bit_vector = new BitSet();
 
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
     private static final TStruct STRUCT_DESC = new TStruct("Fiery");
     private final String message;
     public static final int _MESSAGE = 1;
@@ -77,11 +80,9 @@ public final class Fiery extends java.lang.RuntimeException {
     public String getMessage() { return message; }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static Fiery read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(Fiery.NAMES_TO_IDS, Fiery.FIELD_METADATA);
       Fiery.Builder builder = new Fiery.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

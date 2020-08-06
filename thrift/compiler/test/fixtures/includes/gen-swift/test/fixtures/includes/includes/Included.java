@@ -151,11 +151,9 @@ public final class Included {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static Included read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(Included.NAMES_TO_IDS, Included.FIELD_METADATA);
       Included.Builder builder = new Included.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

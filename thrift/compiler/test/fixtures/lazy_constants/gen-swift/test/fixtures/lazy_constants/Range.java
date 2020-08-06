@@ -151,11 +151,9 @@ public final class Range {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static Range read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(Range.NAMES_TO_IDS, Range.FIELD_METADATA);
       Range.Builder builder = new Range.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

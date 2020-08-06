@@ -27,6 +27,9 @@ public final class ComplexException extends java.lang.Exception {
 
     private BitSet __isset_bit_vector = new BitSet();
 
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
     private static final TStruct STRUCT_DESC = new TStruct("complexException");
     private final String message;
     public static final int _MESSAGE = 1;
@@ -177,11 +180,9 @@ public final class ComplexException extends java.lang.Exception {
     public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static ComplexException read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(ComplexException.NAMES_TO_IDS, ComplexException.FIELD_METADATA);
       ComplexException.Builder builder = new ComplexException.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

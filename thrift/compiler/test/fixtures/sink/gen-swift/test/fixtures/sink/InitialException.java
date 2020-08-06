@@ -27,6 +27,9 @@ public final class InitialException extends java.lang.Exception {
 
     private BitSet __isset_bit_vector = new BitSet();
 
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
     private static final TStruct STRUCT_DESC = new TStruct("InitialException");
     private final String reason;
     public static final int _REASON = 1;
@@ -77,11 +80,9 @@ public final class InitialException extends java.lang.Exception {
     public String getReason() { return reason; }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static InitialException read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(InitialException.NAMES_TO_IDS, InitialException.FIELD_METADATA);
       InitialException.Builder builder = new InitialException.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

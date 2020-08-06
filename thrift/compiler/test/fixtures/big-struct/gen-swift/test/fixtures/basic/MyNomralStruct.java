@@ -1047,11 +1047,9 @@ public final class MyNomralStruct {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static MyNomralStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(MyNomralStruct.NAMES_TO_IDS, MyNomralStruct.FIELD_METADATA);
       MyNomralStruct.Builder builder = new MyNomralStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

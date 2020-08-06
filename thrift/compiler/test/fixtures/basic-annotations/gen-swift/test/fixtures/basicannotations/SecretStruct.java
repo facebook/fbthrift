@@ -151,11 +151,9 @@ public final class SecretStruct {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static SecretStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(SecretStruct.NAMES_TO_IDS, SecretStruct.FIELD_METADATA);
       SecretStruct.Builder builder = new SecretStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

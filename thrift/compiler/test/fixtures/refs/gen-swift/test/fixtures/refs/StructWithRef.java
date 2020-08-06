@@ -183,11 +183,9 @@ public final class StructWithRef {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static StructWithRef read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(StructWithRef.NAMES_TO_IDS, StructWithRef.FIELD_METADATA);
       StructWithRef.Builder builder = new StructWithRef.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

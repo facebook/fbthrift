@@ -215,11 +215,9 @@ public final class MyStructFloatFieldThrowExp {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static MyStructFloatFieldThrowExp read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(MyStructFloatFieldThrowExp.NAMES_TO_IDS, MyStructFloatFieldThrowExp.FIELD_METADATA);
       MyStructFloatFieldThrowExp.Builder builder = new MyStructFloatFieldThrowExp.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

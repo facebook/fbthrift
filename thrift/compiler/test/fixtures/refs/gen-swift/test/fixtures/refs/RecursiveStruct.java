@@ -119,11 +119,9 @@ public final class RecursiveStruct {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static RecursiveStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(RecursiveStruct.NAMES_TO_IDS, RecursiveStruct.FIELD_METADATA);
       RecursiveStruct.Builder builder = new RecursiveStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

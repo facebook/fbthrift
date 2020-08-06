@@ -151,11 +151,9 @@ public final class SimpleStruct {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static SimpleStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(SimpleStruct.NAMES_TO_IDS, SimpleStruct.FIELD_METADATA);
       SimpleStruct.Builder builder = new SimpleStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

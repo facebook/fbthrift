@@ -27,6 +27,9 @@ public final class SinkException2 extends java.lang.Exception {
 
     private BitSet __isset_bit_vector = new BitSet();
 
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
     private static final TStruct STRUCT_DESC = new TStruct("SinkException2");
     private final long reason;
     public static final int _REASON = 1;
@@ -77,11 +80,9 @@ public final class SinkException2 extends java.lang.Exception {
     public long getReason() { return reason; }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static SinkException2 read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(SinkException2.NAMES_TO_IDS, SinkException2.FIELD_METADATA);
       SinkException2.Builder builder = new SinkException2.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

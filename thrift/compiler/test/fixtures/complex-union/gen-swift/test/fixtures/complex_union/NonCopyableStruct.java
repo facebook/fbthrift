@@ -119,11 +119,9 @@ public final class NonCopyableStruct {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static NonCopyableStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(NonCopyableStruct.NAMES_TO_IDS, NonCopyableStruct.FIELD_METADATA);
       NonCopyableStruct.Builder builder = new NonCopyableStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

@@ -407,11 +407,9 @@ public final class Person {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static Person read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(Person.NAMES_TO_IDS, Person.FIELD_METADATA);
       Person.Builder builder = new Person.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

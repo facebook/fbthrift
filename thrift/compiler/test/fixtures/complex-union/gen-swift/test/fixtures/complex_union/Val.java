@@ -183,11 +183,9 @@ public final class Val {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static Val read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(Val.NAMES_TO_IDS, Val.FIELD_METADATA);
       Val.Builder builder = new Val.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

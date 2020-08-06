@@ -27,6 +27,9 @@ public final class Banal extends java.lang.RuntimeException {
 
     private BitSet __isset_bit_vector = new BitSet();
 
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
     private static final TStruct STRUCT_DESC = new TStruct("Banal");
 
     @ThriftConstructor
@@ -55,11 +58,9 @@ public final class Banal extends java.lang.RuntimeException {
     
 
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static Banal read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(Banal.NAMES_TO_IDS, Banal.FIELD_METADATA);
       Banal.Builder builder = new Banal.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

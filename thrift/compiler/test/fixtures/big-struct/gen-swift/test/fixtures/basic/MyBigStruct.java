@@ -7791,11 +7791,9 @@ public final class MyBigStruct {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static MyBigStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(MyBigStruct.NAMES_TO_IDS, MyBigStruct.FIELD_METADATA);
       MyBigStruct.Builder builder = new MyBigStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

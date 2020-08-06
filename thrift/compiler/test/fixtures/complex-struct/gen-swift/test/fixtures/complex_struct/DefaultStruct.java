@@ -839,11 +839,9 @@ public final class DefaultStruct {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static DefaultStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(DefaultStruct.NAMES_TO_IDS, DefaultStruct.FIELD_METADATA);
       DefaultStruct.Builder builder = new DefaultStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

@@ -27,6 +27,9 @@ public final class FooEx extends java.lang.Exception {
 
     private BitSet __isset_bit_vector = new BitSet();
 
+    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
     private static final TStruct STRUCT_DESC = new TStruct("FooEx");
 
     @ThriftConstructor
@@ -55,11 +58,9 @@ public final class FooEx extends java.lang.Exception {
     
 
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static FooEx read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(FooEx.NAMES_TO_IDS, FooEx.FIELD_METADATA);
       FooEx.Builder builder = new FooEx.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

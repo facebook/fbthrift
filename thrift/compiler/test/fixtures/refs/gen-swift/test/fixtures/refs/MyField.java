@@ -183,11 +183,9 @@ public final class MyField {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static MyField read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(MyField.NAMES_TO_IDS, MyField.FIELD_METADATA);
       MyField.Builder builder = new MyField.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

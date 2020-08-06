@@ -183,11 +183,9 @@ public final class StructWithSharedConst {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static StructWithSharedConst read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(StructWithSharedConst.NAMES_TO_IDS, StructWithSharedConst.FIELD_METADATA);
       StructWithSharedConst.Builder builder = new StructWithSharedConst.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

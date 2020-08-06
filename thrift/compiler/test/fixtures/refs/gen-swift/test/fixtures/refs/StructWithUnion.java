@@ -183,11 +183,9 @@ public final class StructWithUnion {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static StructWithUnion read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(StructWithUnion.NAMES_TO_IDS, StructWithUnion.FIELD_METADATA);
       StructWithUnion.Builder builder = new StructWithUnion.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

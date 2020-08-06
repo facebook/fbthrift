@@ -119,11 +119,9 @@ public final class InitialResponse {
     }
     
     
-      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
-      // Perhaps, it will be implemented in the future!
     public static InitialResponse read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin();
+      oprot.readStructBegin(InitialResponse.NAMES_TO_IDS, InitialResponse.FIELD_METADATA);
       InitialResponse.Builder builder = new InitialResponse.Builder();
       while (true) {
         __field = oprot.readFieldBegin();
