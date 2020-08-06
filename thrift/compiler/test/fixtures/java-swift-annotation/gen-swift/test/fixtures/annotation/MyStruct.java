@@ -284,14 +284,10 @@ public final class MyStruct {
             com.foo.FastIntLongMap detailMap;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
             detailMap = new com.foo.FastIntLongMap();
-            for (int _i = 0; _i < _map.size; _i++) {
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 int _key1 = oprot.readI32();
-
                 long _value1 = oprot.readI64();
                 detailMap.put(_key1, _value1);
             }

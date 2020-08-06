@@ -201,11 +201,8 @@ public final class ComplexException extends java.lang.Exception {
             List<String> listStrings;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            listStrings = new ArrayList<String>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            listStrings = new ArrayList<String>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 String _value1 = oprot.readString();
                 listStrings.add(_value1);
@@ -246,14 +243,10 @@ public final class ComplexException extends java.lang.Exception {
             it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
             lsMap = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
-            for (int _i = 0; _i < _map.size; _i++) {
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 long _key1 = oprot.readI64();
-
                 String _value1 = oprot.readString();
                 lsMap.put(_key1, _value1);
             }

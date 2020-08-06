@@ -460,11 +460,8 @@ public final class Person {
             Set<Long> friends;
             {
             TSet _set = oprot.readSetBegin();
-            if (_set.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            friends = new HashSet<Long>(_set.size);
-            for (int _i = 0; _i < _set.size; _i++) {
+            friends = new HashSet<Long>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 
                 long _value1 = oprot.readI64();
                 friends.add(_value1);
@@ -489,14 +486,10 @@ public final class Person {
             Map<test.fixtures.optionals.Animal, String> petNames;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            petNames = new HashMap<test.fixtures.optionals.Animal, String>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            petNames = new HashMap<test.fixtures.optionals.Animal, String>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 test.fixtures.optionals.Animal _key1 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
-
                 String _value1 = oprot.readString();
                 petNames.put(_key1, _value1);
             }
@@ -520,11 +513,8 @@ public final class Person {
             List<test.fixtures.optionals.Vehicle> vehicles;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            vehicles = new ArrayList<test.fixtures.optionals.Vehicle>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            vehicles = new ArrayList<test.fixtures.optionals.Vehicle>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 test.fixtures.optionals.Vehicle _value1 = test.fixtures.optionals.Vehicle.read0(oprot);
                 vehicles.add(_value1);

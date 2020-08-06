@@ -212,14 +212,10 @@ public final class Val {
             Map<Short, String> typedefValue;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            typedefValue = new HashMap<Short, String>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            typedefValue = new HashMap<Short, String>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 short _key1 = oprot.readI16();
-
                 String _value1 = oprot.readString();
                 typedefValue.put(_key1, _value1);
             }

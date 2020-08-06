@@ -25,13 +25,10 @@
             }}{{> BoxedType}} {{field:javaName}};
             {
             TSet _set = oprot.readSetBegin();
-            if (_set.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            {{^type:javaType}}{{field:javaName}} = new Hash{{> BoxedType}}(_set.size);{{/type:javaType}}{{!
+            {{^type:javaType}}{{field:javaName}} = new Hash{{> BoxedType}}(Math.max(0, _set.size));{{/type:javaType}}{{!
             }}{{#type:javaType}}{{field:javaName}} = new {{type:javaType}}();{{/type:javaType}}{{!
             }}
-            for (int _i = 0; _i < _set.size; _i++) {
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 {{field:setIsNested}}
                 {{#type:setElemType}}
                 {{#type:isContainer?}}
@@ -51,13 +48,10 @@
             }}{{> BoxedType}} {{field:javaName}};
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            {{^type:javaType}}{{field:javaName}} = new Array{{> BoxedType}}(_list.size);{{/type:javaType}}{{!
+            {{^type:javaType}}{{field:javaName}} = new Array{{> BoxedType}}(Math.max(0, _list.size));{{/type:javaType}}{{!
             }}{{#type:javaType}}{{field:javaName}} = new {{type:javaType}}();{{/type:javaType}}{{!
             }}
-            for (int _i = 0; _i < _list.size; _i++) {
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 {{field:setIsNested}}
                 {{#type:listElemType}}
                 {{#type:isContainer?}}
@@ -77,13 +71,10 @@
             }}{{> BoxedType}} {{field:javaName}};
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            {{^type:javaType}}{{field:javaName}} = new Hash{{> BoxedType}}(_map.size);{{/type:javaType}}{{!
+            {{^type:javaType}}{{field:javaName}} = new Hash{{> BoxedType}}(Math.max(0, _map.size));{{/type:javaType}}{{!
             }}{{#type:javaType}}{{field:javaName}} = new {{type:javaType}}();{{/type:javaType}}{{!
             }}
-            for (int _i = 0; _i < _map.size; _i++) {
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 {{field:setIsNested}}
                 {{#type:keyType}}
                 {{#type:isContainer?}}
@@ -93,7 +84,6 @@
                 {{> Type}} _key1 = {{> ReadType}};
                 {{/type:isContainer?}}
                 {{/type:keyType}}
-
                 {{#type:valueType}}
                 {{#type:isContainer?}}
                 {{> ReadTypeContainerNestedValue }}

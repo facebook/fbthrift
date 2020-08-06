@@ -287,20 +287,14 @@ public final class MyUnionFloatFieldThrowExp {
               List<List<Float>> setFloat;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            setFloat = new ArrayList<List<Float>>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            setFloat = new ArrayList<List<Float>>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 List<Float> _value1;
                             {
                             TList _list1 = oprot.readListBegin();
-                            if (_list1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new ArrayList<Float>(_list1.size);
-                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                            _value1 = new ArrayList<Float>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                 
                                 
                                 float _value2 = oprot.readFloat();

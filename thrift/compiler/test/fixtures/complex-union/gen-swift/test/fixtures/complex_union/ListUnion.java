@@ -197,11 +197,8 @@ public final class ListUnion {
               List<Long> intListValue;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            intListValue = new ArrayList<Long>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            intListValue = new ArrayList<Long>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 long _value1 = oprot.readI64();
                 intListValue.add(_value1);
@@ -216,11 +213,8 @@ public final class ListUnion {
               List<String> stringListValue;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            stringListValue = new ArrayList<String>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            stringListValue = new ArrayList<String>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 String _value1 = oprot.readString();
                 stringListValue.add(_value1);

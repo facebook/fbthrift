@@ -374,11 +374,8 @@ public final class ComplexUnion {
               List<Long> intListValue;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            intListValue = new ArrayList<Long>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            intListValue = new ArrayList<Long>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 long _value1 = oprot.readI64();
                 intListValue.add(_value1);
@@ -393,11 +390,8 @@ public final class ComplexUnion {
               List<String> stringListValue;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            stringListValue = new ArrayList<String>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            stringListValue = new ArrayList<String>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 String _value1 = oprot.readString();
                 stringListValue.add(_value1);
@@ -412,14 +406,10 @@ public final class ComplexUnion {
               Map<Short, String> typedefValue;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            typedefValue = new HashMap<Short, String>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            typedefValue = new HashMap<Short, String>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 short _key1 = oprot.readI16();
-
                 String _value1 = oprot.readString();
                 typedefValue.put(_key1, _value1);
             }

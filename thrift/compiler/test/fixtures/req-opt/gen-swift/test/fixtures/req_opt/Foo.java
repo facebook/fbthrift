@@ -244,11 +244,8 @@ public final class Foo {
             List<Boolean> myBools;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            myBools = new ArrayList<Boolean>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            myBools = new ArrayList<Boolean>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 boolean _value1 = oprot.readBool();
                 myBools.add(_value1);
@@ -265,11 +262,8 @@ public final class Foo {
             List<Integer> myNumbers;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            myNumbers = new ArrayList<Integer>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            myNumbers = new ArrayList<Integer>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 int _value1 = oprot.readI32();
                 myNumbers.add(_value1);

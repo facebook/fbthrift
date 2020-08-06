@@ -574,11 +574,8 @@ static {
             Set<String> mySet;
             {
             TSet _set = oprot.readSetBegin();
-            if (_set.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mySet = new HashSet<String>(_set.size);
-            for (int _i = 0; _i < _set.size; _i++) {
+            mySet = new HashSet<String>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 
                 String _value1 = oprot.readString();
                 mySet.add(_value1);
@@ -603,11 +600,8 @@ static {
             List<test.fixtures.basic_swift_bean.MyDataItem> myList;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            myList = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            myList = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 test.fixtures.basic_swift_bean.MyDataItem _value1 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
                 myList.add(_value1);
@@ -624,22 +618,15 @@ static {
             Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myMapList;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            myMapList = new HashMap<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            myMapList = new HashMap<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 int _key1 = oprot.readI32();
-
                 List<test.fixtures.basic_swift_bean.MyDataItem> _value1;
                             {
                             TList _list1 = oprot.readListBegin();
-                            if (_list1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(_list1.size);
-                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                            _value1 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                 
                                 
                                 test.fixtures.basic_swift_bean.MyDataItem _value2 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);

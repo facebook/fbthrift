@@ -132,11 +132,8 @@ public final class RecursiveStruct {
             List<test.fixtures.refs.RecursiveStruct> mes;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mes = new ArrayList<test.fixtures.refs.RecursiveStruct>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            mes = new ArrayList<test.fixtures.refs.RecursiveStruct>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 test.fixtures.refs.RecursiveStruct _value1 = test.fixtures.refs.RecursiveStruct.read0(oprot);
                 mes.add(_value1);

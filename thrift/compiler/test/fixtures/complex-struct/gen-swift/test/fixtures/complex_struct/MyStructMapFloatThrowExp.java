@@ -172,31 +172,21 @@ public final class MyStructMapFloatThrowExp {
             Map<Integer, List<List<Float>>> mapListOfFloats;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapListOfFloats = new HashMap<Integer, List<List<Float>>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapListOfFloats = new HashMap<Integer, List<List<Float>>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 int _key1 = oprot.readI32();
-
                 List<List<Float>> _value1;
                             {
                             TList _list1 = oprot.readListBegin();
-                            if (_list1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new ArrayList<List<Float>>(_list1.size);
-                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                            _value1 = new ArrayList<List<Float>>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                 
                                 List<Float> _value2;
             {
             TList _list2 = oprot.readListBegin();
-            if (_list2.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            _value2 = new ArrayList<Float>(_list2.size);
-            for (int _i2 = 0; _i2 < _list2.size; _i2++) {
+            _value2 = new ArrayList<Float>(Math.max(0, _list2.size));
+            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                 
                 
                 float _value3 = oprot.readFloat();

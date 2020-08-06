@@ -1345,11 +1345,8 @@ public final class B {
             Set<Integer> setOfI32;
             {
             TSet _set = oprot.readSetBegin();
-            if (_set.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            setOfI32 = new HashSet<Integer>(_set.size);
-            for (int _i = 0; _i < _set.size; _i++) {
+            setOfI32 = new HashSet<Integer>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 
                 int _value1 = oprot.readI32();
                 setOfI32.add(_value1);
@@ -1366,11 +1363,8 @@ public final class B {
             List<Integer> listOfI32;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            listOfI32 = new ArrayList<Integer>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            listOfI32 = new ArrayList<Integer>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 int _value1 = oprot.readI32();
                 listOfI32.add(_value1);
@@ -1387,11 +1381,8 @@ public final class B {
             List<String> listOfString;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            listOfString = new ArrayList<String>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            listOfString = new ArrayList<String>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 String _value1 = oprot.readString();
                 listOfString.add(_value1);
@@ -1408,14 +1399,10 @@ public final class B {
             Map<String, Integer> mapOfStringToI32;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapOfStringToI32 = new HashMap<String, Integer>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapOfStringToI32 = new HashMap<String, Integer>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 String _key1 = oprot.readString();
-
                 int _value1 = oprot.readI32();
                 mapOfStringToI32.put(_key1, _value1);
             }
@@ -1431,14 +1418,10 @@ public final class B {
             Map<String, test.fixtures.shapes.A> mapOfStringToA;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapOfStringToA = new HashMap<String, test.fixtures.shapes.A>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapOfStringToA = new HashMap<String, test.fixtures.shapes.A>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 String _key1 = oprot.readString();
-
                 test.fixtures.shapes.A _value1 = test.fixtures.shapes.A.read0(oprot);
                 mapOfStringToA.put(_key1, _value1);
             }
@@ -1454,22 +1437,15 @@ public final class B {
             Map<String, List<Integer>> mapOfStringToListOfI32;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapOfStringToListOfI32 = new HashMap<String, List<Integer>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapOfStringToListOfI32 = new HashMap<String, List<Integer>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 String _key1 = oprot.readString();
-
                 List<Integer> _value1;
                             {
                             TList _list1 = oprot.readListBegin();
-                            if (_list1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new ArrayList<Integer>(_list1.size);
-                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                            _value1 = new ArrayList<Integer>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                 
                                 
                                 int _value2 = oprot.readI32();
@@ -1494,22 +1470,15 @@ public final class B {
             Map<String, List<test.fixtures.shapes.A>> mapOfStringToListOfA;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapOfStringToListOfA = new HashMap<String, List<test.fixtures.shapes.A>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapOfStringToListOfA = new HashMap<String, List<test.fixtures.shapes.A>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 String _key1 = oprot.readString();
-
                 List<test.fixtures.shapes.A> _value1;
                             {
                             TList _list1 = oprot.readListBegin();
-                            if (_list1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new ArrayList<test.fixtures.shapes.A>(_list1.size);
-                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                            _value1 = new ArrayList<test.fixtures.shapes.A>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                 
                                 
                                 test.fixtures.shapes.A _value2 = test.fixtures.shapes.A.read0(oprot);
@@ -1534,22 +1503,15 @@ public final class B {
             Map<String, Set<Integer>> mapOfStringToSetOfI32;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapOfStringToSetOfI32 = new HashMap<String, Set<Integer>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapOfStringToSetOfI32 = new HashMap<String, Set<Integer>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 String _key1 = oprot.readString();
-
                 Set<Integer> _value1;
                             {
                             TSet _set1 = oprot.readSetBegin();
-                            if (_set1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new HashSet<Integer>(_set1.size);
-                            for (int _i1 = 0; _i1 < _set1.size; _i1++) {
+                            _value1 = new HashSet<Integer>(Math.max(0, _set1.size));
+                            for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                                 
                                 
                                 int _value2 = oprot.readI32();
@@ -1574,22 +1536,15 @@ public final class B {
             Map<String, Map<String, Integer>> mapOfStringToMapOfStringToI32;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapOfStringToMapOfStringToI32 = new HashMap<String, Map<String, Integer>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapOfStringToMapOfStringToI32 = new HashMap<String, Map<String, Integer>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 String _key1 = oprot.readString();
-
                 Map<String, Integer> _value1;
                             {
                             TMap _map1 = oprot.readMapBegin();
-                            if (_map1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new HashMap<String, Integer>(_map1.size);
-                            for (int _i1 = 0; _i1 < _map1.size; _i1++) {
+                            _value1 = new HashMap<String, Integer>(Math.max(0, _map1.size));
+                            for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                 
                                 
                                 String _key2 = oprot.readString();
@@ -1618,22 +1573,15 @@ public final class B {
             Map<String, Map<String, test.fixtures.shapes.A>> mapOfStringToMapOfStringToA;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapOfStringToMapOfStringToA = new HashMap<String, Map<String, test.fixtures.shapes.A>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapOfStringToMapOfStringToA = new HashMap<String, Map<String, test.fixtures.shapes.A>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 String _key1 = oprot.readString();
-
                 Map<String, test.fixtures.shapes.A> _value1;
                             {
                             TMap _map1 = oprot.readMapBegin();
-                            if (_map1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new HashMap<String, test.fixtures.shapes.A>(_map1.size);
-                            for (int _i1 = 0; _i1 < _map1.size; _i1++) {
+                            _value1 = new HashMap<String, test.fixtures.shapes.A>(Math.max(0, _map1.size));
+                            for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                 
                                 
                                 String _key2 = oprot.readString();
@@ -1662,20 +1610,14 @@ public final class B {
             List<Set<Integer>> listOfSetOfI32;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            listOfSetOfI32 = new ArrayList<Set<Integer>>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            listOfSetOfI32 = new ArrayList<Set<Integer>>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 Set<Integer> _value1;
                             {
                             TSet _set1 = oprot.readSetBegin();
-                            if (_set1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new HashSet<Integer>(_set1.size);
-                            for (int _i1 = 0; _i1 < _set1.size; _i1++) {
+                            _value1 = new HashSet<Integer>(Math.max(0, _set1.size));
+                            for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                                 
                                 
                                 int _value2 = oprot.readI32();
@@ -1700,20 +1642,14 @@ public final class B {
             List<Map<String, List<test.fixtures.shapes.A>>> listOfMapOfStringToListOfA;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            listOfMapOfStringToListOfA = new ArrayList<Map<String, List<test.fixtures.shapes.A>>>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            listOfMapOfStringToListOfA = new ArrayList<Map<String, List<test.fixtures.shapes.A>>>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 Map<String, List<test.fixtures.shapes.A>> _value1;
                             {
                             TMap _map1 = oprot.readMapBegin();
-                            if (_map1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new HashMap<String, List<test.fixtures.shapes.A>>(_map1.size);
-                            for (int _i1 = 0; _i1 < _map1.size; _i1++) {
+                            _value1 = new HashMap<String, List<test.fixtures.shapes.A>>(Math.max(0, _map1.size));
+                            for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                 
                                 
                                 String _key2 = oprot.readString();
@@ -1722,11 +1658,8 @@ public final class B {
                                 List<test.fixtures.shapes.A> _value2;
             {
             TList _list2 = oprot.readListBegin();
-            if (_list2.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            _value2 = new ArrayList<test.fixtures.shapes.A>(_list2.size);
-            for (int _i2 = 0; _i2 < _list2.size; _i2++) {
+            _value2 = new ArrayList<test.fixtures.shapes.A>(Math.max(0, _list2.size));
+            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                 
                 
                 test.fixtures.shapes.A _value3 = test.fixtures.shapes.A.read0(oprot);
@@ -1758,20 +1691,14 @@ public final class B {
             List<Map<String, test.fixtures.shapes.A>> listOfMapOfStringToA;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            listOfMapOfStringToA = new ArrayList<Map<String, test.fixtures.shapes.A>>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            listOfMapOfStringToA = new ArrayList<Map<String, test.fixtures.shapes.A>>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 Map<String, test.fixtures.shapes.A> _value1;
                             {
                             TMap _map1 = oprot.readMapBegin();
-                            if (_map1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new HashMap<String, test.fixtures.shapes.A>(_map1.size);
-                            for (int _i1 = 0; _i1 < _map1.size; _i1++) {
+                            _value1 = new HashMap<String, test.fixtures.shapes.A>(Math.max(0, _map1.size));
+                            for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                 
                                 
                                 String _key2 = oprot.readString();
@@ -1800,11 +1727,8 @@ public final class B {
             List<test.fixtures.shapes.B> listOfSelf;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            listOfSelf = new ArrayList<test.fixtures.shapes.B>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            listOfSelf = new ArrayList<test.fixtures.shapes.B>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 test.fixtures.shapes.B _value1 = test.fixtures.shapes.B.read0(oprot);
                 listOfSelf.add(_value1);
@@ -1821,14 +1745,10 @@ public final class B {
             Map<String, test.fixtures.shapes.B> mapOfStringToSelf;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapOfStringToSelf = new HashMap<String, test.fixtures.shapes.B>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapOfStringToSelf = new HashMap<String, test.fixtures.shapes.B>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 String _key1 = oprot.readString();
-
                 test.fixtures.shapes.B _value1 = test.fixtures.shapes.B.read0(oprot);
                 mapOfStringToSelf.put(_key1, _value1);
             }
@@ -1868,11 +1788,8 @@ public final class B {
             Set<Integer> optionalSetOfI32;
             {
             TSet _set = oprot.readSetBegin();
-            if (_set.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            optionalSetOfI32 = new HashSet<Integer>(_set.size);
-            for (int _i = 0; _i < _set.size; _i++) {
+            optionalSetOfI32 = new HashSet<Integer>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 
                 int _value1 = oprot.readI32();
                 optionalSetOfI32.add(_value1);
@@ -1889,11 +1806,8 @@ public final class B {
             List<Integer> optionalListOfI32;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            optionalListOfI32 = new ArrayList<Integer>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            optionalListOfI32 = new ArrayList<Integer>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 int _value1 = oprot.readI32();
                 optionalListOfI32.add(_value1);
@@ -1910,11 +1824,8 @@ public final class B {
             List<String> optionalListOfString;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            optionalListOfString = new ArrayList<String>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            optionalListOfString = new ArrayList<String>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 String _value1 = oprot.readString();
                 optionalListOfString.add(_value1);
@@ -1931,14 +1842,10 @@ public final class B {
             Map<String, Integer> optionalMapOfStringToI32;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            optionalMapOfStringToI32 = new HashMap<String, Integer>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            optionalMapOfStringToI32 = new HashMap<String, Integer>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 String _key1 = oprot.readString();
-
                 int _value1 = oprot.readI32();
                 optionalMapOfStringToI32.put(_key1, _value1);
             }
@@ -1954,14 +1861,10 @@ public final class B {
             Map<String, test.fixtures.shapes.A> optionalMapOfStringToA;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            optionalMapOfStringToA = new HashMap<String, test.fixtures.shapes.A>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            optionalMapOfStringToA = new HashMap<String, test.fixtures.shapes.A>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 String _key1 = oprot.readString();
-
                 test.fixtures.shapes.A _value1 = test.fixtures.shapes.A.read0(oprot);
                 optionalMapOfStringToA.put(_key1, _value1);
             }
@@ -1977,22 +1880,15 @@ public final class B {
             Map<String, List<Integer>> optionalMapOfStringToListOfI32;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            optionalMapOfStringToListOfI32 = new HashMap<String, List<Integer>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            optionalMapOfStringToListOfI32 = new HashMap<String, List<Integer>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 String _key1 = oprot.readString();
-
                 List<Integer> _value1;
                             {
                             TList _list1 = oprot.readListBegin();
-                            if (_list1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new ArrayList<Integer>(_list1.size);
-                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                            _value1 = new ArrayList<Integer>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                 
                                 
                                 int _value2 = oprot.readI32();
@@ -2017,22 +1913,15 @@ public final class B {
             Map<String, List<test.fixtures.shapes.A>> optionalMapOfStringToListOfA;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            optionalMapOfStringToListOfA = new HashMap<String, List<test.fixtures.shapes.A>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            optionalMapOfStringToListOfA = new HashMap<String, List<test.fixtures.shapes.A>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 String _key1 = oprot.readString();
-
                 List<test.fixtures.shapes.A> _value1;
                             {
                             TList _list1 = oprot.readListBegin();
-                            if (_list1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new ArrayList<test.fixtures.shapes.A>(_list1.size);
-                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                            _value1 = new ArrayList<test.fixtures.shapes.A>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                 
                                 
                                 test.fixtures.shapes.A _value2 = test.fixtures.shapes.A.read0(oprot);
@@ -2057,22 +1946,15 @@ public final class B {
             Map<String, Set<Integer>> optionalMapOfStringToSetOfI32;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            optionalMapOfStringToSetOfI32 = new HashMap<String, Set<Integer>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            optionalMapOfStringToSetOfI32 = new HashMap<String, Set<Integer>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 String _key1 = oprot.readString();
-
                 Set<Integer> _value1;
                             {
                             TSet _set1 = oprot.readSetBegin();
-                            if (_set1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new HashSet<Integer>(_set1.size);
-                            for (int _i1 = 0; _i1 < _set1.size; _i1++) {
+                            _value1 = new HashSet<Integer>(Math.max(0, _set1.size));
+                            for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                                 
                                 
                                 int _value2 = oprot.readI32();
@@ -2153,11 +2035,8 @@ public final class B {
             Set<Integer> setOfI32WithDefaultValue;
             {
             TSet _set = oprot.readSetBegin();
-            if (_set.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            setOfI32WithDefaultValue = new HashSet<Integer>(_set.size);
-            for (int _i = 0; _i < _set.size; _i++) {
+            setOfI32WithDefaultValue = new HashSet<Integer>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 
                 int _value1 = oprot.readI32();
                 setOfI32WithDefaultValue.add(_value1);
@@ -2174,14 +2053,10 @@ public final class B {
             Map<Integer, String> mapOfI32ToStringWithDefaultValue;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapOfI32ToStringWithDefaultValue = new HashMap<Integer, String>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapOfI32ToStringWithDefaultValue = new HashMap<Integer, String>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 int _key1 = oprot.readI32();
-
                 String _value1 = oprot.readString();
                 mapOfI32ToStringWithDefaultValue.put(_key1, _value1);
             }
@@ -2197,11 +2072,8 @@ public final class B {
             List<String> listOfStringWithDefaultValue;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            listOfStringWithDefaultValue = new ArrayList<String>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            listOfStringWithDefaultValue = new ArrayList<String>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 String _value1 = oprot.readString();
                 listOfStringWithDefaultValue.add(_value1);
@@ -2218,22 +2090,15 @@ public final class B {
             Map<String, List<Integer>> mapOfStringToListOfI32WithDefaultValue;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapOfStringToListOfI32WithDefaultValue = new HashMap<String, List<Integer>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapOfStringToListOfI32WithDefaultValue = new HashMap<String, List<Integer>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 String _key1 = oprot.readString();
-
                 List<Integer> _value1;
                             {
                             TList _list1 = oprot.readListBegin();
-                            if (_list1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new ArrayList<Integer>(_list1.size);
-                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                            _value1 = new ArrayList<Integer>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                 
                                 
                                 int _value2 = oprot.readI32();

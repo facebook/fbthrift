@@ -1068,11 +1068,8 @@ public final class MyStruct {
             List<Double> lDouble;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            lDouble = new ArrayList<Double>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            lDouble = new ArrayList<Double>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 double _value1 = oprot.readDouble();
                 lDouble.add(_value1);
@@ -1089,11 +1086,8 @@ public final class MyStruct {
             List<Short> lShort;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            lShort = new ArrayList<Short>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            lShort = new ArrayList<Short>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 short _value1 = oprot.readI16();
                 lShort.add(_value1);
@@ -1110,11 +1104,8 @@ public final class MyStruct {
             List<Integer> lInteger;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            lInteger = new ArrayList<Integer>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            lInteger = new ArrayList<Integer>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 int _value1 = oprot.readI32();
                 lInteger.add(_value1);
@@ -1131,11 +1122,8 @@ public final class MyStruct {
             List<Long> lLong;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            lLong = new ArrayList<Long>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            lLong = new ArrayList<Long>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 long _value1 = oprot.readI64();
                 lLong.add(_value1);
@@ -1152,11 +1140,8 @@ public final class MyStruct {
             List<String> lString;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            lString = new ArrayList<String>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            lString = new ArrayList<String>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 String _value1 = oprot.readString();
                 lString.add(_value1);
@@ -1173,11 +1158,8 @@ public final class MyStruct {
             List<Boolean> lBool;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            lBool = new ArrayList<Boolean>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            lBool = new ArrayList<Boolean>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 boolean _value1 = oprot.readBool();
                 lBool.add(_value1);
@@ -1194,11 +1176,8 @@ public final class MyStruct {
             List<Byte> lByte;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            lByte = new ArrayList<Byte>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            lByte = new ArrayList<Byte>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 byte _value1 = oprot.readByte();
                 lByte.add(_value1);
@@ -1215,14 +1194,10 @@ public final class MyStruct {
             Map<Short, String> mShortString;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mShortString = new HashMap<Short, String>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mShortString = new HashMap<Short, String>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 short _key1 = oprot.readI16();
-
                 String _value1 = oprot.readString();
                 mShortString.put(_key1, _value1);
             }
@@ -1238,14 +1213,10 @@ public final class MyStruct {
             Map<Integer, String> mIntegerString;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mIntegerString = new HashMap<Integer, String>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mIntegerString = new HashMap<Integer, String>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 int _key1 = oprot.readI32();
-
                 String _value1 = oprot.readString();
                 mIntegerString.put(_key1, _value1);
             }
@@ -1261,14 +1232,10 @@ public final class MyStruct {
             Map<String, test.fixtures.complex_struct.MyStruct> mStringMyStruct;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mStringMyStruct = new HashMap<String, test.fixtures.complex_struct.MyStruct>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mStringMyStruct = new HashMap<String, test.fixtures.complex_struct.MyStruct>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 String _key1 = oprot.readString();
-
                 test.fixtures.complex_struct.MyStruct _value1 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                 mStringMyStruct.put(_key1, _value1);
             }
@@ -1284,14 +1251,10 @@ public final class MyStruct {
             Map<String, Boolean> mStringBool;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mStringBool = new HashMap<String, Boolean>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mStringBool = new HashMap<String, Boolean>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 String _key1 = oprot.readString();
-
                 boolean _value1 = oprot.readBool();
                 mStringBool.put(_key1, _value1);
             }
@@ -1307,14 +1270,10 @@ public final class MyStruct {
             Map<Integer, Integer> mIntegerInteger;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mIntegerInteger = new HashMap<Integer, Integer>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mIntegerInteger = new HashMap<Integer, Integer>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 int _key1 = oprot.readI32();
-
                 int _value1 = oprot.readI32();
                 mIntegerInteger.put(_key1, _value1);
             }
@@ -1330,14 +1289,10 @@ public final class MyStruct {
             Map<Integer, Boolean> mIntegerBool;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mIntegerBool = new HashMap<Integer, Boolean>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mIntegerBool = new HashMap<Integer, Boolean>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 int _key1 = oprot.readI32();
-
                 boolean _value1 = oprot.readBool();
                 mIntegerBool.put(_key1, _value1);
             }
@@ -1353,11 +1308,8 @@ public final class MyStruct {
             Set<Short> sShort;
             {
             TSet _set = oprot.readSetBegin();
-            if (_set.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            sShort = new HashSet<Short>(_set.size);
-            for (int _i = 0; _i < _set.size; _i++) {
+            sShort = new HashSet<Short>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 
                 short _value1 = oprot.readI16();
                 sShort.add(_value1);
@@ -1374,11 +1326,8 @@ public final class MyStruct {
             Set<test.fixtures.complex_struct.MyStruct> sMyStruct;
             {
             TSet _set = oprot.readSetBegin();
-            if (_set.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            sMyStruct = new HashSet<test.fixtures.complex_struct.MyStruct>(_set.size);
-            for (int _i = 0; _i < _set.size; _i++) {
+            sMyStruct = new HashSet<test.fixtures.complex_struct.MyStruct>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 
                 test.fixtures.complex_struct.MyStruct _value1 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                 sMyStruct.add(_value1);
@@ -1395,11 +1344,8 @@ public final class MyStruct {
             Set<Long> sLong;
             {
             TSet _set = oprot.readSetBegin();
-            if (_set.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            sLong = new HashSet<Long>(_set.size);
-            for (int _i = 0; _i < _set.size; _i++) {
+            sLong = new HashSet<Long>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 
                 long _value1 = oprot.readI64();
                 sLong.add(_value1);
@@ -1416,11 +1362,8 @@ public final class MyStruct {
             Set<String> sString;
             {
             TSet _set = oprot.readSetBegin();
-            if (_set.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            sString = new HashSet<String>(_set.size);
-            for (int _i = 0; _i < _set.size; _i++) {
+            sString = new HashSet<String>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 
                 String _value1 = oprot.readString();
                 sString.add(_value1);
@@ -1437,11 +1380,8 @@ public final class MyStruct {
             Set<Byte> sByte;
             {
             TSet _set = oprot.readSetBegin();
-            if (_set.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            sByte = new HashSet<Byte>(_set.size);
-            for (int _i = 0; _i < _set.size; _i++) {
+            sByte = new HashSet<Byte>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 
                 byte _value1 = oprot.readByte();
                 sByte.add(_value1);
@@ -1458,35 +1398,25 @@ public final class MyStruct {
             Map<List<Integer>, List<Integer>> mListList;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mListList = new HashMap<List<Integer>, List<Integer>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mListList = new HashMap<List<Integer>, List<Integer>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 List<Integer> _key1;
                             {
                             TList _list1 = oprot.readListBegin();
-                            if (_list1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _key1 = new ArrayList<Integer>(_list1.size);
-                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                            _key1 = new ArrayList<Integer>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                 
                                 int _value2 = oprot.readI32();
                                 _key1.add(_value2);
                             }
                             oprot.readListEnd();
                             }
-                
-                List<Integer> _value1;
+                                List<Integer> _value1;
                             {
                             TList _list1 = oprot.readListBegin();
-                            if (_list1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new ArrayList<Integer>(_list1.size);
-                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                            _value1 = new ArrayList<Integer>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                 
                                 
                                 int _value2 = oprot.readI32();

@@ -940,14 +940,10 @@ public final class DefaultStruct {
             Map<Integer, String> field3;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            field3 = new HashMap<Integer, String>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            field3 = new HashMap<Integer, String>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 int _key1 = oprot.readI32();
-
                 String _value1 = oprot.readString();
                 field3.put(_key1, _value1);
             }
@@ -963,11 +959,8 @@ public final class DefaultStruct {
             List<test.fixtures.complex_struct.MyEnum> myList;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            myList = new ArrayList<test.fixtures.complex_struct.MyEnum>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            myList = new ArrayList<test.fixtures.complex_struct.MyEnum>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 test.fixtures.complex_struct.MyEnum _value1 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
                 myList.add(_value1);
@@ -984,11 +977,8 @@ public final class DefaultStruct {
             Set<String> mySet;
             {
             TSet _set = oprot.readSetBegin();
-            if (_set.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mySet = new HashSet<String>(_set.size);
-            for (int _i = 0; _i < _set.size; _i++) {
+            mySet = new HashSet<String>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 
                 String _value1 = oprot.readString();
                 mySet.add(_value1);
@@ -1013,11 +1003,8 @@ public final class DefaultStruct {
             List<test.fixtures.complex_struct.SimpleStruct> listStructDFset;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            listStructDFset = new ArrayList<test.fixtures.complex_struct.SimpleStruct>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            listStructDFset = new ArrayList<test.fixtures.complex_struct.SimpleStruct>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 test.fixtures.complex_struct.SimpleStruct _value1 = test.fixtures.complex_struct.SimpleStruct.read0(oprot);
                 listStructDFset.add(_value1);
@@ -1042,11 +1029,8 @@ public final class DefaultStruct {
             List<test.fixtures.complex_struct.MyUnion> listUnionDFset;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            listUnionDFset = new ArrayList<test.fixtures.complex_struct.MyUnion>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            listUnionDFset = new ArrayList<test.fixtures.complex_struct.MyUnion>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 test.fixtures.complex_struct.MyUnion _value1 = test.fixtures.complex_struct.MyUnion.read0(oprot);
                 listUnionDFset.add(_value1);
@@ -1063,22 +1047,15 @@ public final class DefaultStruct {
             Map<Integer, List<test.fixtures.complex_struct.SimpleStruct>> mapNestlistStructDfSet;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapNestlistStructDfSet = new HashMap<Integer, List<test.fixtures.complex_struct.SimpleStruct>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapNestlistStructDfSet = new HashMap<Integer, List<test.fixtures.complex_struct.SimpleStruct>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 int _key1 = oprot.readI32();
-
                 List<test.fixtures.complex_struct.SimpleStruct> _value1;
                             {
                             TList _list1 = oprot.readListBegin();
-                            if (_list1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new ArrayList<test.fixtures.complex_struct.SimpleStruct>(_list1.size);
-                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                            _value1 = new ArrayList<test.fixtures.complex_struct.SimpleStruct>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                 
                                 
                                 test.fixtures.complex_struct.SimpleStruct _value2 = test.fixtures.complex_struct.SimpleStruct.read0(oprot);
@@ -1103,14 +1080,10 @@ public final class DefaultStruct {
             it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> mapJavaTypeDFset;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
             mapJavaTypeDFset = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
-            for (int _i = 0; _i < _map.size; _i++) {
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 long _key1 = oprot.readI64();
-
                 String _value1 = oprot.readString();
                 mapJavaTypeDFset.put(_key1, _value1);
             }
@@ -1126,14 +1099,10 @@ public final class DefaultStruct {
             Map<Long, Integer> emptyMap;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            emptyMap = new HashMap<Long, Integer>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            emptyMap = new HashMap<Long, Integer>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 long _key1 = oprot.readI64();
-
                 int _value1 = oprot.readI32();
                 emptyMap.put(_key1, _value1);
             }
@@ -1149,22 +1118,15 @@ public final class DefaultStruct {
             Map<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> enumMapDFset;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            enumMapDFset = new HashMap<String, Map<Integer, test.fixtures.complex_struct.MyEnum>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            enumMapDFset = new HashMap<String, Map<Integer, test.fixtures.complex_struct.MyEnum>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 String _key1 = oprot.readString();
-
                 Map<Integer, test.fixtures.complex_struct.MyEnum> _value1;
                             {
                             TMap _map1 = oprot.readMapBegin();
-                            if (_map1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new HashMap<Integer, test.fixtures.complex_struct.MyEnum>(_map1.size);
-                            for (int _i1 = 0; _i1 < _map1.size; _i1++) {
+                            _value1 = new HashMap<Integer, test.fixtures.complex_struct.MyEnum>(Math.max(0, _map1.size));
+                            for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                 
                                 
                                 int _key2 = oprot.readI32();

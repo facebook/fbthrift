@@ -676,20 +676,14 @@ public final class ComplexNestedStruct {
             Set<Set<Integer>> setOfSetOfInt;
             {
             TSet _set = oprot.readSetBegin();
-            if (_set.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            setOfSetOfInt = new HashSet<Set<Integer>>(_set.size);
-            for (int _i = 0; _i < _set.size; _i++) {
+            setOfSetOfInt = new HashSet<Set<Integer>>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 
                 Set<Integer> _value1;
                             {
                             TSet _set1 = oprot.readSetBegin();
-                            if (_set1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new HashSet<Integer>(_set1.size);
-                            for (int _i1 = 0; _i1 < _set1.size; _i1++) {
+                            _value1 = new HashSet<Integer>(Math.max(0, _set1.size));
+                            for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                                 
                                 
                                 int _value2 = oprot.readI32();
@@ -714,38 +708,26 @@ public final class ComplexNestedStruct {
             List<List<List<List<test.fixtures.complex_struct.MyEnum>>>> listofListOfListOfListOfEnum;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            listofListOfListOfListOfEnum = new ArrayList<List<List<List<test.fixtures.complex_struct.MyEnum>>>>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            listofListOfListOfListOfEnum = new ArrayList<List<List<List<test.fixtures.complex_struct.MyEnum>>>>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 List<List<List<test.fixtures.complex_struct.MyEnum>>> _value1;
                             {
                             TList _list1 = oprot.readListBegin();
-                            if (_list1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new ArrayList<List<List<test.fixtures.complex_struct.MyEnum>>>(_list1.size);
-                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                            _value1 = new ArrayList<List<List<test.fixtures.complex_struct.MyEnum>>>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                 
                                 List<List<test.fixtures.complex_struct.MyEnum>> _value2;
             {
             TList _list2 = oprot.readListBegin();
-            if (_list2.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            _value2 = new ArrayList<List<test.fixtures.complex_struct.MyEnum>>(_list2.size);
-            for (int _i2 = 0; _i2 < _list2.size; _i2++) {
+            _value2 = new ArrayList<List<test.fixtures.complex_struct.MyEnum>>(Math.max(0, _list2.size));
+            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                 
                 List<test.fixtures.complex_struct.MyEnum> _value3;
             {
             TList _list3 = oprot.readListBegin();
-            if (_list3.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            _value3 = new ArrayList<test.fixtures.complex_struct.MyEnum>(_list3.size);
-            for (int _i3 = 0; _i3 < _list3.size; _i3++) {
+            _value3 = new ArrayList<test.fixtures.complex_struct.MyEnum>(Math.max(0, _list3.size));
+            for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
                 
                 
                 test.fixtures.complex_struct.MyEnum _value4 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
@@ -784,20 +766,14 @@ public final class ComplexNestedStruct {
             List<List<test.fixtures.complex_struct.MyStruct>> listOfListOfMyStruct;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            listOfListOfMyStruct = new ArrayList<List<test.fixtures.complex_struct.MyStruct>>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            listOfListOfMyStruct = new ArrayList<List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 List<test.fixtures.complex_struct.MyStruct> _value1;
                             {
                             TList _list1 = oprot.readListBegin();
-                            if (_list1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new ArrayList<test.fixtures.complex_struct.MyStruct>(_list1.size);
-                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                            _value1 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                 
                                 
                                 test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
@@ -822,29 +798,20 @@ public final class ComplexNestedStruct {
             Set<List<List<Long>>> setOfListOfListOfLong;
             {
             TSet _set = oprot.readSetBegin();
-            if (_set.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            setOfListOfListOfLong = new HashSet<List<List<Long>>>(_set.size);
-            for (int _i = 0; _i < _set.size; _i++) {
+            setOfListOfListOfLong = new HashSet<List<List<Long>>>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 
                 List<List<Long>> _value1;
                             {
                             TList _list1 = oprot.readListBegin();
-                            if (_list1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new ArrayList<List<Long>>(_list1.size);
-                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                            _value1 = new ArrayList<List<Long>>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                 
                                 List<Long> _value2;
             {
             TList _list2 = oprot.readListBegin();
-            if (_list2.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            _value2 = new ArrayList<Long>(_list2.size);
-            for (int _i2 = 0; _i2 < _list2.size; _i2++) {
+            _value2 = new ArrayList<Long>(Math.max(0, _list2.size));
+            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                 
                 
                 long _value3 = oprot.readI64();
@@ -876,29 +843,20 @@ public final class ComplexNestedStruct {
             Set<Set<Set<Long>>> setOfSetOfsetOfLong;
             {
             TSet _set = oprot.readSetBegin();
-            if (_set.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            setOfSetOfsetOfLong = new HashSet<Set<Set<Long>>>(_set.size);
-            for (int _i = 0; _i < _set.size; _i++) {
+            setOfSetOfsetOfLong = new HashSet<Set<Set<Long>>>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 
                 Set<Set<Long>> _value1;
                             {
                             TSet _set1 = oprot.readSetBegin();
-                            if (_set1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new HashSet<Set<Long>>(_set1.size);
-                            for (int _i1 = 0; _i1 < _set1.size; _i1++) {
+                            _value1 = new HashSet<Set<Long>>(Math.max(0, _set1.size));
+                            for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                                 
                                 Set<Long> _value2;
             {
             TSet _set2 = oprot.readSetBegin();
-            if (_set2.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            _value2 = new HashSet<Long>(_set2.size);
-            for (int _i2 = 0; _i2 < _set2.size; _i2++) {
+            _value2 = new HashSet<Long>(Math.max(0, _set2.size));
+            for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                 
                 
                 long _value3 = oprot.readI64();
@@ -930,31 +888,21 @@ public final class ComplexNestedStruct {
             Map<Integer, List<List<test.fixtures.complex_struct.MyStruct>>> mapStructListOfListOfLong;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapStructListOfListOfLong = new HashMap<Integer, List<List<test.fixtures.complex_struct.MyStruct>>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapStructListOfListOfLong = new HashMap<Integer, List<List<test.fixtures.complex_struct.MyStruct>>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 int _key1 = oprot.readI32();
-
                 List<List<test.fixtures.complex_struct.MyStruct>> _value1;
                             {
                             TList _list1 = oprot.readListBegin();
-                            if (_list1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new ArrayList<List<test.fixtures.complex_struct.MyStruct>>(_list1.size);
-                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                            _value1 = new ArrayList<List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                 
                                 List<test.fixtures.complex_struct.MyStruct> _value2;
             {
             TList _list2 = oprot.readListBegin();
-            if (_list2.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            _value2 = new ArrayList<test.fixtures.complex_struct.MyStruct>(_list2.size);
-            for (int _i2 = 0; _i2 < _list2.size; _i2++) {
+            _value2 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list2.size));
+            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                 
                 
                 test.fixtures.complex_struct.MyStruct _value3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
@@ -986,14 +934,10 @@ public final class ComplexNestedStruct {
             Map<test.fixtures.complex_struct.MyStruct, Integer> mKeyStructValInt;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mKeyStructValInt = new HashMap<test.fixtures.complex_struct.MyStruct, Integer>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mKeyStructValInt = new HashMap<test.fixtures.complex_struct.MyStruct, Integer>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 test.fixtures.complex_struct.MyStruct _key1 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-
                 int _value1 = oprot.readI32();
                 mKeyStructValInt.put(_key1, _value1);
             }
@@ -1009,20 +953,14 @@ public final class ComplexNestedStruct {
             List<Map<Integer, Integer>> listOfMapKeyIntValInt;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            listOfMapKeyIntValInt = new ArrayList<Map<Integer, Integer>>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            listOfMapKeyIntValInt = new ArrayList<Map<Integer, Integer>>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 Map<Integer, Integer> _value1;
                             {
                             TMap _map1 = oprot.readMapBegin();
-                            if (_map1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new HashMap<Integer, Integer>(_map1.size);
-                            for (int _i1 = 0; _i1 < _map1.size; _i1++) {
+                            _value1 = new HashMap<Integer, Integer>(Math.max(0, _map1.size));
+                            for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                 
                                 
                                 int _key2 = oprot.readI32();
@@ -1051,20 +989,14 @@ public final class ComplexNestedStruct {
             List<Map<String, List<test.fixtures.complex_struct.MyStruct>>> listOfMapKeyStrValList;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            listOfMapKeyStrValList = new ArrayList<Map<String, List<test.fixtures.complex_struct.MyStruct>>>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            listOfMapKeyStrValList = new ArrayList<Map<String, List<test.fixtures.complex_struct.MyStruct>>>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 Map<String, List<test.fixtures.complex_struct.MyStruct>> _value1;
                             {
                             TMap _map1 = oprot.readMapBegin();
-                            if (_map1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new HashMap<String, List<test.fixtures.complex_struct.MyStruct>>(_map1.size);
-                            for (int _i1 = 0; _i1 < _map1.size; _i1++) {
+                            _value1 = new HashMap<String, List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _map1.size));
+                            for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                 
                                 
                                 String _key2 = oprot.readString();
@@ -1073,11 +1005,8 @@ public final class ComplexNestedStruct {
                                 List<test.fixtures.complex_struct.MyStruct> _value2;
             {
             TList _list2 = oprot.readListBegin();
-            if (_list2.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            _value2 = new ArrayList<test.fixtures.complex_struct.MyStruct>(_list2.size);
-            for (int _i2 = 0; _i2 < _list2.size; _i2++) {
+            _value2 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list2.size));
+            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                 
                 
                 test.fixtures.complex_struct.MyStruct _value3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
@@ -1109,28 +1038,21 @@ public final class ComplexNestedStruct {
             Map<Set<Integer>, Long> mapKeySetValLong;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapKeySetValLong = new HashMap<Set<Integer>, Long>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapKeySetValLong = new HashMap<Set<Integer>, Long>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 Set<Integer> _key1;
                             {
                             TSet _set1 = oprot.readSetBegin();
-                            if (_set1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _key1 = new HashSet<Integer>(_set1.size);
-                            for (int _i1 = 0; _i1 < _set1.size; _i1++) {
+                            _key1 = new HashSet<Integer>(Math.max(0, _set1.size));
+                            for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                                 
                                 int _value2 = oprot.readI32();
                                 _key1.add(_value2);
                             }
                             oprot.readSetEnd();
                             }
-                
-                long _value1 = oprot.readI64();
+                                long _value1 = oprot.readI64();
                 mapKeySetValLong.put(_key1, _value1);
             }
             }
@@ -1145,28 +1067,21 @@ public final class ComplexNestedStruct {
             Map<List<String>, Integer> mapKeyListValLong;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapKeyListValLong = new HashMap<List<String>, Integer>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapKeyListValLong = new HashMap<List<String>, Integer>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 List<String> _key1;
                             {
                             TList _list1 = oprot.readListBegin();
-                            if (_list1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _key1 = new ArrayList<String>(_list1.size);
-                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                            _key1 = new ArrayList<String>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                 
                                 String _value2 = oprot.readString();
                                 _key1.add(_value2);
                             }
                             oprot.readListEnd();
                             }
-                
-                int _value1 = oprot.readI32();
+                                int _value1 = oprot.readI32();
                 mapKeyListValLong.put(_key1, _value1);
             }
             }
@@ -1181,20 +1096,14 @@ public final class ComplexNestedStruct {
             Map<Map<Integer, String>, Map<Integer, String>> mapKeyMapValMap;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapKeyMapValMap = new HashMap<Map<Integer, String>, Map<Integer, String>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapKeyMapValMap = new HashMap<Map<Integer, String>, Map<Integer, String>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 Map<Integer, String> _key1;
                             {
                             TMap _map1 = oprot.readMapBegin();
-                            if (_map1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _key1 = new HashMap<Integer, String>(_map1.size);
-                            for (int _i1 = 0; _i1 < _map1.size; _i1++) {
+                            _key1 = new HashMap<Integer, String>(Math.max(0, _map1.size));
+                            for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                 
                                 int _key2 = oprot.readI32();
                 
@@ -1203,15 +1112,11 @@ public final class ComplexNestedStruct {
                             }
                             oprot.readMapEnd();
                             }
-                
-                Map<Integer, String> _value1;
+                                Map<Integer, String> _value1;
                             {
                             TMap _map1 = oprot.readMapBegin();
-                            if (_map1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new HashMap<Integer, String>(_map1.size);
-                            for (int _i1 = 0; _i1 < _map1.size; _i1++) {
+                            _value1 = new HashMap<Integer, String>(Math.max(0, _map1.size));
+                            for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                 
                                 
                                 int _key2 = oprot.readI32();
@@ -1240,29 +1145,20 @@ public final class ComplexNestedStruct {
             Map<Set<List<Integer>>, Map<List<Set<String>>, String>> mapKeySetValMap;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapKeySetValMap = new HashMap<Set<List<Integer>>, Map<List<Set<String>>, String>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapKeySetValMap = new HashMap<Set<List<Integer>>, Map<List<Set<String>>, String>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 Set<List<Integer>> _key1;
                             {
                             TSet _set1 = oprot.readSetBegin();
-                            if (_set1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _key1 = new HashSet<List<Integer>>(_set1.size);
-                            for (int _i1 = 0; _i1 < _set1.size; _i1++) {
+                            _key1 = new HashSet<List<Integer>>(Math.max(0, _set1.size));
+                            for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                                 
                                 List<Integer> _value2;
             {
             TList _list2 = oprot.readListBegin();
-            if (_list2.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            _value2 = new ArrayList<Integer>(_list2.size);
-            for (int _i2 = 0; _i2 < _list2.size; _i2++) {
+            _value2 = new ArrayList<Integer>(Math.max(0, _list2.size));
+            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                 
                 
                 int _value3 = oprot.readI32();
@@ -1278,33 +1174,23 @@ public final class ComplexNestedStruct {
                             }
                             oprot.readSetEnd();
                             }
-                
-                Map<List<Set<String>>, String> _value1;
+                                Map<List<Set<String>>, String> _value1;
                             {
                             TMap _map1 = oprot.readMapBegin();
-                            if (_map1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new HashMap<List<Set<String>>, String>(_map1.size);
-                            for (int _i1 = 0; _i1 < _map1.size; _i1++) {
+                            _value1 = new HashMap<List<Set<String>>, String>(Math.max(0, _map1.size));
+                            for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                 
                                 List<Set<String>> _key2;
             {
             TList _list2 = oprot.readListBegin();
-            if (_list2.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            _key2 = new ArrayList<Set<String>>(_list2.size);
-            for (int _i2 = 0; _i2 < _list2.size; _i2++) {
+            _key2 = new ArrayList<Set<String>>(Math.max(0, _list2.size));
+            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                 
                 Set<String> _value3;
             {
             TSet _set3 = oprot.readSetBegin();
-            if (_set3.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            _value3 = new HashSet<String>(_set3.size);
-            for (int _i3 = 0; _i3 < _set3.size; _i3++) {
+            _value3 = new HashSet<String>(Math.max(0, _set3.size));
+            for (int _i3 = 0; (_set3.size < 0) ? oprot.peekSet() : (_i3 < _set3.size); _i3++) {
                 
                 
                 String _value4 = oprot.readString();
@@ -1345,29 +1231,20 @@ public final class ComplexNestedStruct {
             Map<Map<Map<Integer, String>, String>, Map<Integer, String>> nestedMaps;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            nestedMaps = new HashMap<Map<Map<Integer, String>, String>, Map<Integer, String>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            nestedMaps = new HashMap<Map<Map<Integer, String>, String>, Map<Integer, String>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 Map<Map<Integer, String>, String> _key1;
                             {
                             TMap _map1 = oprot.readMapBegin();
-                            if (_map1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _key1 = new HashMap<Map<Integer, String>, String>(_map1.size);
-                            for (int _i1 = 0; _i1 < _map1.size; _i1++) {
+                            _key1 = new HashMap<Map<Integer, String>, String>(Math.max(0, _map1.size));
+                            for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                 
                                 Map<Integer, String> _key2;
             {
             TMap _map2 = oprot.readMapBegin();
-            if (_map2.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            _key2 = new HashMap<Integer, String>(_map2.size);
-            for (int _i2 = 0; _i2 < _map2.size; _i2++) {
+            _key2 = new HashMap<Integer, String>(Math.max(0, _map2.size));
+            for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
                 
                 int _key3 = oprot.readI32();
 
@@ -1383,15 +1260,11 @@ public final class ComplexNestedStruct {
                             }
                             oprot.readMapEnd();
                             }
-                
-                Map<Integer, String> _value1;
+                                Map<Integer, String> _value1;
                             {
                             TMap _map1 = oprot.readMapBegin();
-                            if (_map1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new HashMap<Integer, String>(_map1.size);
-                            for (int _i1 = 0; _i1 < _map1.size; _i1++) {
+                            _value1 = new HashMap<Integer, String>(Math.max(0, _map1.size));
+                            for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                 
                                 
                                 int _key2 = oprot.readI32();
@@ -1420,22 +1293,15 @@ public final class ComplexNestedStruct {
             Map<Integer, List<test.fixtures.complex_struct.MyStruct>> mapKeyIntValList;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapKeyIntValList = new HashMap<Integer, List<test.fixtures.complex_struct.MyStruct>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapKeyIntValList = new HashMap<Integer, List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 int _key1 = oprot.readI32();
-
                 List<test.fixtures.complex_struct.MyStruct> _value1;
                             {
                             TList _list1 = oprot.readListBegin();
-                            if (_list1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new ArrayList<test.fixtures.complex_struct.MyStruct>(_list1.size);
-                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                            _value1 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                 
                                 
                                 test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
@@ -1460,22 +1326,15 @@ public final class ComplexNestedStruct {
             Map<Integer, Set<Boolean>> mapKeyIntValSet;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapKeyIntValSet = new HashMap<Integer, Set<Boolean>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapKeyIntValSet = new HashMap<Integer, Set<Boolean>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 int _key1 = oprot.readI32();
-
                 Set<Boolean> _value1;
                             {
                             TSet _set1 = oprot.readSetBegin();
-                            if (_set1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new HashSet<Boolean>(_set1.size);
-                            for (int _i1 = 0; _i1 < _set1.size; _i1++) {
+                            _value1 = new HashSet<Boolean>(Math.max(0, _set1.size));
+                            for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                                 
                                 
                                 boolean _value2 = oprot.readBool();
@@ -1500,28 +1359,21 @@ public final class ComplexNestedStruct {
             Map<Set<Boolean>, test.fixtures.complex_struct.MyEnum> mapKeySetValInt;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapKeySetValInt = new HashMap<Set<Boolean>, test.fixtures.complex_struct.MyEnum>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapKeySetValInt = new HashMap<Set<Boolean>, test.fixtures.complex_struct.MyEnum>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 Set<Boolean> _key1;
                             {
                             TSet _set1 = oprot.readSetBegin();
-                            if (_set1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _key1 = new HashSet<Boolean>(_set1.size);
-                            for (int _i1 = 0; _i1 < _set1.size; _i1++) {
+                            _key1 = new HashSet<Boolean>(Math.max(0, _set1.size));
+                            for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                                 
                                 boolean _value2 = oprot.readBool();
                                 _key1.add(_value2);
                             }
                             oprot.readSetEnd();
                             }
-                
-                test.fixtures.complex_struct.MyEnum _value1 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                                test.fixtures.complex_struct.MyEnum _value1 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
                 mapKeySetValInt.put(_key1, _value1);
             }
             }
@@ -1536,44 +1388,31 @@ public final class ComplexNestedStruct {
             Map<List<Integer>, Set<Map<Double, String>>> mapKeyListValSet;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapKeyListValSet = new HashMap<List<Integer>, Set<Map<Double, String>>>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapKeyListValSet = new HashMap<List<Integer>, Set<Map<Double, String>>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 List<Integer> _key1;
                             {
                             TList _list1 = oprot.readListBegin();
-                            if (_list1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _key1 = new ArrayList<Integer>(_list1.size);
-                            for (int _i1 = 0; _i1 < _list1.size; _i1++) {
+                            _key1 = new ArrayList<Integer>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                 
                                 int _value2 = oprot.readI32();
                                 _key1.add(_value2);
                             }
                             oprot.readListEnd();
                             }
-                
-                Set<Map<Double, String>> _value1;
+                                Set<Map<Double, String>> _value1;
                             {
                             TSet _set1 = oprot.readSetBegin();
-                            if (_set1.size < 0) {
-                                throw new TException("Using an unsupported Map, size is less than zero.");
-                            }
-                            _value1 = new HashSet<Map<Double, String>>(_set1.size);
-                            for (int _i1 = 0; _i1 < _set1.size; _i1++) {
+                            _value1 = new HashSet<Map<Double, String>>(Math.max(0, _set1.size));
+                            for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                                 
                                 Map<Double, String> _value2;
             {
             TMap _map2 = oprot.readMapBegin();
-            if (_map2.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            _value2 = new HashMap<Double, String>(_map2.size);
-            for (int _i2 = 0; _i2 < _map2.size; _i2++) {
+            _value2 = new HashMap<Double, String>(Math.max(0, _map2.size));
+            for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
                 
                 
                 double _key3 = oprot.readDouble();

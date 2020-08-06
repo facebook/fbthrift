@@ -252,11 +252,8 @@ public final class Struct2 {
             List<Integer> d;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            d = new ArrayList<Integer>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            d = new ArrayList<Integer>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 int _value1 = oprot.readI32();
                 d.add(_value1);

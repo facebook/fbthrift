@@ -25,13 +25,10 @@
             }}{{> BoxedType}} _value{{field:nestedDepth}};
             {
             TSet _set{{field:nestedDepth}} = oprot.readSetBegin();
-            if (_set{{field:nestedDepth}}.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            {{^type:javaType}}_value{{field:nestedDepth}} = new Hash{{> BoxedType}}(_set{{field:nestedDepth}}.size);{{/type:javaType}}{{!
+            {{^type:javaType}}_value{{field:nestedDepth}} = new Hash{{> BoxedType}}(Math.max(0, _set{{field:nestedDepth}}.size));{{/type:javaType}}{{!
             }}{{#type:javaType}}_value{{field:nestedDepth}} = new {{type:javaType}}();{{/type:javaType}}{{!
             }}
-            for (int _i{{field:nestedDepth}} = 0; _i{{field:nestedDepth}} < _set{{field:nestedDepth}}.size; _i{{field:nestedDepth}}++) {
+            for (int _i{{field:nestedDepth}} = 0; (_set{{field:nestedDepth}}.size < 0) ? oprot.peekSet() : (_i{{field:nestedDepth}} < _set{{field:nestedDepth}}.size); _i{{field:nestedDepth}}++) {
                 {{field:setIsNested}}
                 {{#type:setElemType}}
                 {{#type:isContainer?}}
@@ -55,13 +52,10 @@
             }}{{> BoxedType}} _value{{field:nestedDepth}};
             {
             TList _list{{field:nestedDepth}} = oprot.readListBegin();
-            if (_list{{field:nestedDepth}}.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            {{^type:javaType}}_value{{field:nestedDepth}} = new Array{{> BoxedType}}(_list{{field:nestedDepth}}.size);{{/type:javaType}}{{!
+            {{^type:javaType}}_value{{field:nestedDepth}} = new Array{{> BoxedType}}(Math.max(0, _list{{field:nestedDepth}}.size));{{/type:javaType}}{{!
             }}{{#type:javaType}}_value{{field:nestedDepth}} = new {{type:javaType}}();{{/type:javaType}}{{!
             }}
-            for (int _i{{field:nestedDepth}} = 0; _i{{field:nestedDepth}} < _list{{field:nestedDepth}}.size; _i{{field:nestedDepth}}++) {
+            for (int _i{{field:nestedDepth}} = 0; (_list{{field:nestedDepth}}.size < 0) ? oprot.peekList() : (_i{{field:nestedDepth}} < _list{{field:nestedDepth}}.size); _i{{field:nestedDepth}}++) {
                 {{field:setIsNested}}
                 {{#type:listElemType}}
                 {{#type:isContainer?}}
@@ -85,13 +79,10 @@
             }}{{> BoxedType}} _value{{field:nestedDepth}};
             {
             TMap _map{{field:nestedDepth}} = oprot.readMapBegin();
-            if (_map{{field:nestedDepth}}.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            {{^type:javaType}}_value{{field:nestedDepth}} = new Hash{{> BoxedType}}(_map{{field:nestedDepth}}.size);{{/type:javaType}}{{!
+            {{^type:javaType}}_value{{field:nestedDepth}} = new Hash{{> BoxedType}}(Math.max(0, _map{{field:nestedDepth}}.size));{{/type:javaType}}{{!
             }}{{#type:javaType}}_value{{field:nestedDepth}} = new {{type:javaType}}();{{/type:javaType}}{{!
             }}
-            for (int _i{{field:nestedDepth}} = 0; _i{{field:nestedDepth}} < _map{{field:nestedDepth}}.size; _i{{field:nestedDepth}}++) {
+            for (int _i{{field:nestedDepth}} = 0; (_map{{field:nestedDepth}}.size < 0) ? oprot.peekMap() : (_i{{field:nestedDepth}} < _map{{field:nestedDepth}}.size); _i{{field:nestedDepth}}++) {
                 {{field:setIsNested}}
                 {{#type:keyType}}
                 {{#type:isContainer?}}

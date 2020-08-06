@@ -228,14 +228,10 @@ public final class TypeRemapped {
             it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
             lsMap = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
-            for (int _i = 0; _i < _map.size; _i++) {
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 long _key1 = oprot.readI64();
-
                 String _value1 = oprot.readString();
                 lsMap.put(_key1, _value1);
             }
@@ -251,22 +247,15 @@ public final class TypeRemapped {
             it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
             ioMap = new it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap>();
-            for (int _i = 0; _i < _map.size; _i++) {
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 int _key1 = oprot.readI32();
-
                 it.unimi.dsi.fastutil.ints.Int2LongArrayMap _value1;
             {
             TMap _map1 = oprot.readMapBegin();
-            if (_map1.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
             _value1 = new it.unimi.dsi.fastutil.ints.Int2LongArrayMap();
-            for (int _i1 = 0; _i1 < _map1.size; _i1++) {
+            for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                 
                 
                 int _key2 = oprot.readI32();

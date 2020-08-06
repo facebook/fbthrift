@@ -253,11 +253,8 @@ public final class SomeStruct {
             Set<Integer> tags;
             {
             TSet _set = oprot.readSetBegin();
-            if (_set.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            tags = new HashSet<Integer>(_set.size);
-            for (int _i = 0; _i < _set.size; _i++) {
+            tags = new HashSet<Integer>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 
                 int _value1 = oprot.readI32();
                 tags.add(_value1);

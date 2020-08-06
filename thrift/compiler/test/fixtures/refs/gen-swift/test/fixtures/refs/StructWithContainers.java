@@ -292,11 +292,8 @@ public final class StructWithContainers {
             List<Integer> listRef;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            listRef = new ArrayList<Integer>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            listRef = new ArrayList<Integer>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 int _value1 = oprot.readI32();
                 listRef.add(_value1);
@@ -313,11 +310,8 @@ public final class StructWithContainers {
             Set<Integer> setRef;
             {
             TSet _set = oprot.readSetBegin();
-            if (_set.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            setRef = new HashSet<Integer>(_set.size);
-            for (int _i = 0; _i < _set.size; _i++) {
+            setRef = new HashSet<Integer>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 
                 int _value1 = oprot.readI32();
                 setRef.add(_value1);
@@ -334,14 +328,10 @@ public final class StructWithContainers {
             Map<Integer, Integer> mapRef;
             {
             TMap _map = oprot.readMapBegin();
-            if (_map.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            mapRef = new HashMap<Integer, Integer>(_map.size);
-            for (int _i = 0; _i < _map.size; _i++) {
+            mapRef = new HashMap<Integer, Integer>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 
                 int _key1 = oprot.readI32();
-
                 int _value1 = oprot.readI32();
                 mapRef.put(_key1, _value1);
             }
@@ -357,11 +347,8 @@ public final class StructWithContainers {
             List<Integer> listRefUnique;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            listRefUnique = new ArrayList<Integer>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            listRefUnique = new ArrayList<Integer>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 int _value1 = oprot.readI32();
                 listRefUnique.add(_value1);
@@ -378,11 +365,8 @@ public final class StructWithContainers {
             Set<Integer> setRefShared;
             {
             TSet _set = oprot.readSetBegin();
-            if (_set.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            setRefShared = new HashSet<Integer>(_set.size);
-            for (int _i = 0; _i < _set.size; _i++) {
+            setRefShared = new HashSet<Integer>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 
                 int _value1 = oprot.readI32();
                 setRefShared.add(_value1);
@@ -399,11 +383,8 @@ public final class StructWithContainers {
             List<Integer> listRefSharedConst;
             {
             TList _list = oprot.readListBegin();
-            if (_list.size < 0) {
-                throw new TException("Using an unsupported Map, size is less than zero.");
-            }
-            listRefSharedConst = new ArrayList<Integer>(_list.size);
-            for (int _i = 0; _i < _list.size; _i++) {
+            listRefSharedConst = new ArrayList<Integer>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 
                 int _value1 = oprot.readI32();
                 listRefSharedConst.add(_value1);
