@@ -10,19 +10,13 @@ class module_CONSTANTS {
    * Original thrift constant:-
    * i32 myInt
    */
-  <<__Memoize>>
-  public static function myInt(): int{
-    return 1337;
-  }
+  const int myInt = 1337;
 
   /**
    * Original thrift constant:-
    * string name
    */
-  <<__Memoize>>
-  public static function name(): string{
-    return "Mark Zuckerberg";
-  }
+  const string name = "Mark Zuckerberg";
 
   /**
    * Original thrift constant:-
@@ -47,46 +41,31 @@ class module_CONSTANTS {
    * Original thrift constant:-
    * double x
    */
-  <<__Memoize>>
-  public static function x(): float{
-    return 1.0;
-  }
+  const float x = 1.0;
 
   /**
    * Original thrift constant:-
    * double y
    */
-  <<__Memoize>>
-  public static function y(): float{
-    return 1000000.0;
-  }
+  const float y = 1000000.0;
 
   /**
    * Original thrift constant:-
    * double z
    */
-  <<__Memoize>>
-  public static function z(): float{
-    return 1e+09;
-  }
+  const float z = 1e+09;
 
   /**
    * Original thrift constant:-
    * double zeroDoubleValue
    */
-  <<__Memoize>>
-  public static function zeroDoubleValue(): float{
-    return 0.0;
-  }
+  const float zeroDoubleValue = 0.0;
 
   /**
    * Original thrift constant:-
    * double longDoubleValue
    */
-  <<__Memoize>>
-  public static function longDoubleValue(): float{
-    return 2.59961e-05;
-  }
+  const float longDoubleValue = 2.59961e-05;
 
   /**
    * Original thrift constant:-
@@ -537,46 +516,31 @@ class module_CONSTANTS {
    * Original thrift constant:-
    * string apostrophe
    */
-  <<__Memoize>>
-  public static function apostrophe(): string{
-    return "'";
-  }
+  const string apostrophe = "'";
 
   /**
    * Original thrift constant:-
    * string tripleApostrophe
    */
-  <<__Memoize>>
-  public static function tripleApostrophe(): string{
-    return "'''";
-  }
+  const string tripleApostrophe = "'''";
 
   /**
    * Original thrift constant:-
    * string quotationMark
    */
-  <<__Memoize>>
-  public static function quotationMark(): string{
-    return "\"";
-  }
+  const string quotationMark = "\"";
 
   /**
    * Original thrift constant:-
    * string backslash
    */
-  <<__Memoize>>
-  public static function backslash(): string{
-    return "\\";
-  }
+  const string backslash = "\\";
 
   /**
    * Original thrift constant:-
    * string escaped_a
    */
-  <<__Memoize>>
-  public static function escaped_a(): string{
-    return "\x61";
-  }
+  const string escaped_a = "\x61";
 
   /**
    * Original thrift constant:-
@@ -622,73 +586,49 @@ class module_CONSTANTS {
    * Original thrift constant:-
    * bool false_c
    */
-  <<__Memoize>>
-  public static function false_c(): bool{
-    return false;
-  }
+  const bool false_c = false;
 
   /**
    * Original thrift constant:-
    * bool true_c
    */
-  <<__Memoize>>
-  public static function true_c(): bool{
-    return true;
-  }
+  const bool true_c = true;
 
   /**
    * Original thrift constant:-
    * byte zero_byte
    */
-  <<__Memoize>>
-  public static function zero_byte(): int{
-    return 0;
-  }
+  const int zero_byte = 0;
 
   /**
    * Original thrift constant:-
    * i16 zero16
    */
-  <<__Memoize>>
-  public static function zero16(): int{
-    return 0;
-  }
+  const int zero16 = 0;
 
   /**
    * Original thrift constant:-
    * i32 zero32
    */
-  <<__Memoize>>
-  public static function zero32(): int{
-    return 0;
-  }
+  const int zero32 = 0;
 
   /**
    * Original thrift constant:-
    * i64 zero64
    */
-  <<__Memoize>>
-  public static function zero64(): int{
-    return 0;
-  }
+  const int zero64 = 0;
 
   /**
    * Original thrift constant:-
    * double zero_dot_zero
    */
-  <<__Memoize>>
-  public static function zero_dot_zero(): float{
-    return 0.0;
-  }
+  const float zero_dot_zero = 0.0;
 
   /**
    * Original thrift constant:-
    * string empty_string
    */
-  <<__Memoize>>
-  public static function empty_string(): string{
-    return "";
-  }
+  const string empty_string = "";
 
   /**
    * Original thrift constant:-

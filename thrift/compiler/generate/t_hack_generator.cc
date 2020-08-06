@@ -1120,14 +1120,23 @@ void t_hack_generator::generate_const(t_const* tconst) {
   generate_php_docstring(f_consts_, tconst);
   if (lazy_constants_) {
     f_consts_ << indent();
-    f_consts_ << "<<__Memoize>>\n"
-              << indent() << "public static function " << name
-              << "(): " << type_to_typehint(type, false, false, true) << "{\n";
-    indent_up();
-    f_consts_ << indent() << "return ";
+    // for base hack types, use const (guarantees optimization in hphp)
+    if (type->is_base_type()) {
+      f_consts_ << "const " << type_to_typehint(type) << " " << name << " = ";
+      // cannot use const for objects (incl arrays). use static
+    } else {
+      f_consts_ << "<<__Memoize>>\n"
+                << indent() << "public static function " << name
+                << "(): " << type_to_typehint(type, false, false, true)
+                << "{\n";
+      indent_up();
+      f_consts_ << indent() << "return ";
+    }
     f_consts_ << render_const_value(type, value, true) << ";\n";
-    indent_down();
-    f_consts_ << indent() << "}\n";
+    if (!type->is_base_type()) {
+      indent_down();
+      f_consts_ << indent() << "}\n";
+    }
     f_consts_ << "\n";
   } else {
     // for base php types, use const (guarantees optimization in hphp)
