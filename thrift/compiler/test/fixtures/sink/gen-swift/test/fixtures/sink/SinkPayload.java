@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="SinkPayload", builder=SinkPayload.Builder.class)
 public final class SinkPayload {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public SinkPayload(
         @ThriftField(value=1, name="content", requiredness=Requiredness.NONE) final String content

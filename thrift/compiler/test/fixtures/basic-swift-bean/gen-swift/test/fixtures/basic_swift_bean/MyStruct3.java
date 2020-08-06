@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct("MyStruct3")
 public final class MyStruct3 {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public MyStruct3() {
       this.myInt16 = (short)42;
@@ -226,7 +226,7 @@ public final class MyStruct3 {
     private static final TField MY_SET_FIELD_DESC = new TField("mySet", TType.SET, (short)7);
     private test.fixtures.basic_swift_bean.MyDataItem myDataItem;
     public static final int _MYDATAITEM = 8;
-    private static final TField MY_DATA_ITEM_FIELD_DESC = new TField("myDataItem", TType.STRUCT, (short)8);
+    private static final TField MY_DATA_ITEM_FIELD_DESC = new TField("MyDataItem", TType.STRUCT, (short)8);
     private List<test.fixtures.basic_swift_bean.MyDataItem> myList;
     public static final int _MYLIST = 9;
     private static final TField MY_LIST_FIELD_DESC = new TField("myList", TType.LIST, (short)9);

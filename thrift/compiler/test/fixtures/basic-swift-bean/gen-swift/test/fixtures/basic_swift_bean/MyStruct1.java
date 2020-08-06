@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="MyStruct1", builder=MyStruct1.Builder.class)
 public final class MyStruct1 {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public MyStruct1(
         @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
@@ -115,13 +115,13 @@ public final class MyStruct1 {
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct1");
     private final long myIntField;
     public static final int _MYINTFIELD = 1;
-    private static final TField MY_INT_FIELD_FIELD_DESC = new TField("myIntField", TType.I64, (short)1);
+    private static final TField MY_INT_FIELD_FIELD_DESC = new TField("MyIntField", TType.I64, (short)1);
         private final String myStringField;
     public static final int _MYSTRINGFIELD = 2;
-    private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("myStringField", TType.STRING, (short)2);
+    private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("MyStringField", TType.STRING, (short)2);
         private final test.fixtures.basic_swift_bean.MyDataItem myDataField;
     public static final int _MYDATAFIELD = 3;
-    private static final TField MY_DATA_FIELD_FIELD_DESC = new TField("myDataField", TType.STRUCT, (short)3);
+    private static final TField MY_DATA_FIELD_FIELD_DESC = new TField("MyDataField", TType.STRUCT, (short)3);
         private final long major;
     public static final int _MAJOR = 4;
     private static final TField MAJOR_FIELD_DESC = new TField("major", TType.I64, (short)4);

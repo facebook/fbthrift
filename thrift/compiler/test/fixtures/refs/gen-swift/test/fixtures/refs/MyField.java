@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="MyField", builder=MyField.Builder.class)
 public final class MyField {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public MyField(
         @ThriftField(value=1, name="opt_value", requiredness=Requiredness.OPTIONAL) final Long optValue,
@@ -101,13 +101,13 @@ public final class MyField {
     private static final TStruct STRUCT_DESC = new TStruct("MyField");
     private final Long optValue;
     public static final int _OPT_VALUE = 1;
-    private static final TField OPT_VALUE_FIELD_DESC = new TField("optValue", TType.I64, (short)1);
+    private static final TField OPT_VALUE_FIELD_DESC = new TField("opt_value", TType.I64, (short)1);
         private final long value;
     public static final int _VALUE = 2;
     private static final TField VALUE_FIELD_DESC = new TField("value", TType.I64, (short)2);
         private final long reqValue;
     public static final int _REQ_VALUE = 3;
-    private static final TField REQ_VALUE_FIELD_DESC = new TField("reqValue", TType.I64, (short)3);
+    private static final TField REQ_VALUE_FIELD_DESC = new TField("req_value", TType.I64, (short)3);
     static {
       NAMES_TO_IDS.put("optValue", 1);
       FIELD_METADATA.put(1, OPT_VALUE_FIELD_DESC);

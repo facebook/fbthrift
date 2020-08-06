@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="MyStructNestedAnnotation", builder=MyStructNestedAnnotation.Builder.class)
 public final class MyStructNestedAnnotation {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public MyStructNestedAnnotation(
         @ThriftField(value=1, name="name", requiredness=Requiredness.NONE) final String name

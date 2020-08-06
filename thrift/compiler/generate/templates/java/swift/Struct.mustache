@@ -44,7 +44,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 {{/struct:asBean?}}
 public final class {{struct:javaCapitalName}} {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     {{> struct/ThriftConstructor}}
 
     {{> struct/StructBuilder}}
@@ -58,7 +58,7 @@ public final class {{struct:javaCapitalName}} {
     private {{> FieldType}} {{field:javaName}};
     public static final int _{{field:javaAllCapsName}} = {{field:key}};
     private static final TField {{field:javaTFieldName}} = {{#field:isSupportedApacheType?}}{{!
-    }}new TField("{{field:javaName}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});{{/field:isSupportedApacheType?}}{{!
+    }}new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});{{/field:isSupportedApacheType?}}{{!
     }}{{^field:isSupportedApacheType?}}null;{{/field:isSupportedApacheType?}}
     {{/struct:asBean?}}{{!
 
@@ -66,7 +66,7 @@ public final class {{struct:javaCapitalName}} {
     {{#field:javaAnnotations?}}{{field:javaAnnotations}} {{/field:javaAnnotations?}}private {{^struct:isBigStruct?}}final {{/struct:isBigStruct?}}{{> FieldType}} {{field:javaName}};
     public static final int _{{field:javaAllCapsName}} = {{field:key}};
     private static final TField {{field:javaTFieldName}} = {{#field:isSupportedApacheType?}}{{!
-    }}new TField("{{field:javaName}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});{{/field:isSupportedApacheType?}}{{!
+    }}new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});{{/field:isSupportedApacheType?}}{{!
     }}{{^field:isSupportedApacheType?}}null;{{/field:isSupportedApacheType?}}
     {{/struct:asBean?}}{{!
 

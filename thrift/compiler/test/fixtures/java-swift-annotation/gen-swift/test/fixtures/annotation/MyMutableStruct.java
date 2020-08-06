@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct("MyMutableStruct") @com.foo.Enabled 
 public final class MyMutableStruct {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public MyMutableStruct() {
       this.intField = 0L;

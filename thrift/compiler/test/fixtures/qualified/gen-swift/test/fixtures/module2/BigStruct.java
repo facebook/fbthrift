@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="BigStruct", builder=BigStruct.Builder.class)
 public final class BigStruct {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public BigStruct(
         @ThriftField(value=1, name="s", requiredness=Requiredness.NONE) final test.fixtures.module2.Struct s,

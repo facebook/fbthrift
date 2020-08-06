@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="StructWithUnion", builder=StructWithUnion.Builder.class)
 public final class StructWithUnion {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public StructWithUnion(
         @ThriftField(value=1, name="u", requiredness=Requiredness.NONE) final test.fixtures.refs.MyUnion u,

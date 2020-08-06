@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="ComplexNestedStruct", builder=ComplexNestedStruct.Builder.class)
 public final class ComplexNestedStruct {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public ComplexNestedStruct(
         @ThriftField(value=1, name="setOfSetOfInt", requiredness=Requiredness.NONE) final Set<Set<Integer>> setOfSetOfInt,
@@ -350,7 +350,7 @@ public final class ComplexNestedStruct {
     private static final TField MAP_KEY_SET_VAL_MAP_FIELD_DESC = new TField("mapKeySetValMap", TType.MAP, (short)13);
         private final Map<Map<Map<Integer, String>, String>, Map<Integer, String>> nestedMaps;
     public static final int _NESTEDMAPS = 14;
-    private static final TField NESTED_MAPS_FIELD_DESC = new TField("nestedMaps", TType.MAP, (short)14);
+    private static final TField NESTED_MAPS_FIELD_DESC = new TField("NestedMaps", TType.MAP, (short)14);
         private final Map<Integer, List<test.fixtures.complex_struct.MyStruct>> mapKeyIntValList;
     public static final int _MAPKEYINTVALLIST = 15;
     private static final TField MAP_KEY_INT_VAL_LIST_FIELD_DESC = new TField("mapKeyIntValList", TType.MAP, (short)15);

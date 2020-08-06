@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="StructWithContainers", builder=StructWithContainers.Builder.class)
 public final class StructWithContainers {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public StructWithContainers(
         @ThriftField(value=1, name="list_ref", requiredness=Requiredness.NONE) final List<Integer> listRef,
@@ -143,22 +143,22 @@ public final class StructWithContainers {
     private static final TStruct STRUCT_DESC = new TStruct("StructWithContainers");
     private final List<Integer> listRef;
     public static final int _LIST_REF = 1;
-    private static final TField LIST_REF_FIELD_DESC = new TField("listRef", TType.LIST, (short)1);
+    private static final TField LIST_REF_FIELD_DESC = new TField("list_ref", TType.LIST, (short)1);
         private final Set<Integer> setRef;
     public static final int _SET_REF = 2;
-    private static final TField SET_REF_FIELD_DESC = new TField("setRef", TType.SET, (short)2);
+    private static final TField SET_REF_FIELD_DESC = new TField("set_ref", TType.SET, (short)2);
         private final Map<Integer, Integer> mapRef;
     public static final int _MAP_REF = 3;
-    private static final TField MAP_REF_FIELD_DESC = new TField("mapRef", TType.MAP, (short)3);
+    private static final TField MAP_REF_FIELD_DESC = new TField("map_ref", TType.MAP, (short)3);
         private final List<Integer> listRefUnique;
     public static final int _LIST_REF_UNIQUE = 4;
-    private static final TField LIST_REF_UNIQUE_FIELD_DESC = new TField("listRefUnique", TType.LIST, (short)4);
+    private static final TField LIST_REF_UNIQUE_FIELD_DESC = new TField("list_ref_unique", TType.LIST, (short)4);
         private final Set<Integer> setRefShared;
     public static final int _SET_REF_SHARED = 5;
-    private static final TField SET_REF_SHARED_FIELD_DESC = new TField("setRefShared", TType.SET, (short)5);
+    private static final TField SET_REF_SHARED_FIELD_DESC = new TField("set_ref_shared", TType.SET, (short)5);
         private final List<Integer> listRefSharedConst;
     public static final int _LIST_REF_SHARED_CONST = 6;
-    private static final TField LIST_REF_SHARED_CONST_FIELD_DESC = new TField("listRefSharedConst", TType.LIST, (short)6);
+    private static final TField LIST_REF_SHARED_CONST_FIELD_DESC = new TField("list_ref_shared_const", TType.LIST, (short)6);
     static {
       NAMES_TO_IDS.put("listRef", 1);
       FIELD_METADATA.put(1, LIST_REF_FIELD_DESC);

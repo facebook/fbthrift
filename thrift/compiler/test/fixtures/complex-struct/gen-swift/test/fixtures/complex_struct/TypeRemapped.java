@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="TypeRemapped", builder=TypeRemapped.Builder.class)
 public final class TypeRemapped {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public TypeRemapped(
         @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE) final it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap,
@@ -121,7 +121,7 @@ public final class TypeRemapped {
     private static final TField IO_MAP_FIELD_DESC = new TField("ioMap", TType.MAP, (short)2);
         private final java.math.BigInteger bigInteger;
     public static final int _BIGINTEGER = 3;
-    private static final TField BIG_INTEGER_FIELD_DESC = new TField("bigInteger", TType.I32, (short)3);
+    private static final TField BIG_INTEGER_FIELD_DESC = new TField("BigInteger", TType.I32, (short)3);
         private final java.nio.ByteBuffer binaryTestBuffer;
     public static final int _BINARYTESTBUFFER = 4;
     private static final TField BINARY_TEST_BUFFER_FIELD_DESC = new TField("binaryTestBuffer", TType.STRING, (short)4);

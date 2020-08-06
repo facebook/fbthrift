@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="NonCopyableStruct", builder=NonCopyableStruct.Builder.class)
 public final class NonCopyableStruct {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public NonCopyableStruct(
         @ThriftField(value=1, name="num", requiredness=Requiredness.NONE) final long num

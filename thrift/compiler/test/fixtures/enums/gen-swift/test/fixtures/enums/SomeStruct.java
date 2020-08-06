@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="SomeStruct", builder=SomeStruct.Builder.class)
 public final class SomeStruct {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public SomeStruct(
         @ThriftField(value=1, name="reasonable", requiredness=Requiredness.NONE) final test.fixtures.enums.Metasyntactic reasonable,

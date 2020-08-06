@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="Color", builder=Color.Builder.class)
 public final class Color {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public Color(
         @ThriftField(value=1, name="red", requiredness=Requiredness.NONE) final double red,

@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="CompatibleWithKeywordSink", builder=CompatibleWithKeywordSink.Builder.class)
 public final class CompatibleWithKeywordSink {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public CompatibleWithKeywordSink(
         @ThriftField(value=1, name="sink", requiredness=Requiredness.NONE) final String sink

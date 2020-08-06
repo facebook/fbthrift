@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
 public final class MyStruct {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public MyStruct(
         @ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE) final test.fixtures.swift.enumstrict.MyEnum myEnum,

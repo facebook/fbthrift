@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="StructWithSharedConst", builder=StructWithSharedConst.Builder.class)
 public final class StructWithSharedConst {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public StructWithSharedConst(
         @ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL) final test.fixtures.refs.MyField optSharedConst,
@@ -101,13 +101,13 @@ public final class StructWithSharedConst {
     private static final TStruct STRUCT_DESC = new TStruct("StructWithSharedConst");
     private final test.fixtures.refs.MyField optSharedConst;
     public static final int _OPT_SHARED_CONST = 1;
-    private static final TField OPT_SHARED_CONST_FIELD_DESC = new TField("optSharedConst", TType.STRUCT, (short)1);
+    private static final TField OPT_SHARED_CONST_FIELD_DESC = new TField("opt_shared_const", TType.STRUCT, (short)1);
         private final test.fixtures.refs.MyField sharedConst;
     public static final int _SHARED_CONST = 2;
-    private static final TField SHARED_CONST_FIELD_DESC = new TField("sharedConst", TType.STRUCT, (short)2);
+    private static final TField SHARED_CONST_FIELD_DESC = new TField("shared_const", TType.STRUCT, (short)2);
         private final test.fixtures.refs.MyField reqSharedConst;
     public static final int _REQ_SHARED_CONST = 3;
-    private static final TField REQ_SHARED_CONST_FIELD_DESC = new TField("reqSharedConst", TType.STRUCT, (short)3);
+    private static final TField REQ_SHARED_CONST_FIELD_DESC = new TField("req_shared_const", TType.STRUCT, (short)3);
     static {
       NAMES_TO_IDS.put("optSharedConst", 1);
       FIELD_METADATA.put(1, OPT_SHARED_CONST_FIELD_DESC);

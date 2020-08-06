@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="RecursiveStruct", builder=RecursiveStruct.Builder.class)
 public final class RecursiveStruct {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public RecursiveStruct(
         @ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, isRecursive=Recursiveness.TRUE) final List<test.fixtures.refs.RecursiveStruct> mes

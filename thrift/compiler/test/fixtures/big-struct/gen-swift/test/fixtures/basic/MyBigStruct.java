@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="MyBigStruct", builder=MyBigStruct.Builder.class)
 public final class MyBigStruct {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     protected MyBigStruct() {
       this.msg1 = null;

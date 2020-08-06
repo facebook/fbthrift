@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="MyStructAnnotation", builder=MyStructAnnotation.Builder.class)
 public final class MyStructAnnotation {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public MyStructAnnotation(
         @ThriftField(value=1, name="count", requiredness=Requiredness.NONE) final long count,

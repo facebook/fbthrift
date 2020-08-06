@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="MyMapping", builder=MyMapping.Builder.class)
 public final class MyMapping {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public MyMapping(
         @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE) final com.foo.FastLongStringMap lsMap,

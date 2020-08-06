@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="SecretStruct", builder=SecretStruct.Builder.class)
 public final class SecretStruct {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public SecretStruct(
         @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,

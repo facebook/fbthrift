@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class) @com.foo.Enabled @com.bar.AnotherAnnotation(val = 1) 
 public final class MyStruct {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public MyStruct(
         @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE) final long intField,
@@ -141,7 +141,7 @@ public final class MyStruct {
     private static final TField DETAIL_MAP_FIELD_DESC = new TField("detailMap", TType.MAP, (short)4);
         private final String toto;
     public static final int _TITI = 5;
-    private static final TField TITI_FIELD_DESC = new TField("toto", TType.STRING, (short)5);
+    private static final TField TITI_FIELD_DESC = new TField("titi", TType.STRING, (short)5);
     static {
       NAMES_TO_IDS.put("intField", 1);
       FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);

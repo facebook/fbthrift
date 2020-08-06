@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="MyStructFloatFieldThrowExp", builder=MyStructFloatFieldThrowExp.Builder.class)
 public final class MyStructFloatFieldThrowExp {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public MyStructFloatFieldThrowExp(
         @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE) final long myLongField,
@@ -118,7 +118,7 @@ public final class MyStructFloatFieldThrowExp {
     private static final TField MY_LONG_FIELD_FIELD_DESC = new TField("myLongField", TType.I64, (short)1);
         private final byte myByteField;
     public static final int _MYBYTEFIELD = 2;
-    private static final TField MY_BYTE_FIELD_FIELD_DESC = new TField("myByteField", TType.BYTE, (short)2);
+    private static final TField MY_BYTE_FIELD_FIELD_DESC = new TField("MyByteField", TType.BYTE, (short)2);
         private final String myStringField;
     public static final int _MYSTRINGFIELD = 3;
     private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("myStringField", TType.STRING, (short)3);

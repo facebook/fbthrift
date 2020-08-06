@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="defaultStruct", builder=DefaultStruct.Builder.class)
 public final class DefaultStruct {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public DefaultStruct(
         @ThriftField(value=1, name="myLongDFset", requiredness=Requiredness.NONE) final long myLongDFset,

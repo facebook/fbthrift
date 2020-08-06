@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
 public final class MyStruct {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public MyStruct(
         @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
@@ -451,31 +451,31 @@ public final class MyStruct {
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final long myIntField;
     public static final int _MYINTFIELD = 1;
-    private static final TField MY_INT_FIELD_FIELD_DESC = new TField("myIntField", TType.I64, (short)1);
+    private static final TField MY_INT_FIELD_FIELD_DESC = new TField("MyIntField", TType.I64, (short)1);
         private final String myStringField;
     public static final int _MYSTRINGFIELD = 2;
-    private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("myStringField", TType.STRING, (short)2);
+    private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("MyStringField", TType.STRING, (short)2);
         private final test.fixtures.complex_struct.MyDataItem myDataField;
     public static final int _MYDATAFIELD = 3;
-    private static final TField MY_DATA_FIELD_FIELD_DESC = new TField("myDataField", TType.STRUCT, (short)3);
+    private static final TField MY_DATA_FIELD_FIELD_DESC = new TField("MyDataField", TType.STRUCT, (short)3);
         private final test.fixtures.complex_struct.MyEnum myEnum;
     public static final int _MYENUM = 4;
     private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)4);
         private final boolean myBoolField;
     public static final int _MYBOOLFIELD = 5;
-    private static final TField MY_BOOL_FIELD_FIELD_DESC = new TField("myBoolField", TType.BOOL, (short)5);
+    private static final TField MY_BOOL_FIELD_FIELD_DESC = new TField("MyBoolField", TType.BOOL, (short)5);
         private final byte myByteField;
     public static final int _MYBYTEFIELD = 6;
-    private static final TField MY_BYTE_FIELD_FIELD_DESC = new TField("myByteField", TType.BYTE, (short)6);
+    private static final TField MY_BYTE_FIELD_FIELD_DESC = new TField("MyByteField", TType.BYTE, (short)6);
         private final short myShortField;
     public static final int _MYSHORTFIELD = 7;
-    private static final TField MY_SHORT_FIELD_FIELD_DESC = new TField("myShortField", TType.I16, (short)7);
+    private static final TField MY_SHORT_FIELD_FIELD_DESC = new TField("MyShortField", TType.I16, (short)7);
         private final long myLongField;
     public static final int _MYLONGFIELD = 8;
-    private static final TField MY_LONG_FIELD_FIELD_DESC = new TField("myLongField", TType.I64, (short)8);
+    private static final TField MY_LONG_FIELD_FIELD_DESC = new TField("MyLongField", TType.I64, (short)8);
         private final double myDoubleField;
     public static final int _MYDOUBLEFIELD = 9;
-    private static final TField MY_DOUBLE_FIELD_FIELD_DESC = new TField("myDoubleField", TType.DOUBLE, (short)9);
+    private static final TField MY_DOUBLE_FIELD_FIELD_DESC = new TField("MyDoubleField", TType.DOUBLE, (short)9);
         private final List<Double> lDouble;
     public static final int _LDOUBLE = 10;
     private static final TField L_DOUBLE_FIELD_DESC = new TField("lDouble", TType.LIST, (short)10);

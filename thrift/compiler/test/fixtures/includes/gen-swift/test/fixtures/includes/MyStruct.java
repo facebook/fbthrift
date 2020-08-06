@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
 public final class MyStruct {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public MyStruct(
         @ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included myIncludedField,
@@ -101,13 +101,13 @@ public final class MyStruct {
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final test.fixtures.includes.includes.Included myIncludedField;
     public static final int _MYINCLUDEDFIELD = 1;
-    private static final TField MY_INCLUDED_FIELD_FIELD_DESC = new TField("myIncludedField", TType.STRUCT, (short)1);
+    private static final TField MY_INCLUDED_FIELD_FIELD_DESC = new TField("MyIncludedField", TType.STRUCT, (short)1);
         private final test.fixtures.includes.includes.Included myOtherIncludedField;
     public static final int _MYOTHERINCLUDEDFIELD = 2;
-    private static final TField MY_OTHER_INCLUDED_FIELD_FIELD_DESC = new TField("myOtherIncludedField", TType.STRUCT, (short)2);
+    private static final TField MY_OTHER_INCLUDED_FIELD_FIELD_DESC = new TField("MyOtherIncludedField", TType.STRUCT, (short)2);
         private final long myIncludedInt;
     public static final int _MYINCLUDEDINT = 3;
-    private static final TField MY_INCLUDED_INT_FIELD_DESC = new TField("myIncludedInt", TType.I64, (short)3);
+    private static final TField MY_INCLUDED_INT_FIELD_DESC = new TField("MyIncludedInt", TType.I64, (short)3);
     static {
       NAMES_TO_IDS.put("myIncludedField", 1);
       FIELD_METADATA.put(1, MY_INCLUDED_FIELD_FIELD_DESC);

@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="FinalResponse", builder=FinalResponse.Builder.class)
 public final class FinalResponse {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public FinalResponse(
         @ThriftField(value=1, name="content", requiredness=Requiredness.NONE) final String content

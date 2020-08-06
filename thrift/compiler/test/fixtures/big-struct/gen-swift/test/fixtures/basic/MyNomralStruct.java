@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="MyNomralStruct", builder=MyNomralStruct.Builder.class)
 public final class MyNomralStruct {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public MyNomralStruct(
         @ThriftField(value=1, name="msg1", requiredness=Requiredness.NONE) final String msg1,

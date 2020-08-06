@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="Empty", builder=Empty.Builder.class)
 public final class Empty {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public Empty(
     ) {

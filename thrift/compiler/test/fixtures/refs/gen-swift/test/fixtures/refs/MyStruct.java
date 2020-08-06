@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
 public final class MyStruct {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public MyStruct(
         @ThriftField(value=1, name="opt_ref", requiredness=Requiredness.OPTIONAL) final test.fixtures.refs.MyField optRef,
@@ -101,13 +101,13 @@ public final class MyStruct {
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final test.fixtures.refs.MyField optRef;
     public static final int _OPT_REF = 1;
-    private static final TField OPT_REF_FIELD_DESC = new TField("optRef", TType.STRUCT, (short)1);
+    private static final TField OPT_REF_FIELD_DESC = new TField("opt_ref", TType.STRUCT, (short)1);
         private final test.fixtures.refs.MyField ref;
     public static final int _REF = 2;
     private static final TField REF_FIELD_DESC = new TField("ref", TType.STRUCT, (short)2);
         private final test.fixtures.refs.MyField reqRef;
     public static final int _REQ_REF = 3;
-    private static final TField REQ_REF_FIELD_DESC = new TField("reqRef", TType.STRUCT, (short)3);
+    private static final TField REQ_REF_FIELD_DESC = new TField("req_ref", TType.STRUCT, (short)3);
     static {
       NAMES_TO_IDS.put("optRef", 1);
       FIELD_METADATA.put(1, OPT_REF_FIELD_DESC);

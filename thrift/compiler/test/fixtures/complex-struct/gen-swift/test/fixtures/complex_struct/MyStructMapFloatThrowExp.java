@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="MyStructMapFloatThrowExp", builder=MyStructMapFloatThrowExp.Builder.class)
 public final class MyStructMapFloatThrowExp {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public MyStructMapFloatThrowExp(
         @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE) final long myLongField,

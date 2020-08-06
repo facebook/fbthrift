@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="struct4", builder=Struct4.Builder.class)
 public final class Struct4 {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public Struct4(
         @ThriftField(value=1, name="a", requiredness=Requiredness.NONE) final int a,

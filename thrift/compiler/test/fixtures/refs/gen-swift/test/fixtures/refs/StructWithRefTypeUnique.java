@@ -27,7 +27,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @ThriftStruct(value="StructWithRefTypeUnique", builder=StructWithRefTypeUnique.Builder.class)
 public final class StructWithRefTypeUnique {
     private BitSet __isset_bit_vector = new BitSet();
-    
+
     @ThriftConstructor
     public StructWithRefTypeUnique(
         @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE) final test.fixtures.refs.Empty defField,
@@ -101,13 +101,13 @@ public final class StructWithRefTypeUnique {
     private static final TStruct STRUCT_DESC = new TStruct("StructWithRefTypeUnique");
     private final test.fixtures.refs.Empty defField;
     public static final int _DEF_FIELD = 1;
-    private static final TField DEF_FIELD_FIELD_DESC = new TField("defField", TType.STRUCT, (short)1);
+    private static final TField DEF_FIELD_FIELD_DESC = new TField("def_field", TType.STRUCT, (short)1);
         private final test.fixtures.refs.Empty optField;
     public static final int _OPT_FIELD = 2;
-    private static final TField OPT_FIELD_FIELD_DESC = new TField("optField", TType.STRUCT, (short)2);
+    private static final TField OPT_FIELD_FIELD_DESC = new TField("opt_field", TType.STRUCT, (short)2);
         private final test.fixtures.refs.Empty reqField;
     public static final int _REQ_FIELD = 3;
-    private static final TField REQ_FIELD_FIELD_DESC = new TField("reqField", TType.STRUCT, (short)3);
+    private static final TField REQ_FIELD_FIELD_DESC = new TField("req_field", TType.STRUCT, (short)3);
     static {
       NAMES_TO_IDS.put("defField", 1);
       FIELD_METADATA.put(1, DEF_FIELD_FIELD_DESC);
