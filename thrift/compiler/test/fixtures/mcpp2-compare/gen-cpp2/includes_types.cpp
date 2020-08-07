@@ -194,3 +194,63 @@ template uint32_t AStructB::serializedSize<>(apache::thrift::SimpleJSONProtocolW
 template uint32_t AStructB::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // a::different::ns
+
+namespace a { namespace different { namespace ns {
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        AStruct,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::integral
+          >,
+        ::folly::tag_t<void
+          , int32_t
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        AStruct,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::integral
+          >,
+        ::folly::tag_t<void
+          , int32_t
+          >>,
+    "inconsistent use of nimble option");
+
+
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        AStructB,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::structure
+          >,
+        ::folly::tag_t<void
+          ,  ::a::different::ns::AStruct
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        AStructB,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::structure
+          >,
+        ::folly::tag_t<void
+          ,  ::a::different::ns::AStruct
+          >>,
+    "inconsistent use of nimble option");
+
+}}} // a::different::ns

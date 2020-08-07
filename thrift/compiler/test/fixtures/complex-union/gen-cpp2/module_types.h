@@ -142,6 +142,14 @@ typedef ::std::map<int16_t, ::std::string> containerTypedef;
 // END hash_and_equal_to
 namespace cpp2 {
 class ComplexUnion final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = ComplexUnion;
   enum Type : int {
@@ -607,6 +615,14 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class ListUnion final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = ListUnion;
   enum Type : int {
@@ -854,6 +870,14 @@ uint32_t ListUnion::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class DataUnion final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = DataUnion;
   enum Type : int {
@@ -1101,6 +1125,14 @@ uint32_t DataUnion::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class Val final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = Val;
 
@@ -1288,6 +1320,14 @@ uint32_t Val::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class ValUnion final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = ValUnion;
   enum Type : int {
@@ -1535,6 +1575,14 @@ uint32_t ValUnion::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class VirtualComplexUnion  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = VirtualComplexUnion;
   enum Type : int {
@@ -1783,6 +1831,14 @@ uint32_t VirtualComplexUnion::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class NonCopyableStruct final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = NonCopyableStruct;
 
@@ -1887,6 +1943,14 @@ uint32_t NonCopyableStruct::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class NonCopyableUnion final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = NonCopyableUnion;
   enum Type : int {

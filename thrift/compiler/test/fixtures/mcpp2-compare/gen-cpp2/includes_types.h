@@ -103,6 +103,14 @@ typedef int64_t IncludedInt64;
 // END hash_and_equal_to
 namespace a { namespace different { namespace ns {
 class AStruct final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = signed;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = AStruct;
 
@@ -212,6 +220,14 @@ uint32_t AStruct::read(Protocol_* iprot) {
 }}} // a::different::ns
 namespace a { namespace different { namespace ns {
 class AStructB final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = signed;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = AStructB;
 

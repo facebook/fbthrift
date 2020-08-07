@@ -38,6 +38,19 @@ enum FragileConstructor {
 namespace detail {
 namespace st {
 
+//  struct_private_access
+//
+//  Thrift structures have private members but it may be necessary for the
+//  Thrift support library to access those private members.
+struct struct_private_access {
+  template <typename T>
+  using __fbthrift_cpp2_gen_json = //
+      typename T::__fbthrift_cpp2_gen_json;
+  template <typename T>
+  using __fbthrift_cpp2_gen_nimble = //
+      typename T::__fbthrift_cpp2_gen_nimble;
+};
+
 template <typename T, typename = void>
 struct IsThriftClass : std::false_type {};
 

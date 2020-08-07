@@ -130,6 +130,14 @@ class ModuleB;
 // END hash_and_equal_to
 namespace some { namespace ns {
 class ModuleA final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = ModuleA;
 
@@ -428,6 +436,14 @@ uint32_t ModuleA::read(Protocol_* iprot) {
 }} // some::ns
 namespace some { namespace ns {
 class ModuleB final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = ModuleB;
 

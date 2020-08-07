@@ -357,3 +357,133 @@ template uint32_t Foo::serializedSize<>(apache::thrift::CompactProtocolWriter co
 template uint32_t Foo::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
+
+namespace cpp2 {
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        Mixin1,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::string
+          >,
+        ::folly::tag_t<void
+          , ::std::string
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        Mixin1,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::string
+          >,
+        ::folly::tag_t<void
+          , ::std::string
+          >>,
+    "inconsistent use of nimble option");
+
+
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        Mixin2,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::structure
+          , ::apache::thrift::type_class::string
+          >,
+        ::folly::tag_t<void
+          ,  ::cpp2::Mixin1
+          , ::std::string
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        Mixin2,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::structure
+          , ::apache::thrift::type_class::string
+          >,
+        ::folly::tag_t<void
+          ,  ::cpp2::Mixin1
+          , ::std::string
+          >>,
+    "inconsistent use of nimble option");
+
+
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        Mixin3Base,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::string
+          >,
+        ::folly::tag_t<void
+          , ::std::string
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        Mixin3Base,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::string
+          >,
+        ::folly::tag_t<void
+          , ::std::string
+          >>,
+    "inconsistent use of nimble option");
+
+
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        Foo,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::string
+          , ::apache::thrift::type_class::structure
+          , ::apache::thrift::type_class::structure
+          >,
+        ::folly::tag_t<void
+          , ::std::string
+          ,  ::cpp2::Mixin2
+          ,  ::cpp2::Mixin3
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        Foo,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::string
+          , ::apache::thrift::type_class::structure
+          , ::apache::thrift::type_class::structure
+          >,
+        ::folly::tag_t<void
+          , ::std::string
+          ,  ::cpp2::Mixin2
+          ,  ::cpp2::Mixin3
+          >>,
+    "inconsistent use of nimble option");
+
+} // cpp2

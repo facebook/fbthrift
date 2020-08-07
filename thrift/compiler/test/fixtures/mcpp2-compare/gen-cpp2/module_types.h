@@ -1132,6 +1132,14 @@ template<> struct equal_to<typename ::some::valid::ns::AnnotatedStruct> {
 // END hash_and_equal_to
 namespace some { namespace valid { namespace ns {
 class Empty final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = signed;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = Empty;
 
@@ -1197,6 +1205,14 @@ uint32_t Empty::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 class ASimpleStruct final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = signed;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = ASimpleStruct;
 
@@ -1306,6 +1322,14 @@ uint32_t ASimpleStruct::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 class ASimpleStructNoexcept final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = signed;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = ASimpleStructNoexcept;
 
@@ -1417,6 +1441,14 @@ uint32_t ASimpleStructNoexcept::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 class MyStruct final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = signed;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = MyStruct;
 
@@ -1841,6 +1873,14 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 class SimpleUnion  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = signed;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = SimpleUnion;
   enum Type : int {
@@ -2075,6 +2115,14 @@ uint32_t SimpleUnion::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 class ComplexUnion final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = signed;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = ComplexUnion;
   enum Type : int {
@@ -3654,6 +3702,14 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 class AnException final : public apache::thrift::TException {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = signed;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = AnException;
 
@@ -4273,6 +4329,14 @@ uint32_t AnException::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 class AnotherException : public apache::thrift::TException {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = signed;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = AnotherException;
 
@@ -4462,6 +4526,14 @@ uint32_t AnotherException::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 class containerStruct final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = signed;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = containerStruct;
 
@@ -6198,6 +6270,14 @@ uint32_t containerStruct::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 class MyIncludedStruct final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = signed;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = MyIncludedStruct;
 
@@ -6384,6 +6464,14 @@ uint32_t MyIncludedStruct::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 class AnnotatedStruct  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = signed;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = AnnotatedStruct;
 
@@ -7507,6 +7595,14 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 class ComplexContainerStruct final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = signed;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = ComplexContainerStruct;
 
@@ -7650,6 +7746,14 @@ uint32_t ComplexContainerStruct::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 class FloatStruct final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = signed;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = FloatStruct;
 
@@ -7797,6 +7901,14 @@ uint32_t FloatStruct::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 class FloatUnion final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = signed;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = FloatUnion;
   enum Type : int {
@@ -8016,6 +8128,14 @@ uint32_t FloatUnion::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 class AllRequiredNoExceptMoveCtrStruct final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = signed;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = AllRequiredNoExceptMoveCtrStruct;
 

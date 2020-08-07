@@ -199,3 +199,38 @@ template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWrit
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}} // test::fixtures::enumstrict
+
+namespace test { namespace fixtures { namespace enumstrict {
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        MyStruct,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::enumeration
+          , ::apache::thrift::type_class::enumeration
+          >,
+        ::folly::tag_t<void
+          ,  ::test::fixtures::enumstrict::MyEnum
+          ,  ::test::fixtures::enumstrict::MyBigEnum
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        MyStruct,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::enumeration
+          , ::apache::thrift::type_class::enumeration
+          >,
+        ::folly::tag_t<void
+          ,  ::test::fixtures::enumstrict::MyEnum
+          ,  ::test::fixtures::enumstrict::MyBigEnum
+          >>,
+    "inconsistent use of nimble option");
+
+}}} // test::fixtures::enumstrict

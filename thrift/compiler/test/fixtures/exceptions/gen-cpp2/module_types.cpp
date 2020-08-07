@@ -199,3 +199,88 @@ template uint32_t Serious::serializedSize<>(apache::thrift::CompactProtocolWrite
 template uint32_t Serious::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
+
+namespace cpp2 {
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        Banal,
+        ::folly::tag_t<void
+          >,
+        ::folly::tag_t<void
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        Banal,
+        ::folly::tag_t<void
+          >,
+        ::folly::tag_t<void
+          >>,
+    "inconsistent use of nimble option");
+
+
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        Fiery,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::string
+          >,
+        ::folly::tag_t<void
+          , ::std::string
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        Fiery,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::string
+          >,
+        ::folly::tag_t<void
+          , ::std::string
+          >>,
+    "inconsistent use of nimble option");
+
+
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        Serious,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::string
+          >,
+        ::folly::tag_t<void
+          , ::std::string
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        Serious,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::string
+          >,
+        ::folly::tag_t<void
+          , ::std::string
+          >>,
+    "inconsistent use of nimble option");
+
+} // cpp2

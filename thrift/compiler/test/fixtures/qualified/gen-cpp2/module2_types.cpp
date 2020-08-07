@@ -203,3 +203,71 @@ template uint32_t BigStruct::serializedSize<>(apache::thrift::CompactProtocolWri
 template uint32_t BigStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // module2
+
+namespace module2 {
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        Struct,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::structure
+          , ::apache::thrift::type_class::structure
+          >,
+        ::folly::tag_t<void
+          ,  ::module0::Struct
+          ,  ::module1::Struct
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        Struct,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::structure
+          , ::apache::thrift::type_class::structure
+          >,
+        ::folly::tag_t<void
+          ,  ::module0::Struct
+          ,  ::module1::Struct
+          >>,
+    "inconsistent use of nimble option");
+
+
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        BigStruct,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::structure
+          , ::apache::thrift::type_class::integral
+          >,
+        ::folly::tag_t<void
+          ,  ::module2::Struct
+          , int32_t
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        BigStruct,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::structure
+          , ::apache::thrift::type_class::integral
+          >,
+        ::folly::tag_t<void
+          ,  ::module2::Struct
+          , int32_t
+          >>,
+    "inconsistent use of nimble option");
+
+} // module2

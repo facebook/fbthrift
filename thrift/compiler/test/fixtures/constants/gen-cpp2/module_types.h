@@ -286,6 +286,14 @@ typedef ::std::map<::std::string, ::std::string> MyMapIdentifier;
 // END hash_and_equal_to
 namespace cpp2 {
 class Internship final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = Internship;
 
@@ -473,6 +481,14 @@ uint32_t Internship::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class Range final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = Range;
 
@@ -603,6 +619,14 @@ uint32_t Range::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class struct1 final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = struct1;
 
@@ -755,6 +779,14 @@ uint32_t struct1::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class struct2 final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = struct2;
 
@@ -978,6 +1010,14 @@ uint32_t struct2::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class struct3 final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = struct3;
 
@@ -1165,6 +1205,14 @@ uint32_t struct3::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class struct4 final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = struct4;
 
@@ -1360,6 +1408,14 @@ uint32_t struct4::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class union1 final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = union1;
   enum Type : int {
@@ -1579,6 +1635,14 @@ uint32_t union1::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class union2 final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = union2;
   enum Type : int {

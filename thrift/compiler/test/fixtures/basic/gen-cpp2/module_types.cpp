@@ -342,3 +342,108 @@ template uint32_t MyUnion::serializedSize<>(apache::thrift::CompactProtocolWrite
 template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
+
+namespace cpp2 {
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        MyDataItem,
+        ::folly::tag_t<void
+          >,
+        ::folly::tag_t<void
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        MyDataItem,
+        ::folly::tag_t<void
+          >,
+        ::folly::tag_t<void
+          >>,
+    "inconsistent use of nimble option");
+
+
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        MyStruct,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::integral
+          , ::apache::thrift::type_class::string
+          , ::apache::thrift::type_class::structure
+          , ::apache::thrift::type_class::enumeration
+          >,
+        ::folly::tag_t<void
+          , int64_t
+          , ::std::string
+          ,  ::cpp2::MyDataItem
+          ,  ::cpp2::MyEnum
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        MyStruct,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::integral
+          , ::apache::thrift::type_class::string
+          , ::apache::thrift::type_class::structure
+          , ::apache::thrift::type_class::enumeration
+          >,
+        ::folly::tag_t<void
+          , int64_t
+          , ::std::string
+          ,  ::cpp2::MyDataItem
+          ,  ::cpp2::MyEnum
+          >>,
+    "inconsistent use of nimble option");
+
+
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        MyUnion,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::enumeration
+          , ::apache::thrift::type_class::structure
+          , ::apache::thrift::type_class::structure
+          >,
+        ::folly::tag_t<void
+          ,  ::cpp2::MyEnum
+          ,  ::cpp2::MyStruct
+          ,  ::cpp2::MyDataItem
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        MyUnion,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::enumeration
+          , ::apache::thrift::type_class::structure
+          , ::apache::thrift::type_class::structure
+          >,
+        ::folly::tag_t<void
+          ,  ::cpp2::MyEnum
+          ,  ::cpp2::MyStruct
+          ,  ::cpp2::MyDataItem
+          >>,
+    "inconsistent use of nimble option");
+
+} // cpp2

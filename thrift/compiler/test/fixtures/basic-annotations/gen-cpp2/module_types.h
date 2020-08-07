@@ -157,6 +157,14 @@ class SecretStruct;
 // END hash_and_equal_to
 namespace cpp2 {
 class MyStructNestedAnnotation final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = MyStructNestedAnnotation;
 
@@ -270,6 +278,14 @@ uint32_t MyStructNestedAnnotation::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class MyStructAnnotation final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = MyStructAnnotation;
 
@@ -500,6 +516,14 @@ uint32_t MyStructAnnotation::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class MyStruct final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = MyStruct;
 
@@ -822,6 +846,14 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class SecretStruct final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = SecretStruct;
 

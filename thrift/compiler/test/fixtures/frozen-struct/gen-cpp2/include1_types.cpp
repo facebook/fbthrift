@@ -100,3 +100,38 @@ template uint32_t IncludedA::serializedSize<>(apache::thrift::CompactProtocolWri
 template uint32_t IncludedA::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // some::ns
+
+namespace some { namespace ns {
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        IncludedA,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::integral
+          , ::apache::thrift::type_class::string
+          >,
+        ::folly::tag_t<void
+          , int32_t
+          , ::std::string
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        IncludedA,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::integral
+          , ::apache::thrift::type_class::string
+          >,
+        ::folly::tag_t<void
+          , int32_t
+          , ::std::string
+          >>,
+    "inconsistent use of nimble option");
+
+}} // some::ns

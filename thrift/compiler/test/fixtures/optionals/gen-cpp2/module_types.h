@@ -189,6 +189,14 @@ typedef int64_t PersonID;
 // END hash_and_equal_to
 namespace cpp2 {
 class Color final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = Color;
 
@@ -412,6 +420,14 @@ uint32_t Color::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class Vehicle final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = Vehicle;
 
@@ -694,6 +710,14 @@ uint32_t Vehicle::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class Person final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = Person;
 

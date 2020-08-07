@@ -270,6 +270,14 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor;
 // END hash_and_equal_to
 namespace cpp2 {
 class MyUnion final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = MyUnion;
   enum Type : int {
@@ -503,6 +511,14 @@ uint32_t MyUnion::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class MyField final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = MyField;
 
@@ -686,6 +702,14 @@ uint32_t MyField::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class MyStruct final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = MyStruct;
 
@@ -793,6 +817,14 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class StructWithUnion final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = StructWithUnion;
 
@@ -950,6 +982,14 @@ uint32_t StructWithUnion::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class RecursiveStruct final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = RecursiveStruct;
 
@@ -1058,6 +1098,14 @@ uint32_t RecursiveStruct::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class StructWithContainers final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = StructWithContainers;
 
@@ -1206,6 +1254,14 @@ uint32_t StructWithContainers::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class StructWithSharedConst final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = StructWithSharedConst;
 
@@ -1315,6 +1371,14 @@ uint32_t StructWithSharedConst::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class Empty final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = Empty;
 
@@ -1381,6 +1445,14 @@ uint32_t Empty::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class StructWithRef final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = StructWithRef;
 
@@ -1488,6 +1560,14 @@ uint32_t StructWithRef::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class StructWithRefTypeUnique final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = StructWithRefTypeUnique;
 
@@ -1595,6 +1675,14 @@ uint32_t StructWithRefTypeUnique::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class StructWithRefTypeShared final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = StructWithRefTypeShared;
 
@@ -1704,6 +1792,14 @@ uint32_t StructWithRefTypeShared::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class StructWithRefTypeSharedConst final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = StructWithRefTypeSharedConst;
 
@@ -1813,6 +1909,14 @@ uint32_t StructWithRefTypeSharedConst::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class StructWithRefAndAnnotCppNoexceptMoveCtor final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = StructWithRefAndAnnotCppNoexceptMoveCtor;
 

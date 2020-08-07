@@ -125,6 +125,14 @@ class MyUnion;
 // END hash_and_equal_to
 namespace cpp2 {
 class MyDataItem final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = MyDataItem;
 
@@ -191,6 +199,14 @@ uint32_t MyDataItem::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class MyStruct final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = MyStruct;
 
@@ -416,6 +432,14 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class MyUnion final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = MyUnion;
   enum Type : int {

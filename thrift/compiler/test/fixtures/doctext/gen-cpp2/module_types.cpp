@@ -119,3 +119,34 @@ template uint32_t A::serializedSize<>(apache::thrift::CompactProtocolWriter cons
 template uint32_t A::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
+
+namespace cpp2 {
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        A,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::integral
+          >,
+        ::folly::tag_t<void
+          , int32_t
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        A,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::integral
+          >,
+        ::folly::tag_t<void
+          , int32_t
+          >>,
+    "inconsistent use of nimble option");
+
+} // cpp2

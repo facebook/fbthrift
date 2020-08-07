@@ -78,6 +78,14 @@ class SinkException2;
 // END hash_and_equal_to
 namespace cpp2 {
 class InitialResponse final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = InitialResponse;
 
@@ -191,6 +199,14 @@ uint32_t InitialResponse::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class FinalResponse final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = FinalResponse;
 
@@ -304,6 +320,14 @@ uint32_t FinalResponse::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class SinkPayload final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = SinkPayload;
 
@@ -417,6 +441,14 @@ uint32_t SinkPayload::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class CompatibleWithKeywordSink final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = CompatibleWithKeywordSink;
 
@@ -530,6 +562,14 @@ uint32_t CompatibleWithKeywordSink::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class InitialException final : public apache::thrift::TException {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = InitialException;
 
@@ -647,6 +687,14 @@ uint32_t InitialException::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class SinkException1 final : public apache::thrift::TException {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = SinkException1;
 
@@ -764,6 +812,14 @@ uint32_t SinkException1::read(Protocol_* iprot) {
 } // cpp2
 namespace cpp2 {
 class SinkException2 final : public apache::thrift::TException {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = SinkException2;
 

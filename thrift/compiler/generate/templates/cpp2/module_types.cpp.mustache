@@ -99,3 +99,45 @@ template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::NimbleProt
 
 <% > module_types_cpp/frozen%>
 <%/program:structs%>
+
+<% > common/namespace_cpp2_begin%>
+<%#program:structs%>
+
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        <%struct:name%>,
+        ::folly::tag_t<void
+<%#struct:fields%>
+          , <%#field:type%><%type:fatal_type_class%><%/field:type%>
+<%/struct:fields%>
+          >,
+        ::folly::tag_t<void
+<%#struct:fields%>
+          , <%#field:type%><% > types/type%><%/field:type%>
+<%/struct:fields%>
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        <%struct:name%>,
+        ::folly::tag_t<void
+<%#struct:fields%>
+          , <%#field:type%><%type:fatal_type_class%><%/field:type%>
+<%/struct:fields%>
+          >,
+        ::folly::tag_t<void
+<%#struct:fields%>
+          , <%#field:type%><% > types/type%><%/field:type%>
+<%/struct:fields%>
+          >>,
+    "inconsistent use of nimble option");
+
+<%/program:structs%>
+<% > common/namespace_cpp2_end%>

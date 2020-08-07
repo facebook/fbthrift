@@ -196,6 +196,13 @@ FOLLY_ERASE constexpr S make_constant(
   return s;
 }
 
+namespace st {
+
+struct gen_check_get_json;
+struct gen_check_get_nimble;
+
+} // namespace st
+
 } // namespace detail
 } // namespace thrift
 } // namespace apache

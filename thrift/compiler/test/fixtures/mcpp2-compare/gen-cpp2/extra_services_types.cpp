@@ -367,3 +367,82 @@ template uint32_t containerStruct2::serializedSize<>(apache::thrift::SimpleJSONP
 template uint32_t containerStruct2::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }} // extra::svc
+
+namespace extra { namespace svc {
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        containerStruct2,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::integral
+          , ::apache::thrift::type_class::integral
+          , ::apache::thrift::type_class::integral
+          , ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>
+          , ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>
+          , ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>
+          , ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>
+          , ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>
+          , ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>
+          , ::apache::thrift::type_class::string
+          , ::apache::thrift::type_class::string
+          , ::apache::thrift::type_class::string
+          , ::apache::thrift::type_class::string
+          >,
+        ::folly::tag_t<void
+          , bool
+          , bool
+          , bool
+          , ::std::map<::std::string, bool>
+          , ::std::map<::std::string, bool>
+          , ::std::map<::std::string, bool>
+          , ::std::set<int32_t>
+          , ::std::set<int32_t>
+          , ::std::set<int32_t>
+          , ::std::string
+          , ::std::string
+          , ::std::string
+          , ::std::string
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        containerStruct2,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::integral
+          , ::apache::thrift::type_class::integral
+          , ::apache::thrift::type_class::integral
+          , ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>
+          , ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>
+          , ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>
+          , ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>
+          , ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>
+          , ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>
+          , ::apache::thrift::type_class::string
+          , ::apache::thrift::type_class::string
+          , ::apache::thrift::type_class::string
+          , ::apache::thrift::type_class::string
+          >,
+        ::folly::tag_t<void
+          , bool
+          , bool
+          , bool
+          , ::std::map<::std::string, bool>
+          , ::std::map<::std::string, bool>
+          , ::std::map<::std::string, bool>
+          , ::std::set<int32_t>
+          , ::std::set<int32_t>
+          , ::std::set<int32_t>
+          , ::std::string
+          , ::std::string
+          , ::std::string
+          , ::std::string
+          >>,
+    "inconsistent use of nimble option");
+
+}} // extra::svc
