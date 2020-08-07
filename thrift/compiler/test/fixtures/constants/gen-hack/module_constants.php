@@ -80,19 +80,13 @@ class module_CONSTANTS {
    * Original thrift constant:-
    * string foo
    */
-  <<__Memoize>>
-  public static function foo(): string{
-    return "foo";
-  }
+  const string foo = "foo";
 
   /**
    * Original thrift constant:-
    * i32 bar
    */
-  <<__Memoize>>
-  public static function bar(): int{
-    return 42;
-  }
+  const int bar = 42;
 
   /**
    * Original thrift constant:-

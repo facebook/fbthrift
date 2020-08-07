@@ -22,20 +22,17 @@ class module_CONSTANTS {
    * Original thrift constant:-
    * list<map<string, i32>> states
    */
-  <<__Memoize>>
-  public static function states(): vec<dict<string, int>>{
-    return vec[
-      dict[
-        "San Diego" => 3211000,
-        "Sacramento" => 479600,
-        "SF" => 837400,
-      ],
-      dict[
-        "New York" => 8406000,
-        "Albany" => 98400,
-      ],
-    ];
-  }
+  const vec<dict<string, int>> states = vec[
+    dict[
+      "San Diego" => 3211000,
+      "Sacramento" => 479600,
+      "SF" => 837400,
+    ],
+    dict[
+      "New York" => 8406000,
+      "Albany" => 98400,
+    ],
+  ];
 
   /**
    * Original thrift constant:-
@@ -150,15 +147,12 @@ class module_CONSTANTS {
    * Original thrift constant:-
    * map<string, i32> char2ascii
    */
-  <<__Memoize>>
-  public static function char2ascii(): dict<string, int>{
-    return dict[
-      "'" => 39,
-      "\"" => 34,
-      "\\" => 92,
-      "\x61" => 97,
-    ];
-  }
+  const dict<string, int> char2ascii = dict[
+    "'" => 39,
+    "\"" => 34,
+    "\\" => 92,
+    "\x61" => 97,
+  ];
 
 
   public static function getAllStructuredAnnotations(): dict<string, dict<string, \IThriftStruct>> {

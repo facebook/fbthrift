@@ -180,7 +180,7 @@ const struct3 pod_s_3 = struct3 {
   c = struct2 {
     a = 888,
     c = struct1 {
-      b = gaz
+      b = 'gaz'
     },
     d = [1, 2, 3]
   }

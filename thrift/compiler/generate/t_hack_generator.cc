@@ -539,6 +539,7 @@ class t_hack_generator : public t_oop_generator {
     }
   }
 
+  bool is_hack_const_type(t_type* type);
   /**
    * File streams
    */
@@ -1119,9 +1120,10 @@ void t_hack_generator::generate_const(t_const* tconst) {
   indent_up();
   generate_php_docstring(f_consts_, tconst);
   if (lazy_constants_) {
+    bool is_hack_const = is_hack_const_type(type);
     f_consts_ << indent();
     // for base hack types, use const (guarantees optimization in hphp)
-    if (type->is_base_type()) {
+    if (is_hack_const) {
       f_consts_ << "const " << type_to_typehint(type) << " " << name << " = ";
       // cannot use const for objects (incl arrays). use static
     } else {
@@ -1133,7 +1135,7 @@ void t_hack_generator::generate_const(t_const* tconst) {
       f_consts_ << indent() << "return ";
     }
     f_consts_ << render_const_value(type, value, true) << ";\n";
-    if (!type->is_base_type()) {
+    if (!is_hack_const) {
       indent_down();
       f_consts_ << indent() << "}\n";
     }
@@ -1167,6 +1169,23 @@ void t_hack_generator::generate_const(t_const* tconst) {
   }
 
   indent_down();
+}
+
+bool t_hack_generator::is_hack_const_type(t_type* type) {
+  type = type->get_true_type();
+  if (type->is_base_type()) {
+    return true;
+  } else if (arrays_ && type->is_container()) {
+    if (type->is_list()) {
+      return is_hack_const_type(((t_list*)type)->get_elem_type());
+    } else if (type->is_list()) {
+      return is_hack_const_type(((t_set*)type)->get_elem_type());
+    } else if (type->is_map()) {
+      return is_hack_const_type(((t_map*)type)->get_key_type()) &&
+          is_hack_const_type(((t_map*)type)->get_val_type());
+    }
+  }
+  return false;
 }
 
 std::string t_hack_generator::generate_array_typehint(
