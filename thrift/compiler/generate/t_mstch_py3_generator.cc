@@ -1270,6 +1270,46 @@ class no_reserved_key_in_namespace_validator : virtual public validator {
   }
 };
 
+/**
+ * Generator-specific validator that enforces "name" and "value" is not used as
+ * enum member or union field names (thrift-py3)
+ */
+class enum_member_union_field_names_validator : virtual public validator {
+ public:
+  using validator::visit;
+
+  bool visit(t_enum* enm) override {
+    for (const t_enum_value* ev : enm->get_enum_values()) {
+      validate(ev, ev->get_name());
+    }
+    return true;
+  }
+
+  bool visit(t_struct* s) override {
+    if (!s->is_union()) {
+      return false;
+    }
+    for (const t_field* f : s->get_members()) {
+      validate(f, f->get_name());
+    }
+    return true;
+  }
+
+ private:
+  void validate(const t_annotated* node, const std::string& name) {
+    const auto found = node->annotations_.find("py3.name");
+    const auto& pyname =
+        found == node->annotations_.end() ? name : found->second;
+    if (pyname == "name" || pyname == "value") {
+      std::ostringstream ss;
+      ss << "'" << pyname
+         << "' should not be used as an enum/union field name in thrift-py3. "
+         << "Use a different name or annotate the field with `(py3.name=\"<new_py_name>\")`";
+      add_error(node->get_lineno(), ss.str());
+    }
+  }
+};
+
 class t_mstch_py3_generator : public t_mstch_generator {
  public:
   enum class ModuleType {
@@ -1306,6 +1346,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
 
   void fill_validator_list(validator_list& vl) const override {
     vl.add<no_reserved_key_in_namespace_validator>();
+    vl.add<enum_member_union_field_names_validator>();
   }
 
  protected:

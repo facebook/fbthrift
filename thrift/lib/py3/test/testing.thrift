@@ -118,7 +118,7 @@ union Integers {
     3: i32 medium,
     4: i64 large,
     5: string unbounded,
-    6: string name,   # name is an invalid enum member name
+    6: string name (py3.name="name_"),
     7: Digits digits (cpp.ref="True"),
 }
 
