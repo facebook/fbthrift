@@ -277,6 +277,10 @@ where
         }
     }
 
+    pub fn into_inner(self) -> B {
+        self.buffer
+    }
+
     #[inline]
     fn write_varint_i64(&mut self, v: i64) {
         self.buffer.put_varint_i64(v)
@@ -781,12 +785,10 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
     }
 }
 
-/// Serialize a Thrift value using the compact protocol.
-pub fn serialize<T>(v: T) -> Bytes
+/// How large an item will be when `serialize()` is called
+pub fn serialize_size<T>(v: &T) -> usize
 where
-    T: Serialize<CompactProtocolSerializer<SizeCounter>>
-        + Serialize<CompactProtocolSerializer<BytesMut>>
-        + Copy,
+    T: Serialize<CompactProtocolSerializer<SizeCounter>>,
 {
     let mut sizer = CompactProtocolSerializer {
         state: EncState::new(),
@@ -795,18 +797,35 @@ where
         string_limit: None,
     };
     v.write(&mut sizer);
+    sizer.finish()
+}
 
-    let sz = sizer.finish();
-
+/// Serialize a Thrift value using the compact protocol to a pre-allocated buffer.
+/// This will panic if the buffer is not large enough. A buffer at least as
+/// large as the return value of `serialize_size` will not panic.
+pub fn serialize_to_buffer<T>(v: T, buffer: BytesMut) -> CompactProtocolSerializer<BytesMut>
+where
+    T: Serialize<CompactProtocolSerializer<BytesMut>>,
+{
     // Now that we have the size, allocate an output buffer and serialize into it
     let mut buf = CompactProtocolSerializer {
         state: EncState::new(),
-        buffer: BytesMut::with_capacity(sz),
+        buffer,
         container_limit: None,
         string_limit: None,
     };
     v.write(&mut buf);
+    buf
+}
 
+/// Serialize a Thrift value using the compact protocol.
+pub fn serialize<T>(v: T) -> Bytes
+where
+    T: Serialize<CompactProtocolSerializer<SizeCounter>>
+        + Serialize<CompactProtocolSerializer<BytesMut>>,
+{
+    let sz = serialize_size(&v);
+    let buf = serialize_to_buffer(v, BytesMut::with_capacity(sz));
     // Done
     buf.finish()
 }
