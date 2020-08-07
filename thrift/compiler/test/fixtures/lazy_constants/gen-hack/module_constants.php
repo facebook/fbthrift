@@ -23,18 +23,18 @@ class module_CONSTANTS {
    * list<map<string, i32>> states
    */
   <<__Memoize>>
-  public static function states(): ConstVector<ConstMap<string, int>>{
-    return ImmVector {
-      ImmMap {
+  public static function states(): vec<dict<string, int>>{
+    return vec[
+      dict[
         "San Diego" => 3211000,
         "Sacramento" => 479600,
         "SF" => 837400,
-      },
-      ImmMap {
+      ],
+      dict[
         "New York" => 8406000,
         "Albany" => 98400,
-      },
-    };
+      ],
+    ];
   }
 
   /**
@@ -75,8 +75,8 @@ class module_CONSTANTS {
    * list<struct module.Range> kRanges
    */
   <<__Memoize>>
-  public static function kRanges(): ConstVector<Range>{
-    return ImmVector {
+  public static function kRanges(): vec<Range>{
+    return vec[
       Range::fromShape(
         shape(
           "min" => 1,
@@ -89,7 +89,7 @@ class module_CONSTANTS {
           "max" => 6,
         )
       ),
-    };
+    ];
   }
 
   /**
@@ -97,8 +97,8 @@ class module_CONSTANTS {
    * list<struct module.Internship> internList
    */
   <<__Memoize>>
-  public static function internList(): ConstVector<Internship>{
-    return ImmVector {
+  public static function internList(): vec<Internship>{
+    return vec[
       Internship::fromShape(
         shape(
           "weeks" => 12,
@@ -113,7 +113,7 @@ class module_CONSTANTS {
           "employer" => Company::FACEBOOK,
         )
       ),
-    };
+    ];
   }
 
   /**
@@ -151,13 +151,13 @@ class module_CONSTANTS {
    * map<string, i32> char2ascii
    */
   <<__Memoize>>
-  public static function char2ascii(): ConstMap<string, int>{
-    return ImmMap {
+  public static function char2ascii(): dict<string, int>{
+    return dict[
       "'" => 39,
       "\"" => 34,
       "\\" => 92,
       "\x61" => 97,
-    };
+    ];
   }
 
 
