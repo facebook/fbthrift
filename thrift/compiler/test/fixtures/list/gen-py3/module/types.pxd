@@ -58,7 +58,7 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cmap[cint64_t,vector[string]]] move_shared "std::move"(shared_ptr[cmap[cint64_t,vector[string]]])
 cdef extern from "<utility>" nogil:
     pass  
-    shared_ptr[vector[string]] reference_shared_ptr_Map__i64_List__string "thrift::py3::reference_shared_ptr<std::vector<std::string>>"(...)
+    shared_ptr[vector[string]] reference_shared_ptr_Map__i64_List__string "::thrift::py3::reference_shared_ptr<std::vector<std::string>>"(...)
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::string>>"(shared_ptr[vector[string]])
     cdef shared_ptr[const cmap[cint64_t,vector[string]]] const_pointer_cast "std::const_pointer_cast<const std::map<int64_t,std::vector<std::string>>>"(shared_ptr[cmap[cint64_t,vector[string]]])

@@ -33,7 +33,7 @@ cdef extern from "":
     """
     void SetMetaClass(PyTypeObject* t, PyTypeObject* m)
 
-cdef extern from "thrift/lib/py3/types.h" namespace "thrift::py3" nogil:
+cdef extern from "thrift/lib/py3/types.h" namespace "::thrift::py3" nogil:
     shared_ptr[T] constant_shared_ptr[T](T)
     const T& default_inst[T]()
 

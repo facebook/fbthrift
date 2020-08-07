@@ -55,8 +55,8 @@ cdef extern from "gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
         cint64_t MyIncludedInt
         cMyStruct__isset __isset
 
-    cdef shared_ptr[_includes_types.cIncluded] reference_shared_ptr_MyIncludedField "thrift::py3::reference_shared_ptr<::cpp2::Included>"(shared_ptr[cMyStruct]&, _includes_types.cIncluded&)
-    cdef shared_ptr[_includes_types.cIncluded] reference_shared_ptr_MyOtherIncludedField "thrift::py3::reference_shared_ptr<::cpp2::Included>"(shared_ptr[cMyStruct]&, _includes_types.cIncluded&)
+    cdef shared_ptr[_includes_types.cIncluded] reference_shared_ptr_MyIncludedField "::thrift::py3::reference_shared_ptr<::cpp2::Included>"(shared_ptr[cMyStruct]&, _includes_types.cIncluded&)
+    cdef shared_ptr[_includes_types.cIncluded] reference_shared_ptr_MyOtherIncludedField "::thrift::py3::reference_shared_ptr<::cpp2::Included>"(shared_ptr[cMyStruct]&, _includes_types.cIncluded&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cMyStruct] move(unique_ptr[cMyStruct])

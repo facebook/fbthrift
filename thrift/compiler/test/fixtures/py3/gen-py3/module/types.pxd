@@ -194,11 +194,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
         cBinaryUnion u
         cBinaryUnionStruct__isset __isset
 
-    cdef shared_ptr[cSimpleStruct] reference_shared_ptr_structOne "thrift::py3::reference_shared_ptr<::py3::simple::SimpleStruct>"(shared_ptr[cComplexStruct]&, cSimpleStruct&)
-    cdef shared_ptr[cSimpleStruct] reference_shared_ptr_structTwo "thrift::py3::reference_shared_ptr<::py3::simple::SimpleStruct>"(shared_ptr[cComplexStruct]&, cSimpleStruct&)
-    cdef shared_ptr[foo_Bar] reference_shared_ptr_bytes_with_cpp_type "thrift::py3::reference_shared_ptr<foo::Bar>"(shared_ptr[cComplexStruct]&, foo_Bar&)
-    cdef shared_ptr[__iobuf.cIOBuf] reference_shared_ptr_iobuf_val "thrift::py3::reference_shared_ptr<folly::IOBuf>"(shared_ptr[cBinaryUnion]&, __iobuf.cIOBuf&)
-    cdef shared_ptr[cBinaryUnion] reference_shared_ptr_u "thrift::py3::reference_shared_ptr<::py3::simple::BinaryUnion>"(shared_ptr[cBinaryUnionStruct]&, cBinaryUnion&)
+    cdef shared_ptr[cSimpleStruct] reference_shared_ptr_structOne "::thrift::py3::reference_shared_ptr<::py3::simple::SimpleStruct>"(shared_ptr[cComplexStruct]&, cSimpleStruct&)
+    cdef shared_ptr[cSimpleStruct] reference_shared_ptr_structTwo "::thrift::py3::reference_shared_ptr<::py3::simple::SimpleStruct>"(shared_ptr[cComplexStruct]&, cSimpleStruct&)
+    cdef shared_ptr[foo_Bar] reference_shared_ptr_bytes_with_cpp_type "::thrift::py3::reference_shared_ptr<foo::Bar>"(shared_ptr[cComplexStruct]&, foo_Bar&)
+    cdef shared_ptr[__iobuf.cIOBuf] reference_shared_ptr_iobuf_val "::thrift::py3::reference_shared_ptr<folly::IOBuf>"(shared_ptr[cBinaryUnion]&, __iobuf.cIOBuf&)
+    cdef shared_ptr[cBinaryUnion] reference_shared_ptr_u "::thrift::py3::reference_shared_ptr<::py3::simple::BinaryUnion>"(shared_ptr[cBinaryUnionStruct]&, cBinaryUnion&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cSimpleException] move(unique_ptr[cSimpleException])
@@ -563,16 +563,16 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cset[string]] move_shared "std::move"(shared_ptr[cset[string]])
 cdef extern from "<utility>" nogil:
     pass  
-    shared_ptr[cSimpleStruct] reference_shared_ptr_List__SimpleStruct "thrift::py3::reference_shared_ptr<::py3::simple::SimpleStruct>"(...)
-    shared_ptr[cSimpleStruct] reference_shared_ptr_Map__string_SimpleStruct "thrift::py3::reference_shared_ptr<::py3::simple::SimpleStruct>"(...)
-    shared_ptr[vector[cint32_t]] reference_shared_ptr_List__List__i32 "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(...)
-    shared_ptr[cmap[string,cint32_t]] reference_shared_ptr_Map__string_Map__string_i32 "thrift::py3::reference_shared_ptr<std::map<std::string,int32_t>>"(...)
-    shared_ptr[cset[string]] reference_shared_ptr_List__Set__string "thrift::py3::reference_shared_ptr<std::set<std::string>>"(...)
-    shared_ptr[vector[cSimpleStruct]] reference_shared_ptr_Map__string_List__SimpleStruct "thrift::py3::reference_shared_ptr<std::vector<::py3::simple::SimpleStruct>>"(...)
-    shared_ptr[vector[string]] reference_shared_ptr_List__List__string "thrift::py3::reference_shared_ptr<std::vector<std::string>>"(...)
-    shared_ptr[cset[cint32_t]] reference_shared_ptr_List__Set__i32 "thrift::py3::reference_shared_ptr<std::set<int32_t>>"(...)
-    shared_ptr[cmap[string,string]] reference_shared_ptr_List__Map__string_string "thrift::py3::reference_shared_ptr<std::map<std::string,std::string>>"(...)
-    shared_ptr[cmap[cint32_t,double]] reference_shared_ptr_List__Map__i32_double "thrift::py3::reference_shared_ptr<std::map<int32_t,double>>"(...)
+    shared_ptr[cSimpleStruct] reference_shared_ptr_List__SimpleStruct "::thrift::py3::reference_shared_ptr<::py3::simple::SimpleStruct>"(...)
+    shared_ptr[cSimpleStruct] reference_shared_ptr_Map__string_SimpleStruct "::thrift::py3::reference_shared_ptr<::py3::simple::SimpleStruct>"(...)
+    shared_ptr[vector[cint32_t]] reference_shared_ptr_List__List__i32 "::thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(...)
+    shared_ptr[cmap[string,cint32_t]] reference_shared_ptr_Map__string_Map__string_i32 "::thrift::py3::reference_shared_ptr<std::map<std::string,int32_t>>"(...)
+    shared_ptr[cset[string]] reference_shared_ptr_List__Set__string "::thrift::py3::reference_shared_ptr<std::set<std::string>>"(...)
+    shared_ptr[vector[cSimpleStruct]] reference_shared_ptr_Map__string_List__SimpleStruct "::thrift::py3::reference_shared_ptr<std::vector<::py3::simple::SimpleStruct>>"(...)
+    shared_ptr[vector[string]] reference_shared_ptr_List__List__string "::thrift::py3::reference_shared_ptr<std::vector<std::string>>"(...)
+    shared_ptr[cset[cint32_t]] reference_shared_ptr_List__Set__i32 "::thrift::py3::reference_shared_ptr<std::set<int32_t>>"(...)
+    shared_ptr[cmap[string,string]] reference_shared_ptr_List__Map__string_string "::thrift::py3::reference_shared_ptr<std::map<std::string,std::string>>"(...)
+    shared_ptr[cmap[cint32_t,double]] reference_shared_ptr_List__Map__i32_double "::thrift::py3::reference_shared_ptr<std::map<int32_t,double>>"(...)
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[cAnEnum]] const_pointer_cast "std::const_pointer_cast<const std::vector<::py3::simple::AnEnum>>"(shared_ptr[vector[cAnEnum]])
     cdef shared_ptr[const vector[vector[cint32_t]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<int32_t>>>"(shared_ptr[vector[vector[cint32_t]]])

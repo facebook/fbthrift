@@ -151,13 +151,13 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types_custo
 }}{{#program:structs}}{{#struct:fields}}{{#field:reference?}}{{^field:iobuf_ref?}}{{#field:type}}
     cdef shared_ptr[{{> types/CythonCppType}}] {{!
     }}reference_shared_ptr_{{field:py_name}} {{!
-    }}"thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"({{!
+    }}"::thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"({{!
     }}shared_ptr[c{{struct:name}}]&, {{> types/CythonCppType}}&)
 {{/field:type}}{{/field:iobuf_ref?}}{{/field:reference?}}
 {{^field:reference?}}{{#field:type}}{{^type:simple?}}
     cdef shared_ptr[{{> types/CythonCppType}}] {{!
     }}reference_shared_ptr_{{field:py_name}} {{!
-    }}"thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"({{!
+    }}"::thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"({{!
     }}shared_ptr[c{{struct:name}}]&, {{> types/CythonCppType}}&)
 {{/type:simple?}}{{/field:type}}{{/field:reference?}}
 {{/struct:fields}}{{/program:structs}}
@@ -252,7 +252,7 @@ cdef extern from "<utility>" nogil:
 {{#type:listElemType}}
 {{^type:simple?}}
     shared_ptr[{{> types/CythonCppType}}] reference_shared_ptr_{{containerType:flat_name}} {{!
-    }}"thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"(...)
+    }}"::thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"(...)
 {{/type:simple?}}
 {{/type:listElemType}}
 {{/type:list?}}
@@ -260,7 +260,7 @@ cdef extern from "<utility>" nogil:
 {{#type:setElemType}}
 {{^type:simple?}}
     shared_ptr[{{> types/CythonCppType}}] reference_shared_ptr_{{containerType:flat_name}} {{!
-    }}"thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"(...)
+    }}"::thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"(...)
 {{/type:simple?}}
 {{/type:setElemType}}
 {{/type:set?}}
@@ -268,13 +268,13 @@ cdef extern from "<utility>" nogil:
 {{#type:keyType}}
 {{^type:simple?}}
     shared_ptr[{{> types/CythonCppType}}] reference_shared_ptr_{{containerType:flat_name}}_key {{!
-    }}"thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"(...)
+    }}"::thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"(...)
 {{/type:simple?}}
 {{/type:keyType}}
 {{#type:valueType}}
 {{^type:simple?}}
     shared_ptr[{{> types/CythonCppType}}] reference_shared_ptr_{{containerType:flat_name}} {{!
-    }}"thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"(...)
+    }}"::thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"(...)
 {{/type:simple?}}
 {{/type:valueType}}
 {{/type:map?}}{{!

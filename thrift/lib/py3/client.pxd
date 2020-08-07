@@ -48,9 +48,9 @@ cdef extern from "thrift/lib/cpp/transport/THeader.h":
         THRIFT_UNKNOWN_CLIENT_TYPE,
         THRIFT_UNFRAMED_COMPACT_DEPRECATED
 
-cdef extern from "thrift/lib/py3/client.h" namespace "thrift::py3":
+cdef extern from "thrift/lib/py3/client.h" namespace "::thrift::py3":
     # The custome deleter is hard, so instead make cython treat it as class
-    cdef cppclass cRequestChannel_ptr "thrift::py3::RequestChannel_ptr":
+    cdef cppclass cRequestChannel_ptr "::thrift::py3::RequestChannel_ptr":
         pass
 
     cdef cFollyFuture[cRequestChannel_ptr] createThriftChannelTCP(
@@ -75,8 +75,8 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef cRequestChannel_ptr move(cRequestChannel_ptr)
     cdef string move_string "std::move"(string)
 
-cdef extern from "thrift/lib/py3/client_wrapper.h" namespace "thrift::py3":
-    cdef cppclass cClientWrapper "thrift::py3::ClientWrapper":
+cdef extern from "thrift/lib/py3/client_wrapper.h" namespace "::thrift::py3":
+    cdef cppclass cClientWrapper "::thrift::py3::ClientWrapper":
         void setPersistentHeader(const string& key, const string& value)
         void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 

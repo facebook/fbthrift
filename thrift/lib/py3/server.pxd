@@ -24,7 +24,7 @@ from cpython.ref cimport PyObject
 from thrift.py3.common cimport cPriority, Priority_to_cpp, Headers
 from thrift.py3.std_libcpp cimport milliseconds
 
-cdef extern from "thrift/lib/py3/server.h" namespace "thrift::py3":
+cdef extern from "thrift/lib/py3/server.h" namespace "::thrift::py3":
     cdef cppclass cfollySocketAddress "folly::SocketAddress":
         uint16_t getPort()
         bint isFamilyInet()

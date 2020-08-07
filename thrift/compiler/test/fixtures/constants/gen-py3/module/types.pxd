@@ -249,11 +249,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         const cunion1& get_u() const
         cunion1& set_u(const cunion1&)
 
-    cdef shared_ptr[cstruct1] reference_shared_ptr_c "thrift::py3::reference_shared_ptr<::cpp2::struct1>"(shared_ptr[cstruct2]&, cstruct1&)
-    cdef shared_ptr[vector[cint32_t]] reference_shared_ptr_d "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cstruct2]&, vector[cint32_t]&)
-    cdef shared_ptr[cstruct2] reference_shared_ptr_c "thrift::py3::reference_shared_ptr<::cpp2::struct2>"(shared_ptr[cstruct3]&, cstruct2&)
-    cdef shared_ptr[cstruct1] reference_shared_ptr_s "thrift::py3::reference_shared_ptr<::cpp2::struct1>"(shared_ptr[cunion2]&, cstruct1&)
-    cdef shared_ptr[cunion1] reference_shared_ptr_u "thrift::py3::reference_shared_ptr<::cpp2::union1>"(shared_ptr[cunion2]&, cunion1&)
+    cdef shared_ptr[cstruct1] reference_shared_ptr_c "::thrift::py3::reference_shared_ptr<::cpp2::struct1>"(shared_ptr[cstruct2]&, cstruct1&)
+    cdef shared_ptr[vector[cint32_t]] reference_shared_ptr_d "::thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cstruct2]&, vector[cint32_t]&)
+    cdef shared_ptr[cstruct2] reference_shared_ptr_c "::thrift::py3::reference_shared_ptr<::cpp2::struct2>"(shared_ptr[cstruct3]&, cstruct2&)
+    cdef shared_ptr[cstruct1] reference_shared_ptr_s "::thrift::py3::reference_shared_ptr<::cpp2::struct1>"(shared_ptr[cunion2]&, cstruct1&)
+    cdef shared_ptr[cunion1] reference_shared_ptr_u "::thrift::py3::reference_shared_ptr<::cpp2::union1>"(shared_ptr[cunion2]&, cunion1&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cInternship] move(unique_ptr[cInternship])
@@ -560,9 +560,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cset[string]] move_shared "std::move"(shared_ptr[cset[string]])
 cdef extern from "<utility>" nogil:
     pass  
-    shared_ptr[cmap[string,cint32_t]] reference_shared_ptr_List__Map__string_i32 "thrift::py3::reference_shared_ptr<std::map<std::string,int32_t>>"(...)
-    shared_ptr[cRange] reference_shared_ptr_List__Range "thrift::py3::reference_shared_ptr<::cpp2::Range>"(...)
-    shared_ptr[cInternship] reference_shared_ptr_List__Internship "thrift::py3::reference_shared_ptr<::cpp2::Internship>"(...)
+    shared_ptr[cmap[string,cint32_t]] reference_shared_ptr_List__Map__string_i32 "::thrift::py3::reference_shared_ptr<std::map<std::string,int32_t>>"(...)
+    shared_ptr[cRange] reference_shared_ptr_List__Range "::thrift::py3::reference_shared_ptr<::cpp2::Range>"(...)
+    shared_ptr[cInternship] reference_shared_ptr_List__Internship "::thrift::py3::reference_shared_ptr<::cpp2::Internship>"(...)
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[cInternship]] const_pointer_cast "std::const_pointer_cast<const std::vector<::cpp2::Internship>>"(shared_ptr[vector[cInternship]])
     cdef shared_ptr[const vector[cmap[string,cint32_t]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::map<std::string,int32_t>>>"(shared_ptr[vector[cmap[string,cint32_t]]])

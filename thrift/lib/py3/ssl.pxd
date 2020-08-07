@@ -50,7 +50,7 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cSSLContext] move(shared_ptr[cSSLContext])
 
 
-cdef extern from "thrift/lib/py3/ssl.h" namespace "thrift::py3":
+cdef extern from "thrift/lib/py3/ssl.h" namespace "::thrift::py3":
     cdef cFollyFuture[cRequestChannel_ptr] createThriftChannelTCP(
         shared_ptr[cSSLContext]& ctx,
         string&& host,

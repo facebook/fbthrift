@@ -80,7 +80,7 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::a::dif
         shared_ptr[const cAStruct] FieldA
         cAStructB__isset __isset
 
-    cdef shared_ptr[cAStruct] reference_shared_ptr_FieldA "thrift::py3::reference_shared_ptr<::a::different::ns::AStruct>"(shared_ptr[cAStructB]&, cAStruct&)
+    cdef shared_ptr[cAStruct] reference_shared_ptr_FieldA "::thrift::py3::reference_shared_ptr<::a::different::ns::AStruct>"(shared_ptr[cAStructB]&, cAStruct&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cAStruct] move(unique_ptr[cAStruct])

@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cdef extern from "thrift/lib/py3/test/client_event_handlers/handler.h" namespace "thrift::py3::test":
-    cdef cppclass cTestClientEventHandler "thrift::py3::test::TestClientEventHandler":
+cdef extern from "thrift/lib/py3/test/client_event_handlers/handler.h" namespace "::thrift::py3::test":
+    cdef cppclass cTestClientEventHandler "::thrift::py3::test::TestClientEventHandler":
         bint preWriteCalled()

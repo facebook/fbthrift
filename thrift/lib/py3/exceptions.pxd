@@ -103,7 +103,7 @@ cdef extern from "Python.h":
         pass
 
 
-cdef extern from "thrift/lib/py3/exceptions.h" namespace "thrift::py3::exception":
+cdef extern from "thrift/lib/py3/exceptions.h" namespace "::thrift::py3::exception":
     cdef shared_ptr[T] try_make_shared_exception[T](
         const cFollyExceptionWrapper& excepton)
 

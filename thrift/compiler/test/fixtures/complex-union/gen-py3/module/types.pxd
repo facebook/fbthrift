@@ -199,16 +199,16 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         const cNonCopyableStruct& get_s() const
         cNonCopyableStruct& set_s(const cNonCopyableStruct&)
 
-    cdef shared_ptr[vector[cint64_t]] reference_shared_ptr_intListValue "thrift::py3::reference_shared_ptr<std::vector<int64_t>>"(shared_ptr[cComplexUnion]&, vector[cint64_t]&)
-    cdef shared_ptr[vector[string]] reference_shared_ptr_stringListValue "thrift::py3::reference_shared_ptr<std::vector<std::string>>"(shared_ptr[cComplexUnion]&, vector[string]&)
-    cdef shared_ptr[cmap[cint16_t,string]] reference_shared_ptr_typedefValue "thrift::py3::reference_shared_ptr<std::map<int16_t,std::string>>"(shared_ptr[cComplexUnion]&, cmap[cint16_t,string]&)
-    cdef shared_ptr[string] reference_shared_ptr_stringRef "thrift::py3::reference_shared_ptr<std::string>"(shared_ptr[cComplexUnion]&, string&)
-    cdef shared_ptr[vector[cint64_t]] reference_shared_ptr_intListValue "thrift::py3::reference_shared_ptr<std::vector<int64_t>>"(shared_ptr[cListUnion]&, vector[cint64_t]&)
-    cdef shared_ptr[vector[string]] reference_shared_ptr_stringListValue "thrift::py3::reference_shared_ptr<std::vector<std::string>>"(shared_ptr[cListUnion]&, vector[string]&)
-    cdef shared_ptr[cmap[cint16_t,string]] reference_shared_ptr_typedefValue "thrift::py3::reference_shared_ptr<std::map<int16_t,std::string>>"(shared_ptr[cVal]&, cmap[cint16_t,string]&)
-    cdef shared_ptr[cVal] reference_shared_ptr_v1 "thrift::py3::reference_shared_ptr<::cpp2::Val>"(shared_ptr[cValUnion]&, cVal&)
-    cdef shared_ptr[cVal] reference_shared_ptr_v2 "thrift::py3::reference_shared_ptr<::cpp2::Val>"(shared_ptr[cValUnion]&, cVal&)
-    cdef shared_ptr[cNonCopyableStruct] reference_shared_ptr_s "thrift::py3::reference_shared_ptr<::cpp2::NonCopyableStruct>"(shared_ptr[cNonCopyableUnion]&, cNonCopyableStruct&)
+    cdef shared_ptr[vector[cint64_t]] reference_shared_ptr_intListValue "::thrift::py3::reference_shared_ptr<std::vector<int64_t>>"(shared_ptr[cComplexUnion]&, vector[cint64_t]&)
+    cdef shared_ptr[vector[string]] reference_shared_ptr_stringListValue "::thrift::py3::reference_shared_ptr<std::vector<std::string>>"(shared_ptr[cComplexUnion]&, vector[string]&)
+    cdef shared_ptr[cmap[cint16_t,string]] reference_shared_ptr_typedefValue "::thrift::py3::reference_shared_ptr<std::map<int16_t,std::string>>"(shared_ptr[cComplexUnion]&, cmap[cint16_t,string]&)
+    cdef shared_ptr[string] reference_shared_ptr_stringRef "::thrift::py3::reference_shared_ptr<std::string>"(shared_ptr[cComplexUnion]&, string&)
+    cdef shared_ptr[vector[cint64_t]] reference_shared_ptr_intListValue "::thrift::py3::reference_shared_ptr<std::vector<int64_t>>"(shared_ptr[cListUnion]&, vector[cint64_t]&)
+    cdef shared_ptr[vector[string]] reference_shared_ptr_stringListValue "::thrift::py3::reference_shared_ptr<std::vector<std::string>>"(shared_ptr[cListUnion]&, vector[string]&)
+    cdef shared_ptr[cmap[cint16_t,string]] reference_shared_ptr_typedefValue "::thrift::py3::reference_shared_ptr<std::map<int16_t,std::string>>"(shared_ptr[cVal]&, cmap[cint16_t,string]&)
+    cdef shared_ptr[cVal] reference_shared_ptr_v1 "::thrift::py3::reference_shared_ptr<::cpp2::Val>"(shared_ptr[cValUnion]&, cVal&)
+    cdef shared_ptr[cVal] reference_shared_ptr_v2 "::thrift::py3::reference_shared_ptr<::cpp2::Val>"(shared_ptr[cValUnion]&, cVal&)
+    cdef shared_ptr[cNonCopyableStruct] reference_shared_ptr_s "::thrift::py3::reference_shared_ptr<::cpp2::NonCopyableStruct>"(shared_ptr[cNonCopyableUnion]&, cNonCopyableStruct&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cComplexUnion] move(unique_ptr[cComplexUnion])

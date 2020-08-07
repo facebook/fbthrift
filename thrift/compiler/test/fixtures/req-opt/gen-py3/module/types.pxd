@@ -55,8 +55,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         vector[cint32_t] myNumbers
         cFoo__isset __isset
 
-    cdef shared_ptr[vector[cbool]] reference_shared_ptr_myBools "thrift::py3::reference_shared_ptr<std::vector<bool>>"(shared_ptr[cFoo]&, vector[cbool]&)
-    cdef shared_ptr[vector[cint32_t]] reference_shared_ptr_myNumbers "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cFoo]&, vector[cint32_t]&)
+    cdef shared_ptr[vector[cbool]] reference_shared_ptr_myBools "::thrift::py3::reference_shared_ptr<std::vector<bool>>"(shared_ptr[cFoo]&, vector[cbool]&)
+    cdef shared_ptr[vector[cint32_t]] reference_shared_ptr_myNumbers "::thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cFoo]&, vector[cint32_t]&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cFoo] move(unique_ptr[cFoo])

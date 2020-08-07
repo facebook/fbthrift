@@ -109,9 +109,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         const cMyDataItem& get_myDataItem() const
         cMyDataItem& set_myDataItem(const cMyDataItem&)
 
-    cdef shared_ptr[cMyDataItem] reference_shared_ptr_MyDataField "thrift::py3::reference_shared_ptr<::cpp2::MyDataItem>"(shared_ptr[cMyStruct]&, cMyDataItem&)
-    cdef shared_ptr[cMyStruct] reference_shared_ptr_myStruct "thrift::py3::reference_shared_ptr<::cpp2::MyStruct>"(shared_ptr[cMyUnion]&, cMyStruct&)
-    cdef shared_ptr[cMyDataItem] reference_shared_ptr_myDataItem "thrift::py3::reference_shared_ptr<::cpp2::MyDataItem>"(shared_ptr[cMyUnion]&, cMyDataItem&)
+    cdef shared_ptr[cMyDataItem] reference_shared_ptr_MyDataField "::thrift::py3::reference_shared_ptr<::cpp2::MyDataItem>"(shared_ptr[cMyStruct]&, cMyDataItem&)
+    cdef shared_ptr[cMyStruct] reference_shared_ptr_myStruct "::thrift::py3::reference_shared_ptr<::cpp2::MyStruct>"(shared_ptr[cMyUnion]&, cMyStruct&)
+    cdef shared_ptr[cMyDataItem] reference_shared_ptr_myDataItem "::thrift::py3::reference_shared_ptr<::cpp2::MyDataItem>"(shared_ptr[cMyUnion]&, cMyDataItem&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cMyStruct] move(unique_ptr[cMyStruct])

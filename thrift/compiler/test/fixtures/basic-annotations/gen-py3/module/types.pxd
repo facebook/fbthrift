@@ -139,7 +139,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         string password
         cSecretStruct__isset __isset
 
-    cdef shared_ptr[cMyStructNestedAnnotation] reference_shared_ptr_nest "thrift::py3::reference_shared_ptr<::cpp2::MyStructNestedAnnotation>"(shared_ptr[cMyStructAnnotation]&, cMyStructNestedAnnotation&)
+    cdef shared_ptr[cMyStructNestedAnnotation] reference_shared_ptr_nest "::thrift::py3::reference_shared_ptr<::cpp2::MyStructNestedAnnotation>"(shared_ptr[cMyStructAnnotation]&, cMyStructNestedAnnotation&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cMyStructNestedAnnotation] move(unique_ptr[cMyStructNestedAnnotation])

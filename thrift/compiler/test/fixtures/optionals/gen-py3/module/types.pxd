@@ -144,11 +144,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         vector[cVehicle] vehicles
         cPerson__isset __isset
 
-    cdef shared_ptr[cColor] reference_shared_ptr_color "thrift::py3::reference_shared_ptr<::cpp2::Color>"(shared_ptr[cVehicle]&, cColor&)
-    cdef shared_ptr[cColor] reference_shared_ptr_favoriteColor "thrift::py3::reference_shared_ptr<::cpp2::Color>"(shared_ptr[cPerson]&, cColor&)
-    cdef shared_ptr[cset[cint64_t]] reference_shared_ptr_friends "thrift::py3::reference_shared_ptr<std::set<int64_t>>"(shared_ptr[cPerson]&, cset[cint64_t]&)
-    cdef shared_ptr[cmap[cAnimal,string]] reference_shared_ptr_petNames "thrift::py3::reference_shared_ptr<std::map<::cpp2::Animal,std::string>>"(shared_ptr[cPerson]&, cmap[cAnimal,string]&)
-    cdef shared_ptr[vector[cVehicle]] reference_shared_ptr_vehicles "thrift::py3::reference_shared_ptr<std::vector<::cpp2::Vehicle>>"(shared_ptr[cPerson]&, vector[cVehicle]&)
+    cdef shared_ptr[cColor] reference_shared_ptr_color "::thrift::py3::reference_shared_ptr<::cpp2::Color>"(shared_ptr[cVehicle]&, cColor&)
+    cdef shared_ptr[cColor] reference_shared_ptr_favoriteColor "::thrift::py3::reference_shared_ptr<::cpp2::Color>"(shared_ptr[cPerson]&, cColor&)
+    cdef shared_ptr[cset[cint64_t]] reference_shared_ptr_friends "::thrift::py3::reference_shared_ptr<std::set<int64_t>>"(shared_ptr[cPerson]&, cset[cint64_t]&)
+    cdef shared_ptr[cmap[cAnimal,string]] reference_shared_ptr_petNames "::thrift::py3::reference_shared_ptr<std::map<::cpp2::Animal,std::string>>"(shared_ptr[cPerson]&, cmap[cAnimal,string]&)
+    cdef shared_ptr[vector[cVehicle]] reference_shared_ptr_vehicles "::thrift::py3::reference_shared_ptr<std::vector<::cpp2::Vehicle>>"(shared_ptr[cPerson]&, vector[cVehicle]&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cColor] move(unique_ptr[cColor])
@@ -269,7 +269,7 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cset[cint64_t]] move_shared "std::move"(shared_ptr[cset[cint64_t]])
 cdef extern from "<utility>" nogil:
     pass  
-    shared_ptr[cVehicle] reference_shared_ptr_List__Vehicle "thrift::py3::reference_shared_ptr<::cpp2::Vehicle>"(...)
+    shared_ptr[cVehicle] reference_shared_ptr_List__Vehicle "::thrift::py3::reference_shared_ptr<::cpp2::Vehicle>"(...)
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[cVehicle]] const_pointer_cast "std::const_pointer_cast<const std::vector<::cpp2::Vehicle>>"(shared_ptr[vector[cVehicle]])
     cdef shared_ptr[const cmap[cAnimal,string]] const_pointer_cast "std::const_pointer_cast<const std::map<::cpp2::Animal,std::string>>"(shared_ptr[cmap[cAnimal,string]])
