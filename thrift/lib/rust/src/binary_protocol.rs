@@ -454,27 +454,42 @@ impl<B: Buf> ProtocolReader for BinaryProtocolDeserializer<B> {
     }
 }
 
-/// Serialize a Thrift value using the compact protocol.
-pub fn serialize<T>(v: T) -> Bytes
+/// How large an item will be when `serialize()` is called
+pub fn serialize_size<T>(v: &T) -> usize
 where
-    T: Serialize<BinaryProtocolSerializer<SizeCounter>>
-        + Serialize<BinaryProtocolSerializer<BytesMut>>
-        + Copy,
+    T: Serialize<BinaryProtocolSerializer<SizeCounter>>,
 {
     let mut sizer = BinaryProtocolSerializer::with_buffer(SizeCounter::new());
     v.write(&mut sizer);
+    sizer.finish()
+}
 
-    let sz = sizer.finish();
-
+/// Serialize a Thrift value using the binary protocol to a pre-allocated buffer.
+/// This will panic if the buffer is not large enough. A buffer at least as
+/// large as the return value of `serialize_size` will not panic.
+pub fn serialize_to_buffer<T>(v: T, buffer: BytesMut) -> BinaryProtocolSerializer<BytesMut>
+where
+    T: Serialize<BinaryProtocolSerializer<BytesMut>>,
+{
     // Now that we have the size, allocate an output buffer and serialize into it
-    let mut buf = BinaryProtocolSerializer::with_buffer(BytesMut::with_capacity(sz));
+    let mut buf = BinaryProtocolSerializer::with_buffer(buffer);
     v.write(&mut buf);
+    buf
+}
 
+/// Serialize a Thrift value using the binary protocol.
+pub fn serialize<T>(v: T) -> Bytes
+where
+    T: Serialize<BinaryProtocolSerializer<SizeCounter>>
+        + Serialize<BinaryProtocolSerializer<BytesMut>>,
+{
+    let sz = serialize_size(&v);
+    let buf = serialize_to_buffer(v, BytesMut::with_capacity(sz));
     // Done
     buf.finish()
 }
 
-/// Deserialize a Thrift blob using the compact protocol.
+/// Deserialize a Thrift blob using the binary protocol.
 pub fn deserialize<T, B>(b: B) -> Result<T>
 where
     B: AsRef<[u8]>,
