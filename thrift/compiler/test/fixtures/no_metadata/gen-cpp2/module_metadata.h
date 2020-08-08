@@ -13,3 +13,47 @@ namespace cpp2 {
 class MyServiceSvIf;
 } // namespace cpp2
 
+namespace apache {
+namespace thrift {
+namespace detail {
+namespace md {
+using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
+
+template <>
+class EnumMetadata<::cpp2::MyEnum> {
+ public:
+  static void gen(ThriftMetadata&) {}
+};
+template <>
+class StructMetadata<::cpp2::MyDataItem> {
+ public:
+  static void gen(ThriftMetadata&) {}
+};
+template <>
+class StructMetadata<::cpp2::MyStruct> {
+ public:
+  static void gen(ThriftMetadata&) {}
+};
+template <>
+class StructMetadata<::cpp2::MyUnion> {
+ public:
+  static void gen(ThriftMetadata&) {}
+};
+template <>
+class ServiceMetadata<::cpp2::MyServiceSvIf> {
+ public:
+  static void gen(ThriftMetadata&, ThriftServiceContext&) {}
+ private:
+  static void gen_ping(ThriftMetadata&, ThriftService&) {}
+  static void gen_getRandomData(ThriftMetadata&, ThriftService&) {}
+  static void gen_hasDataById(ThriftMetadata&, ThriftService&) {}
+  static void gen_getDataById(ThriftMetadata&, ThriftService&) {}
+  static void gen_putDataById(ThriftMetadata&, ThriftService&) {}
+  static void gen_lobDataById(ThriftMetadata&, ThriftService&) {}
+};
+} // namespace md
+} // namespace detail
+} // namespace thrift
+} // namespace apache

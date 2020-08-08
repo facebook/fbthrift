@@ -20,36 +20,16 @@
 
 namespace apache {
 namespace thrift {
-namespace metadata {
-class ThriftMetadata;
-}
-
 namespace detail {
 namespace md {
-template <typename T>
-class EnumMetadata {
- public:
-  static void gen(::apache::thrift::metadata::ThriftMetadata&) {}
-};
-template <typename T>
-class StructMetadata {
- public:
-  static void gen(::apache::thrift::metadata::ThriftMetadata&) {}
-};
-
-template <typename T>
-class ExceptionMetadata {
- public:
-  static void gen(::apache::thrift::metadata::ThriftMetadata&) {}
-};
-
-template <typename T>
-class ServiceMetadata {
- public:
-  static void gen(
-      ::apache::thrift::metadata::ThriftMetadata&,
-      ::apache::thrift::metadata::ThriftServiceContext&) {}
-};
+template <typename>
+class EnumMetadata;
+template <typename>
+class StructMetadata;
+template <typename>
+class ExceptionMetadata;
+template <typename>
+class ServiceMetadata;
 } // namespace md
 } // namespace detail
 } // namespace thrift

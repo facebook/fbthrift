@@ -29,7 +29,6 @@ class <%service:name%>SvIf;
 <% > common/service_namespace_cpp2_end %>
 <%/program:services%>
 
-<%#program:gen_metadata?%>
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -42,14 +41,24 @@ using ThriftService = ::apache::thrift::metadata::ThriftService;
 template <>
 class EnumMetadata<<% > common/namespace_cpp2%><%enum:name%>> {
  public:
+<%#program:gen_metadata?%>
   static void gen(ThriftMetadata& metadata);
+<%/program:gen_metadata?%>
+<%^program:gen_metadata?%>
+  static void gen(ThriftMetadata&) {}
+<%/program:gen_metadata?%>
 };
 <%/program:enums%>
 <%#program:structs%>
 template <>
 class StructMetadata<<% > common/namespace_cpp2%><%struct:name%>> {
  public:
+<%#program:gen_metadata?%>
   static void gen(ThriftMetadata& metadata);
+<%/program:gen_metadata?%>
+<%^program:gen_metadata?%>
+  static void gen(ThriftMetadata&) {}
+<%/program:gen_metadata?%>
 };
 <%/program:structs%>
 <%#program:structs%>
@@ -57,7 +66,12 @@ class StructMetadata<<% > common/namespace_cpp2%><%struct:name%>> {
 template <>
 class ExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>> {
  public:
+<%#program:gen_metadata?%>
   static void gen(ThriftMetadata& metadata);
+<%/program:gen_metadata?%>
+<%^program:gen_metadata?%>
+  static void gen(ThriftMetadata&) {}
+<%/program:gen_metadata?%>
 };
 <%/struct:exception?%>
 <%/program:structs%>
@@ -65,10 +79,20 @@ class ExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>> {
 template <>
 class ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf> {
  public:
+<%#program:gen_metadata?%>
   static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+<%/program:gen_metadata?%>
+<%^program:gen_metadata?%>
+  static void gen(ThriftMetadata&, ThriftServiceContext&) {}
+<%/program:gen_metadata?%>
  private:
 <%#service:functions%>
+<%#program:gen_metadata?%>
   static void gen_<%function:cpp_name%>(ThriftMetadata& metadata, ThriftService& context);
+<%/program:gen_metadata?%>
+<%^program:gen_metadata?%>
+  static void gen_<%function:cpp_name%>(ThriftMetadata&, ThriftService&) {}
+<%/program:gen_metadata?%>
 <%/service:functions%>
 };
 <%/program:services%>
@@ -76,4 +100,3 @@ class ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>Sv
 } // namespace detail
 } // namespace thrift
 } // namespace apache
-<%/program:gen_metadata?%>
