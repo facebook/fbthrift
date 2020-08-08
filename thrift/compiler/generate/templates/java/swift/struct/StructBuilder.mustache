@@ -62,6 +62,13 @@ public static class Builder {
         );
         result.__isset_bit_vector.or(__optional_isset);
         return result;
+        {{/struct:asBean?}}{{#struct:asBean?}}
+        {{struct:javaCapitalName}} result = new {{struct:javaCapitalName}}();
+        {{#struct:fields}}
+        result.{{field:javaName}} = this.{{field:javaName}};
+        {{/struct:fields}}
+        result.__isset_bit_vector.or(__optional_isset);
+        return result;
         {{/struct:asBean?}}{{/struct:isBigStruct?}}{{!
         }}{{#struct:isBigStruct?}}
         {{struct:javaCapitalName}} o{{struct:javaCapitalName}} = new {{struct:javaCapitalName}}();
@@ -71,14 +78,7 @@ public static class Builder {
         o{{struct:javaCapitalName}}.__isset_bit_vector.or(__optional_isset);
         return o{{struct:javaCapitalName}};
         {{/struct:isBigStruct?}}{{!
-        }}{{#struct:asBean?}}
-        {{struct:javaCapitalName}} result = new {{struct:javaCapitalName}}();
-        {{#struct:fields}}
-        result.{{field:javaName}} = this.{{field:javaName}};
-        {{/struct:fields}}
-        result.__isset_bit_vector.or(__optional_isset);
-        return result;
-        {{/struct:asBean?}}
+        }}
     }
 }
 {{! terminate with newline }}
