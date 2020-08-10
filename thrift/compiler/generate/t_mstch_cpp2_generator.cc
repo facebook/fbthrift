@@ -236,6 +236,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
  private:
   void set_mstch_generators();
   void generate_reflection(t_program const* program);
+  void generate_visitation(t_program const* program);
   void generate_constants(t_program const* program);
   void generate_metadata(t_program const* program);
   void generate_structs(t_program const* program);
@@ -1900,8 +1901,12 @@ void t_mstch_cpp2_generator::generate_program() {
   auto const* program = get_program();
   set_mstch_generators();
 
-  if (cache_->parsed_options_.count("reflection")) {
+  if (cache_->parsed_options_.count("reflection") ||
+      cache_->parsed_options_.count("visitation")) {
     generate_reflection(program);
+    if (cache_->parsed_options_.count("visitation")) {
+      generate_visitation(program);
+    }
   }
 
   generate_structs(program);
@@ -1993,6 +1998,20 @@ void t_mstch_cpp2_generator::generate_reflection(t_program const* program) {
       cache_->programs_[id],
       "module_fatal_service.h",
       name + "_fatal_service.h");
+}
+
+void t_mstch_cpp2_generator::generate_visitation(const t_program* program) {
+  auto name = program->get_name();
+  const auto& id = program->get_path();
+  if (!cache_->programs_.count(id)) {
+    cache_->programs_[id] =
+        generators_->program_generator_->generate(program, generators_, cache_);
+  }
+
+  render_to_file(
+      cache_->programs_[id],
+      "module_for_each_field.h",
+      name + "_for_each_field.h");
 }
 
 void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
