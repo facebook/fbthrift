@@ -21,9 +21,6 @@ namespace apache {
 namespace thrift {
 namespace detail {
 namespace md {
-using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
-using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
-using ThriftService = ::apache::thrift::metadata::ThriftService;
 
 template <>
 class EnumMetadata<::apache::thrift::fixtures::types::has_bitwise_ops> {

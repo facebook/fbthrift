@@ -22,14 +22,40 @@ namespace apache {
 namespace thrift {
 namespace detail {
 namespace md {
-template <typename>
-class EnumMetadata;
-template <typename>
-class StructMetadata;
-template <typename>
-class ExceptionMetadata;
-template <typename>
-class ServiceMetadata;
+
+using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
+
+class EmptyMetadata {
+ protected:
+  FOLLY_ERASE static void gen(ThriftMetadata&) {}
+};
+class EmptyServiceMetadata {
+ protected:
+  FOLLY_ERASE static void gen(ThriftMetadata&, ThriftServiceContext&) {}
+};
+
+template <typename T>
+class EnumMetadata {
+  static_assert(!sizeof(T), "invalid use of base template");
+};
+
+template <typename T>
+class StructMetadata {
+  static_assert(!sizeof(T), "invalid use of base template");
+};
+
+template <typename T>
+class ExceptionMetadata {
+  static_assert(!sizeof(T), "invalid use of base template");
+};
+
+template <typename T>
+class ServiceMetadata {
+  static_assert(!sizeof(T), "invalid use of base template");
+};
+
 } // namespace md
 } // namespace detail
 } // namespace thrift
