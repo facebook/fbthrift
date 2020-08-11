@@ -351,27 +351,6 @@ class HandlerCallbackBase {
     exception(folly::make_exception_wrapper<Exception>(ex));
   }
 
-  void exceptionInThread(std::exception_ptr ex);
-  void exceptionInThread(folly::exception_wrapper ew);
-
-  template <class Exception>
-  void exceptionInThread(const Exception& ex) {
-    exceptionInThread(folly::make_exception_wrapper<Exception>(ex));
-  }
-
-  static void exceptionInThread(
-      std::unique_ptr<HandlerCallbackBase> thisPtr,
-      std::exception_ptr ex);
-
-  static void exceptionInThread(
-      std::unique_ptr<HandlerCallbackBase> thisPtr,
-      folly::exception_wrapper ew);
-
-  template <class Exception>
-  static void exceptionInThread(
-      std::unique_ptr<HandlerCallbackBase> thisPtr,
-      const Exception& ex);
-
   void appOverloadedException(const std::string& message) {
     doAppOverloadedException(message);
   }
@@ -626,14 +605,6 @@ void GeneratedAsyncProcessor::processInThread(
       true); // upstream
 }
 
-template <class Exception>
-void HandlerCallbackBase::exceptionInThread(
-    std::unique_ptr<HandlerCallbackBase> thisPtr,
-    const Exception& ex) {
-  assert(thisPtr != nullptr);
-  thisPtr->exception(ex);
-}
-
 template <class F>
 void HandlerCallbackBase::runFuncInQueue(F&& func, bool oneway) {
   assert(tm_ != nullptr);
@@ -747,7 +718,8 @@ void HandlerCallback<T>::complete(folly::Try<T>&& r) {
 template <typename T>
 void HandlerCallback<T>::completeInThread(folly::Try<T>&& r) {
   if (r.hasException()) {
-    exceptionInThread(std::move(r.exception()));
+    exception(std::move(r.exception()));
+    delete this;
   } else {
     resultInThread(std::move(r.value()));
   }

@@ -157,34 +157,6 @@ HandlerCallbackBase::~HandlerCallbackBase() {
   }
 }
 
-void HandlerCallbackBase::exceptionInThread(std::exception_ptr ex) {
-  getEventBase()->runInEventBaseThread([=]() {
-    this->exception(ex);
-    delete this;
-  });
-}
-
-void HandlerCallbackBase::exceptionInThread(folly::exception_wrapper ew) {
-  getEventBase()->runInEventBaseThread([=]() {
-    this->exception(ew);
-    delete this;
-  });
-}
-
-void HandlerCallbackBase::exceptionInThread(
-    std::unique_ptr<HandlerCallbackBase> thisPtr,
-    std::exception_ptr ex) {
-  assert(thisPtr != nullptr);
-  thisPtr->exception(std::move(ex));
-}
-
-void HandlerCallbackBase::exceptionInThread(
-    std::unique_ptr<HandlerCallbackBase> thisPtr,
-    folly::exception_wrapper ew) {
-  assert(thisPtr != nullptr);
-  thisPtr->exception(std::move(ew));
-}
-
 folly::EventBase* HandlerCallbackBase::getEventBase() {
   assert(eb_ != nullptr);
   return eb_;
@@ -318,11 +290,11 @@ void HandlerCallback<void>::complete(folly::Try<folly::Unit>&& r) {
 
 void HandlerCallback<void>::completeInThread(folly::Try<folly::Unit>&& r) {
   if (r.hasException()) {
-    exceptionInThread(std::move(r.exception()));
+    exception(std::move(r.exception()));
   } else {
     done();
-    delete this;
   }
+  delete this;
 }
 
 void HandlerCallback<void>::completeInThread(
