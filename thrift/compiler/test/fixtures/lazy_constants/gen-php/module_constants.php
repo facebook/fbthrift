@@ -42,6 +42,17 @@ class module_CONSTANTS {
     return self::$__states;
   }
 
+  private static $__cities = null;
+  public static function cities() {
+    if (self::$__cities == null) {
+      self::$__cities = array(
+        "New York" => true,
+        "Sacramento" => true,
+      );
+    }
+    return self::$__cities;
+  }
+
   private static $__x = null;
   public static function x() {
     if (self::$__x == null) {
@@ -64,6 +75,17 @@ class module_CONSTANTS {
       self::$__z = 1e+09;
     }
     return self::$__z;
+  }
+
+  private static $__const_enum_map = null;
+  public static function const_enum_map() {
+    if (self::$__const_enum_map == null) {
+      self::$__const_enum_map = array(
+                0 => 123,
+                1 => 2,
+      );
+    }
+    return self::$__const_enum_map;
   }
 
   private static $__instagram = null;
@@ -185,9 +207,17 @@ class module_CONSTANTS {
             "Albany" => 98400,
           ),
         ),
+        "cities" => array(
+          "New York" => true,
+          "Sacramento" => true,
+        ),
         "x" => 1,
         "y" => 1000000,
         "z" => 1e+09,
+        "const_enum_map" => array(
+                    0 => 123,
+                    1 => 2,
+        ),
         "instagram" => new Internship(array(
           "weeks" => 12,
           "title" => "Software Engineer",

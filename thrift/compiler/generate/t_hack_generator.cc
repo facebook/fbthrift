@@ -1173,12 +1173,12 @@ void t_hack_generator::generate_const(t_const* tconst) {
 
 bool t_hack_generator::is_hack_const_type(t_type* type) {
   type = type->get_true_type();
-  if (type->is_base_type()) {
+  if (type->is_base_type() || type->is_enum()) {
     return true;
   } else if (arrays_ && type->is_container()) {
     if (type->is_list()) {
       return is_hack_const_type(((t_list*)type)->get_elem_type());
-    } else if (type->is_list()) {
+    } else if (type->is_set()) {
       return is_hack_const_type(((t_set*)type)->get_elem_type());
     } else if (type->is_map()) {
       return is_hack_const_type(((t_map*)type)->get_key_type()) &&

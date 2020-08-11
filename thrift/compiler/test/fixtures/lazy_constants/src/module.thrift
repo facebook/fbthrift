@@ -22,6 +22,10 @@ const list<map<string, i32>> states = [
   {"San Diego": 3211000, "Sacramento": 479600, "SF": 837400},
   {"New York": 8406000, "Albany": 98400}
 ];
+const set<string> cities = [
+  "New York",
+  "Sacramento"
+];
 const double x = 1.0;
 const double y = 1000000;
 const double z = 1000000000.0;
@@ -38,6 +42,11 @@ enum Company {
   OCULUS = 2,
   INSTAGRAM = 3,
 }
+
+const map<Company, i32> const_enum_map = {
+  Company.FACEBOOK: 123,
+  Company.WHATSAPP: 2
+};
 
 struct Internship {
   1: required i32 weeks;

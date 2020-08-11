@@ -1081,6 +1081,14 @@ typedef CppHasAPhrase HasAPhrase;
 // END hash_and_equal_to
 namespace test_cpp2 { namespace cpp_reflection {
 class union1 final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = union1;
   enum Type : int {
@@ -1402,6 +1410,14 @@ uint32_t union1::read(Protocol_* iprot) {
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class union2 final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = union2;
   enum Type : int {
@@ -1723,6 +1739,14 @@ uint32_t union2::read(Protocol_* iprot) {
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class union3 final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = union3;
   enum Type : int {
@@ -2044,6 +2068,14 @@ uint32_t union3::read(Protocol_* iprot) {
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class structA final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = structA;
 
@@ -2195,6 +2227,14 @@ uint32_t structA::read(Protocol_* iprot) {
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class unionA final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = unionA;
   enum Type : int {
@@ -2574,6 +2614,14 @@ uint32_t unionA::read(Protocol_* iprot) {
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class structB final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = structB;
 
@@ -2721,6 +2769,14 @@ uint32_t structB::read(Protocol_* iprot) {
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class structC final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = structC;
 
@@ -3887,6 +3943,14 @@ uint32_t structC::read(Protocol_* iprot) {
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class struct1 final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = struct1;
 
@@ -4175,6 +4239,14 @@ uint32_t struct1::read(Protocol_* iprot) {
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class struct2 final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = struct2;
 
@@ -4511,6 +4583,14 @@ uint32_t struct2::read(Protocol_* iprot) {
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class struct3 final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = struct3;
 
@@ -5243,6 +5323,14 @@ uint32_t struct3::read(Protocol_* iprot) {
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class struct4 final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = struct4;
 
@@ -5438,6 +5526,14 @@ uint32_t struct4::read(Protocol_* iprot) {
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class struct5 final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = struct5;
 
@@ -5695,6 +5791,14 @@ uint32_t struct5::read(Protocol_* iprot) {
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class struct_binary final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = struct_binary;
 
@@ -5808,6 +5912,14 @@ uint32_t struct_binary::read(Protocol_* iprot) {
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class dep_A_struct final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = dep_A_struct;
 
@@ -5989,6 +6101,14 @@ uint32_t dep_A_struct::read(Protocol_* iprot) {
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class dep_B_struct final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = dep_B_struct;
 
@@ -6170,6 +6290,14 @@ uint32_t dep_B_struct::read(Protocol_* iprot) {
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class annotated final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = annotated;
 
@@ -6279,6 +6407,14 @@ uint32_t annotated::read(Protocol_* iprot) {
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class union_with_special_names final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = union_with_special_names;
   enum Type : int {
@@ -7642,6 +7778,14 @@ uint32_t union_with_special_names::read(Protocol_* iprot) {
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class struct_with_special_names final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = struct_with_special_names;
 
@@ -8777,6 +8921,14 @@ uint32_t struct_with_special_names::read(Protocol_* iprot) {
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class struct_with_indirections final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
  public:
   using __fbthrift_cpp2_type = struct_with_indirections;
 

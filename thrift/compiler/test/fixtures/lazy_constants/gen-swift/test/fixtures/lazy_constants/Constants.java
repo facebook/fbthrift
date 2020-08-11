@@ -31,11 +31,21 @@ public final class Constants {
         .build())
         .build();
 
+    public static final Set<String> CITIES = ImmutableSet.<String>builder()
+        .add("New York")
+        .add("Sacramento")
+        .build();
+
     public static final double X = (double)1;
 
     public static final double Y = 1000000.0;
 
     public static final double Z = (double)1000000000;
+
+    public static final Map<test.fixtures.lazy_constants.Company, Integer> CONST_ENUM_MAP = ImmutableMap.<test.fixtures.lazy_constants.Company, Integer>builder()
+        .put(test.fixtures.lazy_constants.Company.FACEBOOK, 123)
+        .put(test.fixtures.lazy_constants.Company.WHATSAPP, 2)
+        .build();
 
     public static final test.fixtures.lazy_constants.Internship INSTAGRAM = new test.fixtures.lazy_constants.Internship.Builder().setWeeks(12).setTitle("Software Engineer").setEmployer(test.fixtures.lazy_constants.Company.INSTAGRAM).build();
 

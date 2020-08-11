@@ -71,10 +71,7 @@ class module_CONSTANTS {
    * Original thrift constant:-
    * enum module.Company my_company
    */
-  <<__Memoize>>
-  public static function my_company(): Company{
-    return Company::FACEBOOK;
-  }
+  const Company my_company = Company::FACEBOOK;
 
   /**
    * Original thrift constant:-

@@ -36,6 +36,15 @@ class module_CONSTANTS {
 
   /**
    * Original thrift constant:-
+   * set<string> cities
+   */
+  const keyset<string> cities = keyset[
+    "New York",
+    "Sacramento",
+  ];
+
+  /**
+   * Original thrift constant:-
    * double x
    */
   const float x = 1.0;
@@ -51,6 +60,15 @@ class module_CONSTANTS {
    * double z
    */
   const float z = 1e+09;
+
+  /**
+   * Original thrift constant:-
+   * map<enum module.Company, i32> const_enum_map
+   */
+  const dict<Company, int> const_enum_map = dict[
+    Company::FACEBOOK => 123,
+    Company::WHATSAPP => 2,
+  ];
 
   /**
    * Original thrift constant:-
@@ -160,9 +178,11 @@ class module_CONSTANTS {
       'myInt' => dict[],
       'name' => dict[],
       'states' => dict[],
+      'cities' => dict[],
       'x' => dict[],
       'y' => dict[],
       'z' => dict[],
+      'const_enum_map' => dict[],
       'instagram' => dict[],
       'kRanges' => dict[],
       'internList' => dict[],
