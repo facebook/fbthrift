@@ -16,8 +16,6 @@
 
 #include <thrift/conformance/cpp2/Protocol.h>
 
-#include <algorithm>
-
 #include <folly/lang/Exception.h>
 
 namespace apache::thrift::conformance {
@@ -70,39 +68,18 @@ auto ProtocolIdManager::getId(const Protocol& protocol) const noexcept
     case Protocol::standard:
       return getStandardId(protocol.get_standard());
     case Protocol::custom:
-      if (auto itr = std::find(
-              customProtocols_.begin(),
-              customProtocols_.end(),
-              protocol.get_custom());
-          itr != customProtocols_.end()) {
-        return getCustomId(itr);
-      }
-      // Check if it is actually a standard protocol.
-      return getStandardId(protocol.get_custom());
+      return findId(protocol.get_custom());
   }
 }
 
 auto ProtocolIdManager::getOrCreateId(const Protocol& protocol) -> id_type {
   switch (protocol.getType()) {
     case Protocol::__EMPTY__:
-      folly::throw_exception(std::invalid_argument("Empty protocol"));
+      folly::throw_exception<std::invalid_argument>("Empty protocol");
     case Protocol::standard:
       return static_cast<id_type>(protocol.get_standard());
     case Protocol::custom:
-      if (auto itr = std::find(
-              customProtocols_.begin(),
-              customProtocols_.end(),
-              protocol.get_custom());
-          itr != customProtocols_.end()) {
-        return getCustomId(itr);
-      }
-      // Check if it is actually a standard protocol before adding a new custom
-      // one.
-      if (auto id = getStandardId(protocol.get_custom()); id != kNoId) {
-        return id;
-      }
-      customProtocols_.emplace_back(protocol.get_custom());
-      return getCustomId(customProtocols_.size());
+      return findOrAllocateId(protocol.get_custom());
   }
 }
 
@@ -110,17 +87,6 @@ auto ProtocolIdManager::getStandardId(StandardProtocol protocol) noexcept
     -> id_type {
   // Use the enum values.
   return static_cast<id_type>(protocol);
-}
-
-auto ProtocolIdManager::getCustomId(size_t num) noexcept -> id_type {
-  // Counts down from max value.
-  return static_cast<id_type>(-num);
-}
-
-auto ProtocolIdManager::getCustomId(
-    const std::vector<std::string>::const_iterator& itr) const noexcept
-    -> id_type {
-  return getCustomId(itr - customProtocols_.begin() + 1);
 }
 
 auto ProtocolIdManager::getStandardId(const std::string& name) noexcept
@@ -131,6 +97,37 @@ auto ProtocolIdManager::getStandardId(const std::string& name) noexcept
     return getStandardId(protocol);
   }
   return kNoId;
+}
+
+auto ProtocolIdManager::getCustomId(size_t ordinal) noexcept -> id_type {
+  // Counts down from max value.
+  return static_cast<id_type>(-ordinal);
+}
+
+auto ProtocolIdManager::findId(const std::string& name) const noexcept
+    -> id_type {
+  auto itr = customProtocols_.find(name);
+  if (itr != customProtocols_.end()) {
+    return itr->second;
+  }
+  // Check if it is actually a standard protocol.
+  return getStandardId(name);
+}
+
+auto ProtocolIdManager::findOrAllocateId(const std::string& name) noexcept
+    -> id_type {
+  auto itr = customProtocols_.find(name);
+  if (itr != customProtocols_.end()) {
+    return itr->second;
+  }
+  // Check if it is actually a standard protocol before adding a new custom
+  // one.
+  if (id_type id = getStandardId(name); id != kNoId) {
+    return id;
+  }
+  id_type id = getCustomId(customProtocols_.size() + 1);
+  customProtocols_.emplace_hint(itr, name, id);
+  return id;
 }
 
 } // namespace apache::thrift::conformance

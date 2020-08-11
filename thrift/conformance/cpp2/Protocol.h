@@ -18,7 +18,7 @@
 
 #include <string>
 #include <string_view>
-#include <vector>
+#include <unordered_map>
 
 #include <thrift/conformance/if/gen-cpp2/protocol_types.h>
 
@@ -57,7 +57,7 @@ class ProtocolIdManager {
   id_type getOrCreateId(const Protocol& protocol);
 
  private:
-  std::vector<std::string> customProtocols_;
+  std::unordered_map<std::string, id_type> customProtocols_;
 
   // Returns the id for the given standard protocol.
   static id_type getStandardId(StandardProtocol protocol) noexcept;
@@ -67,11 +67,12 @@ class ProtocolIdManager {
   // Returns kNoId if name is not a recognized standard names;
   static id_type getStandardId(const std::string& name) noexcept;
 
-  // Computes the runtime id for the geven custom procol based on number or
-  // iterator in customProtocols_.
-  static id_type getCustomId(size_t num) noexcept;
-  id_type getCustomId(const std::vector<std::string>::const_iterator& itr) const
-      noexcept;
+  // Returns the custom id based on the ordinal at which it was added.
+  static id_type getCustomId(size_t ordinal) noexcept;
+
+  // Find (or allocate) an id for the given protocol.
+  id_type findId(const std::string& name) const noexcept;
+  id_type findOrAllocateId(const std::string& name) noexcept;
 };
 
 } // namespace apache::thrift::conformance
