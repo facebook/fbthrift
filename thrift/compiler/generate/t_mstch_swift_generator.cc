@@ -212,6 +212,9 @@ class mstch_swift_struct : public mstch_struct {
              &mstch_swift_struct::has_java_annotations},
             {"struct:isUnion?", &mstch_swift_struct::is_struct_union},
             {"struct:javaAnnotations", &mstch_swift_struct::java_annotations},
+            {"struct:exceptionMessage", &mstch_swift_struct::exception_message},
+            {"struct:needsExceptionMessage?",
+             &mstch_swift_struct::needs_exception_message},
         });
   }
   mstch::node java_package() {
@@ -261,6 +264,21 @@ class mstch_swift_struct : public mstch_struct {
   }
   mstch::node java_annotations() {
     return get_java_annotation(strct_);
+  }
+  mstch::node exception_message() {
+    return strct_->annotations_.at("message");
+  }
+  // we can only override Throwable's getMessage() if:
+  //  1 - there is provided 'message' annotation
+  //  2 - there is no struct field named 'message'
+  //      (since it will generate getMessage() as well)
+  mstch::node needs_exception_message() {
+    return strct_->is_xception() && strct_->annotations_.count("message") &&
+        std::find_if(
+            strct_->get_members().begin(),
+            strct_->get_members().end(),
+            [](auto const& m) { return m->get_name() == "message"; }) ==
+        strct_->get_members().end();
   }
 };
 

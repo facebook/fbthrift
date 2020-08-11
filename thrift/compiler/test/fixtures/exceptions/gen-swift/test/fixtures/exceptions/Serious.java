@@ -78,7 +78,11 @@ public final class Serious extends java.lang.RuntimeException {
     
     @ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL)
     public String getSonnet() { return sonnet; }
-    
+        
+    @Override
+    public String getMessage() {
+      return sonnet;
+    }
     
     public static Serious read0(TProtocol oprot) throws TException {
       TField __field;

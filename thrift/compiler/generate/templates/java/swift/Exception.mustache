@@ -58,6 +58,9 @@ public final class {{struct:javaCapitalName}} extends {{#struct:extendRuntimeExc
     {{#struct:fields}}
     {{> struct/FieldGetter}}
     {{/struct:fields}}
+    {{#struct:needsExceptionMessage?}}
+    {{> ExceptionMessage}}
+    {{/struct:needsExceptionMessage?}}
 
     {{> struct/StructRead}}
 
