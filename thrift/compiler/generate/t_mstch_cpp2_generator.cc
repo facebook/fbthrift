@@ -1952,7 +1952,7 @@ void t_mstch_cpp2_generator::generate_constants(t_program const* program) {
 }
 
 void t_mstch_cpp2_generator::generate_metadata(const t_program* program) {
-  auto name = program->get_name();
+  const auto& name = program->get_name();
   const auto& id = program->get_path();
   if (!cache_->programs_.count(id)) {
     cache_->programs_[id] =
@@ -1968,7 +1968,7 @@ void t_mstch_cpp2_generator::generate_metadata(const t_program* program) {
 }
 
 void t_mstch_cpp2_generator::generate_reflection(t_program const* program) {
-  auto name = program->get_name();
+  const auto& name = program->get_name();
   const auto& id = program->get_path();
   if (!cache_->programs_.count(id)) {
     cache_->programs_[id] =
@@ -2001,7 +2001,7 @@ void t_mstch_cpp2_generator::generate_reflection(t_program const* program) {
 }
 
 void t_mstch_cpp2_generator::generate_visitation(const t_program* program) {
-  auto name = program->get_name();
+  const auto& name = program->get_name();
   const auto& id = program->get_path();
   if (!cache_->programs_.count(id)) {
     cache_->programs_[id] =
@@ -2015,7 +2015,7 @@ void t_mstch_cpp2_generator::generate_visitation(const t_program* program) {
 }
 
 void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
-  auto name = program->get_name();
+  const auto& name = program->get_name();
   const auto& id = program->get_path();
   if (!cache_->programs_.count(id)) {
     cache_->programs_[id] =
