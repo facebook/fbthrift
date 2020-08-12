@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include <folly/lang/Bits.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
 namespace apache {

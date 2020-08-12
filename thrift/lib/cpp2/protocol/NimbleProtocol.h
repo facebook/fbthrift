@@ -17,9 +17,9 @@
 #pragma once
 
 #include <folly/io/Cursor.h>
+#include <folly/lang/Bits.h>
 #include <folly/portability/GFlags.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
-#include <thrift/lib/cpp/util/BitwiseCast.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderWireTypeInfo.h>
 #include <thrift/lib/cpp2/protocol/nimble/Decoder.h>

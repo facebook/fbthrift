@@ -22,7 +22,6 @@
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp/transport/TTransport.h>
-#include <thrift/lib/cpp/util/BitwiseCast.h>
 
 #include <memory>
 

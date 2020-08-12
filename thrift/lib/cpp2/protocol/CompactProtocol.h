@@ -22,6 +22,7 @@
 #include <folly/FBVector.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
+#include <folly/lang/Bits.h>
 #include <folly/portability/GFlags.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>

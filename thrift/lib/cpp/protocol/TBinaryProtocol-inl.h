@@ -171,7 +171,7 @@ uint32_t TBinaryProtocolT<Transport_>::writeDouble(const double dub) {
   static_assert(sizeof(double) == sizeof(uint64_t), "");
   static_assert(std::numeric_limits<double>::is_iec559, "");
 
-  uint64_t bits = bitwise_cast<uint64_t>(dub);
+  uint64_t bits = folly::bit_cast<uint64_t>(dub);
   bits = folly::Endian::big(bits);
   this->trans_->write((uint8_t*)&bits, 8);
   return 8;
@@ -182,7 +182,7 @@ uint32_t TBinaryProtocolT<Transport_>::writeFloat(const float flt) {
   static_assert(sizeof(float) == sizeof(uint32_t), "");
   static_assert(std::numeric_limits<float>::is_iec559, "");
 
-  uint32_t bits = bitwise_cast<uint32_t>(flt);
+  uint32_t bits = folly::bit_cast<uint32_t>(flt);
   bits = folly::Endian::big(bits);
   this->trans_->write((uint8_t*)&bits, 4);
   return 4;
@@ -385,7 +385,7 @@ template <class Transport_>
 uint32_t TBinaryProtocolT<Transport_>::readI16(int16_t& i16) {
   uint8_t b[2];
   this->trans_->readAll(b, 2);
-  i16 = *bitwise_cast<int16_t*>(&b);
+  i16 = *folly::bit_cast<int16_t*>(&b);
   i16 = folly::Endian::big(i16);
   return 2;
 }
@@ -394,7 +394,7 @@ template <class Transport_>
 uint32_t TBinaryProtocolT<Transport_>::readI32(int32_t& i32) {
   uint8_t b[4];
   this->trans_->readAll(b, 4);
-  i32 = *bitwise_cast<int32_t*>(&b);
+  i32 = *folly::bit_cast<int32_t*>(&b);
   i32 = folly::Endian::big(i32);
   return 4;
 }
@@ -403,7 +403,7 @@ template <class Transport_>
 uint32_t TBinaryProtocolT<Transport_>::readI64(int64_t& i64) {
   uint8_t b[8];
   this->trans_->readAll(b, 8);
-  i64 = *bitwise_cast<int64_t*>(&b);
+  i64 = *folly::bit_cast<int64_t*>(&b);
   i64 = folly::Endian::big(i64);
   return 8;
 }
@@ -416,9 +416,9 @@ uint32_t TBinaryProtocolT<Transport_>::readDouble(double& dub) {
   uint64_t bits;
   uint8_t b[8];
   this->trans_->readAll(b, 8);
-  bits = *bitwise_cast<uint64_t*>(&b);
+  bits = *folly::bit_cast<uint64_t*>(&b);
   bits = folly::Endian::big(bits);
-  dub = bitwise_cast<double>(bits);
+  dub = folly::bit_cast<double>(bits);
   return 8;
 }
 
@@ -430,9 +430,9 @@ uint32_t TBinaryProtocolT<Transport_>::readFloat(float& flt) {
   uint32_t bits;
   uint8_t b[4];
   this->trans_->readAll(b, 4);
-  bits = *bitwise_cast<uint32_t*>(&b);
+  bits = *folly::bit_cast<uint32_t*>(&b);
   bits = folly::Endian::big(bits);
-  flt = bitwise_cast<float>(bits);
+  flt = folly::bit_cast<float>(bits);
   return 4;
 }
 

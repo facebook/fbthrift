@@ -30,7 +30,6 @@
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
-#include <thrift/lib/cpp/util/BitwiseCast.h>
 #include <thrift/lib/cpp2/CloneableIOBuf.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderWireTypeInfo.h>
 

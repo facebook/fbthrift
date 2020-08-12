@@ -134,7 +134,7 @@ uint32_t BinaryProtocolWriter::writeDouble(double dub) {
   static_assert(sizeof(double) == sizeof(uint64_t), "");
   static_assert(std::numeric_limits<double>::is_iec559, "");
 
-  uint64_t bits = bitwise_cast<uint64_t>(dub);
+  uint64_t bits = folly::bit_cast<uint64_t>(dub);
   out_.writeBE(bits);
   return sizeof(bits);
 }
@@ -143,7 +143,7 @@ uint32_t BinaryProtocolWriter::writeFloat(float flt) {
   static_assert(sizeof(float) == sizeof(uint32_t), "");
   static_assert(std::numeric_limits<float>::is_iec559, "");
 
-  uint32_t bits = bitwise_cast<uint32_t>(flt);
+  uint32_t bits = folly::bit_cast<uint32_t>(flt);
   out_.writeBE(bits);
   return sizeof(bits);
 }
@@ -483,7 +483,7 @@ void BinaryProtocolReader::readDouble(double& dub) {
   static_assert(std::numeric_limits<double>::is_iec559, "");
 
   uint64_t bits = in_.readBE<int64_t>();
-  dub = bitwise_cast<double>(bits);
+  dub = folly::bit_cast<double>(bits);
 }
 
 void BinaryProtocolReader::readFloat(float& flt) {
@@ -491,7 +491,7 @@ void BinaryProtocolReader::readFloat(float& flt) {
   static_assert(std::numeric_limits<double>::is_iec559, "");
 
   uint32_t bits = in_.readBE<int32_t>();
-  flt = bitwise_cast<float>(bits);
+  flt = folly::bit_cast<float>(bits);
 }
 
 void BinaryProtocolReader::checkStringSize(int32_t size) {

@@ -132,14 +132,14 @@ inline uint32_t NimbleProtocolWriter::writeDouble(double dub) {
   static_assert(sizeof(double) == sizeof(uint64_t), "");
   static_assert(std::numeric_limits<double>::is_iec559, "");
 
-  return writeI64(bitwise_cast<int64_t>(dub));
+  return writeI64(folly::bit_cast<int64_t>(dub));
 }
 
 inline uint32_t NimbleProtocolWriter::writeFloat(float flt) {
   static_assert(sizeof(float) == sizeof(uint32_t), "");
   static_assert(std::numeric_limits<float>::is_iec559, "");
 
-  uint32_t bits = bitwise_cast<uint32_t>(flt);
+  uint32_t bits = folly::bit_cast<uint32_t>(flt);
   encoder_.encodeContentChunk(bits);
   return 0;
 }
@@ -413,7 +413,7 @@ inline void NimbleProtocolReader::readDouble(double& dub) {
 
   int64_t bits = 0;
   readI64(bits);
-  dub = bitwise_cast<double>(bits);
+  dub = folly::bit_cast<double>(bits);
 }
 
 inline void NimbleProtocolReader::readDoubleWithContext(
@@ -424,7 +424,7 @@ inline void NimbleProtocolReader::readDoubleWithContext(
 
   int64_t bits = 0;
   readI64WithContext(bits, srs);
-  dub = bitwise_cast<double>(bits);
+  dub = folly::bit_cast<double>(bits);
 }
 
 inline void NimbleProtocolReader::readFloat(float& flt) {
@@ -432,7 +432,7 @@ inline void NimbleProtocolReader::readFloat(float& flt) {
   static_assert(std::numeric_limits<float>::is_iec559, "");
 
   uint32_t bits = decoder_.nextContentChunk();
-  flt = bitwise_cast<float>(bits);
+  flt = folly::bit_cast<float>(bits);
 }
 
 inline void NimbleProtocolReader::readFloatWithContext(
@@ -442,7 +442,7 @@ inline void NimbleProtocolReader::readFloatWithContext(
   static_assert(std::numeric_limits<float>::is_iec559, "");
 
   uint32_t bits = decoder_.nextContentChunk(srs.decoderState);
-  flt = bitwise_cast<float>(bits);
+  flt = folly::bit_cast<float>(bits);
 }
 
 template <typename StrType>
