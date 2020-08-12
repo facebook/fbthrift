@@ -445,7 +445,8 @@ uint32_t TCompactProtocolT<Transport_>::readMessageBegin(
         TProtocolException::BAD_VERSION, "Bad protocol version");
   }
 
-  messageType = (TMessageType)((versionAndType >> TYPE_SHIFT_AMOUNT) & 0x03);
+  messageType =
+      (TMessageType)((versionAndType >> TYPE_SHIFT_AMOUNT) & TYPE_SHIFTED_MASK);
   rsize += readVarint32(seqid);
   rsize += readString(name);
 

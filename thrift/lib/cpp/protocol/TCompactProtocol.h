@@ -44,6 +44,7 @@ class TCompactProtocolT
  protected:
   static const int8_t TYPE_MASK = 0xE0;
   static const int32_t TYPE_SHIFT_AMOUNT = 5;
+  static const int8_t TYPE_SHIFTED_MASK = 0x07; // 0000 0111
 
   Transport_* trans_;
 
