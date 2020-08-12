@@ -199,6 +199,14 @@ class ThreadManager::Impl : public ThreadManager,
     return tasks_.size();
   }
 
+  size_t pendingUpstreamTaskCount() const override {
+    size_t count = 0;
+    for (size_t i = 1; i < tasks_.priorities(); i += 2) {
+      count += tasks_.at_priority(i).size();
+    }
+    return count;
+  }
+
   size_t totalTaskCount() const override {
     return totalTaskCount_;
   }
@@ -633,6 +641,10 @@ class PriorityThreadManager::PriorityImpl
 
   size_t pendingTaskCount() const override {
     return sum(&ThreadManager::pendingTaskCount);
+  }
+
+  size_t pendingUpstreamTaskCount() const override {
+    return sum(&ThreadManager::pendingUpstreamTaskCount);
   }
 
   size_t pendingTaskCount(PRIORITY priority) const override {

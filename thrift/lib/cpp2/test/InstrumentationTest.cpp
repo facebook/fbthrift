@@ -41,6 +41,7 @@
 using namespace apache::thrift;
 using namespace apache::thrift::concurrency;
 using namespace apache::thrift::test;
+using namespace std::literals::chrono_literals;
 
 class RequestPayload : public folly::RequestData {
  public:
@@ -353,6 +354,38 @@ TEST_F(RequestInstrumentationTest, threadSnapshot) {
       EXPECT_NE(req.getRootRequestContextId(), onThreadReqs[0]);
     }
   }
+}
+
+TEST_F(RequestInstrumentationTest, PendingTaskCount) {
+  auto client = makeRocketClient();
+  folly::Baton baton;
+  folly::Baton baton2;
+  handler()->setCallback([&](TestInterface* ti) {
+    ti->getThreadManager()->add([] {});
+    ti->getThreadManager()->add([] {});
+    ti->getThreadManager()->add([] {});
+    baton.post();
+    baton2.wait();
+  });
+  auto firstReq = client->semifuture_runCallback();
+  baton.wait();
+  EXPECT_EQ(3, thriftServer()->getThreadManager()->pendingTaskCount());
+  EXPECT_EQ(0, thriftServer()->getThreadManager()->pendingUpstreamTaskCount());
+
+  handler()->setCallback([&](TestInterface*) {});
+  auto secondReq = client->semifuture_runCallback();
+
+  auto expire = std::chrono::steady_clock::now() + 5s;
+  while (thriftServer()->getThreadManager()->pendingUpstreamTaskCount() < 1 &&
+         std::chrono::steady_clock::now() < expire) {
+    std::this_thread::yield();
+  }
+  EXPECT_EQ(4, thriftServer()->getThreadManager()->pendingTaskCount());
+  EXPECT_EQ(1, thriftServer()->getThreadManager()->pendingUpstreamTaskCount());
+
+  baton2.post();
+  std::move(firstReq).get();
+  std::move(secondReq).get();
 }
 
 TEST_F(RequestInstrumentationTest, threadSnapshotWithShallowRC) {
@@ -724,8 +757,6 @@ void validateTimestamps(
   }
 }
 } // namespace
-
-using namespace std::literals::chrono_literals;
 
 TEST_P(TimestampsTest, Basic) {
   auto client = rocket ? makeRocketClient() : makeHeaderClient();

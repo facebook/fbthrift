@@ -99,6 +99,11 @@ class FakeThreadManager : public apache::thrift::concurrency::ThreadManager {
     return 1;
   }
 
+  size_t pendingUpstreamTaskCount() const override {
+    LOG(FATAL) << "Method not implemented in this fake object";
+    return 1;
+  }
+
   size_t totalTaskCount() const override {
     LOG(FATAL) << "Method not implemented in this fake object";
     return 1;

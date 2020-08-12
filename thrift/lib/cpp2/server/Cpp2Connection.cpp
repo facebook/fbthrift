@@ -386,7 +386,7 @@ void Cpp2Connection::requestReceived(
     timestamps.readEnd = readEnd;
     timestamps.processBegin = std::chrono::steady_clock::now();
     if (samplingStatus.isEnabledByServer() && observer) {
-      observer->queuedRequests(threadManager_->pendingTaskCount());
+      observer->queuedRequests(threadManager_->pendingUpstreamTaskCount());
       observer->activeRequests(server->getActiveRequests());
     }
   }

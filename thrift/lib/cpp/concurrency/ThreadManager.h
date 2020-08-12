@@ -137,6 +137,11 @@ class ThreadManager : public virtual folly::Executor {
   virtual size_t pendingTaskCount() const = 0;
 
   /**
+   * Gets the current number of pending tasks
+   */
+  virtual size_t pendingUpstreamTaskCount() const = 0;
+
+  /**
    * Gets the current number of pending and executing tasks
    */
   virtual size_t totalTaskCount() const = 0;
@@ -387,6 +392,9 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
     return 0;
   }
   size_t workerCount() const override {
+    return 0;
+  }
+  size_t pendingUpstreamTaskCount() const override {
     return 0;
   }
   size_t pendingTaskCount() const override {

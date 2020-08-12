@@ -381,7 +381,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
     if (auto* observer = serverConfigs_->getObserver()) {
       // Expensive operations; happens only when sampling is enabled
       if (samplingStatus.isEnabledByServer()) {
-        observer->queuedRequests(threadManager_->pendingTaskCount());
+        observer->queuedRequests(threadManager_->pendingUpstreamTaskCount());
         observer->activeRequests(serverConfigs_->getActiveRequests());
       }
     }
