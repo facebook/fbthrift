@@ -63,7 +63,7 @@ union union1 {
   2: string field_string;
   66: list<i64> field_list_i64;
   99: list<string> field_list_string;
-  5: string field_string_ref (cpp2.ref = "true")
+  5: string field_string_reference (cpp2.ref = "true")
   999: binary field_binary
   12: smallstruct field_smallstruct (cpp2.ref = "true")
 }

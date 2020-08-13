@@ -4001,6 +4001,44 @@ class NoExceptMoveUnion final  {
     return std::move(value_.i32_field);
   }
 
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<NoExceptMoveUnion, const T&> string_field_ref() const& {
+    return {*this, value_.string_field, string_field};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<NoExceptMoveUnion, const T&&> string_field_ref() const&& {
+    return {*this, value_.string_field, string_field};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<NoExceptMoveUnion, T&> string_field_ref() & {
+    return {*this, value_.string_field, string_field};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<NoExceptMoveUnion, T&&> string_field_ref() && {
+    return {*this, value_.string_field, string_field};
+  }
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<NoExceptMoveUnion, const T&> i32_field_ref() const& {
+    return {*this, value_.i32_field, i32_field};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<NoExceptMoveUnion, const T&&> i32_field_ref() const&& {
+    return {*this, value_.i32_field, i32_field};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<NoExceptMoveUnion, T&> i32_field_ref() & {
+    return {*this, value_.i32_field, i32_field};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<NoExceptMoveUnion, T&&> i32_field_ref() && {
+    return {*this, value_.i32_field, i32_field};
+  }
   Type getType() const { return type_; }
 
   template <class Protocol_>
@@ -4011,6 +4049,8 @@ class NoExceptMoveUnion final  {
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+ private:
+  template<class, class> friend class ::apache::thrift::union_field_ref;
  protected:
   template <class T>
   void destruct(T &val) {

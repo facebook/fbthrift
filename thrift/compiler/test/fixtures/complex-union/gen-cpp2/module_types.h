@@ -577,6 +577,120 @@ class ComplexUnion final  {
     return std::move(value_.stringRef);
   }
 
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, const T&> intValue_ref() const& {
+    return {*this, value_.intValue, intValue};
+  }
+
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, const T&&> intValue_ref() const&& {
+    return {*this, value_.intValue, intValue};
+  }
+
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, T&> intValue_ref() & {
+    return {*this, value_.intValue, intValue};
+  }
+
+  template <typename..., typename T = int64_t>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, T&&> intValue_ref() && {
+    return {*this, value_.intValue, intValue};
+  }
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, const T&> stringValue_ref() const& {
+    return {*this, value_.stringValue, stringValue};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, const T&&> stringValue_ref() const&& {
+    return {*this, value_.stringValue, stringValue};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, T&> stringValue_ref() & {
+    return {*this, value_.stringValue, stringValue};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, T&&> stringValue_ref() && {
+    return {*this, value_.stringValue, stringValue};
+  }
+  template <typename..., typename T = ::std::vector<int64_t>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, const T&> intListValue_ref() const& {
+    return {*this, value_.intListValue, intListValue};
+  }
+
+  template <typename..., typename T = ::std::vector<int64_t>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, const T&&> intListValue_ref() const&& {
+    return {*this, value_.intListValue, intListValue};
+  }
+
+  template <typename..., typename T = ::std::vector<int64_t>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, T&> intListValue_ref() & {
+    return {*this, value_.intListValue, intListValue};
+  }
+
+  template <typename..., typename T = ::std::vector<int64_t>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, T&&> intListValue_ref() && {
+    return {*this, value_.intListValue, intListValue};
+  }
+  template <typename..., typename T = ::std::vector<::std::string>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, const T&> stringListValue_ref() const& {
+    return {*this, value_.stringListValue, stringListValue};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::string>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, const T&&> stringListValue_ref() const&& {
+    return {*this, value_.stringListValue, stringListValue};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::string>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, T&> stringListValue_ref() & {
+    return {*this, value_.stringListValue, stringListValue};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::string>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, T&&> stringListValue_ref() && {
+    return {*this, value_.stringListValue, stringListValue};
+  }
+  template <typename..., typename T =  ::cpp2::containerTypedef>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, const T&> typedefValue_ref() const& {
+    return {*this, value_.typedefValue, typedefValue};
+  }
+
+  template <typename..., typename T =  ::cpp2::containerTypedef>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, const T&&> typedefValue_ref() const&& {
+    return {*this, value_.typedefValue, typedefValue};
+  }
+
+  template <typename..., typename T =  ::cpp2::containerTypedef>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, T&> typedefValue_ref() & {
+    return {*this, value_.typedefValue, typedefValue};
+  }
+
+  template <typename..., typename T =  ::cpp2::containerTypedef>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, T&&> typedefValue_ref() && {
+    return {*this, value_.typedefValue, typedefValue};
+  }
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, const T&> stringRef_ref() const& {
+    return {*this, value_.stringRef, stringRef};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, const T&&> stringRef_ref() const&& {
+    return {*this, value_.stringRef, stringRef};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, T&> stringRef_ref() & {
+    return {*this, value_.stringRef, stringRef};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ComplexUnion, T&&> stringRef_ref() && {
+    return {*this, value_.stringRef, stringRef};
+  }
   Type getType() const { return type_; }
 
   template <class Protocol_>
@@ -587,6 +701,8 @@ class ComplexUnion final  {
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+ private:
+  template<class, class> friend class ::apache::thrift::union_field_ref;
  protected:
   template <class T>
   void destruct(T &val) {
@@ -832,6 +948,44 @@ class ListUnion final  {
     return std::move(value_.stringListValue);
   }
 
+  template <typename..., typename T = ::std::vector<int64_t>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ListUnion, const T&> intListValue_ref() const& {
+    return {*this, value_.intListValue, intListValue};
+  }
+
+  template <typename..., typename T = ::std::vector<int64_t>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ListUnion, const T&&> intListValue_ref() const&& {
+    return {*this, value_.intListValue, intListValue};
+  }
+
+  template <typename..., typename T = ::std::vector<int64_t>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ListUnion, T&> intListValue_ref() & {
+    return {*this, value_.intListValue, intListValue};
+  }
+
+  template <typename..., typename T = ::std::vector<int64_t>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ListUnion, T&&> intListValue_ref() && {
+    return {*this, value_.intListValue, intListValue};
+  }
+  template <typename..., typename T = ::std::vector<::std::string>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ListUnion, const T&> stringListValue_ref() const& {
+    return {*this, value_.stringListValue, stringListValue};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::string>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ListUnion, const T&&> stringListValue_ref() const&& {
+    return {*this, value_.stringListValue, stringListValue};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::string>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ListUnion, T&> stringListValue_ref() & {
+    return {*this, value_.stringListValue, stringListValue};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::string>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ListUnion, T&&> stringListValue_ref() && {
+    return {*this, value_.stringListValue, stringListValue};
+  }
   Type getType() const { return type_; }
 
   template <class Protocol_>
@@ -842,6 +996,8 @@ class ListUnion final  {
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+ private:
+  template<class, class> friend class ::apache::thrift::union_field_ref;
  protected:
   template <class T>
   void destruct(T &val) {
@@ -1087,6 +1243,44 @@ class DataUnion final  {
     return std::move(value_.stringData);
   }
 
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<DataUnion, const T&> binaryData_ref() const& {
+    return {*this, value_.binaryData, binaryData};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<DataUnion, const T&&> binaryData_ref() const&& {
+    return {*this, value_.binaryData, binaryData};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<DataUnion, T&> binaryData_ref() & {
+    return {*this, value_.binaryData, binaryData};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<DataUnion, T&&> binaryData_ref() && {
+    return {*this, value_.binaryData, binaryData};
+  }
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<DataUnion, const T&> stringData_ref() const& {
+    return {*this, value_.stringData, stringData};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<DataUnion, const T&&> stringData_ref() const&& {
+    return {*this, value_.stringData, stringData};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<DataUnion, T&> stringData_ref() & {
+    return {*this, value_.stringData, stringData};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<DataUnion, T&&> stringData_ref() && {
+    return {*this, value_.stringData, stringData};
+  }
   Type getType() const { return type_; }
 
   template <class Protocol_>
@@ -1097,6 +1291,8 @@ class DataUnion final  {
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+ private:
+  template<class, class> friend class ::apache::thrift::union_field_ref;
  protected:
   template <class T>
   void destruct(T &val) {
@@ -1537,6 +1733,44 @@ class ValUnion final  {
     return std::move(value_.v2);
   }
 
+  template <typename..., typename T =  ::cpp2::Val>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ValUnion, const T&> v1_ref() const& {
+    return {*this, value_.v1, v1};
+  }
+
+  template <typename..., typename T =  ::cpp2::Val>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ValUnion, const T&&> v1_ref() const&& {
+    return {*this, value_.v1, v1};
+  }
+
+  template <typename..., typename T =  ::cpp2::Val>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ValUnion, T&> v1_ref() & {
+    return {*this, value_.v1, v1};
+  }
+
+  template <typename..., typename T =  ::cpp2::Val>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ValUnion, T&&> v1_ref() && {
+    return {*this, value_.v1, v1};
+  }
+  template <typename..., typename T =  ::cpp2::Val>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ValUnion, const T&> v2_ref() const& {
+    return {*this, value_.v2, v2};
+  }
+
+  template <typename..., typename T =  ::cpp2::Val>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ValUnion, const T&&> v2_ref() const&& {
+    return {*this, value_.v2, v2};
+  }
+
+  template <typename..., typename T =  ::cpp2::Val>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ValUnion, T&> v2_ref() & {
+    return {*this, value_.v2, v2};
+  }
+
+  template <typename..., typename T =  ::cpp2::Val>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<ValUnion, T&&> v2_ref() && {
+    return {*this, value_.v2, v2};
+  }
   Type getType() const { return type_; }
 
   template <class Protocol_>
@@ -1547,6 +1781,8 @@ class ValUnion final  {
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+ private:
+  template<class, class> friend class ::apache::thrift::union_field_ref;
  protected:
   template <class T>
   void destruct(T &val) {
@@ -1793,6 +2029,44 @@ class VirtualComplexUnion  {
     return std::move(value_.thingTwo);
   }
 
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<VirtualComplexUnion, const T&> thingOne_ref() const& {
+    return {*this, value_.thingOne, thingOne};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<VirtualComplexUnion, const T&&> thingOne_ref() const&& {
+    return {*this, value_.thingOne, thingOne};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<VirtualComplexUnion, T&> thingOne_ref() & {
+    return {*this, value_.thingOne, thingOne};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<VirtualComplexUnion, T&&> thingOne_ref() && {
+    return {*this, value_.thingOne, thingOne};
+  }
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<VirtualComplexUnion, const T&> thingTwo_ref() const& {
+    return {*this, value_.thingTwo, thingTwo};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<VirtualComplexUnion, const T&&> thingTwo_ref() const&& {
+    return {*this, value_.thingTwo, thingTwo};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<VirtualComplexUnion, T&> thingTwo_ref() & {
+    return {*this, value_.thingTwo, thingTwo};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<VirtualComplexUnion, T&&> thingTwo_ref() && {
+    return {*this, value_.thingTwo, thingTwo};
+  }
   Type getType() const { return type_; }
 
   template <class Protocol_>
@@ -1803,6 +2077,8 @@ class VirtualComplexUnion  {
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+ private:
+  template<class, class> friend class ::apache::thrift::union_field_ref;
  protected:
   template <class T>
   void destruct(T &val) {
@@ -2059,6 +2335,25 @@ class NonCopyableUnion final  {
     return std::move(value_.s);
   }
 
+  template <typename..., typename T =  ::cpp2::NonCopyableStruct>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<NonCopyableUnion, const T&> s_ref() const& {
+    return {*this, value_.s, s};
+  }
+
+  template <typename..., typename T =  ::cpp2::NonCopyableStruct>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<NonCopyableUnion, const T&&> s_ref() const&& {
+    return {*this, value_.s, s};
+  }
+
+  template <typename..., typename T =  ::cpp2::NonCopyableStruct>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<NonCopyableUnion, T&> s_ref() & {
+    return {*this, value_.s, s};
+  }
+
+  template <typename..., typename T =  ::cpp2::NonCopyableStruct>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<NonCopyableUnion, T&&> s_ref() && {
+    return {*this, value_.s, s};
+  }
   Type getType() const { return type_; }
 
   template <class Protocol_>
@@ -2069,6 +2364,8 @@ class NonCopyableUnion final  {
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+ private:
+  template<class, class> friend class ::apache::thrift::union_field_ref;
  protected:
   template <class T>
   void destruct(T &val) {

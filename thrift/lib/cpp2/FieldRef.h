@@ -17,6 +17,7 @@
 #pragma once
 
 #include <initializer_list>
+#include <memory>
 #include <type_traits>
 
 #if (!defined(_MSC_VER) && __has_include(<optional>)) ||        \
@@ -791,6 +792,70 @@ template <typename T, typename U>
 bool operator>=(const T& lhs, required_field_ref<U> rhs) {
   return lhs >= *rhs;
 }
+
+// A reference to an union field of the possibly const-qualified type
+template <typename Union, typename T>
+class union_field_ref {
+  static_assert(std::is_reference<T>::value, "not a reference");
+
+  template <typename, typename>
+  friend class union_field_ref;
+
+  using union_type = typename Union::Type;
+
+ public:
+  using value_type = std::remove_reference_t<T>;
+  using reference_type = T;
+
+  FOLLY_ERASE union_field_ref(
+      Union& union_value,
+      reference_type value,
+      const union_type& field_type) noexcept
+      : union_value_(union_value), value_(value), field_type_(field_type) {}
+
+  FOLLY_ERASE union_field_ref& operator=(const value_type& other) {
+    if (has_value()) {
+      value_ = other;
+    } else {
+      emplace(other);
+    }
+    return *this;
+  }
+
+  FOLLY_ERASE bool has_value() const {
+    return union_value_.getType() == field_type_;
+  }
+
+  FOLLY_ERASE explicit operator bool() const {
+    return has_value();
+  }
+
+  // Returns a reference to the value if this is union's active field,
+  // bad_field_access otherwise.
+  FOLLY_ERASE reference_type value() const {
+    if (!has_value()) {
+      detail::throw_on_bad_field_access();
+    }
+    return static_cast<reference_type>(value_);
+  }
+
+  FOLLY_ERASE reference_type operator*() const {
+    return value();
+  }
+
+  template <typename... Args>
+  FOLLY_ERASE value_type& emplace(Args&&... args) {
+    union_value_.__clear();
+    ::new (std::addressof(value_)) value_type(static_cast<Args&&>(args)...);
+    union_value_.type_ = field_type_;
+    return value_;
+  }
+
+ private:
+  Union& union_value_;
+  value_type& value_;
+  const union_type field_type_;
+};
 
 } // namespace thrift
 } // namespace apache

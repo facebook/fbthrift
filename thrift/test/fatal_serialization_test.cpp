@@ -432,11 +432,11 @@ TYPED_TEST(UnionTest, can_read_strings) {
   expect_same_serialized_size(this->a, this->writer);
 }
 TYPED_TEST(UnionTest, can_read_refstrings) {
-  this->a.set_field_string_ref("also reference strings!");
+  this->a.set_field_string_reference("also reference strings!");
   this->xfer();
   EXPECT_EQ(
-      *(this->b.get_field_string_ref().get()),
-      *(this->a.get_field_string_ref().get()));
+      *(this->b.get_field_string_reference().get()),
+      *(this->a.get_field_string_reference().get()));
   expect_same_serialized_size(this->a, this->writer);
 }
 TYPED_TEST(UnionTest, can_read_iobufs) {
