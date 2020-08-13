@@ -33,13 +33,13 @@ Thrift has a set of protocols for serialization that may be used in different la
 
 ### An RPC Framework
 
-Thrift has a framework to frame messages to send between clients and servers, and to call application-defined functions when receiving messages in different languages.
+Thrift has a framework to frame messages to send between clients and servers and to call application-defined functions when receiving messages in different languages.
 
 There are several key goals for these components:
 * Ease of use:
-  Thrift takes care of the boilerplate of serialization and RPC, and enables the developer to focus on the schema of the system's serializable types and on the interfaces of system's RPC services.
+  Thrift takes care of the boilerplate of serialization and RPC and enables the developer to focus on the schema of the system's serializable types and on the interfaces of the system's RPC services.
 
-* Cross language support:
+* Cross-language support:
   Thrift enables intercommunication between different languages. For example, a Python client communicating with a C++ server.
 
 * Performance:
@@ -85,8 +85,7 @@ Please install the following dependencies before building Facebook Thrift:
 
 This will create:
 
-* `thrift/bin/thrift1`: The Thrift compiler binary to generate client and
-  server code.
+* `thrift/bin/thrift1`: The Thrift compiler binary to generate client and server code.
 * `thrift/lib/libthriftcpp2.so`: Runtime library for clients and servers.
 
 ### Thrift Files
@@ -118,7 +117,7 @@ Information regarding C++ Static Reflection support can be found under the [stat
 
 ## C++ Server Metrics
 
-To collect runtime stats from a Thrift server, e.g. the number of active requests/connections, C++ Thrift server supports an observer API which installs callbacks at a set of specific execution points in the server.
+To collect runtime stats from a Thrift server, e.g. the number of active requests/connections, the C++ Thrift server supports an observer API that installs callbacks at a set of specific execution points in the server.
 
 To expose collected metrics out of the server process, one way is to use `fb303` interfaces, see [fb303 Github repo](https://github.com/facebook/fb303).
 
