@@ -133,6 +133,51 @@ class t_mstch_swift_generator : public t_mstch_generator {
     }
   }
 
+  /*
+   * Generate Service Client implementation - Sync & Async. Writes
+   * output to package_dir
+   */
+  template <typename T, typename Generator, typename Cache>
+  void generate_client(
+      Generator const* generator,
+      Cache& c,
+      const t_program* program,
+      const std::vector<T*>& services) {
+    const auto& id = program->get_path();
+    if (!cache_->programs_.count(id)) {
+      cache_->programs_[id] = generators_->program_generator_->generate(
+          program, generators_, cache_);
+    }
+    auto package_dir = boost::filesystem::path{
+        java::package_to_path(get_namespace_or_default(*program))};
+
+    // Iterate through services
+    for (const T* service : services) {
+      auto service_name = java::mangle_java_name(service->get_name(), true);
+      // Generate sync client
+      auto sync_filename = service_name + "ClientImpl.java";
+      const auto& sync_service_id = id + service->get_name() + "Client";
+      if (!c.count(sync_service_id)) {
+        c[sync_service_id] = generator->generate(service, generators_, cache_);
+      }
+
+      render_to_file(
+          c[sync_service_id], "ServiceClient", package_dir / sync_filename);
+
+      // Generate async client
+      auto async_filename = service_name + "AsyncClientImpl.java";
+      const auto& async_service_id = id + service->get_name() + "AsyncClient";
+      if (!c.count(async_service_id)) {
+        c[async_service_id] = generator->generate(service, generators_, cache_);
+      }
+
+      render_to_file(
+          c[async_service_id],
+          "ServiceAsyncClient",
+          package_dir / async_filename);
+    }
+  }
+
   void generate_constants(const t_program* program) {
     if (program->get_consts().empty()) {
       // Only generate Constants.java if we actually have constants
@@ -964,6 +1009,11 @@ void t_mstch_swift_generator::generate_program() {
       get_program(),
       get_program()->get_services(),
       "Service");
+  generate_client(
+      generators_->service_generator_.get(),
+      cache_->services_,
+      get_program(),
+      get_program()->get_services());
   generate_items(
       generators_->enum_generator_.get(),
       cache_->enums_,
