@@ -85,7 +85,8 @@ Please install the following dependencies before building Facebook Thrift:
 
 This will create:
 
-* `thrift/bin/thrift1`: The Thrift compiler binary to generate client and server code.
+* `thrift/bin/thrift1`: The Thrift compiler binary to generate client and
+  server code.
 * `thrift/lib/libthriftcpp2.so`: Runtime library for clients and servers.
 
 ### Thrift Files
