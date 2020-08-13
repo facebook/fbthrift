@@ -101,7 +101,7 @@ public final class ComplexFieldNames extends java.lang.RuntimeException {
         
     @Override
     public String getMessage() {
-      return internal_error_message;
+      return internalErrorMessage;
     }
     
     public static ComplexFieldNames read0(TProtocol oprot) throws TException {
