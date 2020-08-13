@@ -354,3 +354,251 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
 
 
 
+@__cython.auto_pickle(False)
+cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
+
+    def __init__(
+        ComplexFieldNames self,
+        str error_message=None,
+        str internal_error_message=None
+    ):
+        self._cpp_obj = move(ComplexFieldNames._make_instance(
+          NULL,
+          NULL,
+          error_message,
+          internal_error_message,
+        ))
+        _builtins.Exception.__init__(self, self.error_message, self.internal_error_message)
+
+
+    @staticmethod
+    cdef unique_ptr[cComplexFieldNames] _make_instance(
+        cComplexFieldNames* base_instance,
+        bint* __isNOTSET,
+        str error_message ,
+        str internal_error_message 
+    ) except *:
+        cdef unique_ptr[cComplexFieldNames] c_inst
+        if base_instance:
+            c_inst = make_unique[cComplexFieldNames](deref(base_instance))
+        else:
+            c_inst = make_unique[cComplexFieldNames]()
+
+        if error_message is not None:
+            deref(c_inst).error_message_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(error_message.encode('utf-8'))))
+            deref(c_inst).__isset.error_message = True
+        if internal_error_message is not None:
+            deref(c_inst).internal_error_message_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(internal_error_message.encode('utf-8'))))
+            deref(c_inst).__isset.internal_error_message = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("ComplexFieldNames", {
+          "error_message": cpp_obj.error_message_ref().has_value(),
+          "internal_error_message": cpp_obj.internal_error_message_ref().has_value(),
+        })
+
+    def __iter__(self):
+        yield 'error_message', self.error_message
+        yield 'internal_error_message', self.internal_error_message
+
+    def __bool__(self):
+        return True
+
+    @staticmethod
+    cdef create(shared_ptr[cComplexFieldNames] cpp_obj):
+        inst = <ComplexFieldNames>ComplexFieldNames.__new__(ComplexFieldNames, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
+        inst._cpp_obj = move_shared(cpp_obj)
+        _builtins.Exception.__init__(inst, inst.error_message, inst.internal_error_message)
+        return inst
+
+    @property
+    def error_message(self):
+
+        return (<bytes>deref(self._cpp_obj).error_message_ref().value()).decode('UTF-8')
+
+    @property
+    def internal_error_message(self):
+
+        return (<bytes>deref(self._cpp_obj).internal_error_message_ref().value()).decode('UTF-8')
+
+
+    def __hash__(ComplexFieldNames self):
+        return super().__hash__()
+
+    def __str__(ComplexFieldNames self):
+        field = self.internal_error_message
+        if field is None:
+            return str(field)
+        return field
+
+    def __repr__(ComplexFieldNames self):
+        return f'ComplexFieldNames(error_message={repr(self.error_message)}, internal_error_message={repr(self.internal_error_message)})'
+    def __copy__(ComplexFieldNames self):
+        cdef shared_ptr[cComplexFieldNames] cpp_obj = make_shared[cComplexFieldNames](
+            deref(self._cpp_obj)
+        )
+        return ComplexFieldNames.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, ComplexFieldNames) and
+                isinstance(other, ComplexFieldNames)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cComplexFieldNames* cself = (<ComplexFieldNames>self)._cpp_obj.get()
+        cdef cComplexFieldNames* cother = (<ComplexFieldNames>other)._cpp_obj.get()
+        if cop == Py_EQ:
+            return deref(cself) == deref(cother)
+        elif cop == Py_NE:
+            return deref(cself) != deref(cother)
+        elif cop == Py_LT:
+            return deref(cself) < deref(cother)
+        elif cop == Py_LE:
+            return deref(cself) <= deref(cother)
+        elif cop == Py_GT:
+            return deref(cself) > deref(cother)
+        elif cop == Py_GE:
+            return deref(cself) >= deref(cother)
+        else:
+            return NotImplemented
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__ComplexFieldNames()
+
+
+
+@__cython.auto_pickle(False)
+cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
+
+    def __init__(
+        CustomFieldNames self,
+        str error_message=None,
+        str internal_error_message=None
+    ):
+        self._cpp_obj = move(CustomFieldNames._make_instance(
+          NULL,
+          NULL,
+          error_message,
+          internal_error_message,
+        ))
+        _builtins.Exception.__init__(self, self.error_message, self.internal_error_message)
+
+
+    @staticmethod
+    cdef unique_ptr[cCustomFieldNames] _make_instance(
+        cCustomFieldNames* base_instance,
+        bint* __isNOTSET,
+        str error_message ,
+        str internal_error_message 
+    ) except *:
+        cdef unique_ptr[cCustomFieldNames] c_inst
+        if base_instance:
+            c_inst = make_unique[cCustomFieldNames](deref(base_instance))
+        else:
+            c_inst = make_unique[cCustomFieldNames]()
+
+        if error_message is not None:
+            deref(c_inst).error_message_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(error_message.encode('utf-8'))))
+            deref(c_inst).__isset.error_message = True
+        if internal_error_message is not None:
+            deref(c_inst).internal_error_message_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(internal_error_message.encode('utf-8'))))
+            deref(c_inst).__isset.internal_error_message = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("CustomFieldNames", {
+          "error_message": cpp_obj.error_message_ref().has_value(),
+          "internal_error_message": cpp_obj.internal_error_message_ref().has_value(),
+        })
+
+    def __iter__(self):
+        yield 'error_message', self.error_message
+        yield 'internal_error_message', self.internal_error_message
+
+    def __bool__(self):
+        return True
+
+    @staticmethod
+    cdef create(shared_ptr[cCustomFieldNames] cpp_obj):
+        inst = <CustomFieldNames>CustomFieldNames.__new__(CustomFieldNames, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
+        inst._cpp_obj = move_shared(cpp_obj)
+        _builtins.Exception.__init__(inst, inst.error_message, inst.internal_error_message)
+        return inst
+
+    @property
+    def error_message(self):
+
+        return (<bytes>deref(self._cpp_obj).error_message_ref().value()).decode('UTF-8')
+
+    @property
+    def internal_error_message(self):
+
+        return (<bytes>deref(self._cpp_obj).internal_error_message_ref().value()).decode('UTF-8')
+
+
+    def __hash__(CustomFieldNames self):
+        return super().__hash__()
+
+    def __str__(CustomFieldNames self):
+        field = self.internal_error_message
+        if field is None:
+            return str(field)
+        return field
+
+    def __repr__(CustomFieldNames self):
+        return f'CustomFieldNames(error_message={repr(self.error_message)}, internal_error_message={repr(self.internal_error_message)})'
+    def __copy__(CustomFieldNames self):
+        cdef shared_ptr[cCustomFieldNames] cpp_obj = make_shared[cCustomFieldNames](
+            deref(self._cpp_obj)
+        )
+        return CustomFieldNames.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, CustomFieldNames) and
+                isinstance(other, CustomFieldNames)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cCustomFieldNames* cself = (<CustomFieldNames>self)._cpp_obj.get()
+        cdef cCustomFieldNames* cother = (<CustomFieldNames>other)._cpp_obj.get()
+        if cop == Py_EQ:
+            return deref(cself) == deref(cother)
+        elif cop == Py_NE:
+            return deref(cself) != deref(cother)
+        elif cop == Py_LT:
+            return deref(cself) < deref(cother)
+        elif cop == Py_LE:
+            return deref(cself) <= deref(cother)
+        elif cop == Py_GT:
+            return deref(cself) > deref(cother)
+        elif cop == Py_GE:
+            return deref(cself) >= deref(cother)
+        else:
+            return NotImplemented
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__CustomFieldNames()
+
+
+

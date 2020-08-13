@@ -23,6 +23,18 @@ pub mod types {
         pub sonnet: ::std::option::Option<::std::string::String>,
     }
 
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct ComplexFieldNames {
+        pub error_message: ::std::string::String,
+        pub internal_error_message: ::std::string::String,
+    }
+
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct CustomFieldNames {
+        pub error_message: ::std::string::String,
+        pub internal_error_message: ::std::string::String,
+    }
+
     impl ::std::default::Default for self::Banal {
         fn default() -> Self {
             Self {
@@ -172,6 +184,126 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 sonnet: field_sonnet,
+            })
+        }
+    }
+
+
+    impl ::std::default::Default for self::ComplexFieldNames {
+        fn default() -> Self {
+            Self {
+                error_message: ::std::default::Default::default(),
+                internal_error_message: ::std::default::Default::default(),
+            }
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::ComplexFieldNames {}
+    unsafe impl ::std::marker::Sync for self::ComplexFieldNames {}
+
+    impl ::fbthrift::GetTType for self::ComplexFieldNames {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::ComplexFieldNames
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("ComplexFieldNames");
+            p.write_field_begin("error_message", ::fbthrift::TType::String, 1);
+            ::fbthrift::Serialize::write(&self.error_message, p);
+            p.write_field_end();
+            p.write_field_begin("internal_error_message", ::fbthrift::TType::String, 2);
+            ::fbthrift::Serialize::write(&self.internal_error_message, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::ComplexFieldNames
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            let mut field_error_message = ::std::option::Option::None;
+            let mut field_internal_error_message = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| ())?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::String, 1) => field_error_message = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 2) => field_internal_error_message = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                error_message: field_error_message.unwrap_or_default(),
+                internal_error_message: field_internal_error_message.unwrap_or_default(),
+            })
+        }
+    }
+
+
+    impl ::std::default::Default for self::CustomFieldNames {
+        fn default() -> Self {
+            Self {
+                error_message: ::std::default::Default::default(),
+                internal_error_message: ::std::default::Default::default(),
+            }
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::CustomFieldNames {}
+    unsafe impl ::std::marker::Sync for self::CustomFieldNames {}
+
+    impl ::fbthrift::GetTType for self::CustomFieldNames {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::CustomFieldNames
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("CustomFieldNames");
+            p.write_field_begin("error_message", ::fbthrift::TType::String, 1);
+            ::fbthrift::Serialize::write(&self.error_message, p);
+            p.write_field_end();
+            p.write_field_begin("internal_error_message", ::fbthrift::TType::String, 2);
+            ::fbthrift::Serialize::write(&self.internal_error_message, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::CustomFieldNames
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            let mut field_error_message = ::std::option::Option::None;
+            let mut field_internal_error_message = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| ())?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::String, 1) => field_error_message = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 2) => field_internal_error_message = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                error_message: field_error_message.unwrap_or_default(),
+                internal_error_message: field_internal_error_message.unwrap_or_default(),
             })
         }
     }

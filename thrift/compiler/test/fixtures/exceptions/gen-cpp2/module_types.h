@@ -15,6 +15,10 @@ namespace thrift {
 namespace tag {
 struct message;
 struct sonnet;
+struct error_message;
+struct internal_error_message;
+struct error_message;
+struct internal_error_message;
 } // namespace tag
 namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_message
@@ -24,6 +28,22 @@ APACHE_THRIFT_DEFINE_ACCESSOR(message);
 #ifndef APACHE_THRIFT_ACCESSOR_sonnet
 #define APACHE_THRIFT_ACCESSOR_sonnet
 APACHE_THRIFT_DEFINE_ACCESSOR(sonnet);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_error_message
+#define APACHE_THRIFT_ACCESSOR_error_message
+APACHE_THRIFT_DEFINE_ACCESSOR(error_message);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_internal_error_message
+#define APACHE_THRIFT_ACCESSOR_internal_error_message
+APACHE_THRIFT_DEFINE_ACCESSOR(internal_error_message);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_error_message
+#define APACHE_THRIFT_ACCESSOR_error_message
+APACHE_THRIFT_DEFINE_ACCESSOR(error_message);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_internal_error_message
+#define APACHE_THRIFT_ACCESSOR_internal_error_message
+APACHE_THRIFT_DEFINE_ACCESSOR(internal_error_message);
 #endif
 } // namespace detail
 } // namespace thrift
@@ -40,6 +60,8 @@ namespace cpp2 {
 class Banal;
 class Fiery;
 class Serious;
+class ComplexFieldNames;
+class CustomFieldNames;
 } // cpp2
 // END forward_declare
 // BEGIN typedefs
@@ -372,6 +394,352 @@ void swap(Serious& a, Serious& b);
 
 template <class Protocol_>
 uint32_t Serious::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+class ComplexFieldNames final : public apache::thrift::TException {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
+ public:
+  using __fbthrift_cpp2_type = ComplexFieldNames;
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  ComplexFieldNames() {}
+
+  explicit ComplexFieldNames(const std::string& __message) :
+      internal_error_message(__message) {}
+
+  explicit ComplexFieldNames(std::string&& __message) :
+      internal_error_message(std::move(__message)) {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  ComplexFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg);
+
+  ComplexFieldNames(ComplexFieldNames&&) = default;
+
+  ComplexFieldNames(const ComplexFieldNames&) = default;
+
+
+  ComplexFieldNames& operator=(ComplexFieldNames&&) = default;
+
+  ComplexFieldNames& operator=(const ComplexFieldNames&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  void __clear();
+ public:
+  ::std::string error_message;
+ public:
+  ::std::string internal_error_message;
+
+ public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
+  struct __isset {
+    bool error_message;
+    bool internal_error_message;
+  } __isset = {};
+  bool operator==(const ComplexFieldNames& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const ComplexFieldNames& __x, const ComplexFieldNames& __y) {
+    return !(__x == __y);
+  }
+#endif
+  bool operator<(const ComplexFieldNames& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const ComplexFieldNames& __x, const ComplexFieldNames& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const ComplexFieldNames& __x, const ComplexFieldNames& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const ComplexFieldNames& __x, const ComplexFieldNames& __y) {
+    return !(__x < __y);
+  }
+#endif
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> error_message_ref() const& {
+    return {this->error_message, __isset.error_message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> error_message_ref() const&& {
+    return {std::move(this->error_message), __isset.error_message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> error_message_ref() & {
+    return {this->error_message, __isset.error_message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> error_message_ref() && {
+    return {std::move(this->error_message), __isset.error_message};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> internal_error_message_ref() const& {
+    return {this->internal_error_message, __isset.internal_error_message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> internal_error_message_ref() const&& {
+    return {std::move(this->internal_error_message), __isset.internal_error_message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> internal_error_message_ref() & {
+    return {this->internal_error_message, __isset.internal_error_message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> internal_error_message_ref() && {
+    return {std::move(this->internal_error_message), __isset.internal_error_message};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+  const ::std::string& get_error_message() const& {
+    return error_message;
+  }
+
+  ::std::string get_error_message() && {
+    return std::move(error_message);
+  }
+
+  template <typename T_ComplexFieldNames_error_message_struct_setter = ::std::string>
+  ::std::string& set_error_message(T_ComplexFieldNames_error_message_struct_setter&& error_message_) {
+    error_message = std::forward<T_ComplexFieldNames_error_message_struct_setter>(error_message_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.error_message = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return error_message;
+  }
+
+  const ::std::string& get_internal_error_message() const& {
+    return internal_error_message;
+  }
+
+  ::std::string get_internal_error_message() && {
+    return std::move(internal_error_message);
+  }
+
+  template <typename T_ComplexFieldNames_internal_error_message_struct_setter = ::std::string>
+  ::std::string& set_internal_error_message(T_ComplexFieldNames_internal_error_message_struct_setter&& internal_error_message_) {
+    internal_error_message = std::forward<T_ComplexFieldNames_internal_error_message_struct_setter>(internal_error_message_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.internal_error_message = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return internal_error_message;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+  const char* what() const noexcept override {
+    return internal_error_message.c_str();
+  }
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< ComplexFieldNames >;
+};
+
+void swap(ComplexFieldNames& a, ComplexFieldNames& b);
+
+template <class Protocol_>
+uint32_t ComplexFieldNames::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+class CustomFieldNames final : public apache::thrift::TException {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
+ public:
+  using __fbthrift_cpp2_type = CustomFieldNames;
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  CustomFieldNames() {}
+
+  explicit CustomFieldNames(const std::string& __message) :
+      internal_error_message(__message) {}
+
+  explicit CustomFieldNames(std::string&& __message) :
+      internal_error_message(std::move(__message)) {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  CustomFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg);
+
+  CustomFieldNames(CustomFieldNames&&) = default;
+
+  CustomFieldNames(const CustomFieldNames&) = default;
+
+
+  CustomFieldNames& operator=(CustomFieldNames&&) = default;
+
+  CustomFieldNames& operator=(const CustomFieldNames&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  void __clear();
+ public:
+  ::std::string error_message;
+ public:
+  ::std::string internal_error_message;
+
+ public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
+  struct __isset {
+    bool error_message;
+    bool internal_error_message;
+  } __isset = {};
+  bool operator==(const CustomFieldNames& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const CustomFieldNames& __x, const CustomFieldNames& __y) {
+    return !(__x == __y);
+  }
+#endif
+  bool operator<(const CustomFieldNames& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const CustomFieldNames& __x, const CustomFieldNames& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const CustomFieldNames& __x, const CustomFieldNames& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const CustomFieldNames& __x, const CustomFieldNames& __y) {
+    return !(__x < __y);
+  }
+#endif
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> error_message_ref() const& {
+    return {this->error_message, __isset.error_message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> error_message_ref() const&& {
+    return {std::move(this->error_message), __isset.error_message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> error_message_ref() & {
+    return {this->error_message, __isset.error_message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> error_message_ref() && {
+    return {std::move(this->error_message), __isset.error_message};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> internal_error_message_ref() const& {
+    return {this->internal_error_message, __isset.internal_error_message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> internal_error_message_ref() const&& {
+    return {std::move(this->internal_error_message), __isset.internal_error_message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> internal_error_message_ref() & {
+    return {this->internal_error_message, __isset.internal_error_message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> internal_error_message_ref() && {
+    return {std::move(this->internal_error_message), __isset.internal_error_message};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+  const ::std::string& get_error_message() const& {
+    return error_message;
+  }
+
+  ::std::string get_error_message() && {
+    return std::move(error_message);
+  }
+
+  template <typename T_CustomFieldNames_error_message_struct_setter = ::std::string>
+  ::std::string& set_error_message(T_CustomFieldNames_error_message_struct_setter&& error_message_) {
+    error_message = std::forward<T_CustomFieldNames_error_message_struct_setter>(error_message_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.error_message = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return error_message;
+  }
+
+  const ::std::string& get_internal_error_message() const& {
+    return internal_error_message;
+  }
+
+  ::std::string get_internal_error_message() && {
+    return std::move(internal_error_message);
+  }
+
+  template <typename T_CustomFieldNames_internal_error_message_struct_setter = ::std::string>
+  ::std::string& set_internal_error_message(T_CustomFieldNames_internal_error_message_struct_setter&& internal_error_message_) {
+    internal_error_message = std::forward<T_CustomFieldNames_internal_error_message_struct_setter>(internal_error_message_);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.internal_error_message = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return internal_error_message;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+  const char* what() const noexcept override {
+    return internal_error_message.c_str();
+  }
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< CustomFieldNames >;
+};
+
+void swap(CustomFieldNames& a, CustomFieldNames& b);
+
+template <class Protocol_>
+uint32_t CustomFieldNames::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

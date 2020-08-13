@@ -22,3 +22,17 @@ cdef class Serious_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self):
         yield "sonnet", self.sonnet
 
+cdef class ComplexFieldNames_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.ComplexFieldNames
+
+    def __iter__(self):
+        yield "error_message", self.error_message
+        yield "internal_error_message", self.internal_error_message
+
+cdef class CustomFieldNames_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.CustomFieldNames
+
+    def __iter__(self):
+        yield "error_message", self.error_message
+        yield "internal_error_message", self.internal_error_message
+

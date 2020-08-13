@@ -25,3 +25,13 @@ cdef class Serious_Builder(thrift.py3.builder.StructBuilder):
     cdef public str sonnet
 
 
+cdef class ComplexFieldNames_Builder(thrift.py3.builder.StructBuilder):
+    cdef public str error_message
+    cdef public str internal_error_message
+
+
+cdef class CustomFieldNames_Builder(thrift.py3.builder.StructBuilder):
+    cdef public str error_message
+    cdef public str internal_error_message
+
+

@@ -34,6 +34,16 @@ class StructMetadata<::cpp2::Serious> {
   static void gen(ThriftMetadata& metadata);
 };
 template <>
+class StructMetadata<::cpp2::ComplexFieldNames> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::CustomFieldNames> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
 class ExceptionMetadata<::cpp2::Banal> {
  public:
   static void gen(ThriftMetadata& metadata);
@@ -45,6 +55,16 @@ class ExceptionMetadata<::cpp2::Fiery> {
 };
 template <>
 class ExceptionMetadata<::cpp2::Serious> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class ExceptionMetadata<::cpp2::ComplexFieldNames> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class ExceptionMetadata<::cpp2::CustomFieldNames> {
  public:
   static void gen(ThriftMetadata& metadata);
 };

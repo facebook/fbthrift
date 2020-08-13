@@ -272,3 +272,243 @@ func (p *Serious) Error() string {
   return p.String()
 }
 
+// Attributes:
+//  - ErrorMessage
+//  - InternalErrorMessage
+type ComplexFieldNames struct {
+  ErrorMessage string `thrift:"error_message,1" db:"error_message" json:"error_message"`
+  InternalErrorMessage string `thrift:"internal_error_message,2" db:"internal_error_message" json:"internal_error_message"`
+}
+
+func NewComplexFieldNames() *ComplexFieldNames {
+  return &ComplexFieldNames{}
+}
+
+
+func (p *ComplexFieldNames) GetErrorMessage() string {
+  return p.ErrorMessage
+}
+
+func (p *ComplexFieldNames) GetInternalErrorMessage() string {
+  return p.InternalErrorMessage
+}
+func (p *ComplexFieldNames) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *ComplexFieldNames)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.ErrorMessage = v
+}
+  return nil
+}
+
+func (p *ComplexFieldNames)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.InternalErrorMessage = v
+}
+  return nil
+}
+
+func (p *ComplexFieldNames) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("ComplexFieldNames"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *ComplexFieldNames) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("error_message", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:error_message: ", p), err) }
+  if err := oprot.WriteString(string(p.ErrorMessage)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.error_message (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:error_message: ", p), err) }
+  return err
+}
+
+func (p *ComplexFieldNames) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("internal_error_message", thrift.STRING, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:internal_error_message: ", p), err) }
+  if err := oprot.WriteString(string(p.InternalErrorMessage)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.internal_error_message (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:internal_error_message: ", p), err) }
+  return err
+}
+
+func (p *ComplexFieldNames) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  errorMessageVal := fmt.Sprintf("%v", p.ErrorMessage)
+  internalErrorMessageVal := fmt.Sprintf("%v", p.InternalErrorMessage)
+  return fmt.Sprintf("ComplexFieldNames({ErrorMessage:%s InternalErrorMessage:%s})", errorMessageVal, internalErrorMessageVal)
+}
+
+func (p *ComplexFieldNames) Error() string {
+  return p.String()
+}
+
+// Attributes:
+//  - ErrorMessage
+//  - InternalErrorMessage
+type CustomFieldNames struct {
+  ErrorMessage string `thrift:"error_message,1" db:"error_message" json:"error_message"`
+  InternalErrorMessage string `thrift:"internal_error_message,2" db:"internal_error_message" json:"internal_error_message"`
+}
+
+func NewCustomFieldNames() *CustomFieldNames {
+  return &CustomFieldNames{}
+}
+
+
+func (p *CustomFieldNames) GetErrorMessage() string {
+  return p.ErrorMessage
+}
+
+func (p *CustomFieldNames) GetInternalErrorMessage() string {
+  return p.InternalErrorMessage
+}
+func (p *CustomFieldNames) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *CustomFieldNames)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.ErrorMessage = v
+}
+  return nil
+}
+
+func (p *CustomFieldNames)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.InternalErrorMessage = v
+}
+  return nil
+}
+
+func (p *CustomFieldNames) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("CustomFieldNames"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *CustomFieldNames) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("error_message", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:error_message: ", p), err) }
+  if err := oprot.WriteString(string(p.ErrorMessage)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.error_message (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:error_message: ", p), err) }
+  return err
+}
+
+func (p *CustomFieldNames) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("internal_error_message", thrift.STRING, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:internal_error_message: ", p), err) }
+  if err := oprot.WriteString(string(p.InternalErrorMessage)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.internal_error_message (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:internal_error_message: ", p), err) }
+  return err
+}
+
+func (p *CustomFieldNames) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  errorMessageVal := fmt.Sprintf("%v", p.ErrorMessage)
+  internalErrorMessageVal := fmt.Sprintf("%v", p.InternalErrorMessage)
+  return fmt.Sprintf("CustomFieldNames({ErrorMessage:%s InternalErrorMessage:%s})", errorMessageVal, internalErrorMessageVal)
+}
+
+func (p *CustomFieldNames) Error() string {
+  return p.String()
+}
+

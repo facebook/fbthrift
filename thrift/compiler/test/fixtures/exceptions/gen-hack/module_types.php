@@ -188,3 +188,177 @@ class Serious extends \TException implements \IThriftStruct {
 
 }
 
+/**
+ * Original thrift exception:-
+ * ComplexFieldNames
+ */
+class ComplexFieldNames extends \TException implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'error_message',
+      'type' => \TType::STRING,
+    ),
+    2 => shape(
+      'var' => 'internal_error_message',
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'error_message' => 1,
+    'internal_error_message' => 2,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'error_message' => string,
+    ?'internal_error_message' => string,
+  );
+
+  const int STRUCTURAL_ID = 4419960994551853385;
+  /**
+   * Original thrift field:-
+   * 1: string error_message
+   */
+  public string $error_message;
+  /**
+   * Original thrift field:-
+   * 2: string internal_error_message
+   */
+  public string $internal_error_message;
+
+  <<__Rx>>
+  public function __construct(?string $error_message = null, ?string $internal_error_message = null  ) {
+    parent::__construct();
+    $this->error_message = $error_message ?? '';
+    $this->internal_error_message = $internal_error_message ?? '';
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'error_message'),
+      Shapes::idx($shape, 'internal_error_message'),
+    );
+  }
+
+  public function getName(): string {
+    return 'ComplexFieldNames';
+  }
+
+  <<__Override, __Rx, __MaybeMutable>>
+  public function getMessage(): string {
+    return $this->internal_error_message ?? '';
+  }
+
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'error_message' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'internal_error_message' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'message' => "internal_error_message",
+    ];
+  }
+
+}
+
+/**
+ * Original thrift exception:-
+ * CustomFieldNames
+ */
+class CustomFieldNames extends \TException implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'error_message',
+      'type' => \TType::STRING,
+    ),
+    2 => shape(
+      'var' => 'internal_error_message',
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'error_message' => 1,
+    'internal_error_message' => 2,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'error_message' => string,
+    ?'internal_error_message' => string,
+  );
+
+  const int STRUCTURAL_ID = 4419960994551853385;
+  /**
+   * Original thrift field:-
+   * 1: string error_message
+   */
+  public string $error_message;
+  /**
+   * Original thrift field:-
+   * 2: string internal_error_message
+   */
+  public string $internal_error_message;
+
+  <<__Rx>>
+  public function __construct(?string $error_message = null, ?string $internal_error_message = null  ) {
+    parent::__construct();
+    $this->error_message = $error_message ?? '';
+    $this->internal_error_message = $internal_error_message ?? '';
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'error_message'),
+      Shapes::idx($shape, 'internal_error_message'),
+    );
+  }
+
+  public function getName(): string {
+    return 'CustomFieldNames';
+  }
+
+  <<__Override, __Rx, __MaybeMutable>>
+  public function getMessage(): string {
+    return $this->internal_error_message ?? '';
+  }
+
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'error_message' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+        'internal_error_message' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'message' => "internal_error_message",
+    ];
+  }
+
+}
+

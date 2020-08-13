@@ -84,3 +84,73 @@ cdef __StructSpec get_reflection__Serious():
         ),
     )
     return spec
+cdef __StructSpec get_reflection__ComplexFieldNames():
+    cdef _module_types.ComplexFieldNames defaults = _module_types.ComplexFieldNames.create(
+        constant_shared_ptr[_module_types.cComplexFieldNames](
+            default_inst[_module_types.cComplexFieldNames]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec.create(
+        name="ComplexFieldNames",
+        kind=__StructType.EXCEPTION,
+        annotations={
+            """message""": """internal_error_message""",        },
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="error_message",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="internal_error_message",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
+cdef __StructSpec get_reflection__CustomFieldNames():
+    cdef _module_types.CustomFieldNames defaults = _module_types.CustomFieldNames.create(
+        constant_shared_ptr[_module_types.cCustomFieldNames](
+            default_inst[_module_types.cCustomFieldNames]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec.create(
+        name="CustomFieldNames",
+        kind=__StructType.EXCEPTION,
+        annotations={
+            """message""": """internal_error_message""",        },
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="error_message",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="internal_error_message",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """java.swift.name""": """internalGreatMessage""",            },
+        ),
+    )
+    return spec

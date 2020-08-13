@@ -23,6 +23,14 @@ exception Fiery {
 exception Serious {
   1: optional string sonnet,
 } (message = "sonnet")
+exception ComplexFieldNames {
+  1: string error_message,
+  2: string internal_error_message
+} (message = "internal_error_message")
+exception CustomFieldNames {
+  1: string error_message,
+  2: string internal_error_message (java.swift.name = "internalGreatMessage")
+} (message = "internal_error_message")
 
 service Raiser {
   void doBland(),

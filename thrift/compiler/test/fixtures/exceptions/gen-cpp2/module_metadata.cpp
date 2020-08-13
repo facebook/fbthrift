@@ -70,6 +70,50 @@ void StructMetadata<::cpp2::Serious>::gen(ThriftMetadata& metadata) {
     module_Serious.fields.push_back(std::move(field));
   }
 }
+void StructMetadata<::cpp2::ComplexFieldNames>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.ComplexFieldNames", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_ComplexFieldNames = res.first->second;
+  module_ComplexFieldNames.name = "module.ComplexFieldNames";
+  module_ComplexFieldNames.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_ComplexFieldNames_fields[] = {
+    std::make_tuple(1, "error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(2, "internal_error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+  };
+  for (const auto& f : module_ComplexFieldNames_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
+    module_ComplexFieldNames.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::cpp2::CustomFieldNames>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.CustomFieldNames", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_CustomFieldNames = res.first->second;
+  module_CustomFieldNames.name = "module.CustomFieldNames";
+  module_CustomFieldNames.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_CustomFieldNames_fields[] = {
+    std::make_tuple(1, "error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(2, "internal_error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+  };
+  for (const auto& f : module_CustomFieldNames_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
+    module_CustomFieldNames.fields.push_back(std::move(field));
+  }
+}
 
 void ExceptionMetadata<::cpp2::Banal>::gen(ThriftMetadata& metadata) {
   auto res = metadata.exceptions.emplace("module.Banal", ::apache::thrift::metadata::ThriftException{});
@@ -117,6 +161,48 @@ void ExceptionMetadata<::cpp2::Serious>::gen(ThriftMetadata& metadata) {
     field.is_optional = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Serious.fields.push_back(std::move(field));
+  }
+}
+void ExceptionMetadata<::cpp2::ComplexFieldNames>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.exceptions.emplace("module.ComplexFieldNames", ::apache::thrift::metadata::ThriftException{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftException& module_ComplexFieldNames = res.first->second;
+  module_ComplexFieldNames.name = "module.ComplexFieldNames";
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_ComplexFieldNames_fields[] = {
+    std::make_tuple(1, "error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(2, "internal_error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+  };
+  for (const auto& f : module_ComplexFieldNames_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
+    module_ComplexFieldNames.fields.push_back(std::move(field));
+  }
+}
+void ExceptionMetadata<::cpp2::CustomFieldNames>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.exceptions.emplace("module.CustomFieldNames", ::apache::thrift::metadata::ThriftException{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftException& module_CustomFieldNames = res.first->second;
+  module_CustomFieldNames.name = "module.CustomFieldNames";
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_CustomFieldNames_fields[] = {
+    std::make_tuple(1, "error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(2, "internal_error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+  };
+  for (const auto& f : module_CustomFieldNames_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
+    module_CustomFieldNames.fields.push_back(std::move(field));
   }
 }
 void ServiceMetadata<::cpp2::RaiserSvIf>::gen_doBland(ThriftMetadata& metadata, ThriftService& service) {
