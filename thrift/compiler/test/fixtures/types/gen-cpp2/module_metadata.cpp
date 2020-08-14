@@ -539,6 +539,27 @@ void StructMetadata<::apache::thrift::fixtures::types::AllocatorAware>::gen(Thri
     module_AllocatorAware.fields.push_back(std::move(field));
   }
 }
+void StructMetadata<::apache::thrift::fixtures::types::AllocatorAware2>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.AllocatorAware2", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_AllocatorAware2 = res.first->second;
+  module_AllocatorAware2.name = "module.AllocatorAware2";
+  module_AllocatorAware2.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_AllocatorAware2_fields[] = {
+    std::make_tuple(1, "not_a_container", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
+  };
+  for (const auto& f : module_AllocatorAware2_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
+    module_AllocatorAware2.fields.push_back(std::move(field));
+  }
+}
 
 void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_bounce_map(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;

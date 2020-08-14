@@ -519,6 +519,16 @@ void TccStructTraits<::apache::thrift::fixtures::types::AllocatorAware>::transla
     _ftype = apache::thrift::protocol::T_I32;
   }
 }
+void TccStructTraits<::apache::thrift::fixtures::types::AllocatorAware2>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "not_a_container") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
 
 } // namespace detail
 } // namespace thrift
@@ -2227,6 +2237,61 @@ template uint32_t AllocatorAware::serializedSize<>(apache::thrift::CompactProtoc
 template uint32_t AllocatorAware::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AllocatorAware2::AllocatorAware2(apache::thrift::FragileConstructor, int32_t not_a_container__arg) :
+    not_a_container(std::move(not_a_container__arg)) {
+  __isset.not_a_container = true;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+void AllocatorAware2::__clear() {
+  // clear all fields
+  not_a_container = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+bool AllocatorAware2::operator==(const AllocatorAware2& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.not_a_container == rhs.not_a_container)) {
+    return false;
+  }
+  return true;
+}
+
+bool AllocatorAware2::operator<(const AllocatorAware2& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.not_a_container == rhs.not_a_container)) {
+    return lhs.not_a_container < rhs.not_a_container;
+  }
+  return false;
+}
+
+
+void swap(AllocatorAware2& a, AllocatorAware2& b) {
+  using ::std::swap;
+  swap(a.not_a_container, b.not_a_container);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+template void AllocatorAware2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t AllocatorAware2::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t AllocatorAware2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t AllocatorAware2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void AllocatorAware2::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t AllocatorAware2::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t AllocatorAware2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t AllocatorAware2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 //  if this struct is generated with extern template instances for simple-json
@@ -2990,6 +3055,35 @@ static_assert(
           , ::std::set<int32_t>
           , ::std::map<int32_t, int32_t>
           , ::std::string
+          , int32_t
+          >>,
+    "inconsistent use of nimble option");
+
+
+//  if this struct is generated with extern template instances for simple-json
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_json,
+        AllocatorAware2,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::integral
+          >,
+        ::folly::tag_t<void
+          , int32_t
+          >>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check<
+        ::apache::thrift::detail::st::gen_check_get_nimble,
+        AllocatorAware2,
+        ::folly::tag_t<void
+          , ::apache::thrift::type_class::integral
+          >,
+        ::folly::tag_t<void
           , int32_t
           >>,
     "inconsistent use of nimble option");

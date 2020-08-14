@@ -175,10 +175,16 @@ union NoExceptMoveUnion {
   2: i32 i32_field,
 } (cpp.noexcept_move)
 
+# Allocator-aware struct with allocator-aware fields
 struct AllocatorAware {
   1: list<i32> (cpp.use_allocator) aa_list;
   2: set<i32> (cpp.use_allocator) aa_set;
   3: map<i32, i32> (cpp.use_allocator) aa_map;
   4: string (cpp.use_allocator) aa_string;
   5: i32 not_a_container;
+} (cpp.allocator="some_allocator")
+
+# Allocator-aware struct with no allocator-aware fields
+struct AllocatorAware2 {
+  1: i32 not_a_container;
 } (cpp.allocator="some_allocator")

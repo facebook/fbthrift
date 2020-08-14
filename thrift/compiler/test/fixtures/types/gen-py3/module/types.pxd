@@ -754,6 +754,22 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         cint32_t not_a_container
         cAllocatorAware__isset __isset
 
+    cdef cppclass cAllocatorAware2__isset "::apache::thrift::fixtures::types::AllocatorAware2::__isset":
+        bint not_a_container
+
+    cdef cppclass cAllocatorAware2 "::apache::thrift::fixtures::types::AllocatorAware2":
+        cAllocatorAware2() except +
+        cAllocatorAware2(const cAllocatorAware2&) except +
+        bint operator==(cAllocatorAware2&)
+        bint operator!=(cAllocatorAware2&)
+        bint operator<(cAllocatorAware2&)
+        bint operator>(cAllocatorAware2&)
+        bint operator<=(cAllocatorAware2&)
+        bint operator>=(cAllocatorAware2&)
+        __FieldRef[cint32_t] not_a_container_ref()
+        cint32_t not_a_container
+        cAllocatorAware2__isset __isset
+
     cdef shared_ptr[vector[cint32_t]] reference_shared_ptr_fieldA "::thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cContainerStruct]&, vector[cint32_t]&)
     cdef shared_ptr[std_list[cint32_t]] reference_shared_ptr_fieldB "::thrift::py3::reference_shared_ptr<std::list<int32_t>>"(shared_ptr[cContainerStruct]&, std_list[cint32_t]&)
     cdef shared_ptr[std_deque[cint32_t]] reference_shared_ptr_fieldC "::thrift::py3::reference_shared_ptr<std::deque<int32_t>>"(shared_ptr[cContainerStruct]&, std_deque[cint32_t]&)
@@ -845,6 +861,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cAllocatorAware] move(unique_ptr[cAllocatorAware])
     cdef shared_ptr[cAllocatorAware] move_shared "std::move"(shared_ptr[cAllocatorAware])
     cdef unique_ptr[cAllocatorAware] move_unique "std::move"(unique_ptr[cAllocatorAware])
+    cdef shared_ptr[cAllocatorAware2] move(unique_ptr[cAllocatorAware2])
+    cdef shared_ptr[cAllocatorAware2] move_shared "std::move"(shared_ptr[cAllocatorAware2])
+    cdef unique_ptr[cAllocatorAware2] move_unique "std::move"(unique_ptr[cAllocatorAware2])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cdecorated_struct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::decorated_struct>"(shared_ptr[cdecorated_struct])
@@ -869,6 +888,7 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cNoexceptMoveComplexStruct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>"(shared_ptr[cNoexceptMoveComplexStruct])
     cdef shared_ptr[const cNoExceptMoveUnion] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::NoExceptMoveUnion>"(shared_ptr[cNoExceptMoveUnion])
     cdef shared_ptr[const cAllocatorAware] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::AllocatorAware>"(shared_ptr[cAllocatorAware])
+    cdef shared_ptr[const cAllocatorAware2] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::AllocatorAware2>"(shared_ptr[cAllocatorAware2])
 
 
 
@@ -1306,6 +1326,23 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cAllocatorAware])
+
+
+
+cdef class AllocatorAware2(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cAllocatorAware2] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cAllocatorAware2] _make_instance(
+        cAllocatorAware2* base_instance,
+        bint* __isNOTSET,
+        object not_a_container
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cAllocatorAware2])
 
 
 cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):

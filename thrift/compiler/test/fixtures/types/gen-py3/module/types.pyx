@@ -5557,6 +5557,193 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
 
 
 @__cython.auto_pickle(False)
+cdef class AllocatorAware2(thrift.py3.types.Struct):
+
+    def __init__(
+        AllocatorAware2 self, *,
+        not_a_container=None
+    ):
+        if not_a_container is not None:
+            if not isinstance(not_a_container, int):
+                raise TypeError(f'not_a_container is not a { int !r}.')
+            not_a_container = <cint32_t> not_a_container
+
+        self._cpp_obj = move(AllocatorAware2._make_instance(
+          NULL,
+          NULL,
+          not_a_container,
+        ))
+
+    def __call__(
+        AllocatorAware2 self,
+        not_a_container=__NOTSET
+    ):
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[1] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if not_a_container is ___NOTSET:
+            __isNOTSET[0] = True
+            not_a_container = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
+
+        if not changes:
+            return self
+
+        if not_a_container is not None:
+            if not isinstance(not_a_container, int):
+                raise TypeError(f'not_a_container is not a { int !r}.')
+            not_a_container = <cint32_t> not_a_container
+
+        inst = <AllocatorAware2>AllocatorAware2.__new__(AllocatorAware2)
+        inst._cpp_obj = move(AllocatorAware2._make_instance(
+          self._cpp_obj.get(),
+          __isNOTSET,
+          not_a_container,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cAllocatorAware2] _make_instance(
+        cAllocatorAware2* base_instance,
+        bint* __isNOTSET,
+        object not_a_container 
+    ) except *:
+        cdef unique_ptr[cAllocatorAware2] c_inst
+        if base_instance:
+            c_inst = make_unique[cAllocatorAware2](deref(base_instance))
+        else:
+            c_inst = make_unique[cAllocatorAware2]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if not __isNOTSET[0] and not_a_container is None:
+                deref(c_inst).not_a_container_ref().assign(default_inst[cAllocatorAware2]().not_a_container_ref().value())
+                deref(c_inst).__isset.not_a_container = False
+                pass
+
+        if not_a_container is not None:
+            deref(c_inst).not_a_container_ref().assign(not_a_container)
+            deref(c_inst).__isset.not_a_container = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    cdef object __fbthrift_isset(self):
+        cpp_obj = deref(self._cpp_obj)
+        return thrift.py3.types._IsSet("AllocatorAware2", {
+          "not_a_container": cpp_obj.not_a_container_ref().has_value(),
+        })
+
+    def __iter__(self):
+        yield 'not_a_container', self.not_a_container
+
+    def __bool__(self):
+        return True
+
+    @staticmethod
+    cdef create(shared_ptr[cAllocatorAware2] cpp_obj):
+        inst = <AllocatorAware2>AllocatorAware2.__new__(AllocatorAware2)
+        inst._cpp_obj = move_shared(cpp_obj)
+        return inst
+
+    @property
+    def not_a_container(self):
+
+        return deref(self._cpp_obj).not_a_container_ref().value()
+
+
+    def __hash__(AllocatorAware2 self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.not_a_container,
+            ))
+        return self.__hash
+
+    def __repr__(AllocatorAware2 self):
+        return f'AllocatorAware2(not_a_container={repr(self.not_a_container)})'
+    def __copy__(AllocatorAware2 self):
+        cdef shared_ptr[cAllocatorAware2] cpp_obj = make_shared[cAllocatorAware2](
+            deref(self._cpp_obj)
+        )
+        return AllocatorAware2.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, AllocatorAware2) and
+                isinstance(other, AllocatorAware2)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cAllocatorAware2* cself = (<AllocatorAware2>self)._cpp_obj.get()
+        cdef cAllocatorAware2* cother = (<AllocatorAware2>other)._cpp_obj.get()
+        if cop == Py_EQ:
+            return deref(cself) == deref(cother)
+        elif cop == Py_NE:
+            return deref(cself) != deref(cother)
+        elif cop == Py_LT:
+            return deref(cself) < deref(cother)
+        elif cop == Py_LE:
+            return deref(cself) <= deref(cother)
+        elif cop == Py_GT:
+            return deref(cself) > deref(cother)
+        elif cop == Py_GE:
+            return deref(cself) >= deref(cother)
+        else:
+            return NotImplemented
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__AllocatorAware2()
+
+    cdef __iobuf.IOBuf _serialize(AllocatorAware2 self, __Protocol proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cAllocatorAware2* cpp_obj = self._cpp_obj.get()
+        if proto == __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cAllocatorAware2](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto == __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cAllocatorAware2](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto == __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cAllocatorAware2](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto == __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cAllocatorAware2](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef cuint32_t _deserialize(AllocatorAware2 self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cAllocatorAware2]()
+        cdef cAllocatorAware2* cpp_obj = self._cpp_obj.get()
+        if proto == __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cAllocatorAware2](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto == __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cAllocatorAware2](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto == __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cAllocatorAware2](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto == __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cAllocatorAware2](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (AllocatorAware2, serialize(self)))
+
+
+@__cython.auto_pickle(False)
 cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, std_unordered_map__Map__i32_string):

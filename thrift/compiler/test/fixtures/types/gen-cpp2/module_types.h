@@ -68,6 +68,7 @@ struct aa_set;
 struct aa_map;
 struct aa_string;
 struct not_a_container;
+struct not_a_container;
 } // namespace tag
 namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_field
@@ -281,6 +282,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(aa_map);
 #ifndef APACHE_THRIFT_ACCESSOR_aa_string
 #define APACHE_THRIFT_ACCESSOR_aa_string
 APACHE_THRIFT_DEFINE_ACCESSOR(aa_string);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_not_a_container
+#define APACHE_THRIFT_ACCESSOR_not_a_container
+APACHE_THRIFT_DEFINE_ACCESSOR(not_a_container);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_not_a_container
 #define APACHE_THRIFT_ACCESSOR_not_a_container
@@ -511,6 +516,7 @@ class NoexceptMoveSimpleStruct;
 class NoexceptMoveComplexStruct;
 class NoExceptMoveUnion;
 class AllocatorAware;
+class AllocatorAware2;
 }}}} // apache::thrift::fixtures::types
 // END forward_declare
 // BEGIN typedefs
@@ -4365,6 +4371,135 @@ void swap(AllocatorAware& a, AllocatorAware& b);
 
 template <class Protocol_>
 uint32_t AllocatorAware::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+class AllocatorAware2 final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  //  using signed/unsigned as true/false for quicker parsing
+  using __fbthrift_cpp2_gen_json = unsigned;
+  using __fbthrift_cpp2_gen_nimble = unsigned;
+
+ public:
+  using __fbthrift_cpp2_type = AllocatorAware2;
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  AllocatorAware2() :
+      not_a_container(0) {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  AllocatorAware2(apache::thrift::FragileConstructor, int32_t not_a_container__arg);
+
+  AllocatorAware2(AllocatorAware2&&) = default;
+
+  AllocatorAware2(const AllocatorAware2&) = default;
+
+  using allocator_type = some_allocator;
+
+  AllocatorAware2(allocator_type alloc) :
+    not_a_container() {}
+
+  AllocatorAware2(const AllocatorAware2& other, allocator_type alloc) :
+    not_a_container(other.not_a_container),
+    __isset(other.__isset) {}
+
+  AllocatorAware2(AllocatorAware2&& other, allocator_type alloc) :
+    not_a_container(std::move(other.not_a_container)),
+    __isset(other.__isset) {}
+
+  AllocatorAware2& operator=(AllocatorAware2&&) = default;
+
+  AllocatorAware2& operator=(const AllocatorAware2&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  void __clear();
+ public:
+  int32_t not_a_container;
+
+ public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
+  struct __isset {
+    bool not_a_container;
+  } __isset = {};
+  bool operator==(const AllocatorAware2& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const AllocatorAware2& __x, const AllocatorAware2& __y) {
+    return !(__x == __y);
+  }
+#endif
+  bool operator<(const AllocatorAware2& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const AllocatorAware2& __x, const AllocatorAware2& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const AllocatorAware2& __x, const AllocatorAware2& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const AllocatorAware2& __x, const AllocatorAware2& __y) {
+    return !(__x < __y);
+  }
+#endif
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> not_a_container_ref() const& {
+    return {this->not_a_container, __isset.not_a_container};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> not_a_container_ref() const&& {
+    return {std::move(this->not_a_container), __isset.not_a_container};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> not_a_container_ref() & {
+    return {this->not_a_container, __isset.not_a_container};
+  }
+
+  template <typename..., typename T = int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> not_a_container_ref() && {
+    return {std::move(this->not_a_container), __isset.not_a_container};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+  int32_t get_not_a_container() const {
+    return not_a_container;
+  }
+
+  int32_t& set_not_a_container(int32_t not_a_container_) {
+    not_a_container = not_a_container_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.not_a_container = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return not_a_container;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< AllocatorAware2 >;
+};
+
+void swap(AllocatorAware2& a, AllocatorAware2& b);
+
+template <class Protocol_>
+uint32_t AllocatorAware2::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

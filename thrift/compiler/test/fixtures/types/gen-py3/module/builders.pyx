@@ -170,3 +170,9 @@ cdef class AllocatorAware_Builder(thrift.py3.builder.StructBuilder):
         yield "aa_string", self.aa_string
         yield "not_a_container", self.not_a_container
 
+cdef class AllocatorAware2_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.AllocatorAware2
+
+    def __iter__(self):
+        yield "not_a_container", self.not_a_container
+

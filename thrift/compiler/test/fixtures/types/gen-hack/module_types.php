@@ -2767,3 +2767,84 @@ class AllocatorAware implements \IThriftStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * AllocatorAware2
+ */
+class AllocatorAware2 implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'not_a_container',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'not_a_container' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'not_a_container' => int,
+  );
+
+  const int STRUCTURAL_ID = 3476753821834683211;
+  /**
+   * Original thrift field:-
+   * 1: i32 not_a_container
+   */
+  public int $not_a_container;
+
+  <<__Rx>>
+  public function __construct(?int $not_a_container = null  ) {
+    $this->not_a_container = $not_a_container ?? 0;
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'not_a_container'),
+    );
+  }
+
+  public function getName(): string {
+    return 'AllocatorAware2';
+  }
+
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'not_a_container' => shape(
+          'field' => dict[],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
+  public static function getAnnotations(): darray<string, mixed> {
+    return darray[
+      'cpp.allocator' => "some_allocator",
+    ];
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'not_a_container') !== null) {
+      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['not_a_container'];
+      if ($_tmp0 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->not_a_container = (int)$_tmp0;
+      }
+    }    
+  }
+
+}
+

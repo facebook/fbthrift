@@ -153,6 +153,11 @@ class StructMetadata<::apache::thrift::fixtures::types::AllocatorAware> {
   static void gen(ThriftMetadata& metadata);
 };
 template <>
+class StructMetadata<::apache::thrift::fixtures::types::AllocatorAware2> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
 class ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf> {
  public:
   static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);

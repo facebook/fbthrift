@@ -3649,3 +3649,88 @@ func (p *AllocatorAware) String() string {
   return fmt.Sprintf("AllocatorAware({AaList:%s AaSet:%s AaMap:%s AaString:%s NotAContainer:%s})", aaListVal, aaSetVal, aaMapVal, aaStringVal, notAContainerVal)
 }
 
+// Attributes:
+//  - NotAContainer
+type AllocatorAware2 struct {
+  NotAContainer int32 `thrift:"not_a_container,1" db:"not_a_container" json:"not_a_container"`
+}
+
+func NewAllocatorAware2() *AllocatorAware2 {
+  return &AllocatorAware2{}
+}
+
+
+func (p *AllocatorAware2) GetNotAContainer() int32 {
+  return p.NotAContainer
+}
+func (p *AllocatorAware2) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *AllocatorAware2)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.NotAContainer = v
+}
+  return nil
+}
+
+func (p *AllocatorAware2) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("AllocatorAware2"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *AllocatorAware2) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("not_a_container", thrift.I32, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:not_a_container: ", p), err) }
+  if err := oprot.WriteI32(int32(p.NotAContainer)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.not_a_container (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:not_a_container: ", p), err) }
+  return err
+}
+
+func (p *AllocatorAware2) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  notAContainerVal := fmt.Sprintf("%v", p.NotAContainer)
+  return fmt.Sprintf("AllocatorAware2({NotAContainer:%s})", notAContainerVal)
+}
+

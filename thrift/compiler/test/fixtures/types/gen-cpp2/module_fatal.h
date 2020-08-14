@@ -19,6 +19,7 @@ namespace thrift_fatal_impl_detail {
 
 struct apache_thrift_fixtures_types_module__unique_strings_list {
   using AllocatorAware = ::fatal::sequence<char, 'A', 'l', 'l', 'o', 'c', 'a', 't', 'o', 'r', 'A', 'w', 'a', 'r', 'e'>;
+  using AllocatorAware2 = ::fatal::sequence<char, 'A', 'l', 'l', 'o', 'c', 'a', 't', 'o', 'r', 'A', 'w', 'a', 'r', 'e', '2'>;
   using AnnotatedTypes = ::fatal::sequence<char, 'A', 'n', 'n', 'o', 't', 'a', 't', 'e', 'd', 'T', 'y', 'p', 'e', 's'>;
   using ComplexNestedWithDefault = ::fatal::sequence<char, 'C', 'o', 'm', 'p', 'l', 'e', 'x', 'N', 'e', 's', 't', 'e', 'd', 'W', 'i', 't', 'h', 'D', 'e', 'f', 'a', 'u', 'l', 't'>;
   using ComplexString = ::fatal::sequence<char, 'C', 'o', 'm', 'p', 'l', 'e', 'x', 'S', 't', 'r', 'i', 'n', 'g'>;
@@ -155,6 +156,7 @@ class module_tags {
     using NoexceptMoveSimpleStruct = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveSimpleStruct;
     using NoexceptMoveComplexStruct = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveComplexStruct;
     using AllocatorAware = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::AllocatorAware;
+    using AllocatorAware2 = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::AllocatorAware2;
   };
 
   struct apache_thrift_fixtures_types_module__unique_constants_list {
@@ -218,7 +220,8 @@ THRIFT_REGISTER_REFLECTION_METADATA(
     ::fatal::pair<NoexceptMoveEmpty, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveEmpty>,
     ::fatal::pair<NoexceptMoveSimpleStruct, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveSimpleStruct>,
     ::fatal::pair<NoexceptMoveComplexStruct, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveComplexStruct>,
-    ::fatal::pair<AllocatorAware, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::AllocatorAware>
+    ::fatal::pair<AllocatorAware, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::AllocatorAware>,
+    ::fatal::pair<AllocatorAware2, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::AllocatorAware2>
   >,
   // constants
   ::fatal::list<

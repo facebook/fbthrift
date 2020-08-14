@@ -899,6 +899,30 @@ cdef __StructSpec get_reflection__AllocatorAware():
         ),
     )
     return spec
+cdef __StructSpec get_reflection__AllocatorAware2():
+    cdef _module_types.AllocatorAware2 defaults = _module_types.AllocatorAware2.create(
+        constant_shared_ptr[_module_types.cAllocatorAware2](
+            default_inst[_module_types.cAllocatorAware2]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec.create(
+        name="AllocatorAware2",
+        kind=__StructType.STRUCT,
+        annotations={
+            """cpp.allocator""": """some_allocator""",        },
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            name="not_a_container",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __MapSpec get_reflection__std_unordered_map__Map__i32_string():
     return __MapSpec.create(
         key=int,
