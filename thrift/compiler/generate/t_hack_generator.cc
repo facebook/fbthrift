@@ -989,13 +989,14 @@ void t_hack_generator::init_generator() {
     constants_values_.clear();
     string const_namespace = php_namespace(program_);
     if (const_namespace != "") {
-      f_consts_ << "class " << const_namespace << "CONSTANTS {\n";
+      f_consts_ << "class " << const_namespace << "CONSTANTS ";
     } else {
       if (!hack_ns.empty()) {
         f_consts_ << "namespace " << hack_ns << ";\n\n";
       }
-      f_consts_ << "class " << program_name_ << "_CONSTANTS {\n";
+      f_consts_ << "class " << program_name_ << "_CONSTANTS ";
     }
+    f_consts_ << "implements \\IThriftConstants {\n";
   }
 }
 
@@ -3341,7 +3342,7 @@ void t_hack_generator::generate_service_helpers(
   }
 
   f_service_ << indent() << "class " << php_servicename_mangle(mangle, tservice)
-             << "StaticMetadata {\n";
+             << "StaticMetadata implements \\IThriftServiceStaticMetadata {\n";
   indent_up();
   // Structured annotations
   f_service_ << indent()

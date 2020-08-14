@@ -61,7 +61,7 @@ class FooHackServiceAsyncRpcOptionsClient extends \ThriftClientBase implements F
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class FooHackServiceStaticMetadata {
+class FooHackServiceStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getAllStructuredAnnotations(): \TServiceAnnotations {
     return shape(
       'service' => dict[],

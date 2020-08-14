@@ -2908,7 +2908,7 @@ class MyService_doNothing_result implements \IThriftStruct {
 
 }
 
-class MyServiceStaticMetadata {
+class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getAllStructuredAnnotations(): \TServiceAnnotations {
     return shape(
       'service' => dict[],

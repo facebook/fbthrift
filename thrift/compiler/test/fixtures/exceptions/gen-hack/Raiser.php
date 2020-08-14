@@ -1367,7 +1367,7 @@ class Raiser_get500_result implements \IThriftStruct {
 
 }
 
-class RaiserStaticMetadata {
+class RaiserStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getAllStructuredAnnotations(): \TServiceAnnotations {
     return shape(
       'service' => dict[],

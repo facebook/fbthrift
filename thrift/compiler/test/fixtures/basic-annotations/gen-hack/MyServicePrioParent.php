@@ -873,7 +873,7 @@ class MyServicePrioParent_pong_result implements \IThriftStruct {
 
 }
 
-class MyServicePrioParentStaticMetadata {
+class MyServicePrioParentStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getAllStructuredAnnotations(): \TServiceAnnotations {
     return shape(
       'service' => dict[],

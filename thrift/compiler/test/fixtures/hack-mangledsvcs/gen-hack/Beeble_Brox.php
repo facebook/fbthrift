@@ -61,7 +61,7 @@ class Beeble_BroxAsyncRpcOptionsClient extends \ThriftClientBase implements Beeb
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class Beeble_BroxStaticMetadata {
+class Beeble_BroxStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getAllStructuredAnnotations(): \TServiceAnnotations {
     return shape(
       'service' => dict[],

@@ -21,7 +21,7 @@
  * Base interface for Thrift structs
  */
 <<__ConsistentConstruct>>
-interface IThriftStruct {
+interface IThriftStruct extends IAnnotatedThriftStruct {
   const type TFieldSpec = shape(
     'var' => string,
     'type' => TType,
@@ -76,4 +76,5 @@ interface IThriftStruct {
   public function getName(): string;
   public function read(TProtocol $input): int;
   public function write(TProtocol $input): int;
+  public static function getAllStructuredAnnotations(): \TStructAnnotations;
 }

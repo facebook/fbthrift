@@ -791,7 +791,7 @@ class SomeService_binary_keyed_map_result implements \IThriftStruct {
 
 }
 
-class SomeServiceStaticMetadata {
+class SomeServiceStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getAllStructuredAnnotations(): \TServiceAnnotations {
     return shape(
       'service' => dict[],

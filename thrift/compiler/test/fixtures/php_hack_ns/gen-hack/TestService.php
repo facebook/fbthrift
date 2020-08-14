@@ -372,7 +372,7 @@ class TestService_ping_result implements \IThriftStruct {
 
 }
 
-class TestServiceStaticMetadata {
+class TestServiceStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getAllStructuredAnnotations(): \TServiceAnnotations {
     return shape(
       'service' => dict[],

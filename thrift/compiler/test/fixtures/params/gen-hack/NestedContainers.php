@@ -2203,7 +2203,7 @@ class NestedContainers_turtles_result implements \IThriftStruct {
 
 }
 
-class NestedContainersStaticMetadata {
+class NestedContainersStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getAllStructuredAnnotations(): \TServiceAnnotations {
     return shape(
       'service' => dict[],

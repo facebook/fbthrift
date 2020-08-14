@@ -538,7 +538,7 @@ class Bar_baz_result implements \IThriftStruct {
 
 }
 
-class BarStaticMetadata {
+class BarStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getAllStructuredAnnotations(): \TServiceAnnotations {
     return shape(
       'service' => dict[],

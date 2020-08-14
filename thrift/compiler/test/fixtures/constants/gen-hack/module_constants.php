@@ -5,7 +5,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-class module_CONSTANTS {
+class module_CONSTANTS implements \IThriftConstants {
   /**
    * Original thrift constant:-
    * i32 myInt

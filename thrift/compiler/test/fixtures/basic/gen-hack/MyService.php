@@ -2508,7 +2508,7 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
 
 }
 
-class MyServiceStaticMetadata {
+class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getAllStructuredAnnotations(): \TServiceAnnotations {
     return shape(
       'service' => dict[],

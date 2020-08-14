@@ -473,7 +473,7 @@ class MyServicePrioChild_pang_result implements \IThriftStruct {
 
 }
 
-class MyServicePrioChildStaticMetadata {
+class MyServicePrioChildStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getAllStructuredAnnotations(): \TServiceAnnotations {
     return shape(
       'service' => dict[],

@@ -31,3 +31,12 @@ type TServiceAnnotations = shape(
   'service' => dict<string, \IThriftStruct>,
   'functions' => dict<string, dict<string, \IThriftStruct>>,
 );
+
+interface IThriftServiceStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TServiceAnnotations;
+}
+
+interface IThriftConstants {
+  public static function getAllStructuredAnnotations(
+  ): dict<string, dict<string, \IThriftStruct>>;
+}
