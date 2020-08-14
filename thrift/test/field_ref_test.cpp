@@ -639,3 +639,14 @@ TEST(optional_field_ref_test, to_optional) {
   EXPECT_EQ(*opt, "foo");
 }
 #endif
+
+TEST(optional_field_ref_test, rvalue_ref_method) {
+  TestStruct s;
+  auto ref = std::move(s).uptr();
+  static_assert(std::is_rvalue_reference_v<decltype(ref)::reference_type>);
+  ref = std::make_unique<int>(10);
+  EXPECT_EQ(**ref, 10);
+  std::unique_ptr<int> p = *ref;
+  EXPECT_EQ(*p, 10);
+  EXPECT_FALSE(*ref);
+}
