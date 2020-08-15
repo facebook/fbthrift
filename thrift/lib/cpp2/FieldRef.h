@@ -261,13 +261,6 @@ class optional_field_ref {
   using value_type = std::remove_reference_t<T>;
   using reference_type = T;
 
- private:
-  using pointee_type = std::conditional_t<
-      std::is_rvalue_reference<T>{},
-      const value_type,
-      value_type>;
-
- public:
   FOLLY_ERASE optional_field_ref(
       reference_type value,
       detail::is_set_t<value_type>& is_set) noexcept
@@ -377,9 +370,7 @@ class optional_field_ref {
   // Returns a reference to the value if this optional_field_ref has one; throws
   // bad_field_access otherwise.
   FOLLY_ERASE reference_type value() const {
-    if (!is_set_) {
-      detail::throw_on_bad_field_access();
-    }
+    throw_if_unset();
     return static_cast<reference_type>(value_);
   }
 
@@ -399,8 +390,9 @@ class optional_field_ref {
     return value();
   }
 
-  FOLLY_ERASE pointee_type* operator->() const {
-    return &static_cast<pointee_type&>(value());
+  FOLLY_ERASE value_type* operator->() const {
+    throw_if_unset();
+    return &value_;
   }
 
   FOLLY_ERASE reference_type ensure() noexcept {
@@ -432,6 +424,12 @@ class optional_field_ref {
   }
 
  private:
+  FOLLY_ERASE void throw_if_unset() const {
+    if (!is_set_) {
+      detail::throw_on_bad_field_access();
+    }
+  }
+
   value_type& value_;
   detail::is_set_t<value_type>& is_set_;
 };

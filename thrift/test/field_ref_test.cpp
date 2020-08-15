@@ -478,6 +478,8 @@ TEST(optional_field_ref_test, mutable_accessors) {
   EXPECT_EQ(*name, "bar");
   name->assign("baz");
   EXPECT_EQ(*name, "baz");
+  std::move(s).opt_name()->assign("qux");
+  EXPECT_EQ(*name, "qux");
   EXPECT_TRUE(name.has_value());
 }
 
