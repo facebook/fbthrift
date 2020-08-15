@@ -96,7 +96,6 @@ target_link_libraries(
 add_library(
   thriftcpp2
 
-  FrozenTApplicationException.cpp
   GeneratedCodeHelper.cpp
   async/AsyncClient.cpp
   async/AsyncProcessor.cpp

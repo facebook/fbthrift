@@ -26,7 +26,6 @@
 #include <folly/Utility.h>
 #include <folly/futures/Future.h>
 #include <folly/io/Cursor.h>
-#include <thrift/lib/cpp2/FrozenTApplicationException.h>
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
