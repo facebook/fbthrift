@@ -19,8 +19,8 @@
 
 #include <thrift/lib/cpp2/BadFieldAccess.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
-#include <thrift/lib/cpp2/test/optionals/without_folly_optional/gen-cpp2/FollyOptionals_types.h>
-#include <thrift/lib/cpp2/test/optionals/without_folly_optional/gen-cpp2/FollyOptionals_types_custom_protocol.h>
+#include <thrift/test/gen-cpp2/optionals_types.h>
+#include <thrift/test/gen-cpp2/optionals_types_custom_protocol.h>
 
 using namespace apache::thrift;
 
@@ -47,7 +47,7 @@ static T jsonToObj(const std::string& json) {
   return ret;
 }
 
-TEST(TestWithoutFollyOptionals, SerDesTests) {
+TEST(OptionalsTest, SerDesTests) {
   std::string json1;
   std::string json2;
 
@@ -140,7 +140,7 @@ TEST(TestWithoutFollyOptionals, SerDesTests) {
   EXPECT_EQ(json1, json2);
 }
 
-TEST(TestWithoutFollyOptionals, ValueUncheckedTest) {
+TEST(OptionalsTest, ValueUncheckedTest) {
   cpp2::HasOptionals obj;
   obj.stringOpt_ref().value_unchecked() = "helloOPTIONAL";
   EXPECT_FALSE(obj.stringOpt_ref().has_value());
@@ -148,7 +148,7 @@ TEST(TestWithoutFollyOptionals, ValueUncheckedTest) {
   EXPECT_EQ(obj.stringOpt_ref().value_unchecked(), "helloOPTIONAL");
 }
 
-TEST(TestWithoutFollyOptionals, EqualityTests) {
+TEST(OptionalsTest, EqualityTests) {
   cpp2::HasOptionals obj1;
   cpp2::HasOptionals obj2;
   obj1.__clear();
@@ -306,7 +306,7 @@ TEST(TestWithoutFollyOptionals, EqualityTests) {
   EXPECT_EQ(obj1, obj2);
 }
 
-TEST(TestWithoutFollyOptionals, emplace) {
+TEST(OptionalsTest, emplace) {
   cpp2::HasOptionals obj;
   folly::for_each(
       std::make_tuple(
@@ -330,7 +330,7 @@ TEST(TestWithoutFollyOptionals, emplace) {
       });
 }
 
-TEST(TestWithoutFollyOptionals, FollyOptionalConversion) {
+TEST(OptionalsTest, FollyOptionalConversion) {
   cpp2::HasOptionals obj;
 
   obj.int64Opt_ref() = 1;
@@ -417,7 +417,7 @@ TEST(TestWithFollyOptionals, equalToFollyOptional) {
   EXPECT_TRUE(equalToFollyOptional(obj.int64Opt_ref(), opt));
 }
 
-TEST(TestWithoutFollyOptionals, Equality) {
+TEST(OptionalsTest, Equality) {
   cpp2::HasOptionals obj;
   obj.int64Opt_ref() = 1;
   EXPECT_EQ(obj.int64Opt_ref(), 1);
@@ -429,7 +429,7 @@ TEST(TestWithoutFollyOptionals, Equality) {
   EXPECT_NE(1, obj.int64Opt_ref());
 }
 
-TEST(TestWithoutFollyOptionals, Comparison) {
+TEST(OptionalsTest, Comparison) {
   cpp2::HasOptionals obj;
   obj.int64Opt_ref() = 2;
   EXPECT_LT(obj.int64Opt_ref(), 3);
@@ -453,7 +453,7 @@ TEST(TestWithoutFollyOptionals, Comparison) {
   EXPECT_GE(-1, obj.int64Opt_ref());
 }
 
-TEST(TestWithoutFollyOptionals, UnsetUnsafe) {
+TEST(OptionalsTest, UnsetUnsafe) {
   cpp2::HasOptionals obj;
   EXPECT_FALSE(obj.int64Def_ref().has_value());
   obj.int64Def_ref() = 1;
@@ -462,7 +462,7 @@ TEST(TestWithoutFollyOptionals, UnsetUnsafe) {
   EXPECT_FALSE(obj.int64Def_ref().has_value());
 }
 
-TEST(TestWithoutFollyOptionals, RefForUnqualifiedField) {
+TEST(OptionalsTest, RefForUnqualifiedField) {
   cpp2::HasOptionals obj;
   EXPECT_TRUE(obj.int64Req_ref().has_value());
   obj.int64Req_ref() = 42;
@@ -475,7 +475,7 @@ TEST(TestWithoutFollyOptionals, RefForUnqualifiedField) {
   EXPECT_EQ(obj.stringReq_ref(), "foo");
 }
 
-TEST(TestWithoutFollyOptionals, MoveFrom) {
+TEST(OptionalsTest, MoveFrom) {
   cpp2::HasOptionals obj1;
   cpp2::HasOptionals obj2;
 
@@ -496,7 +496,7 @@ TEST(TestWithoutFollyOptionals, MoveFrom) {
   EXPECT_EQ(obj2.int64Opt_ref().value(), 4);
 }
 
-TEST(TestWithoutFollyOptionals, CopyFrom) {
+TEST(OptionalsTest, CopyFrom) {
   cpp2::HasOptionals obj1;
   cpp2::HasOptionals obj2;
 
@@ -521,7 +521,7 @@ TEST(TestWithoutFollyOptionals, CopyFrom) {
   EXPECT_EQ(obj2.int64Opt_ref().value(), 4);
 }
 
-TEST(TestWithoutFollyOptionals, AddRef) {
+TEST(OptionalsTest, AddRef) {
   cpp2::HasOptionals obj;
   static_assert(std::is_same_v<
                 decltype(obj.int64Opt_ref()),
