@@ -475,7 +475,6 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
 };
 
 
-
 } // thrift_fatal_impl_detail
 THRIFT_REGISTER_STRUCT_TRAITS(
   containerStruct2,
@@ -505,5 +504,3 @@ THRIFT_REGISTER_STRUCT_TRAITS(
 );
 
 }} // extra::svc
-namespace apache { namespace thrift { namespace detail {
-}}} // apache::thrift::detail

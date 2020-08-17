@@ -2321,7 +2321,6 @@ struct AllocatorAware2_apache_thrift_fixtures_types_module__struct_unique_member
 };
 
 
-
 } // thrift_fatal_impl_detail
 THRIFT_REGISTER_STRUCT_TRAITS(
   decorated_struct,
@@ -2664,5 +2663,3 @@ THRIFT_REGISTER_STRUCT_TRAITS(
 );
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace detail {
-}}} // apache::thrift::detail

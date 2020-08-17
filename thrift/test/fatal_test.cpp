@@ -227,7 +227,6 @@ TEST(fatal, reflect_module_tag) {
   EXPECT_SAME<
       tag,
       apache::thrift::reflect_module_tag<struct_with_special_names>>();
-  EXPECT_SAME<tag, apache::thrift::reflect_module_tag<my_structA>>();
 }
 
 TEST(fatal, try_reflect_module_tag) {
@@ -260,7 +259,6 @@ TEST(fatal, try_reflect_module_tag) {
       tag,
       apache::thrift::
           try_reflect_module_tag<struct_with_special_names, void>>();
-  EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<my_structA, void>>();
 
   EXPECT_SAME<void, apache::thrift::try_reflect_module_tag<int, void>>();
   EXPECT_SAME<void, apache::thrift::try_reflect_module_tag<void, void>>();

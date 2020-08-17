@@ -4195,45 +4195,6 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
 };
 
 
-struct my_structA_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
-  using a = ::apache::thrift::reflected_struct_data_member<
-    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::a,
-    decltype(static_cast<my_structA *>(nullptr)->a),
-    1,
-    ::apache::thrift::optionality::required,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::a
-      >
-    >,
-    ::apache::thrift::detail::invoke_reffer<
-      ::apache::thrift::tag::a
-    >,
-    ::apache::thrift::type_class::integral,
-    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_a,
-    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structA_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::a>,
-    my_structA
-  >;
-  using b = ::apache::thrift::reflected_struct_data_member<
-    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::b,
-    decltype(static_cast<my_structA *>(nullptr)->b),
-    2,
-    ::apache::thrift::optionality::required,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::b
-      >
-    >,
-    ::apache::thrift::detail::invoke_reffer<
-      ::apache::thrift::tag::b
-    >,
-    ::apache::thrift::type_class::string,
-    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_b,
-    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::structA_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::b>,
-    my_structA
-  >;
-};
-
 } // thrift_fatal_impl_detail
 THRIFT_REGISTER_STRUCT_TRAITS(
   structA,
@@ -4534,20 +4495,3 @@ THRIFT_REGISTER_STRUCT_TRAITS(
 );
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift { namespace detail {
-THRIFT_REGISTER_STRUCT_TRAITS(
-   ::test_cpp2::cpp_reflection::my_structA,
-   ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::my_structA,
-   ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::my_structA_test_cpp2_cpp_reflection_module__struct_unique_member_info_list,
-  ::fatal::list<
-       ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::my_structA_test_cpp2_cpp_reflection_module__struct_unique_member_info_list::a,
-       ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::my_structA_test_cpp2_cpp_reflection_module__struct_unique_member_info_list::b
-  >,
-   ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::structA_test_cpp2_cpp_reflection_module__struct_unique_annotations::members,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    ::test_cpp2::cpp_reflection::module_tags::module,
-    ::apache::thrift::reflected_annotations< ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::structA_test_cpp2_cpp_reflection_module__struct_unique_annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(9663308154247018828ull)
-  >
-);
-}}} // apache::thrift::detail

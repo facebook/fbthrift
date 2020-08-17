@@ -1287,8 +1287,6 @@ class mstch_cpp2_program : public mstch_program {
             {"program:indirection_recursive?",
              &mstch_cpp2_program::has_indirection_recursive},
             {"program:indirection", &mstch_cpp2_program::indirection},
-            {"program:aliases_to_struct",
-             &mstch_cpp2_program::aliases_to_struct},
             {"program:enforce_required?",
              &mstch_cpp2_program::enforce_required},
             {"program:gen_metadata?", &mstch_cpp2_program::gen_metadata},
@@ -1613,24 +1611,6 @@ class mstch_cpp2_program : public mstch_program {
                      {"indirection:indirection_fields", per_struct}});
     }
     return result;
-  }
-  mstch::node aliases_to_struct() {
-    mstch::array a;
-    for (const t_typedef* i : program_->get_typedefs()) {
-      const t_type* alias = i->get_type();
-      if (alias->is_typedef() && alias->annotations_.count("cpp.type")) {
-        const t_type* ttype = i->get_type()->get_true_type();
-        if (ttype->is_struct() || ttype->is_xception()) {
-          a.push_back(mstch::map{{"alias:name", i->get_name()},
-                                 {"alias:struct",
-                                  generators_->struct_generator_->generate(
-                                      dynamic_cast<const t_struct*>(ttype),
-                                      generators_,
-                                      cache_)}});
-        }
-      }
-    }
-    return a;
   }
   mstch::node enforce_required() {
     return cache_->parsed_options_.count("deprecated_enforce_required") != 0;

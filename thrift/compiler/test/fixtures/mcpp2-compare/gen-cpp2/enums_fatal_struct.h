@@ -78,7 +78,6 @@ struct SomeStruct_facebook_ns_qwerty_enums__struct_unique_member_info_list {
 };
 
 
-
 } // thrift_fatal_impl_detail
 THRIFT_REGISTER_STRUCT_TRAITS(
   SomeStruct,
@@ -96,5 +95,3 @@ THRIFT_REGISTER_STRUCT_TRAITS(
 );
 
 }}} // facebook::ns::qwerty
-namespace apache { namespace thrift { namespace detail {
-}}} // apache::thrift::detail
