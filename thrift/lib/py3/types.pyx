@@ -13,7 +13,11 @@
 # limitations under the License.
 
 import enum
+import warnings
 cimport cython
+
+from cython.operator cimport dereference as deref, postincrement as inc
+from folly.cast cimport down_cast_ptr
 from folly.iobuf import IOBuf
 from types import MappingProxyType
 
@@ -83,11 +87,219 @@ cdef class Container:
 
 
 @cython.auto_pickle(False)
+cdef class EnumData:
+    @staticmethod
+    cdef EnumData create(cEnumData* ptr, py_type):
+        cdef EnumData inst = EnumData.__new__(EnumData)
+        inst._py_type = py_type
+        inst._cpp_obj = unique_ptr[cEnumData](ptr)
+        return inst
+
+    cdef get_by_name(self, str name):
+        cdef bytes name_bytes = name.encode("utf-8") # to keep the buffer alive
+        cdef string_view name_sv = string_view(name_bytes)
+        cdef pair[PyObjectPtr, cOptionalInt] r = self._cpp_obj.get().tryGetByName(name_sv)
+        cdef PyObject* inst = r.first
+        cdef optional[int] value = r.second
+        if inst != NULL:
+            return <object>inst
+        if not value.has_value():
+            raise AttributeError(f"'{self._py_type.__name__}' has no attribute '{name}'")
+        return <object>self._add_to_cache(name, value.value())
+
+    cdef get_by_value(self, int value):
+        if value < -(1<<31) or value >= (1 << 31):
+            self._value_error(value)
+        cdef pair[PyObjectPtr, string_view] r = self._cpp_obj.get().tryGetByValue(value)
+        cdef PyObject* inst = r.first
+        cdef string_view name = r.second
+        if inst != NULL:
+            return <object>inst
+        if name.data() == NULL:
+            self._value_error(value)
+        return <object>self._add_to_cache(sv_to_str(name), value)
+
+    cdef PyObject* _add_to_cache(self, str name, int value) except *:
+        new_inst = self._py_type.__new__(self._py_type, name, value, NOTSET)
+        return self._cpp_obj.get().tryAddToCache(
+            value,
+            <PyObject*>new_inst
+        )
+
+    def get_all_names(self):
+        cdef cEnumData* cpp_obj_ptr = self._cpp_obj.get()
+        cdef cRange[const cStringPiece*] names = cpp_obj_ptr.getNames()
+        cdef cStringPiece name
+        for name in names:
+            yield sv_to_str(cpp_obj_ptr.getPyName(string_view(name.data())))
+
+    cdef int size(self):
+        return self._cpp_obj.get().size()
+
+    cdef void _value_error(self, int value) except *:
+        raise ValueError(f"{value} is not a valid {self._py_type.__name__}")
+
+
+@cython.auto_pickle(False)
+cdef class EnumFlagsData(EnumData):
+
+    @staticmethod
+    cdef EnumFlagsData create(cEnumFlagsData* ptr, py_type):
+        cdef EnumFlagsData inst = EnumFlagsData.__new__(EnumFlagsData)
+        inst._py_type = py_type
+        inst._cpp_obj = unique_ptr[cEnumData](ptr)
+        return inst
+
+    cdef get_by_value(self, int value):
+        cdef cEnumFlagsData* cpp_obj_ptr = down_cast_ptr[
+            cEnumFlagsData, cEnumData](self._cpp_obj.get())
+        if value < 0:
+            value = cpp_obj_ptr.convertNegativeValue(value)
+        cdef pair[PyObjectPtr, string_view] r = cpp_obj_ptr.tryGetByValue(value)
+        cdef PyObject* inst = r.first
+        cdef string_view name = r.second
+        if inst != NULL:
+            return <object>inst
+        if name.data() == NULL:
+            self._value_error(value)
+        if not name.empty():
+            # it's not a derived value
+            return <object>self._add_to_cache(sv_to_str(name), value)
+        # it's a derived value
+        new_inst = self._py_type.__new__(
+            self._py_type,
+            cpp_obj_ptr.getNameForDerivedValue(value).decode("utf-8"),
+            value,
+            NOTSET,
+        )
+        return <object>cpp_obj_ptr.tryAddToFlagValuesCache(value, <PyObject*>new_inst)
+
+    cdef get_invert(self, uint32_t value):
+        cdef cEnumFlagsData* cpp_obj_ptr = down_cast_ptr[
+            cEnumFlagsData, cEnumData](self._cpp_obj.get())
+        return self.get_by_value(cpp_obj_ptr.getInvertValue(value))
+
+@cython.auto_pickle(False)
+cdef class UnionTypeEnumData(EnumData):
+
+    @staticmethod
+    cdef UnionTypeEnumData create(cEnumData* ptr, py_type):
+        cdef UnionTypeEnumData inst = UnionTypeEnumData.__new__(UnionTypeEnumData)
+        inst._py_type = py_type
+        inst._cpp_obj = unique_ptr[cEnumData](ptr)
+        inst.__empty = py_type.__new__(py_type, "EMPTY", 0, NOTSET)
+        return inst
+
+    def get_all_names(self):
+        yield "EMPTY"
+        yield from EnumData.get_all_names(self)
+
+    cdef get_by_name(self, str name):
+        if name == "EMPTY":
+            return self.__empty
+        return EnumData.get_by_name(self, name)
+
+    cdef get_by_value(self, int value):
+        if value == 0:
+            return self.__empty
+        return EnumData.get_by_value(self, value)
+
+    cdef int size(self):
+        return EnumData.size(self) + 1  # for EMPTY
+
+
+@cython.auto_pickle(False)
+cdef class EnumMeta(type):
+    def __get_by_name(cls, str name):
+        return NotImplemented
+
+    def __get_by_value(cls, int value):
+        return NotImplemented
+
+    def __get_all_names(cls):
+        return NotImplemented
+
+    def __call__(cls, value):
+        if isinstance(value, cls):
+            return value
+        if not isinstance(value, int):
+            raise ValueError(f"{repr(value)} is not a valid {cls.__name__}")
+        return cls.__get_by_value(value)
+
+    def __getitem__(cls, name):
+        if not isinstance(name, str):
+            raise KeyError(name)
+        try:
+            return cls.__get_by_name(name)
+        except AttributeError:
+            raise KeyError(name)
+
+    def __getattr__(cls, name):
+        return cls.__get_by_name(name)
+
+    def __iter__(cls):
+        for name in cls.__get_all_names():
+            yield cls.__get_by_name(name)
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in cls.__iter__()
+
+    def __len__(cls):
+        return NotImplemented
+
+    @property
+    def __members__(cls):
+        return MappingProxyType({inst.name: inst for inst in cls.__iter__()})
+
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__'] + [name for name in cls.__get_all_names()]
+
+
+@cython.auto_pickle(False)
 cdef class CompiledEnum:
     """
     Base class for all thrift Enum
     """
-    pass
+    def __cinit__(self, name, value, __NotSet guard = None):
+        if guard is not NOTSET:
+            raise TypeError('__new__ is disabled in the interest of type-safety')
+        self.name = name
+        self.value = value
+        self.__hash = hash(name)
+        self.__str = f"{type(self).__name__}.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    cdef get_by_name(self, str name):
+        return NotImplemented
+
+    def __getattr__(self, name):
+        return self.get_by_name(name)
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return type(self), (self.value,)
+
+    def __eq__(self, other):
+        if type(other) is not type(self):
+            warnings.warn(f"comparison not supported between instances of { type(self) } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
 
 Enum = CompiledEnum
 # I wanted to call the base class Enum, but there is a cython bug
@@ -100,7 +312,34 @@ cdef class Flag(CompiledEnum):
     """
     Base class for all thrift Flag
     """
-    pass
+    def __contains__(self, other):
+        if type(other) is not type(self):
+            return NotImplemented
+        return other.value & self.value == other.value
+
+    def __bool__(self):
+        return bool(self.value)
+
+    def __or__(self, other):
+        cls = type(self)
+        if type(other) is not cls:
+            return NotImplemented
+        return cls(self.value | other.value)
+
+    def __and__(self, other):
+        cls = type(self)
+        if type(other) is not cls:
+            return NotImplemented
+        return cls(self.value & other.value)
+
+    def __xor__(self, other):
+        cls = type(self)
+        if type(other) is not cls:
+            return NotImplemented
+        return cls(self.value ^ other.value)
+
+    def __invert__(self):
+        return NotImplemented
 
 
 cdef class BadEnum:

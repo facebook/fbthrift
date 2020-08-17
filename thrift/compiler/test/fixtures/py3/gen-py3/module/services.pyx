@@ -2260,7 +2260,7 @@ async def SimpleService_set_enum_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(_module_types.AnEnum_to_cpp(result))
+        promise.cPromise.setValue(<_module_types.cAnEnum><int>result)
 
 cdef api void call_cy_SimpleService_list_of_lists(
     object self,

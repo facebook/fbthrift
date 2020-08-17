@@ -20,202 +20,44 @@ This is a template for creating compiled Enum and Flag pyx information
 
 }}
 {{#program:enums}}
-cdef object __{{enum:name}}EnumInstances = None  # Set[{{enum:name}}]
-cdef object __{{enum:name}}EnumMembers = {}      # Dict[str, {{enum:name}}]
-cdef object __{{enum:name}}EnumUniqueValues = dict()    # Dict[int, {{enum:name}}]
+
 {{#enum:flags?}}
-cdef object __{{enum:name}}EnumValueMapping = None  # WeakMapping[Int, {{enum:name}}]
+cdef __EnumFlagsData __{{enum:name}}_enum_data  = __EnumFlagsData.create(thrift.py3.types.createEnumFlagsData[c{{enum:name}}](), {{enum:name}})
+{{/enum:flags?}}{{^enum:flags?}}
+cdef __EnumData __{{enum:name}}_enum_data  = __EnumData.create(thrift.py3.types.createEnumData[c{{enum:name}}](), {{enum:name}})
 {{/enum:flags?}}
+
 
 @__cython.internal
 @__cython.auto_pickle(False)
-cdef class __{{enum:name}}Meta(type):
-    def __call__(cls, value):
-        cdef int cvalue
-        {{#enum:flags?}}
-        cdef bint invert = False
-        {{/enum:flags?}}
-        if isinstance(value, cls):
-            return value
-        if isinstance(value, int):
-        {{#enum:flags?}}
-            if value < 0:
-                invert = True
-                value = ~value
-        {{/enum:flags?}}
-            cvalue = value
-            {{#enum:values}}
-            {{^first?}}el{{/first?}}if cvalue == {{enumValue:value}}:
-                return {{#enum:flags?}}~{{enum:name}}.{{enumValue:enumSafeName}} if invert else {{/enum:flags?}}{{enum:name}}.{{enumValue:enumSafeName}}
-            {{#last?}}
-            {{#enum:flags?}}
-            item = __{{enum:name}}EnumValueMapping.get(value, None)
-            if item is None:
-                item = {{enum:name}}.__new__({{enum:name}}, value, None)
-            return ~item if invert else item
-            {{/enum:flags?}}
-            {{/last?}}
-            {{/enum:values}}
+cdef class __{{enum:name}}Meta(thrift.py3.types.EnumMeta):
 
-        raise ValueError(f'{value} is not a valid {{enum:name}}')
+    def __get_by_name(cls, str name):
+        return __{{enum:name}}_enum_data.get_by_name(name)
 
-    def __getitem__(cls, name):
-        return __{{enum:name}}EnumMembers[name]
+    def __get_by_value(cls, int value):
+        return __{{enum:name}}_enum_data.get_by_value(value)
 
-    def __dir__(cls):
-        return ['__class__', '__doc__', '__members__', '__module__',
-        {{#enum:values}}
-        '{{enumValue:enumSafeName}}',
-        {{/enum:values}}
-        ]
-
-    def __iter__(cls):
-        return iter(__{{enum:name}}EnumUniqueValues.values())
-
-    def __reversed__(cls):
-        return reversed(iter(cls))
-
-    def __contains__(cls, item):
-        if not isinstance(item, cls):
-            return False
-        return item in __{{enum:name}}EnumInstances
+    def __get_all_names(cls):
+        return __{{enum:name}}_enum_data.get_all_names()
 
     def __len__(cls):
-        return len(__{{enum:name}}EnumInstances)
-
-
-{{#enum:values}}{{#first?}}
-cdef __{{enum:name}}_unique_instance(int value, str name):
-    {{! Build up __memebers__ and maintain unique value }}
-    inst = __{{enum:name}}EnumUniqueValues.get(value)
-    if inst is None:
-        inst = __{{enum:name}}EnumUniqueValues[value] = {{enum:name}}.__new__({{enum:name}}, value, name)
-    __{{enum:name}}EnumMembers[name] = inst
-    return inst
-{{/first?}}{{/enum:values}}
+        return __{{enum:name}}_enum_data.size()
 
 
 @__cython.final
 @__cython.auto_pickle(False)
 cdef class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}CompiledEnum{{/enum:flags?}}{{#enum:flags?}}Flag{{/enum:flags?}}):
-    {{#enum:values}}
-    {{enumValue:enumSafeName}} = __{{enum:name}}_unique_instance({{enumValue:value}}, "{{enumValue:enumSafeName}}")
-    {{/enum:values}}
-    __members__ = thrift.py3.types.MappingProxyType(__{{enum:name}}EnumMembers)
+    cdef get_by_name(self, str name):
+        return __{{enum:name}}_enum_data.get_by_name(name)
 
-    def __cinit__(self, value, name):
-        {{^enum:flags?}}
-        if __{{enum:name}}EnumInstances is not None:
-            raise TypeError('__new__ is disabled in the interest of type-safety')
-        {{/enum:flags?}}
-        {{#enum:flags?}}
-        __ExistingValues = __{{enum:name}}EnumValueMapping
-        cdef int temp
-        if __ExistingValues is not None:
-            {{! This is a combination value, not a predefined }}
-            if value < 0 or value in __ExistingValues:
-                raise TypeError('__new__ is disabled in the interest of type-safety')
-            elif value == 0:
-                name = "0"
-            else:
-                {{! Find the decomposed value }}
-                combo = []
-                temp = value
-                while temp:
-                    flag = thrift.py3.types.largest_flag(temp)
-                    if flag not in __ExistingValues:
-                        raise ValueError(f'{value} is not a valid {{enum:name}}')
-                    combo.append(__ExistingValues[flag].name)
-                    temp ^= flag
-                name = '|'.join(combo)
-            {{! Save so combo instances are re-used, this mirrors enum.Flag from python }}
-            __ExistingValues[value] = self
-        {{/enum:flags?}}
-        self.value = value
-        self.name = name
-        self.__hash = hash(name)
-        self.__str = f"{{enum:name}}.{name}"
-        self.__repr = f"<{self.__str}: {value}>"
-
-    def __repr__(self):
-        return self.__repr
-
-    def __str__(self):
-        return self.__str
-
-    def __int__(self):
-        return self.value
-
-    def __eq__(self, other):
-        if not isinstance(other, {{enum:name}}):
-            warnings.warn(f"comparison not supported between instances of { {{enum:name}} } and {type(other)}", RuntimeWarning, stacklevel=2)
-            return False
-        return self is other
-
-    def __hash__(self):
-        return self.__hash
-
-    def __reduce__(self):
-        return {{enum:name}}, (self.value,)
-{{#enum:flags?}}
-
-    def __contains__(self, other):
-        if not isinstance(other, {{enum:name}}):
-            return NotImplemented
-        return other.value & self.value == other.value
-
-    def __bool__(self):
-        return bool(self.value)
-
-    def __or__(self, other):
-        if not isinstance(other, {{enum:name}}):
-            return NotImplemented
-        return {{enum:name}}(self.value | other.value)
-
-    def __and__(self, other):
-        if not isinstance(other, {{enum:name}}):
-            return NotImplemented
-        return {{enum:name}}(self.value & other.value)
-
-    def __xor__(self, other):
-        if not isinstance(other, {{enum:name}}):
-            return NotImplemented
-        return {{enum:name}}(self.value ^ other.value)
+    {{#enum:flags?}}
 
     def __invert__(self):
-        inverted = {{enum:name}}(0)
-        for m in {{enum:name}}:
-            if not (m.value & self.value):
-                inverted = inverted | m
-        return {{enum:name}}(inverted)
-{{/enum:flags?}}
+        return __{{enum:name}}_enum_data.get_invert(self.value)
+    {{/enum:flags?}}
 
 
 __SetMetaClass(<PyTypeObject*> {{enum:name}}, <PyTypeObject*> __{{enum:name}}Meta)
-__{{enum:name}}EnumInstances = set(__{{enum:name}}EnumUniqueValues.values())
-{{#enum:flags?}}
-__{{enum:name}}EnumValueMapping = __weakref.WeakValueDictionary(
-    {f.value: f for f in tuple({{enum:name}})}
-)
-{{/enum:flags?}}
 
-
-cdef inline c{{enum:name}} {{enum:name}}_to_cpp({{enum:name}} value):
-    {{^enum:flags?}}
-    {{! We do .value once because it slow Python, and Cython will turn the
-        if/elif chain into a switch statement when the vars on both sides are
-        C ints
-    }}
-    cdef int cvalue = value.value
-    {{#enum:values}}
-    {{^first?}}el{{/first?}}if cvalue == {{enumValue:value}}:
-        return {{enum:name}}__{{enumValue:py_name}}{{! This is from cpp so not enumSafeName }}
-    {{/enum:values}}
-    {{^enum:values}}
-    pass
-    {{/enum:values}}
-    {{/enum:flags?}}
-    {{#enum:flags?}}
-    return <c{{enum:name}}>(<int>value.value)
-    {{/enum:flags?}}
 {{/program:enums}}

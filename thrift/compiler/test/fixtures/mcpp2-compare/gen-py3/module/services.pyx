@@ -1490,7 +1490,7 @@ async def ReturnService_enumReturn_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(_module_types.MyEnumA_to_cpp(result))
+        promise.cPromise.setValue(<_module_types.cMyEnumA><int>result)
 
 cdef api void call_cy_ReturnService_list_EnumReturn(
     object self,
@@ -3087,7 +3087,7 @@ async def ParamService_enum_ret_double_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(_module_types.MyEnumA_to_cpp(result))
+        promise.cPromise.setValue(<_module_types.cMyEnumA><int>result)
 
 cdef api void call_cy_ParamService_enum_ret_double_enum_param(
     object self,
@@ -3145,7 +3145,7 @@ async def ParamService_enum_ret_double_enum_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(_module_types.MyEnumA_to_cpp(result))
+        promise.cPromise.setValue(<_module_types.cMyEnumA><int>result)
 
 cdef api void call_cy_ParamService_listenum_ret_map_param(
     object self,

@@ -26,26 +26,20 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
+cdef extern from "gen-py3/module0/types.h":
+  pass
 
 
 cdef extern from "gen-cpp2/module0_types.h" namespace "::module0":
     cdef cppclass cEnum "::module0::Enum":
-        bint operator==(cEnum&)
-        bint operator!=(cEnum&)
-    cEnum Enum__ONE "::module0::Enum::ONE"
-    cEnum Enum__TWO "::module0::Enum::TWO"
-    cEnum Enum__THREE "::module0::Enum::THREE"
+        pass
+
 
 
 
 
 cdef class Enum(thrift.py3.types.CompiledEnum):
     pass
-
-
-cdef cEnum Enum_to_cpp(Enum value)
-
-
 
 cdef extern from "gen-cpp2/module0_types_custom_protocol.h" namespace "::module0":
     cdef cppclass cStruct__isset "::module0::Struct::__isset":

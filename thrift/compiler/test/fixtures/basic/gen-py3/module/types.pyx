@@ -11,6 +11,7 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
+from libcpp.utility cimport move as cmove
 from cpython cimport bool as pbool
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
@@ -22,6 +23,10 @@ from thrift.py3.types cimport (
     constant_shared_ptr,
     default_inst,
     NOTSET as __NOTSET,
+    EnumData as __EnumData,
+    EnumFlagsData as __EnumFlagsData,
+    UnionTypeEnumData as __UnionTypeEnumData,
+    createEnumDataForUnionType as __createEnumDataForUnionType,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
@@ -32,218 +37,75 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
-import warnings
 import weakref as __weakref
 import builtins as _builtins
 
 cimport module.types_reflection as _types_reflection
 
-cdef object __MyEnumEnumInstances = None  # Set[MyEnum]
-cdef object __MyEnumEnumMembers = {}      # Dict[str, MyEnum]
-cdef object __MyEnumEnumUniqueValues = dict()    # Dict[int, MyEnum]
+
+cdef __EnumData __MyEnum_enum_data  = __EnumData.create(thrift.py3.types.createEnumData[cMyEnum](), MyEnum)
+
 
 @__cython.internal
 @__cython.auto_pickle(False)
-cdef class __MyEnumMeta(type):
-    def __call__(cls, value):
-        cdef int cvalue
-        if isinstance(value, cls):
-            return value
-        if isinstance(value, int):
-            cvalue = value
-            if cvalue == 0:
-                return MyEnum.MyValue1
-            elif cvalue == 1:
-                return MyEnum.MyValue2
+cdef class __MyEnumMeta(thrift.py3.types.EnumMeta):
 
-        raise ValueError(f'{value} is not a valid MyEnum')
+    def __get_by_name(cls, str name):
+        return __MyEnum_enum_data.get_by_name(name)
 
-    def __getitem__(cls, name):
-        return __MyEnumEnumMembers[name]
+    def __get_by_value(cls, int value):
+        return __MyEnum_enum_data.get_by_value(value)
 
-    def __dir__(cls):
-        return ['__class__', '__doc__', '__members__', '__module__',
-        'MyValue1',
-        'MyValue2',
-        ]
-
-    def __iter__(cls):
-        return iter(__MyEnumEnumUniqueValues.values())
-
-    def __reversed__(cls):
-        return reversed(iter(cls))
-
-    def __contains__(cls, item):
-        if not isinstance(item, cls):
-            return False
-        return item in __MyEnumEnumInstances
+    def __get_all_names(cls):
+        return __MyEnum_enum_data.get_all_names()
 
     def __len__(cls):
-        return len(__MyEnumEnumInstances)
-
-
-cdef __MyEnum_unique_instance(int value, str name):
-    inst = __MyEnumEnumUniqueValues.get(value)
-    if inst is None:
-        inst = __MyEnumEnumUniqueValues[value] = MyEnum.__new__(MyEnum, value, name)
-    __MyEnumEnumMembers[name] = inst
-    return inst
+        return __MyEnum_enum_data.size()
 
 
 @__cython.final
 @__cython.auto_pickle(False)
 cdef class MyEnum(thrift.py3.types.CompiledEnum):
-    MyValue1 = __MyEnum_unique_instance(0, "MyValue1")
-    MyValue2 = __MyEnum_unique_instance(1, "MyValue2")
-    __members__ = thrift.py3.types.MappingProxyType(__MyEnumEnumMembers)
+    cdef get_by_name(self, str name):
+        return __MyEnum_enum_data.get_by_name(name)
 
-    def __cinit__(self, value, name):
-        if __MyEnumEnumInstances is not None:
-            raise TypeError('__new__ is disabled in the interest of type-safety')
-        self.value = value
-        self.name = name
-        self.__hash = hash(name)
-        self.__str = f"MyEnum.{name}"
-        self.__repr = f"<{self.__str}: {value}>"
-
-    def __repr__(self):
-        return self.__repr
-
-    def __str__(self):
-        return self.__str
-
-    def __int__(self):
-        return self.value
-
-    def __eq__(self, other):
-        if not isinstance(other, MyEnum):
-            warnings.warn(f"comparison not supported between instances of { MyEnum } and {type(other)}", RuntimeWarning, stacklevel=2)
-            return False
-        return self is other
-
-    def __hash__(self):
-        return self.__hash
-
-    def __reduce__(self):
-        return MyEnum, (self.value,)
 
 
 __SetMetaClass(<PyTypeObject*> MyEnum, <PyTypeObject*> __MyEnumMeta)
-__MyEnumEnumInstances = set(__MyEnumEnumUniqueValues.values())
 
 
-cdef inline cMyEnum MyEnum_to_cpp(MyEnum value):
-    cdef int cvalue = value.value
-    if cvalue == 0:
-        return MyEnum__MyValue1
-    elif cvalue == 1:
-        return MyEnum__MyValue2
 
-
-cdef object __MyUnion_Union_TypeEnumMembers = None
+cdef __UnionTypeEnumData __MyUnion_union_type_enum_data  = __UnionTypeEnumData.create(
+    __createEnumDataForUnionType[cMyUnion](),
+    __MyUnionType,
+)
 
 
 @__cython.internal
 @__cython.auto_pickle(False)
-cdef class __MyUnion_Union_TypeMeta(type):
-    def __call__(cls, value):
-        cdef int cvalue
-        if isinstance(value, cls) and value in __MyUnion_Union_TypeEnumMembers:
-            return value
+cdef class __MyUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
 
-        if isinstance(value, int):
-            cvalue = value
-            if cvalue == 0:
-                return __MyUnionType.EMPTY
-            elif cvalue == 1:
-                return __MyUnionType.myEnum
-            elif cvalue == 2:
-                return __MyUnionType.myStruct
-            elif cvalue == 3:
-                return __MyUnionType.myDataItem
+    def __get_by_name(cls, str name):
+        return __MyUnion_union_type_enum_data.get_by_name(name)
 
-        raise ValueError(f'{value} is not a valid MyUnion.Type')
+    def __get_by_value(cls, int value):
+        return __MyUnion_union_type_enum_data.get_by_value(value)
 
-    def __getitem__(cls, name):
-        if name == "EMPTY":
-            return __MyUnionType.EMPTY
-        elif name == "myEnum":
-            return __MyUnionType.myEnum
-        elif name == "myStruct":
-            return __MyUnionType.myStruct
-        elif name == "myDataItem":
-            return __MyUnionType.myDataItem
-        raise KeyError(name)
-
-    def __dir__(cls):
-        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
-            'myEnum',
-            'myStruct',
-            'myDataItem',
-        ]
-
-    @property
-    def __members__(cls):
-        return {m.name: m for m in cls}
-
-    def __iter__(cls):
-        yield __MyUnionType.EMPTY
-        yield __MyUnionType.myEnum
-        yield __MyUnionType.myStruct
-        yield __MyUnionType.myDataItem
-
-    def __reversed__(cls):
-        return reversed(iter(cls))
-
-    def __contains__(cls, item):
-        if not isinstance(item, cls):
-            return False
-        return item in __MyUnion_Union_TypeEnumMembers
+    def __get_all_names(cls):
+        return __MyUnion_union_type_enum_data.get_all_names()
 
     def __len__(cls):
-        return 3+1  # For Empty
+        return __MyUnion_union_type_enum_data.size()
 
 
 @__cython.final
 @__cython.auto_pickle(False)
 cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
-    EMPTY = __MyUnionType.__new__(__MyUnionType, 0, "EMPTY")
-    myEnum = __MyUnionType.__new__(__MyUnionType, 1, "myEnum")
-    myStruct = __MyUnionType.__new__(__MyUnionType, 2, "myStruct")
-    myDataItem = __MyUnionType.__new__(__MyUnionType, 3, "myDataItem")
+    cdef get_by_name(self, str name):
+        return __MyUnion_union_type_enum_data.get_by_name(name)
 
-    def __cinit__(self, value, name):
-        if __MyUnion_Union_TypeEnumMembers is not None:
-            raise TypeError('For Safty we have disabled __new__')
-        self.value = value
-        self.name = name
-        self.__hash = hash(name)
-        self.__str = f"MyUnion.Type.{name}"
-        self.__repr = f"<{self.__str}: {value}>"
-
-    def __repr__(self):
-        return self.__repr
-
-    def __str__(self):
-        return self.__str
-
-    def __int__(self):
-        return self.value
-
-    def __eq__(self, other):
-        if not isinstance(other, __MyUnionType):
-            warnings.warn(f"comparison not supported between instances of { __MyUnionType } and {type(other)}", RuntimeWarning, stacklevel=2)
-            return False
-        return self is other
-
-    def __hash__(self):
-        return self.__hash
-
-    def __reduce__(self):
-        return __MyUnionType, (self.value,)
 
 __SetMetaClass(<PyTypeObject*> __MyUnionType, <PyTypeObject*> __MyUnion_Union_TypeMeta)
-__MyUnion_Union_TypeEnumMembers = set(__MyUnionType)
 
 
 @__cython.auto_pickle(False)
@@ -388,7 +250,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(c_inst).MyDataField_ref().assign(deref((<MyDataItem?> MyDataField)._cpp_obj))
             deref(c_inst).__isset.MyDataField = True
         if myEnum is not None:
-            deref(c_inst).myEnum_ref().assign(MyEnum_to_cpp(myEnum))
+            deref(c_inst).myEnum_ref().assign(<cMyEnum><int>myEnum)
             deref(c_inst).__isset.myEnum = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -714,7 +576,7 @@ cdef class MyUnion(thrift.py3.types.Union):
         if myEnum is not None:
             if any_set:
                 raise TypeError("At most one field may be set when initializing a union")
-            deref(c_inst).set_myEnum(MyEnum_to_cpp(myEnum))
+            deref(c_inst).set_myEnum(<cMyEnum><int>myEnum)
             any_set = True
         if myStruct is not None:
             if any_set:

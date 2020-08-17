@@ -26,26 +26,20 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
+cdef extern from "src/gen-py3/module/types.h":
+  pass
 
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cEmptyEnum "::cpp2::EmptyEnum":
-        bint operator==(cEmptyEnum&)
-        bint operator!=(cEmptyEnum&)
+        pass
+
     cdef cppclass cCity "::cpp2::City":
-        bint operator==(cCity&)
-        bint operator!=(cCity&)
-    cCity City__NYC "::cpp2::City::NYC"
-    cCity City__MPK "::cpp2::City::MPK"
-    cCity City__SEA "::cpp2::City::SEA"
-    cCity City__LON "::cpp2::City::LON"
+        pass
+
     cdef cppclass cCompany "::cpp2::Company":
-        bint operator==(cCompany&)
-        bint operator!=(cCompany&)
-    cCompany Company__FACEBOOK "::cpp2::Company::FACEBOOK"
-    cCompany Company__WHATSAPP "::cpp2::Company::WHATSAPP"
-    cCompany Company__OCULUS "::cpp2::Company::OCULUS"
-    cCompany Company__INSTAGRAM "::cpp2::Company::INSTAGRAM"
+        pass
+
 
 
 
@@ -54,27 +48,12 @@ cdef class EmptyEnum(thrift.py3.types.CompiledEnum):
     pass
 
 
-cdef cEmptyEnum EmptyEnum_to_cpp(EmptyEnum value)
-
-
-
-
 cdef class City(thrift.py3.types.CompiledEnum):
     pass
 
 
-cdef cCity City_to_cpp(City value)
-
-
-
-
 cdef class Company(thrift.py3.types.CompiledEnum):
     pass
-
-
-cdef cCompany Company_to_cpp(Company value)
-
-
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
     cdef cppclass cInternship__isset "::cpp2::Internship::__isset":

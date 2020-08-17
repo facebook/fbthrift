@@ -55,7 +55,7 @@ class UnionTests(unittest.TestCase):
         self.assertEqual(x.type, Integers.Type.large)
         self.assertEqual(x.value, value)
         # Hashing Works
-        s = set([x])
+        s = {x}
         self.assertIn(x, s)
         # Repr is useful
         rx = repr(x)
