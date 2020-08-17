@@ -26,20 +26,26 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
-cdef extern from "src/gen-py3/module/types.h":
-  pass
 
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cAnimal "::cpp2::Animal":
-        pass
-
+        bint operator==(cAnimal&)
+        bint operator!=(cAnimal&)
+    cAnimal Animal__DOG "::cpp2::Animal::DOG"
+    cAnimal Animal__CAT "::cpp2::Animal::CAT"
+    cAnimal Animal__TARANTULA "::cpp2::Animal::TARANTULA"
 
 
 
 
 cdef class Animal(thrift.py3.types.CompiledEnum):
     pass
+
+
+cdef cAnimal Animal_to_cpp(Animal value)
+
+
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
     cdef cppclass cColor__isset "::cpp2::Color::__isset":

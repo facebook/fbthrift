@@ -1306,7 +1306,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[_module_types.cAnEnum](
             self._executor,
             down_cast_ptr[cSimpleServiceClientWrapper, cClientWrapper](self._client.get()).set_enum(rpc_options._cpp_obj, 
-                <_module_types.cAnEnum><int>in_enum,
+                _module_types.AnEnum_to_cpp(in_enum),
             ),
             SimpleService_set_enum_callback,
             <PyObject *> __userdata

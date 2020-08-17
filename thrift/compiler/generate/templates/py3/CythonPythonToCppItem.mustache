@@ -50,5 +50,5 @@ key, include the parallel CythonPythonToCppKey file instead.
 }}{{#type:container?}}{{!
   }}deref((<{{> types/CythonPythonType}}>item)._cpp_obj){{!
 }}{{/type:container?}}{{!
-}}{{#type:enum?}}<{{> types/CythonCppType}}><int>item{{/type:enum?}}{{!
+}}{{#type:enum}}{{> types/CythonPythonType}}_to_cpp(item){{/type:enum}}{{!
 }}{{/type:hasCustomTypeBehavior?}}

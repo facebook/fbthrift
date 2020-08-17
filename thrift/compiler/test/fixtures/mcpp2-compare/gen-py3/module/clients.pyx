@@ -1346,7 +1346,7 @@ cdef class ParamService(thrift.py3.client.Client):
         bridgeFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).void_ret_enum_param(rpc_options._cpp_obj, 
-                <_module_types.cMyEnumA><int>param1,
+                _module_types.MyEnumA_to_cpp(param1),
             ),
             ParamService_void_ret_enum_param_callback,
             <PyObject *> __userdata
@@ -1808,7 +1808,7 @@ cdef class ParamService(thrift.py3.client.Client):
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).enum_ret_double_enum_param(rpc_options._cpp_obj, 
                 param1,
-                <_module_types.cMyEnumA><int>param2,
+                _module_types.MyEnumA_to_cpp(param2),
             ),
             ParamService_enum_ret_double_enum_param_callback,
             <PyObject *> __userdata

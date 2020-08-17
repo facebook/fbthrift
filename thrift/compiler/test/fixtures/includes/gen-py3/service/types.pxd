@@ -29,8 +29,6 @@ from folly.optional cimport cOptional
 cimport includes.types as _includes_types
 cimport module.types as _module_types
 cimport transitive.types as _transitive_types
-cdef extern from "src/gen-py3/service/types.h":
-  pass
 
 
 

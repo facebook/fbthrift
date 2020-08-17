@@ -11,7 +11,6 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
-from libcpp.utility cimport move as cmove
 from cpython cimport bool as pbool
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
@@ -23,10 +22,6 @@ from thrift.py3.types cimport (
     constant_shared_ptr,
     default_inst,
     NOTSET as __NOTSET,
-    EnumData as __EnumData,
-    EnumFlagsData as __EnumFlagsData,
-    UnionTypeEnumData as __UnionTypeEnumData,
-    createEnumDataForUnionType as __createEnumDataForUnionType,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
@@ -37,6 +32,7 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
+import warnings
 import weakref as __weakref
 import builtins as _builtins
 
@@ -44,202 +40,624 @@ cimport module.types_reflection as _types_reflection
 
 
 
-cdef __UnionTypeEnumData __ComplexUnion_union_type_enum_data  = __UnionTypeEnumData.create(
-    __createEnumDataForUnionType[cComplexUnion](),
-    __ComplexUnionType,
-)
+cdef object __ComplexUnion_Union_TypeEnumMembers = None
 
 
 @__cython.internal
 @__cython.auto_pickle(False)
-cdef class __ComplexUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
+cdef class __ComplexUnion_Union_TypeMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __ComplexUnion_Union_TypeEnumMembers:
+            return value
 
-    def __get_by_name(cls, str name):
-        return __ComplexUnion_union_type_enum_data.get_by_name(name)
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return __ComplexUnionType.EMPTY
+            elif cvalue == 1:
+                return __ComplexUnionType.intValue
+            elif cvalue == 5:
+                return __ComplexUnionType.stringValue
+            elif cvalue == 2:
+                return __ComplexUnionType.intListValue
+            elif cvalue == 3:
+                return __ComplexUnionType.stringListValue
+            elif cvalue == 9:
+                return __ComplexUnionType.typedefValue
+            elif cvalue == 14:
+                return __ComplexUnionType.stringRef
 
-    def __get_by_value(cls, int value):
-        return __ComplexUnion_union_type_enum_data.get_by_value(value)
+        raise ValueError(f'{value} is not a valid ComplexUnion.Type')
 
-    def __get_all_names(cls):
-        return __ComplexUnion_union_type_enum_data.get_all_names()
+    def __getitem__(cls, name):
+        if name == "EMPTY":
+            return __ComplexUnionType.EMPTY
+        elif name == "intValue":
+            return __ComplexUnionType.intValue
+        elif name == "stringValue":
+            return __ComplexUnionType.stringValue
+        elif name == "intListValue":
+            return __ComplexUnionType.intListValue
+        elif name == "stringListValue":
+            return __ComplexUnionType.stringListValue
+        elif name == "typedefValue":
+            return __ComplexUnionType.typedefValue
+        elif name == "stringRef":
+            return __ComplexUnionType.stringRef
+        raise KeyError(name)
+
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+            'intValue',
+            'stringValue',
+            'intListValue',
+            'stringListValue',
+            'typedefValue',
+            'stringRef',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
+    def __iter__(cls):
+        yield __ComplexUnionType.EMPTY
+        yield __ComplexUnionType.intValue
+        yield __ComplexUnionType.stringValue
+        yield __ComplexUnionType.intListValue
+        yield __ComplexUnionType.stringListValue
+        yield __ComplexUnionType.typedefValue
+        yield __ComplexUnionType.stringRef
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __ComplexUnion_Union_TypeEnumMembers
 
     def __len__(cls):
-        return __ComplexUnion_union_type_enum_data.size()
+        return 6+1  # For Empty
 
 
 @__cython.final
 @__cython.auto_pickle(False)
 cdef class __ComplexUnionType(thrift.py3.types.CompiledEnum):
-    cdef get_by_name(self, str name):
-        return __ComplexUnion_union_type_enum_data.get_by_name(name)
+    EMPTY = __ComplexUnionType.__new__(__ComplexUnionType, 0, "EMPTY")
+    intValue = __ComplexUnionType.__new__(__ComplexUnionType, 1, "intValue")
+    stringValue = __ComplexUnionType.__new__(__ComplexUnionType, 5, "stringValue")
+    intListValue = __ComplexUnionType.__new__(__ComplexUnionType, 2, "intListValue")
+    stringListValue = __ComplexUnionType.__new__(__ComplexUnionType, 3, "stringListValue")
+    typedefValue = __ComplexUnionType.__new__(__ComplexUnionType, 9, "typedefValue")
+    stringRef = __ComplexUnionType.__new__(__ComplexUnionType, 14, "stringRef")
 
+    def __cinit__(self, value, name):
+        if __ComplexUnion_Union_TypeEnumMembers is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"ComplexUnion.Type.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, __ComplexUnionType):
+            warnings.warn(f"comparison not supported between instances of { __ComplexUnionType } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return __ComplexUnionType, (self.value,)
 
 __SetMetaClass(<PyTypeObject*> __ComplexUnionType, <PyTypeObject*> __ComplexUnion_Union_TypeMeta)
+__ComplexUnion_Union_TypeEnumMembers = set(__ComplexUnionType)
 
 
-cdef __UnionTypeEnumData __ListUnion_union_type_enum_data  = __UnionTypeEnumData.create(
-    __createEnumDataForUnionType[cListUnion](),
-    __ListUnionType,
-)
+
+cdef object __ListUnion_Union_TypeEnumMembers = None
 
 
 @__cython.internal
 @__cython.auto_pickle(False)
-cdef class __ListUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
+cdef class __ListUnion_Union_TypeMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __ListUnion_Union_TypeEnumMembers:
+            return value
 
-    def __get_by_name(cls, str name):
-        return __ListUnion_union_type_enum_data.get_by_name(name)
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return __ListUnionType.EMPTY
+            elif cvalue == 2:
+                return __ListUnionType.intListValue
+            elif cvalue == 3:
+                return __ListUnionType.stringListValue
 
-    def __get_by_value(cls, int value):
-        return __ListUnion_union_type_enum_data.get_by_value(value)
+        raise ValueError(f'{value} is not a valid ListUnion.Type')
 
-    def __get_all_names(cls):
-        return __ListUnion_union_type_enum_data.get_all_names()
+    def __getitem__(cls, name):
+        if name == "EMPTY":
+            return __ListUnionType.EMPTY
+        elif name == "intListValue":
+            return __ListUnionType.intListValue
+        elif name == "stringListValue":
+            return __ListUnionType.stringListValue
+        raise KeyError(name)
+
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+            'intListValue',
+            'stringListValue',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
+    def __iter__(cls):
+        yield __ListUnionType.EMPTY
+        yield __ListUnionType.intListValue
+        yield __ListUnionType.stringListValue
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __ListUnion_Union_TypeEnumMembers
 
     def __len__(cls):
-        return __ListUnion_union_type_enum_data.size()
+        return 2+1  # For Empty
 
 
 @__cython.final
 @__cython.auto_pickle(False)
 cdef class __ListUnionType(thrift.py3.types.CompiledEnum):
-    cdef get_by_name(self, str name):
-        return __ListUnion_union_type_enum_data.get_by_name(name)
+    EMPTY = __ListUnionType.__new__(__ListUnionType, 0, "EMPTY")
+    intListValue = __ListUnionType.__new__(__ListUnionType, 2, "intListValue")
+    stringListValue = __ListUnionType.__new__(__ListUnionType, 3, "stringListValue")
 
+    def __cinit__(self, value, name):
+        if __ListUnion_Union_TypeEnumMembers is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"ListUnion.Type.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, __ListUnionType):
+            warnings.warn(f"comparison not supported between instances of { __ListUnionType } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return __ListUnionType, (self.value,)
 
 __SetMetaClass(<PyTypeObject*> __ListUnionType, <PyTypeObject*> __ListUnion_Union_TypeMeta)
+__ListUnion_Union_TypeEnumMembers = set(__ListUnionType)
 
 
-cdef __UnionTypeEnumData __DataUnion_union_type_enum_data  = __UnionTypeEnumData.create(
-    __createEnumDataForUnionType[cDataUnion](),
-    __DataUnionType,
-)
+
+cdef object __DataUnion_Union_TypeEnumMembers = None
 
 
 @__cython.internal
 @__cython.auto_pickle(False)
-cdef class __DataUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
+cdef class __DataUnion_Union_TypeMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __DataUnion_Union_TypeEnumMembers:
+            return value
 
-    def __get_by_name(cls, str name):
-        return __DataUnion_union_type_enum_data.get_by_name(name)
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return __DataUnionType.EMPTY
+            elif cvalue == 1:
+                return __DataUnionType.binaryData
+            elif cvalue == 2:
+                return __DataUnionType.stringData
 
-    def __get_by_value(cls, int value):
-        return __DataUnion_union_type_enum_data.get_by_value(value)
+        raise ValueError(f'{value} is not a valid DataUnion.Type')
 
-    def __get_all_names(cls):
-        return __DataUnion_union_type_enum_data.get_all_names()
+    def __getitem__(cls, name):
+        if name == "EMPTY":
+            return __DataUnionType.EMPTY
+        elif name == "binaryData":
+            return __DataUnionType.binaryData
+        elif name == "stringData":
+            return __DataUnionType.stringData
+        raise KeyError(name)
+
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+            'binaryData',
+            'stringData',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
+    def __iter__(cls):
+        yield __DataUnionType.EMPTY
+        yield __DataUnionType.binaryData
+        yield __DataUnionType.stringData
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __DataUnion_Union_TypeEnumMembers
 
     def __len__(cls):
-        return __DataUnion_union_type_enum_data.size()
+        return 2+1  # For Empty
 
 
 @__cython.final
 @__cython.auto_pickle(False)
 cdef class __DataUnionType(thrift.py3.types.CompiledEnum):
-    cdef get_by_name(self, str name):
-        return __DataUnion_union_type_enum_data.get_by_name(name)
+    EMPTY = __DataUnionType.__new__(__DataUnionType, 0, "EMPTY")
+    binaryData = __DataUnionType.__new__(__DataUnionType, 1, "binaryData")
+    stringData = __DataUnionType.__new__(__DataUnionType, 2, "stringData")
 
+    def __cinit__(self, value, name):
+        if __DataUnion_Union_TypeEnumMembers is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"DataUnion.Type.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, __DataUnionType):
+            warnings.warn(f"comparison not supported between instances of { __DataUnionType } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return __DataUnionType, (self.value,)
 
 __SetMetaClass(<PyTypeObject*> __DataUnionType, <PyTypeObject*> __DataUnion_Union_TypeMeta)
+__DataUnion_Union_TypeEnumMembers = set(__DataUnionType)
 
 
-cdef __UnionTypeEnumData __ValUnion_union_type_enum_data  = __UnionTypeEnumData.create(
-    __createEnumDataForUnionType[cValUnion](),
-    __ValUnionType,
-)
+
+cdef object __ValUnion_Union_TypeEnumMembers = None
 
 
 @__cython.internal
 @__cython.auto_pickle(False)
-cdef class __ValUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
+cdef class __ValUnion_Union_TypeMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __ValUnion_Union_TypeEnumMembers:
+            return value
 
-    def __get_by_name(cls, str name):
-        return __ValUnion_union_type_enum_data.get_by_name(name)
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return __ValUnionType.EMPTY
+            elif cvalue == 1:
+                return __ValUnionType.v1
+            elif cvalue == 2:
+                return __ValUnionType.v2
 
-    def __get_by_value(cls, int value):
-        return __ValUnion_union_type_enum_data.get_by_value(value)
+        raise ValueError(f'{value} is not a valid ValUnion.Type')
 
-    def __get_all_names(cls):
-        return __ValUnion_union_type_enum_data.get_all_names()
+    def __getitem__(cls, name):
+        if name == "EMPTY":
+            return __ValUnionType.EMPTY
+        elif name == "v1":
+            return __ValUnionType.v1
+        elif name == "v2":
+            return __ValUnionType.v2
+        raise KeyError(name)
+
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+            'v1',
+            'v2',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
+    def __iter__(cls):
+        yield __ValUnionType.EMPTY
+        yield __ValUnionType.v1
+        yield __ValUnionType.v2
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __ValUnion_Union_TypeEnumMembers
 
     def __len__(cls):
-        return __ValUnion_union_type_enum_data.size()
+        return 2+1  # For Empty
 
 
 @__cython.final
 @__cython.auto_pickle(False)
 cdef class __ValUnionType(thrift.py3.types.CompiledEnum):
-    cdef get_by_name(self, str name):
-        return __ValUnion_union_type_enum_data.get_by_name(name)
+    EMPTY = __ValUnionType.__new__(__ValUnionType, 0, "EMPTY")
+    v1 = __ValUnionType.__new__(__ValUnionType, 1, "v1")
+    v2 = __ValUnionType.__new__(__ValUnionType, 2, "v2")
 
+    def __cinit__(self, value, name):
+        if __ValUnion_Union_TypeEnumMembers is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"ValUnion.Type.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, __ValUnionType):
+            warnings.warn(f"comparison not supported between instances of { __ValUnionType } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return __ValUnionType, (self.value,)
 
 __SetMetaClass(<PyTypeObject*> __ValUnionType, <PyTypeObject*> __ValUnion_Union_TypeMeta)
+__ValUnion_Union_TypeEnumMembers = set(__ValUnionType)
 
 
-cdef __UnionTypeEnumData __VirtualComplexUnion_union_type_enum_data  = __UnionTypeEnumData.create(
-    __createEnumDataForUnionType[cVirtualComplexUnion](),
-    __VirtualComplexUnionType,
-)
+
+cdef object __VirtualComplexUnion_Union_TypeEnumMembers = None
 
 
 @__cython.internal
 @__cython.auto_pickle(False)
-cdef class __VirtualComplexUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
+cdef class __VirtualComplexUnion_Union_TypeMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __VirtualComplexUnion_Union_TypeEnumMembers:
+            return value
 
-    def __get_by_name(cls, str name):
-        return __VirtualComplexUnion_union_type_enum_data.get_by_name(name)
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return __VirtualComplexUnionType.EMPTY
+            elif cvalue == 1:
+                return __VirtualComplexUnionType.thingOne
+            elif cvalue == 2:
+                return __VirtualComplexUnionType.thingTwo
 
-    def __get_by_value(cls, int value):
-        return __VirtualComplexUnion_union_type_enum_data.get_by_value(value)
+        raise ValueError(f'{value} is not a valid VirtualComplexUnion.Type')
 
-    def __get_all_names(cls):
-        return __VirtualComplexUnion_union_type_enum_data.get_all_names()
+    def __getitem__(cls, name):
+        if name == "EMPTY":
+            return __VirtualComplexUnionType.EMPTY
+        elif name == "thingOne":
+            return __VirtualComplexUnionType.thingOne
+        elif name == "thingTwo":
+            return __VirtualComplexUnionType.thingTwo
+        raise KeyError(name)
+
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+            'thingOne',
+            'thingTwo',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
+    def __iter__(cls):
+        yield __VirtualComplexUnionType.EMPTY
+        yield __VirtualComplexUnionType.thingOne
+        yield __VirtualComplexUnionType.thingTwo
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __VirtualComplexUnion_Union_TypeEnumMembers
 
     def __len__(cls):
-        return __VirtualComplexUnion_union_type_enum_data.size()
+        return 2+1  # For Empty
 
 
 @__cython.final
 @__cython.auto_pickle(False)
 cdef class __VirtualComplexUnionType(thrift.py3.types.CompiledEnum):
-    cdef get_by_name(self, str name):
-        return __VirtualComplexUnion_union_type_enum_data.get_by_name(name)
+    EMPTY = __VirtualComplexUnionType.__new__(__VirtualComplexUnionType, 0, "EMPTY")
+    thingOne = __VirtualComplexUnionType.__new__(__VirtualComplexUnionType, 1, "thingOne")
+    thingTwo = __VirtualComplexUnionType.__new__(__VirtualComplexUnionType, 2, "thingTwo")
 
+    def __cinit__(self, value, name):
+        if __VirtualComplexUnion_Union_TypeEnumMembers is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"VirtualComplexUnion.Type.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, __VirtualComplexUnionType):
+            warnings.warn(f"comparison not supported between instances of { __VirtualComplexUnionType } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return __VirtualComplexUnionType, (self.value,)
 
 __SetMetaClass(<PyTypeObject*> __VirtualComplexUnionType, <PyTypeObject*> __VirtualComplexUnion_Union_TypeMeta)
+__VirtualComplexUnion_Union_TypeEnumMembers = set(__VirtualComplexUnionType)
 
 
-cdef __UnionTypeEnumData __NonCopyableUnion_union_type_enum_data  = __UnionTypeEnumData.create(
-    __createEnumDataForUnionType[cNonCopyableUnion](),
-    __NonCopyableUnionType,
-)
+
+cdef object __NonCopyableUnion_Union_TypeEnumMembers = None
 
 
 @__cython.internal
 @__cython.auto_pickle(False)
-cdef class __NonCopyableUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
+cdef class __NonCopyableUnion_Union_TypeMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __NonCopyableUnion_Union_TypeEnumMembers:
+            return value
 
-    def __get_by_name(cls, str name):
-        return __NonCopyableUnion_union_type_enum_data.get_by_name(name)
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return __NonCopyableUnionType.EMPTY
+            elif cvalue == 1:
+                return __NonCopyableUnionType.s
 
-    def __get_by_value(cls, int value):
-        return __NonCopyableUnion_union_type_enum_data.get_by_value(value)
+        raise ValueError(f'{value} is not a valid NonCopyableUnion.Type')
 
-    def __get_all_names(cls):
-        return __NonCopyableUnion_union_type_enum_data.get_all_names()
+    def __getitem__(cls, name):
+        if name == "EMPTY":
+            return __NonCopyableUnionType.EMPTY
+        elif name == "s":
+            return __NonCopyableUnionType.s
+        raise KeyError(name)
+
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+            's',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
+    def __iter__(cls):
+        yield __NonCopyableUnionType.EMPTY
+        yield __NonCopyableUnionType.s
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __NonCopyableUnion_Union_TypeEnumMembers
 
     def __len__(cls):
-        return __NonCopyableUnion_union_type_enum_data.size()
+        return 1+1  # For Empty
 
 
 @__cython.final
 @__cython.auto_pickle(False)
 cdef class __NonCopyableUnionType(thrift.py3.types.CompiledEnum):
-    cdef get_by_name(self, str name):
-        return __NonCopyableUnion_union_type_enum_data.get_by_name(name)
+    EMPTY = __NonCopyableUnionType.__new__(__NonCopyableUnionType, 0, "EMPTY")
+    s = __NonCopyableUnionType.__new__(__NonCopyableUnionType, 1, "s")
 
+    def __cinit__(self, value, name):
+        if __NonCopyableUnion_Union_TypeEnumMembers is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"NonCopyableUnion.Type.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, __NonCopyableUnionType):
+            warnings.warn(f"comparison not supported between instances of { __NonCopyableUnionType } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return __NonCopyableUnionType, (self.value,)
 
 __SetMetaClass(<PyTypeObject*> __NonCopyableUnionType, <PyTypeObject*> __NonCopyableUnion_Union_TypeMeta)
+__NonCopyableUnion_Union_TypeEnumMembers = set(__NonCopyableUnionType)
 
 
 

@@ -27,8 +27,6 @@ from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
 cimport includes.types as _includes_types
-cdef extern from "src/gen-py3/module/types.h":
-  pass
 
 cdef extern from "<folly/small_vector.h>":
   pass
@@ -283,17 +281,27 @@ cdef extern from *:
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
     cdef cppclass cMyEnumA "::some::valid::ns::MyEnumA":
-        pass
-
+        bint operator==(cMyEnumA&)
+        bint operator!=(cMyEnumA&)
+    cMyEnumA MyEnumA__fieldA "::some::valid::ns::MyEnumA::fieldA"
+    cMyEnumA MyEnumA__fieldB "::some::valid::ns::MyEnumA::fieldB"
+    cMyEnumA MyEnumA__fieldC "::some::valid::ns::MyEnumA::fieldC"
     cdef cppclass cAnnotatedEnum "::some::valid::ns::AnnotatedEnum":
-        pass
-
+        bint operator==(cAnnotatedEnum&)
+        bint operator!=(cAnnotatedEnum&)
+    cAnnotatedEnum AnnotatedEnum__FIELDA "::some::valid::ns::AnnotatedEnum::FIELDA"
+    cAnnotatedEnum AnnotatedEnum__FIELDB "::some::valid::ns::AnnotatedEnum::FIELDB"
+    cAnnotatedEnum AnnotatedEnum__FIELDC "::some::valid::ns::AnnotatedEnum::FIELDC"
     cdef cppclass cAnnotatedEnum2 "::some::valid::ns::AnnotatedEnum2":
-        pass
-
+        bint operator==(cAnnotatedEnum2&)
+        bint operator!=(cAnnotatedEnum2&)
+    cAnnotatedEnum2 AnnotatedEnum2__FIELDA "::some::valid::ns::AnnotatedEnum2::FIELDA"
+    cAnnotatedEnum2 AnnotatedEnum2__FIELDB "::some::valid::ns::AnnotatedEnum2::FIELDB"
+    cAnnotatedEnum2 AnnotatedEnum2__FIELDC "::some::valid::ns::AnnotatedEnum2::FIELDC"
     cdef cppclass cMyEnumB "::some::valid::ns::MyEnumB":
-        pass
-
+        bint operator==(cMyEnumB&)
+        bint operator!=(cMyEnumB&)
+    cMyEnumB MyEnumB__AField "::some::valid::ns::MyEnumB::AField"
 
 
 
@@ -302,16 +310,36 @@ cdef class MyEnumA(thrift.py3.types.CompiledEnum):
     pass
 
 
+cdef cMyEnumA MyEnumA_to_cpp(MyEnumA value)
+
+
+
+
 cdef class AnnotatedEnum(thrift.py3.types.CompiledEnum):
     pass
+
+
+cdef cAnnotatedEnum AnnotatedEnum_to_cpp(AnnotatedEnum value)
+
+
 
 
 cdef class AnnotatedEnum2(thrift.py3.types.CompiledEnum):
     pass
 
 
+cdef cAnnotatedEnum2 AnnotatedEnum2_to_cpp(AnnotatedEnum2 value)
+
+
+
+
 cdef class MyEnumB(thrift.py3.types.CompiledEnum):
     pass
+
+
+cdef cMyEnumB MyEnumB_to_cpp(MyEnumB value)
+
+
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some::valid::ns":
     cdef cppclass cEmpty__isset "::some::valid::ns::Empty::__isset":

@@ -27,8 +27,6 @@ from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
 cimport include.types as _include_types
-cdef extern from "src/gen-py3/module/types.h":
-  pass
 
 cdef extern from * nogil:
     cdef cppclass std_unordered_map "std::unordered_map"[T, U]:
@@ -269,17 +267,29 @@ cdef extern from * nogil:
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixtures::types":
     cdef cppclass chas_bitwise_ops "::apache::thrift::fixtures::types::has_bitwise_ops":
-        pass
-
+        bint operator==(chas_bitwise_ops&)
+        bint operator!=(chas_bitwise_ops&)
+    chas_bitwise_ops has_bitwise_ops__none "::apache::thrift::fixtures::types::has_bitwise_ops::none"
+    chas_bitwise_ops has_bitwise_ops__zero "::apache::thrift::fixtures::types::has_bitwise_ops::zero"
+    chas_bitwise_ops has_bitwise_ops__one "::apache::thrift::fixtures::types::has_bitwise_ops::one"
+    chas_bitwise_ops has_bitwise_ops__two "::apache::thrift::fixtures::types::has_bitwise_ops::two"
+    chas_bitwise_ops has_bitwise_ops__three "::apache::thrift::fixtures::types::has_bitwise_ops::three"
     cdef cppclass cis_unscoped "::apache::thrift::fixtures::types::is_unscoped":
-        pass
-
+        bint operator==(cis_unscoped&)
+        bint operator!=(cis_unscoped&)
+    cis_unscoped is_unscoped__hello "::apache::thrift::fixtures::types::is_unscoped::hello"
+    cis_unscoped is_unscoped__world "::apache::thrift::fixtures::types::is_unscoped::world"
     cdef cppclass cMyForwardRefEnum "::apache::thrift::fixtures::types::MyForwardRefEnum":
-        pass
-
+        bint operator==(cMyForwardRefEnum&)
+        bint operator!=(cMyForwardRefEnum&)
+    cMyForwardRefEnum MyForwardRefEnum__ZERO "::apache::thrift::fixtures::types::MyForwardRefEnum::ZERO"
+    cMyForwardRefEnum MyForwardRefEnum__NONZERO "::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO"
     cdef cppclass cMyEnumA "::apache::thrift::fixtures::types::MyEnumA":
-        pass
-
+        bint operator==(cMyEnumA&)
+        bint operator!=(cMyEnumA&)
+    cMyEnumA MyEnumA__fieldA "::apache::thrift::fixtures::types::MyEnumA::fieldA"
+    cMyEnumA MyEnumA__fieldB "::apache::thrift::fixtures::types::MyEnumA::fieldB"
+    cMyEnumA MyEnumA__fieldC "::apache::thrift::fixtures::types::MyEnumA::fieldC"
 
 
 
@@ -288,16 +298,36 @@ cdef class has_bitwise_ops(thrift.py3.types.CompiledEnum):
     pass
 
 
+cdef chas_bitwise_ops has_bitwise_ops_to_cpp(has_bitwise_ops value)
+
+
+
+
 cdef class is_unscoped(thrift.py3.types.CompiledEnum):
     pass
+
+
+cdef cis_unscoped is_unscoped_to_cpp(is_unscoped value)
+
+
 
 
 cdef class MyForwardRefEnum(thrift.py3.types.CompiledEnum):
     pass
 
 
+cdef cMyForwardRefEnum MyForwardRefEnum_to_cpp(MyForwardRefEnum value)
+
+
+
+
 cdef class MyEnumA(thrift.py3.types.CompiledEnum):
     pass
+
+
+cdef cMyEnumA MyEnumA_to_cpp(MyEnumA value)
+
+
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apache::thrift::fixtures::types":
     cdef cppclass cdecorated_struct__isset "::apache::thrift::fixtures::types::decorated_struct::__isset":

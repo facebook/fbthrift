@@ -11,7 +11,6 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
-from libcpp.utility cimport move as cmove
 from cpython cimport bool as pbool
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
@@ -23,10 +22,6 @@ from thrift.py3.types cimport (
     constant_shared_ptr,
     default_inst,
     NOTSET as __NOTSET,
-    EnumData as __EnumData,
-    EnumFlagsData as __EnumFlagsData,
-    UnionTypeEnumData as __UnionTypeEnumData,
-    createEnumDataForUnionType as __createEnumDataForUnionType,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
@@ -37,105 +32,403 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
+import warnings
 import weakref as __weakref
 import builtins as _builtins
 
 cimport test.fixtures.enumstrict.module.types_reflection as _types_reflection
 
-
-cdef __EnumData __EmptyEnum_enum_data  = __EnumData.create(thrift.py3.types.createEnumData[cEmptyEnum](), EmptyEnum)
-
+cdef object __EmptyEnumEnumInstances = None  # Set[EmptyEnum]
+cdef object __EmptyEnumEnumMembers = {}      # Dict[str, EmptyEnum]
+cdef object __EmptyEnumEnumUniqueValues = dict()    # Dict[int, EmptyEnum]
 
 @__cython.internal
 @__cython.auto_pickle(False)
-cdef class __EmptyEnumMeta(thrift.py3.types.EnumMeta):
+cdef class __EmptyEnumMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls):
+            return value
+        if isinstance(value, int):
+            cvalue = value
 
-    def __get_by_name(cls, str name):
-        return __EmptyEnum_enum_data.get_by_name(name)
+        raise ValueError(f'{value} is not a valid EmptyEnum')
 
-    def __get_by_value(cls, int value):
-        return __EmptyEnum_enum_data.get_by_value(value)
+    def __getitem__(cls, name):
+        return __EmptyEnumEnumMembers[name]
 
-    def __get_all_names(cls):
-        return __EmptyEnum_enum_data.get_all_names()
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        ]
+
+    def __iter__(cls):
+        return iter(__EmptyEnumEnumUniqueValues.values())
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __EmptyEnumEnumInstances
 
     def __len__(cls):
-        return __EmptyEnum_enum_data.size()
+        return len(__EmptyEnumEnumInstances)
+
+
 
 
 @__cython.final
 @__cython.auto_pickle(False)
 cdef class EmptyEnum(thrift.py3.types.CompiledEnum):
-    cdef get_by_name(self, str name):
-        return __EmptyEnum_enum_data.get_by_name(name)
+    __members__ = thrift.py3.types.MappingProxyType(__EmptyEnumEnumMembers)
 
+    def __cinit__(self, value, name):
+        if __EmptyEnumEnumInstances is not None:
+            raise TypeError('__new__ is disabled in the interest of type-safety')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"EmptyEnum.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, EmptyEnum):
+            warnings.warn(f"comparison not supported between instances of { EmptyEnum } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return EmptyEnum, (self.value,)
 
 
 __SetMetaClass(<PyTypeObject*> EmptyEnum, <PyTypeObject*> __EmptyEnumMeta)
+__EmptyEnumEnumInstances = set(__EmptyEnumEnumUniqueValues.values())
 
 
-cdef __EnumData __MyEnum_enum_data  = __EnumData.create(thrift.py3.types.createEnumData[cMyEnum](), MyEnum)
-
+cdef inline cEmptyEnum EmptyEnum_to_cpp(EmptyEnum value):
+    cdef int cvalue = value.value
+    pass
+cdef object __MyEnumEnumInstances = None  # Set[MyEnum]
+cdef object __MyEnumEnumMembers = {}      # Dict[str, MyEnum]
+cdef object __MyEnumEnumUniqueValues = dict()    # Dict[int, MyEnum]
 
 @__cython.internal
 @__cython.auto_pickle(False)
-cdef class __MyEnumMeta(thrift.py3.types.EnumMeta):
+cdef class __MyEnumMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls):
+            return value
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 1:
+                return MyEnum.ONE
+            elif cvalue == 2:
+                return MyEnum.TWO
 
-    def __get_by_name(cls, str name):
-        return __MyEnum_enum_data.get_by_name(name)
+        raise ValueError(f'{value} is not a valid MyEnum')
 
-    def __get_by_value(cls, int value):
-        return __MyEnum_enum_data.get_by_value(value)
+    def __getitem__(cls, name):
+        return __MyEnumEnumMembers[name]
 
-    def __get_all_names(cls):
-        return __MyEnum_enum_data.get_all_names()
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        'ONE',
+        'TWO',
+        ]
+
+    def __iter__(cls):
+        return iter(__MyEnumEnumUniqueValues.values())
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __MyEnumEnumInstances
 
     def __len__(cls):
-        return __MyEnum_enum_data.size()
+        return len(__MyEnumEnumInstances)
+
+
+cdef __MyEnum_unique_instance(int value, str name):
+    inst = __MyEnumEnumUniqueValues.get(value)
+    if inst is None:
+        inst = __MyEnumEnumUniqueValues[value] = MyEnum.__new__(MyEnum, value, name)
+    __MyEnumEnumMembers[name] = inst
+    return inst
 
 
 @__cython.final
 @__cython.auto_pickle(False)
 cdef class MyEnum(thrift.py3.types.CompiledEnum):
-    cdef get_by_name(self, str name):
-        return __MyEnum_enum_data.get_by_name(name)
+    ONE = __MyEnum_unique_instance(1, "ONE")
+    TWO = __MyEnum_unique_instance(2, "TWO")
+    __members__ = thrift.py3.types.MappingProxyType(__MyEnumEnumMembers)
 
+    def __cinit__(self, value, name):
+        if __MyEnumEnumInstances is not None:
+            raise TypeError('__new__ is disabled in the interest of type-safety')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"MyEnum.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, MyEnum):
+            warnings.warn(f"comparison not supported between instances of { MyEnum } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return MyEnum, (self.value,)
 
 
 __SetMetaClass(<PyTypeObject*> MyEnum, <PyTypeObject*> __MyEnumMeta)
+__MyEnumEnumInstances = set(__MyEnumEnumUniqueValues.values())
 
 
-cdef __EnumData __MyBigEnum_enum_data  = __EnumData.create(thrift.py3.types.createEnumData[cMyBigEnum](), MyBigEnum)
-
+cdef inline cMyEnum MyEnum_to_cpp(MyEnum value):
+    cdef int cvalue = value.value
+    if cvalue == 1:
+        return MyEnum__ONE
+    elif cvalue == 2:
+        return MyEnum__TWO
+cdef object __MyBigEnumEnumInstances = None  # Set[MyBigEnum]
+cdef object __MyBigEnumEnumMembers = {}      # Dict[str, MyBigEnum]
+cdef object __MyBigEnumEnumUniqueValues = dict()    # Dict[int, MyBigEnum]
 
 @__cython.internal
 @__cython.auto_pickle(False)
-cdef class __MyBigEnumMeta(thrift.py3.types.EnumMeta):
+cdef class __MyBigEnumMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls):
+            return value
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return MyBigEnum.UNKNOWN
+            elif cvalue == 1:
+                return MyBigEnum.ONE
+            elif cvalue == 2:
+                return MyBigEnum.TWO
+            elif cvalue == 3:
+                return MyBigEnum.THREE
+            elif cvalue == 4:
+                return MyBigEnum.FOUR
+            elif cvalue == 5:
+                return MyBigEnum.FIVE
+            elif cvalue == 6:
+                return MyBigEnum.SIX
+            elif cvalue == 7:
+                return MyBigEnum.SEVEN
+            elif cvalue == 8:
+                return MyBigEnum.EIGHT
+            elif cvalue == 9:
+                return MyBigEnum.NINE
+            elif cvalue == 10:
+                return MyBigEnum.TEN
+            elif cvalue == 11:
+                return MyBigEnum.ELEVEN
+            elif cvalue == 12:
+                return MyBigEnum.TWELVE
+            elif cvalue == 13:
+                return MyBigEnum.THIRTEEN
+            elif cvalue == 14:
+                return MyBigEnum.FOURTEEN
+            elif cvalue == 15:
+                return MyBigEnum.FIFTEEN
+            elif cvalue == 16:
+                return MyBigEnum.SIXTEEN
+            elif cvalue == 17:
+                return MyBigEnum.SEVENTEEN
+            elif cvalue == 18:
+                return MyBigEnum.EIGHTEEN
+            elif cvalue == 19:
+                return MyBigEnum.NINETEEN
 
-    def __get_by_name(cls, str name):
-        return __MyBigEnum_enum_data.get_by_name(name)
+        raise ValueError(f'{value} is not a valid MyBigEnum')
 
-    def __get_by_value(cls, int value):
-        return __MyBigEnum_enum_data.get_by_value(value)
+    def __getitem__(cls, name):
+        return __MyBigEnumEnumMembers[name]
 
-    def __get_all_names(cls):
-        return __MyBigEnum_enum_data.get_all_names()
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        'UNKNOWN',
+        'ONE',
+        'TWO',
+        'THREE',
+        'FOUR',
+        'FIVE',
+        'SIX',
+        'SEVEN',
+        'EIGHT',
+        'NINE',
+        'TEN',
+        'ELEVEN',
+        'TWELVE',
+        'THIRTEEN',
+        'FOURTEEN',
+        'FIFTEEN',
+        'SIXTEEN',
+        'SEVENTEEN',
+        'EIGHTEEN',
+        'NINETEEN',
+        ]
+
+    def __iter__(cls):
+        return iter(__MyBigEnumEnumUniqueValues.values())
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __MyBigEnumEnumInstances
 
     def __len__(cls):
-        return __MyBigEnum_enum_data.size()
+        return len(__MyBigEnumEnumInstances)
+
+
+cdef __MyBigEnum_unique_instance(int value, str name):
+    inst = __MyBigEnumEnumUniqueValues.get(value)
+    if inst is None:
+        inst = __MyBigEnumEnumUniqueValues[value] = MyBigEnum.__new__(MyBigEnum, value, name)
+    __MyBigEnumEnumMembers[name] = inst
+    return inst
 
 
 @__cython.final
 @__cython.auto_pickle(False)
 cdef class MyBigEnum(thrift.py3.types.CompiledEnum):
-    cdef get_by_name(self, str name):
-        return __MyBigEnum_enum_data.get_by_name(name)
+    UNKNOWN = __MyBigEnum_unique_instance(0, "UNKNOWN")
+    ONE = __MyBigEnum_unique_instance(1, "ONE")
+    TWO = __MyBigEnum_unique_instance(2, "TWO")
+    THREE = __MyBigEnum_unique_instance(3, "THREE")
+    FOUR = __MyBigEnum_unique_instance(4, "FOUR")
+    FIVE = __MyBigEnum_unique_instance(5, "FIVE")
+    SIX = __MyBigEnum_unique_instance(6, "SIX")
+    SEVEN = __MyBigEnum_unique_instance(7, "SEVEN")
+    EIGHT = __MyBigEnum_unique_instance(8, "EIGHT")
+    NINE = __MyBigEnum_unique_instance(9, "NINE")
+    TEN = __MyBigEnum_unique_instance(10, "TEN")
+    ELEVEN = __MyBigEnum_unique_instance(11, "ELEVEN")
+    TWELVE = __MyBigEnum_unique_instance(12, "TWELVE")
+    THIRTEEN = __MyBigEnum_unique_instance(13, "THIRTEEN")
+    FOURTEEN = __MyBigEnum_unique_instance(14, "FOURTEEN")
+    FIFTEEN = __MyBigEnum_unique_instance(15, "FIFTEEN")
+    SIXTEEN = __MyBigEnum_unique_instance(16, "SIXTEEN")
+    SEVENTEEN = __MyBigEnum_unique_instance(17, "SEVENTEEN")
+    EIGHTEEN = __MyBigEnum_unique_instance(18, "EIGHTEEN")
+    NINETEEN = __MyBigEnum_unique_instance(19, "NINETEEN")
+    __members__ = thrift.py3.types.MappingProxyType(__MyBigEnumEnumMembers)
 
+    def __cinit__(self, value, name):
+        if __MyBigEnumEnumInstances is not None:
+            raise TypeError('__new__ is disabled in the interest of type-safety')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"MyBigEnum.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, MyBigEnum):
+            warnings.warn(f"comparison not supported between instances of { MyBigEnum } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return MyBigEnum, (self.value,)
 
 
 __SetMetaClass(<PyTypeObject*> MyBigEnum, <PyTypeObject*> __MyBigEnumMeta)
+__MyBigEnumEnumInstances = set(__MyBigEnumEnumUniqueValues.values())
 
 
+cdef inline cMyBigEnum MyBigEnum_to_cpp(MyBigEnum value):
+    cdef int cvalue = value.value
+    if cvalue == 0:
+        return MyBigEnum__UNKNOWN
+    elif cvalue == 1:
+        return MyBigEnum__ONE
+    elif cvalue == 2:
+        return MyBigEnum__TWO
+    elif cvalue == 3:
+        return MyBigEnum__THREE
+    elif cvalue == 4:
+        return MyBigEnum__FOUR
+    elif cvalue == 5:
+        return MyBigEnum__FIVE
+    elif cvalue == 6:
+        return MyBigEnum__SIX
+    elif cvalue == 7:
+        return MyBigEnum__SEVEN
+    elif cvalue == 8:
+        return MyBigEnum__EIGHT
+    elif cvalue == 9:
+        return MyBigEnum__NINE
+    elif cvalue == 10:
+        return MyBigEnum__TEN
+    elif cvalue == 11:
+        return MyBigEnum__ELEVEN
+    elif cvalue == 12:
+        return MyBigEnum__TWELVE
+    elif cvalue == 13:
+        return MyBigEnum__THIRTEEN
+    elif cvalue == 14:
+        return MyBigEnum__FOURTEEN
+    elif cvalue == 15:
+        return MyBigEnum__FIFTEEN
+    elif cvalue == 16:
+        return MyBigEnum__SIXTEEN
+    elif cvalue == 17:
+        return MyBigEnum__SEVENTEEN
+    elif cvalue == 18:
+        return MyBigEnum__EIGHTEEN
+    elif cvalue == 19:
+        return MyBigEnum__NINETEEN
 
 @__cython.auto_pickle(False)
 cdef class MyStruct(thrift.py3.types.Struct):
@@ -222,10 +515,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 pass
 
         if myEnum is not None:
-            deref(c_inst).myEnum_ref().assign(<cMyEnum><int>myEnum)
+            deref(c_inst).myEnum_ref().assign(MyEnum_to_cpp(myEnum))
             deref(c_inst).__isset.myEnum = True
         if myBigEnum is not None:
-            deref(c_inst).myBigEnum_ref().assign(<cMyBigEnum><int>myBigEnum)
+            deref(c_inst).myBigEnum_ref().assign(MyBigEnum_to_cpp(myBigEnum))
             deref(c_inst).__isset.myBigEnum = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here

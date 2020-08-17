@@ -46,7 +46,7 @@ __property__ = property
 {{#program:enums}}
 class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum:flags?}}Flag{{/enum:flags?}}):
     {{#enum:values}}
-    {{enumValue:py_name}}: {{enum:name}} = ...
+    {{enumValue:enumSafeName}}: {{enum:name}} = ...
     {{/enum:values}}
     {{^enum:values}}
     pass
@@ -100,7 +100,7 @@ class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable{{^struct:u
     class Type(thrift.py3.types.Enum):
         EMPTY: {{struct:name}}.Type = ...
     {{#struct:fields}}
-        {{field:py_name}}: {{struct:name}}.Type = ...
+        {{field:enumSafeName}}: {{struct:name}}.Type = ...
     {{/struct:fields}}
 
     @staticmethod

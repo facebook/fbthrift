@@ -11,7 +11,6 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
-from libcpp.utility cimport move as cmove
 from cpython cimport bool as pbool
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
@@ -23,10 +22,6 @@ from thrift.py3.types cimport (
     constant_shared_ptr,
     default_inst,
     NOTSET as __NOTSET,
-    EnumData as __EnumData,
-    EnumFlagsData as __EnumFlagsData,
-    UnionTypeEnumData as __UnionTypeEnumData,
-    createEnumDataForUnionType as __createEnumDataForUnionType,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
@@ -37,6 +32,7 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
+import warnings
 import weakref as __weakref
 import builtins as _builtins
 
@@ -44,37 +40,90 @@ cimport module.types_reflection as _types_reflection
 
 
 
-cdef __UnionTypeEnumData __Nada_union_type_enum_data  = __UnionTypeEnumData.create(
-    __createEnumDataForUnionType[cNada](),
-    __NadaType,
-)
+cdef object __Nada_Union_TypeEnumMembers = None
 
 
 @__cython.internal
 @__cython.auto_pickle(False)
-cdef class __Nada_Union_TypeMeta(thrift.py3.types.EnumMeta):
+cdef class __Nada_Union_TypeMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __Nada_Union_TypeEnumMembers:
+            return value
 
-    def __get_by_name(cls, str name):
-        return __Nada_union_type_enum_data.get_by_name(name)
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return __NadaType.EMPTY
 
-    def __get_by_value(cls, int value):
-        return __Nada_union_type_enum_data.get_by_value(value)
+        raise ValueError(f'{value} is not a valid Nada.Type')
 
-    def __get_all_names(cls):
-        return __Nada_union_type_enum_data.get_all_names()
+    def __getitem__(cls, name):
+        if name == "EMPTY":
+            return __NadaType.EMPTY
+        raise KeyError(name)
+
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
+    def __iter__(cls):
+        yield __NadaType.EMPTY
+        return iter(())
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __Nada_Union_TypeEnumMembers
 
     def __len__(cls):
-        return __Nada_union_type_enum_data.size()
+        return 0+1  # For Empty
 
 
 @__cython.final
 @__cython.auto_pickle(False)
 cdef class __NadaType(thrift.py3.types.CompiledEnum):
-    cdef get_by_name(self, str name):
-        return __Nada_union_type_enum_data.get_by_name(name)
+    EMPTY = __NadaType.__new__(__NadaType, 0, "EMPTY")
 
+    def __cinit__(self, value, name):
+        if __Nada_Union_TypeEnumMembers is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"Nada.Type.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, __NadaType):
+            warnings.warn(f"comparison not supported between instances of { __NadaType } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return __NadaType, (self.value,)
 
 __SetMetaClass(<PyTypeObject*> __NadaType, <PyTypeObject*> __Nada_Union_TypeMeta)
+__Nada_Union_TypeEnumMembers = set(__NadaType)
 
 
 @__cython.auto_pickle(False)

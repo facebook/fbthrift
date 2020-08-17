@@ -26,20 +26,40 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
-cdef extern from "src/gen-py3/module/types.h":
-  pass
 
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::test::fixtures::enumstrict":
     cdef cppclass cEmptyEnum "::test::fixtures::enumstrict::EmptyEnum":
-        pass
-
+        bint operator==(cEmptyEnum&)
+        bint operator!=(cEmptyEnum&)
     cdef cppclass cMyEnum "::test::fixtures::enumstrict::MyEnum":
-        pass
-
+        bint operator==(cMyEnum&)
+        bint operator!=(cMyEnum&)
+    cMyEnum MyEnum__ONE "::test::fixtures::enumstrict::MyEnum::ONE"
+    cMyEnum MyEnum__TWO "::test::fixtures::enumstrict::MyEnum::TWO"
     cdef cppclass cMyBigEnum "::test::fixtures::enumstrict::MyBigEnum":
-        pass
-
+        bint operator==(cMyBigEnum&)
+        bint operator!=(cMyBigEnum&)
+    cMyBigEnum MyBigEnum__UNKNOWN "::test::fixtures::enumstrict::MyBigEnum::UNKNOWN"
+    cMyBigEnum MyBigEnum__ONE "::test::fixtures::enumstrict::MyBigEnum::ONE"
+    cMyBigEnum MyBigEnum__TWO "::test::fixtures::enumstrict::MyBigEnum::TWO"
+    cMyBigEnum MyBigEnum__THREE "::test::fixtures::enumstrict::MyBigEnum::THREE"
+    cMyBigEnum MyBigEnum__FOUR "::test::fixtures::enumstrict::MyBigEnum::FOUR"
+    cMyBigEnum MyBigEnum__FIVE "::test::fixtures::enumstrict::MyBigEnum::FIVE"
+    cMyBigEnum MyBigEnum__SIX "::test::fixtures::enumstrict::MyBigEnum::SIX"
+    cMyBigEnum MyBigEnum__SEVEN "::test::fixtures::enumstrict::MyBigEnum::SEVEN"
+    cMyBigEnum MyBigEnum__EIGHT "::test::fixtures::enumstrict::MyBigEnum::EIGHT"
+    cMyBigEnum MyBigEnum__NINE "::test::fixtures::enumstrict::MyBigEnum::NINE"
+    cMyBigEnum MyBigEnum__TEN "::test::fixtures::enumstrict::MyBigEnum::TEN"
+    cMyBigEnum MyBigEnum__ELEVEN "::test::fixtures::enumstrict::MyBigEnum::ELEVEN"
+    cMyBigEnum MyBigEnum__TWELVE "::test::fixtures::enumstrict::MyBigEnum::TWELVE"
+    cMyBigEnum MyBigEnum__THIRTEEN "::test::fixtures::enumstrict::MyBigEnum::THIRTEEN"
+    cMyBigEnum MyBigEnum__FOURTEEN "::test::fixtures::enumstrict::MyBigEnum::FOURTEEN"
+    cMyBigEnum MyBigEnum__FIFTEEN "::test::fixtures::enumstrict::MyBigEnum::FIFTEEN"
+    cMyBigEnum MyBigEnum__SIXTEEN "::test::fixtures::enumstrict::MyBigEnum::SIXTEEN"
+    cMyBigEnum MyBigEnum__SEVENTEEN "::test::fixtures::enumstrict::MyBigEnum::SEVENTEEN"
+    cMyBigEnum MyBigEnum__EIGHTEEN "::test::fixtures::enumstrict::MyBigEnum::EIGHTEEN"
+    cMyBigEnum MyBigEnum__NINETEEN "::test::fixtures::enumstrict::MyBigEnum::NINETEEN"
 
 
 
@@ -48,12 +68,27 @@ cdef class EmptyEnum(thrift.py3.types.CompiledEnum):
     pass
 
 
+cdef cEmptyEnum EmptyEnum_to_cpp(EmptyEnum value)
+
+
+
+
 cdef class MyEnum(thrift.py3.types.CompiledEnum):
     pass
 
 
+cdef cMyEnum MyEnum_to_cpp(MyEnum value)
+
+
+
+
 cdef class MyBigEnum(thrift.py3.types.CompiledEnum):
     pass
+
+
+cdef cMyBigEnum MyBigEnum_to_cpp(MyBigEnum value)
+
+
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test::fixtures::enumstrict":
     cdef cppclass cMyStruct__isset "::test::fixtures::enumstrict::MyStruct::__isset":

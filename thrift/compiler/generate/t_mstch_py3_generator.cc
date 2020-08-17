@@ -778,7 +778,7 @@ class mstch_py3_field : public mstch_field {
             {"field:isset?", &mstch_py3_field::isSet},
             {"field:cppName", &mstch_py3_field::cppName},
             {"field:hasModifiedName?", &mstch_py3_field::hasModifiedName},
-            {"field:hasPyName?", &mstch_py3_field::hasPyName},
+            {"field:enumSafeName", &mstch_py3_field::enumSafeName},
         });
   }
 
@@ -837,8 +837,11 @@ class mstch_py3_field : public mstch_field {
     return pyName_ != cppName_;
   }
 
-  mstch::node hasPyName() {
-    return pyName_ != field_->get_name();
+  mstch::node enumSafeName() {
+    if (pyName_ == "name" || pyName_ == "value") {
+      return pyName_ + "_";
+    }
+    return pyName_;
   }
 
   bool has_default_value() {
@@ -1007,7 +1010,7 @@ class mstch_py3_enum_value : public mstch_enum_value {
         {
             {"enumValue:py_name", &mstch_py3_enum_value::pyName},
             {"enumValue:cppName", &mstch_py3_enum_value::cppName},
-            {"enumValue:hasPyName?", &mstch_py3_enum_value::hasPyName},
+            {"enumValue:enumSafeName", &mstch_py3_enum_value::enumSafeName},
         });
   }
 
@@ -1019,8 +1022,12 @@ class mstch_py3_enum_value : public mstch_enum_value {
     return get_cppname<t_enum_value>(*enm_value_);
   }
 
-  mstch::node hasPyName() {
-    return py3::get_py3_name(*enm_value_) != enm_value_->get_name();
+  mstch::node enumSafeName() {
+    auto pyName = py3::get_py3_name(*enm_value_);
+    if (pyName == "name" || pyName == "value") {
+      return pyName + "_";
+    }
+    return pyName;
   }
 };
 
@@ -1449,16 +1456,13 @@ void t_mstch_py3_generator::generate_module(ModuleType moduleType) {
   if (moduleType != ModuleType::REFLECTIONS) {
     exts.push_back(".pyi");
   }
-  if (moduleType == ModuleType::TYPES) {
-    exts.push_back(".h");
-  }
   for (auto ext : exts) {
     render_to_file(
         nodePtr, module + ext, generateRootPath_ / name / (module + ext));
   }
-  auto cpp_path = boost::filesystem::path{name};
   if (moduleType == ModuleType::CLIENTS || moduleType == ModuleType::SERVICES) {
     auto basename = module + "_wrapper";
+    auto cpp_path = boost::filesystem::path{name};
     for (auto ext : {".h", ".cpp"}) {
       render_to_file(nodePtr, basename + ext, cpp_path / (basename + ext));
     }
@@ -1470,7 +1474,6 @@ void t_mstch_py3_generator::generate_module(ModuleType moduleType) {
   }
 
   if (moduleType == ModuleType::TYPES) {
-    render_to_file(nodePtr, "types.h", cpp_path / "types.h");
     programNodePtr->setTypeContext(false);
     for (auto ext : {".pxd", ".pyx"}) {
       const auto filename = std::string{"types_reflection"} + ext;

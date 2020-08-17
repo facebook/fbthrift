@@ -26,8 +26,6 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
-cdef extern from "src/gen-py3/module/types.h":
-  pass
 
 cdef extern from *:
     ctypedef cint64_t Foo "Foo"
@@ -38,14 +36,22 @@ cdef extern from *:
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cMyEnumA "::cpp2::MyEnumA":
-        pass
-
+        bint operator==(cMyEnumA&)
+        bint operator!=(cMyEnumA&)
+    cMyEnumA MyEnumA__fieldA "::cpp2::MyEnumA::fieldA"
+    cMyEnumA MyEnumA__fieldB "::cpp2::MyEnumA::fieldB"
+    cMyEnumA MyEnumA__fieldC "::cpp2::MyEnumA::fieldC"
 
 
 
 
 cdef class MyEnumA(thrift.py3.types.CompiledEnum):
     pass
+
+
+cdef cMyEnumA MyEnumA_to_cpp(MyEnumA value)
+
+
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
     cdef cppclass cSmallStruct__isset "::cpp2::SmallStruct::__isset":

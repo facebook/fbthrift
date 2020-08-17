@@ -24,4 +24,9 @@ This is a template for creating compiled Enum and Flag pxd information
 
 cdef class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}CompiledEnum{{/enum:flags?}}{{#enum:flags?}}Flag{{/enum:flags?}}):
     pass
+
+
+cdef c{{enum:name}} {{enum:name}}_to_cpp({{enum:name}} value)
+
+
 {{/program:enums}}

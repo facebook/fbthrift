@@ -11,7 +11,6 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
-from libcpp.utility cimport move as cmove
 from cpython cimport bool as pbool
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
@@ -23,10 +22,6 @@ from thrift.py3.types cimport (
     constant_shared_ptr,
     default_inst,
     NOTSET as __NOTSET,
-    EnumData as __EnumData,
-    EnumFlagsData as __EnumFlagsData,
-    UnionTypeEnumData as __UnionTypeEnumData,
-    createEnumDataForUnionType as __createEnumDataForUnionType,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
@@ -37,43 +32,118 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
+import warnings
 import weakref as __weakref
 import builtins as _builtins
 
 cimport module1.types_reflection as _types_reflection
 
-
-cdef __EnumData __Enum_enum_data  = __EnumData.create(thrift.py3.types.createEnumData[cEnum](), Enum)
-
+cdef object __EnumEnumInstances = None  # Set[Enum]
+cdef object __EnumEnumMembers = {}      # Dict[str, Enum]
+cdef object __EnumEnumUniqueValues = dict()    # Dict[int, Enum]
 
 @__cython.internal
 @__cython.auto_pickle(False)
-cdef class __EnumMeta(thrift.py3.types.EnumMeta):
+cdef class __EnumMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls):
+            return value
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 1:
+                return Enum.ONE
+            elif cvalue == 2:
+                return Enum.TWO
+            elif cvalue == 3:
+                return Enum.THREE
 
-    def __get_by_name(cls, str name):
-        return __Enum_enum_data.get_by_name(name)
+        raise ValueError(f'{value} is not a valid Enum')
 
-    def __get_by_value(cls, int value):
-        return __Enum_enum_data.get_by_value(value)
+    def __getitem__(cls, name):
+        return __EnumEnumMembers[name]
 
-    def __get_all_names(cls):
-        return __Enum_enum_data.get_all_names()
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        'ONE',
+        'TWO',
+        'THREE',
+        ]
+
+    def __iter__(cls):
+        return iter(__EnumEnumUniqueValues.values())
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __EnumEnumInstances
 
     def __len__(cls):
-        return __Enum_enum_data.size()
+        return len(__EnumEnumInstances)
+
+
+cdef __Enum_unique_instance(int value, str name):
+    inst = __EnumEnumUniqueValues.get(value)
+    if inst is None:
+        inst = __EnumEnumUniqueValues[value] = Enum.__new__(Enum, value, name)
+    __EnumEnumMembers[name] = inst
+    return inst
 
 
 @__cython.final
 @__cython.auto_pickle(False)
 cdef class Enum(thrift.py3.types.CompiledEnum):
-    cdef get_by_name(self, str name):
-        return __Enum_enum_data.get_by_name(name)
+    ONE = __Enum_unique_instance(1, "ONE")
+    TWO = __Enum_unique_instance(2, "TWO")
+    THREE = __Enum_unique_instance(3, "THREE")
+    __members__ = thrift.py3.types.MappingProxyType(__EnumEnumMembers)
 
+    def __cinit__(self, value, name):
+        if __EnumEnumInstances is not None:
+            raise TypeError('__new__ is disabled in the interest of type-safety')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"Enum.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, Enum):
+            warnings.warn(f"comparison not supported between instances of { Enum } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return Enum, (self.value,)
 
 
 __SetMetaClass(<PyTypeObject*> Enum, <PyTypeObject*> __EnumMeta)
+__EnumEnumInstances = set(__EnumEnumUniqueValues.values())
 
 
+cdef inline cEnum Enum_to_cpp(Enum value):
+    cdef int cvalue = value.value
+    if cvalue == 1:
+        return Enum__ONE
+    elif cvalue == 2:
+        return Enum__TWO
+    elif cvalue == 3:
+        return Enum__THREE
 
 @__cython.auto_pickle(False)
 cdef class Struct(thrift.py3.types.Struct):
@@ -321,7 +391,7 @@ cdef class List__Enum(thrift.py3.types.Container):
             for item in items:
                 if not isinstance(item, Enum):
                     raise TypeError(f"{item!r} is not of type Enum")
-                deref(c_inst).push_back(<cEnum><int>item)
+                deref(c_inst).push_back(Enum_to_cpp(item))
         return c_inst
 
     def __add__(object self, object other):
@@ -380,7 +450,7 @@ cdef class List__Enum(thrift.py3.types.Container):
             return False
         if not isinstance(item, Enum):
             return False
-        return std_libcpp.find[vector[cEnum].iterator, cEnum](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), <cEnum><int>item) != deref(self._cpp_obj).end()
+        return std_libcpp.find[vector[cEnum].iterator, cEnum](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), Enum_to_cpp(item)) != deref(self._cpp_obj).end()
 
     def __iter__(self):
         if not self:
@@ -436,7 +506,7 @@ cdef class List__Enum(thrift.py3.types.Container):
         cdef vector[cEnum].iterator loc = std_libcpp.find[vector[cEnum].iterator, cEnum](
             std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
             end,
-            <cEnum><int>item        )
+            Enum_to_cpp(item)        )
         if loc != end:
             return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
@@ -447,7 +517,7 @@ cdef class List__Enum(thrift.py3.types.Container):
         if not isinstance(item, Enum):
             return 0
         return <cint64_t> std_libcpp.count[vector[cEnum].iterator, cEnum](
-            deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), <cEnum><int>item)
+            deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), Enum_to_cpp(item))
 
     def __reduce__(self):
         return (List__Enum, (list(self), ))
