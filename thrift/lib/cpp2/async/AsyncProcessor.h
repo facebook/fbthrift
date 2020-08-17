@@ -606,33 +606,14 @@ void GeneratedAsyncProcessor::processInThread(
 }
 
 template <class F>
-void HandlerCallbackBase::runFuncInQueue(F&& func, bool oneway) {
+void HandlerCallbackBase::runFuncInQueue(F&& func, bool) {
   assert(tm_ != nullptr);
   assert(getEventBase()->isInEventBaseThread());
-  auto task = concurrency::FunctionRunner::create(std::forward<F>(func));
-  try {
-    tm_->add(
-        task,
-        0, // timeout
-        0, // expiration
-        true); // upstream
-  } catch (...) {
-    if (oneway) {
-      return;
-    }
-
-    TApplicationException ex("Failed to add task to queue, too full");
-    if (req_ != nullptr && ewp_ != nullptr) {
-      std::exchange(req_, {})->sendErrorWrapped(
-          folly::make_exception_wrapper<TApplicationException>(std::move(ex)),
-          kQueueOverloadedErrorCode);
-    } else {
-      LOG(ERROR) << folly::exceptionStr(ex);
-    }
-    // task owns the callback. If exception is thrown, task isn't added to
-    // thread manager so when task falls out of scope the callback will be
-    // destroyed.
-  }
+  tm_->add(
+      concurrency::FunctionRunner::create(std::forward<F>(func)),
+      0, // timeout
+      0, // expiration
+      true); // upstream
 }
 
 template <typename F, typename T>
