@@ -782,6 +782,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:num_union_members",
              &mstch_cpp2_struct::get_num_union_members},
             {"struct:cpp_allocator", &mstch_cpp2_struct::cpp_allocator},
+            {"struct:cpp_allocator_via", &mstch_cpp2_struct::cpp_allocator_via},
         });
   }
   mstch::node filtered_fields() {
@@ -890,6 +891,18 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node cpp_allocator() {
     if (strct_->annotations_.count("cpp.allocator")) {
       return strct_->annotations_.at("cpp.allocator");
+    }
+    return std::string();
+  }
+  mstch::node cpp_allocator_via() {
+    if (strct_->annotations_.count("cpp.allocator_via")) {
+      auto name = strct_->annotations_.at("cpp.allocator_via");
+      for (const auto* field : strct_->get_members()) {
+        if (get_cpp_name(field) == name) {
+          return name;
+        }
+      }
+      throw runtime_error("No cpp.allocator_via field \"" + name + "\"");
     }
     return std::string();
   }

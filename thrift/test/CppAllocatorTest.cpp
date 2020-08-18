@@ -25,18 +25,34 @@ using namespace apache::thrift::test;
 static const char* kTooLong =
     "This is too long for the small string optimization";
 
-TEST(CppAllocatorTest, example) {
-  MyAlloc alloc;
-  aa_struct a(alloc);
+TEST(CppAllocatorTest, UsesAllocator) {
+  ScopedThrowingAlloc alloc;
+  UsesAllocatorParent s(alloc);
 
-  EXPECT_THROW(a.nested_ref()->aa_list_ref()->emplace_back(42), std::bad_alloc);
-  EXPECT_THROW(a.nested_ref()->aa_set_ref()->emplace(42), std::bad_alloc);
-  EXPECT_THROW(a.nested_ref()->aa_map_ref()->emplace(42, 42), std::bad_alloc);
+  EXPECT_THROW(s.child_ref()->aa_list_ref()->emplace_back(42), std::bad_alloc);
+  EXPECT_THROW(s.child_ref()->aa_set_ref()->emplace(42), std::bad_alloc);
+  EXPECT_THROW(s.child_ref()->aa_map_ref()->emplace(42, 42), std::bad_alloc);
   EXPECT_THROW(
-      a.nested_ref()->aa_string_ref()->assign(kTooLong), std::bad_alloc);
+      s.child_ref()->aa_string_ref()->assign(kTooLong), std::bad_alloc);
 
-  EXPECT_NO_THROW(a.nested_ref()->not_aa_list_ref()->emplace_back(42));
-  EXPECT_NO_THROW(a.nested_ref()->not_aa_set_ref()->emplace(42));
-  EXPECT_NO_THROW(a.nested_ref()->not_aa_map_ref()->emplace(42, 42));
-  EXPECT_NO_THROW(a.nested_ref()->not_aa_string_ref()->assign(kTooLong));
+  EXPECT_NO_THROW(s.child_ref()->not_aa_list_ref()->emplace_back(42));
+  EXPECT_NO_THROW(s.child_ref()->not_aa_set_ref()->emplace(42));
+  EXPECT_NO_THROW(s.child_ref()->not_aa_map_ref()->emplace(42, 42));
+  EXPECT_NO_THROW(s.child_ref()->not_aa_string_ref()->assign(kTooLong));
+}
+
+TEST(CppAllocatorTest, GetAllocator) {
+  ScopedStatefulAlloc alloc(42);
+
+  NoAllocatorVia s1(alloc);
+  EXPECT_EQ(alloc, s1.get_allocator());
+
+  YesAllocatorVia s2(alloc);
+  EXPECT_EQ(alloc, s2.get_allocator());
+}
+
+TEST(CppAllocatorTest, AllocatorVia) {
+  NoAllocatorVia s1;
+  YesAllocatorVia s2;
+  EXPECT_GT(sizeof(s1), sizeof(s2));
 }

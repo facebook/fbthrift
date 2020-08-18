@@ -4092,6 +4092,13 @@ class AllocatorAware final  {
   //  using signed/unsigned as true/false for quicker parsing
   using __fbthrift_cpp2_gen_json = unsigned;
   using __fbthrift_cpp2_gen_nimble = unsigned;
+ public:
+  using allocator_type = some_allocator;
+  allocator_type get_allocator() const {
+    return __fbthrift_alloc;
+  }
+ private:
+  FOLLY_ATTR_NO_UNIQUE_ADDRESS allocator_type __fbthrift_alloc;
 
  public:
   using __fbthrift_cpp2_type = AllocatorAware;
@@ -4107,16 +4114,16 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   AllocatorAware(const AllocatorAware&) = default;
 
-  using allocator_type = some_allocator;
-
-  AllocatorAware(allocator_type alloc) :
+  explicit AllocatorAware(const allocator_type& alloc) noexcept :
+    __fbthrift_alloc(alloc),
     aa_list(alloc),
     aa_set(alloc),
     aa_map(alloc),
     aa_string(alloc),
     not_a_container() {}
 
-  AllocatorAware(const AllocatorAware& other, allocator_type alloc) :
+  explicit AllocatorAware(const AllocatorAware& other, const allocator_type& alloc) noexcept :
+    __fbthrift_alloc(alloc),
     aa_list(other.aa_list, alloc),
     aa_set(other.aa_set, alloc),
     aa_map(other.aa_map, alloc),
@@ -4124,7 +4131,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     not_a_container(other.not_a_container),
     __isset(other.__isset) {}
 
-  AllocatorAware(AllocatorAware&& other, allocator_type alloc) :
+  explicit AllocatorAware(AllocatorAware&& other, const allocator_type& alloc) noexcept :
+    __fbthrift_alloc(alloc),
     aa_list(std::move(other.aa_list), alloc),
     aa_set(std::move(other.aa_set), alloc),
     aa_map(std::move(other.aa_map), alloc),
@@ -4386,6 +4394,13 @@ class AllocatorAware2 final  {
   //  using signed/unsigned as true/false for quicker parsing
   using __fbthrift_cpp2_gen_json = unsigned;
   using __fbthrift_cpp2_gen_nimble = unsigned;
+ public:
+  using allocator_type = some_allocator;
+  allocator_type get_allocator() const {
+    return __fbthrift_alloc;
+  }
+ private:
+  FOLLY_ATTR_NO_UNIQUE_ADDRESS allocator_type __fbthrift_alloc;
 
  public:
   using __fbthrift_cpp2_type = AllocatorAware2;
@@ -4401,16 +4416,17 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   AllocatorAware2(const AllocatorAware2&) = default;
 
-  using allocator_type = some_allocator;
-
-  AllocatorAware2(allocator_type alloc) :
+  explicit AllocatorAware2(const allocator_type& alloc) noexcept :
+    __fbthrift_alloc(alloc),
     not_a_container() {}
 
-  AllocatorAware2(const AllocatorAware2& other, allocator_type alloc) :
+  explicit AllocatorAware2(const AllocatorAware2& other, const allocator_type& alloc) noexcept :
+    __fbthrift_alloc(alloc),
     not_a_container(other.not_a_container),
     __isset(other.__isset) {}
 
-  AllocatorAware2(AllocatorAware2&& other, allocator_type alloc) :
+  explicit AllocatorAware2(AllocatorAware2&& other, const allocator_type& alloc) noexcept :
+    __fbthrift_alloc(alloc),
     not_a_container(std::move(other.not_a_container)),
     __isset(other.__isset) {}
 

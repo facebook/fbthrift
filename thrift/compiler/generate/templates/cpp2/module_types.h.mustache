@@ -77,6 +77,22 @@ class <%struct:name%> <%!
   //  using signed/unsigned as true/false for quicker parsing
   using __fbthrift_cpp2_gen_json = <%^program:json?%>un<%/program:json?%>signed;
   using __fbthrift_cpp2_gen_nimble = <%^program:nimble?%>un<%/program:nimble?%>signed;
+<%#struct:cpp_allocator%>
+ public:
+  using allocator_type = <%struct:cpp_allocator%>;
+  allocator_type get_allocator() const {
+<%#struct:cpp_allocator_via%>
+    return this-><%struct:cpp_allocator_via%>.get_allocator();
+<%/struct:cpp_allocator_via%>
+<%^struct:cpp_allocator_via%>
+    return __fbthrift_alloc;
+<%/struct:cpp_allocator_via%>
+  }
+<%^struct:cpp_allocator_via%>
+ private:
+  FOLLY_ATTR_NO_UNIQUE_ADDRESS allocator_type __fbthrift_alloc;
+<%/struct:cpp_allocator_via%>
+<%/struct:cpp_allocator%>
 
  public:
   using __fbthrift_cpp2_type = <%struct:name%>;

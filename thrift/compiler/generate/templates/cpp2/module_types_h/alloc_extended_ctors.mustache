@@ -15,16 +15,20 @@
   limitations under the License.
 
 %>
-  using allocator_type = <%struct:cpp_allocator%>;
-
-  <%struct:name%>(allocator_type alloc) :
+  explicit <%struct:name%>(const allocator_type& alloc) noexcept :
+<%^struct:cpp_allocator_via%>
+    __fbthrift_alloc(alloc),
+<%/struct:cpp_allocator_via%>
 <%#struct:fields_in_layout_order%>
     <%field:cpp_name%>(<%#field:type%><%!
     %><%#type:cpp_use_allocator?%>alloc<%/type:cpp_use_allocator?%><%!
     %>)<%/field:type%><%^last?%>,<%/last?%><%#last?%> {}<%/last?%>
 <%/struct:fields_in_layout_order%>
 
-  <%struct:name%>(const <%struct:name%>& other, allocator_type alloc) :
+  explicit <%struct:name%>(const <%struct:name%>& other, const allocator_type& alloc) noexcept :
+<%^struct:cpp_allocator_via%>
+    __fbthrift_alloc(alloc),
+<%/struct:cpp_allocator_via%>
 <%#struct:fields_in_layout_order%>
     <%field:cpp_name%>(<%#field:type%>other.<%field:cpp_name%><%!
     %><%#type:cpp_use_allocator?%>, alloc<%/type:cpp_use_allocator?%><%!
@@ -36,7 +40,10 @@
     __isset(other.__isset) {}
 <%/struct:isset_fields?%>
 
-  <%struct:name%>(<%struct:name%>&& other, allocator_type alloc) :
+  explicit <%struct:name%>(<%struct:name%>&& other, const allocator_type& alloc) noexcept :
+<%^struct:cpp_allocator_via%>
+    __fbthrift_alloc(alloc),
+<%/struct:cpp_allocator_via%>
 <%#struct:fields_in_layout_order%>
     <%field:cpp_name%>(<%#field:type%>std::move(other.<%field:cpp_name%>)<%!
     %><%#type:cpp_use_allocator?%>, alloc<%/type:cpp_use_allocator?%><%!

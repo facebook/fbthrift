@@ -18,18 +18,30 @@ namespace cpp2 apache.thrift.test
 
 cpp_include "thrift/test/CppAllocatorTest.h"
 
-struct aa_struct2 {
-  1: list<i32> (cpp.use_allocator, cpp.template = "MyVector") aa_list;
-  2: set<i32> (cpp.use_allocator, cpp.template = "MySet") aa_set;
-  3: map<i32, i32> (cpp.use_allocator, cpp.template = "MyMap") aa_map;
-  4: string (cpp_use_allocator, cpp.type = "MyString") aa_string;
+struct UsesAllocatorChild {
+  1: list<i32> (cpp.use_allocator, cpp.template = "::ThrowingVector") aa_list;
+  2: set<i32> (cpp.use_allocator, cpp.template = "::ThrowingSet") aa_set;
+  3: map<i32, i32> (cpp.use_allocator, cpp.template = "::ThrowingMap") aa_map;
+  4: string (cpp_use_allocator, cpp.type = "::ThrowingString") aa_string;
   5: i32 not_a_container;
   6: list<i32> not_aa_list;
   7: set<i32> not_aa_set;
   8: map<i32, i32> not_aa_map;
   9: string not_aa_string;
-} (cpp.allocator="MyAlloc")
+} (cpp.allocator="::ScopedThrowingAlloc")
 
-struct aa_struct {
-  1: aa_struct2 (cpp.use_allocator) nested;
-} (cpp.allocator="MyAlloc")
+struct UsesAllocatorParent {
+  1: UsesAllocatorChild (cpp.use_allocator) child;
+} (cpp.allocator="::ScopedThrowingAlloc")
+
+struct AAStruct {
+  1: i32 foo;
+} (cpp.allocator="::ScopedStatefulAlloc")
+
+struct NoAllocatorVia  {
+  1: AAStruct (cpp.use_allocator) foo;
+} (cpp.allocator="::ScopedStatefulAlloc")
+
+struct YesAllocatorVia  {
+  1: AAStruct (cpp.use_allocator) foo;
+} (cpp.allocator="::ScopedStatefulAlloc", cpp.allocator_via="foo")

@@ -55,15 +55,56 @@ struct ThrowingAllocator : private std::allocator<T> {
   }
 };
 
-using MyAlloc = std::scoped_allocator_adaptor<ThrowingAllocator<char>>;
+using ScopedThrowingAlloc =
+    std::scoped_allocator_adaptor<ThrowingAllocator<char>>;
 
 template <class T>
-using MyVector = std::vector<T, MyAlloc>;
+using ThrowingVector = std::vector<T, ScopedThrowingAlloc>;
 
 template <class T>
-using MySet = std::set<T, std::less<T>, MyAlloc>;
+using ThrowingSet = std::set<T, std::less<T>, ScopedThrowingAlloc>;
 
 template <class K, class V>
-using MyMap = std::map<K, V, std::less<K>, MyAlloc>;
+using ThrowingMap = std::map<K, V, std::less<K>, ScopedThrowingAlloc>;
 
-using MyString = std::basic_string<char, std::char_traits<char>, MyAlloc>;
+using ThrowingString =
+    std::basic_string<char, std::char_traits<char>, ScopedThrowingAlloc>;
+
+template <class T>
+struct StatefulAlloc : private std::allocator<T> {
+  using value_type = T;
+
+  StatefulAlloc() = default;
+  StatefulAlloc(const StatefulAlloc&) = default;
+  StatefulAlloc& operator=(const StatefulAlloc&) noexcept = default;
+  explicit StatefulAlloc(int state) : state_(state) {}
+  template <class U>
+  explicit StatefulAlloc(const StatefulAlloc<U>& other) noexcept
+      : state_(other.state_) {}
+
+  int state_ = 0;
+
+  T* allocate(size_t size) {
+    return std::allocator<T>::allocate(size);
+  }
+
+  void deallocate(T* p, size_t size) {
+    std::allocator<T>::deallocate(p, size);
+  }
+
+  template <class U>
+  friend bool operator==(
+      StatefulAlloc<T> const& a,
+      StatefulAlloc<U> const& b) noexcept {
+    return a.state_ == b.state_;
+  }
+
+  template <class U>
+  friend bool operator!=(
+      StatefulAlloc<T> const& a,
+      StatefulAlloc<U> const& b) noexcept {
+    return a.state_ != b.state_;
+  }
+};
+
+using ScopedStatefulAlloc = std::scoped_allocator_adaptor<StatefulAlloc<char>>;
