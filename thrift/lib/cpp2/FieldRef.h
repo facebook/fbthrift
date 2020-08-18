@@ -348,9 +348,10 @@ class optional_field_ref {
     is_set_ = other.has_value();
   }
 
-  FOLLY_ERASE std::optional<value_type> to_optional() const {
-    return is_set_ ? std::optional<value_type>(value_)
-                   : std::optional<value_type>();
+  FOLLY_ERASE std::optional<std::remove_const_t<value_type>> to_optional()
+      const {
+    using type = std::optional<std::remove_const_t<value_type>>;
+    return is_set_ ? type(value_) : type();
   }
 #endif
 
@@ -374,11 +375,12 @@ class optional_field_ref {
     return static_cast<reference_type>(value_);
   }
 
-  template <typename U = value_type>
-  FOLLY_ERASE value_type value_or(U&& default_value) const {
-    return is_set_
-        ? static_cast<value_type>(static_cast<reference_type>(value_))
-        : static_cast<value_type>(static_cast<U&&>(default_value));
+  template <typename U = std::remove_const_t<value_type>>
+  FOLLY_ERASE std::remove_const_t<value_type> value_or(
+      U&& default_value) const {
+    using type = std::remove_const_t<value_type>;
+    return is_set_ ? type(static_cast<reference_type>(value_))
+                   : type(static_cast<U&&>(default_value));
   }
 
   // Returns a reference to the value without checking whether it is available.
@@ -811,11 +813,19 @@ class union_field_ref {
       const union_type& field_type) noexcept
       : union_value_(union_value), value_(value), field_type_(field_type) {}
 
-  FOLLY_ERASE union_field_ref& operator=(const value_type& other) {
+  template <
+      typename U,
+      std::enable_if_t<
+          std::is_convertible<U, value_type>::value ||
+              std::is_assignable<value_type, U>::value,
+          int> = 0>
+  FOLLY_ERASE union_field_ref& operator=(U&& other) noexcept(
+      std::is_nothrow_constructible<value_type, U>::value&&
+          std::is_nothrow_assignable<value_type, U>::value) {
     if (has_value()) {
-      value_ = other;
+      value_ = static_cast<U&&>(other);
     } else {
-      emplace(other);
+      emplace(static_cast<U&&>(other));
     }
     return *this;
   }
@@ -844,7 +854,7 @@ class union_field_ref {
   template <typename... Args>
   FOLLY_ERASE value_type& emplace(Args&&... args) {
     union_value_.__clear();
-    ::new (std::addressof(value_)) value_type(static_cast<Args&&>(args)...);
+    ::new (&value_) value_type(static_cast<Args&&>(args)...);
     union_value_.type_ = field_type_;
     return value_;
   }
