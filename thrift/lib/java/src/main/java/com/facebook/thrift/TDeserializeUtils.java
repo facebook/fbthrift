@@ -21,6 +21,7 @@ import com.facebook.thrift.protocol.TProtocolFactory;
 import com.facebook.thrift.transport.TIOStreamTransport;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 
 /** Generic utility methods to create deserialization protocols. */
 public class TDeserializeUtils {
@@ -32,6 +33,19 @@ public class TDeserializeUtils {
   public static TProtocol protocolFromByteArray(TProtocolFactory protocolFactory, byte[] bytes)
       throws TException {
     return protocolFactory.getProtocol(new TIOStreamTransport(new ByteArrayInputStream(bytes)));
+  }
+
+  /**
+   * Get a protocol for deserializing a Thrift object from a byte buffer.
+   *
+   * @param buffer The byte buffer to read from.
+   */
+  public static TProtocol protocolFromByteBuffer(
+      TProtocolFactory protocolFactory, ByteBuffer buffer) throws TException {
+    byte[] byteData = new byte[buffer.limit()];
+    buffer.position(0);
+    buffer.get(byteData);
+    return protocolFromByteArray(protocolFactory, byteData);
   }
 
   /**
