@@ -474,44 +474,44 @@ class MyUnion final  {
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, const T&> anInteger_ref() const& {
-    return {*this, value_.anInteger, anInteger};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> anInteger_ref() const& {
+    return {value_.anInteger, type_, anInteger, {}};
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, const T&&> anInteger_ref() const&& {
-    return {*this, value_.anInteger, anInteger};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> anInteger_ref() const&& {
+    return {std::move(value_.anInteger), type_, anInteger, {}};
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, T&> anInteger_ref() & {
-    return {*this, value_.anInteger, anInteger};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&> anInteger_ref() & {
+    return {value_.anInteger, type_, anInteger, *this};
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, T&&> anInteger_ref() && {
-    return {*this, value_.anInteger, anInteger};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> anInteger_ref() && {
+    return {value_.anInteger, type_, anInteger, *this};
   }
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, const T&> aString_ref() const& {
-    return {*this, value_.aString, aString};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> aString_ref() const& {
+    return {value_.aString, type_, aString, {}};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, const T&&> aString_ref() const&& {
-    return {*this, value_.aString, aString};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> aString_ref() const&& {
+    return {std::move(value_.aString), type_, aString, {}};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, T&> aString_ref() & {
-    return {*this, value_.aString, aString};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&> aString_ref() & {
+    return {value_.aString, type_, aString, *this};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, T&&> aString_ref() && {
-    return {*this, value_.aString, aString};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> aString_ref() && {
+    return {value_.aString, type_, aString, *this};
   }
-  Type getType() const { return type_; }
+  Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -521,15 +521,13 @@ class MyUnion final  {
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
- private:
-  template<class, class> friend class ::apache::thrift::union_field_ref;
  protected:
   template <class T>
   void destruct(T &val) {
     (&val)->~T();
   }
 
-  Type type_;
+  std::underlying_type_t<Type> type_;
   storage_type value_;
 
  private:

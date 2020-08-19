@@ -694,63 +694,63 @@ class MyUnion final  {
   }
 
   template <typename..., typename T =  ::cpp2::MyEnum>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, const T&> myEnum_ref() const& {
-    return {*this, value_.myEnum, myEnum};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myEnum_ref() const& {
+    return {value_.myEnum, type_, myEnum, {}};
   }
 
   template <typename..., typename T =  ::cpp2::MyEnum>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, const T&&> myEnum_ref() const&& {
-    return {*this, value_.myEnum, myEnum};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myEnum_ref() const&& {
+    return {std::move(value_.myEnum), type_, myEnum, {}};
   }
 
   template <typename..., typename T =  ::cpp2::MyEnum>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, T&> myEnum_ref() & {
-    return {*this, value_.myEnum, myEnum};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&> myEnum_ref() & {
+    return {value_.myEnum, type_, myEnum, *this};
   }
 
   template <typename..., typename T =  ::cpp2::MyEnum>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, T&&> myEnum_ref() && {
-    return {*this, value_.myEnum, myEnum};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myEnum_ref() && {
+    return {value_.myEnum, type_, myEnum, *this};
   }
   template <typename..., typename T =  ::cpp2::MyStruct>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, const T&> myStruct_ref() const& {
-    return {*this, value_.myStruct, myStruct};
-  }
-
-  template <typename..., typename T =  ::cpp2::MyStruct>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, const T&&> myStruct_ref() const&& {
-    return {*this, value_.myStruct, myStruct};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myStruct_ref() const& {
+    return {value_.myStruct, type_, myStruct, {}};
   }
 
   template <typename..., typename T =  ::cpp2::MyStruct>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, T&> myStruct_ref() & {
-    return {*this, value_.myStruct, myStruct};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myStruct_ref() const&& {
+    return {std::move(value_.myStruct), type_, myStruct, {}};
   }
 
   template <typename..., typename T =  ::cpp2::MyStruct>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, T&&> myStruct_ref() && {
-    return {*this, value_.myStruct, myStruct};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&> myStruct_ref() & {
+    return {value_.myStruct, type_, myStruct, *this};
+  }
+
+  template <typename..., typename T =  ::cpp2::MyStruct>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myStruct_ref() && {
+    return {value_.myStruct, type_, myStruct, *this};
   }
   template <typename..., typename T =  ::cpp2::MyDataItem>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, const T&> myDataItem_ref() const& {
-    return {*this, value_.myDataItem, myDataItem};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myDataItem_ref() const& {
+    return {value_.myDataItem, type_, myDataItem, {}};
   }
 
   template <typename..., typename T =  ::cpp2::MyDataItem>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, const T&&> myDataItem_ref() const&& {
-    return {*this, value_.myDataItem, myDataItem};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myDataItem_ref() const&& {
+    return {std::move(value_.myDataItem), type_, myDataItem, {}};
   }
 
   template <typename..., typename T =  ::cpp2::MyDataItem>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, T&> myDataItem_ref() & {
-    return {*this, value_.myDataItem, myDataItem};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&> myDataItem_ref() & {
+    return {value_.myDataItem, type_, myDataItem, *this};
   }
 
   template <typename..., typename T =  ::cpp2::MyDataItem>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<MyUnion, T&&> myDataItem_ref() && {
-    return {*this, value_.myDataItem, myDataItem};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myDataItem_ref() && {
+    return {value_.myDataItem, type_, myDataItem, *this};
   }
-  Type getType() const { return type_; }
+  Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -760,15 +760,13 @@ class MyUnion final  {
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
- private:
-  template<class, class> friend class ::apache::thrift::union_field_ref;
  protected:
   template <class T>
   void destruct(T &val) {
     (&val)->~T();
   }
 
-  Type type_;
+  std::underlying_type_t<Type> type_;
   storage_type value_;
 
  private:

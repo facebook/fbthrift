@@ -4008,44 +4008,44 @@ class NoExceptMoveUnion final  {
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<NoExceptMoveUnion, const T&> string_field_ref() const& {
-    return {*this, value_.string_field, string_field};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> string_field_ref() const& {
+    return {value_.string_field, type_, string_field, {}};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<NoExceptMoveUnion, const T&&> string_field_ref() const&& {
-    return {*this, value_.string_field, string_field};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> string_field_ref() const&& {
+    return {std::move(value_.string_field), type_, string_field, {}};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<NoExceptMoveUnion, T&> string_field_ref() & {
-    return {*this, value_.string_field, string_field};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&> string_field_ref() & {
+    return {value_.string_field, type_, string_field, *this};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<NoExceptMoveUnion, T&&> string_field_ref() && {
-    return {*this, value_.string_field, string_field};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> string_field_ref() && {
+    return {value_.string_field, type_, string_field, *this};
   }
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<NoExceptMoveUnion, const T&> i32_field_ref() const& {
-    return {*this, value_.i32_field, i32_field};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> i32_field_ref() const& {
+    return {value_.i32_field, type_, i32_field, {}};
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<NoExceptMoveUnion, const T&&> i32_field_ref() const&& {
-    return {*this, value_.i32_field, i32_field};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> i32_field_ref() const&& {
+    return {std::move(value_.i32_field), type_, i32_field, {}};
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<NoExceptMoveUnion, T&> i32_field_ref() & {
-    return {*this, value_.i32_field, i32_field};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&> i32_field_ref() & {
+    return {value_.i32_field, type_, i32_field, *this};
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE ::apache::thrift::union_field_ref<NoExceptMoveUnion, T&&> i32_field_ref() && {
-    return {*this, value_.i32_field, i32_field};
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> i32_field_ref() && {
+    return {value_.i32_field, type_, i32_field, *this};
   }
-  Type getType() const { return type_; }
+  Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -4055,15 +4055,13 @@ class NoExceptMoveUnion final  {
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
- private:
-  template<class, class> friend class ::apache::thrift::union_field_ref;
  protected:
   template <class T>
   void destruct(T &val) {
     (&val)->~T();
   }
 
-  Type type_;
+  std::underlying_type_t<Type> type_;
   storage_type value_;
 
  private:

@@ -30,6 +30,7 @@
 #endif
 
 #include <folly/CPortability.h>
+#include <folly/CppAttributes.h>
 
 namespace apache {
 namespace thrift {
@@ -793,25 +794,57 @@ bool operator>=(const T& lhs, required_field_ref<U> rhs) {
   return lhs >= *rhs;
 }
 
+namespace detail {
+
+template <bool kIsConst>
+class type_erased_union {};
+
+template <>
+class type_erased_union<false> {
+ private:
+  template <class Union>
+  static void gen_reset(void* u) {
+    static_cast<Union*>(u)->__clear();
+  }
+
+  using reset_t = void(void*);
+
+  void* const value_;
+  reset_t* const reset_;
+
+ public:
+  template <class Union>
+  explicit type_erased_union(Union& u)
+      : value_(static_cast<void*>(&u)), reset_(gen_reset<Union>) {}
+
+  void reset() const {
+    reset_(value_);
+  }
+};
+} // namespace detail
+
 // A reference to an union field of the possibly const-qualified type
-template <typename Union, typename T>
+template <typename T>
 class union_field_ref {
   static_assert(std::is_reference<T>::value, "not a reference");
 
-  template <typename, typename>
+  template <typename>
   friend class union_field_ref;
 
-  using union_type = typename Union::Type;
+  using int_t = std::conditional_t<std::is_const<T>::value, const int, int>;
+  using type_erased_union = detail::type_erased_union<std::is_const<T>::value>;
 
  public:
   using value_type = std::remove_reference_t<T>;
   using reference_type = T;
 
+  template <class Union>
   FOLLY_ERASE union_field_ref(
-      Union& union_value,
       reference_type value,
-      const union_type& field_type) noexcept
-      : union_value_(union_value), value_(value), field_type_(field_type) {}
+      int_t& type,
+      const int field_type,
+      Union& u) noexcept
+      : value_(value), type_(type), field_type_(field_type), union_(u) {}
 
   template <
       typename U,
@@ -831,7 +864,7 @@ class union_field_ref {
   }
 
   FOLLY_ERASE bool has_value() const {
-    return union_value_.getType() == field_type_;
+    return type_ == field_type_;
   }
 
   FOLLY_ERASE explicit operator bool() const {
@@ -853,16 +886,17 @@ class union_field_ref {
 
   template <typename... Args>
   FOLLY_ERASE value_type& emplace(Args&&... args) {
-    union_value_.__clear();
+    union_.reset();
     ::new (&value_) value_type(static_cast<Args&&>(args)...);
-    union_value_.type_ = field_type_;
+    type_ = field_type_;
     return value_;
   }
 
  private:
-  Union& union_value_;
-  value_type& value_;
-  const union_type field_type_;
+  reference_type value_;
+  int_t& type_;
+  const int field_type_;
+  FOLLY_ATTR_NO_UNIQUE_ADDRESS const type_erased_union union_;
 };
 
 } // namespace thrift
