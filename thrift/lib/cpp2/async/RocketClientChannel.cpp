@@ -119,6 +119,7 @@ folly::Try<FirstResponsePayload> decodeResponseError(
       exType = TApplicationException::UNKNOWN_METHOD;
       break;
     case ResponseRpcErrorCode::UNKNOWN_METHOD:
+      exCode = kMethodUnknownErrorCode;
       exType = TApplicationException::UNKNOWN_METHOD;
       break;
     case ResponseRpcErrorCode::CHECKSUM_MISMATCH:
