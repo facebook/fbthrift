@@ -48,8 +48,8 @@ void EventTask::expired() {
     if (oneway) {
       return;
     }
-    TApplicationException ex{"Failed to add task to queue, too full"};
-    req->sendErrorWrapped(std::move(ex), kQueueOverloadedErrorCode);
+    TApplicationException ex{"Task expired without processing"};
+    req->sendErrorWrapped(std::move(ex), kTaskExpiredErrorCode);
   };
 
   if (base_->isInEventBaseThread()) {
