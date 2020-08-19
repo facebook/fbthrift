@@ -66,9 +66,7 @@ std::unique_ptr<folly::IOBuf> serializeError(
 std::unique_ptr<folly::IOBuf> serializeErrorStruct(
     protocol::PROTOCOL_TYPES protId,
     const TApplicationException& obj) {
-  auto f =
-      [](auto prot,
-         const TApplicationException& obj) -> std::unique_ptr<folly::IOBuf> {
+  auto f = [&](auto prot) -> std::unique_ptr<folly::IOBuf> {
     size_t bufSize = obj.serializedSizeZC(&prot);
     folly::IOBufQueue queue;
     prot.setOutput(&queue, bufSize);
@@ -78,10 +76,10 @@ std::unique_ptr<folly::IOBuf> serializeErrorStruct(
 
   switch (protId) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL: {
-      return f(BinaryProtocolWriter{}, obj);
+      return f(BinaryProtocolWriter{});
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL: {
-      return f(CompactProtocolWriter{}, obj);
+      return f(CompactProtocolWriter{});
     }
     default: {
       LOG(ERROR) << "Invalid protocol from client";
