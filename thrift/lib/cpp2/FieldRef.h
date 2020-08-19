@@ -31,6 +31,7 @@
 
 #include <folly/CPortability.h>
 #include <folly/CppAttributes.h>
+#include <folly/Portability.h>
 
 namespace apache {
 namespace thrift {
@@ -796,31 +797,30 @@ bool operator>=(const T& lhs, required_field_ref<U> rhs) {
 
 namespace detail {
 
-template <bool kIsConst>
-class type_erased_union {};
-
-template <>
-class type_erased_union<false> {
- private:
-  template <class Union>
-  static void gen_reset(void* u) {
-    static_cast<Union*>(u)->__clear();
-  }
-
+struct union_field_ref_owner_vtable {
   using reset_t = void(void*);
 
-  void* const value_;
-  reset_t* const reset_;
+  reset_t* reset;
+};
 
- public:
-  template <class Union>
-  explicit type_erased_union(Union& u)
-      : value_(static_cast<void*>(&u)), reset_(gen_reset<Union>) {}
-
-  void reset() const {
-    reset_(value_);
+struct union_field_ref_owner_vtable_impl {
+  template <typename T>
+  static void reset(void* obj) {
+    static_cast<T*>(obj)->__clear();
   }
 };
+
+template <typename T>
+FOLLY_INLINE_VARIABLE constexpr union_field_ref_owner_vtable //
+    union_field_ref_owner_vtable_for{nullptr};
+template <typename T>
+FOLLY_INLINE_VARIABLE constexpr union_field_ref_owner_vtable //
+    union_field_ref_owner_vtable_for<T&>{
+        &union_field_ref_owner_vtable_impl::reset<T>};
+template <typename T>
+FOLLY_INLINE_VARIABLE constexpr union_field_ref_owner_vtable //
+    union_field_ref_owner_vtable_for<T const&>{nullptr};
+
 } // namespace detail
 
 // A reference to an union field of the possibly const-qualified type
@@ -832,19 +832,24 @@ class union_field_ref {
   friend class union_field_ref;
 
   using int_t = std::conditional_t<std::is_const<T>::value, const int, int>;
-  using type_erased_union = detail::type_erased_union<std::is_const<T>::value>;
+  using owner = std::conditional_t<std::is_const<T>::value, void const*, void*>;
+  using vtable = detail::union_field_ref_owner_vtable;
 
  public:
   using value_type = std::remove_reference_t<T>;
   using reference_type = T;
 
-  template <class Union>
   FOLLY_ERASE union_field_ref(
       reference_type value,
       int_t& type,
-      const int field_type,
-      Union& u) noexcept
-      : value_(value), type_(type), field_type_(field_type), union_(u) {}
+      int field_type,
+      owner ow,
+      vtable const& vt) noexcept
+      : value_(value),
+        type_(type),
+        field_type_(field_type),
+        owner_(ow),
+        vtable_(vt) {}
 
   template <
       typename U,
@@ -886,7 +891,7 @@ class union_field_ref {
 
   template <typename... Args>
   FOLLY_ERASE value_type& emplace(Args&&... args) {
-    union_.reset();
+    vtable_.reset(owner_);
     ::new (&value_) value_type(static_cast<Args&&>(args)...);
     type_ = field_type_;
     return value_;
@@ -896,7 +901,8 @@ class union_field_ref {
   reference_type value_;
   int_t& type_;
   const int field_type_;
-  FOLLY_ATTR_NO_UNIQUE_ADDRESS const type_erased_union union_;
+  owner owner_;
+  vtable const& vtable_;
 };
 
 } // namespace thrift

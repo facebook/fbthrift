@@ -579,117 +579,117 @@ class ComplexUnion final  {
 
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> intValue_ref() const& {
-    return {value_.intValue, type_, intValue, {}};
+    return {value_.intValue, type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> intValue_ref() const&& {
-    return {std::move(value_.intValue), type_, intValue, {}};
+    return {value_.intValue, type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> intValue_ref() & {
-    return {value_.intValue, type_, intValue, *this};
+    return {value_.intValue, type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> intValue_ref() && {
-    return {value_.intValue, type_, intValue, *this};
+    return {value_.intValue, type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> stringValue_ref() const& {
-    return {value_.stringValue, type_, stringValue, {}};
+    return {value_.stringValue, type_, stringValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> stringValue_ref() const&& {
-    return {std::move(value_.stringValue), type_, stringValue, {}};
+    return {value_.stringValue, type_, stringValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> stringValue_ref() & {
-    return {value_.stringValue, type_, stringValue, *this};
+    return {value_.stringValue, type_, stringValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> stringValue_ref() && {
-    return {value_.stringValue, type_, stringValue, *this};
+    return {value_.stringValue, type_, stringValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::vector<int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> intListValue_ref() const& {
-    return {value_.intListValue, type_, intListValue, {}};
+    return {value_.intListValue, type_, intListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::vector<int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> intListValue_ref() const&& {
-    return {std::move(value_.intListValue), type_, intListValue, {}};
+    return {value_.intListValue, type_, intListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::vector<int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> intListValue_ref() & {
-    return {value_.intListValue, type_, intListValue, *this};
+    return {value_.intListValue, type_, intListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::vector<int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> intListValue_ref() && {
-    return {value_.intListValue, type_, intListValue, *this};
+    return {value_.intListValue, type_, intListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> stringListValue_ref() const& {
-    return {value_.stringListValue, type_, stringListValue, {}};
+    return {value_.stringListValue, type_, stringListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> stringListValue_ref() const&& {
-    return {std::move(value_.stringListValue), type_, stringListValue, {}};
+    return {value_.stringListValue, type_, stringListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> stringListValue_ref() & {
-    return {value_.stringListValue, type_, stringListValue, *this};
+    return {value_.stringListValue, type_, stringListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> stringListValue_ref() && {
-    return {value_.stringListValue, type_, stringListValue, *this};
+    return {value_.stringListValue, type_, stringListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T =  ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> typedefValue_ref() const& {
-    return {value_.typedefValue, type_, typedefValue, {}};
+    return {value_.typedefValue, type_, typedefValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> typedefValue_ref() const&& {
-    return {std::move(value_.typedefValue), type_, typedefValue, {}};
+    return {value_.typedefValue, type_, typedefValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> typedefValue_ref() & {
-    return {value_.typedefValue, type_, typedefValue, *this};
+    return {value_.typedefValue, type_, typedefValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> typedefValue_ref() && {
-    return {value_.typedefValue, type_, typedefValue, *this};
+    return {value_.typedefValue, type_, typedefValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> stringRef_ref() const& {
-    return {value_.stringRef, type_, stringRef, {}};
+    return {value_.stringRef, type_, stringRef, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> stringRef_ref() const&& {
-    return {std::move(value_.stringRef), type_, stringRef, {}};
+    return {value_.stringRef, type_, stringRef, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> stringRef_ref() & {
-    return {value_.stringRef, type_, stringRef, *this};
+    return {value_.stringRef, type_, stringRef, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> stringRef_ref() && {
-    return {value_.stringRef, type_, stringRef, *this};
+    return {value_.stringRef, type_, stringRef, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 
@@ -948,41 +948,41 @@ class ListUnion final  {
 
   template <typename..., typename T = ::std::vector<int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> intListValue_ref() const& {
-    return {value_.intListValue, type_, intListValue, {}};
+    return {value_.intListValue, type_, intListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::vector<int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> intListValue_ref() const&& {
-    return {std::move(value_.intListValue), type_, intListValue, {}};
+    return {value_.intListValue, type_, intListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::vector<int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> intListValue_ref() & {
-    return {value_.intListValue, type_, intListValue, *this};
+    return {value_.intListValue, type_, intListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::vector<int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> intListValue_ref() && {
-    return {value_.intListValue, type_, intListValue, *this};
+    return {value_.intListValue, type_, intListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> stringListValue_ref() const& {
-    return {value_.stringListValue, type_, stringListValue, {}};
+    return {value_.stringListValue, type_, stringListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> stringListValue_ref() const&& {
-    return {std::move(value_.stringListValue), type_, stringListValue, {}};
+    return {value_.stringListValue, type_, stringListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> stringListValue_ref() & {
-    return {value_.stringListValue, type_, stringListValue, *this};
+    return {value_.stringListValue, type_, stringListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> stringListValue_ref() && {
-    return {value_.stringListValue, type_, stringListValue, *this};
+    return {value_.stringListValue, type_, stringListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 
@@ -1241,41 +1241,41 @@ class DataUnion final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> binaryData_ref() const& {
-    return {value_.binaryData, type_, binaryData, {}};
+    return {value_.binaryData, type_, binaryData, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> binaryData_ref() const&& {
-    return {std::move(value_.binaryData), type_, binaryData, {}};
+    return {value_.binaryData, type_, binaryData, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> binaryData_ref() & {
-    return {value_.binaryData, type_, binaryData, *this};
+    return {value_.binaryData, type_, binaryData, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> binaryData_ref() && {
-    return {value_.binaryData, type_, binaryData, *this};
+    return {value_.binaryData, type_, binaryData, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> stringData_ref() const& {
-    return {value_.stringData, type_, stringData, {}};
+    return {value_.stringData, type_, stringData, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> stringData_ref() const&& {
-    return {std::move(value_.stringData), type_, stringData, {}};
+    return {value_.stringData, type_, stringData, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> stringData_ref() & {
-    return {value_.stringData, type_, stringData, *this};
+    return {value_.stringData, type_, stringData, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> stringData_ref() && {
-    return {value_.stringData, type_, stringData, *this};
+    return {value_.stringData, type_, stringData, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 
@@ -1729,41 +1729,41 @@ class ValUnion final  {
 
   template <typename..., typename T =  ::cpp2::Val>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> v1_ref() const& {
-    return {value_.v1, type_, v1, {}};
+    return {value_.v1, type_, v1, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::Val>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> v1_ref() const&& {
-    return {std::move(value_.v1), type_, v1, {}};
+    return {value_.v1, type_, v1, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::Val>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> v1_ref() & {
-    return {value_.v1, type_, v1, *this};
+    return {value_.v1, type_, v1, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::Val>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> v1_ref() && {
-    return {value_.v1, type_, v1, *this};
+    return {value_.v1, type_, v1, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T =  ::cpp2::Val>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> v2_ref() const& {
-    return {value_.v2, type_, v2, {}};
+    return {value_.v2, type_, v2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::Val>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> v2_ref() const&& {
-    return {std::move(value_.v2), type_, v2, {}};
+    return {value_.v2, type_, v2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::Val>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> v2_ref() & {
-    return {value_.v2, type_, v2, *this};
+    return {value_.v2, type_, v2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::Val>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> v2_ref() && {
-    return {value_.v2, type_, v2, *this};
+    return {value_.v2, type_, v2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 
@@ -2023,41 +2023,41 @@ class VirtualComplexUnion  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> thingOne_ref() const& {
-    return {value_.thingOne, type_, thingOne, {}};
+    return {value_.thingOne, type_, thingOne, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> thingOne_ref() const&& {
-    return {std::move(value_.thingOne), type_, thingOne, {}};
+    return {value_.thingOne, type_, thingOne, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> thingOne_ref() & {
-    return {value_.thingOne, type_, thingOne, *this};
+    return {value_.thingOne, type_, thingOne, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> thingOne_ref() && {
-    return {value_.thingOne, type_, thingOne, *this};
+    return {value_.thingOne, type_, thingOne, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> thingTwo_ref() const& {
-    return {value_.thingTwo, type_, thingTwo, {}};
+    return {value_.thingTwo, type_, thingTwo, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> thingTwo_ref() const&& {
-    return {std::move(value_.thingTwo), type_, thingTwo, {}};
+    return {value_.thingTwo, type_, thingTwo, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> thingTwo_ref() & {
-    return {value_.thingTwo, type_, thingTwo, *this};
+    return {value_.thingTwo, type_, thingTwo, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> thingTwo_ref() && {
-    return {value_.thingTwo, type_, thingTwo, *this};
+    return {value_.thingTwo, type_, thingTwo, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 
@@ -2327,22 +2327,22 @@ class NonCopyableUnion final  {
 
   template <typename..., typename T =  ::cpp2::NonCopyableStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> s_ref() const& {
-    return {value_.s, type_, s, {}};
+    return {value_.s, type_, s, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::NonCopyableStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> s_ref() const&& {
-    return {std::move(value_.s), type_, s, {}};
+    return {value_.s, type_, s, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::NonCopyableStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> s_ref() & {
-    return {value_.s, type_, s, *this};
+    return {value_.s, type_, s, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::NonCopyableStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> s_ref() && {
-    return {value_.s, type_, s, *this};
+    return {value_.s, type_, s, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 

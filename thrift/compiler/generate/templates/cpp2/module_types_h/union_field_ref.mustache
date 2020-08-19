@@ -17,21 +17,21 @@
 %><%#struct:fields%><%#field:type%>
   template <typename..., typename T = <% > types/type%>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> <%field:cpp_name%>_ref() const& {
-    return {value_.<%field:cpp_name%>, type_, <%field:cpp_name%>, {}};
+    return {value_.<%field:cpp_name%>, type_, <%field:cpp_name%>, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = <% > types/type%>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> <%field:cpp_name%>_ref() const&& {
-    return {std::move(value_.<%field:cpp_name%>), type_, <%field:cpp_name%>, {}};
+    return {value_.<%field:cpp_name%>, type_, <%field:cpp_name%>, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = <% > types/type%>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> <%field:cpp_name%>_ref() & {
-    return {value_.<%field:cpp_name%>, type_, <%field:cpp_name%>, *this};
+    return {value_.<%field:cpp_name%>, type_, <%field:cpp_name%>, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = <% > types/type%>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> <%field:cpp_name%>_ref() && {
-    return {value_.<%field:cpp_name%>, type_, <%field:cpp_name%>, *this};
+    return {value_.<%field:cpp_name%>, type_, <%field:cpp_name%>, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 <%/field:type%><%/struct:fields%>
