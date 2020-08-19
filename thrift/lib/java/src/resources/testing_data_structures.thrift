@@ -253,3 +253,32 @@ struct StructWithMaps {
   4: map<i32, string> intstrings,
   5: map<string, i32> stringints,
 }
+
+struct EveryLayout {
+  1: bool aBool,
+  2: i32 aInt,
+  3: i64 aLong,
+  5: string aString,
+  6: double aDouble,
+  7: float aFloat,
+  8: i16 aShort,
+  9: byte aByte,
+  10: list<string> aList,
+  11: set<string> aSet,
+  12: map<i32, string> aMap,
+  13: list<list<string>> aListOfLists,
+  14: set<set<string>> aSetOfSets,
+  15: map<i32, list<i32>> aMapOfLists,
+  16: list<set<map<bool, string>>> listOfSetsOfMap,
+  17: binary blob,
+} (android.generate_builder = "true")
+
+struct Nesting {
+ 1: EveryLayout every,
+ 2: map<string, bool> boolMap,
+ 3: map<string, EveryLayout> structMap,
+}
+
+struct BoolStruct {
+ 1: bool aBool,
+}
