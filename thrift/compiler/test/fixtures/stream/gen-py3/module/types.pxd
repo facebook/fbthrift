@@ -34,6 +34,8 @@ from thrift.py3.stream cimport (
     ServerStream, cServerStream, ResponseAndServerStream
 )
 from thrift.py3.common cimport RpcOptions as __RpcOptions
+cdef extern from "src/gen-py3/module/types.h":
+  pass
 
 
 

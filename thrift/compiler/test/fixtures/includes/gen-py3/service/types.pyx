@@ -11,6 +11,7 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
+from libcpp.utility cimport move as cmove
 from cpython cimport bool as pbool
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
@@ -22,6 +23,10 @@ from thrift.py3.types cimport (
     constant_shared_ptr,
     default_inst,
     NOTSET as __NOTSET,
+    EnumData as __EnumData,
+    EnumFlagsData as __EnumFlagsData,
+    UnionTypeEnumData as __UnionTypeEnumData,
+    createEnumDataForUnionType as __createEnumDataForUnionType,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
@@ -32,7 +37,6 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
-import warnings
 import weakref as __weakref
 import builtins as _builtins
 cimport includes.types as _includes_types
@@ -43,6 +47,7 @@ cimport transitive.types as _transitive_types
 import transitive.types as _transitive_types
 
 cimport service.types_reflection as _types_reflection
+
 
 
 IncludesIncluded = _includes_types.Included

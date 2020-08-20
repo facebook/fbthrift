@@ -27,6 +27,8 @@ from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
 cimport transitive.types as _transitive_types
+cdef extern from "gen-py3/includes/types.h":
+  pass
 
 
 

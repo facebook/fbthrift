@@ -50,9 +50,7 @@ on a struct.
   }}{{#type:string?}}.encode('utf-8'))){{/type:string?}}{{!
   }}{{#type:binary?}})){{/type:binary?}}{{!
 }}{{/type:base?}}{{!
-}}{{#type:enum?}}{{!
-    }}{{> types/CythonPythonType}}_to_cpp({{field:py_name}}){{!
-}}{{/type:enum?}}{{!
+}}{{#type:enum?}}<{{> types/CythonCppType}}><int>{{field:py_name}}{{/type:enum?}}{{!
 }}{{#type:struct?}}{{!
     }}deref((<{{> types/CythonPythonType }}?> {{field:py_name}})._cpp_obj){{!
 }}{{/type:struct?}}{{!

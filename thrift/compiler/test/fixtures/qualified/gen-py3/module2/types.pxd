@@ -28,6 +28,8 @@ from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_f
 from folly.optional cimport cOptional
 cimport module0.types as _module0_types
 cimport module1.types as _module1_types
+cdef extern from "src/gen-py3/module2/types.h":
+  pass
 
 
 

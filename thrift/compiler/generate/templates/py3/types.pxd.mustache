@@ -58,6 +58,8 @@ from thrift.py3.common cimport RpcOptions as __RpcOptions
 {{#program:includeNamespaces}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeNamespace}}{{value}}_{{/includeNamespace}}types
 {{/program:includeNamespaces}}
+cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/types.h":
+  pass
 
 {{#program:cppIncludes}}
 cdef extern from "{{.}}":
@@ -76,11 +78,8 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
 }} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
 {{/first?}}
     cdef cppclass c{{enum:name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{enum:name}}":
-        bint operator==(c{{enum:name}}&)
-        bint operator!=(c{{enum:name}}&)
-    {{#enum:values}}
-    c{{enum:name}} {{enum:name}}__{{enumValue:py_name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{enum:name}}::{{enumValue:cppName}}"
-    {{/enum:values}}
+        pass
+
 {{/program:enums}}
 
 

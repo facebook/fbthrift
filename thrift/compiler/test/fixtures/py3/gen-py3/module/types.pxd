@@ -26,26 +26,19 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
+cdef extern from "src/gen-py3/module/types.h":
+  pass
 
 cdef extern from *:
     ctypedef bstring foo_Bar "foo::Bar"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::py3::simple":
     cdef cppclass cAnEnum "::py3::simple::AnEnum":
-        bint operator==(cAnEnum&)
-        bint operator!=(cAnEnum&)
-    cAnEnum AnEnum__NOTSET "::py3::simple::AnEnum::None"
-    cAnEnum AnEnum__ONE "::py3::simple::AnEnum::ONE"
-    cAnEnum AnEnum__TWO "::py3::simple::AnEnum::TWO"
-    cAnEnum AnEnum__THREE "::py3::simple::AnEnum::THREE"
-    cAnEnum AnEnum__FOUR "::py3::simple::AnEnum::FOUR"
+        pass
+
     cdef cppclass cFlags "::py3::simple::Flags":
-        bint operator==(cFlags&)
-        bint operator!=(cFlags&)
-    cFlags Flags__flag_A "::py3::simple::Flags::flag_A"
-    cFlags Flags__flag_B "::py3::simple::Flags::flag_B"
-    cFlags Flags__flag_C "::py3::simple::Flags::flag_C"
-    cFlags Flags__flag_D "::py3::simple::Flags::flag_D"
+        pass
+
 
 
 
@@ -54,18 +47,8 @@ cdef class AnEnum(thrift.py3.types.CompiledEnum):
     pass
 
 
-cdef cAnEnum AnEnum_to_cpp(AnEnum value)
-
-
-
-
 cdef class Flags(thrift.py3.types.Flag):
     pass
-
-
-cdef cFlags Flags_to_cpp(Flags value)
-
-
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3::simple":
     cdef cppclass cSimpleException__isset "::py3::simple::SimpleException::__isset":

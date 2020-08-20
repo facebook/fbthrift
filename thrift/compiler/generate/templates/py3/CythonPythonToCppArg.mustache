@@ -44,5 +44,5 @@ This template assumes that the Python object is in a variable named <field>.
 }}{{#type:container?}}{{!
   }}deref((<{{> types/CythonPythonType}}>{{field:py_name}})._cpp_obj){{!
 }}{{/type:container?}}{{!
-}}{{#type:enum}}{{> types/CythonPythonType}}_to_cpp({{field:py_name}}){{/type:enum}}{{!
+}}{{#type:enum?}}<{{> types/CythonCppType}}><int>{{field:py_name}}{{/type:enum?}}{{!
 }}{{/type:hasCustomTypeBehavior?}}

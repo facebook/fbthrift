@@ -26,27 +26,22 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
 from folly.optional cimport cOptional
+cdef extern from "gen-py3/includes/types.h":
+  pass
 
 cdef extern from "folly/sorted_vector_types.h":
   pass
 
 cdef extern from "gen-cpp2/includes_types.h" namespace "::a::different::ns":
     cdef cppclass cAnEnum "::a::different::ns::AnEnum":
-        bint operator==(cAnEnum&)
-        bint operator!=(cAnEnum&)
-    cAnEnum AnEnum__FIELDA "::a::different::ns::AnEnum::FIELDA"
-    cAnEnum AnEnum__FIELDB "::a::different::ns::AnEnum::FIELDB"
+        pass
+
 
 
 
 
 cdef class AnEnum(thrift.py3.types.CompiledEnum):
     pass
-
-
-cdef cAnEnum AnEnum_to_cpp(AnEnum value)
-
-
 
 cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::a::different::ns":
     cdef cppclass cAStruct__isset "::a::different::ns::AStruct::__isset":

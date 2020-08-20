@@ -14,28 +14,77 @@
 
 # distutils: language=c++
 from cpython.bytes cimport PyBytes_AsStringAndSize
-from cpython.object cimport PyTypeObject, Py_LT, Py_EQ
+from cpython.object cimport PyObject, PyTypeObject, Py_LT, Py_EQ
 from folly.iobuf cimport cIOBuf, IOBuf
+from folly.range cimport StringPiece as cStringPiece, Range as cRange
 from libc.stdint cimport uint32_t
 from libcpp.string cimport string
-from libcpp.memory cimport shared_ptr
+from libcpp.memory cimport shared_ptr, unique_ptr
+from libcpp.vector cimport vector
+from libcpp.pair cimport pair
 from collections.abc import Iterable
 
+from thrift.py3.std_libcpp cimport string_view, optional, sv_to_str
 from thrift.py3.common cimport Protocol
 
-cdef extern from "":
+cdef extern from *:
     """
-        static CYTHON_INLINE void SetMetaClass(PyTypeObject* t, PyTypeObject* m)
-        {
-            Py_TYPE(t) = m;
-            PyType_Modified(t);
-        }
+    static CYTHON_INLINE void SetMetaClass(PyTypeObject* t, PyTypeObject* m)
+    {
+        Py_TYPE(t) = m;
+        PyType_Modified(t);
+    }
     """
     void SetMetaClass(PyTypeObject* t, PyTypeObject* m)
 
 cdef extern from "thrift/lib/py3/types.h" namespace "::thrift::py3" nogil:
     shared_ptr[T] constant_shared_ptr[T](T)
     const T& default_inst[T]()
+
+ctypedef PyObject* PyObjectPtr
+ctypedef optional[int] cOptionalInt
+
+cdef extern from "thrift/lib/py3/enums.h" namespace "::thrift::py3" nogil:
+    cdef cppclass cEnumData "::thrift::py3::EnumData":
+        pair[PyObjectPtr, cOptionalInt] tryGetByName(string_view name) except +
+        pair[PyObjectPtr, string_view] tryGetByValue(int value) except +
+        PyObject* tryAddToCache(int value, PyObject* obj) except +
+        size_t size()
+        string_view getPyName(string_view name)
+        cRange[const cStringPiece*] getNames()
+    cdef cppclass cEnumFlagsData "::thrift::py3::EnumFlagsData"(cEnumData):
+        PyObject* tryAddToFlagValuesCache(int value, PyObject* obj) except +
+        string getNameForDerivedValue(int value) except +
+        int getInvertValue(int value) except +
+        int convertNegativeValue(int value) except +
+    cEnumData* createEnumData[T]() except +
+    cEnumFlagsData* createEnumFlagsData[T]() except +
+    cEnumData* createEnumDataForUnionType[T]() except +
+
+
+cdef class EnumData:
+    cdef unique_ptr[cEnumData] _cpp_obj
+    cdef type _py_type
+    cdef get_by_name(self, str name)
+    cdef get_by_value(self, int value)
+    cdef PyObject* _add_to_cache(self, str name, int value) except *
+    cdef int size(self)
+    cdef void _value_error(self, int value) except *
+    @staticmethod
+    cdef EnumData create(cEnumData* ptr, py_type)
+
+cdef class EnumFlagsData(EnumData):
+    cdef get_invert(self, uint32_t value)
+    @staticmethod
+    cdef EnumFlagsData create(cEnumFlagsData* ptr, py_type)
+
+cdef class UnionTypeEnumData(EnumData):
+    cdef object __empty
+    @staticmethod
+    cdef UnionTypeEnumData create(cEnumData* ptr, py_type)
+
+cdef class EnumMeta(type):
+    pass
 
 
 cdef class __NotSet:
@@ -66,6 +115,7 @@ cdef class CompiledEnum:
     cdef object __hash
     cdef object __str
     cdef object __repr
+    cdef get_by_name(self, str name)
 
 
 cdef class Flag(CompiledEnum):
@@ -124,18 +174,6 @@ cdef inline string bytes_to_string(bytes b) except*:
     PyBytes_AsStringAndSize(b, &data, &length)
     return move(string(data, length))  # there is a temp because string can raise
 
-
-cdef inline uint32_t largest_flag(uint32_t v):
-    """
-    Given a 32bit flag field, this identifies the largest bit flag that v is
-    composed of
-    """
-    v |= (v >> 1)
-    v |= (v >> 2)
-    v |= (v >> 4)
-    v |= (v >> 8)
-    v |= (v >> 16)
-    return v ^ (v >> 1)
 
 
 cdef extern from "thrift/lib/cpp2/FieldRef.h" namespace "apache::thrift" nogil:
