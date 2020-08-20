@@ -23,31 +23,92 @@ using namespace ::testing;
 namespace apache::thrift::conformance {
 namespace {
 
-TEST(AnyRefTest, DocExmaple) {
+TEST(AnyRefTest, DocExample1) {
+  std::any a;
+  any_ref ra = a;
+  // ra can now be assigned any value
+  ra.assign_value(1); // a is now an int.
+  ra.assign_value(1.5); // a is now a double.
+
+  int i;
+  any_ref ri = i;
+  ri.assign_value(1); // i is now 1;
+  EXPECT_THROW(
+      ri.assign_value(1.5f),
+      std::bad_any_cast); // Thows a bad_any_cast exception
+                          // because i is not a double.
+}
+
+TEST(AnyRefTest, DocExample2) {
+  auto foo = [](any_ref in) {
+    if (const auto* i = any_cast<const int>(&in)) {
+      return 1;
+    } else if (const auto* f = any_cast<const float>(&in)) {
+      return 2;
+    }
+    return 3;
+  };
+
+  EXPECT_EQ(foo(1), 1); // Captured as int&&.
+  const float f = 0.5f;
+  EXPECT_EQ(foo(f), 2); // Captured as const float&.
+  EXPECT_EQ(foo(1.5), 3);
+}
+
+TEST(AnyRefTest, DocExample3) {
+  auto foo2 = [](any_ref out) { // Previously was void foo(int& out).
+    out.assign_value(1);
+  };
+  int i;
+  std::any a;
+  double d;
+  foo2(i); // i is now 1.
+  EXPECT_EQ(i, 1);
+  foo2(a); // a now stores the integer 1.
+  EXPECT_EQ(std::any_cast<int>(a), 1);
+  EXPECT_THROW(foo2(d), std::bad_any_cast); // throws std::bad_any_cast.
+}
+
+TEST(AnyRefTest, DocExample4) {
   std::any foo;
   any_ref fooRef = foo;
-  assert(fooRef.has_value()); // Is set to an empty std::any.
+  EXPECT_TRUE(fooRef.has_reference()); // Is set to an empty std::any.
   // The empty std::any advertises the any type.
-  assert(fooRef.type() == typeid(std::any));
+  EXPECT_EQ(fooRef.type(), typeid(std::any));
 
-  // The std::any value can be set through the any_ref .
-  any_cast<std::any&>(fooRef) = 1;
+  // The std::any value can be set through the any_ref.
+  fooRef.assign_value(1);
   // Now it advertises the int type.
-  assert(fooRef.type() == typeid(int));
+  EXPECT_EQ(fooRef.type(), typeid(int));
   // Which can be accessed directly through the any_ref.
-  any_cast<int&>(fooRef) = 2;
+  fooRef.assign_value(2);
   // The original value shows the change.
-  assert(any_cast<int>(foo) == 2);
+  EXPECT_EQ(std::any_cast<int>(foo), 2);
 
   // The std::any is still accessible.
-  any_cast<std::any&>(fooRef) = 2.0;
-  assert(fooRef.type() == typeid(double));
+  fooRef.assign_value(2.0);
+  EXPECT_EQ(fooRef.type(), typeid(double));
+}
+
+TEST(AnyRefTest, DocExample5) {
+  any_ref ref;
+  int i = 0;
+  ref = {i};
+  ref.assign_value(1); // i now equals 1
+  EXPECT_EQ(i, 1);
+  double d = 0;
+  ref = {d};
+  ref.assign_value(1.0); // d now equals 1.0.
+  EXPECT_EQ(d, 1.0);
+  ref = {}; // ref doesn't refer to anything.
+  EXPECT_FALSE(ref.has_reference());
 }
 
 TEST(AnyRefTest, Empty) {
   any_ref empty;
-  EXPECT_FALSE(empty);
+  EXPECT_FALSE(empty.has_reference());
   EXPECT_FALSE(empty.has_value());
+  EXPECT_FALSE(empty);
   EXPECT_EQ(empty.type(), typeid(void));
   EXPECT_FALSE(empty.is_const());
   EXPECT_FALSE(empty.is_rvalue_reference());
@@ -63,6 +124,9 @@ TEST(AnyRefTest, Empty) {
 TEST(AnyRefTest, Const) {
   constexpr int i = 1;
   any_ref ref = i;
+  EXPECT_TRUE(ref.has_reference());
+  EXPECT_TRUE(ref.has_value());
+  EXPECT_TRUE(ref);
   EXPECT_EQ(ref.type(), typeid(int));
   EXPECT_TRUE(ref.is_const());
   EXPECT_FALSE(ref.is_rvalue_reference());
@@ -83,7 +147,10 @@ TEST(AnyRefTest, Const) {
   EXPECT_THROW(any_cast<const double&>(ref), std::bad_any_cast);
   EXPECT_THROW(any_cast_exact<const double&>(ref), std::bad_any_cast);
 
-  ref = std::move(i);
+  ref = {std::move(i)};
+  EXPECT_TRUE(ref.has_reference());
+  EXPECT_TRUE(ref.has_value());
+  EXPECT_TRUE(ref);
   EXPECT_EQ(ref.type(), typeid(int));
   EXPECT_TRUE(ref.is_const());
   EXPECT_TRUE(ref.is_rvalue_reference());
@@ -107,11 +174,11 @@ TEST(AnyRefTest, Const) {
 
 TEST(AnyRefTest, NonConst) {
   any_ref ref;
-  EXPECT_FALSE(ref);
   int i = 2;
-  ref = i;
-  EXPECT_TRUE(ref);
+  ref = {i};
+  EXPECT_TRUE(ref.has_reference());
   EXPECT_TRUE(ref.has_value());
+  EXPECT_TRUE(ref);
   EXPECT_FALSE(ref.is_const());
   EXPECT_FALSE(ref.is_rvalue_reference());
 
@@ -126,7 +193,10 @@ TEST(AnyRefTest, NonConst) {
   any_cast_exact<int&>(ref) = 4;
   EXPECT_EQ(i, 4);
 
-  ref = std::move(i);
+  ref = {std::move(i)};
+  EXPECT_TRUE(ref.has_reference());
+  EXPECT_TRUE(ref.has_value());
+  EXPECT_TRUE(ref);
   EXPECT_FALSE(ref.is_const());
   EXPECT_TRUE(ref.is_rvalue_reference());
 
@@ -153,7 +223,7 @@ TEST(AnyRefTest, NonConst) {
   EXPECT_THROW(any_cast_exact<double&>(ref), std::bad_any_cast);
 
   const float f = 1.5f;
-  ref = f;
+  ref = {f};
   EXPECT_TRUE(ref.is_const());
   EXPECT_THROW(any_cast<double>(ref), std::bad_any_cast);
   EXPECT_EQ(any_cast<float>(ref), 1.5f);
@@ -175,6 +245,9 @@ TEST(AnyRefTest, Volatile) {
 TEST(AnyRefTest, MoveOnly) {
   auto i = std::make_unique<int>(2);
   any_ref ref = i;
+  EXPECT_TRUE(ref.has_reference());
+  EXPECT_TRUE(ref.has_value());
+  EXPECT_TRUE(ref);
   EXPECT_FALSE(ref.is_const());
   EXPECT_FALSE(ref.is_rvalue_reference());
 
@@ -187,7 +260,7 @@ TEST(AnyRefTest, MoveOnly) {
   // Uncomment to get expected compile-time error.
   // any_cast<std::unique_ptr<int>>(ref);
 
-  ref = std::move(i);
+  ref = {std::move(i)};
   EXPECT_NE(i, nullptr);
   EXPECT_FALSE(ref.is_const());
   EXPECT_TRUE(ref.is_rvalue_reference());
@@ -220,6 +293,11 @@ TEST(AnyRefTest, Pointer) {
   int* pi = &i;
   any_ref ref = pi;
 
+  EXPECT_TRUE(ref.has_reference());
+  EXPECT_TRUE(ref.has_value());
+  EXPECT_TRUE(ref);
+  EXPECT_EQ(ref.type(), typeid(int*));
+  EXPECT_NE(ref.type(), typeid(int));
   EXPECT_THROW(any_cast<const int&>(ref), std::bad_any_cast);
   EXPECT_THROW(any_cast_exact<const int&>(ref), std::bad_any_cast);
   EXPECT_THROW(any_cast<int>(ref), std::bad_any_cast);
@@ -234,7 +312,9 @@ TEST(AnyRefTest, Pointer) {
 TEST(AnyRefTest, AnyTransparency_Empty) {
   std::any a;
   any_ref ref = a;
-  EXPECT_TRUE(ref.has_value());
+  EXPECT_TRUE(ref.has_reference());
+  EXPECT_FALSE(ref.has_value());
+  EXPECT_FALSE(ref);
   EXPECT_EQ(ref.type(), typeid(std::any));
   EXPECT_FALSE(ref.is_const());
   EXPECT_FALSE(ref.is_rvalue_reference());
@@ -266,6 +346,9 @@ TEST(AnyRefTest, AnyTransparency_NonConst) {
   int i = 2;
   std::any a = i;
   any_ref ref = a;
+  EXPECT_TRUE(ref.has_reference());
+  EXPECT_TRUE(ref.has_value());
+  EXPECT_TRUE(ref);
   EXPECT_EQ(ref.type(), typeid(int));
   EXPECT_FALSE(ref.is_const());
   EXPECT_FALSE(ref.is_rvalue_reference());
@@ -306,6 +389,9 @@ TEST(AnyRefTest, AnyTransparency_Const) {
   std::any a = i;
   const std::any& ca = a;
   any_ref ref = ca;
+  EXPECT_TRUE(ref.has_reference());
+  EXPECT_TRUE(ref.has_value());
+  EXPECT_TRUE(ref);
   EXPECT_EQ(ref.type(), typeid(int));
   EXPECT_TRUE(ref.is_const());
   EXPECT_FALSE(ref.is_rvalue_reference());

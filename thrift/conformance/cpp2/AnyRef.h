@@ -33,42 +33,84 @@ template <typename T>
 T* raw_any_cast(const any_ref* operand) noexcept;
 }
 
-// A reference wrapper to any c++ value.
+// A reference to any c++ value.
 //
-// For example:
+// Behaves like std::any, except it does not own the value.
+// If referencing an std::any, any value can be assigned through
+// the reference. Otherwise only the type being referenced can be
+// assigned:
+//
+//     std::any a;
+//     any_ref ra = a;
+//     // ra can now be assigned any value
+//     ra.assign_value(1);  // a is now an int.
+//     ra.assign_value(1.5); // a is now a double.
+//
+//     int i;
+//     any_ref ri = i;
+//     ri.assign_value(1); // i is now 1;
+//     ri.assign_value(1.5f); // Thows a bad_any_cast exception because i is not
+//                            // a double.
+//
+// Can be used to accept a type-erased value by reference:
+//
 //     void foo(any_ref in) {
-//       if (const auto* i = any_cast<const int>(&in); i != nullptr) {
+//       if (const auto* i = any_cast<const int>(&in)) {
 //         ...
-//       } else if (const auto* f = any_cast<const float>(&any_ref); f !=
-//       nullptr)
-//       {
+//       } else if (const auto* f = any_cast<const float>(&in)) {
 //         ...
 //       }
 //     }
 //
-//     foo(1);
-//     foo(0.5f);
+//     foo(1); // Captured as int&&.
+//     const float f = 0.5f;
+//     foo(f); // Captured as const float&.
 //
-// References to std::any refer to the stored value, if present.
-// For example:
+// Can be used to replace an output reference:
+//
+//     void foo2(any_ref out) { // Previously was `void foo(int& out)`.
+//       out.assign_value(1); // Previously was `out = 1`.
+//     }
+//     ...
+//     int i;
+//     std::any a;
+//     double d;
+//     foo2(i); // i is now 1.
+//     foo2(a); // a now stores the integer 1.
+//     foo2(d); // throws std::bad_any_cast.
+//
+// Can be used as a reference to an std::any, in which case it refences the
+// value in the any, if present:
+//
 //    std::any foo;
 //    any_ref fooRef = foo;
-//    assert(fooRef.has_value());  // Is set to an empty std::any.
+//    assert(fooRef.has_reference());  // Is set to an empty std::any.
 //    // The empty std::any advertises the any type.
 //    assert(fooRef.type() == typeid(std::any));
 //
 //    // The std::any value can be set through the any_ref.
-//    any_cast<std::any&>(fooRef) = 1;
+//    fooRef.assign_value(1);
 //    // Now it advertises the int type.
 //    assert(fooRef.type() == typeid(int));
 //    // Which can be accessed directly through the any_ref.
-//    any_cast<int&>(fooRef) = 2;
+//    fooRef.assign_value(2);
 //    // The original value shows the change.
 //    assert(std::any_cast<int>(foo) == 2);
 //
 //    // The std::any is still accessible.
-//    any_cast<std::any&>(fooRef) = 2.0;
+//    fooRef.assign_value(2.0);
 //    assert(fooRef.type() == typeid(double));
+//
+// The copy constructor can be used to change which value is being referenced:
+//
+//    any_ref ref;
+//    int i;
+//    ref = {i};
+//    ref.assign_value(1);  // i now equals 1
+//    double d;
+//    ref = {d};
+//    ref.assign_value(1.0); // d now equals 1.0.
+//    ref = {};  // ref doesn't refer to anything.
 //
 // TODO(afuller): move to folly.
 class any_ref final {
@@ -79,12 +121,15 @@ class any_ref final {
  public:
   any_ref() noexcept {}
   any_ref(const any_ref&) noexcept = default;
-  any_ref(any_ref&&) noexcept = default;
-
   any_ref& operator=(const any_ref&) noexcept = default;
-  any_ref& operator=(any_ref&&) noexcept = default;
 
-  // Implicit constructors.
+  // Disable assignment with other types.
+  //
+  // This effectivly disables implicit rebinding.
+  template <typename T, typename = disable_self<T>>
+  any_ref& operator=(T&& value) = delete;
+
+  // Implicit binding constructors.
   template <typename T, typename = disable_self<T>>
   /* implicit */ any_ref(T& value) noexcept
       : details_(details<T&>()),
@@ -96,15 +141,21 @@ class any_ref final {
 
   // Returns the type of the value being referenced.
   //
-  // If a non-empty std::any is being stored, this returns
-  // the inner type of the any.
+  // If a non-empty std::any is being stored, this returns the inner type of the
+  // any.
   const std::type_info& type() const noexcept;
 
   // If a reference is being stored.
-  bool has_value() const noexcept {
+  bool has_reference() const noexcept {
     return value_ != nullptr;
   }
-  explicit operator bool() const noexcept {
+
+  // If a value is being referenced.
+  //
+  // Returns false if not referencing a value or referencing an std::any without
+  // a value.
+  bool has_value() const noexcept;
+  operator bool() const noexcept {
     return has_value();
   }
 
@@ -117,6 +168,19 @@ class any_ref final {
   bool is_rvalue_reference() const noexcept {
     return details_->is_rvalue_reference;
   }
+
+  // Tries to assign the given value to referenced variable.
+  //
+  // Does not support implicit conversions.
+  //
+  // Returns true iff successful.
+  template <typename T>
+  bool try_assign_value(T&& value) noexcept;
+
+  // Same as try_assign, except throws std::bad_any_cast on
+  // failure.
+  template <typename T>
+  void assign_value(T&& value);
 
  private:
   template <typename T>
@@ -137,13 +201,13 @@ class any_ref final {
 
 // Try to cast the any_ref to a pointer of the given type.
 //
-// @returns nullptr if the cast is invalid.
+// Returns nullptr if the cast is invalid.
 template <typename T>
 T* any_cast_exact(const any_ref* operand) noexcept;
 
 // Try to cast the any_ref to a value or reference of the given type.
 //
-// @throws std::bad_any_cast if the cast is invalid.
+// Throws std::bad_any_cast if the cast is invalid.
 template <typename T>
 T any_cast_exact(const any_ref& operand);
 
@@ -156,8 +220,29 @@ T* any_cast(const any_ref* operand) noexcept;
 template <typename T>
 T any_cast(const any_ref& operand);
 
-// Implemenation details.
+// Implemenation.
 
+template <typename T>
+bool any_ref::try_assign_value(T&& value) noexcept {
+  if (auto* target = any_cast<std::decay_t<T>>(this)) {
+    *target = std::forward<T>(value);
+    return true;
+  }
+  if constexpr (std::is_copy_constructible_v<T>) { // std::any requires copy.
+    if (auto* target = any_cast<std::any>(this)) {
+      *target = std::forward<T>(value);
+      return true;
+    }
+  }
+  return false;
+}
+
+template <typename T>
+void any_ref::assign_value(T&& value) {
+  if (!try_assign_value(std::forward<T>(value))) {
+    folly::throw_exception<std::bad_any_cast>();
+  }
+}
 namespace detail {
 
 template <typename T>
@@ -195,7 +280,7 @@ FOLLY_EXPORT auto any_ref::details() -> const TypeDetails* {
 
 template <typename T>
 T* any_cast_exact(const any_ref* operand) noexcept {
-  if (!operand->has_value() || // No value.
+  if (!operand->has_reference() || // No reference.
       operand->is_const() != std::is_const_v<T>) { // Chagnes constness.
     return nullptr;
   }
@@ -218,7 +303,7 @@ T any_cast_exact(const any_ref& operand) {
 
 template <typename T>
 T* any_cast(const any_ref* operand) noexcept {
-  if (!operand->has_value()) {
+  if (!operand->has_reference()) {
     return nullptr; // No value.
   }
   if constexpr (!std::is_const_v<T>) {

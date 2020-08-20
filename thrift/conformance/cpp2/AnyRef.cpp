@@ -20,12 +20,23 @@ namespace apache::thrift::conformance {
 
 const std::type_info& any_ref::type() const noexcept {
   if (details_->type == typeid(std::any)) {
-    const auto& value = any_cast<const std::any&>(*this);
+    const auto& value = *static_cast<const std::any*>(value_);
     if (value.has_value()) {
       return value.type();
     }
   }
   return details_->type;
+}
+
+bool any_ref::has_value() const noexcept {
+  if (!has_reference()) {
+    return false;
+  }
+  if (details_->type == typeid(std::any)) {
+    const auto& value = *static_cast<const std::any*>(value_);
+    return value.has_value();
+  }
+  return true;
 }
 
 } // namespace apache::thrift::conformance
