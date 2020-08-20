@@ -194,7 +194,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   std::unique_ptr<ThriftProcessor> thriftProcessor_;
   std::vector<std::unique_ptr<TransportRoutingHandler>> routingHandlers_;
-  folly::Optional<std::string> nextProtocol_;
 
   friend class Cpp2Connection;
   friend class Cpp2Worker;
@@ -475,14 +474,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   folly::Optional<wangle::SSLCacheOptions> getSSLCacheOptions() const {
     return sslCacheOptions_;
-  }
-
-  void setTransport(const std::string& nextProtocolName) {
-    nextProtocol_ = nextProtocolName;
-  }
-
-  folly::Optional<std::string> getTransport() const {
-    return nextProtocol_;
   }
 
   wangle::ServerSocketConfig getServerSocketConfig() {

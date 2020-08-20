@@ -90,10 +90,6 @@ void Cpp2Worker::onNewConnection(
     sock->setZeroCopyEnableFunc(func);
   }
 
-  // log nextProtocolName to scuba
-  if (!nextProtocolName.empty()) {
-    server_->setTransport(nextProtocolName);
-  }
   // Check the security protocol
   switch (secureTransportType) {
     // If no security, peek into the socket to determine type
