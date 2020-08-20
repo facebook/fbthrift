@@ -330,16 +330,19 @@ void ThriftServer::setup() {
       // zeroCopyEnableFunc_ is valid
       bool useZeroCopy = !!zeroCopyEnableFunc_;
       for (auto& socket : getSockets()) {
-        socket->setShutdownSocketSet(wShutdownSocketSet_);
-        socket->setAcceptRateAdjustSpeed(acceptRateAdjustSpeed_);
-        socket->setZeroCopy(useZeroCopy);
+        auto* evb = socket->getEventBase();
+        evb->runImmediatelyOrRunInEventBaseThreadAndWait([&] {
+          socket->setShutdownSocketSet(wShutdownSocketSet_);
+          socket->setAcceptRateAdjustSpeed(acceptRateAdjustSpeed_);
+          socket->setZeroCopy(useZeroCopy);
 
-        try {
-          socket->setTosReflect(tosReflect_);
-        } catch (std::exception const& ex) {
-          LOG(ERROR) << "Got exception setting up TOS reflect: "
-                     << folly::exceptionStr(ex);
-        }
+          try {
+            socket->setTosReflect(tosReflect_);
+          } catch (std::exception const& ex) {
+            LOG(ERROR) << "Got exception setting up TOS reflect: "
+                       << folly::exceptionStr(ex);
+          }
+        });
       }
 
       // Notify handler of the preServe event
