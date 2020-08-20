@@ -685,7 +685,22 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
     return $this->_type;
   }
 
+  public function reset(): void {
+    switch ($this->_type) {
+      case union1Enum::i:
+        $this->i = null;
+        break;
+      case union1Enum::d:
+        $this->d = null;
+        break;
+      case union1Enum::_EMPTY_:
+        break;
+    }
+    $this->_type = union1Enum::_EMPTY_;
+}
+
   public function set_i(int $i): this {
+    $this->reset();
     $this->_type = union1Enum::i;
     $this->i = $i;
     return $this;
@@ -701,6 +716,7 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
   }
 
   public function set_d(float $d): this {
+    $this->reset();
     $this->_type = union1Enum::d;
     $this->d = $d;
     return $this;
@@ -853,7 +869,28 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     return $this->_type;
   }
 
+  public function reset(): void {
+    switch ($this->_type) {
+      case union2Enum::i:
+        $this->i = null;
+        break;
+      case union2Enum::d:
+        $this->d = null;
+        break;
+      case union2Enum::s:
+        $this->s = null;
+        break;
+      case union2Enum::u:
+        $this->u = null;
+        break;
+      case union2Enum::_EMPTY_:
+        break;
+    }
+    $this->_type = union2Enum::_EMPTY_;
+}
+
   public function set_i(int $i): this {
+    $this->reset();
     $this->_type = union2Enum::i;
     $this->i = $i;
     return $this;
@@ -869,6 +906,7 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
   }
 
   public function set_d(float $d): this {
+    $this->reset();
     $this->_type = union2Enum::d;
     $this->d = $d;
     return $this;
@@ -884,6 +922,7 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
   }
 
   public function set_s(struct1 $s): this {
+    $this->reset();
     $this->_type = union2Enum::s;
     $this->s = $s;
     return $this;
@@ -899,6 +938,7 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
   }
 
   public function set_u(union1 $u): this {
+    $this->reset();
     $this->_type = union2Enum::u;
     $this->u = $u;
     return $this;

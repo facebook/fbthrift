@@ -279,7 +279,28 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
     return $this->_type;
   }
 
+  public function reset(): void {
+    switch ($this->_type) {
+      case TestUnionEnum::string_field:
+        $this->string_field = null;
+        break;
+      case TestUnionEnum::int_field:
+        $this->int_field = null;
+        break;
+      case TestUnionEnum::enum_field:
+        $this->enum_field = null;
+        break;
+      case TestUnionEnum::foo_struct:
+        $this->foo_struct = null;
+        break;
+      case TestUnionEnum::_EMPTY_:
+        break;
+    }
+    $this->_type = TestUnionEnum::_EMPTY_;
+}
+
   public function set_string_field(string $string_field): this {
+    $this->reset();
     $this->_type = TestUnionEnum::string_field;
     $this->string_field = $string_field;
     return $this;
@@ -295,6 +316,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   public function set_int_field(int $int_field): this {
+    $this->reset();
     $this->_type = TestUnionEnum::int_field;
     $this->int_field = $int_field;
     return $this;
@@ -310,6 +332,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   public function set_enum_field(TestEnum $enum_field): this {
+    $this->reset();
     $this->_type = TestUnionEnum::enum_field;
     $this->enum_field = $enum_field;
     return $this;
@@ -325,6 +348,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   public function set_foo_struct(Foo $foo_struct): this {
+    $this->reset();
     $this->_type = TestUnionEnum::foo_struct;
     $this->foo_struct = $foo_struct;
     return $this;

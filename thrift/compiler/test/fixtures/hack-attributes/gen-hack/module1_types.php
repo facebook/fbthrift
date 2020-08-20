@@ -296,7 +296,22 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
     return $this->_type;
   }
 
+  public function reset(): void {
+    switch ($this->_type) {
+      case \test\fixtures\jsenum\UnionTestingEnum::foo:
+        $this->foo = null;
+        break;
+      case \test\fixtures\jsenum\UnionTestingEnum::bar:
+        $this->bar = null;
+        break;
+      case \test\fixtures\jsenum\UnionTestingEnum::_EMPTY_:
+        break;
+    }
+    $this->_type = \test\fixtures\jsenum\UnionTestingEnum::_EMPTY_;
+}
+
   public function set_foo(string $foo): this {
+    $this->reset();
     $this->_type = \test\fixtures\jsenum\UnionTestingEnum::foo;
     $this->foo = $foo;
     return $this;
@@ -312,6 +327,7 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
   }
 
   public function set_bar(int $bar): this {
+    $this->reset();
     $this->_type = \test\fixtures\jsenum\UnionTestingEnum::bar;
     $this->bar = $bar;
     return $this;

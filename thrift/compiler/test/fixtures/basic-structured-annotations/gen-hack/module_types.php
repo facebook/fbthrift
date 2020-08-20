@@ -727,7 +727,22 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
     return $this->_type;
   }
 
+  public function reset(): void {
+    switch ($this->_type) {
+      case MyUnionEnum::first:
+        $this->first = null;
+        break;
+      case MyUnionEnum::second:
+        $this->second = null;
+        break;
+      case MyUnionEnum::_EMPTY_:
+        break;
+    }
+    $this->_type = MyUnionEnum::_EMPTY_;
+}
+
   public function set_first(string $first): this {
+    $this->reset();
     $this->_type = MyUnionEnum::first;
     $this->first = $first;
     return $this;
@@ -743,6 +758,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
   }
 
   public function set_second(int $second): this {
+    $this->reset();
     $this->_type = MyUnionEnum::second;
     $this->second = $second;
     return $this;

@@ -2474,7 +2474,22 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
     return $this->_type;
   }
 
+  public function reset(): void {
+    switch ($this->_type) {
+      case NoExceptMoveUnionEnum::string_field:
+        $this->string_field = null;
+        break;
+      case NoExceptMoveUnionEnum::i32_field:
+        $this->i32_field = null;
+        break;
+      case NoExceptMoveUnionEnum::_EMPTY_:
+        break;
+    }
+    $this->_type = NoExceptMoveUnionEnum::_EMPTY_;
+}
+
   public function set_string_field(string $string_field): this {
+    $this->reset();
     $this->_type = NoExceptMoveUnionEnum::string_field;
     $this->string_field = $string_field;
     return $this;
@@ -2490,6 +2505,7 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
   }
 
   public function set_i32_field(int $i32_field): this {
+    $this->reset();
     $this->_type = NoExceptMoveUnionEnum::i32_field;
     $this->i32_field = $i32_field;
     return $this;

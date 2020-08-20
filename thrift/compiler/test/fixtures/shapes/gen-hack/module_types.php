@@ -98,7 +98,22 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     return $this->_type;
   }
 
+  public function reset(): void {
+    switch ($this->_type) {
+      case \test\fixtures\UnionEnum::intValue:
+        $this->intValue = null;
+        break;
+      case \test\fixtures\UnionEnum::stringValue:
+        $this->stringValue = null;
+        break;
+      case \test\fixtures\UnionEnum::_EMPTY_:
+        break;
+    }
+    $this->_type = \test\fixtures\UnionEnum::_EMPTY_;
+}
+
   public function set_intValue(int $intValue): this {
+    $this->reset();
     $this->_type = \test\fixtures\UnionEnum::intValue;
     $this->intValue = $intValue;
     return $this;
@@ -114,6 +129,7 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
   }
 
   public function set_stringValue(string $stringValue): this {
+    $this->reset();
     $this->_type = \test\fixtures\UnionEnum::stringValue;
     $this->stringValue = $stringValue;
     return $this;

@@ -187,7 +187,34 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
     return $this->_type;
   }
 
+  public function reset(): void {
+    switch ($this->_type) {
+      case TestUnionEnum::int_value:
+        $this->int_value = null;
+        break;
+      case TestUnionEnum::str_value:
+        $this->str_value = null;
+        break;
+      case TestUnionEnum::double_value:
+        $this->double_value = null;
+        break;
+      case TestUnionEnum::list_of_strings:
+        $this->list_of_strings = null;
+        break;
+      case TestUnionEnum::map_of_string_to_ints:
+        $this->map_of_string_to_ints = null;
+        break;
+      case TestUnionEnum::struct_foo:
+        $this->struct_foo = null;
+        break;
+      case TestUnionEnum::_EMPTY_:
+        break;
+    }
+    $this->_type = TestUnionEnum::_EMPTY_;
+}
+
   public function set_int_value(int $int_value): this {
+    $this->reset();
     $this->_type = TestUnionEnum::int_value;
     $this->int_value = $int_value;
     return $this;
@@ -203,6 +230,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
   }
 
   public function set_str_value(string $str_value): this {
+    $this->reset();
     $this->_type = TestUnionEnum::str_value;
     $this->str_value = $str_value;
     return $this;
@@ -218,6 +246,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
   }
 
   public function set_double_value(float $double_value): this {
+    $this->reset();
     $this->_type = TestUnionEnum::double_value;
     $this->double_value = $double_value;
     return $this;
@@ -233,6 +262,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
   }
 
   public function set_list_of_strings(varray<string> $list_of_strings): this {
+    $this->reset();
     $this->_type = TestUnionEnum::list_of_strings;
     $this->list_of_strings = $list_of_strings;
     return $this;
@@ -248,6 +278,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
   }
 
   public function set_map_of_string_to_ints(darray<string, int> $map_of_string_to_ints): this {
+    $this->reset();
     $this->_type = TestUnionEnum::map_of_string_to_ints;
     $this->map_of_string_to_ints = $map_of_string_to_ints;
     return $this;
@@ -263,6 +294,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
   }
 
   public function set_struct_foo(Foo $struct_foo): this {
+    $this->reset();
     $this->_type = TestUnionEnum::struct_foo;
     $this->struct_foo = $struct_foo;
     return $this;

@@ -174,7 +174,34 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     return $this->_type;
   }
 
+  public function reset(): void {
+    switch ($this->_type) {
+      case ComplexUnionEnum::intValue:
+        $this->intValue = null;
+        break;
+      case ComplexUnionEnum::stringValue:
+        $this->stringValue = null;
+        break;
+      case ComplexUnionEnum::intListValue:
+        $this->intListValue = null;
+        break;
+      case ComplexUnionEnum::stringListValue:
+        $this->stringListValue = null;
+        break;
+      case ComplexUnionEnum::typedefValue:
+        $this->typedefValue = null;
+        break;
+      case ComplexUnionEnum::stringRef:
+        $this->stringRef = null;
+        break;
+      case ComplexUnionEnum::_EMPTY_:
+        break;
+    }
+    $this->_type = ComplexUnionEnum::_EMPTY_;
+}
+
   public function set_intValue(int $intValue): this {
+    $this->reset();
     $this->_type = ComplexUnionEnum::intValue;
     $this->intValue = $intValue;
     return $this;
@@ -190,6 +217,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function set_stringValue(string $stringValue): this {
+    $this->reset();
     $this->_type = ComplexUnionEnum::stringValue;
     $this->stringValue = $stringValue;
     return $this;
@@ -205,6 +233,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function set_intListValue(Vector<int> $intListValue): this {
+    $this->reset();
     $this->_type = ComplexUnionEnum::intListValue;
     $this->intListValue = $intListValue;
     return $this;
@@ -220,6 +249,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function set_stringListValue(Vector<string> $stringListValue): this {
+    $this->reset();
     $this->_type = ComplexUnionEnum::stringListValue;
     $this->stringListValue = $stringListValue;
     return $this;
@@ -235,6 +265,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function set_typedefValue(Map<int, string> $typedefValue): this {
+    $this->reset();
     $this->_type = ComplexUnionEnum::typedefValue;
     $this->typedefValue = $typedefValue;
     return $this;
@@ -250,6 +281,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function set_stringRef(string $stringRef): this {
+    $this->reset();
     $this->_type = ComplexUnionEnum::stringRef;
     $this->stringRef = $stringRef;
     return $this;
@@ -445,7 +477,22 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
     return $this->_type;
   }
 
+  public function reset(): void {
+    switch ($this->_type) {
+      case ListUnionEnum::intListValue:
+        $this->intListValue = null;
+        break;
+      case ListUnionEnum::stringListValue:
+        $this->stringListValue = null;
+        break;
+      case ListUnionEnum::_EMPTY_:
+        break;
+    }
+    $this->_type = ListUnionEnum::_EMPTY_;
+}
+
   public function set_intListValue(Vector<int> $intListValue): this {
+    $this->reset();
     $this->_type = ListUnionEnum::intListValue;
     $this->intListValue = $intListValue;
     return $this;
@@ -461,6 +508,7 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
   }
 
   public function set_stringListValue(Vector<string> $stringListValue): this {
+    $this->reset();
     $this->_type = ListUnionEnum::stringListValue;
     $this->stringListValue = $stringListValue;
     return $this;
@@ -607,7 +655,22 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
     return $this->_type;
   }
 
+  public function reset(): void {
+    switch ($this->_type) {
+      case DataUnionEnum::binaryData:
+        $this->binaryData = null;
+        break;
+      case DataUnionEnum::stringData:
+        $this->stringData = null;
+        break;
+      case DataUnionEnum::_EMPTY_:
+        break;
+    }
+    $this->_type = DataUnionEnum::_EMPTY_;
+}
+
   public function set_binaryData(string $binaryData): this {
+    $this->reset();
     $this->_type = DataUnionEnum::binaryData;
     $this->binaryData = $binaryData;
     return $this;
@@ -623,6 +686,7 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
   }
 
   public function set_stringData(string $stringData): this {
+    $this->reset();
     $this->_type = DataUnionEnum::stringData;
     $this->stringData = $stringData;
     return $this;
@@ -893,7 +957,22 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
     return $this->_type;
   }
 
+  public function reset(): void {
+    switch ($this->_type) {
+      case ValUnionEnum::v1:
+        $this->v1 = null;
+        break;
+      case ValUnionEnum::v2:
+        $this->v2 = null;
+        break;
+      case ValUnionEnum::_EMPTY_:
+        break;
+    }
+    $this->_type = ValUnionEnum::_EMPTY_;
+}
+
   public function set_v1(Val $v1): this {
+    $this->reset();
     $this->_type = ValUnionEnum::v1;
     $this->v1 = $v1;
     return $this;
@@ -909,6 +988,7 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
   }
 
   public function set_v2(Val $v2): this {
+    $this->reset();
     $this->_type = ValUnionEnum::v2;
     $this->v2 = $v2;
     return $this;
@@ -1047,7 +1127,22 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
     return $this->_type;
   }
 
+  public function reset(): void {
+    switch ($this->_type) {
+      case VirtualComplexUnionEnum::thingOne:
+        $this->thingOne = null;
+        break;
+      case VirtualComplexUnionEnum::thingTwo:
+        $this->thingTwo = null;
+        break;
+      case VirtualComplexUnionEnum::_EMPTY_:
+        break;
+    }
+    $this->_type = VirtualComplexUnionEnum::_EMPTY_;
+}
+
   public function set_thingOne(string $thingOne): this {
+    $this->reset();
     $this->_type = VirtualComplexUnionEnum::thingOne;
     $this->thingOne = $thingOne;
     return $this;
@@ -1063,6 +1158,7 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
   }
 
   public function set_thingTwo(string $thingTwo): this {
+    $this->reset();
     $this->_type = VirtualComplexUnionEnum::thingTwo;
     $this->thingTwo = $thingTwo;
     return $this;
@@ -1255,7 +1351,19 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
     return $this->_type;
   }
 
+  public function reset(): void {
+    switch ($this->_type) {
+      case NonCopyableUnionEnum::s:
+        $this->s = null;
+        break;
+      case NonCopyableUnionEnum::_EMPTY_:
+        break;
+    }
+    $this->_type = NonCopyableUnionEnum::_EMPTY_;
+}
+
   public function set_s(NonCopyableStruct $s): this {
+    $this->reset();
     $this->_type = NonCopyableUnionEnum::s;
     $this->s = $s;
     return $this;

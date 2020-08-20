@@ -2410,6 +2410,24 @@ void t_hack_generator::generate_php_union_methods(
   indent(out) << indent() << "return $this->_type;\n";
   indent(out) << "}\n\n";
 
+  out << indent() << "public function reset(): void {\n";
+  indent_up();
+  out << indent() << "switch ($this->_type) {\n";
+  indent_up();
+  for (const auto& m : members) {
+    auto fieldName = m->get_name();
+    out << indent() << "case " << enumName << "::" << fieldName << ":\n";
+    out << indent(get_indent() + 1) << "$this->" << fieldName << " = null;\n";
+    out << indent(get_indent() + 1) << "break;\n";
+  }
+  out << indent() << "case " << enumName << "::_EMPTY_:\n";
+  out << indent(get_indent() + 1) << "break;\n";
+  indent_down();
+  out << indent() << "}\n";
+  out << indent() << "$this->_type = " << enumName << "::_EMPTY_;\n";
+  indent_down();
+  out << "}\n\n";
+
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     auto fieldName = (*m_iter)->get_name();
     auto typehint = type_to_typehint((*m_iter)->get_type());
@@ -2417,6 +2435,7 @@ void t_hack_generator::generate_php_union_methods(
     indent(out) << "public function set_" << fieldName << "(" << typehint
                 << " $" << fieldName << "): this {\n";
     indent_up();
+    indent(out) << "$this->reset();\n";
     indent(out) << "$this->_type = " << enumName << "::" << fieldName << ";\n";
     indent(out) << "$this->" << fieldName << " = "
                 << "$" << fieldName << ";\n";
