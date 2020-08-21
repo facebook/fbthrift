@@ -78,9 +78,9 @@ void StructMetadata<::test_cpp2::cpp_reflection::union1>::gen(ThriftMetadata& me
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_union1_fields[] = {
     std::make_tuple(1, "ui", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
-    std::make_tuple(2, "ud", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)),
-    std::make_tuple(3, "us", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(4, "ue", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1")),
+    std::make_tuple(3, "ud", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)),
+    std::make_tuple(5, "us", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(7, "ue", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1")),
   };
   for (const auto& f : module_union1_fields) {
     ::apache::thrift::metadata::ThriftField field;

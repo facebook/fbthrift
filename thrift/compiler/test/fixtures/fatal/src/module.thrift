@@ -55,9 +55,9 @@ enum enum3 {
 
 union union1 {
   1: i32 ui
-  2: double ud
-  3: string us
-  4: enum1 ue
+  3: double ud
+  5: string us
+  7: enum1 ue
 }
 
 union union2 {

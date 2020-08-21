@@ -208,7 +208,7 @@ void union1::readNoXfer(Protocol_* iprot) {
         }
         break;
       }
-      case 2:
+      case 3:
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_DOUBLE)) {
           this->set_ud();
@@ -218,7 +218,7 @@ void union1::readNoXfer(Protocol_* iprot) {
         }
         break;
       }
-      case 3:
+      case 5:
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
           this->set_us();
@@ -228,7 +228,7 @@ void union1::readNoXfer(Protocol_* iprot) {
         }
         break;
       }
-      case 4:
+      case 7:
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_ue();
@@ -266,19 +266,19 @@ uint32_t union1::serializedSize(Protocol_ const* prot_) const {
     }
     case union1::Type::ud:
     {
-      xfer += prot_->serializedFieldSize("ud", apache::thrift::protocol::T_DOUBLE, 2);
+      xfer += prot_->serializedFieldSize("ud", apache::thrift::protocol::T_DOUBLE, 3);
       xfer += prot_->serializedSizeDouble(this->get_ud());
       break;
     }
     case union1::Type::us:
     {
-      xfer += prot_->serializedFieldSize("us", apache::thrift::protocol::T_STRING, 3);
+      xfer += prot_->serializedFieldSize("us", apache::thrift::protocol::T_STRING, 5);
       xfer += prot_->serializedSizeString(this->get_us());
       break;
     }
     case union1::Type::ue:
     {
-      xfer += prot_->serializedFieldSize("ue", apache::thrift::protocol::T_I32, 4);
+      xfer += prot_->serializedFieldSize("ue", apache::thrift::protocol::T_I32, 7);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, this->get_ue());
       break;
     }
@@ -301,19 +301,19 @@ uint32_t union1::serializedSizeZC(Protocol_ const* prot_) const {
     }
     case union1::Type::ud:
     {
-      xfer += prot_->serializedFieldSize("ud", apache::thrift::protocol::T_DOUBLE, 2);
+      xfer += prot_->serializedFieldSize("ud", apache::thrift::protocol::T_DOUBLE, 3);
       xfer += prot_->serializedSizeDouble(this->get_ud());
       break;
     }
     case union1::Type::us:
     {
-      xfer += prot_->serializedFieldSize("us", apache::thrift::protocol::T_STRING, 3);
+      xfer += prot_->serializedFieldSize("us", apache::thrift::protocol::T_STRING, 5);
       xfer += prot_->serializedSizeString(this->get_us());
       break;
     }
     case union1::Type::ue:
     {
-      xfer += prot_->serializedFieldSize("ue", apache::thrift::protocol::T_I32, 4);
+      xfer += prot_->serializedFieldSize("ue", apache::thrift::protocol::T_I32, 7);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, this->get_ue());
       break;
     }
@@ -337,21 +337,21 @@ uint32_t union1::write(Protocol_* prot_) const {
     }
     case union1::Type::ud:
     {
-      xfer += prot_->writeFieldBegin("ud", apache::thrift::protocol::T_DOUBLE, 2);
+      xfer += prot_->writeFieldBegin("ud", apache::thrift::protocol::T_DOUBLE, 3);
       xfer += prot_->writeDouble(this->get_ud());
       xfer += prot_->writeFieldEnd();
       break;
     }
     case union1::Type::us:
     {
-      xfer += prot_->writeFieldBegin("us", apache::thrift::protocol::T_STRING, 3);
+      xfer += prot_->writeFieldBegin("us", apache::thrift::protocol::T_STRING, 5);
       xfer += prot_->writeString(this->get_us());
       xfer += prot_->writeFieldEnd();
       break;
     }
     case union1::Type::ue:
     {
-      xfer += prot_->writeFieldBegin("ue", apache::thrift::protocol::T_I32, 4);
+      xfer += prot_->writeFieldBegin("ue", apache::thrift::protocol::T_I32, 7);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::write(*prot_, this->get_ue());
       xfer += prot_->writeFieldEnd();
       break;

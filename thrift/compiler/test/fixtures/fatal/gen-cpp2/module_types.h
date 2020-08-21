@@ -1097,9 +1097,9 @@ class union1 final  {
   enum Type : int {
     __EMPTY__ = 0,
     ui = 1,
-    ud = 2,
-    us = 3,
-    ue = 4,
+    ud = 3,
+    us = 5,
+    ue = 7,
   } ;
 
   union1()

@@ -261,15 +261,15 @@ void TccStructTraits<::test_cpp2::cpp_reflection::union1>::translateFieldName(
     _ftype = apache::thrift::protocol::T_I32;
   }
   else if (_fname == "ud") {
-    fid = 2;
+    fid = 3;
     _ftype = apache::thrift::protocol::T_DOUBLE;
   }
   else if (_fname == "us") {
-    fid = 3;
+    fid = 5;
     _ftype = apache::thrift::protocol::T_STRING;
   }
   else if (_fname == "ue") {
-    fid = 4;
+    fid = 7;
     _ftype = apache::thrift::protocol::T_I32;
   }
 }
