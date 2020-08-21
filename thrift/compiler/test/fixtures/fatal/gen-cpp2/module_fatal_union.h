@@ -244,7 +244,7 @@ class union1_variant_traits {
       union1__struct_unique_setters_list::ud,
       ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud,
-        2,
+        3,
         ::apache::thrift::type_class::floating_point
       >
     >,
@@ -255,7 +255,7 @@ class union1_variant_traits {
       union1__struct_unique_setters_list::us,
       ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us,
-        3,
+        5,
         ::apache::thrift::type_class::string
       >
     >,
@@ -266,7 +266,7 @@ class union1_variant_traits {
       union1__struct_unique_setters_list::ue,
       ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue,
-        4,
+        7,
         ::apache::thrift::type_class::enumeration
       >
     >
