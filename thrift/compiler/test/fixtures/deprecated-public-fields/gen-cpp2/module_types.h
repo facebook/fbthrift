@@ -53,6 +53,9 @@ class Foo final  {
  public:
   using __fbthrift_cpp2_type = Foo;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Foo() :
       bar(0) {}

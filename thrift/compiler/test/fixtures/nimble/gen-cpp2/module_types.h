@@ -68,6 +68,9 @@ class BasicTypes final  {
  public:
   using __fbthrift_cpp2_type = BasicTypes;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   BasicTypes() :
       first(0),

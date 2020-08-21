@@ -297,6 +297,9 @@ class Internship final  {
  public:
   using __fbthrift_cpp2_type = Internship;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Internship() :
       weeks(0),
@@ -492,6 +495,9 @@ class Range final  {
  public:
   using __fbthrift_cpp2_type = Range;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Range() :
       min(0),
@@ -629,6 +635,9 @@ class struct1 final  {
 
  public:
   using __fbthrift_cpp2_type = struct1;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct1() :
@@ -789,6 +798,9 @@ class struct2 final  {
 
  public:
   using __fbthrift_cpp2_type = struct2;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct2() :
@@ -1021,6 +1033,9 @@ class struct3 final  {
  public:
   using __fbthrift_cpp2_type = struct3;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct3() :
       b(0) {}
@@ -1215,6 +1230,9 @@ class struct4 final  {
 
  public:
   using __fbthrift_cpp2_type = struct4;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct4() :
@@ -1418,6 +1436,9 @@ class union1 final  {
 
  public:
   using __fbthrift_cpp2_type = union1;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     i = 1,
@@ -1683,6 +1704,9 @@ class union2 final  {
 
  public:
   using __fbthrift_cpp2_type = union2;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     i = 1,

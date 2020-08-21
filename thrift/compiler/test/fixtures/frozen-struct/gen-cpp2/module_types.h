@@ -141,6 +141,9 @@ class ModuleA final  {
  public:
   using __fbthrift_cpp2_type = ModuleA;
 
+
+ public:
+
   ModuleA();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
@@ -446,6 +449,9 @@ class ModuleB final  {
 
  public:
   using __fbthrift_cpp2_type = ModuleB;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ModuleB() :

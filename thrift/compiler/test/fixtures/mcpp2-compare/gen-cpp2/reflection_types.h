@@ -53,6 +53,9 @@ class ReflectionStruct final  {
  public:
   using __fbthrift_cpp2_type = ReflectionStruct;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ReflectionStruct() :
       fieldA(5) {}

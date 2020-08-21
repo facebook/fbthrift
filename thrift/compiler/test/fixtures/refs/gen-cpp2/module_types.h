@@ -280,6 +280,9 @@ class MyUnion final  {
 
  public:
   using __fbthrift_cpp2_type = MyUnion;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     anInteger = 1,
@@ -560,6 +563,9 @@ class MyField final  {
  public:
   using __fbthrift_cpp2_type = MyField;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyField() :
       opt_value(0),
@@ -751,6 +757,9 @@ class MyStruct final  {
  public:
   using __fbthrift_cpp2_type = MyStruct;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct() :
       ref(std::make_unique< ::cpp2::MyField>()),
@@ -865,6 +874,9 @@ class StructWithUnion final  {
 
  public:
   using __fbthrift_cpp2_type = StructWithUnion;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithUnion() :
@@ -1031,6 +1043,9 @@ class RecursiveStruct final  {
  public:
   using __fbthrift_cpp2_type = RecursiveStruct;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   RecursiveStruct() {}
   // FragileConstructor for use in initialization lists only.
@@ -1146,6 +1161,9 @@ class StructWithContainers final  {
 
  public:
   using __fbthrift_cpp2_type = StructWithContainers;
+
+
+ public:
 
   StructWithContainers();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1303,6 +1321,9 @@ class StructWithSharedConst final  {
  public:
   using __fbthrift_cpp2_type = StructWithSharedConst;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithSharedConst() :
       shared_const(std::make_shared< ::cpp2::MyField>()),
@@ -1420,6 +1441,9 @@ class Empty final  {
  public:
   using __fbthrift_cpp2_type = Empty;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Empty() {}
   // FragileConstructor for use in initialization lists only.
@@ -1493,6 +1517,9 @@ class StructWithRef final  {
 
  public:
   using __fbthrift_cpp2_type = StructWithRef;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRef() :
@@ -1609,6 +1636,9 @@ class StructWithRefTypeUnique final  {
  public:
   using __fbthrift_cpp2_type = StructWithRefTypeUnique;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefTypeUnique() :
       def_field(std::make_unique< ::cpp2::Empty>()),
@@ -1723,6 +1753,9 @@ class StructWithRefTypeShared final  {
 
  public:
   using __fbthrift_cpp2_type = StructWithRefTypeShared;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefTypeShared() :
@@ -1841,6 +1874,9 @@ class StructWithRefTypeSharedConst final  {
  public:
   using __fbthrift_cpp2_type = StructWithRefTypeSharedConst;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefTypeSharedConst() :
       def_field(std::make_shared< ::cpp2::Empty>()),
@@ -1957,6 +1993,9 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor final  {
 
  public:
   using __fbthrift_cpp2_type = StructWithRefAndAnnotCppNoexceptMoveCtor;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefAndAnnotCppNoexceptMoveCtor() :

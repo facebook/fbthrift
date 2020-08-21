@@ -1091,6 +1091,9 @@ class union1 final  {
 
  public:
   using __fbthrift_cpp2_type = union1;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     ui = 1,
@@ -1496,6 +1499,9 @@ class union2 final  {
 
  public:
   using __fbthrift_cpp2_type = union2;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     ui_2 = 1,
@@ -1901,6 +1907,9 @@ class union3 final  {
 
  public:
   using __fbthrift_cpp2_type = union3;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     ui_3 = 1,
@@ -2307,6 +2316,9 @@ class structA final  {
  public:
   using __fbthrift_cpp2_type = structA;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structA() :
       a(0) {}
@@ -2465,6 +2477,9 @@ class unionA final  {
 
  public:
   using __fbthrift_cpp2_type = unionA;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     i = 1,
@@ -2948,6 +2963,9 @@ class structB final  {
  public:
   using __fbthrift_cpp2_type = structB;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structB() :
       c(0),
@@ -3102,6 +3120,9 @@ class structC final  {
 
  public:
   using __fbthrift_cpp2_type = structC;
+
+
+ public:
 
   structC();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -4277,6 +4298,9 @@ class struct1 final  {
  public:
   using __fbthrift_cpp2_type = struct1;
 
+
+ public:
+
   struct1();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
@@ -4572,6 +4596,9 @@ class struct2 final  {
 
  public:
   using __fbthrift_cpp2_type = struct2;
+
+
+ public:
 
   struct2();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -4916,6 +4943,9 @@ class struct3 final  {
 
  public:
   using __fbthrift_cpp2_type = struct3;
+
+
+ public:
 
   struct3();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -5657,6 +5687,9 @@ class struct4 final  {
  public:
   using __fbthrift_cpp2_type = struct4;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct4() :
       field0(0),
@@ -5859,6 +5892,9 @@ class struct5 final  {
 
  public:
   using __fbthrift_cpp2_type = struct5;
+
+
+ public:
 
   struct5();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -6125,6 +6161,9 @@ class struct_binary final  {
  public:
   using __fbthrift_cpp2_type = struct_binary;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct_binary() {}
   // FragileConstructor for use in initialization lists only.
@@ -6245,6 +6284,9 @@ class dep_A_struct final  {
 
  public:
   using __fbthrift_cpp2_type = dep_A_struct;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   dep_A_struct() :
@@ -6435,6 +6477,9 @@ class dep_B_struct final  {
  public:
   using __fbthrift_cpp2_type = dep_B_struct;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   dep_B_struct() :
       i_a(0) {}
@@ -6624,6 +6669,9 @@ class annotated final  {
  public:
   using __fbthrift_cpp2_type = annotated;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   annotated() :
       a(0) {}
@@ -6740,6 +6788,9 @@ class union_with_special_names final  {
 
  public:
   using __fbthrift_cpp2_type = union_with_special_names;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     get = 1,
@@ -8644,6 +8695,9 @@ class struct_with_special_names final  {
  public:
   using __fbthrift_cpp2_type = struct_with_special_names;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct_with_special_names() :
       get(0),
@@ -9786,6 +9840,9 @@ class struct_with_indirections final  {
 
  public:
   using __fbthrift_cpp2_type = struct_with_indirections;
+
+
+ public:
 
   struct_with_indirections();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN

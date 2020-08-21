@@ -89,6 +89,9 @@ class InitialResponse final  {
  public:
   using __fbthrift_cpp2_type = InitialResponse;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   InitialResponse() {}
   // FragileConstructor for use in initialization lists only.
@@ -209,6 +212,9 @@ class FinalResponse final  {
 
  public:
   using __fbthrift_cpp2_type = FinalResponse;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FinalResponse() {}
@@ -331,6 +337,9 @@ class SinkPayload final  {
  public:
   using __fbthrift_cpp2_type = SinkPayload;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkPayload() {}
   // FragileConstructor for use in initialization lists only.
@@ -452,6 +461,9 @@ class CompatibleWithKeywordSink final  {
  public:
   using __fbthrift_cpp2_type = CompatibleWithKeywordSink;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   CompatibleWithKeywordSink() {}
   // FragileConstructor for use in initialization lists only.
@@ -572,6 +584,9 @@ class InitialException final : public apache::thrift::TException {
 
  public:
   using __fbthrift_cpp2_type = InitialException;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   InitialException() {}
@@ -698,6 +713,9 @@ class SinkException1 final : public apache::thrift::TException {
  public:
   using __fbthrift_cpp2_type = SinkException1;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkException1() {}
   // FragileConstructor for use in initialization lists only.
@@ -822,6 +840,9 @@ class SinkException2 final : public apache::thrift::TException {
 
  public:
   using __fbthrift_cpp2_type = SinkException2;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkException2() :

@@ -152,6 +152,9 @@ class ComplexUnion final  {
 
  public:
   using __fbthrift_cpp2_type = ComplexUnion;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     intValue = 1,
@@ -739,6 +742,9 @@ class ListUnion final  {
 
  public:
   using __fbthrift_cpp2_type = ListUnion;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     intListValue = 2,
@@ -1032,6 +1038,9 @@ class DataUnion final  {
 
  public:
   using __fbthrift_cpp2_type = DataUnion;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     binaryData = 1,
@@ -1326,6 +1335,9 @@ class Val final  {
  public:
   using __fbthrift_cpp2_type = Val;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Val() :
       intVal(0) {}
@@ -1520,6 +1532,9 @@ class ValUnion final  {
 
  public:
   using __fbthrift_cpp2_type = ValUnion;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     v1 = 1,
@@ -1813,6 +1828,9 @@ class VirtualComplexUnion  {
 
  public:
   using __fbthrift_cpp2_type = VirtualComplexUnion;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     thingOne = 1,
@@ -2108,6 +2126,9 @@ class NonCopyableStruct final  {
  public:
   using __fbthrift_cpp2_type = NonCopyableStruct;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   NonCopyableStruct() :
       num(0) {}
@@ -2219,6 +2240,9 @@ class NonCopyableUnion final  {
 
  public:
   using __fbthrift_cpp2_type = NonCopyableUnion;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     s = 1,

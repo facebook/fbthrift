@@ -200,6 +200,9 @@ class Color final  {
  public:
   using __fbthrift_cpp2_type = Color;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Color() :
       red(0),
@@ -430,6 +433,9 @@ class Vehicle final  {
 
  public:
   using __fbthrift_cpp2_type = Vehicle;
+
+
+ public:
 
   Vehicle();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -720,6 +726,9 @@ class Person final  {
 
  public:
   using __fbthrift_cpp2_type = Person;
+
+
+ public:
 
   Person();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN

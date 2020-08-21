@@ -114,6 +114,9 @@ class AStruct final  {
  public:
   using __fbthrift_cpp2_type = AStruct;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AStruct() :
       FieldA(0) {}
@@ -230,6 +233,9 @@ class AStructB final  {
 
  public:
   using __fbthrift_cpp2_type = AStructB;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AStructB() :

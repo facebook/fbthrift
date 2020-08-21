@@ -63,6 +63,9 @@ class Included final  {
  public:
   using __fbthrift_cpp2_type = Included;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Included() :
       MyIntField(0LL),

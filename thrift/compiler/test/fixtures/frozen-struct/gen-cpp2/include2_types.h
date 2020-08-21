@@ -58,6 +58,9 @@ class IncludedB final  {
  public:
   using __fbthrift_cpp2_type = IncludedB;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   IncludedB() :
       i32Field(0) {}

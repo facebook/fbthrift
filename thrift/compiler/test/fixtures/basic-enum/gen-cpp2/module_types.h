@@ -193,6 +193,9 @@ class MyStruct final  {
  public:
   using __fbthrift_cpp2_type = MyStruct;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct() :
       myEnum(static_cast< ::test::fixtures::enumstrict::MyEnum>(0)),

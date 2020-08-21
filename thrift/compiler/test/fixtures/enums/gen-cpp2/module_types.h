@@ -121,6 +121,9 @@ class SomeStruct final  {
  public:
   using __fbthrift_cpp2_type = SomeStruct;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SomeStruct() :
       reasonable( ::cpp2::Metasyntactic::FOO),

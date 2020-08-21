@@ -1143,6 +1143,9 @@ class Empty final  {
  public:
   using __fbthrift_cpp2_type = Empty;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Empty() {}
   // FragileConstructor for use in initialization lists only.
@@ -1215,6 +1218,9 @@ class ASimpleStruct final  {
 
  public:
   using __fbthrift_cpp2_type = ASimpleStruct;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ASimpleStruct() :
@@ -1332,6 +1338,9 @@ class ASimpleStructNoexcept final  {
 
  public:
   using __fbthrift_cpp2_type = ASimpleStructNoexcept;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ASimpleStructNoexcept() :
@@ -1451,6 +1460,9 @@ class MyStruct final  {
 
  public:
   using __fbthrift_cpp2_type = MyStruct;
+
+
+ public:
 
   MyStruct();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1883,6 +1895,9 @@ class SimpleUnion  {
 
  public:
   using __fbthrift_cpp2_type = SimpleUnion;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     intValue = 7,
@@ -2163,6 +2178,9 @@ class ComplexUnion final  {
 
  public:
   using __fbthrift_cpp2_type = ComplexUnion;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     intValue = 1,
@@ -4264,6 +4282,9 @@ class AnException final : public apache::thrift::TException {
  public:
   using __fbthrift_cpp2_type = AnException;
 
+
+ public:
+
   AnException();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
@@ -4891,6 +4912,9 @@ class AnotherException : public apache::thrift::TException {
  public:
   using __fbthrift_cpp2_type = AnotherException;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AnotherException() :
       code(0),
@@ -5087,6 +5111,9 @@ class containerStruct final  {
 
  public:
   using __fbthrift_cpp2_type = containerStruct;
+
+
+ public:
 
   containerStruct();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -6832,6 +6859,9 @@ class MyIncludedStruct final  {
  public:
   using __fbthrift_cpp2_type = MyIncludedStruct;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyIncludedStruct() :
       MyIncludedInt(42LL),
@@ -7025,6 +7055,9 @@ class AnnotatedStruct  {
 
  public:
   using __fbthrift_cpp2_type = AnnotatedStruct;
+
+
+ public:
 
   AnnotatedStruct();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -8157,6 +8190,9 @@ class ComplexContainerStruct final  {
  public:
   using __fbthrift_cpp2_type = ComplexContainerStruct;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ComplexContainerStruct() {}
   // FragileConstructor for use in initialization lists only.
@@ -8307,6 +8343,9 @@ class FloatStruct final  {
 
  public:
   using __fbthrift_cpp2_type = FloatStruct;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FloatStruct() :
@@ -8462,6 +8501,9 @@ class FloatUnion final  {
 
  public:
   using __fbthrift_cpp2_type = FloatUnion;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     floatSide = 1,
@@ -8727,6 +8769,9 @@ class AllRequiredNoExceptMoveCtrStruct final  {
 
  public:
   using __fbthrift_cpp2_type = AllRequiredNoExceptMoveCtrStruct;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AllRequiredNoExceptMoveCtrStruct() :

@@ -77,6 +77,10 @@ class <%struct:name%> <%!
   //  using signed/unsigned as true/false for quicker parsing
   using __fbthrift_cpp2_gen_json = <%^program:json?%>un<%/program:json?%>signed;
   using __fbthrift_cpp2_gen_nimble = <%^program:nimble?%>un<%/program:nimble?%>signed;
+
+ public:
+  using __fbthrift_cpp2_type = <%struct:name%>;
+
 <%#struct:cpp_allocator%>
  public:
   using allocator_type = <%struct:cpp_allocator%>;
@@ -95,7 +99,6 @@ class <%struct:name%> <%!
 <%/struct:cpp_allocator%>
 
  public:
-  using __fbthrift_cpp2_type = <%struct:name%>;
 <%#struct:union?%>
 <% > module_types_h/union_enum%>
 

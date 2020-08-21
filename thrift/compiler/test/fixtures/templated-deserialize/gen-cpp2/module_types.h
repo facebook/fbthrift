@@ -258,6 +258,9 @@ class SmallStruct final  {
  public:
   using __fbthrift_cpp2_type = SmallStruct;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SmallStruct() :
       small_A(0),
@@ -412,6 +415,9 @@ class containerStruct final  {
 
  public:
   using __fbthrift_cpp2_type = containerStruct;
+
+
+ public:
 
   containerStruct();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN

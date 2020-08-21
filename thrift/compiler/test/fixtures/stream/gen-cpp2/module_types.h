@@ -48,6 +48,9 @@ class FooEx final : public apache::thrift::TException {
  public:
   using __fbthrift_cpp2_type = FooEx;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FooEx() {}
   // FragileConstructor for use in initialization lists only.

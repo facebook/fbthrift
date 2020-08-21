@@ -89,6 +89,9 @@ class Mixin1 final  {
  public:
   using __fbthrift_cpp2_type = Mixin1;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Mixin1() {}
   // FragileConstructor for use in initialization lists only.
@@ -209,6 +212,9 @@ class Mixin2 final  {
 
  public:
   using __fbthrift_cpp2_type = Mixin2;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Mixin2() {}
@@ -372,6 +378,9 @@ class Mixin3Base final  {
  public:
   using __fbthrift_cpp2_type = Mixin3Base;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Mixin3Base() {}
   // FragileConstructor for use in initialization lists only.
@@ -492,6 +501,9 @@ class Foo final  {
 
  public:
   using __fbthrift_cpp2_type = Foo;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Foo() {}

@@ -82,6 +82,9 @@ class Banal final : public apache::thrift::TException {
  public:
   using __fbthrift_cpp2_type = Banal;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Banal() {}
   // FragileConstructor for use in initialization lists only.
@@ -159,6 +162,9 @@ class Fiery final : public apache::thrift::TException {
 
  public:
   using __fbthrift_cpp2_type = Fiery;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Fiery() {}
@@ -280,6 +286,9 @@ class Serious final : public apache::thrift::TException {
 
  public:
   using __fbthrift_cpp2_type = Serious;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Serious() {}
@@ -412,6 +421,9 @@ class ComplexFieldNames final : public apache::thrift::TException {
 
  public:
   using __fbthrift_cpp2_type = ComplexFieldNames;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ComplexFieldNames() {}
@@ -585,6 +597,9 @@ class CustomFieldNames final : public apache::thrift::TException {
 
  public:
   using __fbthrift_cpp2_type = CustomFieldNames;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   CustomFieldNames() {}

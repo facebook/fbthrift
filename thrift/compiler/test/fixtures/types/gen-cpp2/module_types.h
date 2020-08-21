@@ -549,6 +549,9 @@ class decorated_struct final  {
  public:
   using __fbthrift_cpp2_type = decorated_struct;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   decorated_struct() {}
   // FragileConstructor for use in initialization lists only.
@@ -669,6 +672,9 @@ class ContainerStruct final  {
 
  public:
   using __fbthrift_cpp2_type = ContainerStruct;
+
+
+ public:
 
   ContainerStruct();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1041,6 +1047,9 @@ class CppTypeStruct final  {
  public:
   using __fbthrift_cpp2_type = CppTypeStruct;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   CppTypeStruct() {}
   // FragileConstructor for use in initialization lists only.
@@ -1155,6 +1164,9 @@ class VirtualStruct  {
 
  public:
   using __fbthrift_cpp2_type = VirtualStruct;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   VirtualStruct() :
@@ -1275,6 +1287,9 @@ class MyStructWithForwardRefEnum final  {
 
  public:
   using __fbthrift_cpp2_type = MyStructWithForwardRefEnum;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructWithForwardRefEnum() :
@@ -1431,6 +1446,9 @@ class TrivialNumeric final  {
  public:
   using __fbthrift_cpp2_type = TrivialNumeric;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   TrivialNumeric() :
       a(0),
@@ -1586,6 +1604,9 @@ class TrivialNestedWithDefault final  {
  public:
   using __fbthrift_cpp2_type = TrivialNestedWithDefault;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   TrivialNestedWithDefault() :
       z(4),
@@ -1739,6 +1760,9 @@ class ComplexString final  {
 
  public:
   using __fbthrift_cpp2_type = ComplexString;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ComplexString() {}
@@ -1896,6 +1920,9 @@ class ComplexNestedWithDefault final  {
 
  public:
   using __fbthrift_cpp2_type = ComplexNestedWithDefault;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ComplexNestedWithDefault() :
@@ -2055,6 +2082,9 @@ class MinPadding final  {
 
  public:
   using __fbthrift_cpp2_type = MinPadding;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MinPadding() :
@@ -2287,6 +2317,9 @@ class MyDataItem final  {
  public:
   using __fbthrift_cpp2_type = MyDataItem;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyDataItem() {}
   // FragileConstructor for use in initialization lists only.
@@ -2342,6 +2375,9 @@ class MyStruct final  {
 
  public:
   using __fbthrift_cpp2_type = MyStruct;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct() :
@@ -2558,6 +2594,9 @@ class Renaming final  {
  public:
   using __fbthrift_cpp2_type = Renaming;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Renaming() :
       bar(0) {}
@@ -2674,6 +2713,9 @@ class AnnotatedTypes final  {
 
  public:
   using __fbthrift_cpp2_type = AnnotatedTypes;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AnnotatedTypes() {}
@@ -2832,6 +2874,9 @@ class ForwardUsageStruct final  {
  public:
   using __fbthrift_cpp2_type = ForwardUsageStruct;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ForwardUsageStruct() {}
   // FragileConstructor for use in initialization lists only.
@@ -2947,6 +2992,9 @@ class ForwardUsageRoot final  {
 
  public:
   using __fbthrift_cpp2_type = ForwardUsageRoot;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ForwardUsageRoot() {}
@@ -3075,6 +3123,9 @@ class ForwardUsageByRef final  {
  public:
   using __fbthrift_cpp2_type = ForwardUsageByRef;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ForwardUsageByRef() {}
   // FragileConstructor for use in initialization lists only.
@@ -3191,6 +3242,9 @@ class NoexceptMoveEmpty final  {
  public:
   using __fbthrift_cpp2_type = NoexceptMoveEmpty;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   NoexceptMoveEmpty() {}
   // FragileConstructor for use in initialization lists only.
@@ -3263,6 +3317,9 @@ class NoexceptMoveSimpleStruct final  {
 
  public:
   using __fbthrift_cpp2_type = NoexceptMoveSimpleStruct;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   NoexceptMoveSimpleStruct() :
@@ -3382,6 +3439,9 @@ class NoexceptMoveComplexStruct final  {
 
  public:
   using __fbthrift_cpp2_type = NoexceptMoveComplexStruct;
+
+
+ public:
 
   NoexceptMoveComplexStruct();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -3814,6 +3874,9 @@ class NoExceptMoveUnion final  {
 
  public:
   using __fbthrift_cpp2_type = NoExceptMoveUnion;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     string_field = 1,
@@ -4090,6 +4153,10 @@ class AllocatorAware final  {
   //  using signed/unsigned as true/false for quicker parsing
   using __fbthrift_cpp2_gen_json = unsigned;
   using __fbthrift_cpp2_gen_nimble = unsigned;
+
+ public:
+  using __fbthrift_cpp2_type = AllocatorAware;
+
  public:
   using allocator_type = some_allocator;
   allocator_type get_allocator() const {
@@ -4099,7 +4166,6 @@ class AllocatorAware final  {
   FOLLY_ATTR_NO_UNIQUE_ADDRESS allocator_type __fbthrift_alloc;
 
  public:
-  using __fbthrift_cpp2_type = AllocatorAware;
 
   AllocatorAware();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -4392,6 +4458,10 @@ class AllocatorAware2 final  {
   //  using signed/unsigned as true/false for quicker parsing
   using __fbthrift_cpp2_gen_json = unsigned;
   using __fbthrift_cpp2_gen_nimble = unsigned;
+
+ public:
+  using __fbthrift_cpp2_type = AllocatorAware2;
+
  public:
   using allocator_type = some_allocator;
   allocator_type get_allocator() const {
@@ -4401,7 +4471,6 @@ class AllocatorAware2 final  {
   FOLLY_ATTR_NO_UNIQUE_ADDRESS allocator_type __fbthrift_alloc;
 
  public:
-  using __fbthrift_cpp2_type = AllocatorAware2;
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AllocatorAware2() :

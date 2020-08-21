@@ -136,6 +136,9 @@ class MyDataItem final  {
  public:
   using __fbthrift_cpp2_type = MyDataItem;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyDataItem() {}
   // FragileConstructor for use in initialization lists only.
@@ -209,6 +212,9 @@ class MyStruct final  {
 
  public:
   using __fbthrift_cpp2_type = MyStruct;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct() :
@@ -442,6 +448,9 @@ class MyUnion final  {
 
  public:
   using __fbthrift_cpp2_type = MyUnion;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
     myEnum = 1,

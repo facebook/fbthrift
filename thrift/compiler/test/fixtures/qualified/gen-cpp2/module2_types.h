@@ -71,6 +71,9 @@ class Struct final  {
  public:
   using __fbthrift_cpp2_type = Struct;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Struct() {}
   // FragileConstructor for use in initialization lists only.
@@ -221,6 +224,9 @@ class BigStruct final  {
 
  public:
   using __fbthrift_cpp2_type = BigStruct;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   BigStruct() :

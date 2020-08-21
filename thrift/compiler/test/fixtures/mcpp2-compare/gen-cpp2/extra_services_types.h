@@ -114,6 +114,9 @@ class containerStruct2 final  {
  public:
   using __fbthrift_cpp2_type = containerStruct2;
 
+
+ public:
+
   containerStruct2();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 

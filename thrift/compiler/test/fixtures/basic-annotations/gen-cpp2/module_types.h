@@ -168,6 +168,9 @@ class MyStructNestedAnnotation final  {
  public:
   using __fbthrift_cpp2_type = MyStructNestedAnnotation;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructNestedAnnotation() {}
   // FragileConstructor for use in initialization lists only.
@@ -288,6 +291,9 @@ class MyStructAnnotation final  {
 
  public:
   using __fbthrift_cpp2_type = MyStructAnnotation;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructAnnotation() :
@@ -526,6 +532,9 @@ class MyStruct final  {
 
  public:
   using __fbthrift_cpp2_type = MyStruct;
+
+
+ public:
 
   MyStruct();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -856,6 +865,9 @@ class SecretStruct final  {
 
  public:
   using __fbthrift_cpp2_type = SecretStruct;
+
+
+ public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SecretStruct() :

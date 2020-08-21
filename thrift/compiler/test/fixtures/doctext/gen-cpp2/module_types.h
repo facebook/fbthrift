@@ -103,6 +103,9 @@ class A final  {
  public:
   using __fbthrift_cpp2_type = A;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   A() :
       useless_field(0) {}

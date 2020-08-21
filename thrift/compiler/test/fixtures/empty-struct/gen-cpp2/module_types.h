@@ -49,6 +49,9 @@ class Empty final  {
  public:
   using __fbthrift_cpp2_type = Empty;
 
+
+ public:
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Empty() {}
   // FragileConstructor for use in initialization lists only.
@@ -122,6 +125,9 @@ class Nada final  {
 
  public:
   using __fbthrift_cpp2_type = Nada;
+
+
+ public:
   enum Type : int {
     __EMPTY__ = 0,
   } ;
