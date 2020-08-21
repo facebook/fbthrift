@@ -74,9 +74,8 @@ class <%struct:name%> <%!
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = <%^program:json?%>un<%/program:json?%>signed;
-  using __fbthrift_cpp2_gen_nimble = <%^program:nimble?%>un<%/program:nimble?%>signed;
+  static constexpr bool __fbthrift_cpp2_gen_json = <%program:json?%>;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = <%program:nimble?%>;
 
  public:
   using __fbthrift_cpp2_type = <%struct:name%>;

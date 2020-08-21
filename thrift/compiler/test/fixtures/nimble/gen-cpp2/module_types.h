@@ -61,9 +61,8 @@ class BasicTypes final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = unsigned;
-  using __fbthrift_cpp2_gen_nimble = signed;
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = true;
 
  public:
   using __fbthrift_cpp2_type = BasicTypes;

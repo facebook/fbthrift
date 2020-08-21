@@ -96,32 +96,22 @@ template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWr
 } // matching_module_name
 
 namespace matching_module_name {
-//  if this struct is generated with extern template instances for simple-json
-//  protocol, enforce that all its dependencies are too
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
 static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_json,
+    ::apache::thrift::detail::st::gen_check_json<
         MyStruct,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::structure
-          >,
-        ::folly::tag_t<void
-          ,  ::matching_module_name::OtherStruct
-          >>,
+        ::apache::thrift::type_class::structure,
+         ::matching_module_name::OtherStruct>,
     "inconsistent use of json option");
 
 //  if this struct is generated with extern template instances for nimble
 //  protocol, enforce that all its dependencies are too
 static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_nimble,
+    ::apache::thrift::detail::st::gen_check_nimble<
         MyStruct,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::structure
-          >,
-        ::folly::tag_t<void
-          ,  ::matching_module_name::OtherStruct
-          >>,
+        ::apache::thrift::type_class::structure,
+         ::matching_module_name::OtherStruct>,
     "inconsistent use of nimble option");
 
 } // matching_module_name

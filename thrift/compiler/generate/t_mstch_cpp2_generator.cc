@@ -18,6 +18,7 @@
 #include <array>
 #include <memory>
 #include <vector>
+#include <queue>
 
 #include <boost/algorithm/string/replace.hpp>
 #include <thrift/compiler/generate/common.h>
@@ -440,6 +441,8 @@ class mstch_cpp2_type : public mstch_type {
             {"type:resolves_to_fixed_size?",
              &mstch_cpp2_type::resolves_to_fixed_size},
             {"type:resolves_to_enum?", &mstch_cpp2_type::resolves_to_enum},
+            {"type:transitively_refers_to_struct?",
+             &mstch_cpp2_type::transitively_refers_to_struct},
             {"type:cpp_type", &mstch_cpp2_type::cpp_type},
             {"type:resolved_cpp_type", &mstch_cpp2_type::resolved_cpp_type},
             {"type:string_or_binary?", &mstch_cpp2_type::is_string_or_binary},
@@ -493,6 +496,40 @@ class mstch_cpp2_type : public mstch_type {
   }
   mstch::node resolves_to_enum() {
     return resolved_type_->is_enum();
+  }
+  mstch::node transitively_refers_to_struct() {
+    // fast path is unnecessary but may avoid allocations
+    if (resolved_type_->is_struct()) {
+      return true;
+    }
+    if (!resolved_type_->is_container()) {
+      return false;
+    }
+    // type is a container: traverse (breadthwise, but could be depthwise)
+    std::queue<t_type const*> queue;
+    queue.push(resolved_type_);
+    while (!queue.empty()) {
+      auto next = queue.front();
+      queue.pop();
+      if (next->is_struct()) {
+        return true;
+      }
+      if (!next->is_container()) {
+        continue;
+      }
+      if (false) {
+      } else if (next->is_list()) {
+        queue.push(static_cast<t_list const*>(next)->get_elem_type());
+      } else if (next->is_set()) {
+        queue.push(static_cast<t_set const*>(next)->get_elem_type());
+      } else if (next->is_map()) {
+        queue.push(static_cast<t_map const*>(next)->get_key_type());
+        queue.push(static_cast<t_map const*>(next)->get_val_type());
+      } else {
+        assert(false);
+      }
+    }
+    return false;
   }
   mstch::node cpp_type() {
     return cpp2::get_cpp_type(type_);

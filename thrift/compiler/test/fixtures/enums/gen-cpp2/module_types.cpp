@@ -171,44 +171,10 @@ template uint32_t SomeStruct::serializedSizeZC<>(apache::thrift::CompactProtocol
 } // cpp2
 
 namespace cpp2 {
-//  if this struct is generated with extern template instances for simple-json
-//  protocol, enforce that all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_json,
-        SomeStruct,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::enumeration
-          , ::apache::thrift::type_class::enumeration
-          , ::apache::thrift::type_class::enumeration
-          , ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>
-          >,
-        ::folly::tag_t<void
-          ,  ::cpp2::Metasyntactic
-          ,  ::cpp2::Metasyntactic
-          ,  ::cpp2::Metasyntactic
-          , ::std::set<int32_t>
-          >>,
-    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
 
 //  if this struct is generated with extern template instances for nimble
 //  protocol, enforce that all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_nimble,
-        SomeStruct,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::enumeration
-          , ::apache::thrift::type_class::enumeration
-          , ::apache::thrift::type_class::enumeration
-          , ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>
-          >,
-        ::folly::tag_t<void
-          ,  ::cpp2::Metasyntactic
-          ,  ::cpp2::Metasyntactic
-          ,  ::cpp2::Metasyntactic
-          , ::std::set<int32_t>
-          >>,
-    "inconsistent use of nimble option");
 
 } // cpp2

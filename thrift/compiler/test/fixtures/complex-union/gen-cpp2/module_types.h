@@ -146,9 +146,8 @@ class ComplexUnion final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = unsigned;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = ComplexUnion;
@@ -736,9 +735,8 @@ class ListUnion final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = unsigned;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = ListUnion;
@@ -1032,9 +1030,8 @@ class DataUnion final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = unsigned;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = DataUnion;
@@ -1328,9 +1325,8 @@ class Val final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = unsigned;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = Val;
@@ -1526,9 +1522,8 @@ class ValUnion final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = unsigned;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = ValUnion;
@@ -1822,9 +1817,8 @@ class VirtualComplexUnion  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = unsigned;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = VirtualComplexUnion;
@@ -2119,9 +2113,8 @@ class NonCopyableStruct final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = unsigned;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = NonCopyableStruct;
@@ -2234,9 +2227,8 @@ class NonCopyableUnion final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = unsigned;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = NonCopyableUnion;

@@ -468,155 +468,22 @@ template uint32_t SecretStruct::serializedSizeZC<>(apache::thrift::CompactProtoc
 } // cpp2
 
 namespace cpp2 {
-//  if this struct is generated with extern template instances for simple-json
-//  protocol, enforce that all its dependencies are too
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
 static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_json,
-        MyStructNestedAnnotation,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::string
-          >,
-        ::folly::tag_t<void
-          , ::std::string
-          >>,
-    "inconsistent use of json option");
-
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_nimble,
-        MyStructNestedAnnotation,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::string
-          >,
-        ::folly::tag_t<void
-          , ::std::string
-          >>,
-    "inconsistent use of nimble option");
-
-
-//  if this struct is generated with extern template instances for simple-json
-//  protocol, enforce that all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_json,
+    ::apache::thrift::detail::st::gen_check_json<
         MyStructAnnotation,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::integral
-          , ::apache::thrift::type_class::string
-          , ::apache::thrift::type_class::string
-          , ::apache::thrift::type_class::structure
-          >,
-        ::folly::tag_t<void
-          , int64_t
-          , ::std::string
-          , ::std::string
-          ,  ::cpp2::MyStructNestedAnnotation
-          >>,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::MyStructNestedAnnotation>,
     "inconsistent use of json option");
 
 //  if this struct is generated with extern template instances for nimble
 //  protocol, enforce that all its dependencies are too
 static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_nimble,
+    ::apache::thrift::detail::st::gen_check_nimble<
         MyStructAnnotation,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::integral
-          , ::apache::thrift::type_class::string
-          , ::apache::thrift::type_class::string
-          , ::apache::thrift::type_class::structure
-          >,
-        ::folly::tag_t<void
-          , int64_t
-          , ::std::string
-          , ::std::string
-          ,  ::cpp2::MyStructNestedAnnotation
-          >>,
-    "inconsistent use of nimble option");
-
-
-//  if this struct is generated with extern template instances for simple-json
-//  protocol, enforce that all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_json,
-        MyStruct,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::integral
-          , ::apache::thrift::type_class::string
-          , ::apache::thrift::type_class::string
-          , ::apache::thrift::type_class::string
-          , ::apache::thrift::type_class::string
-          , ::apache::thrift::type_class::string
-          >,
-        ::folly::tag_t<void
-          , int64_t
-          , ::std::string
-          , ::std::string
-          , ::std::string
-          , ::std::string
-          , ::std::string
-          >>,
-    "inconsistent use of json option");
-
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_nimble,
-        MyStruct,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::integral
-          , ::apache::thrift::type_class::string
-          , ::apache::thrift::type_class::string
-          , ::apache::thrift::type_class::string
-          , ::apache::thrift::type_class::string
-          , ::apache::thrift::type_class::string
-          >,
-        ::folly::tag_t<void
-          , int64_t
-          , ::std::string
-          , ::std::string
-          , ::std::string
-          , ::std::string
-          , ::std::string
-          >>,
-    "inconsistent use of nimble option");
-
-
-//  if this struct is generated with extern template instances for simple-json
-//  protocol, enforce that all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_json,
-        SecretStruct,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::integral
-          , ::apache::thrift::type_class::string
-          >,
-        ::folly::tag_t<void
-          , int64_t
-          , ::std::string
-          >>,
-    "inconsistent use of json option");
-
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_nimble,
-        SecretStruct,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::integral
-          , ::apache::thrift::type_class::string
-          >,
-        ::folly::tag_t<void
-          , int64_t
-          , ::std::string
-          >>,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::MyStructNestedAnnotation>,
     "inconsistent use of nimble option");
 
 } // cpp2

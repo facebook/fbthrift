@@ -75,9 +75,8 @@ class Banal final : public apache::thrift::TException {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = unsigned;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = Banal;
@@ -156,9 +155,8 @@ class Fiery final : public apache::thrift::TException {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = unsigned;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = Fiery;
@@ -280,9 +278,8 @@ class Serious final : public apache::thrift::TException {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = unsigned;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = Serious;
@@ -415,9 +412,8 @@ class ComplexFieldNames final : public apache::thrift::TException {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = unsigned;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = ComplexFieldNames;
@@ -591,9 +587,8 @@ class CustomFieldNames final : public apache::thrift::TException {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = unsigned;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = CustomFieldNames;

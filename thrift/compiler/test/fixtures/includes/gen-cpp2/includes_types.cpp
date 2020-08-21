@@ -110,36 +110,22 @@ template uint32_t Included::serializedSizeZC<>(apache::thrift::CompactProtocolWr
 } // cpp2
 
 namespace cpp2 {
-//  if this struct is generated with extern template instances for simple-json
-//  protocol, enforce that all its dependencies are too
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
 static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_json,
+    ::apache::thrift::detail::st::gen_check_json<
         Included,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::integral
-          , ::apache::thrift::type_class::structure
-          >,
-        ::folly::tag_t<void
-          , int64_t
-          ,  ::cpp2::Foo
-          >>,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::Foo>,
     "inconsistent use of json option");
 
 //  if this struct is generated with extern template instances for nimble
 //  protocol, enforce that all its dependencies are too
 static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_nimble,
+    ::apache::thrift::detail::st::gen_check_nimble<
         Included,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::integral
-          , ::apache::thrift::type_class::structure
-          >,
-        ::folly::tag_t<void
-          , int64_t
-          ,  ::cpp2::Foo
-          >>,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::Foo>,
     "inconsistent use of nimble option");
 
 } // cpp2

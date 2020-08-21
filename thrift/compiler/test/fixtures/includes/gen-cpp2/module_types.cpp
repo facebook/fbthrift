@@ -132,40 +132,34 @@ template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWr
 } // cpp2
 
 namespace cpp2 {
-//  if this struct is generated with extern template instances for simple-json
-//  protocol, enforce that all its dependencies are too
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
 static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_json,
+    ::apache::thrift::detail::st::gen_check_json<
         MyStruct,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::structure
-          , ::apache::thrift::type_class::structure
-          , ::apache::thrift::type_class::integral
-          >,
-        ::folly::tag_t<void
-          ,  ::cpp2::Included
-          ,  ::cpp2::Included
-          ,  ::cpp2::IncludedInt64
-          >>,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::Included>,
+    "inconsistent use of json option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        MyStruct,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::Included>,
     "inconsistent use of json option");
 
 //  if this struct is generated with extern template instances for nimble
 //  protocol, enforce that all its dependencies are too
 static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_nimble,
+    ::apache::thrift::detail::st::gen_check_nimble<
         MyStruct,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::structure
-          , ::apache::thrift::type_class::structure
-          , ::apache::thrift::type_class::integral
-          >,
-        ::folly::tag_t<void
-          ,  ::cpp2::Included
-          ,  ::cpp2::Included
-          ,  ::cpp2::IncludedInt64
-          >>,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::Included>,
+    "inconsistent use of nimble option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        MyStruct,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::Included>,
     "inconsistent use of nimble option");
 
 } // cpp2

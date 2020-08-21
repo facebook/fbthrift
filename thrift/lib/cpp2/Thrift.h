@@ -43,12 +43,16 @@ namespace st {
 //  Thrift structures have private members but it may be necessary for the
 //  Thrift support library to access those private members.
 struct struct_private_access {
+  //  These should be alias templates but Clang has a bug where it does not
+  //  permit member alias templates of a friend struct to access private
+  //  members of the type to which it is a friend. Making these function
+  //  templates is a workaround.
   template <typename T>
-  using __fbthrift_cpp2_gen_json = //
-      typename T::__fbthrift_cpp2_gen_json;
+  static folly::bool_constant<T::__fbthrift_cpp2_gen_json> //
+      __fbthrift_cpp2_gen_json();
   template <typename T>
-  using __fbthrift_cpp2_gen_nimble = //
-      typename T::__fbthrift_cpp2_gen_nimble;
+  static folly::bool_constant<T::__fbthrift_cpp2_gen_nimble> //
+      __fbthrift_cpp2_gen_nimble();
 };
 
 template <typename T, typename = void>

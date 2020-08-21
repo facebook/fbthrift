@@ -29,6 +29,8 @@ namespace detail {
 
 namespace st {
 
+namespace {
+
 //  gen_check_get_json
 //  gen_check_get_nimble
 //
@@ -37,15 +39,14 @@ namespace st {
 //    * __fbthrift_cpp2_gen_nimble
 struct gen_check_get_json {
   template <typename Type>
-  using apply = typename struct_private_access::__fbthrift_cpp2_gen_json<Type>;
+  using apply =
+      decltype(struct_private_access::__fbthrift_cpp2_gen_json<Type>());
 };
 struct gen_check_get_nimble {
   template <typename Type>
   using apply =
-      typename struct_private_access::__fbthrift_cpp2_gen_nimble<Type>;
+      decltype(struct_private_access::__fbthrift_cpp2_gen_nimble<Type>());
 };
-
-namespace {
 
 //  gen_check_get
 //
@@ -70,7 +71,7 @@ template <typename Get, typename Type>
 constexpr bool gen_check_get_<
     folly::void_t<typename Get::template apply<Type>>,
     Get,
-    Type> = std::is_signed<typename Get::template apply<Type>>::value;
+    Type> = Get::template apply<Type>::value;
 template <typename Get, typename Type>
 constexpr bool gen_check_get = gen_check_get_<void, Get, Type>;
 
@@ -119,16 +120,6 @@ struct gen_check_rec<type_class::structure> : gen_check_rec_structure_variant {
 template <>
 struct gen_check_rec<type_class::variant> : gen_check_rec_structure_variant {};
 
-//  gen_check_variadic_logical_and
-//
-//  Metafunction for variadic logical and taking bools and returning bool.
-//
-//  Like folly::StrictConjunction but with bool values rather than types.
-template <bool... V>
-constexpr bool gen_check_variadic_logical_and = std::is_same<
-    std::integer_sequence<bool, V...>,
-    std::integer_sequence<bool, (V || true)...>>::value;
-
 //  gen_check
 //
 //  Returns whether, if the property Get holds for the outer structure Type,
@@ -138,27 +129,29 @@ constexpr bool gen_check_variadic_logical_and = std::is_same<
 //  Get is one of the getters above:
 //    * gen_check_get_json
 //    * gen_check_get_nimble
+template <
+    typename Get,
+    typename Type,
+    typename FieldTypeClass,
+    typename FieldType>
+constexpr bool gen_check = !gen_check_get<Get, Type> ||
+    gen_check_rec<FieldTypeClass>::template apply<Get, FieldType>;
+
+//  gen_check_json
+//  gen_check_nimble
+//
+//  Aliases to gen_check partially instantiated with one of the getters above:
+//    * gen_check_get_json
+//    * gen_check_get_nimble
 //
 //  Used by a generated static_assert to enforce consistency over transitive
 //  dependencies in the use of extern-template instantiations over json/nimble.
-template <
-    typename Get,
-    typename Type,
-    typename FieldTypeClassList,
-    typename FieldTypeList>
-constexpr bool gen_check = false;
-template <
-    typename Get,
-    typename Type,
-    typename... FieldTypeClass,
-    typename... FieldType>
-constexpr bool gen_check<
-    Get,
-    Type,
-    folly::tag_t<void, FieldTypeClass...>,
-    folly::tag_t<void, FieldType...>> = !gen_check_get<Get, Type> ||
-    gen_check_variadic_logical_and<
-        gen_check_rec<FieldTypeClass>::template apply<Get, FieldType>...>;
+template <typename Type, typename FieldTypeClass, typename FieldType>
+constexpr bool gen_check_json =
+    gen_check<gen_check_get_json, Type, FieldTypeClass, FieldType>;
+template <typename Type, typename FieldTypeClass, typename FieldType>
+constexpr bool gen_check_nimble =
+    gen_check<gen_check_get_nimble, Type, FieldTypeClass, FieldType>;
 
 } // namespace
 

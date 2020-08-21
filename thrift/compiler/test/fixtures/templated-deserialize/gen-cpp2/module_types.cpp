@@ -745,149 +745,58 @@ template uint32_t containerStruct::serializedSizeZC<>(apache::thrift::CompactPro
 } // cpp2
 
 namespace cpp2 {
-//  if this struct is generated with extern template instances for simple-json
-//  protocol, enforce that all its dependencies are too
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
 static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_json,
-        SmallStruct,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::integral
-          , ::apache::thrift::type_class::integral
-          >,
-        ::folly::tag_t<void
-          , bool
-          , int32_t
-          >>,
+    ::apache::thrift::detail::st::gen_check_json<
+        containerStruct,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::SmallStruct>,
+    "inconsistent use of json option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        containerStruct,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::SmallStruct>,
+    "inconsistent use of json option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        containerStruct,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::SmallStruct>,
+    "inconsistent use of json option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        containerStruct,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::SmallStruct>,
     "inconsistent use of json option");
 
 //  if this struct is generated with extern template instances for nimble
 //  protocol, enforce that all its dependencies are too
 static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_nimble,
-        SmallStruct,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::integral
-          , ::apache::thrift::type_class::integral
-          >,
-        ::folly::tag_t<void
-          , bool
-          , int32_t
-          >>,
+    ::apache::thrift::detail::st::gen_check_nimble<
+        containerStruct,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::SmallStruct>,
     "inconsistent use of nimble option");
-
-
-//  if this struct is generated with extern template instances for simple-json
-//  protocol, enforce that all its dependencies are too
 static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_json,
+    ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::integral
-          , ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>
-          , ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>
-          , ::apache::thrift::type_class::string
-          , ::apache::thrift::type_class::string
-          , ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>>
-          , ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>>>
-          , ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>
-          , ::apache::thrift::type_class::integral
-          , ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>
-          , ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>>>
-          , ::apache::thrift::type_class::set<::apache::thrift::type_class::set<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>>
-          , ::apache::thrift::type_class::map<::apache::thrift::type_class::set<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>, ::apache::thrift::type_class::map<::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::string>>, ::apache::thrift::type_class::string>>
-          , ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>
-          , ::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>
-          , ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>
-          , ::apache::thrift::type_class::enumeration
-          , ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>
-          , ::apache::thrift::type_class::structure
-          , ::apache::thrift::type_class::structure
-          , ::apache::thrift::type_class::structure
-          , ::apache::thrift::type_class::structure
-          >,
-        ::folly::tag_t<void
-          , bool
-          , ::std::map<::std::string, bool>
-          , ::std::set<int32_t>
-          , ::std::string
-          , ::std::string
-          , ::std::vector<::std::vector<::std::vector<int32_t>>>
-          , ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>
-          , ::std::vector<::std::set<int32_t>>
-          , bool
-          , ::std::map<::std::string, ::std::vector<int32_t>>
-          , ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>
-          , ::std::set<::std::set<::std::set<bool>>>
-          , ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>
-          , ::std::vector< ::cpp2::IndirectionA>
-          , ::std::vector< ::cpp2::IndirectionB>
-          , ::std::vector< ::cpp2::IndirectionC>
-          ,  ::cpp2::MyEnumA
-          , ::std::map<::std::string, bool>
-          ,  ::cpp2::SmallStruct
-          ,  ::cpp2::SmallStruct
-          ,  ::cpp2::SmallStruct
-          ,  ::cpp2::SmallStruct
-          >>,
-    "inconsistent use of json option");
-
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
+        ::apache::thrift::type_class::structure,
+         ::cpp2::SmallStruct>,
+    "inconsistent use of nimble option");
 static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_nimble,
+    ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::integral
-          , ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>
-          , ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>
-          , ::apache::thrift::type_class::string
-          , ::apache::thrift::type_class::string
-          , ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>>
-          , ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>>>
-          , ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>
-          , ::apache::thrift::type_class::integral
-          , ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>
-          , ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>>>
-          , ::apache::thrift::type_class::set<::apache::thrift::type_class::set<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>>
-          , ::apache::thrift::type_class::map<::apache::thrift::type_class::set<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>, ::apache::thrift::type_class::map<::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::string>>, ::apache::thrift::type_class::string>>
-          , ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>
-          , ::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>
-          , ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>
-          , ::apache::thrift::type_class::enumeration
-          , ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>
-          , ::apache::thrift::type_class::structure
-          , ::apache::thrift::type_class::structure
-          , ::apache::thrift::type_class::structure
-          , ::apache::thrift::type_class::structure
-          >,
-        ::folly::tag_t<void
-          , bool
-          , ::std::map<::std::string, bool>
-          , ::std::set<int32_t>
-          , ::std::string
-          , ::std::string
-          , ::std::vector<::std::vector<::std::vector<int32_t>>>
-          , ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>
-          , ::std::vector<::std::set<int32_t>>
-          , bool
-          , ::std::map<::std::string, ::std::vector<int32_t>>
-          , ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>
-          , ::std::set<::std::set<::std::set<bool>>>
-          , ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>
-          , ::std::vector< ::cpp2::IndirectionA>
-          , ::std::vector< ::cpp2::IndirectionB>
-          , ::std::vector< ::cpp2::IndirectionC>
-          ,  ::cpp2::MyEnumA
-          , ::std::map<::std::string, bool>
-          ,  ::cpp2::SmallStruct
-          ,  ::cpp2::SmallStruct
-          ,  ::cpp2::SmallStruct
-          ,  ::cpp2::SmallStruct
-          >>,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::SmallStruct>,
+    "inconsistent use of nimble option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        containerStruct,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::SmallStruct>,
     "inconsistent use of nimble option");
 
 } // cpp2

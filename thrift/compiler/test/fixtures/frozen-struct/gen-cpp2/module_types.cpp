@@ -310,85 +310,34 @@ template uint32_t ModuleB::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 }} // some::ns
 
 namespace some { namespace ns {
-//  if this struct is generated with extern template instances for simple-json
-//  protocol, enforce that all its dependencies are too
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
 static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_json,
+    ::apache::thrift::detail::st::gen_check_json<
         ModuleA,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::integral
-          , ::apache::thrift::type_class::string
-          , ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>
-          , ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>
-          , ::apache::thrift::type_class::structure
-          , ::apache::thrift::type_class::structure
-          >,
-        ::folly::tag_t<void
-          , int32_t
-          , ::std::string
-          , ::std::vector<int16_t>
-          , ::std::map<::std::string, int32_t>
-          ,  ::some::ns::IncludedA
-          ,  ::some::ns::IncludedB
-          >>,
+        ::apache::thrift::type_class::structure,
+         ::some::ns::IncludedA>,
+    "inconsistent use of json option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        ModuleA,
+        ::apache::thrift::type_class::structure,
+         ::some::ns::IncludedB>,
     "inconsistent use of json option");
 
 //  if this struct is generated with extern template instances for nimble
 //  protocol, enforce that all its dependencies are too
 static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_nimble,
+    ::apache::thrift::detail::st::gen_check_nimble<
         ModuleA,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::integral
-          , ::apache::thrift::type_class::string
-          , ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>
-          , ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>
-          , ::apache::thrift::type_class::structure
-          , ::apache::thrift::type_class::structure
-          >,
-        ::folly::tag_t<void
-          , int32_t
-          , ::std::string
-          , ::std::vector<int16_t>
-          , ::std::map<::std::string, int32_t>
-          ,  ::some::ns::IncludedA
-          ,  ::some::ns::IncludedB
-          >>,
+        ::apache::thrift::type_class::structure,
+         ::some::ns::IncludedA>,
     "inconsistent use of nimble option");
-
-
-//  if this struct is generated with extern template instances for simple-json
-//  protocol, enforce that all its dependencies are too
 static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_json,
-        ModuleB,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::integral
-          , ::apache::thrift::type_class::enumeration
-          >,
-        ::folly::tag_t<void
-          , int32_t
-          ,  ::some::ns::EnumB
-          >>,
-    "inconsistent use of json option");
-
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check<
-        ::apache::thrift::detail::st::gen_check_get_nimble,
-        ModuleB,
-        ::folly::tag_t<void
-          , ::apache::thrift::type_class::integral
-          , ::apache::thrift::type_class::enumeration
-          >,
-        ::folly::tag_t<void
-          , int32_t
-          ,  ::some::ns::EnumB
-          >>,
+    ::apache::thrift::detail::st::gen_check_nimble<
+        ModuleA,
+        ::apache::thrift::type_class::structure,
+         ::some::ns::IncludedB>,
     "inconsistent use of nimble option");
 
 }} // some::ns

@@ -1136,9 +1136,8 @@ class Empty final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = signed;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = Empty;
@@ -1212,9 +1211,8 @@ class ASimpleStruct final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = signed;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = ASimpleStruct;
@@ -1332,9 +1330,8 @@ class ASimpleStructNoexcept final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = signed;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = ASimpleStructNoexcept;
@@ -1454,9 +1451,8 @@ class MyStruct final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = signed;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = MyStruct;
@@ -1889,9 +1885,8 @@ class SimpleUnion  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = signed;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = SimpleUnion;
@@ -2172,9 +2167,8 @@ class ComplexUnion final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = signed;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = ComplexUnion;
@@ -4275,9 +4269,8 @@ class AnException final : public apache::thrift::TException {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = signed;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = AnException;
@@ -4905,9 +4898,8 @@ class AnotherException : public apache::thrift::TException {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = signed;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = AnotherException;
@@ -5105,9 +5097,8 @@ class containerStruct final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = signed;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = containerStruct;
@@ -6852,9 +6843,8 @@ class MyIncludedStruct final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = signed;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = MyIncludedStruct;
@@ -7049,9 +7039,8 @@ class AnnotatedStruct  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = signed;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = AnnotatedStruct;
@@ -8183,9 +8172,8 @@ class ComplexContainerStruct final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = signed;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = ComplexContainerStruct;
@@ -8337,9 +8325,8 @@ class FloatStruct final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = signed;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = FloatStruct;
@@ -8495,9 +8482,8 @@ class FloatUnion final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = signed;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = FloatUnion;
@@ -8763,9 +8749,8 @@ class AllRequiredNoExceptMoveCtrStruct final  {
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
-  //  using signed/unsigned as true/false for quicker parsing
-  using __fbthrift_cpp2_gen_json = signed;
-  using __fbthrift_cpp2_gen_nimble = unsigned;
+  static constexpr bool __fbthrift_cpp2_gen_json = true;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
   using __fbthrift_cpp2_type = AllRequiredNoExceptMoveCtrStruct;
