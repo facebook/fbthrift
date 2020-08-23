@@ -17,11 +17,16 @@
 #pragma once
 
 #include <folly/Traits.h>
-#include <thrift/lib/cpp2/reflection/reflection.h>
 #include <thrift/lib/cpp2/visitation/metadata.h>
 
 namespace apache {
 namespace thrift {
+namespace detail {
+template <class T>
+struct ForEachField {
+  static_assert(sizeof(T) < 0, "Must include visitation header");
+};
+} // namespace detail
 /**
  * for_each_field iterates over fields in thrift struct. Example:
  *
@@ -38,13 +43,7 @@ namespace thrift {
  */
 template <typename T, typename F>
 void for_each_field(T&& t, F&& f) {
-  using type = folly::remove_cvref_t<T>;
-  using meta = reflect_struct<type>;
-  fatal::foreach<typename meta::members>([&](auto tag) {
-    using mtype = decltype(fatal::tag_type(tag));
-    auto&& ref = typename mtype::field_ref_getter()(static_cast<T&&>(t));
-    static_cast<F&&>(f)(ref, detail::get_field_metadata<type>(tag.value));
-  });
+  detail::ForEachField<folly::remove_cvref_t<T>>()(static_cast<T&&>(t), f);
 }
 } // namespace thrift
 } // namespace apache

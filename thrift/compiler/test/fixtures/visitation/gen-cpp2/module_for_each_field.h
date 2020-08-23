@@ -7,5 +7,342 @@
 #pragma once
 
 #include "thrift/compiler/test/fixtures/visitation/gen-cpp2/module_metadata.h"
-#include "thrift/compiler/test/fixtures/visitation/gen-cpp2/module_fatal_struct.h"
 #include <thrift/lib/cpp2/visitation/for_each.h>
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::union1> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::union1>;
+
+    f(static_cast<T&&>(t).ui_ref(), get_metadata(0));
+    f(static_cast<T&&>(t).ud_ref(), get_metadata(1));
+    f(static_cast<T&&>(t).us_ref(), get_metadata(2));
+    f(static_cast<T&&>(t).ue_ref(), get_metadata(3));
+  }
+};
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::union2> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::union2>;
+
+    f(static_cast<T&&>(t).ui_2_ref(), get_metadata(0));
+    f(static_cast<T&&>(t).ud_2_ref(), get_metadata(1));
+    f(static_cast<T&&>(t).us_2_ref(), get_metadata(2));
+    f(static_cast<T&&>(t).ue_2_ref(), get_metadata(3));
+  }
+};
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::union3> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::union3>;
+
+    f(static_cast<T&&>(t).ui_3_ref(), get_metadata(0));
+    f(static_cast<T&&>(t).ud_3_ref(), get_metadata(1));
+    f(static_cast<T&&>(t).us_3_ref(), get_metadata(2));
+    f(static_cast<T&&>(t).ue_3_ref(), get_metadata(3));
+  }
+};
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::structA> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::structA>;
+
+    f(static_cast<T&&>(t).a_ref(), get_metadata(0));
+    f(static_cast<T&&>(t).b_ref(), get_metadata(1));
+  }
+};
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::unionA> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::unionA>;
+
+    f(static_cast<T&&>(t).i_ref(), get_metadata(0));
+    f(static_cast<T&&>(t).d_ref(), get_metadata(1));
+    f(static_cast<T&&>(t).s_ref(), get_metadata(2));
+    f(static_cast<T&&>(t).e_ref(), get_metadata(3));
+    f(static_cast<T&&>(t).a_ref(), get_metadata(4));
+  }
+};
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::structB> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::structB>;
+
+    f(static_cast<T&&>(t).c_ref(), get_metadata(0));
+    f(static_cast<T&&>(t).d_ref(), get_metadata(1));
+  }
+};
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::structC> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::structC>;
+
+    f(static_cast<T&&>(t).a_ref(), get_metadata(0));
+    f(static_cast<T&&>(t).b_ref(), get_metadata(1));
+    f(static_cast<T&&>(t).c_ref(), get_metadata(2));
+    f(static_cast<T&&>(t).d_ref(), get_metadata(3));
+    f(static_cast<T&&>(t).e_ref(), get_metadata(4));
+    f(static_cast<T&&>(t).f_ref(), get_metadata(5));
+    f(static_cast<T&&>(t).g_ref(), get_metadata(6));
+    f(static_cast<T&&>(t).h_ref(), get_metadata(7));
+    f(static_cast<T&&>(t).i_ref(), get_metadata(8));
+    f(static_cast<T&&>(t).j_ref(), get_metadata(9));
+    f(static_cast<T&&>(t).j1_ref(), get_metadata(10));
+    f(static_cast<T&&>(t).j2_ref(), get_metadata(11));
+    f(static_cast<T&&>(t).j3_ref(), get_metadata(12));
+    f(static_cast<T&&>(t).k_ref(), get_metadata(13));
+    f(static_cast<T&&>(t).k1_ref(), get_metadata(14));
+    f(static_cast<T&&>(t).k2_ref(), get_metadata(15));
+    f(static_cast<T&&>(t).k3_ref(), get_metadata(16));
+    f(static_cast<T&&>(t).l_ref(), get_metadata(17));
+    f(static_cast<T&&>(t).l1_ref(), get_metadata(18));
+    f(static_cast<T&&>(t).l2_ref(), get_metadata(19));
+    f(static_cast<T&&>(t).l3_ref(), get_metadata(20));
+    f(static_cast<T&&>(t).m1_ref(), get_metadata(21));
+    f(static_cast<T&&>(t).m2_ref(), get_metadata(22));
+    f(static_cast<T&&>(t).m3_ref(), get_metadata(23));
+    f(static_cast<T&&>(t).n1_ref(), get_metadata(24));
+    f(static_cast<T&&>(t).n2_ref(), get_metadata(25));
+    f(static_cast<T&&>(t).n3_ref(), get_metadata(26));
+    f(static_cast<T&&>(t).o1_ref(), get_metadata(27));
+    f(static_cast<T&&>(t).o2_ref(), get_metadata(28));
+    f(static_cast<T&&>(t).o3_ref(), get_metadata(29));
+  }
+};
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::struct1> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::struct1>;
+
+    f(static_cast<T&&>(t).field0_ref(), get_metadata(0));
+    f(static_cast<T&&>(t).field1_ref(), get_metadata(1));
+    f(static_cast<T&&>(t).field2_ref(), get_metadata(2));
+    f(static_cast<T&&>(t).field3_ref(), get_metadata(3));
+    f(static_cast<T&&>(t).field4_ref(), get_metadata(4));
+    f(static_cast<T&&>(t).field5_ref(), get_metadata(5));
+  }
+};
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::struct2> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::struct2>;
+
+    f(static_cast<T&&>(t).fieldA_ref(), get_metadata(0));
+    f(static_cast<T&&>(t).fieldB_ref(), get_metadata(1));
+    f(static_cast<T&&>(t).fieldC_ref(), get_metadata(2));
+    f(static_cast<T&&>(t).fieldD_ref(), get_metadata(3));
+    f(static_cast<T&&>(t).fieldE_ref(), get_metadata(4));
+    f(static_cast<T&&>(t).fieldF_ref(), get_metadata(5));
+    f(static_cast<T&&>(t).fieldG_ref(), get_metadata(6));
+  }
+};
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::struct3> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::struct3>;
+
+    f(static_cast<T&&>(t).fieldA_ref(), get_metadata(0));
+    f(static_cast<T&&>(t).fieldB_ref(), get_metadata(1));
+    f(static_cast<T&&>(t).fieldC_ref(), get_metadata(2));
+    f(static_cast<T&&>(t).fieldD_ref(), get_metadata(3));
+    f(static_cast<T&&>(t).fieldE_ref(), get_metadata(4));
+    f(static_cast<T&&>(t).fieldF_ref(), get_metadata(5));
+    f(static_cast<T&&>(t).fieldG_ref(), get_metadata(6));
+    f(static_cast<T&&>(t).fieldH_ref(), get_metadata(7));
+    f(static_cast<T&&>(t).fieldI_ref(), get_metadata(8));
+    f(static_cast<T&&>(t).fieldJ_ref(), get_metadata(9));
+    f(static_cast<T&&>(t).fieldK_ref(), get_metadata(10));
+    f(static_cast<T&&>(t).fieldL_ref(), get_metadata(11));
+    f(static_cast<T&&>(t).fieldM_ref(), get_metadata(12));
+    f(static_cast<T&&>(t).fieldN_ref(), get_metadata(13));
+    f(static_cast<T&&>(t).fieldO_ref(), get_metadata(14));
+    f(static_cast<T&&>(t).fieldP_ref(), get_metadata(15));
+    f(static_cast<T&&>(t).fieldQ_ref(), get_metadata(16));
+    f(static_cast<T&&>(t).fieldR_ref(), get_metadata(17));
+  }
+};
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::struct4> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::struct4>;
+
+    f(static_cast<T&&>(t).field0_ref(), get_metadata(0));
+    f(static_cast<T&&>(t).field1_ref(), get_metadata(1));
+    f(static_cast<T&&>(t).field2_ref(), get_metadata(2));
+    f(static_cast<T&&>(t).field3_ref(), get_metadata(3));
+  }
+};
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::struct5> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::struct5>;
+
+    f(static_cast<T&&>(t).field0_ref(), get_metadata(0));
+    f(static_cast<T&&>(t).field1_ref(), get_metadata(1));
+    f(static_cast<T&&>(t).field2_ref(), get_metadata(2));
+    f(static_cast<T&&>(t).field3_ref(), get_metadata(3));
+    f(static_cast<T&&>(t).field4_ref(), get_metadata(4));
+  }
+};
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::struct_binary> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::struct_binary>;
+
+    f(static_cast<T&&>(t).bi_ref(), get_metadata(0));
+  }
+};
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::dep_A_struct> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::dep_A_struct>;
+
+    f(static_cast<T&&>(t).b_ref(), get_metadata(0));
+    f(static_cast<T&&>(t).c_ref(), get_metadata(1));
+    f(static_cast<T&&>(t).i_a_ref(), get_metadata(2));
+  }
+};
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::dep_B_struct> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::dep_B_struct>;
+
+    f(static_cast<T&&>(t).b_ref(), get_metadata(0));
+    f(static_cast<T&&>(t).c_ref(), get_metadata(1));
+    f(static_cast<T&&>(t).i_a_ref(), get_metadata(2));
+  }
+};
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::annotated> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::annotated>;
+
+    f(static_cast<T&&>(t).a_ref(), get_metadata(0));
+  }
+};
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::union_with_special_names> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::union_with_special_names>;
+
+    f(static_cast<T&&>(t).get_ref(), get_metadata(0));
+    f(static_cast<T&&>(t).getter_ref(), get_metadata(1));
+    f(static_cast<T&&>(t).lists_ref(), get_metadata(2));
+    f(static_cast<T&&>(t).maps_ref(), get_metadata(3));
+    f(static_cast<T&&>(t).name_ref(), get_metadata(4));
+    f(static_cast<T&&>(t).name_to_value_ref(), get_metadata(5));
+    f(static_cast<T&&>(t).names_ref(), get_metadata(6));
+    f(static_cast<T&&>(t).prefix_tree_ref(), get_metadata(7));
+    f(static_cast<T&&>(t).sets_ref(), get_metadata(8));
+    f(static_cast<T&&>(t).setter_ref(), get_metadata(9));
+    f(static_cast<T&&>(t).str_ref(), get_metadata(10));
+    f(static_cast<T&&>(t).strings_ref(), get_metadata(11));
+    f(static_cast<T&&>(t).type_ref(), get_metadata(12));
+    f(static_cast<T&&>(t).value_ref(), get_metadata(13));
+    f(static_cast<T&&>(t).value_to_name_ref(), get_metadata(14));
+    f(static_cast<T&&>(t).values_ref(), get_metadata(15));
+    f(static_cast<T&&>(t).id_ref(), get_metadata(16));
+    f(static_cast<T&&>(t).ids_ref(), get_metadata(17));
+    f(static_cast<T&&>(t).descriptor_ref(), get_metadata(18));
+    f(static_cast<T&&>(t).descriptors_ref(), get_metadata(19));
+    f(static_cast<T&&>(t).key_ref(), get_metadata(20));
+    f(static_cast<T&&>(t).keys_ref(), get_metadata(21));
+    f(static_cast<T&&>(t).annotation_ref(), get_metadata(22));
+    f(static_cast<T&&>(t).annotations_ref(), get_metadata(23));
+    f(static_cast<T&&>(t).member_ref(), get_metadata(24));
+    f(static_cast<T&&>(t).members_ref(), get_metadata(25));
+    f(static_cast<T&&>(t).field_ref(), get_metadata(26));
+    f(static_cast<T&&>(t).fields_ref(), get_metadata(27));
+  }
+};
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::struct_with_special_names> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::struct_with_special_names>;
+
+    f(static_cast<T&&>(t).get_ref(), get_metadata(0));
+    f(static_cast<T&&>(t).getter_ref(), get_metadata(1));
+    f(static_cast<T&&>(t).lists_ref(), get_metadata(2));
+    f(static_cast<T&&>(t).maps_ref(), get_metadata(3));
+    f(static_cast<T&&>(t).name_ref(), get_metadata(4));
+    f(static_cast<T&&>(t).name_to_value_ref(), get_metadata(5));
+    f(static_cast<T&&>(t).names_ref(), get_metadata(6));
+    f(static_cast<T&&>(t).prefix_tree_ref(), get_metadata(7));
+    f(static_cast<T&&>(t).sets_ref(), get_metadata(8));
+    f(static_cast<T&&>(t).setter_ref(), get_metadata(9));
+    f(static_cast<T&&>(t).str_ref(), get_metadata(10));
+    f(static_cast<T&&>(t).strings_ref(), get_metadata(11));
+    f(static_cast<T&&>(t).type_ref(), get_metadata(12));
+    f(static_cast<T&&>(t).value_ref(), get_metadata(13));
+    f(static_cast<T&&>(t).value_to_name_ref(), get_metadata(14));
+    f(static_cast<T&&>(t).values_ref(), get_metadata(15));
+    f(static_cast<T&&>(t).id_ref(), get_metadata(16));
+    f(static_cast<T&&>(t).ids_ref(), get_metadata(17));
+    f(static_cast<T&&>(t).descriptor_ref(), get_metadata(18));
+    f(static_cast<T&&>(t).descriptors_ref(), get_metadata(19));
+    f(static_cast<T&&>(t).key_ref(), get_metadata(20));
+    f(static_cast<T&&>(t).keys_ref(), get_metadata(21));
+    f(static_cast<T&&>(t).annotation_ref(), get_metadata(22));
+    f(static_cast<T&&>(t).annotations_ref(), get_metadata(23));
+    f(static_cast<T&&>(t).member_ref(), get_metadata(24));
+    f(static_cast<T&&>(t).members_ref(), get_metadata(25));
+    f(static_cast<T&&>(t).field_ref(), get_metadata(26));
+    f(static_cast<T&&>(t).fields_ref(), get_metadata(27));
+  }
+};
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::struct_with_indirections> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::struct_with_indirections>;
+
+    f(static_cast<T&&>(t).real_ref(), get_metadata(0));
+    f(static_cast<T&&>(t).fake_ref(), get_metadata(1));
+    f(static_cast<T&&>(t).number_ref(), get_metadata(2));
+    f(static_cast<T&&>(t).result_ref(), get_metadata(3));
+    f(static_cast<T&&>(t).phrase_ref(), get_metadata(4));
+  }
+};
+} // namespace detail
+} // namespace thrift
+} // namespace apache

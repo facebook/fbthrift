@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-#include <thrift/test/gen-cpp2/reflection_for_each_field.h> // @manual=:reflection_if-cpp2-visitation
-#include <thrift/test/gen-cpp2/reflection_no_metadata_for_each_field.h> // @manual=:reflection_no_metadata_if-cpp2-visitation
+#include <thrift/test/gen-cpp2/reflection_for_each_field.h>
+#include <thrift/test/gen-cpp2/reflection_no_metadata_for_each_field.h>
 
 #include <folly/Overload.h>
-#include <folly/functional/Invoke.h>
 #include <folly/portability/GTest.h>
 
 #include <typeindex>
@@ -32,7 +31,7 @@ namespace cpp_reflection {
 TEST(struct1, test_metadata) {
   struct1 s;
   for_each_field(s, [i = 0](auto ref, auto&& meta) mutable {
-    EXPECT_EQ(meta.id, i + 1);
+    EXPECT_EQ(meta.id, 1 << i);
     EXPECT_EQ(meta.name, "field" + to_string(i));
     EXPECT_EQ(
         meta.type.getType(),
@@ -126,7 +125,7 @@ TEST(hasRefUnique, test_cpp_ref_unique) {
   };
   for_each_field(s, [&, i = 0](auto&& ref, auto&& meta) mutable {
     EXPECT_EQ(meta.name, names[i++]);
-    if constexpr (std::is_same_v<decltype(*ref), deque<string>&>) {
+    if constexpr (is_same_v<decltype(*ref), deque<string>&>) {
       if (meta.is_optional) {
         ref.reset(new decltype(names)(names));
       }
@@ -145,6 +144,107 @@ TEST(hasRefUnique, test_cpp_ref_unique) {
   EXPECT_FALSE(s.anOptionalSet_ref());
   EXPECT_FALSE(s.anOptionalMap_ref());
   EXPECT_FALSE(s.anOptionalUnion_ref());
+}
+
+TEST(struct1, test_reference_type) {
+  struct1 s;
+  for_each_field(s, [](auto&& ref, auto&& meta) {
+    switch (meta.id) {
+      case 1:
+        EXPECT_TRUE((is_same_v<decltype(*ref), int32_t&>));
+        break;
+      case 2:
+        EXPECT_TRUE((is_same_v<decltype(*ref), string&>));
+        break;
+      case 4:
+        EXPECT_TRUE((is_same_v<decltype(*ref), enum1&>));
+        break;
+      case 8:
+        EXPECT_TRUE((is_same_v<decltype(*ref), enum2&>));
+        break;
+      case 16:
+        EXPECT_TRUE((is_same_v<decltype(*ref), union1&>));
+        break;
+      case 32:
+        EXPECT_TRUE((is_same_v<decltype(*ref), union2&>));
+        break;
+      default:
+        EXPECT_TRUE(false) << meta.name << " " << meta.id;
+    }
+  });
+  for_each_field(move(s), [](auto&& ref, auto&& meta) {
+    switch (meta.id) {
+      case 1:
+        EXPECT_TRUE((is_same_v<decltype(*ref), int32_t&&>));
+        break;
+      case 2:
+        EXPECT_TRUE((is_same_v<decltype(*ref), string&&>));
+        break;
+      case 4:
+        EXPECT_TRUE((is_same_v<decltype(*ref), enum1&&>));
+        break;
+      case 8:
+        EXPECT_TRUE((is_same_v<decltype(*ref), enum2&&>));
+        break;
+      case 16:
+        EXPECT_TRUE((is_same_v<decltype(*ref), union1&&>));
+        break;
+      case 32:
+        EXPECT_TRUE((is_same_v<decltype(*ref), union2&&>));
+        break;
+      default:
+        EXPECT_TRUE(false) << meta.name << " " << meta.id;
+    }
+  });
+  const struct1 t;
+  for_each_field(t, [](auto&& ref, auto&& meta) {
+    switch (meta.id) {
+      case 1:
+        EXPECT_TRUE((is_same_v<decltype(*ref), const int32_t&>));
+        break;
+      case 2:
+        EXPECT_TRUE((is_same_v<decltype(*ref), const string&>));
+        break;
+      case 4:
+        EXPECT_TRUE((is_same_v<decltype(*ref), const enum1&>));
+        break;
+      case 8:
+        EXPECT_TRUE((is_same_v<decltype(*ref), const enum2&>));
+        break;
+      case 16:
+        EXPECT_TRUE((is_same_v<decltype(*ref), const union1&>));
+        break;
+      case 32:
+        EXPECT_TRUE((is_same_v<decltype(*ref), const union2&>));
+        break;
+      default:
+        EXPECT_TRUE(false) << meta.name << " " << meta.id;
+    }
+  });
+  for_each_field(move(t), [](auto&& ref, auto&& meta) {
+    switch (meta.id) {
+      case 1:
+        EXPECT_TRUE((is_same_v<decltype(*ref), const int32_t&&>));
+        break;
+      case 2:
+        EXPECT_TRUE((is_same_v<decltype(*ref), const string&&>));
+        break;
+      case 4:
+        EXPECT_TRUE((is_same_v<decltype(*ref), const enum1&&>));
+        break;
+      case 8:
+        EXPECT_TRUE((is_same_v<decltype(*ref), const enum2&&>));
+        break;
+      case 16:
+        EXPECT_TRUE((is_same_v<decltype(*ref), const union1&&>));
+        break;
+      case 32:
+        EXPECT_TRUE((is_same_v<decltype(*ref), const union2&&>));
+        break;
+      default:
+        EXPECT_TRUE(false) << meta.name << " " << meta.id;
+    }
+  });
 }
 
 } // namespace cpp_reflection

@@ -18,5 +18,25 @@
 #pragma once
 
 #include "<%program:include_prefix%><%program:name%>_metadata.h"
-#include "<%program:include_prefix%><%program:name%>_fatal_struct.h"
 #include <thrift/lib/cpp2/visitation/for_each.h>
+
+namespace apache {
+namespace thrift {
+namespace detail {
+<%#program:structs%>
+
+template <>
+struct ForEachField<<% > common/namespace_cpp2%><%struct:name%>> {
+  template <typename T, typename F>
+  void operator()(T&& t, F&& f) const {
+    constexpr auto get_metadata = get_field_metadata<<% > common/namespace_cpp2%><%struct:name%>>;
+
+    <%#struct:fields%>
+    f(static_cast<T&&>(t).<%field:cpp_name%>_ref(), get_metadata(<%field:index%>));
+    <%/struct:fields%>
+  }
+};
+<%/program:structs%>
+} // namespace detail
+} // namespace thrift
+} // namespace apache

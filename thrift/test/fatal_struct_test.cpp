@@ -143,16 +143,16 @@ TEST(fatal_struct, struct1_sanity_check) {
       field_id<2>,
       fatal::get<traits::members, field1s, fatal::get_type::name>::id>();
   EXPECT_SAME<
-      field_id<3>,
+      field_id<4>,
       fatal::get<traits::members, field2s, fatal::get_type::name>::id>();
   EXPECT_SAME<
-      field_id<4>,
+      field_id<8>,
       fatal::get<traits::members, field3s, fatal::get_type::name>::id>();
   EXPECT_SAME<
-      field_id<5>,
+      field_id<16>,
       fatal::get<traits::members, field4s, fatal::get_type::name>::id>();
   EXPECT_SAME<
-      field_id<6>,
+      field_id<32>,
       fatal::get<traits::members, field5s, fatal::get_type::name>::id>();
 
   EXPECT_SAME<

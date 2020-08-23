@@ -150,10 +150,10 @@ struct structC {
 struct struct1 {
   1: required i32 field0
   2: optional string field1
-  3: enum1 field2
-  4: required enum2 field3
-  5: optional union1 field4
-  6: union2 field5
+  4: enum1 field2
+  8: required enum2 field3
+  16: optional union1 field4
+  32: union2 field5
 }
 
 struct struct2 {
