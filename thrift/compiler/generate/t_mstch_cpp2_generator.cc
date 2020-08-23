@@ -2042,6 +2042,9 @@ void t_mstch_cpp2_generator::generate_visitation(const t_program* program) {
       cache_->programs_[id],
       "module_for_each_field.h",
       name + "_for_each_field.h");
+
+  render_to_file(
+      cache_->programs_[id], "module_visit_union.h", name + "_visit_union.h");
 }
 
 void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
