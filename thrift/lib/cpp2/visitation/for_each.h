@@ -30,8 +30,8 @@ struct ForEachField {
 /**
  * for_each_field iterates over fields in thrift struct. Example:
  *
- *   for_each_field(thriftObject, [](auto field_ref, const ThriftField& meta) {
- *     LOG(INFO) << meta.name << " --> " << *field_ref;
+ *   for_each_field(thriftObject, [](const ThriftField& meta, auto field_ref) {
+ *     LOG(INFO) << *meta.name_ref() << " --> " << *field_ref;
  *   });
  *
  * ThriftField schema is defined here: https://git.io/JJQpY
@@ -43,7 +43,7 @@ struct ForEachField {
  */
 template <typename T, typename F>
 void for_each_field(T&& t, F&& f) {
-  detail::ForEachField<folly::remove_cvref_t<T>>()(static_cast<T&&>(t), f);
+  detail::ForEachField<folly::remove_cvref_t<T>>()(f, static_cast<T&&>(t));
 }
 } // namespace thrift
 } // namespace apache
