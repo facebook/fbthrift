@@ -247,6 +247,59 @@ TEST(struct1, test_reference_type) {
   });
 }
 
+TEST(structA, test_two_structs_document) {
+  structA thrift1;
+  thrift1.a_ref() = 10;
+  thrift1.b_ref() = "20";
+  structA thrift2 = thrift1;
+
+  for_each_field(
+      thrift1,
+      thrift2,
+      [](const apache::thrift::metadata::ThriftField& meta,
+         auto field_ref1,
+         auto field_ref2) {
+        EXPECT_EQ(field_ref1, field_ref2) << *meta.name_ref() << " mismatch";
+      });
+}
+
+TEST(struct1, test_two_structs_assignment) {
+  struct1 s, t;
+  s.field0_ref() = 10;
+  s.field1_ref() = "11";
+  t.field0_ref() = 20;
+  t.field1_ref() = "22";
+  auto run = folly::overload(
+      [](auto& meta,
+         required_field_ref<int32_t&> r1,
+         required_field_ref<int32_t&> r2) {
+        EXPECT_EQ(r1, 10);
+        EXPECT_EQ(r2, 20);
+        r1 = 30;
+        r2 = 40;
+
+        EXPECT_EQ(meta.name, "field0");
+        EXPECT_EQ(meta.is_optional, false);
+      },
+      [](auto& meta,
+         optional_field_ref<string&> r1,
+         optional_field_ref<string&> r2) {
+        EXPECT_EQ(r1, "11");
+        EXPECT_EQ(r2, "22");
+        r1 = "33";
+        r2 = "44";
+
+        EXPECT_EQ(meta.name, "field1");
+        EXPECT_EQ(meta.is_optional, true);
+      },
+      [](auto&&...) {});
+  for_each_field(s, t, run);
+  EXPECT_EQ(s.field0_ref(), 30);
+  EXPECT_EQ(s.field1_ref(), "33");
+  EXPECT_EQ(t.field0_ref(), 40);
+  EXPECT_EQ(t.field1_ref(), "44");
+}
+
 } // namespace cpp_reflection
 } // namespace test_cpp2
 

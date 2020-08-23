@@ -45,5 +45,23 @@ template <typename T, typename F>
 void for_each_field(T&& t, F&& f) {
   detail::ForEachField<folly::remove_cvref_t<T>>()(f, static_cast<T&&>(t));
 }
+
+/**
+ * Similar to for_each_field(t, f), but works with 2 structures. Example:
+ *
+ *   for_each_field(thrift1, thrift2, [](const ThriftField& meta,
+ *                                       auto field_ref1,
+ *                                       auto field_ref2) {
+ *     EXPECT_EQ(field_ref1, field_ref2) << *meta.name_ref() << " mismatch";
+ *   });
+ */
+template <typename T1, typename T2, typename F>
+void for_each_field(T1&& t1, T2&& t2, F f) {
+  static_assert(
+      std::is_same<folly::remove_cvref_t<T1>, folly::remove_cvref_t<T2>>::value,
+      "type mismatch");
+  detail::ForEachField<folly::remove_cvref_t<T1>>()(
+      f, static_cast<T1&&>(t1), static_cast<T2&&>(t2));
+}
 } // namespace thrift
 } // namespace apache
