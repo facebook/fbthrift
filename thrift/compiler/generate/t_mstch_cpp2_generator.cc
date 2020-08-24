@@ -17,8 +17,8 @@
 #include <algorithm>
 #include <array>
 #include <memory>
-#include <vector>
 #include <queue>
+#include <vector>
 
 #include <boost/algorithm/string/replace.hpp>
 #include <thrift/compiler/generate/common.h>
