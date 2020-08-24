@@ -2039,6 +2039,9 @@ void t_mstch_cpp2_generator::generate_visitation(const t_program* program) {
   }
 
   render_to_file(
+      cache_->programs_[id], "module_visitation.h", name + "_visitation.h");
+
+  render_to_file(
       cache_->programs_[id],
       "module_for_each_field.h",
       name + "_for_each_field.h");
