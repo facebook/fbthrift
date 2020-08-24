@@ -288,22 +288,6 @@ void HandlerCallback<void>::complete(folly::Try<folly::Unit>&& r) {
   }
 }
 
-void HandlerCallback<void>::completeInThread(folly::Try<folly::Unit>&& r) {
-  if (r.hasException()) {
-    exception(std::move(r.exception()));
-  } else {
-    done();
-  }
-  delete this;
-}
-
-void HandlerCallback<void>::completeInThread(
-    std::unique_ptr<HandlerCallback> thisPtr,
-    folly::Try<folly::Unit>&& r) {
-  assert(thisPtr != nullptr);
-  thisPtr->complete(std::move(r));
-}
-
 void HandlerCallback<void>::doDone() {
   assert(cp_ != nullptr);
   auto queue = cp_(this->protoSeqId_, this->ctx_.get());

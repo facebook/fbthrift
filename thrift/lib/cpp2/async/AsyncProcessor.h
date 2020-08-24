@@ -460,10 +460,6 @@ class HandlerCallback : public HandlerCallbackBase {
       std::unique_ptr<ResultType> r);
 
   void complete(folly::Try<T>&& r);
-  void completeInThread(folly::Try<T>&& r);
-  static void completeInThread(
-      std::unique_ptr<HandlerCallback> thisPtr,
-      folly::Try<T>&& r);
 
  protected:
   virtual void doResult(InputType r);
@@ -495,10 +491,6 @@ class HandlerCallback<void> : public HandlerCallbackBase {
   }
 
   void complete(folly::Try<folly::Unit>&& r);
-  void completeInThread(folly::Try<folly::Unit>&& r);
-  static void completeInThread(
-      std::unique_ptr<HandlerCallback> thisPtr,
-      folly::Try<folly::Unit>&& r);
 
  protected:
   virtual void doDone();
@@ -694,24 +686,6 @@ void HandlerCallback<T>::complete(folly::Try<T>&& r) {
   } else {
     result(std::move(r.value()));
   }
-}
-
-template <typename T>
-void HandlerCallback<T>::completeInThread(folly::Try<T>&& r) {
-  if (r.hasException()) {
-    exception(std::move(r.exception()));
-    delete this;
-  } else {
-    resultInThread(std::move(r.value()));
-  }
-}
-
-template <typename T>
-void HandlerCallback<T>::completeInThread(
-    std::unique_ptr<HandlerCallback> thisPtr,
-    folly::Try<T>&& r) {
-  assert(thisPtr != nullptr);
-  thisPtr->complete(std::move(r));
 }
 
 template <typename T>
