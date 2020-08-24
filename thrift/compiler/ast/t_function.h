@@ -45,7 +45,6 @@ class t_function : public t_annotated {
    * @param arglist     - The parameters that are passed to the functions
    * @param xceptions   - Declare the exceptions that function might throw
    * @param stream_xceptions - Exceptions to be sent via the stream
-   * @param annotations - Optional args that add more functionality
    * @param oneway      - Determines if it is a one way function
    */
   t_function(
