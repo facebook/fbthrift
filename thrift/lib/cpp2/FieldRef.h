@@ -831,14 +831,18 @@ class union_field_ref {
   template <typename>
   friend class union_field_ref;
 
-  using int_t = std::conditional_t<std::is_const<T>::value, const int, int>;
-  using owner = std::conditional_t<std::is_const<T>::value, void const*, void*>;
-  using vtable = detail::union_field_ref_owner_vtable;
-
  public:
   using value_type = std::remove_reference_t<T>;
   using reference_type = T;
 
+ private:
+  using int_t =
+      std::conditional_t<std::is_const<value_type>::value, const int, int>;
+  using owner =
+      std::conditional_t<std::is_const<value_type>::value, void const*, void*>;
+  using vtable = detail::union_field_ref_owner_vtable;
+
+ public:
   FOLLY_ERASE union_field_ref(
       reference_type value,
       int_t& type,

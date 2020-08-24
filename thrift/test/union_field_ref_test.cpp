@@ -133,6 +133,34 @@ TEST(UnionFieldTest, duplicate_type) {
   EXPECT_FALSE(a.str2_ref());
   EXPECT_THROW(a.str2_ref().value(), bad_field_access);
 }
+
+TEST(UnionFieldTest, const_union) {
+  {
+    const Basic a;
+    EXPECT_EQ(a.getType(), Basic::__EMPTY__);
+    EXPECT_FALSE(a.int64_ref());
+    EXPECT_THROW(a.int64_ref().value(), bad_field_access);
+    EXPECT_FALSE(a.list_i32_ref());
+    EXPECT_THROW(a.list_i32_ref().value(), bad_field_access);
+    EXPECT_FALSE(a.str_ref());
+    EXPECT_THROW(a.str_ref().value(), bad_field_access);
+  }
+
+  {
+    Basic b;
+    const string str = "foo";
+    b.str_ref() = str;
+
+    const Basic& a = b;
+    EXPECT_EQ(a.getType(), Basic::str);
+    EXPECT_FALSE(a.int64_ref());
+    EXPECT_THROW(a.int64_ref().value(), bad_field_access);
+    EXPECT_FALSE(a.list_i32_ref());
+    EXPECT_THROW(a.list_i32_ref().value(), bad_field_access);
+    EXPECT_TRUE(a.str_ref());
+    EXPECT_EQ(a.str_ref().value(), str);
+  }
+}
 } // namespace test
 } // namespace thrift
 } // namespace apache
