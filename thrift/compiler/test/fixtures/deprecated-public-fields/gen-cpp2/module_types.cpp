@@ -51,13 +51,8 @@ bool Foo::operator==(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.bar_ref().has_value() != rhs.bar_ref().has_value()) {
+  if (lhs.bar_ref() != rhs.bar_ref()) {
     return false;
-  }
-  if (lhs.bar_ref().has_value()) {
-    if (!(lhs.bar == rhs.bar)) {
-      return false;
-    }
   }
   return true;
 }
@@ -66,13 +61,8 @@ bool Foo::operator<(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.bar_ref().has_value() != rhs.bar_ref().has_value()) {
-    return lhs.bar_ref().has_value() < rhs.bar_ref().has_value();
-  }
-  if (lhs.bar_ref().has_value()) {
-    if (!(lhs.bar == rhs.bar)) {
-      return lhs.bar < rhs.bar;
-    }
+  if (lhs.bar_ref() != rhs.bar_ref()) {
+    return lhs.bar_ref() < rhs.bar_ref();
   }
   return false;
 }

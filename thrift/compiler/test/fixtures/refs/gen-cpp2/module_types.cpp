@@ -392,13 +392,8 @@ bool MyField::operator==(const MyField& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.opt_value_ref().has_value() != rhs.opt_value_ref().has_value()) {
+  if (lhs.opt_value_ref() != rhs.opt_value_ref()) {
     return false;
-  }
-  if (lhs.opt_value_ref().has_value()) {
-    if (!(lhs.opt_value == rhs.opt_value)) {
-      return false;
-    }
   }
   if (!(lhs.value == rhs.value)) {
     return false;
@@ -413,13 +408,8 @@ bool MyField::operator<(const MyField& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.opt_value_ref().has_value() != rhs.opt_value_ref().has_value()) {
-    return lhs.opt_value_ref().has_value() < rhs.opt_value_ref().has_value();
-  }
-  if (lhs.opt_value_ref().has_value()) {
-    if (!(lhs.opt_value == rhs.opt_value)) {
-      return lhs.opt_value < rhs.opt_value;
-    }
+  if (lhs.opt_value_ref() != rhs.opt_value_ref()) {
+    return lhs.opt_value_ref() < rhs.opt_value_ref();
   }
   if (!(lhs.value == rhs.value)) {
     return lhs.value < rhs.value;
@@ -688,13 +678,8 @@ bool RecursiveStruct::operator==(const RecursiveStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.mes_ref().has_value() != rhs.mes_ref().has_value()) {
+  if (lhs.mes_ref() != rhs.mes_ref()) {
     return false;
-  }
-  if (lhs.mes_ref().has_value()) {
-    if (!(lhs.mes == rhs.mes)) {
-      return false;
-    }
   }
   return true;
 }
@@ -703,13 +688,8 @@ bool RecursiveStruct::operator<(const RecursiveStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.mes_ref().has_value() != rhs.mes_ref().has_value()) {
-    return lhs.mes_ref().has_value() < rhs.mes_ref().has_value();
-  }
-  if (lhs.mes_ref().has_value()) {
-    if (!(lhs.mes == rhs.mes)) {
-      return lhs.mes < rhs.mes;
-    }
+  if (lhs.mes_ref() != rhs.mes_ref()) {
+    return lhs.mes_ref() < rhs.mes_ref();
   }
   return false;
 }

@@ -1523,13 +1523,8 @@ bool ForwardUsageStruct::operator==(const ForwardUsageStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.foo_ref().has_value() != rhs.foo_ref().has_value()) {
+  if (lhs.foo_ref() != rhs.foo_ref()) {
     return false;
-  }
-  if (lhs.foo_ref().has_value()) {
-    if (!(lhs.foo == rhs.foo)) {
-      return false;
-    }
   }
   return true;
 }
@@ -1538,13 +1533,8 @@ bool ForwardUsageStruct::operator<(const ForwardUsageStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.foo_ref().has_value() != rhs.foo_ref().has_value()) {
-    return lhs.foo_ref().has_value() < rhs.foo_ref().has_value();
-  }
-  if (lhs.foo_ref().has_value()) {
-    if (!(lhs.foo == rhs.foo)) {
-      return lhs.foo < rhs.foo;
-    }
+  if (lhs.foo_ref() != rhs.foo_ref()) {
+    return lhs.foo_ref() < rhs.foo_ref();
   }
   return false;
 }
@@ -1612,13 +1602,8 @@ bool ForwardUsageRoot::operator==(const ForwardUsageRoot& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.ForwardUsageStruct_ref().has_value() != rhs.ForwardUsageStruct_ref().has_value()) {
+  if (lhs.ForwardUsageStruct_ref() != rhs.ForwardUsageStruct_ref()) {
     return false;
-  }
-  if (lhs.ForwardUsageStruct_ref().has_value()) {
-    if (!(lhs.ForwardUsageStruct == rhs.ForwardUsageStruct)) {
-      return false;
-    }
   }
   if (!!lhs.ForwardUsageByRef != !!rhs.ForwardUsageByRef) {
     return false;
@@ -1635,13 +1620,8 @@ bool ForwardUsageRoot::operator<(const ForwardUsageRoot& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.ForwardUsageStruct_ref().has_value() != rhs.ForwardUsageStruct_ref().has_value()) {
-    return lhs.ForwardUsageStruct_ref().has_value() < rhs.ForwardUsageStruct_ref().has_value();
-  }
-  if (lhs.ForwardUsageStruct_ref().has_value()) {
-    if (!(lhs.ForwardUsageStruct == rhs.ForwardUsageStruct)) {
-      return lhs.ForwardUsageStruct < rhs.ForwardUsageStruct;
-    }
+  if (lhs.ForwardUsageStruct_ref() != rhs.ForwardUsageStruct_ref()) {
+    return lhs.ForwardUsageStruct_ref() < rhs.ForwardUsageStruct_ref();
   }
   if (!!lhs.ForwardUsageByRef != !!rhs.ForwardUsageByRef) {
     return !!lhs.ForwardUsageByRef < !!rhs.ForwardUsageByRef;
@@ -1702,13 +1682,8 @@ bool ForwardUsageByRef::operator==(const ForwardUsageByRef& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.foo_ref().has_value() != rhs.foo_ref().has_value()) {
+  if (lhs.foo_ref() != rhs.foo_ref()) {
     return false;
-  }
-  if (lhs.foo_ref().has_value()) {
-    if (!(lhs.foo == rhs.foo)) {
-      return false;
-    }
   }
   return true;
 }
@@ -1717,13 +1692,8 @@ bool ForwardUsageByRef::operator<(const ForwardUsageByRef& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.foo_ref().has_value() != rhs.foo_ref().has_value()) {
-    return lhs.foo_ref().has_value() < rhs.foo_ref().has_value();
-  }
-  if (lhs.foo_ref().has_value()) {
-    if (!(lhs.foo == rhs.foo)) {
-      return lhs.foo < rhs.foo;
-    }
+  if (lhs.foo_ref() != rhs.foo_ref()) {
+    return lhs.foo_ref() < rhs.foo_ref();
   }
   return false;
 }

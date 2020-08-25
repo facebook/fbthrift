@@ -2138,13 +2138,8 @@ bool struct1::operator==(const struct1& rhs) const {
   if (!(lhs.field0 == rhs.field0)) {
     return false;
   }
-  if (lhs.field1_ref().has_value() != rhs.field1_ref().has_value()) {
+  if (lhs.field1_ref() != rhs.field1_ref()) {
     return false;
-  }
-  if (lhs.field1_ref().has_value()) {
-    if (!(lhs.field1 == rhs.field1)) {
-      return false;
-    }
   }
   if (!(lhs.field2 == rhs.field2)) {
     return false;
@@ -2152,13 +2147,8 @@ bool struct1::operator==(const struct1& rhs) const {
   if (!(lhs.field3 == rhs.field3)) {
     return false;
   }
-  if (lhs.field4_ref().has_value() != rhs.field4_ref().has_value()) {
+  if (lhs.field4_ref() != rhs.field4_ref()) {
     return false;
-  }
-  if (lhs.field4_ref().has_value()) {
-    if (!(lhs.field4 == rhs.field4)) {
-      return false;
-    }
   }
   if (!(lhs.field5 == rhs.field5)) {
     return false;
@@ -2173,13 +2163,8 @@ bool struct1::operator<(const struct1& rhs) const {
   if (!(lhs.field0 == rhs.field0)) {
     return lhs.field0 < rhs.field0;
   }
-  if (lhs.field1_ref().has_value() != rhs.field1_ref().has_value()) {
-    return lhs.field1_ref().has_value() < rhs.field1_ref().has_value();
-  }
-  if (lhs.field1_ref().has_value()) {
-    if (!(lhs.field1 == rhs.field1)) {
-      return lhs.field1 < rhs.field1;
-    }
+  if (lhs.field1_ref() != rhs.field1_ref()) {
+    return lhs.field1_ref() < rhs.field1_ref();
   }
   if (!(lhs.field2 == rhs.field2)) {
     return lhs.field2 < rhs.field2;
@@ -2187,13 +2172,8 @@ bool struct1::operator<(const struct1& rhs) const {
   if (!(lhs.field3 == rhs.field3)) {
     return lhs.field3 < rhs.field3;
   }
-  if (lhs.field4_ref().has_value() != rhs.field4_ref().has_value()) {
-    return lhs.field4_ref().has_value() < rhs.field4_ref().has_value();
-  }
-  if (lhs.field4_ref().has_value()) {
-    if (!(lhs.field4 == rhs.field4)) {
-      return lhs.field4 < rhs.field4;
-    }
+  if (lhs.field4_ref() != rhs.field4_ref()) {
+    return lhs.field4_ref() < rhs.field4_ref();
   }
   if (!(lhs.field5 == rhs.field5)) {
     return lhs.field5 < rhs.field5;
@@ -2786,13 +2766,8 @@ bool struct4::operator==(const struct4& rhs) const {
   if (!(lhs.field0 == rhs.field0)) {
     return false;
   }
-  if (lhs.field1_ref().has_value() != rhs.field1_ref().has_value()) {
+  if (lhs.field1_ref() != rhs.field1_ref()) {
     return false;
-  }
-  if (lhs.field1_ref().has_value()) {
-    if (!(lhs.field1 == rhs.field1)) {
-      return false;
-    }
   }
   if (!(lhs.field2 == rhs.field2)) {
     return false;
@@ -2815,13 +2790,8 @@ bool struct4::operator<(const struct4& rhs) const {
   if (!(lhs.field0 == rhs.field0)) {
     return lhs.field0 < rhs.field0;
   }
-  if (lhs.field1_ref().has_value() != rhs.field1_ref().has_value()) {
-    return lhs.field1_ref().has_value() < rhs.field1_ref().has_value();
-  }
-  if (lhs.field1_ref().has_value()) {
-    if (!(lhs.field1 == rhs.field1)) {
-      return lhs.field1 < rhs.field1;
-    }
+  if (lhs.field1_ref() != rhs.field1_ref()) {
+    return lhs.field1_ref() < rhs.field1_ref();
   }
   if (!(lhs.field2 == rhs.field2)) {
     return lhs.field2 < rhs.field2;
@@ -2902,13 +2872,8 @@ bool struct5::operator==(const struct5& rhs) const {
   if (!(lhs.field0 == rhs.field0)) {
     return false;
   }
-  if (lhs.field1_ref().has_value() != rhs.field1_ref().has_value()) {
+  if (lhs.field1_ref() != rhs.field1_ref()) {
     return false;
-  }
-  if (lhs.field1_ref().has_value()) {
-    if (!(lhs.field1 == rhs.field1)) {
-      return false;
-    }
   }
   if (!(lhs.field2 == rhs.field2)) {
     return false;
@@ -2929,13 +2894,8 @@ bool struct5::operator<(const struct5& rhs) const {
   if (!(lhs.field0 == rhs.field0)) {
     return lhs.field0 < rhs.field0;
   }
-  if (lhs.field1_ref().has_value() != rhs.field1_ref().has_value()) {
-    return lhs.field1_ref().has_value() < rhs.field1_ref().has_value();
-  }
-  if (lhs.field1_ref().has_value()) {
-    if (!(lhs.field1 == rhs.field1)) {
-      return lhs.field1 < rhs.field1;
-    }
+  if (lhs.field1_ref() != rhs.field1_ref()) {
+    return lhs.field1_ref() < rhs.field1_ref();
   }
   if (!(lhs.field2 == rhs.field2)) {
     return lhs.field2 < rhs.field2;

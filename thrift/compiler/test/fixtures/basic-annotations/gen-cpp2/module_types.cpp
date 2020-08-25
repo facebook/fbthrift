@@ -220,13 +220,8 @@ bool MyStructAnnotation::operator==(const MyStructAnnotation& rhs) const {
   if (!(lhs.name == rhs.name)) {
     return false;
   }
-  if (lhs.extra_ref().has_value() != rhs.extra_ref().has_value()) {
+  if (lhs.extra_ref() != rhs.extra_ref()) {
     return false;
-  }
-  if (lhs.extra_ref().has_value()) {
-    if (!(lhs.extra == rhs.extra)) {
-      return false;
-    }
   }
   if (!(lhs.nest == rhs.nest)) {
     return false;
@@ -244,13 +239,8 @@ bool MyStructAnnotation::operator<(const MyStructAnnotation& rhs) const {
   if (!(lhs.name == rhs.name)) {
     return lhs.name < rhs.name;
   }
-  if (lhs.extra_ref().has_value() != rhs.extra_ref().has_value()) {
-    return lhs.extra_ref().has_value() < rhs.extra_ref().has_value();
-  }
-  if (lhs.extra_ref().has_value()) {
-    if (!(lhs.extra == rhs.extra)) {
-      return lhs.extra < rhs.extra;
-    }
+  if (lhs.extra_ref() != rhs.extra_ref()) {
+    return lhs.extra_ref() < rhs.extra_ref();
   }
   if (!(lhs.nest == rhs.nest)) {
     return lhs.nest < rhs.nest;

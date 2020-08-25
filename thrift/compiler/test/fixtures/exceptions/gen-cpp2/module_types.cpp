@@ -182,13 +182,8 @@ bool Serious::operator==(const Serious& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.sonnet_ref().has_value() != rhs.sonnet_ref().has_value()) {
+  if (lhs.sonnet_ref() != rhs.sonnet_ref()) {
     return false;
-  }
-  if (lhs.sonnet_ref().has_value()) {
-    if (!(lhs.sonnet == rhs.sonnet)) {
-      return false;
-    }
   }
   return true;
 }
@@ -197,13 +192,8 @@ bool Serious::operator<(const Serious& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.sonnet_ref().has_value() != rhs.sonnet_ref().has_value()) {
-    return lhs.sonnet_ref().has_value() < rhs.sonnet_ref().has_value();
-  }
-  if (lhs.sonnet_ref().has_value()) {
-    if (!(lhs.sonnet == rhs.sonnet)) {
-      return lhs.sonnet < rhs.sonnet;
-    }
+  if (lhs.sonnet_ref() != rhs.sonnet_ref()) {
+    return lhs.sonnet_ref() < rhs.sonnet_ref();
   }
   return false;
 }

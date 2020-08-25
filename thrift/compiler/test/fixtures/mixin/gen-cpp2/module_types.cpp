@@ -154,13 +154,8 @@ bool Mixin2::operator==(const Mixin2& rhs) const {
   if (!(lhs.m1 == rhs.m1)) {
     return false;
   }
-  if (lhs.field2_ref().has_value() != rhs.field2_ref().has_value()) {
+  if (lhs.field2_ref() != rhs.field2_ref()) {
     return false;
-  }
-  if (lhs.field2_ref().has_value()) {
-    if (!(lhs.field2 == rhs.field2)) {
-      return false;
-    }
   }
   return true;
 }
@@ -172,13 +167,8 @@ bool Mixin2::operator<(const Mixin2& rhs) const {
   if (!(lhs.m1 == rhs.m1)) {
     return lhs.m1 < rhs.m1;
   }
-  if (lhs.field2_ref().has_value() != rhs.field2_ref().has_value()) {
-    return lhs.field2_ref().has_value() < rhs.field2_ref().has_value();
-  }
-  if (lhs.field2_ref().has_value()) {
-    if (!(lhs.field2 == rhs.field2)) {
-      return lhs.field2 < rhs.field2;
-    }
+  if (lhs.field2_ref() != rhs.field2_ref()) {
+    return lhs.field2_ref() < rhs.field2_ref();
   }
   return false;
 }

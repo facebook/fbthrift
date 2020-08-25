@@ -74,21 +74,11 @@ bool BasicTypes::operator==(const BasicTypes& rhs) const {
   if (!(lhs.first == rhs.first)) {
     return false;
   }
-  if (lhs.second_ref().has_value() != rhs.second_ref().has_value()) {
+  if (lhs.second_ref() != rhs.second_ref()) {
     return false;
   }
-  if (lhs.second_ref().has_value()) {
-    if (!(lhs.second == rhs.second)) {
-      return false;
-    }
-  }
-  if (lhs.third_ref().has_value() != rhs.third_ref().has_value()) {
+  if (lhs.third_ref() != rhs.third_ref()) {
     return false;
-  }
-  if (lhs.third_ref().has_value()) {
-    if (!(lhs.third == rhs.third)) {
-      return false;
-    }
   }
   if (!(lhs.isTrue == rhs.isTrue)) {
     return false;
@@ -103,21 +93,11 @@ bool BasicTypes::operator<(const BasicTypes& rhs) const {
   if (!(lhs.first == rhs.first)) {
     return lhs.first < rhs.first;
   }
-  if (lhs.second_ref().has_value() != rhs.second_ref().has_value()) {
-    return lhs.second_ref().has_value() < rhs.second_ref().has_value();
+  if (lhs.second_ref() != rhs.second_ref()) {
+    return lhs.second_ref() < rhs.second_ref();
   }
-  if (lhs.second_ref().has_value()) {
-    if (!(lhs.second == rhs.second)) {
-      return lhs.second < rhs.second;
-    }
-  }
-  if (lhs.third_ref().has_value() != rhs.third_ref().has_value()) {
-    return lhs.third_ref().has_value() < rhs.third_ref().has_value();
-  }
-  if (lhs.third_ref().has_value()) {
-    if (!(lhs.third == rhs.third)) {
-      return lhs.third < rhs.third;
-    }
+  if (lhs.third_ref() != rhs.third_ref()) {
+    return lhs.third_ref() < rhs.third_ref();
   }
   if (!(lhs.isTrue == rhs.isTrue)) {
     return lhs.isTrue < rhs.isTrue;

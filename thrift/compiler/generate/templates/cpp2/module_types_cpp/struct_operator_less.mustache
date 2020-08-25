@@ -32,21 +32,21 @@ bool <%struct:name%>::operator<(const <%struct:name%>& rhs) const {
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
 <%#field:optional?%>
+<%#type:binary?%>
   if (lhs.<%field:cpp_name%>_ref().has_value() != rhs.<%field:cpp_name%>_ref().has_value()) {
     return lhs.<%field:cpp_name%>_ref().has_value() < rhs.<%field:cpp_name%>_ref().has_value();
   }
   if (lhs.<%field:cpp_name%>_ref().has_value()) {
-<%#type:binary?%>
     if (!apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isEqual(lhs.<%field:cpp_name%><%type:cpp_indirection%>, rhs.<%field:cpp_name%><%type:cpp_indirection%>)) {
       return apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isLess(lhs.<%field:cpp_name%><%type:cpp_indirection%>, rhs.<%field:cpp_name%><%type:cpp_indirection%>);
     }
+  }
 <%/type:binary?%>
 <%^type:binary?%>
-    if (!(lhs.<%field:cpp_name%> == rhs.<%field:cpp_name%>)) {
-      return lhs.<%field:cpp_name%> < rhs.<%field:cpp_name%>;
-    }
-<%/type:binary?%>
+  if (lhs.<%field:cpp_name%>_ref() != rhs.<%field:cpp_name%>_ref()) {
+    return lhs.<%field:cpp_name%>_ref() < rhs.<%field:cpp_name%>_ref();
   }
+<%/type:binary?%>
 <%/field:optional?%>
 <%^field:optional?%>
 <%#type:binary?%>

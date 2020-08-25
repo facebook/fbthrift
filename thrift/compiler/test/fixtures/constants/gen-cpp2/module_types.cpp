@@ -334,13 +334,8 @@ bool Internship::operator==(const Internship& rhs) const {
   if (!(lhs.title == rhs.title)) {
     return false;
   }
-  if (lhs.employer_ref().has_value() != rhs.employer_ref().has_value()) {
+  if (lhs.employer_ref() != rhs.employer_ref()) {
     return false;
-  }
-  if (lhs.employer_ref().has_value()) {
-    if (!(lhs.employer == rhs.employer)) {
-      return false;
-    }
   }
   return true;
 }
@@ -355,13 +350,8 @@ bool Internship::operator<(const Internship& rhs) const {
   if (!(lhs.title == rhs.title)) {
     return lhs.title < rhs.title;
   }
-  if (lhs.employer_ref().has_value() != rhs.employer_ref().has_value()) {
-    return lhs.employer_ref().has_value() < rhs.employer_ref().has_value();
-  }
-  if (lhs.employer_ref().has_value()) {
-    if (!(lhs.employer == rhs.employer)) {
-      return lhs.employer < rhs.employer;
-    }
+  if (lhs.employer_ref() != rhs.employer_ref()) {
+    return lhs.employer_ref() < rhs.employer_ref();
   }
   return false;
 }
@@ -721,21 +711,11 @@ bool struct4::operator==(const struct4& rhs) const {
   if (!(lhs.a == rhs.a)) {
     return false;
   }
-  if (lhs.b_ref().has_value() != rhs.b_ref().has_value()) {
+  if (lhs.b_ref() != rhs.b_ref()) {
     return false;
   }
-  if (lhs.b_ref().has_value()) {
-    if (!(lhs.b == rhs.b)) {
-      return false;
-    }
-  }
-  if (lhs.c_ref().has_value() != rhs.c_ref().has_value()) {
+  if (lhs.c_ref() != rhs.c_ref()) {
     return false;
-  }
-  if (lhs.c_ref().has_value()) {
-    if (!(lhs.c == rhs.c)) {
-      return false;
-    }
   }
   return true;
 }
@@ -747,21 +727,11 @@ bool struct4::operator<(const struct4& rhs) const {
   if (!(lhs.a == rhs.a)) {
     return lhs.a < rhs.a;
   }
-  if (lhs.b_ref().has_value() != rhs.b_ref().has_value()) {
-    return lhs.b_ref().has_value() < rhs.b_ref().has_value();
+  if (lhs.b_ref() != rhs.b_ref()) {
+    return lhs.b_ref() < rhs.b_ref();
   }
-  if (lhs.b_ref().has_value()) {
-    if (!(lhs.b == rhs.b)) {
-      return lhs.b < rhs.b;
-    }
-  }
-  if (lhs.c_ref().has_value() != rhs.c_ref().has_value()) {
-    return lhs.c_ref().has_value() < rhs.c_ref().has_value();
-  }
-  if (lhs.c_ref().has_value()) {
-    if (!(lhs.c == rhs.c)) {
-      return lhs.c < rhs.c;
-    }
+  if (lhs.c_ref() != rhs.c_ref()) {
+    return lhs.c_ref() < rhs.c_ref();
   }
   return false;
 }

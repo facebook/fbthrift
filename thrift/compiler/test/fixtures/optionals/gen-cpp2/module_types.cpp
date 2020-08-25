@@ -276,37 +276,17 @@ bool Vehicle::operator==(const Vehicle& rhs) const {
   if (!(lhs.color == rhs.color)) {
     return false;
   }
-  if (lhs.licensePlate_ref().has_value() != rhs.licensePlate_ref().has_value()) {
+  if (lhs.licensePlate_ref() != rhs.licensePlate_ref()) {
     return false;
   }
-  if (lhs.licensePlate_ref().has_value()) {
-    if (!(lhs.licensePlate == rhs.licensePlate)) {
-      return false;
-    }
-  }
-  if (lhs.description_ref().has_value() != rhs.description_ref().has_value()) {
+  if (lhs.description_ref() != rhs.description_ref()) {
     return false;
   }
-  if (lhs.description_ref().has_value()) {
-    if (!(lhs.description == rhs.description)) {
-      return false;
-    }
-  }
-  if (lhs.name_ref().has_value() != rhs.name_ref().has_value()) {
+  if (lhs.name_ref() != rhs.name_ref()) {
     return false;
   }
-  if (lhs.name_ref().has_value()) {
-    if (!(lhs.name == rhs.name)) {
-      return false;
-    }
-  }
-  if (lhs.hasAC_ref().has_value() != rhs.hasAC_ref().has_value()) {
+  if (lhs.hasAC_ref() != rhs.hasAC_ref()) {
     return false;
-  }
-  if (lhs.hasAC_ref().has_value()) {
-    if (!(lhs.hasAC == rhs.hasAC)) {
-      return false;
-    }
   }
   return true;
 }
@@ -318,37 +298,17 @@ bool Vehicle::operator<(const Vehicle& rhs) const {
   if (!(lhs.color == rhs.color)) {
     return lhs.color < rhs.color;
   }
-  if (lhs.licensePlate_ref().has_value() != rhs.licensePlate_ref().has_value()) {
-    return lhs.licensePlate_ref().has_value() < rhs.licensePlate_ref().has_value();
+  if (lhs.licensePlate_ref() != rhs.licensePlate_ref()) {
+    return lhs.licensePlate_ref() < rhs.licensePlate_ref();
   }
-  if (lhs.licensePlate_ref().has_value()) {
-    if (!(lhs.licensePlate == rhs.licensePlate)) {
-      return lhs.licensePlate < rhs.licensePlate;
-    }
+  if (lhs.description_ref() != rhs.description_ref()) {
+    return lhs.description_ref() < rhs.description_ref();
   }
-  if (lhs.description_ref().has_value() != rhs.description_ref().has_value()) {
-    return lhs.description_ref().has_value() < rhs.description_ref().has_value();
+  if (lhs.name_ref() != rhs.name_ref()) {
+    return lhs.name_ref() < rhs.name_ref();
   }
-  if (lhs.description_ref().has_value()) {
-    if (!(lhs.description == rhs.description)) {
-      return lhs.description < rhs.description;
-    }
-  }
-  if (lhs.name_ref().has_value() != rhs.name_ref().has_value()) {
-    return lhs.name_ref().has_value() < rhs.name_ref().has_value();
-  }
-  if (lhs.name_ref().has_value()) {
-    if (!(lhs.name == rhs.name)) {
-      return lhs.name < rhs.name;
-    }
-  }
-  if (lhs.hasAC_ref().has_value() != rhs.hasAC_ref().has_value()) {
-    return lhs.hasAC_ref().has_value() < rhs.hasAC_ref().has_value();
-  }
-  if (lhs.hasAC_ref().has_value()) {
-    if (!(lhs.hasAC == rhs.hasAC)) {
-      return lhs.hasAC < rhs.hasAC;
-    }
+  if (lhs.hasAC_ref() != rhs.hasAC_ref()) {
+    return lhs.hasAC_ref() < rhs.hasAC_ref();
   }
   return false;
 }
@@ -448,69 +408,29 @@ bool Person::operator==(const Person& rhs) const {
   if (!(lhs.name == rhs.name)) {
     return false;
   }
-  if (lhs.age_ref().has_value() != rhs.age_ref().has_value()) {
+  if (lhs.age_ref() != rhs.age_ref()) {
     return false;
   }
-  if (lhs.age_ref().has_value()) {
-    if (!(lhs.age == rhs.age)) {
-      return false;
-    }
-  }
-  if (lhs.address_ref().has_value() != rhs.address_ref().has_value()) {
+  if (lhs.address_ref() != rhs.address_ref()) {
     return false;
   }
-  if (lhs.address_ref().has_value()) {
-    if (!(lhs.address == rhs.address)) {
-      return false;
-    }
-  }
-  if (lhs.favoriteColor_ref().has_value() != rhs.favoriteColor_ref().has_value()) {
+  if (lhs.favoriteColor_ref() != rhs.favoriteColor_ref()) {
     return false;
   }
-  if (lhs.favoriteColor_ref().has_value()) {
-    if (!(lhs.favoriteColor == rhs.favoriteColor)) {
-      return false;
-    }
-  }
-  if (lhs.friends_ref().has_value() != rhs.friends_ref().has_value()) {
+  if (lhs.friends_ref() != rhs.friends_ref()) {
     return false;
   }
-  if (lhs.friends_ref().has_value()) {
-    if (!(lhs.friends == rhs.friends)) {
-      return false;
-    }
-  }
-  if (lhs.bestFriend_ref().has_value() != rhs.bestFriend_ref().has_value()) {
+  if (lhs.bestFriend_ref() != rhs.bestFriend_ref()) {
     return false;
   }
-  if (lhs.bestFriend_ref().has_value()) {
-    if (!(lhs.bestFriend == rhs.bestFriend)) {
-      return false;
-    }
-  }
-  if (lhs.petNames_ref().has_value() != rhs.petNames_ref().has_value()) {
+  if (lhs.petNames_ref() != rhs.petNames_ref()) {
     return false;
   }
-  if (lhs.petNames_ref().has_value()) {
-    if (!(lhs.petNames == rhs.petNames)) {
-      return false;
-    }
-  }
-  if (lhs.afraidOfAnimal_ref().has_value() != rhs.afraidOfAnimal_ref().has_value()) {
+  if (lhs.afraidOfAnimal_ref() != rhs.afraidOfAnimal_ref()) {
     return false;
   }
-  if (lhs.afraidOfAnimal_ref().has_value()) {
-    if (!(lhs.afraidOfAnimal == rhs.afraidOfAnimal)) {
-      return false;
-    }
-  }
-  if (lhs.vehicles_ref().has_value() != rhs.vehicles_ref().has_value()) {
+  if (lhs.vehicles_ref() != rhs.vehicles_ref()) {
     return false;
-  }
-  if (lhs.vehicles_ref().has_value()) {
-    if (!(lhs.vehicles == rhs.vehicles)) {
-      return false;
-    }
   }
   return true;
 }
@@ -525,69 +445,29 @@ bool Person::operator<(const Person& rhs) const {
   if (!(lhs.name == rhs.name)) {
     return lhs.name < rhs.name;
   }
-  if (lhs.age_ref().has_value() != rhs.age_ref().has_value()) {
-    return lhs.age_ref().has_value() < rhs.age_ref().has_value();
+  if (lhs.age_ref() != rhs.age_ref()) {
+    return lhs.age_ref() < rhs.age_ref();
   }
-  if (lhs.age_ref().has_value()) {
-    if (!(lhs.age == rhs.age)) {
-      return lhs.age < rhs.age;
-    }
+  if (lhs.address_ref() != rhs.address_ref()) {
+    return lhs.address_ref() < rhs.address_ref();
   }
-  if (lhs.address_ref().has_value() != rhs.address_ref().has_value()) {
-    return lhs.address_ref().has_value() < rhs.address_ref().has_value();
+  if (lhs.favoriteColor_ref() != rhs.favoriteColor_ref()) {
+    return lhs.favoriteColor_ref() < rhs.favoriteColor_ref();
   }
-  if (lhs.address_ref().has_value()) {
-    if (!(lhs.address == rhs.address)) {
-      return lhs.address < rhs.address;
-    }
+  if (lhs.friends_ref() != rhs.friends_ref()) {
+    return lhs.friends_ref() < rhs.friends_ref();
   }
-  if (lhs.favoriteColor_ref().has_value() != rhs.favoriteColor_ref().has_value()) {
-    return lhs.favoriteColor_ref().has_value() < rhs.favoriteColor_ref().has_value();
+  if (lhs.bestFriend_ref() != rhs.bestFriend_ref()) {
+    return lhs.bestFriend_ref() < rhs.bestFriend_ref();
   }
-  if (lhs.favoriteColor_ref().has_value()) {
-    if (!(lhs.favoriteColor == rhs.favoriteColor)) {
-      return lhs.favoriteColor < rhs.favoriteColor;
-    }
+  if (lhs.petNames_ref() != rhs.petNames_ref()) {
+    return lhs.petNames_ref() < rhs.petNames_ref();
   }
-  if (lhs.friends_ref().has_value() != rhs.friends_ref().has_value()) {
-    return lhs.friends_ref().has_value() < rhs.friends_ref().has_value();
+  if (lhs.afraidOfAnimal_ref() != rhs.afraidOfAnimal_ref()) {
+    return lhs.afraidOfAnimal_ref() < rhs.afraidOfAnimal_ref();
   }
-  if (lhs.friends_ref().has_value()) {
-    if (!(lhs.friends == rhs.friends)) {
-      return lhs.friends < rhs.friends;
-    }
-  }
-  if (lhs.bestFriend_ref().has_value() != rhs.bestFriend_ref().has_value()) {
-    return lhs.bestFriend_ref().has_value() < rhs.bestFriend_ref().has_value();
-  }
-  if (lhs.bestFriend_ref().has_value()) {
-    if (!(lhs.bestFriend == rhs.bestFriend)) {
-      return lhs.bestFriend < rhs.bestFriend;
-    }
-  }
-  if (lhs.petNames_ref().has_value() != rhs.petNames_ref().has_value()) {
-    return lhs.petNames_ref().has_value() < rhs.petNames_ref().has_value();
-  }
-  if (lhs.petNames_ref().has_value()) {
-    if (!(lhs.petNames == rhs.petNames)) {
-      return lhs.petNames < rhs.petNames;
-    }
-  }
-  if (lhs.afraidOfAnimal_ref().has_value() != rhs.afraidOfAnimal_ref().has_value()) {
-    return lhs.afraidOfAnimal_ref().has_value() < rhs.afraidOfAnimal_ref().has_value();
-  }
-  if (lhs.afraidOfAnimal_ref().has_value()) {
-    if (!(lhs.afraidOfAnimal == rhs.afraidOfAnimal)) {
-      return lhs.afraidOfAnimal < rhs.afraidOfAnimal;
-    }
-  }
-  if (lhs.vehicles_ref().has_value() != rhs.vehicles_ref().has_value()) {
-    return lhs.vehicles_ref().has_value() < rhs.vehicles_ref().has_value();
-  }
-  if (lhs.vehicles_ref().has_value()) {
-    if (!(lhs.vehicles == rhs.vehicles)) {
-      return lhs.vehicles < rhs.vehicles;
-    }
+  if (lhs.vehicles_ref() != rhs.vehicles_ref()) {
+    return lhs.vehicles_ref() < rhs.vehicles_ref();
   }
   return false;
 }
