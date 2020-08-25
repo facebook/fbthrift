@@ -32,6 +32,8 @@ import java.util.Map;
  */
 public class TCompactProtocol extends TProtocol {
 
+  private static final long NO_LENGTH_LIMIT = -1;
+
   private static final TStruct ANONYMOUS_STRUCT = new TStruct("");
   private static final TField TSTOP = new TField("", TType.STOP, (short) 0);
 
@@ -56,19 +58,24 @@ public class TCompactProtocol extends TProtocol {
   /** TProtocolFactory that produces TCompactProtocols. */
   @SuppressWarnings("serial")
   public static class Factory implements TProtocolFactory {
-    private final long maxNetworkBytes_;
+    private final long stringLengthLimit_;
+    private final long containerLengthLimit_;
 
     public Factory() {
-      maxNetworkBytes_ = -1;
+      this(NO_LENGTH_LIMIT, NO_LENGTH_LIMIT);
     }
 
-    public Factory(int maxNetworkBytes) {
-      maxNetworkBytes_ = maxNetworkBytes;
+    public Factory(long stringLengthLimit) {
+      this(stringLengthLimit, NO_LENGTH_LIMIT);
     }
 
-    @Override
+    public Factory(long stringLengthLimit, long containerLengthLimit) {
+      this.containerLengthLimit_ = containerLengthLimit;
+      this.stringLengthLimit_ = stringLengthLimit;
+    }
+
     public TProtocol getProtocol(TTransport trans) {
-      return new TCompactProtocol(trans, maxNetworkBytes_);
+      return new TCompactProtocol(trans, stringLengthLimit_, containerLengthLimit_);
     }
   }
 
@@ -121,10 +128,16 @@ public class TCompactProtocol extends TProtocol {
   private Boolean boolValue_ = null;
 
   /**
-   * The maximum number of bytes to read from the network for variable-length fields (such as
-   * strings or binary) or -1 for unlimited.
+   * The maximum number of bytes to read from the transport for variable-length fields (such as
+   * strings or binary) or {@link #NO_LENGTH_LIMIT} for unlimited.
    */
-  private final long maxNetworkBytes_;
+  private final long stringLengthLimit_;
+
+  /**
+   * The maximum number of elements to read from the network for containers (maps, sets, lists), or
+   * {@link #NO_LENGTH_LIMIT} for unlimited.
+   */
+  private final long containerLengthLimit_;
 
   /** Temporary buffer to avoid allocations */
   private final byte[] buffer = new byte[10];
@@ -133,11 +146,15 @@ public class TCompactProtocol extends TProtocol {
    * Create a TCompactProtocol.
    *
    * @param transport the TTransport object to read from or write to.
-   * @param maxNetworkBytes the maximum number of bytes to read for variable-length fields.
+   * @param stringLengthLimit the maximum number of bytes to read for variable-length fields. If the
+   *     value is <= 0, then the check is disable.
+   * @param containerLengthLimit the maximum number of elements to read for containers. If the value
+   *     is <= 0, then the check is disable.
    */
-  public TCompactProtocol(TTransport transport, long maxNetworkBytes) {
+  public TCompactProtocol(TTransport transport, long stringLengthLimit, long containerLengthLimit) {
     super(transport);
-    maxNetworkBytes_ = maxNetworkBytes;
+    this.stringLengthLimit_ = stringLengthLimit;
+    this.containerLengthLimit_ = containerLengthLimit;
   }
 
   /**
@@ -146,7 +163,7 @@ public class TCompactProtocol extends TProtocol {
    * @param transport the TTransport object to read from or write to.
    */
   public TCompactProtocol(TTransport transport) {
-    this(transport, -1);
+    this(transport, NO_LENGTH_LIMIT, NO_LENGTH_LIMIT);
   }
 
   @Override
@@ -541,6 +558,7 @@ public class TCompactProtocol extends TProtocol {
   @Override
   public TMap readMapBegin() throws TException {
     int size = readVarint32();
+    checkContainerReadLength(size);
     byte keyAndValueType = size == 0 ? 0 : readByte();
     byte keyType = getTType((byte) (keyAndValueType >> 4));
     byte valueType = getTType((byte) (keyAndValueType & 0xf));
@@ -562,6 +580,7 @@ public class TCompactProtocol extends TProtocol {
     if (size == 15) {
       size = readVarint32();
     }
+    checkContainerReadLength(size);
     byte type = getTType(size_and_type);
     ensureContainerHasEnough(size, type);
     return new TList(type, size);
@@ -648,7 +667,7 @@ public class TCompactProtocol extends TProtocol {
   @Override
   public String readString() throws TException {
     int length = readVarint32();
-    checkReadLength(length);
+    checkContentReadLength(length);
 
     if (length == 0) {
       return "";
@@ -669,7 +688,7 @@ public class TCompactProtocol extends TProtocol {
   @Override
   public byte[] readBinary() throws TException {
     int length = readVarint32();
-    checkReadLength(length);
+    checkContentReadLength(length);
     return readBinary(length);
   }
 
@@ -684,12 +703,27 @@ public class TCompactProtocol extends TProtocol {
     return buf;
   }
 
-  private void checkReadLength(int length) throws TProtocolException {
+  private void checkContentReadLength(int length) throws TProtocolException {
     if (length < 0) {
-      throw new TProtocolException("Negative length: " + length);
+      throw new TProtocolException(TProtocolException.NEGATIVE_SIZE, "Negative length: " + length);
     }
-    if (maxNetworkBytes_ != -1 && length > maxNetworkBytes_) {
-      throw new TProtocolException("Length exceeded max allowed: " + length);
+    if (stringLengthLimit_ > 0 && length > stringLengthLimit_) {
+      throw new TProtocolException(
+          TProtocolException.SIZE_LIMIT,
+          String.format(
+              "String/binary length %s exceeded max allowed %s", length, stringLengthLimit_));
+    }
+  }
+
+  private void checkContainerReadLength(int length) throws TProtocolException {
+    if (length < 0) {
+      throw new TProtocolException(TProtocolException.NEGATIVE_SIZE, "Negative length: " + length);
+    }
+    if (containerLengthLimit_ > 0 && length > containerLengthLimit_) {
+      throw new TProtocolException(
+          TProtocolException.SIZE_LIMIT,
+          String.format(
+              "Container length %s exceeded max allowed %s", length, containerLengthLimit_));
     }
   }
 

@@ -22,6 +22,7 @@ import static org.junit.Assert.assertThat;
 
 import com.facebook.thrift.java.test.StringAndList;
 import com.facebook.thrift.protocol.TBinaryProtocol;
+import com.facebook.thrift.protocol.TCompactProtocol;
 import com.facebook.thrift.protocol.TProtocol;
 import com.facebook.thrift.protocol.TProtocolException;
 import com.facebook.thrift.transport.TIOStreamTransport;
@@ -62,6 +63,7 @@ public class ProtocolLimitTest {
   private ByteArrayOutputStream bos;
   private TIOStreamTransport out;
   private TProtocol binaryOutProto;
+  private TProtocol compactOutProto;
 
   @Before
   public void setup() {
@@ -69,6 +71,7 @@ public class ProtocolLimitTest {
     out = new TIOStreamTransport(bos);
     binaryOutProto =
         new TBinaryProtocol.Factory(false, true, MAX_VALUE, MAX_VALUE).getProtocol(out);
+    compactOutProto = new TCompactProtocol.Factory(MAX_VALUE, MAX_VALUE).getProtocol(out);
   }
 
   @Test
@@ -108,5 +111,43 @@ public class ProtocolLimitTest {
     StringAndList struct =
         new StringAndList.Builder().setMyString(SMALL_STRING).setMyInts(BIG_INTS).build();
     checkBinaryReadingOverLimit(struct);
+  }
+
+  @Test
+  public void compactProtocol_works_whenStringAndContainerAreBelowLimit() throws Exception {
+    StringAndList struct =
+        new StringAndList.Builder().setMyString(SMALL_STRING).setMyInts(SMALL_INTS).build();
+    struct.write(compactOutProto);
+
+    TMemoryInputTransport in = new TMemoryInputTransport(bos.toByteArray());
+    TProtocol iproto = new TCompactProtocol.Factory(MAX_VALUE, MAX_VALUE).getProtocol(in);
+    StringAndList readStruct = new StringAndList();
+    readStruct.read(iproto);
+
+    assertThat(readStruct, is(equalTo(struct)));
+  }
+
+  private void checkCompactReadingOverLimit(StringAndList struct) throws Exception {
+    struct.write(compactOutProto);
+
+    TMemoryInputTransport in = new TMemoryInputTransport(bos.toByteArray());
+    TProtocol iproto = new TCompactProtocol.Factory(MAX_VALUE, MAX_VALUE).getProtocol(in);
+    StringAndList readStruct = new StringAndList();
+    readStruct.read(iproto);
+  }
+
+  @Test(expected = TProtocolException.class)
+  public void compactProtocol_throwsTProtocolException_whenStringExceedsLimit() throws Exception {
+    StringAndList struct =
+        new StringAndList.Builder().setMyString(BIG_STRING).setMyInts(SMALL_INTS).build();
+    checkCompactReadingOverLimit(struct);
+  }
+
+  @Test(expected = TProtocolException.class)
+  public void compactProtocol_throwsTProtocolException_whenContainerExceedsLimit()
+      throws Exception {
+    StringAndList struct =
+        new StringAndList.Builder().setMyString(SMALL_STRING).setMyInts(BIG_INTS).build();
+    checkCompactReadingOverLimit(struct);
   }
 }
