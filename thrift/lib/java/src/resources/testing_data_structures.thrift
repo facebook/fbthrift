@@ -282,3 +282,8 @@ struct Nesting {
 struct BoolStruct {
  1: bool aBool,
 }
+
+struct StringAndList {
+  1: string myString,
+  2: list<i32> myInts,
+}
