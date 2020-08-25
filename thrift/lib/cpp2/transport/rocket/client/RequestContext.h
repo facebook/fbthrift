@@ -50,8 +50,8 @@ class RequestContext {
   enum class State : uint8_t {
     WRITE_NOT_SCHEDULED,
     WRITE_SCHEDULED,
-    WRITE_SENDING, /* AsyncSocket::writev() called, but not yet confirmed as
-                      written to the underlying socket */
+    WRITE_SENDING, /* AsyncSocket::writeChain() called, but WriteCallback has
+                      not yet fired */
     WRITE_SENT, /* Write to socket completed (possibly with error) */
     COMPLETE, /* Terminal state. Result stored in responsePayload_ */
   };
@@ -139,6 +139,7 @@ class RequestContext {
   const FrameType frameType_;
   State state_{State::WRITE_NOT_SCHEDULED};
   bool lastInWriteBatch_{false};
+  bool isDummyEndOfBatchMarker_{false};
 
   boost::intrusive::unordered_set_member_hook<> setHook_;
   folly::fibers::Baton baton_;
@@ -161,6 +162,18 @@ class RequestContext {
       setupBuffer->prependChain(std::move(serializedFrame_));
       serializedFrame_ = std::move(setupBuffer);
     }
+  }
+
+  explicit RequestContext(RequestContextQueue& queue)
+      : queue_(queue), frameType_(FrameType::REQUEST_RESPONSE) {}
+
+  static RequestContext& createDummyEndOfBatchMarker(
+      RequestContextQueue& queue) {
+    auto* rctx = new RequestContext(queue);
+    rctx->lastInWriteBatch_ = true;
+    rctx->isDummyEndOfBatchMarker_ = true;
+    rctx->state_ = State::WRITE_SENDING;
+    return *rctx;
   }
 
   struct Equal {

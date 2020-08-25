@@ -911,9 +911,7 @@ void RocketClient::writeSuccess() noexcept {
 
   queue_.markNextSendingBatchAsSent([&](auto& req) {
     req.onWriteSuccess();
-    if (req.isRequestResponse()) {
-      req.scheduleTimeoutForResponse();
-    } else {
+    if (!req.isRequestResponse()) {
       queue_.markAsResponded(req);
     }
   });

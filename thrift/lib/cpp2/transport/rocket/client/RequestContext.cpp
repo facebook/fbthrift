@@ -73,7 +73,7 @@ folly::Try<Payload> RequestContext::waitForResponse(
   CHECK(folly::fibers::onFiber());
 
   // The request timeout is scheduled only after the write to the socket
-  // succeeds.
+  // begins.
   folly::fibers::Baton::TimeoutHandler timeoutHandler;
   setTimeoutInfo(
       *folly::fibers::FiberManager::getFiberManagerUnsafe()
@@ -87,22 +87,24 @@ folly::Try<Payload> RequestContext::waitForResponse(
 
 folly::Try<Payload> RequestContext::getResponse() && {
   switch (state_) {
+    case State::WRITE_SENDING:
+      // Client timeout fired before writeSuccess()/writeErr() callback fired.
+      queue_.timeOutSendingRequest(*this);
+      return std::move(responsePayload_);
+
     case State::WRITE_SENT:
       // writeSuccess() or writeErr() processed this request but a response was
       // not received within the request's allotted timeout. Terminate request
       // with timeout.
       queue_.abortSentRequest(
           *this, TTransportException(TTransportException::TIMED_OUT));
-
-      DCHECK(state_ == State::COMPLETE);
-      FOLLY_FALLTHROUGH;
+      return std::move(responsePayload_);
 
     case State::COMPLETE:
       return std::move(responsePayload_);
 
     case State::WRITE_NOT_SCHEDULED:
     case State::WRITE_SCHEDULED:
-    case State::WRITE_SENDING:
       LOG(FATAL) << fmt::format(
           "Returned from Baton::wait() with unexpected state {} in {}",
           static_cast<int>(state_),

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <algorithm>
 #include <deque>
 #include <memory>
 #include <string>
@@ -304,24 +305,29 @@ class SlowWritingSocket : public folly::AsyncSocket {
 
 folly::SemiFuture<std::unique_ptr<folly::IOBuf>> echoSync(
     test::TestServiceAsyncClient& client,
-    size_t nbytes) {
+    size_t nbytes,
+    std::optional<std::chrono::milliseconds> timeout = std::nullopt) {
   auto& fm =
       folly::fibers::getFiberManager(*client.getChannel()->getEventBase());
-  return fm.addTaskFuture([&, nbytes] {
+  return fm.addTaskFuture([&, nbytes, timeout] {
     auto iobuf = folly::IOBuf::copyBuffer(std::string(nbytes, 'x'));
     test::IOBufPtr response;
     client.sync_echoIOBuf(
-        RpcOptions().setTimeout(std::chrono::seconds(30)), response, *iobuf);
+        RpcOptions().setTimeout(timeout.value_or(std::chrono::seconds(30))),
+        response,
+        *iobuf);
     return response;
   });
 }
 
 folly::SemiFuture<std::unique_ptr<folly::IOBuf>> echoSemiFuture(
     test::TestServiceAsyncClient& client,
-    size_t nbytes) {
+    size_t nbytes,
+    std::optional<std::chrono::milliseconds> timeout = std::nullopt) {
   return folly::makeSemiFutureWith([&] {
     auto iobuf = folly::IOBuf::copyBuffer(std::string(nbytes, 'x'));
-    auto options = RpcOptions().setTimeout(std::chrono::seconds(30));
+    auto options =
+        RpcOptions().setTimeout(timeout.value_or(std::chrono::seconds(30)));
     return client.semifuture_echoIOBuf(options, *iobuf);
   });
 }
@@ -642,6 +648,88 @@ TEST_F(RocketClientChannelTest, FailLastRequestInBatchSemiFuture) {
 TEST_F(RocketClientChannelTest, FailLastRequestWithZeroBytesWrittenSemiFuture) {
   doFailLastRequestsInBatchSemiFuture(
       runner_.getAddress(), folly::Optional<size_t>(0));
+}
+
+TEST_F(
+    RocketClientChannelTest,
+    BatchedWriteRequestResponseWithFastClientTimeout) {
+  folly::EventBase evb;
+  auto* slowWritingSocket = new SlowWritingSocket(&evb, runner_.getAddress());
+  test::TestServiceAsyncClient client(RocketClientChannel::newChannel(
+      folly::AsyncSocket::UniquePtr(slowWritingSocket)));
+
+  // Hold off on writing any requests. This ensures that this test exercises the
+  // path where a client request timeout fires while the request is still in the
+  // WRITE_SENDING queue.
+  slowWritingSocket->delayWritingAfterFirstNBytes(1);
+
+  std::vector<folly::SemiFuture<folly::Unit>> futures;
+  const std::chrono::seconds flushDelay(2);
+  auto sf =
+      folly::makeSemiFuture()
+          .delayed(flushDelay)
+          .via(&evb)
+          .thenValue([&](auto&&) { slowWritingSocket->flushBufferedWrites(); });
+  futures.push_back(std::move(sf));
+
+  auto checkResponse = [](const auto& response, size_t expectedResponseSize) {
+    if (expectedResponseSize == 0) {
+      EXPECT_TRUE(response.hasException());
+      EXPECT_TRUE(
+          response.exception()
+              .template is_compatible_with<transport::TTransportException>());
+      response.exception()
+          .template with_exception<transport::TTransportException>(
+              [](const auto& tex) {
+                EXPECT_EQ(
+                    transport::TTransportException::TTransportExceptionType::
+                        TIMED_OUT,
+                    tex.getType());
+              });
+    } else {
+      EXPECT_TRUE(response.hasValue());
+      EXPECT_EQ(
+          expectedResponseSize, response.value()->computeChainDataLength());
+    }
+  };
+
+  // Over several event loops, force some timeouts to fire before any socket
+  // writes complete at varying positions within each batch of requests.
+  std::vector<uint32_t> timeouts = {50, 50, 10000, 10000, 10000, 10000};
+  for (size_t requestSize = 20, loops = 0; loops < 20; ++loops) {
+    for (uint32_t timeoutMs : timeouts) {
+      const std::chrono::milliseconds timeout(timeoutMs);
+
+      sf = echoSync(client, requestSize, timeout)
+               .via(&evb)
+               .thenTry([&checkResponse,
+                         responseSize = timeout < flushDelay ? 0 : requestSize](
+                            auto&& response) {
+                 checkResponse(response, responseSize);
+               });
+      futures.push_back(std::move(sf));
+
+      sf = echoSemiFuture(client, requestSize, timeout)
+               .via(&evb)
+               .thenTry([&checkResponse,
+                         responseSize = timeout < flushDelay ? 0 : requestSize](
+                            auto&& response) {
+                 checkResponse(response, responseSize);
+               });
+      futures.push_back(std::move(sf));
+
+      ++requestSize;
+    }
+
+    // Start writing the current batch of requests and ensure a new batch is
+    // started next iteration
+    evb.loopOnce();
+    evb.loopOnce();
+
+    std::rotate(timeouts.begin(), timeouts.begin() + 1, timeouts.end());
+  }
+
+  folly::collectAllUnsafe(std::move(futures)).getVia(&evb);
 }
 
 TEST_F(RocketClientChannelTest, StreamInitialResponseBeforeBatchedWriteFails) {

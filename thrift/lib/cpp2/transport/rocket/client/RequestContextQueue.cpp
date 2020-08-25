@@ -42,6 +42,9 @@ RequestContextQueue::getNextScheduledWritesBatch() noexcept {
 
     DCHECK(req.state_ == State::WRITE_SCHEDULED);
     req.state_ = State::WRITE_SENDING;
+    if (req.isRequestResponse()) {
+      req.scheduleTimeoutForResponse();
+    }
     writeSendingQueue_.push_back(req);
 
     if (writeScheduledQueue_.empty()) {
@@ -57,6 +60,17 @@ RequestContextQueue::getNextScheduledWritesBatch() noexcept {
   }
 
   return batchBuf;
+}
+
+void RequestContextQueue::timeOutSendingRequest(RequestContext& req) noexcept {
+  DCHECK(req.state_ == State::WRITE_SENDING);
+  DCHECK(!req.responsePayload_.hasException());
+
+  req.responsePayload_.emplaceException(transport::TTransportException(
+      transport::TTransportException::TIMED_OUT));
+  untrackIfRequestResponse(req);
+  removeFromWriteSendingQueue(req);
+  req.state_ = State::COMPLETE;
 }
 
 void RequestContextQueue::abortSentRequest(
@@ -79,17 +93,18 @@ void RequestContextQueue::markAsResponded(RequestContext& req) noexcept {
   untrackIfRequestResponse(req);
 
   if (LIKELY(req.state() == State::WRITE_SENT)) {
-    req.state_ = State::COMPLETE;
     writeSentQueue_.erase(writeSentQueue_.iterator_to(req));
-    req.baton_.post();
   } else {
-    // Response arrived before AsyncSocket WriteCallback fired; we let the write
-    // complete. writeSuccess()/writeErr() are therefore responsible for
-    // handling this request's final queue transition and posting the baton.
+    // Response arrived after the socket write was initiated but before the
+    // socket WriteCallback fired
     DCHECK(req.isRequestResponse());
     DCHECK(req.state() == State::WRITE_SENDING);
-    req.state_ = State::COMPLETE;
+    removeFromWriteSendingQueue(req);
+    req.onWriteSuccess();
   }
+
+  req.state_ = State::COMPLETE;
+  req.baton_.post();
 }
 
 void RequestContextQueue::failAllScheduledWrites(
@@ -118,6 +133,19 @@ void RequestContextQueue::failQueue(
     untrackIfRequestResponse(req);
     req.state_ = State::COMPLETE;
     req.baton_.post();
+  }
+}
+
+void RequestContextQueue::removeFromWriteSendingQueue(
+    RequestContext& req) noexcept {
+  DCHECK(req.state_ == State::WRITE_SENDING);
+  auto it = writeSendingQueue_.erase(writeSendingQueue_.iterator_to(req));
+  // If req marks the end of a write batch, swap req with a dummy RequestContext
+  // that preserves the end-of-batch marking. This ensures that subsequent calls
+  // to writeSuccess()/writeErr() operate on the correct requests.
+  if (req.lastInWriteBatch_) {
+    writeSendingQueue_.insert(
+        it, RequestContext::createDummyEndOfBatchMarker(*this));
   }
 }
 
