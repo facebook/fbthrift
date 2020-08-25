@@ -21,8 +21,8 @@ type MessageType int32
 
 const (
 	INVALID_MESSAGE_TYPE MessageType = 0
-	CALL                  MessageType = 1
-	REPLY                 MessageType = 2
-	EXCEPTION             MessageType = 3
-	ONEWAY                MessageType = 4
+	CALL                 MessageType = 1
+	REPLY                MessageType = 2
+	EXCEPTION            MessageType = 3
+	ONEWAY               MessageType = 4
 )
