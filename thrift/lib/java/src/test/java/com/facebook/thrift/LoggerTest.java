@@ -20,12 +20,11 @@
 package com.facebook.thrift;
 
 import com.facebook.thrift.utils.Logger;
-import junit.framework.TestCase;
 import org.junit.Test;
 
-public class LoggerTest extends TestCase {
+public class LoggerTest {
 
-  @Test(expected = Test.None.class /* no exception expected */)
+  @Test
   public void testLogger() throws Exception {
     Logger logger = Logger.getLogger("LoggerTest");
     logger.error("foo");

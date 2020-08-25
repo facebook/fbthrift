@@ -40,26 +40,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.junit.Test;
 
-public class DeprecatedToSwiftTest extends junit.framework.TestCase {
+public class DeprecatedToSwiftTest {
 
-  public static void main(String[] args) throws Exception {
-    testWriteEqualDeprecatedReadSimple();
-    testWriteEqualDeprecatedReadStructs();
-    testWriteEqualDeprecatedCollectionStructs();
-    testWriteEqualDeprecatedReadSimpleUnion();
-    testSwiftWriteVsDeprecatedReadNestedStructs();
-    testSwiftReadVsWriteNestedStructs();
-    testReadEqualWriteStructTypes();
-    testReadEqualWriteCollectionStructs();
-    testReadEqualWriteSimpleUnion();
-    testReadEqualWriteOptionalFields();
-    testSwiftTypeAnnontationsFields();
-    testDefaultValues();
-    testWriteEqualDeprecatedReadSimpleDFValue();
-  }
-
-  public static void testWriteEqualDeprecatedReadSimple() throws Exception {
+  @Test
+  public void testWriteEqualDeprecatedReadSimple() throws Exception {
     long idValue = 4444444444444444444L;
     String nameValue = "Hello Thrift Team";
 
@@ -80,7 +66,8 @@ public class DeprecatedToSwiftTest extends junit.framework.TestCase {
     assertThat(structJavaDeprecated.getName(), equalTo(nameValue));
   }
 
-  public static void testWriteEqualDeprecatedReadSimpleDFValue() throws Exception {
+  @Test
+  public void testWriteEqualDeprecatedReadSimpleDFValue() throws Exception {
     org.apache.thrift.transport.TMemoryBuffer buf =
         new org.apache.thrift.transport.TMemoryBuffer(0);
     org.apache.thrift.protocol.TProtocolFactory factory =
@@ -98,7 +85,8 @@ public class DeprecatedToSwiftTest extends junit.framework.TestCase {
     assertThat(structJavaDeprecated.getName(), equalTo("Batman"));
   }
 
-  public static void testWriteEqualDeprecatedReadSimpleUnion() throws Exception {
+  @Test
+  public void testWriteEqualDeprecatedReadSimpleUnion() throws Exception {
     long idValue = 4444444444444444444L;
     org.apache.thrift.transport.TMemoryBuffer buf =
         new org.apache.thrift.transport.TMemoryBuffer(0);
@@ -117,7 +105,8 @@ public class DeprecatedToSwiftTest extends junit.framework.TestCase {
     assertThat(unionJavaDeprecated.getCaseOne(), equalTo(idValue));
   }
 
-  public static void testReadEqualWriteSimpleUnion() throws Exception {
+  @Test
+  public void testReadEqualWriteSimpleUnion() throws Exception {
     long idValue = 4444444444444444444L;
     String nameValue = "Hello Thrift Team";
 
@@ -134,7 +123,8 @@ public class DeprecatedToSwiftTest extends junit.framework.TestCase {
     assertThat(unionCreatedFromRead.getCaseFour(), equalTo(struct1));
   }
 
-  public static void testWriteEqualDeprecatedReadStructs() throws Exception {
+  @Test
+  public void testWriteEqualDeprecatedReadStructs() throws Exception {
     String msg = "Hello Thrift Team";
     boolean b = true;
     byte y = 111;
@@ -165,7 +155,8 @@ public class DeprecatedToSwiftTest extends junit.framework.TestCase {
     assertThat(structJavaDeprecated.getD(), equalTo(d));
   }
 
-  public static void testReadEqualWriteStructTypes() throws Exception {
+  @Test
+  public void testReadEqualWriteStructTypes() throws Exception {
     String msg = "Hello Thrift Team";
     boolean b = true;
     byte y = 111;
@@ -193,7 +184,8 @@ public class DeprecatedToSwiftTest extends junit.framework.TestCase {
     assertThat(structCreatedFromRead.getD(), equalTo(d));
   }
 
-  public static void testDefaultValuesSimpleStructTypes() throws Exception {
+  @Test
+  public void testDefaultValuesSimpleStructTypes() throws Exception {
     String defaultMsg = "Bye Thrift Team";
     boolean defaultB = false;
     byte defaultY = 97;
@@ -221,7 +213,8 @@ public class DeprecatedToSwiftTest extends junit.framework.TestCase {
     assertThat(structCreatedFromRead.getD(), equalTo(defaultD));
   }
 
-  public static void testDefaultValues() throws Exception {
+  @Test
+  public void testDefaultValues() throws Exception {
     long defaultMyLongDFset = 10L;
     long defaultMyLongDF = 0L; // Default value
     int defaultPortDFset = 3456; // Constant PortNum
@@ -320,7 +313,8 @@ public class DeprecatedToSwiftTest extends junit.framework.TestCase {
     assertThat(structCreatedFromRead.getMyBinary(), equalTo(defaultMyBinary));
   }
 
-  public static void testWriteEqualDeprecatedCollectionStructs() throws Exception {
+  @Test
+  public void testWriteEqualDeprecatedCollectionStructs() throws Exception {
     List<Double> lDouble = new ArrayList<Double>();
     lDouble.add(5555555.5555);
     lDouble.add(0.0);
@@ -363,7 +357,8 @@ public class DeprecatedToSwiftTest extends junit.framework.TestCase {
     assertThat(structJavaDeprecated.getSLong(), equalTo(sLong));
   }
 
-  public static void testSwiftWriteVsDeprecatedReadNestedStructs() throws Exception {
+  @Test
+  public void testSwiftWriteVsDeprecatedReadNestedStructs() throws Exception {
 
     Set<Set<Integer>> setOfSetOfInt = new HashSet<Set<Integer>>();
     Set<Integer> sIntOne = new HashSet<Integer>();
@@ -495,7 +490,8 @@ public class DeprecatedToSwiftTest extends junit.framework.TestCase {
         equalTo(3));
   }
 
-  public static void testSwiftReadVsWriteNestedStructs() throws Exception {
+  @Test
+  public void testSwiftReadVsWriteNestedStructs() throws Exception {
     Set<Set<Integer>> setOfSetOfInt = new HashSet<Set<Integer>>();
     Set<Integer> sIntOne = new HashSet<Integer>();
     sIntOne.add(-1);
@@ -623,7 +619,8 @@ public class DeprecatedToSwiftTest extends junit.framework.TestCase {
         equalTo(3));
   }
 
-  public static void testReadEqualWriteCollectionStructs() throws Exception {
+  @Test
+  public void testReadEqualWriteCollectionStructs() throws Exception {
     List<Double> lDouble = new ArrayList<Double>();
     lDouble.add(5555555.5555);
     lDouble.add(0.0);
@@ -662,7 +659,8 @@ public class DeprecatedToSwiftTest extends junit.framework.TestCase {
     assertThat(structCreatedFromRead.getSLong(), equalTo(sLong));
   }
 
-  public static void testReadEqualWriteOptionalFields() throws Exception {
+  @Test
+  public void testReadEqualWriteOptionalFields() throws Exception {
     Map<Integer, String> mIntegerString = new HashMap<Integer, String>();
     mIntegerString.put(-1, "Hello");
     mIntegerString.put(0, "Thrift");
@@ -704,7 +702,8 @@ public class DeprecatedToSwiftTest extends junit.framework.TestCase {
     assertThat(structCreatedFromRead.getMySmallEnum().getValue(), equalTo(0));
   }
 
-  public static void testSwiftTypeAnnontationsFields() throws Exception {
+  @Test
+  public void testSwiftTypeAnnontationsFields() throws Exception {
     long idValue = 4444444444444444444L;
     String nameValue = "Hello Thrift Team";
     Long2ObjectArrayMap<String> longStrMap = new Long2ObjectArrayMap<String>();

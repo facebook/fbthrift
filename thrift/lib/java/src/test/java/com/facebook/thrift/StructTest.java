@@ -31,10 +31,9 @@ import com.facebook.thrift.java.test.StructWithOptional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import junit.framework.TestCase;
 import org.junit.Test;
 
-public class StructTest extends TestCase {
+public class StructTest {
   @Test
   public void testStructHashcode() throws Exception {
     MySimpleStruct defaultStruct = new MySimpleStruct();

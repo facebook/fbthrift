@@ -20,10 +20,9 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 import com.facebook.thrift.javaswift.test.MySimpleBean;
-import junit.framework.TestCase;
 import org.junit.Test;
 
-public class BeansTest extends TestCase {
+public class BeansTest {
   @Test
   public void testJavaBeans() throws Exception {
     MySimpleBean bean = new MySimpleBean();

@@ -16,6 +16,9 @@
 
 package com.facebook.thrift;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import com.facebook.thrift.java.test.MyListStruct;
 import com.facebook.thrift.java.test.MyMapStruct;
 import com.facebook.thrift.java.test.MySetStruct;
@@ -28,7 +31,7 @@ import com.facebook.thrift.protocol.TType;
 import com.facebook.thrift.transport.TMemoryInputTransport;
 import org.junit.Test;
 
-public class TruncatedFrameTest extends junit.framework.TestCase {
+public class TruncatedFrameTest {
   private static final byte[] kBinaryListEncoding = {
     TType.LIST, // Field Type = List
     (byte) 0x00,
@@ -96,21 +99,21 @@ public class TruncatedFrameTest extends junit.framework.TestCase {
   }
 
   @Test
-  public static void testListBinary() throws Exception {
+  public void testListBinary() throws Exception {
     TMemoryInputTransport buf = new TMemoryInputTransport(kBinaryListEncoding);
     TProtocol iprot = new TBinaryProtocol(buf);
     testTruncated(new MyListStruct(), iprot);
   }
 
   @Test
-  public static void testListCompact() throws Exception {
+  public void testListCompact() throws Exception {
     TMemoryInputTransport buf = new TMemoryInputTransport(kCompactListEncoding);
     TProtocol iprot = new TCompactProtocol(buf);
     testTruncated(new MyListStruct(), iprot);
   }
 
   @Test
-  public static void testLongListCompact() throws Exception {
+  public void testLongListCompact() throws Exception {
     TMemoryInputTransport buf = new TMemoryInputTransport(kCompactListEncoding2);
     TProtocol iprot = new TCompactProtocol(buf);
     testTruncated(new MyListStruct(), iprot);
@@ -172,21 +175,21 @@ public class TruncatedFrameTest extends junit.framework.TestCase {
   };
 
   @Test
-  public static void testSetBinary() throws Exception {
+  public void testSetBinary() throws Exception {
     TMemoryInputTransport buf = new TMemoryInputTransport(kBinarySetEncoding);
     TProtocol iprot = new TBinaryProtocol(buf);
     testTruncated(new MySetStruct(), iprot);
   }
 
   @Test
-  public static void testSetCompact() throws Exception {
+  public void testSetCompact() throws Exception {
     TMemoryInputTransport buf = new TMemoryInputTransport(kCompactSetEncoding);
     TProtocol iprot = new TCompactProtocol(buf);
     testTruncated(new MySetStruct(), iprot);
   }
 
   @Test
-  public static void testLongSetCompact() throws Exception {
+  public void testLongSetCompact() throws Exception {
     TMemoryInputTransport buf = new TMemoryInputTransport(kCompactSetEncoding2);
     TProtocol iprot = new TCompactProtocol(buf);
     testTruncated(new MySetStruct(), iprot);
@@ -261,14 +264,14 @@ public class TruncatedFrameTest extends junit.framework.TestCase {
   };
 
   @Test
-  public static void testMapBinary() throws Exception {
+  public void testMapBinary() throws Exception {
     TMemoryInputTransport buf = new TMemoryInputTransport(kBinaryMapEncoding);
     TProtocol iprot = new TBinaryProtocol(buf);
     testTruncated(new MyMapStruct(), iprot);
   }
 
   @Test
-  public static void testMapCompact() throws Exception {
+  public void testMapCompact() throws Exception {
     TMemoryInputTransport buf = new TMemoryInputTransport(kCompactMapEncoding);
     TProtocol iprot = new TCompactProtocol(buf);
     testTruncated(new MyMapStruct(), iprot);

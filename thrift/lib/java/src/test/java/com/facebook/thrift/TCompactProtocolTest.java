@@ -16,6 +16,10 @@
 
 package com.facebook.thrift;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.TCompactProtocol;
 import com.facebook.thrift.protocol.TField;
@@ -36,16 +40,12 @@ import thrift.test.Nesting;
 import thrift.test.OneOfEach;
 import thrift.test.Srv;
 
-public class TCompactProtocolTest extends junit.framework.TestCase {
+public class TCompactProtocolTest {
 
   static TProtocolFactory factory = new TCompactProtocol.Factory();
 
-  public static void main(String[] args) throws Exception {
-    testCompactProtocol();
-  }
-
   @Test
-  public static void testCompactProtocol() throws Exception {
+  public void testCompactProtocol() throws Exception {
     testNakedByte();
     for (int i = 0; i < 128; i++) {
       testByteField((byte) i);
@@ -148,17 +148,17 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
     testServerRequest();
   }
 
-  public static void testNakedByte() throws Exception {
+  @Test
+  public void testNakedByte() throws Exception {
+    byte x = 123;
     TMemoryBuffer buf = new TMemoryBuffer(0);
     TProtocol proto = factory.getProtocol(buf);
-    proto.writeByte((byte) 123);
+    proto.writeByte(x);
     byte out = proto.readByte();
-    if (out != 123) {
-      throw new RuntimeException("Byte was supposed to be " + (byte) 123 + " but was " + out);
-    }
+    assertThat(out, equalTo(x));
   }
 
-  public static void testByteField(final byte b) throws Exception {
+  private static void testByteField(byte b) throws Exception {
     testStructField(
         new StructFieldTestCase(TType.BYTE, (short) 15) {
           public void writeMethod(TProtocol proto) throws TException {
@@ -167,26 +167,20 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
 
           public void readMethod(TProtocol proto) throws TException {
             byte result = proto.readByte();
-            if (result != b) {
-              throw new RuntimeException(
-                  "Byte was supposed to be " + (byte) b + " but was " + result);
-            }
+            assertThat(result, equalTo(b));
           }
         });
   }
 
-  public static void testNakedI16(short n) throws Exception {
+  private static void testNakedI16(short n) throws Exception {
     TMemoryBuffer buf = new TMemoryBuffer(0);
     TProtocol proto = factory.getProtocol(buf);
     proto.writeI16(n);
-    // System.out.println(buf.inspect());
-    int out = proto.readI16();
-    if (out != n) {
-      throw new RuntimeException("I16 was supposed to be " + n + " but was " + out);
-    }
+    short out = proto.readI16();
+    assertThat(out, equalTo(n));
   }
 
-  public static void testI16Field(final short n) throws Exception {
+  private static void testI16Field(short n) throws Exception {
     testStructField(
         new StructFieldTestCase(TType.I16, (short) 15) {
           public void writeMethod(TProtocol proto) throws TException {
@@ -195,25 +189,20 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
 
           public void readMethod(TProtocol proto) throws TException {
             short result = proto.readI16();
-            if (result != n) {
-              throw new RuntimeException("I16 was supposed to be " + n + " but was " + result);
-            }
+            assertThat(result, equalTo(n));
           }
         });
   }
 
-  public static void testNakedI32(int n) throws Exception {
+  private static void testNakedI32(int n) throws Exception {
     TMemoryBuffer buf = new TMemoryBuffer(0);
     TProtocol proto = factory.getProtocol(buf);
     proto.writeI32(n);
-    // System.out.println(buf.inspect());
     int out = proto.readI32();
-    if (out != n) {
-      throw new RuntimeException("I32 was supposed to be " + n + " but was " + out);
-    }
+    assertThat(out, equalTo(n));
   }
 
-  public static void testI32Field(final int n) throws Exception {
+  private static void testI32Field(int n) throws Exception {
     testStructField(
         new StructFieldTestCase(TType.I32, (short) 15) {
           public void writeMethod(TProtocol proto) throws TException {
@@ -222,25 +211,20 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
 
           public void readMethod(TProtocol proto) throws TException {
             int result = proto.readI32();
-            if (result != n) {
-              throw new RuntimeException("I32 was supposed to be " + n + " but was " + result);
-            }
+            assertThat(result, equalTo(n));
           }
         });
   }
 
-  public static void testNakedI64(long n) throws Exception {
+  private static void testNakedI64(long n) throws Exception {
     TMemoryBuffer buf = new TMemoryBuffer(0);
     TProtocol proto = factory.getProtocol(buf);
     proto.writeI64(n);
-    // System.out.println(buf.inspect());
     long out = proto.readI64();
-    if (out != n) {
-      throw new RuntimeException("I64 was supposed to be " + n + " but was " + out);
-    }
+    assertThat(out, equalTo(n));
   }
 
-  public static void testI64Field(final long n) throws Exception {
+  private static void testI64Field(long n) throws Exception {
     testStructField(
         new StructFieldTestCase(TType.I64, (short) 15) {
           public void writeMethod(TProtocol proto) throws TException {
@@ -249,34 +233,32 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
 
           public void readMethod(TProtocol proto) throws TException {
             long result = proto.readI64();
-            if (result != n) {
-              throw new RuntimeException("I64 was supposed to be " + n + " but was " + result);
-            }
+            assertThat(result, equalTo(n));
           }
         });
   }
 
-  public static void testDouble() throws Exception {
+  @Test
+  public void testDouble() throws Exception {
+    double d = 123.456;
     TMemoryBuffer buf = new TMemoryBuffer(1000);
     TProtocol proto = factory.getProtocol(buf);
-    proto.writeDouble(123.456);
+    proto.writeDouble(d);
     double out = proto.readDouble();
-    if (out != 123.456) {
-      throw new RuntimeException("Double was supposed to be " + 123.456 + " but was " + out);
-    }
+    assertThat(out, equalTo(d));
   }
 
-  public static void testFloat() throws Exception {
+  @Test
+  public void testFloat() throws Exception {
+    float f = 321.654f;
     TMemoryBuffer buf = new TMemoryBuffer(1000);
     TProtocol proto = factory.getProtocol(buf);
-    proto.writeFloat(123.456f);
+    proto.writeFloat(f);
     float out = proto.readFloat();
-    if (out != 123.456f) {
-      throw new RuntimeException("Float was supposed to be " + 123.456f + " but was " + out);
-    }
+    assertThat(out, equalTo(f));
   }
 
-  public static void testFloatField(final float value) throws Exception {
+  private static void testFloatField(float value) throws Exception {
     testStructField(
         new StructFieldTestCase(TType.FLOAT, (short) 15) {
           public void writeMethod(TProtocol proto) throws TException {
@@ -285,26 +267,20 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
 
           public void readMethod(TProtocol proto) throws TException {
             float result = proto.readFloat();
-            if (0 != Float.compare(result, value)) {
-              throw new RuntimeException(
-                  "Float was supposed to  be " + value + " but was " + result);
-            }
+            assertThat(Float.compare(result, value), equalTo(0));
           }
         });
   }
 
-  public static void testNakedString(String str) throws Exception {
+  private static void testNakedString(String str) throws Exception {
     TMemoryBuffer buf = new TMemoryBuffer(0);
     TProtocol proto = factory.getProtocol(buf);
     proto.writeString(str);
-    // System.out.println(buf.inspect());
     String out = proto.readString();
-    if (!str.equals(out)) {
-      throw new RuntimeException("String was supposed to be '" + str + "' but was '" + out + "'");
-    }
+    assertThat(out, equalTo(str));
   }
 
-  public static void testStringField(final String str) throws Exception {
+  private static void testStringField(String str) throws Exception {
     testStructField(
         new StructFieldTestCase(TType.STRING, (short) 15) {
           public void writeMethod(TProtocol proto) throws TException {
@@ -313,25 +289,21 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
 
           public void readMethod(TProtocol proto) throws TException {
             String result = proto.readString();
-            if (!result.equals(str)) {
-              throw new RuntimeException("String was supposed to be " + str + " but was " + result);
-            }
+            assertThat(result, equalTo(str));
           }
         });
   }
 
-  public static void testNakedBinary(byte[] data) throws Exception {
+  private static void testNakedBinary(byte[] data) throws Exception {
     TMemoryBuffer buf = new TMemoryBuffer(0);
     TProtocol proto = factory.getProtocol(buf);
     proto.writeBinary(data);
-    // System.out.println(buf.inspect());
     byte[] out = proto.readBinary();
-    if (!Arrays.equals(data, out)) {
-      throw new RuntimeException("Binary was supposed to be '" + data + "' but was '" + out + "'");
-    }
+
+    assertThat(out, is(data));
   }
 
-  public static void testBinaryField(final byte[] data) throws Exception {
+  private static void testBinaryField(byte[] data) throws Exception {
     testStructField(
         new StructFieldTestCase(TType.STRING, (short) 15) {
           public void writeMethod(TProtocol proto) throws TException {
@@ -340,48 +312,28 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
 
           public void readMethod(TProtocol proto) throws TException {
             byte[] result = proto.readBinary();
-            if (!Arrays.equals(data, result)) {
-              throw new RuntimeException(
-                  "Binary was supposed to be '"
-                      + bytesToString(data)
-                      + "' but was '"
-                      + bytesToString(result)
-                      + "'");
-            }
+            assertThat(result, is(data));
           }
         });
   }
 
-  public static <T extends TBase> void testSerialization(Class<T> klass, T obj) throws Exception {
+  private static <T extends TBase> void testSerialization(Class<T> klass, T obj) throws Exception {
     TMemoryBuffer buf = new TMemoryBuffer(0);
     TBinaryProtocol binproto = new TBinaryProtocol(buf);
+    obj.write(binproto);
 
-    try {
-      obj.write(binproto);
-      // System.out.println("Size in binary protocol: " + buf.length());
+    buf = new TMemoryBuffer(0);
+    TProtocol proto = factory.getProtocol(buf);
 
-      buf = new TMemoryBuffer(0);
-      TProtocol proto = factory.getProtocol(buf);
+    obj.write(proto);
 
-      obj.write(proto);
-      System.out.println("Size in compact protocol: " + buf.length());
-      // System.out.println(buf.inspect());
-
-      T objRead = klass.newInstance();
-      objRead.read(proto);
-      if (!obj.equals(objRead)) {
-        System.out.println("Expected: " + obj.toString());
-        System.out.println("Actual: " + objRead.toString());
-        // System.out.println(buf.inspect());
-        throw new RuntimeException("Objects didn't match!");
-      }
-    } catch (Exception e) {
-      System.out.println(buf.inspect());
-      throw e;
-    }
+    T objRead = klass.newInstance();
+    objRead.read(proto);
+    assertThat(obj, equalTo(objRead));
   }
 
-  public static void testMessage() throws Exception {
+  @Test
+  public void testMessage() throws Exception {
     List<TMessage> msgs =
         Arrays.asList(
             new TMessage[] {
@@ -396,19 +348,15 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
       TMemoryBuffer buf = new TMemoryBuffer(0);
       TProtocol proto = factory.getProtocol(buf);
       TMessage output = null;
-
       proto.writeMessageBegin(msg);
       proto.writeMessageEnd();
-
       output = proto.readMessageBegin();
-
-      if (!msg.equals(output)) {
-        throw new RuntimeException("Message was supposed to be " + msg + " but was " + output);
-      }
+      assertThat(output, equalTo(msg));
     }
   }
 
-  public static void testServerRequest() throws Exception {
+  @Test
+  public void testServerRequest() throws Exception {
     Srv.Iface handler =
         new Srv.Iface() {
           public int Janky(int i32arg) throws TException {
@@ -427,7 +375,6 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
 
           public void voidMethod() throws TException {
             // TODO Auto-generated method stub
-
           }
         };
 
@@ -441,27 +388,15 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
     Srv.Client testClient = new Srv.Client(clientInProto, clientOutProto);
 
     testClient.send_Janky(1);
-    // System.out.println(clientOutTrans.inspect());
     TRpcConnectionContext ctx = new TRpcConnectionContext(null, clientInProto, clientOutProto);
     testProcessor.process(clientOutProto, clientInProto, ctx);
-    // System.out.println(clientInTrans.inspect());
     int result = testClient.recv_Janky();
-    if (result != 2) {
-      throw new RuntimeException("Got an unexpected result: " + result);
-    }
+    assertThat(result, equalTo(2));
   }
 
   //
   // Helper methods
   //
-
-  private static String bytesToString(byte[] bytes) {
-    String s = "";
-    for (int i = 0; i < bytes.length; i++) {
-      s += Integer.toHexString((int) bytes[i]) + " ";
-    }
-    return s;
-  }
 
   private static void testStructField(StructFieldTestCase testCase) throws Exception {
     TMemoryBuffer buf = new TMemoryBuffer(0);
@@ -474,14 +409,12 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
     proto.writeFieldEnd();
     proto.writeStructEnd();
 
-    // System.out.println(buf.inspect());
-
     proto.readStructBegin();
     TField readField = proto.readFieldBegin();
-    // TODO: verify the field is as expected
-    if (!field.equals(readField)) {
-      throw new RuntimeException("Expected " + field + " but got " + readField);
-    }
+
+    assertThat(readField.id, equalTo(field.id));
+    assertThat(readField.type, equalTo(field.type));
+    // TODO: verify the field content is as expected
     testCase.readMethod(proto);
     proto.readStructEnd();
   }

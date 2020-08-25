@@ -23,10 +23,9 @@ import static org.junit.Assert.assertThat;
 import com.facebook.thrift.utils.ByteBufferUtils;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import junit.framework.TestCase;
 import org.junit.Test;
 
-public class ByteBufferUtilsTest extends TestCase {
+public class ByteBufferUtilsTest {
   private ByteBuffer generateBuffer(boolean useDirectBuffer, byte[] bytes) {
     ByteBuffer buf;
     if (useDirectBuffer) {

@@ -16,6 +16,9 @@
 
 package com.facebook.thrift;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 import com.facebook.thrift.java.test.StructWithAllTypes;
 import com.facebook.thrift.java.test.StructWithMaps;
 import com.facebook.thrift.protocol.TCompactJSONProtocol;
@@ -27,7 +30,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import org.junit.Test;
 
-public class TCompactJSONTest extends junit.framework.TestCase {
+public class TCompactJSONTest {
 
   @Test
   public void testCompactJSONProtocol() throws Exception {
@@ -45,7 +48,7 @@ public class TCompactJSONTest extends junit.framework.TestCase {
 
     StructWithAllTypes read0 = new StructWithAllTypes();
     read0.read(iproto);
-    assertEquals(struct, read0);
+    assertThat(read0, equalTo(struct));
 
     // Test SimpleJSON compatibility (i.e. boolean serialized as true/false)
     String oldJson = json.replaceAll("\"bb\":1", "\"bb\":true");
@@ -55,7 +58,7 @@ public class TCompactJSONTest extends junit.framework.TestCase {
 
     StructWithAllTypes read1 = new StructWithAllTypes();
     read1.read(iproto);
-    assertEquals(struct, read1);
+    assertThat(read1, equalTo(struct));
   }
 
   @Test
@@ -105,7 +108,7 @@ public class TCompactJSONTest extends junit.framework.TestCase {
 
     StructWithMaps read0 = new StructWithMaps();
     read0.read(iproto);
-    assertEquals(struct, read0);
+    assertThat(read0, equalTo(struct));
 
     // Test TSimpleJSON compatibility (i.e. boolean serialized as 0/1)
     json = json.replace("\"boolstrings\":{\"1\":\"VRAI\"}", "\"boolstrings\":{true:\"VRAI\"}");
@@ -115,6 +118,6 @@ public class TCompactJSONTest extends junit.framework.TestCase {
 
     StructWithMaps read1 = new StructWithMaps();
     read1.read(iproto);
-    assertEquals(struct, read1);
+    assertThat(read1, equalTo(struct));
   }
 }

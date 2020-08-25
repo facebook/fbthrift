@@ -16,29 +16,30 @@
 
 package com.facebook.thrift;
 
+import static org.junit.Assert.assertFalse;
+
 import com.facebook.thrift.java.test.MySensitiveStruct;
-import junit.framework.TestCase;
 import org.junit.Test;
 
-public class SensitiveStructTest extends TestCase {
+public class SensitiveStructTest {
   private static final String password = "toto1234";
   private static final String errorMsg = "toString should not contain sensitive fields content!";
 
   @Test
-  public static void testJavaDeprecated() throws Exception {
+  public void testJavaDeprecated() throws Exception {
     MySensitiveStruct struct = new MySensitiveStruct(123L, password);
     assertFalse(errorMsg, struct.toString().contains(password));
   }
 
   @Test
-  public static void testAndroid() throws Exception {
+  public void testAndroid() throws Exception {
     com.facebook.thrift.android.test.MySensitiveStruct struct =
         new com.facebook.thrift.android.test.MySensitiveStruct(123L, password);
     assertFalse(errorMsg, struct.toString().contains(password));
   }
 
   @Test
-  public static void testJavaSwift() throws Exception {
+  public void testJavaSwift() throws Exception {
     com.facebook.thrift.javaswift.test.MySensitiveStruct struct =
         new com.facebook.thrift.javaswift.test.MySensitiveStruct.Builder()
             .setId(123L)
