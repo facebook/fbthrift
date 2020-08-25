@@ -688,6 +688,10 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.Container):
     cdef shared_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *:
         cdef shared_ptr[{{> types/CythonCppType}}] c_inst = make_shared[{{> types/CythonCppType}}]()
         if items is not None:
+            {{#type:containerOfString?}}
+            if isinstance(items, str):
+                raise TypeError("If you really want to pass a string into a {{> types/PEP484Type}} field, explicitly convert it first.")
+            {{/type:containerOfString?}}
             for item in items:
                 {{#type:listElemType}}
                 {{#type:container?}}
@@ -901,6 +905,10 @@ Sequence.register({{> types/CythonPythonType}})
     cdef shared_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *:
         cdef shared_ptr[{{> types/CythonCppType}}] c_inst = make_shared[{{> types/CythonCppType}}]()
         if items is not None:
+            {{#type:containerOfString?}}
+            if isinstance(items, str):
+                raise TypeError("If you really want to pass a string into a {{> types/PEP484Type}} field, explicitly convert it first.")
+            {{/type:containerOfString?}}
             for item in items:
                 {{#type:setElemType}}
                 {{#type:container?}}

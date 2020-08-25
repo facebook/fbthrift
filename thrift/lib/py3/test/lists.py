@@ -16,7 +16,7 @@
 import itertools
 import unittest
 
-from testing.types import I32List, StrList2D, easy, int_list
+from testing.types import I32List, StringList, StrList2D, easy, int_list
 from thrift.py3.types import Container
 
 
@@ -112,3 +112,8 @@ class ListTests(unittest.TestCase):
         self.assertIsInstance(int_list, Container)
         self.assertIsInstance(I32List([1, 2, 3]), Container)
         self.assertIsInstance(StrList2D([["a", "b"], ["c", "d"]]), Container)
+
+    def test_string_list(self) -> None:
+        StringList(["hello", "world"])
+        with self.assertRaises(TypeError):
+            StringList("hello")

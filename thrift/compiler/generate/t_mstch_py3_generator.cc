@@ -147,6 +147,7 @@ class mstch_py3_type : public mstch_type {
             {"type:hasCustomType?", &mstch_py3_type::hasCustomType},
             {"type:number?", &mstch_py3_type::isNumber},
             {"type:integer?", &mstch_py3_type::isInteger},
+            {"type:containerOfString?", &mstch_py3_type::isContainerOfString},
             {"type:cythonTypeNoneable?", &mstch_py3_type::cythonTypeNoneable},
             {"type:hasCythonType?", &mstch_py3_type::hasCythonType},
             {"type:iobuf?", &mstch_py3_type::isIOBuf},
@@ -208,6 +209,10 @@ class mstch_py3_type : public mstch_type {
 
   mstch::node isInteger() {
     return is_integer();
+  }
+
+  mstch::node isContainerOfString() {
+    return is_list_of_string() || is_set_of_string();
   }
 
   mstch::node cythonTypeNoneable() {
@@ -334,6 +339,20 @@ class mstch_py3_type : public mstch_type {
 
   bool is_number() const {
     return is_integer() || type_->is_floating_point();
+  }
+
+  bool is_list_of_string() {
+    if (!type_->is_list()) {
+      return false;
+    }
+    return get_list_elem_type(*type_)->is_string_or_binary();
+  }
+
+  bool is_set_of_string() {
+    if (!type_->is_set()) {
+      return false;
+    }
+    return get_set_elem_type(*type_)->is_string_or_binary();
   }
 
   bool has_cython_type() const {
