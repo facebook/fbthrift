@@ -293,14 +293,6 @@ class ServerInterface : public AsyncProcessorFactory {
  * either result(value), done(), exception(ex), or appOverloadedException() to
  * finish the async call.  Only one of these must be called, otherwise your
  * client will likely get confused with multiple response messages.
- *
- *
- * If you passed the HandlerCallback to another thread, you may call
- * the *InThread() version of these methods.  The callback will be
- * called in the correct thread, then it will *delete* itself (because
- * otherwise you wouldn't know when to delete it). So make sure to
- * .release() the unique_ptr on the HandlerCallback if you call the
- * *InThread() method.
  */
 class HandlerCallbackBase {
  protected:
@@ -450,14 +442,6 @@ class HandlerCallback : public HandlerCallbackBase {
     doResult(std::forward<InputType>(r));
   }
   void result(std::unique_ptr<ResultType> r);
-  void resultInThread(InputType r);
-  void resultInThread(std::unique_ptr<ResultType> r);
-  static void resultInThread(
-      std::unique_ptr<HandlerCallback> thisPtr,
-      InputType r);
-  static void resultInThread(
-      std::unique_ptr<HandlerCallback> thisPtr,
-      std::unique_ptr<ResultType> r);
 
   void complete(folly::Try<T>&& r);
 
@@ -649,34 +633,6 @@ void HandlerCallback<T>::result(std::unique_ptr<ResultType> r) {
     : exception(TApplicationException(
           TApplicationException::MISSING_RESULT,
           "nullptr yielded from handler"));
-}
-
-template <typename T>
-void HandlerCallback<T>::resultInThread(InputType r) {
-  result(std::forward<InputType>(r));
-  delete this;
-}
-
-template <typename T>
-void HandlerCallback<T>::resultInThread(std::unique_ptr<ResultType> r) {
-  result(std::move(r));
-  delete this;
-}
-
-template <typename T>
-void HandlerCallback<T>::resultInThread(
-    std::unique_ptr<HandlerCallback> thisPtr,
-    InputType r) {
-  assert(thisPtr != nullptr);
-  thisPtr->result(std::forward<InputType>(r));
-}
-
-template <typename T>
-void HandlerCallback<T>::resultInThread(
-    std::unique_ptr<HandlerCallback> thisPtr,
-    std::unique_ptr<ResultType> r) {
-  assert(thisPtr != nullptr);
-  thisPtr->result(std::move(r));
 }
 
 template <typename T>
