@@ -889,11 +889,8 @@ public class TCompactProtocol extends TProtocol {
       case TType.I16: // because of variable length encoding
       case TType.I32: // because of variable length encoding
       case TType.I64: // because of variable length encoding
-        return 1;
-      case TType.FLOAT:
-        return 4;
-      case TType.DOUBLE:
-        return 8;
+      case TType.FLOAT: // because of variable length encoding
+      case TType.DOUBLE: // because of variable length encoding
       case TType.STRING:
       case TType.STRUCT:
       case TType.MAP:
