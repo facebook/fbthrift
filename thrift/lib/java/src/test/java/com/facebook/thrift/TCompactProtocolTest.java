@@ -342,6 +342,7 @@ public class TCompactProtocolTest {
               new TMessage(
                   "loooooooooooooooooooooooooooooooooong", TMessageType.EXCEPTION, 1 << 16),
               new TMessage("Janky", TMessageType.CALL, 0),
+              new TMessage("1way", TMessageType.ONEWAY, 54321),
             });
 
     for (TMessage msg : msgs) {
