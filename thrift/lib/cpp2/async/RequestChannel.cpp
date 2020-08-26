@@ -125,46 +125,6 @@ void RequestChannel::sendRequestAsync<RpcKind::SINK>(
       });
 }
 
-void RequestChannel::sendRequestResponse(
-    const RpcOptions& rpcOptions,
-    LegacySerializedRequest&& request,
-    std::shared_ptr<apache::thrift::transport::THeader> header,
-    RequestClientCallback::Ptr clientCallback) {
-  if (auto envelopeAndRequest =
-          EnvelopeUtil::stripRequestEnvelope(std::move(request.buffer))) {
-    return sendRequestResponse(
-        rpcOptions,
-        envelopeAndRequest->first.methodName,
-        SerializedRequest(std::move(envelopeAndRequest->second)),
-        std::move(header),
-        std::move(clientCallback));
-  }
-  clientCallback.release()->onResponseError(
-      folly::make_exception_wrapper<transport::TTransportException>(
-          transport::TTransportException::CORRUPTED_DATA,
-          "Unexpected problem stripping envelope"));
-}
-
-void RequestChannel::sendRequestNoResponse(
-    const RpcOptions& rpcOptions,
-    LegacySerializedRequest&& request,
-    std::shared_ptr<apache::thrift::transport::THeader> header,
-    RequestClientCallback::Ptr clientCallback) {
-  if (auto envelopeAndRequest =
-          EnvelopeUtil::stripRequestEnvelope(std::move(request.buffer))) {
-    return sendRequestNoResponse(
-        rpcOptions,
-        envelopeAndRequest->first.methodName,
-        SerializedRequest(std::move(envelopeAndRequest->second)),
-        std::move(header),
-        std::move(clientCallback));
-  }
-  clientCallback.release()->onResponseError(
-      folly::make_exception_wrapper<transport::TTransportException>(
-          transport::TTransportException::CORRUPTED_DATA,
-          "Unexpected problem stripping envelope"));
-}
-
 void RequestChannel::sendRequestStream(
     const RpcOptions&,
     folly::StringPiece,

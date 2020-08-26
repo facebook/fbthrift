@@ -989,11 +989,24 @@ void TransportCompatibilityTest::TestBadPayload() {
         }
         void onResponseError(folly::exception_wrapper) noexcept override {}
       };
-      channel->sendRequestResponse(
-          rpcOptions,
-          std::move(payload),
-          std::move(header),
-          ErrorCallback::create());
+
+      if (auto envelopeAndRequest =
+              apache::thrift::EnvelopeUtil::stripRequestEnvelope(
+                  std::move(payload))) {
+        channel->sendRequestResponse(
+            rpcOptions,
+            envelopeAndRequest->first.methodName,
+            apache::thrift::SerializedRequest(
+                std::move(envelopeAndRequest->second)),
+            std::move(header),
+            ErrorCallback::create());
+      } else {
+        ErrorCallback::create().release()->onResponseError(
+            folly::make_exception_wrapper<
+                apache::thrift::transport::TTransportException>(
+                apache::thrift::transport::TTransportException::CORRUPTED_DATA,
+                "Unexpected problem stripping envelope"));
+      }
     });
   });
 }

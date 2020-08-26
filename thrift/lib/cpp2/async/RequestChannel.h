@@ -107,12 +107,6 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) = 0;
 
-  void sendRequestResponse(
-      const RpcOptions&,
-      LegacySerializedRequest&&,
-      std::shared_ptr<apache::thrift::transport::THeader>,
-      RequestClientCallback::Ptr);
-
   /* Similar to sendRequest, although replyReceived will never be called
    *
    * Null RequestCallback is allowed for oneway requests
@@ -123,12 +117,6 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) = 0;
-
-  void sendRequestNoResponse(
-      const RpcOptions&,
-      LegacySerializedRequest&&,
-      std::shared_ptr<apache::thrift::transport::THeader>,
-      RequestClientCallback::Ptr);
 
   /**
    * ReplyCallback will be invoked when the reply to this request is

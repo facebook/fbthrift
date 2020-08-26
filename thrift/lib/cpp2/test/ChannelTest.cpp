@@ -66,6 +66,21 @@ unique_ptr<IOBuf> makeTestBuf(size_t len) {
   LOG(FATAL) << "Can't generate valid legacy request of given length: " << len;
 }
 
+SerializedRequest makeTestSerializedRequest(size_t len) {
+  for (auto requestLen = len; requestLen > 0; --requestLen) {
+    unique_ptr<IOBuf> buf = IOBuf::create(requestLen);
+    buf->IOBuf::append(requestLen);
+    memset(buf->writableData(), char(0x80), requestLen);
+    if (LegacySerializedRequest(
+            T_COMPACT_PROTOCOL, "test", SerializedRequest(buf->clone()))
+            .buffer->computeChainDataLength() == len) {
+      return SerializedRequest(std::move(buf));
+    }
+  }
+  LOG(FATAL) << "Can't generate valid serialized request of given length: "
+             << len;
+}
+
 class EventBaseAborter : public folly::AsyncTimeout {
  public:
   EventBaseAborter(folly::EventBase* eventBase, uint32_t timeoutMS)
@@ -481,12 +496,14 @@ class HeaderChannelTest
     RpcOptions options;
     channel0_->sendRequestNoResponse(
         options,
-        makeTestBuf(len_),
+        "test",
+        makeTestSerializedRequest(len_),
         std::unique_ptr<THeader>(new THeader),
         RequestClientCallback::Ptr(new Callback(this, true)));
     channel0_->sendRequestResponse(
         options,
-        makeTestBuf(len_),
+        "test",
+        makeTestSerializedRequest(len_),
         std::unique_ptr<THeader>(new THeader),
         RequestClientCallback::Ptr(new Callback(this, false)));
     channel0_->setCloseCallback(nullptr);
@@ -563,7 +580,8 @@ class HeaderChannelClosedTest
     RpcOptions options;
     channel0_->sendRequestResponse(
         options,
-        makeTestBuf(42),
+        "test",
+        makeTestSerializedRequest(42),
         std::make_unique<THeader>(),
         RequestClientCallback::Ptr(new Callback(this)));
   }
@@ -625,12 +643,14 @@ class InOrderTest
     RpcOptions options;
     channel0_->sendRequestResponse(
         options,
-        makeTestBuf(len_),
+        "test",
+        makeTestSerializedRequest(len_),
         std::unique_ptr<THeader>(new THeader),
         RequestClientCallback::Ptr(new Callback(this)));
     channel0_->sendRequestResponse(
         options,
-        makeTestBuf(len_ + 1),
+        "test",
+        makeTestSerializedRequest(len_ + 1),
         std::unique_ptr<THeader>(new THeader),
         RequestClientCallback::Ptr(new Callback(this)));
   }
@@ -705,12 +725,14 @@ class BadSeqIdTest
     RpcOptions options;
     channel0_->sendRequestNoResponse(
         options,
-        makeTestBuf(len_),
+        "test",
+        makeTestSerializedRequest(len_),
         std::unique_ptr<THeader>(new THeader),
         RequestClientCallback::Ptr(new Callback(this, true)));
     channel0_->sendRequestResponse(
         options,
-        makeTestBuf(len_),
+        "test",
+        makeTestSerializedRequest(len_),
         std::unique_ptr<THeader>(new THeader),
         RequestClientCallback::Ptr(new Callback(this, false)));
   }
@@ -756,12 +778,14 @@ class TimeoutTest
     RpcOptions options;
     channel0_->sendRequestResponse(
         options,
-        makeTestBuf(len_),
+        "test",
+        makeTestSerializedRequest(len_),
         std::unique_ptr<THeader>(new THeader),
         RequestClientCallback::Ptr(new TestRequestCallback()));
     channel0_->sendRequestResponse(
         options,
-        makeTestBuf(len_),
+        "test",
+        makeTestSerializedRequest(len_),
         std::unique_ptr<THeader>(new THeader),
         RequestClientCallback::Ptr(new TestRequestCallback()));
   }
@@ -829,7 +853,8 @@ class OptionsTimeoutTest
     options.setTimeout(std::chrono::milliseconds(25));
     channel0_->sendRequestResponse(
         options,
-        makeTestBuf(len_),
+        "test",
+        makeTestSerializedRequest(len_),
         std::unique_ptr<THeader>(new THeader),
         RequestClientCallback::Ptr(new TestRequestCallback()));
     // Verify the timeout worked within 10ms
@@ -841,7 +866,8 @@ class OptionsTimeoutTest
           RpcOptions options;
           channel0_->sendRequestResponse(
               options,
-              makeTestBuf(len_),
+              "test",
+              makeTestSerializedRequest(len_),
               std::unique_ptr<THeader>(new THeader),
               RequestClientCallback::Ptr(new TestRequestCallback()));
         },
@@ -1043,12 +1069,14 @@ class ClientCloseOnErrorTest
     RpcOptions options;
     channel0_->sendRequestResponse(
         options,
-        makeTestBuf(10),
+        "test",
+        makeTestSerializedRequest(10),
         std::make_unique<THeader>(),
         RequestClientCallback::Ptr(new Callback(this)));
     channel0_->sendRequestResponse(
         options,
-        makeTestBuf(reqSize_),
+        "test",
+        makeTestSerializedRequest(reqSize_),
         std::make_unique<THeader>(),
         RequestClientCallback::Ptr(new Callback(this)));
   }
