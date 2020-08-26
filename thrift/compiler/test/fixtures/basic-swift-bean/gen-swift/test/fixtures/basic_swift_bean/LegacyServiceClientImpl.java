@@ -7,17 +7,46 @@
 
 package test.fixtures.basic_swift_bean;
 
+import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
+import com.facebook.swift.transport.client.RpcOptions;
 import java.io.*;
+import java.lang.reflect.Method;
 import java.util.*;
 
 @SwiftGenerated
-public class LegacyServiceClientImpl implements LegacyService {
+public class LegacyServiceClientImpl extends AbstractThriftClient implements LegacyService {
+
+
+    // Method Handlers
+    private ThriftMethodHandler getPointsMethodHandler;
+
+    // Method Exceptions
+    private static final Class[] getPointsExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+
+    public LegacyServiceClientImpl(
+        RequestChannel channel,
+        Map<Method, ThriftMethodHandler> methods,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        List<? extends ThriftClientEventHandler> eventHandlers) {
+      super(channel, headers, persistentHeaders, eventHandlers);
+
+      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
+      methods.forEach(
+          (key, value) -> {
+            methodHandlerMap.put(key.getName(), value);
+          });
+
+      // Set method handlers
+      getPointsMethodHandler = methodHandlerMap.get("getPoints");
+    }
 
     @Override
     public void close() {
-      throw new RuntimeException("No implemented");
+        super.close();
     }
 
 
@@ -25,6 +54,28 @@ public class LegacyServiceClientImpl implements LegacyService {
     public Map<String, List<Integer>> getPoints(
         Set<String> key,
         long legacyStuff) throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+      try {
+        return (Map<String, List<Integer>>) execute(getPointsMethodHandler, getPointsExceptions, key, legacyStuff);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+
+    public Map<String, List<Integer>> getPoints(
+        Set<String> key,
+        long legacyStuff,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        return (Map<String, List<Integer>>) executeWithOptions(getPointsMethodHandler, getPointsExceptions, rpcOptions, key, legacyStuff);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
     }
 }

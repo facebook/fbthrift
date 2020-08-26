@@ -7,38 +7,131 @@
 
 package test.fixtures.exceptions;
 
+import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
+import com.facebook.swift.transport.client.RpcOptions;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
+import java.lang.reflect.Method;
 import java.util.*;
 
 @SwiftGenerated
-public class RaiserAsyncClientImpl implements Raiser.Async {
+public class RaiserAsyncClientImpl extends AbstractThriftClient implements Raiser.Async {
+
+    // Method Handlers
+    private ThriftMethodHandler doBlandMethodHandler;
+    private ThriftMethodHandler doRaiseMethodHandler;
+    private ThriftMethodHandler get200MethodHandler;
+    private ThriftMethodHandler get500MethodHandler;
+
+    // Method Exceptions
+    private static final Class[] doBlandExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] doRaiseExceptions = new Class[] {
+        test.fixtures.exceptions.Banal.class, test.fixtures.exceptions.Fiery.class, test.fixtures.exceptions.Serious.class, org.apache.thrift.TException.class};
+    private static final Class[] get200Exceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] get500Exceptions = new Class[] {
+        test.fixtures.exceptions.Fiery.class, test.fixtures.exceptions.Banal.class, test.fixtures.exceptions.Serious.class, org.apache.thrift.TException.class};
+
+    public RaiserAsyncClientImpl(
+        RequestChannel channel,
+        Map<Method, ThriftMethodHandler> methods,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        List<? extends ThriftClientEventHandler> eventHandlers) {
+      super(channel, headers, persistentHeaders, eventHandlers);
+
+      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
+      methods.forEach(
+          (key, value) -> {
+            methodHandlerMap.put(key.getName(), value);
+          });
+
+      // Set method handlers
+      doBlandMethodHandler = methodHandlerMap.get("doBland");
+      doRaiseMethodHandler = methodHandlerMap.get("doRaise");
+      get200MethodHandler = methodHandlerMap.get("get200");
+      get500MethodHandler = methodHandlerMap.get("get500");
+    }
 
     @Override
     public void close() {
-      throw new RuntimeException("No implemented");
+        super.close();
     }
 
 
     @Override
     public ListenableFuture<Void> doBland() {
-        throw new UnsupportedOperationException();
+        try {
+          return (ListenableFuture<Void>) execute(doBlandMethodHandler, doBlandExceptions);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
     }
 
     @Override
     public ListenableFuture<Void> doRaise() {
-        throw new UnsupportedOperationException();
+        try {
+          return (ListenableFuture<Void>) execute(doRaiseMethodHandler, doRaiseExceptions);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
     }
 
     @Override
     public ListenableFuture<String> get200() {
-        throw new UnsupportedOperationException();
+        try {
+          return (ListenableFuture<String>) execute(get200MethodHandler, get200Exceptions);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
     }
 
     @Override
     public ListenableFuture<String> get500() {
-        throw new UnsupportedOperationException();
+        try {
+          return (ListenableFuture<String>) execute(get500MethodHandler, get500Exceptions);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
+    }
+
+
+    public ListenableFuture<Void> doBland(
+        RpcOptions rpcOptions) {
+        try {
+          return (ListenableFuture<Void>) executeWithOptions(doBlandMethodHandler, doBlandExceptions, rpcOptions);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
+    }
+
+    public ListenableFuture<Void> doRaise(
+        RpcOptions rpcOptions) {
+        try {
+          return (ListenableFuture<Void>) executeWithOptions(doRaiseMethodHandler, doRaiseExceptions, rpcOptions);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
+    }
+
+    public ListenableFuture<String> get200(
+        RpcOptions rpcOptions) {
+        try {
+          return (ListenableFuture<String>) executeWithOptions(get200MethodHandler, get200Exceptions, rpcOptions);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
+    }
+
+    public ListenableFuture<String> get500(
+        RpcOptions rpcOptions) {
+        try {
+          return (ListenableFuture<String>) executeWithOptions(get500MethodHandler, get500Exceptions, rpcOptions);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
     }
 }

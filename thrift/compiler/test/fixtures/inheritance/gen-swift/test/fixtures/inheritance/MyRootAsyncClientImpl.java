@@ -7,23 +7,65 @@
 
 package test.fixtures.inheritance;
 
+import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
+import com.facebook.swift.transport.client.RpcOptions;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
+import java.lang.reflect.Method;
 import java.util.*;
 
 @SwiftGenerated
-public class MyRootAsyncClientImpl implements MyRoot.Async {
+public class MyRootAsyncClientImpl extends AbstractThriftClient implements MyRoot.Async {
+
+    // Method Handlers
+    private ThriftMethodHandler doRootMethodHandler;
+
+    // Method Exceptions
+    private static final Class[] doRootExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+
+    public MyRootAsyncClientImpl(
+        RequestChannel channel,
+        Map<Method, ThriftMethodHandler> methods,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        List<? extends ThriftClientEventHandler> eventHandlers) {
+      super(channel, headers, persistentHeaders, eventHandlers);
+
+      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
+      methods.forEach(
+          (key, value) -> {
+            methodHandlerMap.put(key.getName(), value);
+          });
+
+      // Set method handlers
+      doRootMethodHandler = methodHandlerMap.get("doRoot");
+    }
 
     @Override
     public void close() {
-      throw new RuntimeException("No implemented");
+        super.close();
     }
 
 
     @Override
     public ListenableFuture<Void> doRoot() {
-        throw new UnsupportedOperationException();
+        try {
+          return (ListenableFuture<Void>) execute(doRootMethodHandler, doRootExceptions);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
+    }
+
+
+    public ListenableFuture<Void> doRoot(
+        RpcOptions rpcOptions) {
+        try {
+          return (ListenableFuture<Void>) executeWithOptions(doRootMethodHandler, doRootExceptions, rpcOptions);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
     }
 }

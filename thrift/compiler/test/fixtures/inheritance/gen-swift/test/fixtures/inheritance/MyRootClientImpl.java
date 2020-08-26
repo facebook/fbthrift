@@ -7,22 +7,71 @@
 
 package test.fixtures.inheritance;
 
+import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
+import com.facebook.swift.transport.client.RpcOptions;
 import java.io.*;
+import java.lang.reflect.Method;
 import java.util.*;
 
 @SwiftGenerated
-public class MyRootClientImpl implements MyRoot {
+public class MyRootClientImpl extends AbstractThriftClient implements MyRoot {
+
+
+    // Method Handlers
+    private ThriftMethodHandler doRootMethodHandler;
+
+    // Method Exceptions
+    private static final Class[] doRootExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+
+    public MyRootClientImpl(
+        RequestChannel channel,
+        Map<Method, ThriftMethodHandler> methods,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        List<? extends ThriftClientEventHandler> eventHandlers) {
+      super(channel, headers, persistentHeaders, eventHandlers);
+
+      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
+      methods.forEach(
+          (key, value) -> {
+            methodHandlerMap.put(key.getName(), value);
+          });
+
+      // Set method handlers
+      doRootMethodHandler = methodHandlerMap.get("doRoot");
+    }
 
     @Override
     public void close() {
-      throw new RuntimeException("No implemented");
+        super.close();
     }
 
 
     @Override
     public void doRoot() throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+      try {
+        execute(doRootMethodHandler, doRootExceptions);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+
+    public void doRoot(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        executeWithOptions(doRootMethodHandler, doRootExceptions, rpcOptions);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
     }
 }

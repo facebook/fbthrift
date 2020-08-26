@@ -7,23 +7,65 @@
 
 package test.fixtures.basicannotations;
 
+import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
+import com.facebook.swift.transport.client.RpcOptions;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
+import java.lang.reflect.Method;
 import java.util.*;
 
 @SwiftGenerated
 public class MyServicePrioChildAsyncClientImpl extends test.fixtures.basicannotations.MyServicePrioParentAsyncClientImpl implements MyServicePrioChild.Async {
 
+    // Method Handlers
+    private ThriftMethodHandler pangMethodHandler;
+
+    // Method Exceptions
+    private static final Class[] pangExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+
+    public MyServicePrioChildAsyncClientImpl(
+        RequestChannel channel,
+        Map<Method, ThriftMethodHandler> methods,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        List<? extends ThriftClientEventHandler> eventHandlers) {
+      super(channel, methods, headers, persistentHeaders, eventHandlers);
+
+      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
+      methods.forEach(
+          (key, value) -> {
+            methodHandlerMap.put(key.getName(), value);
+          });
+
+      // Set method handlers
+      pangMethodHandler = methodHandlerMap.get("pang");
+    }
+
     @Override
     public void close() {
-      throw new RuntimeException("No implemented");
+        super.close();
     }
 
 
     @Override
     public ListenableFuture<Void> pang() {
-        throw new UnsupportedOperationException();
+        try {
+          return (ListenableFuture<Void>) execute(pangMethodHandler, pangExceptions);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
+    }
+
+
+    public ListenableFuture<Void> pang(
+        RpcOptions rpcOptions) {
+        try {
+          return (ListenableFuture<Void>) executeWithOptions(pangMethodHandler, pangExceptions, rpcOptions);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
     }
 }

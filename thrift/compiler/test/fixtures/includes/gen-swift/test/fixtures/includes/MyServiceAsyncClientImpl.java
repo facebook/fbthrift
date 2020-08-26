@@ -7,18 +7,50 @@
 
 package test.fixtures.includes;
 
+import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
+import com.facebook.swift.transport.client.RpcOptions;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
+import java.lang.reflect.Method;
 import java.util.*;
 
 @SwiftGenerated
-public class MyServiceAsyncClientImpl implements MyService.Async {
+public class MyServiceAsyncClientImpl extends AbstractThriftClient implements MyService.Async {
+
+    // Method Handlers
+    private ThriftMethodHandler queryMethodHandler;
+    private ThriftMethodHandler hasArgDocsMethodHandler;
+
+    // Method Exceptions
+    private static final Class[] queryExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] hasArgDocsExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+
+    public MyServiceAsyncClientImpl(
+        RequestChannel channel,
+        Map<Method, ThriftMethodHandler> methods,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        List<? extends ThriftClientEventHandler> eventHandlers) {
+      super(channel, headers, persistentHeaders, eventHandlers);
+
+      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
+      methods.forEach(
+          (key, value) -> {
+            methodHandlerMap.put(key.getName(), value);
+          });
+
+      // Set method handlers
+      queryMethodHandler = methodHandlerMap.get("query");
+      hasArgDocsMethodHandler = methodHandlerMap.get("hasArgDocs");
+    }
 
     @Override
     public void close() {
-      throw new RuntimeException("No implemented");
+        super.close();
     }
 
 
@@ -26,13 +58,44 @@ public class MyServiceAsyncClientImpl implements MyService.Async {
     public ListenableFuture<Void> query(
         test.fixtures.includes.MyStruct s,
         test.fixtures.includes.includes.Included i) {
-        throw new UnsupportedOperationException();
+        try {
+          return (ListenableFuture<Void>) execute(queryMethodHandler, queryExceptions, s, i);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
     }
 
     @Override
     public ListenableFuture<Void> hasArgDocs(
         test.fixtures.includes.MyStruct s,
         test.fixtures.includes.includes.Included i) {
-        throw new UnsupportedOperationException();
+        try {
+          return (ListenableFuture<Void>) execute(hasArgDocsMethodHandler, hasArgDocsExceptions, s, i);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
+    }
+
+
+    public ListenableFuture<Void> query(
+        test.fixtures.includes.MyStruct s,
+        test.fixtures.includes.includes.Included i,
+        RpcOptions rpcOptions) {
+        try {
+          return (ListenableFuture<Void>) executeWithOptions(queryMethodHandler, queryExceptions, rpcOptions, s, i);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
+    }
+
+    public ListenableFuture<Void> hasArgDocs(
+        test.fixtures.includes.MyStruct s,
+        test.fixtures.includes.includes.Included i,
+        RpcOptions rpcOptions) {
+        try {
+          return (ListenableFuture<Void>) executeWithOptions(hasArgDocsMethodHandler, hasArgDocsExceptions, rpcOptions, s, i);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
     }
 }

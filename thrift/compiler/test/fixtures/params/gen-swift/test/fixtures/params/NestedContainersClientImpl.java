@@ -7,47 +7,193 @@
 
 package test.fixtures.params;
 
+import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
+import com.facebook.swift.transport.client.RpcOptions;
 import java.io.*;
+import java.lang.reflect.Method;
 import java.util.*;
 
 @SwiftGenerated
-public class NestedContainersClientImpl implements NestedContainers {
+public class NestedContainersClientImpl extends AbstractThriftClient implements NestedContainers {
+
+
+    // Method Handlers
+    private ThriftMethodHandler mapListMethodHandler;
+    private ThriftMethodHandler mapSetMethodHandler;
+    private ThriftMethodHandler listMapMethodHandler;
+    private ThriftMethodHandler listSetMethodHandler;
+    private ThriftMethodHandler turtlesMethodHandler;
+
+    // Method Exceptions
+    private static final Class[] mapListExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] mapSetExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] listMapExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] listSetExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] turtlesExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+
+    public NestedContainersClientImpl(
+        RequestChannel channel,
+        Map<Method, ThriftMethodHandler> methods,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        List<? extends ThriftClientEventHandler> eventHandlers) {
+      super(channel, headers, persistentHeaders, eventHandlers);
+
+      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
+      methods.forEach(
+          (key, value) -> {
+            methodHandlerMap.put(key.getName(), value);
+          });
+
+      // Set method handlers
+      mapListMethodHandler = methodHandlerMap.get("mapList");
+      mapSetMethodHandler = methodHandlerMap.get("mapSet");
+      listMapMethodHandler = methodHandlerMap.get("listMap");
+      listSetMethodHandler = methodHandlerMap.get("listSet");
+      turtlesMethodHandler = methodHandlerMap.get("turtles");
+    }
 
     @Override
     public void close() {
-      throw new RuntimeException("No implemented");
+        super.close();
     }
 
 
     @Override
     public void mapList(
         Map<Integer, List<Integer>> foo) throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+      try {
+        execute(mapListMethodHandler, mapListExceptions, foo);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
     }
 
     @Override
     public void mapSet(
         Map<Integer, Set<Integer>> foo) throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+      try {
+        execute(mapSetMethodHandler, mapSetExceptions, foo);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
     }
 
     @Override
     public void listMap(
         List<Map<Integer, Integer>> foo) throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+      try {
+        execute(listMapMethodHandler, listMapExceptions, foo);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
     }
 
     @Override
     public void listSet(
         List<Set<Integer>> foo) throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+      try {
+        execute(listSetMethodHandler, listSetExceptions, foo);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
     }
 
     @Override
     public void turtles(
         List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo) throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+      try {
+        execute(turtlesMethodHandler, turtlesExceptions, foo);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+
+    public void mapList(
+        Map<Integer, List<Integer>> foo,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        executeWithOptions(mapListMethodHandler, mapListExceptions, rpcOptions, foo);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+    public void mapSet(
+        Map<Integer, Set<Integer>> foo,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        executeWithOptions(mapSetMethodHandler, mapSetExceptions, rpcOptions, foo);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+    public void listMap(
+        List<Map<Integer, Integer>> foo,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        executeWithOptions(listMapMethodHandler, listMapExceptions, rpcOptions, foo);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+    public void listSet(
+        List<Set<Integer>> foo,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        executeWithOptions(listSetMethodHandler, listSetExceptions, rpcOptions, foo);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+    public void turtles(
+        List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        executeWithOptions(turtlesMethodHandler, turtlesExceptions, rpcOptions, foo);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
     }
 }

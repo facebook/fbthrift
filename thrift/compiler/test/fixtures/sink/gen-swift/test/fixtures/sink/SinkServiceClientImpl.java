@@ -7,17 +7,67 @@
 
 package test.fixtures.sink;
 
+import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
+import com.facebook.swift.transport.client.RpcOptions;
 import java.io.*;
+import java.lang.reflect.Method;
 import java.util.*;
 
 @SwiftGenerated
-public class SinkServiceClientImpl implements SinkService {
+public class SinkServiceClientImpl extends AbstractThriftClient implements SinkService {
+
+
+    // Method Handlers
+    private ThriftMethodHandler methodMethodHandler;
+    private ThriftMethodHandler methodAndReponseMethodHandler;
+    private ThriftMethodHandler methodThrowMethodHandler;
+    private ThriftMethodHandler methodSinkThrowMethodHandler;
+    private ThriftMethodHandler methodFinalThrowMethodHandler;
+    private ThriftMethodHandler methodBothThrowMethodHandler;
+
+    // Method Exceptions
+    private static final Class[] methodExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] methodAndReponseExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] methodThrowExceptions = new Class[] {
+        test.fixtures.sink.InitialException.class, org.apache.thrift.TException.class};
+    private static final Class[] methodSinkThrowExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] methodFinalThrowExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] methodBothThrowExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+
+    public SinkServiceClientImpl(
+        RequestChannel channel,
+        Map<Method, ThriftMethodHandler> methods,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        List<? extends ThriftClientEventHandler> eventHandlers) {
+      super(channel, headers, persistentHeaders, eventHandlers);
+
+      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
+      methods.forEach(
+          (key, value) -> {
+            methodHandlerMap.put(key.getName(), value);
+          });
+
+      // Set method handlers
+      methodMethodHandler = methodHandlerMap.get("method");
+      methodAndReponseMethodHandler = methodHandlerMap.get("methodAndReponse");
+      methodThrowMethodHandler = methodHandlerMap.get("methodThrow");
+      methodSinkThrowMethodHandler = methodHandlerMap.get("methodSinkThrow");
+      methodFinalThrowMethodHandler = methodHandlerMap.get("methodFinalThrow");
+      methodBothThrowMethodHandler = methodHandlerMap.get("methodBothThrow");
+    }
 
     @Override
     public void close() {
-      throw new RuntimeException("No implemented");
+        super.close();
     }
+
 
 }

@@ -7,58 +7,251 @@
 
 package test.fixtures.basicannotations;
 
+import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
+import com.facebook.swift.transport.client.RpcOptions;
 import java.io.*;
+import java.lang.reflect.Method;
 import java.util.*;
 
 @SwiftGenerated
-public class MyServiceClientImpl implements MyService {
+public class MyServiceClientImpl extends AbstractThriftClient implements MyService {
+
+
+    // Method Handlers
+    private ThriftMethodHandler pingMethodHandler;
+    private ThriftMethodHandler getRandomDataMethodHandler;
+    private ThriftMethodHandler hasDataByIdMethodHandler;
+    private ThriftMethodHandler getDataByIdMethodHandler;
+    private ThriftMethodHandler putDataByIdMethodHandler;
+    private ThriftMethodHandler lobDataByIdMethodHandler;
+    private ThriftMethodHandler doNothingMethodHandler;
+
+    // Method Exceptions
+    private static final Class[] pingExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] getRandomDataExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] hasDataByIdExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] getDataByIdExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] putDataByIdExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] lobDataByIdExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] doNothingExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+
+    public MyServiceClientImpl(
+        RequestChannel channel,
+        Map<Method, ThriftMethodHandler> methods,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        List<? extends ThriftClientEventHandler> eventHandlers) {
+      super(channel, headers, persistentHeaders, eventHandlers);
+
+      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
+      methods.forEach(
+          (key, value) -> {
+            methodHandlerMap.put(key.getName(), value);
+          });
+
+      // Set method handlers
+      pingMethodHandler = methodHandlerMap.get("ping");
+      getRandomDataMethodHandler = methodHandlerMap.get("getRandomData");
+      hasDataByIdMethodHandler = methodHandlerMap.get("hasDataById");
+      getDataByIdMethodHandler = methodHandlerMap.get("getDataById");
+      putDataByIdMethodHandler = methodHandlerMap.get("putDataById");
+      lobDataByIdMethodHandler = methodHandlerMap.get("lobDataById");
+      doNothingMethodHandler = methodHandlerMap.get("doNothing");
+    }
 
     @Override
     public void close() {
-      throw new RuntimeException("No implemented");
+        super.close();
     }
 
 
     @Override
     public void ping() throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+      try {
+        execute(pingMethodHandler, pingExceptions);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
     }
 
     @Override
     public String getRandomData() throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+      try {
+        return (String) execute(getRandomDataMethodHandler, getRandomDataExceptions);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
     }
 
     @Override
     public boolean hasDataById(
         long id) throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+      try {
+        return (boolean) execute(hasDataByIdMethodHandler, hasDataByIdExceptions, id);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
     }
 
     @Override
     public String getDataById(
         long id) throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+      try {
+        return (String) execute(getDataByIdMethodHandler, getDataByIdExceptions, id);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
     }
 
     @Override
     public void putDataById(
         long id,
         String data) throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+      try {
+        execute(putDataByIdMethodHandler, putDataByIdExceptions, id, data);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
     }
 
     @Override
     public void lobDataById(
         long id,
         String data) throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+      try {
+        execute(lobDataByIdMethodHandler, lobDataByIdExceptions, id, data);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
     }
 
     @Override
     public void doNothing() throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+      try {
+        execute(doNothingMethodHandler, doNothingExceptions);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+
+    public void ping(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        executeWithOptions(pingMethodHandler, pingExceptions, rpcOptions);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+    public String getRandomData(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        return (String) executeWithOptions(getRandomDataMethodHandler, getRandomDataExceptions, rpcOptions);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+    public boolean hasDataById(
+        long id,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        return (boolean) executeWithOptions(hasDataByIdMethodHandler, hasDataByIdExceptions, rpcOptions, id);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+    public String getDataById(
+        long id,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        return (String) executeWithOptions(getDataByIdMethodHandler, getDataByIdExceptions, rpcOptions, id);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+    public void putDataById(
+        long id,
+        String data,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        executeWithOptions(putDataByIdMethodHandler, putDataByIdExceptions, rpcOptions, id, data);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+    public void lobDataById(
+        long id,
+        String data,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        executeWithOptions(lobDataByIdMethodHandler, lobDataByIdExceptions, rpcOptions, id, data);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+    public void doNothing(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        executeWithOptions(doNothingMethodHandler, doNothingExceptions, rpcOptions);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
     }
 }

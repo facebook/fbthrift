@@ -7,22 +7,71 @@
 
 package test.fixtures.basicannotations;
 
+import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
+import com.facebook.swift.transport.client.RpcOptions;
 import java.io.*;
+import java.lang.reflect.Method;
 import java.util.*;
 
 @SwiftGenerated
 public class MyServicePrioChildClientImpl extends test.fixtures.basicannotations.MyServicePrioParentClientImpl implements MyServicePrioChild {
 
+
+    // Method Handlers
+    private ThriftMethodHandler pangMethodHandler;
+
+    // Method Exceptions
+    private static final Class[] pangExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+
+    public MyServicePrioChildClientImpl(
+        RequestChannel channel,
+        Map<Method, ThriftMethodHandler> methods,
+        Map<String, String> headers,
+        Map<String, String> persistentHeaders,
+        List<? extends ThriftClientEventHandler> eventHandlers) {
+      super(channel, methods, headers, persistentHeaders, eventHandlers);
+
+      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
+      methods.forEach(
+          (key, value) -> {
+            methodHandlerMap.put(key.getName(), value);
+          });
+
+      // Set method handlers
+      pangMethodHandler = methodHandlerMap.get("pang");
+    }
+
     @Override
     public void close() {
-      throw new RuntimeException("No implemented");
+        super.close();
     }
 
 
     @Override
     public void pang() throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+      try {
+        execute(pangMethodHandler, pangExceptions);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+
+    public void pang(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        executeWithOptions(pangMethodHandler, pangExceptions, rpcOptions);
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
     }
 }
