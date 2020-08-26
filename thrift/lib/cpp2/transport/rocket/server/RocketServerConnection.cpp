@@ -25,6 +25,7 @@
 #include <folly/MapUtil.h>
 #include <folly/Overload.h>
 #include <folly/ScopeGuard.h>
+#include <folly/Utility.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/AsyncTransport.h>
@@ -594,16 +595,20 @@ void RocketServerConnection::writeErr(
     frameHandler_->requestComplete();
   }
 
+  const auto ew = folly::make_exception_wrapper<transport::TTransportException>(
+      transport::TTransportException::UNKNOWN,
+      fmt::format(
+          "Failed to write to remote endpoint. Wrote {} bytes."
+          " AsyncSocketException: {}",
+          bytesWritten,
+          ex.what()));
+
   for (auto& cb : context.sendCallbacks) {
-    cb.release()->messageSendError(ex);
+    cb.release()->messageSendError(folly::copy(ew));
   }
 
   inflightWritesQueue_.pop();
-  close(folly::make_exception_wrapper<std::runtime_error>(fmt::format(
-      "Failed to write to remote endpoint. Wrote {} bytes."
-      " AsyncSocketException: {}",
-      bytesWritten,
-      ex.what())));
+  close(ew);
 }
 
 void RocketServerConnection::scheduleStreamTimeout(
