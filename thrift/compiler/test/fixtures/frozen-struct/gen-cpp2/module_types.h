@@ -139,6 +139,8 @@ class ModuleA final  {
 
  public:
   using __fbthrift_cpp2_type = ModuleA;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -447,6 +449,8 @@ class ModuleB final  {
 
  public:
   using __fbthrift_cpp2_type = ModuleB;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:

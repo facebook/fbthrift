@@ -87,6 +87,8 @@ class Mixin1 final  {
 
  public:
   using __fbthrift_cpp2_type = Mixin1;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -210,6 +212,8 @@ class Mixin2 final  {
 
  public:
   using __fbthrift_cpp2_type = Mixin2;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -374,6 +378,8 @@ class Mixin3Base final  {
 
  public:
   using __fbthrift_cpp2_type = Mixin3Base;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -497,6 +503,8 @@ class Foo final  {
 
  public:
   using __fbthrift_cpp2_type = Foo;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:

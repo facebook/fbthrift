@@ -51,6 +51,8 @@ class Foo final  {
 
  public:
   using __fbthrift_cpp2_type = Foo;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:

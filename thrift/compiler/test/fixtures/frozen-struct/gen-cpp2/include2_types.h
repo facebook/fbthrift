@@ -56,6 +56,8 @@ class IncludedB final  {
 
  public:
   using __fbthrift_cpp2_type = IncludedB;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:

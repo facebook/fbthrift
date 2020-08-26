@@ -47,6 +47,8 @@ class Empty final  {
 
  public:
   using __fbthrift_cpp2_type = Empty;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -123,6 +125,8 @@ class Nada final  {
 
  public:
   using __fbthrift_cpp2_type = Nada;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    true;
 
 
  public:

@@ -112,6 +112,8 @@ class AStruct final  {
 
  public:
   using __fbthrift_cpp2_type = AStruct;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -231,6 +233,8 @@ class AStructB final  {
 
  public:
   using __fbthrift_cpp2_type = AStructB;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:

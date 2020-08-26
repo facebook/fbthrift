@@ -1090,6 +1090,8 @@ class union1 final  {
 
  public:
   using __fbthrift_cpp2_type = union1;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    true;
 
 
  public:
@@ -1497,6 +1499,8 @@ class union2 final  {
 
  public:
   using __fbthrift_cpp2_type = union2;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    true;
 
 
  public:
@@ -1904,6 +1908,8 @@ class union3 final  {
 
  public:
   using __fbthrift_cpp2_type = union3;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    true;
 
 
  public:
@@ -2311,6 +2317,8 @@ class structA final  {
 
  public:
   using __fbthrift_cpp2_type = structA;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -2472,6 +2480,8 @@ class unionA final  {
 
  public:
   using __fbthrift_cpp2_type = unionA;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    true;
 
 
  public:
@@ -2956,6 +2966,8 @@ class structB final  {
 
  public:
   using __fbthrift_cpp2_type = structB;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -3113,6 +3125,8 @@ class structC final  {
 
  public:
   using __fbthrift_cpp2_type = structC;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -4289,6 +4303,8 @@ class struct1 final  {
 
  public:
   using __fbthrift_cpp2_type = struct1;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -4587,6 +4603,8 @@ class struct2 final  {
 
  public:
   using __fbthrift_cpp2_type = struct2;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -4933,6 +4951,8 @@ class struct3 final  {
 
  public:
   using __fbthrift_cpp2_type = struct3;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -5675,6 +5695,8 @@ class struct4 final  {
 
  public:
   using __fbthrift_cpp2_type = struct4;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -5880,6 +5902,8 @@ class struct5 final  {
 
  public:
   using __fbthrift_cpp2_type = struct5;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -6147,6 +6171,8 @@ class struct_binary final  {
 
  public:
   using __fbthrift_cpp2_type = struct_binary;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -6270,6 +6296,8 @@ class dep_A_struct final  {
 
  public:
   using __fbthrift_cpp2_type = dep_A_struct;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -6461,6 +6489,8 @@ class dep_B_struct final  {
 
  public:
   using __fbthrift_cpp2_type = dep_B_struct;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -6652,6 +6682,8 @@ class annotated final  {
 
  public:
   using __fbthrift_cpp2_type = annotated;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -6771,6 +6803,8 @@ class union_with_special_names final  {
 
  public:
   using __fbthrift_cpp2_type = union_with_special_names;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    true;
 
 
  public:
@@ -8676,6 +8710,8 @@ class struct_with_special_names final  {
 
  public:
   using __fbthrift_cpp2_type = struct_with_special_names;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -9821,6 +9857,8 @@ class struct_with_indirections final  {
 
  public:
   using __fbthrift_cpp2_type = struct_with_indirections;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:

@@ -46,6 +46,8 @@ class FooEx final : public apache::thrift::TException {
 
  public:
   using __fbthrift_cpp2_type = FooEx;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:

@@ -166,6 +166,8 @@ class MyStructNestedAnnotation final  {
 
  public:
   using __fbthrift_cpp2_type = MyStructNestedAnnotation;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -289,6 +291,8 @@ class MyStructAnnotation final  {
 
  public:
   using __fbthrift_cpp2_type = MyStructAnnotation;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -529,6 +533,8 @@ class MyStruct final  {
 
  public:
   using __fbthrift_cpp2_type = MyStruct;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -861,6 +867,8 @@ class SecretStruct final  {
 
  public:
   using __fbthrift_cpp2_type = SecretStruct;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:

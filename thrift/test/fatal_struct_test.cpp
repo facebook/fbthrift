@@ -45,6 +45,28 @@ using required =
 namespace test_cpp2 {
 namespace cpp_reflection {
 
+using apache::thrift::detail::st::IsThriftClass;
+using apache::thrift::detail::st::IsThriftUnion;
+
+static_assert(IsThriftClass<union1>::value);
+static_assert(IsThriftClass<union2>::value);
+static_assert(IsThriftClass<union3>::value);
+static_assert(IsThriftClass<struct1>::value);
+static_assert(IsThriftClass<struct2>::value);
+static_assert(IsThriftClass<struct3>::value);
+static_assert(!IsThriftClass<enum1>::value);
+static_assert(!IsThriftClass<enum2>::value);
+static_assert(!IsThriftClass<enum3>::value);
+static_assert(IsThriftUnion<union1>::value);
+static_assert(IsThriftUnion<union2>::value);
+static_assert(IsThriftUnion<union3>::value);
+static_assert(!IsThriftUnion<struct1>::value);
+static_assert(!IsThriftUnion<struct2>::value);
+static_assert(!IsThriftUnion<struct3>::value);
+static_assert(!IsThriftUnion<enum1>::value);
+static_assert(!IsThriftUnion<enum2>::value);
+static_assert(!IsThriftUnion<enum3>::value);
+
 TEST(fatal_struct, struct1_sanity_check) {
   using traits = apache::thrift::reflect_struct<struct1>;
 

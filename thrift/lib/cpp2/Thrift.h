@@ -23,6 +23,7 @@
 #include <thrift/lib/cpp2/OptionalField.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 
+#include <folly/Traits.h>
 #include <initializer_list>
 #include <utility>
 
@@ -61,6 +62,13 @@ struct IsThriftClass : std::false_type {};
 template <typename T>
 struct IsThriftClass<T, folly::void_t<typename T::__fbthrift_cpp2_type>>
     : std::true_type {};
+
+template <typename T, typename = void>
+struct IsThriftUnion : std::false_type {};
+
+template <typename T>
+struct IsThriftUnion<T, folly::void_t<typename T::__fbthrift_cpp2_type>>
+    : folly::bool_constant<T::__fbthrift_cpp2_is_union> {};
 
 } // namespace st
 } // namespace detail

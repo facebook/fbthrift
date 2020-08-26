@@ -87,6 +87,8 @@ class InitialResponse final  {
 
  public:
   using __fbthrift_cpp2_type = InitialResponse;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -210,6 +212,8 @@ class FinalResponse final  {
 
  public:
   using __fbthrift_cpp2_type = FinalResponse;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -333,6 +337,8 @@ class SinkPayload final  {
 
  public:
   using __fbthrift_cpp2_type = SinkPayload;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -456,6 +462,8 @@ class CompatibleWithKeywordSink final  {
 
  public:
   using __fbthrift_cpp2_type = CompatibleWithKeywordSink;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -579,6 +587,8 @@ class InitialException final : public apache::thrift::TException {
 
  public:
   using __fbthrift_cpp2_type = InitialException;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -706,6 +716,8 @@ class SinkException1 final : public apache::thrift::TException {
 
  public:
   using __fbthrift_cpp2_type = SinkException1;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -833,6 +845,8 @@ class SinkException2 final : public apache::thrift::TException {
 
  public:
   using __fbthrift_cpp2_type = SinkException2;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:

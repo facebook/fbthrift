@@ -80,6 +80,8 @@ class Banal final : public apache::thrift::TException {
 
  public:
   using __fbthrift_cpp2_type = Banal;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -160,6 +162,8 @@ class Fiery final : public apache::thrift::TException {
 
  public:
   using __fbthrift_cpp2_type = Fiery;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -283,6 +287,8 @@ class Serious final : public apache::thrift::TException {
 
  public:
   using __fbthrift_cpp2_type = Serious;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -417,6 +423,8 @@ class ComplexFieldNames final : public apache::thrift::TException {
 
  public:
   using __fbthrift_cpp2_type = ComplexFieldNames;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -592,6 +600,8 @@ class CustomFieldNames final : public apache::thrift::TException {
 
  public:
   using __fbthrift_cpp2_type = CustomFieldNames;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:

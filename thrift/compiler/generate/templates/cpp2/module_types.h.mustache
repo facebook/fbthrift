@@ -79,6 +79,8 @@ class <%struct:name%> <%!
 
  public:
   using __fbthrift_cpp2_type = <%struct:name%>;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    <%#struct:union?%>true<%/struct:union?%><%^struct:union?%>false<%/struct:union?%>;
 
 <%#struct:cpp_allocator%>
  public:

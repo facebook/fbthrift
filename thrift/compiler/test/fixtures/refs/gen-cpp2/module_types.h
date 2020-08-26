@@ -279,6 +279,8 @@ class MyUnion final  {
 
  public:
   using __fbthrift_cpp2_type = MyUnion;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    true;
 
 
  public:
@@ -560,6 +562,8 @@ class MyField final  {
 
  public:
   using __fbthrift_cpp2_type = MyField;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -753,6 +757,8 @@ class MyStruct final  {
 
  public:
   using __fbthrift_cpp2_type = MyStruct;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -870,6 +876,8 @@ class StructWithUnion final  {
 
  public:
   using __fbthrift_cpp2_type = StructWithUnion;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -1037,6 +1045,8 @@ class RecursiveStruct final  {
 
  public:
   using __fbthrift_cpp2_type = RecursiveStruct;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -1155,6 +1165,8 @@ class StructWithContainers final  {
 
  public:
   using __fbthrift_cpp2_type = StructWithContainers;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -1313,6 +1325,8 @@ class StructWithSharedConst final  {
 
  public:
   using __fbthrift_cpp2_type = StructWithSharedConst;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -1432,6 +1446,8 @@ class Empty final  {
 
  public:
   using __fbthrift_cpp2_type = Empty;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -1508,6 +1524,8 @@ class StructWithRef final  {
 
  public:
   using __fbthrift_cpp2_type = StructWithRef;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -1625,6 +1643,8 @@ class StructWithRefTypeUnique final  {
 
  public:
   using __fbthrift_cpp2_type = StructWithRefTypeUnique;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -1742,6 +1762,8 @@ class StructWithRefTypeShared final  {
 
  public:
   using __fbthrift_cpp2_type = StructWithRefTypeShared;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -1861,6 +1883,8 @@ class StructWithRefTypeSharedConst final  {
 
  public:
   using __fbthrift_cpp2_type = StructWithRefTypeSharedConst;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -1980,6 +2004,8 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor final  {
 
  public:
   using __fbthrift_cpp2_type = StructWithRefAndAnnotCppNoexceptMoveCtor;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:

@@ -112,6 +112,8 @@ class containerStruct2 final  {
 
  public:
   using __fbthrift_cpp2_type = containerStruct2;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:

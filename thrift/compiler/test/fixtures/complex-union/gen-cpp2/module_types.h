@@ -151,6 +151,8 @@ class ComplexUnion final  {
 
  public:
   using __fbthrift_cpp2_type = ComplexUnion;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    true;
 
 
  public:
@@ -740,6 +742,8 @@ class ListUnion final  {
 
  public:
   using __fbthrift_cpp2_type = ListUnion;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    true;
 
 
  public:
@@ -1035,6 +1039,8 @@ class DataUnion final  {
 
  public:
   using __fbthrift_cpp2_type = DataUnion;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    true;
 
 
  public:
@@ -1330,6 +1336,8 @@ class Val final  {
 
  public:
   using __fbthrift_cpp2_type = Val;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -1527,6 +1535,8 @@ class ValUnion final  {
 
  public:
   using __fbthrift_cpp2_type = ValUnion;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    true;
 
 
  public:
@@ -1822,6 +1832,8 @@ class VirtualComplexUnion  {
 
  public:
   using __fbthrift_cpp2_type = VirtualComplexUnion;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    true;
 
 
  public:
@@ -2118,6 +2130,8 @@ class NonCopyableStruct final  {
 
  public:
   using __fbthrift_cpp2_type = NonCopyableStruct;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
 
 
  public:
@@ -2232,6 +2246,8 @@ class NonCopyableUnion final  {
 
  public:
   using __fbthrift_cpp2_type = NonCopyableUnion;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    true;
 
 
  public:
