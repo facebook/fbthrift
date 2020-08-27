@@ -584,7 +584,7 @@ void RocketServerConnection::writeSuccess() noexcept {
 }
 
 void RocketServerConnection::writeErr(
-    size_t bytesWritten,
+    size_t /* bytesWritten */,
     const folly::AsyncSocketException& ex) noexcept {
   DestructorGuard dg(this);
   DCHECK(!inflightWritesQueue_.empty());
@@ -595,20 +595,14 @@ void RocketServerConnection::writeErr(
     frameHandler_->requestComplete();
   }
 
-  const auto ew = folly::make_exception_wrapper<transport::TTransportException>(
-      transport::TTransportException::UNKNOWN,
-      fmt::format(
-          "Failed to write to remote endpoint. Wrote {} bytes."
-          " AsyncSocketException: {}",
-          bytesWritten,
-          ex.what()));
+  auto ew = folly::make_exception_wrapper<transport::TTransportException>(ex);
 
   for (auto& cb : context.sendCallbacks) {
     cb.release()->messageSendError(folly::copy(ew));
   }
 
   inflightWritesQueue_.pop();
-  close(ew);
+  close(std::move(ew));
 }
 
 void RocketServerConnection::scheduleStreamTimeout(
