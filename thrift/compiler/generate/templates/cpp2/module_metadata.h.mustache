@@ -62,9 +62,9 @@ class StructMetadata<<% > common/namespace_cpp2%><%struct:name%>> {
 <%^program:gen_metadata?%>
 template <>
 class StructMetadata<<% > common/namespace_cpp2%><%struct:name%>>
-    : private EmptyMetadata {
+    : private EmptyStructMetadata {
  public:
-  using EmptyMetadata::gen;
+  using EmptyStructMetadata::gen;
 };
 <%/program:gen_metadata?%>
 <%/program:structs%>

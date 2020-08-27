@@ -31,6 +31,15 @@ class EmptyMetadata {
  protected:
   FOLLY_ERASE static void gen(ThriftMetadata&) {}
 };
+
+class EmptyStructMetadata {
+ protected:
+  FOLLY_ERASE static const ::apache::thrift::metadata::ThriftStruct gen(
+      ThriftMetadata&) {
+    return {};
+  }
+};
+
 class EmptyServiceMetadata {
  protected:
   FOLLY_ERASE static void gen(ThriftMetadata&, ThriftServiceContext&) {}

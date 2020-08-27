@@ -17,9 +17,10 @@
 #pragma once
 
 #include <folly/Indestructible.h>
-#include <folly/Overload.h>
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
+
+#include <array>
 
 namespace apache {
 namespace thrift {
@@ -36,14 +37,7 @@ namespace detail {
 template <class T>
 const auto& get_struct_metadata() {
   static const folly::Indestructible<metadata::ThriftStruct> data =
-      folly::overload(
-          [](void (*)(metadata::ThriftMetadata&)) {
-            return metadata::ThriftStruct{};
-          },
-          [](auto gen) {
-            metadata::ThriftMetadata metadata;
-            return gen(metadata);
-          })(md::StructMetadata<T>::gen);
+      md::StructMetadata<T>::gen(std::array{metadata::ThriftMetadata{}}[0]);
   return *data;
 } // namespace detail
 
