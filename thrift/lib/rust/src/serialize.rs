@@ -17,6 +17,7 @@
 use crate::protocol::ProtocolWriter;
 use crate::ttype::GetTType;
 use bytes::Bytes;
+use ordered_float::OrderedFloat;
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 use std::hash::Hash;
 use std::sync::Arc;
@@ -135,6 +136,26 @@ where
     #[inline]
     fn write(&self, p: &mut P) {
         p.write_float(*self)
+    }
+}
+
+impl<P> Serialize<P> for OrderedFloat<f64>
+where
+    P: ProtocolWriter,
+{
+    #[inline]
+    fn write(&self, p: &mut P) {
+        p.write_double(self.0)
+    }
+}
+
+impl<P> Serialize<P> for OrderedFloat<f32>
+where
+    P: ProtocolWriter,
+{
+    #[inline]
+    fn write(&self, p: &mut P) {
+        p.write_float(self.0)
     }
 }
 

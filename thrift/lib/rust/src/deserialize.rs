@@ -17,6 +17,7 @@
 use crate::protocol::ProtocolReader;
 use crate::Result;
 use bytes::Bytes;
+use ordered_float::OrderedFloat;
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 use std::hash::Hash;
 use std::sync::Arc;
@@ -129,6 +130,26 @@ where
     #[inline]
     fn read(p: &mut P) -> Result<Self> {
         p.read_float()
+    }
+}
+
+impl<P> Deserialize<P> for OrderedFloat<f64>
+where
+    P: ProtocolReader,
+{
+    #[inline]
+    fn read(p: &mut P) -> Result<Self> {
+        p.read_double().map(OrderedFloat)
+    }
+}
+
+impl<P> Deserialize<P> for OrderedFloat<f32>
+where
+    P: ProtocolReader,
+{
+    #[inline]
+    fn read(p: &mut P) -> Result<Self> {
+        p.read_float().map(OrderedFloat)
     }
 }
 

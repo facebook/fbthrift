@@ -700,8 +700,8 @@ class mstch_rust_value : public mstch_base {
             {"value:boolValue", &mstch_rust_value::bool_value},
             {"value:integer?", &mstch_rust_value::is_integer},
             {"value:integerValue", &mstch_rust_value::integer_value},
-            {"value:double?", &mstch_rust_value::is_double},
-            {"value:doubleValue", &mstch_rust_value::double_value},
+            {"value:floatingPoint?", &mstch_rust_value::is_floating_point},
+            {"value:floatingPointValue", &mstch_rust_value::floating_point_value},
             {"value:string?", &mstch_rust_value::is_string},
             {"value:binary?", &mstch_rust_value::is_binary},
             {"value:quoted", &mstch_rust_value::string_quoted},
@@ -763,10 +763,10 @@ class mstch_rust_value : public mstch_base {
   mstch::node integer_value() {
     return std::to_string(const_value_->get_integer());
   }
-  mstch::node is_double() {
+  mstch::node is_floating_point() {
     return type_->is_float() || type_->is_double();
   }
-  mstch::node double_value() {
+  mstch::node floating_point_value() {
     std::ostringstream oss;
     oss << std::setprecision(std::numeric_limits<double>::digits10);
     oss << const_value_->get_double();

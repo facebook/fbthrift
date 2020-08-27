@@ -51,14 +51,20 @@
     }}{{#type:rust}}::{{type:rust}}{{/type:rust}}{{!
     }}{{^type:rust}}::std::collections::BTreeSet{{/type:rust}}{{!
     }}<{{!
-        }}{{#type:setElemType}}{{>lib/type}}{{/type:setElemType}}{{!
+        }}{{#type:setElemType}}{{!
+        }}{{#type:floating_point?}}::fbthrift::export::OrderedFloat<{{>lib/type}}>{{/type:floating_point?}}{{!
+        }}{{^type:floating_point?}}{{>lib/type}}{{/type:floating_point?}}{{!
+        }}{{/type:setElemType}}{{!
     }}>{{!
 }}{{/type:set?}}{{!
 }}{{#type:map?}}{{!
     }}{{#type:rust}}::{{type:rust}}{{/type:rust}}{{!
     }}{{^type:rust}}::std::collections::BTreeMap{{/type:rust}}{{!
     }}<{{!
-        }}{{#type:keyType}}{{>lib/type}}{{/type:keyType}}, {{!
+        }}{{#type:keyType}}{{!
+        }}{{#type:floating_point?}}::fbthrift::export::OrderedFloat<{{>lib/type}}>{{/type:floating_point?}}{{!
+        }}{{^type:floating_point?}}{{>lib/type}}{{/type:floating_point?}}{{!
+        }}{{/type:keyType}}, {{!
         }}{{#type:valueType}}{{>lib/type}}{{/type:valueType}}{{!
     }}>{{!
 }}{{/type:map?}}{{!

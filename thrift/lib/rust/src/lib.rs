@@ -42,6 +42,7 @@ pub mod application_exception;
 pub mod binary_protocol;
 pub mod compact_protocol;
 pub mod deserialize;
+pub mod export;
 pub mod framing;
 pub mod processor;
 pub mod serialize;

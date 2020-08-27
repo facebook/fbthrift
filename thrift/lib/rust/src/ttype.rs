@@ -17,6 +17,7 @@
 use crate::errors::ProtocolError;
 use crate::Result;
 use bytes::Bytes;
+use ordered_float::OrderedFloat;
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap, HashSet},
     convert::TryFrom,
@@ -143,6 +144,14 @@ impl GetTType for f64 {
 }
 
 impl GetTType for f32 {
+    const TTYPE: TType = TType::Float;
+}
+
+impl GetTType for OrderedFloat<f64> {
+    const TTYPE: TType = TType::Double;
+}
+
+impl GetTType for OrderedFloat<f32> {
     const TTYPE: TType = TType::Float;
 }
 

@@ -22,7 +22,7 @@
 }}{{/value:newtype?}}{{!
 }}{{#value:bool?}}{{value:boolValue}}{{/value:bool?}}{{!
 }}{{#value:integer?}}{{value:integerValue}}{{/value:integer?}}{{!
-}}{{#value:double?}}{{value:doubleValue}}{{/value:double?}}{{!
+}}{{#value:floatingPoint?}}{{value:floatingPointValue}}{{/value:floatingPoint?}}{{!
 }}{{#value:string?}}{{!
     }}{{#value:empty?}}::std::string::String::new(){{/value:empty?}}{{!
     }}{{^value:empty?}}{{value:quoted}}.to_owned(){{/value:empty?}}{{!
@@ -54,7 +54,12 @@
                 }}{{^type:rust}}::std::collections::BTreeSet{{/type:rust}}{{!
             }}::new();{{!
             }}{{#value:setMembers}}
-        {{value:indent}}set.insert({{>lib/value}});{{!
+        {{value:indent}}set.insert({{!
+            }}{{#value:floatingPoint?}}{{!
+                }}::fbthrift::export::OrderedFloat({{>lib/value}}){{!
+            }}{{/value:floatingPoint?}}{{!
+            }}{{^value:floatingPoint?}}{{>lib/value}}{{/value:floatingPoint?}}{{!
+        }});{{!
             }}{{/value:setMembers}}
             {{value:indent}}set
         {{value:indent}}}{{!
@@ -74,7 +79,12 @@
             }}::new();{{!
             }}{{#value:mapEntries}}
             {{value:indent}}map.insert({{!
-                }}{{#entry:key}}{{>lib/value}}{{/entry:key}}, {{!
+                }}{{#entry:key}}{{!
+                    }}{{#value:floatingPoint?}}{{!
+                        }}::fbthrift::export::OrderedFloat({{>lib/value}}){{!
+                    }}{{/value:floatingPoint?}}{{!
+                    }}{{^value:floatingPoint?}}{{>lib/value}}{{/value:floatingPoint?}}{{!
+                }}{{/entry:key}}, {{!
                 }}{{#entry:value}}{{>lib/value}}{{/entry:value}}{{!
             }});{{!
             }}{{/value:mapEntries}}
