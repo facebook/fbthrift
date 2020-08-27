@@ -192,7 +192,8 @@ void HeaderClientChannel::sendRequestResponse(
   try {
     setBaseReceivedCallback(); // Cpp2Channel->setReceiveCallback can throw
   } catch (const TTransportException& ex) {
-    twcb->messageSendError(ex);
+    twcb->messageSendError(
+        folly::exception_wrapper(std::current_exception(), ex));
     return;
   }
 
