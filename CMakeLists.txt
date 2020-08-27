@@ -59,18 +59,9 @@ set(CMAKE_MODULE_PATH
 # Find required dependencies
 find_package(OpenSSL REQUIRED)
 
-# Provide an option to control the -std argument for the C++ compiler.
-# We don't use CMAKE_CXX_STANDARD since it requires at least CMake 3.8
-# to support C++17.
-set(CXX_STD "gnu++1z"
-  CACHE STRING
-  "The C++ standard argument to pass to the compiler. Defaults to gnu++1z."
-)
-mark_as_advanced(CXX_STD)
-if("${CMAKE_CXX_COMPILER_ID}" MATCHES Clang
-    OR "${CMAKE_CXX_COMPILER_ID}" MATCHES GNU)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=${CXX_STD}")
-endif()
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Enable modular builds
 option(compiler_only "Build the Thrift Compiler only" OFF)
