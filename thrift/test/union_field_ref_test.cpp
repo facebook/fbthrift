@@ -161,6 +161,84 @@ TEST(UnionFieldTest, const_union) {
     EXPECT_EQ(a.str_ref().value(), str);
   }
 }
+TEST(UnionFieldTest, emplace) {
+  DuplicateType a;
+
+  EXPECT_EQ(a.str1_ref().emplace(5, '0'), "00000");
+  EXPECT_EQ(*a.str1_ref(), "00000");
+  EXPECT_TRUE(a.str1_ref().has_value());
+
+  EXPECT_EQ(a.str2_ref().emplace({'1', '2', '3', '4', '5'}), "12345");
+  EXPECT_EQ(*a.str2_ref(), "12345");
+  EXPECT_TRUE(a.str2_ref().has_value());
+
+  const vector<int32_t> list_i32 = {3, 1, 2};
+  EXPECT_EQ(a.list_i32_ref().emplace(list_i32), list_i32);
+  EXPECT_EQ(*a.list_i32_ref(), list_i32);
+  EXPECT_TRUE(a.list_i32_ref().has_value());
+}
+
+TEST(UnionFieldTest, ensure) {
+  Basic a;
+
+  EXPECT_FALSE(a.str_ref());
+  EXPECT_EQ(a.str_ref().ensure(), "");
+  EXPECT_TRUE(a.str_ref());
+  EXPECT_EQ(a.str_ref().emplace("123"), "123");
+  EXPECT_EQ(a.str_ref().ensure(), "123");
+  EXPECT_EQ(*a.str_ref(), "123");
+
+  EXPECT_EQ(a.int64_ref().ensure(), 0);
+  EXPECT_FALSE(a.str_ref());
+}
+
+TEST(UnionFieldTest, member_of_pointer_operator) {
+  Basic a;
+  EXPECT_THROW(a.list_i32_ref()->push_back(3), bad_field_access);
+  a.list_i32_ref().emplace({1, 2});
+  a.list_i32_ref()->push_back(3);
+  EXPECT_EQ(a.list_i32_ref(), (vector<int32_t>{1, 2, 3}));
+}
+
+TEST(UnionFieldTest, comparison) {
+  auto test = [](auto i) {
+    Basic a;
+    auto ref = a.int64_ref();
+
+    ref = i;
+
+    EXPECT_LE(ref, i + 1);
+    EXPECT_LE(ref, i);
+    EXPECT_LE(i, ref);
+    EXPECT_LE(i - 1, ref);
+
+    EXPECT_LT(ref, i + 1);
+    EXPECT_LT(i - 1, ref);
+
+    EXPECT_GT(ref, i - 1);
+    EXPECT_GT(i + 1, ref);
+
+    EXPECT_GE(ref, i - 1);
+    EXPECT_GE(ref, i);
+    EXPECT_GE(i, ref);
+    EXPECT_GE(i + 1, ref);
+
+    EXPECT_EQ(ref, i);
+    EXPECT_EQ(i, ref);
+
+    EXPECT_NE(ref, i - 1);
+    EXPECT_NE(i - 1, ref);
+  };
+
+  {
+    SCOPED_TRACE("same type");
+    test(int64_t(10));
+  }
+  {
+    SCOPED_TRACE("different type");
+    test('a');
+  }
+}
 } // namespace test
 } // namespace thrift
 } // namespace apache

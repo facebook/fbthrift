@@ -883,14 +883,24 @@ class union_field_ref {
   // Returns a reference to the value if this is union's active field,
   // bad_field_access otherwise.
   FOLLY_ERASE reference_type value() const {
-    if (!has_value()) {
-      detail::throw_on_bad_field_access();
-    }
+    throw_if_unset();
     return static_cast<reference_type>(value_);
   }
 
   FOLLY_ERASE reference_type operator*() const {
     return value();
+  }
+
+  FOLLY_ERASE value_type* operator->() const {
+    throw_if_unset();
+    return &value_;
+  }
+
+  FOLLY_ERASE reference_type ensure() {
+    if (!has_value()) {
+      emplace();
+    }
+    return static_cast<reference_type>(value_);
   }
 
   template <typename... Args>
@@ -901,13 +911,124 @@ class union_field_ref {
     return value_;
   }
 
+  template <class U, class... Args>
+  FOLLY_ERASE std::enable_if_t<
+      std::is_constructible<value_type, std::initializer_list<U>, Args&&...>::
+          value,
+      value_type&>
+  emplace(std::initializer_list<U> ilist, Args&&... args) {
+    vtable_.reset(owner_);
+    ::new (&value_) value_type(ilist, static_cast<Args&&>(args)...);
+    type_ = field_type_;
+    return value_;
+  }
+
  private:
+  FOLLY_ERASE void throw_if_unset() const {
+    if (!has_value()) {
+      detail::throw_on_bad_field_access();
+    }
+  }
+
   reference_type value_;
   int_t& type_;
   const int field_type_;
   owner owner_;
   vtable const& vtable_;
 };
+
+template <typename T1, typename T2>
+bool operator==(union_field_ref<T1> a, union_field_ref<T2> b) {
+  return a && b ? *a == *b : a.has_value() == b.has_value();
+}
+
+template <typename T1, typename T2>
+bool operator!=(union_field_ref<T1> a, union_field_ref<T2> b) {
+  return !(a == b);
+}
+
+template <typename T1, typename T2>
+bool operator<(union_field_ref<T1> a, union_field_ref<T2> b) {
+  if (a.has_value() != b.has_value()) {
+    return a.has_value() < b.has_value();
+  }
+  return a ? *a < *b : false;
+}
+
+template <typename T1, typename T2>
+bool operator>(union_field_ref<T1> a, union_field_ref<T2> b) {
+  return b < a;
+}
+
+template <typename T1, typename T2>
+bool operator<=(union_field_ref<T1> a, union_field_ref<T2> b) {
+  return !(a > b);
+}
+
+template <typename T1, typename T2>
+bool operator>=(union_field_ref<T1> a, union_field_ref<T2> b) {
+  return !(a < b);
+}
+
+template <typename T, typename U>
+bool operator==(union_field_ref<T> a, const U& b) {
+  return a ? *a == b : false;
+}
+
+template <typename T, typename U>
+bool operator!=(union_field_ref<T> a, const U& b) {
+  return !(a == b);
+}
+
+template <typename T, typename U>
+bool operator==(const U& a, union_field_ref<T> b) {
+  return b == a;
+}
+
+template <typename T, typename U>
+bool operator!=(const U& a, union_field_ref<T> b) {
+  return b != a;
+}
+
+template <typename T, typename U>
+bool operator<(union_field_ref<T> a, const U& b) {
+  return a ? *a < b : true;
+}
+
+template <typename T, typename U>
+bool operator>(union_field_ref<T> a, const U& b) {
+  return a ? *a > b : false;
+}
+
+template <typename T, typename U>
+bool operator<=(union_field_ref<T> a, const U& b) {
+  return !(a > b);
+}
+
+template <typename T, typename U>
+bool operator>=(union_field_ref<T> a, const U& b) {
+  return !(a < b);
+}
+
+template <typename T, typename U>
+bool operator<(const U& a, union_field_ref<T> b) {
+  return b > a;
+}
+
+template <typename T, typename U>
+bool operator<=(const U& a, union_field_ref<T> b) {
+  return b >= a;
+}
+
+template <typename T, typename U>
+bool operator>(const U& a, union_field_ref<T> b) {
+  return b < a;
+}
+
+template <typename T, typename U>
+bool operator>=(const U& a, union_field_ref<T> b) {
+  return b <= a;
+}
 
 } // namespace thrift
 } // namespace apache
