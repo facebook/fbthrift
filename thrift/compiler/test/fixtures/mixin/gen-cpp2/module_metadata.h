@@ -18,22 +18,22 @@ namespace md {
 template <>
 class StructMetadata<::cpp2::Mixin1> {
  public:
-  static void gen(ThriftMetadata& metadata);
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
 class StructMetadata<::cpp2::Mixin2> {
  public:
-  static void gen(ThriftMetadata& metadata);
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
 class StructMetadata<::cpp2::Mixin3Base> {
  public:
-  static void gen(ThriftMetadata& metadata);
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
 class StructMetadata<::cpp2::Foo> {
  public:
-  static void gen(ThriftMetadata& metadata);
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 } // namespace md
 } // namespace detail

@@ -23,17 +23,17 @@ class EnumMetadata<::cpp2::Animal> {
 template <>
 class StructMetadata<::cpp2::Color> {
  public:
-  static void gen(ThriftMetadata& metadata);
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
 class StructMetadata<::cpp2::Vehicle> {
  public:
-  static void gen(ThriftMetadata& metadata);
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
 class StructMetadata<::cpp2::Person> {
  public:
-  static void gen(ThriftMetadata& metadata);
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 } // namespace md
 } // namespace detail

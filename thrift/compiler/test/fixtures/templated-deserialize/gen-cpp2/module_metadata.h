@@ -23,12 +23,12 @@ class EnumMetadata<::cpp2::MyEnumA> {
 template <>
 class StructMetadata<::cpp2::SmallStruct> {
  public:
-  static void gen(ThriftMetadata& metadata);
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
 class StructMetadata<::cpp2::containerStruct> {
  public:
-  static void gen(ThriftMetadata& metadata);
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 } // namespace md
 } // namespace detail

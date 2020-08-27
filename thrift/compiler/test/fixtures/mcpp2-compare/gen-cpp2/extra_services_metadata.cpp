@@ -19,10 +19,11 @@ using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 
-void StructMetadata<::extra::svc::containerStruct2>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::extra::svc::containerStruct2>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("extra_services.containerStruct2", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& extra_services_containerStruct2 = res.first->second;
   extra_services_containerStruct2.name = "extra_services.containerStruct2";
@@ -51,6 +52,7 @@ void StructMetadata<::extra::svc::containerStruct2>::gen(ThriftMetadata& metadat
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     extra_services_containerStruct2.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
 
 void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_simple_function(ThriftMetadata& metadata, ThriftService& service) {

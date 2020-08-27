@@ -45,10 +45,11 @@ void EnumMetadata<<% > common/namespace_cpp2%><%enum:name%>>::gen(ThriftMetadata
 <%/program:enums%>
 
 <%#program:structs%>
-void StructMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("<%program:name%>.<%struct:name%>", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& <%struct:metadata_name%> = res.first->second;
   <%struct:metadata_name%>.name = "<%program:name%>.<%struct:name%>";
@@ -69,6 +70,7 @@ void StructMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftMeta
     <%struct:metadata_name%>.fields.push_back(std::move(field));
   }
 <%/struct:fields?%>
+  return res.first->second;
 }
 <%/program:structs%>
 

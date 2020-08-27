@@ -31,10 +31,11 @@ void EnumMetadata<::a::different::ns::AnEnum>::gen(ThriftMetadata& metadata) {
   }
 }
 
-void StructMetadata<::a::different::ns::AStruct>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::a::different::ns::AStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("includes.AStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& includes_AStruct = res.first->second;
   includes_AStruct.name = "includes.AStruct";
@@ -51,11 +52,13 @@ void StructMetadata<::a::different::ns::AStruct>::gen(ThriftMetadata& metadata) 
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     includes_AStruct.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::a::different::ns::AStructB>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::a::different::ns::AStructB>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("includes.AStructB", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& includes_AStructB = res.first->second;
   includes_AStructB.name = "includes.AStructB";
@@ -72,6 +75,7 @@ void StructMetadata<::a::different::ns::AStructB>::gen(ThriftMetadata& metadata)
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     includes_AStructB.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
 
 } // namespace md

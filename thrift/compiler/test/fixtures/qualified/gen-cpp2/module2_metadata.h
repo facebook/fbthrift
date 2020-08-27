@@ -20,12 +20,12 @@ namespace md {
 template <>
 class StructMetadata<::module2::Struct> {
  public:
-  static void gen(ThriftMetadata& metadata);
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
 class StructMetadata<::module2::BigStruct> {
  public:
-  static void gen(ThriftMetadata& metadata);
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 } // namespace md
 } // namespace detail

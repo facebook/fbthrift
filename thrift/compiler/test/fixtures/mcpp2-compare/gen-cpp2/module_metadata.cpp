@@ -67,19 +67,22 @@ void EnumMetadata<::some::valid::ns::MyEnumB>::gen(ThriftMetadata& metadata) {
   }
 }
 
-void StructMetadata<::some::valid::ns::Empty>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::some::valid::ns::Empty>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.Empty", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_Empty = res.first->second;
   module_Empty.name = "module.Empty";
   module_Empty.is_union = false;
+  return res.first->second;
 }
-void StructMetadata<::some::valid::ns::ASimpleStruct>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::some::valid::ns::ASimpleStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.ASimpleStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_ASimpleStruct = res.first->second;
   module_ASimpleStruct.name = "module.ASimpleStruct";
@@ -96,11 +99,13 @@ void StructMetadata<::some::valid::ns::ASimpleStruct>::gen(ThriftMetadata& metad
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ASimpleStruct.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::some::valid::ns::ASimpleStructNoexcept>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::some::valid::ns::ASimpleStructNoexcept>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.ASimpleStructNoexcept", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_ASimpleStructNoexcept = res.first->second;
   module_ASimpleStructNoexcept.name = "module.ASimpleStructNoexcept";
@@ -117,11 +122,13 @@ void StructMetadata<::some::valid::ns::ASimpleStructNoexcept>::gen(ThriftMetadat
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ASimpleStructNoexcept.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::some::valid::ns::MyStruct>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::some::valid::ns::MyStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_MyStruct = res.first->second;
   module_MyStruct.name = "module.MyStruct";
@@ -146,11 +153,13 @@ void StructMetadata<::some::valid::ns::MyStruct>::gen(ThriftMetadata& metadata) 
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_MyStruct.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::some::valid::ns::SimpleUnion>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::some::valid::ns::SimpleUnion>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.SimpleUnion", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_SimpleUnion = res.first->second;
   module_SimpleUnion.name = "module.SimpleUnion";
@@ -168,11 +177,13 @@ void StructMetadata<::some::valid::ns::SimpleUnion>::gen(ThriftMetadata& metadat
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_SimpleUnion.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::some::valid::ns::ComplexUnion>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::some::valid::ns::ComplexUnion>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.ComplexUnion", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_ComplexUnion = res.first->second;
   module_ComplexUnion.name = "module.ComplexUnion";
@@ -215,11 +226,13 @@ void StructMetadata<::some::valid::ns::ComplexUnion>::gen(ThriftMetadata& metada
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ComplexUnion.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::some::valid::ns::AnException>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::some::valid::ns::AnException>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.AnException", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_AnException = res.first->second;
   module_AnException.name = "module.AnException";
@@ -250,11 +263,13 @@ void StructMetadata<::some::valid::ns::AnException>::gen(ThriftMetadata& metadat
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_AnException.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::some::valid::ns::AnotherException>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::some::valid::ns::AnotherException>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.AnotherException", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_AnotherException = res.first->second;
   module_AnotherException.name = "module.AnotherException";
@@ -273,11 +288,13 @@ void StructMetadata<::some::valid::ns::AnotherException>::gen(ThriftMetadata& me
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_AnotherException.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::some::valid::ns::containerStruct>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::some::valid::ns::containerStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.containerStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_containerStruct = res.first->second;
   module_containerStruct.name = "module.containerStruct";
@@ -339,11 +356,13 @@ void StructMetadata<::some::valid::ns::containerStruct>::gen(ThriftMetadata& met
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_containerStruct.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::some::valid::ns::MyIncludedStruct>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::some::valid::ns::MyIncludedStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.MyIncludedStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_MyIncludedStruct = res.first->second;
   module_MyIncludedStruct.name = "module.MyIncludedStruct";
@@ -363,11 +382,13 @@ void StructMetadata<::some::valid::ns::MyIncludedStruct>::gen(ThriftMetadata& me
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_MyIncludedStruct.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::some::valid::ns::AnnotatedStruct>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::some::valid::ns::AnnotatedStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.AnnotatedStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_AnnotatedStruct = res.first->second;
   module_AnnotatedStruct.name = "module.AnnotatedStruct";
@@ -423,11 +444,13 @@ void StructMetadata<::some::valid::ns::AnnotatedStruct>::gen(ThriftMetadata& met
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_AnnotatedStruct.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::some::valid::ns::ComplexContainerStruct>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::some::valid::ns::ComplexContainerStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.ComplexContainerStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_ComplexContainerStruct = res.first->second;
   module_ComplexContainerStruct.name = "module.ComplexContainerStruct";
@@ -445,11 +468,13 @@ void StructMetadata<::some::valid::ns::ComplexContainerStruct>::gen(ThriftMetada
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ComplexContainerStruct.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::some::valid::ns::FloatStruct>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::some::valid::ns::FloatStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.FloatStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_FloatStruct = res.first->second;
   module_FloatStruct.name = "module.FloatStruct";
@@ -467,11 +492,13 @@ void StructMetadata<::some::valid::ns::FloatStruct>::gen(ThriftMetadata& metadat
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_FloatStruct.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::some::valid::ns::FloatUnion>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::some::valid::ns::FloatUnion>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.FloatUnion", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_FloatUnion = res.first->second;
   module_FloatUnion.name = "module.FloatUnion";
@@ -489,11 +516,13 @@ void StructMetadata<::some::valid::ns::FloatUnion>::gen(ThriftMetadata& metadata
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_FloatUnion.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.AllRequiredNoExceptMoveCtrStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_AllRequiredNoExceptMoveCtrStruct = res.first->second;
   module_AllRequiredNoExceptMoveCtrStruct.name = "module.AllRequiredNoExceptMoveCtrStruct";
@@ -510,6 +539,7 @@ void StructMetadata<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::gen(Th
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_AllRequiredNoExceptMoveCtrStruct.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
 
 void ExceptionMetadata<::some::valid::ns::AnException>::gen(ThriftMetadata& metadata) {

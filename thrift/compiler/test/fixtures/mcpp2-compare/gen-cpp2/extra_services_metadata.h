@@ -23,7 +23,7 @@ namespace md {
 template <>
 class StructMetadata<::extra::svc::containerStruct2> {
  public:
-  static void gen(ThriftMetadata& metadata);
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
 class ServiceMetadata<::extra::svc::ExtraServiceSvIf> {

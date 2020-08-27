@@ -26,7 +26,7 @@ class EnumMetadata<::cpp2::B> {
 template <>
 class StructMetadata<::cpp2::A> {
  public:
-  static void gen(ThriftMetadata& metadata);
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
 class ServiceMetadata<::cpp2::CSvIf> {

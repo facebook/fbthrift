@@ -31,10 +31,11 @@ void EnumMetadata<::cpp2::Animal>::gen(ThriftMetadata& metadata) {
   }
 }
 
-void StructMetadata<::cpp2::Color>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::Color>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.Color", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_Color = res.first->second;
   module_Color.name = "module.Color";
@@ -54,11 +55,13 @@ void StructMetadata<::cpp2::Color>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Color.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::Vehicle>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::Vehicle>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.Vehicle", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_Vehicle = res.first->second;
   module_Vehicle.name = "module.Vehicle";
@@ -79,11 +82,13 @@ void StructMetadata<::cpp2::Vehicle>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Vehicle.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::Person>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::Person>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.Person", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_Person = res.first->second;
   module_Person.name = "module.Person";
@@ -109,6 +114,7 @@ void StructMetadata<::cpp2::Person>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Person.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
 
 } // namespace md

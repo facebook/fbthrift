@@ -19,19 +19,22 @@ using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 
-void StructMetadata<::cpp2::Banal>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::Banal>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.Banal", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_Banal = res.first->second;
   module_Banal.name = "module.Banal";
   module_Banal.is_union = false;
+  return res.first->second;
 }
-void StructMetadata<::cpp2::Fiery>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::Fiery>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.Fiery", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_Fiery = res.first->second;
   module_Fiery.name = "module.Fiery";
@@ -48,11 +51,13 @@ void StructMetadata<::cpp2::Fiery>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Fiery.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::Serious>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::Serious>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.Serious", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_Serious = res.first->second;
   module_Serious.name = "module.Serious";
@@ -69,11 +74,13 @@ void StructMetadata<::cpp2::Serious>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Serious.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::ComplexFieldNames>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::ComplexFieldNames>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.ComplexFieldNames", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_ComplexFieldNames = res.first->second;
   module_ComplexFieldNames.name = "module.ComplexFieldNames";
@@ -91,11 +98,13 @@ void StructMetadata<::cpp2::ComplexFieldNames>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ComplexFieldNames.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::CustomFieldNames>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::CustomFieldNames>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.CustomFieldNames", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_CustomFieldNames = res.first->second;
   module_CustomFieldNames.name = "module.CustomFieldNames";
@@ -113,6 +122,7 @@ void StructMetadata<::cpp2::CustomFieldNames>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_CustomFieldNames.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
 
 void ExceptionMetadata<::cpp2::Banal>::gen(ThriftMetadata& metadata) {

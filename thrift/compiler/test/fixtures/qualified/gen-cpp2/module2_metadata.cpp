@@ -19,10 +19,11 @@ using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 
-void StructMetadata<::module2::Struct>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::module2::Struct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module2.Struct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module2_Struct = res.first->second;
   module2_Struct.name = "module2.Struct";
@@ -40,11 +41,13 @@ void StructMetadata<::module2::Struct>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module2_Struct.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::module2::BigStruct>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::module2::BigStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module2.BigStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module2_BigStruct = res.first->second;
   module2_BigStruct.name = "module2.BigStruct";
@@ -62,6 +65,7 @@ void StructMetadata<::module2::BigStruct>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module2_BigStruct.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
 
 } // namespace md

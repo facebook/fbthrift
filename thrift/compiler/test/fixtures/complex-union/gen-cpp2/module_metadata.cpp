@@ -19,10 +19,11 @@ using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 
-void StructMetadata<::cpp2::ComplexUnion>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::ComplexUnion>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.ComplexUnion", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_ComplexUnion = res.first->second;
   module_ComplexUnion.name = "module.ComplexUnion";
@@ -44,11 +45,13 @@ void StructMetadata<::cpp2::ComplexUnion>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ComplexUnion.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::ListUnion>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::ListUnion>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.ListUnion", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_ListUnion = res.first->second;
   module_ListUnion.name = "module.ListUnion";
@@ -66,11 +69,13 @@ void StructMetadata<::cpp2::ListUnion>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ListUnion.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::DataUnion>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::DataUnion>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.DataUnion", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_DataUnion = res.first->second;
   module_DataUnion.name = "module.DataUnion";
@@ -88,11 +93,13 @@ void StructMetadata<::cpp2::DataUnion>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_DataUnion.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::Val>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::Val>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.Val", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_Val = res.first->second;
   module_Val.name = "module.Val";
@@ -111,11 +118,13 @@ void StructMetadata<::cpp2::Val>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Val.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::ValUnion>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::ValUnion>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.ValUnion", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_ValUnion = res.first->second;
   module_ValUnion.name = "module.ValUnion";
@@ -133,11 +142,13 @@ void StructMetadata<::cpp2::ValUnion>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ValUnion.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::VirtualComplexUnion>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::VirtualComplexUnion>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.VirtualComplexUnion", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_VirtualComplexUnion = res.first->second;
   module_VirtualComplexUnion.name = "module.VirtualComplexUnion";
@@ -155,11 +166,13 @@ void StructMetadata<::cpp2::VirtualComplexUnion>::gen(ThriftMetadata& metadata) 
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_VirtualComplexUnion.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::NonCopyableStruct>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::NonCopyableStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.NonCopyableStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_NonCopyableStruct = res.first->second;
   module_NonCopyableStruct.name = "module.NonCopyableStruct";
@@ -176,11 +189,13 @@ void StructMetadata<::cpp2::NonCopyableStruct>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_NonCopyableStruct.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::NonCopyableUnion>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::NonCopyableUnion>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.NonCopyableUnion", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_NonCopyableUnion = res.first->second;
   module_NonCopyableUnion.name = "module.NonCopyableUnion";
@@ -197,6 +212,7 @@ void StructMetadata<::cpp2::NonCopyableUnion>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_NonCopyableUnion.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
 
 } // namespace md

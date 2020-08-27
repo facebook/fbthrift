@@ -19,10 +19,11 @@ using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 
-void StructMetadata<::cpp2::Mixin1>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::Mixin1>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.Mixin1", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_Mixin1 = res.first->second;
   module_Mixin1.name = "module.Mixin1";
@@ -39,11 +40,13 @@ void StructMetadata<::cpp2::Mixin1>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Mixin1.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::Mixin2>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::Mixin2>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.Mixin2", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_Mixin2 = res.first->second;
   module_Mixin2.name = "module.Mixin2";
@@ -61,11 +64,13 @@ void StructMetadata<::cpp2::Mixin2>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Mixin2.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::Mixin3Base>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::Mixin3Base>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.Mixin3Base", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_Mixin3Base = res.first->second;
   module_Mixin3Base.name = "module.Mixin3Base";
@@ -82,11 +87,13 @@ void StructMetadata<::cpp2::Mixin3Base>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Mixin3Base.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::Foo>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::Foo>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.Foo", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_Foo = res.first->second;
   module_Foo.name = "module.Foo";
@@ -105,6 +112,7 @@ void StructMetadata<::cpp2::Foo>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Foo.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
 
 } // namespace md

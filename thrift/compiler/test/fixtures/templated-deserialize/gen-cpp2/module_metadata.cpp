@@ -31,10 +31,11 @@ void EnumMetadata<::cpp2::MyEnumA>::gen(ThriftMetadata& metadata) {
   }
 }
 
-void StructMetadata<::cpp2::SmallStruct>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::SmallStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.SmallStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_SmallStruct = res.first->second;
   module_SmallStruct.name = "module.SmallStruct";
@@ -52,11 +53,13 @@ void StructMetadata<::cpp2::SmallStruct>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_SmallStruct.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::containerStruct>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::containerStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.containerStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_containerStruct = res.first->second;
   module_containerStruct.name = "module.containerStruct";
@@ -94,6 +97,7 @@ void StructMetadata<::cpp2::containerStruct>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_containerStruct.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
 
 } // namespace md

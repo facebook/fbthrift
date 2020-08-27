@@ -31,10 +31,11 @@ void EnumMetadata<::cpp2::B>::gen(ThriftMetadata& metadata) {
   }
 }
 
-void StructMetadata<::cpp2::A>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::A>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.A", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_A = res.first->second;
   module_A.name = "module.A";
@@ -51,6 +52,7 @@ void StructMetadata<::cpp2::A>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_A.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
 
 void ServiceMetadata<::cpp2::CSvIf>::gen_f(ThriftMetadata& metadata, ThriftService& service) {

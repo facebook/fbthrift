@@ -31,10 +31,11 @@ void EnumMetadata<::some::ns::EnumB>::gen(ThriftMetadata& metadata) {
   }
 }
 
-void StructMetadata<::some::ns::ModuleA>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::some::ns::ModuleA>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.ModuleA", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_ModuleA = res.first->second;
   module_ModuleA.name = "module.ModuleA";
@@ -56,11 +57,13 @@ void StructMetadata<::some::ns::ModuleA>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ModuleA.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::some::ns::ModuleB>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::some::ns::ModuleB>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.ModuleB", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_ModuleB = res.first->second;
   module_ModuleB.name = "module.ModuleB";
@@ -78,6 +81,7 @@ void StructMetadata<::some::ns::ModuleB>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ModuleB.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
 
 } // namespace md

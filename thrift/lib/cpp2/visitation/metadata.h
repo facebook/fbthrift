@@ -17,6 +17,7 @@
 #pragma once
 
 #include <folly/Indestructible.h>
+#include <folly/Overload.h>
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
 
@@ -34,18 +35,17 @@ namespace detail {
  */
 template <class T>
 const auto& get_struct_metadata() {
-  static const folly::Indestructible<metadata::ThriftStruct> data = [] {
-    metadata::ThriftMetadata metadata;
-    md::StructMetadata<T>::gen(metadata);
-    if (metadata.structs.empty()) {
-      // if metadata is disabled
-      return metadata::ThriftStruct{};
-    }
-
-    return std::move(metadata.structs.begin()->second);
-  }();
+  static const folly::Indestructible<metadata::ThriftStruct> data =
+      folly::overload(
+          [](void (*)(metadata::ThriftMetadata&)) {
+            return metadata::ThriftStruct{};
+          },
+          [](auto gen) {
+            metadata::ThriftMetadata metadata;
+            return gen(metadata);
+          })(md::StructMetadata<T>::gen);
   return *data;
-}
+} // namespace detail
 
 /**
  * Get ThriftMetadata of given thrift structure. If no_metadata option is

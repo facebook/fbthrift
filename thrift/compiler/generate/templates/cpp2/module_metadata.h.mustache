@@ -56,7 +56,7 @@ class EnumMetadata<<% > common/namespace_cpp2%><%enum:name%>>
 template <>
 class StructMetadata<<% > common/namespace_cpp2%><%struct:name%>> {
  public:
-  static void gen(ThriftMetadata& metadata);
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 <%/program:gen_metadata?%>
 <%^program:gen_metadata?%>

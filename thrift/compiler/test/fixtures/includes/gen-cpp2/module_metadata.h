@@ -19,7 +19,7 @@ namespace md {
 template <>
 class StructMetadata<::cpp2::MyStruct> {
  public:
-  static void gen(ThriftMetadata& metadata);
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 } // namespace md
 } // namespace detail

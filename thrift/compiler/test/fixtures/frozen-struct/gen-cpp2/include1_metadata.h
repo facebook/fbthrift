@@ -18,7 +18,7 @@ namespace md {
 template <>
 class StructMetadata<::some::ns::IncludedA> {
  public:
-  static void gen(ThriftMetadata& metadata);
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 } // namespace md
 } // namespace detail

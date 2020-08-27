@@ -79,10 +79,11 @@ void EnumMetadata<::facebook::ns::qwerty::AnEnumE>::gen(ThriftMetadata& metadata
   }
 }
 
-void StructMetadata<::facebook::ns::qwerty::SomeStruct>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::facebook::ns::qwerty::SomeStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("enums.SomeStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& enums_SomeStruct = res.first->second;
   enums_SomeStruct.name = "enums.SomeStruct";
@@ -99,6 +100,7 @@ void StructMetadata<::facebook::ns::qwerty::SomeStruct>::gen(ThriftMetadata& met
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     enums_SomeStruct.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
 
 } // namespace md

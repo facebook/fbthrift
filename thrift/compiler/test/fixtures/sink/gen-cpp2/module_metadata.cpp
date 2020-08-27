@@ -19,10 +19,11 @@ using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 
-void StructMetadata<::cpp2::InitialResponse>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::InitialResponse>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.InitialResponse", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_InitialResponse = res.first->second;
   module_InitialResponse.name = "module.InitialResponse";
@@ -39,11 +40,13 @@ void StructMetadata<::cpp2::InitialResponse>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_InitialResponse.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::FinalResponse>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::FinalResponse>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.FinalResponse", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_FinalResponse = res.first->second;
   module_FinalResponse.name = "module.FinalResponse";
@@ -60,11 +63,13 @@ void StructMetadata<::cpp2::FinalResponse>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_FinalResponse.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::SinkPayload>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::SinkPayload>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.SinkPayload", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_SinkPayload = res.first->second;
   module_SinkPayload.name = "module.SinkPayload";
@@ -81,11 +86,13 @@ void StructMetadata<::cpp2::SinkPayload>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_SinkPayload.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::CompatibleWithKeywordSink>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::CompatibleWithKeywordSink>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.CompatibleWithKeywordSink", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_CompatibleWithKeywordSink = res.first->second;
   module_CompatibleWithKeywordSink.name = "module.CompatibleWithKeywordSink";
@@ -102,11 +109,13 @@ void StructMetadata<::cpp2::CompatibleWithKeywordSink>::gen(ThriftMetadata& meta
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_CompatibleWithKeywordSink.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::InitialException>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::InitialException>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.InitialException", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_InitialException = res.first->second;
   module_InitialException.name = "module.InitialException";
@@ -123,11 +132,13 @@ void StructMetadata<::cpp2::InitialException>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_InitialException.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::SinkException1>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::SinkException1>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.SinkException1", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_SinkException1 = res.first->second;
   module_SinkException1.name = "module.SinkException1";
@@ -144,11 +155,13 @@ void StructMetadata<::cpp2::SinkException1>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_SinkException1.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::SinkException2>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::SinkException2>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.SinkException2", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_SinkException2 = res.first->second;
   module_SinkException2.name = "module.SinkException2";
@@ -165,6 +178,7 @@ void StructMetadata<::cpp2::SinkException2>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_SinkException2.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
 
 void ExceptionMetadata<::cpp2::InitialException>::gen(ThriftMetadata& metadata) {

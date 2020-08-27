@@ -19,14 +19,16 @@ using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 
-void StructMetadata<::cpp2::FooEx>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::FooEx>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.FooEx", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_FooEx = res.first->second;
   module_FooEx.name = "module.FooEx";
   module_FooEx.is_union = false;
+  return res.first->second;
 }
 
 void ExceptionMetadata<::cpp2::FooEx>::gen(ThriftMetadata& metadata) {

@@ -31,10 +31,11 @@ void EnumMetadata<::cpp2::TypedEnum>::gen(ThriftMetadata& metadata) {
   }
 }
 
-void StructMetadata<::cpp2::MyUnion>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::MyUnion>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.MyUnion", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_MyUnion = res.first->second;
   module_MyUnion.name = "module.MyUnion";
@@ -52,11 +53,13 @@ void StructMetadata<::cpp2::MyUnion>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_MyUnion.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::MyField>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::MyField>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.MyField", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_MyField = res.first->second;
   module_MyField.name = "module.MyField";
@@ -75,11 +78,13 @@ void StructMetadata<::cpp2::MyField>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_MyField.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_MyStruct = res.first->second;
   module_MyStruct.name = "module.MyStruct";
@@ -98,11 +103,13 @@ void StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_MyStruct.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::StructWithUnion>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::StructWithUnion>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.StructWithUnion", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_StructWithUnion = res.first->second;
   module_StructWithUnion.name = "module.StructWithUnion";
@@ -121,11 +128,13 @@ void StructMetadata<::cpp2::StructWithUnion>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_StructWithUnion.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::RecursiveStruct>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::RecursiveStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.RecursiveStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_RecursiveStruct = res.first->second;
   module_RecursiveStruct.name = "module.RecursiveStruct";
@@ -142,11 +151,13 @@ void StructMetadata<::cpp2::RecursiveStruct>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_RecursiveStruct.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::StructWithContainers>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::StructWithContainers>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.StructWithContainers", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_StructWithContainers = res.first->second;
   module_StructWithContainers.name = "module.StructWithContainers";
@@ -168,11 +179,13 @@ void StructMetadata<::cpp2::StructWithContainers>::gen(ThriftMetadata& metadata)
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_StructWithContainers.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::StructWithSharedConst>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::StructWithSharedConst>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.StructWithSharedConst", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_StructWithSharedConst = res.first->second;
   module_StructWithSharedConst.name = "module.StructWithSharedConst";
@@ -191,20 +204,24 @@ void StructMetadata<::cpp2::StructWithSharedConst>::gen(ThriftMetadata& metadata
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_StructWithSharedConst.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::Empty>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::Empty>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.Empty", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_Empty = res.first->second;
   module_Empty.name = "module.Empty";
   module_Empty.is_union = false;
+  return res.first->second;
 }
-void StructMetadata<::cpp2::StructWithRef>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::StructWithRef>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.StructWithRef", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_StructWithRef = res.first->second;
   module_StructWithRef.name = "module.StructWithRef";
@@ -223,11 +240,13 @@ void StructMetadata<::cpp2::StructWithRef>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_StructWithRef.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::StructWithRefTypeUnique>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::StructWithRefTypeUnique>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.StructWithRefTypeUnique", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_StructWithRefTypeUnique = res.first->second;
   module_StructWithRefTypeUnique.name = "module.StructWithRefTypeUnique";
@@ -246,11 +265,13 @@ void StructMetadata<::cpp2::StructWithRefTypeUnique>::gen(ThriftMetadata& metada
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_StructWithRefTypeUnique.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::StructWithRefTypeShared>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::StructWithRefTypeShared>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.StructWithRefTypeShared", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_StructWithRefTypeShared = res.first->second;
   module_StructWithRefTypeShared.name = "module.StructWithRefTypeShared";
@@ -269,11 +290,13 @@ void StructMetadata<::cpp2::StructWithRefTypeShared>::gen(ThriftMetadata& metada
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_StructWithRefTypeShared.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::StructWithRefTypeSharedConst>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::StructWithRefTypeSharedConst>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.StructWithRefTypeSharedConst", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_StructWithRefTypeSharedConst = res.first->second;
   module_StructWithRefTypeSharedConst.name = "module.StructWithRefTypeSharedConst";
@@ -292,11 +315,13 @@ void StructMetadata<::cpp2::StructWithRefTypeSharedConst>::gen(ThriftMetadata& m
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_StructWithRefTypeSharedConst.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
-void StructMetadata<::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.StructWithRefAndAnnotCppNoexceptMoveCtor", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_StructWithRefAndAnnotCppNoexceptMoveCtor = res.first->second;
   module_StructWithRefAndAnnotCppNoexceptMoveCtor.name = "module.StructWithRefAndAnnotCppNoexceptMoveCtor";
@@ -313,6 +338,7 @@ void StructMetadata<::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>::gen(Thrif
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_StructWithRefAndAnnotCppNoexceptMoveCtor.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
 
 } // namespace md

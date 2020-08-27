@@ -31,10 +31,11 @@ void EnumMetadata<::cpp2::Metasyntactic>::gen(ThriftMetadata& metadata) {
   }
 }
 
-void StructMetadata<::cpp2::SomeStruct>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::SomeStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("module.SomeStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_SomeStruct = res.first->second;
   module_SomeStruct.name = "module.SomeStruct";
@@ -54,6 +55,7 @@ void StructMetadata<::cpp2::SomeStruct>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_SomeStruct.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
 
 } // namespace md

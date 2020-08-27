@@ -19,10 +19,11 @@ using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 
-void StructMetadata<::some::ns::IncludedA>::gen(ThriftMetadata& metadata) {
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::some::ns::IncludedA>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs.emplace("include1.IncludedA", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
-    return;
+    return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& include1_IncludedA = res.first->second;
   include1_IncludedA.name = "include1.IncludedA";
@@ -40,6 +41,7 @@ void StructMetadata<::some::ns::IncludedA>::gen(ThriftMetadata& metadata) {
     std::get<3>(f)->writeAndGenType(field.type, metadata);
     include1_IncludedA.fields.push_back(std::move(field));
   }
+  return res.first->second;
 }
 
 } // namespace md
