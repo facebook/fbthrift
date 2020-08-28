@@ -1508,13 +1508,11 @@ void t_mstch_rust_generator::set_mstch_generators() {
 
 void t_mstch_rust_generator::load_crate_map(const std::string& path) {
   // Each line of the file is:
-  // thrift_name crate_root crate_name
+  // thrift_name crate_name
   //
   // As an example of each value, we might have:
   //   - thrift_name: demo
   //     (this is the name by which the dependency is referred to in thrift)
-  //   - crate_root: ../../demo.thrift/gen-rust
-  //     (this directory contains Cargo.toml for the generated crate)
   //   - crate_name: demo_api
   //     (the Rust code will refer to demo_api::types::WhateverType)
   auto in = std::ifstream(path);
@@ -1526,8 +1524,8 @@ void t_mstch_rust_generator::load_crate_map(const std::string& path) {
   std::string line;
   while (std::getline(in, line)) {
     std::istringstream iss(line);
-    std::string thrift_name, crate_root, crate_name;
-    iss >> thrift_name >> crate_root >> crate_name;
+    std::string thrift_name, crate_name;
+    iss >> thrift_name >> crate_name;
     sources[crate_name].push_back(thrift_name);
   }
 
