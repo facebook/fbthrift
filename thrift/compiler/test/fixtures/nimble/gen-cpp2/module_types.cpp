@@ -130,13 +130,6 @@ template uint32_t BasicTypes::write<>(apache::thrift::NimbleProtocolWriter*) con
 template uint32_t BasicTypes::serializedSize<>(apache::thrift::NimbleProtocolWriter const*) const;
 template uint32_t BasicTypes::serializedSizeZC<>(apache::thrift::NimbleProtocolWriter const*) const;
 
-} // cpp2
 
-namespace cpp2 {
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
-
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 
 } // cpp2

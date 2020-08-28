@@ -71,78 +71,6 @@ void TccStructTraits<::cpp2::Color>::translateFieldName(
     _ftype = apache::thrift::protocol::T_DOUBLE;
   }
 }
-void TccStructTraits<::cpp2::Vehicle>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "color") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "licensePlate") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "description") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "name") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "hasAC") {
-    fid = 5;
-    _ftype = apache::thrift::protocol::T_BOOL;
-  }
-}
-void TccStructTraits<::cpp2::Person>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "id") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "name") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "age") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_I16;
-  }
-  else if (_fname == "address") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "favoriteColor") {
-    fid = 5;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "friends") {
-    fid = 6;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "bestFriend") {
-    fid = 7;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "petNames") {
-    fid = 8;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "afraidOfAnimal") {
-    fid = 9;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "vehicles") {
-    fid = 10;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-}
 
 } // namespace detail
 } // namespace thrift
@@ -232,7 +160,44 @@ template uint32_t Color::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Color::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Color::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::Vehicle>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "color") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "licensePlate") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "description") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "name") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "hasAC") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -343,7 +308,80 @@ template uint32_t Vehicle::write<>(apache::thrift::CompactProtocolWriter*) const
 template uint32_t Vehicle::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Vehicle::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        Vehicle,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::Color>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        Vehicle,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::Color>,
+    "inconsistent use of nimble option");
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::Person>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "id") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "name") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "age") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_I16;
+  }
+  else if (_fname == "address") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "favoriteColor") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "friends") {
+    fid = 6;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "bestFriend") {
+    fid = 7;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "petNames") {
+    fid = 8;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "afraidOfAnimal") {
+    fid = 9;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "vehicles") {
+    fid = 10;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -531,23 +569,16 @@ template uint32_t Person::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Person::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Person::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-
-namespace cpp2 {
 //  enforce that if this thrift file is generated with extern template instances
 //  for simple-json protocol then all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        Vehicle,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::Color>,
-    "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Person,
         ::apache::thrift::type_class::structure,
          ::cpp2::Color>,
     "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Person,
@@ -559,16 +590,12 @@ static_assert(
 //  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
-        Vehicle,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::Color>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
         Person,
         ::apache::thrift::type_class::structure,
          ::cpp2::Color>,
     "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         Person,

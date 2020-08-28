@@ -20,7 +20,6 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-<%#program:structs%>
 void TccStructTraits<<% > common/namespace_cpp2%><%struct:name%>>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
@@ -33,7 +32,6 @@ void TccStructTraits<<% > common/namespace_cpp2%><%struct:name%>>::translateFiel
   }
   <%/field:type%><%/struct:fields%>
 }
-<%/program:structs%>
 
 } // namespace detail
 } // namespace thrift

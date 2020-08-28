@@ -59,72 +59,6 @@ void TccStructTraits<::cpp2::MyStructNestedAnnotation>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
-void TccStructTraits<::cpp2::MyStructAnnotation>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "count") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "name") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "extra") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "nest") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
-void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "major") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "package") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "annotation_with_quote") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "class_") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "annotation_with_trailing_comma") {
-    fid = 5;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "empty_annotations") {
-    fid = 6;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
-void TccStructTraits<::cpp2::SecretStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "id") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "password") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
 
 } // namespace detail
 } // namespace thrift
@@ -184,7 +118,40 @@ template uint32_t MyStructNestedAnnotation::write<>(apache::thrift::CompactProto
 template uint32_t MyStructNestedAnnotation::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t MyStructNestedAnnotation::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::MyStructAnnotation>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "count") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "name") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "extra") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "nest") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -277,7 +244,64 @@ template uint32_t MyStructAnnotation::write<>(apache::thrift::CompactProtocolWri
 template uint32_t MyStructAnnotation::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t MyStructAnnotation::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        MyStructAnnotation,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::MyStructNestedAnnotation>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        MyStructAnnotation,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::MyStructNestedAnnotation>,
+    "inconsistent use of nimble option");
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "major") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "package") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "annotation_with_quote") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "class_") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "annotation_with_trailing_comma") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "empty_annotations") {
+    fid = 6;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -390,7 +414,32 @@ template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter*) cons
 template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::SecretStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "id") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "password") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -455,25 +504,6 @@ template uint32_t SecretStruct::write<>(apache::thrift::CompactProtocolWriter*) 
 template uint32_t SecretStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t SecretStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
 
-namespace cpp2 {
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        MyStructAnnotation,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::MyStructNestedAnnotation>,
-    "inconsistent use of json option");
-
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        MyStructAnnotation,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::MyStructNestedAnnotation>,
-    "inconsistent use of nimble option");
 
 } // cpp2

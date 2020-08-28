@@ -144,29 +144,6 @@ FOLLY_POP_WARNING
 
 }}}} // apache::thrift::fixtures::types
 
-namespace apache { namespace thrift {
-
-constexpr std::size_t const TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::size;
-folly::Range<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type const*> const TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::values = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::names = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::names);
-
-char const* TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
-}
-
-bool TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
-}
-}} // apache::thrift
-
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -179,354 +156,6 @@ void TccStructTraits<::apache::thrift::fixtures::types::decorated_struct>::trans
   else if (_fname == "field") {
     fid = 1;
     _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::ContainerStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "fieldA") {
-    fid = 12;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldB") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldC") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldD") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldE") {
-    fid = 5;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldF") {
-    fid = 6;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "fieldG") {
-    fid = 7;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "fieldH") {
-    fid = 8;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::CppTypeStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "fieldA") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::VirtualStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "MyIntField") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "a") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "b") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::TrivialNumeric>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "a") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "b") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_BOOL;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "z") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "n") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::ComplexString>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "a") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "b") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "z") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "n") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::MinPadding>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "small") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_BYTE;
-  }
-  else if (_fname == "big") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "medium") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_I16;
-  }
-  else if (_fname == "biggish") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "tiny") {
-    fid = 5;
-    _ftype = apache::thrift::protocol::T_BYTE;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::MyDataItem>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-}
-void TccStructTraits<::apache::thrift::fixtures::types::MyStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "MyIntField") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "MyStringField") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "majorVer") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "data") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::Renaming>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "foo") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::AnnotatedTypes>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "binary_field") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "list_field") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "foo") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageRoot>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "ForwardUsageStruct") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "ForwardUsageByRef") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageByRef>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "foo") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-}
-void TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "boolField") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "MyBoolField") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_BOOL;
-  }
-  else if (_fname == "MyIntField") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "MyStringField") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "MyStringField2") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "MyBinaryField") {
-    fid = 5;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "MyBinaryField2") {
-    fid = 6;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "MyBinaryField3") {
-    fid = 7;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "MyBinaryListField4") {
-    fid = 8;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "MyMapEnumAndInt") {
-    fid = 9;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "string_field") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "i32_field") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::AllocatorAware>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "aa_list") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "aa_set") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "aa_map") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "aa_string") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "not_a_container") {
-    fid = 5;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-}
-void TccStructTraits<::apache::thrift::fixtures::types::AllocatorAware2>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "not_a_container") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
   }
 }
 
@@ -588,7 +217,56 @@ template uint32_t decorated_struct::write<>(apache::thrift::CompactProtocolWrite
 template uint32_t decorated_struct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t decorated_struct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::ContainerStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "fieldA") {
+    fid = 12;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldB") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldC") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldD") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldE") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldF") {
+    fid = 6;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "fieldG") {
+    fid = 7;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "fieldH") {
+    fid = 8;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -753,7 +431,28 @@ template uint32_t ContainerStruct::write<>(apache::thrift::CompactProtocolWriter
 template uint32_t ContainerStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ContainerStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::CppTypeStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "fieldA") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -816,7 +515,28 @@ template uint32_t CppTypeStruct::write<>(apache::thrift::CompactProtocolWriter*)
 template uint32_t CppTypeStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t CppTypeStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::VirtualStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "MyIntField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -871,7 +591,32 @@ template uint32_t VirtualStruct::write<>(apache::thrift::CompactProtocolWriter*)
 template uint32_t VirtualStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t VirtualStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "a") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "b") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -936,7 +681,32 @@ template uint32_t MyStructWithForwardRefEnum::write<>(apache::thrift::CompactPro
 template uint32_t MyStructWithForwardRefEnum::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t MyStructWithForwardRefEnum::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::TrivialNumeric>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "a") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "b") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1001,7 +771,32 @@ template uint32_t TrivialNumeric::write<>(apache::thrift::CompactProtocolWriter*
 template uint32_t TrivialNumeric::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t TrivialNumeric::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "z") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "n") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1074,7 +869,48 @@ template uint32_t TrivialNestedWithDefault::write<>(apache::thrift::CompactProto
 template uint32_t TrivialNestedWithDefault::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t TrivialNestedWithDefault::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        TrivialNestedWithDefault,
+        ::apache::thrift::type_class::structure,
+         ::apache::thrift::fixtures::types::TrivialNumeric>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        TrivialNestedWithDefault,
+        ::apache::thrift::type_class::structure,
+         ::apache::thrift::fixtures::types::TrivialNumeric>,
+    "inconsistent use of nimble option");
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::ComplexString>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "a") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "b") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1147,7 +983,32 @@ template uint32_t ComplexString::write<>(apache::thrift::CompactProtocolWriter*)
 template uint32_t ComplexString::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ComplexString::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "z") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "n") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1220,7 +1081,60 @@ template uint32_t ComplexNestedWithDefault::write<>(apache::thrift::CompactProto
 template uint32_t ComplexNestedWithDefault::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ComplexNestedWithDefault::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        ComplexNestedWithDefault,
+        ::apache::thrift::type_class::structure,
+         ::apache::thrift::fixtures::types::ComplexString>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        ComplexNestedWithDefault,
+        ::apache::thrift::type_class::structure,
+         ::apache::thrift::fixtures::types::ComplexString>,
+    "inconsistent use of nimble option");
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::MinPadding>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "small") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_BYTE;
+  }
+  else if (_fname == "big") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "medium") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_I16;
+  }
+  else if (_fname == "biggish") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "tiny") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_BYTE;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1303,7 +1217,24 @@ template uint32_t MinPadding::write<>(apache::thrift::CompactProtocolWriter*) co
 template uint32_t MinPadding::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t MinPadding::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::MyDataItem>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1331,7 +1262,40 @@ template uint32_t MyDataItem::write<>(apache::thrift::CompactProtocolWriter*) co
 template uint32_t MyDataItem::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::MyStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "MyIntField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "MyStringField") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "majorVer") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "data") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1387,7 +1351,44 @@ template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter*) cons
 template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        MyStruct,
+        ::apache::thrift::type_class::structure,
+         ::apache::thrift::fixtures::types::MyDataItem>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        MyStruct,
+        ::apache::thrift::type_class::structure,
+         ::apache::thrift::fixtures::types::MyDataItem>,
+    "inconsistent use of nimble option");
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::Renaming>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "foo") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1442,7 +1443,32 @@ template uint32_t Renaming::write<>(apache::thrift::CompactProtocolWriter*) cons
 template uint32_t Renaming::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Renaming::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::AnnotatedTypes>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "binary_field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "list_field") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1502,7 +1528,28 @@ template uint32_t AnnotatedTypes::write<>(apache::thrift::CompactProtocolWriter*
 template uint32_t AnnotatedTypes::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t AnnotatedTypes::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "foo") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1565,7 +1612,48 @@ template uint32_t ForwardUsageStruct::write<>(apache::thrift::CompactProtocolWri
 template uint32_t ForwardUsageStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ForwardUsageStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        ForwardUsageStruct,
+        ::apache::thrift::type_class::structure,
+         ::apache::thrift::fixtures::types::ForwardUsageRoot>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        ForwardUsageStruct,
+        ::apache::thrift::type_class::structure,
+         ::apache::thrift::fixtures::types::ForwardUsageRoot>,
+    "inconsistent use of nimble option");
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageRoot>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "ForwardUsageStruct") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "ForwardUsageByRef") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 ForwardUsageRoot::ForwardUsageRoot(const ForwardUsageRoot& srcObj) {
@@ -1661,7 +1749,60 @@ template uint32_t ForwardUsageRoot::write<>(apache::thrift::CompactProtocolWrite
 template uint32_t ForwardUsageRoot::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ForwardUsageRoot::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        ForwardUsageRoot,
+        ::apache::thrift::type_class::structure,
+         ::apache::thrift::fixtures::types::ForwardUsageStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        ForwardUsageRoot,
+        ::apache::thrift::type_class::structure,
+         ::apache::thrift::fixtures::types::ForwardUsageByRef>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        ForwardUsageRoot,
+        ::apache::thrift::type_class::structure,
+         ::apache::thrift::fixtures::types::ForwardUsageStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        ForwardUsageRoot,
+        ::apache::thrift::type_class::structure,
+         ::apache::thrift::fixtures::types::ForwardUsageByRef>,
+    "inconsistent use of nimble option");
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageByRef>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "foo") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1724,7 +1865,40 @@ template uint32_t ForwardUsageByRef::write<>(apache::thrift::CompactProtocolWrit
 template uint32_t ForwardUsageByRef::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ForwardUsageByRef::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        ForwardUsageByRef,
+        ::apache::thrift::type_class::structure,
+         ::apache::thrift::fixtures::types::ForwardUsageRoot>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        ForwardUsageByRef,
+        ::apache::thrift::type_class::structure,
+         ::apache::thrift::fixtures::types::ForwardUsageRoot>,
+    "inconsistent use of nimble option");
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1764,7 +1938,28 @@ template uint32_t NoexceptMoveEmpty::write<>(apache::thrift::CompactProtocolWrit
 template uint32_t NoexceptMoveEmpty::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t NoexceptMoveEmpty::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "boolField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1819,7 +2014,60 @@ template uint32_t NoexceptMoveSimpleStruct::write<>(apache::thrift::CompactProto
 template uint32_t NoexceptMoveSimpleStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t NoexceptMoveSimpleStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "MyBoolField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+  else if (_fname == "MyIntField") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "MyStringField") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyStringField2") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyBinaryField") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyBinaryField2") {
+    fid = 6;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyBinaryField3") {
+    fid = 7;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyBinaryListField4") {
+    fid = 8;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "MyMapEnumAndInt") {
+    fid = 9;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -2003,7 +2251,54 @@ template uint32_t NoexceptMoveComplexStruct::write<>(apache::thrift::CompactProt
 template uint32_t NoexceptMoveComplexStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t NoexceptMoveComplexStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "string_field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "i32_field") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::size;
+folly::Range<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type const*> const TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::values = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::names = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::names);
+
+char const* TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+}} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 void NoExceptMoveUnion::__clear() {
@@ -2079,7 +2374,44 @@ template uint32_t NoExceptMoveUnion::write<>(apache::thrift::CompactProtocolWrit
 template uint32_t NoExceptMoveUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t NoExceptMoveUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::AllocatorAware>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "aa_list") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "aa_set") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "aa_map") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "aa_string") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "not_a_container") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -2206,7 +2538,28 @@ template uint32_t AllocatorAware::write<>(apache::thrift::CompactProtocolWriter*
 template uint32_t AllocatorAware::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t AllocatorAware::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 }}}} // apache::thrift::fixtures::types
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::AllocatorAware2>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "not_a_container") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -2261,97 +2614,6 @@ template uint32_t AllocatorAware2::write<>(apache::thrift::CompactProtocolWriter
 template uint32_t AllocatorAware2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t AllocatorAware2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}}}} // apache::thrift::fixtures::types
 
-namespace apache { namespace thrift { namespace fixtures { namespace types {
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        TrivialNestedWithDefault,
-        ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::TrivialNumeric>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ComplexNestedWithDefault,
-        ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ComplexString>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        MyStruct,
-        ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::MyDataItem>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ForwardUsageStruct,
-        ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ForwardUsageRoot>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ForwardUsageRoot,
-        ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ForwardUsageStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ForwardUsageRoot,
-        ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ForwardUsageByRef>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ForwardUsageByRef,
-        ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ForwardUsageRoot>,
-    "inconsistent use of json option");
-
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        TrivialNestedWithDefault,
-        ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::TrivialNumeric>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexNestedWithDefault,
-        ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ComplexString>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        MyStruct,
-        ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::MyDataItem>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ForwardUsageStruct,
-        ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ForwardUsageRoot>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ForwardUsageRoot,
-        ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ForwardUsageStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ForwardUsageRoot,
-        ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ForwardUsageByRef>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ForwardUsageByRef,
-        ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ForwardUsageRoot>,
-    "inconsistent use of nimble option");
 
 }}}} // apache::thrift::fixtures::types

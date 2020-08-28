@@ -12,129 +12,6 @@
 #include "thrift/compiler/test/fixtures/complex-union/gen-cpp2/module_data.h"
 
 
-namespace apache { namespace thrift {
-
-constexpr std::size_t const TEnumTraits<::cpp2::ComplexUnion::Type>::size;
-folly::Range<::cpp2::ComplexUnion::Type const*> const TEnumTraits<::cpp2::ComplexUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::ComplexUnion::Type>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::ComplexUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::ComplexUnion::Type>::names);
-
-char const* TEnumTraits<::cpp2::ComplexUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::cpp2::ComplexUnion::Type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
-}
-
-bool TEnumTraits<::cpp2::ComplexUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::cpp2::ComplexUnion::Type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
-}
-
-constexpr std::size_t const TEnumTraits<::cpp2::ListUnion::Type>::size;
-folly::Range<::cpp2::ListUnion::Type const*> const TEnumTraits<::cpp2::ListUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::ListUnion::Type>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::ListUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::ListUnion::Type>::names);
-
-char const* TEnumTraits<::cpp2::ListUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::cpp2::ListUnion::Type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
-}
-
-bool TEnumTraits<::cpp2::ListUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::cpp2::ListUnion::Type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
-}
-
-constexpr std::size_t const TEnumTraits<::cpp2::DataUnion::Type>::size;
-folly::Range<::cpp2::DataUnion::Type const*> const TEnumTraits<::cpp2::DataUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::DataUnion::Type>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::DataUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::DataUnion::Type>::names);
-
-char const* TEnumTraits<::cpp2::DataUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::cpp2::DataUnion::Type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
-}
-
-bool TEnumTraits<::cpp2::DataUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::cpp2::DataUnion::Type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
-}
-
-constexpr std::size_t const TEnumTraits<::cpp2::ValUnion::Type>::size;
-folly::Range<::cpp2::ValUnion::Type const*> const TEnumTraits<::cpp2::ValUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::ValUnion::Type>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::ValUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::ValUnion::Type>::names);
-
-char const* TEnumTraits<::cpp2::ValUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::cpp2::ValUnion::Type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
-}
-
-bool TEnumTraits<::cpp2::ValUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::cpp2::ValUnion::Type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
-}
-
-constexpr std::size_t const TEnumTraits<::cpp2::VirtualComplexUnion::Type>::size;
-folly::Range<::cpp2::VirtualComplexUnion::Type const*> const TEnumTraits<::cpp2::VirtualComplexUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::VirtualComplexUnion::Type>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::VirtualComplexUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::VirtualComplexUnion::Type>::names);
-
-char const* TEnumTraits<::cpp2::VirtualComplexUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::cpp2::VirtualComplexUnion::Type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
-}
-
-bool TEnumTraits<::cpp2::VirtualComplexUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::cpp2::VirtualComplexUnion::Type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
-}
-
-constexpr std::size_t const TEnumTraits<::cpp2::NonCopyableUnion::Type>::size;
-folly::Range<::cpp2::NonCopyableUnion::Type const*> const TEnumTraits<::cpp2::NonCopyableUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::NonCopyableUnion::Type>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::NonCopyableUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::NonCopyableUnion::Type>::names);
-
-char const* TEnumTraits<::cpp2::NonCopyableUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::cpp2::NonCopyableUnion::Type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
-}
-
-bool TEnumTraits<::cpp2::NonCopyableUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::cpp2::NonCopyableUnion::Type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
-}
-}} // apache::thrift
-
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -169,105 +46,33 @@ void TccStructTraits<::cpp2::ComplexUnion>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
-void TccStructTraits<::cpp2::ListUnion>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "intListValue") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "stringListValue") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-}
-void TccStructTraits<::cpp2::DataUnion>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "binaryData") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "stringData") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
-void TccStructTraits<::cpp2::Val>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "strVal") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "intVal") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "typedefValue") {
-    fid = 9;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-}
-void TccStructTraits<::cpp2::ValUnion>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "v1") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "v2") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
-void TccStructTraits<::cpp2::VirtualComplexUnion>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "thingOne") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "thingTwo") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
-void TccStructTraits<::cpp2::NonCopyableStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "num") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-}
-void TccStructTraits<::cpp2::NonCopyableUnion>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "s") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
 
 } // namespace detail
 } // namespace thrift
 } // namespace apache
 
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::cpp2::ComplexUnion::Type>::size;
+folly::Range<::cpp2::ComplexUnion::Type const*> const TEnumTraits<::cpp2::ComplexUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::ComplexUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::ComplexUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::ComplexUnion::Type>::names);
+
+char const* TEnumTraits<::cpp2::ComplexUnion::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::cpp2::ComplexUnion::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::cpp2::ComplexUnion::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::cpp2::ComplexUnion::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+}} // apache::thrift
 namespace cpp2 {
 
 void ComplexUnion::__clear() {
@@ -387,7 +192,54 @@ template uint32_t ComplexUnion::write<>(apache::thrift::CompactProtocolWriter*) 
 template uint32_t ComplexUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::ListUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "intListValue") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "stringListValue") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::cpp2::ListUnion::Type>::size;
+folly::Range<::cpp2::ListUnion::Type const*> const TEnumTraits<::cpp2::ListUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::ListUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::ListUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::ListUnion::Type>::names);
+
+char const* TEnumTraits<::cpp2::ListUnion::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::cpp2::ListUnion::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::cpp2::ListUnion::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::cpp2::ListUnion::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+}} // apache::thrift
 namespace cpp2 {
 
 void ListUnion::__clear() {
@@ -463,7 +315,54 @@ template uint32_t ListUnion::write<>(apache::thrift::CompactProtocolWriter*) con
 template uint32_t ListUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ListUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::DataUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "binaryData") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "stringData") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::cpp2::DataUnion::Type>::size;
+folly::Range<::cpp2::DataUnion::Type const*> const TEnumTraits<::cpp2::DataUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::DataUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::DataUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::DataUnion::Type>::names);
+
+char const* TEnumTraits<::cpp2::DataUnion::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::cpp2::DataUnion::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::cpp2::DataUnion::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::cpp2::DataUnion::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+}} // apache::thrift
 namespace cpp2 {
 
 void DataUnion::__clear() {
@@ -539,7 +438,36 @@ template uint32_t DataUnion::write<>(apache::thrift::CompactProtocolWriter*) con
 template uint32_t DataUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t DataUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::Val>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "strVal") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "intVal") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "typedefValue") {
+    fid = 9;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -622,7 +550,54 @@ template uint32_t Val::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Val::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Val::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::ValUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "v1") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "v2") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::cpp2::ValUnion::Type>::size;
+folly::Range<::cpp2::ValUnion::Type const*> const TEnumTraits<::cpp2::ValUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::ValUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::ValUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::ValUnion::Type>::names);
+
+char const* TEnumTraits<::cpp2::ValUnion::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::cpp2::ValUnion::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::cpp2::ValUnion::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::cpp2::ValUnion::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+}} // apache::thrift
 namespace cpp2 {
 
 void ValUnion::__clear() {
@@ -698,7 +673,86 @@ template uint32_t ValUnion::write<>(apache::thrift::CompactProtocolWriter*) cons
 template uint32_t ValUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ValUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        ValUnion,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::Val>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        ValUnion,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::Val>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        ValUnion,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::Val>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        ValUnion,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::Val>,
+    "inconsistent use of nimble option");
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::VirtualComplexUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "thingOne") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "thingTwo") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::cpp2::VirtualComplexUnion::Type>::size;
+folly::Range<::cpp2::VirtualComplexUnion::Type const*> const TEnumTraits<::cpp2::VirtualComplexUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::VirtualComplexUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::VirtualComplexUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::VirtualComplexUnion::Type>::names);
+
+char const* TEnumTraits<::cpp2::VirtualComplexUnion::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::cpp2::VirtualComplexUnion::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::cpp2::VirtualComplexUnion::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::cpp2::VirtualComplexUnion::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+}} // apache::thrift
 namespace cpp2 {
 
 void VirtualComplexUnion::__clear() {
@@ -774,7 +828,28 @@ template uint32_t VirtualComplexUnion::write<>(apache::thrift::CompactProtocolWr
 template uint32_t VirtualComplexUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t VirtualComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::NonCopyableStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "num") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -829,7 +904,50 @@ template uint32_t NonCopyableStruct::write<>(apache::thrift::CompactProtocolWrit
 template uint32_t NonCopyableStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t NonCopyableStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::NonCopyableUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "s") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::cpp2::NonCopyableUnion::Type>::size;
+folly::Range<::cpp2::NonCopyableUnion::Type const*> const TEnumTraits<::cpp2::NonCopyableUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::NonCopyableUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::NonCopyableUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::NonCopyableUnion::Type>::names);
+
+char const* TEnumTraits<::cpp2::NonCopyableUnion::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::cpp2::NonCopyableUnion::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::cpp2::NonCopyableUnion::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::cpp2::NonCopyableUnion::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+}} // apache::thrift
 namespace cpp2 {
 
 void NonCopyableUnion::__clear() {
@@ -894,23 +1012,8 @@ template uint32_t NonCopyableUnion::write<>(apache::thrift::CompactProtocolWrite
 template uint32_t NonCopyableUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t NonCopyableUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-
-namespace cpp2 {
 //  enforce that if this thrift file is generated with extern template instances
 //  for simple-json protocol then all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ValUnion,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::Val>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ValUnion,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::Val>,
-    "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         NonCopyableUnion,
@@ -920,18 +1023,6 @@ static_assert(
 
 //  if this struct is generated with extern template instances for nimble
 //  protocol, enforce that all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ValUnion,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::Val>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ValUnion,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::Val>,
-    "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         NonCopyableUnion,

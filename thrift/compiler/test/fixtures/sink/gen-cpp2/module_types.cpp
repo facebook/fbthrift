@@ -26,66 +26,6 @@ void TccStructTraits<::cpp2::InitialResponse>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
-void TccStructTraits<::cpp2::FinalResponse>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "content") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
-void TccStructTraits<::cpp2::SinkPayload>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "content") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
-void TccStructTraits<::cpp2::CompatibleWithKeywordSink>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "sink") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
-void TccStructTraits<::cpp2::InitialException>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "reason") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
-void TccStructTraits<::cpp2::SinkException1>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "reason") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
-void TccStructTraits<::cpp2::SinkException2>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "reason") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-}
 
 } // namespace detail
 } // namespace thrift
@@ -145,7 +85,28 @@ template uint32_t InitialResponse::write<>(apache::thrift::CompactProtocolWriter
 template uint32_t InitialResponse::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t InitialResponse::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::FinalResponse>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "content") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -200,7 +161,28 @@ template uint32_t FinalResponse::write<>(apache::thrift::CompactProtocolWriter*)
 template uint32_t FinalResponse::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t FinalResponse::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::SinkPayload>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "content") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -255,7 +237,28 @@ template uint32_t SinkPayload::write<>(apache::thrift::CompactProtocolWriter*) c
 template uint32_t SinkPayload::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t SinkPayload::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::CompatibleWithKeywordSink>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "sink") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -310,7 +313,28 @@ template uint32_t CompatibleWithKeywordSink::write<>(apache::thrift::CompactProt
 template uint32_t CompatibleWithKeywordSink::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t CompatibleWithKeywordSink::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::InitialException>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "reason") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -365,7 +389,28 @@ template uint32_t InitialException::write<>(apache::thrift::CompactProtocolWrite
 template uint32_t InitialException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t InitialException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::SinkException1>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "reason") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -420,7 +465,28 @@ template uint32_t SinkException1::write<>(apache::thrift::CompactProtocolWriter*
 template uint32_t SinkException1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t SinkException1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::SinkException2>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "reason") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -475,13 +541,6 @@ template uint32_t SinkException2::write<>(apache::thrift::CompactProtocolWriter*
 template uint32_t SinkException2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t SinkException2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
 
-namespace cpp2 {
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
-
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 
 } // cpp2

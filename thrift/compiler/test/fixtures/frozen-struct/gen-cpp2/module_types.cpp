@@ -79,20 +79,6 @@ void TccStructTraits<::some::ns::ModuleA>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
-void TccStructTraits<::some::ns::ModuleB>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "i32Field") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "inclEnumB") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-}
 
 } // namespace detail
 } // namespace thrift
@@ -242,7 +228,64 @@ template uint32_t ModuleA::write<>(apache::thrift::CompactProtocolWriter*) const
 template uint32_t ModuleA::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ModuleA::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        ModuleA,
+        ::apache::thrift::type_class::structure,
+         ::some::ns::IncludedA>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        ModuleA,
+        ::apache::thrift::type_class::structure,
+         ::some::ns::IncludedB>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        ModuleA,
+        ::apache::thrift::type_class::structure,
+         ::some::ns::IncludedA>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        ModuleA,
+        ::apache::thrift::type_class::structure,
+         ::some::ns::IncludedB>,
+    "inconsistent use of nimble option");
+
 }} // some::ns
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::some::ns::ModuleB>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "i32Field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "inclEnumB") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace some { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -307,37 +350,6 @@ template uint32_t ModuleB::write<>(apache::thrift::CompactProtocolWriter*) const
 template uint32_t ModuleB::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ModuleB::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-}} // some::ns
 
-namespace some { namespace ns {
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ModuleA,
-        ::apache::thrift::type_class::structure,
-         ::some::ns::IncludedA>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ModuleA,
-        ::apache::thrift::type_class::structure,
-         ::some::ns::IncludedB>,
-    "inconsistent use of json option");
-
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ModuleA,
-        ::apache::thrift::type_class::structure,
-         ::some::ns::IncludedA>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ModuleA,
-        ::apache::thrift::type_class::structure,
-         ::some::ns::IncludedB>,
-    "inconsistent use of nimble option");
 
 }} // some::ns

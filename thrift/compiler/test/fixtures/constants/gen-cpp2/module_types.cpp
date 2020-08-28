@@ -111,49 +111,6 @@ FOLLY_POP_WARNING
 
 } // cpp2
 
-namespace apache { namespace thrift {
-
-constexpr std::size_t const TEnumTraits<::cpp2::union1::Type>::size;
-folly::Range<::cpp2::union1::Type const*> const TEnumTraits<::cpp2::union1::Type>::values = folly::range(TEnumDataStorage<::cpp2::union1::Type>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::union1::Type>::names = folly::range(TEnumDataStorage<::cpp2::union1::Type>::names);
-
-char const* TEnumTraits<::cpp2::union1::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::cpp2::union1::Type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
-}
-
-bool TEnumTraits<::cpp2::union1::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::cpp2::union1::Type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
-}
-
-constexpr std::size_t const TEnumTraits<::cpp2::union2::Type>::size;
-folly::Range<::cpp2::union2::Type const*> const TEnumTraits<::cpp2::union2::Type>::values = folly::range(TEnumDataStorage<::cpp2::union2::Type>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::union2::Type>::names = folly::range(TEnumDataStorage<::cpp2::union2::Type>::names);
-
-char const* TEnumTraits<::cpp2::union2::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::cpp2::union2::Type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
-}
-
-bool TEnumTraits<::cpp2::union2::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::cpp2::union2::Type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
-}
-}} // apache::thrift
-
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -174,128 +131,6 @@ void TccStructTraits<::cpp2::Internship>::translateFieldName(
   else if (_fname == "employer") {
     fid = 3;
     _ftype = apache::thrift::protocol::T_I32;
-  }
-}
-void TccStructTraits<::cpp2::Range>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "min") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "max") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-}
-void TccStructTraits<::cpp2::struct1>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "a") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "b") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
-void TccStructTraits<::cpp2::struct2>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "a") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "b") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "c") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "d") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-}
-void TccStructTraits<::cpp2::struct3>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "a") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "b") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "c") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
-void TccStructTraits<::cpp2::struct4>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "a") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "b") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_DOUBLE;
-  }
-  else if (_fname == "c") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_BYTE;
-  }
-}
-void TccStructTraits<::cpp2::union1>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "i") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "d") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_DOUBLE;
-  }
-}
-void TccStructTraits<::cpp2::union2>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "i") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "d") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_DOUBLE;
-  }
-  else if (_fname == "s") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "u") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
 
@@ -376,7 +211,32 @@ template uint32_t Internship::write<>(apache::thrift::CompactProtocolWriter*) co
 template uint32_t Internship::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Internship::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::Range>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "min") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "max") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -432,7 +292,32 @@ template uint32_t Range::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Range::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Range::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::struct1>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "a") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "b") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -497,7 +382,40 @@ template uint32_t struct1::write<>(apache::thrift::CompactProtocolWriter*) const
 template uint32_t struct1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::struct2>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "a") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "b") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "c") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "d") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -598,7 +516,52 @@ template uint32_t struct2::write<>(apache::thrift::CompactProtocolWriter*) const
 template uint32_t struct2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        struct2,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::struct1>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        struct2,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::struct1>,
+    "inconsistent use of nimble option");
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::struct3>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "a") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "b") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "c") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -681,7 +644,52 @@ template uint32_t struct3::write<>(apache::thrift::CompactProtocolWriter*) const
 template uint32_t struct3::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct3::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        struct3,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::struct2>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        struct3,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::struct2>,
+    "inconsistent use of nimble option");
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::struct4>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "a") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "b") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_DOUBLE;
+  }
+  else if (_fname == "c") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_BYTE;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -756,7 +764,54 @@ template uint32_t struct4::write<>(apache::thrift::CompactProtocolWriter*) const
 template uint32_t struct4::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct4::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::union1>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "i") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "d") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_DOUBLE;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::cpp2::union1::Type>::size;
+folly::Range<::cpp2::union1::Type const*> const TEnumTraits<::cpp2::union1::Type>::values = folly::range(TEnumDataStorage<::cpp2::union1::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::union1::Type>::names = folly::range(TEnumDataStorage<::cpp2::union1::Type>::names);
+
+char const* TEnumTraits<::cpp2::union1::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::cpp2::union1::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::cpp2::union1::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::cpp2::union1::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+}} // apache::thrift
 namespace cpp2 {
 
 void union1::__clear() {
@@ -832,7 +887,62 @@ template uint32_t union1::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t union1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t union1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::union2>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "i") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "d") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_DOUBLE;
+  }
+  else if (_fname == "s") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "u") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::cpp2::union2::Type>::size;
+folly::Range<::cpp2::union2::Type const*> const TEnumTraits<::cpp2::union2::Type>::values = folly::range(TEnumDataStorage<::cpp2::union2::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::union2::Type>::names = folly::range(TEnumDataStorage<::cpp2::union2::Type>::names);
+
+char const* TEnumTraits<::cpp2::union2::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::cpp2::union2::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::cpp2::union2::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::cpp2::union2::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+}} // apache::thrift
 namespace cpp2 {
 
 void union2::__clear() {
@@ -930,29 +1040,16 @@ template uint32_t union2::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t union2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t union2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-
-namespace cpp2 {
 //  enforce that if this thrift file is generated with extern template instances
 //  for simple-json protocol then all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        struct2,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::struct1>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        struct3,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::struct2>,
-    "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         union2,
         ::apache::thrift::type_class::structure,
          ::cpp2::struct1>,
     "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         union2,
@@ -964,22 +1061,12 @@ static_assert(
 //  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
-        struct2,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::struct1>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        struct3,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::struct2>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
         union2,
         ::apache::thrift::type_class::structure,
          ::cpp2::struct1>,
     "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         union2,

@@ -26,48 +26,6 @@ void TccStructTraits<::cpp2::Mixin1>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
-void TccStructTraits<::cpp2::Mixin2>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "m1") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "field2") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
-void TccStructTraits<::cpp2::Mixin3Base>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "field3") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
-void TccStructTraits<::cpp2::Foo>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "field4") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "m2") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "m3") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
 
 } // namespace detail
 } // namespace thrift
@@ -127,7 +85,32 @@ template uint32_t Mixin1::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Mixin1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Mixin1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::Mixin2>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "m1") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "field2") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -200,7 +183,44 @@ template uint32_t Mixin2::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Mixin2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Mixin2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        Mixin2,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::Mixin1>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        Mixin2,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::Mixin1>,
+    "inconsistent use of nimble option");
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::Mixin3Base>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "field3") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -255,7 +275,36 @@ template uint32_t Mixin3Base::write<>(apache::thrift::CompactProtocolWriter*) co
 template uint32_t Mixin3Base::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Mixin3Base::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+
+
 } // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::Foo>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "field4") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "m2") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "m3") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -346,23 +395,16 @@ template uint32_t Foo::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Foo::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Foo::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-
-namespace cpp2 {
 //  enforce that if this thrift file is generated with extern template instances
 //  for simple-json protocol then all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        Mixin2,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::Mixin1>,
-    "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Foo,
         ::apache::thrift::type_class::structure,
          ::cpp2::Mixin2>,
     "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Foo,
@@ -374,16 +416,12 @@ static_assert(
 //  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
-        Mixin2,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::Mixin1>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
         Foo,
         ::apache::thrift::type_class::structure,
          ::cpp2::Mixin2>,
     "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         Foo,

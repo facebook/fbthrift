@@ -89,13 +89,6 @@ template uint32_t ReflectionStruct::write<>(apache::thrift::SimpleJSONProtocolWr
 template uint32_t ReflectionStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t ReflectionStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-} // cpp2
 
-namespace cpp2 {
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
-
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 
 } // cpp2

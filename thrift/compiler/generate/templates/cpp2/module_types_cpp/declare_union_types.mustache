@@ -14,10 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#program:unions?%>
+%>
 
 namespace apache { namespace thrift {
-<%#program:structs%><%#struct:union?%>
 
 constexpr std::size_t const TEnumTraits<<% > common/namespace_cpp2%><%struct:name%>::Type>::size;
 folly::Range<<% > common/namespace_cpp2%><%struct:name%>::Type const*> const TEnumTraits<<% > common/namespace_cpp2%><%struct:name%>::Type>::values = <%!
@@ -40,6 +39,4 @@ bool TEnumTraits<<% > common/namespace_cpp2%><%struct:name%>::Type>::findValue(c
   auto found = map->find(name);
   return found == map->end() ? false : (*out = found->second, true);
 }
-<%/struct:union?%><%/program:structs%>
 }} // apache::thrift
-<%/program:unions?%>

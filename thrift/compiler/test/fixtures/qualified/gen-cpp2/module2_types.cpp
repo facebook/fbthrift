@@ -30,20 +30,6 @@ void TccStructTraits<::module2::Struct>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
-void TccStructTraits<::module2::BigStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "s") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "id") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-}
 
 } // namespace detail
 } // namespace thrift
@@ -129,7 +115,64 @@ template uint32_t Struct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Struct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Struct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        Struct,
+        ::apache::thrift::type_class::structure,
+         ::module0::Struct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        Struct,
+        ::apache::thrift::type_class::structure,
+         ::module1::Struct>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        Struct,
+        ::apache::thrift::type_class::structure,
+         ::module0::Struct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        Struct,
+        ::apache::thrift::type_class::structure,
+         ::module1::Struct>,
+    "inconsistent use of nimble option");
+
 } // module2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::module2::BigStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "s") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "id") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace module2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -202,23 +245,8 @@ template uint32_t BigStruct::write<>(apache::thrift::CompactProtocolWriter*) con
 template uint32_t BigStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t BigStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // module2
-
-namespace module2 {
 //  enforce that if this thrift file is generated with extern template instances
 //  for simple-json protocol then all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        Struct,
-        ::apache::thrift::type_class::structure,
-         ::module0::Struct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        Struct,
-        ::apache::thrift::type_class::structure,
-         ::module1::Struct>,
-    "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         BigStruct,
@@ -228,18 +256,6 @@ static_assert(
 
 //  if this struct is generated with extern template instances for nimble
 //  protocol, enforce that all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        Struct,
-        ::apache::thrift::type_class::structure,
-         ::module0::Struct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        Struct,
-        ::apache::thrift::type_class::structure,
-         ::module1::Struct>,
-    "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         BigStruct,

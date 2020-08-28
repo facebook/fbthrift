@@ -63,6 +63,82 @@ void TccStructTraits<::cpp2::SmallStruct>::translateFieldName(
     _ftype = apache::thrift::protocol::T_I32;
   }
 }
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SmallStruct::SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, int32_t small_B__arg) :
+    small_A(std::move(small_A__arg)),
+    small_B(std::move(small_B__arg)) {
+  __isset.small_A = true;
+  __isset.small_B = true;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+void SmallStruct::__clear() {
+  // clear all fields
+  small_A = 0;
+  small_B = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+bool SmallStruct::operator==(const SmallStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.small_A == rhs.small_A)) {
+    return false;
+  }
+  if (!(lhs.small_B == rhs.small_B)) {
+    return false;
+  }
+  return true;
+}
+
+bool SmallStruct::operator<(const SmallStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.small_A == rhs.small_A)) {
+    return lhs.small_A < rhs.small_A;
+  }
+  if (!(lhs.small_B == rhs.small_B)) {
+    return lhs.small_B < rhs.small_B;
+  }
+  return false;
+}
+
+
+void swap(SmallStruct& a, SmallStruct& b) {
+  using ::std::swap;
+  swap(a.small_A, b.small_A);
+  swap(a.small_B, b.small_B);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+template void SmallStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t SmallStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t SmallStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t SmallStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void SmallStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t SmallStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t SmallStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t SmallStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+
+} // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
 void TccStructTraits<::cpp2::containerStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
@@ -162,71 +238,6 @@ void TccStructTraits<::cpp2::containerStruct>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-SmallStruct::SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, int32_t small_B__arg) :
-    small_A(std::move(small_A__arg)),
-    small_B(std::move(small_B__arg)) {
-  __isset.small_A = true;
-  __isset.small_B = true;
-}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-void SmallStruct::__clear() {
-  // clear all fields
-  small_A = 0;
-  small_B = 0;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-}
-
-bool SmallStruct::operator==(const SmallStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (!(lhs.small_A == rhs.small_A)) {
-    return false;
-  }
-  if (!(lhs.small_B == rhs.small_B)) {
-    return false;
-  }
-  return true;
-}
-
-bool SmallStruct::operator<(const SmallStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (!(lhs.small_A == rhs.small_A)) {
-    return lhs.small_A < rhs.small_A;
-  }
-  if (!(lhs.small_B == rhs.small_B)) {
-    return lhs.small_B < rhs.small_B;
-  }
-  return false;
-}
-
-
-void swap(SmallStruct& a, SmallStruct& b) {
-  using ::std::swap;
-  swap(a.small_A, b.small_A);
-  swap(a.small_B, b.small_B);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-}
-
-template void SmallStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t SmallStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t SmallStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t SmallStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void SmallStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t SmallStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t SmallStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t SmallStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-} // cpp2
 namespace cpp2 {
 
 containerStruct::containerStruct(const containerStruct& srcObj) {
@@ -742,9 +753,6 @@ template uint32_t containerStruct::write<>(apache::thrift::CompactProtocolWriter
 template uint32_t containerStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t containerStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-
-namespace cpp2 {
 //  enforce that if this thrift file is generated with extern template instances
 //  for simple-json protocol then all its dependencies are too
 static_assert(
@@ -753,18 +761,24 @@ static_assert(
         ::apache::thrift::type_class::structure,
          ::cpp2::SmallStruct>,
     "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::structure,
          ::cpp2::SmallStruct>,
     "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::structure,
          ::cpp2::SmallStruct>,
     "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
@@ -780,18 +794,24 @@ static_assert(
         ::apache::thrift::type_class::structure,
          ::cpp2::SmallStruct>,
     "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::structure,
          ::cpp2::SmallStruct>,
     "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::structure,
          ::cpp2::SmallStruct>,
     "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,

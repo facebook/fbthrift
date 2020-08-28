@@ -59,16 +59,6 @@ void TccStructTraits<::a::different::ns::AStruct>::translateFieldName(
     _ftype = apache::thrift::protocol::T_I32;
   }
 }
-void TccStructTraits<::a::different::ns::AStructB>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "FieldA") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
 
 } // namespace detail
 } // namespace thrift
@@ -132,7 +122,28 @@ template uint32_t AStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) co
 template uint32_t AStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t AStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+
+
 }}} // a::different::ns
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::a::different::ns::AStructB>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "FieldA") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace a { namespace different { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -193,9 +204,6 @@ template uint32_t AStructB::write<>(apache::thrift::SimpleJSONProtocolWriter*) c
 template uint32_t AStructB::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t AStructB::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // a::different::ns
-
-namespace a { namespace different { namespace ns {
 //  enforce that if this thrift file is generated with extern template instances
 //  for simple-json protocol then all its dependencies are too
 static_assert(

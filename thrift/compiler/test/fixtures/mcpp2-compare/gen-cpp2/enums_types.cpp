@@ -254,13 +254,6 @@ template uint32_t SomeStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*)
 template uint32_t SomeStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t SomeStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // facebook::ns::qwerty
 
-namespace facebook { namespace ns { namespace qwerty {
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
-
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 
 }}} // facebook::ns::qwerty

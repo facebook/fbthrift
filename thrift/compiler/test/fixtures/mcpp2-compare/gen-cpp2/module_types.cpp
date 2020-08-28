@@ -144,69 +144,6 @@ FOLLY_POP_WARNING
 
 }}} // some::valid::ns
 
-namespace apache { namespace thrift {
-
-constexpr std::size_t const TEnumTraits<::some::valid::ns::SimpleUnion::Type>::size;
-folly::Range<::some::valid::ns::SimpleUnion::Type const*> const TEnumTraits<::some::valid::ns::SimpleUnion::Type>::values = folly::range(TEnumDataStorage<::some::valid::ns::SimpleUnion::Type>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::some::valid::ns::SimpleUnion::Type>::names = folly::range(TEnumDataStorage<::some::valid::ns::SimpleUnion::Type>::names);
-
-char const* TEnumTraits<::some::valid::ns::SimpleUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::some::valid::ns::SimpleUnion::Type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
-}
-
-bool TEnumTraits<::some::valid::ns::SimpleUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::some::valid::ns::SimpleUnion::Type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
-}
-
-constexpr std::size_t const TEnumTraits<::some::valid::ns::ComplexUnion::Type>::size;
-folly::Range<::some::valid::ns::ComplexUnion::Type const*> const TEnumTraits<::some::valid::ns::ComplexUnion::Type>::values = folly::range(TEnumDataStorage<::some::valid::ns::ComplexUnion::Type>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::some::valid::ns::ComplexUnion::Type>::names = folly::range(TEnumDataStorage<::some::valid::ns::ComplexUnion::Type>::names);
-
-char const* TEnumTraits<::some::valid::ns::ComplexUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::some::valid::ns::ComplexUnion::Type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
-}
-
-bool TEnumTraits<::some::valid::ns::ComplexUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::some::valid::ns::ComplexUnion::Type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
-}
-
-constexpr std::size_t const TEnumTraits<::some::valid::ns::FloatUnion::Type>::size;
-folly::Range<::some::valid::ns::FloatUnion::Type const*> const TEnumTraits<::some::valid::ns::FloatUnion::Type>::values = folly::range(TEnumDataStorage<::some::valid::ns::FloatUnion::Type>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::some::valid::ns::FloatUnion::Type>::names = folly::range(TEnumDataStorage<::some::valid::ns::FloatUnion::Type>::names);
-
-char const* TEnumTraits<::some::valid::ns::FloatUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::some::valid::ns::FloatUnion::Type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
-}
-
-bool TEnumTraits<::some::valid::ns::FloatUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::some::valid::ns::FloatUnion::Type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
-}
-}} // apache::thrift
-
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -216,710 +153,6 @@ void TccStructTraits<::some::valid::ns::Empty>::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-}
-void TccStructTraits<::some::valid::ns::ASimpleStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "boolField") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-}
-void TccStructTraits<::some::valid::ns::ASimpleStructNoexcept>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "boolField") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-}
-void TccStructTraits<::some::valid::ns::MyStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "MyBoolField") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_BOOL;
-  }
-  else if (_fname == "MyIntField") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "MyStringField") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "MyStringField2") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "MyBinaryField") {
-    fid = 5;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "MyBinaryField2") {
-    fid = 6;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "MyBinaryField3") {
-    fid = 7;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "MyBinaryListField4") {
-    fid = 8;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "MyMapEnumAndInt") {
-    fid = 9;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-}
-void TccStructTraits<::some::valid::ns::SimpleUnion>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "intValue") {
-    fid = 7;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "stringValue") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
-void TccStructTraits<::some::valid::ns::ComplexUnion>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "intValue") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "opt_intValue") {
-    fid = 201;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "stringValue") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "opt_stringValue") {
-    fid = 203;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "intValue2") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_I16;
-  }
-  else if (_fname == "intValue3") {
-    fid = 6;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "doubelValue") {
-    fid = 7;
-    _ftype = apache::thrift::protocol::T_DOUBLE;
-  }
-  else if (_fname == "boolValue") {
-    fid = 8;
-    _ftype = apache::thrift::protocol::T_BOOL;
-  }
-  else if (_fname == "union_list") {
-    fid = 9;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "union_set") {
-    fid = 10;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "union_map") {
-    fid = 11;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "opt_union_map") {
-    fid = 211;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "enum_field") {
-    fid = 12;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "enum_container") {
-    fid = 13;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "a_struct") {
-    fid = 14;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "a_set_struct") {
-    fid = 15;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "a_union") {
-    fid = 16;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "opt_a_union") {
-    fid = 216;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "a_union_list") {
-    fid = 17;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "a_union_typedef") {
-    fid = 18;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "a_union_typedef_list") {
-    fid = 19;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "MyBinaryField") {
-    fid = 20;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "MyBinaryField2") {
-    fid = 21;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "MyBinaryListField4") {
-    fid = 23;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "ref_field") {
-    fid = 24;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "ref_field2") {
-    fid = 25;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "excp_field") {
-    fid = 26;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
-void TccStructTraits<::some::valid::ns::AnException>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "code") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "req_code") {
-    fid = 101;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "message2") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "req_message") {
-    fid = 102;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "exception_list") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "exception_set") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "exception_map") {
-    fid = 5;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "req_exception_map") {
-    fid = 105;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "enum_field") {
-    fid = 6;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "enum_container") {
-    fid = 7;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "a_struct") {
-    fid = 8;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "a_set_struct") {
-    fid = 9;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "a_union_list") {
-    fid = 10;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "union_typedef") {
-    fid = 11;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "a_union_typedef_list") {
-    fid = 19;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-}
-void TccStructTraits<::some::valid::ns::AnotherException>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "code") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "req_code") {
-    fid = 101;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "message") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
-void TccStructTraits<::some::valid::ns::containerStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "fieldA") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_BOOL;
-  }
-  else if (_fname == "req_fieldA") {
-    fid = 101;
-    _ftype = apache::thrift::protocol::T_BOOL;
-  }
-  else if (_fname == "opt_fieldA") {
-    fid = 201;
-    _ftype = apache::thrift::protocol::T_BOOL;
-  }
-  else if (_fname == "fieldB") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "req_fieldB") {
-    fid = 102;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "opt_fieldB") {
-    fid = 202;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "fieldC") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "req_fieldC") {
-    fid = 103;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "opt_fieldC") {
-    fid = 203;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "fieldD") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "fieldE") {
-    fid = 5;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "req_fieldE") {
-    fid = 105;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "opt_fieldE") {
-    fid = 205;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "fieldF") {
-    fid = 6;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldG") {
-    fid = 7;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "fieldH") {
-    fid = 8;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldI") {
-    fid = 9;
-    _ftype = apache::thrift::protocol::T_BOOL;
-  }
-  else if (_fname == "fieldJ") {
-    fid = 10;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "fieldK") {
-    fid = 11;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldL") {
-    fid = 12;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "fieldM") {
-    fid = 13;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "fieldN") {
-    fid = 14;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "fieldO") {
-    fid = 15;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldP") {
-    fid = 16;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldQ") {
-    fid = 17;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "fieldR") {
-    fid = 18;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "req_fieldR") {
-    fid = 118;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "opt_fieldR") {
-    fid = 218;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "fieldS") {
-    fid = 19;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "fieldT") {
-    fid = 21;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldU") {
-    fid = 22;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldV") {
-    fid = 23;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "req_fieldV") {
-    fid = 123;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "opt_fieldV") {
-    fid = 223;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "fieldW") {
-    fid = 24;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "fieldX") {
-    fid = 25;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "req_fieldX") {
-    fid = 125;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "opt_fieldX") {
-    fid = 225;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "fieldY") {
-    fid = 26;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldZ") {
-    fid = 27;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "fieldAA") {
-    fid = 28;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldAB") {
-    fid = 29;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "fieldAC") {
-    fid = 30;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "fieldAD") {
-    fid = 31;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "fieldAE") {
-    fid = 32;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "fieldSD") {
-    fid = 33;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
-void TccStructTraits<::some::valid::ns::MyIncludedStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "MyIncludedInt") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "MyIncludedStruct") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "ARefField") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "ARequiredField") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
-void TccStructTraits<::some::valid::ns::AnnotatedStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "no_annotation") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "cpp_unique_ref") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "cpp2_unique_ref") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "container_with_ref") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "req_cpp_unique_ref") {
-    fid = 5;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "req_cpp2_unique_ref") {
-    fid = 6;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "req_container_with_ref") {
-    fid = 7;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "opt_cpp_unique_ref") {
-    fid = 8;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "opt_cpp2_unique_ref") {
-    fid = 9;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "opt_container_with_ref") {
-    fid = 10;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "ref_type_unique") {
-    fid = 11;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "ref_type_shared") {
-    fid = 12;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "ref_type_const") {
-    fid = 13;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "req_ref_type_shared") {
-    fid = 14;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "req_ref_type_const") {
-    fid = 15;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "req_ref_type_unique") {
-    fid = 16;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "opt_ref_type_const") {
-    fid = 17;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "opt_ref_type_unique") {
-    fid = 18;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "opt_ref_type_shared") {
-    fid = 19;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "base_type") {
-    fid = 20;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "list_type") {
-    fid = 21;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "set_type") {
-    fid = 22;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "map_type") {
-    fid = 23;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "map_struct_type") {
-    fid = 24;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "iobuf_type") {
-    fid = 25;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "iobuf_ptr") {
-    fid = 26;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "list_i32_template") {
-    fid = 27;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "list_string_template") {
-    fid = 28;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "set_template") {
-    fid = 29;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "map_template") {
-    fid = 30;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "typedef_list_template") {
-    fid = 31;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "typedef_deque_template") {
-    fid = 32;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "typedef_set_template") {
-    fid = 33;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "typedef_map_template") {
-    fid = 34;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "indirection_a") {
-    fid = 35;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "indirection_b") {
-    fid = 36;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "indirection_c") {
-    fid = 37;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "iobuf_type_val") {
-    fid = 38;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "iobuf_ptr_val") {
-    fid = 39;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "struct_struct") {
-    fid = 40;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
-void TccStructTraits<::some::valid::ns::ComplexContainerStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "map_of_iobufs") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "map_of_iobuf_ptrs") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-}
-void TccStructTraits<::some::valid::ns::FloatStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "floatField") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_FLOAT;
-  }
-  else if (_fname == "doubleField") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_DOUBLE;
-  }
-}
-void TccStructTraits<::some::valid::ns::FloatUnion>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "floatSide") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_FLOAT;
-  }
-  else if (_fname == "doubleSide") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_DOUBLE;
-  }
-}
-void TccStructTraits<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "intField") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
 }
 
 } // namespace detail
@@ -969,7 +202,28 @@ template uint32_t Empty::write<>(apache::thrift::SimpleJSONProtocolWriter*) cons
 template uint32_t Empty::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t Empty::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+
+
 }}} // some::valid::ns
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::some::valid::ns::ASimpleStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "boolField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1018,7 +272,28 @@ template uint32_t ASimpleStruct::write<>(apache::thrift::SimpleJSONProtocolWrite
 template uint32_t ASimpleStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t ASimpleStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+
+
 }}} // some::valid::ns
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::some::valid::ns::ASimpleStructNoexcept>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "boolField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1077,7 +352,60 @@ template uint32_t ASimpleStructNoexcept::write<>(apache::thrift::SimpleJSONProto
 template uint32_t ASimpleStructNoexcept::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t ASimpleStructNoexcept::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+
+
 }}} // some::valid::ns
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::some::valid::ns::MyStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "MyBoolField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+  else if (_fname == "MyIntField") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "MyStringField") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyStringField2") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyBinaryField") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyBinaryField2") {
+    fid = 6;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyBinaryField3") {
+    fid = 7;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyBinaryListField4") {
+    fid = 8;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "MyMapEnumAndInt") {
+    fid = 9;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1266,7 +594,54 @@ template uint32_t MyStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) c
 template uint32_t MyStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+
+
 }}} // some::valid::ns
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::some::valid::ns::SimpleUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "intValue") {
+    fid = 7;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "stringValue") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::some::valid::ns::SimpleUnion::Type>::size;
+folly::Range<::some::valid::ns::SimpleUnion::Type const*> const TEnumTraits<::some::valid::ns::SimpleUnion::Type>::values = folly::range(TEnumDataStorage<::some::valid::ns::SimpleUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::some::valid::ns::SimpleUnion::Type>::names = folly::range(TEnumDataStorage<::some::valid::ns::SimpleUnion::Type>::names);
+
+char const* TEnumTraits<::some::valid::ns::SimpleUnion::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::some::valid::ns::SimpleUnion::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::some::valid::ns::SimpleUnion::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::some::valid::ns::SimpleUnion::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 void SimpleUnion::__clear() {
@@ -1346,7 +721,154 @@ template uint32_t SimpleUnion::write<>(apache::thrift::SimpleJSONProtocolWriter*
 template uint32_t SimpleUnion::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+
+
 }}} // some::valid::ns
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::some::valid::ns::ComplexUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "intValue") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "opt_intValue") {
+    fid = 201;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "stringValue") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "opt_stringValue") {
+    fid = 203;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "intValue2") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_I16;
+  }
+  else if (_fname == "intValue3") {
+    fid = 6;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "doubelValue") {
+    fid = 7;
+    _ftype = apache::thrift::protocol::T_DOUBLE;
+  }
+  else if (_fname == "boolValue") {
+    fid = 8;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+  else if (_fname == "union_list") {
+    fid = 9;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "union_set") {
+    fid = 10;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "union_map") {
+    fid = 11;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "opt_union_map") {
+    fid = 211;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "enum_field") {
+    fid = 12;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "enum_container") {
+    fid = 13;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "a_struct") {
+    fid = 14;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "a_set_struct") {
+    fid = 15;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "a_union") {
+    fid = 16;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "opt_a_union") {
+    fid = 216;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "a_union_list") {
+    fid = 17;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "a_union_typedef") {
+    fid = 18;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "a_union_typedef_list") {
+    fid = 19;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "MyBinaryField") {
+    fid = 20;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyBinaryField2") {
+    fid = 21;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyBinaryListField4") {
+    fid = 23;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "ref_field") {
+    fid = 24;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "ref_field2") {
+    fid = 25;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "excp_field") {
+    fid = 26;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::some::valid::ns::ComplexUnion::Type>::size;
+folly::Range<::some::valid::ns::ComplexUnion::Type const*> const TEnumTraits<::some::valid::ns::ComplexUnion::Type>::values = folly::range(TEnumDataStorage<::some::valid::ns::ComplexUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::some::valid::ns::ComplexUnion::Type>::names = folly::range(TEnumDataStorage<::some::valid::ns::ComplexUnion::Type>::names);
+
+char const* TEnumTraits<::some::valid::ns::ComplexUnion::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::some::valid::ns::ComplexUnion::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::some::valid::ns::ComplexUnion::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::some::valid::ns::ComplexUnion::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 void ComplexUnion::__clear() {
@@ -1729,7 +1251,212 @@ template uint32_t ComplexUnion::write<>(apache::thrift::SimpleJSONProtocolWriter
 template uint32_t ComplexUnion::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        ComplexUnion,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::MyStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        ComplexUnion,
+        ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
+        ::std::set< ::some::valid::ns::MyStruct>>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        ComplexUnion,
+        ::apache::thrift::type_class::variant,
+         ::some::valid::ns::SimpleUnion>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        ComplexUnion,
+        ::apache::thrift::type_class::variant,
+         ::some::valid::ns::SimpleUnion>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        ComplexUnion,
+        ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
+        ::std::vector< ::some::valid::ns::SimpleUnion>>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        ComplexUnion,
+        ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
+         ::some::valid::ns::unionTypeDef>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        ComplexUnion,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::MyStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        ComplexUnion,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::MyStruct>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        ComplexUnion,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::MyStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        ComplexUnion,
+        ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
+        ::std::set< ::some::valid::ns::MyStruct>>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        ComplexUnion,
+        ::apache::thrift::type_class::variant,
+         ::some::valid::ns::SimpleUnion>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        ComplexUnion,
+        ::apache::thrift::type_class::variant,
+         ::some::valid::ns::SimpleUnion>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        ComplexUnion,
+        ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
+        ::std::vector< ::some::valid::ns::SimpleUnion>>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        ComplexUnion,
+        ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
+         ::some::valid::ns::unionTypeDef>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        ComplexUnion,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::MyStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        ComplexUnion,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::MyStruct>,
+    "inconsistent use of nimble option");
+
 }}} // some::valid::ns
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::some::valid::ns::AnException>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "code") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "req_code") {
+    fid = 101;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "message2") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "req_message") {
+    fid = 102;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "exception_list") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "exception_set") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "exception_map") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "req_exception_map") {
+    fid = 105;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "enum_field") {
+    fid = 6;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "enum_container") {
+    fid = 7;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "a_struct") {
+    fid = 8;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "a_set_struct") {
+    fid = 9;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "a_union_list") {
+    fid = 10;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "union_typedef") {
+    fid = 11;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "a_union_typedef_list") {
+    fid = 19;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -2018,7 +1745,100 @@ template uint32_t AnException::write<>(apache::thrift::SimpleJSONProtocolWriter*
 template uint32_t AnException::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t AnException::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnException,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::MyStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnException,
+        ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
+        ::std::set< ::some::valid::ns::MyStruct>>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnException,
+        ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
+        ::std::vector< ::some::valid::ns::SimpleUnion>>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnException,
+        ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
+         ::some::valid::ns::unionTypeDef>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnException,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::MyStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnException,
+        ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
+        ::std::set< ::some::valid::ns::MyStruct>>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnException,
+        ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
+        ::std::vector< ::some::valid::ns::SimpleUnion>>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnException,
+        ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
+         ::some::valid::ns::unionTypeDef>,
+    "inconsistent use of nimble option");
+
 }}} // some::valid::ns
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::some::valid::ns::AnotherException>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "code") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "req_code") {
+    fid = 101;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "message") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -2096,7 +1916,208 @@ template uint32_t AnotherException::write<>(apache::thrift::SimpleJSONProtocolWr
 template uint32_t AnotherException::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t AnotherException::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+
+
 }}} // some::valid::ns
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::some::valid::ns::containerStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "fieldA") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+  else if (_fname == "req_fieldA") {
+    fid = 101;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+  else if (_fname == "opt_fieldA") {
+    fid = 201;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+  else if (_fname == "fieldB") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "req_fieldB") {
+    fid = 102;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "opt_fieldB") {
+    fid = 202;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "fieldC") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "req_fieldC") {
+    fid = 103;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "opt_fieldC") {
+    fid = 203;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "fieldD") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "fieldE") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "req_fieldE") {
+    fid = 105;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "opt_fieldE") {
+    fid = 205;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "fieldF") {
+    fid = 6;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldG") {
+    fid = 7;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "fieldH") {
+    fid = 8;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldI") {
+    fid = 9;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+  else if (_fname == "fieldJ") {
+    fid = 10;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "fieldK") {
+    fid = 11;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldL") {
+    fid = 12;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "fieldM") {
+    fid = 13;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "fieldN") {
+    fid = 14;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "fieldO") {
+    fid = 15;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldP") {
+    fid = 16;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldQ") {
+    fid = 17;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "fieldR") {
+    fid = 18;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "req_fieldR") {
+    fid = 118;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "opt_fieldR") {
+    fid = 218;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "fieldS") {
+    fid = 19;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "fieldT") {
+    fid = 21;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldU") {
+    fid = 22;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldV") {
+    fid = 23;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "req_fieldV") {
+    fid = 123;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "opt_fieldV") {
+    fid = 223;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "fieldW") {
+    fid = 24;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "fieldX") {
+    fid = 25;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "req_fieldX") {
+    fid = 125;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "opt_fieldX") {
+    fid = 225;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "fieldY") {
+    fid = 26;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldZ") {
+    fid = 27;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "fieldAA") {
+    fid = 28;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldAB") {
+    fid = 29;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "fieldAC") {
+    fid = 30;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "fieldAD") {
+    fid = 31;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "fieldAE") {
+    fid = 32;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "fieldSD") {
+    fid = 33;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -2885,7 +2906,200 @@ template uint32_t containerStruct::write<>(apache::thrift::SimpleJSONProtocolWri
 template uint32_t containerStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t containerStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        containerStruct,
+        ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>,
+         ::some::valid::ns::complexStructTypeDef>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        containerStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::MyStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        containerStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::MyStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        containerStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::MyStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        containerStruct,
+        ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
+        ::std::set< ::some::valid::ns::MyStruct>>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        containerStruct,
+        ::apache::thrift::type_class::variant,
+         ::some::valid::ns::ComplexUnion>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        containerStruct,
+        ::apache::thrift::type_class::variant,
+         ::some::valid::ns::ComplexUnion>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        containerStruct,
+        ::apache::thrift::type_class::variant,
+         ::some::valid::ns::ComplexUnion>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        containerStruct,
+        ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
+        ::std::vector< ::some::valid::ns::ComplexUnion>>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        containerStruct,
+        ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
+         ::some::valid::ns::unionTypeDef>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        containerStruct,
+        ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>,
+         ::some::valid::ns::complexStructTypeDef>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        containerStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::MyStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        containerStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::MyStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        containerStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::MyStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        containerStruct,
+        ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
+        ::std::set< ::some::valid::ns::MyStruct>>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        containerStruct,
+        ::apache::thrift::type_class::variant,
+         ::some::valid::ns::ComplexUnion>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        containerStruct,
+        ::apache::thrift::type_class::variant,
+         ::some::valid::ns::ComplexUnion>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        containerStruct,
+        ::apache::thrift::type_class::variant,
+         ::some::valid::ns::ComplexUnion>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        containerStruct,
+        ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
+        ::std::vector< ::some::valid::ns::ComplexUnion>>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        containerStruct,
+        ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
+         ::some::valid::ns::unionTypeDef>,
+    "inconsistent use of nimble option");
+
 }}} // some::valid::ns
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::some::valid::ns::MyIncludedStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "MyIncludedInt") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "MyIncludedStruct") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "ARefField") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "ARequiredField") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace some { namespace valid { namespace ns {
 
 MyIncludedStruct::MyIncludedStruct(const MyIncludedStruct& srcObj) {
@@ -3017,7 +3231,232 @@ template uint32_t MyIncludedStruct::write<>(apache::thrift::SimpleJSONProtocolWr
 template uint32_t MyIncludedStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t MyIncludedStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        MyIncludedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::AStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        MyIncludedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::AStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        MyIncludedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::AStruct>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        MyIncludedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::AStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        MyIncludedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::AStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        MyIncludedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::AStruct>,
+    "inconsistent use of nimble option");
+
 }}} // some::valid::ns
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::some::valid::ns::AnnotatedStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "no_annotation") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "cpp_unique_ref") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "cpp2_unique_ref") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "container_with_ref") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "req_cpp_unique_ref") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "req_cpp2_unique_ref") {
+    fid = 6;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "req_container_with_ref") {
+    fid = 7;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "opt_cpp_unique_ref") {
+    fid = 8;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "opt_cpp2_unique_ref") {
+    fid = 9;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "opt_container_with_ref") {
+    fid = 10;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "ref_type_unique") {
+    fid = 11;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "ref_type_shared") {
+    fid = 12;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "ref_type_const") {
+    fid = 13;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "req_ref_type_shared") {
+    fid = 14;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "req_ref_type_const") {
+    fid = 15;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "req_ref_type_unique") {
+    fid = 16;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "opt_ref_type_const") {
+    fid = 17;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "opt_ref_type_unique") {
+    fid = 18;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "opt_ref_type_shared") {
+    fid = 19;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "base_type") {
+    fid = 20;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "list_type") {
+    fid = 21;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "set_type") {
+    fid = 22;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "map_type") {
+    fid = 23;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "map_struct_type") {
+    fid = 24;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "iobuf_type") {
+    fid = 25;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "iobuf_ptr") {
+    fid = 26;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "list_i32_template") {
+    fid = 27;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "list_string_template") {
+    fid = 28;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "set_template") {
+    fid = 29;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "map_template") {
+    fid = 30;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "typedef_list_template") {
+    fid = 31;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "typedef_deque_template") {
+    fid = 32;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "typedef_set_template") {
+    fid = 33;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "typedef_map_template") {
+    fid = 34;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "indirection_a") {
+    fid = 35;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "indirection_b") {
+    fid = 36;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "indirection_c") {
+    fid = 37;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "iobuf_type_val") {
+    fid = 38;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "iobuf_ptr_val") {
+    fid = 39;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "struct_struct") {
+    fid = 40;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -3606,7 +4045,272 @@ template uint32_t AnnotatedStruct::write<>(apache::thrift::SimpleJSONProtocolWri
 template uint32_t AnnotatedStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t AnnotatedStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
+         ::some::valid::ns::UnorderedMapStruct>,
+    "inconsistent use of json option");
+//  enforce that if this thrift file is generated with extern template instances
+//  for simple-json protocol then all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of json option");
+
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
+         ::some::valid::ns::UnorderedMapStruct>,
+    "inconsistent use of nimble option");
+//  if this struct is generated with extern template instances for nimble
+//  protocol, enforce that all its dependencies are too
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        AnnotatedStruct,
+        ::apache::thrift::type_class::structure,
+         ::some::valid::ns::containerStruct>,
+    "inconsistent use of nimble option");
+
 }}} // some::valid::ns
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::some::valid::ns::ComplexContainerStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "map_of_iobufs") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "map_of_iobuf_ptrs") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -3691,7 +4395,32 @@ template uint32_t ComplexContainerStruct::write<>(apache::thrift::SimpleJSONProt
 template uint32_t ComplexContainerStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t ComplexContainerStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+
+
 }}} // some::valid::ns
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::some::valid::ns::FloatStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "floatField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_FLOAT;
+  }
+  else if (_fname == "doubleField") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_DOUBLE;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -3760,7 +4489,54 @@ template uint32_t FloatStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*
 template uint32_t FloatStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t FloatStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+
+
 }}} // some::valid::ns
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::some::valid::ns::FloatUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "floatSide") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_FLOAT;
+  }
+  else if (_fname == "doubleSide") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_DOUBLE;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::some::valid::ns::FloatUnion::Type>::size;
+folly::Range<::some::valid::ns::FloatUnion::Type const*> const TEnumTraits<::some::valid::ns::FloatUnion::Type>::values = folly::range(TEnumDataStorage<::some::valid::ns::FloatUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::some::valid::ns::FloatUnion::Type>::names = folly::range(TEnumDataStorage<::some::valid::ns::FloatUnion::Type>::names);
+
+char const* TEnumTraits<::some::valid::ns::FloatUnion::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::some::valid::ns::FloatUnion::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::some::valid::ns::FloatUnion::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::some::valid::ns::FloatUnion::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 void FloatUnion::__clear() {
@@ -3840,7 +4616,28 @@ template uint32_t FloatUnion::write<>(apache::thrift::SimpleJSONProtocolWriter*)
 template uint32_t FloatUnion::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t FloatUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+
+
 }}} // some::valid::ns
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "intField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -3891,493 +4688,6 @@ template uint32_t AllRequiredNoExceptMoveCtrStruct::write<>(apache::thrift::Simp
 template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-}}} // some::valid::ns
 
-namespace some { namespace valid { namespace ns {
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ComplexUnion,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ComplexUnion,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::some::valid::ns::MyStruct>>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ComplexUnion,
-        ::apache::thrift::type_class::variant,
-         ::some::valid::ns::SimpleUnion>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ComplexUnion,
-        ::apache::thrift::type_class::variant,
-         ::some::valid::ns::SimpleUnion>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ComplexUnion,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
-        ::std::vector< ::some::valid::ns::SimpleUnion>>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ComplexUnion,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
-         ::some::valid::ns::unionTypeDef>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ComplexUnion,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ComplexUnion,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnException,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnException,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::some::valid::ns::MyStruct>>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnException,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
-        ::std::vector< ::some::valid::ns::SimpleUnion>>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnException,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
-         ::some::valid::ns::unionTypeDef>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        containerStruct,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>,
-         ::some::valid::ns::complexStructTypeDef>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        containerStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        containerStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        containerStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        containerStruct,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::some::valid::ns::MyStruct>>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        containerStruct,
-        ::apache::thrift::type_class::variant,
-         ::some::valid::ns::ComplexUnion>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        containerStruct,
-        ::apache::thrift::type_class::variant,
-         ::some::valid::ns::ComplexUnion>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        containerStruct,
-        ::apache::thrift::type_class::variant,
-         ::some::valid::ns::ComplexUnion>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        containerStruct,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
-        ::std::vector< ::some::valid::ns::ComplexUnion>>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        containerStruct,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
-         ::some::valid::ns::unionTypeDef>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        MyIncludedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::AStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        MyIncludedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::AStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        MyIncludedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::AStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-         ::some::valid::ns::UnorderedMapStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of json option");
-
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexUnion,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexUnion,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::some::valid::ns::MyStruct>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexUnion,
-        ::apache::thrift::type_class::variant,
-         ::some::valid::ns::SimpleUnion>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexUnion,
-        ::apache::thrift::type_class::variant,
-         ::some::valid::ns::SimpleUnion>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexUnion,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
-        ::std::vector< ::some::valid::ns::SimpleUnion>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexUnion,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
-         ::some::valid::ns::unionTypeDef>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexUnion,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexUnion,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnException,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnException,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::some::valid::ns::MyStruct>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnException,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
-        ::std::vector< ::some::valid::ns::SimpleUnion>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnException,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
-         ::some::valid::ns::unionTypeDef>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>,
-         ::some::valid::ns::complexStructTypeDef>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::some::valid::ns::MyStruct>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::variant,
-         ::some::valid::ns::ComplexUnion>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::variant,
-         ::some::valid::ns::ComplexUnion>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::variant,
-         ::some::valid::ns::ComplexUnion>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
-        ::std::vector< ::some::valid::ns::ComplexUnion>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
-         ::some::valid::ns::unionTypeDef>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        MyIncludedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::AStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        MyIncludedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::AStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        MyIncludedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::AStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-         ::some::valid::ns::UnorderedMapStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
 
 }}} // some::valid::ns

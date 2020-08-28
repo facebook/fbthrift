@@ -107,9 +107,6 @@ template uint32_t Included::write<>(apache::thrift::CompactProtocolWriter*) cons
 template uint32_t Included::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Included::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
-
-namespace cpp2 {
 //  enforce that if this thrift file is generated with extern template instances
 //  for simple-json protocol then all its dependencies are too
 static_assert(
