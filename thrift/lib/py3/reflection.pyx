@@ -64,7 +64,7 @@ cdef class StructSpec:
             for field in fields:
                 Py_INCREF(field)
                 self._fields.push_back(<PyObject*>fields)
-        self.kind = kind
+        self.kind = StructType(kind)
         self.annotations = MappingProxyType(annotations)
 
     @staticmethod

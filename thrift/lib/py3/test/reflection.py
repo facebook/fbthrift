@@ -49,6 +49,7 @@ class ReflectionTests(unittest.TestCase):
         self.assertTrue(inspectable(easy))
         r = inspect(x)
         self.assertEqual(r.name, "easy")
+        self.assertIsInstance(r.kind, StructType)
         self.assertEqual(r.kind, StructType.STRUCT)
         self.assertEqual(r.annotations, {"anno1": "foo", "bar": "1"})
 

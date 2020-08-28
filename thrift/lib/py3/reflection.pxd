@@ -43,7 +43,7 @@ cpdef enum StructType:
 cdef class StructSpec:
     cdef readonly str name
     cdef cvector[PyObject*] _fields
-    cdef readonly StructType kind
+    cdef readonly object kind
     cdef readonly object annotations
 
     @staticmethod
