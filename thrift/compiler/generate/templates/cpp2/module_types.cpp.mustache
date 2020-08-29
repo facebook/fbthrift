@@ -98,11 +98,11 @@ template uint32_t <%struct:name%>::serializedSize<>(apache::thrift::NimbleProtoc
 template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::NimbleProtocolWriter const*) const;
 <%/program:nimble?%>
 
+<%! enforce that if this thrift file is generated with extern template instances
+    for simple-json protocol then all its dependencies are too %>
 <%#struct:fields%>
 <%#field:type%>
 <%#type:transitively_refers_to_struct?%>
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         <%struct:name%>,
@@ -113,11 +113,11 @@ static_assert(
 <%/field:type%>
 <%/struct:fields%>
 
+<%! if this struct is generated with extern template instances for nimble
+    protocol, enforce that all its dependencies are too %>
 <%#struct:fields%>
 <%#field:type%>
 <%#type:transitively_refers_to_struct?%>
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         <%struct:name%>,

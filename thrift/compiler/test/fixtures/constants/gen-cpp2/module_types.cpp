@@ -516,8 +516,6 @@ template uint32_t struct2::write<>(apache::thrift::CompactProtocolWriter*) const
 template uint32_t struct2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct2,
@@ -525,8 +523,6 @@ static_assert(
          ::cpp2::struct1>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct2,
@@ -644,8 +640,6 @@ template uint32_t struct3::write<>(apache::thrift::CompactProtocolWriter*) const
 template uint32_t struct3::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct3::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
@@ -653,8 +647,6 @@ static_assert(
          ::cpp2::struct2>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
@@ -1040,16 +1032,12 @@ template uint32_t union2::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t union2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t union2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         union2,
         ::apache::thrift::type_class::structure,
          ::cpp2::struct1>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         union2,
@@ -1057,16 +1045,12 @@ static_assert(
          ::cpp2::union1>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         union2,
         ::apache::thrift::type_class::structure,
          ::cpp2::struct1>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         union2,

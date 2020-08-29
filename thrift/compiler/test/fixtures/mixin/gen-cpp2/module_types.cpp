@@ -183,8 +183,6 @@ template uint32_t Mixin2::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Mixin2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Mixin2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Mixin2,
@@ -192,8 +190,6 @@ static_assert(
          ::cpp2::Mixin1>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         Mixin2,
@@ -395,16 +391,12 @@ template uint32_t Foo::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Foo::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Foo::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Foo,
         ::apache::thrift::type_class::structure,
          ::cpp2::Mixin2>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Foo,
@@ -412,16 +404,12 @@ static_assert(
          ::cpp2::Mixin3>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         Foo,
         ::apache::thrift::type_class::structure,
          ::cpp2::Mixin2>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         Foo,

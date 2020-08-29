@@ -204,8 +204,6 @@ template uint32_t AStructB::write<>(apache::thrift::SimpleJSONProtocolWriter*) c
 template uint32_t AStructB::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t AStructB::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AStructB,
@@ -213,8 +211,6 @@ static_assert(
          ::a::different::ns::AStruct>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AStructB,

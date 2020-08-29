@@ -869,8 +869,6 @@ template uint32_t TrivialNestedWithDefault::write<>(apache::thrift::CompactProto
 template uint32_t TrivialNestedWithDefault::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t TrivialNestedWithDefault::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         TrivialNestedWithDefault,
@@ -878,8 +876,6 @@ static_assert(
          ::apache::thrift::fixtures::types::TrivialNumeric>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         TrivialNestedWithDefault,
@@ -1081,8 +1077,6 @@ template uint32_t ComplexNestedWithDefault::write<>(apache::thrift::CompactProto
 template uint32_t ComplexNestedWithDefault::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ComplexNestedWithDefault::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexNestedWithDefault,
@@ -1090,8 +1084,6 @@ static_assert(
          ::apache::thrift::fixtures::types::ComplexString>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexNestedWithDefault,
@@ -1351,8 +1343,6 @@ template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter*) cons
 template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStruct,
@@ -1360,8 +1350,6 @@ static_assert(
          ::apache::thrift::fixtures::types::MyDataItem>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyStruct,
@@ -1612,8 +1600,6 @@ template uint32_t ForwardUsageStruct::write<>(apache::thrift::CompactProtocolWri
 template uint32_t ForwardUsageStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ForwardUsageStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ForwardUsageStruct,
@@ -1621,8 +1607,6 @@ static_assert(
          ::apache::thrift::fixtures::types::ForwardUsageRoot>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ForwardUsageStruct,
@@ -1749,16 +1733,12 @@ template uint32_t ForwardUsageRoot::write<>(apache::thrift::CompactProtocolWrite
 template uint32_t ForwardUsageRoot::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ForwardUsageRoot::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ForwardUsageRoot,
         ::apache::thrift::type_class::structure,
          ::apache::thrift::fixtures::types::ForwardUsageStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ForwardUsageRoot,
@@ -1766,16 +1746,12 @@ static_assert(
          ::apache::thrift::fixtures::types::ForwardUsageByRef>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ForwardUsageRoot,
         ::apache::thrift::type_class::structure,
          ::apache::thrift::fixtures::types::ForwardUsageStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ForwardUsageRoot,
@@ -1865,8 +1841,6 @@ template uint32_t ForwardUsageByRef::write<>(apache::thrift::CompactProtocolWrit
 template uint32_t ForwardUsageByRef::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ForwardUsageByRef::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ForwardUsageByRef,
@@ -1874,8 +1848,6 @@ static_assert(
          ::apache::thrift::fixtures::types::ForwardUsageRoot>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ForwardUsageByRef,

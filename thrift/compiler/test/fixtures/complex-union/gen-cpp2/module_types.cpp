@@ -673,16 +673,12 @@ template uint32_t ValUnion::write<>(apache::thrift::CompactProtocolWriter*) cons
 template uint32_t ValUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ValUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ValUnion,
         ::apache::thrift::type_class::structure,
          ::cpp2::Val>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ValUnion,
@@ -690,16 +686,12 @@ static_assert(
          ::cpp2::Val>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ValUnion,
         ::apache::thrift::type_class::structure,
          ::cpp2::Val>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ValUnion,
@@ -1012,8 +1004,6 @@ template uint32_t NonCopyableUnion::write<>(apache::thrift::CompactProtocolWrite
 template uint32_t NonCopyableUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t NonCopyableUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         NonCopyableUnion,
@@ -1021,8 +1011,6 @@ static_assert(
          ::cpp2::NonCopyableStruct>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         NonCopyableUnion,

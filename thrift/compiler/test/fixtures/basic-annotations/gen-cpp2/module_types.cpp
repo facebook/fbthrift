@@ -244,8 +244,6 @@ template uint32_t MyStructAnnotation::write<>(apache::thrift::CompactProtocolWri
 template uint32_t MyStructAnnotation::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t MyStructAnnotation::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructAnnotation,
@@ -253,8 +251,6 @@ static_assert(
          ::cpp2::MyStructNestedAnnotation>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyStructAnnotation,

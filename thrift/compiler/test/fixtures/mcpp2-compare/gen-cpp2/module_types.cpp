@@ -1251,64 +1251,48 @@ template uint32_t ComplexUnion::write<>(apache::thrift::SimpleJSONProtocolWriter
 template uint32_t ComplexUnion::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexUnion,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::MyStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexUnion,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
         ::std::set< ::some::valid::ns::MyStruct>>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexUnion,
         ::apache::thrift::type_class::variant,
          ::some::valid::ns::SimpleUnion>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexUnion,
         ::apache::thrift::type_class::variant,
          ::some::valid::ns::SimpleUnion>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexUnion,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
         ::std::vector< ::some::valid::ns::SimpleUnion>>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexUnion,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
          ::some::valid::ns::unionTypeDef>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexUnion,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::MyStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexUnion,
@@ -1316,64 +1300,48 @@ static_assert(
          ::some::valid::ns::MyStruct>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexUnion,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::MyStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexUnion,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
         ::std::set< ::some::valid::ns::MyStruct>>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexUnion,
         ::apache::thrift::type_class::variant,
          ::some::valid::ns::SimpleUnion>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexUnion,
         ::apache::thrift::type_class::variant,
          ::some::valid::ns::SimpleUnion>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexUnion,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
         ::std::vector< ::some::valid::ns::SimpleUnion>>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexUnion,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
          ::some::valid::ns::unionTypeDef>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexUnion,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::MyStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexUnion,
@@ -1745,32 +1713,24 @@ template uint32_t AnException::write<>(apache::thrift::SimpleJSONProtocolWriter*
 template uint32_t AnException::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t AnException::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnException,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::MyStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnException,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
         ::std::set< ::some::valid::ns::MyStruct>>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnException,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
         ::std::vector< ::some::valid::ns::SimpleUnion>>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnException,
@@ -1778,32 +1738,24 @@ static_assert(
          ::some::valid::ns::unionTypeDef>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnException,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::MyStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnException,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
         ::std::set< ::some::valid::ns::MyStruct>>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnException,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
         ::std::vector< ::some::valid::ns::SimpleUnion>>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnException,
@@ -2906,80 +2858,60 @@ template uint32_t containerStruct::write<>(apache::thrift::SimpleJSONProtocolWri
 template uint32_t containerStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t containerStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>,
          ::some::valid::ns::complexStructTypeDef>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::MyStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::MyStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::MyStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
         ::std::set< ::some::valid::ns::MyStruct>>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::variant,
          ::some::valid::ns::ComplexUnion>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::variant,
          ::some::valid::ns::ComplexUnion>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::variant,
          ::some::valid::ns::ComplexUnion>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
         ::std::vector< ::some::valid::ns::ComplexUnion>>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
@@ -2987,80 +2919,60 @@ static_assert(
          ::some::valid::ns::unionTypeDef>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>,
          ::some::valid::ns::complexStructTypeDef>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::MyStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::MyStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::MyStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
         ::std::set< ::some::valid::ns::MyStruct>>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::variant,
          ::some::valid::ns::ComplexUnion>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::variant,
          ::some::valid::ns::ComplexUnion>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::variant,
          ::some::valid::ns::ComplexUnion>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
         ::std::vector< ::some::valid::ns::ComplexUnion>>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
@@ -3231,24 +3143,18 @@ template uint32_t MyIncludedStruct::write<>(apache::thrift::SimpleJSONProtocolWr
 template uint32_t MyIncludedStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t MyIncludedStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyIncludedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::AStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyIncludedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::AStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyIncludedStruct,
@@ -3256,24 +3162,18 @@ static_assert(
          ::some::valid::ns::AStruct>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyIncludedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::AStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyIncludedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::AStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyIncludedStruct,
@@ -4045,120 +3945,90 @@ template uint32_t AnnotatedStruct::write<>(apache::thrift::SimpleJSONProtocolWri
 template uint32_t AnnotatedStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t AnnotatedStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
          ::some::valid::ns::UnorderedMapStruct>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
@@ -4166,120 +4036,90 @@ static_assert(
          ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
          ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
          ::some::valid::ns::UnorderedMapStruct>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,

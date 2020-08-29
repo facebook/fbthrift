@@ -228,16 +228,12 @@ template uint32_t ModuleA::write<>(apache::thrift::CompactProtocolWriter*) const
 template uint32_t ModuleA::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ModuleA::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ModuleA,
         ::apache::thrift::type_class::structure,
          ::some::ns::IncludedA>,
     "inconsistent use of json option");
-//  enforce that if this thrift file is generated with extern template instances
-//  for simple-json protocol then all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ModuleA,
@@ -245,16 +241,12 @@ static_assert(
          ::some::ns::IncludedB>,
     "inconsistent use of json option");
 
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ModuleA,
         ::apache::thrift::type_class::structure,
          ::some::ns::IncludedA>,
     "inconsistent use of nimble option");
-//  if this struct is generated with extern template instances for nimble
-//  protocol, enforce that all its dependencies are too
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ModuleA,
