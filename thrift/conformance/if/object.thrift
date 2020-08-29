@@ -40,14 +40,18 @@ union Value {
   7: float f32Value;
   8: double f64Value;
 
+  // Strings.
+  9: string stringValue;
+  10: binary binaryValue;
+
   // Containers of values.
-  9: list<Value> listValue;
-  10: map<Value, Value> mapValue;
-  11: set<Value> setValue;
+  11: list<Value> listValue;
+  12: map<Value, Value> mapValue;
+  13: set<Value> setValue;
 
   // A dynamic object value.
-  12: Object objectValue;
+  14: Object objectValue;
 
   // A static object value.
-  13: any.Any anyValue;
+  15: any.Any anyValue;
 }
