@@ -179,6 +179,8 @@ struct PayloadAppServerExceptionMetadata {
 union PayloadExceptionMetadata {
   1: PayloadDeclaredExceptionMetadata declaredException;
   2: PayloadProxyExceptionMetadata proxyException;
+  // Deprecated
+  // replaced by PayloadProxyExceptionMetadata + ProxiedPayloadMetadata
   3: PayloadProxiedExceptionMetadata proxiedException;
   4: PayloadAppClientExceptionMetadata appClientException;
   5: PayloadAppServerExceptionMetadata appServerException;
@@ -193,6 +195,9 @@ struct PayloadExceptionMetadataBase {
 union PayloadMetadata {
   1: PayloadResponseMetadata responseMetadata;
   2: PayloadExceptionMetadataBase exceptionMetadata;
+}
+
+struct ProxiedPayloadMetadata {
 }
 
 // RPC metadata sent from the server to the client.  The lifetime of
@@ -222,6 +227,8 @@ struct ResponseRpcMetadata {
   6: optional CompressionAlgorithm compression;
   // Additional metadata for the response payload
   7: optional PayloadMetadata payloadMetadata;
+  // Additional metadata for the response payload (if proxied)
+  8: optional ProxiedPayloadMetadata proxiedPayloadMetadata;
 }
 
 enum ResponseRpcErrorCategory {

@@ -162,6 +162,9 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
     uint16_t protocolId,
     folly::StringPiece methodName) {
   if (auto payloadMetadataRef = metadata.payloadMetadata_ref()) {
+    const auto isProxiedResponse =
+        metadata.proxiedPayloadMetadata_ref().has_value();
+
     switch (payloadMetadataRef->getType()) {
       case PayloadMetadata::responseMetadata:
         payload =
@@ -182,10 +185,12 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
           switch (exceptionMetadataRef->getType()) {
             case PayloadExceptionMetadata::declaredException:
               if (exceptionNameRef) {
-                (*otherMetadataRef)["uex"] = *exceptionNameRef;
+                (*otherMetadataRef)[isProxiedResponse ? "puex" : "uex"] =
+                    *exceptionNameRef;
               }
               if (exceptionWhatRef) {
-                (*otherMetadataRef)["uexw"] = *exceptionWhatRef;
+                (*otherMetadataRef)[isProxiedResponse ? "puexw" : "uexw"] =
+                    *exceptionWhatRef;
               }
               payload = LegacySerializedResponse(
                             protocolId,
@@ -194,8 +199,10 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
                             .buffer;
               break;
             case PayloadExceptionMetadata::proxyException:
-              (*otherMetadataRef)["servicerouter:sr_internal_error"] =
-                  protocol::base64Encode(payload->coalesce());
+              (*otherMetadataRef)
+                  [isProxiedResponse ? "servicerouter:sr_error"
+                                     : "servicerouter:sr_internal_error"] =
+                      protocol::base64Encode(payload->coalesce());
               payload =
                   LegacySerializedResponse(
                       protocolId,
@@ -214,14 +221,17 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
                       .buffer;
               break;
             case PayloadExceptionMetadata::appClientException:
-              (*otherMetadataRef)["ex"] = kAppClientErrorCode;
+              (*otherMetadataRef)[isProxiedResponse ? "pex" : "ex"] =
+                  kAppClientErrorCode;
               FOLLY_FALLTHROUGH;
             default:
               if (exceptionNameRef) {
-                (*otherMetadataRef)["uex"] = *exceptionNameRef;
+                (*otherMetadataRef)[isProxiedResponse ? "puex" : "uex"] =
+                    *exceptionNameRef;
               }
               if (exceptionWhatRef) {
-                (*otherMetadataRef)["uexw"] = *exceptionWhatRef;
+                (*otherMetadataRef)[isProxiedResponse ? "puexw" : "uexw"] =
+                    *exceptionWhatRef;
               }
               payload =
                   LegacySerializedResponse(
@@ -563,7 +573,7 @@ class RocketClientChannel::SingleRequestNoResponseCallback final
 
 rocket::SetupFrame RocketClientChannel::makeSetupFrame(
     RequestSetupMetadata meta) {
-  meta.maxVersion_ref() = 3;
+  meta.maxVersion_ref() = 4;
   CompactProtocolWriter compactProtocolWriter;
   folly::IOBufQueue paramQueue;
   compactProtocolWriter.setOutput(&paramQueue);
