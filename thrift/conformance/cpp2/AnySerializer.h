@@ -85,8 +85,8 @@ class AnySerializer {
 //
 // Type specific calls are forward to the following functions, required to
 // be publicially accessible on Derived:
-// - void encode(const T&, folly::io::QueueAppender&&)
-// - T decode(folly::io::Cursor& cursor)
+// - void encode(const T&, folly::io::QueueAppender&&) const
+// - T decode(folly::io::Cursor& cursor) const
 template <typename T, typename Derived>
 class BaseTypedAnySerializer : public AnySerializer {
   using Base = AnySerializer;
