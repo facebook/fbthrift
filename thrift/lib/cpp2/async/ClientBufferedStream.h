@@ -157,6 +157,9 @@ class ClientBufferedStream {
       folly::coro::Baton baton;
     };
 
+    int8_t iterationsSinceLastReschedule = 0;
+    constexpr int8_t rescheduleEvery = 64;
+
     while (true) {
       if ((co_await folly::coro::co_current_cancellation_token)
               .isCancellationRequested()) {
@@ -181,6 +184,14 @@ class ClientBufferedStream {
           detail::ClientStreamBridge::Ptr(streamBridge.release());
           throw folly::OperationCancelled();
         }
+      }
+
+      // Coroutine TS symmetric transfer is broken in some build modes. Avoid
+      // stack overflow by periodically re-scheduling a task onto current
+      // executor.
+      if (++iterationsSinceLastReschedule == rescheduleEvery) {
+        iterationsSinceLastReschedule = 0;
+        co_await folly::coro::co_reschedule_on_current_executor;
       }
 
       {
