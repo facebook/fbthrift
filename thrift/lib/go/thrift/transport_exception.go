@@ -62,6 +62,11 @@ func (p *transportException) Error() string {
 	return p.err.Error()
 }
 
+// Unwrap is used for errors.Unwrap.
+func (p *transportException) Unwrap() error {
+	return p.err
+}
+
 func (p *transportException) Err() error {
 	return p.err
 }
