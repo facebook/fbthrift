@@ -115,3 +115,9 @@ using ScopedStatefulAlloc = std::scoped_allocator_adaptor<StatefulAlloc<char>>;
 
 template <class T>
 using StatefulAllocVector = std::vector<T, ScopedStatefulAlloc>;
+
+template <class T>
+using StatefulAllocSet = std::set<T, std::less<T>, ScopedStatefulAlloc>;
+
+template <class K, class V>
+using StatefulAllocMap = std::map<K, V, std::less<K>, ScopedStatefulAlloc>;
