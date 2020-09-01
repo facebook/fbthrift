@@ -3480,7 +3480,7 @@ _readField_aa_list:
   {
     _readState.beforeSubobject(iprot);
     
-    this->aa_list = ::std::vector<int32_t>();
+    this->aa_list = ::std::vector<int32_t>(this->get_allocator());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, this->aa_list);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.aa_list = true;
@@ -3499,7 +3499,7 @@ _readField_aa_set:
   {
     _readState.beforeSubobject(iprot);
     
-    this->aa_set = ::std::set<int32_t>();
+    this->aa_set = ::std::set<int32_t>(this->get_allocator());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::read(*iprot, this->aa_set);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.aa_set = true;
@@ -3518,7 +3518,7 @@ _readField_aa_map:
   {
     _readState.beforeSubobject(iprot);
     
-    this->aa_map = ::std::map<int32_t, int32_t>();
+    this->aa_map = ::std::map<int32_t, int32_t>(this->get_allocator());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::map<int32_t, int32_t>>::read(*iprot, this->aa_map);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.aa_map = true;

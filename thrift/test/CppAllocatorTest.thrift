@@ -45,3 +45,8 @@ struct NoAllocatorVia  {
 struct YesAllocatorVia  {
   1: AAStruct (cpp.use_allocator) foo;
 } (cpp.allocator="::ScopedStatefulAlloc", cpp.allocator_via="foo")
+
+struct HasContainerField  {
+  1: list<i32>
+    (cpp.use_allocator, cpp.template = "::StatefulAllocVector") aa_list;
+} (cpp.allocator="::ScopedStatefulAlloc")

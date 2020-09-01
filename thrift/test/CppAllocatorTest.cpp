@@ -16,6 +16,7 @@
 
 #include <thrift/test/CppAllocatorTest.h>
 
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/test/gen-cpp2/CppAllocatorTest_types.h>
 
 #include <folly/portability/GTest.h>
@@ -55,4 +56,23 @@ TEST(CppAllocatorTest, AllocatorVia) {
   NoAllocatorVia s1;
   YesAllocatorVia s2;
   EXPECT_GT(sizeof(s1), sizeof(s2));
+}
+
+TEST(CppAllocatorTest, Deserialize) {
+  using serializer = apache::thrift::CompactSerializer;
+
+  HasContainerField s1;
+  s1.aa_list_ref() = {1, 2, 3};
+
+  auto str = serializer::serialize<std::string>(s1);
+
+  ScopedStatefulAlloc alloc(42);
+  HasContainerField s2(alloc);
+  EXPECT_EQ(s2.get_allocator(), alloc);
+  EXPECT_EQ(s2.aa_list_ref()->get_allocator(), alloc);
+
+  serializer::deserialize(str, s2);
+  EXPECT_EQ(s2.aa_list_ref(), (StatefulAllocVector<int32_t>{1, 2, 3}));
+  EXPECT_EQ(s2.get_allocator(), alloc);
+  EXPECT_EQ(s2.aa_list_ref()->get_allocator(), alloc);
 }

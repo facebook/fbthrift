@@ -44,7 +44,12 @@ this-><%field:cpp_name%> = std::move(ptr);<%!
 ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:cpp_name%>);<%!
 %><%/type:string_or_binary?%><%!
 %><%#type:resolves_to_container?%>
+<%#type:cpp_use_allocator?%>
+this-><%field:cpp_name%> = <% > types/type%>(this->get_allocator());
+<%/type:cpp_use_allocator?%>
+<%^type:cpp_use_allocator?%>
 this-><%field:cpp_name%> = <% > types/type%>();
+<%/type:cpp_use_allocator?%>
 ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:cpp_name%>);<%!
 %><%/type:resolves_to_container?%><%!
 %><%#type:struct?%><%!

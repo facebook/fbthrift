@@ -82,6 +82,10 @@ struct StatefulAlloc : private std::allocator<T> {
   explicit StatefulAlloc(const StatefulAlloc<U>& other) noexcept
       : state_(other.state_) {}
 
+  using propagate_on_container_copy_assignment = std::true_type;
+  using propagate_on_container_move_assignment = std::true_type;
+  using propagate_on_container_swap = std::true_type;
+
   int state_ = 0;
 
   T* allocate(size_t size) {
@@ -108,3 +112,6 @@ struct StatefulAlloc : private std::allocator<T> {
 };
 
 using ScopedStatefulAlloc = std::scoped_allocator_adaptor<StatefulAlloc<char>>;
+
+template <class T>
+using StatefulAllocVector = std::vector<T, ScopedStatefulAlloc>;
