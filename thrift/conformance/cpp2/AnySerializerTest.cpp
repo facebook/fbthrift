@@ -32,22 +32,52 @@ namespace apache::thrift::conformance {
 
 namespace {
 
+// Helpers for encoding/decoding using stirngs.
+std::string encode(const AnySerializer& serializer, any_ref value) {
+  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+  // Allocate 16KB at a time; leave some room for the IOBuf overhead
+  constexpr size_t kDesiredGrowth = (1 << 14) - 64;
+  serializer.encode(value, folly::io::QueueAppender(&queue, kDesiredGrowth));
+
+  std::string result;
+  queue.appendToString(result);
+  return result;
+}
+
+template <typename T>
+T decode(const AnySerializer& serializer, std::string_view data) {
+  folly::IOBuf buf(folly::IOBuf::WRAP_BUFFER, data.data(), data.size());
+  folly::io::Cursor cursor{&buf};
+  return serializer.decode<T>(cursor);
+}
+
+std::any decode(
+    const AnySerializer& serializer,
+    const std::type_info& typeinfo,
+    std::string_view data) {
+  folly::IOBuf buf(folly::IOBuf::WRAP_BUFFER, data.data(), data.size());
+  folly::io::Cursor cursor{&buf};
+  std::any result;
+  serializer.decode(typeinfo, cursor, result);
+  return result;
+}
+
 TEST(AnySerializerTest, TypedSerializer) {
   FollyToStringSerializer<int> intCodec;
-  EXPECT_EQ(intCodec.encode(1), "1");
-  EXPECT_EQ(intCodec.decode("1"), 1);
+  EXPECT_EQ(encode(intCodec, 1), "1");
+  EXPECT_EQ(decode<int>(intCodec, "1"), 1);
 
   AnySerializer& anyCodec(intCodec);
-  EXPECT_EQ(anyCodec.encode(1), "1");
-  EXPECT_EQ(anyCodec.encode(std::any(1)), "1");
-  EXPECT_THROW(anyCodec.encode(2.5), std::bad_any_cast);
-  EXPECT_THROW(anyCodec.encode(std::any(2.5)), std::bad_any_cast);
+  EXPECT_EQ(encode(anyCodec, 1), "1");
+  EXPECT_EQ(encode(anyCodec, std::any(1)), "1");
+  EXPECT_THROW(encode(anyCodec, 2.5), std::bad_any_cast);
+  EXPECT_THROW(encode(anyCodec, std::any(2.5)), std::bad_any_cast);
 
-  EXPECT_EQ(anyCodec.decode<int>("1"), 1);
-  EXPECT_EQ(std::any_cast<int>(anyCodec.decode(typeid(int), "1")), 1);
+  EXPECT_EQ(decode<int>(anyCodec, "1"), 1);
+  EXPECT_EQ(std::any_cast<int>(decode(anyCodec, typeid(int), "1")), 1);
 
-  EXPECT_THROW(anyCodec.decode<double>("1.0"), std::bad_any_cast);
-  EXPECT_THROW(anyCodec.decode(typeid(double), ""), std::bad_any_cast);
+  EXPECT_THROW(decode<double>(anyCodec, "1.0"), std::bad_any_cast);
+  EXPECT_THROW(decode(anyCodec, typeid(double), "1.0"), std::bad_any_cast);
 }
 
 TEST(SerializerTest, MultiSerializer) {
@@ -57,43 +87,43 @@ TEST(SerializerTest, MultiSerializer) {
   SCOPED_CHECK(multiSerializer.checkAndResetAll());
 
   // Can handle ints.
-  EXPECT_EQ(serializer.encode(1), "1");
+  EXPECT_EQ(encode(serializer, 1), "1");
   SCOPED_CHECK(multiSerializer.checkIntEnc());
-  EXPECT_EQ(serializer.decode<int>("1"), 1);
+  EXPECT_EQ(decode<int>(serializer, "1"), 1);
   SCOPED_CHECK(multiSerializer.checkIntDec());
 
   // Can handle std::any(int).
-  std::any a = serializer.decode(typeid(int), "1");
+  std::any a = decode(serializer, typeid(int), "1");
   SCOPED_CHECK(multiSerializer.checkAnyIntDec());
   EXPECT_EQ(std::any_cast<int>(a), 1);
-  EXPECT_EQ(serializer.encode(a), "1");
+  EXPECT_EQ(encode(serializer, a), "1");
   SCOPED_CHECK(multiSerializer.checkIntEnc());
 
   // Can handle doubles.
-  EXPECT_EQ(serializer.encode(2.5), "2.5");
+  EXPECT_EQ(encode(serializer, 2.5), "2.5");
   SCOPED_CHECK(multiSerializer.checkDblEnc());
-  EXPECT_EQ(serializer.decode<double>("0.5"), 0.5f);
+  EXPECT_EQ(decode<double>(serializer, "0.5"), 0.5f);
   SCOPED_CHECK(multiSerializer.checkDblDec());
 
   // Can handle std::any(double).
-  a = serializer.decode(typeid(double), "1");
+  a = decode(serializer, typeid(double), "1");
   SCOPED_CHECK(multiSerializer.checkAnyDblDec());
   EXPECT_EQ(std::any_cast<double>(a), 1.0);
-  EXPECT_EQ(serializer.encode(a), "1");
+  EXPECT_EQ(encode(serializer, a), "1");
   SCOPED_CHECK(multiSerializer.checkDblEnc());
 
   // Cannot handle float.
-  EXPECT_THROW(serializer.encode(1.0f), std::bad_any_cast);
+  EXPECT_THROW(encode(serializer, 1.0f), std::bad_any_cast);
   SCOPED_CHECK(multiSerializer.checkAndResetAll());
-  EXPECT_THROW(serializer.decode<float>("1"), std::bad_any_cast);
+  EXPECT_THROW(decode<float>(serializer, "1"), std::bad_any_cast);
   SCOPED_CHECK(multiSerializer.checkAndResetAll());
 
   // Cannot handle std::any(float).
   a = 1.0f;
-  EXPECT_THROW(serializer.decode(typeid(float), "1"), std::bad_any_cast);
+  EXPECT_THROW(decode(serializer, typeid(float), "1"), std::bad_any_cast);
   SCOPED_CHECK(multiSerializer.checkAndResetAny(1));
   SCOPED_CHECK(multiSerializer.checkAndResetAll());
-  EXPECT_THROW(serializer.encode(a), std::bad_any_cast);
+  EXPECT_THROW(encode(serializer, a), std::bad_any_cast);
   SCOPED_CHECK(multiSerializer.checkAndResetAll());
 }
 

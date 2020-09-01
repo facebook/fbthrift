@@ -18,39 +18,12 @@
 
 namespace apache::thrift::conformance {
 
-std::string AnySerializer::encode(any_ref value) const {
-  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-  // Allocate 16KB at a time; leave some room for the IOBuf overhead
-  constexpr size_t kDesiredGrowth = (1 << 14) - 64;
-  encode(value, folly::io::QueueAppender(&queue, kDesiredGrowth));
-  std::string out;
-  queue.appendToString(out);
-  return out;
-}
-
-void AnySerializer::decode(
-    const std::type_info& typeInfo,
-    std::string_view data,
-    any_ref value) const {
-  folly::IOBuf buf(folly::IOBuf::WRAP_BUFFER, data.data(), data.size());
-  folly::io::Cursor cursor{&buf};
-  decode(typeInfo, cursor, value);
-}
-
 std::any AnySerializer::decode(
     const std::type_info& typeInfo,
     folly::io::Cursor& cursor) const {
   std::any result;
   decode(typeInfo, cursor, result);
   return result;
-}
-
-std::any AnySerializer::decode(
-    const std::type_info& typeInfo,
-    std::string_view data) const {
-  folly::IOBuf buf(folly::IOBuf::WRAP_BUFFER, data.data(), data.size());
-  folly::io::Cursor cursor{&buf};
-  return decode(typeInfo, cursor);
 }
 
 void AnySerializer::checkType(

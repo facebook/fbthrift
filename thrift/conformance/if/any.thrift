@@ -27,5 +27,7 @@ struct Any {
   2: protocol.Protocol protocol;
 
   // The encoded value.
-  3: binary data;
+  // TODO(afuller): Consider switching to std::unique_ptr<folly::IOBuf> to make
+  // moves cheaper (profile to see if this is better).
+  3: binary (cpp.type = "folly::IOBuf") data;
 }

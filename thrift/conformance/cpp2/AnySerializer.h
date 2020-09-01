@@ -46,8 +46,6 @@ class AnySerializer {
   // Throws std::bad_any_cast if the type is not supported.
   virtual void encode(any_ref value, folly::io::QueueAppender&& appender)
       const = 0;
-  // String overload
-  std::string encode(any_ref value) const;
 
   // Decode a value.
   //
@@ -57,22 +55,13 @@ class AnySerializer {
       folly::io::Cursor& cursor,
       any_ref value) const = 0;
 
-  // String overload.
-  void decode(
-      const std::type_info& typeInfo,
-      std::string_view data,
-      any_ref value) const;
-
   // std::any overloads.
   std::any decode(const std::type_info& typeInfo, folly::io::Cursor& cursor)
       const;
-  std::any decode(const std::type_info& typeInfo, std::string_view data) const;
 
   // Compile-time type overloads.
   template <typename T>
   T decode(folly::io::Cursor& cursor) const;
-  template <typename T>
-  T decode(std::string_view data) const;
 
  protected:
   // Throws std::bad_any_cast if the types are not equal.
@@ -103,10 +92,6 @@ class BaseTypedAnySerializer : public AnySerializer {
       folly::io::Cursor& cursor,
       any_ref value) const final;
 
-  T decode(std::string_view cursor) const {
-    return decode<T>(cursor);
-  }
-
  private:
   const Derived& derived() const {
     return static_cast<const Derived&>(*this);
@@ -119,12 +104,6 @@ template <typename T>
 T AnySerializer::decode(folly::io::Cursor& cursor) const {
   T result;
   decode(typeid(T), cursor, result);
-  return result;
-}
-template <typename T>
-T AnySerializer::decode(std::string_view data) const {
-  T result;
-  decode(typeid(T), data, result);
   return result;
 }
 

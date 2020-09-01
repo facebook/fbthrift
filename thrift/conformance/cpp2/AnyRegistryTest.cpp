@@ -24,6 +24,14 @@ namespace apache::thrift::conformance {
 
 namespace {
 
+std::string toString(const folly::IOBuf& buf) {
+  std::string result;
+  folly::IOBufQueue queue;
+  queue.append(buf);
+  queue.appendToString(result);
+  return result;
+}
+
 TEST(AnyTest, Registry) {
   AnyRegistry registry;
   EXPECT_EQ(registry.getTypeName(typeid(int)), "");
@@ -72,7 +80,7 @@ TEST(AnyTest, Registry) {
 
   Any value = registry.store(3, kFollyToStringProtocol);
   EXPECT_EQ(*value.type_ref(), "int");
-  EXPECT_EQ(*value.data_ref(), "3");
+  EXPECT_EQ(toString(*value.data_ref()), "3");
   ASSERT_EQ(value.protocol_ref()->getType(), Protocol::custom);
   EXPECT_EQ(value.protocol_ref()->get_custom(), "FollyToString");
   EXPECT_EQ(std::any_cast<int>(registry.load(value)), 3);
@@ -82,12 +90,12 @@ TEST(AnyTest, Registry) {
   Any original = value;
   value = registry.store(original, kFollyToStringProtocol);
   EXPECT_EQ(*value.type_ref(), "int");
-  EXPECT_EQ(*value.data_ref(), "3");
+  EXPECT_EQ(toString(*value.data_ref()), "3");
   ASSERT_EQ(value.protocol_ref()->getType(), Protocol::custom);
   EXPECT_EQ(value.protocol_ref()->get_custom(), "FollyToString");
   value = registry.store(std::any(std::move(original)), kFollyToStringProtocol);
   EXPECT_EQ(*value.type_ref(), "int");
-  EXPECT_EQ(*value.data_ref(), "3");
+  EXPECT_EQ(toString(*value.data_ref()), "3");
   ASSERT_EQ(value.protocol_ref()->getType(), Protocol::custom);
   EXPECT_EQ(value.protocol_ref()->get_custom(), "FollyToString");
 
@@ -95,13 +103,13 @@ TEST(AnyTest, Registry) {
   original = value;
   value = registry.store(original, Number1Serializer::kProtocol);
   EXPECT_EQ(*value.type_ref(), "int");
-  EXPECT_EQ(*value.data_ref(), "number 1!!");
+  EXPECT_EQ(toString(*value.data_ref()), "number 1!!");
   ASSERT_EQ(value.protocol_ref()->getType(), Protocol::custom);
   EXPECT_EQ(value.protocol_ref()->get_custom(), "Number1");
   value = registry.store(
       std::any(std::move(original)), Number1Serializer::kProtocol);
   EXPECT_EQ(*value.type_ref(), "int");
-  EXPECT_EQ(*value.data_ref(), "number 1!!");
+  EXPECT_EQ(toString(*value.data_ref()), "number 1!!");
   ASSERT_EQ(value.protocol_ref()->getType(), Protocol::custom);
   EXPECT_EQ(value.protocol_ref()->get_custom(), "Number1");
   EXPECT_EQ(std::any_cast<int>(registry.load(value)), 1);
@@ -121,14 +129,14 @@ TEST(AnyTest, Registry) {
   // Loading an empty Any value throws an error.
   value = {};
   EXPECT_EQ(*value.type_ref(), "");
-  EXPECT_EQ(*value.data_ref(), "");
+  EXPECT_EQ(toString(*value.data_ref()), "");
   ASSERT_EQ(value.protocol_ref()->getType(), Protocol::__EMPTY__);
   EXPECT_THROW(registry.load(value), std::bad_any_cast);
   EXPECT_THROW(registry.load<float>(value), std::bad_any_cast);
 
   value = registry.store(2.5, kFollyToStringProtocol);
   EXPECT_EQ(*value.type_ref(), "double");
-  EXPECT_EQ(*value.data_ref(), "2.5");
+  EXPECT_EQ(toString(*value.data_ref()), "2.5");
   ASSERT_EQ(value.protocol_ref()->getType(), Protocol::custom);
   EXPECT_EQ(value.protocol_ref()->get_custom(), "FollyToString");
   EXPECT_EQ(std::any_cast<double>(registry.load(value)), 2.5);

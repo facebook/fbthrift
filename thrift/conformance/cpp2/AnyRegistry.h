@@ -120,9 +120,6 @@ class AnyRegistry {
   const AnySerializer* getSerializer(
       const TypeEntry* entry,
       const Protocol& protocol) const;
-
-  static Any
-  store(std::string data, const TypeEntry& entry, const Protocol& protocol);
 };
 
 // Implementation details.

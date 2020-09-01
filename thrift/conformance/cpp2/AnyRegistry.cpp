@@ -16,6 +16,8 @@
 
 #include <thrift/conformance/cpp2/AnyRegistry.h>
 
+#include <folly/io/Cursor.h>
+
 namespace apache::thrift::conformance {
 
 bool AnyRegistry::registerType(const std::type_info& type, std::string name) {
@@ -86,7 +88,16 @@ Any AnyRegistry::store(any_ref value, const Protocol& protocol) const {
     folly::throw_exception<std::bad_any_cast>();
   }
 
-  return store(serializer->encode(value), *entry, protocol);
+  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+  // Allocate 16KB at a time; leave some room for the IOBuf overhead
+  constexpr size_t kDesiredGrowth = (1 << 14) - 64;
+  serializer->encode(value, folly::io::QueueAppender(&queue, kDesiredGrowth));
+
+  Any result;
+  result.type_ref() = entry->name;
+  result.protocol_ref() = protocol;
+  result.data_ref() = queue.moveAsValue();
+  return result;
 }
 
 Any AnyRegistry::store(const Any& value, const Protocol& protocol) const {
@@ -103,7 +114,8 @@ void AnyRegistry::load(const Any& value, any_ref out) const {
   if (serializer == nullptr) {
     folly::throw_exception<std::bad_any_cast>();
   }
-  serializer->decode(entry->type, *value.data_ref(), out);
+  folly::io::Cursor cursor(&*value.data_ref());
+  serializer->decode(entry->type, cursor, out);
 }
 
 std::any AnyRegistry::load(const Any& value) const {
@@ -146,17 +158,6 @@ const AnySerializer* AnyRegistry::getSerializer(
     return nullptr;
   }
   return itr->second;
-}
-
-Any AnyRegistry::store(
-    std::string data,
-    const TypeEntry& entry,
-    const Protocol& protocol) {
-  Any result;
-  result.data_ref() = std::move(data);
-  result.type_ref() = entry.name;
-  result.protocol_ref() = protocol;
-  return result;
 }
 
 } // namespace apache::thrift::conformance
