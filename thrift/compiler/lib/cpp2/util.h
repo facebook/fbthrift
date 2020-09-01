@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <map>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -60,6 +61,8 @@ std::string const& get_cpp_type(const t_type* type);
  * implicit ref (see @is_implicit_ref).
  */
 bool is_cpp_ref(const t_field* f);
+
+bool is_stack_arguments(std::map<std::string, std::string> const& options);
 
 } // namespace cpp2
 } // namespace compiler

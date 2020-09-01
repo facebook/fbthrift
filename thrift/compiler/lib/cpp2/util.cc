@@ -176,6 +176,10 @@ bool is_cpp_ref(const t_field* f) {
       f->annotations_.count("cpp2.ref_type") || is_implicit_ref(f->get_type());
 }
 
+bool is_stack_arguments(std::map<std::string, std::string> const& options) {
+  return options.count("stack_arguments") != 0;
+}
+
 } // namespace cpp2
 } // namespace compiler
 } // namespace thrift

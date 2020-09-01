@@ -445,7 +445,7 @@ class mstch_py3_program : public mstch_program {
   }
 
   mstch::node isStackArguments() {
-    return containsInParsedOptions(cache_.get(), "stack_arguments");
+    return cpp2::is_stack_arguments(cache_->parsed_options_);
   }
 
   mstch::node getCppIncludes() {

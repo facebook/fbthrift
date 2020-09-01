@@ -571,7 +571,7 @@ class mstch_cpp2_type : public mstch_type {
     return t_mstch_cpp2_generator::get_namespace_array(type_->get_program());
   }
   mstch::node stack_arguments() {
-    return cache_->parsed_options_.count("stack_arguments") != 0;
+    return cpp2::is_stack_arguments(cache_->parsed_options_);
   }
   mstch::node sync_methods_return_try() {
     return cache_->parsed_options_.count("sync_methods_return_try") != 0;
@@ -2194,8 +2194,9 @@ bool annotation_validator::visit(t_struct* s) {
 }
 class service_method_validator : public validator {
  public:
-  explicit service_method_validator(bool stack_arguments)
-      : stack_arguments_on(stack_arguments) {}
+  explicit service_method_validator(
+      std::map<std::string, std::string> const& options)
+      : options_(options) {}
 
   using validator::visit;
   /**
@@ -2205,27 +2206,32 @@ class service_method_validator : public validator {
   bool visit(t_service* service) override;
 
  private:
-  bool stack_arguments_on = false;
+  std::map<std::string, std::string> options_;
 };
 
 bool service_method_validator::visit(t_service* service) {
   for (const auto func : service->get_functions()) {
-    bool hascoro = ((func->annotations_.count("cpp.coroutine")) != 0);
-    bool suppressed =
-        (func->annotations_.count(
-             "cpp.coroutine_stack_arguments_broken_suppress_error") != 0);
+    auto suppress_key = "cpp.coroutine_stack_arguments_broken_suppress_error";
+    auto const& annots = func->annotations_;
+    bool suppressed = annots.count(suppress_key) != 0;
+    if (suppressed) {
+      continue;
+    }
+    bool is_coro = annots.count("cpp.coroutine") != 0;
+    if (!is_coro) {
+      continue;
+    }
+    bool is_sa = cpp2::is_stack_arguments(options_);
+    if (!is_sa) {
+      continue;
+    }
     // when cpp.coroutine and stack_arguments are both on, return failure if
     // this function has complex types (including string and binary).
-    auto arglist = func->get_arglist();
-    bool ok = true;
-    for (auto field : arglist->get_members()) {
-      auto tp = field->get_type()->get_true_type();
-      if ((!tp->is_base_type() || tp->is_string_or_binary()) && hascoro &&
-          stack_arguments_on && !suppressed) {
-        ok = false;
-        break;
-      }
-    }
+    auto args = func->get_arglist()->get_members();
+    bool ok = std::all_of(args.begin(), args.end(), [](auto arg) {
+      auto type = arg->get_type()->get_true_type();
+      return type->is_base_type() && !type->is_string_or_binary();
+    });
 
     if (!ok) {
       add_error(
@@ -2241,7 +2247,7 @@ bool service_method_validator::visit(t_service* service) {
 
 void t_mstch_cpp2_generator::fill_validator_list(validator_list& l) const {
   l.add<annotation_validator>();
-  l.add<service_method_validator>(this->has_option("stack_arguments"));
+  l.add<service_method_validator>(this->parsed_options_);
 }
 
 THRIFT_REGISTER_GENERATOR(mstch_cpp2, "cpp2", "");
